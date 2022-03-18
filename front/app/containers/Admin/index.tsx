@@ -119,8 +119,7 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const [contentBuilderLayoutVisible, setContentBuilderLayoutVisible] =
-      useState(false);
+    const [adminFullWidthContent, setAdminFullWidthContent] = useState(false);
 
     useEffect(() => {
       const subscriptions = [
@@ -137,7 +136,7 @@ const AdminPage = memo<Props & WithRouterProps>(
     }, []);
 
     const setContentBuilderNavbarToVisible = (isVisible) =>
-      setContentBuilderLayoutVisible(isVisible);
+      setAdminFullWidthContent(isVisible);
 
     const userCanViewAdmin = () =>
       hasPermission({
@@ -178,7 +177,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       >
         <ThemeProvider theme={chartTheme}>
           <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            {!contentBuilderLayoutVisible && (
+            {!adminFullWidthContent && (
               <>
                 <Sidebar />
                 <RightColumn
