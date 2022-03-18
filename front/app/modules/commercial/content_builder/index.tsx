@@ -19,6 +19,8 @@ const configuration: ModuleConfiguration = {
     },
     'app.containers.Admin.contentBuilderLayout': ({
       onMount,
+      // The <Outlet> has a special mechanism to handle the children prop that we do not use here
+      // so we name the children childrenToRender to avoid a it
       childrenToRender,
     }) => {
       return (

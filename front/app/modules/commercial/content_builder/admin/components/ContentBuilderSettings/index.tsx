@@ -15,7 +15,6 @@ import { ROOT_NODE } from '@craftjs/utils';
 // intl
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import { getComponentNameMessage } from '../../utils';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
@@ -42,6 +41,13 @@ const ContentBuilderSettings = () => {
       isEnabled: state.options.enabled,
     };
   });
+
+  const getComponentNameMessage = (name: 'Container') => {
+    switch (name) {
+      case 'Container':
+        return messages.oneColumn;
+    }
+  };
 
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox
