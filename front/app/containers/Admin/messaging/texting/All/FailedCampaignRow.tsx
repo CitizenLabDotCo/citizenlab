@@ -1,7 +1,6 @@
 import React from 'react';
-import { TextCell } from 'components/admin/ResourceList';
+//import { TextCell } from 'components/admin/ResourceList';
 import { ITextingCampaignData } from 'services/textingCampaigns';
-import T from 'components/T';
 import styled from 'styled-components';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,9 +19,12 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const TextCellWrapper = styled.div`
+const Text = styled.p`
   width: 80%;
-  overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
 `;
 
 const Left = styled.div`
@@ -38,11 +40,7 @@ const Right = styled.div`
 const FailedCampaignRow = ({ campaign }: Props) => (
   <Container id={campaign.id}>
     <Left>
-      <TextCellWrapper>
-        <TextCell className="expand">
-          <T value={campaign.attributes.body_multiloc} />
-        </TextCell>
-      </TextCellWrapper>
+      <Text>{campaign.attributes.body}</Text>
       <StatusLabel
         backgroundColor={colors.clRedError}
         text={<FormattedMessage {...messages.failed} />}
