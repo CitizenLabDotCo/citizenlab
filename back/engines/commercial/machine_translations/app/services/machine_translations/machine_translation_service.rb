@@ -56,7 +56,7 @@ module MachineTranslations
     def fix_html(text_or_html)
       doc = Nokogiri::HTML.fragment text_or_html
       plain_text = doc.text == text_or_html
-      return if plain_text
+      return text_or_html if plain_text
 
       doc.errors.any? ? doc.to_s : text_or_html
     end
