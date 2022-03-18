@@ -1,17 +1,16 @@
 require 'rails_helper'
 
 describe MachineTranslations::MachineTranslationService do
-  let(:service) { described_class.new }
-
   describe 'translate' do
     before do
       stub_easy_translate!
     end
 
     it 'corrects translated HTML' do
-      text = service.translate '<strong>Gezondheid &amp; Welzijn</strong>', 'nl-BE', 'en'
+      text = subject.translate '<strong>Gezondheid &amp; Welzijn</strong>', 'nl-BE', 'en'
       doc = Nokogiri::HTML.fragment text
       expect(doc.errors).to be_blank
+      expect(text).to eq '<strong>Health &amp; Wellness</strong>'
     end
   end
 

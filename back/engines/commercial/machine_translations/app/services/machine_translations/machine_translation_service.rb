@@ -25,7 +25,7 @@ module MachineTranslations
       multiloc.keys.first
     end
 
-    def translate(text_or_html, locale_from, locale_to, retries: 10)
+    def translate(text_or_html, locale_from, locale_to, retries: 0)
       # Uses Google translate
       from = locale_from[0...2]
       to = locale_to[0...2]
@@ -34,15 +34,12 @@ module MachineTranslations
 
       translation = nil
       exception = nil
-      while retries > 0
-        begin
-          translation = EasyTranslate.translate text_or_html, from: from, to: to
-          break
-        rescue EasyTranslate::EasyTranslateException => e
-          exception = e
-          retries -= 1
-          sleep rand(60)
-        end
+      (retries + 1).times do
+        translation = EasyTranslate.translate text_or_html, from: from, to: to
+        break
+      rescue EasyTranslate::EasyTranslateException => e
+        exception = e
+        sleep rand(60)
       end
 
       if translation.present?
