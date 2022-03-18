@@ -8,7 +8,10 @@ const configuration: ModuleConfiguration = {
       {
         path: 'projects/:projectId/description/content-builder',
         name: 'content_builder',
-        container: () => import('./admin/containers/index'),
+        container: () =>
+          import(
+            './admin/components/ContentBuilderTopBar/ContentBuilderTopBar'
+          ),
       },
     ],
   },
