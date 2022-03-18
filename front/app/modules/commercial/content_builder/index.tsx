@@ -1,12 +1,13 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/ContentBuilderToggle';
+import ContentBuilderLayout from 'modules/commercial/content_builder/admin/components/ContentBuilderLayout';
 
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
-        path: 'projects/:projectId/description/content-builder',
+        path: 'content-builder/projects/:projectId/description',
         name: 'content_builder',
         container: () => import('./admin/containers/index'),
       },
@@ -16,9 +17,19 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.projects.edit.description.contentBuilder': (
       props
     ) => {
+      return <ContentBuilderToggle {...props} />;
+    },
+    'app.containers.Admin.contentBuilderLayout': ({
+      onMount,
+      // The <Outlet> has a special mechanism to handle the children prop that we do not use here
+      // so we name the children childrenToRender to avoid a it
+      childrenToRender,
+    }) => {
       return (
         <>
-          <ContentBuilderToggle {...props} />
+          <ContentBuilderLayout onMount={onMount}>
+            {childrenToRender}
+          </ContentBuilderLayout>
         </>
       );
     },
