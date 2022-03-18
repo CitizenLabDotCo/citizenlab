@@ -102,11 +102,12 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
     if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events"
       nil
     else
-      if Rails.env.development? || Rails.env.staging?
-        ENV.fetch('OVERRIDE_HOST', request.host).gsub(/\./, "_")
-      else
-        request.host.gsub(/\./, "_")
-      end
+      host = if Rails.env.development? || Rails.env.staging?
+               ENV.fetch('OVERRIDE_HOST', request.host)
+             else
+               request.host
+             end
+      Tenant.host_to_schema_name(host)
     end
   end
 end
@@ -123,3 +124,16 @@ Rails.application.config.middleware.insert_after ActionDispatch::Session::Cookie
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
 # Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
 # Rails.application.config.middleware.use 'Apartment::Elevators::FirstSubdomain'
+
+# https://github.com/rails-on-services/apartment/tree/2.11.0#callbacks
+require 'apartment/adapters/abstract_adapter'
+
+module Apartment
+  module Adapters
+    class AbstractAdapter
+      set_callback :switch, :after do |object|
+        Sentry.set_tags(tenant: ::Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
+      end
+    end
+  end
+end
