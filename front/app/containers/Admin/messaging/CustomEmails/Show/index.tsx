@@ -246,7 +246,7 @@ class Show extends React.Component<Props, State> {
             {isDraft(campaign) && (
               <Buttons>
                 <Button
-                  linkTo={`/admin/emails/custom/${campaign.id}/edit`}
+                  linkTo={`/admin/messaging/emails/custom/${campaign.id}/edit`}
                   buttonStyle="secondary"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
@@ -344,7 +344,7 @@ class Show extends React.Component<Props, State> {
               <ButtonsWrapper>
                 <Button
                   buttonStyle="secondary"
-                  linkTo={`/admin/emails/custom/${campaign.id}/edit`}
+                  linkTo={`/admin/messaging/emails/custom/${campaign.id}/edit`}
                 >
                   <FormattedMessage {...messages.changeRecipientsButton} />
                 </Button>
