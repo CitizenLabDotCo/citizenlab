@@ -11,6 +11,9 @@ import { Icon } from '@citizenlab/cl2-component-library';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+// utils
+import { isString } from 'utils/helperUtils';
+
 const Article = styled(Link)`
   display: flex;
   justify-content: space-between;
@@ -38,7 +41,7 @@ const Article = styled(Link)`
 
 interface Props {
   trackLink: () => void;
-  linkMessage: ReactIntl.FormattedMessage.MessageDescriptor;
+  linkMessage: ReactIntl.FormattedMessage.MessageDescriptor | string;
   titleMessage: ReactIntl.FormattedMessage.MessageDescriptor;
   descriptionMessage: ReactIntl.FormattedMessage.MessageDescriptor;
 }
@@ -50,8 +53,12 @@ const AdminGuideArticle = ({
   titleMessage,
   descriptionMessage,
 }: Props & InjectedIntlProps) => {
+  const formattedURL = isString(linkMessage)
+    ? linkMessage
+    : formatMessage(linkMessage);
+
   return (
-    <Article to={formatMessage(linkMessage)} onClick={trackLink}>
+    <Article to={formattedURL} onClick={trackLink}>
       <div>
         <FormattedMessage tagName="h3" {...titleMessage} />
         <FormattedMessage tagName="p" {...descriptionMessage} />

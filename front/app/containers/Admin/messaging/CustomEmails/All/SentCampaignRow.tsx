@@ -6,28 +6,34 @@ import Button from 'components/UI/Button';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import { FormattedDate, FormattedTime } from 'react-intl';
 
 interface Props {
   campaign: ICampaignData;
 }
 
-const DraftCampaignRow = ({ campaign }: Props) => (
+const SentCampaignRow = ({ campaign }: Props) => (
   <Row id={campaign.id}>
     <TextCell className="expand">
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
+    <div>
+      <FormattedDate value={campaign.attributes.updated_at} />
+      &nbsp;
+      <FormattedTime value={campaign.attributes.updated_at} />
+    </div>
     <StatusLabel
-      backgroundColor="draftYellow"
-      text={<FormattedMessage {...messages.draft} />}
+      backgroundColor="clGreenSuccess"
+      text={<FormattedMessage {...messages.sent} />}
     />
     <Button
-      linkTo={`/admin/emails/custom/${campaign.id}`}
-      buttonStyle="secondary"
-      icon="edit"
+      linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
+      icon="charts"
+      buttonStyle="text"
     >
-      <FormattedMessage {...messages.manageButtonLabel} />
+      <FormattedMessage {...messages.statsButton} />
     </Button>
   </Row>
 );
 
-export default DraftCampaignRow;
+export default SentCampaignRow;

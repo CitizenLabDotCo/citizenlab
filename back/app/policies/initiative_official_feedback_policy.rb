@@ -12,7 +12,7 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
     end
   end
 
-  def create? 
+  def create?
     user&.admin?
   end
 
@@ -27,5 +27,4 @@ class InitiativeOfficialFeedbackPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end
