@@ -4,7 +4,7 @@ class MultilocValidator < ActiveModel::EachValidator
     return if record.errors.present? || value.nil?
 
     validate_supported_locales record, attribute, value
-    validate_values_not_all_strings record, attribute, value
+    validate_values_are_strings record, attribute, value
     validate_html record, attribute, value
   end
 
@@ -23,8 +23,8 @@ class MultilocValidator < ActiveModel::EachValidator
     end
   end
 
-  def validate_values_not_all_strings(record, attribute, value)
-    if value&.values && !value.values.all? { |v| v.is_a? String }
+  def validate_values_are_strings(record, attribute, value)
+    if value&.values && !value.values.all?(String)
       locales = value.keys.reject { |l| value[l].is_a?(String) }
       message = "non-string values (for #{locales}) cannot be accepted. Either the key should be removed, or the value should be replaced by an empty string"
       record.errors.add attribute, :values_not_all_strings, message: message
@@ -40,14 +40,15 @@ class MultilocValidator < ActiveModel::EachValidator
   end
 
   def validate_html(record, attribute, value)
-    if options[:html]
-      value.each do |key, html|
-        doc = Nokogiri::HTML.fragment html
-        next if doc.text == html
+    return if !options[:html]
 
-        doc.errors.each do |error|
-          record.errors.add attribute, :bad_html, message: "#{key}: #{error.message}"
-        end
+    value.each do |key, html|
+      doc = Nokogiri::HTML.fragment html
+      plain_text = doc.text == html
+      next if plain_text
+
+      doc.errors.each do |error|
+        record.errors.add attribute, :bad_html, message: "#{key}: #{error.message}"
       end
     end
   end
