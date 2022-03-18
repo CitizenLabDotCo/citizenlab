@@ -61,7 +61,6 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       ? windowSize?.windowWidth <= viewportWidths.smallTablet
       : false;
     const isPBProject = project.attributes.participation_method === 'budgeting';
-    const projectId = project.id;
 
     return (
       <Container

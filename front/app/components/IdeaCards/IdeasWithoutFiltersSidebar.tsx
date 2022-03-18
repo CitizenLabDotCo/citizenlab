@@ -44,7 +44,6 @@ import {
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 const Container = styled.div`
@@ -161,6 +160,7 @@ interface InputProps extends GetIdeasInputProps {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
+  projectId: string;
 }
 
 interface DataProps {
@@ -187,6 +187,7 @@ const IdeasWithoutFiltersSidebar = ({
   participationMethod,
   participationContextId,
   participationContextType,
+  projectId,
 }: Props) => {
   const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
 
@@ -265,7 +266,6 @@ const IdeasWithoutFiltersSidebar = ({
   );
   const smallerThan1100px = !!(windowSize && windowSize <= 1100);
   const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);
-  const projectId = !isNilOrError(project) ? project.id : undefined;
 
   if (list) {
     return (
@@ -353,12 +353,13 @@ const IdeasWithoutFiltersSidebar = ({
   return null;
 };
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
+const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  ideas: ({ render, ...getIdeasInputProps }) => (
+  ideas: ({ render, projectId, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
+      projectIds={[projectId]}
       pageSize={24}
       sort={
         getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
@@ -367,24 +368,22 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
       {render}
     </GetIdeas>
   ),
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  project: ({ render, projectId }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  ideaCustomFieldsSchemas: ({ project, render }) => {
+  ideaCustomFieldsSchemas: ({ render, projectId }) => {
     return (
-      <GetIdeaCustomFieldsSchemas
-        projectId={!isNilOrError(project) ? project.id : null}
-      >
+      <GetIdeaCustomFieldsSchemas projectId={projectId}>
         {render}
       </GetIdeaCustomFieldsSchemas>
     );
   },
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <IdeasWithoutFiltersSidebar {...inputProps} {...dataProps} />
     )}
   </Data>
-));
+);
