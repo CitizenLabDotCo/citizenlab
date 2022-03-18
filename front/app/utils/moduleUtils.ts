@@ -31,6 +31,7 @@ import {
   ITab,
   MessageDescriptor,
   Multiloc,
+  Locale,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -136,7 +137,13 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
   };
-  'app.containers.Admin.projects.edit.description.contentBuilder';
+  'app.containers.Admin.projects.edit.description.contentBuilder': {
+    onMount: () => void;
+    valueMultiloc: Multiloc | null | undefined;
+    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+    label: string;
+    labelTooltipText: string;
+  };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';
