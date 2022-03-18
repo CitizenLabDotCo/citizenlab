@@ -472,7 +472,7 @@ de:
       subject: 'Der Status Ihres Vorschlags hat sich geändert'
       preheader: 'Der Status Ihres Vorschlags hat sich geändert'
     user_digest:
-      subject: "Wöchentliches Update der %{organizationName}'s Beteiligungsplattform"
+      subject: "Ihre Aktivität auf der Beteiligungsplattform von %{organizationName}"
       commented: "%{authorFirstName} kommentierte:"
       preheader: "Wöchentliche Übersicht über %{organizationName}"
       title_your_weekly_report: "Entdecken Sie, was letzte Woche passiert ist"
@@ -491,7 +491,7 @@ de:
       no_notifications: "Keine Benachrichtigungen"
       one_notification: "1 Benachrichtigung"
       multiple_notifications: "%{notifCount} Benachrichtigungen"
-      no_unread_notifications: "Es ist an der Zeit, neue Aktivitäten zu schaffen! Besuche die Plattform, um zu erfahren, was sich tut."
+      no_unread_notifications: "Sie haben keine ungelesenen Benachrichtigungen. Besuchen Sie die Plattform, um etwas zu posten und neue Benachrichtigungen zu generieren!"
       unread_notifications: "Sie haben ungelesene Benachrichtigungen. Besuchen Sie die Plattform, um zu erfahren, was los ist."
     threshold_reached_for_admin:
       by_author: 'von %{authorName}'
