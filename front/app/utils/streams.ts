@@ -512,7 +512,7 @@ class Streams {
     );
 
     // If a stream with the calculated streamId does not yet exist
-    if (!has(this.streams, streamId)) {
+    if (!this.streams[streamId]) {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(
         apiEndpoint.lastIndexOf('/') + 1
@@ -529,6 +529,7 @@ class Streams {
 
       // Here we fetch the data for the given andpoint and push it into the associated stream
       const fetch = async () => {
+        const stream = this.streams[streamId];
         try {
           const response = await request<any>(
             apiEndpoint,
@@ -537,7 +538,9 @@ class Streams {
             queryParameters
           );
           // grab the response and push it into the stream
-          this.streams?.[streamId]?.observer?.next(response);
+          if (stream) {
+            stream.observer.next(response);
+          }
           return response;
         } catch (error) {
           // When the endpoint returns an error we destroy the stream
@@ -557,16 +560,17 @@ class Streams {
           // and exclude them from the error-handling logic.
           if (
             streamId !== authApiEndpoint &&
-            streamId !== currentOnboardingCampaignsApiEndpoint
+            streamId !== currentOnboardingCampaignsApiEndpoint &&
+            stream
           ) {
             // push the error reponse into the stream
-            this.streams[streamId].observer.next(error);
+            stream.observer.next(error);
             // destroy the stream
             this.deleteStream(streamId, apiEndpoint);
             reportError(error);
             throw error;
-          } else if (streamId === authApiEndpoint) {
-            this.streams[streamId].observer.next(null);
+          } else if (streamId === authApiEndpoint && stream) {
+            stream.observer.next(null);
           }
           return null;
         }
@@ -582,8 +586,9 @@ class Streams {
       const observable = new Observable<T | null>((observer) => {
         const dataId = lastUrlSegment;
 
-        if (this.streams[streamId]) {
-          this.streams[streamId].observer = observer;
+        const stream = this.streams[streamId];
+        if (stream) {
+          stream.observer = observer;
         }
 
         // When we know the stream represents a single-item endpoint,
@@ -618,10 +623,13 @@ class Streams {
         // https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan
         startWith('initial' as any),
         scan((accumulated: T, current: T | pureFn<T>) => {
+          const stream = this.streams[streamId];
           let data: any = accumulated;
           const dataIds = {};
 
-          this.streams[streamId].type = 'unknown';
+          if (stream) {
+            stream.type = 'unknown';
+          }
 
           // I don't think we still have uss cases were current is a function
           // instead of a value (was an early experiment)
@@ -635,7 +643,11 @@ class Streams {
 
             // endpoints that return an array of objects
             if (isArray(innerData)) {
-              this.streams[streamId].type = 'arrayOfObjects';
+              const stream = this.streams[streamId];
+
+              if (stream) {
+                stream.type = 'arrayOfObjects';
+              }
               // loop through the array of objects
               innerData
                 .filter((item) => has(item, 'id'))
@@ -651,16 +663,19 @@ class Streams {
                   }
                   // create an index for the stream by its dataId
                   this.addStreamIdByDataIdIndex(
+                    dataId,
                     streamId,
-                    isQueryStream,
-                    dataId
+                    isQueryStream
                   );
                 });
             }
             // endpoints that return a single object
             else if (isObject(innerData) && has(innerData, 'id')) {
               const dataId = innerData['id'];
-              this.streams[streamId].type = 'singleObject';
+              const stream = this.streams[streamId];
+              if (stream) {
+                stream.type = 'singleObject';
+              }
               dataIds[dataId] = true;
               if (cacheStream) {
                 // write the endpoint response to the key-value object cache
@@ -670,7 +685,7 @@ class Streams {
                 });
               }
               // create an index for the stream by its dataId
-              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
+              this.addStreamIdByDataIdIndex(dataId, streamId, isQueryStream);
             }
 
             // Important: also loop through any included data and put in it the key-value object cache
@@ -699,7 +714,9 @@ class Streams {
             }
           }
 
-          this.streams[streamId].dataIds = dataIds;
+          if (stream) {
+            stream.dataIds = dataIds;
+          }
 
           return this.deepFreeze(data);
         }),
@@ -732,8 +749,10 @@ class Streams {
         // to make sure there at any give time at least 1 subscriber
         // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
         // it will stay subscribed as long as the user is on the platform)
-        this.streams[streamId].subscription =
-          this.streams[streamId].observable.subscribe();
+        const stream = this.streams[streamId];
+        if (stream) {
+          stream.subscription = stream.observable.subscribe();
+        }
       }
 
       return this.streams[streamId] as IStream<T>;
