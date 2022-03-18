@@ -296,6 +296,10 @@ namespace :cl2_back do
         disable_downvoting: {
           enabled: true,
           allowed: true
+        },
+        texting: {
+          enabled: true,
+          allowed: true
         }
       }
     )

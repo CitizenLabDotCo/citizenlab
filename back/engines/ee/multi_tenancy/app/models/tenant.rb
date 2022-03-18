@@ -4,22 +4,24 @@
 #
 # Table name: public.tenants
 #
-#  id         :uuid             not null, primary key
-#  name       :string
-#  host       :string
-#  settings   :jsonb
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  logo       :string
-#  header_bg  :string
-#  favicon    :string
-#  style      :jsonb
-#  deleted_at :datetime
+#  id                    :uuid             not null, primary key
+#  name                  :string
+#  host                  :string
+#  settings              :jsonb
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  logo                  :string
+#  header_bg             :string
+#  favicon               :string
+#  style                 :jsonb
+#  deleted_at            :datetime
+#  creation_finalized_at :datetime
 #
 # Indexes
 #
-#  index_tenants_on_deleted_at  (deleted_at)
-#  index_tenants_on_host        (host)
+#  index_tenants_on_creation_finalized_at  (creation_finalized_at)
+#  index_tenants_on_deleted_at             (deleted_at)
+#  index_tenants_on_host                   (host)
 #
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator

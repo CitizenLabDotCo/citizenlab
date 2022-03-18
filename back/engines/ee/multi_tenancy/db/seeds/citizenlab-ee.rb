@@ -442,6 +442,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       disable_downvoting: {
         enabled: true,
         allowed: true
+      },
+      texting: {
+        enabled: true,
+        allowed: true
       }
     }
   })
