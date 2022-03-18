@@ -1,20 +1,17 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
-resource "Users" do
-
-  explanation "Citizens and city administrators."
+resource 'Users' do
+  explanation 'Citizens and city administrators.'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
   end
 
-  context "when not authenticated" do
-
-    get "web_api/v1/users/me" do
-      example_request "[error] Get the authenticated user" do
-        expect(status).to eq(404)
+  context 'when not authenticated' do
+    get 'web_api/v1/users/me' do
+      example_request '[error] Get the authenticated user' do
+        expect(status).to eq 401
       end
     end
 

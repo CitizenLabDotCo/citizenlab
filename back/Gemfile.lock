@@ -317,6 +317,12 @@ PATH
       rails (~> 6.1)
 
 PATH
+  remote: engines/commercial/texting
+  specs:
+    texting (0.1.0)
+      rails (~> 6.1)
+
+PATH
   remote: engines/commercial/user_custom_fields
   specs:
     user_custom_fields (0.1.0)
@@ -1259,6 +1265,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   test-prof (~> 1.0)
+  texting!
   user_confirmation!
   user_custom_fields!
   verification!
