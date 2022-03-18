@@ -241,17 +241,21 @@ NOTE: Watch out that you don't accidently commit these changes!
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines. For adding commercial engines, see the Notion documentation: https://www.notion.so/citizenlab/Engines-and-features-5efffe90cb1e4b55ba5c3e01322d6a5a
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
 
 1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 
-2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
+2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. 
 
-3. Add the new engine to `citizenlab.config.json` and 
+3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. 
 
-4. Update the licenses by executing `license_finder approvals add blorgh`.
+4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-5. A good way to verify if your engine was added successfully is by running the `spec/lib/settings_spec.rb` spec.
+5. Add the new engine to `citizenlab.config.json` and 
+
+6. Update the licenses by executing `license_finder approvals add blorgh`.
+
+7. A good way to verify if your engine was added successfully is by running the `spec/lib/settings_spec.rb` spec.
 
 
 ## Running the profiler
