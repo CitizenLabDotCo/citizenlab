@@ -17,12 +17,19 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-color: #e0e0e0 !important;
+  border-top: 1px solid;
 `;
 
 const Left = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
   width: 100%;
+`;
+
+const TextWrapper = styled.div`
+  line-height: 50px;
 `;
 
 const Text = styled.p`
@@ -43,7 +50,9 @@ const Right = styled.div`
 const DraftCampaignRow = ({ campaign }: Props) => (
   <Container id={campaign.id}>
     <Left>
-      <Text>{campaign.attributes.body}</Text>
+      <TextWrapper>
+        <Text>{campaign.attributes.body}</Text>
+      </TextWrapper>
       <StatusLabel
         backgroundColor={colors.adminOrangeIcons}
         text={<FormattedMessage {...messages.draft} />}
