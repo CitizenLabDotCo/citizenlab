@@ -5,6 +5,7 @@
 ### Changed
 
 - Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
 
 ### Fixed
 
