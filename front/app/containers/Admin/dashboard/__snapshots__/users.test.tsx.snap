@@ -54,11 +54,6 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
       endAt="2010-01-01T04:06:07.000Z"
       id="app.containers.Admin.dashboard.users.graphs"
     />
-    <WithTheme(MostActiveUsersList)
-      className="dynamicHeight"
-      endAt="2010-01-01T04:06:07.000Z"
-      infoMessage="The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant."
-    />
   </Chart__GraphsContainer>
 </Fragment>
 `;
