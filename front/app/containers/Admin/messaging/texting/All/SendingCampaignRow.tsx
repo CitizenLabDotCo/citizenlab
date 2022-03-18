@@ -20,11 +20,12 @@ const Container = styled.div`
 
 const Left = styled.div`
   display: flex;
+  gap: 10px;
   width: 100%;
 `;
 
 const Text = styled.p`
-  width: 80%;
+  width: 600px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

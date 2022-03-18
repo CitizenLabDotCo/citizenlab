@@ -1,5 +1,4 @@
 import React from 'react';
-//import { TextCell } from 'components/admin/ResourceList';
 import { ITextingCampaignData } from 'services/textingCampaigns';
 import styled from 'styled-components';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
@@ -19,17 +18,18 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const Left = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+`;
+
 const Text = styled.p`
-  width: 80%;
+  width: 600px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
-`;
-
-const Left = styled.div`
-  display: flex;
-  width: 100%;
 `;
 
 const Right = styled.div`
