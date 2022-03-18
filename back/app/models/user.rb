@@ -299,20 +299,12 @@ class User < ApplicationRecord
     false
   end
 
-  def admin_or_moderator?(project_id)
-    admin? || (project_id && project_moderator?(project_id))
-  end
-
-  def active_admin_or_moderator?(project_id)
-    active? && admin_or_moderator?(project_id)
+  def normal_user?
+    !admin?
   end
 
   def moderatable_project_ids # TODO include folders?
     []
-  end
-
-  def moderatable_projects
-    Project.none
   end
 
   def add_role(type, options = {})

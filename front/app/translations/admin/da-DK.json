@@ -313,6 +313,7 @@
   "app.containers.Admin.Insights.components.TopBar.deleteConfirmation": "Er du sikker?",
   "app.containers.Admin.Insights.components.TopBar.duplicate": "Duplikere",
   "app.containers.Admin.Insights.components.TopBar.editName": "Rediger navn",
+  "app.containers.Admin.Insights.components.TopBar.linkedProjects": "Sammenkædede projekter ({numberOfProjects})",
   "app.containers.Admin.Insights.components.TopBar.options": "Muligheder",
   "app.containers.Admin.Insights.components.TopBar.renameModalCancel": "Annuller",
   "app.containers.Admin.Insights.components.TopBar.renameModalNameLabel": "Nyt navn",
