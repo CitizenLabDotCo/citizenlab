@@ -58,6 +58,7 @@ describe('<PostManager />', () => {
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
+        defaultFilterMenu={'projects'}
         visibleFilterMenus={['projects', 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
@@ -97,6 +98,7 @@ describe('<PostManager />', () => {
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
+        defaultFilterMenu={'projects'}
         visibleFilterMenus={['projects', 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
@@ -120,6 +122,7 @@ describe('<PostManager />', () => {
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
+        defaultFilterMenu={'projects'}
         visibleFilterMenus={['projects', 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
@@ -150,6 +153,7 @@ describe('<PostManager />', () => {
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
+        defaultFilterMenu={'topics'}
         visibleFilterMenus={['topics', 'statuses', 'projects']}
         posts={posts}
         postStatuses={postStatuses}
@@ -180,6 +184,7 @@ describe('<PostManager />', () => {
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
+        defaultFilterMenu={'topics'}
         visibleFilterMenus={['topics', 'statuses', 'projects']}
         posts={posts}
         postStatuses={postStatuses}
@@ -205,6 +210,7 @@ describe('<PostManager />', () => {
     const Wrapper = shallow(
       <PostManager
         type="Initiatives"
+        defaultFilterMenu={'projects'}
         visibleFilterMenus={['topics', 'statuses', 'projects']}
         posts={posts}
         postStatuses={postStatuses}
