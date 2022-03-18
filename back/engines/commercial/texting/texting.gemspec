@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*']
 
   s.add_dependency 'rails', '~> 6.1'
+  s.add_dependency 'twilio-ruby', '~> 5.65'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
