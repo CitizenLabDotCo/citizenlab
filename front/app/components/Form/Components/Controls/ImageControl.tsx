@@ -16,6 +16,7 @@ import useIdeaImages from 'hooks/useIdeaImages';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { FormContext } from '../../contexts';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const ImageControl = ({
   uischema,
@@ -64,7 +65,7 @@ const ImageControl = ({
   }, [remoteImages, inputId]);
 
   return (
-    <>
+    <Box id="e2e-idea-image-upload">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
@@ -81,7 +82,7 @@ const ImageControl = ({
         onRemove={handleUploadOnRemove}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-    </>
+    </Box>
   );
 };
 

@@ -125,7 +125,7 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   );
 
   return (
-    <PageContainer overflow="hidden">
+    <PageContainer overflow="hidden" id="e2e-idea-edit-page">
       {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
         <>
           <IdeasEditMeta ideaId={ideaId} projectId={project.id} />

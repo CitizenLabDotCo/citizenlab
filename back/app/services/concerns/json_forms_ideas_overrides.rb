@@ -6,7 +6,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'Categorization',
       options: {
-        formId: 'ideaForm',
+        formId: 'idea-form',
         inputTerm: input_term,
       },
       elements: drop_empty_categories([

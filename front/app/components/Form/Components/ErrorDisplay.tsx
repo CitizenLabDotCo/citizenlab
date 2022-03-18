@@ -120,7 +120,6 @@ const Bullet = styled.span`
 interface Props {
   fieldPath: string;
   ajvErrors?: string;
-  className?: string;
   didBlur?: boolean;
 }
 
@@ -158,8 +157,8 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
       enter={true}
       exit={true}
     >
-      <Container role="alert">
-        <ContainerInner className="e2e-error-message">
+      <Container role="alert" className="e2e-error-message">
+        <ContainerInner>
           <ErrorIcon name="error" />
 
           <ErrorMessageText>

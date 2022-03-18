@@ -486,7 +486,6 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
 
               <ButtonBarContainer>
                 <IdeasEditButtonBar
-                  elementId="e2e-idea-edit-save-button"
                   form="idea-form"
                   submitError={submitError}
                   processing={processing}

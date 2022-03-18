@@ -56,7 +56,7 @@ describe('Idea edit page', () => {
 
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form', { timeout: 100000 });
-    cy.get('#e2e-idea-title-input #title').as('titleInput');
+    cy.get('#e2e-idea-title-input input').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
     // check initial form values
@@ -99,7 +99,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-file-upload');
 
     // save the form
-    cy.get('#e2e-idea-edit-save-button').click();
+    cy.get('.e2e-submit-idea-form').click();
 
     // verify updated idea page
     cy.location('pathname').should('eq', `/en/ideas/${ideaSlug}`);

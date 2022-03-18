@@ -1,6 +1,6 @@
 import { randomString, apiRemoveProject } from '../support/commands';
 
-describe.skip('Idea form settings', () => {
+describe('Idea form settings', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
@@ -42,8 +42,8 @@ describe.skip('Idea form settings', () => {
         cy.visit(`admin/projects/${projectId}/ideaform`);
 
         // set project idea form setting of location to disabled
-        cy.get('.e2e-location-setting-collapsed').click();
-        cy.get('.e2e-location-enabled-toggle-label').click();
+        cy.get('.e2e-location_description-setting-collapsed').click();
+        cy.get('.e2e-location_description-enabled-toggle-label').click();
         cy.get('#e2e-ideaform-settings-submit').click();
 
         // go to idea form and verify field is not there
@@ -81,8 +81,8 @@ describe.skip('Idea form settings', () => {
         cy.wait(1000);
 
         // set location to disabled
-        cy.get('.e2e-location-setting-collapsed').click();
-        cy.get('.e2e-location-enabled-toggle-label').click();
+        cy.get('.e2e-location_description-setting-collapsed').click();
+        cy.get('.e2e-location_description-enabled-toggle-label').click();
         cy.get('#e2e-ideaform-settings-submit').click();
 
         // check that location isn't on the idea show page anymore
@@ -102,14 +102,14 @@ describe.skip('Idea form settings', () => {
         cy.visit(`admin/projects/${projectId}/ideaform`);
 
         // set project idea form setting of location to disabled
-        cy.get('.e2e-location-setting-collapsed').click();
-        cy.get('.e2e-location-enabled-toggle-label').click();
+        cy.get('.e2e-location_description-setting-collapsed').click();
+        cy.get('.e2e-location_description-enabled-toggle-label').click();
         cy.get('#e2e-ideaform-settings-submit').click();
 
-        // verify that the list/view toggle buttons are not there anymore
-        cy.visit(`projects/${projectTitle}`);
-        cy.get('#e2e-ideas-container');
-        cy.get('.e2e-list-map-viewbuttons').should('not.exist');
+        // // verify that the list/view toggle buttons are not there anymore
+        // cy.visit(`projects/${projectTitle}`);
+        // cy.get('#e2e-ideas-container');
+        // cy.get('.e2e-list-map-viewbuttons').should('not.exist');
       });
     });
   });
@@ -135,8 +135,8 @@ describe.skip('Idea form settings', () => {
             cy.wait(1000);
 
             // set topics to required
-            cy.get('.e2e-topics-setting-collapsed').click();
-            cy.get('.e2e-topics-required-toggle-label').click();
+            cy.get('.e2e-topic_ids-setting-collapsed').click();
+            cy.get('.e2e-topic_ids-required-toggle-label').click();
             cy.get('#e2e-ideaform-settings-submit').click();
 
             // go to ideaform and try to post idea
@@ -145,10 +145,10 @@ describe.skip('Idea form settings', () => {
             cy.reload();
             // without getting the form first, the form gets submitted before the fields are loaded
             cy.get('#idea-form');
-            cy.get('#e2e-idea-edit-save-button').click();
+            cy.get('.e2e-submit-idea-form').click();
 
             // find topics error on idea form page and check we stay on the idea form page
-            cy.get('#e2e-new-idea-topics-error');
+            cy.get('#e2e-idea-topics-input .e2e-error-message');
             cy.location('pathname').should('eq', `/en/ideas/edit/${ideaId}`);
           });
         });
@@ -160,8 +160,8 @@ describe.skip('Idea form settings', () => {
           cy.visit(`admin/projects/${projectId}/ideaform`);
 
           // set project idea form setting of topics to required
-          cy.get('.e2e-topics-setting-collapsed').click();
-          cy.get('.e2e-topics-required-toggle-label').click();
+          cy.get('.e2e-topic_ids-setting-collapsed').click();
+          cy.get('.e2e-topic_ids-required-toggle-label').click();
           cy.get('#e2e-ideaform-settings-submit').click();
 
           // go to ideaform and try to post idea
@@ -171,11 +171,11 @@ describe.skip('Idea form settings', () => {
           // try to post an idea without the required topics field
           // without getting the form first, the form gets submitted before the fields are loaded
           cy.get('#idea-form');
-          cy.get('#e2e-idea-new-submit-button').click();
+          cy.get('.e2e-submit-idea-form').click();
 
           // verify that we got an error for the topics field
           // and check we stay on the idea form page
-          cy.get('#e2e-new-idea-topics-error');
+          cy.get('#e2e-idea-topics-input .e2e-error-message');
           cy.location('pathname').should(
             'eq',
             `/en/projects/${projectSlug}/ideas/new`

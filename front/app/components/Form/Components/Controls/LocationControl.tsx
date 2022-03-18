@@ -45,6 +45,7 @@ const LocationControl = ({
           placeholder={''}
           onBlur={() => setDidBlur(true)}
           aria-label={getLabel(uischema, schema, path)}
+          className="e2e-idea-form-location-input-field"
         />
       ) : (
         <Error text={formatMessage(messages.locationGoogleUnavailable)} />

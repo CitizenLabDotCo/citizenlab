@@ -11,6 +11,7 @@ import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabel } from 'components/UI/FormComponents';
 import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const TopicsControl = ({
   data: selectedTopicIds = [],
@@ -34,7 +35,7 @@ const TopicsControl = ({
   const [didBlur, setDidBlur] = useState(false);
 
   return (
-    <>
+    <Box id="e2e-idea-topics-input">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
@@ -49,7 +50,7 @@ const TopicsControl = ({
         id={sanitizeForClassname(id)}
       />
       <ErrorDisplay fieldPath={path} ajvErrors={errors} didBlur={didBlur} />
-    </>
+    </Box>
   );
 };
 

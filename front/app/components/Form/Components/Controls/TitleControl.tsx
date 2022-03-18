@@ -26,7 +26,6 @@ export const TitleControl = ({
 
   const onChange = useCallback(
     (value: string) => {
-      console.log(value);
       handleChange(
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
@@ -35,7 +34,7 @@ export const TitleControl = ({
     [schema.type, handleChange, path]
   );
   return (
-    <>
+    <Box id="e2e-idea-title-input">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}
@@ -47,7 +46,6 @@ export const TitleControl = ({
         <Input
           data-testid="inputControl"
           id={sanitizeForClassname(id)}
-          className={`input_field_root_${label}`}
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
@@ -63,7 +61,7 @@ export const TitleControl = ({
         <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-    </>
+    </Box>
   );
 };
 

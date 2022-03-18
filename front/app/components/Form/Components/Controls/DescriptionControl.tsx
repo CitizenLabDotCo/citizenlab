@@ -11,6 +11,7 @@ import {
   sanitizeForClassname,
   getFieldNameFromPath,
 } from 'utils/JSONFormUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const DescriptionControl = ({
   data,
@@ -24,7 +25,7 @@ const DescriptionControl = ({
 }: ControlProps & InjectedIntlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   return (
-    <>
+    <Box id="e2e-idea-description-input">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
@@ -40,7 +41,7 @@ const DescriptionControl = ({
         onBlur={() => setDidBlur(true)}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-    </>
+    </Box>
   );
 };
 

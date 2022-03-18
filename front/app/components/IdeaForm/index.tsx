@@ -912,7 +912,7 @@ class IdeaForm extends PureComponent<
               )}
 
               {showTopics && (
-                <FormElement>
+                <FormElement id="e2e-idea-topics-input">
                   <FormLabel
                     htmlFor="topics"
                     labelMessage={messages.topicsTitle}
@@ -936,7 +936,7 @@ class IdeaForm extends PureComponent<
                     availableTopics={allowedTopics}
                   />
                   {topicsError && (
-                    <Error id="e2e-new-idea-topics-error" text={topicsError} />
+                    <Error className="e2e-error-message" text={topicsError} />
                   )}
                 </FormElement>
               )}

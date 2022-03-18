@@ -20,26 +20,20 @@ describe('Idea new page', () => {
   it('shows an error when no title is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message').contains(
-      'Please provide a title'
-    );
+    cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
   it('shows an error when no description is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message').contains(
-      'Please provide a description'
-    );
+    cy.get('#e2e-idea-description-input .e2e-error-message');
   });
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#idea-form');
-    cy.get('#e2e-idea-title-input #title').type(randomString(9));
+    cy.get('#e2e-idea-title-input input').type(randomString(9));
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message').contains(
-      'The idea title must be at least 10 characters long'
-    );
+    cy.get('#e2e-idea-title-input .e2e-error-message');
   });
 
   it('shows an error when the description is less than 30 characters long', () => {
@@ -48,9 +42,7 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').blur();
     cy.wait(200);
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message').contains(
-      'The idea description must be at least 30 characters long'
-    );
+    cy.get('#e2e-idea-description-input .e2e-error-message');
   });
 
   it('has a working idea form', () => {
@@ -61,11 +53,11 @@ describe('Idea new page', () => {
     cy.get('#idea-form');
 
     // add a title and description
-    cy.get('#e2e-idea-title-input #title').type(ideaTitle);
+    cy.get('#e2e-idea-title-input input').type(ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description
-    cy.get('#e2e-idea-title-input #title').should('contain.value', ideaTitle);
+    cy.get('#e2e-idea-title-input input').should('contain.value', ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // add a topic

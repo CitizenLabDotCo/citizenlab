@@ -16,6 +16,7 @@ import useResourceFiles from 'hooks/useResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { deleteIdeaFile } from 'services/ideaFiles';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const AttachmentsControl = ({
   uischema,
@@ -88,7 +89,7 @@ const AttachmentsControl = ({
   }, [remoteFiles, inputId]);
 
   return (
-    <>
+    <Box id="e2e-idea-file-upload">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
@@ -103,7 +104,7 @@ const AttachmentsControl = ({
         files={files}
       />
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-    </>
+    </Box>
   );
 };
 

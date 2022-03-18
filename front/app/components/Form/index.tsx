@@ -36,6 +36,9 @@ import AttachmentsControl, {
 import DescriptionControl, {
   descriptionControlTester,
 } from './Components/Controls/DescriptionControl';
+import TitleControl, {
+  titleControlTester,
+} from './Components/Controls/TitleControl';
 
 import {
   createAjv,
@@ -154,6 +157,7 @@ const renderers = [
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
   { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
+  { tester: titleControlTester, renderer: TitleControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
