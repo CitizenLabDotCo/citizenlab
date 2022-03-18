@@ -315,6 +315,7 @@
   "app.containers.Admin.Insights.components.TopBar.deleteConfirmation": "Da li ste sigurni?",
   "app.containers.Admin.Insights.components.TopBar.duplicate": "Dupliraj",
   "app.containers.Admin.Insights.components.TopBar.editName": "Izmeni ime",
+  "app.containers.Admin.Insights.components.TopBar.linkedProjects": "Linked projects ({numberOfProjects})",
   "app.containers.Admin.Insights.components.TopBar.options": "Opcije",
   "app.containers.Admin.Insights.components.TopBar.renameModalCancel": "Poništi",
   "app.containers.Admin.Insights.components.TopBar.renameModalNameLabel": "Novo ime",
