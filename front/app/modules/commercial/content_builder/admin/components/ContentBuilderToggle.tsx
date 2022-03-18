@@ -49,7 +49,7 @@ const StyledLink = styled(Link)`
 `;
 
 const ContentBuilderToggle = ({
-  location: { pathname },
+  params,
   intl: { formatMessage },
   valueMultiloc,
   onChange,
@@ -66,7 +66,7 @@ const ContentBuilderToggle = ({
 
   const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
     useState(false);
-  const route = `${pathname}/content-builder`;
+  const route = `/admin/content-builder/projects/${params.projectId}/description`;
   const toggleContentBuilderLinkVisible = () => {
     setContentBuilderLinkVisible(!contentBuilderLinkVisible);
   };
