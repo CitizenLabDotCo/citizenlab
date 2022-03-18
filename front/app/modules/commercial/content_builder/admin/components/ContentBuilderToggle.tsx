@@ -17,26 +17,44 @@ import Link from 'utils/cl-router/Link';
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
+// Messages
+import messages from '../messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
 type ContentBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
   onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
   label: string;
   labelTooltipText: string;
-  toggleLabel: string;
-  toggleTooltipText: string;
-  linkText: string;
   onMount: () => void;
-} & WithRouterProps;
+} & WithRouterProps &
+  InjectedIntlProps;
+
+const StyledBox = styled(Box)`
+  display: flex;
+  gap: 10px;
+`;
+
+const StyledToggle = styled(Toggle)`
+  margin-bottom: 30px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-bottom: 30px;
+`;
+
+const StyledLink = styled(Link)`
+  margin-top: -10px;
+`;
 
 const ContentBuilderToggle = ({
   location: { pathname },
+  intl: { formatMessage },
   valueMultiloc,
   onChange,
   label,
   labelTooltipText,
-  toggleLabel,
-  toggleTooltipText,
-  linkText,
   onMount,
 }: ContentBuilderToggleProps) => {
   const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
@@ -53,39 +71,21 @@ const ContentBuilderToggle = ({
     setContentBuilderLinkVisible(!contentBuilderLinkVisible);
   };
 
-  const StyledBox = styled(Box)`
-    display: flex;
-    gap: 10px;
-  `;
-
-  const StyledToggle = styled(Toggle)`
-    margin-bottom: 30px;
-  `;
-
-  const StyledIconTooltip = styled(IconTooltip)`
-    margin-bottom: 30px;
-  `;
-
-  const StyledLink = styled(Link)`
-    margin-top: -10px;
-  `;
-
   return (
     <>
       <StyledBox>
         <StyledToggle
           checked={contentBuilderLinkVisible}
-          label={toggleLabel}
+          label={formatMessage(messages.toggleLabel)}
           onChange={toggleContentBuilderLinkVisible}
         />
-        <StyledIconTooltip content={toggleTooltipText} />
+        <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
       </StyledBox>
       {contentBuilderLinkVisible && (
-        <StyledLink to={route}>{linkText}</StyledLink>
+        <StyledLink to={route}>{formatMessage(messages.linkText)}</StyledLink>
       )}
       {!contentBuilderLinkVisible && (
         <QuillMultilocWithLocaleSwitcher
-          data-testid={'quillEditor'}
           id="project-description"
           valueMultiloc={valueMultiloc}
           onChange={onChange}
@@ -98,4 +98,4 @@ const ContentBuilderToggle = ({
   );
 };
 
-export default withRouter(ContentBuilderToggle);
+export default injectIntl(withRouter(ContentBuilderToggle));

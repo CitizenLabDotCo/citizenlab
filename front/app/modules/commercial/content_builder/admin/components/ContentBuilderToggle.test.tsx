@@ -3,6 +3,7 @@ import { Multiloc } from 'typings';
 import { render, screen } from 'utils/testUtils/rtl';
 import ContentBuilderToggle from './ContentBuilderToggle';
 
+jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
 jest.mock('hooks/useLocale', () => jest.fn(() => 'en'));
@@ -18,7 +19,7 @@ jest.mock('react-router', () => {
   };
 });
 
-const dummyFunction = () => {};
+const dummyFunction = jest.fn();
 const multiloc = 'en' as Multiloc;
 
 const routerProps = {
@@ -38,9 +39,6 @@ describe('ContentBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         labelTooltipText={'LabelTooltipText'}
-        toggleLabel={'ToggleLabel'}
-        toggleTooltipText={'ToggleTooltipText'}
-        linkText={'LinkText'}
         onMount={dummyFunction}
         {...routerProps}
       />
@@ -57,9 +55,6 @@ describe('ContentBuilderToggle', () => {
         onChange={dummyFunction}
         label={'QuillLabel'}
         labelTooltipText={'LabelTooltipText'}
-        toggleLabel={'ToggleLabel'}
-        toggleTooltipText={'ToggleTooltipText'}
-        linkText={'LinkText'}
         onMount={dummyFunction}
         {...routerProps}
       />
