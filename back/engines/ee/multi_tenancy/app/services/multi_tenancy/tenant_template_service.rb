@@ -179,7 +179,7 @@ module MultiTenancy
       end
       # Determine if translation needs to happen.
       translate_from = locales_from.first
-      translate_to = if locales_to.include?(translate_from) ? nil : locales_to.first
+      translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
       # Change multiloc fields, applying translation and removing
       # unsupported locales.
       template['models'].each do |model_name, fields|
