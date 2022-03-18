@@ -245,42 +245,66 @@ class Streams {
   // - When a fetch inside of streams.get() returns an error
   // -> here we destroy the stream so it can be re-initiated
   deleteStream(streamId: string, apiEndpoint: string) {
-    if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
-      this.streamIdsByApiEndPointWithQuery[apiEndpoint] =
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+    let streamIdsByApiEndPointWithQuery =
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint];
+    let streamIdsByApiEndPointWithoutQuery =
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint];
+    const stream = this.streams[streamId];
+
+    if (
+      includes(streamIdsByApiEndPointWithQuery, streamId) &&
+      streamIdsByApiEndPointWithQuery
+    ) {
+      streamIdsByApiEndPointWithQuery = streamIdsByApiEndPointWithQuery.filter(
+        (value) => {
           return value !== streamId;
-        });
+        }
+      );
     }
 
     if (
-      includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)
+      includes(streamIdsByApiEndPointWithoutQuery, streamId) &&
+      streamIdsByApiEndPointWithoutQuery
     ) {
-      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] =
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
+      streamIdsByApiEndPointWithoutQuery =
+        streamIdsByApiEndPointWithoutQuery.filter((value) => {
           return value !== streamId;
         });
     }
 
-    if (streamId && this.streams[streamId]) {
-      Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
-        if (includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[dataId] =
-            this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+    if (stream) {
+      Object.keys(stream.dataIds).forEach((dataId) => {
+        let streamIdsByDataIdWithQuery =
+          this.streamIdsByDataIdWithQuery[dataId];
+        let streamIdsByDataIdWithoutQuery =
+          this.streamIdsByDataIdWithoutQuery[dataId];
+
+        if (
+          includes(streamIdsByDataIdWithQuery, streamId) &&
+          streamIdsByDataIdWithQuery
+        ) {
+          streamIdsByDataIdWithQuery = streamIdsByDataIdWithQuery.filter(
+            (value) => {
               return value !== streamId;
-            });
+            }
+          );
         }
 
-        if (includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithoutQuery[dataId] =
-            this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+        if (
+          includes(streamIdsByDataIdWithoutQuery, streamId) &&
+          streamIdsByDataIdWithoutQuery
+        ) {
+          streamIdsByDataIdWithoutQuery = streamIdsByDataIdWithoutQuery.filter(
+            (value) => {
               return value !== streamId;
-            });
+            }
+          );
         }
       });
-    }
 
-    if (this.streams[streamId] && this.streams[streamId].subscription) {
-      (this.streams[streamId].subscription as Subscription).unsubscribe();
+      if (stream.subscription) {
+        stream.subscription.unsubscribe();
+      }
     }
 
     delete this.streams[streamId];
