@@ -47,7 +47,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body: 'Draft SMS message content',
-      phone_numbers: [1234567890, 1234567891],
+      phone_numbers: ['1234567890', '1234567891'],
       status: 'draft',
     },
   },
@@ -56,7 +56,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body: 'Sending SMS message content',
-      phone_numbers: [1234567890, 1234567891],
+      phone_numbers: ['1234567890', '1234567891'],
       status: 'sending',
     },
   },
@@ -65,7 +65,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body: 'Sending SMS message content. I am a longer message. I should be truncated to fifty, or less, characters.',
-      phone_numbers: [1234567890, 1234567891],
+      phone_numbers: ['1234567890', '1234567891'],
       status: 'sending',
     },
   },
@@ -74,7 +74,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2021-12-28T12:22:34.697Z',
       body: 'Sent SMS message content',
-      phone_numbers: [1234567890, 1234567891],
+      phone_numbers: ['1234567890', '1234567891'],
       status: 'sent',
     },
   },
@@ -83,7 +83,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body: 'Sent SMS message content. I am a longer message. I should be truncated to fifty, or less, characters.',
-      phone_numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+      phone_numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
       status: 'sent',
     },
   },
@@ -92,7 +92,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body: 'Failed SMS message content.',
-      phone_numbers: [1234567890, 1234567891],
+      phone_numbers: ['1234567890', '1234567891'],
       status: 'failed',
     },
   },
@@ -101,7 +101,7 @@ const texting_campaigns = [
     attributes: {
       sent_at: '2022-03-15T16:01:04.697Z',
       body: 'Failed SMS message content. I am a failure. I am not worthy. I also should be truncated to fifty, or less, characters.',
-      phone_numbers: [1234567890, 1234567891],
+      phone_numbers: ['1234567890', '1234567891'],
       status: 'failed',
     },
   },

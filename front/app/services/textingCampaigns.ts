@@ -4,6 +4,6 @@ export interface ITextingCampaignData {
     body: string;
     status: string;
     sent_at: string;
-    phone_numbers: number[];
+    phone_numbers: string[];
   };
 }
