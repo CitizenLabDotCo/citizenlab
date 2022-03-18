@@ -19,6 +19,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import { withRouter } from 'react-router';
 
 const TopContainer = styled(Box)`
   border-style: solid;
@@ -28,26 +29,6 @@ const TopContainer = styled(Box)`
   display: flex;
   background: ${colors.adminContentBackground};
   align-items: center;
-`;
-
-const HeaderContainerLeft = styled(Box)`
-  padding: 15px;
-  width: 210px;
-`;
-
-const HeaderContainerRight = styled(Box)`
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-left-color: ${colors.separation};
-  padding: 15px;
-  flex-grow: 1;
-  align-items: center;
-  display: flex;
-  gap: 10px;
-`;
-
-const ProjectDescriptionContainer = styled(Box)`
-  flex-grow: 2;
 `;
 
 const ProjectTitle = styled.p`
@@ -62,37 +43,39 @@ const BuilderTitle = styled.h1`
 
 const dummy = () => {};
 
-const ContentBuilderPage = () => {
+const ContentBuilderPage = ({ params: { projectId } }) => {
   const localize = useLocalize();
-  const route = window.location.pathname;
-  const projectId = route.substring(
-    route.indexOf('projects/') + 9,
-    route.lastIndexOf('/') - 12
-  );
   const project = useProject({ projectId });
-  let projectTitle = '';
-  if (!isNilOrError(project)) {
-    projectTitle = localize(project.attributes.title_multiloc);
-  }
 
+  if (isNilOrError(project)) {
+    return null;
+  }
   return (
     <TopContainer>
-      <HeaderContainerLeft>
+      <Box p="15px" w="210px">
         <GoBackButton onClick={dummy} />
-      </HeaderContainerLeft>
-      <HeaderContainerRight>
-        <ProjectDescriptionContainer>
-          <ProjectTitle>{projectTitle?.toString()}</ProjectTitle>
+      </Box>
+      <Box
+        display="flex"
+        borderLeft={`1px solid ${colors.separation}`}
+        p="15px"
+        flexGrow={1}
+        alignItems="center"
+      >
+        <Box flexGrow={2}>
+          <ProjectTitle>
+            {localize(project.attributes.title_multiloc)}
+          </ProjectTitle>
           <BuilderTitle>
             <FormattedMessage {...messages.descriptionTopicManagerText} />
           </BuilderTitle>
-        </ProjectDescriptionContainer>
+        </Box>
         <Button buttonStyle="primary" onClick={dummy}>
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
-      </HeaderContainerRight>
+      </Box>
     </TopContainer>
   );
 };
 
-export default ContentBuilderPage;
+export default withRouter(ContentBuilderPage);
