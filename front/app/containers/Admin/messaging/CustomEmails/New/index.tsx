@@ -30,7 +30,7 @@ class New extends React.Component<Props> {
       ...values,
     })
       .then((response) => {
-        clHistory.push(`/admin/emails/custom/${response.data.id}`);
+        clHistory.push(`/admin/messaging/emails/custom/${response.data.id}`);
       })
       .catch((errorResponse) => {
         if (isCLErrorJSON(errorResponse)) {
@@ -56,7 +56,7 @@ class New extends React.Component<Props> {
   renderFn = (props) => <CampaignForm {...props} mode="new" />;
 
   goBack = () => {
-    clHistory.push('/admin/emails/custom');
+    clHistory.push('/admin/messaging/emails/custom');
   };
 
   render() {

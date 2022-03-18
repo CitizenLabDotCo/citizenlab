@@ -135,7 +135,7 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const setContentBuilderNavbarToVisible = (isVisible) =>
+    const setAdminFullWidthContentToVisible = (isVisible) =>
       setAdminFullWidthContent(isVisible);
 
     const userCanViewAdmin = () =>
@@ -191,7 +191,7 @@ const AdminPage = memo<Props & WithRouterProps>(
             )}
             <Outlet
               id="app.containers.Admin.contentBuilderLayout"
-              onMount={setContentBuilderNavbarToVisible}
+              onMount={setAdminFullWidthContentToVisible}
               childrenToRender={children}
             />
           </Container>

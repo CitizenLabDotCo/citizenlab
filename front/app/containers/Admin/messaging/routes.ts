@@ -2,52 +2,52 @@ import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
-  path: 'emails',
+  path: 'messaging',
   component: Loadable({
-    loader: () => import('./'),
+    loader: () => import('.'),
     loading: LoadableLoadingAdmin,
     delay: 500,
   }),
   indexRoute: {
     component: Loadable({
-      loader: () => import('./custom/All'),
+      loader: () => import('./CustomEmails/All'),
       loading: LoadableLoadingAdmin,
       delay: 500,
     }),
   },
   childRoutes: [
     {
-      path: 'custom',
+      path: 'emails/custom',
       component: Loadable({
-        loader: () => import('./custom/All'),
+        loader: () => import('./CustomEmails/All'),
         loading: () => null,
       }),
     },
     {
-      path: 'custom/new',
+      path: 'emails/custom/new',
       component: Loadable({
-        loader: () => import('./custom/New'),
+        loader: () => import('./CustomEmails/New'),
         loading: () => null,
       }),
     },
     {
-      path: 'custom/:campaignId/edit',
+      path: 'emails/custom/:campaignId/edit',
       component: Loadable({
-        loader: () => import('./custom/Edit'),
+        loader: () => import('./CustomEmails/Edit'),
         loading: () => null,
       }),
     },
     {
-      path: 'custom/:campaignId',
+      path: 'emails/custom/:campaignId',
       component: Loadable({
-        loader: () => import('./custom/Show'),
+        loader: () => import('./CustomEmails/Show'),
         loading: () => null,
       }),
     },
     {
-      path: 'automated',
+      path: 'emails/automated',
       component: Loadable({
-        loader: () => import('./automated'),
+        loader: () => import('./AutomatedEmails'),
         loading: () => null,
       }),
     },

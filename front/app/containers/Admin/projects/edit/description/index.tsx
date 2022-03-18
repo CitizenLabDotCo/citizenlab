@@ -56,6 +56,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       intl: { formatMessage },
     } = props;
 
+    const [moduleActive, setModuleActive] = useState(false);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -65,6 +66,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       description_multiloc: null,
     });
 
+    const setModuleToActive = () => setModuleActive(true);
     const tenantLocales = useAppConfigurationLocales();
     const project = useProject({ projectId: props.params.projectId });
 
@@ -176,15 +178,24 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
             </SectionField>
 
             <SectionField>
-              <QuillMultilocWithLocaleSwitcher
-                id="project-description"
+              {!moduleActive && (
+                <QuillMultilocWithLocaleSwitcher
+                  id="project-description"
+                  valueMultiloc={formValues.description_multiloc}
+                  onChange={handleDescriptionOnChange}
+                  label={formatMessage(messages.descriptionLabel)}
+                  labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                  withCTAButton
+                />
+              )}
+              <Outlet
+                id="app.containers.Admin.projects.edit.description.contentBuilder"
+                onMount={setModuleToActive}
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
-                withCTAButton
               />
-              <Outlet id="app.containers.Admin.projects.edit.description.contentBuilder" />
               <Error
                 fieldName="description_multiloc"
                 apiErrors={errors?.description_multiloc}

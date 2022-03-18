@@ -14,8 +14,10 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.projects.edit.description.contentBuilder': () => {
-      return <ContentBuilderToggle />;
+    'app.containers.Admin.projects.edit.description.contentBuilder': (
+      props
+    ) => {
+      return <ContentBuilderToggle {...props} />;
     },
     'app.containers.Admin.contentBuilderLayout': ({
       onMount,

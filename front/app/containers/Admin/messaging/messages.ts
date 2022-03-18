@@ -7,9 +7,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  titleEmails: {
-    id: 'app.containers.Admin.emails.titleEmails',
-    defaultMessage: 'Email Campaigns',
+  titleMessaging: {
+    id: 'app.containers.Admin.emails.titleMessaging',
+    defaultMessage: 'Messaging',
   },
   subtitleEmails: {
     id: 'app.containers.Admin.emails.subtitleEmails',
@@ -17,8 +17,8 @@ export default defineMessages({
       'Compose your own emails to be sent out to all users or to particular groups. And control what automated emails your users receive.',
   },
   helmetTitle: {
-    id: 'app.containers.Admin.emails.helmetTitle',
-    defaultMessage: 'Email Campaigns',
+    id: 'app.containers.Admin.messaging.helmetTitle',
+    defaultMessage: 'Messaging',
   },
   helmetDescription: {
     id: 'app.containers.Admin.emails.helmetDescription',
