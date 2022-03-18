@@ -21,16 +21,6 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter } from 'react-router';
 
-const TopContainer = styled(Box)`
-  border-style: solid;
-  border-width: 1px;
-  border-color: ${colors.separation};
-  width: 100%;
-  display: flex;
-  background: ${colors.adminContentBackground};
-  align-items: center;
-`;
-
 const ProjectTitle = styled.p`
   margin-bottom: 6px;
   color: ${colors.adminSecondaryTextColor};
@@ -51,7 +41,13 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
     return null;
   }
   return (
-    <TopContainer>
+    <Box
+      alignItems="center"
+      border={`1px solid ${colors.separation}`}
+      w="100%"
+      display="flex"
+      background={`${colors.adminContentBackground}`}
+    >
       <Box p="15px" w="210px">
         <GoBackButton onClick={dummy} />
       </Box>
@@ -74,7 +70,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
       </Box>
-    </TopContainer>
+    </Box>
   );
 };
 
