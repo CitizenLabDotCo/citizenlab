@@ -56,8 +56,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       intl: { formatMessage },
     } = props;
 
-    const [contentBuilderModuleActive, setContentBuilderModuleActive] =
-      useState(false);
+    const [moduleActive, setModuleActive] = useState(false);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -67,8 +66,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       description_multiloc: null,
     });
 
-    const setContentBuilderModuleToActive = () =>
-      setContentBuilderModuleActive(true);
+    const setModuleToActive = () => setModuleActive(true);
     const tenantLocales = useAppConfigurationLocales();
     const project = useProject({ projectId: props.params.projectId });
 
@@ -180,7 +178,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
             </SectionField>
 
             <SectionField>
-              {!contentBuilderModuleActive && (
+              {!moduleActive && (
                 <QuillMultilocWithLocaleSwitcher
                   id="project-description"
                   valueMultiloc={formValues.description_multiloc}
@@ -192,7 +190,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
               )}
               <Outlet
                 id="app.containers.Admin.projects.edit.description.contentBuilder"
-                onMount={setContentBuilderModuleToActive}
+                onMount={setModuleToActive}
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
