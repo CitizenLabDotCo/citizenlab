@@ -239,6 +239,21 @@ NOTE: Watch out that you don't accidently commit these changes!
 3. Comment out `asset_host` method (use original implementation from Carrierwave)
 
 
+## Creating Engines
+
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines. For adding commercial engines, see the Notion documentation: https://www.notion.so/citizenlab/Engines-and-features-5efffe90cb1e4b55ba5c3e01322d6a5a
+
+1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
+
+2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
+
+3. Add the new engine to `citizenlab.config.json` and 
+
+4. Update the licenses by executing `license_finder approvals add blorgh`.
+
+5. A good way to verify if your engine was added successfully is by running the `spec/lib/settings_spec.rb` spec.
+
+
 ## Running the profiler
 
 1. Run the backend
