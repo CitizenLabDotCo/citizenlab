@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from './TextingHeader';
-
+import Modal from 'components/UI/Modal';
+import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
 // import { InjectedIntlProps } from 'react-intl';
 // import { FormattedMessage } from 'utils/cl-intl';
@@ -14,7 +15,7 @@ import TextingHeader from './TextingHeader';
 
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { fontSizes } from 'utils/styleUtils';
 
 const InformativeTitle = styled.span`
   font-weight: bold;
@@ -99,10 +100,34 @@ const PhoneMessage = styled.div`
   }
 `;
 
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .Button {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const ModalContainer = styled.div`
+  padding: 30px;
+`;
+
+const SendNowWarning = styled.div`
+  font-size: ${fontSizes.base}px;
+  margin-bottom: 30px;
+`;
+
 const testCopy =
   'The city is considering a major landscape architectural development. Currently divided in a peculiar four-square arrangement, three new proposals re-image our Public Square into a united green space design. Let us know which one you prefer! green.ville/vote-design';
 
 const TextMessagePreview = () => {
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showDeleteTextModal, setShowDeleteTextModal] = useState(false);
+
   return (
     <>
       <HelmetIntl
@@ -114,20 +139,24 @@ const TextMessagePreview = () => {
       />
       <TextingHeader
         headerMessage="Preview SMS message"
-        onClickHandler={() => {}}
+        onClickGoBack={() => {}}
         showHorizontalRule
       >
         <ButtonContainer>
           <Button
-            onClick={() => {}}
+            onClick={() => {
+              console.log('go back to the create screen');
+            }}
             buttonStyle="secondary"
-            size="2"
+            size="1"
             text={'Edit'}
           />
           <Button
-            onClick={() => {}}
+            onClick={() => {
+              setShowConfirmationModal(true);
+            }}
             buttonStyle="primary"
-            size="2"
+            size="1"
             icon="send"
             iconPos="right"
             text={'Send'}
@@ -152,15 +181,77 @@ const TextMessagePreview = () => {
         </PhoneContainer>
         <Button
           marginTop="15px"
-          onClick={() => {}}
+          onClick={() => {
+            setShowDeleteTextModal(true);
+          }}
           buttonStyle="delete"
-          size="2"
+          size="1"
           icon="trash"
           text={'Delete this SMS'}
         />
       </PhoneWrapper>
 
       <ScreenReaderOnly>{testCopy}</ScreenReaderOnly>
+
+      {/* // send confirmation modal */}
+      <Modal
+        opened={showConfirmationModal}
+        close={() => {
+          setShowConfirmationModal(false);
+        }}
+        header={'Confirm Text Sending'}
+      >
+        <ModalContainer>
+          <SendNowWarning>
+            Do you want to send this message to 1,920 people now?
+          </SendNowWarning>
+          <ButtonsWrapper>
+            <Button buttonStyle="secondary" onClick={() => {}}>
+              Edit or Delete SMS
+            </Button>
+            <Button
+              buttonStyle="primary"
+              onClick={() => {}}
+              icon="send"
+              iconPos="right"
+            >
+              Send Now
+            </Button>
+          </ButtonsWrapper>
+        </ModalContainer>
+      </Modal>
+
+      <Modal
+        opened={showDeleteTextModal}
+        close={() => {
+          setShowDeleteTextModal(false);
+        }}
+        header={'Delete Draft Text'}
+      >
+        <ModalContainer>
+          <SendNowWarning>
+            Do you want to delete this draft message?
+          </SendNowWarning>
+          <ButtonsWrapper>
+            <Button
+              buttonStyle="secondary"
+              onClick={() => {
+                setShowDeleteTextModal(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              buttonStyle="delete"
+              onClick={() => {}}
+              icon="trash"
+              iconPos="right"
+            >
+              Delete
+            </Button>
+          </ButtonsWrapper>
+        </ModalContainer>
+      </Modal>
     </>
   );
 };

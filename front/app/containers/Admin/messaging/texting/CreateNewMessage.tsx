@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import TextArea from 'components/UI/TextArea';
 // import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
-
-import { Label, Box } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
+import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 
@@ -63,7 +63,7 @@ const TextCreation = () => {
         <SectionField>
           <TextingHeader
             headerMessage="New SMS campaign"
-            onClickHandler={() => {}}
+            onClickGoBack={() => {}}
           />
         </SectionField>
         <StyledForm onSubmit={handleOnSubmit}>
@@ -73,23 +73,22 @@ const TextCreation = () => {
               include the international dialing code (eg. +1).
             </Label>
             <TextArea
-              key="testkeykey"
               rows={8}
               maxRows={8}
               value={inputPhoneNumbers}
               onChange={handleInputPhoneNumbersChange}
-              id="e2e-sms-numbers"
             />
+            <Error text="90 numbers were incorrect: 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, " />
           </SectionField>
-
           <SectionField>
-            <Label>Message</Label>
+            <Label>
+              Message <IconTooltip content="Help goes here" />
+            </Label>
             <TextArea
               rows={8}
               maxRows={8}
               value={inputMessage}
               onChange={handleInputMessageChange}
-              id="e2e-sms-message"
             />
             {remainingChars} characters remaining
           </SectionField>

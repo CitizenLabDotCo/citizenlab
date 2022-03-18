@@ -18,19 +18,19 @@ const HeaderContainer = styled.div`
 `;
 
 interface Props {
-  onClickHandler: () => void;
+  onClickGoBack: () => void;
   headerMessage: string;
   showHorizontalRule?: boolean;
   children?: ReactNode;
 }
 
 const TextingHeader = memo<Props>(
-  ({ onClickHandler, headerMessage, showHorizontalRule, children }) => {
+  ({ onClickGoBack, headerMessage, showHorizontalRule, children }) => {
     return (
       <Box>
         <Button
           justify="left"
-          onClick={onClickHandler}
+          onClick={onClickGoBack}
           buttonStyle="text"
           icon="arrow-back"
           padding="0"

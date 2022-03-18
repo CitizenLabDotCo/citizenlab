@@ -28,7 +28,7 @@ const TextCreation = () => {
         <SectionField>
           <TextingHeader
             headerMessage="View sent message"
-            onClickHandler={() => {}}
+            onClickGoBack={() => {}}
           />
           <p>Sent March 10 2022 to 2019 recipients.</p>
         </SectionField>
