@@ -992,7 +992,7 @@
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_opdeling",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologie (voorpaginafilter)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Hoe moeten tags in de voorpaginafilter genoemd worden? Bv. tags, categorieën, afdelingen, ...",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags kunnen aangepast worden {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "hier",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
