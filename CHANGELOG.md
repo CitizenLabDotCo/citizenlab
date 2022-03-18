@@ -6,6 +6,28 @@
 
 - Put back secret pages-page
 
+### Changed
+
+- Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
+- Removed 'most active users' graph
+
+### Fixed
+
+- Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
+### Fixed
+
+- Fixed spacing issue between field name and 'optional' in input form
+
 ## 2022-03-14
 
 ### Fixed
