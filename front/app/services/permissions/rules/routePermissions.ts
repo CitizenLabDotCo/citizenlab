@@ -13,7 +13,7 @@ import { IAppConfigurationData } from 'services/appConfiguration';
 
 export const MODERATOR_ROUTES = [
   '/admin/projects',
-  '/admin/emails',
+  '/admin/messaging',
   '/admin/ideas',
   '/admin/workshops',
   '/admin/processing',
