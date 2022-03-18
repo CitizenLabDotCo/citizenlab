@@ -85,6 +85,15 @@ const HeaderImage = styled(Image)`
   width: 100%;
   height: auto;
 
+  // slightly blur the header image on smaller screens
+  filter: blur(1px);
+
+  // more blur on larger devices, to make sure small images
+  // from the 2-column layout look good
+  ${media.biggerThanMinTablet`
+    filter: blur(2px);
+  `}
+
   ${media.smallerThanMaxTablet`
     &.objectFitCoverSupported {
       width: 100%;

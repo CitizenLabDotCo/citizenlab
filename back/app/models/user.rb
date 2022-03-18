@@ -299,20 +299,12 @@ class User < ApplicationRecord
     false
   end
 
-  def admin_or_moderator?(project_id)
-    admin? || (project_id && project_moderator?(project_id))
-  end
-
-  def active_admin_or_moderator?(project_id)
-    active? && admin_or_moderator?(project_id)
+  def normal_user?
+    !admin?
   end
 
   def moderatable_project_ids # TODO include folders?
     []
-  end
-
-  def moderatable_projects
-    Project.none
   end
 
   def add_role(type, options = {})
@@ -362,11 +354,7 @@ class User < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
-      self.slug = SecureRandom.uuid
-    elsif first_name.present?
-      self.slug = SlugService.new.generate_slug self, full_name
-    end
+    self.slug = UserSlugService.new.generate_slug(self, full_name)
   end
 
   def sanitize_bio_multiloc
