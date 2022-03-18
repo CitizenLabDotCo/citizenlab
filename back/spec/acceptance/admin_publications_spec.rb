@@ -170,19 +170,30 @@ resource 'AdminPublication' do
         parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true
       end
 
+      # we don't need any extra publications in this spec
+      let(:empty_draft_folder) { nil }
+      let(:custom_folder) { nil }
+
+      let!(:projects) do
+        Array.new(3) do |i|
+          create(:project, admin_publication_attributes: { publication_status: 'published', ordering: i })
+        end
+      end
+
       let(:id) { AdminPublication.find_by(ordering: 2).id }
       let(:ordering) { 1 }
 
       if CitizenLab.ee?
         example 'Reorder an admin publication' do
-          old_second_project = AdminPublication.find_by(ordering: ordering)
+          old_second_publication = AdminPublication.find_by(ordering: ordering)
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
           expect(json_response.dig(:data, :id)).to eq id
-          expect(AdminPublication.where(ordering: ordering).ids).to include id
-          expect(old_second_project.reload.ordering).to eq 2 # previous second is now third
+
+          expect(AdminPublication.find(id).ordering).to eq(ordering)
+          expect(old_second_publication.reload.ordering).to eq 2 # previous second is now third
         end
       end
     end
