@@ -1,13 +1,18 @@
-import { parse } from 'qs';
-import { isNil } from 'lodash-es';
+import { parse } from 'query-string';
+import Url from 'url-parse';
 
 export type SortDirection = 'ascending' | 'descending';
 
-export function getPageNumberFromUrl(url) {
-  if (!url || typeof url !== 'string' || url === '') return null;
-  const queryString = url.split('?')[1];
-  const result = parse(queryString).page?.['number'];
-  return isNil(result) || result < 0 ? null : parseInt(result, 10);
+export function getPageNumberFromUrl(url: string) {
+  if (url === '') return null;
+
+  const queryString = new Url(url).query;
+  const parsedQueryString = parse(queryString);
+  const pageNumber = parsedQueryString['page[number]'];
+
+  return typeof pageNumber === 'string' && parseInt(pageNumber, 10) > 0
+    ? parseInt(pageNumber, 10)
+    : null;
 }
 
 export function getSortAttribute<Sort, SortAttribute>(sort: Sort) {

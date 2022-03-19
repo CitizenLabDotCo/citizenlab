@@ -72,14 +72,21 @@ export default class GetCampaignDeliveries extends React.Component<
           })
         )
         .subscribe((deliveries) => {
+          const currentPageNumberFromURL = !isNilOrError(deliveries)
+            ? getPageNumberFromUrl(deliveries.links.self)
+            : null;
+          const currentPageNumber = currentPageNumberFromURL || 1;
+          const lastPageNumberFromURL = !isNilOrError(deliveries)
+            ? getPageNumberFromUrl(deliveries.links.last)
+            : null;
+          const lastPageNumber = lastPageNumberFromURL || 1;
+
           this.setState({
             deliveries: !isNilOrError(deliveries)
               ? deliveries.data
               : deliveries,
-            currentPage:
-              getPageNumberFromUrl(deliveries && deliveries.links.self) || 1,
-            lastPage:
-              getPageNumberFromUrl(deliveries && deliveries.links.last) || 1,
+            currentPage: currentPageNumber,
+            lastPage: lastPageNumber,
           });
         }),
     ];
