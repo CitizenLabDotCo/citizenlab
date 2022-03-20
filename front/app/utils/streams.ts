@@ -952,6 +952,7 @@ class Streams {
         partialApiEndpoint.forEach((endpoint) => {
           const streamIdsByApiEndPointWithQuery =
             this.streamIdsByApiEndPointWithQuery[key];
+
           if (key.includes(endpoint) && streamIdsByApiEndPointWithQuery) {
             streamIds2.push(...streamIdsByApiEndPointWithQuery);
           }
@@ -976,6 +977,7 @@ class Streams {
         regexApiEndpoint.forEach((regex) => {
           const streamIdsByApiEndPointWithQuery =
             this.streamIdsByApiEndPointWithQuery[key];
+
           if (regex.test(key) && streamIdsByApiEndPointWithQuery) {
             streamIds3.push(...streamIdsByApiEndPointWithQuery);
           }
@@ -986,6 +988,7 @@ class Streams {
         regexApiEndpoint.forEach((regex) => {
           const streamIdsByApiEndPointWithoutQuery =
             this.streamIdsByApiEndPointWithoutQuery[key];
+
           if (regex.test(key) && streamIdsByApiEndPointWithoutQuery) {
             streamIds3.push(...streamIdsByApiEndPointWithoutQuery);
           }
