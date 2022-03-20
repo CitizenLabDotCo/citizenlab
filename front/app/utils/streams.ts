@@ -394,9 +394,9 @@ class Streams {
   // refetch the list from the back-end. Hence never manually push data in a query stream,
   // but always do a refetch!
   addStreamIdByDataIdIndex(
-    dataId: string,
     streamId: string,
-    isQueryStream: boolean
+    isQueryStream: boolean,
+    dataId: string
   ) {
     addStreamIdByDataId(
       isQueryStream
