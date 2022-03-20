@@ -922,8 +922,8 @@ class Streams {
   }
 
   async fetchAllWith({
-    dataId,
-    apiEndpoint,
+    dataId = [],
+    apiEndpoint = [],
     partialApiEndpoint,
     regexApiEndpoint,
     onlyFetchActiveStreams,
@@ -934,7 +934,7 @@ class Streams {
     regexApiEndpoint?: RegExp[];
     onlyFetchActiveStreams?: boolean;
   }) {
-    const keys = [...(dataId || []), ...(apiEndpoint || [])];
+    const keys = [...dataId, ...apiEndpoint];
     const promises: Promise<any>[] = [];
 
     const streamIds1 = flatten(
