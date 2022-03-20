@@ -486,7 +486,7 @@ nl-BE:
       today_by_author: "Vandaag door %{author}"
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
-      trending_ideas: "Populaire ideeën"
+      trending_ideas: "Populaire bijdrages"
       trending_ideas_text: "Geïnteresseerd in wat er is gebeurd op het platform? Bekijk de drie meest populaire ideeën, wat mensen erover te zeggen hebben en neem deel aan het gesprek."
       no_notifications: "Geen meldingen"
       one_notification: "1 melding"
