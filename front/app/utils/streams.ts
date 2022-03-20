@@ -777,10 +777,7 @@ class Streams {
       }
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
-        const stream = this.streams[streamId];
-        if (stream) {
-          promises.push(stream.fetch());
-        }
+        addStreamToPromises(streamId, promises);
       });
 
       if (waitForRefetchesToResolve) {
@@ -902,10 +899,7 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        const stream = this.streams[streamId];
-        if (stream) {
-          promises.push(stream.fetch());
-        }
+        addStreamToPromises(streamId, promises);
       });
 
       if (waitForRefetchesToResolve) {
@@ -1007,14 +1001,18 @@ class Streams {
 
     uniq(mergedStreamIds).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
-        const stream = this.streams[streamId];
-        if (stream) {
-          promises.push(stream.fetch());
-        }
+        addStreamToPromises(streamId, promises);
       }
     });
 
     return await Promise.all(promises);
+  }
+}
+
+function addStreamToPromises(streamId: string, promises: Promise<any>[]) {
+  const stream = this.streams[streamId];
+  if (stream) {
+    promises.push(stream.fetch());
   }
 }
 
