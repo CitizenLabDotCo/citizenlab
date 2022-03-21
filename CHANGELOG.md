@@ -6,6 +6,10 @@
 
 - The email/phone field in the sign in/up forms now has validation of the email address/phone number and provides an error message when this validation fails.
 
+### Added
+
+- Put back secret pages-page
+
 ### Changed
 
 - Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.

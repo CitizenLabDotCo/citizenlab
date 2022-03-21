@@ -5,7 +5,7 @@ import {
   reorderNavbarItem,
   removeNavbarItem,
 } from '../../../../services/navbar';
-import { deletePage } from '../../../../services/pages';
+import { deletePage } from 'services/pages';
 import { NAVIGATION_PATH } from '../..';
 import navbarItems from 'hooks/fixtures/navbarItems';
 import clHistory from 'utils/cl-router/history';
@@ -21,7 +21,7 @@ jest.mock('../../../../services/navbar', () => ({
   removeNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../../services/pages', () => ({
+jest.mock('services/pages', () => ({
   deletePage: jest.fn(),
 }));
 
