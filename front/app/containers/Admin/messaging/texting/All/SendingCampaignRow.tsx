@@ -23,7 +23,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
 `;
 
