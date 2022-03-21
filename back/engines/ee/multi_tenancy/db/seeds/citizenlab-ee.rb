@@ -213,6 +213,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      content_builder: {
+        enabled: true,
+        allowed: true
+      },
       custom_idea_statuses: {
         enabled: true,
         allowed: true
@@ -436,6 +440,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       disable_downvoting: {
+        enabled: true,
+        allowed: true
+      },
+      texting: {
         enabled: true,
         allowed: true
       }

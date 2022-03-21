@@ -18,11 +18,12 @@ module MultiTenancy
       template_names
     end
 
-    def resolve_and_apply_template template_name, external_subfolder: 'release', validate: true
-      apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate
+    def resolve_and_apply_template template_name, external_subfolder: 'release', validate: true, max_time: nil
+      apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate, max_time: max_time
     end
 
-    def apply_template(template, validate: true)
+    def apply_template template, validate: true, max_time: nil
+      t1 = Time.now
       obj_to_id_and_class = {}
       template['models'].each do |model_name, fields|
         LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: { 
@@ -31,6 +32,10 @@ module MultiTenancy
         })
         model_class = get_model_class(model_name)
         fields.each do |attributes|
+          minutes_spent = Time.now - t1
+          if max_time && (minutes_spent > max_time)
+            raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
+          end
           model = model_class.new
           image_assignments = {}
           restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
