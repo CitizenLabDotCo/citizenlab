@@ -21,6 +21,9 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { withRouter } from 'react-router';
 
+// libraries
+import clHistory from 'utils/cl-router/history';
+
 const ProjectTitle = styled.p`
   margin-bottom: 6px;
   color: ${colors.adminSecondaryTextColor};
@@ -31,7 +34,9 @@ const BuilderTitle = styled.h1`
   font-size: 18px;
 `;
 
-const dummy = () => {};
+const goBack = () => {
+  clHistory.goBack();
+};
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
   const localize = useLocalize();
@@ -48,7 +53,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
       background={`${colors.adminContentBackground}`}
     >
       <Box p="15px" w="210px">
-        <GoBackButton onClick={dummy} />
+        <GoBackButton onClick={goBack} />
       </Box>
       <Box
         display="flex"
@@ -65,7 +70,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             <FormattedMessage {...messages.descriptionTopicManagerText} />
           </BuilderTitle>
         </Box>
-        <Button buttonStyle="primary" onClick={dummy}>
+        <Button buttonStyle="primary" onClick={goBack}>
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
       </Box>
