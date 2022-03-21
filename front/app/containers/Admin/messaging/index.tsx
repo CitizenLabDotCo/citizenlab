@@ -32,7 +32,6 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
-    const alwaysTrue = true; // Hack for manual dev testing & to pass linting.
 
     if (
       this.props.canManageManualCampaigns &&
@@ -43,11 +42,7 @@ class MessagingDashboard extends React.PureComponent<
         url: '/admin/messaging/emails/custom',
       });
     }
-    if (
-      alwaysTrue
-      // this.props.canManageTextingCampaigns &&
-      // this.props.textingEnabled
-    ) {
+    if (this.props.textingEnabled) {
       tabs.push({
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
@@ -116,6 +111,7 @@ const Data = adopt<Props>({
   automatedEmailingEnabled: (
     <GetFeatureFlag name="automated_emailing_control" />
   ),
+  textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
 export default (inputProps) => (
