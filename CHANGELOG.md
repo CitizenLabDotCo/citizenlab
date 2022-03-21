@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Added
+
+- Put back secret pages-page
 
 ### Changed
 
