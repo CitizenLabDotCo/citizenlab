@@ -14,7 +14,6 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
   canManageManualCampaigns: boolean | null;
-  canManageTextingCampaigns: boolean | null;
   manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
   textingEnabled: boolean | null;
@@ -32,7 +31,6 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
-    const textingFeatureActive = true; // Hack for manual dev testing & to pass linting.
 
     if (
       this.props.canManageManualCampaigns &&
@@ -43,11 +41,7 @@ class MessagingDashboard extends React.PureComponent<
         url: '/admin/messaging/emails/custom',
       });
     }
-    if (
-      textingFeatureActive
-      // this.props.canManageTextingCampaigns &&
-      // this.props.textingEnabled
-    ) {
+    if (this.props.textingEnabled) {
       tabs.push({
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
@@ -119,6 +113,7 @@ const Data = adopt<Props>({
   automatedEmailingEnabled: (
     <GetFeatureFlag name="automated_emailing_control" />
   ),
+  textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
 export default (inputProps) => (
