@@ -69,7 +69,7 @@ const StatusWrapper = styled.div`
 `;
 
 const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
-  const { status } = campaign.attributes;
+  const { message, phone_numbers, status } = campaign.attributes;
 
   let formattedStatusLabel;
 
@@ -112,7 +112,7 @@ const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
       <Left>
         <TextWrapper>
           <Text>
-            <Link to={`/${campaign.id}`}>{campaign.attributes.body}</Link>
+            <Link to={`/${campaign.id}`}>{message}</Link>
           </Text>
         </TextWrapper>
         {formattedStatusLabel}
@@ -127,10 +127,7 @@ const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
             </DateTime>
             <StatusWrapper>
               <p>
-                Sent to{' '}
-                {campaign.attributes.phone_numbers.length.toLocaleString(
-                  'en-US'
-                )}{' '}
+                Sent to {phone_numbers.length.toLocaleString('en-US')}{' '}
                 recipients
               </p>
             </StatusWrapper>
