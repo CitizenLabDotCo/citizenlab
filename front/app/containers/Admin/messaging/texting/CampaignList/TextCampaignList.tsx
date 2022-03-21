@@ -40,12 +40,6 @@ const IconWrapper = styled.div`
   height: 40px;
 `;
 
-interface InputProps {}
-
-interface DataProps {}
-
-export interface Props extends InputProps, DataProps {}
-
 const TextingCampaignsList = () => {
   const textingCampaigns = useTextingCampaigns();
 
