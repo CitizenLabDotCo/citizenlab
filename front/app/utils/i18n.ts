@@ -66,7 +66,7 @@ export function getLocalized(
 
     if (isObject(multiloc) && !isEmpty(multiloc)) {
       // Return value for exactly the same locale
-      if (!!multiloc[locale]) return truncate(multiloc[locale], maxLength);
+      if (multiloc[locale]) return truncate(multiloc[locale], maxLength);
 
       const multilocLocales = keys(multiloc) as Locale[];
 
