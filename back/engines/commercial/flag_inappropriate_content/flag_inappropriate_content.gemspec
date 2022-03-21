@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = FlagInappropriateContent::VERSION
   s.authors     = ["CitizenLab"]
   s.email       = ["developers@citizenlab.co"]
-  s.licenses    = ['CitizenLab Commercial License']
+  s.licenses    = ['CitizenLab Commercial License V1']
   s.summary     = "Automatically detect inappropriate content posted to the platform using Natural Language Processing."
 
   s.files = Dir["{app,config,db,lib}/**/*", "README.md"]
