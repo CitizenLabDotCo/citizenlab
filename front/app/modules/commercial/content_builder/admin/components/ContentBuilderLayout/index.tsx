@@ -15,7 +15,7 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   onMount,
   location: { pathname },
 }) => {
-  const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
+  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
   const contentBuilderLayoutVisible =
     featureEnabled && pathname.includes('admin/content-builder');
 
