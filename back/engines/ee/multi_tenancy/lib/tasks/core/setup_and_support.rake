@@ -134,7 +134,7 @@ namespace :setup_and_support do
             value = object.send ml
             if value.present? && value[args[:locale_from]].present? && !value[args[:locale_to]].present?
               changes[ml] = value.clone
-              changes[ml][args[:locale_to]] = translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to]
+              changes[ml][args[:locale_to]] = translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to], retries: 10
             end
           end
           object.update_columns changes if changes.present?

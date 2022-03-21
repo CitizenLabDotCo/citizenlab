@@ -168,9 +168,11 @@ module MultiTenancy
       locales.to_a
     end
 
-    def translate_and_fix_locales template
+    def translate_and_fix_locales(template)
+      translator = MachineTranslations::MachineTranslationService.new
       locales_to = Tenant.current.settings.dig('core', 'locales')
       return template if Set.new(template_locales(template)).subset? Set.new(locales_to)
+
       locales_from = required_locales template
       # Change unsupported user locales to first target tenant locale.
       if !Set.new(locales_from).subset? Set.new(locales_to)
@@ -182,11 +184,7 @@ module MultiTenancy
       end
       # Determine if translation needs to happen.
       translate_from = locales_from.first
-      translate_to = if locales_to.include? translate_from
-        nil
-      else
-        locales_to.first
-      end
+      translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
       # Change multiloc fields, applying translation and removing
       # unsupported locales.
       template['models'].each do |model_name, fields|
@@ -196,12 +194,12 @@ module MultiTenancy
               if (field_value.keys & locales_to).blank? && !field_value.keys.include?(translate_from) && field_value.present?
                 other_translate_from = field_value.keys.first
                 other_translate_to = translate_to || locales_to.first
-                translation = MachineTranslations::MachineTranslationService.new.translate field_value[other_translate_from], other_translate_from, other_translate_to
-                attributes[field_name] = {translate_to => translation}
+                translation = translator.translate field_value[other_translate_from], other_translate_from, other_translate_to, retries: 10
+                attributes[field_name] = { translate_to => translation }
               else
-                field_value.keys.each do |locale|
+                field_value.each_key do |locale|
                   if locale == translate_from && translate_to
-                    field_value[locale] = MachineTranslations::MachineTranslationService.new.translate field_value[locale], locale, translate_to
+                    field_value[locale] = translator.translate field_value[locale], locale, translate_to, retries: 10
                   elsif !locales_to.include? locale
                     field_value.delete locale
                   end
@@ -213,16 +211,14 @@ module MultiTenancy
       end
       # Cut off translations that are too long.
       {
-        'project' => {'description_preview_multiloc' => 280},
-        'idea' => {'title_multiloc' => 80}
+        'project' => { 'description_preview_multiloc' => 280 },
+        'idea' => { 'title_multiloc' => 80 }
       }.each do |model, restrictions|
         template['models'][model]&.each do |attributes|
           restrictions.each do |field_name, max_len|
             multiloc = attributes[field_name]
             multiloc.each do |locale, value|
-              if value.size > max_len
-                multiloc[locale] = value[0...max_len]
-              end
+              multiloc[locale] = value[0...max_len] if value.size > max_len
             end
           end
         end
