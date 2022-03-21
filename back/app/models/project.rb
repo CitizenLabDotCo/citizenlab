@@ -83,7 +83,7 @@ class Project < ApplicationRecord
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :slug, presence: true, uniqueness: true
   validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
@@ -181,8 +181,7 @@ class Project < ApplicationRecord
   end
 
   def generate_slug
-    slug_service = SlugService.new
-    self.slug ||= slug_service.generate_slug self, title_multiloc.values.first
+    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
   end
 
   def sanitize_description_multiloc

@@ -1,7 +1,4 @@
 class Cl2DataListingService
-
-  
-
   def cl2_global_models
     [PublicApi::ApiClient, Tenant]
   end
@@ -29,7 +26,7 @@ class Cl2DataListingService
     ActiveRecord::Base.descendants.select do |claz|
       ![
         *ActiveRecord::Base.subclasses.map(&:name),
-        PublicApi::ApiClient.name, 
+        PublicApi::ApiClient.name,
         Tenant.name
       ].include? claz.name
     end.select do |claz|
@@ -48,5 +45,4 @@ class Cl2DataListingService
       column_name.ends_with? '_multiloc'
     end
   end
-
 end
