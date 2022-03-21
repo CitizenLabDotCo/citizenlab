@@ -6,28 +6,26 @@ class ProjectsAllowedInputTopicPolicy < ApplicationPolicy
       @user  = user
       @scope = scope
     end
+
     def resolve
       scope.where(project: Pundit.policy_scope(user, Project))
     end
   end
 
   def create?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    user&.active? && UserRoleService.new.can_moderate_project?(record.project, user)
   end
 
   def reorder?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    user&.active? && UserRoleService.new.can_moderate_project?(record.project, user)
   end
 
   def destroy?
-    user&.active? && user&.active_admin_or_moderator?(record.project_id)
+    user&.active? && UserRoleService.new.can_moderate_project?(record.project, user)
   end
 
   def permitted_attributes_for_create
-    [
-      :topic_id,
-      :project_id
-    ]
+    %i[topic_id project_id]
   end
 
   def permitted_attributes_for_reorder
