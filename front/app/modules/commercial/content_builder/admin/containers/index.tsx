@@ -18,12 +18,12 @@ import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 
 const Wrapper = styled.div`
   flex: 0 0 auto;
-  width: 212px;
+  width: 210px;
 `;
 
 const ContainerInner = styled.nav`
   flex: 0 0 auto;
-  width: 212px;
+  width: 210px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,7 +32,6 @@ const ContainerInner = styled.nav`
   bottom: 0;
   padding-top: ${stylingConsts.menuHeight + 10}px;
   background-color: ${colors.separation};
-  border-right: 1px solid ${colors.separation};
 `;
 
 const ContentBuilderPage = () => {
@@ -47,21 +46,23 @@ const ContentBuilderPage = () => {
             <ContentBuilderToolbox />
           </ContainerInner>
         </Wrapper>
-        <RightColumn>
-          <Box paddingTop="100px">
-            <Frame>
-              <Element
-                is="div"
-                canvas
-                style={{
-                  padding: '4px',
-                  minHeight: '300px',
-                  backgroundColor: '#fff',
-                }}
-              />
-            </Frame>
-          </Box>
-        </RightColumn>
+        <Box w="100%" borderLeft={`1px solid ${colors.separation}`}>
+          <RightColumn>
+            <Box paddingTop="100px">
+              <Frame>
+                <Element
+                  is="div"
+                  canvas
+                  style={{
+                    padding: '4px',
+                    minHeight: '300px',
+                    backgroundColor: '#fff',
+                  }}
+                />
+              </Frame>
+            </Box>
+          </RightColumn>
+        </Box>
         <ContentBuilderSettings />
       </Editor>
     </>

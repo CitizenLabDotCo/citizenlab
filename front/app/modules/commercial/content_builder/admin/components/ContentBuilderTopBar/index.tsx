@@ -43,7 +43,6 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
   return (
     <Box
       alignItems="center"
-      border={`1px solid ${colors.separation}`}
       w="100%"
       display="flex"
       background={`${colors.adminContentBackground}`}
