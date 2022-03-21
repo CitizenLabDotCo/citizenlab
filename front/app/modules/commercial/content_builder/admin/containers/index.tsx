@@ -18,12 +18,12 @@ import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 
 const Wrapper = styled.div`
   flex: 0 0 auto;
-  width: 210px;
+  width: 212px;
 `;
 
 const ContainerInner = styled.nav`
   flex: 0 0 auto;
-  width: 210px;
+  width: 212px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,8 +31,8 @@ const ContainerInner = styled.nav`
   top: 0;
   bottom: 0;
   padding-top: ${stylingConsts.menuHeight + 10}px;
-  background-color: ${colors.disabledPrimaryButtonBg};
-  border-right: 1px solid ${colors.border};
+  background-color: ${colors.separation};
+  border-right: 1px solid ${colors.separation};
 `;
 
 const ContentBuilderPage = () => {
