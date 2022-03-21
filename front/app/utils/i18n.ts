@@ -65,8 +65,12 @@ export function getLocalized(
     }
 
     if (isObject(multiloc) && !isEmpty(multiloc)) {
+      // Return value for exactly the same locale
+      if (!!multiloc[locale]) return truncate(multiloc[locale], maxLength);
+
       const multilocLocales = keys(multiloc) as Locale[];
 
+      // Return value for a locale of the same language
       const sameLanguageLocale = findSimilarLocale(locale, multilocLocales);
       if (!isNilOrError(sameLanguageLocale) && !!multiloc[sameLanguageLocale]) {
         return truncate(multiloc[sameLanguageLocale], maxLength);
