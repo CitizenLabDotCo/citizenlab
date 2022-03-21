@@ -54,7 +54,7 @@ export default () => ({
     {
       path: 'texting',
       component: Loadable({
-        loader: () => import('./Texting/All'),
+        loader: () => import('./texting/CampaignList/TextCampaignList'),
         loading: () => null,
       }),
     },

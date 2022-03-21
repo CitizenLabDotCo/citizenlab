@@ -1,23 +1,24 @@
 import React from 'react';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
-import { GetCampaignsChildProps } from 'resources/GetCampaigns';
-
-import { FormattedMessage } from 'utils/cl-intl';
-
+// components
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
-import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import DraftCampaignRow from './DraftCampaignRow';
-import SendingCampaignRow from './SendingCampaignRow';
-import SentCampaignRow from './SentCampaignRow';
-import FailedCampaignRow from './FailedCampaignRow';
+import TextCampaignListRow from './TextCampaignListRow';
 
+// resources
+import { GetCampaignsChildProps } from 'resources/GetCampaigns';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
+// styling
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 const NoCampaignsWrapper = styled.div`
@@ -115,8 +116,6 @@ export interface Props extends InputProps, DataProps {}
 
 class TextingCampaigns extends React.Component<Props> {
   render() {
-    const { currentPage, lastPage } = this.props;
-
     if (isNilOrError(texting_campaigns)) return null;
 
     if (texting_campaigns.length === 0) {
@@ -132,7 +131,7 @@ class TextingCampaigns extends React.Component<Props> {
             <Button
               buttonStyle="cl-blue"
               icon="plus-circle"
-              linkTo="/admin/messaging/emails/custom/new" // TODO: Link to texting/new when it exists
+              linkTo="/admin/messaging/texting/new"
             >
               <FormattedMessage {...messages.addTextButton} />
             </Button>
@@ -147,32 +146,18 @@ class TextingCampaigns extends React.Component<Props> {
           <Button
             buttonStyle="cl-blue"
             icon="plus-circle"
-            linkTo="/admin/messaging/emails/custom/new" // TODO: Link to texting/new when it exists
+            linkTo="/admin/messaging/emails/texting/new"
           >
             <FormattedMessage {...messages.addTextButton} />
           </Button>
         </ButtonWrapper>
-        <List key={texting_campaigns.map((c) => c.id).join()}>
+        <List>
           {texting_campaigns.map((campaign) => {
-            switch (campaign.attributes.status) {
-              case 'draft':
-                return <DraftCampaignRow campaign={campaign} />;
-              case 'sent':
-                return <SentCampaignRow campaign={campaign} />;
-              case 'sending':
-                return <SendingCampaignRow campaign={campaign} />;
-              case 'failed':
-                return <FailedCampaignRow campaign={campaign} />;
-              default:
-                return null;
-            }
+            return (
+              <TextCampaignListRow key={campaign.id} campaign={campaign} />
+            );
           })}
         </List>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={lastPage}
-          loadPage={this.props.onChangePage}
-        />
       </>
     );
   }
