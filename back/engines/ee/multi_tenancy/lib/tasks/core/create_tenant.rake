@@ -261,6 +261,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        content_builder: {
+          enabled: true,
+          allowed: true
+        },
         customizable_navbar: {
           enabled: true,
           allowed: true
@@ -290,6 +294,10 @@ namespace :cl2_back do
           allowed: true
         },
         disable_downvoting: {
+          enabled: true,
+          allowed: true
+        },
+        texting: {
           enabled: true,
           allowed: true
         }
