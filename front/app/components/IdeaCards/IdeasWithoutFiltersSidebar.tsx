@@ -160,7 +160,7 @@ interface InputProps extends GetIdeasInputProps {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
-  projectId: string;
+  projectId?: string;
 }
 
 interface DataProps {
@@ -359,7 +359,7 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, projectId, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
-      projectIds={[projectId]}
+      projectIds={projectId ? [projectId] : 'all'}
       pageSize={24}
       sort={
         getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
@@ -373,7 +373,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
   ideaCustomFieldsSchemas: ({ render, projectId }) => {
     return (
-      <GetIdeaCustomFieldsSchemas projectId={projectId}>
+      <GetIdeaCustomFieldsSchemas projectId={projectId || null}>
         {render}
       </GetIdeaCustomFieldsSchemas>
     );

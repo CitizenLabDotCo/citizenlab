@@ -44,7 +44,6 @@ const IdeaCards = memo<Props>(
     className,
     invisibleTitleMessage,
     showFiltersSidebar = false,
-    projectId,
     ...props
   }) => {
     return (
@@ -57,9 +56,9 @@ const IdeaCards = memo<Props>(
         <Suspense fallback={null}>
           {showFiltersSidebar ? (
             <IdeasWithFiltersSidebar {...props} />
-          ) : projectId ? (
-            <IdeasWithoutFiltersSidebar projectId={projectId} {...props} />
-          ) : null}
+          ) : (
+            <IdeasWithoutFiltersSidebar {...props} />
+          )}
         </Suspense>
       </Container>
     );
