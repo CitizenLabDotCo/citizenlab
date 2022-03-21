@@ -14,7 +14,6 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
   canManageManualCampaigns: boolean | null;
-  canManageTextingCampaigns: boolean | null;
   manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
   textingEnabled: boolean | null;
