@@ -90,7 +90,7 @@ module ProjectFolders
     end
 
     def set_admin_publication
-      self.admin_publication_attributes = {} if !admin_publication
+      self.admin_publication_attributes = {} unless admin_publication
     end
 
     def remove_notifications

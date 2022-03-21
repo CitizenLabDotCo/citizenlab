@@ -2,9 +2,7 @@ require 'rails_helper'
 
 describe MachineTranslations::MachineTranslationService do
   describe 'translate' do
-    before do
-      stub_easy_translate!
-    end
+    before { stub_easy_translate! }
 
     it 'corrects translated HTML' do
       text = subject.translate '<strong>Gezondheid &amp; Welzijn</strong>', 'nl-BE', 'en'
