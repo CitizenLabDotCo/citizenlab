@@ -46,7 +46,7 @@ describe MachineTranslations::MachineTranslationService do
         'fr' => '<strong>Santé &amp; Bien-être</strong>',
         'nl' => ''
       }[options[:to]]
-      translation || raise(EasyTranslate::EasyTranslateException.new('Locale not supported!'))
+      translation || raise(EasyTranslate::EasyTranslateException, 'Locale not supported!')
     end
   end
 end
