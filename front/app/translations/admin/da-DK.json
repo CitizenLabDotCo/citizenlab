@@ -991,7 +991,7 @@
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Projektfaser",
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_omfordeling",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminologi (forsidefilter)",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Hvordan skal tags i forsidefilteret kaldes? f.eks. tags, kategorier, afdelinger, ...",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Hvordan skal tags i forsidefilteret kaldes? F. eks. tags, kategorier, afdelinger, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags kan konfigureres {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "her",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
