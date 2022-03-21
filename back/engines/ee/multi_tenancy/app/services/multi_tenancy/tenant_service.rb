@@ -131,6 +131,12 @@ module MultiTenancy
       )
     end
 
+    def replace_locale_occurences!(tenant, replaced_locale, replacing_locale)
+      tenant.switch do
+        User.where(locale: replaced_locale).update_all locale: replacing_locale
+      end
+    end
+
     private
 
     # @param [String] template_name
