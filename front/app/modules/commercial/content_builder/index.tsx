@@ -9,7 +9,7 @@ const configuration: ModuleConfiguration = {
       {
         path: 'content-builder/projects/:projectId/description',
         name: 'content_builder',
-        container: () => import('./admin/containers/index'),
+        container: () => import('./admin/containers'),
       },
     ],
   },

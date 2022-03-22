@@ -14,49 +14,49 @@ import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
 import Container from '../components/CraftComponents/Container';
 import RenderNode from '../components/RenderNode';
+import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 
-const Wrapper = styled.div`
-  flex: 0 0 auto;
-  width: 210px;
-`;
-
-const ContainerInner = styled.nav`
-  flex: 0 0 auto;
-  width: 210px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  padding-top: ${stylingConsts.menuHeight + 10}px;
-  background-color: ${colors.disabledPrimaryButtonBg};
-  border-right: 1px solid ${colors.border};
+const StyledRightColumn = styled(RightColumn)`
+  min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
 `;
 
 const ContentBuilderPage = () => {
   return (
-    <Editor resolver={{ Box, Container }} onRender={RenderNode}>
-      <Wrapper>
-        <ContainerInner>
-          <ContentBuilderToolbox />
-        </ContainerInner>
-      </Wrapper>
-      <RightColumn>
-        <Frame>
-          <Element
-            is="div"
-            canvas
-            style={{
-              padding: '4px',
-              minHeight: '300px',
-              backgroundColor: '#fff',
-            }}
-          />
-        </Frame>
-      </RightColumn>
-      <ContentBuilderSettings />
-    </Editor>
+    <Box display="flex" flexDirection="column" w="100%">
+      <ContentBuilderTopBar />
+      <Editor resolver={{ Box, Container }} onRender={RenderNode}>
+        <Box display="flex">
+          <Box
+            flex="0 0 auto"
+            h="100%"
+            w="220px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            bgColor={colors.adminDarkBackground}
+            borderRight={`1px solid ${colors.border}`}
+          >
+            <ContentBuilderToolbox />
+          </Box>
+          <StyledRightColumn>
+            <Box paddingTop="20px">
+              <Frame>
+                <Element
+                  is="div"
+                  canvas
+                  style={{
+                    padding: '4px',
+                    minHeight: '300px',
+                    backgroundColor: '#fff',
+                  }}
+                />
+              </Frame>
+            </Box>
+          </StyledRightColumn>
+          <ContentBuilderSettings />
+        </Box>
+      </Editor>
+    </Box>
   );
 };
 
