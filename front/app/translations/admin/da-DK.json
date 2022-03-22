@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Hvordan skal tags i forsidefilteret kaldes? F. eks. tags, kategorier, afdelinger, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags kan konfigureres {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "her",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Betegnelse for et tag (ental)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Betegnelse for flere tags (flertal)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "tags",
