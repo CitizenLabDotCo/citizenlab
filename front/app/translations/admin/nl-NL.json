@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Hoe moeten tags in de voorpaginafilter genoemd worden? Bv. tags, categorieën, afdelingen, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags kunnen {topicManagerLink} aangepast worden.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "hier",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term voor één tag (enkelvoud)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tag",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Term voor meerdere tags (meervoud)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "tags",
