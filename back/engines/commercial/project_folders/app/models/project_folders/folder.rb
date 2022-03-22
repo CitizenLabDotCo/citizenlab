@@ -17,7 +17,6 @@
 #
 module ProjectFolders
   class Folder < ::ApplicationRecord
-
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
     has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: "project_folder_id" # todo remove after renaming project_folder association in Image model
@@ -30,7 +29,9 @@ module ProjectFolders
 
     mount_base64_uploader :header_bg, HeaderBgUploader
 
-    validates :title_multiloc, presence: true, multiloc: {presence: true}
+    validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :description_multiloc, multiloc: { presence: false, html: true }
+    validates :description_preview_multiloc, multiloc: { presence: false, html: true }
     validates :slug, uniqueness: true, presence: true
     validate :admin_publication_must_exist
 
@@ -60,37 +61,36 @@ module ProjectFolders
     end
 
     def generate_slug
-      slug_service = SlugService.new
-      self.slug ||= slug_service.generate_slug self, self.title_multiloc.values.first
+      self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
     end
 
     def sanitize_description_multiloc
       service = SanitizationService.new
       self.description_multiloc = service.sanitize_multiloc(
-        self.description_multiloc,
-        %i{title alignment list decoration link image video}
+        description_multiloc,
+        %i[title alignment list decoration link image video]
       )
-      self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
-      self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
+      self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
+      self.description_multiloc = service.linkify_multiloc description_multiloc
     end
 
     def sanitize_description_preview_multiloc
       service = SanitizationService.new
       self.description_preview_multiloc = service.sanitize_multiloc(
-        self.description_preview_multiloc,
-        %i{decoration link}
+        description_preview_multiloc,
+        %i[decoration link]
       )
-      self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_preview_multiloc)
+      self.description_preview_multiloc = service.remove_multiloc_empty_trailing_tags description_preview_multiloc
     end
 
     def strip_title
-      self.title_multiloc.each do |key, value|
-        self.title_multiloc[key] = value.strip
+      title_multiloc.each do |key, value|
+        title_multiloc[key] = value.strip
       end
     end
 
     def set_admin_publication
-      self.admin_publication_attributes= {} if !self.admin_publication
+      self.admin_publication_attributes = {} unless admin_publication
     end
 
     def remove_notifications

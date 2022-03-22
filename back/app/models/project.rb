@@ -52,8 +52,6 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-  DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
-
   has_many :ideas, dependent: :destroy
   has_many :votes, through: :ideas
 
@@ -85,16 +83,9 @@ class Project < ApplicationRecord
   INTERNAL_ROLES = %w[open_idea_box].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :slug, presence: true, uniqueness: true
-  validates :description_preview_multiloc, json: {
-    schema: DESCRIPTION_PREVIEW_JSON_SCHEMA,
-    message: ->(errors) { errors.map { |e| { fragment: e[:fragment], error: e[:failed_attribute], human_message: e[:message] } } },
-    options: {
-      errors_as_objects: true
-    }
-  }
   validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist
@@ -190,8 +181,7 @@ class Project < ApplicationRecord
   end
 
   def generate_slug
-    slug_service = SlugService.new
-    self.slug ||= slug_service.generate_slug self, title_multiloc.values.first
+    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
   end
 
   def sanitize_description_multiloc

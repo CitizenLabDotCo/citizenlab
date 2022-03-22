@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.addCampaignButton',
     defaultMessage: 'Create campaign',
   },
+  addTextButton: {
+    id: 'app.containers.Admin.emails.addTextButton',
+    defaultMessage: 'Create a new SMS',
+  },
   deleteButtonLabel: {
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
@@ -99,9 +103,17 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.draft',
     defaultMessage: 'Draft',
   },
+  sending: {
+    id: 'app.containers.Admin.emails.sending',
+    defaultMessage: 'Sending',
+  },
   sent: {
     id: 'app.containers.Admin.emails.sent',
     defaultMessage: 'Sent',
+  },
+  failed: {
+    id: 'app.containers.Admin.emails.failed',
+    defaultMessage: 'Failed',
   },
   sendNowButton: {
     id: 'app.containers.Admin.emails.sendNowButton',
@@ -213,6 +225,10 @@ export default defineMessages({
   noCampaignsHeader: {
     id: 'app.containers.Admin.emails.noCampaignsHeader',
     defaultMessage: 'No custom email campaigns yet',
+  },
+  noTextingCampaignsHeader: {
+    id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
+    defaultMessage: 'No SMS has been drafted or sent yet',
   },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',

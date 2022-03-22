@@ -14,7 +14,6 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
   canManageManualCampaigns: boolean | null;
-  canManageTextingCampaigns: boolean | null;
   manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
   textingEnabled: boolean | null;
@@ -32,7 +31,6 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
-    const alwaysTrue = true; // Hack for manual dev testing & to pass linting.
 
     if (
       this.props.canManageManualCampaigns &&
@@ -43,11 +41,7 @@ class MessagingDashboard extends React.PureComponent<
         url: '/admin/messaging/emails/custom',
       });
     }
-    if (
-      alwaysTrue
-      // this.props.canManageTextingCampaigns &&
-      // this.props.textingEnabled
-    ) {
+    if (this.props.textingEnabled) {
       tabs.push({
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
@@ -84,6 +78,9 @@ class MessagingDashboard extends React.PureComponent<
             title: formatMessage(messages.titleMessaging),
             // note: update subtitle once SMS feature is live.
             // right now it's accurate in only referring to email functionality
+            // It may even be better to make the subtitle content sensitive to each of the possible messaging features
+            // and display different copy depending on which messaging feature(s) is/are active:
+            // Manual emails / automated emails / SMS
             subtitle: formatMessage(messages.subtitleEmails),
           }}
           tabs={this.tabs()}
@@ -116,6 +113,7 @@ const Data = adopt<Props>({
   automatedEmailingEnabled: (
     <GetFeatureFlag name="automated_emailing_control" />
   ),
+  textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
 export default (inputProps) => (
