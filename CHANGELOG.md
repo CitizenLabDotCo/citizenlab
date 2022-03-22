@@ -6,6 +6,8 @@
 
 - Add new topic/tag filter on homepage.
 
+## 2022-03-22
+
 ### Fixed
 
 - 'View' button sometimes freezing page in Navigation settings: should be fixed now.
