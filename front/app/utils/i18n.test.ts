@@ -20,14 +20,14 @@ describe('getLocalized', () => {
       expect(result).toBe('english');
     });
 
-    it('returns first language in multiloc if locale not in multiloc', () => {
+    it('returns most similar language in multiloc if locale not in multiloc', () => {
       const result = getLocalized(multiloc, 'nl-BE', ['en', 'nl-NL']);
-      expect(result).toBe('english');
+      expect(result).toBe('nederlands');
     });
 
-    it('returns first language in multiloc if locale not in multiloc but in tenantLocales', () => {
+    it('returns most similar language in multiloc if locale not in multiloc but in tenantLocales', () => {
       const result = getLocalized(multiloc, 'nl-BE', ['en', 'nl-NL', 'nl-BE']);
-      expect(result).toBe('english');
+      expect(result).toBe('nederlands');
     });
   });
 
