@@ -16,60 +16,63 @@ import messages from './messages';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useAreas from 'hooks/useAreas';
+import useTopics from 'hooks/useTopics';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // services
 import { coreSettings } from 'services/appConfiguration';
 
-interface SelectAreasProps {
-  selectedAreas: string[];
-  onChangeAreas: (areas: string[]) => void;
+interface SelectTopicsProps {
+  className?: string;
+  selectedTopics: string[];
+  onChangeTopics: (topics: string[]) => void;
 }
 
-const SelectAreas = ({
-  selectedAreas,
-  onChangeAreas,
+const SelectTopics = ({
+  className,
+  selectedTopics,
+  onChangeTopics,
   intl: { formatMessage },
-}: SelectAreasProps & InjectedIntlProps) => {
+}: SelectTopicsProps & InjectedIntlProps) => {
   const localize = useLocalize();
-  const areas = useAreas({ forHomepageFilter: true });
+  const topics = useTopics({ forHomepageFilter: true });
   const appConfig = useAppConfiguration();
   const smallerThanMinTablet = useBreakpoint('smallTablet');
 
   if (isNilOrError(appConfig)) return null;
 
-  const areasOptions = (): { text: string; value: string }[] => {
-    if (!isNilOrError(areas)) {
-      return areas.map((area) => ({
-        text: localize(area.attributes.title_multiloc),
-        value: area.id,
+  const topicsOptions = (): { text: string; value: string }[] => {
+    if (!isNilOrError(topics)) {
+      return topics.map((topic) => ({
+        text: localize(topic.attributes.title_multiloc),
+        value: topic.id,
       }));
     } else {
       return [];
     }
   };
 
-  const areaTerm = () => {
-    const fallback = formatMessage(messages.areaTitle);
-    const areaTerm = coreSettings(appConfig).area_term;
+  const topicTerm = () => {
+    const fallback = formatMessage(messages.topicTitle);
+    const topicTerm = coreSettings(appConfig).topic_term;
 
-    return capitalize(localize(areaTerm, { fallback }));
+    return capitalize(localize(topicTerm, { fallback }));
   };
 
-  const options = areasOptions();
+  const options = topicsOptions();
 
   if (options.length === 0) return null;
 
-  const title = areaTerm();
+  const title = topicTerm();
 
   return (
     <FilterSelector
       title={title}
-      name="areas"
-      selected={selectedAreas}
+      className={className}
+      name="topics"
+      selected={selectedTopics}
       values={options}
-      onChange={onChangeAreas}
+      onChange={onChangeTopics}
       multipleSelectionAllowed={true}
       right="-4px"
       mobileLeft={smallerThanMinTablet ? '-4px' : undefined}
@@ -79,4 +82,4 @@ const SelectAreas = ({
   );
 };
 
-export default injectIntl(SelectAreas);
+export default injectIntl(SelectTopics);

@@ -131,7 +131,7 @@ const Tabs = ({
         >
           <div aria-hidden>
             <FormattedMessage {...MESSAGES_MAP[tab]} />
-            <StatusCount>({statusCounts[tab]})</StatusCount>
+            <StatusCount>({statusCounts[tab] || 0})</StatusCount>
           </div>
 
           <ScreenReaderOnly>
@@ -139,7 +139,7 @@ const Tabs = ({
               {...messages.a11y_projectFilterTabInfo}
               values={{
                 tab: <FormattedMessage {...MESSAGES_MAP[tab]} />,
-                count: statusCounts[tab],
+                count: statusCounts[tab] || 0,
               }}
             />
           </ScreenReaderOnly>

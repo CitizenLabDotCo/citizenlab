@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Passordet ditt har blitt oppdatert",
   "app.containers.PasswordReset.title": "Tilbakestill passordet ditt",
   "app.containers.PasswordReset.updatePassword": "Bekreft nytt passord",
-  "app.containers.ProjectCards.areasTitle": "Filtrer etter område",
   "app.containers.ProjectFolderCards.allProjects": "Alle prosjekter",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} arbeider for øyeblikket med",
   "app.containers.ProjectFolderShowPage.editFolder": "Rediger mappe",

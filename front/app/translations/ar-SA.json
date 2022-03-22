@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "تم تحديث كلمة المرور الخاصة بك بنجاح",
   "app.containers.PasswordReset.title": "إعادة تعيين كلمة المرور",
   "app.containers.PasswordReset.updatePassword": "تأكيد كلمة المرور الجديدة",
-  "app.containers.ProjectCards.areasTitle": "التصفية بحسب المنطقة",
   "app.containers.ProjectFolderCards.allProjects": "جميع المشاريع",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "تعمل {orgName} حاليًا على",
   "app.containers.ProjectFolderShowPage.editFolder": "تعديل",

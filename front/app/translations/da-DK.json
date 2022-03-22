@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Din adgangskode er blevet opdateret uden problemer",
   "app.containers.PasswordReset.title": "Nulstil din adgangskode",
   "app.containers.PasswordReset.updatePassword": "Bekræft ny adgangskode",
-  "app.containers.ProjectCards.areasTitle": "Filtrer efter områder",
   "app.containers.ProjectFolderCards.allProjects": "Alle projekter",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} arbejder i øjeblikket med",
   "app.containers.ProjectFolderShowPage.editFolder": "Rediger folder",

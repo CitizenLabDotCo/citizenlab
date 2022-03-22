@@ -1034,7 +1034,6 @@
   "app.containers.AdminPage.SettingsPage.areas.editButtonLabel": "Modifier",
   "app.containers.AdminPage.SettingsPage.areasTerm": "Terme désignant plusieurs lieux (pluriel)",
   "app.containers.AdminPage.SettingsPage.areasTermPlaceholder": "lieux",
-  "app.containers.AdminPage.SettingsPage.areasTermsSave": "Sauvegarder",
   "app.containers.AdminPage.SettingsPage.avatarsTitle": "Avatars",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatars": "Afficher les avatars",
   "app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle": "Montrer les photos de profil des participants et leur nombre aux visiteurs non inscrits",

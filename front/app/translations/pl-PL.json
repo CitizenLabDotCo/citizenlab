@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Twoje hasło zostało pomyślnie zaktualizowane",
   "app.containers.PasswordReset.title": "Zmień swoje hasło",
   "app.containers.PasswordReset.updatePassword": "Potwierdź nowe hasło",
-  "app.containers.ProjectCards.areasTitle": "Filtr według dzielnic",
   "app.containers.ProjectFolderCards.allProjects": "Wszystkie projekty",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} pracuje obecnie nad",
   "app.containers.ProjectFolderShowPage.editFolder": "Edytuj folder",

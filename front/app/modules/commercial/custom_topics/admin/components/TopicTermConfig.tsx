@@ -10,7 +10,7 @@ import { updateAppConfiguration } from 'services/appConfiguration';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -19,7 +19,7 @@ interface Props {
   className?: string;
 }
 
-const AreaTermConfig = ({ className }: Props) => {
+const TopicTermConfig = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
   if (isNilOrError(appConfiguration)) return null;
 
@@ -27,14 +27,14 @@ const AreaTermConfig = ({ className }: Props) => {
     await updateAppConfiguration({
       settings: {
         core: {
-          area_term: singular,
-          areas_term: plural,
+          topic_term: singular,
+          topics_term: plural,
         },
       },
     });
   };
 
-  const { areas_term, area_term } =
+  const { topic_term, topics_term } =
     appConfiguration.data.attributes.settings.core;
 
   return (
@@ -42,15 +42,15 @@ const AreaTermConfig = ({ className }: Props) => {
       className={className}
       terminologyMessage={messages.subtitleTerminology}
       tooltipMessage={messages.terminologyTooltip}
-      singularValueMultiloc={area_term}
-      pluralValueMultiloc={areas_term}
-      singularLabelMessage={messages.areaTerm}
-      pluralLabelMessage={messages.areasTerm}
-      singularPlaceholderMessage={messages.areaTermPlaceholder}
-      pluralPlaceholderMessage={messages.areasTermPlaceholder}
+      singularValueMultiloc={topic_term}
+      pluralValueMultiloc={topics_term}
+      singularLabelMessage={messages.topicTerm}
+      pluralLabelMessage={messages.topicsTerm}
+      singularPlaceholderMessage={messages.topicTermPlaceholder}
+      pluralPlaceholderMessage={messages.topicsTermPlaceholder}
       onSave={save}
     />
   );
 };
 
-export default AreaTermConfig;
+export default TopicTermConfig;

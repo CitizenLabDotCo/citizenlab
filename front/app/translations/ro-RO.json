@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Parola ta a fost actualizată cu succes",
   "app.containers.PasswordReset.title": "Resetează parola",
   "app.containers.PasswordReset.updatePassword": "Confirmă noua parolă",
-  "app.containers.ProjectCards.areasTitle": "Filtrul după zonă",
   "app.containers.ProjectFolderCards.allProjects": "Toate proiectele",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} lucrează în prezent la:",
   "app.containers.ProjectFolderShowPage.editFolder": "Editați folderul",

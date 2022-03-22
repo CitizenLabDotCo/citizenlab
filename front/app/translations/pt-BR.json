@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Sua senha foi alterada com sucesso",
   "app.containers.PasswordReset.title": "Resetar sua senha",
   "app.containers.PasswordReset.updatePassword": "Confirmar nova senha",
-  "app.containers.ProjectCards.areasTitle": "Filtrar por área",
   "app.containers.ProjectFolderCards.allProjects": "Todos os projetos",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} atualmente está trabalhando em",
   "app.containers.ProjectFolderShowPage.editFolder": "Editar pasta",

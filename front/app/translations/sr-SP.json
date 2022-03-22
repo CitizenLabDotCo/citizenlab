@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Ваша лозинка је успешно ажурирана",
   "app.containers.PasswordReset.title": "Ресетујте своју шифру",
   "app.containers.PasswordReset.updatePassword": "Потврдите нову лозинку",
-  "app.containers.ProjectCards.areasTitle": "Филтрирај по области",
   "app.containers.ProjectFolderCards.allProjects": "Сви пројекти",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} тренутно ради на",
   "app.containers.ProjectFolderShowPage.editFolder": "Измените фолдер",

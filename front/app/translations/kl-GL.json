@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Kode isissutigisartakkat ajunngitsumik nutarterneqarpoq",
   "app.containers.PasswordReset.title": "Kode isissutigisartakkat allanngortiguk",
   "app.containers.PasswordReset.updatePassword": "Kode isissutigisartakkat allaqqiguk",
-  "app.containers.ProjectCards.areasTitle": "Sumiiffikkaarlugit immikkoortiterineq",
   "app.containers.ProjectFolderCards.allProjects": "Suliniutit tamarmik",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} maanna una suliarivaa",
   "app.containers.ProjectFolderShowPage.editFolder": "Ilioraavik aaqqissuuguk",

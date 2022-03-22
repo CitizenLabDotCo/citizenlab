@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Your password has been successfully updated",
   "app.containers.PasswordReset.title": "Reset your password",
   "app.containers.PasswordReset.updatePassword": "Confirm new password",
-  "app.containers.ProjectCards.areasTitle": "Filter by area",
   "app.containers.ProjectFolderCards.allProjects": "All projects",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} is currently working on",
   "app.containers.ProjectFolderShowPage.editFolder": "Edit folder",

@@ -948,7 +948,6 @@
   "app.containers.PasswordReset.successMessage": "Vaša lozinka je uspešno ažurirana",
   "app.containers.PasswordReset.title": "Resetujte vašu lozinku",
   "app.containers.PasswordReset.updatePassword": "Potvrdite novu lozinku",
-  "app.containers.ProjectCards.areasTitle": "Filtriraj po oblasti",
   "app.containers.ProjectFolderCards.allProjects": "Svi projekti",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} trenutno radi na",
   "app.containers.ProjectFolderShowPage.editFolder": "Izmeni folder",
