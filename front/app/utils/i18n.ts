@@ -65,7 +65,17 @@ export function getLocalized(
     }
 
     if (isObject(multiloc) && !isEmpty(multiloc)) {
+      // Return value for exactly the same locale
+      if (multiloc[locale]) return truncate(multiloc[locale], maxLength);
+
       const multilocLocales = keys(multiloc) as Locale[];
+
+      // Return value for a locale of the same language
+      const sameLanguageLocale = findSimilarLocale(locale, multilocLocales);
+      if (!isNilOrError(sameLanguageLocale) && !!multiloc[sameLanguageLocale]) {
+        return truncate(multiloc[sameLanguageLocale], maxLength);
+      }
+
       const graphqlMultilocLocales = multilocLocales.map((multilocLocale) =>
         convertToGraphqlLocale(multilocLocale)
       );
@@ -106,3 +116,18 @@ export function getLocalizedWithFallback(
 }
 
 const isMissing = (value?: string) => !value || value.length === 0;
+
+function getLanguage(locale: Locale) {
+  return locale.indexOf('-') > -1 ? locale.split('-')[0] : locale;
+}
+
+function findSimilarLocale(locale: Locale, candidateLocales: Locale[]) {
+  const localeLanguage = getLanguage(locale);
+  const localeLanguages = candidateLocales.map(getLanguage);
+
+  const similarLocaleIndex = localeLanguages.findIndex(
+    (language) => language === localeLanguage
+  );
+
+  return similarLocaleIndex > -1 ? candidateLocales[similarLocaleIndex] : null;
+}

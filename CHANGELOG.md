@@ -6,13 +6,23 @@
 
 - Add new topic/tag filter on homepage.
 
+## 2022-03-21
+
+### Added
+
+- Put back secret pages-page
+
 ### Changed
 
 - Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
+- Removed 'most active users' graph
+- When the locale of the current user is not present in a multiloc, fall back to the value for a locale of the same language (for example es-CL as picked language and a multiloc with es-ES).
 
 ### Fixed
 
 - Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+- HTML is fixed when machine translating HTML content returns bad HTML.
 
 ## 2022-03-15 (2)
 
