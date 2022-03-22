@@ -19,7 +19,7 @@ import { getInitialFormValues, createPageUpdateData } from './utils';
 import { NAVIGATION_PATH } from '..';
 
 // services
-import { updatePage } from '../../../services/pages';
+import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks
