@@ -367,31 +367,14 @@ describe InvitesService do
     end
     let(:inviter) { create(:user) }
 
-    before do
-      service.bulk_create(hash_array, _default_params = {}, inviter)
-    end
-
     context 'with multiple emails and no names' do
-      it 'creates users' do
+      it 'creates users with no slugs' do
+        service.bulk_create(hash_array, _default_params = {}, inviter)
+
         expect(User.find_by(email: test_email1)).to be_present
         expect(User.find_by(email: test_email2)).to be_present
-      end
-
-      let(:test_email3) { 'find_me_3@test.com' }
-      let(:test_email4) { 'find_me_4@test.com' }
-      let(:hash_array2) do
-        [
-          { "email"=>test_email3 },
-          { "email"=>test_email4 }
-        ]
-      end
-
-      # To catch case where check for full_name != ' ' is removed from generate_slugs in UserSlugService
-      # and then attempts to create duplicate user slugs based on such a full_name value cause errors.
-      it 'succeeds more than once' do
-        service.bulk_create(hash_array2, _default_params = {}, inviter)
-        expect(User.find_by(email: test_email3)).to be_present
-        expect(User.find_by(email: test_email4)).to be_present
+        expect(User.find_by(email: test_email1).slug).to eq(nil)
+        expect(User.find_by(email: test_email2).slug).to eq(nil)
       end
     end
   end
