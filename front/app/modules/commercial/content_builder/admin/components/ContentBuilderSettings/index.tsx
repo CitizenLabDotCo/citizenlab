@@ -25,6 +25,8 @@ const ContentBuilderSettings = () => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selected;
 
+    console.log(currentNodeId);
+
     if (currentNodeId) {
       selected = {
         id: currentNodeId,
@@ -42,9 +44,13 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  const getComponentNameMessage = (name: 'Container') => {
+  const getComponentNameMessage = (name) => {
     switch (name) {
       case 'Container':
+        return messages.oneColumn;
+      case 'Text':
+        return messages.text;
+      default:
         return messages.oneColumn;
     }
   };

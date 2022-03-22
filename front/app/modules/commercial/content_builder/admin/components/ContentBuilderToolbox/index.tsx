@@ -3,6 +3,7 @@ import React from 'react';
 // craft
 import { useEditor, Element } from '@craftjs/core';
 import Container from '../CraftComponents/Container';
+import Text from '../CraftComponents/Text';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -26,6 +27,14 @@ const ContentBuilderToolbox = ({
         }
       >
         {formatMessage(messages.oneColumn)}
+      </button>
+      <button
+        ref={(ref) =>
+          ref &&
+          connectors.create(ref, <Element text="Text" is={Text} id="text" />)
+        }
+      >
+        {formatMessage(messages.text)}
       </button>
     </Box>
   );
