@@ -355,4 +355,25 @@ describe InvitesService do
       end
     end
   end
+
+  describe 'bulk_create' do
+    let(:test_email1) { 'find_me_1@test.com' }
+    let(:test_email2) { 'find_me_2@test.com' }
+    let(:hash_array) do
+      [
+        { 'email' => test_email1 },
+        { 'email' => test_email2 }
+      ]
+    end
+    let(:inviter) { create(:user) }
+
+    context 'with multiple emails and no names' do
+      it 'creates users with no slugs' do
+        service.bulk_create(hash_array, _default_params = {}, inviter)
+
+        expect(User.find_by(email: test_email1).slug).to be_nil
+        expect(User.find_by(email: test_email2).slug).to be_nil
+      end
+    end
+  end
 end
