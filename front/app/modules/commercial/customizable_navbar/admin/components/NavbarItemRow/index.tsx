@@ -7,6 +7,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // components
 import { TextCell } from 'components/admin/ResourceList';
+import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import T from 'components/T';
 
@@ -47,11 +48,11 @@ interface Props {
   addButtonDisabled?: boolean;
   showRemoveButton?: boolean;
   showViewButton?: boolean;
+  viewButtonLink?: string;
   onClickEditButton?: () => void;
   onClickAddButton?: () => void;
   onClickRemoveButton?: () => void;
   onClickDeleteButton?: () => void;
-  onClickViewButton?: () => void;
 }
 
 export default ({
@@ -61,11 +62,11 @@ export default ({
   showAddButton,
   addButtonDisabled,
   showRemoveButton,
+  viewButtonLink,
   onClickEditButton,
   onClickAddButton,
   onClickRemoveButton,
   onClickDeleteButton,
-  onClickViewButton,
 }: Props) => {
   const handleOnClickEditButton = () => {
     if (onClickEditButton) onClickEditButton();
@@ -85,10 +86,6 @@ export default ({
     if (onClickDeleteButton) {
       onClickDeleteButton();
     }
-  };
-
-  const handleOnClickViewButton = () => {
-    if (onClickViewButton) onClickViewButton();
   };
 
   return (
@@ -115,14 +112,13 @@ export default ({
           </Button>
         )}
 
-        <Button
-          buttonStyle="secondary"
-          icon="search"
-          onClick={handleOnClickViewButton}
-          ml="10px"
-        >
-          <FormattedMessage {...messages.viewButton} />
-        </Button>
+        {viewButtonLink && (
+          <Link to={viewButtonLink} target="_blank">
+            <Button buttonStyle="secondary" icon="search" ml="10px">
+              <FormattedMessage {...messages.viewButton} />
+            </Button>
+          </Link>
+        )}
 
         {!isDefaultPage && (
           <Button
