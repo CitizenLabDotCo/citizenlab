@@ -354,7 +354,7 @@ class User < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    self.slug = UserSlugService.new.generate_slug(self, full_name)
+    self.slug = UserSlugService.new.generate_slug(self, full_name) if self.first_name.present?
   end
 
   def sanitize_bio_multiloc
