@@ -1,7 +1,7 @@
 describe.skip('email consent', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
-    cy.visit('/admin/emails/custom/new');
+    cy.visit('/admin/messaging/emails/custom/new');
     cy.acceptCookies();
   });
 
