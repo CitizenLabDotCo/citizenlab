@@ -39,7 +39,6 @@
 
 ### Fixed
 
-- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
 - When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
 - User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
 - Rich text editor copy/paste issues should be resolved
