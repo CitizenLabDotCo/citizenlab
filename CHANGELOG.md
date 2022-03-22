@@ -15,6 +15,7 @@
 ### Fixed
 
 - Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+- Bulk invites of invitees using only emails (no names specified) now succeeds again.
 
 ## 2022-03-15 (2)
 
