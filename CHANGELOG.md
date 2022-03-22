@@ -5,7 +5,6 @@
 ### Added
 
 - Put back secret pages-page
-- Texting feature under Messages admin tab created and hidden behind a feature flag
 
 ### Changed
 
