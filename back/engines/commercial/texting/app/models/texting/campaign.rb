@@ -10,10 +10,46 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
+
 module Texting
   class Campaign < ApplicationRecord
-    validates :phone_numbers, :message, :status, presence: true
+    enum status: {
+      draft: 'draft',
+      sending: 'sending',
+      sent: 'sent'
+    }.freeze
 
-    after_initialize { self.status ||= 'draft' }
+    before_validation :format_phone_numbers
+
+    validates :phone_numbers, :message, :status, presence: true
+    validate :validate_phone_numbers
+
+    after_initialize do
+      self.status ||= self.class.statuses.fetch(:draft)
+    end
+
+    def self.segments_count
+      where.not(status: statuses.fetch(:draft))
+           .where('sent_at > ?', Time.zone.now.beginning_of_month).sum(&:segments_count)
+    end
+
+    def segments_count
+      phone_numbers.count * Sms.segments_count(message)
+    end
+
+    private
+
+    # we don't want the same recipient to get 2 messages
+    def format_phone_numbers
+      self.phone_numbers = phone_numbers.map { |number| number.gsub(/[-()\s]/, '') }.uniq
+    end
+
+    def validate_phone_numbers
+      return unless phone_numbers_changed?
+
+      codes = AppConfiguration.instance.settings('texting', 'recipient_country_calling_codes')
+      invalid_numbers = phone_numbers.reject { |number| Texting::PhoneNumber.valid?(number, codes) }
+      errors.add(:phone_numbers, :invalid, invalid_numbers: invalid_numbers) if invalid_numbers.any?
+    end
   end
 end

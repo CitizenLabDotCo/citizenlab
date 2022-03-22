@@ -7,6 +7,10 @@ resource 'Texting campaigns' do
     user = create(:admin)
     token = Knock::AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
+
+    app_configuration = AppConfiguration.instance
+    app_configuration.settings['texting'] = { enabled: true, allowed: true }
+    app_configuration.save!
   end
 
   get '/web_api/v1/texting_campaigns' do
@@ -43,16 +47,16 @@ resource 'Texting campaigns' do
       parameter :message, 'The body of the texting campaign. Plain text', required: true
     end
 
-    let(:phone_numbers) { ['+22222', '+11111'] }
+    let(:phone_numbers) { ['+12345678911', '+12345678922'] }
     let(:message) { 'Join our platform!' }
 
     example_request 'Create a campaign' do
       expect(response_status).to eq 201
-      expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(['+22222', '+11111'])
+      expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(phone_numbers)
       expect(json_response_body.dig(:data, :attributes, :message)).to eq(message)
 
       campaign = Texting::Campaign.last
-      expect(campaign.phone_numbers).to match_array(['+22222', '+11111'])
+      expect(campaign.phone_numbers).to match_array(phone_numbers)
       expect(campaign.message).to eq(message)
     end
   end
@@ -64,21 +68,74 @@ resource 'Texting campaigns' do
     end
 
     let(:campaign) do
-      create(:texting_campaign, phone_numbers: ['+33333'], message: 'Hello')
+      create(:texting_campaign, phone_numbers: ['+12345678912'], message: 'Hello')
     end
 
     let(:id) { campaign.id }
-    let(:phone_numbers) { ['+22222', '+11111'] }
+    let(:phone_numbers) { ['+12345678911', '+12345678922'] }
     let(:message) { 'Join our platform!' }
 
     example_request 'Update a campaign' do
       expect(response_status).to eq 200
-      expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(['+22222', '+11111'])
+      expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(phone_numbers)
       expect(json_response_body.dig(:data, :attributes, :message)).to eq(message)
 
-      campaign = Texting::Campaign.last
-      expect(campaign.phone_numbers).to match_array(['+22222', '+11111'])
+      expect(campaign.reload.phone_numbers).to match_array(phone_numbers)
       expect(campaign.message).to eq(message)
+    end
+  end
+
+  post 'web_api/v1/texting_campaigns/:id/send', active_job_inline_adapter: true do
+    let(:campaign) do
+      create(:texting_campaign, phone_numbers: ['+12345678911'], message: 'Hello')
+    end
+
+    let(:id) { campaign.id }
+
+    example 'Start sending a campaign' do
+      twilio_client = Twilio::REST::Client.new
+      expect(Twilio::REST::Client).to receive(:new).once.and_return(twilio_client)
+      twilio_options = hash_including(body: campaign.message, to: campaign.phone_numbers.first)
+      expect(twilio_client.messages).to receive(:create).once.with(twilio_options)
+
+      do_request
+      expect(response_status).to eq 200
+      expect(campaign.reload.status).to eq('sending')
+    end
+  end
+
+  # To test locally without stubs:
+  # 1. Run ngrok
+  # 2. Tenant.find_by(host: 'localhost').update!(host: 'd635-31-179-57-73.ngrok.io')
+  # 3. Add to .env-back: OVERRIDE_HOST=d635-31-179-57-73.ngrok.io
+  # 4. Texting::SendCampaignJob.perform_later(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello'))
+  # 5. See the console logs and a message on your phone
+  post 'web_api/v1/texting_campaigns/:id/mark_as_sent', document: false do
+    let(:campaign) do
+      create(:texting_campaign, phone_numbers: ['+12345678911'], message: 'Hello', status: :sending)
+    end
+
+    let(:id) { campaign.id }
+    header 'X-Twilio-Signature', 'signature'
+
+    example 'Status changed if validation succeeds' do
+      validator = Twilio::Security::RequestValidator.new('auth_token')
+      expect(Twilio::Security::RequestValidator).to receive(:new).once.and_return(validator)
+      expect(validator).to receive(:validate).once.and_return(true)
+
+      do_request
+      expect(response_status).to eq 200
+      expect(campaign.reload.status).to eq('sent')
+    end
+
+    example 'Status not changed if validation fails' do
+      validator = Twilio::Security::RequestValidator.new('auth_token')
+      expect(Twilio::Security::RequestValidator).to receive(:new).once.and_return(validator)
+      expect(validator).to receive(:validate).once.and_return(false)
+
+      do_request
+      expect(response_status).to eq 401
+      expect(campaign.reload.status).to eq('sending')
     end
   end
 

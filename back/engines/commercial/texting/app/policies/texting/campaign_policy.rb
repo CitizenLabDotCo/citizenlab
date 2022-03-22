@@ -14,16 +14,20 @@ class Texting::CampaignPolicy < ApplicationPolicy
   end
 
   def update?
-    can_access_and_modify?
+    @record.draft? && can_access_and_modify?
   end
 
   def destroy?
     can_access_and_modify?
   end
 
+  def do_send?
+    @record.draft? && can_access_and_modify?
+  end
+
   private
 
   def can_access_and_modify?
-    user&.active? && user&.admin?
+    user&.active? && user&.admin? && AppConfiguration.instance.feature_activated?('texting')
   end
 end
