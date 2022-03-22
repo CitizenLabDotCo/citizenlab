@@ -2,21 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 // components
 import TextArea from 'components/UI/TextArea';
-// import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
+import TextingHeader from '../TextingHeader';
 
-import TextingHeader from './TextingHeader';
-
-// i18n
-// import { InjectedIntlProps } from 'react-intl';
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from '../messages';
-// import { API_PATH, appLocalePairs } from 'containers/App/constants';
-// import { getLocalized } from 'utils/i18n';
+// services
+import { addTextingCampaign } from 'services/textingCampaigns';
 
 // styling
 import styled from 'styled-components';
@@ -41,8 +34,19 @@ const TextCreation = () => {
     setInputMessage(value);
   };
 
-  const handleOnSubmit = (event) => {
+  const handleOnSubmit = async (event) => {
     event.preventDefault();
+
+    const splitNumbers = inputPhoneNumbers.split(',');
+    try {
+      const result = await addTextingCampaign(inputMessage, splitNumbers);
+      console.log('success!');
+      const { id } = result.data;
+      const url = `/admin/messaging/texting/${id}`;
+      window.location.href = url;
+    } catch (error) {
+      console.log('something borked', error);
+    }
   };
 
   useEffect(() => {
@@ -78,7 +82,6 @@ const TextCreation = () => {
               value={inputPhoneNumbers}
               onChange={handleInputPhoneNumbersChange}
             />
-            <Error text="90 numbers were incorrect: 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, 1-800-900-9999, " />
           </SectionField>
           <SectionField>
             <Label>
@@ -99,7 +102,8 @@ const TextCreation = () => {
                 buttonStyle="primary"
                 size="2"
                 type="submit"
-                text={'Preview SMS'}
+                text={'Validate and preview SMS'}
+                onClick={handleOnSubmit}
               />
             </Box>
           </SectionField>

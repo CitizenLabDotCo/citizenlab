@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // components
 import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from './TextingHeader';
+import TextingHeader from '../TextingHeader';
 import Modal from 'components/UI/Modal';
 import { ScreenReaderOnly } from 'utils/a11y';
 // i18n
@@ -13,9 +13,16 @@ import { ScreenReaderOnly } from 'utils/a11y';
 // import { API_PATH, appLocalePairs } from 'containers/App/constants';
 // import { getLocalized } from 'utils/i18n';
 
+// utils
+import { withRouter, WithRouterProps } from 'react-router';
+
+// hooks
+import useTextingCampaign from 'hooks/useTextingCampaign';
+
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const InformativeTitle = styled.span`
   font-weight: bold;
@@ -124,9 +131,18 @@ const SendNowWarning = styled.div`
 const testCopy =
   'The city is considering a major landscape architectural development. Currently divided in a peculiar four-square arrangement, three new proposals re-image our Public Square into a united green space design. Let us know which one you prefer! green.ville/vote-design';
 
-const TextMessagePreview = () => {
+const TextMessagePreview = (props: WithRouterProps) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showDeleteTextModal, setShowDeleteTextModal] = useState(false);
+
+  const { campaignId } = props.params;
+
+  const campaign = useTextingCampaign(campaignId);
+
+  // show error: campaign not found
+  if (isNilOrError(campaign)) return null;
+
+  const { message, phone_numbers } = campaign.attributes;
 
   return (
     <>
@@ -165,18 +181,20 @@ const TextMessagePreview = () => {
       </TextingHeader>
       <div>
         <InformativeTitle>Sending to:</InformativeTitle>
-        <InformativeContent>1029 people</InformativeContent>
+        <InformativeContent>{phone_numbers.length} people</InformativeContent>
       </div>
       <div>
         <InformativeTitle>Usage:</InformativeTitle>
-        <InformativeContent>199 Characters (2 messages)</InformativeContent>
+        <InformativeContent>
+          {message.length} Characters (message count here)
+        </InformativeContent>
       </div>
 
       <PhoneWrapper>
         <PhoneContainer aria-hidden>
           <PhoneBezel></PhoneBezel>
           <MessagesContainer>
-            <PhoneMessage>{testCopy}</PhoneMessage>
+            <PhoneMessage>{message}</PhoneMessage>
           </MessagesContainer>
         </PhoneContainer>
         <Button
@@ -256,4 +274,4 @@ const TextMessagePreview = () => {
   );
 };
 
-export default TextMessagePreview;
+export default withRouter(TextMessagePreview);
