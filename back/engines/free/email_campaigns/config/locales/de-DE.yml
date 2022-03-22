@@ -1,7 +1,7 @@
 de:
   email_campaigns:
     campaign_type_description:
-      "manual": Offizielle Mitteilungen
+      "manual": Offizielle Nachrichten
       "admin_rights_received": Administratorrechte erhalten
       "comment_deleted_by_admin": Löschung meines Kommentars
       "comment_marked_as_spam": Kommentar-Spam-Bericht
@@ -30,7 +30,7 @@ de:
       "official_feedback_on_voted_initiative": Update zu einem Vorschlag, für den ich gestimmt habe
       "official_feedback_on_your_idea": Update zu meiner Idee
       "official_feedback_on_your_initiative": Update zu meinem Vorschlag
-      "password_reset": Zurücksetzen des Passworts
+      "password_reset": Passwort zurücksetzen
       "project_moderation_rights_received": ProjektleiterInnenrechte erhalten
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
       "project_phase_started": Neue Projekt-Phase
@@ -195,7 +195,7 @@ de:
       report_inappropriate_offensive_content: 'Ich finde diesen Inhalt unangemessen oder anstößig.'
       report_not_an_initiative: 'Dieser Inhalt ist keine Vorschlag und gehört nicht hierhin.'
       subject: 'Du hast einen Spam-Bericht auf der Plattform von %{organizationName}'
-      preheader: 'Handeln Sie nach diesem Spam-Bericht'
+      preheader: 'Unternehmen Sie etwas mit diesem Spam-Bericht'
       reported_this_because: '%{reporterFirstName} meldete dies, weil:'
       title_spam_report: '%{firstName} %{lastName} gemeldeter Spam'
     initiative_assigned_to_you:
@@ -242,7 +242,7 @@ de:
       preheader: '%{commentAuthor} hat dich im Feedback erwähnt'
     new_comment_on_commented_idea:
       commented: '%{commentAuthor} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworte auf %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zur Idee ''%{ideaTitle}'' geschrieben auf der Beteiligungsplattform von %{organizationName}. Klicke auf die Schaltfläche unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} schrieb einen Kommentar zu derselben Idee'
       subject: 'Es gibt einen weiteren Kommentar zu der Idee, die Sie kommentiert haben'
@@ -250,7 +250,7 @@ de:
     mention_in_comment:
       by_author: 'von %{authorName}'
       commented: '%{commentAuthor} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworte auf %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat dich in seinem Kommentar zur Idee ''%{post}'' erwähnt. Klicke auf den untenstehenden Link, um mit %{commentAuthor} zu interagieren'
       main_header: 'Du wurdest von jemandem erwähnt'
       subject: 'Jemand hat dich auf der Plattform von %{organizationName} erwähnt'
@@ -271,7 +271,7 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     new_comment_on_commented_initiative:
       commented: '%{commentAuthor} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworte auf %{commentAuthor}'
       event_description: '%{commentAuthorFull} hat auch einen Kommentar zum Vorschlag ''%{initiativeTitle}'' auf der Beteiligungsplattform von %{organizationName} geschrieben. Klicke auf die Schaltfläche unten, um das Gespräch mit %{commentAuthor} zu beginnen.'
       main_header: '%{commentAuthor} schrieb einen Kommentar zum gleichen Vorschlag'
       subject: 'Es gibt einen weiteren Kommentar zu dem Vorschlag, den du kommentiert hast'
@@ -290,7 +290,7 @@ de:
     comment_on_your_idea:
       by_author: 'von %{authorName}'
       commented: '%{authorFirstName} schrieb:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworte auf %{commentAuthor}'
       event_description: '%{authorNameFull} hat eine Reaktion auf Ihre Idee ''%{ideaTitle}'' abgegeben. Klicken Sie auf die Schaltfläche unten, um das Gespräch mit %{authorName} fortzusetzen.'
       main_header: '%{authorName} hat Ihre Idee kommentiert'
       subject: 'Du hast einen Kommentar erhalten auf %{organizationName}s Plattform'
@@ -304,7 +304,7 @@ de:
       preheader: '%{commentAuthor} hat auf der Plattform von %{organizationName} einen Kommentar zum Vorschlag hinterlassen, für den du abgestimmt hast'
     new_comment_on_voted_idea:
       commented: '%{commentAuthor} kommentierte:'
-      cta_reply_to: 'Antworten Sie auf %{commentAuthor}'
+      cta_reply_to: 'Antworte auf %{commentAuthor}'
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{commentAuthor} hat die Idee "%{ideaTitle}" kommentiert, für die du abgestimmt hast. Nehme an der Diskussion auf der Plattform von %{organizationName} teil!'
       main_header: '%{firstName}, es gibt einen neuen Kommentar zu der Idee, über die Sie abgestimmt haben'
@@ -357,8 +357,8 @@ de:
     official_feedback_on_commented_idea:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
-      cta_view: 'Gehen Sie zu dieser Idee'
-      event_description: '%{officialName} gab ein Update auf die Idee ''%{ideaTitle}''.... Klicke auf die untenstehende Schaltfläche, um in das Gespräch mit %{officialName} einzugehen.'
+      cta_view: 'Zur Idee'
+      event_description: '%{officialName} hat ein Update zu der Idee ''%{ideaTitle}'' gegeben. Klicke auf die Schaltfläche unten, um das Gespräch mit %{officialName} zu beginnen.'
       main_header: 'Es gibt ein Update zu einer Idee, die du kommentiert hast'
       subject: 'Eine Idee, die du kommentiert hast, hat auf der Plattform von %{organizationName} ein offizielles Update erhalten'
       preheader: '%{officialName} hat ein offizielles Update für eine Idee veröffentlicht, die du kommentiert hast'
@@ -373,14 +373,14 @@ de:
     official_feedback_on_voted_initiative:
       by_author: 'von %{authorName}'
       updated: '%{officialName} schrieb:'
-      cta_view: 'Zum Vorschlag gehen'
-      event_description: '%{officialName} gab ein Update zum Vorschlag ''%{initiativeTitle}''.... Klicke auf die untenstehende Schaltfläche, um in das Gespräch mit %{organizationName} einzugehen.'
+      cta_view: 'Zum Vorschlag'
+      event_description: '%{officialName} hat ein Update zum Vorschlag ''%{initiativeTitle}'' gegeben. Klicke auf die Schaltfläche unten, um das Gespräch mit %{organizationName} zu beginnen.'
       main_header: 'Es gibt ein Update zu einem Vorschlag, über den du abgestimmt hast'
       subject: 'Ein Vorschlag, über den du abgestimmt hast, hat eine offizielle Aktualisierung auf der Plattform von %{organizationName} erhalten'
       preheader: '%{officialName} hat ein offizielles Update zum Vorschlag veröffentlicht, für den du abgestimmt hast'
     official_feedback_on_your_initiative:
       updated: '%{officialName} schrieb:'
-      cta_view: 'Gehe zu deinem Vorschlag'
+      cta_view: 'Zu deinem Vorschlag'
       event_description: '%{officialName} hat sich zu Ihrem Vorschlag ''%{initiativeTitle}'' geäußert. Klicken Sie auf die Schaltfläche unten, um das Gespräch mit %{organizationName} zu beginnen.'
       main_header: 'Du hast ein Update von %{officialName} erhalten'
       subject: 'Sie haben ein offizielles Update auf der Plattform von %{organizationName} erhalten'
@@ -395,7 +395,7 @@ de:
       text_moderate_analyse_input: 'Sobald das Projekt angelaufen ist, werden die ersten Ideen eintreffen. Sie erhalten wöchentliche Berichte mit allen wichtigen Aktivitäten, damit Sie den Überblick behalten. Die Ideenübersicht in Ihrer Projektmanager-Ansicht hilft Ihnen zu verstehen, welche Ideen die meisten Für- und Gegen-Stimmen erhalten haben.'
       text_share_project_information: 'Um die Qualität der Ideen, die Sie erhalten, zu erhöhen, ist es vor allem wichtig, die Bürger:innen genügend zu informieren. Fügen Sie eine Projektbeschreibung hinzu. Fügen Sie Bilder, wie Pläne und Skizzen, hinzu. Kommunizieren Sie alle betreffenden Veranstaltungen und Ereignisse. Denken Sie daran: gut informieren ist das A und O jeder Beteiligung!'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
-      title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger'
+      title_moderate_analyse_input: 'Moderieren und Analysieren des Inputs'
       title_share_project_information: 'Stellen Sie Projektinformationen bereit'
       title_what_can_you_do_moderator: 'Was können Sie als Projektleiter:in tun?'
       title_you_became_moderator: 'Sie sind nun ProjektmanagerIn'
@@ -410,7 +410,7 @@ de:
       text_moderate_analyse_input: 'Sobald die Projekte gestartet wurden, werden die ersten Beiträge eingehen. Sie werden wöchentliche Berichte mit den wichtigsten Aktivitäten erhalten, damit Sie den Überblick behalten können. Mit dem Beitragsmanager in Ihrer Admin-Ansicht können Sie sich die Beiträge ansehen und sie verwalten (z. B. können Sie einen Status zuweisen und auf Beiträge und Kommentare antworten).'
       text_design_participatory_process: 'Sie können die verschiedenen Beteiligungsprojekte in Ihrem Ordner verwalten – konfigurieren Sie die Teilnahmemethode, fügen Sie eine Projektbeschreibung hinzu, hängen Sie Bilder an und informieren Sie über relevante Ereignisse. Sie können auch festlegen, wie Teilnehmende bei Ihren Projekten mitwirken können. Zum Beispiel können Sie die Zugriffsrechte festlegen und die Beitrags-, Abstimmungs- und Kommentareinstellungen konfigurieren.'
       title_design_participatory_process: 'Gestalten Sie den partizipativen Prozess'
-      title_moderate_analyse_input: 'Moderieren und analysieren Sie den Input der Bürger'
+      title_moderate_analyse_input: 'Moderieren und Analysieren des Inputs'
       title_manage_folder: 'Verwalten Sie die Ordnereinstellungen und erstellen Sie neue Projekte.'
       title_what_can_you_do_folderadmin: 'Was können Sie als Ordneradministrator machen?'
       title_added_as_folderadmin: 'Sie wurden als Ordneradministrator hinzugefügt'
@@ -431,46 +431,46 @@ de:
       preheader: 'Bald beginnt eine neue Phase für %{projectName}'
     status_change_of_commented_idea:
       status_change: 'Der neue Status dieser Idee ist ''%{ideaStatus}'''
-      cta_view_idea: 'Gehen Sie zu dieser Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{organizationName} hat den Status der Idee ''%{ideaTitle}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
       main_header: 'Eine Idee, die du kommentiert hast, verfügt nun über einen neuen Status'
       subject: 'Der Status einer Idee, die du kommentiert hast, wurde geändert'
       preheader: '%{organizationName} hat den Status einer Idee geändert, die du kommentiert hast'
     status_change_of_your_idea:
       status_change: 'Der neue Status Ihrer Idee ist ''%{ideaStatus}'''
-      cta_view_idea: 'Gehen Sie zu Ihrer Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{organizationName} hat den Status Ihrer Idee ''%{ideaTitle}'' auf ihrer digitalen Beteiligungsplattform aktualisiert.'
       main_header: 'Ihre Idee hat einen neuen Status'
       subject: 'Der Status Ihrer Idee wurde geändert'
       preheader: '%{organizationName} hat den Status Ihrer Idee geändert'
     status_change_of_voted_idea:
       status_change: 'Der neue Status dieser Idee ist ''%{ideaStatus}'''
-      cta_view_idea: 'Gehen Sie zu dieser Idee'
-      event_description: '%{organizationName} aktualisierte den Status der Idee ''%{ideaTitle}'' auf ihrer digitalen Beteiligungsplattform.'
+      cta_view_idea: 'Zur Idee'
+      event_description: '%{organizationName} hat den Status der Idee ''%{ideaTitle}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'
       main_header: 'Eine Idee, über die du abgestimmt hast, hat einen neuen Status'
       subject: 'Der Status einer Idee, für die du abgestimmt hast, wurde geändert'
       preheader: '%{organizationName} hat den Status einer Idee geändert, für die du abgestimmt hast'
     status_change_of_voted_initiative:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
-      cta_view_initiative: 'Zum Vorschlag gehen'
+      cta_view_initiative: 'Zum Vorschlag'
       event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
       main_header: 'Ein Vorschlag, über den du abgestimmt hast, hat einen neuen Status'
       subject: 'Der Status eines Vorschlags, über den du abgestimmt hast, hat sich geändert'
       preheader: 'Der Status eines Vorschlags, über den du abgestimmt hast, hat sich geändert'
     status_change_of_commented_initiative:
       status_change: 'Der neue Status des Vorschlags ist ''%{initiativeStatus}'''
-      cta_view_initiative: 'Zum Vorschlag gehen'
+      cta_view_initiative: 'Zum Vorschlag'
       event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
       main_header: 'Ein Vorschlag, den du kommentiert hast, hat einen neuen Status'
       subject: 'Der Status eines Vorschlags, zu dem du einen Kommentar abgegeben hast, hat sich geändert'
-      preheader: 'Der Status eines Vorschlags, welchen du kommentiert hast, wurde geändert'
+      preheader: 'Der Status eines Vorschlags, zu dem du einen Kommentar abgegeben hast, hat sich geändert'
     status_change_of_your_initiative:
       status_change: 'Der neue Status Ihres Vorschlags lautet ''%{initiativeStatus}'''
-      cta_view_initiative: 'Gehe zu deinem Vorschlag'
+      cta_view_initiative: 'Zu deinem Vorschlag'
       event_description: 'Der Status des Vorschlags ''%{initiativeTitle}'' wurde auf der digitalen Beteiligungsplattform von %{organizationName} aktualisiert.'
       main_header: 'Ihr Vorschlag hat einen neuen Status'
       subject: 'Der Status Ihres Vorschlags hat sich geändert'
-      preheader: 'Der Status deines Vorschlags wurde geändert'
+      preheader: 'Der Status Ihres Vorschlags hat sich geändert'
     user_digest:
       subject: "Ihre Aktivität auf der Beteiligungsplattform von %{organizationName}"
       commented: "%{authorFirstName} kommentierte:"
@@ -478,7 +478,7 @@ de:
       title_your_weekly_report: "Entdecken Sie, was letzte Woche passiert ist"
       intro_text: "Hier finden Sie eine Zusammenfassung dessen, was auf der Beteiligungsplattform von %{organizationName} passiert ist."
       cta_go_to_the_platform: "Zur Plattform"
-      title_no_activity_past_week: "Keine Aktivität in der letzten Woche"
+      title_no_activity_past_week: "Keine Aktivitäten in der letzten Woche"
       title_proposals: "Gestartete Vorschläge"
       proposals_started_text: "Vorschläge sind Ideen, die von anderen (Menschen wie dir!) unterstützt werden müssen, um voranzukommen. Im Folgenden findest du eine Liste von Vorschlägen, die in der letzten Woche eingereicht wurden. Klicke auf einen von ihnen, um einen Blick darauf zu werfen und deine Unterstützung und dein Feedback anzubieten!"
       title_successful_proposals: "Vorschläge, die den Schwellenwert erreicht haben"
@@ -509,14 +509,14 @@ de:
       action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
       action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
       add_image: 'Füge ein Bild hinzu'
-      cta_view_idea: 'Gehen Sie zu Ihrer Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{firstName}, herzlichen Glückwunsch zu deiner ersten Idee auf der Beteiligungsplattform von %{organizationName}. Du wirst benachrichtigt, sobald Personen mit deiner Idee interagieren. Erfahre im Folgenden, welche nächsten Schritte du unternehmen kannst.'
       link: Link
       main_header: '%{firstName}, Du hast deine erste Idee veröffentlicht!'
       message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner ersten Idee auf der Plattform von %{organizationName}. Suche jetzt Unterstützung für deine Idee'
       see_you: 'Bis gleich auf der Plattform!'
-      send_email: e-Mail
+      send_email: E-Mail
       subject: 'Deine erste Idee auf der Plattform von %{organizationName}'
     welcome:
       cta_join_platform: 'Entdecken Sie die Plattform'
@@ -526,20 +526,20 @@ de:
       preheader: 'Hier ist was du machen kannst auf der Plattform von %{organizationName}'
     idea_published:
       action_add_image: '%{addImageLink} um die Sichtbarkeit zu erhöhen'
-      action_published_idea: 'Veröffentlichte Idee'
+      action_published_idea: 'Ihre Idee veröffentlicht'
       action_send_email: 'Sende deinen Kontakten eine %{sendEmailLink}'
       action_share_fb: 'Informiere deine Freunde auf %{fbLink}'
       action_share_link: 'Teile es über einen beliebigen Kanal, indem du den %{link} kopierst'
       action_share_twitter: 'Informiere deine Follower über %{twitterLink}'
       add_image: 'Füge ein Bild hinzu'
-      cta_view_idea: 'Gehen Sie zu Ihrer Idee'
+      cta_view_idea: 'Zur Idee'
       event_description: '%{firstName}, deine Idee wurde erfolgreich auf der Beteiligungsplattform von %{organizationName} veröffentlicht. Du wirst benachrichtigt, sobald Personen mit deiner Idee interagieren. Finde unten heraus, welche nächsten Schritte du unternehmen kannst.'
       link: Link
       main_header: 'Du hast eine Idee gepostet! Lass uns sicherstellen, dass sie gelesen wird.'
-      message_get_votes: 'Erreichen Sie mit Ihrer Idee mehr Menschen:'
+      message_get_votes: 'Erreiche mit deiner Idee mehr Menschen:'
       preheader: '%{firstName}, herzlichen Glückwunsch zum Hinzufügen deiner Idee auf der Plattform von %{organizationName}. Suche dir jetzt Unterstützung für deine Idee.'
       see_you: 'Bis gleich auf der Plattform!'
-      send_email: e-Mail
+      send_email: E-Mail
       subject: 'Deine Idee auf der Plattform von %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
