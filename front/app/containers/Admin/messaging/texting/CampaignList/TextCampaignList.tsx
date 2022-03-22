@@ -47,23 +47,21 @@ const TextingCampaignsList = () => {
 
   if (textingCampaigns.length === 0) {
     return (
-      <>
-        <NoCampaignsWrapper>
-          <IconWrapper>
-            <Icon name="messageBig" />
-          </IconWrapper>
-          <NoCampaignsHeader>
-            <FormattedMessage {...messages.noTextingCampaignsHeader} />
-          </NoCampaignsHeader>
-          <Button
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            linkTo="/admin/messaging/texting/new"
-          >
-            <FormattedMessage {...messages.addTextButton} />
-          </Button>
-        </NoCampaignsWrapper>
-      </>
+      <NoCampaignsWrapper>
+        <IconWrapper>
+          <Icon name="messageBig" />
+        </IconWrapper>
+        <NoCampaignsHeader>
+          <FormattedMessage {...messages.noTextingCampaignsHeader} />
+        </NoCampaignsHeader>
+        <Button
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          linkTo="/admin/messaging/texting/new"
+        >
+          <FormattedMessage {...messages.addTextButton} />
+        </Button>
+      </NoCampaignsWrapper>
     );
   }
 

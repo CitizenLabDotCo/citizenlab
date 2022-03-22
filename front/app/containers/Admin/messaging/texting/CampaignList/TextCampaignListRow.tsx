@@ -1,16 +1,16 @@
 import React from 'react';
 
-// routing
-import { withRouter, WithRouterProps } from 'react-router';
-import Link from 'utils/cl-router/Link';
-
 // components
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 import messages from '../../messages';
 import Button from 'components/UI/Button';
+import Link from 'utils/cl-router/Link';
 
 // typings
-import { ITextingCampaignData } from 'services/textingCampaigns';
+import {
+  ITextingCampaignData,
+  ITextingCampaignStatuses,
+} from 'services/textingCampaigns';
 
 // style
 import styled from 'styled-components';
@@ -22,6 +22,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   campaign: ITextingCampaignData;
+}
+
+interface FormattedStatusLabelProps {
+  campaignStatus: ITextingCampaignStatuses;
 }
 
 const Container = styled.div`
@@ -68,64 +72,66 @@ const StatusWrapper = styled.div`
   text-align: right;
 `;
 
-const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
-  const { message, phone_numbers, status } = campaign.attributes;
-
-  let formattedStatusLabel;
-
-  switch (status) {
+const FormattedStatusLabel = (
+  props: FormattedStatusLabelProps
+): JSX.Element | null => {
+  switch (props.campaignStatus) {
     case 'draft':
-      formattedStatusLabel = (
+      return (
         <StatusLabel
           backgroundColor={colors.adminOrangeIcons}
           text={<FormattedMessage {...messages.draft} />}
         />
       );
-      break;
     case 'sending':
-      formattedStatusLabel = (
+      return (
         <StatusLabel
           backgroundColor={colors.adminMenuBackground}
           text={<FormattedMessage {...messages.sending} />}
         />
       );
-      break;
     case 'sent':
-      formattedStatusLabel = (
+      return (
         <StatusLabel
           backgroundColor={colors.clGreenSuccess}
           text={<FormattedMessage {...messages.sent} />}
         />
       );
-      break;
     case 'failed':
-      formattedStatusLabel = (
+      return (
         <StatusLabel
           backgroundColor={colors.clRedError}
           text={<FormattedMessage {...messages.failed} />}
         />
       );
+    default:
+      return null;
   }
+};
+
+const TextingCampaignRow = ({ campaign }: Props) => {
+  const {
+    id,
+    attributes: { message, phone_numbers, status, sent_at },
+  } = campaign;
 
   return (
-    <Container id={campaign.id}>
+    <Container id={id}>
       <Left>
         <TextWrapper>
           <Text>
-            <Link to={`/admin/messaging/texting/${campaign.id}`}>
-              {message}
-            </Link>
+            <Link to={`/admin/messaging/texting/${id}`}>{message}</Link>
           </Text>
         </TextWrapper>
-        {formattedStatusLabel}
+        <FormattedStatusLabel campaignStatus={status} />
       </Left>
       <Right>
         {status === 'sent' && (
           <>
             <DateTime>
-              <FormattedDate value={campaign.attributes.sent_at} />
+              <FormattedDate value={sent_at} />
               &nbsp;
-              <FormattedTime value={campaign.attributes.sent_at} />
+              <FormattedTime value={sent_at} />
             </DateTime>
             <StatusWrapper>
               <p>
@@ -151,4 +157,4 @@ const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
   );
 };
 
-export default withRouter(TextingCampaignRow);
+export default TextingCampaignRow;
