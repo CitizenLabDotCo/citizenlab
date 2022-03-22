@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Comment appeler les balises dans le filtre de la page d'accueil ? Par exemple, balises, catégories, départements, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Les étiquettes peuvent être configurées {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "ici",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Terme pour une seule étiquette (singulier)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "étiquette",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Terme désignant des balises multiples (pluriel)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "balises",
