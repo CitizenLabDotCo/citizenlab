@@ -57,7 +57,7 @@ const ContentBuilderToggle = ({
   labelTooltipText,
   onMount,
 }: ContentBuilderToggleProps) => {
-  const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
+  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
 
   useEffect(() => {
     if (!featureEnabled) return;
