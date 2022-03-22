@@ -247,14 +247,6 @@ export default defineMessages({
     defaultMessage:
       'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
   },
-  mostActiveUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
-    defaultMessage: 'Most active users',
-  },
-  deletedUser: {
-    id: 'app.containers.AdminPage.DashboardPage.deletedUser',
-    defaultMessage: 'Deleted user',
-  },
   subtitleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',
     defaultMessage:

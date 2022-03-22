@@ -1,44 +1,10 @@
 import React, { useEffect } from 'react';
 
-// styles
-import styled from 'styled-components';
-import { colors, stylingConsts } from 'utils/styleUtils';
-
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // intl
 import { withRouter, WithRouterProps } from 'react-router';
-
-// components
-import { RightColumn } from 'containers/Admin';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// craft
-import { Editor } from '@craftjs/core';
-import ContentBuilderToolbox from '../ContentBuilderToolbox';
-import ContentBuilderSettings from '../ContentBuilderSettings';
-import Container from '../CraftComponents/Container';
-import RenderNode from '../RenderNode';
-
-const Wrapper = styled.div`
-  flex: 0 0 auto;
-  width: 210px;
-`;
-
-const ContainerInner = styled.nav`
-  flex: 0 0 auto;
-  width: 210px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  padding-top: ${stylingConsts.menuHeight + 10}px;
-  background-color: ${colors.disabledPrimaryButtonBg};
-  border-right: 1px solid ${colors.border};
-`;
 
 type ContentBuilderLayoutProps = {
   onMount: (isVisible: boolean) => void;
@@ -49,7 +15,7 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   onMount,
   location: { pathname },
 }) => {
-  const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
+  const featureEnabled = useFeatureFlag({ name: 'content_builder' });
   const contentBuilderLayoutVisible =
     featureEnabled && pathname.includes('admin/content-builder');
 
@@ -60,18 +26,7 @@ const ContentBuilderLayout: React.FC<ContentBuilderLayoutProps> = ({
   if (!contentBuilderLayoutVisible) {
     return null;
   }
-
-  return (
-    <Editor resolver={{ Box, Container }} onRender={RenderNode}>
-      <Wrapper>
-        <ContainerInner>
-          <ContentBuilderToolbox />
-        </ContainerInner>
-      </Wrapper>
-      <RightColumn>{children}</RightColumn>
-      <ContentBuilderSettings />
-    </Editor>
-  );
+  return <>{children}</>;
 };
 
 export default withRouter(ContentBuilderLayout);

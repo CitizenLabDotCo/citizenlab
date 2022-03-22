@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProject from 'hooks/useProject';
 
 // Services
@@ -56,6 +55,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       intl: { formatMessage },
     } = props;
 
+    const [moduleActive, setModuleActive] = useState(false);
     const [touched, setTouched] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -65,7 +65,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       description_multiloc: null,
     });
 
-    const tenantLocales = useAppConfigurationLocales();
+    const setModuleToActive = () => setModuleActive(true);
     const project = useProject({ projectId: props.params.projectId });
 
     useEffect(() => {
@@ -102,24 +102,11 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       []
     );
 
-    const validate = useCallback(() => {
-      // if (!isNilOrError(tenantLocales)) {
-      //   // check that all fields have content for all tenant locales
-      //   const { description_preview_multiloc, description_multiloc } = formValues;
-      //   return tenantLocales.every(locale => !isEmpty(description_preview_multiloc?.[locale]) && !isEmpty(description_multiloc?.[locale]));
-      // }
-
-      // return false;
-      return true;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, formValues]);
-
     const handleOnSubmit = useCallback(() => {
       const { description_preview_multiloc, description_multiloc } = formValues;
 
       if (
         !processing &&
-        validate() &&
         !isNilOrError(project) &&
         description_preview_multiloc &&
         description_multiloc
@@ -144,7 +131,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
             setSuccess(false);
           });
       }
-    }, [project, formValues, processing, validate]);
+    }, [project, formValues, processing]);
 
     if (!isNilOrError(project)) {
       return (
@@ -176,13 +163,23 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
             </SectionField>
 
             <SectionField>
-              <QuillMultilocWithLocaleSwitcher
-                id="project-description"
+              {!moduleActive && (
+                <QuillMultilocWithLocaleSwitcher
+                  id="project-description"
+                  valueMultiloc={formValues.description_multiloc}
+                  onChange={handleDescriptionOnChange}
+                  label={formatMessage(messages.descriptionLabel)}
+                  labelTooltipText={formatMessage(messages.descriptionTooltip)}
+                  withCTAButton
+                />
+              )}
+              <Outlet
+                id="app.containers.Admin.projects.edit.description.contentBuilder"
+                onMount={setModuleToActive}
                 valueMultiloc={formValues.description_multiloc}
                 onChange={handleDescriptionOnChange}
                 label={formatMessage(messages.descriptionLabel)}
                 labelTooltipText={formatMessage(messages.descriptionTooltip)}
-                withCTAButton
               />
               <Outlet id="app.containers.Admin.projects.edit.description.contentBuilder" />
               <Error

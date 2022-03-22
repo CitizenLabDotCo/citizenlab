@@ -12,6 +12,7 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import { getComponentNameMessage } from '../../utils';
+import messages from '../../messages';
 
 const RenderNode = ({ render }) => {
   const { isActive } = useEditor((_, query) => ({
@@ -23,6 +24,13 @@ const RenderNode = ({ render }) => {
   }));
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE;
+  const getComponentNameMessage = (name: 'Container') => {
+    switch (name) {
+      case 'Container':
+        return messages.oneColumn;
+    }
+  };
+
   return (
     <Box position="relative">
       {nodeNameIsVisible && (

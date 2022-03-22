@@ -43,13 +43,15 @@ const ContentBuilderSettings = () => {
     };
   });
 
+  const getComponentNameMessage = (name: 'Container') => {
+    switch (name) {
+      case 'Container':
+        return messages.oneColumn;
+    }
+  };
+
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
-    <StyledBox
-      bgColor={colors.disabledPrimaryButtonBg}
-      px="20px"
-      py="20px"
-      minWidth="400px"
-    >
+    <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
       <Box pb="20px">
         <h2>
           <FormattedMessage {...getComponentNameMessage(selected.name)} />
