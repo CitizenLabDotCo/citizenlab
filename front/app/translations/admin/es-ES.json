@@ -994,7 +994,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "¿Cómo deben llamarse las etiquetas en el filtro de la página principal? Por ejemplo, etiquetas, categorías, departamentos, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Pueden configurarse las etiquetas {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "aquí",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Término para una etiqueta (singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "tema",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Término para varias etiquetas (plural)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "etiquetas",
