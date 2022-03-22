@@ -991,7 +991,7 @@
   "app.containers.AdminPage.ProjectTimeline.titleTimeline": "Project phases",
   "app.containers.AdminPage.ReportsTab.customFieldTitleExport": "{fieldName}_repartition",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology": "Terminology (front page filter)",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "How should tags in the front page filter be called? E.g. tags, categories, departments, ...",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "How should tags in the front page filter be called? e.g. tags, categories, departments, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags can be configured {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "here",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
