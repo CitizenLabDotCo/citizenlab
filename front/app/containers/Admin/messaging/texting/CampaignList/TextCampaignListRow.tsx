@@ -112,13 +112,15 @@ const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
       <Left>
         <TextWrapper>
           <Text>
-            <Link to={`/${campaign.id}`}>{message}</Link>
+            <Link to={`/admin/messaging/texting/${campaign.id}`}>
+              {message}
+            </Link>
           </Text>
         </TextWrapper>
         {formattedStatusLabel}
       </Left>
       <Right>
-        {status == 'sent' && (
+        {status === 'sent' && (
           <>
             <DateTime>
               <FormattedDate value={campaign.attributes.sent_at} />
@@ -133,7 +135,7 @@ const TextingCampaignRow = ({ campaign }: Props & WithRouterProps) => {
             </StatusWrapper>
           </>
         )}
-        {status == 'draft' && (
+        {status === 'draft' && (
           <>
             <Button
               linkTo={`/admin/messaging/texting/${campaign.id}`}
