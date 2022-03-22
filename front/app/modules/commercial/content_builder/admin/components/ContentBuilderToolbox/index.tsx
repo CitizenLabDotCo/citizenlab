@@ -15,7 +15,7 @@ const ContentBuilderToolbox = ({
 }: InjectedIntlProps) => {
   const { connectors } = useEditor();
   return (
-    <Box marginTop="100px">
+    <Box marginTop="20px">
       <button
         ref={(ref) =>
           ref &&

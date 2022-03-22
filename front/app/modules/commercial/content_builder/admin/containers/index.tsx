@@ -16,39 +16,30 @@ import Container from '../components/CraftComponents/Container';
 import RenderNode from '../components/RenderNode';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 
-const Wrapper = styled.div`
-  flex: 0 0 auto;
-  width: 210px;
-`;
-
-const ContainerInner = styled.nav`
-  flex: 0 0 auto;
-  width: 210px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  padding-top: ${stylingConsts.menuHeight + 10}px;
-  background-color: ${colors.separation};
+const StyledRightColumn = styled(RightColumn)`
+  min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
 `;
 
 const ContentBuilderPage = () => {
   return (
-    <>
-      <Box position="absolute" zIndex="1" w="100%">
-        <ContentBuilderTopBar />
-      </Box>
+    <Box display="flex" flexDirection="column" w="100%">
+      <ContentBuilderTopBar />
       <Editor resolver={{ Box, Container }} onRender={RenderNode}>
-        <Wrapper>
-          <ContainerInner>
+        <Box display="flex">
+          <Box
+            flex="0 0 auto"
+            h="100%"
+            w="220px"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            bgColor={colors.adminDarkBackground}
+            borderRight={`1px solid ${colors.border}`}
+          >
             <ContentBuilderToolbox />
-          </ContainerInner>
-        </Wrapper>
-        <Box w="100%" borderLeft={`1px solid ${colors.separation}`}>
-          <RightColumn>
-            <Box paddingTop="100px">
+          </Box>
+          <StyledRightColumn>
+            <Box paddingTop="20px">
               <Frame>
                 <Element
                   is="div"
@@ -61,11 +52,11 @@ const ContentBuilderPage = () => {
                 />
               </Frame>
             </Box>
-          </RightColumn>
+          </StyledRightColumn>
+          <ContentBuilderSettings />
         </Box>
-        <ContentBuilderSettings />
       </Editor>
-    </>
+    </Box>
   );
 };
 

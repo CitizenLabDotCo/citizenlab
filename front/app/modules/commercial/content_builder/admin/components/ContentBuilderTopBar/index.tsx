@@ -11,7 +11,7 @@ import Button from 'components/UI/Button';
 // Styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, stylingConsts, Spinner } from '@citizenlab/cl2-component-library';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,41 +34,47 @@ const BuilderTitle = styled.h1`
   font-size: 18px;
 `;
 
-const goBack = () => {
-  clHistory.goBack();
-};
-
 const ContentBuilderPage = ({ params: { projectId } }) => {
   const localize = useLocalize();
   const project = useProject({ projectId });
 
-  if (isNilOrError(project)) {
-    return null;
-  }
+  const goBack = () => {
+    clHistory.goBack();
+  };
+
   return (
     <Box
       alignItems="center"
       w="100%"
+      h={`${stylingConsts.menuHeight}px`}
       display="flex"
       background={`${colors.adminContentBackground}`}
+      borderBottom={`1px solid ${colors.border}`}
     >
-      <Box p="15px" w="210px">
-        <GoBackButton onClick={goBack} />
-      </Box>
       <Box
-        display="flex"
-        borderLeft={`1px solid ${colors.separation}`}
         p="15px"
-        flexGrow={1}
+        w="220px"
+        h="100%"
+        borderRight={`1px solid ${colors.border}`}
+        display="flex"
         alignItems="center"
       >
+        <GoBackButton onClick={goBack} />
+      </Box>
+      <Box display="flex" p="15px" flexGrow={1} alignItems="center">
         <Box flexGrow={2}>
-          <ProjectTitle>
-            {localize(project.attributes.title_multiloc)}
-          </ProjectTitle>
-          <BuilderTitle>
-            <FormattedMessage {...messages.descriptionTopicManagerText} />
-          </BuilderTitle>
+          {isNilOrError(project) ? (
+            <Spinner />
+          ) : (
+            <>
+              <ProjectTitle>
+                {localize(project.attributes.title_multiloc)}
+              </ProjectTitle>
+              <BuilderTitle>
+                <FormattedMessage {...messages.descriptionTopicManagerText} />
+              </BuilderTitle>
+            </>
+          )}
         </Box>
         <Button buttonStyle="primary" onClick={goBack}>
           <FormattedMessage {...messages.contentBuilderSave} />
