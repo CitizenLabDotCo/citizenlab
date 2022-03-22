@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useProject from 'hooks/useProject';
 
 // Services
@@ -67,7 +66,6 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
     });
 
     const setModuleToActive = () => setModuleActive(true);
-    const tenantLocales = useAppConfigurationLocales();
     const project = useProject({ projectId: props.params.projectId });
 
     useEffect(() => {
@@ -104,24 +102,11 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       []
     );
 
-    const validate = useCallback(() => {
-      // if (!isNilOrError(tenantLocales)) {
-      //   // check that all fields have content for all tenant locales
-      //   const { description_preview_multiloc, description_multiloc } = formValues;
-      //   return tenantLocales.every(locale => !isEmpty(description_preview_multiloc?.[locale]) && !isEmpty(description_multiloc?.[locale]));
-      // }
-
-      // return false;
-      return true;
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, formValues]);
-
     const handleOnSubmit = useCallback(() => {
       const { description_preview_multiloc, description_multiloc } = formValues;
 
       if (
         !processing &&
-        validate() &&
         !isNilOrError(project) &&
         description_preview_multiloc &&
         description_multiloc
@@ -146,7 +131,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
             setSuccess(false);
           });
       }
-    }, [project, formValues, processing, validate]);
+    }, [project, formValues, processing]);
 
     if (!isNilOrError(project)) {
       return (

@@ -71,6 +71,10 @@ const ContentBuilderToggle = ({
     setContentBuilderLinkVisible(!contentBuilderLinkVisible);
   };
 
+  if (!featureEnabled) {
+    return null;
+  }
+
   return (
     <>
       <StyledBox>
