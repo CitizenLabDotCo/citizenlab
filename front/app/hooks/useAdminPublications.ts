@@ -11,6 +11,7 @@ import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
 export interface BaseProps {
+  topicFilter?: string[];
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
@@ -53,12 +54,14 @@ export interface IUseAdminPublicationsOutput {
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
+  onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
 export default function useAdminPublications({
   pageSize = 1000,
+  topicFilter,
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
@@ -72,6 +75,7 @@ export default function useAdminPublications({
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
+  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
@@ -83,6 +87,11 @@ export default function useAdminPublications({
       setPageNumber((prevPageNumber) => prevPageNumber + 1);
     }
   }, [hasMore]);
+
+  const onChangeTopics = useCallback((topics) => {
+    setTopics(topics);
+    setPageNumber(1);
+  }, []);
 
   const onChangeAreas = useCallback((areas) => {
     setAreas(areas);
@@ -104,6 +113,7 @@ export default function useAdminPublications({
       'page[number]': pageNumber,
       'page[size]': pageSize,
       depth: rootLevelOnly ? 0 : undefined,
+      topics,
       areas,
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
@@ -162,6 +172,7 @@ export default function useAdminPublications({
   }, [
     pageNumber,
     pageSize,
+    topics,
     areas,
     publicationStatuses,
     rootLevelOnly,
@@ -175,6 +186,7 @@ export default function useAdminPublications({
     loadingInitial,
     loadingMore,
     onLoadMore,
+    onChangeTopics,
     onChangeAreas,
     onChangePublicationStatus,
   };

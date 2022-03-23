@@ -17,6 +17,7 @@ import {
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
 
 // i18n
 import T from 'components/T';
@@ -141,20 +142,32 @@ const FooterValue = styled.div`
 
 interface Props {
   ideaMarker: IIdeaMarkerData;
-  isPBIdea: boolean;
   onClose?: () => void;
   className?: string;
   projectId: string;
+  phaseId?: string;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, isPBIdea, onClose, className, projectId }) => {
+  ({ ideaMarker, onClose, className, projectId, phaseId }) => {
     const tenant = useAppConfiguration();
+    const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
     const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
     const [hovered, setHovered] = useState(false);
+
+    const isParticipatoryBudgetProject =
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'budgeting';
+    const isParticipatoryBudgetPhase =
+      !isNilOrError(phase) &&
+      phase.attributes.participation_method === 'budgeting';
+    const isParticipatoryBudgetIdea = isNilOrError(phase)
+      ? isParticipatoryBudgetProject
+      : isParticipatoryBudgetPhase;
 
     useEffect(() => {
       const subscriptions = [
@@ -247,7 +260,7 @@ const IdeaMapCard = memo<Props>(
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
           <Footer>
-            {isPBIdea && tenantCurrency && ideaBudget && (
+            {isParticipatoryBudgetIdea && tenantCurrency && ideaBudget && (
               <FooterItem>
                 <MoneybagIcon name="coin-stack" />
                 <FooterValue>
@@ -255,7 +268,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-            {!isPBIdea && (
+            {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
                   <DownvoteIcon name="upvote" />

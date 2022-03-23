@@ -31,6 +31,7 @@ import {
   ITab,
   MessageDescriptor,
   Multiloc,
+  Locale,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -65,14 +66,8 @@ import {
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-
-// typings
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-
-type Localize = (
-  multiloc: Multiloc | null | undefined,
-  maxChar?: number | undefined
-) => string;
+import { Localize } from 'hooks/useLocalize';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -135,6 +130,17 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
+  };
+  'app.containers.Admin.contentBuilderLayout': {
+    onMount: (isVisible: boolean) => void;
+    childrenToRender: React.ReactNode;
+  };
+  'app.containers.Admin.projects.edit.description.contentBuilder': {
+    onMount: () => void;
+    valueMultiloc: Multiloc | null | undefined;
+    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+    label: string;
+    labelTooltipText: string;
   };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
@@ -401,6 +407,10 @@ export type OutletsPropertyMap = {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
+    string,
+    any
+  >;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

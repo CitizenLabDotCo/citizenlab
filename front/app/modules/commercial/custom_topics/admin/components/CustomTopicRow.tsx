@@ -6,11 +6,7 @@ import styled from 'styled-components';
 // components
 import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import {
-  RowContent,
-  RowContentInner,
-  RowTitle,
-} from '../../components/RowStyles';
+import { RowContent, RowContentInner, RowTitle } from './RowStyles';
 
 // i18n
 import messages from './messages';
@@ -27,7 +23,7 @@ interface Props {
   handleDeleteClick: (topicId: string) => (event: React.FormEvent<any>) => void;
 }
 
-const DefaultTopicRow = memo((props: Props) => {
+const CustomTopicRow = memo((props: Props) => {
   const { isLastItem, topic, handleDeleteClick } = props;
 
   if (!isNilOrError(topic)) {
@@ -69,4 +65,4 @@ const DefaultTopicRow = memo((props: Props) => {
   return null;
 });
 
-export default DefaultTopicRow;
+export default CustomTopicRow;

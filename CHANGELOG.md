@@ -1,6 +1,19 @@
 # Changelog
 
-## Next
+## 2022-03-23
+
+### Added
+
+- Add new topic/tag filter on homepage.
+
+## 2022-03-22
+
+### Fixed
+
+- 'View' button sometimes freezing page in Navigation settings: should be fixed now.
+- Bulk invites of invitees using only emails (no names specified) now succeeds again.
+
+## 2022-03-21
 
 ### Added
 
@@ -16,6 +29,7 @@
 ### Fixed
 
 - Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+- HTML is fixed when machine translating HTML content returns bad HTML.
 
 ## 2022-03-15 (2)
 

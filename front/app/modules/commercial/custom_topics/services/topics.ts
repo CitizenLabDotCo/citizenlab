@@ -13,12 +13,22 @@ export async function addTopic(object: ITopicUpdate) {
   return response;
 }
 
-export function updateTopic(topicId: string, object: ITopicUpdate) {
-  return streams.update<ITopic>(`${apiEndpoint}/${topicId}`, topicId, {
-    topic: object,
-  });
+export async function updateTopic(topicId: string, object: ITopicUpdate) {
+  const response = await streams.update<ITopic>(
+    `${apiEndpoint}/${topicId}`,
+    topicId,
+    {
+      topic: object,
+    }
+  );
+
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
-export function deleteTopic(topicId: string) {
-  return streams.delete(`${apiEndpoint}/${topicId}`, topicId);
+export async function deleteTopic(topicId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${topicId}`, topicId);
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+
+  return response;
 }
