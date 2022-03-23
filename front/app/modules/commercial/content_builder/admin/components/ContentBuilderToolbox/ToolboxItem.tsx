@@ -67,7 +67,13 @@ const ToolboxItem = ({
         )
       }
     >
-      <Icon width="20px" height="20px" fill={colors.clBlue} name={iconStyle} />
+      <Icon
+        marginRight="16px"
+        width="18px"
+        height="18px"
+        fill={colors.clBlue}
+        name={iconStyle}
+      />
       <ToolboxItemText>{formatMessage(label)}</ToolboxItemText>
     </Box>
   );
