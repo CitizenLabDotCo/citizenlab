@@ -7,11 +7,18 @@ import { StatusLabel } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { FormattedDate, FormattedTime } from 'react-intl';
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 interface Props {
   campaign: ICampaignData;
 }
+
+const Right = styled.div`
+  min-width: 100px;
+  display: flex;
+  justify-content: flex-end;
+`;
 
 const SentCampaignRow = ({ campaign }: Props) => (
   <Row id={campaign.id}>
@@ -24,16 +31,20 @@ const SentCampaignRow = ({ campaign }: Props) => (
       <FormattedTime value={campaign.attributes.updated_at} />
     </div>
     <StatusLabel
+      minWidth="60px"
       backgroundColor={colors.clGreenSuccess}
       text={<FormattedMessage {...messages.sent} />}
     />
-    <Button
-      linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
-      icon="charts"
-      buttonStyle="text"
-    >
-      <FormattedMessage {...messages.statsButton} />
-    </Button>
+    <Right>
+      <Button
+        linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
+        width="100px"
+        icon="charts"
+        buttonStyle="text"
+      >
+        <FormattedMessage {...messages.statsButton} />
+      </Button>
+    </Right>
   </Row>
 );
 
