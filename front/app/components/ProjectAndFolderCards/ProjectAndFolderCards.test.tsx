@@ -16,6 +16,9 @@ jest.mock('@citizenlab/cl2-component-library', () => ({
 
 jest.spyOn(styledComponents, 'useTheme').mockReturnValue(getTheme());
 
+// Mock services
+jest.mock('services/locale');
+
 // Mock hooks
 const DEFAULT_ADMIN_PUBLICATIONS = [
   { publicationId: '1', publicationType: 'project' },
@@ -31,6 +34,7 @@ let mockHasMore = false;
 let mockLoadingInitial = true;
 const mockLoadingMore = false;
 const mockLoadMore = jest.fn();
+const mockChangeTopics = jest.fn();
 const mockChangeAreas = jest.fn();
 const mockChangePublicationStatus = jest.fn();
 
@@ -41,6 +45,7 @@ jest.mock('hooks/useAdminPublications', () =>
     loadingInitial: mockLoadingInitial,
     loadingMore: mockLoadingMore,
     onLoadMore: mockLoadMore,
+    onChangeTopics: mockChangeTopics,
     onChangeAreas: mockChangeAreas,
     onChangePublicationStatus: mockChangePublicationStatus,
   }))
@@ -54,12 +59,14 @@ const DEFAULT_STATUS_COUNTS = {
 
 let mockStatusCounts: any = DEFAULT_STATUS_COUNTS;
 
+const mockChangeTopics2 = jest.fn();
 const mockChangeAreas2 = jest.fn();
 const mockChangePublicationStatus2 = jest.fn();
 
 jest.mock('hooks/useAdminPublicationsStatusCounts', () =>
   jest.fn(() => ({
     counts: mockStatusCounts,
+    onChangeTopics: mockChangeTopics2,
     onChangeAreas: mockChangeAreas2,
     onChangePublicationStatus: mockChangePublicationStatus2,
   }))
@@ -75,7 +82,8 @@ jest.mock('hooks/useAppConfiguration', () =>
         settings: {
           core: {
             currently_working_on_text: { en: 'Working on text' },
-            areas_term: { en: 'Areas' },
+            area_term: { en: 'Area' },
+            topic_term: { en: 'Topic' },
           },
         },
       },
@@ -101,6 +109,15 @@ const DEFAULT_AREA_DATA = [
 let mockAreaData = DEFAULT_AREA_DATA;
 
 jest.mock('hooks/useAreas', () => jest.fn(() => mockAreaData));
+
+const DEFAULT_TOPIC_DATA = [
+  { id: '1', attributes: { title_multiloc: { en: 'Topic 1' } } },
+  { id: '2', attributes: { title_multiloc: { en: 'Topic 2' } } },
+];
+
+let mockTopicData = DEFAULT_TOPIC_DATA;
+
+jest.mock('hooks/useTopics', () => jest.fn(() => mockTopicData));
 
 // Mock components
 jest.mock('components/ProjectCard', () => ({
@@ -283,7 +300,7 @@ describe('<ProjectAndFolderCards />', () => {
     );
 
     const filterSelector = container.querySelector(
-      '.e2e-filter-selector-button'
+      '.e2e-filter-selector-areas'
     );
     expect(filterSelector).not.toBeInTheDocument();
   });
@@ -300,7 +317,7 @@ describe('<ProjectAndFolderCards />', () => {
     );
 
     const filterSelector = container.querySelector(
-      '.e2e-filter-selector-button'
+      '.e2e-filter-selector-areas'
     );
     expect(filterSelector).toBeInTheDocument();
   });
@@ -314,12 +331,12 @@ describe('<ProjectAndFolderCards />', () => {
       />
     );
 
-    const filterSelector = container.querySelector(
-      '.e2e-filter-selector-button'
+    const filterSelectorButton = container.querySelector(
+      '.e2e-filter-selector-areas > .e2e-filter-selector-button'
     );
 
     // Open filter selector
-    fireEvent.click(filterSelector);
+    fireEvent.click(filterSelectorButton);
 
     // Get areas
     const areas = container.querySelectorAll('.e2e-checkbox');
@@ -339,6 +356,103 @@ describe('<ProjectAndFolderCards />', () => {
     fireEvent.click(areas[1]);
     expect(mockChangeAreas).toHaveBeenCalledWith([]);
     expect(mockChangeAreas2).toHaveBeenCalledWith([]);
+  });
+
+  it('does not render topic filter if no topics', () => {
+    mockTopicData = [];
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-topics'
+    );
+    expect(filterSelector).not.toBeInTheDocument();
+  });
+
+  it('renders topic filter if topics', () => {
+    mockTopicData = DEFAULT_TOPIC_DATA;
+
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-topics'
+    );
+    expect(filterSelector).toBeInTheDocument();
+  });
+
+  it('calls onChangeTopics on change topics', () => {
+    const { container } = render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    const filterSelector = container.querySelector(
+      '.e2e-filter-selector-topics > .e2e-filter-selector-button'
+    );
+
+    // Open filter selector
+    fireEvent.click(filterSelector);
+
+    // Get topics
+    const topics = container.querySelectorAll('.e2e-checkbox');
+
+    fireEvent.click(topics[0]);
+    expect(mockChangeTopics).toHaveBeenCalledWith(['1']);
+    expect(mockChangeTopics2).toHaveBeenCalledWith(['1']);
+
+    fireEvent.click(topics[1]);
+    expect(mockChangeTopics).toHaveBeenCalledWith(['1', '2']);
+    expect(mockChangeTopics2).toHaveBeenCalledWith(['1', '2']);
+
+    fireEvent.click(topics[0]);
+    expect(mockChangeTopics).toHaveBeenCalledWith(['2']);
+    expect(mockChangeTopics2).toHaveBeenCalledWith(['2']);
+
+    fireEvent.click(topics[1]);
+    expect(mockChangeTopics).toHaveBeenCalledWith([]);
+    expect(mockChangeTopics2).toHaveBeenCalledWith([]);
+  });
+
+  it('renders filter label if topics and/or areas', () => {
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.getByText('Filter by')).toBeInTheDocument();
+  });
+
+  it('does not render filter label if no topics and no areas', () => {
+    mockTopicData = [];
+    mockAreaData = [];
+
+    render(
+      <ProjectAndFolderCards
+        publicationStatusFilter={['published', 'archived']}
+        showTitle={true}
+        layout={'dynamic'}
+      />
+    );
+
+    expect(screen.queryByText('Filter by')).not.toBeInTheDocument();
   });
 
   it('if only published admin pubs: renders only Active tab', () => {
@@ -399,6 +513,8 @@ describe('<ProjectAndFolderCards />', () => {
         archived: 2,
         all: 2,
       };
+      mockTopicData = DEFAULT_TOPIC_DATA;
+      mockAreaData = DEFAULT_AREA_DATA;
 
       const { container } = render(
         <ProjectAndFolderCards
@@ -411,10 +527,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tabs = screen.getAllByTestId('tab');
       expect(tabs).toHaveLength(1);
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).toBeInTheDocument();
+      expect(filterSelectorTopics).toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
@@ -437,10 +558,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tab = screen.queryByTestId('tab');
       expect(tab).not.toBeInTheDocument();
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).not.toBeInTheDocument();
+      expect(filterSelectorTopics).not.toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).not.toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
@@ -468,10 +594,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tabs = screen.getAllByTestId('tab');
       expect(tabs).toHaveLength(1);
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).not.toBeInTheDocument();
+      expect(filterSelectorTopics).not.toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).not.toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
@@ -494,10 +625,15 @@ describe('<ProjectAndFolderCards />', () => {
       const tab = screen.queryByTestId('tab');
       expect(tab).not.toBeInTheDocument();
 
-      const filterSelector = container.querySelector(
-        '.e2e-filter-selector-button'
+      const filterSelectorTopics = container.querySelector(
+        '.e2e-filter-selector-topics'
       );
-      expect(filterSelector).not.toBeInTheDocument();
+      expect(filterSelectorTopics).not.toBeInTheDocument();
+
+      const filterSelectorAreas = container.querySelector(
+        '.e2e-filter-selector-areas'
+      );
+      expect(filterSelectorAreas).not.toBeInTheDocument();
 
       const emptyContainer = container.querySelector('#projects-empty');
       expect(emptyContainer).toBeInTheDocument();
