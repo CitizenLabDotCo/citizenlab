@@ -28,30 +28,36 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc "Linkifies multilocs"
-  task :linkify_multilocs => [:environment] do |t, args|
+  desc 'Resanitizes attributes that can contain HTML'
+  task :resanitize => [:environment] do |t, args|
+    html_multilocs = Cl2DataListingService.new.cl2_schema_root_models.map do |claz|
+      atrs = Cl2DataListingService.new.html_multiloc_attributes claz
+      [claz, atrs] if atrs
+    end.compact.to_h
 
-    # All models that have a multiloc that can contain titles
-    linkify_multilocs = {
-      Area => :description_multiloc,
-      Comment => :body_multiloc,
-      CustomField => :description_multiloc,
-      Event => :description_multiloc,
-      Idea => :body_multiloc,
-      Invite => :invite_text,
-      OfficialFeedback => :body_multiloc,
-      StaticPage => :body_multiloc,
-      Phase => :description_multiloc,
-      Project => :description_multiloc
+    html_attributes = {
+      **html_multilocs,
+      # Area => :description_multiloc,
+      # Comment => :body_multiloc,
+      # CustomField => :description_multiloc,
+      # Event => :description_multiloc,
+      # Idea => :body_multiloc,
+      Invite => %i[invite_text]
+      # OfficialFeedback => :body_multiloc,
+      # StaticPage => :body_multiloc,
+      # Phase => :description_multiloc,
+      # Project => :description_multiloc
     }
 
     Tenant.all.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         puts "Processing tenant #{tenant.host}..."
-        linkify_multilocs.map do |claz, attr|
+        html_attributes.map do |claz, atrs|
           claz.all.map do |instance|
-            instance.send("sanitize_#{attr}")
-            instance.update_columns(attr => instance.send(attr))
+            atrs.each do |atr|
+              instance.send("sanitize_#{atr}")
+              instance.update_columns(atr => instance.send(atr))
+            end
           end
         end
       end
