@@ -12,6 +12,9 @@ services:
     volumes:
       - ./config:/cube/conf
 
+networks:
+  default:
+    name: citizenlab
 
 #  cube_api:
 #  image: cubejs/cube
@@ -93,7 +96,4 @@ services:
 #
 #volumes:
 #  postgres:
-#
-#networks:
-#  default:
-#    name: citizenlab
+

@@ -28,3 +28,7 @@ services:
 volumes:
   matomo_db:
   matomo:
+
+networks:
+  default:
+    name: citizenlab

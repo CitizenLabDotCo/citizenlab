@@ -5,7 +5,7 @@ const {Pool} = require('pg');
 const {fetchTenants} = require('./utils/citizenlab_db')
 
 const PG_CONNECTION_POOL = new Pool({
-  host: 'host.docker.internal',
+  host: 'postgres',
   database: 'cl2_back_development',
   user: 'postgres',
   password: 'postgres',
