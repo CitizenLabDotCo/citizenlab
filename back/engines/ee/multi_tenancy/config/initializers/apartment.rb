@@ -132,7 +132,9 @@ module Apartment
   module Adapters
     class AbstractAdapter
       set_callback :switch, :after do |object|
-        Sentry.set_tags(tenant: ::Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
+        # It's not always correct. E.g. it's `public` tracking errors by sentry-rails gem in controllers.
+        # But still extremely useful for errors in background jobs, rake tasks, and the console.
+        Sentry.set_tags(switched_tenant: ::Tenant.schema_name_to_host(object.current)) if defined?(Sentry)
       end
     end
   end
