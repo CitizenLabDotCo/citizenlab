@@ -35,7 +35,8 @@ const TextingHeader = memo<Props>(
           icon="arrow-back"
           padding="0"
           size="2"
-          text={'Go Back'}
+          mb="2rem"
+          text={'Go back'}
         />
         <HeaderContainer>
           <HeaderText>{headerMessage}</HeaderText>

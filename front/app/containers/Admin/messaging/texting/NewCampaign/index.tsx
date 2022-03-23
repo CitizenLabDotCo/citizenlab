@@ -11,6 +11,9 @@ import TextingHeader from '../TextingHeader';
 // services
 import { addTextingCampaign } from 'services/textingCampaigns';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+
 // styling
 import styled from 'styled-components';
 
@@ -40,10 +43,9 @@ const TextCreation = () => {
     const splitNumbers = inputPhoneNumbers.split(',');
     try {
       const result = await addTextingCampaign(inputMessage, splitNumbers);
-      console.log('success!');
       const { id } = result.data;
       const url = `/admin/messaging/texting/${id}`;
-      window.location.href = url;
+      clHistory.replace(url);
     } catch (error) {
       console.log('something borked', error);
     }
@@ -102,7 +104,7 @@ const TextCreation = () => {
                 buttonStyle="primary"
                 size="2"
                 type="submit"
-                text={'Validate and preview SMS'}
+                text={'Preview SMS'}
                 onClick={handleOnSubmit}
               />
             </Box>
