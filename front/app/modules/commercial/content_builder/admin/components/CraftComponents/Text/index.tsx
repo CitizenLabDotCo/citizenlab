@@ -13,11 +13,11 @@ const Text = ({ text }) => {
     connectors: { connect, drag },
   } = useNode();
   return (
-    <div ref={(ref: any) => connect(drag(ref))}>
+    <Box minHeight="26px" ref={(ref: any) => connect(drag(ref))}>
       <QuillEditedContent>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>
-    </div>
+    </Box>
   );
 };
 
