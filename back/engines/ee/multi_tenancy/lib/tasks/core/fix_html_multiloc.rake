@@ -40,7 +40,7 @@ namespace :fix_existing_tenants do
       Invite => %i[invite_text]
     }
 
-    Tenant.all.map do |tenant|
+    Tenant.creation_finalized.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         puts "Processing tenant #{tenant.host}..."
         html_attributes.map do |claz, atrs|
