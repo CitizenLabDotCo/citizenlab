@@ -45,4 +45,12 @@ class Cl2DataListingService
       column_name.ends_with? '_multiloc'
     end
   end
+
+  def html_multiloc_attributes(model_class)
+    multiloc_attributes(model_class).map(&:to_sym).select do |atr|
+      model_class.validators.select do |v|
+        v.attributes.include?(atr) && v.options[:html]
+      end.present?
+    end
+  end
 end
