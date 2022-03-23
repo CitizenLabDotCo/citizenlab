@@ -37,16 +37,7 @@ namespace :fix_existing_tenants do
 
     html_attributes = {
       **html_multilocs,
-      # Area => :description_multiloc,
-      # Comment => :body_multiloc,
-      # CustomField => :description_multiloc,
-      # Event => :description_multiloc,
-      # Idea => :body_multiloc,
       Invite => %i[invite_text]
-      # OfficialFeedback => :body_multiloc,
-      # StaticPage => :body_multiloc,
-      # Phase => :description_multiloc,
-      # Project => :description_multiloc
     }
 
     Tenant.all.map do |tenant|
