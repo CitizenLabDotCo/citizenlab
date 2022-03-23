@@ -6,6 +6,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 
 // craft
 import { useNode } from '@craftjs/core';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const Text = ({ text }) => {
   const {
@@ -29,16 +30,18 @@ const TextSettings = () => {
   }));
 
   return (
-    <div>
-      <QuillEditor
-        noImages
-        id="quill-editor"
-        value={text}
-        onChange={(value) => {
-          setProp((props) => (props.text = value));
-        }}
-      />
-    </div>
+    <Box background="#ffffff">
+      <Box marginBottom="20px">
+        <QuillEditor
+          noImages
+          id="quill-editor"
+          value={text}
+          onChange={(value) => {
+            setProp((props) => (props.text = value));
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
 

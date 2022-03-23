@@ -63,6 +63,7 @@ const ContentBuilderSettings = () => {
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
         <Button
+          w="120px"
           icon="delete"
           buttonStyle="primary-outlined"
           borderColor={colors.clRed}

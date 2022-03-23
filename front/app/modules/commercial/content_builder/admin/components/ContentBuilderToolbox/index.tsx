@@ -47,6 +47,7 @@ const ToolboxHeader = styled.h1`
 const ToolboxIcon = styled(Icon)`
   width: 18px;
   height: 18px;
+  fill: ${colors.clBlue};
 `;
 
 const ContentBuilderToolbox = ({
