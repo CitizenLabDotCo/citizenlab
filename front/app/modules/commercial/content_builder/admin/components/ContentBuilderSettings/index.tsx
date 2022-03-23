@@ -42,7 +42,7 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  const getComponentNameMessage = (name) => {
+  const getComponentNameMessage = (name: 'Container' | 'Text') => {
     switch (name) {
       case 'Container':
         return messages.oneColumn;

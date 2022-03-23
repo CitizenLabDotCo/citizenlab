@@ -24,7 +24,7 @@ const RenderNode = ({ render }) => {
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE;
 
-  const getComponentNameMessage = (name) => {
+  const getComponentNameMessage = (name: 'Container' | 'Text') => {
     switch (name) {
       case 'Container':
         return messages.oneColumn;

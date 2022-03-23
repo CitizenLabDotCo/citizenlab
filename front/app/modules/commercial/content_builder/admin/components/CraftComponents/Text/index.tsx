@@ -30,24 +30,22 @@ const TextSettings = () => {
   }));
 
   return (
-    <Box background="#ffffff">
-      <Box marginBottom="20px">
-        <QuillEditor
-          noImages
-          id="quill-editor"
-          value={text}
-          onChange={(value) => {
-            setProp((props) => (props.text = value));
-          }}
-        />
-      </Box>
+    <Box background="#ffffff" marginBottom="20px">
+      <QuillEditor
+        noImages
+        id="quill-editor"
+        value={text}
+        onChange={(value) => {
+          setProp((props) => (props.text = value));
+        }}
+      />
     </Box>
   );
 };
 
 Text.craft = {
   props: {
-    text: 'Textbox',
+    text: '',
   },
   related: {
     settings: TextSettings,
