@@ -72,6 +72,8 @@ const StatusWrapper = styled.div`
   text-align: right;
 `;
 
+const statusLabelMinWidth = '76px';
+
 const FormattedStatusLabel = (
   props: FormattedStatusLabelProps
 ): JSX.Element | null => {
@@ -79,6 +81,7 @@ const FormattedStatusLabel = (
     case 'draft':
       return (
         <StatusLabel
+          minWidth={statusLabelMinWidth}
           backgroundColor={colors.adminOrangeIcons}
           text={<FormattedMessage {...messages.draft} />}
         />
@@ -86,6 +89,7 @@ const FormattedStatusLabel = (
     case 'sending':
       return (
         <StatusLabel
+          minWidth={statusLabelMinWidth}
           backgroundColor={colors.adminMenuBackground}
           text={<FormattedMessage {...messages.sending} />}
         />
@@ -93,6 +97,7 @@ const FormattedStatusLabel = (
     case 'sent':
       return (
         <StatusLabel
+          minWidth={statusLabelMinWidth}
           backgroundColor={colors.clGreenSuccess}
           text={<FormattedMessage {...messages.sent} />}
         />
@@ -100,6 +105,7 @@ const FormattedStatusLabel = (
     case 'failed':
       return (
         <StatusLabel
+          minWidth={statusLabelMinWidth}
           backgroundColor={colors.clRedError}
           text={<FormattedMessage {...messages.failed} />}
         />
