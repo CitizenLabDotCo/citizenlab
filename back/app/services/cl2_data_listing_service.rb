@@ -47,9 +47,9 @@ class Cl2DataListingService
   end
 
   def html_multiloc_attributes(model_class)
-    multiloc_attributes(model_class).map(&:to_sym).select do |atr|
+    multiloc_attributes(model_class).select do |atr|
       model_class.validators.select do |v|
-        v.attributes.include?(atr) && v.options[:html]
+        v.attributes.include?(atr.to_sym) && v.options[:html]
       end.present?
     end
   end
