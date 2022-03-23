@@ -43,10 +43,21 @@ export interface ITopics {
   data: ITopicData[];
 }
 
+export interface ITopicsQueryParams {
+  code?: Code;
+  exclude_code?: Code;
+  sort?: 'new' | 'custom';
+  for_homepage_filter?: boolean;
+}
+
+interface ITopicsStreamParams extends IStreamParams {
+  queryParameters: ITopicsQueryParams;
+}
+
 export function topicByIdStream(topicId: string) {
   return streams.get<ITopic>({ apiEndpoint: `${apiEndpoint}/${topicId}` });
 }
 
-export function topicsStream(streamParams: IStreamParams | null = null) {
+export function topicsStream(streamParams: ITopicsStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }

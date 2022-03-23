@@ -13,6 +13,7 @@ import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
 import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
+import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
@@ -60,7 +61,11 @@ import GetFeatureFlag, {
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
-import { getDefaultState, initSubscriptions } from './utils/state';
+import {
+  getDefaultState,
+  initSubscriptions,
+  getSelectedTopicIds,
+} from './utils/state';
 import save from './utils/save';
 import validate from './utils/validate';
 
@@ -239,6 +244,16 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
+  handleTopicsChange = (topicIds: string[]) => {
+    this.setState(({ projectAttributesDiff }) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...projectAttributesDiff,
+        topic_ids: topicIds,
+      },
+    }));
+  };
+
   handleAreaTypeChange = (value: 'all' | 'selection') => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
@@ -396,6 +411,11 @@ class AdminProjectEditGeneral extends PureComponent<
           ) as IOption;
         });
 
+      const selectedTopicIds = getSelectedTopicIds(
+        projectAttributesDiff,
+        project
+      );
+
       return (
         <StyledForm
           className="e2e-project-general-form"
@@ -482,6 +502,11 @@ class AdminProjectEditGeneral extends PureComponent<
                 apiErrors={apiErrors}
               />
             )}
+
+            <TopicInputs
+              selectedTopicIds={selectedTopicIds}
+              onChange={this.handleTopicsChange}
+            />
 
             <GeographicAreaInputs
               areaType={areaType}

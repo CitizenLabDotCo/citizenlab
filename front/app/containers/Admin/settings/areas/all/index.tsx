@@ -22,7 +22,6 @@ import {
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
-import Collapse from 'components/UI/Collapse';
 
 interface InputProps {}
 
@@ -32,23 +31,10 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  terminologyOpened: boolean;
-}
-
-class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AreaList extends React.PureComponent<Props & InjectedIntlProps> {
   constructor(props) {
     super(props);
-    this.state = {
-      terminologyOpened: false,
-    };
   }
-
-  handleToggleTerminology = () => {
-    this.setState(({ terminologyOpened }) => ({
-      terminologyOpened: !terminologyOpened,
-    }));
-  };
 
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
     const deleteMessage = this.props.intl.formatMessage(
@@ -66,12 +52,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
   };
 
   render() {
-    const { terminologyOpened } = this.state;
-    const {
-      areas,
-      intl: { formatMessage },
-    } = this.props;
-
+    const { areas } = this.props;
     if (isNilOrError(areas)) return null;
 
     return (
@@ -83,14 +64,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
           <FormattedMessage {...messages.subtitleAreas} />
         </SectionDescription>
 
-        <Collapse
-          opened={terminologyOpened}
-          onToggle={this.handleToggleTerminology}
-          label={formatMessage(messages.subtitleTerminology)}
-          labelTooltipText={formatMessage(messages.terminologyTooltip)}
-        >
-          <AreaTermConfig />
-        </Collapse>
+        <AreaTermConfig />
 
         <ButtonWrapper>
           <Button

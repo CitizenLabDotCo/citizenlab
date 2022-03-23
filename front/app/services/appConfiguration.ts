@@ -49,6 +49,8 @@ export type IAppConfigurationSettingsCore = {
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
+  topics_term?: Multiloc;
+  topic_term?: Multiloc;
 };
 
 export interface IAppConfigurationSettings {
@@ -200,6 +202,7 @@ export interface IAppConfigurationSettings {
   };
   customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
+  content_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -312,6 +315,9 @@ export async function updateAppConfiguration(
   await currentAppConfigurationStream().fetch();
   return tenant;
 }
+
+export const coreSettings = (appConfiguration: IAppConfiguration) =>
+  appConfiguration.data.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =
