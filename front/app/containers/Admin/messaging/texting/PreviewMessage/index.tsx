@@ -6,12 +6,6 @@ import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../TextingHeader';
 import Modal from 'components/UI/Modal';
 import { ScreenReaderOnly } from 'utils/a11y';
-// i18n
-// import { InjectedIntlProps } from 'react-intl';
-// import { FormattedMessage } from 'utils/cl-intl';
-// import messages from '../messages';
-// import { API_PATH, appLocalePairs } from 'containers/App/constants';
-// import { getLocalized } from 'utils/i18n';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -42,8 +36,28 @@ const ButtonContainer = styled.div`
   gap: 15px;
 `;
 
-// styles for the phone-shaped display
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
 
+  .Button {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const ModalContainer = styled.div`
+  padding: 30px;
+`;
+
+const SendNowWarning = styled.div`
+  font-size: ${fontSizes.base}px;
+  margin-bottom: 30px;
+`;
+
+// styled components for the phone-shaped display
 const PhoneWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -111,27 +125,6 @@ const PhoneMessage = styled.div`
   }
 `;
 
-const ButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
-
-  .Button {
-    margin-right: 1rem;
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const ModalContainer = styled.div`
-  padding: 30px;
-`;
-
-const SendNowWarning = styled.div`
-  font-size: ${fontSizes.base}px;
-  margin-bottom: 30px;
-`;
-
 const TextMessagePreview = (props: WithRouterProps) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showDeleteTextModal, setShowDeleteTextModal] = useState(false);
@@ -140,10 +133,12 @@ const TextMessagePreview = (props: WithRouterProps) => {
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
-    console.log('disable send message here');
+    console.log('disable send button here');
     try {
       console.log('implement send BE call here');
-      console.log('if successful, go to the view page for the');
+      console.log(
+        'if successful, redirect to the view page for the newly created draft message'
+      );
     } catch (e) {
       console.log('fail', e);
     }
@@ -160,7 +155,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
     }
   };
 
-  // show error: campaign not found
+  // actual error state when campaign not found
   if (isNilOrError(campaign)) return null;
 
   const { message, phone_numbers } = campaign.attributes;
@@ -176,7 +171,10 @@ const TextMessagePreview = (props: WithRouterProps) => {
       />
       <TextingHeader
         headerMessage="Preview SMS message"
-        onClickGoBack={() => {}}
+        onClickGoBack={() => {
+          const url = `/admin/messaging/texting/${campaignId}/`;
+          clHistory.replace(url);
+        }}
         showHorizontalRule
       >
         <ButtonContainer>
@@ -266,6 +264,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
         </ModalContainer>
       </Modal>
 
+      {/* // confirm delete modal */}
       <Modal
         opened={showDeleteTextModal}
         close={() => {

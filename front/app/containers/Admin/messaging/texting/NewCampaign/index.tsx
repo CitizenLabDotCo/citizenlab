@@ -44,7 +44,7 @@ const TextCreation = () => {
     try {
       const result = await addTextingCampaign(inputMessage, splitNumbers);
       const { id } = result.data;
-      const url = `/admin/messaging/texting/${id}`;
+      const url = `/admin/messaging/texting/${id}/preview`;
       clHistory.replace(url);
     } catch (error) {
       // handle error here in subsequent ticket

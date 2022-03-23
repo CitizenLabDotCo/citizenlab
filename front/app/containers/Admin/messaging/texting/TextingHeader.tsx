@@ -4,6 +4,7 @@ import React, { ReactNode, memo } from 'react';
 import Button from 'components/UI/Button';
 import { Box } from '@citizenlab/cl2-component-library';
 
+// styling
 import styled from 'styled-components';
 
 const HeaderText = styled.h1`
