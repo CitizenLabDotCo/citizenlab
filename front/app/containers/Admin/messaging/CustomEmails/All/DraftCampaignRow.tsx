@@ -26,7 +26,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
     </TextCell>
     <StatusLabel
       minWidth="60px"
-      backgroundColor={colors.clRedError}
+      backgroundColor={colors.adminOrangeIcons}
       text={<FormattedMessage {...messages.draft} />}
     />
     <Right>
