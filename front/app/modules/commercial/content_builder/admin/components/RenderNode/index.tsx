@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -14,15 +14,30 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
 const RenderNode = ({ render }) => {
-  const { isActive } = useEditor((_, query) => ({
+  const {
+    isActive,
+    isDeletable,
+    parentId,
+    actions: { selectNode },
+    query: { node },
+  } = useEditor((_, query) => ({
     isActive: query.getEvent('selected').contains(id),
+    parentId: id && query.node(id).ancestors()[0],
+    isDeletable: id && query.node(id).isDeletable(),
   }));
 
   const { id, name } = useNode((node) => ({
     name: node.data.custom.displayName || node.data.displayName,
   }));
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE;
+  useEffect(() => {
+    if (isActive && parentId && name === 'Container') {
+      const parentNode = node(parentId).get();
+      parentNode.data.name === 'TwoColumn' && selectNode(parentId);
+    }
+  });
+
+  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
 
   const getComponentNameMessage = (name: 'Container' | 'TwoColumn') => {
     switch (name) {
