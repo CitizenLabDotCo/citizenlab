@@ -25,8 +25,6 @@ const ContentBuilderSettings = () => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selected;
 
-    console.log(currentNodeId);
-
     if (currentNodeId) {
       selected = {
         id: currentNodeId,
