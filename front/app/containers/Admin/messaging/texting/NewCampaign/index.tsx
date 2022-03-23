@@ -21,7 +21,7 @@ const StyledForm = styled.form`
   width: 500px;
 `;
 
-// enough to fit 3 messages
+// enough to fit 3 messages, actual functionality TBD in subsequent ticket
 const MAX_CHAR_COUNT = 480;
 
 const TextCreation = () => {
@@ -47,7 +47,8 @@ const TextCreation = () => {
       const url = `/admin/messaging/texting/${id}`;
       clHistory.replace(url);
     } catch (error) {
-      console.log('something borked', error);
+      // handle error here in subsequent ticket
+      console.log('something broke', error);
     }
   };
 

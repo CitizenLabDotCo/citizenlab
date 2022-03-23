@@ -15,9 +15,13 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // hooks
 import useTextingCampaign from 'hooks/useTextingCampaign';
+
+// services
+import { deleteTextingCampaign } from 'services/textingCampaigns';
 
 // styling
 import styled from 'styled-components';
@@ -139,6 +143,25 @@ const TextMessagePreview = (props: WithRouterProps) => {
 
   const campaign = useTextingCampaign(campaignId);
 
+  const confirmSendTextingCampaign = async () => {
+    try {
+      console.log('implement send BE call here');
+    } catch (e) {
+      console.log('fail', e);
+    }
+  };
+
+  const confirmDeleteTextingCampaign = async () => {
+    try {
+      const result = await deleteTextingCampaign(campaignId);
+      console.log('successful delete', result);
+      const url = `/admin/messaging/texting`;
+      clHistory.replace(url);
+    } catch (e) {
+      console.log('fail', e);
+    }
+  };
+
   // show error: campaign not found
   if (isNilOrError(campaign)) return null;
 
@@ -224,12 +247,19 @@ const TextMessagePreview = (props: WithRouterProps) => {
             Do you want to send this message to 1,920 people now?
           </SendNowWarning>
           <ButtonsWrapper>
-            <Button buttonStyle="secondary" onClick={() => {}}>
+            <Button
+              buttonStyle="secondary"
+              onClick={() => {
+                console.log('edit here');
+              }}
+            >
               Edit or Delete SMS
             </Button>
             <Button
               buttonStyle="primary"
-              onClick={() => {}}
+              onClick={() => {
+                confirmSendTextingCampaign();
+              }}
               icon="send"
               iconPos="right"
             >
@@ -261,7 +291,9 @@ const TextMessagePreview = (props: WithRouterProps) => {
             </Button>
             <Button
               buttonStyle="delete"
-              onClick={() => {}}
+              onClick={() => {
+                confirmDeleteTextingCampaign();
+              }}
               icon="trash"
               iconPos="right"
             >
