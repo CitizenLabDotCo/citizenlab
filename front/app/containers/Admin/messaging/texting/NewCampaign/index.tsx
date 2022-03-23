@@ -70,7 +70,9 @@ const TextCreation = () => {
         <SectionField>
           <TextingHeader
             headerMessage="New SMS campaign"
-            onClickGoBack={() => {}}
+            onClickGoBack={() => {
+              clHistory.goBack();
+            }}
           />
         </SectionField>
         <StyledForm onSubmit={handleOnSubmit}>

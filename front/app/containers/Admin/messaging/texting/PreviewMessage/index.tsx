@@ -132,20 +132,18 @@ const SendNowWarning = styled.div`
   margin-bottom: 30px;
 `;
 
-const testCopy =
-  'The city is considering a major landscape architectural development. Currently divided in a peculiar four-square arrangement, three new proposals re-image our Public Square into a united green space design. Let us know which one you prefer! green.ville/vote-design';
-
 const TextMessagePreview = (props: WithRouterProps) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showDeleteTextModal, setShowDeleteTextModal] = useState(false);
 
   const { campaignId } = props.params;
-
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
+    console.log('disable send message here');
     try {
       console.log('implement send BE call here');
+      console.log('if successful, go to the view page for the');
     } catch (e) {
       console.log('fail', e);
     }
@@ -220,6 +218,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
             <PhoneMessage>{message}</PhoneMessage>
           </MessagesContainer>
         </PhoneContainer>
+        <ScreenReaderOnly>{message}</ScreenReaderOnly>
         <Button
           marginTop="15px"
           onClick={() => {
@@ -231,8 +230,6 @@ const TextMessagePreview = (props: WithRouterProps) => {
           text={'Delete this SMS'}
         />
       </PhoneWrapper>
-
-      <ScreenReaderOnly>{testCopy}</ScreenReaderOnly>
 
       {/* // send confirmation modal */}
       <Modal
@@ -253,7 +250,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
                 console.log('edit here');
               }}
             >
-              Edit or Delete SMS
+              Cancel
             </Button>
             <Button
               buttonStyle="primary"

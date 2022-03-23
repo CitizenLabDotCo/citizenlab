@@ -23,6 +23,7 @@ export interface ITextingCampaigns {
   data: ITextingCampaignData[];
 }
 
+// multiple campaigns
 export const textingCampaignsStream = (
   streamParams: IStreamParams | null = null
 ) => {
@@ -32,6 +33,7 @@ export const textingCampaignsStream = (
   });
 };
 
+// one campaign by ID
 export const textingCampaignStream = (
   campaignId: string,
   streamParams: IStreamParams | null = null
@@ -46,25 +48,28 @@ export const addTextingCampaign = async (
   message: string,
   phone_numbers: string[]
 ) => {
-  return streams.add<ITextingCampaign>(`${apiEndpoint}`, {
+  const result = await streams.add<ITextingCampaign>(`${apiEndpoint}`, {
     message,
     phone_numbers,
   });
+  return result;
 };
 
 // only for updating numbers and message, sending will be via a different endpoint
-export const updateTextingCampaign = (
+export const updateTextingCampaign = async (
   campaignId: string,
   attributes: {
     message?: string;
     phone_numbers?: string[];
   }
 ) => {
-  return streams.update<ITextingCampaign>(
+  const result = await streams.update<ITextingCampaign>(
     `${apiEndpoint}/${campaignId}`,
     campaignId,
     attributes
   );
+
+  return result;
 };
 
 export const deleteTextingCampaign = async (campaignId: string) => {
