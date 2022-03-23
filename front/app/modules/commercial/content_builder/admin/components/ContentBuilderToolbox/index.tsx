@@ -3,6 +3,7 @@ import React from 'react';
 // craft
 import { useEditor, Element } from '@craftjs/core';
 import Container from '../CraftComponents/Container';
+import TwoColumn from '../CraftComponents/TwoColumn';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -26,6 +27,10 @@ const ContentBuilderToolbox = ({
         }
       >
         {formatMessage(messages.oneColumn)}
+      </button>
+      <br />
+      <button ref={(ref) => ref && connectors.create(ref, <TwoColumn />)}>
+        2 column
       </button>
     </Box>
   );

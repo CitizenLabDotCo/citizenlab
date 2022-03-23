@@ -42,10 +42,12 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  const getComponentNameMessage = (name: 'Container') => {
+  const getComponentNameMessage = (name: 'Container' | 'TwoColumn') => {
     switch (name) {
       case 'Container':
         return messages.oneColumn;
+      case 'TwoColumn':
+        return messages.twoColumn;
     }
   };
 
