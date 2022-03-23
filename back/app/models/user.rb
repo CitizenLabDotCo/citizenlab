@@ -245,7 +245,8 @@ class User < ApplicationRecord
   def to_token_payload
     {
       sub: id,
-      roles: roles
+      roles: roles,
+      tenant_host: Tenant.current.schema_name, # to be removed or moved to citizenlab-ee
     }
   end
 
