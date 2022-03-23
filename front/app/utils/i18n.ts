@@ -95,6 +95,28 @@ export function getLocalized(
   return '';
 }
 
+export function getLocalizedWithFallback(
+  multiloc: Multiloc | null | undefined,
+  locale: Locale | null | undefined | Error,
+  tenantLocales: Locale[] | null | undefined | Error,
+  maxLength?: number,
+  fallback?: string
+) {
+  if (!multiloc || isNilOrError(locale)) {
+    return fallback
+      ? truncate(fallback, maxLength)
+      : getLocalized(multiloc, locale, tenantLocales, maxLength);
+  }
+
+  if (isMissing(multiloc[locale]) && fallback) {
+    return truncate(fallback, maxLength);
+  }
+
+  return getLocalized(multiloc, locale, tenantLocales, maxLength);
+}
+
+const isMissing = (value?: string) => !value || value.length === 0;
+
 function getLanguage(locale: Locale) {
   return locale.indexOf('-') > -1 ? locale.split('-')[0] : locale;
 }

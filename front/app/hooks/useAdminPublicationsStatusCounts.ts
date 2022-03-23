@@ -19,6 +19,7 @@ export interface IStatusCounts extends IStatusCountsBase {
 }
 
 export default function useAdminPublicationsStatusCounts({
+  topicFilter,
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
@@ -27,10 +28,15 @@ export default function useAdminPublicationsStatusCounts({
   const [counts, setCounts] = useState<
     IStatusCounts | undefined | null | Error
   >(undefined);
+  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
   >(publicationStatusFilter);
+
+  const onChangeTopics = useCallback((topics: string[]) => {
+    topics.length === 0 ? setTopics(undefined) : setTopics(topics);
+  }, []);
 
   const onChangeAreas = useCallback((areas: string[]) => {
     areas.length === 0 ? setAreas(undefined) : setAreas(areas);
@@ -39,6 +45,7 @@ export default function useAdminPublicationsStatusCounts({
   useEffect(() => {
     const queryParameters = {
       depth: rootLevelOnly ? 0 : undefined,
+      topics,
       areas,
       publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
@@ -55,10 +62,17 @@ export default function useAdminPublicationsStatusCounts({
       });
 
     return () => subscription.unsubscribe();
-  }, [areas, publicationStatuses, rootLevelOnly, removeNotAllowedParents]);
+  }, [
+    topics,
+    areas,
+    publicationStatuses,
+    rootLevelOnly,
+    removeNotAllowedParents,
+  ]);
 
   return {
     counts,
+    onChangeTopics,
     onChangeAreas,
     onChangePublicationStatus: setPublicationStatuses,
   };

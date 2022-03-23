@@ -8,8 +8,7 @@ import { defaultCardStyle, media, fontSizes } from 'utils/styleUtils';
 import { Image } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
@@ -74,7 +73,12 @@ const EmptyMessageLine = styled.p`
   text-align: center;
 `;
 
-const EmptyContainer = () => {
+interface Props {
+  titleMessage: MessageDescriptor;
+  descriptionMessage: MessageDescriptor;
+}
+
+const EmptyContainer = ({ titleMessage, descriptionMessage }: Props) => {
   const objectFitCoverSupported =
     window['CSS'] &&
     typeof CSS !== 'undefined' &&
@@ -90,10 +94,10 @@ const EmptyContainer = () => {
       />
       <EmptyMessage>
         <EmptyMessageTitle>
-          <FormattedMessage {...messages.noProjectYet} />
+          <FormattedMessage {...titleMessage} />
         </EmptyMessageTitle>
         <EmptyMessageLine>
-          <FormattedMessage {...messages.stayTuned} />
+          <FormattedMessage {...descriptionMessage} />
         </EmptyMessageLine>
       </EmptyMessage>
     </Container>

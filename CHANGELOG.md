@@ -1,6 +1,10 @@
 # Changelog
 
-## Next release
+## 2022-03-23
+
+### Added
+
+- Add new topic/tag filter on homepage.
 
 ## 2022-03-22
 
