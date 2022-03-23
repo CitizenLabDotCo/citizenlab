@@ -1001,7 +1001,7 @@
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.terminologyTooltip": "Wie sollten Tags im Titelseitenfilter genannte werden? Z. B. Tags, Kategorien, Themen, ...",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy": "Tags können konfiguriert werden {topicManagerLink}.",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink": "hier",
-  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Term for one tag (singular)",
+  "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTerm2": "Bezeichnung für einen Tag (Singular)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicTermPlaceholder": "Thema",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTerm": "Bezeichnung für mehrere Tags (Plural)",
   "app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicsTermPlaceholder": "Themen",
