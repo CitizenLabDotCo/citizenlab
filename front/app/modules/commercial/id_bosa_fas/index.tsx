@@ -3,11 +3,15 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
 import BosaFasButton from './components/BosaFasButton';
 import { isLastVerificationMethod } from 'modules/commercial/verification';
+import { TVerificationMethodName } from 'services/verificationMethods';
 
-const verificationMethodName = 'clave_unica';
+const verificationMethodName: TVerificationMethodName = 'bosa_fas';
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.buttons': ({ verificationMethods }) => {
+    'app.components.VerificationModal.buttons': ({
+      verificationMethods,
+      ...otherProps
+    }) => {
       const method = verificationMethods.find(
         (vm) => vm.attributes.name === verificationMethodName
       );
@@ -17,7 +21,7 @@ const configuration: ModuleConfiguration = {
           verificationMethodName,
           verificationMethods
         );
-        return <BosaFasButton last={last} method={method} />;
+        return <BosaFasButton last={last} method={method} {...otherProps} />;
       }
 
       return null;
