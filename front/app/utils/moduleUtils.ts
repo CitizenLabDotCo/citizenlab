@@ -66,14 +66,8 @@ import {
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-
-// typings
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-
-type Localize = (
-  multiloc: Multiloc | null | undefined,
-  maxChar?: number | undefined
-) => string;
+import { Localize } from 'hooks/useLocalize';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -413,6 +407,10 @@ export type OutletsPropertyMap = {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
+    string,
+    any
+  >;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];

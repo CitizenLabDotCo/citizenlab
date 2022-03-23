@@ -77,6 +77,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
     defaultMessage: 'here',
   },
+  topicsLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.topicLabel',
+    defaultMessage: 'Tags',
+  },
+  topicsLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.topicLabelTooltip',
+    defaultMessage:
+      'Select {topicsCopy} for this project. Users can use these to filter projects by.',
+  },
   areasAllLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabel',
     defaultMessage: 'All Areas',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Multiloc } from 'typings';
 import { render, screen } from 'utils/testUtils/rtl';
-import ContentBuilderToggle from './ContentBuilderToggle';
+import ContentBuilderToggle from './';
 
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
@@ -31,8 +31,12 @@ const routerProps = {
   },
 };
 
+let mockFeatureFlagData = true;
+
+jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
+
 describe('ContentBuilderToggle', () => {
-  it('Confirm link shown appropriately when builder option toggled', () => {
+  it('shows confirm link  appropriately when builder option toggled', () => {
     render(
       <ContentBuilderToggle
         valueMultiloc={multiloc}
@@ -48,7 +52,7 @@ describe('ContentBuilderToggle', () => {
     toggle.click();
     expect(screen.queryByText('LinkText')).toBeInTheDocument();
   });
-  it('Confirm Quill editor shown appropriately when builder option toggled', () => {
+  it('shows confirm Quill editor  appropriately when builder option toggled', () => {
     render(
       <ContentBuilderToggle
         valueMultiloc={multiloc}
@@ -63,5 +67,21 @@ describe('ContentBuilderToggle', () => {
     expect(screen.queryByText('QuillLabel')).toBeInTheDocument();
     toggle.click();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
+  });
+  it('does not render component when feature flag is not active', () => {
+    mockFeatureFlagData = false;
+    render(
+      <ContentBuilderToggle
+        valueMultiloc={multiloc}
+        onChange={dummyFunction}
+        label={'QuillLabel'}
+        labelTooltipText={'LabelTooltipText'}
+        onMount={dummyFunction}
+        {...routerProps}
+      />
+    );
+    expect(
+      screen.queryByTestId('contentBuilderToggle')
+    ).not.toBeInTheDocument();
   });
 });

@@ -219,6 +219,7 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
   slug?: string;
+  topic_ids?: string[];
 }
 
 export interface IProjectFormState {
@@ -303,6 +304,8 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
   return response;
@@ -325,6 +328,8 @@ export async function updateProject(
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
 

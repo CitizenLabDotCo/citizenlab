@@ -18,7 +18,7 @@ import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // Messages
-import messages from '../messages';
+import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -76,7 +76,7 @@ const ContentBuilderToggle = ({
   }
 
   return (
-    <>
+    <Box data-testid="contentBuilderToggle">
       <StyledBox>
         <StyledToggle
           checked={contentBuilderLinkVisible}
@@ -98,7 +98,7 @@ const ContentBuilderToggle = ({
           withCTAButton
         />
       )}
-    </>
+    </Box>
   );
 };
 
