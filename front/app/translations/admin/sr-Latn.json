@@ -1302,6 +1302,7 @@
   "app.containers.admin.ContentBuilder.delete": "Izbriši",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolona",
   "app.containers.admin.ContentBuilder.projectDescription": "Opis projekta",
+  "app.containers.admin.ContentBuilder.text": "Text",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Dodaj status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Podrazumevani status ne može se izbrisati.",
