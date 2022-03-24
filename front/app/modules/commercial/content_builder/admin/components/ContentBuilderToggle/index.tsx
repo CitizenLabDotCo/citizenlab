@@ -46,6 +46,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 
 const StyledLink = styled(Link)`
   margin-top: -10px;
+  font-size: 16px;
 `;
 
 const ContentBuilderToggle = ({
