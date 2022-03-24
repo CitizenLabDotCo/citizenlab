@@ -1302,6 +1302,7 @@
   "app.containers.admin.ContentBuilder.delete": "Verwijder",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolom",
   "app.containers.admin.ContentBuilder.projectDescription": "Projectbeschrijving",
+  "app.containers.admin.ContentBuilder.text": "Text",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Voeg een status toe",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "De standaardstatus kan niet worden verwijderd.",
