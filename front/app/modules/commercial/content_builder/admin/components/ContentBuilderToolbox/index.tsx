@@ -32,10 +32,7 @@ const ContentBuilderToolbox = ({
           )
         }
       >
-        <ToolboxItem
-          icon="column1"
-          label={formatMessage(messages.oneColumn).toString()}
-        />
+        <ToolboxItem icon="column1" label={formatMessage(messages.oneColumn)} />
       </div>
       <div
         ref={(ref) =>
@@ -43,10 +40,7 @@ const ContentBuilderToolbox = ({
           connectors.create(ref, <Element canvas is={Text} id="text" text="" />)
         }
       >
-        <ToolboxItem
-          icon="text"
-          label={formatMessage(messages.text).toString()}
-        />
+        <ToolboxItem icon="text" label={formatMessage(messages.text)} />
       </div>
     </Box>
   );
