@@ -76,7 +76,7 @@ const RenderNode = ({ render }) => {
             ? colors.separation
             : undefined
         }`}
-        m="4px"
+        m={!isTwoColumn ? '4px' : undefined}
       >
         {render}
       </Box>
