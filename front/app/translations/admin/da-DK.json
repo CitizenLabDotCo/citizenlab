@@ -1302,6 +1302,7 @@
   "app.containers.admin.ContentBuilder.delete": "Slet",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivelse",
+  "app.containers.admin.ContentBuilder.text": "Text",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Tilføj status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Standardstatus kan ikke slettes.",
