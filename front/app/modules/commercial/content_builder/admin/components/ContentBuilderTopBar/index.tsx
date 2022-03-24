@@ -10,7 +10,7 @@ import Button from 'components/UI/Button';
 
 // Styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { Box, stylingConsts, Spinner } from '@citizenlab/cl2-component-library';
 
 // Utils
@@ -31,7 +31,7 @@ const ProjectTitle = styled.p`
 
 const BuilderTitle = styled.h1`
   margin: 0px;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
@@ -49,13 +49,13 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
       h={`${stylingConsts.menuHeight}px`}
       display="flex"
       background={`${colors.adminContentBackground}`}
-      borderBottom={`1px solid ${colors.border}`}
+      borderBottom={`1px solid ${colors.mediumGrey}`}
     >
       <Box
         p="15px"
         w="220px"
         h="100%"
-        borderRight={`1px solid ${colors.border}`}
+        borderRight={`1px solid ${colors.mediumGrey}`}
         display="flex"
         alignItems="center"
       >

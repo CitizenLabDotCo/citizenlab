@@ -18,14 +18,13 @@ const DraftCampaignRow = ({ campaign }: Props) => (
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
     <StatusLabel
-      minWidth="60px"
+      minWidth="94px"
       backgroundColor={colors.adminOrangeIcons}
       text={<FormattedMessage {...messages.draft} />}
     />
-    <Box minWidth="100px" display="flex" justifyContent="flex-end">
+    <Box minWidth="220px" display="flex" justifyContent="flex-end">
       <Button
         linkTo={`/admin/messaging/emails/custom/${campaign.id}`}
-        width="86px"
         buttonStyle="secondary"
         icon="edit"
       >
