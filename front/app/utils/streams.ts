@@ -403,7 +403,10 @@ class Streams {
         this.streamIdsByDataIdWithQuery[dataId] &&
         !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)
       ) {
-        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
+        const streamIds = this.streamIdsByDataIdWithQuery[dataId];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
         this.streamIdsByDataIdWithQuery[dataId] = [streamId];
       }
@@ -414,7 +417,10 @@ class Streams {
         this.streamIdsByDataIdWithoutQuery[dataId] &&
         !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)
       ) {
-        this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
+        const streamIds = this.streamIdsByDataIdWithQuery[dataId];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
         this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
       }
@@ -438,7 +444,10 @@ class Streams {
       if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
       } else {
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
+        const streamIds = this.streamIdsByApiEndPointWithQuery[apiEndpoint];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       }
     }
 
@@ -446,7 +455,10 @@ class Streams {
       if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
       } else {
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
+        const streamIds = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       }
     }
   }
