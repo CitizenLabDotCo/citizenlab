@@ -15,21 +15,28 @@ module MultiTenancy
       LogActivityJob.perform_later(tenant, 'loading_template', current_user, Time.now.to_i)
     end
 
+    def around_apply_template tenant, template, current_user=nil, &block
+      block.call
+    rescue Exception => e
+      LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
+        error_message: "Loading of the template failed.\n#{e.to_s}"
+      })
+      raise e
+    end
+
     def after_apply_template tenant, template, current_user=nil
       LogActivityJob.perform_later(tenant, 'template_loaded', current_user, Time.now.to_i, payload: { 
         tenant_template: template 
       })
       tenant.switch do
-        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
-        PermissionsService.new.update_all_permissions # fix permissions
-        track_tenant_async(tenant)
+        TenantService.new.finalize_creation tenant
+        LogActivityJob.perform_later tenant, 'creation_finalized', current_user, tenant.creation_finalized_at.to_i
       rescue Exception => e
         LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
           error_message: 'Finalization of tenant (default campaigns, permissions, tracking) failed'
         })
         raise e
       end
-      LogActivityJob.perform_later(tenant, 'creation_finalized', current_user, Time.now.to_i)
     end
 
     def before_update(tenant, current_user = nil) end
@@ -41,7 +48,7 @@ module MultiTenancy
       trigger_lifecycle_stage_change_effects(tenant, current_user) if tenant.changed_lifecycle_stage?
 
       update_google_host(tenant) if tenant.active? && tenant.host_previously_changed? || tenant.changed_lifecycle_stage?
-      track_tenant_async(tenant)
+      tenant.switch { TrackTenantJob.perform_later tenant }
     end
 
     def before_destroy(tenant, _current_user = nil)
@@ -64,11 +71,6 @@ module MultiTenancy
     def trigger_host_changed_effects(tenant, user)
       LogActivityJob.perform_later(tenant, 'changed_host', user, tenant.updated_at.to_i,
                                    payload: { changes: tenant.host_previous_change })
-    end
-
-    # @param [Tenant] tenant
-    def track_tenant_async(tenant)
-      tenant.switch { TrackTenantJob.perform_later(tenant) }
     end
 
     def update_google_host(tenant)

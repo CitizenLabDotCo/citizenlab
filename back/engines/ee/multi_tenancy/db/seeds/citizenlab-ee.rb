@@ -1,3 +1,4 @@
+# coding: utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -160,6 +161,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
         identifier: '***REMOVED***',
         secret: '***REMOVED***'
       },
+      vienna_login: {
+        allowed: true,
+        enabled: true,
+        environment: 'test',
+      },
       pages: {
         allowed: true,
         enabled: true
@@ -204,6 +210,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       user_custom_fields: {
+        enabled: true,
+        allowed: true
+      },
+      content_builder: {
         enabled: true,
         allowed: true
       },
@@ -432,6 +442,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       disable_downvoting: {
         enabled: true,
         allowed: true
+      },
+      texting: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -507,7 +521,6 @@ user = {
 
 if Apartment::Tenant.current == 'empty_localhost'
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
   random_user = anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
   User.create! random_user.merge({ **admin, id: 'e0d698fc-5969-439f-9fe6-e74fe82b567a' })
 end
@@ -542,7 +555,6 @@ if Apartment::Tenant.current == 'localhost'
   end
 
   MultiTenancy::TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
-  MultiTenancy::SideFxTenantService.new.after_apply_template(Tenant.current, 'base')
   User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
   User.create! anonymizer.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
@@ -1009,6 +1021,5 @@ unless Apartment::Tenant.current == 'public'
   User.find_each do |user|
     EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
   end
-
-  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
+  MultiTenancy::TenantService.new.finalize_creation Tenant.current
 end

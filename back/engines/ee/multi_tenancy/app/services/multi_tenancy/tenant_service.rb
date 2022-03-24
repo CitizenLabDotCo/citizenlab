@@ -37,6 +37,16 @@ module MultiTenancy
       [false, tenant, config]
     end
 
+    def finalize_creation(tenant)
+      tenant.switch do 
+        EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
+        PermissionsService.new.update_all_permissions # fix permissions
+        TrackTenantJob.perform_later tenant
+      end
+
+      tenant.update! creation_finalized_at: Time.zone.now
+    end
+
     # @return [Array(Boolean, Tenant, AppConfiguration)]
     def initialize_with_template(tenant_attrs, config_attrs, template_name)
       locales = config_attrs.dig('settings', 'core', 'locales')
@@ -75,8 +85,11 @@ module MultiTenancy
     # @param [Tenant] tenant
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
+      # Change the host to liberate use of the original.
+      update_tenant(tenant, { host: "#{tenant.host}-#{SecureRandom.hex(4)}" })
+
       tenant_side_fx.before_destroy(tenant)
-      tenant.update!(deleted_at: Time.now) # mark the tenant as deleted
+      tenant.update!(deleted_at: Time.now) # Mark the tenant as deleted.
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.
@@ -116,6 +129,12 @@ module MultiTenancy
       LogActivityJob.perform_later(
         Tenant.current, 'timestamps_shifted', nil, Time.now.to_i, payload: { days_shifted: num_days }
       )
+    end
+
+    def replace_locale_occurences!(tenant, replaced_locale, replacing_locale)
+      tenant.switch do
+        User.where(locale: replaced_locale).update_all locale: replacing_locale
+      end
     end
 
     private

@@ -134,7 +134,7 @@ namespace :setup_and_support do
             value = object.send ml
             if value.present? && value[args[:locale_from]].present? && !value[args[:locale_to]].present?
               changes[ml] = value.clone
-              changes[ml][args[:locale_to]] = translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to]
+              changes[ml][args[:locale_to]] = translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to], retries: 10
             end
           end
           object.update_columns changes if changes.present?
@@ -353,6 +353,22 @@ namespace :setup_and_support do
         u.send :generate_slug
         u.save!
       end
+    end
+  end
+
+  desc 'Reduce the number of users on a given platform'
+  task :auto_reduce_users, [:host, :skip_user_ids_url] => [:environment] do |_, args|
+    Apartment::Tenant.switch(args[:host].gsub('.', '_')) do
+      service = UserReduceService.new
+      scope = if args[:skip_user_ids_url]
+        skip_user_ids = open(args[:skip_user_ids_url]).readlines.map(&:strip)
+        User.where(id: skip_user_ids)
+      else
+        nil
+      end 
+      puts "Initial amount of users: #{User.count}"
+      service.reduce! skip_users: scope
+      puts "Final amount of users: #{User.count}"
     end
   end
 

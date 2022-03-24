@@ -4,22 +4,24 @@
 #
 # Table name: public.tenants
 #
-#  id         :uuid             not null, primary key
-#  name       :string
-#  host       :string
-#  settings   :jsonb
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  logo       :string
-#  header_bg  :string
-#  favicon    :string
-#  style      :jsonb
-#  deleted_at :datetime
+#  id                    :uuid             not null, primary key
+#  name                  :string
+#  host                  :string
+#  settings              :jsonb
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  logo                  :string
+#  header_bg             :string
+#  favicon               :string
+#  style                 :jsonb
+#  deleted_at            :datetime
+#  creation_finalized_at :datetime
 #
 # Indexes
 #
-#  index_tenants_on_deleted_at  (deleted_at)
-#  index_tenants_on_host        (host)
+#  index_tenants_on_creation_finalized_at  (creation_finalized_at)
+#  index_tenants_on_deleted_at             (deleted_at)
+#  index_tenants_on_host                   (host)
 #
 class Tenant < ApplicationRecord
   include PublicApi::TenantDecorator
@@ -58,13 +60,24 @@ class Tenant < ApplicationRecord
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
+  scope :creation_finalized, -> { not_deleted.where.not(creation_finalized_at: nil) }
   scope :churned, -> { with_lifecycle('churned') }
   scope :with_lifecycle, lambda { |lifecycle|
     where(%(settings @> '{"core": {"lifecycle_stage": "#{lifecycle}"} }'))
   }
 
+  class << self
+    def schema_name_to_host(schema_name)
+      schema_name&.tr('_', '.')
+    end
+
+    def host_to_schema_name(host)
+      host&.tr('.', '_')
+    end
+  end
+
   def self.current
-    Current.tenant || find_by!(host: Apartment::Tenant.current.tr('_', '.'))
+    Current.tenant || find_by!(host: schema_name_to_host(Apartment::Tenant.current))
   end
 
   def self.settings(*path)
@@ -125,7 +138,7 @@ class Tenant < ApplicationRecord
     # the tenant's host. `host_was` should always
     # correspond to the value as it currently is in the
     # database.
-    host_was&.gsub(/\./, '_')
+    Tenant.host_to_schema_name(host_was)
   end
 
   def cleanup_settings
