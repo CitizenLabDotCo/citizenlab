@@ -61,8 +61,20 @@ module MultiTenancy
             end
             assign_images(model, image_assignments) if image_assignments.present?
           rescue Exception => e
+            table_names = ActiveRecord::Base.connection.execute(
+              <<-SQL.squish
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_type = 'BASE TABLE'
+                AND table_schema = \'#{Tenant.current.schema_name}\'
+              SQL
+            ).map do |r|
+              r['table_name']
+            end
             json_info = {
               error_message: e.message,
+              tenant_settings: Tenant.current.settings, # temporary for debugging
+              table_names: table_names, # temporary for debugging
               model_class: model_class.name,
               attributes: attributes
             }.to_json
