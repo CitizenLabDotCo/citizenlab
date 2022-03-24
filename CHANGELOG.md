@@ -2,6 +2,9 @@
 
 ## Next release
 
+
+## 2022-03-24
+
 ### Fixed
 
 - When you need to verify to comment on proposals, an error message with link to the sign in form is now shown again.
