@@ -41,6 +41,7 @@ const RenderNode = ({ render }) => {
   });
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
+  const isTwoColumn = name === TWO_COLUMNS;
 
   const getComponentNameMessage = (
     name: typeof CONTAINER | typeof TWO_COLUMNS
@@ -67,18 +68,18 @@ const RenderNode = ({ render }) => {
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      {name !== TWO_COLUMNS ? (
-        <Box
-          border={`1px solid${
-            nodeNameIsVisible ? colors.adminTextColor : colors.separation
-          }`}
-          m="4px"
-        >
-          {render}
-        </Box>
-      ) : (
-        render
-      )}
+      <Box
+        border={`1px solid${
+          nodeNameIsVisible
+            ? colors.adminTextColor
+            : !isTwoColumn
+            ? colors.separation
+            : undefined
+        }`}
+        m="4px"
+      >
+        {render}
+      </Box>
     </Box>
   );
 };
