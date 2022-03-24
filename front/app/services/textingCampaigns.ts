@@ -11,6 +11,8 @@ export interface ITextingCampaignData {
     message: string;
     status: ITextingCampaignStatuses;
     sent_at: string;
+    created_at: string;
+    updated_at: string;
     phone_numbers: string[];
   };
 }
