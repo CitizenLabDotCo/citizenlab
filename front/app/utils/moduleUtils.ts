@@ -52,7 +52,8 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
@@ -256,17 +257,17 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
-  'app.components.VerificationModal.button': {
-    method: IVerificationMethod;
-    onMethodSelected: () => void;
-    last: boolean;
+  'app.components.VerificationModal.buttons': {
+    onClick: (method: TVerificationMethod) => void;
+    verificationMethods: TVerificationMethod[];
   };
-  'app.components.VerificationModal.methodStep': {
-    method: IVerificationMethod;
+  'app.components.VerificationModal.methodSteps': {
+    method: TVerificationMethod | null;
     onCancel: () => void;
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
+    activeStep: TVerificationStep;
   };
   'app.components.PostShowComponents.ActionBar.right': {
     translateButtonClicked: boolean;

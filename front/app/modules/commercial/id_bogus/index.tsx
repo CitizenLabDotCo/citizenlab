@@ -1,19 +1,45 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
-import Bogus from './components/BogusButton';
+import BogusButton from './components/BogusButton';
 import VerificationFormBogus from './components/VerificationFormBogus';
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 
+const verificationMethodName = 'bogus';
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
-      if (props.method.attributes.name !== 'bogus') return null;
-      return <Bogus {...props} />;
-    },
-    'app.components.VerificationModal.methodStep': (props) => {
-      if (props.method.attributes.name !== 'bogus') return null;
+    'app.components.VerificationModal.buttons': ({
+      verificationMethods,
+      ...otherProps
+    }) => {
+      const method = verificationMethods.find(
+        (vm) => vm.attributes.name === verificationMethodName
+      );
 
-      return <VerificationFormBogus {...props} />;
+      if (method) {
+        const last = isLastVerificationMethod(
+          verificationMethodName,
+          verificationMethods
+        );
+
+        return <BogusButton last={last} method={method} {...otherProps} />;
+      }
+
+      return null;
+    },
+    'app.components.VerificationModal.methodSteps': ({
+      method,
+      activeStep,
+      ...otherProps
+    }) => {
+      if (
+        activeStep === 'method-step' &&
+        method?.attributes.name === verificationMethodName
+      ) {
+        return <VerificationFormBogus {...otherProps} />;
+      }
+
+      return null;
     },
   },
 };
