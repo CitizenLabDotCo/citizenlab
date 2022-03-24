@@ -8,26 +8,37 @@ import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 
-// services
-import { addTextingCampaign } from 'services/textingCampaigns';
-
 // utils
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'react-router';
+
+// hooks
+import useTextingCampaign from 'hooks/useTextingCampaign';
+
+// services
+import {
+  updateTextingCampaign,
+  ITextingCampaignStatuses,
+} from 'services/textingCampaigns';
 
 // styling
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledForm = styled.form`
   width: 500px;
 `;
 
 // enough to fit 3 messages, actual functionality TBD in subsequent ticket
-const MAX_CHAR_COUNT = 480;
+// const MAX_CHAR_COUNT = 480;
 
-const TextCreation = () => {
+const ViewCreatedMessage = (props: WithRouterProps) => {
   const [inputPhoneNumbers, setInputPhoneNumbers] = useState('');
   const [inputMessage, setInputMessage] = useState('');
-  const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
+  // const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
+
+  const { campaignId } = props.params;
+  const campaign = useTextingCampaign(campaignId);
 
   const handleInputPhoneNumbersChange = (value) => {
     setInputPhoneNumbers(value);
@@ -42,7 +53,10 @@ const TextCreation = () => {
 
     const splitNumbers = inputPhoneNumbers.split(',');
     try {
-      const result = await addTextingCampaign(inputMessage, splitNumbers);
+      const result = await updateTextingCampaign(campaignId, {
+        message: inputMessage,
+        phone_numbers: splitNumbers,
+      });
       const { id } = result.data;
       const url = `/admin/messaging/texting/${id}/preview`;
       clHistory.replace(url);
@@ -53,23 +67,43 @@ const TextCreation = () => {
   };
 
   useEffect(() => {
-    const remainingCharCount = MAX_CHAR_COUNT - inputMessage.length;
-    setRemainingChars(remainingCharCount);
-  }, [inputMessage]);
+    if (!isNilOrError(campaign)) {
+      setInputMessage(campaign.attributes.message);
+      setInputPhoneNumbers(campaign.attributes.phone_numbers.join(', '));
+    }
+  }, [campaign]);
+
+  const getTitleMessage = (campaignStatus: ITextingCampaignStatuses) => {
+    switch (campaignStatus) {
+      case 'draft':
+        return 'Draft SMS Campaign';
+      case 'sending':
+        return 'Sending SMS Campaign';
+      case 'sent':
+        return 'Sent SMS Campaign';
+      default:
+        return 'Created SMS Campaign';
+    }
+  };
+
+  // show campaign not found
+  if (isNilOrError(campaign)) return null;
+
+  const { status } = campaign.attributes;
 
   return (
     <>
       <HelmetIntl
-        title={{ id: 'test', defaultMessage: 'Create new SMS' }}
+        title={{ id: 'test', defaultMessage: 'View SMS campaign' }}
         description={{
           id: 'test',
-          defaultMessage: 'Create new SMS description',
+          defaultMessage: 'View SMS campaign description',
         }}
       />
       <Section>
         <SectionField>
           <TextingHeader
-            headerMessage="New SMS campaign"
+            headerMessage={getTitleMessage(status)}
             onClickGoBack={() => {
               clHistory.goBack();
             }}
@@ -85,6 +119,7 @@ const TextCreation = () => {
               rows={8}
               maxRows={8}
               value={inputPhoneNumbers}
+              disabled={status !== 'draft'}
               onChange={handleInputPhoneNumbersChange}
             />
           </SectionField>
@@ -96,26 +131,29 @@ const TextCreation = () => {
               rows={8}
               maxRows={8}
               value={inputMessage}
+              disabled={status !== 'draft'}
               onChange={handleInputMessageChange}
             />
-            {remainingChars} characters remaining
+            {/* {remainingChars} characters remaining */}
           </SectionField>
 
-          <SectionField>
-            <Box maxWidth="250px">
-              <Button
-                buttonStyle="primary"
-                size="2"
-                type="submit"
-                text={'Preview SMS'}
-                onClick={handleOnSubmit}
-              />
-            </Box>
-          </SectionField>
+          {status === 'draft' && (
+            <SectionField>
+              <Box maxWidth="250px">
+                <Button
+                  buttonStyle="primary"
+                  size="2"
+                  type="submit"
+                  text={'Preview SMS'}
+                  onClick={handleOnSubmit}
+                />
+              </Box>
+            </SectionField>
+          )}
         </StyledForm>
       </Section>
     </>
   );
 };
 
-export default TextCreation;
+export default withRouter(ViewCreatedMessage);
