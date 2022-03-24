@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import Topbar from './components/Topbar';
@@ -9,6 +9,9 @@ import Footer from './components/Footer';
 
 // hooks
 import useAdminPublications from 'hooks/useAdminPublications';
+import useAdminPublicationsStatusCounts, {
+  IStatusCounts,
+} from 'hooks/useAdminPublicationsStatusCounts';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -17,12 +20,14 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 
+// i18n
+import messages from './messages';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getAvailableTabs } from './utils';
 
 // typings
-import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
 import { PublicationTab, Props as BaseProps } from '.';
 
 const Container = styled.div`
@@ -37,6 +42,7 @@ const StyledTopbar = styled(Topbar)`
 interface Props extends BaseProps {
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
@@ -47,6 +53,7 @@ const ProjectAndFolderCardsInner = ({
   showTitle,
   layout,
   publicationStatusFilter,
+  onChangeTopics,
   onChangeAreas,
   onChangeTab,
 }: Props) => {
@@ -57,22 +64,44 @@ const ProjectAndFolderCardsInner = ({
     removeNotAllowedParents: true,
   });
 
-  const publicationStatusesStringified = JSON.stringify(
-    publicationStatusFilter
+  const { counts: statusCountsWithoutFilters } =
+    useAdminPublicationsStatusCounts({
+      publicationStatusFilter,
+      rootLevelOnly: true,
+      removeNotAllowedParents: true,
+    });
+
+  const publicationStatusesForCurrentTab = currentTab
+    ? currentTab === 'all'
+      ? publicationStatusFilter
+      : [currentTab]
+    : undefined;
+
+  const publicationStatusesForCurrentTabStringified = JSON.stringify(
+    publicationStatusesForCurrentTab
   );
 
   useEffect(() => {
-    adminPublications.onChangePublicationStatus(publicationStatusFilter);
+    if (!publicationStatusesForCurrentTab) return;
+    adminPublications.onChangePublicationStatus(
+      publicationStatusesForCurrentTab
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [publicationStatusesStringified]);
+  }, [publicationStatusesForCurrentTabStringified]);
 
-  const availableTabs = useMemo(() => {
-    return getAvailableTabs(statusCounts);
-  }, [statusCounts]);
+  if (isNilOrError(statusCountsWithoutFilters)) return null;
+
+  const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
+  const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
   const showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     adminPublications.onLoadMore();
+  };
+
+  const handleChangeTopics = (topics: string[]) => {
+    onChangeTopics(topics);
+    adminPublications.onChangeTopics(topics);
   };
 
   const handleChangeAreas = (areas: string[]) => {
@@ -89,15 +118,29 @@ const ProjectAndFolderCardsInner = ({
         showTitle={showTitle}
         currentTab={currentTab}
         statusCounts={statusCounts}
+        noAdminPublicationsAtAll={noAdminPublicationsAtAll}
         availableTabs={availableTabs}
         hasPublications={hasPublications}
+        onChangeTopics={handleChangeTopics}
         onChangeAreas={handleChangeAreas}
         onChangeTab={onChangeTab}
       />
 
       {loadingInitial && <LoadingBox />}
 
-      {!loadingInitial && !hasPublications && <EmptyContainer />}
+      {!loadingInitial && noAdminPublicationsAtAll && (
+        <EmptyContainer
+          titleMessage={messages.noProjectYet}
+          descriptionMessage={messages.stayTuned}
+        />
+      )}
+
+      {!loadingInitial && !noAdminPublicationsAtAll && !hasPublications && (
+        <EmptyContainer
+          titleMessage={messages.noProjectsAvailable}
+          descriptionMessage={messages.tryChangingFilters}
+        />
+      )}
 
       {!loadingInitial && hasPublications && (
         <ProjectsList

@@ -53,7 +53,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     cy.get('#e2e-ideas-list');
     cy.get('.e2e-idea-card')
       .first()
-      .contains('Repellendus reprehenderit quae voluptas quia');
+      .contains('Repellendus reprehenderit quae voluptas quia.');
 
     // sort by oldest first
     cy.get('#e2e-ideas-sort-dropdown').click();
