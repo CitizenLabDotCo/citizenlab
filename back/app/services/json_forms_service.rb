@@ -11,7 +11,7 @@ class JsonFormsService
   def ui_and_json_multiloc_schemas(configuration, fields, current_user)
     resource_types = fields.map{|f| f.resource_type}.uniq
     raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
-    return {} if resource_types.empty?
+    return nil if resource_types.empty?
 
     allowed_fields = allowed_fields(configuration, fields, current_user)
     json_schema_multiloc = fields_to_json_schema_multiloc(configuration, allowed_fields)
