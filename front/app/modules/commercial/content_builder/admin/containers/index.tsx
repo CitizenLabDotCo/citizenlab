@@ -35,7 +35,7 @@ const ContentBuilderPage = () => {
             flexDirection="column"
             alignItems="center"
             bgColor={colors.adminDarkBackground}
-            borderRight={`1px solid ${colors.border}`}
+            borderRight={`1px solid ${colors.mediumGrey}`}
           >
             <ContentBuilderToolbox />
           </Box>
