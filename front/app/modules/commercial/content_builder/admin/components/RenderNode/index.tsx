@@ -43,7 +43,7 @@ const RenderNode = ({ render }) => {
           bgColor={colors.adminTextColor}
           color="#fff"
           position="absolute"
-          top="0px"
+          top="-28px"
           left="4px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />
