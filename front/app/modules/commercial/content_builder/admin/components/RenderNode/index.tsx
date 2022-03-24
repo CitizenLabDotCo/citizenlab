@@ -41,7 +41,7 @@ const RenderNode = ({ render }) => {
   }));
 
   const { id, name } = useNode((node) => ({
-    name: node.data.custom.displayName || node.data.displayName,
+    name: node.data.name as ComponentNamesType,
   }));
 
   useEffect(() => {
