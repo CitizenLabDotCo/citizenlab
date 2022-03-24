@@ -1303,6 +1303,7 @@
   "app.containers.admin.ContentBuilder.delete": "حذف",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
   "app.containers.admin.ContentBuilder.projectDescription": "وصف المشروع",
+  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "حذف",
