@@ -5,6 +5,7 @@
 ### Fixed
 
 - When you need to verify to comment on proposals, an error message with link to the sign in form is now shown again.
+- Status labels are visible again in manual email campaigns list (Admin : Messaging : Custom)
 
 ## 2022-03-23
 
