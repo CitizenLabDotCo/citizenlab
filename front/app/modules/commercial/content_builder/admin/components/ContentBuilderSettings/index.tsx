@@ -52,18 +52,20 @@ const ContentBuilderSettings = () => {
       </Box>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
-        <Button
-          icon="delete"
-          buttonStyle="primary-outlined"
-          borderColor={colors.clRed}
-          textColor={colors.clRed}
-          iconColor={colors.clRed}
-          onClick={() => {
-            actions.delete(selected.id);
-          }}
-        >
-          <FormattedMessage {...messages.delete} />
-        </Button>
+        <Box display="flex">
+          <Button
+            icon="delete"
+            buttonStyle="primary-outlined"
+            borderColor={colors.clRed}
+            textColor={colors.clRed}
+            iconColor={colors.clRed}
+            onClick={() => {
+              actions.delete(selected.id);
+            }}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </Box>
       ) : null}
     </StyledBox>
   ) : null;

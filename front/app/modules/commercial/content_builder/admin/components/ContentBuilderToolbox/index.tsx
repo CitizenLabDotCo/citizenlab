@@ -1,23 +1,30 @@
 import React from 'react';
 
-// craft
+// Craft
 import { useEditor, Element } from '@craftjs/core';
-import Container from '../CraftComponents/Container';
-import TwoColumn from '../CraftComponents/TwoColumn';
 
-// intl
+// Intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+
+// Components
+import ToolboxItem from './ToolboxItem';
 import { Box } from '@citizenlab/cl2-component-library';
+import Container from '../CraftComponents/Container';
+import Text from '../CraftComponents/Text';
+import TwoColumn from '../CraftComponents/TwoColumn';
+
+// Intl
+import messages from '../../messages';
 
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const { connectors } = useEditor();
+
   return (
-    <Box marginTop="20px">
-      <button
+    <Box w="100%" display="inline" marginTop="20px">
+      <div
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -26,12 +33,27 @@ const ContentBuilderToolbox = ({
           )
         }
       >
-        {formatMessage(messages.oneColumn)}
-      </button>
-      <br />
-      <button ref={(ref) => ref && connectors.create(ref, <TwoColumn />)}>
-        {formatMessage(messages.twoColumn)}
-      </button>
+        <ToolboxItem icon="column1" label={formatMessage(messages.oneColumn)} />
+      </div>
+      <div
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element canvas is={TwoColumn} id="twoColumn" />
+          )
+        }
+      >
+        <ToolboxItem icon="column2" label={formatMessage(messages.twoColumn)} />
+      </div>
+      <div
+        ref={(ref) =>
+          ref &&
+          connectors.create(ref, <Element canvas is={Text} id="text" text="" />)
+        }
+      >
+        <ToolboxItem icon="text" label={formatMessage(messages.text)} />
+      </div>
     </Box>
   );
 };
