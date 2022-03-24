@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 // craft
 import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
+import { ComponentNamesType, CONTAINER, TWO_COLUMNS } from '../RenderNode';
 
 // intl
 import messages from '../../messages';
@@ -42,11 +43,11 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  const getComponentNameMessage = (name: 'Container' | 'TwoColumn') => {
+  const getComponentNameMessage = (name: ComponentNamesType) => {
     switch (name) {
-      case 'Container':
+      case CONTAINER:
         return messages.oneColumn;
-      case 'TwoColumn':
+      case TWO_COLUMNS:
         return messages.twoColumn;
     }
   };
