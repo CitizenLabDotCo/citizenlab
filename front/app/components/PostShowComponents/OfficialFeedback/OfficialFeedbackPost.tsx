@@ -170,7 +170,7 @@ export class OfficialFeedbackPost extends PureComponent<
   Props & InjectedIntlProps,
   State
 > {
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       showEditForm: false,
@@ -350,7 +350,7 @@ const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />
     )}
   </Data>
