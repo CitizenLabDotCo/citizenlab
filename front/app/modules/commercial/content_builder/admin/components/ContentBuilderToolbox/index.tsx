@@ -30,7 +30,7 @@ const ContentBuilderToolbox = ({
       </button>
       <br />
       <button ref={(ref) => ref && connectors.create(ref, <TwoColumn />)}>
-        2 column
+        {formatMessage(messages.twoColumn)}
       </button>
     </Box>
   );
