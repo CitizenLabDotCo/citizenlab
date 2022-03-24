@@ -679,9 +679,9 @@ class Streams {
                   }
                   // create an index for the stream by its dataId
                   this.addStreamIdByDataIdIndex(
-                    dataId,
                     streamId,
-                    isQueryStream
+                    isQueryStream,
+                    dataId
                   );
                 });
             }
@@ -701,7 +701,7 @@ class Streams {
                 });
               }
               // create an index for the stream by its dataId
-              this.addStreamIdByDataIdIndex(dataId, streamId, isQueryStream);
+              this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
             }
 
             // Important: also loop through any included data and put in it the key-value object cache
