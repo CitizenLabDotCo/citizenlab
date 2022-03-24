@@ -13,13 +13,13 @@ export const itemOrderWasUpdated = (
   return false;
 };
 
-export const orderingIsValid = (items: Item[]) => {
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    if (item.attributes.ordering !== i) {
-      return false;
-    }
-  }
+// export const orderingIsValid = (items: Item[]) => {
+//   for (let i = 0; i < items.length; i++) {
+//     const item = items[i];
+//     if (item.attributes.ordering !== i) {
+//       return false;
+//     }
+//   }
 
-  return true;
-};
+//   return true;
+// };

@@ -18,6 +18,11 @@ export default defineMessages({
     defaultMessage:
       'Enter an email address in the correct format, like name@example.com',
   },
+  emailOrPhoneNumberError: {
+    id: 'app.containers.SignIn.emailOrPhoneNumberError',
+    defaultMessage:
+      'Enter an email address or a phone number in the correct format',
+  },
   passwordLabel: {
     id: 'app.containers.SignIn.passwordLabel',
     defaultMessage: 'Password',

@@ -2,8 +2,7 @@ import React, { useMemo } from 'react';
 
 // services
 import { addNavbarItem } from '../../../../services/navbar';
-import { deletePage } from '../../../../services/pages';
-import { IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
+import { deletePage, IPageData, FIXED_PAGES, TPageCode } from 'services/pages';
 import { getNavbarItemSlug } from 'services/navbar';
 
 // hooks
@@ -11,7 +10,6 @@ import useNavbarItems from 'hooks/useNavbarItems';
 import useRemovedDefaultNavbarItems from '../../../../hooks/useRemovedDefaultNavbarItems';
 import usePages from 'hooks/usePages';
 import usePageSlugById from 'hooks/usePageSlugById';
-import useLocale from 'hooks/useLocale';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -40,14 +38,12 @@ const HiddenNavbarItemList = ({
   const removedDefaultNavbarItems = useRemovedDefaultNavbarItems();
   const pages = usePages();
   const pageSlugById = usePageSlugById();
-  const locale = useLocale();
 
   const notAllHooksRendered =
     isNilOrError(navbarItems) ||
     isNilOrError(removedDefaultNavbarItems) ||
     isNilOrError(pages) ||
-    isNilOrError(pageSlugById) ||
-    isNilOrError(locale);
+    isNilOrError(pageSlugById);
 
   const itemsNotInNavbar = useMemo(() => {
     if (notAllHooksRendered) return null;
@@ -81,16 +77,14 @@ const HiddenNavbarItemList = ({
     }
   };
 
-  const handleClickView = (item: IItemNotInNavbar) => () => {
-    const originWithLocale = `${window.location.origin}/${locale}`;
-    const slug =
+  const getViewButtonLink = (item: IItemNotInNavbar) => {
+    return (
       getNavbarItemSlug(
         item.type === 'default_item' ? item.navbarCode : 'custom',
         pageSlugById,
         item.type === 'page' ? item.pageId : undefined
-      ) || '/';
-
-    window.open(originWithLocale + slug, '_blank');
+      ) || '/'
+    );
   };
 
   return (
@@ -109,13 +103,13 @@ const HiddenNavbarItemList = ({
               isDefaultPage={item.type === 'default_item'}
               showEditButton={item.type !== 'default_item'}
               showAddButton
+              viewButtonLink={getViewButtonLink(item)}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
               addButtonDisabled={navbarItems.length === 7}
               onClickDeleteButton={handleClickDelete(
                 item.type === 'page' ? item.pageId : undefined
               )}
-              onClickViewButton={handleClickView(item)}
             />
           </Row>
         ))}

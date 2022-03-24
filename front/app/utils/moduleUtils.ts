@@ -31,6 +31,7 @@ import {
   ITab,
   MessageDescriptor,
   Multiloc,
+  Locale,
 } from 'typings';
 import { LatLngTuple } from 'leaflet';
 import { Point } from 'components/UI/LeafletMap/typings';
@@ -51,7 +52,8 @@ import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';
 import { TTabName } from 'containers/Admin/projects/all/CreateProject';
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
+import { TVerificationStep } from 'components/Verification/verificationModalEvents';
 import { IPhaseData } from 'services/phases';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 import { GetLocaleChildProps } from 'resources/GetLocale';
@@ -65,14 +67,8 @@ import {
 } from 'services/onboardingCampaigns';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
-
-// typings
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
-
-type Localize = (
-  multiloc: Multiloc | null | undefined,
-  maxChar?: number | undefined
-) => string;
+import { Localize } from 'hooks/useLocalize';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -135,6 +131,17 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
+  };
+  'app.containers.Admin.contentBuilderLayout': {
+    onMount: (isVisible: boolean) => void;
+    childrenToRender: React.ReactNode;
+  };
+  'app.containers.Admin.projects.edit.description.contentBuilder': {
+    onMount: () => void;
+    valueMultiloc: Multiloc | null | undefined;
+    onChange: (description_multiloc: Multiloc, _locale: Locale) => void;
+    label: string;
+    labelTooltipText: string;
   };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
@@ -250,17 +257,17 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.registrationTabEnd': Record<string, any>;
   'app.containers.Admin.settings.registrationSectionEnd': IAdminSettingsRegistrationSectionEndOutletProps;
-  'app.components.VerificationModal.button': {
-    method: IVerificationMethod;
-    onMethodSelected: () => void;
-    last: boolean;
+  'app.components.VerificationModal.buttons': {
+    onClick: (method: TVerificationMethod) => void;
+    verificationMethods: TVerificationMethod[];
   };
-  'app.components.VerificationModal.methodStep': {
-    method: IVerificationMethod;
+  'app.components.VerificationModal.methodSteps': {
+    method: TVerificationMethod | null;
     onCancel: () => void;
     onVerified: () => void;
     showHeader?: boolean;
     inModal: boolean;
+    activeStep: TVerificationStep;
   };
   'app.components.PostShowComponents.ActionBar.right': {
     translateButtonClicked: boolean;
@@ -401,6 +408,10 @@ export type OutletsPropertyMap = {
     flow: TSignUpInFlow;
     onContinue: (authProvider: AuthProvider) => void;
   };
+  'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
+    string,
+    any
+  >;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
@@ -452,16 +463,15 @@ export interface ParsedModuleConfiguration {
   streamsToReset: string[];
 }
 
-export type ModuleConfiguration = RecursivePartial<
-  ParsedModuleConfiguration
-> & {
-  /** this function triggers before the Root component is mounted */
-  beforeMountApplication?: () => void;
-  /** this function triggers after the Root component mounted */
-  afterMountApplication?: () => void;
-  /** used to reset streams created in a module */
-  streamsToReset?: string[];
-};
+export type ModuleConfiguration =
+  RecursivePartial<ParsedModuleConfiguration> & {
+    /** this function triggers before the Root component is mounted */
+    beforeMountApplication?: () => void;
+    /** this function triggers after the Root component mounted */
+    afterMountApplication?: () => void;
+    /** used to reset streams created in a module */
+    streamsToReset?: string[];
+  };
 
 type Modules = {
   configuration: ModuleConfiguration;
@@ -572,45 +582,49 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
   };
 };
 
-export const insertConfiguration = <T extends { name: string }>({
-  configuration,
-  insertAfterName,
-  insertBeforeName,
-  removeName,
-}: InsertConfigurationOptions<T>) => (items: T[]): T[] => {
-  const itemAlreadyInserted = items.some(
-    (item) => item.name === configuration.name
-  );
-  // index of item where we need to insert before/after
-  const referenceIndex = items.findIndex(
-    (item) => item.name === (insertAfterName || insertBeforeName)
-  );
-  const insertIndex = clamp(
-    // if number is outside of lower and upper, it picks
-    // the closes value. If it's inside the ranges, the
-    // number is kept
-    insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
-    0,
-    items.length
-  );
-
-  if (itemAlreadyInserted) {
-    items.splice(insertIndex, 1);
-  }
-
-  const newItems = [
-    ...items.slice(0, insertIndex),
+export const insertConfiguration =
+  <T extends { name: string }>({
     configuration,
-    ...items.slice(insertIndex),
-  ];
+    insertAfterName,
+    insertBeforeName,
+    removeName,
+  }: InsertConfigurationOptions<T>) =>
+  (items: T[]): T[] => {
+    const itemAlreadyInserted = items.some(
+      (item) => item.name === configuration.name
+    );
+    // index of item where we need to insert before/after
+    const referenceIndex = items.findIndex(
+      (item) => item.name === (insertAfterName || insertBeforeName)
+    );
+    const insertIndex = clamp(
+      // if number is outside of lower and upper, it picks
+      // the closes value. If it's inside the ranges, the
+      // number is kept
+      insertAfterName ? referenceIndex + 1 : referenceIndex - 1,
+      0,
+      items.length
+    );
 
-  if (removeName) {
-    const removeIndex = newItems.findIndex((item) => removeName === item.name);
-
-    if (removeIndex > -1) {
-      newItems.splice(removeIndex, 1);
+    if (itemAlreadyInserted) {
+      items.splice(insertIndex, 1);
     }
-  }
 
-  return newItems;
-};
+    const newItems = [
+      ...items.slice(0, insertIndex),
+      configuration,
+      ...items.slice(insertIndex),
+    ];
+
+    if (removeName) {
+      const removeIndex = newItems.findIndex(
+        (item) => removeName === item.name
+      );
+
+      if (removeIndex > -1) {
+        newItems.splice(removeIndex, 1);
+      }
+    }
+
+    return newItems;
+  };

@@ -7,7 +7,7 @@ class WebApi::V1::AvatarsController < ApplicationController
     avatars_service = AvatarsService.new
 
     limit = [params[:limit]&.to_i || 5, 10].min
-    users = policy_scope(User).active
+    users = User.active
 
     avatars = case params[:context_type]
     when 'project'
