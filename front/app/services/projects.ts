@@ -22,7 +22,7 @@ import {
   InputTerm,
 } from './participationContexts';
 
-const apiEndpoint = `${API_PATH}/projects`;
+export const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
@@ -170,6 +170,9 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
+    topics: {
+      data: IRelationship[];
+    };
     current_phase?: {
       data: IRelationship | null;
     };
@@ -181,9 +184,6 @@ export interface IProjectData {
     };
     admin_publication: {
       data: IRelationship | null;
-    };
-    topics: {
-      data: IRelationship[] | null;
     };
   };
 }
@@ -219,6 +219,7 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
   slug?: string;
+  topic_ids?: string[];
 }
 
 export interface IProjectFormState {
@@ -303,6 +304,8 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
   return response;
@@ -325,6 +328,8 @@ export async function updateProject(
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
 

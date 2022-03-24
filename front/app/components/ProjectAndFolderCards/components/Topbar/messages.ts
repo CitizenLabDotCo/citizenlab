@@ -22,4 +22,20 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, no {# projects} one {# project} other {# projects}}',
   },
+  areaTitle: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.areaTitle',
+    defaultMessage: 'Area',
+  },
+  topicTitle: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.topicTitle',
+    defaultMessage: 'Tag',
+  },
+  currentlyWorkingOn: {
+    id: 'app.containers.ProjectFolderCards.currentlyWorkingOn',
+    defaultMessage: '{orgName} is currently working on',
+  },
+  filterBy: {
+    id: 'app.components.ProjectFolderCards.components.Topbar.filterBy',
+    defaultMessage: 'Filter by',
+  },
 });

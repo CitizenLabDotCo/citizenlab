@@ -1,7 +1,17 @@
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal.
   class IdViennaSamlOmniauth
-    FIXED_METADATA = { issuer: 'CitizenLab' }.freeze
+    # The Issuer is hardcoded on Vienna's side and needs to match exactly.
+    ENVIRONMENTS = {
+      test: {
+        issuer: 'CitizenLab',
+        metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_test.xml')
+      },
+      production: {
+        issuer: 'CitizenLabWien',
+        metadata_xml_file: File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_production.xml')
+      }
+    }.freeze
 
     # Extracts user attributes from the Omniauth response auth.
     # @param [OmniAuth::AuthHash] auth
@@ -20,14 +30,17 @@ module IdViennaSaml
     # Configures the SAML endpoint to authenticate with Vienna's StandardPortal
     # if the feature is enabled.
     # Most of the settings are read from the XML file that Vienna shared with us.
-    # The issuer though needs to be hard-coded to 'CitizenLab'.
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('vienna_login')
 
+      metadata_file = ENVIRONMENTS.dig(vienna_login_env, :metadata_xml_file)
+      issuer = ENVIRONMENTS.dig(vienna_login_env, :issuer)
+
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
-      idp_metadata = idp_metadata_parser.parse_to_hash(idp_metadata_xml)
-      metadata = idp_metadata.merge(FIXED_METADATA)
+      idp_metadata = idp_metadata_parser.parse_to_hash(File.read(metadata_file))
+
+      metadata = idp_metadata.merge({ issuer: issuer })
 
       env['omniauth.strategy'].options.merge!(metadata)
     end
@@ -53,22 +66,9 @@ module IdViennaSaml
       "#{configuration.base_backend_uri}/auth/saml/callback"
     end
 
-    def idp_metadata_xml
-      File.read(idp_metadata_xml_file)
-    end
-
-    # Returns the XML file that contains the Metatdata of the SAML IdP based
-    # on the configured environment
-    def idp_metadata_xml_file
-      env = AppConfiguration.instance.settings('vienna_login', 'environment')
-      case env
-      when 'test'
-        File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_test.xml')
-      when 'production'
-        File.join(IdViennaSaml::Engine.root, 'config', 'idp_metadata_production.xml')
-      else
-        raise "No Idp metadata known for vienna_login env: #{env}"
-      end
+    # @return [Symbol] The configured Vienna Login environment as a symbol
+    def vienna_login_env
+      AppConfiguration.instance.settings('vienna_login', 'environment').to_sym
     end
   end
 end

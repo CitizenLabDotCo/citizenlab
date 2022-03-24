@@ -25,10 +25,6 @@ module ProjectManagement
           super.or(scope.project_moderator(record.id))
         end
       end
-
-      def moderate_for_active?
-        super || (record.id && user.project_moderator?(record.id))
-      end
     end
   end
 end

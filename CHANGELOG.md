@@ -2,6 +2,119 @@
 
 ## Next release
 
+/
+
+## 2022-03-24
+
+### Added
+
+- When phone sign in/up is enabled, email/phone field in the sign in/up forms now have validation of the email address/phone number and provides an error message when this validation fails.
+
+### Fixed
+
+- When you need to verify to comment on proposals, an error message with link to the sign in form is now shown again.
+- Status labels are visible again in manual email campaigns list (Admin : Messaging : Custom)
+- Custom email campaigns list properly accomodates longer translations in labels and buttons.
+
+## 2022-03-23
+
+### Added
+
+- Add new topic/tag filter on homepage.
+
+## 2022-03-22
+
+### Fixed
+
+- 'View' button sometimes freezing page in Navigation settings: should be fixed now.
+- Bulk invites of invitees using only emails (no names specified) now succeeds again.
+
+## 2022-03-21
+
+### Added
+
+- Put back secret pages-page
+
+### Changed
+
+- Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
+- Removed 'most active users' graph
+- When the locale of the current user is not present in a multiloc, fall back to the value for a locale of the same language (for example es-CL as picked language and a multiloc with es-ES).
+
+### Fixed
+
+- Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+- HTML is fixed when machine translating HTML content returns bad HTML.
+
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
+### Fixed
+
+- Fixed spacing issue between field name and 'optional' in input form
+
+## 2022-03-14
+
+### Fixed
+
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
+- Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
+
+## 2022-03-11
+
+### Fixed
+
+- When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
+- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
+- Rich text editor copy/paste issues should be resolved
+
+## 2022-03-10
+
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+- Added slight blur to logged-in header image. The logged-in header image is reused from the logged-out banner, and blur was added to make smaller banner images from the two-column layout look nice when fully stretched on the logged-in banner
+
+## 2022-03-08
+
+### Added
+
+- Filter projects by topics
+
+### Fixed
+
+- FranceConnect test login
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+
+### Changed
+
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Use only user name in FranceConnect instead of full profile scope
+
+## 2022-03-04
+
+### Fixed
+
+- Can now re-use tenant host URL immediately the tenant is deleted.
+- Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
+- Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
+
+## 2022-02-28
+
+### Changed
+
+- Non-moderating users cannot visit a folder page, when none of the projects inside are visible to them (e.g. due to group permissions)
+- Non-moderating users cannot visit a folder page, when there are no projects inside
+- Non-moderating users cannot visit a folder page, when the folder is a draft
+
+## 2022-02-25
+
 ### Added
 
 - SAML Single-Sign on (Vienna)

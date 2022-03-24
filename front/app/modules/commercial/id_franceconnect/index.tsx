@@ -2,12 +2,25 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import './services/verificationMethods';
 import VerificationFranceConnectButton from './components/VerificationFranceConnectButton';
+import { TVerificationMethodName } from 'services/verificationMethods';
 
+const verificationMethodName: TVerificationMethodName = 'franceconnect';
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
-      if (props.method.attributes.name !== 'franceconnect') return null;
-      return <VerificationFranceConnectButton {...props} />;
+    'app.components.VerificationModal.buttons': ({
+      verificationMethods,
+      ...otherProps
+    }) => {
+      const method = verificationMethods.find(
+        (vm) => vm.attributes.name === verificationMethodName
+      );
+      if (method) {
+        return (
+          <VerificationFranceConnectButton method={method} {...otherProps} />
+        );
+      }
+
+      return null;
     },
   },
 };

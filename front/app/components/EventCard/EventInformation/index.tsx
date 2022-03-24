@@ -89,18 +89,8 @@ const Time = styled.time`
 
 const Location = styled.div``;
 
-interface StyledIconProps {
-  width: number;
-  height: number;
-  marginRight: number;
-}
-
-const StyledIcon = styled(Icon)<StyledIconProps>`
+const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
-  fill: ${colors.label};
-  margin-right: ${({ marginRight }) => marginRight}px;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
   margin-top: -1.5px;
 
   ${media.smallerThanMinTablet`
@@ -267,9 +257,10 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           <Time>
             <StyledIcon
               name="clock-solid"
-              width={fontSizes.medium}
-              height={fontSizes.medium}
-              marginRight={6}
+              fill={colors.label}
+              width={`${fontSizes.medium}px`}
+              height={`${fontSizes.medium}px`}
+              marginRight="6px"
             />
             {eventDateTime}
           </Time>
@@ -278,9 +269,9 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
             <Location>
               <StyledIcon
                 name="mapmarker"
-                width={fontSizes.medium}
-                height={fontSizes.medium}
-                marginRight={3}
+                width={`${fontSizes.medium}px`}
+                height={`${fontSizes.medium}px`}
+                marginRight="6px"
               />
               <T value={event.attributes.location_multiloc} />
             </Location>

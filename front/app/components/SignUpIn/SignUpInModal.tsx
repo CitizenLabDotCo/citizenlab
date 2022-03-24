@@ -105,6 +105,12 @@ const SignUpInModal = memo<Props>(
       const authUserIsVerified =
         !isNilOrError(authUser) && authUser.attributes.verified;
 
+      // Temporary fix for CL-355 given urgency
+      if (metaData?.pathname.includes('projects/')) {
+        location.reload();
+      }
+      // Temporary fix end
+
       if (hasAction && (!requiresVerification || authUserIsVerified)) {
         metaData?.action?.();
       }

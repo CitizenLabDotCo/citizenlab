@@ -63,9 +63,9 @@ module Insights
 
         def inputs_params
           @inputs_params ||=
-            params.permit(inputs: [:processed, categories: [], keywords: []])
-                  .fetch(:inputs, nil)
-                  .presence
+            params.permit(
+              inputs: [:processed, categories: [], keywords: []]
+            )[:inputs].to_h
         end
 
 

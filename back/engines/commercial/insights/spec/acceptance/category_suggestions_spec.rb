@@ -8,7 +8,7 @@ resource 'Category suggestions for view inputs' do
 
   let(:view) { create(:view) }
   let(:view_id) { view.id }
-  let(:idea) { create(:idea, project: view.scope) }
+  let(:idea) { create(:idea, project: view.source_projects.first) }
   let(:input_id) { idea.id }
 
   let(:json_response) { json_parse(response_body) }
