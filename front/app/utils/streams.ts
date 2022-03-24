@@ -418,23 +418,35 @@ class Streams {
   // refetch the list from the back-end. Hence never manually push data in a query stream,
   // but always do a refetch!
   addStreamIdByDataIdIndex(
-    dataId: string,
     streamId: string,
-    isQueryStream: boolean
+    isQueryStream: boolean,
+    dataId: string
   ) {
-    addStreamIdByDataId(
-      isQueryStream
-        ? this.streamIdsByDataIdWithQuery[dataId]
-        : this.streamIdsByDataIdWithoutQuery[dataId]
-    );
-
-    function addStreamIdByDataId(streamIdsByDataIds: string[] | undefined) {
-      if (Array.isArray(streamIdsByDataIds)) {
-        if (!streamIdsByDataIds.includes(streamId)) {
-          streamIdsByDataIds.push(streamId);
+    if (isQueryStream) {
+      if (
+        this.streamIdsByDataIdWithQuery[dataId] &&
+        !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)
+      ) {
+        const streamIds = this.streamIdsByDataIdWithQuery[dataId];
+        if (streamIds) {
+          streamIds.push(streamId);
         }
-      } else {
-        streamIdsByDataIds = [streamId];
+      } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
+        this.streamIdsByDataIdWithQuery[dataId] = [streamId];
+      }
+    }
+
+    if (!isQueryStream) {
+      if (
+        this.streamIdsByDataIdWithoutQuery[dataId] &&
+        !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)
+      ) {
+        const streamIds = this.streamIdsByDataIdWithQuery[dataId];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
+      } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
+        this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
       }
     }
   }
@@ -452,21 +464,25 @@ class Streams {
     streamId: string,
     isQueryStream: boolean
   ) {
-    addStreamIdByApiEndpoint(
-      isQueryStream
-        ? this.streamIdsByApiEndPointWithQuery[apiEndpoint]
-        : this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
-    );
-
-    function addStreamIdByApiEndpoint(
-      streamIdsByApiEndpoints: string[] | undefined
-    ) {
-      if (Array.isArray(streamIdsByApiEndpoints)) {
-        if (!streamIdsByApiEndpoints.includes(streamId)) {
-          streamIdsByApiEndpoints.push(streamId);
-        }
+    if (isQueryStream) {
+      if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
+        this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
       } else {
-        streamIdsByApiEndpoints = [streamId];
+        const streamIds = this.streamIdsByApiEndPointWithQuery[apiEndpoint];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
+      }
+    }
+
+    if (!isQueryStream) {
+      if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
+      } else {
+        const streamIds = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       }
     }
   }
@@ -971,8 +987,8 @@ class Streams {
   }
 
   async fetchAllWith({
-    dataId,
-    apiEndpoint,
+    dataId = [],
+    apiEndpoint = [],
     partialApiEndpoint,
     regexApiEndpoint,
     onlyFetchActiveStreams,
@@ -983,7 +999,7 @@ class Streams {
     regexApiEndpoint?: RegExp[];
     onlyFetchActiveStreams?: boolean;
   }) {
-    const keys = [...(dataId || []), ...(apiEndpoint || [])];
+    const keys = [...dataId, ...apiEndpoint];
     const promises: Promise<any>[] = [];
 
     const streamIds1 = flatten(
@@ -1001,6 +1017,7 @@ class Streams {
         partialApiEndpoint.forEach((endpoint) => {
           const streamIdsByApiEndPointWithQuery =
             this.streamIdsByApiEndPointWithQuery[key];
+
           if (key.includes(endpoint) && streamIdsByApiEndPointWithQuery) {
             streamIds2.push(...streamIdsByApiEndPointWithQuery);
           }
@@ -1025,6 +1042,7 @@ class Streams {
         regexApiEndpoint.forEach((regex) => {
           const streamIdsByApiEndPointWithQuery =
             this.streamIdsByApiEndPointWithQuery[key];
+
           if (regex.test(key) && streamIdsByApiEndPointWithQuery) {
             streamIds3.push(...streamIdsByApiEndPointWithQuery);
           }
@@ -1035,6 +1053,7 @@ class Streams {
         regexApiEndpoint.forEach((regex) => {
           const streamIdsByApiEndPointWithoutQuery =
             this.streamIdsByApiEndPointWithoutQuery[key];
+
           if (regex.test(key) && streamIdsByApiEndPointWithoutQuery) {
             streamIds3.push(...streamIdsByApiEndPointWithoutQuery);
           }
