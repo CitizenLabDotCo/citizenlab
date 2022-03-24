@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
 
 import { WithRouterProps } from 'react-router';
@@ -17,16 +17,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
-import Form from 'components/Form';
+import Form, { AjvErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from 'cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
+import { ApiErrorGetter } from 'components/Form/contexts';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -110,6 +111,30 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
   };
 
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error, _uischema) => {
+      return (
+        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
+        messages[`api_error_${error}`] ||
+        messages[`api_error_invalid`]
+      );
+    },
+    [uiSchema]
+  );
+
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error, field) => {
+      return (
+        messages[
+          `ajv_error_${uiSchema?.options?.inputTerm}_${field}_${error}`
+        ] ||
+        messages[`ajv_error_${field}_${error}`] ||
+        undefined
+      );
+    },
+    [uiSchema]
+  );
+
   return (
     <PageContainer overflow="hidden">
       {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
@@ -120,6 +145,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             uiSchema={uiSchema}
             onSubmit={onSubmit}
             initialFormData={initialFormData}
+            getAjvErrorMessage={getAjvErrorMessage}
+            getApiErrorMessage={getApiErrorMessage}
             title={
               <FormattedMessage
                 {...{

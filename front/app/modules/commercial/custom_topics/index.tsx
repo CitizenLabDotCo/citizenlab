@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ProjectEditTab from './admin/components/ProjectEditTab';
 import SettingsTab from './admin/components/SettingsTab';
+import TopicInputsTooltipExtraCopy from './admin/components/TopicInputsTooltipExtraCopy';
 import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
@@ -40,9 +41,9 @@ const configuration: ModuleConfiguration = {
   routes: {
     'admin.projects': [
       {
-        path: '/:locale/admin/projects/:projectId/topics',
+        path: '/:locale/admin/projects/:projectId/allowed-input-topics',
         name: 'topics',
-        container: () => import('./admin/containers/ProjectTopics'),
+        container: () => import('./admin/containers/ProjectAllowedInputTopics'),
       },
     ],
     'admin.settings': [
@@ -70,6 +71,8 @@ const configuration: ModuleConfiguration = {
       </RenderOnHideTabCondition>
     ),
     'app.containers.Admin.settings.tabs': (props) => <SettingsTab {...props} />,
+    'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy':
+      () => <TopicInputsTooltipExtraCopy />,
   },
 };
 

@@ -14,6 +14,7 @@ import useIdea from 'hooks/useIdea';
 import { FormattedDate } from 'react-intl';
 import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 type TSize = '1' | '2' | '3' | '4';
 type TStyleType = 'border' | 'shadow';
@@ -476,14 +477,14 @@ const VoteButton = ({
               buttonVoteModeIsActive={buttonVoteModeIsActive}
               buttonVoteMode={buttonVoteMode}
               disabledReason={disabledReason}
-              title={
-                <FormattedMessage
-                  {...{ up: messages.upvote, down: messages.downvote }[
-                    buttonVoteMode
-                  ]}
-                />
-              }
             />
+            <ScreenReaderOnly>
+              <FormattedMessage
+                {...{ up: messages.upvote, down: messages.downvote }[
+                  buttonVoteMode
+                ]}
+              />
+            </ScreenReaderOnly>
           </VoteIconContainer>
           <VoteCount
             votingEnabled={buttonEnabled}

@@ -170,6 +170,11 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.notificationsLabel',
     defaultMessage: 'Notifications',
   },
+  a11y_notificationsLabel: {
+    id: 'app.containers.NotificationMenu.a11y_notificationsLabel',
+    defaultMessage:
+      '{count, plural, =0 {no unviewed notifications} one {1 unviewed notification} other {# unviewed notifications}}',
+  },
   deletedUser: {
     id: 'app.containers.NotificationMenu.deletedUser',
     defaultMessage: 'Deleted user',

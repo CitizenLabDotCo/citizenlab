@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_12_081701) do
+ActiveRecord::Schema.define(version: 2022_03_08_184000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.datetime "acted_at", null: false
     t.datetime "created_at", null: false
     t.index ["acted_at"], name: "index_activities_on_acted_at"
-    t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
+    t.index ["item_type", "item_id"], name: "index_activities_on_item"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -112,13 +112,6 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.datetime "updated_at", null: false
     t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
     t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
-  end
-
-  create_table "clusterings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "title_multiloc", default: {}
-    t.jsonb "structure", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -496,6 +489,10 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "inputs_count", default: 0, null: false
+    t.string "source_type"
+    t.uuid "source_id"
+    t.index ["source_type", "source_id"], name: "index_insights_categories_on_source"
+    t.index ["source_type"], name: "index_insights_categories_on_source_type"
     t.index ["view_id", "name"], name: "index_insights_categories_on_view_id_and_name", unique: true
     t.index ["view_id"], name: "index_insights_categories_on_view_id"
   end
@@ -513,13 +510,15 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.index ["input_type", "input_id"], name: "index_insights_category_assignments_on_input_type_and_input_id"
   end
 
-  create_table "insights_detected_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
+  create_table "insights_data_sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "view_id", null: false
+    t.string "origin_type", null: false
+    t.uuid "origin_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["view_id", "name"], name: "index_insights_detected_categories_on_view_id_and_name", unique: true
-    t.index ["view_id"], name: "index_insights_detected_categories_on_view_id"
+    t.index ["origin_type", "origin_id"], name: "index_insights_data_sources_on_origin"
+    t.index ["view_id", "origin_type", "origin_id"], name: "index_insights_data_sources_on_view_and_origin", unique: true
+    t.index ["view_id"], name: "index_insights_data_sources_on_view_id"
   end
 
   create_table "insights_processed_flags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -556,7 +555,6 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
 
   create_table "insights_views", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.uuid "scope_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_insights_views_on_name"
@@ -916,12 +914,21 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
-  create_table "projects_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+  create_table "projects_allowed_input_topics", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "topic_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "ordering"
+    t.index ["project_id"], name: "index_projects_allowed_input_topics_on_project_id"
+    t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
+  end
+
+  create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["project_id"], name: "index_projects_topics_on_project_id"
     t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
   end
@@ -1027,6 +1034,8 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.string "favicon"
     t.jsonb "style", default: {}
     t.datetime "deleted_at"
+    t.datetime "creation_finalized_at"
+    t.index ["creation_finalized_at"], name: "index_tenants_on_creation_finalized_at"
     t.index ["deleted_at"], name: "index_tenants_on_deleted_at"
     t.index ["host"], name: "index_tenants_on_host"
   end
@@ -1039,6 +1048,15 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "text_reference", null: false
+  end
+
+  create_table "texting_campaigns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "phone_numbers", default: [], null: false, array: true
+    t.text "message", null: false
+    t.datetime "sent_at"
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1167,11 +1185,10 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
   add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "insights_categories", "insights_views", column: "view_id"
   add_foreign_key "insights_category_assignments", "insights_categories", column: "category_id"
-  add_foreign_key "insights_detected_categories", "insights_views", column: "view_id"
+  add_foreign_key "insights_data_sources", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "insights_views", column: "view_id"
   add_foreign_key "insights_text_network_analysis_tasks_views", "nlp_text_network_analysis_tasks", column: "task_id"
   add_foreign_key "insights_text_networks", "insights_views", column: "view_id"
-  add_foreign_key "insights_views", "projects", column: "scope_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_categories", column: "category_id"
   add_foreign_key "insights_zeroshot_classification_tasks_categories", "insights_zeroshot_classification_tasks", column: "task_id"
   add_foreign_key "insights_zeroshot_classification_tasks_inputs", "insights_zeroshot_classification_tasks", column: "task_id"
@@ -1202,6 +1219,8 @@ ActiveRecord::Schema.define(version: 2022_01_12_081701) do
   add_foreign_key "project_folders_images", "project_folders_folders", column: "project_folder_id"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
+  add_foreign_key "projects_allowed_input_topics", "projects"
+  add_foreign_key "projects_allowed_input_topics", "topics"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"

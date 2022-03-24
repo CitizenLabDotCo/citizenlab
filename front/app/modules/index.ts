@@ -13,7 +13,6 @@ import geographicDashboardConfiguration from './commercial/geographic_dashboard'
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import machineTranslationsConfiguration from './commercial/machine_translations';
 import similarIdeaConfiguration from './commercial/similar_ideas';
-import clusteringsConfiguration from './commercial/clusterings';
 import customizableHomepageBannerConfiguration from './commercial/customizable_homepage_banner';
 
 import projectVisibilityConfiguration from './free/project_visibility';
@@ -25,6 +24,7 @@ import intercomConfiguration from './commercial/intercom';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
+import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
@@ -117,16 +117,16 @@ export default loadModules([
     isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
   },
   {
+    configuration: contentBuilderConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/content_builder'],
+  },
+  {
     configuration: customIdeaStatusesConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_idea_statuses'],
   },
   {
     configuration: customTopicsConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/custom_topics'],
-  },
-  {
-    configuration: clusteringsConfiguration,
-    isEnabled: CL_CONFIG['modules']['commercial/clusterings'],
   },
   {
     configuration: customizableHomepageBannerConfiguration,

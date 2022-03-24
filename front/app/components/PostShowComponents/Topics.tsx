@@ -53,15 +53,13 @@ const Topics = memo<Props & InjectedLocalized>(
     if (!isNilOrError(topics) && topics.length > 0) {
       return (
         <Container id={`e2e-${postType}-topics`} className={className}>
-          {topics
-            .filter((topic) => !isNilOrError(topic))
-            .map((topic: ITopicData) => {
-              return (
-                <Topic key={topic.id} className={`e2e-${postType}-topic`}>
-                  {localize(topic.attributes.title_multiloc)}
-                </Topic>
-              );
-            })}
+          {topics.map((topic: ITopicData) => {
+            return (
+              <Topic key={topic.id} className={`e2e-${postType}-topic`}>
+                {localize(topic.attributes.title_multiloc)}
+              </Topic>
+            );
+          })}
         </Container>
       );
     }

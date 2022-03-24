@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
+import { authApiEndpoint } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -140,6 +141,9 @@ export async function completeRegistration(
     { user: { custom_field_values: customFieldValues || {} } }
   );
   await streams.reset();
+  await streams.fetchAllWith({
+    apiEndpoint: [authApiEndpoint],
+  });
 
   return authUser;
 }

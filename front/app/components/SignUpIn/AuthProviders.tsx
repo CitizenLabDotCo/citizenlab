@@ -250,6 +250,7 @@ const Data = adopt<DataProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
+  viennaLoginEnabled: <GetFeatureFlag name="vienna_login" />,
 });
 
 export default (inputProps: InputProps) => (

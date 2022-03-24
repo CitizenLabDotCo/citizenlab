@@ -2,10 +2,231 @@
 
 ## Next release
 
+/
+
+## 2022-03-24
+
+### Added
+
+- When phone sign in/up is enabled, email/phone field in the sign in/up forms now have validation of the email address/phone number and provides an error message when this validation fails.
+
+### Fixed
+
+- When you need to verify to comment on proposals, an error message with link to the sign in form is now shown again.
+- Status labels are visible again in manual email campaigns list (Admin : Messaging : Custom)
+- Custom email campaigns list properly accomodates longer translations in labels and buttons.
+
+## 2022-03-23
+
+### Added
+
+- Add new topic/tag filter on homepage.
+
+## 2022-03-22
+
+### Fixed
+
+- 'View' button sometimes freezing page in Navigation settings: should be fixed now.
+- Bulk invites of invitees using only emails (no names specified) now succeeds again.
+
+## 2022-03-21
+
+### Added
+
+- Put back secret pages-page
+
+### Changed
+
+- Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
+- Removed 'most active users' graph
+- When the locale of the current user is not present in a multiloc, fall back to the value for a locale of the same language (for example es-CL as picked language and a multiloc with es-ES).
+
+### Fixed
+
+- Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+- HTML is fixed when machine translating HTML content returns bad HTML.
+
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
+### Fixed
+
+- Fixed spacing issue between field name and 'optional' in input form
+
+## 2022-03-14
+
+### Fixed
+
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
+- Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
+
+## 2022-03-11
+
+### Fixed
+
+- When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
+- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
+- Rich text editor copy/paste issues should be resolved
+
+## 2022-03-10
+
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+- Added slight blur to logged-in header image. The logged-in header image is reused from the logged-out banner, and blur was added to make smaller banner images from the two-column layout look nice when fully stretched on the logged-in banner
+
+## 2022-03-08
+
+### Added
+
+- Filter projects by topics
+
+### Fixed
+
+- FranceConnect test login
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+
+### Changed
+
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Use only user name in FranceConnect instead of full profile scope
+
+## 2022-03-04
+
+### Fixed
+
+- Can now re-use tenant host URL immediately the tenant is deleted.
+- Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
+- Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
+
+## 2022-02-28
+
+### Changed
+
+- Non-moderating users cannot visit a folder page, when none of the projects inside are visible to them (e.g. due to group permissions)
+- Non-moderating users cannot visit a folder page, when there are no projects inside
+- Non-moderating users cannot visit a folder page, when the folder is a draft
+
+## 2022-02-25
+
+### Added
+
+- SAML Single-Sign on (Vienna)
+
+### Changed
+
+- Language parameter added in Typeform. Allows for question branching in surveys based on user's language.
+
+## 2022-02-23
+
+### Changed
+
+- The ideas overview on project/user and ideas index (/ideas) pages are properly keyboard navigable, implemented as a full-fledged tab system.
+- The timeline of a project is now fully keyboard navigable
+- The proposal button has no tooltip anymore when submitting new proposals is disabled. Instead, a warning message is shown.
+
+### Added
+
+- Ensure `nofollow` is added to all links added through the rich text editor, which makes them useless for backlink generation by bots
+
+## 2022-02-21
+
+### Added
+
+- Support added for custom font not on Adobe Fonts
+
+### Fixed
+
+- Improved area filter layout on frontpage on mobile (now has correct padding), and used a smaller breakpoint for when filter goes below topbar.
+- Enalyzer URL validation now has greater flexibility
+
+### Added
+
+- Support added for email and user ID parameters in SmartSurvey
+
+### Changed
+
+- Icons don't have wrong/empty descriptions linked to them anymore, which improves the user experience for screen readers.
+- Icons that work as button (like the vote button, the bell in the notification menu, etc.) all have accompanying descriptions so we provide more information about these buttons to people using screen readers.
+
+## 2022-02-17
+
+### Changed
+
+- Removes support for category detection in Insights. \[IN-717\]
+
+### Fixed
+
+- Customizable navbar is now feature flagged, meaning it can be enabled or disabled in AdminHQ
+
+## 2022-02-14
+
+### Added
+
+- It is now possible to add `alt` text to images in the Quill rich text editor
+
+## 2022-02-11
+
+### Changed
+
+- More descriptive and consistent error messages in the sign up and sign in flow.
+
+## 2022-02-08
+
+### Fixed
+
+- Typeform surveys now display properly on mobile devices
+- Remove periods from non-Latin URL slugs
+
+### Added
+
+- Folder slugs (URLs) can now be customized
+
+## 2022-02-07
+
+### Changed
+
+- Removes support for the (deprecated) Clustering feature. 💐 \[IN-688\]
+- Remove the word 'del' from NL profanity list
+
+### Fixed
+
+- Always show color and opacity inputs
+- Truncate user count in banner bubble if value is over 10k
+
+## 2022-02-04
+
+### Added
+
+- Re-enable homepage filter tabs now that translations are working
+
+### Fixed
+
+- Color contrast issue (accessibility): the number of total votes needed for a proposal to be considered, shown on the proposal card, has a darker color. This makes it easier to see this information.
+
+## 2022-02-02
+
+### Added
+
+- Projects on homepage can now be filtered by 'Active', 'Archived' or 'All' through a tab system
+
+## 2022-02-01
+
 ### Changed
 
 - Improved `alt` text for logo images on the platform
 - Anonymization of users (using initials avatars, different set of face avatars, different set of first and last names, making anonymous users easier to identify through their email)
+- Updated CC license in Vienna basemap attribution and increased maximum zoom level to 20.
+
+# Fixed
+
+- An issue that prevented Que from starting up was solved by updating the bootsnap gem to the latest version
 
 ## 2022-01-24
 

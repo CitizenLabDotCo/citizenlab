@@ -164,7 +164,7 @@ resource 'Category-suggestion tasks' do
           expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
             expect(view_arg).to eq(view)
             expect(options.fetch(:categories)).to match_array(categories)
-            expect(options.fetch(:input_filter)).to be_nil
+            expect(options.fetch(:input_filter)).to eq({})
           end
 
           do_request(categories: category_ids)
@@ -176,7 +176,7 @@ resource 'Category-suggestion tasks' do
         example 'creates classification tasks for all inputs and categories', document: false do
           expect(Insights::CreateClassificationTasksJob).to receive(:perform_now) do |view_arg, options|
             expect(view_arg).to eq(view)
-            expect(options.fetch(:input_filter)).to be_nil
+            expect(options.fetch(:input_filter)).to eq({})
             expect(options.fetch(:categories)).to be_nil
           end
 

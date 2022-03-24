@@ -3,7 +3,7 @@ import { IOpenPostPageModalEvent } from 'containers/App';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // events
@@ -17,10 +17,12 @@ import {
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProject from 'hooks/useProject';
+import usePhase from 'hooks/usePhase';
 
 // i18n
 import T from 'components/T';
 import FormattedBudget from 'utils/currency/FormattedBudget';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
@@ -31,6 +33,8 @@ import {
   viewportWidths,
   media,
 } from 'utils/styleUtils';
+
+import { darken } from 'polished';
 
 // typings
 import { IIdeaMarkerData } from 'services/ideas';
@@ -51,14 +55,18 @@ const Container = styled.div`
   }
 `;
 
-const CloseButtonWrapper = styled.div`
-  display: flex;
+const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
   top: 10px;
   right: 10px;
-`;
+  background: ${colors.lightGreyishBlue};
+  padding: 7px 8px;
+  border-radius: ${({ theme }) => theme.borderRadius};
 
-const CloseButton = styled(Button)``;
+  &:hover {
+    background: ${darken(0.1, colors.lightGreyishBlue)};
+  }
+`;
 
 const Title = styled.h3`
   height: 46px;
@@ -134,20 +142,32 @@ const FooterValue = styled.div`
 
 interface Props {
   ideaMarker: IIdeaMarkerData;
-  isPBIdea: boolean;
   onClose?: () => void;
   className?: string;
   projectId: string;
+  phaseId?: string;
 }
 
 const IdeaMapCard = memo<Props>(
-  ({ ideaMarker, isPBIdea, onClose, className, projectId }) => {
+  ({ ideaMarker, onClose, className, projectId, phaseId }) => {
     const tenant = useAppConfiguration();
+    const phase = usePhase(phaseId || null);
     const project = useProject({ projectId });
     const { windowWidth } = useWindowSize();
     const smallerThanMaxTablet = windowWidth <= viewportWidths.largeTablet;
 
     const [hovered, setHovered] = useState(false);
+
+    const isParticipatoryBudgetProject =
+      !isNilOrError(project) &&
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'budgeting';
+    const isParticipatoryBudgetPhase =
+      !isNilOrError(phase) &&
+      phase.attributes.participation_method === 'budgeting';
+    const isParticipatoryBudgetIdea = isNilOrError(phase)
+      ? isParticipatoryBudgetProject
+      : isParticipatoryBudgetPhase;
 
     useEffect(() => {
       const subscriptions = [
@@ -178,9 +198,7 @@ const IdeaMapCard = memo<Props>(
       }
     };
 
-    const handleOnKeyPress = (event: React.FormEvent) => {
-      event?.preventDefault();
-
+    const handleOnKeyPress = (event: React.KeyboardEvent) => {
       if (event?.['key'] === 'Enter') {
         handleOnClick(event);
       }
@@ -194,8 +212,8 @@ const IdeaMapCard = memo<Props>(
       setLeafletMapHoveredMarker(null);
     };
 
-    const handleCloseButtonClick = (event: React.FormEvent) => {
-      event?.preventDefault();
+    const handleCloseButtonClick = (event: React.MouseEvent) => {
+      event.stopPropagation();
       onClose?.();
     };
 
@@ -229,23 +247,20 @@ const IdeaMapCard = memo<Props>(
           tabIndex={0}
         >
           {smallerThanMaxTablet && (
-            <CloseButtonWrapper>
-              <CloseButton
-                width="26px"
-                height="26px"
-                padding="0px"
-                buttonStyle="secondary"
-                icon="close"
-                iconSize="12px"
-                onClick={handleCloseButtonClick}
-              />
-            </CloseButtonWrapper>
+            <StyledCloseIconButton
+              iconWidth={'12px'}
+              iconHeight={'12px'}
+              onClick={handleCloseButtonClick}
+              a11y_buttonActionMessage={messages.a11y_hideIdeaCard}
+              iconColor={darken(0.1, colors.label)}
+              iconColorOnHover={darken(0.2, colors.label)}
+            />
           )}
           <Title>
             <T value={ideaMarker.attributes.title_multiloc} />
           </Title>
           <Footer>
-            {isPBIdea && tenantCurrency && ideaBudget && (
+            {isParticipatoryBudgetIdea && tenantCurrency && ideaBudget && (
               <FooterItem>
                 <MoneybagIcon name="coin-stack" />
                 <FooterValue>
@@ -253,7 +268,7 @@ const IdeaMapCard = memo<Props>(
                 </FooterValue>
               </FooterItem>
             )}
-            {!isPBIdea && (
+            {!isParticipatoryBudgetIdea && (
               <>
                 <FooterItem>
                   <DownvoteIcon name="upvote" />

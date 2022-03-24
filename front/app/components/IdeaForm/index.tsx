@@ -30,7 +30,6 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
@@ -38,14 +37,16 @@ import {
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -64,7 +65,6 @@ import { IOption, UploadFile, Locale } from 'typings';
 // style
 import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
 import { media } from 'utils/styleUtils';
 import { getInputTerm } from 'services/participationContexts';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -92,7 +92,7 @@ const StyledFormSection = styled(FormSection)`
   `}
 `;
 
-const FormElement = styled.div`
+export const FormElement = styled.div`
   width: 100%;
   margin-bottom: 40px;
 `;
@@ -131,7 +131,7 @@ interface InputProps {
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
-  topics: GetTopicsChildProps;
+  allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
@@ -650,7 +650,7 @@ class IdeaForm extends PureComponent<
     const {
       projectId,
       pbEnabled,
-      topics,
+      allowedTopics,
       project,
       phases,
       hasTitleProfanityError,
@@ -691,7 +691,7 @@ class IdeaForm extends PureComponent<
     if (
       !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale) &&
-      !isNilOrError(topics) &&
+      !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
       const topicsEnabled = this.isFieldEnabled(
@@ -715,12 +715,10 @@ class IdeaForm extends PureComponent<
         locale
       );
       const showPBBudget = pbContext && pbEnabled;
-      const showTopics = topicsEnabled && topics && topics.length > 0;
+      const showTopics =
+        topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
       const showproposedBudget = proposedBudgetEnabled;
-      const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
@@ -751,7 +749,7 @@ class IdeaForm extends PureComponent<
                     locale
                   )
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.title?.description
                 }
@@ -788,7 +786,10 @@ class IdeaForm extends PureComponent<
             {ideaAuthorChangeEnabled &&
               isAdmin({ data: authUser as IUserData }) && (
                 <FormElement id="e2e-idea-author-input">
-                  <FormLabel htmlFor="author" labelMessage={messages.author} />
+                  <FormLabel
+                    htmlFor="author-select"
+                    labelMessage={messages.author}
+                  />
                   <UserSelect
                     id="author"
                     inputId="author-select"
@@ -807,7 +808,7 @@ class IdeaForm extends PureComponent<
                 optional={
                   !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.body?.description
                 }
@@ -851,7 +852,7 @@ class IdeaForm extends PureComponent<
                   context={{ projectId }}
                 >
                   <FormElement>
-                    <FormLabelWithIcon
+                    <FormLabel
                       labelMessage={messages.budgetLabel}
                       labelMessageValues={{
                         currency: tenantCurrency,
@@ -859,7 +860,6 @@ class IdeaForm extends PureComponent<
                       }}
                       htmlFor="budget"
                       iconName="admin"
-                      iconAriaHidden
                     />
                     <Input
                       id="budget"
@@ -887,7 +887,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.proposed_budget?.description
@@ -919,7 +919,7 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.topic_ids?.description
@@ -929,7 +929,7 @@ class IdeaForm extends PureComponent<
                   <TopicsPicker
                     selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
-                    availableTopics={filteredTopics}
+                    availableTopics={allowedTopics}
                   />
                   {topicsError && (
                     <Error id="e2e-new-idea-topics-error" text={topicsError} />
@@ -948,14 +948,16 @@ class IdeaForm extends PureComponent<
                         locale
                       )
                     }
-                    subtext={
+                    subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
                       ]?.properties?.location?.description
                     }
                     subtextSupportsHtml={true}
+                    htmlFor="idea-form-location-input-field"
                   >
                     <LocationInput
+                      id="idea-form-location-input-field"
                       className="e2e-idea-form-location-input-field"
                       value={address}
                       placeholder={formatMessage(messages.locationPlaceholder)}
@@ -981,7 +983,7 @@ class IdeaForm extends PureComponent<
                     locale
                   )
                 }
-                subtext={
+                subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
                     ?.properties?.images?.description
                 }
@@ -1009,12 +1011,13 @@ class IdeaForm extends PureComponent<
                       locale
                     )
                   }
-                  subtext={
+                  subtextValue={
                     ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                       locale || ''
                     ]?.properties?.attachments?.description
                   }
                   subtextSupportsHtml={true}
+                  htmlFor="idea-form-file-uploader"
                 >
                   <FileUploader
                     id="idea-form-file-uploader"
@@ -1044,8 +1047,16 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  topics: ({ projectId, render }) => {
-    return <GetTopics projectId={projectId}>{render}</GetTopics>;
+  allowedTopics: ({ projectId, render }) => {
+    return (
+      <GetProjectAllowedInputTopics projectId={projectId}>
+        {(projectAllowedInputTopics) => {
+          const topicIds = getTopicIds(projectAllowedInputTopics);
+
+          return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+        }}
+      </GetProjectAllowedInputTopics>
+    );
   },
   authUser: ({ render }) => {
     return <GetAuthUser>{render}</GetAuthUser>;

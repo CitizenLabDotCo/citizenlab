@@ -49,6 +49,8 @@ export type IAppConfigurationSettingsCore = {
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
+  topics_term?: Multiloc;
+  topic_term?: Multiloc;
 };
 
 export interface IAppConfigurationSettings {
@@ -125,6 +127,7 @@ export interface IAppConfigurationSettings {
     verification_methods: string[];
   };
   dynamic_idea_form?: AppConfigurationFeature;
+  jsonforms_custom_fields?: AppConfigurationFeature;
   idea_custom_fields?: AppConfigurationFeature;
   user_custom_fields?: AppConfigurationFeature;
   volunteering?: AppConfigurationFeature;
@@ -148,7 +151,6 @@ export interface IAppConfigurationSettings {
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
-  clustering?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
   granular_permissions?: AppConfigurationFeature;
@@ -198,6 +200,8 @@ export interface IAppConfigurationSettings {
   events_widget?: AppConfigurationFeature & {
     widget_title?: Multiloc;
   };
+  customizable_navbar?: AppConfigurationFeature;
+  content_builder?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -220,11 +224,14 @@ export interface IAppConfigurationStyle {
   signedOutHeaderOverlayColor?: string;
   signedOutHeaderTitleFontSize?: number;
   signedOutHeaderTitleFontWeight?: number;
+  // Number between 0 and 100, inclusive
   signedOutHeaderOverlayOpacity?: number;
   signedInHeaderOverlayColor?: string;
+  // Number between 0 and 100, inclusive
   signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
+  customFontURL?: string;
   projectNavbarBackgroundColor?: string;
   projectNavbarTextColor?: string;
   projectNavbarIdeaButtonBackgroundColor?: string;
@@ -307,6 +314,9 @@ export async function updateAppConfiguration(
   await currentAppConfigurationStream().fetch();
   return tenant;
 }
+
+export const coreSettings = (appConfiguration: IAppConfiguration) =>
+  appConfiguration.data.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

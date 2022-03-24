@@ -119,10 +119,12 @@ interface DataProps {
 
 interface Props extends WithRouterProps, InputProps, DataProps {}
 
+export type TAuthUser = IUser | null | undefined;
+
 interface State {
   previousPathname: string | null;
   tenant: IAppConfiguration | null;
-  authUser: IUser | null | undefined;
+  authUser: TAuthUser;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
@@ -238,6 +240,26 @@ class App extends PureComponent<Props, State> {
                   .customFontAdobeId,
               },
             });
+          });
+        } else if (
+          tenant.data.attributes.style &&
+          tenant.data.attributes.style.customFontURL
+        ) {
+          import('webfontloader').then((WebfontLoader) => {
+            const fontName = (
+              tenant.data.attributes.style as IAppConfigurationStyle
+            ).customFontName;
+            const fontURL = (
+              tenant.data.attributes.style as IAppConfigurationStyle
+            ).customFontURL;
+            if (fontName !== undefined && fontURL !== undefined) {
+              WebfontLoader.load({
+                custom: {
+                  families: [fontName],
+                  urls: [fontURL],
+                },
+              });
+            }
           });
         }
       }),

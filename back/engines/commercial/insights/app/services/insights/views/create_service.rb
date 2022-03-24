@@ -9,7 +9,16 @@ module Insights
 
       def initialize(current_user, params)
         @current_user = current_user
-        @params = params.dup
+
+        @params = params.dup.to_h.tap do |p|
+          data_sources = p.delete(:data_sources)
+          raise ArgumentError, 'At least one data source must be provided' if data_sources.blank?
+
+          # Since Project is the only supported origin_type for now, we use it as the
+          # default and make the origin_type attribute optional.
+          default_attrs = { origin_type: 'Project' }
+          p[:data_sources_attributes] = data_sources.map { |ds| default_attrs.merge(ds) }
+        end
       end
 
       def execute
@@ -24,9 +33,11 @@ module Insights
 
       def after_create(view)
         Insights::CreateTnaTasksJob.perform_later(view)
-        Insights::DetectCategoriesJob.perform_later(view) # [TODO] feature-flag to only detect for premium
-        Insights::TopicImportService.new.copy_assignments(view, @current_user)
-        Insights::ProcessedFlagsService.new.set_processed(view.scope.ideas, [view.id])
+        Insights::CategoryImporter.new.import(view, @current_user.locale)
+
+        view_inputs = InputsFinder.new(view).execute
+        Insights::ProcessedFlagsService.new.set_processed(view_inputs, [view.id])
+
         LogActivityJob.perform_later(view, 'created', @current_user, view.created_at.to_i)
       end
     end

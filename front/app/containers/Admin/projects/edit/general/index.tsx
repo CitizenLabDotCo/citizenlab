@@ -11,8 +11,9 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
-import SlugInput from './components/SlugInput';
+import SlugInput from 'components/admin/SlugInput';
 import ProjectTypePicker from './components/ProjectTypePicker';
+import TopicInputs from './components/TopicInputs';
 import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
@@ -60,7 +61,11 @@ import GetFeatureFlag, {
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
-import { getDefaultState, initSubscriptions } from './utils/state';
+import {
+  getDefaultState,
+  initSubscriptions,
+  getSelectedTopicIds,
+} from './utils/state';
 import save from './utils/save';
 import validate from './utils/validate';
 
@@ -239,6 +244,16 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
+  handleTopicsChange = (topicIds: string[]) => {
+    this.setState(({ projectAttributesDiff }) => ({
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...projectAttributesDiff,
+        topic_ids: topicIds,
+      },
+    }));
+  };
+
   handleAreaTypeChange = (value: 'all' | 'selection') => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
@@ -368,7 +383,6 @@ class AdminProjectEditGeneral extends PureComponent<
       slug,
       showSlugErrorMessage,
       currentTenant,
-      locale,
     } = this.state;
 
     const { authUser } = this.props;
@@ -396,6 +410,11 @@ class AdminProjectEditGeneral extends PureComponent<
             (areaOption) => areaOption.value === id
           ) as IOption;
         });
+
+      const selectedTopicIds = getSelectedTopicIds(
+        projectAttributesDiff,
+        project
+      );
 
       return (
         <StyledForm
@@ -429,10 +448,8 @@ class AdminProjectEditGeneral extends PureComponent<
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
             {currentTenant && project?.data.attributes.slug && (
               <SlugInput
-                currentTenant={currentTenant}
-                project={project}
-                locale={locale}
                 slug={slug}
+                resource="project"
                 apiErrors={apiErrors}
                 showSlugErrorMessage={showSlugErrorMessage}
                 handleSlugOnChange={this.handleSlugOnChange}
@@ -485,6 +502,11 @@ class AdminProjectEditGeneral extends PureComponent<
                 apiErrors={apiErrors}
               />
             )}
+
+            <TopicInputs
+              selectedTopicIds={selectedTopicIds}
+              onChange={this.handleTopicsChange}
+            />
 
             <GeographicAreaInputs
               areaType={areaType}

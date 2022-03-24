@@ -10,12 +10,16 @@ import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IRelationship } from 'typings';
 
-export interface InputProps {
-  pageSize?: number;
+export interface BaseProps {
+  topicFilter?: string[];
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   rootLevelOnly?: boolean;
   removeNotAllowedParents?: boolean;
+}
+
+export interface InputProps extends BaseProps {
+  pageSize?: number;
   /**
    * childrenOfId is an id of a folder that we want
    * child admin publications of.
@@ -50,12 +54,14 @@ export interface IUseAdminPublicationsOutput {
   loadingInitial: boolean;
   loadingMore: boolean;
   onLoadMore: () => void;
-  onChangeAreas: (areas: string[] | null) => void;
+  onChangeTopics: (topics: string[]) => void;
+  onChangeAreas: (areas: string[]) => void;
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
 export default function useAdminPublications({
   pageSize = 1000,
+  topicFilter,
   areaFilter,
   publicationStatusFilter,
   rootLevelOnly = false,
@@ -69,6 +75,7 @@ export default function useAdminPublications({
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
+  const [topics, setTopics] = useState<string[] | undefined>(topicFilter);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
   const [publicationStatuses, setPublicationStatuses] = useState<
     PublicationStatus[]
@@ -80,6 +87,11 @@ export default function useAdminPublications({
       setPageNumber((prevPageNumber) => prevPageNumber + 1);
     }
   }, [hasMore]);
+
+  const onChangeTopics = useCallback((topics) => {
+    setTopics(topics);
+    setPageNumber(1);
+  }, []);
 
   const onChangeAreas = useCallback((areas) => {
     setAreas(areas);
@@ -98,12 +110,13 @@ export default function useAdminPublications({
 
   useEffect(() => {
     const queryParameters = {
-      areas,
-      publication_statuses: publicationStatuses,
       'page[number]': pageNumber,
       'page[size]': pageSize,
+      depth: rootLevelOnly ? 0 : undefined,
+      topics,
+      areas,
+      publication_statuses: publicationStatuses,
       remove_not_allowed_parents: removeNotAllowedParents,
-      depth: rootLevelOnly && 0,
       folder: childrenOfId,
     };
 
@@ -159,10 +172,12 @@ export default function useAdminPublications({
   }, [
     pageNumber,
     pageSize,
+    topics,
     areas,
     publicationStatuses,
     rootLevelOnly,
     removeNotAllowedParents,
+    childrenOfId,
   ]);
 
   return {
@@ -171,6 +186,7 @@ export default function useAdminPublications({
     loadingInitial,
     loadingMore,
     onLoadMore,
+    onChangeTopics,
     onChangeAreas,
     onChangePublicationStatus,
   };

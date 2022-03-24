@@ -154,15 +154,16 @@ class AnonymizeUserService
   end
 
   def random_email(first_name, last_name)
-    Faker::Internet.unique.email name: "#{first_name} #{last_name}", domain: 'anonymized'
+    email = Faker::Internet.email name: "#{first_name} #{last_name}"
+    "#{email.split('@').first}_#{SecureRandom.uuid[...6]}@anonymized.com"
   end
 
   def random_avatar_assignment(first_name, last_name, gender)
     gender = mismatch_gender(gender) if rand(30) == 0
     if rand(5) == 0
-      { remote_avatar_url: random_face_avatar_url(gender) }
+      { 'remote_avatar_url' => random_face_avatar_url(gender) }
     else
-      { avatar: random_initials_avatar_base64(first_name, last_name) }
+      { 'avatar' => random_initials_avatar_base64(first_name, last_name) }
     end
   rescue Exception => e
     ErrorReporter.report e

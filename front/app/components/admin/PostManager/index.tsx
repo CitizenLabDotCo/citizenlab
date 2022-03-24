@@ -13,7 +13,7 @@ import {
   IGlobalStateService,
 } from 'services/globalState';
 import { IProjectData } from 'services/projects';
-import { ITopicData } from 'services/topics';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetIdeaStatuses, {
@@ -28,6 +28,7 @@ import GetInitiatives, {
 } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -306,10 +307,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       this.getNonSharedParams();
 
     if (!isNilOrError(topics)) {
-      const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
-
       return (
         <>
           <TopActionBar>
@@ -380,7 +377,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                   phases={!isNilOrError(phases) ? phases : undefined}
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={filteredTopics}
+                  topics={topics}
                   selectedPhase={selectedPhase}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
@@ -488,11 +485,19 @@ const Data = adopt<DataProps, InputProps>({
     ),
   topics: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
-      return <GetTopics exclude_code="custom">{render}</GetTopics>;
+      return <GetTopics excludeCode="custom">{render}</GetTopics>;
     }
 
     if (type === 'ProjectIdeas' && projectId) {
-      return <GetTopics projectId={projectId}>{render}</GetTopics>;
+      return (
+        <GetProjectAllowedInputTopics projectId={projectId}>
+          {(projectAllowedInputTopics) => {
+            const topicIds = getTopicIds(projectAllowedInputTopics);
+
+            return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+          }}
+        </GetProjectAllowedInputTopics>
+      );
     }
 
     if (type === 'AllIdeas') {

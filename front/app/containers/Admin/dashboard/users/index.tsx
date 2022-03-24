@@ -11,7 +11,6 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import ChartFilters from '../components/ChartFilters';
 import { GraphsContainer, ControlBar } from 'components/admin/Chart';
 import TimeControl from '../components/TimeControl';
-import MostActiveUsersList from './charts/MostActiveUsersList';
 import Outlet from 'components/Outlet';
 
 // i18n
@@ -106,9 +105,6 @@ export class UsersDashboard extends PureComponent<
     } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
-    const infoMessage = this.props.intl.formatMessage(
-      messages.mostActiveUsersRankingDescription
-    );
 
     return (
       <>
@@ -139,13 +135,6 @@ export class UsersDashboard extends PureComponent<
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
             currentGroupFilterLabel={currentGroupFilterLabel}
-          />
-          <MostActiveUsersList
-            currentGroupFilter={currentGroupFilter}
-            startAt={startAt}
-            endAt={endAt}
-            infoMessage={infoMessage}
-            className="dynamicHeight"
           />
         </GraphsContainer>
       </>
