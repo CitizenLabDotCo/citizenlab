@@ -13,6 +13,9 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
+const CONTAINER = 'Container';
+const TWO_COLUMNS = 'TwoColumn';
+
 const RenderNode = ({ render }) => {
   const {
     isActive,
@@ -31,19 +34,21 @@ const RenderNode = ({ render }) => {
   }));
 
   useEffect(() => {
-    if (isActive && parentId && name === 'Container') {
+    if (isActive && parentId && name === CONTAINER) {
       const parentNode = node(parentId).get();
-      parentNode.data.name === 'TwoColumn' && selectNode(parentId);
+      parentNode.data.name === TWO_COLUMNS && selectNode(parentId);
     }
   });
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
 
-  const getComponentNameMessage = (name: 'Container' | 'TwoColumn') => {
+  const getComponentNameMessage = (
+    name: typeof CONTAINER | typeof TWO_COLUMNS
+  ) => {
     switch (name) {
-      case 'Container':
+      case CONTAINER:
         return messages.oneColumn;
-      case 'TwoColumn':
+      case TWO_COLUMNS:
         return messages.twoColumn;
     }
   };
@@ -62,14 +67,18 @@ const RenderNode = ({ render }) => {
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      <Box
-        border={`1px solid${
-          nodeNameIsVisible ? colors.adminTextColor : colors.separation
-        }`}
-        m="4px"
-      >
-        {render}
-      </Box>
+      {name !== TWO_COLUMNS ? (
+        <Box
+          border={`1px solid${
+            nodeNameIsVisible ? colors.adminTextColor : colors.separation
+          }`}
+          m="4px"
+        >
+          {render}
+        </Box>
+      ) : (
+        render
+      )}
     </Box>
   );
 };
