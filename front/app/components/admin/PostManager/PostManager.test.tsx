@@ -55,11 +55,12 @@ describe('<PostManager />', () => {
   it('Handles the state of the Preview', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
+    const defaultFilterMenu = 'projects';
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
-        defaultFilterMenu={'projects'}
-        visibleFilterMenus={['projects', 'statuses', 'topics']}
+        defaultFilterMenu={defaultFilterMenu}
+        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
         topics={topics}
@@ -94,12 +95,13 @@ describe('<PostManager />', () => {
   it('Sets globalState AdminFullWidth and back', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
+    const defaultFilterMenu = 'projects';
 
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
-        defaultFilterMenu={'projects'}
-        visibleFilterMenus={['projects', 'statuses', 'topics']}
+        defaultFilterMenu={defaultFilterMenu}
+        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
         topics={topics}
@@ -118,12 +120,13 @@ describe('<PostManager />', () => {
   it('Handles the selection', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
+    const defaultFilterMenu = 'projects';
 
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
-        defaultFilterMenu={'projects'}
-        visibleFilterMenus={['projects', 'statuses', 'topics']}
+        defaultFilterMenu={defaultFilterMenu}
+        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
         topics={topics}
@@ -149,12 +152,13 @@ describe('<PostManager />', () => {
   it('Handles the active state of the filter menu', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
+    const defaultFilterMenu = 'topics';
 
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
-        defaultFilterMenu={'topics'}
-        visibleFilterMenus={['topics', 'statuses', 'projects']}
+        defaultFilterMenu={defaultFilterMenu}
+        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'projects']}
         posts={posts}
         postStatuses={postStatuses}
         topics={topics}
@@ -179,13 +183,14 @@ describe('<PostManager />', () => {
     const onChangeSearchTerm = jest.fn();
     posts.onChangeSearchTerm = onChangeSearchTerm;
     const topics = [mockTopicData];
+    const defaultFilterMenu = 'topics';
     const postStatuses = [mockIdeaStatusData];
 
     const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
-        defaultFilterMenu={'topics'}
-        visibleFilterMenus={['topics', 'statuses', 'projects']}
+        defaultFilterMenu={defaultFilterMenu}
+        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'projects']}
         posts={posts}
         postStatuses={postStatuses}
         topics={topics}
@@ -206,12 +211,13 @@ describe('<PostManager />', () => {
     posts.onChangeStatus = onChangeStatus;
     const topics = [mockTopicData];
     const postStatuses = [mockProposalStatusData];
+    const defaultFilterMenu = 'projects';
 
     const Wrapper = shallow(
       <PostManager
         type="Initiatives"
-        defaultFilterMenu={'projects'}
-        visibleFilterMenus={['topics', 'statuses', 'projects']}
+        defaultFilterMenu={defaultFilterMenu}
+        visibleFilterMenus={[defaultFilterMenu, 'statuses', 'topics']}
         posts={posts}
         postStatuses={postStatuses}
         topics={topics}
