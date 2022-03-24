@@ -9,6 +9,9 @@ import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
 
+// i18n
+import { FormattedDate } from 'react-intl';
+
 // utils
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -57,15 +60,35 @@ const getTitleMessage = (campaignStatus: ITextingCampaignStatuses) => {
 const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
   switch (campaign.attributes.status) {
     case 'draft':
-      return `Created at: ${campaign.attributes.created_at}`;
+      return (
+        <>
+          Created at: <FormattedDate value={campaign.attributes.created_at} />
+        </>
+      );
     case 'sending':
-      return `Sent at: ${campaign.attributes.sent_at}`;
+      return (
+        <>
+          Sent at: <FormattedDate value={campaign.attributes.sent_at} />
+        </>
+      );
     case 'sent':
-      return `Sent at: ${campaign.attributes.sent_at}`;
+      return (
+        <>
+          Sent at: <FormattedDate value={campaign.attributes.sent_at} />
+        </>
+      );
     case 'failed':
-      return `Created at: ${campaign.attributes.created_at}`;
+      return (
+        <>
+          Created at: <FormattedDate value={campaign.attributes.created_at} />
+        </>
+      );
     default:
-      return `Created at: ${campaign.attributes.created_at}`;
+      return (
+        <>
+          Created at: <FormattedDate value={campaign.attributes.created_at} />
+        </>
+      );
   }
 };
 
@@ -148,8 +171,13 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
         <StyledForm onSubmit={handleOnSubmit}>
           <SectionField>
             <Label>
-              Enter a list of phone numbers. Separate each number by a comma and
-              include the international dialing code (eg. +1).
+              {isDraft && (
+                <span>
+                  Enter a list of phone numbers. Separate each number by a comma
+                  and include the international dialing code (eg. +1).
+                </span>
+              )}
+              {!isDraft && <span>Sent to:</span>}
             </Label>
             <TextArea
               rows={8}
