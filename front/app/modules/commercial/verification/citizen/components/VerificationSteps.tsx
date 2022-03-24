@@ -3,7 +3,6 @@ import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
-import { Spinner } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
 // resource hooks
@@ -15,12 +14,12 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   ContextShape,
   IVerificationError,
-  TVerificationSteps,
+  TVerificationStep,
 } from 'components/Verification/verificationModalEvents';
 
 const Container = styled.div`
@@ -34,17 +33,9 @@ const Container = styled.div`
   `}
 `;
 
-const Loading = styled.div`
-  width: 100%;
-  height: 250px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export interface Props {
   context: ContextShape; // TODO change to pass in additionnal rules info
-  initialActiveStep: TVerificationSteps;
+  initialActiveStep: TVerificationStep;
   showHeader?: boolean;
   inModal: boolean;
   skippable?: boolean;
@@ -68,10 +59,10 @@ const VerificationSteps = memo<Props>(
     onError,
     error,
   }) => {
-    const [activeStep, setActiveStep] = useState<TVerificationSteps>(
+    const [activeStep, setActiveStep] = useState<TVerificationStep>(
       initialActiveStep || 'method-selection'
     );
-    const [method, setMethod] = useState<IVerificationMethod | null>(null);
+    const [method, setMethod] = useState<TVerificationMethod | null>(null);
 
     const authUser = useAuthUser();
     const verificationMethods = useVerificationMethods();
@@ -87,13 +78,10 @@ const VerificationSteps = memo<Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onCompleted, onError, context, activeStep]);
 
-    const onMethodSelected = useCallback(
-      (selectedMethod: IVerificationMethod) => {
-        setMethod(selectedMethod);
-        setActiveStep('method-step');
-      },
-      []
-    );
+    const onMethodSelected = (selectedMethod: TVerificationMethod) => {
+      setMethod(selectedMethod);
+      setActiveStep('method-step');
+    };
 
     const goToSuccessStep = useCallback(() => {
       if (!isNilOrError(authUser)) {
@@ -117,15 +105,7 @@ const VerificationSteps = memo<Props>(
       onSkipped?.();
     }, [onSkipped]);
 
-    if (verificationMethods === undefined) {
-      return (
-        <Loading>
-          <Spinner />
-        </Loading>
-      );
-    }
-
-    if (verificationMethods !== undefined) {
+    if (!isNilOrError(verificationMethods)) {
       return (
         <Container
           id="e2e-verification-wizard-root"
@@ -142,16 +122,15 @@ const VerificationSteps = memo<Props>(
             />
           )}
 
-          {activeStep === 'method-step' && method && (
-            <Outlet
-              id="app.components.VerificationModal.methodStep"
-              method={method}
-              showHeader={showHeader}
-              inModal={inModal}
-              onCancel={onStepCancel}
-              onVerified={onStepVerified}
-            />
-          )}
+          <Outlet
+            id="app.components.VerificationModal.methodSteps"
+            method={method}
+            showHeader={showHeader}
+            inModal={inModal}
+            onCancel={onStepCancel}
+            onVerified={onStepVerified}
+            activeStep={activeStep}
+          />
         </Container>
       );
     }

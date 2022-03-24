@@ -2,9 +2,18 @@
 
 ## Next release
 
+/
+
+## 2022-03-24
+
+### Added
+
+- When phone sign in/up is enabled, email/phone field in the sign in/up forms now have validation of the email address/phone number and provides an error message when this validation fails.
+
 ### Fixed
 
 - When you need to verify to comment on proposals, an error message with link to the sign in form is now shown again.
+- Status labels are visible again in manual email campaigns list (Admin : Messaging : Custom)
 
 ## 2022-03-23
 
