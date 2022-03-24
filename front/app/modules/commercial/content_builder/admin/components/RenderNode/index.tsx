@@ -13,10 +13,19 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
-export const CONTAINER = 'Container';
-export const TWO_COLUMNS = 'TwoColumn';
+const CONTAINER = 'Container';
+const TWO_COLUMNS = 'TwoColumn';
 
-export type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS;
+type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS;
+
+export const getComponentNameMessage = (name: ComponentNamesType) => {
+  switch (name) {
+    case CONTAINER:
+      return messages.oneColumn;
+    case TWO_COLUMNS:
+      return messages.twoColumn;
+  }
+};
 
 const RenderNode = ({ render }) => {
   const {
@@ -44,15 +53,6 @@ const RenderNode = ({ render }) => {
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
   const isTwoColumn = name === TWO_COLUMNS;
-
-  const getComponentNameMessage = (name: ComponentNamesType) => {
-    switch (name) {
-      case CONTAINER:
-        return messages.oneColumn;
-      case TWO_COLUMNS:
-        return messages.twoColumn;
-    }
-  };
 
   return (
     <Box position="relative">
