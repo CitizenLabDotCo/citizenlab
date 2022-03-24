@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -13,23 +13,46 @@ import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 
+const CONTAINER = 'Container';
+const TWO_COLUMNS = 'TwoColumn';
+
+type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS;
+
+export const getComponentNameMessage = (name: ComponentNamesType) => {
+  switch (name) {
+    case CONTAINER:
+      return messages.oneColumn;
+    case TWO_COLUMNS:
+      return messages.twoColumn;
+  }
+};
+
 const RenderNode = ({ render }) => {
-  const { isActive } = useEditor((_, query) => ({
+  const {
+    isActive,
+    isDeletable,
+    parentId,
+    actions: { selectNode },
+    query: { node },
+  } = useEditor((_, query) => ({
     isActive: query.getEvent('selected').contains(id),
+    parentId: id && query.node(id).ancestors()[0],
+    isDeletable: id && query.node(id).isDeletable(),
   }));
 
   const { id, name } = useNode((node) => ({
     name: node.data.custom.displayName || node.data.displayName,
   }));
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE;
-
-  const getComponentNameMessage = (name: 'Container') => {
-    switch (name) {
-      case 'Container':
-        return messages.oneColumn;
+  useEffect(() => {
+    if (isActive && parentId && name === CONTAINER) {
+      const parentNode = node(parentId).get();
+      parentNode.data.name === TWO_COLUMNS && selectNode(parentId);
     }
-  };
+  });
+
+  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
+  const isTwoColumn = name === TWO_COLUMNS;
 
   return (
     <Box position="relative">
@@ -47,9 +70,13 @@ const RenderNode = ({ render }) => {
       )}
       <Box
         border={`1px solid${
-          nodeNameIsVisible ? colors.adminTextColor : colors.separation
+          nodeNameIsVisible
+            ? colors.adminTextColor
+            : !isTwoColumn
+            ? colors.separation
+            : undefined
         }`}
-        m="4px"
+        m={!isTwoColumn ? '4px' : undefined}
       >
         {render}
       </Box>
