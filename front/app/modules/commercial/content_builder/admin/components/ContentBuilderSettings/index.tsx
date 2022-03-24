@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 // craft
 import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
+import { getComponentNameMessage } from '../RenderNode';
 
 // intl
 import messages from '../../messages';
@@ -41,17 +42,6 @@ const ContentBuilderSettings = () => {
       isEnabled: state.options.enabled,
     };
   });
-
-  const getComponentNameMessage = (name: 'Container' | 'Text') => {
-    switch (name) {
-      case 'Container':
-        return messages.oneColumn;
-      case 'Text':
-        return messages.text;
-      default:
-        return messages.oneColumn;
-    }
-  };
 
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">

@@ -14,6 +14,7 @@ import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
 import Container from '../components/CraftComponents/Container';
 import Text from '../components/CraftComponents/Text';
+import TwoColumn from '../components/CraftComponents/TwoColumn';
 import RenderNode from '../components/RenderNode';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 
@@ -25,7 +26,10 @@ const ContentBuilderPage = () => {
   return (
     <Box display="flex" flexDirection="column" w="100%">
       <ContentBuilderTopBar />
-      <Editor resolver={{ Box, Container, Text }} onRender={RenderNode}>
+      <Editor
+        resolver={{ Box, Container, TwoColumn, Text }}
+        onRender={RenderNode}
+      >
         <Box display="flex">
           <Box
             flex="0 0 auto"
