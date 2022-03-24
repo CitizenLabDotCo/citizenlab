@@ -19,7 +19,11 @@ export interface Props extends DataProps {}
 
 const IdeasTab = memo(({ projects }: Props) => {
   const defaultFilterMenu: TFilterMenu = 'projects';
-  const visibleFilterMenus: TFilterMenu[] = ['projects', 'topics', 'statuses'];
+  const visibleFilterMenus: TFilterMenu[] = [
+    defaultFilterMenu,
+    'topics',
+    'statuses',
+  ];
 
   if (!isNilOrError(projects) && projects.projectsList !== undefined) {
     return (
