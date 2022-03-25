@@ -211,7 +211,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
 
       <PhoneWrapper>
         <PhoneContainer aria-hidden>
-          <PhoneBezel></PhoneBezel>
+          <PhoneBezel />
           <MessagesContainer>
             <PhoneMessage>{message}</PhoneMessage>
           </MessagesContainer>
