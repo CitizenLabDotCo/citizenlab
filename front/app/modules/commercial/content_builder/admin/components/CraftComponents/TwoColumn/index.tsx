@@ -23,7 +23,7 @@ const TwoColumn: UserComponent = () => {
     >
       <Box
         m="-4px"
-        mb={isLargeTablet ? '2px' : '0px'}
+        mb={isLargeTablet ? '2px' : '-2px'}
         mr={isLargeTablet ? '-4px' : '0px'}
         flex="1"
       >
