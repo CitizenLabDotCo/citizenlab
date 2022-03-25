@@ -214,7 +214,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                   >
                     <div id="e2e-project-description">
                       <QuillEditedContent
-                        fontSize="medium"
+                        fontSize="m"
                         textColor={theme.colorText}
                       >
                         <T
