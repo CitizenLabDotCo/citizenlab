@@ -49,7 +49,15 @@ const ContentBuilderToolbox = ({
       <div
         ref={(ref) =>
           ref &&
-          connectors.create(ref, <Element canvas is={Text} id="text" text="" />)
+          connectors.create(
+            ref,
+            <Element
+              canvas
+              is={Text}
+              id="text"
+              text={formatMessage(messages.textValue)}
+            />
+          )
         }
       >
         <ToolboxItem icon="text" label={formatMessage(messages.text)} />
