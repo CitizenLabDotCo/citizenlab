@@ -33,12 +33,14 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
 const RenderNode = ({ render }) => {
   const {
     isActive,
+    isHover,
     isDeletable,
     parentId,
     actions: { selectNode },
     query: { node },
   } = useEditor((_, query) => ({
     isActive: query.getEvent('selected').contains(id),
+    isHover: query.getEvent('hovered').contains(id),
     parentId: id && query.node(id).ancestors()[0],
     isDeletable: id && query.node(id).isDeletable(),
   }));
@@ -54,8 +56,8 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const isTwoColumn = name === TWO_COLUMNS;
+  const nodeNameIsVisible =
+    (isHover || isActive) && id !== ROOT_NODE && isDeletable;
 
   return (
     <Box position="relative">
@@ -73,11 +75,7 @@ const RenderNode = ({ render }) => {
       )}
       <Box
         border={`1px solid${
-          nodeNameIsVisible
-            ? colors.adminTextColor
-            : !isTwoColumn
-            ? colors.separation
-            : undefined
+          nodeNameIsVisible ? colors.adminTextColor : undefined
         }`}
         m="4px"
       >
