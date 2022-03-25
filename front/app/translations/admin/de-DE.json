@@ -1303,7 +1303,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 Spalte",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeschreibung",
   "app.containers.admin.ContentBuilder.text": "Text",
-  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
+  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 Spalte",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Status hinzufügen",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Der Standardstatus kann nicht gelöscht werden.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Löschen",
