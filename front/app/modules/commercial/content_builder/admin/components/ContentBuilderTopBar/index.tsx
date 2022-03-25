@@ -31,7 +31,7 @@ const ProjectTitle = styled.p`
 
 const BuilderTitle = styled.h1`
   margin: 0px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
