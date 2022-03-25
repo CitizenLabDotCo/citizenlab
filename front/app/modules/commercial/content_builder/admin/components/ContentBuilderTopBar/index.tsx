@@ -9,9 +9,14 @@ import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 
 // Styling
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { Box, stylingConsts, Spinner } from '@citizenlab/cl2-component-library';
+import { colors } from 'utils/styleUtils';
+import {
+  Box,
+  stylingConsts,
+  Spinner,
+  Text,
+  Title,
+} from '@citizenlab/cl2-component-library';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,16 +28,6 @@ import { withRouter } from 'react-router';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
-
-const ProjectTitle = styled.p`
-  margin-bottom: 6px;
-  color: ${colors.adminSecondaryTextColor};
-`;
-
-const BuilderTitle = styled.h1`
-  margin: 0px;
-  font-size: ${fontSizes.l}px;
-`;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
   const localize = useLocalize();
@@ -67,12 +62,12 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             <Spinner />
           ) : (
             <>
-              <ProjectTitle>
+              <Text mb="8px" color="adminSecondaryTextColor">
                 {localize(project.attributes.title_multiloc)}
-              </ProjectTitle>
-              <BuilderTitle>
+              </Text>
+              <Title variant="h4" as="h1">
                 <FormattedMessage {...messages.descriptionTopicManagerText} />
-              </BuilderTitle>
+              </Title>
             </>
           )}
         </Box>
