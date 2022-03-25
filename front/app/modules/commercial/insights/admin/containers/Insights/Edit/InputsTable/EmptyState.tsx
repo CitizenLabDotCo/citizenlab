@@ -34,7 +34,7 @@ const StyledEmptyState = styled.div`
   }
   p {
     font-weight: normal;
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
   }
 `;
 

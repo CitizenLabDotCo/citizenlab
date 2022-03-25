@@ -6,18 +6,18 @@ import { Subscription, combineLatest } from 'rxjs';
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 
+// hooks
+import { Localize } from 'hooks/useLocalize';
+
 // i18n
-import { getLocalized } from 'utils/i18n';
+import { getLocalizedWithFallback } from 'utils/i18n';
 
 // Typing
-import { Multiloc, Locale } from 'typings';
+import { Locale } from 'typings';
 import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {
-  localize: (
-    multiloc: Multiloc | null | undefined,
-    maxChar?: number | undefined
-  ) => string;
+  localize: Localize;
   locale: Locale;
   tenantLocales: Locale[];
 }
@@ -64,17 +64,14 @@ export default function injectLocalize<P>(
       this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
-    localize = (multiloc: Multiloc | undefined | null, maxChar?: number) => {
-      if (this.state.locale && multiloc) {
-        return getLocalized(
-          multiloc,
-          this.state.locale,
-          this.state.tenantLocales,
-          maxChar
-        );
-      }
-
-      return '';
+    localize: Localize = (multiloc, { maxChar, fallback } = {}) => {
+      return getLocalizedWithFallback(
+        multiloc,
+        this.state.locale,
+        this.state.tenantLocales,
+        maxChar,
+        fallback
+      );
     };
 
     render() {

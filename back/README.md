@@ -1,4 +1,4 @@
-# cl2-back
+# cl2_back
  
 # Getting started
 
@@ -241,39 +241,21 @@ NOTE: Watch out that you don't accidently commit these changes!
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine. These instructions are for adding free engines (Citizenlab employees can find the instructions for commercial engines in Notion).
 
-1. Create a new folder in the `engines` folder and initialize it with an empty `app` folder. Initialize your engine with a nice `README` file.
+1. Run `docker-compose run web bin/rails plugin new engines/free/blorgh --mountable`. Initialize your engine with a nice `README` file.
 
-2. Create a `config` folder with a `config/routes.rb` file initialized as:
-```
-Blorgh::Engine.routes.draw do
+2. Remove files/folders you don’t need. Change the current files to correspond with the other engines. 
 
-end
-```
+3. In the `blorgh.gemspec` file, make sure `AGPLv3` is specified as license. 
 
-3. Create a `db` folder and in it an empty `migrate` folder.
+4. For feature engines (represented by an app configuration setting that can be enabled and disabled), copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
 
-4. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
+5. Add the new engine to `citizenlab.config.json` and 
 
-5. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
+6. Update the licenses by executing `license_finder approvals add blorgh`.
 
-6. Add the following line to your `Gemfile`:
-```
-gem 'blorgh', path: 'engines/blorgh'
-```
-
-7. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
-
-8. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
-
-9. For feature engines, copy over `lib/blorgh/feature_specification.rb` and `spec/lib/settings_spec.rb` and edit according to your engine's specifications.
-
-10. Add your engine to the appropriate citizenlab.config json file and update the licenses.
-
-11. If needed, create a `bin` folder with in it the desired binaries (e.g. `rake`).
-
-12. Add factories in engine.rb if you have factories.
+7. A good way to verify if your engine was added successfully is by running the `spec/lib/settings_spec.rb` spec.
 
 
 ## Running the profiler

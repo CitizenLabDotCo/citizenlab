@@ -154,7 +154,7 @@ const VolunteersCountIcon = styled(Icon)`
 
 const VolunteersCountText = styled.span`
   color: #fff;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 300;
 `;
 

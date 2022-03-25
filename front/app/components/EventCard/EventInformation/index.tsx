@@ -89,18 +89,8 @@ const Time = styled.time`
 
 const Location = styled.div``;
 
-interface StyledIconProps {
-  width: number;
-  height: number;
-  marginRight: number;
-}
-
-const StyledIcon = styled(Icon)<StyledIconProps>`
+const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
-  fill: ${colors.label};
-  margin-right: ${({ marginRight }) => marginRight}px;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
   margin-top: -1.5px;
 
   ${media.smallerThanMinTablet`
@@ -110,7 +100,7 @@ const StyledIcon = styled(Icon)<StyledIconProps>`
 
 const EventDescription = styled.div``;
 
-const SMALL_LINE_HEIGHT = fontSizes.small + 2.45;
+const SMALL_LINE_HEIGHT = fontSizes.s + 2.45;
 
 interface IStyledT {
   hideTextOverflow?: boolean;
@@ -139,7 +129,7 @@ const StyledT = styled(T)<IStyledT>`
   }}
 
   p {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     line-height: ${SMALL_LINE_HEIGHT}px;
   }
 
@@ -267,9 +257,10 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
           <Time>
             <StyledIcon
               name="clock-solid"
-              width={fontSizes.medium}
-              height={fontSizes.medium}
-              marginRight={6}
+              fill={colors.label}
+              width={`${fontSizes.m}px`}
+              height={`${fontSizes.m}px`}
+              marginRight="6px"
             />
             {eventDateTime}
           </Time>
@@ -278,9 +269,9 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
             <Location>
               <StyledIcon
                 name="mapmarker"
-                width={fontSizes.medium}
-                height={fontSizes.medium}
-                marginRight={3}
+                width={`${fontSizes.m}px`}
+                height={`${fontSizes.m}px`}
+                marginRight="6px"
               />
               <T value={event.attributes.location_multiloc} />
             </Location>

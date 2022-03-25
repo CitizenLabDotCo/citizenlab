@@ -13,7 +13,7 @@ import {
   IGlobalStateService,
 } from 'services/globalState';
 import { IProjectData } from 'services/projects';
-import { ITopicData } from 'services/topics';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetIdeaStatuses, {
@@ -28,6 +28,7 @@ import GetInitiatives, {
 } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -105,6 +106,7 @@ interface InputProps {
   // filters settings
   // the filters needed for this view, in the order they'll be shown, first one active by default
   visibleFilterMenus: TFilterMenu[]; // cannot be empty.
+  defaultFilterMenu: TFilterMenu;
   phases?: GetPhasesChildProps;
   // When the PostManager is used in admin/posts, the parent component passes
   // down the array of projects the current user can moderate.
@@ -137,7 +139,7 @@ export class PostManager extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       selection: new Set(),
-      activeFilterMenu: props.visibleFilterMenus[0],
+      activeFilterMenu: props.defaultFilterMenu,
       searchTerm: undefined,
       previewPostId: null,
       previewMode: 'view',
@@ -158,7 +160,10 @@ export class PostManager extends React.PureComponent<Props, State> {
 
     if (
       prevProps.visibleFilterMenus !== visibleFilterMenus &&
-      !visibleFilterMenus.find((item) => item === this.state.activeFilterMenu)
+      !visibleFilterMenus.find(
+        (item) => item === this.state.activeFilterMenu
+      ) &&
+      visibleFilterMenus[0]
     ) {
       this.setState({ activeFilterMenu: visibleFilterMenus[0] });
     }
@@ -226,8 +231,9 @@ export class PostManager extends React.PureComponent<Props, State> {
 
   openPreviewEdit = () => {
     const { selection } = this.state;
-    if (selection.size === 1) {
-      this.setState({ previewPostId: [...selection][0], previewMode: 'edit' });
+    const previewPostId = [...selection][0];
+    if (selection.size === 1 && previewPostId) {
+      this.setState({ previewPostId, previewMode: 'edit' });
     }
   };
 
@@ -306,10 +312,6 @@ export class PostManager extends React.PureComponent<Props, State> {
       this.getNonSharedParams();
 
     if (!isNilOrError(topics)) {
-      const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
-
       return (
         <>
           <TopActionBar>
@@ -380,7 +382,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                   phases={!isNilOrError(phases) ? phases : undefined}
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={filteredTopics}
+                  topics={topics}
                   selectedPhase={selectedPhase}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
@@ -488,11 +490,19 @@ const Data = adopt<DataProps, InputProps>({
     ),
   topics: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
-      return <GetTopics exclude_code="custom">{render}</GetTopics>;
+      return <GetTopics excludeCode="custom">{render}</GetTopics>;
     }
 
     if (type === 'ProjectIdeas' && projectId) {
-      return <GetTopics projectId={projectId}>{render}</GetTopics>;
+      return (
+        <GetProjectAllowedInputTopics projectId={projectId}>
+          {(projectAllowedInputTopics) => {
+            const topicIds = getTopicIds(projectAllowedInputTopics);
+
+            return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+          }}
+        </GetProjectAllowedInputTopics>
+      );
     }
 
     if (type === 'AllIdeas') {

@@ -32,6 +32,7 @@ import {
 import {
   ImageBlot,
   AltTextToImagesModule,
+  KeepHTML,
   attributes,
 } from './altTextToImagesModule';
 // typings
@@ -52,7 +53,7 @@ const DropdownListItem = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   width: auto !important;
@@ -362,6 +363,8 @@ Quill.register(
   },
   true
 );
+
+Quill.register(KeepHTML);
 
 const QuillEditor = memo<Props & InjectedIntlProps>(
   ({

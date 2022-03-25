@@ -30,7 +30,7 @@ const TopicsContainer = styled.div`
 
 const TopicSwitch = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   text-align: left;
@@ -122,7 +122,6 @@ const TopicsPicker = memo(
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = !isNilOrError(selectedTopics)
         ? selectedTopics
-            .filter((topic) => !isNilOrError(topic))
             .map((topic: ITopicData) =>
               localize(topic.attributes.title_multiloc)
             )

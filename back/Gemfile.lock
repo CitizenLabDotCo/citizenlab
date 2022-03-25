@@ -96,6 +96,15 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/content_builder
+  specs:
+    content_builder (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/custom_idea_statuses
   specs:
     custom_idea_statuses (0.1.0)
@@ -305,6 +314,12 @@ PATH
   remote: engines/commercial/smart_groups
   specs:
     smart_groups (0.1.0)
+      rails (~> 6.1)
+
+PATH
+  remote: engines/commercial/texting
+  specs:
+    texting (0.1.0)
       rails (~> 6.1)
 
 PATH
@@ -1137,6 +1152,7 @@ DEPENDENCIES
   byebug
   carrierwave!
   carrierwave-base64 (~> 2.10)
+  content_builder!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
@@ -1249,6 +1265,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   test-prof (~> 1.0)
+  texting!
   user_confirmation!
   user_custom_fields!
   verification!

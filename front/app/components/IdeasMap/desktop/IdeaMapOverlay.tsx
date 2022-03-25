@@ -91,86 +91,79 @@ const StyledIdeasList = styled(MapIdeasList)`
 `;
 
 interface Props {
-  projectIds: string[];
   projectId: string;
-  phaseId?: string | null;
+  phaseId?: string;
   className?: string;
 }
 
-const IdeaMapOverlay = memo<Props>(
-  ({ projectIds, projectId, phaseId, className }) => {
-    const project = useProject({ projectId });
-    const { windowWidth } = useWindowSize();
-    const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
+const IdeaMapOverlay = memo<Props>(({ projectId, phaseId, className }) => {
+  const project = useProject({ projectId });
+  const { windowWidth } = useWindowSize();
+  const smallerThan1440px = !!(windowWidth && windowWidth <= 1440);
 
-    const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
-    const [scrollContainerElement, setScrollContainerElement] =
-      useState<HTMLDivElement | null>(null);
+  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const [scrollContainerElement, setScrollContainerElement] =
+    useState<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-      const subscription = ideaMapCardSelected$.subscribe((ideaId) => {
-        setSelectedIdeaId(ideaId);
-      });
+  useEffect(() => {
+    const subscription = ideaMapCardSelected$.subscribe((ideaId) => {
+      setSelectedIdeaId(ideaId);
+    });
 
-      return () => {
-        setIdeaMapCardSelected(null);
-        subscription.unsubscribe();
-      };
-    }, [projectIds, projectId]);
-
-    useEffect(() => {
-      if (scrollContainerElement && selectedIdeaId) {
-        scrollContainerElement.scrollTop = 0;
-      }
-    }, [scrollContainerElement, selectedIdeaId]);
-
-    const goBack = () => {
+    return () => {
       setIdeaMapCardSelected(null);
+      subscription.unsubscribe();
     };
+  }, [projectId]);
 
-    const handleIdeasShowSetRef = (element: HTMLDivElement) => {
-      setScrollContainerElement(element);
-    };
-
-    if (!isNilOrError(project)) {
-      return (
-        <Container className={className || ''}>
-          <StyledIdeasList
-            projectIds={projectIds}
-            projectId={projectId}
-            phaseId={phaseId}
-          />
-          <CSSTransition
-            classNames="animation"
-            in={!!selectedIdeaId}
-            timeout={timeout}
-            mounOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-          >
-            <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
-              <StyledIdeaShowPageTopBar
-                ideaId={selectedIdeaId as string}
-                goBackAction={goBack}
-                projectId={projectId}
-                insideModal={false}
-              />
-              <StyledIdeasShow
-                ideaId={selectedIdeaId as string}
-                projectId={projectId}
-                insideModal={false}
-                compact={true}
-                setRef={handleIdeasShowSetRef}
-              />
-            </InnerOverlay>
-          </CSSTransition>
-        </Container>
-      );
+  useEffect(() => {
+    if (scrollContainerElement && selectedIdeaId) {
+      scrollContainerElement.scrollTop = 0;
     }
+  }, [scrollContainerElement, selectedIdeaId]);
 
-    return null;
+  const deselectIdeaOnMap = () => {
+    setIdeaMapCardSelected(null);
+  };
+
+  const handleIdeasShowSetRef = (element: HTMLDivElement) => {
+    setScrollContainerElement(element);
+  };
+
+  if (!isNilOrError(project)) {
+    return (
+      <Container className={className || ''}>
+        <StyledIdeasList projectId={projectId} phaseId={phaseId} />
+        <CSSTransition
+          classNames="animation"
+          in={!!selectedIdeaId}
+          timeout={timeout}
+          mounOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+        >
+          <InnerOverlay right={smallerThan1440px ? '-100px' : '-150px'}>
+            <StyledIdeaShowPageTopBar
+              ideaId={selectedIdeaId as string}
+              deselectIdeaOnMap={deselectIdeaOnMap}
+              projectId={projectId}
+              insideModal={false}
+            />
+            <StyledIdeasShow
+              ideaId={selectedIdeaId as string}
+              projectId={projectId}
+              insideModal={false}
+              compact={true}
+              setRef={handleIdeasShowSetRef}
+            />
+          </InnerOverlay>
+        </CSSTransition>
+      </Container>
+    );
   }
-);
+
+  return null;
+});
 
 export default IdeaMapOverlay;

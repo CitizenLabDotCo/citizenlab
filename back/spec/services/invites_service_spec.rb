@@ -331,6 +331,49 @@ describe InvitesService do
         expect(Invite.first.send_invite_email).to be true
       end
     end
+
+    context 'when abbreviated user names feature is enabled' do
+      let(:email) { 'someone@email.com' }
+      let(:hash_array) do
+        [{
+          email: email,
+          first_name: SecureRandom.hex(4).to_s,
+          last_name: SecureRandom.hex(4).to_s,
+          language: 'en'
+        }]
+      end
+      let(:inviter) { create(:user) }
+
+      before do
+        SettingsService.new.activate_feature! 'abbreviated_user_names'
+        service.bulk_create_xlsx(xlsx)
+      end
+
+      it 'anonymizes user slugs' do
+        user = User.find_by(email: email)
+        expect(user.slug).not_to include user.last_name
+      end
+    end
   end
 
+  describe 'bulk_create' do
+    let(:test_email1) { 'find_me_1@test.com' }
+    let(:test_email2) { 'find_me_2@test.com' }
+    let(:hash_array) do
+      [
+        { 'email' => test_email1 },
+        { 'email' => test_email2 }
+      ]
+    end
+    let(:inviter) { create(:user) }
+
+    context 'with multiple emails and no names' do
+      it 'creates users with no slugs' do
+        service.bulk_create(hash_array, _default_params = {}, inviter)
+
+        expect(User.find_by(email: test_email1).slug).to be_nil
+        expect(User.find_by(email: test_email2).slug).to be_nil
+      end
+    end
+  end
 end

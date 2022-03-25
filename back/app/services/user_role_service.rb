@@ -1,5 +1,7 @@
 class UserRoleService
   def can_moderate?(object, user)
+    return true if user.admin?
+
     case object.class.name
     when 'Idea'
       can_moderate? object.project, user
@@ -7,8 +9,14 @@ class UserRoleService
       can_moderate_initiatives? user
     when 'Comment'
       can_moderate? object.post, user
+    when 'OfficialFeedback'
+      can_moderate? object.post, user
+    when 'Vote'
+      can_moderate? object.votable, user
     when 'Project'
       can_moderate_project? object, user
+    when 'Phase'
+      can_moderate_project? object.project, user
     end
   end
 
