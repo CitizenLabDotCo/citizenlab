@@ -3,7 +3,7 @@ import {
   IProjectAllowedInputTopic,
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { NilOrError } from 'utils/helperUtils';
 // import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 export type IProjectAllowedInputTopicsState =
@@ -18,11 +18,7 @@ export default function useProjectAllowedInputTopics(projectId: string) {
     const subscription = listProjectAllowedInputTopics(
       projectId
     ).observable.subscribe((projectAllowedInputTopicsResponse) => {
-      setProjectAllowedInputTopics(
-        !isNilOrError(projectAllowedInputTopicsResponse)
-          ? projectAllowedInputTopicsResponse.data
-          : null
-      );
+      setProjectAllowedInputTopics(projectAllowedInputTopicsResponse.data);
     });
 
     return () => subscription.unsubscribe();
