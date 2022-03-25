@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // libraries
@@ -32,7 +31,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { isValidEmail } from 'utils/validate';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
@@ -94,15 +93,12 @@ type State = {
   email: string | null;
   password: string | null;
   processing: boolean;
-  emailError: string | null;
+  emailOrPhoneNumberError: string | null;
   signInError: string | null;
   hasEmptyPasswordError: boolean;
 };
 
-class PasswordSignin extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  State
-> {
+class PasswordSignin extends PureComponent<Props & InjectedIntlProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
@@ -112,7 +108,7 @@ class PasswordSignin extends PureComponent<
       email: null,
       password: null,
       processing: false,
-      emailError: null,
+      emailOrPhoneNumberError: null,
       signInError: null,
       hasEmptyPasswordError: false,
     };
@@ -123,7 +119,7 @@ class PasswordSignin extends PureComponent<
   handleEmailOnChange = (email: string) => {
     this.setState({
       email,
-      emailError: null,
+      emailOrPhoneNumberError: null,
       signInError: null,
     });
   };
@@ -159,53 +155,77 @@ class PasswordSignin extends PureComponent<
     }
   };
 
-  validate(email: string | null) {
+  validate(
+    phoneLoginEnabled: boolean,
+    emailOrPhoneNumber: string | null,
+    password: string | null
+  ) {
     const {
       intl: { formatMessage },
-      tenant,
     } = this.props;
-    const { password } = this.state;
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const hasEmailError = !phone && (!email || !isValidEmail(email));
-    const emailError = hasEmailError
-      ? formatMessage(messages.emailError)
-      : null;
-    const hasEmptyPasswordError = !password;
+    const hasValidPhoneNumber = emailOrPhoneNumber
+      ? isValidPhoneNumber(emailOrPhoneNumber)
+      : false;
+    const hasValidEmail = emailOrPhoneNumber
+      ? isValidEmail(emailOrPhoneNumber)
+      : false;
 
-    this.setState({ emailError, hasEmptyPasswordError });
+    const hasEmailOrPhoneNumberValidationError = phoneLoginEnabled
+      ? !hasValidEmail && !hasValidPhoneNumber
+      : !hasValidEmail;
+    const hasEmptyPasswordError = password ? password.length === 0 : true;
 
-    if (emailError && this.emailInputElement) {
+    this.setState({
+      emailOrPhoneNumberError: hasEmailOrPhoneNumberValidationError
+        ? formatMessage(
+            phoneLoginEnabled
+              ? messages.emailOrPhoneNumberError
+              : messages.emailError
+          )
+        : null,
+      hasEmptyPasswordError,
+    });
+
+    if (hasEmailOrPhoneNumberValidationError && this.emailInputElement) {
       this.emailInputElement.focus();
     }
 
-    if (!emailError && hasEmptyPasswordError && this.passwordInputElement) {
+    if (
+      !hasEmailOrPhoneNumberValidationError &&
+      hasEmptyPasswordError &&
+      this.passwordInputElement
+    ) {
       this.passwordInputElement.focus();
     }
 
-    return !emailError && !hasEmptyPasswordError;
+    return !hasEmailOrPhoneNumberValidationError && !hasEmptyPasswordError;
   }
 
-  handleOnSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  handleOnSubmit =
+    (phoneLoginEnabled: boolean) => async (event: React.FormEvent) => {
+      event.preventDefault();
 
-    const { onSignInCompleted } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { email, password } = this.state;
+      const { onSignInCompleted } = this.props;
+      const { formatMessage } = this.props.intl;
+      const { email, password } = this.state;
 
-    if (this.validate(email) && email && password) {
-      try {
-        this.setState({ processing: true });
-        const user = await signIn(email, password);
-        trackEventByName(tracks.signInEmailPasswordCompleted);
-        onSignInCompleted(user.data.id);
-      } catch (error) {
-        trackEventByName(tracks.signInEmailPasswordFailed, { error });
-        const signInError = formatMessage(messages.signInError);
-        this.setState({ signInError, processing: false });
+      if (
+        this.validate(phoneLoginEnabled, email, password) &&
+        email &&
+        password
+      ) {
+        try {
+          this.setState({ processing: true });
+          const user = await signIn(email, password);
+          trackEventByName(tracks.signInEmailPasswordCompleted);
+          onSignInCompleted(user.data.id);
+        } catch (error) {
+          trackEventByName(tracks.signInEmailPasswordFailed, { error });
+          const signInError = formatMessage(messages.signInError);
+          this.setState({ signInError, processing: false });
+        }
       }
-    }
-  };
+    };
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     if (element) {
@@ -222,7 +242,7 @@ class PasswordSignin extends PureComponent<
       email,
       password,
       processing,
-      emailError,
+      emailOrPhoneNumberError,
       signInError,
       hasEmptyPasswordError,
     } = this.state;
@@ -237,8 +257,10 @@ class PasswordSignin extends PureComponent<
       franceconnectLoginEnabled,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const phoneLoginEnabled =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
+        ? tenant.attributes.settings.password_login.phone
+        : false;
     const enabledProviders = [
       passwordLoginEnabled,
       googleLoginEnabled,
@@ -255,19 +277,25 @@ class PasswordSignin extends PureComponent<
         id="e2e-sign-in-email-password-container"
         className={className || ''}
       >
-        <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
+        <Form
+          id="signin"
+          onSubmit={this.handleOnSubmit(phoneLoginEnabled)}
+          noValidate={true}
+        >
           <FormElement>
             <FormLabel
               htmlFor="email"
               labelMessage={
-                phone ? messages.emailOrPhoneLabel : messages.emailLabel
+                phoneLoginEnabled
+                  ? messages.emailOrPhoneLabel
+                  : messages.emailLabel
               }
             />
             <Input
               type="email"
               id="email"
               value={email}
-              error={emailError}
+              error={emailOrPhoneNumberError}
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
@@ -294,7 +322,7 @@ class PasswordSignin extends PureComponent<
           <FormElement>
             <ButtonWrapper>
               <Button
-                onClick={this.handleOnSubmit}
+                onClick={this.handleOnSubmit(phoneLoginEnabled)}
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 id="e2e-signin-password-submit-button"
@@ -344,7 +372,7 @@ class PasswordSignin extends PureComponent<
   }
 }
 
-const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
+const PasswordSigninWithHoC = injectIntl(PasswordSignin);
 
 const Data = adopt<DataProps>({
   tenant: <GetAppConfiguration />,
@@ -358,6 +386,8 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => <PasswordSigninWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <PasswordSigninWithHoC {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

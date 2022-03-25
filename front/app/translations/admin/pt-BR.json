@@ -1300,6 +1300,7 @@
   "app.containers.admin.ContentBuilder.delete": "Deletar",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
   "app.containers.admin.ContentBuilder.projectDescription": "Descrição projeto",
+  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Adicionar status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "O status padrão não pode ser excluído",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Deletar",
