@@ -16,6 +16,7 @@ import clHistory from 'utils/cl-router/history';
 
 // styling
 import styled from 'styled-components';
+import { isNilOrError } from 'utils/helperUtils';
 
 const StyledForm = styled.form`
   width: 500px;
@@ -25,20 +26,25 @@ const StyledForm = styled.form`
 const MAX_CHAR_COUNT = 480;
 
 const TextCreation = () => {
-  const [inputPhoneNumbers, setInputPhoneNumbers] = useState('');
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputPhoneNumbers, setInputPhoneNumbers] = useState<string | null>(
+    null
+  );
+  const [inputMessage, setInputMessage] = useState<string | null>(null);
   const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
 
-  const handleInputPhoneNumbersChange = (value) => {
+  const handleInputPhoneNumbersChange = (value: string | null) => {
     setInputPhoneNumbers(value);
   };
 
-  const handleInputMessageChange = (value) => {
+  const handleInputMessageChange = (value: string) => {
     setInputMessage(value);
   };
 
-  const handleOnSubmit = async (event) => {
+  const handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    //
+    if (isNilOrError(inputMessage) || isNilOrError(inputPhoneNumbers)) return;
 
     const splitNumbers = inputPhoneNumbers.split(',');
     try {
@@ -53,9 +59,20 @@ const TextCreation = () => {
   };
 
   useEffect(() => {
+    if (isNilOrError(inputMessage)) {
+      setRemainingChars(MAX_CHAR_COUNT);
+      return;
+    }
+
     const remainingCharCount = MAX_CHAR_COUNT - inputMessage.length;
     setRemainingChars(remainingCharCount);
   }, [inputMessage]);
+
+  const isSubmitButtonEnabled =
+    !isNilOrError(inputMessage) &&
+    !isNilOrError(inputPhoneNumbers) &&
+    inputMessage.length > 0 &&
+    inputPhoneNumbers.length > 0;
 
   return (
     <>
@@ -70,9 +87,7 @@ const TextCreation = () => {
         <SectionField>
           <TextingHeader
             headerMessage="New SMS campaign"
-            onClickGoBack={() => {
-              clHistory.goBack();
-            }}
+            onClickGoBack={clHistory.goBack}
           />
         </SectionField>
         <StyledForm onSubmit={handleOnSubmit}>
@@ -109,6 +124,7 @@ const TextCreation = () => {
                 type="submit"
                 text={'Preview SMS'}
                 onClick={handleOnSubmit}
+                disabled={!isSubmitButtonEnabled}
               />
             </Box>
           </SectionField>

@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-export const apiEndpoint = `${API_PATH}/texting_campaigns`;
+const apiEndpoint = `${API_PATH}/texting_campaigns`;
 
 export type ITextingCampaignStatuses = 'draft' | 'sending' | 'sent' | 'failed';
 
@@ -28,7 +28,7 @@ export const textingCampaignsStream = (
   streamParams: IStreamParams | null = null
 ) => {
   return streams.get<ITextingCampaigns>({
-    apiEndpoint: `${apiEndpoint}`,
+    apiEndpoint,
     ...streamParams,
   });
 };
@@ -48,7 +48,7 @@ export const addTextingCampaign = async (
   message: string,
   phone_numbers: string[]
 ) => {
-  const result = await streams.add<ITextingCampaign>(`${apiEndpoint}`, {
+  const result = await streams.add<ITextingCampaign>(apiEndpoint, {
     message,
     phone_numbers,
   });

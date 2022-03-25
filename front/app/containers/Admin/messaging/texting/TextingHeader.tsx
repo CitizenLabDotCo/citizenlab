@@ -1,22 +1,8 @@
-import React, { ReactNode, memo } from 'react';
+import React, { ReactNode } from 'react';
 
 // components
 import Button from 'components/UI/Button';
-import { Box } from '@citizenlab/cl2-component-library';
-
-// styling
-import styled from 'styled-components';
-
-const HeaderText = styled.h1`
-  font-size: 2rem;
-`;
-
-const HeaderContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
+import { Box, Title } from '@citizenlab/cl2-component-library';
 
 interface Props {
   onClickGoBack: () => void;
@@ -25,28 +11,38 @@ interface Props {
   children?: ReactNode;
 }
 
-const TextingHeader = memo<Props>(
-  ({ onClickGoBack, headerMessage, showHorizontalRule, children }) => {
-    return (
-      <Box>
-        <Button
-          justify="left"
-          onClick={onClickGoBack}
-          buttonStyle="text"
-          icon="arrow-back"
-          padding="0"
-          size="2"
-          mb="2rem"
-          text={'Go back'}
-        />
-        <HeaderContainer>
-          <HeaderText>{headerMessage}</HeaderText>
-          {children}
-        </HeaderContainer>
-        {showHorizontalRule && <hr />}
+const TextingHeader = ({
+  onClickGoBack,
+  headerMessage,
+  showHorizontalRule,
+  children,
+}: Props) => {
+  return (
+    <>
+      <Button
+        justify="left"
+        onClick={onClickGoBack}
+        buttonStyle="text"
+        icon="arrow-back"
+        padding="0"
+        size="2"
+        mb="2rem"
+        text={'Go back'}
+      />
+      <Box
+        height="100%"
+        width="100%"
+        display="flex"
+        justifyContent="space-between"
+      >
+        <Title variant="h1" margin="0">
+          {headerMessage}
+        </Title>
+        {children}
       </Box>
-    );
-  }
-);
+      {showHorizontalRule && <hr />}
+    </>
+  );
+};
 
 export default TextingHeader;
