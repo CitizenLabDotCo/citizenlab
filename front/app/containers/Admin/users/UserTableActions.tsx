@@ -59,7 +59,7 @@ const TableOptions = styled.div`
 
 const UserCount = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 5px;

@@ -36,7 +36,7 @@ const Container = styled.li`
 
 const ReplyButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   cursor: pointer;
