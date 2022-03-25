@@ -1302,7 +1302,7 @@
   "app.containers.admin.ContentBuilder.delete": "Eliminar",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 columna",
   "app.containers.admin.ContentBuilder.projectDescription": "Descripción del proyecto",
-  "app.containers.admin.ContentBuilder.text": "Text",
+  "app.containers.admin.ContentBuilder.text": "Texto",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 columna",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Agregar estado",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "El estado predeterminado no puede ser eliminado.",
