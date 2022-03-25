@@ -26,6 +26,7 @@ import styled from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
+import { TOnContinueFunction } from '../AuthProviderButton';
 
 const Container = styled.div``;
 
@@ -60,7 +61,7 @@ const SignIn = memo<Props>(
       };
     }, []);
 
-    const handleOnAuthProviderSelected = (
+    const handleOnAuthProviderSelected: TOnContinueFunction = (
       selectedMethod: AuthProvider,
       setHrefFromModule?: () => void
     ) => {
