@@ -41,7 +41,7 @@ export default class GetProjectAllowedInputTopics extends React.Component<
       this.props.projectId
     ).observable.subscribe((projectAllowedInputTopicsResponse) => {
       this.setState({
-        projectAllowedInputTopics: isNilOrError(
+        projectAllowedInputTopics: !isNilOrError(
           projectAllowedInputTopicsResponse
         )
           ? projectAllowedInputTopicsResponse.data
