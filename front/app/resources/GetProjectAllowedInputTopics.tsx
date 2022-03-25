@@ -1,12 +1,8 @@
 import React from 'react';
 import { IProjectAllowedInputTopicsState } from 'hooks/useProjectAllowedInputTopics';
-import {
-  IProjectAllowedInputTopicsResponse,
-  listProjectAllowedInputTopics,
-} from 'services/projectAllowedInputTopics';
-import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { listProjectAllowedInputTopics } from 'services/projectAllowedInputTopics';
+import { isNilOrError } from 'utils/helperUtils';
 import { Subscription } from 'rxjs';
-import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 interface State {
   projectAllowedInputTopics: IProjectAllowedInputTopicsState;
@@ -43,23 +39,15 @@ export default class GetProjectAllowedInputTopics extends React.Component<
   setSubscription() {
     this.subscription = listProjectAllowedInputTopics(
       this.props.projectId
-    ).observable.subscribe(
-      (
-        projectAllowedInputTopicsResponse:
-          | IProjectAllowedInputTopicsResponse
-          | NilOrError
-      ) => {
-        this.setState({
-          projectAllowedInputTopics: isNilOrError(
-            projectAllowedInputTopicsResponse
-          )
-            ? projectAllowedInputTopicsResponse
-            : orderingIsValid(projectAllowedInputTopicsResponse.data)
-            ? projectAllowedInputTopicsResponse.data
-            : null,
-        });
-      }
-    );
+    ).observable.subscribe((projectAllowedInputTopicsResponse) => {
+      this.setState({
+        projectAllowedInputTopics: isNilOrError(
+          projectAllowedInputTopicsResponse
+        )
+          ? projectAllowedInputTopicsResponse.data
+          : null,
+      });
+    });
   }
 
   componentDidMount() {

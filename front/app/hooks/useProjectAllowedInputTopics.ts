@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
   IProjectAllowedInputTopic,
-  IProjectAllowedInputTopicsResponse,
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -18,19 +17,13 @@ export default function useProjectAllowedInputTopics(projectId: string) {
   useEffect(() => {
     const subscription = listProjectAllowedInputTopics(
       projectId
-    ).observable.subscribe(
-      (
-        projectAllowedInputTopicsResponse:
-          | IProjectAllowedInputTopicsResponse
-          | NilOrError
-      ) => {
-        setProjectAllowedInputTopics(
-          !isNilOrError(projectAllowedInputTopicsResponse)
-            ? projectAllowedInputTopicsResponse.data
-            : null
-        );
-      }
-    );
+    ).observable.subscribe((projectAllowedInputTopicsResponse) => {
+      setProjectAllowedInputTopics(
+        !isNilOrError(projectAllowedInputTopicsResponse)
+          ? projectAllowedInputTopicsResponse.data
+          : null
+      );
+    });
 
     return () => subscription.unsubscribe();
   }, [projectId]);
