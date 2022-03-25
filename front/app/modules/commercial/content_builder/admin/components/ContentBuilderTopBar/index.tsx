@@ -62,7 +62,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             <Spinner />
           ) : (
             <>
-              <Text mb="8px" color="adminSecondaryTextColor">
+              <Text mb="0px" color="adminSecondaryTextColor">
                 {localize(project.attributes.title_multiloc)}
               </Text>
               <Title variant="h4" as="h1">
