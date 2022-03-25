@@ -40,7 +40,6 @@ declare global {
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
       apiAddPoll: typeof apiAddPoll;
-      apiVerifyEmail: typeof apiVerifyEmail;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
       intersectsViewport: typeof intersectsViewport;
