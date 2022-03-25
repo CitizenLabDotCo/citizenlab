@@ -36,6 +36,7 @@ interface Props extends GetIdeasInputProps {
   showFiltersSidebar?: boolean;
   className?: string;
   invisibleTitleMessage?: MessageDescriptor;
+  projectId?: string;
 }
 
 const IdeaCards = memo<Props>(

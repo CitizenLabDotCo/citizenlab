@@ -57,7 +57,7 @@ const StyledSearch = styled(Search)`
 
 const StyledInputCount = styled.span`
   font-weight: normal;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   margin-left: 8px;
 `;
 

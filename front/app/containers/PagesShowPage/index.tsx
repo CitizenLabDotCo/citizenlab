@@ -93,7 +93,7 @@ export const PageDescription = styled.div``;
 
 export const StyledLink = styled(Link)`
   color: #666;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 400;
   display: flex;
   align-items: center;

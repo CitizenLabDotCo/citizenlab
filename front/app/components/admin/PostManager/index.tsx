@@ -485,7 +485,7 @@ const Data = adopt<DataProps, InputProps>({
     ),
   topics: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
-      return <GetTopics exclude_code="custom">{render}</GetTopics>;
+      return <GetTopics excludeCode="custom">{render}</GetTopics>;
     }
 
     if (type === 'ProjectIdeas' && projectId) {

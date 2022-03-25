@@ -40,7 +40,7 @@ const StyledTableRow = styled.tr`
   }
 
   .inputTitle {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     color: ${colors.label};
   }
 

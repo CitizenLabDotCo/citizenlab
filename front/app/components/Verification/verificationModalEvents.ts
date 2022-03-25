@@ -10,7 +10,7 @@ export type ProjectContext = {
   action: IPCAction;
 };
 
-export type TVerificationSteps =
+export type TVerificationStep =
   | 'method-selection'
   | 'method-step'
   | 'success'
@@ -29,7 +29,7 @@ export type ContextShape =
   | undefined;
 
 export interface OpenVerificationModalData {
-  step: TVerificationSteps;
+  step: TVerificationStep;
   context: ContextShape | null;
   error?: IVerificationError | null;
 }
@@ -41,7 +41,7 @@ export enum VerificationModalEvents {
 
 interface IOpenVerificationModalParams {
   context?: ContextShape;
-  step?: TVerificationSteps;
+  step?: TVerificationStep;
   error?: IVerificationError | null;
 }
 export function isProjectContext(obj: ContextShape): obj is ProjectContext {

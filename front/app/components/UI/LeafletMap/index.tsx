@@ -40,7 +40,7 @@ const LeafletMapContainer = styled.div<{ mapHeight: string | undefined }>`
     & > span {
       color: #000;
       font-weight: 600;
-      font-size: ${fontSizes.medium}px;
+      font-size: ${fontSizes.m}px;
       line-height: normal;
       text-align: center;
     }

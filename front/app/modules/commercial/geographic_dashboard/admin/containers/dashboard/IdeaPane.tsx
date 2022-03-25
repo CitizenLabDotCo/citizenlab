@@ -33,7 +33,7 @@ const Container = styled.div`
   flex-direction: column;
 
   h4 {
-    font-size: ${fontSizes.medium}px;
+    font-size: ${fontSizes.m}px;
   }
 `;
 

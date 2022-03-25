@@ -5,7 +5,7 @@ import {
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { orderingIsValid } from 'components/admin/ResourceList/utils';
+// import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]
@@ -25,9 +25,7 @@ export default function useProjectAllowedInputTopics(projectId: string) {
           | NilOrError
       ) => {
         setProjectAllowedInputTopics(
-          isNilOrError(projectAllowedInputTopicsResponse)
-            ? projectAllowedInputTopicsResponse
-            : orderingIsValid(projectAllowedInputTopicsResponse.data)
+          !isNilOrError(projectAllowedInputTopicsResponse)
             ? projectAllowedInputTopicsResponse.data
             : null
         );
