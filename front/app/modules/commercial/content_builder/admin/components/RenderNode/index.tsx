@@ -65,7 +65,7 @@ const RenderNode = ({ render }) => {
           bgColor={colors.adminTextColor}
           color="#fff"
           position="absolute"
-          top="-28px"
+          top="-27px"
           left="4px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />
@@ -79,7 +79,7 @@ const RenderNode = ({ render }) => {
             ? colors.separation
             : undefined
         }`}
-        m={!isTwoColumn ? '4px' : undefined}
+        m="4px"
       >
         {render}
       </Box>

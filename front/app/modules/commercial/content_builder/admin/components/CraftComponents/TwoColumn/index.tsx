@@ -21,10 +21,10 @@ const TwoColumn: UserComponent = () => {
       display="flex"
       w="100%"
     >
-      <Box flex="1">
+      <Box marginBottom="-4px" marginTop="-4px" marginLeft="-4px" flex="1">
         <Element id="column1" is={Container} canvas />
       </Box>
-      <Box flex="1">
+      <Box marginBottom="-4px" marginTop="-4px" marginRight="-4px" flex="1">
         <Element id="column2" is={Container} canvas />
       </Box>
     </Box>
