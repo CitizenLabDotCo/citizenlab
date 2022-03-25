@@ -16,6 +16,7 @@ type Props = {
   canManageManualCampaigns: boolean | null;
   manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
+  textingEnabled: boolean | null;
 };
 
 interface State {}
@@ -30,13 +31,20 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
+
     if (
       this.props.canManageManualCampaigns &&
       this.props.manualEmailingEnabled
     ) {
       tabs.push({
-        label: formatMessage(messages.tabCustom),
+        label: formatMessage(messages.tabCustomEmail),
         url: '/admin/messaging/emails/custom',
+      });
+    }
+    if (this.props.textingEnabled) {
+      tabs.push({
+        label: formatMessage(messages.tabTexting),
+        url: '/admin/messaging/texting',
       });
     }
     if (
@@ -44,7 +52,7 @@ class MessagingDashboard extends React.PureComponent<
       this.props.automatedEmailingEnabled
     ) {
       tabs.push({
-        label: formatMessage(messages.tabAutomated),
+        label: formatMessage(messages.tabAutomatedEmails),
         url: '/admin/messaging/emails/automated',
       });
     }
@@ -102,6 +110,7 @@ const Data = adopt<Props>({
   automatedEmailingEnabled: (
     <GetFeatureFlag name="automated_emailing_control" />
   ),
+  textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
 export default (inputProps) => (

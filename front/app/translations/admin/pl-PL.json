@@ -182,8 +182,6 @@
   "app.containers.Admin.Campaigns.deliveryStatus_opened": "Otwarto",
   "app.containers.Admin.Campaigns.deliveryStatus_sent": "Wysłano",
   "app.containers.Admin.Campaigns.noAccess": "Przykro nam, ale wygląda na to, że nie masz dostępu do działu poczty elektronicznej",
-  "app.containers.Admin.Campaigns.tabAutomated": "Zautomatyzowane",
-  "app.containers.Admin.Campaigns.tabCustom": "Własne",
   "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Anuluj",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Resetuj kategorie",
   "app.containers.Admin.Insights.Details.categoriesEmptyDescription": "Zdefiniuj kategorie, na które chcesz pogrupować swoje dane wejściowe.",
