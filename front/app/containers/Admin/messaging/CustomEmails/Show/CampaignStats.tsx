@@ -29,13 +29,13 @@ const GraphCard = styled.div`
 `;
 
 const GraphCardPercentage = styled.div`
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.s};
   color: ${colors.adminSecondaryTextColor};
 `;
 
 const GraphCardTitle = styled.h3`
   display: flex;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   margin: 0;

@@ -240,7 +240,7 @@ const ContentBody = styled.div`
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
   display: flex;

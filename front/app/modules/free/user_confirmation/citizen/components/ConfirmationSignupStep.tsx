@@ -79,7 +79,7 @@ const FooterNotes = styled.div`
 
 const FooterNote = styled.p`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
 
   &:not(:last-child) {
@@ -88,7 +88,7 @@ const FooterNote = styled.p`
 `;
 
 const FooterNoteLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   padding-left: 4px;
   color: ${({ theme }) => theme.colorText};
   text-decoration: underline;

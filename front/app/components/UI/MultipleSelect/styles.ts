@@ -56,7 +56,7 @@ export function getSelectStyles(borderColor = colors.border) {
     }),
     multiValueRemove: (base) => ({
       ...base,
-      fontSize: `${fontSizes.large}px`,
+      fontSize: `${fontSizes.l}px`,
       ':hover': {
         background: '#ccc',
       },

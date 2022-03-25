@@ -83,7 +83,7 @@ const HeaderSubtitle = styled.h2<{
         ? '#fff'
         : theme.colorMain
       : theme.colorMain};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   line-height: 28px;
   font-weight: 400;
   text-align: ${({ align }) => align};

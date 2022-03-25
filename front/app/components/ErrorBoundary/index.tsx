@@ -16,7 +16,7 @@ const Container = styled.div`
   width: 100%;
   text-align: center;
   margin-top: 50px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
 `;
 
 const StyledButton = styled.button`
