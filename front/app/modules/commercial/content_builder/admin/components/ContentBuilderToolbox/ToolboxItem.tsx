@@ -11,7 +11,13 @@ interface Props {
 
 const ToolboxItem = ({ icon, label }: Props) => {
   return (
-    <Box marginBottom="16px" width="100%" display="flex" paddingLeft="10px">
+    <Box
+      marginBottom="16px"
+      width="100%"
+      display="flex"
+      paddingLeft="10px"
+      alignItems="center"
+    >
       <Icon
         marginRight="16px"
         width="20px"
