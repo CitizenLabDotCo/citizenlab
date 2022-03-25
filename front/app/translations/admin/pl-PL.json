@@ -1300,6 +1300,7 @@
   "app.containers.admin.ContentBuilder.delete": "Usuń",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumna",
   "app.containers.admin.ContentBuilder.projectDescription": "Opis projektu",
+  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Dodaj status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Domyślnego statusu nie można usunąć.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Usuń",

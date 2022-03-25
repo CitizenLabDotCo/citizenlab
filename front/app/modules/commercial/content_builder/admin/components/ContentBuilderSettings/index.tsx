@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 // craft
 import { useEditor } from '@craftjs/core';
 import { ROOT_NODE } from '@craftjs/utils';
+import { getComponentNameMessage } from '../RenderNode';
 
 // intl
 import messages from '../../messages';
@@ -42,13 +43,6 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  const getComponentNameMessage = (name: 'Container') => {
-    switch (name) {
-      case 'Container':
-        return messages.oneColumn;
-    }
-  };
-
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
       <Box pb="20px">
@@ -58,18 +52,20 @@ const ContentBuilderSettings = () => {
       </Box>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
-        <Button
-          icon="delete"
-          buttonStyle="primary-outlined"
-          borderColor={colors.clRed}
-          textColor={colors.clRed}
-          iconColor={colors.clRed}
-          onClick={() => {
-            actions.delete(selected.id);
-          }}
-        >
-          <FormattedMessage {...messages.delete} />
-        </Button>
+        <Box display="flex">
+          <Button
+            icon="delete"
+            buttonStyle="primary-outlined"
+            borderColor={colors.clRed}
+            textColor={colors.clRed}
+            iconColor={colors.clRed}
+            onClick={() => {
+              actions.delete(selected.id);
+            }}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </Box>
       ) : null}
     </StyledBox>
   ) : null;

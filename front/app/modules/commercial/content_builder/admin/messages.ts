@@ -9,6 +9,14 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.oneColumnLayout',
     defaultMessage: '1 column',
   },
+  twoColumn: {
+    id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
+    defaultMessage: '2 column',
+  },
+  text: {
+    id: 'app.containers.admin.ContentBuilder.text',
+    defaultMessage: 'Text',
+  },
   delete: {
     id: 'app.containers.admin.ContentBuilder.delete',
     defaultMessage: 'Delete',
