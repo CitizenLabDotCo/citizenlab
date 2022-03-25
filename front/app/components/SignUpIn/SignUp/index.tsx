@@ -51,6 +51,7 @@ import styled, { withTheme } from 'styled-components';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { Multiloc, MessageDescriptor } from 'typings';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { TOnContinueFunction } from '../AuthProviderButton';
 
 const Container = styled.div`
   width: 100%;
@@ -247,7 +248,7 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       setHeaderHeight(`${Math.round(height) + 2}px`);
     };
 
-    const handleSelectAuthProvider = (
+    const handleSelectAuthProvider: TOnContinueFunction = (
       selectedAuthProvider: AuthProvider,
       setHrefFromModule?: () => void
     ) => {
