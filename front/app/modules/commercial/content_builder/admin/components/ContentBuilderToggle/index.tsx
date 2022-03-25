@@ -12,6 +12,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // Utils
 import Link from 'utils/cl-router/Link';
+import { fontSizes } from 'utils/styleUtils';
 
 // Components
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
@@ -46,6 +47,7 @@ const StyledIconTooltip = styled(IconTooltip)`
 
 const StyledLink = styled(Link)`
   margin-top: -10px;
+  font-size: ${fontSizes.base}px;
 `;
 
 const ContentBuilderToggle = ({
