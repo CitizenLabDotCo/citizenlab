@@ -61,7 +61,7 @@ const RenderNode = ({ render }) => {
 
   return (
     <Box position="relative">
-      {nodeNameIsVisible && (
+      {nodeNameIsVisible && isActive && (
         <Box
           p="4px"
           bgColor={colors.adminTextColor}

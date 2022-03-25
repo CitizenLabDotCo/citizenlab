@@ -21,10 +21,15 @@ const TwoColumn: UserComponent = () => {
       display="flex"
       w="100%"
     >
-      <Box marginBottom="-4px" marginTop="-4px" marginLeft="-4px" flex="1">
+      <Box
+        m="-4px"
+        mb={isLargeTablet ? '2px' : '0px'}
+        mr={isLargeTablet ? '-4px' : '0px'}
+        flex="1"
+      >
         <Element id="column1" is={Container} canvas />
       </Box>
-      <Box marginBottom="-4px" marginTop="-4px" marginRight="-4px" flex="1">
+      <Box m="-4px" ml={isLargeTablet ? '-4px' : '0px'} flex="1">
         <Element id="column2" is={Container} canvas />
       </Box>
     </Box>
