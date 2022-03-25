@@ -17,6 +17,17 @@ describe 'JsonFormsService ideas overrides' do
 
   describe 'topic_ids field' do
     before do
+      cf2 = create(:custom_field, resource: custom_form, code: nil, key: 'field_1')
+    end
+    it 'only includes the topics associated with the current project' do
+      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
+      expect(schema.dig(:properties, :custom_field_values, :properties)).to match ({"field_1"=>{:type=>"string"}})
+    end
+  end
+
+  describe 'additional field' do
+    before do
       # project = create(:project)
       @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2, project: project)
       # @custom_form = CustomForm.create(project: project)
@@ -158,6 +169,13 @@ describe 'JsonFormsService ideas overrides' do
       expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'extra' }).to eq true
       expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.count).to eq 1
       expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+    end
+
+    it 'all non built-in fields have a nested path' do
+      fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
+      expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.count).to eq 1
+      expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.first[:scope]).to eq '#/properties/custom_field_values/properties/extra_field'
     end
   end
 end

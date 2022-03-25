@@ -44,10 +44,45 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
-          elements: fields.reject(&:built_in?).map{|f| yield f}
+          elements: fields.reject(&:built_in?).map{|f| yield f, previousScope = '#/properties/custom_field_values/properties/'}
         }
       ].compact)
     }
+  end
+
+  def custom_form_to_json_schema fields, locale='en'
+    {
+      type: "object",
+      additionalProperties: false,
+      properties: fields.select(&:built_in?).inject({}) do |memo, field|
+        override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
+        memo[field.key] =
+          if field.code && self.respond_to?(override_method, true)
+            send(override_method, field, locale)
+          else
+            send("#{field.input_type}_to_json_schema_field", field, locale)
+          end
+        memo.tap do |properties|
+          properties[:custom_field_values] = {
+            type: "object",
+            additionalProperties: false,
+            properties: fields.reject(&:built_in?).inject({}) do |mem, field|
+              override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
+              mem[field.key] =
+                if field.code && self.respond_to?(override_method, true)
+                  send(override_method, field, locale)
+                else
+                  send("#{field.input_type}_to_json_schema_field", field, locale)
+                end
+              mem
+            end
+          }
+        end
+      end
+    }.tap do |output|
+      required = fields.select(&:enabled).select(&:required).map(&:key)
+      output[:required] = required unless required.empty?
+    end
   end
 
   private
@@ -75,14 +110,14 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_title_multiloc_to_ui_schema_field field, locale
+  def custom_form_title_multiloc_to_ui_schema_field field, locale, previousScope
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
       elements: AppConfiguration.instance.settings('core','locales').map do |locale|
         {
           type: 'Control',
-          scope: "#/properties/#{field.key}/properties/#{locale}",
+          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: locale, trim_on_blur: true },
           label: handle_title(field, locale),
           description: handle_description(field, locale),
@@ -107,7 +142,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_ui_schema_field field, locale
+  def custom_form_body_multiloc_to_ui_schema_field field, locale, previousScope
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -115,7 +150,7 @@ module JsonFormsIdeasOverrides
         {
           type: 'Control',
           locale: locale,
-          scope: "#/properties/#{field.key}/properties/#{locale}",
+          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: locale, render: 'WYSIWYG' },
           label: handle_title(field, locale),
           description: handle_description(field, locale),

@@ -20,6 +20,7 @@ FactoryBot.define do
         "en" => "An extra question"
       }}
       required { false }
+      key { 'extra_field'}
       input_type { "select" }
       enabled { true }
       resource { create(:custom_form) }
