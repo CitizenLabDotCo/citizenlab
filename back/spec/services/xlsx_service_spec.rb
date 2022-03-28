@@ -93,6 +93,19 @@ describe XlsxService do
         expect(worksheet[0].cells.map(&:value)).not_to include 'author_email'
       end
     end
+
+    describe do
+      before do
+        project = create(:project)
+        create(:custom_field_extra_custom_form, resource: create(:custom_form, project: project))
+        @custom_idea = create(:idea, project: project, custom_field_values: { 'extra_field' => 'test value'})
+      end
+      let(:xlsx) { service.generate_ideas_xlsx(ideas + [@custom_idea], view_private_attributes: false) }
+
+      it "adds columns for custom fields" do
+        expect(worksheet[0].cells.map(&:value)).to include 'An extra question'
+      end
+    end
   end
 
   describe "generate_initiatives_xlsx" do

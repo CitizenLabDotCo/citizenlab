@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+ # frozen_string_literal: true
 
 class XlsxService
   include HtmlToPlainText
@@ -132,7 +132,7 @@ class XlsxService
       { header: 'last_name', f: ->(u) { u.last_name } },
       { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
-      *custom_field_columns(:itself, true)
+      *user_custom_field_columns(:itself, true)
     ]
 
     unless view_private_attributes
@@ -166,9 +166,10 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 },
+      *custom_form_custom_field_columns(:itself, ideas)
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
@@ -200,7 +201,7 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
@@ -219,7 +220,7 @@ class XlsxService
       { header: 'parent_comment_id',  f: ->(c) { c.parent_id },     skip_sanitization: true },
       { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -237,7 +238,7 @@ class XlsxService
       { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
       { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -259,7 +260,7 @@ class XlsxService
 
   # @param [Symbol] record_to_user
   # @param [Boolean] view_private_attributes
-  def custom_field_columns(record_to_user, view_private_attributes)
+  def user_custom_field_columns(record_to_user, view_private_attributes)
     return [] unless view_private_attributes
 
     areas = Area.all.index_by(&:id)
@@ -295,6 +296,46 @@ class XlsxService
             user = record.send(record_to_user)
 
             user && user.custom_field_values[field.key]
+          end
+        end
+
+      { header: column_name, f: value_getter }
+    end
+  end
+
+  # @param [Symbol] record_to_user
+  # @param [Boolean] view_private_attributes
+  def custom_form_custom_field_columns record_to_idea, ideas
+
+    projects = ideas.map { |idea| idea.project }
+    idea_custom_fields = CustomField.where(resource: CustomForm.where(project: projects))
+
+    # options keys are only unique in the scope of their field, namespacing to avoid collisions
+    options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }
+
+    idea_custom_fields&.map do |field|
+
+      column_name = multiloc_service.t(field.title_multiloc)
+      value_getter = #lambda that gets a record and returns the field value
+        if field.support_options? #field with option
+          lambda do |record|
+            idea = record.send(record_to_idea)
+
+            if idea && idea.custom_field_values[field.key]
+              if idea.custom_field_values[field.key].kind_of?(Array)
+                idea.custom_field_values[field.key].map { |key|
+                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+                }.join(', ')
+              elsif idea.custom_field_values[field.key].kind_of?(String)
+                multiloc_service.t(options[namespace(field.id, idea.custom_field_values[field.key])]&.title_multiloc)
+              end
+            end
+          end
+        else # all other custom fields
+          lambda do |record|
+            idea = record.send(record_to_idea)
+
+            idea && idea.custom_field_values[field.key]
           end
         end
 
