@@ -33,66 +33,77 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
 const RenderNode = ({ render }) => {
   const {
     isActive,
-    isHover,
     isDeletable,
     parentId,
     actions: { selectNode },
     query: { node },
   } = useEditor((_, query) => ({
     isActive: query.getEvent('selected').contains(id),
-    isHover: query.getEvent('hovered').contains(id),
     parentId: id && query.node(id).ancestors()[0],
     isDeletable: id && query.node(id).isDeletable(),
   }));
 
-  const { id, name } = useNode((node) => ({
+  const { id, name, isHover } = useNode((node) => ({
+    isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
   }));
 
   const parentNode = parentId && node(parentId).get();
-
-  useEffect(() => {
-    if (isActive && name === CONTAINER && parentNode) {
-      parentNode.data.name === TWO_COLUMNS && selectNode(parentId);
-    }
-  });
+  const parentNodeName = parentNode && parentNode.data.name;
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
   const isTwoColumn = name === TWO_COLUMNS;
-  const twoColumnsIsHover =
-    (name === TWO_COLUMNS && isHover) ||
-    (parentNode &&
-      name === CONTAINER &&
-      isHover &&
-      parentNode.data.name === TWO_COLUMNS);
-  console.log({ name, twoColumnsIsHover, isHover });
+
+  // Handle selected state
+  useEffect(() => {
+    if (isActive && name === CONTAINER && parentNode) {
+      parentNodeName === TWO_COLUMNS && selectNode(parentId);
+    }
+  });
+
+  // Handle hover state
+  useEffect(() => {
+    const node = document.getElementById(id);
+    const parentNode = document.getElementById(parentId);
+    if (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS) {
+      node?.setAttribute('style', `border: 1px solid ${colors.adminTextColor}`);
+    } else if (parentNodeName === TWO_COLUMNS && isHover) {
+      parentNode?.setAttribute(
+        'style',
+        `border: 1px solid ${colors.adminTextColor}`
+      );
+    } else {
+      node?.removeAttribute('style');
+      parentNode?.removeAttribute('style');
+    }
+  }, [isHover, id, parentNodeName, parentId]);
 
   return (
-    <Box position="relative">
+    <Box
+      id={id}
+      position="relative"
+      border={`1px ${
+        nodeNameIsVisible
+          ? `solid ${colors.adminTextColor}`
+          : !isTwoColumn
+          ? `dashed ${colors.separation}`
+          : `transparent`
+      } `}
+      m="4px"
+    >
       {nodeNameIsVisible && (
         <Box
           p="4px"
           bgColor={colors.adminTextColor}
           color="#fff"
           position="absolute"
-          top="-27px"
-          left="4px"
+          top="-28px"
+          left="-1px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      <Box
-        border={`1px ${
-          nodeNameIsVisible || isHover || isTwoColumn
-            ? `solid ${colors.adminTextColor}`
-            : !isTwoColumn
-            ? `dashed ${colors.separation}`
-            : undefined
-        }`}
-        m={!isTwoColumn ? '4px' : undefined}
-      >
-        {render}
-      </Box>
+      {render}
     </Box>
   );
 };
