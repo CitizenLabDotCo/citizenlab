@@ -48,4 +48,36 @@ RSpec.describe ContentBuilder::Layout, type: :model do
     its(:created_at) { is_expected.to be_an_instance_of(ActiveSupport::TimeWithZone) }
     its(:updated_at) { is_expected.to be_an_instance_of(ActiveSupport::TimeWithZone) }
   end
+
+  describe '#content_buildable' do
+    context 'when the content buildable exists' do
+      subject(:layout) { create(:layout) }
+
+      it 'returns the content buildable' do
+        expect(layout.content_buildable).to be_instance_of Project
+        expect(layout.content_buildable.id).to eq layout.content_buildable_id
+      end
+    end
+
+    context 'when the content buildable does not exist' do
+      it 'raises ActiveRecord::RecordNotFound' do
+        layout = create(:layout)
+        another_object = create(:idea)
+        layout.content_buildable_id = another_object.id
+        expect { layout.content_buildable }.to raise_error ActiveRecord::RecordNotFound
+
+        another_layout = create(:layout)
+        another_layout.content_buildable_type = 'Idea'
+        expect { layout.content_buildable }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+
+    context 'when the content buildable type is not a model class' do
+      subject(:layout) { create(:layout, content_buildable_type: 'UnknownClassName') }
+
+      it 'raises NameError' do
+        expect { layout.content_buildable }.to raise_error NameError
+      end
+    end
+  end
 end
