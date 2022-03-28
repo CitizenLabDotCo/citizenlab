@@ -3,6 +3,14 @@ class IdeaCustomFieldsService
     default_fields(custom_form)
   end
 
+  def allowed_custom_field_keys custom_form
+    enabled_fields = IdeaCustomFieldsService.new.all_fields(custom_form).find_all { |f|
+      !f.code && f.enabled && !f.hidden
+    }
+    simple_keys, array_keys = enabled_fields.partition{|c| c.input_type = 'multiselect'}
+    [*simple_keys.map(&:key).map(&:to_sym), array_keys.map(&:key).map(&:to_sym).map{|k| [k, []]}.to_h]
+  end
+
   private
 
   def default_fields(custom_form)

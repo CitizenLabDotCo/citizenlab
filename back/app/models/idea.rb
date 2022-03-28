@@ -24,6 +24,7 @@
 #  assignee_id              :uuid
 #  assigned_at              :datetime
 #  proposed_budget          :integer
+#  custom_field_values      :jsonb
 #
 # Indexes
 #
@@ -79,6 +80,14 @@ class Idea < ApplicationRecord
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
   validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
+
+  validates :custom_field_values, json: {
+    schema: -> {
+      extra_fields = CustomForm.where(project: project)&.first.custom_fields.find_all { |f| f.code == nil }
+      CustomFieldService.new.fields_to_json_schema(extra_fields)
+     },
+    message: ->(errors) { errors }
+  }, if: %i[custom_field_values_changed?]
 
   with_options unless: :draft? do
     validates :idea_status, presence: true

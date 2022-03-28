@@ -108,6 +108,8 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     service = SideFxIdeaService.new
 
+    CustomFieldService.new.cleanup_custom_field_values! params[:idea][:custom_field_values]
+
     @idea = Idea.new idea_params
     @idea.author ||= current_user
     service.before_create(@idea, current_user)
@@ -135,9 +137,16 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     service = SideFxIdeaService.new
 
+
     params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
+
+    mark_custom_field_values_to_clear!
+
+    idea_params.to_h
+    idea_params[:custom_field_values] = @idea.custom_field_values.merge(idea_params[:custom_field_values] || {})
+    CustomFieldService.new.cleanup_custom_field_values! idea_params[:custom_field_values]
 
     @idea.assign_attributes idea_params
     authorize @idea
@@ -184,6 +193,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def idea_attributes
+    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
+    custom_form = project.custom_form || CustomForm.new(project: @project)
+    allowed_custom_field_keys = IdeaCustomFieldsService.new.allowed_custom_field_keys custom_form
+
     attributes = [
       :publication_status,
       :project_id,
@@ -193,12 +206,12 @@ class WebApi::V1::IdeasController < ApplicationController
       [idea_images_attributes: [:image]],
       [{ idea_files_attributes: [{ file_by_content: [:content, :name]}, :name] }],
       { location_point_geojson: [:type, { coordinates: [] }],
+        custom_field_values: allowed_custom_field_keys,
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
         topic_ids: [],
         area_ids: [] }
     ]
-    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
     if project && UserRoleService.new.can_moderate_project?(project, current_user)
       attributes += %i[idea_status_id budget] + [phase_ids: []]
     end
@@ -231,6 +244,19 @@ class WebApi::V1::IdeasController < ApplicationController
         params: fastjson_params(pcs: ParticipationContextService.new),
         include: [:author, :idea_images]
       }
+    end
+  end
+
+  def mark_custom_field_values_to_clear!
+    # We need to explicitly mark which custom field values
+    # should be cleared so we can distinguish those from
+    # the custom field value updates cleared out by the
+    # policy (which should stay like before instead of
+    # being cleared out).
+    if @idea&.custom_field_values && params[:idea][:custom_field_values]
+      (@idea.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
+        params[:idea][:custom_field_values][clear_key] = nil
+      end
     end
   end
 end
