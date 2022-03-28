@@ -75,7 +75,7 @@ export default () => ({
     {
       path: 'texting/:campaignId',
       component: Loadable({
-        loader: () => import('./texting/ViewCreatedMessage'),
+        loader: () => import('./texting/NewSMSMessage'),
         loading: () => null,
       }),
     },
