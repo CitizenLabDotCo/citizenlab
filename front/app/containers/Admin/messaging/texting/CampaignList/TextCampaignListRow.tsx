@@ -1,30 +1,20 @@
 import React from 'react';
 
 // components
-import { StatusLabel } from '@citizenlab/cl2-component-library';
-import messages from '../../messages';
 import Link from 'utils/cl-router/Link';
+import FormattedStatusLabel from '../components/FormattedStatusLabel';
 
 // typings
-import {
-  ITextingCampaignData,
-  ITextingCampaignStatuses,
-} from 'services/textingCampaigns';
+import { ITextingCampaignData } from 'services/textingCampaigns';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   campaign: ITextingCampaignData;
-}
-
-interface FormattedStatusLabelProps {
-  campaignStatus: ITextingCampaignStatuses;
 }
 
 const Row = styled.tr`
@@ -59,47 +49,6 @@ const StatusText = styled.div`
 const SpacerCell = styled.td`
   width: 100%;
 `;
-
-const FormattedStatusLabel = (
-  props: FormattedStatusLabelProps
-): JSX.Element | null => {
-  switch (props.campaignStatus) {
-    case 'draft':
-      return (
-        <StatusLabel
-          width="100%"
-          backgroundColor={colors.adminOrangeIcons}
-          text={<FormattedMessage {...messages.draft} />}
-        />
-      );
-    case 'sending':
-      return (
-        <StatusLabel
-          width="100%"
-          backgroundColor={colors.adminMenuBackground}
-          text={<FormattedMessage {...messages.sending} />}
-        />
-      );
-    case 'sent':
-      return (
-        <StatusLabel
-          width="100%"
-          backgroundColor={colors.clGreenSuccess}
-          text={<FormattedMessage {...messages.sent} />}
-        />
-      );
-    case 'failed':
-      return (
-        <StatusLabel
-          width="100%"
-          backgroundColor={colors.clRedError}
-          text={<FormattedMessage {...messages.failed} />}
-        />
-      );
-    default:
-      return null;
-  }
-};
 
 const TextingCampaignRow = ({ campaign }: Props) => {
   const {

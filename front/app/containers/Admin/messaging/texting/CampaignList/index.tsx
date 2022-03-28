@@ -70,7 +70,7 @@ const TextingCampaignsList = () => {
         <Button
           buttonStyle="cl-blue"
           icon="plus-circle"
-          linkTo="/admin/messaging/emails/texting/new"
+          linkTo="/admin/messaging/texting/new"
         >
           <FormattedMessage {...messages.addTextButton} />
         </Button>
