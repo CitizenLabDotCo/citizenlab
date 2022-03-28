@@ -55,15 +55,13 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
-    if (parentNodeName === TWO_COLUMNS) {
-      if (isHover) {
-        parentNodeElement?.setAttribute(
-          'style',
-          `border: 1px solid ${colors.adminTextColor}`
-        );
-      } else {
-        parentNodeElement?.removeAttribute('style');
-      }
+    if (parentNodeName === TWO_COLUMNS && isHover) {
+      parentNodeElement?.setAttribute(
+        'style',
+        `border: 1px solid ${colors.adminTextColor}`
+      );
+    } else {
+      parentNodeElement?.removeAttribute('style');
     }
   }, [isHover, id, parentNodeName, parentId]);
 
