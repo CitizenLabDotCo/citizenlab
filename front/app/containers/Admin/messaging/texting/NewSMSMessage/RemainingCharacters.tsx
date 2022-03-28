@@ -3,10 +3,10 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
   remainingChars: number;
+  overCharacterLimit: boolean;
 }
 
-const RemainingCharacters = ({ remainingChars }: Props) => {
-  const overCharacterLimit = remainingChars < 0;
+const RemainingCharacters = ({ remainingChars, overCharacterLimit }: Props) => {
   const getText = () => {
     if (overCharacterLimit) {
       return <>{remainingChars * -1} over the character limit</>;

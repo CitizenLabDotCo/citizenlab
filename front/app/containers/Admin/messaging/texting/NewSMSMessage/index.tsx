@@ -143,6 +143,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
 
   const { status } = campaign.attributes;
   const isDraft = status === 'draft';
+  const overCharacterLimit = remainingChars < 0;
 
   return (
     <>
@@ -196,7 +197,12 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
               disabled={!isDraft}
               onChange={handleInputMessageChange}
             />
-            {isDraft && <RemainingCharacters remainingChars={remainingChars} />}
+            {isDraft && (
+              <RemainingCharacters
+                remainingChars={remainingChars}
+                overCharacterLimit={overCharacterLimit}
+              />
+            )}
           </SectionField>
 
           {isDraft && (
@@ -208,6 +214,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
                   type="submit"
                   text={'Update and Preview SMS'}
                   onClick={handleOnSubmit}
+                  disabled={overCharacterLimit}
                 />
               </Box>
             </SectionField>
