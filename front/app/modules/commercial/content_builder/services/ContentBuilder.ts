@@ -17,7 +17,7 @@ export interface IBuilderLayout {
   data: IBuilderLayoutData;
 }
 
-export function BuilderLayoutStream(projectId: string, code: string) {
+export function builderLayoutStream(projectId: string, code: string) {
   return streams.get<IBuilderLayout>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
   });

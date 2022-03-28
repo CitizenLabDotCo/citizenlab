@@ -2,9 +2,16 @@ import { renderHook } from '@testing-library/react-hooks';
 import useBuilderLayout from './useContentBuilder';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { builderLayoutStream } from '../services/ContentBuilder';
+
+const viewId = 'TestID';
+const code = 'TestCode';
 
 const mockBuilderLayout = {
-  data: undefined,
+  data: {
+    id: 'testID',
+    code: 'TestCode',
+  },
 };
 
 const mockObservable = new Observable((subscriber) => {
@@ -13,7 +20,7 @@ const mockObservable = new Observable((subscriber) => {
 
 jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
   return {
-    BuilderContentStream: jest.fn(() => {
+    builderLayoutStream: jest.fn(() => {
       return {
         observable: mockObservable,
       };
@@ -22,8 +29,8 @@ jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
 });
 
 describe('useBuilderLayout', () => {
-  it('should call BuilderContentStream with correct arguments', async () => {
-    renderHook(() => useBuilderLayout('', ''));
-    // Empty test placeholder for now.
+  it('should call BuilderContentStream with correct arguments', () => {
+    renderHook(() => useBuilderLayout(viewId, code));
+    expect(builderLayoutStream).toHaveBeenCalledWith(viewId, code);
   });
 });

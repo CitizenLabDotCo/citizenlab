@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  BuilderLayoutStream,
+  builderLayoutStream,
   IBuilderLayout,
 } from '../services/ContentBuilder';
 
@@ -10,7 +10,7 @@ const useBuilderLayout = (id: string, code: string) => {
   >(undefined);
 
   useEffect(() => {
-    const subscription = BuilderLayoutStream(id, code).observable.subscribe(
+    const subscription = builderLayoutStream(id, code).observable.subscribe(
       (builderLayout) => {
         setBuilderLayout(builderLayout);
       }
