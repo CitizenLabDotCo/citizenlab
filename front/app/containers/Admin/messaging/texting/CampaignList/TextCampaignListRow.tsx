@@ -3,7 +3,6 @@ import React from 'react';
 // components
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 import messages from '../../messages';
-import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
 
 // typings
@@ -28,51 +27,32 @@ interface FormattedStatusLabelProps {
   campaignStatus: ITextingCampaignStatuses;
 }
 
-const Container = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #e0e0e0;
-`;
-
-const Left = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
-`;
-
 const TextWrapper = styled.div`
-  line-height: 50px;
+  line-height: 40px;
 `;
 
 const Text = styled.p`
-  width: 600px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
 `;
 
-const Right = styled.div`
-  display: flex;
-  gap: 30px;
-`;
-
-// 140px is sufficient for longest date-time string
 const DateTime = styled.div`
-  width: 140px;
+  text-align: left;
+  white-space: nowrap;
+  margin-left: 20px;
 `;
 
-// 174px is sufficient for 999,999 recipients
-const StatusWrapper = styled.div`
-  width: 174px;
+const StatusText = styled.div`
   text-align: right;
+  white-space: nowrap;
+  margin-left: 20px;
 `;
 
-const statusLabelMinWidth = '76px';
+const SpacerCell = styled.td`
+  width: 100%;
+`;
 
 const FormattedStatusLabel = (
   props: FormattedStatusLabelProps
@@ -81,7 +61,7 @@ const FormattedStatusLabel = (
     case 'draft':
       return (
         <StatusLabel
-          minWidth={statusLabelMinWidth}
+          width="100%"
           backgroundColor={colors.adminOrangeIcons}
           text={<FormattedMessage {...messages.draft} />}
         />
@@ -89,7 +69,7 @@ const FormattedStatusLabel = (
     case 'sending':
       return (
         <StatusLabel
-          minWidth={statusLabelMinWidth}
+          width="100%"
           backgroundColor={colors.adminMenuBackground}
           text={<FormattedMessage {...messages.sending} />}
         />
@@ -97,7 +77,7 @@ const FormattedStatusLabel = (
     case 'sent':
       return (
         <StatusLabel
-          minWidth={statusLabelMinWidth}
+          width="100%"
           backgroundColor={colors.clGreenSuccess}
           text={<FormattedMessage {...messages.sent} />}
         />
@@ -105,7 +85,7 @@ const FormattedStatusLabel = (
     case 'failed':
       return (
         <StatusLabel
-          minWidth={statusLabelMinWidth}
+          width="100%"
           backgroundColor={colors.clRedError}
           text={<FormattedMessage {...messages.failed} />}
         />
@@ -122,44 +102,45 @@ const TextingCampaignRow = ({ campaign }: Props) => {
   } = campaign;
 
   return (
-    <Container id={id}>
-      <Left>
+    <tr>
+      <td>
         <TextWrapper>
           <Text>
             <Link to={`/admin/messaging/texting/${id}`}>{message}</Link>
           </Text>
         </TextWrapper>
+      </td>
+      <SpacerCell></SpacerCell>
+      <td>
         <FormattedStatusLabel campaignStatus={status} />
-      </Left>
-      <Right>
-        {status === 'sent' && (
-          <>
+      </td>
+      {status === 'draft' && (
+        <>
+          <td></td>
+          <td></td>
+        </>
+      )}
+
+      {status === 'sent' && (
+        <>
+          <td>
             <DateTime>
               <FormattedDate value={sent_at} />
               &nbsp;
               <FormattedTime value={sent_at} />
             </DateTime>
-            <StatusWrapper>
+          </td>
+          <td>
+            <StatusText>
               <p>
                 Sent to {phone_numbers.length.toLocaleString('en-US')}{' '}
                 recipients
               </p>
-            </StatusWrapper>
-          </>
-        )}
-        {status === 'draft' && (
-          <>
-            <Button
-              linkTo={`/admin/messaging/texting/${campaign.id}`}
-              buttonStyle="secondary"
-              icon="edit"
-            >
-              <FormattedMessage {...messages.manageButtonLabel} />
-            </Button>
-          </>
-        )}
-      </Right>
-    </Container>
+            </StatusText>
+          </td>
+        </>
+      )}
+    </tr>
   );
 };
 

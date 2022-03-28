@@ -4,9 +4,8 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Table } from '@citizenlab/cl2-component-library';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import TextCampaignListRow from './TextCampaignListRow';
 
@@ -76,11 +75,11 @@ const TextingCampaignsList = () => {
           <FormattedMessage {...messages.addTextButton} />
         </Button>
       </ButtonWrapper>
-      <List>
+      <Table>
         {textingCampaigns.map((campaign) => {
           return <TextCampaignListRow key={campaign.id} campaign={campaign} />;
         })}
-      </List>
+      </Table>
     </>
   );
 };
