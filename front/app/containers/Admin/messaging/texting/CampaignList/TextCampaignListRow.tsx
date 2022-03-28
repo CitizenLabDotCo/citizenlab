@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
+import { Text } from '@citizenlab/cl2-component-library';
 
 // typings
 import { ITextingCampaignData } from 'services/textingCampaigns';
@@ -25,7 +26,7 @@ const Row = styled.tr`
   cursor: pointer;
 `;
 
-const Text = styled.p`
+const BodyText = styled.p`
   min-width: 100px;
   max-width: 400px;
   white-space: nowrap;
@@ -65,7 +66,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
   return (
     <Row onClick={handleEvent}>
       <td>
-        <Text>{message}</Text>
+        <BodyText>{message}</BodyText>
       </td>
       <SpacerCell />
       <td>
@@ -75,18 +76,20 @@ const TextingCampaignRow = ({ campaign }: Props) => {
       {status === 'sent' && (
         <>
           <td>
-            <DateTime>
-              <FormattedDate value={sent_at} />
-              &nbsp;
-              <FormattedTime value={sent_at} />
-            </DateTime>
+            <Text fontSize="s" color="adminTextColor">
+              <DateTime>
+                <FormattedDate value={sent_at} />
+                &nbsp;
+                <FormattedTime value={sent_at} />
+              </DateTime>
+            </Text>
           </td>
           <td>
             <SentText>
-              <p>
+              <Text fontSize="s" color="adminTextColor">
                 Sent to {phone_numbers.length.toLocaleString('en-US')}{' '}
                 recipients
-              </p>
+              </Text>
             </SentText>
           </td>
         </>
