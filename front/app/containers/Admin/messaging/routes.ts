@@ -61,7 +61,7 @@ export default () => ({
     {
       path: 'texting/new',
       component: Loadable({
-        loader: () => import('./texting/NewCampaign'),
+        loader: () => import('./texting/NewSMSCampaign'),
         loading: () => null,
       }),
     },
