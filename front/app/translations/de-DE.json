@@ -364,7 +364,7 @@
   "app.components.ProjectFolderCards.components.Topbar.draft": "Entwurf",
   "app.components.ProjectFolderCards.components.Topbar.filterBy": "Filtern nach",
   "app.components.ProjectFolderCards.components.Topbar.published": "Aktiv",
-  "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Tag",
+  "app.components.ProjectFolderCards.components.Topbar.topicTitle": "Themen",
   "app.components.ProjectFolderCards.noProjectYet": "Es gibt noch kein Projekt",
   "app.components.ProjectFolderCards.noProjectsAvailable": "Keine Projekte verfügbar",
   "app.components.ProjectFolderCards.showMore": "Mehr anzeigen",
