@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { ScreenReaderOnly } from 'utils/a11y';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -22,6 +22,10 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+const StyledModalButton = styled(Button)`
+  margin-right: 10px;
+`;
+
 const InformativeTitle = styled.span`
   font-weight: bold;
 `;
@@ -36,57 +40,9 @@ const ButtonContainer = styled.div`
   gap: 15px;
 `;
 
-const ButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
-
-  .Button {
-    margin-right: 1rem;
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const ModalContainer = styled.div`
-  padding: 30px;
-`;
-
 const SendNowWarning = styled.div`
   font-size: ${fontSizes.base}px;
   margin-bottom: 30px;
-`;
-
-// styled components for the phone-shaped display
-const PhoneWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-`;
-
-const PhoneContainer = styled.div`
-  height: 500px;
-  width: 295px;
-  border: 21px solid #000000;
-  box-sizing: border-box;
-  border-radius: 33px;
-  position: relative;
-`;
-
-const PhoneBezel = styled.div`
-  position: absolute;
-  width: 150px;
-  left: 53px;
-  height: 25.39px;
-  top: 0px;
-  background-color: black;
-`;
-
-const MessagesContainer = styled.div`
-  width: 210px;
-  margin: 0 auto;
-  margin-top: 30px;
 `;
 
 const PhoneMessage = styled.div`
@@ -126,33 +82,57 @@ const PhoneMessage = styled.div`
 `;
 
 const TextMessagePreview = (props: WithRouterProps) => {
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [showDeleteTextModal, setShowDeleteTextModal] = useState(false);
+  const [confirmationModalIsVisible, setConfirmationModalVisible] =
+    useState(false);
+  const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
+    useState(false);
 
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
-    console.log('disable send button here');
+    // console.log('disable send button here');
     try {
-      console.log('implement send BE call here');
-      console.log(
-        'if successful, redirect to the view page for the newly created draft message'
-      );
+      // console.log('implement send BE call here');
+      // console.log(
+      // 'if successful, redirect to the view page for the newly created draft message'
+      // );
     } catch (e) {
-      console.log('fail', e);
+      // console.log('fail', e);
     }
   };
 
   const confirmDeleteTextingCampaign = async () => {
     try {
-      const result = await deleteTextingCampaign(campaignId);
-      console.log('successful delete', result);
+      // const result = await deleteTextingCampaign(campaignId);
+      await deleteTextingCampaign(campaignId);
+      // console.log('successful delete', result);
       const url = `/admin/messaging/texting`;
       clHistory.replace(url);
     } catch (e) {
-      console.log('fail', e);
+      // console.log('fail', e);
     }
+  };
+
+  const openDeleteModal = () => {
+    setDeleteCampaignModalVisible(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeleteCampaignModalVisible(false);
+  };
+
+  const openSendConfirmationModal = () => {
+    setConfirmationModalVisible(true);
+  };
+
+  const closeSendConfirmationModal = () => {
+    setConfirmationModalVisible(false);
+  };
+
+  const goBackToCampaignView = () => {
+    const url = `/admin/messaging/texting/${campaignId}/`;
+    clHistory.replace(url);
   };
 
   // actual error state when campaign not found
@@ -171,25 +151,18 @@ const TextMessagePreview = (props: WithRouterProps) => {
       />
       <TextingHeader
         headerMessage="Preview SMS message"
-        onClickGoBack={() => {
-          const url = `/admin/messaging/texting/${campaignId}/`;
-          clHistory.replace(url);
-        }}
+        onClickGoBack={goBackToCampaignView}
         showHorizontalRule
       >
         <ButtonContainer>
           <Button
-            onClick={() => {
-              console.log('go back to the create screen');
-            }}
+            onClick={goBackToCampaignView}
             buttonStyle="secondary"
             size="1"
             text={'Edit'}
           />
           <Button
-            onClick={() => {
-              setShowConfirmationModal(true);
-            }}
+            onClick={openSendConfirmationModal}
             buttonStyle="primary"
             size="1"
             icon="send"
@@ -209,94 +182,107 @@ const TextMessagePreview = (props: WithRouterProps) => {
         </InformativeContent>
       </div>
 
-      <PhoneWrapper>
-        <PhoneContainer aria-hidden>
-          <PhoneBezel></PhoneBezel>
-          <MessagesContainer>
+      {/* Phone Wrapper */}
+      <Box display="flex" flexDirection="column" alignItems="center">
+        {/* Phone Container */}
+        <Box
+          height="500px"
+          width="295px"
+          border="21px solid black"
+          borderRadius="33px"
+          position="relative"
+        >
+          {/* Phone Bezel */}
+          <Box
+            position="absolute"
+            width="150px"
+            top="-4px"
+            left="53px"
+            height="23px"
+            bgColor="black"
+            borderRadius="4px"
+          />
+          {/* Messages Container */}
+          <Box width="210px" margin="30px auto 0 auto">
             <PhoneMessage>{message}</PhoneMessage>
-          </MessagesContainer>
-        </PhoneContainer>
-        <ScreenReaderOnly>{message}</ScreenReaderOnly>
+          </Box>
+        </Box>
         <Button
           marginTop="15px"
-          onClick={() => {
-            setShowDeleteTextModal(true);
-          }}
+          onClick={openDeleteModal}
           buttonStyle="delete"
           size="1"
           icon="trash"
           text={'Delete this SMS'}
         />
-      </PhoneWrapper>
+      </Box>
 
       {/* // send confirmation modal */}
       <Modal
-        opened={showConfirmationModal}
-        close={() => {
-          setShowConfirmationModal(false);
-        }}
+        opened={confirmationModalIsVisible}
+        close={closeSendConfirmationModal}
         header={'Confirm Text Sending'}
       >
-        <ModalContainer>
+        <Box padding="30px">
           <SendNowWarning>
             Do you want to send this message to 1,920 people now?
           </SendNowWarning>
-          <ButtonsWrapper>
-            <Button
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            flexWrap="wrap"
+            width="100%"
+          >
+            <StyledModalButton
               buttonStyle="secondary"
-              onClick={() => {
-                console.log('edit here');
-              }}
+              onClick={closeSendConfirmationModal}
             >
               Cancel
-            </Button>
-            <Button
+            </StyledModalButton>
+            <StyledModalButton
               buttonStyle="primary"
-              onClick={() => {
-                confirmSendTextingCampaign();
-              }}
+              onClick={confirmSendTextingCampaign}
               icon="send"
               iconPos="right"
             >
               Send Now
-            </Button>
-          </ButtonsWrapper>
-        </ModalContainer>
+            </StyledModalButton>
+          </Box>
+        </Box>
       </Modal>
 
       {/* // confirm delete modal */}
       <Modal
-        opened={showDeleteTextModal}
-        close={() => {
-          setShowDeleteTextModal(false);
-        }}
+        opened={deleteCampaignModalIsVisible}
+        close={closeDeleteModal}
         header={'Delete Draft Text'}
       >
-        <ModalContainer>
+        <Box padding="30px">
           <SendNowWarning>
             Do you want to delete this draft message?
           </SendNowWarning>
-          <ButtonsWrapper>
-            <Button
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            flexWrap="wrap"
+            width="100%"
+          >
+            <StyledModalButton
               buttonStyle="secondary"
-              onClick={() => {
-                setShowDeleteTextModal(false);
-              }}
+              onClick={closeDeleteModal}
             >
               Cancel
-            </Button>
-            <Button
+            </StyledModalButton>
+            <StyledModalButton
               buttonStyle="delete"
-              onClick={() => {
-                confirmDeleteTextingCampaign();
-              }}
+              onClick={confirmDeleteTextingCampaign}
               icon="trash"
               iconPos="right"
             >
               Delete
-            </Button>
-          </ButtonsWrapper>
-        </ModalContainer>
+            </StyledModalButton>
+          </Box>
+        </Box>
       </Modal>
     </>
   );

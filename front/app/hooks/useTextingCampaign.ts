@@ -20,7 +20,7 @@ export default function useTextingCampaigns(campaignId) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [campaignId]);
 
   return textingCampaign;
 }

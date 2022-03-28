@@ -60,7 +60,7 @@ const DropzoneLabelIcon = styled(Icon)`
 
 const DropzoneImagesRemaining = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
   text-align: center;

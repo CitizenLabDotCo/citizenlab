@@ -37,7 +37,7 @@ const ScanContainer = styled.div`
     margin: 0;
   }
   .scanDescription {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
   }
 `;
 

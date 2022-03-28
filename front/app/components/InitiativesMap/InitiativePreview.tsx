@@ -63,7 +63,7 @@ const Address = styled.div`
   margin-top: 20px;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     margin-top: 18px;
   `}
 `;

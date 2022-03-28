@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-export const apiEndpoint = `${API_PATH}/texting_campaigns`;
+const apiEndpoint = `${API_PATH}/texting_campaigns`;
 
 export type ITextingCampaignStatuses = 'draft' | 'sending' | 'sent' | 'failed';
 
@@ -30,7 +30,7 @@ export const textingCampaignsStream = (
   streamParams: IStreamParams | null = null
 ) => {
   return streams.get<ITextingCampaigns>({
-    apiEndpoint: `${apiEndpoint}`,
+    apiEndpoint,
     ...streamParams,
   });
 };
@@ -50,7 +50,7 @@ export const addTextingCampaign = async (
   message: string,
   phone_numbers: string[]
 ) => {
-  const result = await streams.add<ITextingCampaign>(`${apiEndpoint}`, {
+  const result = await streams.add<ITextingCampaign>(apiEndpoint, {
     message,
     phone_numbers,
   });
@@ -58,21 +58,22 @@ export const addTextingCampaign = async (
 };
 
 // only for updating numbers and message, sending will be via a different endpoint
-export const updateTextingCampaign = async (
-  campaignId: string,
-  attributes: {
-    message?: string;
-    phone_numbers?: string[];
-  }
-) => {
-  const result = await streams.update<ITextingCampaign>(
-    `${apiEndpoint}/${campaignId}`,
-    campaignId,
-    attributes
-  );
+// commented out to appease linter for now, will be used in the next PR
+// export const updateTextingCampaign = async (
+//   campaignId: string,
+//   attributes: {
+//     message?: string;
+//     phone_numbers?: string[];
+//   }
+// ) => {
+//   const result = await streams.update<ITextingCampaign>(
+//     `${apiEndpoint}/${campaignId}`,
+//     campaignId,
+//     attributes
+//   );
 
-  return result;
-};
+//   return result;
+// };
 
 export const deleteTextingCampaign = async (campaignId: string) => {
   const result = await streams.delete(

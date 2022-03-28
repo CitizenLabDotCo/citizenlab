@@ -38,7 +38,7 @@ const Topics = styled.div``;
 
 const Topic = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   display: inline-block;
