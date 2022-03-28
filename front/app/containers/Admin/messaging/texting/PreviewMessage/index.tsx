@@ -22,7 +22,6 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-//styling
 const StyledModalButton = styled(Button)`
   margin-right: 10px;
 `;
@@ -131,6 +130,11 @@ const TextMessagePreview = (props: WithRouterProps) => {
     setConfirmationModalVisible(false);
   };
 
+  const goBackToCampaignView = () => {
+    const url = `/admin/messaging/texting/${campaignId}/`;
+    clHistory.replace(url);
+  };
+
   // actual error state when campaign not found
   if (isNilOrError(campaign)) return null;
 
@@ -147,22 +151,16 @@ const TextMessagePreview = (props: WithRouterProps) => {
       />
       <TextingHeader
         headerMessage="Preview SMS message"
-        onClickGoBack={() => {
-          const url = `/admin/messaging/texting/${campaignId}/`;
-          clHistory.replace(url);
-        }}
+        onClickGoBack={goBackToCampaignView}
         showHorizontalRule
       >
         <ButtonContainer>
           <Button
-            onClick={() => {
-              console.log('go back to the create screen');
-            }}
+            onClick={goBackToCampaignView}
             buttonStyle="secondary"
             size="1"
             text={'Edit'}
           />
-          <Box></Box>
           <Button
             onClick={openSendConfirmationModal}
             buttonStyle="primary"
