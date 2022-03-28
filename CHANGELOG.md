@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Changed
+
+- Vienna Saml button is temporarily disactivated
 
 ## 2022-03-24
 
