@@ -6,7 +6,7 @@ import Button from 'components/UI/Button';
 import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../TextingHeader';
+import TextingHeader from '../components/TextingHeader';
 
 // services
 import { addTextingCampaign } from 'services/textingCampaigns';

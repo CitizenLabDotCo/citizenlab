@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // components
 import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
-import TextingHeader from '../TextingHeader';
+import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
 import { Box } from '@citizenlab/cl2-component-library';
 
