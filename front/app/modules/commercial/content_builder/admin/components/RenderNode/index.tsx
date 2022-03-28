@@ -56,12 +56,11 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeNameIsVisible =
-    (isHover || isActive) && id !== ROOT_NODE && isDeletable;
+  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
 
   return (
     <Box position="relative">
-      {nodeNameIsVisible && isActive && (
+      {nodeNameIsVisible && (
         <Box
           p="4px"
           bgColor={colors.adminTextColor}
