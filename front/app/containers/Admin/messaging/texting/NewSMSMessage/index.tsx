@@ -8,7 +8,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
-import RemainingCharacters from './RemainingCharacters';
+import RemainingCharacters from '../components/RemainingCharacters';
 
 // i18n
 import { FormattedDate } from 'react-intl';
