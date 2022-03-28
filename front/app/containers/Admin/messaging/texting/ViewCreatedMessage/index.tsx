@@ -88,23 +88,27 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
 };
 
 const ViewCreatedMessage = (props: WithRouterProps) => {
-  const [inputPhoneNumbers, setInputPhoneNumbers] = useState('');
-  const [inputMessage, setInputMessage] = useState('');
-  const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
-
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
-  const handleInputPhoneNumbersChange = (value) => {
+  const [inputPhoneNumbers, setInputPhoneNumbers] = useState<string | null>(
+    null
+  );
+  const [inputMessage, setInputMessage] = useState<string | null>(null);
+  const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
+
+  const handleInputPhoneNumbersChange = (value: string) => {
     setInputPhoneNumbers(value);
   };
 
-  const handleInputMessageChange = (value) => {
+  const handleInputMessageChange = (value: string) => {
     setInputMessage(value);
   };
 
-  const handleOnSubmit = async (event) => {
+  const handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (isNilOrError(inputPhoneNumbers) || isNilOrError(inputMessage)) return;
 
     const splitNumbers = inputPhoneNumbers.split(',');
     try {
@@ -128,6 +132,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
   }, [campaign]);
 
   useEffect(() => {
+    if (isNilOrError(inputMessage)) return;
     const remainingCharCount = MAX_CHAR_COUNT - inputMessage.length;
     setRemainingChars(remainingCharCount);
   }, [inputMessage]);
@@ -151,16 +156,14 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
         <SectionField>
           <TextingHeader
             headerMessage={getTitleMessage(status)}
-            onClickGoBack={() => {
-              clHistory.goBack();
-            }}
+            onClickGoBack={clHistory.goBack}
           />
-          <div>
+          <>
             <Box display="inline-block" marginRight="12px">
               <FormattedStatusLabel campaignStatus={status} />
             </Box>
             <span>{getAdditionalInfoByStatus(campaign)}</span>
-          </div>
+          </>
         </SectionField>
         <StyledForm onSubmit={handleOnSubmit}>
           <SectionField>
