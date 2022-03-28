@@ -94,11 +94,13 @@ namespace :templates do
     locales = service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
     name = template.split('_').join('')
-    tn = Tenant.create!(
+    tn_attributes = {
       name: name,
       host: "#{name}.localhost",
       settings: { core: { allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo' } }
-    )
+    }
+    puts "#{name}: #{tn_attributes}" # temporary for debugging
+    tn = Tenant.create! tn_attributes
 
     Apartment::Tenant.switch(tn.schema_name) do
       puts "Verifying #{template}"
