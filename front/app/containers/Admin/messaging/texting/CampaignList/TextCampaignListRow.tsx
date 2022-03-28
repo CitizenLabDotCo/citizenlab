@@ -27,6 +27,11 @@ interface FormattedStatusLabelProps {
   campaignStatus: ITextingCampaignStatuses;
 }
 
+const Row = styled.tr`
+  height: 30px;
+  border-top: 1px solid #e0e0e0;
+`;
+
 const TextWrapper = styled.div`
   line-height: 40px;
 `;
@@ -36,6 +41,7 @@ const Text = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
+  text-decoration: underline;
 `;
 
 const DateTime = styled.div`
@@ -102,7 +108,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
   } = campaign;
 
   return (
-    <tr>
+    <Row>
       <td>
         <TextWrapper>
           <Text>
@@ -110,14 +116,14 @@ const TextingCampaignRow = ({ campaign }: Props) => {
           </Text>
         </TextWrapper>
       </td>
-      <SpacerCell></SpacerCell>
+      <SpacerCell />
       <td>
         <FormattedStatusLabel campaignStatus={status} />
       </td>
       {status === 'draft' && (
         <>
-          <td></td>
-          <td></td>
+          <td />
+          <td />
         </>
       )}
 
@@ -140,7 +146,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
           </td>
         </>
       )}
-    </tr>
+    </Row>
   );
 };
 
