@@ -8,6 +8,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
+import RemainingCharacters from './RemainingCharacters';
 
 // i18n
 import { FormattedDate } from 'react-intl';
@@ -195,7 +196,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
               disabled={!isDraft}
               onChange={handleInputMessageChange}
             />
-            {isDraft && <>{remainingChars} characters remaining</>}
+            {isDraft && <RemainingCharacters remainingChars={remainingChars} />}
           </SectionField>
 
           {isDraft && (
