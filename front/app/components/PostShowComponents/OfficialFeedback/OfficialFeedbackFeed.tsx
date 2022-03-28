@@ -45,7 +45,7 @@ const FeedbackHeader = styled.div`
 
 const FeedbackTitle = styled.h2`
   color: ${colors.clRedError};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 600;
   padding: 0;

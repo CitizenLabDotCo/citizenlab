@@ -64,7 +64,7 @@ const Row = styled.div`
 
 const TopicName = styled.div`
   padding: 1px;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.s};
   word-break: break-all;
   width: auto;
   height: 20px;
