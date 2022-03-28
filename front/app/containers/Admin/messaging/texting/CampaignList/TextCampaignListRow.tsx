@@ -1,7 +1,6 @@
 import React from 'react';
 
 // components
-import Link from 'utils/cl-router/Link';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
 
 // typings
@@ -13,6 +12,9 @@ import styled from 'styled-components';
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+
 interface Props {
   campaign: ITextingCampaignData;
 }
@@ -20,10 +22,7 @@ interface Props {
 const Row = styled.tr`
   height: 30px;
   border-top: 1px solid #e0e0e0;
-`;
-
-const TextWrapper = styled.div`
-  line-height: 40px;
+  cursor: pointer;
 `;
 
 const Text = styled.p`
@@ -56,25 +55,19 @@ const TextingCampaignRow = ({ campaign }: Props) => {
     attributes: { message, phone_numbers, status, sent_at },
   } = campaign;
 
+  const handleEvent = () => {
+    clHistory.push(`/admin/messaging/texting/${id}`);
+  };
+
   return (
-    <Row>
+    <Row onClick={handleEvent}>
       <td>
-        <TextWrapper>
-          <Text>
-            <Link to={`/admin/messaging/texting/${id}`}>{message}</Link>
-          </Text>
-        </TextWrapper>
+        <Text>{message}</Text>
       </td>
       <SpacerCell />
       <td>
         <FormattedStatusLabel campaignStatus={status} />
       </td>
-      {status === 'draft' && (
-        <>
-          <td />
-          <td />
-        </>
-      )}
 
       {status === 'sent' && (
         <>
@@ -93,6 +86,13 @@ const TextingCampaignRow = ({ campaign }: Props) => {
               </p>
             </StatusText>
           </td>
+        </>
+      )}
+
+      {status !== 'sent' && (
+        <>
+          <td />
+          <td />
         </>
       )}
     </Row>
