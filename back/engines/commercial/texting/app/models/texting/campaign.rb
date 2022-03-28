@@ -22,13 +22,15 @@ module Texting
     before_validation :format_phone_numbers
 
     validates :phone_numbers, :message, :status, presence: true
+    # https://support.twilio.com/hc/en-us/articles/360033806753-Maximum-Message-Length-with-Twilio-Programmable-Messaging
+    validates :message, length: { maximum: 320 }
     validate :validate_phone_numbers
 
     after_initialize do
       self.status ||= self.class.statuses.fetch(:draft)
     end
 
-    def self.segments_count
+    def self.this_month_segments_count
       where.not(status: statuses.fetch(:draft))
            .where('sent_at > ?', Time.zone.now.beginning_of_month).sum(&:segments_count)
     end
@@ -41,7 +43,7 @@ module Texting
 
     # we don't want the same recipient to get 2 messages
     def format_phone_numbers
-      self.phone_numbers = phone_numbers.map { |number| number.gsub(/[-()\s]/, '') }.uniq
+      self.phone_numbers = phone_numbers.uniq { |number| number.gsub(/[-\s]/, '') }
     end
 
     def validate_phone_numbers

@@ -57,11 +57,12 @@ module Texting
       segments_limit = AppConfiguration.instance.settings('texting', 'monthly_sms_segments_limit')
       if Texting::Sms.provider.exeeds_queue_limit?(@campaign.segments_count)
         render json: { errors: { base: [{ error: :too_many_total_segments }] } }, status: :unprocessable_entity
-      elsif segments_limit && Campaign.segments_count + @campaign.segments_count > segments_limit
+      elsif segments_limit && Campaign.this_month_segments_count + @campaign.segments_count > segments_limit
         render json: { errors: { base: [{ error: :monthly_limit_reached }] } }, status: :unprocessable_entity
       else
         @campaign.update!(status: Texting::Campaign.statuses.fetch(:sending))
         SendCampaignJob.perform_later(@campaign)
+        SideFxCampaignService.new.after_send(@campaign, current_user)
         head :ok
       end
     end

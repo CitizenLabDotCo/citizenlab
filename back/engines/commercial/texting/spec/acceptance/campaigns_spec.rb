@@ -8,9 +8,7 @@ resource 'Texting campaigns' do
     token = Knock::AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
 
-    app_configuration = AppConfiguration.instance
-    app_configuration.settings['texting'] = { enabled: true, allowed: true }
-    app_configuration.save!
+    SettingsService.new.activate_feature!('texting')
   end
 
   get '/web_api/v1/texting_campaigns' do
@@ -97,6 +95,7 @@ resource 'Texting campaigns' do
       expect(Twilio::REST::Client).to receive(:new).once.and_return(twilio_client)
       twilio_options = hash_including(body: campaign.message, to: campaign.phone_numbers.first)
       expect(twilio_client.messages).to receive(:create).once.with(twilio_options)
+      expect(LogActivityJob).to receive(:perform_later)
 
       do_request
       expect(response_status).to eq 200
@@ -108,7 +107,7 @@ resource 'Texting campaigns' do
   # 1. Run ngrok
   # 2. Tenant.find_by(host: 'localhost').update!(host: 'd635-31-179-57-73.ngrok.io')
   # 3. Add to .env-back: OVERRIDE_HOST=d635-31-179-57-73.ngrok.io
-  # 4. Texting::SendCampaignJob.perform_later(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello'))
+  # 4. Texting::SendCampaignJob.perform_now(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello'))
   # 5. See the console logs and a message on your phone
   post 'web_api/v1/texting_campaigns/:id/mark_as_sent', document: false do
     let(:campaign) do
