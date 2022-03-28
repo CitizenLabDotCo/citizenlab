@@ -15,8 +15,9 @@ import messages from '../../messages';
 
 const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
+const TEXT = 'Text';
 
-type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS;
+type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS | typeof TEXT;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -24,6 +25,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.oneColumn;
     case TWO_COLUMNS:
       return messages.twoColumn;
+    case TEXT:
+      return messages.text;
   }
 };
 
@@ -62,7 +65,7 @@ const RenderNode = ({ render }) => {
           bgColor={colors.adminTextColor}
           color="#fff"
           position="absolute"
-          top="0px"
+          top="-28px"
           left="4px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />

@@ -48,7 +48,7 @@ const StyledIcon = styled(Icon)`
 
 const OpenMapModalButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: 22px;
   text-decoration: underline;
   text-align: left;

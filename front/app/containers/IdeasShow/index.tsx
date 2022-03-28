@@ -166,7 +166,7 @@ const StyledGoBackButton = styled(GoBackButton)`
 `;
 
 const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.large}px;
+  font-size: ${(props) => props.theme.fontSizes.l}px;
   font-weight: 500;
   line-height: 28px;
   padding: 0;
