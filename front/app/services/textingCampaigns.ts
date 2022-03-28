@@ -57,23 +57,21 @@ export const addTextingCampaign = async (
   return result;
 };
 
-// only for updating numbers and message, sending will be via a different endpoint
-// commented out to appease linter for now, will be used in the next PR
-// export const updateTextingCampaign = async (
-//   campaignId: string,
-//   attributes: {
-//     message?: string;
-//     phone_numbers?: string[];
-//   }
-// ) => {
-//   const result = await streams.update<ITextingCampaign>(
-//     `${apiEndpoint}/${campaignId}`,
-//     campaignId,
-//     attributes
-//   );
+export const updateTextingCampaign = async (
+  campaignId: string,
+  attributes: {
+    message?: string;
+    phone_numbers?: string[];
+  }
+) => {
+  const result = await streams.update<ITextingCampaign>(
+    `${apiEndpoint}/${campaignId}`,
+    campaignId,
+    attributes
+  );
 
-//   return result;
-// };
+  return result;
+};
 
 export const deleteTextingCampaign = async (campaignId: string) => {
   const result = await streams.delete(

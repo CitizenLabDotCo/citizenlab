@@ -34,11 +34,6 @@ const StyledForm = styled.form`
   width: 500px;
 `;
 
-const StatusLabelContainer = styled.div`
-  display: inline-block;
-  margin-right: 12px;
-`;
-
 // enough to fit 3 messages, actual functionality TBD in subsequent ticket
 const MAX_CHAR_COUNT = 480;
 
@@ -122,7 +117,6 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
       clHistory.replace(url);
     } catch (error) {
       // handle error here in subsequent ticket
-      console.log('something broke', error);
     }
   };
 
@@ -162,9 +156,9 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
             }}
           />
           <div>
-            <StatusLabelContainer>
+            <Box display="inline-block" marginRight="12px">
               <FormattedStatusLabel campaignStatus={status} />
-            </StatusLabelContainer>
+            </Box>
             <span>{getAdditionalInfoByStatus(campaign)}</span>
           </div>
         </SectionField>
