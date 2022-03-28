@@ -49,14 +49,23 @@ const RenderNode = ({ render }) => {
     name: node.data.name as ComponentNamesType,
   }));
 
+  const parentNode = parentId && node(parentId).get();
+
   useEffect(() => {
-    if (isActive && parentId && name === CONTAINER) {
-      const parentNode = node(parentId).get();
+    if (isActive && name === CONTAINER && parentNode) {
       parentNode.data.name === TWO_COLUMNS && selectNode(parentId);
     }
   });
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
+  const isTwoColumn = name === TWO_COLUMNS;
+  const twoColumnsIsHover =
+    (name === TWO_COLUMNS && isHover) ||
+    (parentNode &&
+      name === CONTAINER &&
+      isHover &&
+      parentNode.data.name === TWO_COLUMNS);
+  console.log({ name, twoColumnsIsHover, isHover });
 
   return (
     <Box position="relative">
@@ -73,10 +82,14 @@ const RenderNode = ({ render }) => {
         </Box>
       )}
       <Box
-        border={`1px solid${
-          nodeNameIsVisible ? colors.adminTextColor : undefined
+        border={`1px ${
+          nodeNameIsVisible || isHover || isTwoColumn
+            ? `solid ${colors.adminTextColor}`
+            : !isTwoColumn
+            ? `dashed ${colors.separation}`
+            : undefined
         }`}
-        m="4px"
+        m={!isTwoColumn ? '4px' : undefined}
       >
         {render}
       </Box>
