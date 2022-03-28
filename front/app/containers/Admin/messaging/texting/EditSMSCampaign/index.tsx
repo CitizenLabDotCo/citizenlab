@@ -148,10 +148,10 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
   return (
     <>
       <HelmetIntl
-        title={{ id: 'test', defaultMessage: 'View SMS campaign' }}
+        title={{ id: 'test', defaultMessage: 'Edit SMS campaign' }}
         description={{
           id: 'test',
-          defaultMessage: 'View SMS campaign description',
+          defaultMessage: 'Edit SMS campaign description',
         }}
       />
       <Section>
