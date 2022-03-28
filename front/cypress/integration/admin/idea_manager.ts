@@ -53,7 +53,7 @@ describe('Idea manager', () => {
     });
   });
 
-  describe('Need feedback toggle', () => {
+  describe.skip('Need feedback toggle', () => {
     it('Filters on ideas that need feedback', () => {
       cy.getAuthUser().then((user) => {
         const projectTitle = randomString();
