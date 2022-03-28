@@ -43,7 +43,6 @@ const TextCreation = () => {
   const handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    //
     if (isNilOrError(inputMessage) || isNilOrError(inputPhoneNumbers)) return;
 
     const splitNumbers = inputPhoneNumbers.split(',');
@@ -54,7 +53,7 @@ const TextCreation = () => {
       clHistory.replace(url);
     } catch (error) {
       // handle error here in subsequent ticket
-      console.log('something broke', error);
+      // console.log('something broke', error);
     }
   };
 

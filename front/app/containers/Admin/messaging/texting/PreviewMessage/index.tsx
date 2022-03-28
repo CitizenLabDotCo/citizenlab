@@ -22,6 +22,11 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
+//styling
+const StyledModalButton = styled(Button)`
+  margin-right: 10px;
+`;
+
 const InformativeTitle = styled.span`
   font-weight: bold;
 `;
@@ -34,18 +39,6 @@ const InformativeContent = styled.span`
 const ButtonContainer = styled.div`
   display: flex;
   gap: 15px;
-`;
-
-const ButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
-
-  .Button {
-    margin-right: 1rem;
-    margin-bottom: 0.5rem;
-  }
 `;
 
 const SendNowWarning = styled.div`
@@ -99,25 +92,26 @@ const TextMessagePreview = (props: WithRouterProps) => {
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
-    console.log('disable send button here');
+    // console.log('disable send button here');
     try {
-      console.log('implement send BE call here');
-      console.log(
-        'if successful, redirect to the view page for the newly created draft message'
-      );
+      // console.log('implement send BE call here');
+      // console.log(
+      // 'if successful, redirect to the view page for the newly created draft message'
+      // );
     } catch (e) {
-      console.log('fail', e);
+      // console.log('fail', e);
     }
   };
 
   const confirmDeleteTextingCampaign = async () => {
     try {
-      const result = await deleteTextingCampaign(campaignId);
-      console.log('successful delete', result);
+      // const result = await deleteTextingCampaign(campaignId);
+      await deleteTextingCampaign(campaignId);
+      // console.log('successful delete', result);
       const url = `/admin/messaging/texting`;
       clHistory.replace(url);
     } catch (e) {
-      console.log('fail', e);
+      // console.log('fail', e);
     }
   };
 
@@ -235,22 +229,27 @@ const TextMessagePreview = (props: WithRouterProps) => {
           <SendNowWarning>
             Do you want to send this message to 1,920 people now?
           </SendNowWarning>
-          <ButtonsWrapper>
-            <Button
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            flexWrap="wrap"
+            width="100%"
+          >
+            <StyledModalButton
               buttonStyle="secondary"
               onClick={closeSendConfirmationModal}
             >
               Cancel
-            </Button>
-            <Button
+            </StyledModalButton>
+            <StyledModalButton
               buttonStyle="primary"
               onClick={confirmSendTextingCampaign}
               icon="send"
               iconPos="right"
             >
               Send Now
-            </Button>
-          </ButtonsWrapper>
+            </StyledModalButton>
+          </Box>
         </Box>
       </Modal>
 
@@ -264,19 +263,27 @@ const TextMessagePreview = (props: WithRouterProps) => {
           <SendNowWarning>
             Do you want to delete this draft message?
           </SendNowWarning>
-          <ButtonsWrapper>
-            <Button buttonStyle="secondary" onClick={closeDeleteModal}>
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            flexWrap="wrap"
+            width="100%"
+          >
+            <StyledModalButton
+              buttonStyle="secondary"
+              onClick={closeDeleteModal}
+            >
               Cancel
-            </Button>
-            <Button
+            </StyledModalButton>
+            <StyledModalButton
               buttonStyle="delete"
               onClick={confirmDeleteTextingCampaign}
               icon="trash"
               iconPos="right"
             >
               Delete
-            </Button>
-          </ButtonsWrapper>
+            </StyledModalButton>
+          </Box>
         </Box>
       </Modal>
     </>
