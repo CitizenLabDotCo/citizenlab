@@ -32,9 +32,11 @@ const TextCreation = () => {
   );
   const [inputMessage, setInputMessage] = useState<string | null>(null);
   const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
+  const [hasValidPhoneNumbers, setHasValidPhoneNumbers] = useState(false);
 
   const handleInputPhoneNumbersChange = (value: string | null) => {
     setInputPhoneNumbers(value);
+    setHasValidPhoneNumbers(true);
   };
 
   const handleInputMessageChange = (value: string) => {
@@ -74,7 +76,8 @@ const TextCreation = () => {
     !isNilOrError(inputPhoneNumbers) &&
     inputMessage.length > 0 &&
     inputPhoneNumbers.length > 0 &&
-    !overCharacterLimit;
+    !overCharacterLimit &&
+    hasValidPhoneNumbers;
 
   return (
     <>
