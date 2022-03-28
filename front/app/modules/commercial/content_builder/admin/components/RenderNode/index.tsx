@@ -51,8 +51,21 @@ const RenderNode = ({ render }) => {
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const isTwoColumn = name === TWO_COLUMNS;
+  // Handle two column hover state
+  useEffect(() => {
+    const parentNodeElement = document.getElementById(parentId);
+
+    if (parentNodeName === TWO_COLUMNS) {
+      if (isHover) {
+        parentNodeElement?.setAttribute(
+          'style',
+          `border: 1px solid ${colors.adminTextColor}`
+        );
+      } else {
+        parentNodeElement?.removeAttribute('style');
+      }
+    }
+  }, [isHover, id, parentNodeName, parentId]);
 
   // Handle selected state
   useEffect(() => {
@@ -61,33 +74,21 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  // Handle hover state
-  useEffect(() => {
-    const node = document.getElementById(id);
-    const parentNode = document.getElementById(parentId);
-    if (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS) {
-      node?.setAttribute('style', `border: 1px solid ${colors.adminTextColor}`);
-    } else if (parentNodeName === TWO_COLUMNS && isHover) {
-      parentNode?.setAttribute(
-        'style',
-        `border: 1px solid ${colors.adminTextColor}`
-      );
-    } else {
-      node?.removeAttribute('style');
-      parentNode?.removeAttribute('style');
-    }
-  }, [isHover, id, parentNodeName, parentId]);
+  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
+  const solidBorderIsVisible =
+    nodeNameIsVisible ||
+    (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS);
 
   return (
     <Box
       id={id}
       position="relative"
       border={`1px ${
-        nodeNameIsVisible
+        solidBorderIsVisible
           ? `solid ${colors.adminTextColor}`
-          : !isTwoColumn
+          : name !== TWO_COLUMNS
           ? `dashed ${colors.separation}`
-          : `transparent`
+          : `solid transparent`
       } `}
       m="4px"
     >
