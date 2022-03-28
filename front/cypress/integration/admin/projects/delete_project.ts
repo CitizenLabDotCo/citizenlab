@@ -1,7 +1,6 @@
-import { randomString } from '../../../support/commands';
 import { generateProject, generateProjectFolder } from '../../../fixtures';
 
-describe.skip('Admin: delete project', () => {
+describe('Admin: delete project', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
@@ -13,21 +12,15 @@ describe.skip('Admin: delete project', () => {
         project.body.data.attributes.title_multiloc['en'];
       const projectIdToDelete = project.body.data.id;
 
-      cy.route2({
-        path: `/web_api/v1/projects/${projectIdToDelete}`,
-        method: 'DELETE',
-      }).as('deleteProject');
-
       cy.contains('.e2e-admin-projects-list-item', projectTitleToDelete)
         .find('.e2e-admin-delete-publication')
         .click();
+
       cy.on('window:confirm', () => true);
-      cy.wait('@deleteProject', { responseTimeout: 10000 }).then(() => {
-        cy.contains(
-          '.e2e-admin-projects-list-item',
-          projectTitleToDelete
-        ).should('not.exist');
-      });
+
+      cy.contains('.e2e-admin-projects-list-item', projectTitleToDelete).should(
+        'not.exist'
+      );
     });
   });
 
@@ -37,21 +30,15 @@ describe.skip('Admin: delete project', () => {
         project.body.data.attributes.title_multiloc['en'];
       const folderIdToDelete = project.body.data.id;
       cy.log(folderTitleToDelete);
-      cy.route2({
-        path: `/web_api/v1/project_folders/${folderIdToDelete}`,
-        method: 'DELETE',
-      }).as('deleteFolder');
 
       cy.contains('.e2e-admin-adminPublications-list-item', folderTitleToDelete)
         .find('.e2e-admin-delete-publication')
         .click();
       cy.on('window:confirm', () => true);
-      cy.wait('@deleteFolder', { responseTimeout: 10000 }).then(() => {
-        cy.contains(
-          '.e2e-admin-projects-list-item',
-          folderTitleToDelete
-        ).should('not.exist');
-      });
+
+      cy.contains('.e2e-admin-projects-list-item', folderTitleToDelete).should(
+        'not.exist'
+      );
     });
   });
 });
