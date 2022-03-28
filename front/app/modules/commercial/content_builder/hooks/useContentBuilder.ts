@@ -1,40 +1,25 @@
 import { useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import { Observable, of } from 'rxjs';
 import {
-  BuilderContentStream,
-  IContentLayoutData,
-  IContentLayout,
+  BuilderLayoutStream,
+  IBuilderLayout,
 } from '../services/ContentBuilder';
 
-interface Props {
-  projectId?: string;
-  code?: string;
-}
-
-export default function useBuilderLayout({ projectId, code }: Props) {
+const useBuilderLayout = (id: string, code: string) => {
   const [builderLayout, setBuilderLayout] = useState<
-    IContentLayoutData | undefined | null
-  >();
+    IBuilderLayout | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
-    setBuilderLayout(undefined);
-    let observable: Observable<IContentLayout | null> = of(null);
-
-    if (projectId !== undefined && code !== undefined) {
-      observable = BuilderContentStream(projectId, code).observable;
-    }
-
-    const subscription = observable.subscribe((response) => {
-      if (isNilOrError(response)) {
-        setBuilderLayout(response);
-        return;
+    const subscription = BuilderLayoutStream(id, code).observable.subscribe(
+      (builderLayout) => {
+        setBuilderLayout(builderLayout);
       }
-      setBuilderLayout(response.data);
-    });
+    );
 
     return () => subscription.unsubscribe();
-  }, [projectId, code]);
+  }, [id, code]);
 
   return builderLayout;
-}
+};
+
+export default useBuilderLayout;

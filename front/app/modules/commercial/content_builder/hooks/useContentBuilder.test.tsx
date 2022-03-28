@@ -23,7 +23,7 @@ jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
 
 describe('useBuilderLayout', () => {
   it('should call BuilderContentStream with correct arguments', async () => {
-    renderHook(() => useBuilderLayout({}));
+    renderHook(() => useBuilderLayout('', ''));
     // Empty test placeholder for now.
   });
 });
