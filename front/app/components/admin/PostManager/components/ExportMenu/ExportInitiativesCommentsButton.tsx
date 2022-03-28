@@ -78,7 +78,7 @@ class ExportCommentsButton extends React.PureComponent<
         onClick={this.handleExportComments}
         processing={exporting}
         padding="0"
-        fontSize={`${fontSizes.small}px`}
+        fontSize={`${fontSizes.s}px`}
       >
         {exportType === 'all' && (
           <FormattedMessage {...messages.exportInitiativesComments} />

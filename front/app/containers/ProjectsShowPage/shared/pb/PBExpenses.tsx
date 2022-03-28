@@ -61,7 +61,7 @@ const Header = styled.div`
 const Title = styled.h2`
   min-height: 20px;
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
   display: flex;
