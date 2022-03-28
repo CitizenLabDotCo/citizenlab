@@ -26,11 +26,18 @@ const Row = styled.tr`
 `;
 
 const Text = styled.p`
+  min-width: 100px;
+  max-width: 400px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 16px;
   text-decoration: underline;
+`;
+
+const SpacerCell = styled.td`
+  min-width: 20px;
+  width: 100%;
 `;
 
 const DateTime = styled.div`
@@ -39,14 +46,10 @@ const DateTime = styled.div`
   margin-left: 20px;
 `;
 
-const StatusText = styled.div`
+const SentText = styled.div`
   text-align: right;
   white-space: nowrap;
   margin-left: 20px;
-`;
-
-const SpacerCell = styled.td`
-  width: 100%;
 `;
 
 const TextingCampaignRow = ({ campaign }: Props) => {
@@ -79,12 +82,12 @@ const TextingCampaignRow = ({ campaign }: Props) => {
             </DateTime>
           </td>
           <td>
-            <StatusText>
+            <SentText>
               <p>
                 Sent to {phone_numbers.length.toLocaleString('en-US')}{' '}
                 recipients
               </p>
-            </StatusText>
+            </SentText>
           </td>
         </>
       )}
