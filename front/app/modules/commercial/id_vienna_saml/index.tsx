@@ -5,6 +5,8 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 
 const configuration: ModuleConfiguration = {
   outlets: {
+    // This button is temporarily commented out
+    // https://citizenlab.atlassian.net/browse/CL-528
     // 'app.components.SignUpIn.AuthProviders.ContainerEnd': (props) => {
     //   return (
     //     <FeatureFlag name="vienna_login">
