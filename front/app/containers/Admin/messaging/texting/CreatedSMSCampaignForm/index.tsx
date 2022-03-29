@@ -8,6 +8,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
+import RemainingCharacters from '../components/RemainingCharacters';
 
 // i18n
 import { FormattedDate } from 'react-intl';
@@ -87,7 +88,7 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
   }
 };
 
-const ViewCreatedMessage = (props: WithRouterProps) => {
+const CreatedSMSCampaignForm = (props: WithRouterProps) => {
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
@@ -142,6 +143,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
 
   const { status } = campaign.attributes;
   const isDraft = status === 'draft';
+  const overCharacterLimit = remainingChars < 0;
 
   return (
     <>
@@ -195,7 +197,12 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
               disabled={!isDraft}
               onChange={handleInputMessageChange}
             />
-            {isDraft && <>{remainingChars} characters remaining</>}
+            {isDraft && (
+              <RemainingCharacters
+                remainingChars={remainingChars}
+                overCharacterLimit={overCharacterLimit}
+              />
+            )}
           </SectionField>
 
           {isDraft && (
@@ -207,6 +214,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
                   type="submit"
                   text={'Update and Preview SMS'}
                   onClick={handleOnSubmit}
+                  disabled={overCharacterLimit}
                 />
               </Box>
             </SectionField>
@@ -217,4 +225,4 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
   );
 };
 
-export default withRouter(ViewCreatedMessage);
+export default withRouter(CreatedSMSCampaignForm);
