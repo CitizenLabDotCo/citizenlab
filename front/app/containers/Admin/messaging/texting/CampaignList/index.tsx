@@ -44,6 +44,17 @@ const Table = styled.table`
   width: 100%;
 `;
 
+const TableHeader = styled.th`
+  text-align: left;
+  padding: 15px 0;
+  font-size: ${fontSizes.base}px;
+  padding-left: 20px;
+`;
+
+const MessageTableHeader = styled(TableHeader)`
+  padding-left: 0;
+`;
+
 const TextingCampaignsList = () => {
   const textingCampaigns = useTextingCampaigns();
 
@@ -81,6 +92,14 @@ const TextingCampaignsList = () => {
         </Button>
       </ButtonWrapper>
       <Table>
+        <thead>
+          <tr>
+            <MessageTableHeader>Message</MessageTableHeader>
+            <TableHeader>Date sent</TableHeader>
+            <TableHeader>Recipients</TableHeader>
+            <TableHeader>Status</TableHeader>
+          </tr>
+        </thead>
         {textingCampaigns.map((campaign) => {
           return <TextCampaignListRow key={campaign.id} campaign={campaign} />;
         })}
