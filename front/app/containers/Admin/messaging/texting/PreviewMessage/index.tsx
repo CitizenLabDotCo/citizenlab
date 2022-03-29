@@ -30,7 +30,7 @@ const StatusTable = styled.table`
   width: 100%;
   display: flex;
   align-content: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 
   tr > td {
     padding-right: 15px;
@@ -181,7 +181,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
           <tr>
             <td>
               <Text
-                fontSize="l"
+                fontSize="m"
                 color="adminTextColor"
                 as="span"
                 fontWeight="bold"
@@ -190,7 +190,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
               </Text>
             </td>
             <td>
-              <Text fontSize="l" color="adminTextColor" as="span">
+              <Text fontSize="m" color="adminTextColor" as="span">
                 {phone_numbers.length} people
               </Text>
             </td>
@@ -198,7 +198,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
           <tr>
             <td>
               <Text
-                fontSize="l"
+                fontSize="m"
                 color="adminTextColor"
                 as="span"
                 fontWeight="bold"
@@ -207,7 +207,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
               </Text>
             </td>
             <td>
-              <Text fontSize="l" color="adminTextColor" as="span">
+              <Text fontSize="m" color="adminTextColor" as="span">
                 {message.length} Characters ({Math.ceil(message.length / 160)}{' '}
                 segments)
               </Text>
