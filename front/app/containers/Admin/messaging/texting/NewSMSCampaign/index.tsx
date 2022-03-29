@@ -26,7 +26,7 @@ const StyledForm = styled.form`
 // enough to fit 3 messages, actual functionality TBD in subsequent ticket
 const MAX_CHAR_COUNT = 480;
 
-const TextCreation = () => {
+const NewSMSCampaign = () => {
   const [inputPhoneNumbers, setInputPhoneNumbers] = useState<string | null>(
     null
   );
@@ -142,4 +142,4 @@ const TextCreation = () => {
   );
 };
 
-export default TextCreation;
+export default NewSMSCampaign;
