@@ -158,7 +158,7 @@ const CreatedSMSCampaignForm = (props: WithRouterProps) => {
         onClickGoBack={clHistory.goBack}
       />
       <>
-        <Box display="inline-block" marginRight="12px" marginBottom="12px">
+        <Box display="inline-block" marginRight="12px" marginBottom="24px">
           <FormattedStatusLabel campaignStatus={status} />
         </Box>
         <span>{getAdditionalInfoByStatus(campaign)}</span>
