@@ -73,7 +73,7 @@ export default () => ({
       }),
     },
     {
-      path: 'texting/:campaignId/edit',
+      path: 'texting/:campaignId',
       component: Loadable({
         loader: () => import('./texting/EditSMSCampaign'),
         loading: () => null,

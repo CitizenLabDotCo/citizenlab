@@ -75,7 +75,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
       <Left>
         <TextWrapper>
           <Text>
-            <Link to={`/admin/messaging/texting/${id}/edit`}>{message}</Link>
+            <Link to={`/admin/messaging/texting/${id}`}>{message}</Link>
           </Text>
         </TextWrapper>
         <FormattedStatusLabel campaignStatus={status} />
@@ -99,7 +99,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
         {status === 'draft' && (
           <>
             <Button
-              linkTo={`/admin/messaging/texting/${campaign.id}/edit`}
+              linkTo={`/admin/messaging/texting/${id}`}
               buttonStyle="secondary"
               icon="edit"
             >
