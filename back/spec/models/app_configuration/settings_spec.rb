@@ -67,6 +67,7 @@ RSpec.describe AppConfiguration::Settings do
     end
 
     it 'requires timezone as it is in `required-settings`' do
+    binding.pry
       config = AppConfiguration.instance
       config.settings['core'].except! 'timezone'
       expect(config.update(settings: config.settings)).to be_falsey
