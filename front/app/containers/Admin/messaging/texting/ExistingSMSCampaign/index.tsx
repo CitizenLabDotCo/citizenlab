@@ -97,11 +97,11 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
   );
   const [inputMessage, setInputMessage] = useState<string | null>(null);
   const [remainingChars, setRemainingChars] = useState(MAX_CHAR_COUNT);
-  const [hasValidPhoneNumbers, setHasValidPhoneNumbers] = useState(false);
+  const [hasPhoneNumbers, setHasPhoneNumbers] = useState(false);
 
   const handleInputPhoneNumbersChange = (value: string) => {
     setInputPhoneNumbers(value);
-    setHasValidPhoneNumbers(true);
+    setHasPhoneNumbers(value.length > 0);
   };
 
   const handleInputMessageChange = (value: string) => {
@@ -146,7 +146,7 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
   const { status } = campaign.attributes;
   const isDraft = status === 'draft';
   const overCharacterLimit = remainingChars < 0;
-  const isButtonDisabled = overCharacterLimit || hasValidPhoneNumbers;
+  const isButtonDisabled = overCharacterLimit || hasPhoneNumbers;
 
   return (
     <>

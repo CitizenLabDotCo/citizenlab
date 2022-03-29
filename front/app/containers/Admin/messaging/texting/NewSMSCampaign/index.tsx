@@ -36,7 +36,7 @@ const NewSMSCampaign = () => {
 
   const handleInputPhoneNumbersChange = (value: string) => {
     setInputPhoneNumbers(value);
-    setHasPhoneNumbers(true);
+    setHasPhoneNumbers(value.length > 0);
   };
 
   const handleInputMessageChange = (value: string) => {
