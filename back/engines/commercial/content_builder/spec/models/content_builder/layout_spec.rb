@@ -14,16 +14,10 @@ RSpec.describe ContentBuilder::Layout, type: :model do
   end
 
   describe '#valid?' do
-    it 'returns false when content_buildable_type is not present' do
-      layout = build(:layout, content_buildable_type: nil)
+    it 'returns false when content_buildable is not present' do
+      layout = build(:default_layout, code: 'project_description')
       expect(layout).to be_invalid
-      expect(layout.errors.details).to eq({ content_buildable_type: [{ error: :blank }] })
-    end
-
-    it 'returns false when content_buildable_id is not present' do
-      layout = build(:layout, content_buildable_id: nil)
-      expect(layout).to be_invalid
-      expect(layout.errors.details).to eq({ content_buildable_id: [{ error: :blank }] })
+      expect(layout.errors.to_hash).to eq({ content_buildable: ['must exist', "can't be blank"] })
     end
 
     it 'returns false when code is not present' do
@@ -60,15 +54,11 @@ RSpec.describe ContentBuilder::Layout, type: :model do
     end
 
     context 'when the content buildable does not exist' do
-      it 'raises ActiveRecord::RecordNotFound' do
+      it 'returns nil' do
         layout = create(:layout)
-        another_object = create(:idea)
-        layout.content_buildable_id = another_object.id
-        expect { layout.content_buildable }.to raise_error ActiveRecord::RecordNotFound
-
-        another_layout = create(:layout)
-        another_layout.content_buildable_type = 'Idea'
-        expect { layout.content_buildable }.to raise_error ActiveRecord::RecordNotFound
+        layout.content_buildable.destroy
+        layout.reload
+        expect(layout.content_buildable).to be_nil
       end
     end
 

@@ -17,10 +17,8 @@
 #
 module ContentBuilder
   class Layout < ApplicationRecord
-    validates :content_buildable_type, :content_buildable_id, :code, presence: true
+    belongs_to :content_buildable, polymorphic: true
 
-    def content_buildable
-      content_buildable_type.constantize.find(content_buildable_id)
-    end
+    validates :content_buildable, :code, presence: true
   end
 end

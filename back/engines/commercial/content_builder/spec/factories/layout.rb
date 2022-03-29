@@ -6,8 +6,7 @@ FactoryBot.define do
       project { create(:project) }
     end
     craftjs_jsonmultiloc { {} }
-    content_buildable_type { project.class.name }
-    content_buildable_id { project.id }
+    content_buildable { project }
     code { 'layout-1' }
     enabled { true }
   end
