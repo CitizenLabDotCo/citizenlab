@@ -88,7 +88,7 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
   }
 };
 
-const ViewCreatedCampaign = (props: WithRouterProps) => {
+const CreatedCampaignForm = (props: WithRouterProps) => {
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
@@ -225,4 +225,4 @@ const ViewCreatedCampaign = (props: WithRouterProps) => {
   );
 };
 
-export default withRouter(ViewCreatedCampaign);
+export default withRouter(CreatedCampaignForm);
