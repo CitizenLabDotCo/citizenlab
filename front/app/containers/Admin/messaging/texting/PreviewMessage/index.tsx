@@ -192,7 +192,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
             </td>
             <td>
               {' '}
-              {message.length} Characters ({Math.ceil(160 / message.length)}{' '}
+              {message.length} Characters ({Math.ceil(message.length / 160)}{' '}
               segments)
             </td>
           </tr>
