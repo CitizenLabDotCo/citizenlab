@@ -284,7 +284,7 @@ resource 'ContentBuilderLayouts' do
           end
         end
 
-        describe 'disabling a locale' do
+        describe 'disabling a layout' do
           let! :layout do
             create(
               :layout,
@@ -323,7 +323,7 @@ resource 'ContentBuilderLayouts' do
           end
         end
 
-        describe 'enabling a locale' do
+        describe 'enabling a layout' do
           let! :layout do
             create(
               :layout,
