@@ -14,6 +14,7 @@ import { FormattedTime, FormattedDate } from 'react-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
+import { truncate } from 'utils/textUtils';
 
 interface Props {
   campaign: ITextingCampaignData;
@@ -36,18 +37,23 @@ const DateTime = styled.div`
 `;
 
 const SentText = styled.div`
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
   margin-right: 20px;
 `;
 
-const TextCell = styled.td`
-  width: 70%;
+const Cell = styled.td`
+  padding-left: 20px;
+`;
+
+const MessageCell = styled(Cell)`
+  width: 67%;
   margin-left: 20px;
   font-size: 16px;
   white-space: normal;
   word-break: break-all;
   text-decoration: underline;
+  padding-left: 0;
 `;
 
 const TextingCampaignRow = ({ campaign }: Props) => {
@@ -62,40 +68,37 @@ const TextingCampaignRow = ({ campaign }: Props) => {
 
   return (
     <Row onClick={handleEvent}>
-      <TextCell>
-        <BodyText>{message}</BodyText>
-      </TextCell>
+      <MessageCell>
+        <BodyText>{truncate(message, 60)}</BodyText>
+      </MessageCell>
 
       {status === 'sent' && (
         <>
-          <td>
+          <Cell>
             <DateTime>
               <FormattedDate value={sent_at} />
               &nbsp;
               <FormattedTime value={sent_at} />
             </DateTime>
-          </td>
-          <td>
+          </Cell>
+          <Cell>
             <SentText>
-              <p>
-                Sent to {phone_numbers.length.toLocaleString('en-US')}{' '}
-                recipients
-              </p>
+              <p>{phone_numbers.length}</p>
             </SentText>
-          </td>
+          </Cell>
         </>
       )}
 
       {status !== 'sent' && (
         <>
-          <td />
-          <td />
+          <Cell />
+          <Cell />
         </>
       )}
 
-      <td>
+      <Cell>
         <FormattedStatusLabel campaignStatus={status} />
-      </td>
+      </Cell>
     </Row>
   );
 };
