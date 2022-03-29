@@ -30,12 +30,12 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         service = controller.send(:side_fx_service)
 
         expect(service).to receive(:before_create).with(
-          an_instance_of(::ContentBuilder::Layout),
+          layout,
           user
         ).ordered.and_call_original
         expect(layout).to receive(:save).ordered.and_call_original
         expect(service).to receive(:after_create).with(
-          an_instance_of(::ContentBuilder::Layout),
+          layout,
           user
         ).ordered.and_call_original
 
