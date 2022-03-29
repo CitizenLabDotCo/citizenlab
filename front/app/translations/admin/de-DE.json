@@ -224,7 +224,7 @@
   "app.containers.Admin.Insights.Detect.empty": "Keine Tags gefunden. Bitte gehen Sie zurück und definieren Sie Ihre eigenen.",
   "app.containers.Admin.Insights.Detect.goBack": "Zurück",
   "app.containers.Admin.Insights.Detect.pageTitle": "Tags erkennen",
-  "app.containers.Admin.Insights.Detect.sectionDescription": "Diese automatisch erkannten Tags sind die am häufigsten diskutierten Themen auf Ihrer Plattform.",
+  "app.containers.Admin.Insights.Detect.sectionDescription": "Diese automatisch erkannten Schlagwörter sind die am häufigsten diskutierten Themen auf Ihrer Plattform.",
   "app.containers.Admin.Insights.Detect.sectionTitle": "Erkannte Tags",
   "app.containers.Admin.Insights.Edit.Details.addCategoryLabel": "Ein Tag hinzufügen",
   "app.containers.Admin.Insights.Edit.Details.addCategoryPlaceholder": "Benenne den Tag...",
