@@ -44,7 +44,7 @@ module ContentBuilder
             content_buildable_type: Project.name,
             code: params[:code]
           )
-          authorize @layout, policy_class: ::ContentBuilder::LayoutPolicy
+          authorize @layout
         end
 
         def side_fx_service
@@ -68,7 +68,7 @@ module ContentBuilder
 
         def create
           @layout = Layout.new params_for_create
-          authorize @layout, policy_class: ::ContentBuilder::LayoutPolicy
+          authorize @layout
           side_fx_service.before_create @layout, current_user
           if @layout.save
             side_fx_service.after_create @layout, current_user
