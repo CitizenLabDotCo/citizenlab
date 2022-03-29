@@ -99,7 +99,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
         {status === 'draft' && (
           <>
             <Button
-              linkTo={`/admin/messaging/texting/${campaign.id}`}
+              linkTo={`/admin/messaging/texting/${id}`}
               buttonStyle="secondary"
               icon="edit"
             >

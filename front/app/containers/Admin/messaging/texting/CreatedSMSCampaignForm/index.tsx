@@ -7,6 +7,7 @@ import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
+import RemainingCharacters from '../components/RemainingCharacters';
 
 // i18n
 import { FormattedDate } from 'react-intl';
@@ -86,7 +87,7 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
   }
 };
 
-const ViewCreatedMessage = (props: WithRouterProps) => {
+const CreatedSMSCampaignForm = (props: WithRouterProps) => {
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
@@ -141,6 +142,7 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
 
   const { status } = campaign.attributes;
   const isDraft = status === 'draft';
+  const overCharacterLimit = remainingChars < 0;
 
   return (
     <>
@@ -191,7 +193,12 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
             disabled={!isDraft}
             onChange={handleInputMessageChange}
           />
-          {isDraft && <>{remainingChars} characters remaining</>}
+          {isDraft && (
+            <RemainingCharacters
+              remainingChars={remainingChars}
+              overCharacterLimit={overCharacterLimit}
+            />
+          )}
         </Box>
 
         {isDraft && (
@@ -210,4 +217,4 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
   );
 };
 
-export default withRouter(ViewCreatedMessage);
+export default withRouter(CreatedSMSCampaignForm);

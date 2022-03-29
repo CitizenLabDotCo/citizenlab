@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
+import RemainingCharacters from '../components/RemainingCharacters';
 
 // services
 import { addTextingCampaign } from 'services/textingCampaigns';
@@ -65,11 +66,13 @@ const TextCreation = () => {
     setRemainingChars(remainingCharCount);
   }, [inputMessage]);
 
+  const overCharacterLimit = remainingChars < 0;
   const isSubmitButtonEnabled =
     !isNilOrError(inputMessage) &&
     !isNilOrError(inputPhoneNumbers) &&
     inputMessage.length > 0 &&
-    inputPhoneNumbers.length > 0;
+    inputPhoneNumbers.length > 0 &&
+    !overCharacterLimit;
 
   return (
     <>
@@ -107,8 +110,12 @@ const TextCreation = () => {
             value={inputMessage}
             onChange={handleInputMessageChange}
           />
-          {remainingChars} characters remaining
+          <RemainingCharacters
+            remainingChars={remainingChars}
+            overCharacterLimit={overCharacterLimit}
+          />
         </Box>
+
         <Box maxWidth="250px">
           <Button
             buttonStyle="primary"
