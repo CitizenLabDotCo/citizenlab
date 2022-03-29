@@ -214,7 +214,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                   >
                     <div id="e2e-project-description">
                       <QuillEditedContent
-                        fontSize="medium"
+                        fontSize="m"
                         textColor={theme.colorText}
                       >
                         <T
@@ -243,7 +243,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                             textColor={colors.label}
                             textHoverColor={theme.colorText}
                             fontWeight="500"
-                            fontSize={`${fontSizes.medium}px`}
+                            fontSize={`${fontSizes.m}px`}
                             padding="0"
                           >
                             <FormattedMessage {...messages.readMore} />
@@ -264,7 +264,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                           textColor={colors.label}
                           textHoverColor={theme.colorText}
                           fontWeight="500"
-                          fontSize={`${fontSizes.medium}px`}
+                          fontSize={`${fontSizes.m}px`}
                           padding="0"
                         >
                           <FormattedMessage {...messages.seeLess} />

@@ -32,7 +32,7 @@ const Container = styled.div`
 
 const Title = styled.h3<{ isInModal?: boolean }>`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 600;
   display: flex;
   align-items: center;

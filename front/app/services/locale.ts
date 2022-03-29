@@ -159,7 +159,7 @@ export function getUrlLocale(pathname: string): string | null {
   const firstUrlSegment = pathname.replace(/^\/|\/$/g, '').split('/')[0];
   // check first items appartenance to predefined locales obj
   const isLocale = includes(locales, firstUrlSegment);
-  return isLocale ? firstUrlSegment : null;
+  return isLocale && firstUrlSegment ? firstUrlSegment : null;
 }
 
 /*  @param pathname : the pathname you want to extract the locale from

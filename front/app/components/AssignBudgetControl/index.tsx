@@ -81,7 +81,7 @@ const Budget = styled.div`
   width: 100%;
   height: 90px;
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 600;
   text-align: center;
   display: flex;

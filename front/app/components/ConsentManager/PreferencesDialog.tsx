@@ -18,11 +18,11 @@ export const ContentContainer = styled.div`
   background: white;
 
   h1 {
-    font-size: ${fontSizes.medium}px;
+    font-size: ${fontSizes.m}px;
   }
 
   h2 {
-    font-size: ${fontSizes.large}px;
+    font-size: ${fontSizes.l}px;
   }
 
   ${media.smallerThanMinTablet`

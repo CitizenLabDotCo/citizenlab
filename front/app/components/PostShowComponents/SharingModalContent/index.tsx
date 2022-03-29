@@ -87,7 +87,7 @@ const Description = styled.p`
   width: 100%;
   max-width: 500px;
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   line-height: 25px;
   font-weight: 300;
   text-align: center;

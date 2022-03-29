@@ -56,7 +56,7 @@ const FranceConnectButtonLink = styled.button`
 
 const SubSocialButtonLink = styled.a`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 300;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
