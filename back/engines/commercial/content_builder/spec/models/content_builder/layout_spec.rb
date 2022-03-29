@@ -54,11 +54,10 @@ RSpec.describe ContentBuilder::Layout, type: :model do
     end
 
     context 'when the content buildable does not exist' do
-      it 'returns nil' do
+      it 'raises ActiveRecord::RecordNotFound' do
         layout = create(:layout)
         layout.content_buildable.destroy
-        layout.reload
-        expect(layout.content_buildable).to be_nil
+        expect { layout.reload }.to raise_error ActiveRecord::RecordNotFound
       end
     end
 
