@@ -247,11 +247,14 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       setHeaderHeight(`${Math.round(height) + 2}px`);
     };
 
-    const handleSelectAuthProvider = (selectedAuthProvider: AuthProvider) => {
+    const handleSelectAuthProvider = (
+      selectedAuthProvider: AuthProvider,
+      setHrefFromModule?: () => void
+    ) => {
       if (selectedAuthProvider === 'email') {
         setEmailSignUpSelected(true);
       } else {
-        handleOnSSOClick(selectedAuthProvider, metaData);
+        handleOnSSOClick(selectedAuthProvider, metaData, setHrefFromModule);
       }
     };
 
