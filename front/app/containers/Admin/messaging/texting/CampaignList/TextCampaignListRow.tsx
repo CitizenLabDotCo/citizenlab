@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
-import { Text } from '@citizenlab/cl2-component-library';
 
 // typings
 import { ITextingCampaignData } from 'services/textingCampaigns';
@@ -21,36 +20,34 @@ interface Props {
 }
 
 const Row = styled.tr`
-  height: 30px;
+  height: 50px;
   border-top: 1px solid #e0e0e0;
   cursor: pointer;
 `;
 
-const BodyText = styled.p`
-  min-width: 100px;
-  max-width: 400px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 16px;
-  text-decoration: underline;
-`;
-
-const SpacerCell = styled.td`
-  min-width: 20px;
-  width: 100%;
+const BodyText = styled.div`
+  margin-right: 20px;
 `;
 
 const DateTime = styled.div`
   text-align: left;
   white-space: nowrap;
-  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const SentText = styled.div`
   text-align: right;
   white-space: nowrap;
+  margin-right: 20px;
+`;
+
+const TextCell = styled.td`
+  width: 70%;
   margin-left: 20px;
+  font-size: 16px;
+  white-space: normal;
+  word-break: break-all;
+  text-decoration: underline;
 `;
 
 const TextingCampaignRow = ({ campaign }: Props) => {
@@ -65,31 +62,25 @@ const TextingCampaignRow = ({ campaign }: Props) => {
 
   return (
     <Row onClick={handleEvent}>
-      <td>
+      <TextCell>
         <BodyText>{message}</BodyText>
-      </td>
-      <SpacerCell />
-      <td>
-        <FormattedStatusLabel campaignStatus={status} />
-      </td>
+      </TextCell>
 
       {status === 'sent' && (
         <>
           <td>
-            <Text fontSize="s" color="adminTextColor">
-              <DateTime>
-                <FormattedDate value={sent_at} />
-                &nbsp;
-                <FormattedTime value={sent_at} />
-              </DateTime>
-            </Text>
+            <DateTime>
+              <FormattedDate value={sent_at} />
+              &nbsp;
+              <FormattedTime value={sent_at} />
+            </DateTime>
           </td>
           <td>
             <SentText>
-              <Text fontSize="s" color="adminTextColor">
+              <p>
                 Sent to {phone_numbers.length.toLocaleString('en-US')}{' '}
                 recipients
-              </Text>
+              </p>
             </SentText>
           </td>
         </>
@@ -101,6 +92,10 @@ const TextingCampaignRow = ({ campaign }: Props) => {
           <td />
         </>
       )}
+
+      <td>
+        <FormattedStatusLabel campaignStatus={status} />
+      </td>
     </Row>
   );
 };
