@@ -55,7 +55,7 @@ const Left = styled.ul`
 
     &:after {
       color: ${colors.label};
-      font-size: ${fontSizes.small}px;
+      font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
       margin-left: 12px;
@@ -71,7 +71,7 @@ const Left = styled.ul`
 
         &:before {
           color: ${colors.label};
-          font-size: ${fontSizes.small}px;
+          font-size: ${fontSizes.s}px;
           font-weight: 400;
           content: '•';
           margin-right: 12px;

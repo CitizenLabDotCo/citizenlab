@@ -40,7 +40,7 @@ const Styledh1 = styled.h1`
 `;
 
 const Styledh2 = styled.h2`
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 500;
   line-height: 24px;
 `;

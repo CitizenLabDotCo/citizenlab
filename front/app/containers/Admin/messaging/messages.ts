@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.addCampaignButton',
     defaultMessage: 'Create campaign',
   },
+  addTextButton: {
+    id: 'app.containers.Admin.emails.addTextButton',
+    defaultMessage: 'Create a new SMS',
+  },
   deleteButtonLabel: {
     id: 'app.containers.Admin.emails.deleteButtonLabel',
     defaultMessage: 'Delete',
@@ -99,9 +103,17 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.draft',
     defaultMessage: 'Draft',
   },
+  sending: {
+    id: 'app.containers.Admin.emails.sending',
+    defaultMessage: 'Sending',
+  },
   sent: {
     id: 'app.containers.Admin.emails.sent',
     defaultMessage: 'Sent',
+  },
+  failed: {
+    id: 'app.containers.Admin.emails.failed',
+    defaultMessage: 'Failed',
   },
   sendNowButton: {
     id: 'app.containers.Admin.emails.sendNowButton',
@@ -181,13 +193,17 @@ export default defineMessages({
     defaultMessage:
       'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
   },
-  tabCustom: {
-    id: 'app.containers.Admin.Campaigns.tabCustom',
-    defaultMessage: 'Custom',
+  tabCustomEmail: {
+    id: 'app.containers.Admin.Campaigns.tabCustomEmail',
+    defaultMessage: 'Send email',
   },
-  tabAutomated: {
-    id: 'app.containers.Admin.Campaigns.tabAutomated',
-    defaultMessage: 'Automated',
+  tabAutomatedEmails: {
+    id: 'app.containers.Admin.Campaigns.tabAutomatedEmails',
+    defaultMessage: 'Automated emails',
+  },
+  tabTexting: {
+    id: 'app.containers.Admin.Campaigns.tabTexting',
+    defaultMessage: 'Send SMS',
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
@@ -209,6 +225,10 @@ export default defineMessages({
   noCampaignsHeader: {
     id: 'app.containers.Admin.emails.noCampaignsHeader',
     defaultMessage: 'No custom email campaigns yet',
+  },
+  noTextingCampaignsHeader: {
+    id: 'app.containers.Admin.emails.noTextingCampaignsHeader',
+    defaultMessage: 'No SMS has been drafted or sent yet',
   },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',

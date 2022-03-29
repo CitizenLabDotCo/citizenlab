@@ -1,14 +1,8 @@
 import React from 'react';
 
 // Components
-import { Box, Icon, IconNames } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-
-const ToolboxItemText = styled.p`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
-`;
+import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
+import { colors } from 'utils/styleUtils';
 
 interface Props {
   label: string;
@@ -17,7 +11,13 @@ interface Props {
 
 const ToolboxItem = ({ icon, label }: Props) => {
   return (
-    <Box marginBottom="16px" width="100%" display="flex" paddingLeft="10px">
+    <Box
+      marginBottom="16px"
+      width="100%"
+      display="flex"
+      paddingLeft="10px"
+      alignItems="center"
+    >
       <Icon
         marginRight="16px"
         width="20px"
@@ -25,7 +25,7 @@ const ToolboxItem = ({ icon, label }: Props) => {
         fill={colors.adminTextColor}
         name={icon}
       />
-      <ToolboxItemText>{label}</ToolboxItemText>
+      <Text color="adminTextColor">{label}</Text>
     </Box>
   );
 };
