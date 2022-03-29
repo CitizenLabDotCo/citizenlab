@@ -88,7 +88,7 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
   }
 };
 
-const ViewCreatedMessage = (props: WithRouterProps) => {
+const CreatedSMSCampaignForm = (props: WithRouterProps) => {
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
@@ -151,10 +151,10 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
   return (
     <>
       <HelmetIntl
-        title={{ id: 'test', defaultMessage: 'Edit SMS campaign' }}
+        title={{ id: 'test', defaultMessage: 'View SMS campaign' }}
         description={{
           id: 'test',
-          defaultMessage: 'Edit SMS campaign description',
+          defaultMessage: 'View SMS campaign description',
         }}
       />
       <Section>
@@ -228,4 +228,4 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
   );
 };
 
-export default withRouter(ViewCreatedMessage);
+export default withRouter(CreatedSMSCampaignForm);

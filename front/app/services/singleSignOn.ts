@@ -26,9 +26,15 @@ export interface SSOParams {
 
 export const handleOnSSOClick = (
   provider: SSOProvider,
-  metaData: ISignUpInMetaData
+  metaData: ISignUpInMetaData,
+  setHrefFromModule?: () => void
 ) => {
+  setHrefFromModule ? setHrefFromModule() : setHref(provider, metaData);
+};
+
+function setHref(provider: SSOProvider, metaData: ISignUpInMetaData) {
   const { pathname, verification, verificationContext } = metaData;
+
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: metaData.flow,
@@ -41,10 +47,5 @@ export const handleOnSSOClick = (
     sso_verification_type: verificationContext?.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
-  // This needs to move somewhere else.
-  if (provider === 'id_vienna_saml') {
-    window.location.href = `${AUTH_PATH}/saml`;
-  } else {
-    window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
-  }
-};
+  window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+}

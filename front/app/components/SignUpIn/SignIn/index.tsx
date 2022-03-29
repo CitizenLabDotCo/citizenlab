@@ -60,17 +60,16 @@ const SignIn = memo<Props>(
       };
     }, []);
 
-    const handleOnAuthProviderSelected = useCallback(
-      (selectedMethod: AuthProvider) => {
-        if (selectedMethod === 'email') {
-          setActiveStep('password-signin');
-        } else {
-          handleOnSSOClick(selectedMethod, metaData);
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
+    const handleOnAuthProviderSelected = (
+      selectedMethod: AuthProvider,
+      setHrefFromModule?: () => void
+    ) => {
+      if (selectedMethod === 'email') {
+        setActiveStep('password-signin');
+      } else {
+        handleOnSSOClick(selectedMethod, metaData, setHrefFromModule);
+      }
+    };
 
     const handleGoToSignUpFlow = useCallback(() => {
       onGoToSignUp();

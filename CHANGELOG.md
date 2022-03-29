@@ -4,6 +4,12 @@
 
 /
 
+## 2022-03-29
+
+### Changed
+
+- Vienna Saml button is temporarily disactivated
+
 ## 2022-03-24
 
 ### Added

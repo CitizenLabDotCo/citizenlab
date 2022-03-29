@@ -131,7 +131,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
   };
 
   const goBackToCampaignView = () => {
-    const url = `/admin/messaging/texting/${campaignId}/edit`;
+    const url = `/admin/messaging/texting/${campaignId}`;
     clHistory.replace(url);
   };
 
