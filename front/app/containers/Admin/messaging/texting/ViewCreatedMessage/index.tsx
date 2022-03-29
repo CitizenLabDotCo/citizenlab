@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
 import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
@@ -152,67 +151,61 @@ const ViewCreatedMessage = (props: WithRouterProps) => {
           defaultMessage: 'View SMS campaign description',
         }}
       />
-      <Section>
-        <SectionField>
-          <TextingHeader
-            headerMessage={getTitleMessage(status)}
-            onClickGoBack={clHistory.goBack}
+      <TextingHeader
+        headerMessage={getTitleMessage(status)}
+        onClickGoBack={clHistory.goBack}
+      />
+      <>
+        <Box display="inline-block" marginRight="12px" marginBottom="12px">
+          <FormattedStatusLabel campaignStatus={status} />
+        </Box>
+        <span>{getAdditionalInfoByStatus(campaign)}</span>
+      </>
+      <StyledForm onSubmit={handleOnSubmit}>
+        <Box marginBottom="20px">
+          <Label>
+            {isDraft && (
+              <span>
+                Enter a list of phone numbers. Separate each number by a comma
+                and include the international dialing code (eg. +1).
+              </span>
+            )}
+            {!isDraft && <span>Sent to:</span>}
+          </Label>
+          <TextArea
+            rows={8}
+            maxRows={8}
+            value={inputPhoneNumbers}
+            disabled={!isDraft}
+            onChange={handleInputPhoneNumbersChange}
           />
-          <>
-            <Box display="inline-block" marginRight="12px">
-              <FormattedStatusLabel campaignStatus={status} />
-            </Box>
-            <span>{getAdditionalInfoByStatus(campaign)}</span>
-          </>
-        </SectionField>
-        <StyledForm onSubmit={handleOnSubmit}>
-          <SectionField>
-            <Label>
-              {isDraft && (
-                <span>
-                  Enter a list of phone numbers. Separate each number by a comma
-                  and include the international dialing code (eg. +1).
-                </span>
-              )}
-              {!isDraft && <span>Sent to:</span>}
-            </Label>
-            <TextArea
-              rows={8}
-              maxRows={8}
-              value={inputPhoneNumbers}
-              disabled={!isDraft}
-              onChange={handleInputPhoneNumbersChange}
-            />
-          </SectionField>
-          <SectionField>
-            <Label>
-              Message <IconTooltip content="Help goes here" />
-            </Label>
-            <TextArea
-              rows={8}
-              maxRows={8}
-              value={inputMessage}
-              disabled={!isDraft}
-              onChange={handleInputMessageChange}
-            />
-            {isDraft && <>{remainingChars} characters remaining</>}
-          </SectionField>
+        </Box>
+        <Box marginBottom="30px">
+          <Label>
+            Message <IconTooltip content="Help goes here" />
+          </Label>
+          <TextArea
+            rows={8}
+            maxRows={8}
+            value={inputMessage}
+            disabled={!isDraft}
+            onChange={handleInputMessageChange}
+          />
+          {isDraft && <>{remainingChars} characters remaining</>}
+        </Box>
 
-          {isDraft && (
-            <SectionField>
-              <Box maxWidth="250px">
-                <Button
-                  buttonStyle="primary"
-                  size="2"
-                  type="submit"
-                  text={'Update and Preview SMS'}
-                  onClick={handleOnSubmit}
-                />
-              </Box>
-            </SectionField>
-          )}
-        </StyledForm>
-      </Section>
+        {isDraft && (
+          <Box maxWidth="250px">
+            <Button
+              buttonStyle="primary"
+              size="2"
+              type="submit"
+              text={'Update and Preview SMS'}
+              onClick={handleOnSubmit}
+            />
+          </Box>
+        )}
+      </StyledForm>
     </>
   );
 };

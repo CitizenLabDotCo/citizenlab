@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -26,13 +26,14 @@ const StyledModalButton = styled(Button)`
   margin-right: 10px;
 `;
 
-const InformativeTitle = styled.span`
-  font-weight: bold;
-`;
+const StatusTable = styled.table`
+  width: 100%;
+  display: flex;
+  align-content: flex-start;
 
-const InformativeContent = styled.span`
-  display: inline-block;
-  margin-left: 10px;
+  tr > td {
+    padding-right: 15px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -56,6 +57,8 @@ const PhoneMessage = styled.div`
     text-align: left;
     display: inline-block;
     font-size: 0.9rem;
+    inline-size: 212px;
+    overflow-wrap: break-word;
   }
   &:before {
     content: '';
@@ -171,16 +174,30 @@ const TextMessagePreview = (props: WithRouterProps) => {
           />
         </ButtonContainer>
       </TextingHeader>
-      <div>
-        <InformativeTitle>Sending to:</InformativeTitle>
-        <InformativeContent>{phone_numbers.length} people</InformativeContent>
-      </div>
-      <div>
-        <InformativeTitle>Usage:</InformativeTitle>
-        <InformativeContent>
-          {message.length} Characters (message count here)
-        </InformativeContent>
-      </div>
+      <StatusTable>
+        <tbody>
+          <tr>
+            <td>
+              <Text color="adminTextColor" as="span" fontWeight="bold">
+                Sending to:
+              </Text>
+            </td>
+            <td>{phone_numbers.length} people</td>
+          </tr>
+          <tr>
+            <td>
+              <Text color="adminTextColor" as="span" fontWeight="bold">
+                Usage:
+              </Text>
+            </td>
+            <td>
+              {' '}
+              {message.length} Characters ({Math.ceil(160 / message.length)}{' '}
+              segments)
+            </td>
+          </tr>
+        </tbody>
+      </StatusTable>
 
       {/* Phone Wrapper */}
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -208,12 +225,12 @@ const TextMessagePreview = (props: WithRouterProps) => {
           </Box>
         </Box>
         <Button
-          marginTop="15px"
+          marginTop="25px"
           onClick={openDeleteModal}
           buttonStyle="delete"
           size="1"
           icon="trash"
-          text={'Delete this SMS'}
+          text={'Delete this draft SMS'}
         />
       </Box>
 

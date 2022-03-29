@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
 import { Label, Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 
@@ -53,7 +52,6 @@ const TextCreation = () => {
       clHistory.replace(url);
     } catch (error) {
       // handle error here in subsequent ticket
-      // console.log('something broke', error);
     }
   };
 
@@ -82,53 +80,46 @@ const TextCreation = () => {
           defaultMessage: 'Create new SMS description',
         }}
       />
-      <Section>
-        <SectionField>
-          <TextingHeader
-            headerMessage="New SMS campaign"
-            onClickGoBack={clHistory.goBack}
+      <TextingHeader
+        headerMessage="New SMS campaign"
+        onClickGoBack={clHistory.goBack}
+      />
+      <StyledForm onSubmit={handleOnSubmit}>
+        <Box marginBottom="20px">
+          <Label>
+            Enter a list of phone numbers. Separate each number by a comma and
+            include the international dialing code (eg. +1).
+          </Label>
+          <TextArea
+            rows={8}
+            maxRows={8}
+            value={inputPhoneNumbers}
+            onChange={handleInputPhoneNumbersChange}
           />
-        </SectionField>
-        <StyledForm onSubmit={handleOnSubmit}>
-          <SectionField>
-            <Label>
-              Enter a list of phone numbers. Separate each number by a comma and
-              include the international dialing code (eg. +1).
-            </Label>
-            <TextArea
-              rows={8}
-              maxRows={8}
-              value={inputPhoneNumbers}
-              onChange={handleInputPhoneNumbersChange}
-            />
-          </SectionField>
-          <SectionField>
-            <Label>
-              Message <IconTooltip content="Help goes here" />
-            </Label>
-            <TextArea
-              rows={8}
-              maxRows={8}
-              value={inputMessage}
-              onChange={handleInputMessageChange}
-            />
-            {remainingChars} characters remaining
-          </SectionField>
-
-          <SectionField>
-            <Box maxWidth="250px">
-              <Button
-                buttonStyle="primary"
-                size="2"
-                type="submit"
-                text={'Preview SMS'}
-                onClick={handleOnSubmit}
-                disabled={!isSubmitButtonEnabled}
-              />
-            </Box>
-          </SectionField>
-        </StyledForm>
-      </Section>
+        </Box>
+        <Box marginBottom="30px">
+          <Label>
+            Message <IconTooltip content="Help goes here" />
+          </Label>
+          <TextArea
+            rows={8}
+            maxRows={8}
+            value={inputMessage}
+            onChange={handleInputMessageChange}
+          />
+          {remainingChars} characters remaining
+        </Box>
+        <Box maxWidth="250px">
+          <Button
+            buttonStyle="primary"
+            size="2"
+            type="submit"
+            text={'Preview SMS'}
+            onClick={handleOnSubmit}
+            disabled={!isSubmitButtonEnabled}
+          />
+        </Box>
+      </StyledForm>
     </>
   );
 };
