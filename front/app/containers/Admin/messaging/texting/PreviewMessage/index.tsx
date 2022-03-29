@@ -30,6 +30,7 @@ const StatusTable = styled.table`
   width: 100%;
   display: flex;
   align-content: flex-start;
+  margin-bottom: 12px;
 
   tr > td {
     padding-right: 15px;
@@ -178,21 +179,37 @@ const TextMessagePreview = (props: WithRouterProps) => {
         <tbody>
           <tr>
             <td>
-              <Text color="adminTextColor" as="span" fontWeight="bold">
+              <Text
+                fontSize="l"
+                color="adminTextColor"
+                as="span"
+                fontWeight="bold"
+              >
                 Sending to:
               </Text>
             </td>
-            <td>{phone_numbers.length} people</td>
+            <td>
+              <Text fontSize="l" color="adminTextColor" as="span">
+                {phone_numbers.length} people
+              </Text>
+            </td>
           </tr>
           <tr>
             <td>
-              <Text color="adminTextColor" as="span" fontWeight="bold">
+              <Text
+                fontSize="l"
+                color="adminTextColor"
+                as="span"
+                fontWeight="bold"
+              >
                 Usage:
               </Text>
             </td>
             <td>
-              {message.length} Characters ({Math.ceil(message.length / 160)}{' '}
-              segments)
+              <Text fontSize="l" color="adminTextColor" as="span">
+                {message.length} Characters ({Math.ceil(message.length / 160)}{' '}
+                segments)
+              </Text>
             </td>
           </tr>
         </tbody>
