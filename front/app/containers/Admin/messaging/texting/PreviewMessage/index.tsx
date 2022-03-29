@@ -60,6 +60,7 @@ const PhoneMessage = styled.div`
     font-size: 0.9rem;
     inline-size: 212px;
     overflow-wrap: break-word;
+    max-height: 410px;
   }
   &:before {
     content: '';
@@ -135,7 +136,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
   };
 
   const goBackToCampaignView = () => {
-    const url = `/admin/messaging/texting/${campaignId}`;
+    const url = `/admin/messaging/texting/${campaignId}/`;
     clHistory.replace(url);
   };
 
