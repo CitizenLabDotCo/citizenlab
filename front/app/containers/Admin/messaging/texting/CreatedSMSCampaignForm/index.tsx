@@ -207,7 +207,7 @@ const CreatedSMSCampaignForm = (props: WithRouterProps) => {
               buttonStyle="primary"
               size="2"
               type="submit"
-              text={'Update and Preview SMS Long Text'}
+              text={'Update and Preview SMS'}
               onClick={handleOnSubmit}
             />
           </Box>
