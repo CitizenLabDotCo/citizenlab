@@ -31,7 +31,7 @@ const NoCampaignsWrapper = styled.div`
 const NoCampaignsHeader = styled.h2`
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 `;
 
 const IconWrapper = styled.div`

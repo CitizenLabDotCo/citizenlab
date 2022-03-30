@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -26,13 +26,15 @@ const StyledModalButton = styled(Button)`
   margin-right: 10px;
 `;
 
-const InformativeTitle = styled.span`
-  font-weight: bold;
-`;
+const StatusTable = styled.table`
+  width: 100%;
+  display: flex;
+  align-content: flex-start;
+  margin-bottom: 24px;
 
-const InformativeContent = styled.span`
-  display: inline-block;
-  margin-left: 10px;
+  tr > td {
+    padding-right: 15px;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -56,6 +58,9 @@ const PhoneMessage = styled.div`
     text-align: left;
     display: inline-block;
     font-size: 0.9rem;
+    inline-size: 212px;
+    overflow-wrap: break-word;
+    max-height: 410px;
   }
   &:before {
     content: '';
@@ -80,6 +85,29 @@ const PhoneMessage = styled.div`
     border-bottom-right-radius: 10px;
   }
 `;
+
+const InformativeTableRow = ({
+  title,
+  content,
+}: {
+  title: string;
+  content: string;
+}): JSX.Element => {
+  return (
+    <tr>
+      <td>
+        <Text fontSize="m" color="adminTextColor" as="span" fontWeight="bold">
+          {title}
+        </Text>
+      </td>
+      <td>
+        <Text fontSize="m" color="adminTextColor" as="span">
+          {content}
+        </Text>
+      </td>
+    </tr>
+  );
+};
 
 const TextMessagePreview = (props: WithRouterProps) => {
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
@@ -171,16 +199,20 @@ const TextMessagePreview = (props: WithRouterProps) => {
           />
         </ButtonContainer>
       </TextingHeader>
-      <div>
-        <InformativeTitle>Sending to:</InformativeTitle>
-        <InformativeContent>{phone_numbers.length} people</InformativeContent>
-      </div>
-      <div>
-        <InformativeTitle>Usage:</InformativeTitle>
-        <InformativeContent>
-          {message.length} Characters (message count here)
-        </InformativeContent>
-      </div>
+      <StatusTable>
+        <tbody>
+          <InformativeTableRow
+            title="Sending to:"
+            content={`${phone_numbers.length} people`}
+          />
+          <InformativeTableRow
+            title="Usage"
+            content={`${message.length} Characters (${Math.ceil(
+              message.length / 160
+            )} segments)`}
+          />
+        </tbody>
+      </StatusTable>
 
       {/* Phone Wrapper */}
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -191,6 +223,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
           border="21px solid black"
           borderRadius="33px"
           position="relative"
+          marginBottom="25px"
         >
           {/* Phone Bezel */}
           <Box
@@ -208,12 +241,11 @@ const TextMessagePreview = (props: WithRouterProps) => {
           </Box>
         </Box>
         <Button
-          marginTop="15px"
           onClick={openDeleteModal}
           buttonStyle="delete"
           size="1"
           icon="trash"
-          text={'Delete this SMS'}
+          text={'Delete this draft SMS'}
         />
       </Box>
 
