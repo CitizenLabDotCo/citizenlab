@@ -26,11 +26,9 @@ const configuration: ModuleConfiguration = {
       childrenToRender,
     }) => {
       return (
-        <>
-          <ContentBuilderLayout onMount={onMount}>
-            {childrenToRender}
-          </ContentBuilderLayout>
-        </>
+        <ContentBuilderLayout onMount={onMount}>
+          {childrenToRender}
+        </ContentBuilderLayout>
       );
     },
   },
