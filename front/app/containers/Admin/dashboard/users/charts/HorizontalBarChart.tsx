@@ -26,7 +26,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';

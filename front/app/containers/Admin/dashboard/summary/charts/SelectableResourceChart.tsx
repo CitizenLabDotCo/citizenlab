@@ -29,7 +29,7 @@ import {
   NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';

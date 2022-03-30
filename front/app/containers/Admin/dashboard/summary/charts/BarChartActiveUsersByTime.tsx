@@ -31,7 +31,7 @@ import {
   GraphCardHeader,
   GraphCardTitle,
   NoDataContainer,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';

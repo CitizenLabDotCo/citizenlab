@@ -20,7 +20,7 @@ import {
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';

@@ -4,7 +4,11 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
-import { GraphsContainer, ControlBar, Column } from 'components/admin/Chart';
+import {
+  GraphsContainer,
+  ControlBar,
+  Column,
+} from 'components/admin/GraphWrappers';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';

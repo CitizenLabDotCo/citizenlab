@@ -27,7 +27,7 @@ import {
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IUserCustomFieldData } from '../../services/userCustomFields';
