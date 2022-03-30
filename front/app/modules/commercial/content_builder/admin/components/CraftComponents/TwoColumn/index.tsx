@@ -20,16 +20,12 @@ const TwoColumn: UserComponent = () => {
       minHeight="100px"
       display="flex"
       w="100%"
+      gap="4px"
     >
-      <Box
-        m="-4px"
-        mb={isLargeTablet ? '2px' : '-2px'}
-        mr={isLargeTablet ? '-4px' : '0px'}
-        flex="1"
-      >
+      <Box flex="1">
         <Element id="column1" is={Container} canvas />
       </Box>
-      <Box m="-4px" ml={isLargeTablet ? '-4px' : '0px'} flex="1">
+      <Box flex="1">
         <Element id="column2" is={Container} canvas />
       </Box>
     </Box>
