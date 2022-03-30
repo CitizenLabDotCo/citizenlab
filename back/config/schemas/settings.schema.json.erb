@@ -1,5 +1,6 @@
 {
   "description": "Schema for validating the settings on a tenant",
+  "$schema": "<%= TenantSchema::ExtendedSchema::SCHEMA_URL %>",
   "type": "object",
   "required": ["core"],
   "additionalProperties": false,
@@ -530,7 +531,7 @@
         "title": "Proposals",
         "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
