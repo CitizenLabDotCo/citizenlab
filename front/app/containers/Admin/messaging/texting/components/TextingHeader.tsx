@@ -18,7 +18,7 @@ const TextingHeader = ({
   children,
 }: Props) => {
   return (
-    <>
+    <Box marginBottom="10px">
       <Button
         justify="left"
         onClick={onClickGoBack}
@@ -34,6 +34,7 @@ const TextingHeader = ({
         width="100%"
         display="flex"
         justifyContent="space-between"
+        alignItems="flex-start"
       >
         <Title variant="h1" margin="0">
           {headerMessage}
@@ -41,7 +42,7 @@ const TextingHeader = ({
         {children}
       </Box>
       {showHorizontalRule && <hr />}
-    </>
+    </Box>
   );
 };
 
