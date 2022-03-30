@@ -4,7 +4,6 @@ import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -38,6 +37,22 @@ const NoCampaignsHeader = styled.h2`
 const IconWrapper = styled.div`
   width: 40px;
   height: 40px;
+`;
+
+const Table = styled.table`
+  table-layout: auto;
+  width: 100%;
+`;
+
+const TableHeader = styled.th`
+  text-align: left;
+  padding: 15px 0;
+  font-size: ${fontSizes.base}px;
+  padding-right: 20px;
+`;
+
+const StatusTableHeader = styled(TableHeader)`
+  padding-right: 0;
 `;
 
 const TextingCampaignsList = () => {
@@ -76,11 +91,23 @@ const TextingCampaignsList = () => {
           <FormattedMessage {...messages.addTextButton} />
         </Button>
       </ButtonWrapper>
-      <List>
-        {textingCampaigns.map((campaign) => {
-          return <TextCampaignListRow key={campaign.id} campaign={campaign} />;
-        })}
-      </List>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>Message</TableHeader>
+            <TableHeader>Date sent</TableHeader>
+            <TableHeader>Recipients</TableHeader>
+            <StatusTableHeader>Status</StatusTableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {textingCampaigns.map((campaign) => {
+            return (
+              <TextCampaignListRow key={campaign.id} campaign={campaign} />
+            );
+          })}
+        </tbody>
+      </Table>
     </>
   );
 };
