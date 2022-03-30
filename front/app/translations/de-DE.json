@@ -351,7 +351,7 @@
   "app.components.ProjectCard.viewTheQuestions": "Sehen Sie sich die Fragen an",
   "app.components.ProjectCard.vote": "Stimmen",
   "app.components.ProjectCard.xComments": "{commentsCount, plural, no {# Kommentare} one {# Kommentar} other {# Kommentare}}",
-  "app.components.ProjectCard.xContributions": "{ideasCount, Plural, keine {# Beiträge} ein {# Beitrag} andere {# Beiträge}}\n",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, ein {# contribution} other {# contributions}}",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {keine Ideen} one {# Idee} other {# Ideen}}",
   "app.components.ProjectCard.xIssues": "{ideasCount, Plural, keine {# Probleme} ein {# Problem} andere {# Probleme}}\n",
   "app.components.ProjectCard.xOptions": "{ideasCount, Plural, keine {# Optionen} eine {# Option} andere {# Optionen}}\n",
