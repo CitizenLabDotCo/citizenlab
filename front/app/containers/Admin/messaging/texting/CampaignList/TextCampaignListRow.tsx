@@ -41,7 +41,7 @@ const MessageCell = styled(Cell)`
   width: 67%;
   margin-left: 20px;
   margin-right: 20px;
-  font-size: ${fontSizes.base}px
+  font-size: ${fontSizes.base}px;
   white-space: normal;
   word-break: break-all;
   text-decoration: underline;
