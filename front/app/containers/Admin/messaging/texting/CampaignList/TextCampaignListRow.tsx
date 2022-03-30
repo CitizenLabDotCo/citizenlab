@@ -8,6 +8,7 @@ import { ITextingCampaignData } from 'services/textingCampaigns';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
@@ -26,17 +27,7 @@ const Row = styled.tr`
   cursor: pointer;
 `;
 
-const BodyText = styled.div`
-  margin-right: 20px;
-`;
-
-const DateTime = styled.div`
-  text-align: left;
-  white-space: nowrap;
-  margin-right: 20px;
-`;
-
-const SentText = styled.div`
+const MetaInfoCell = styled.div`
   text-align: left;
   white-space: nowrap;
   margin-right: 20px;
@@ -49,7 +40,8 @@ const Cell = styled.td`
 const MessageCell = styled(Cell)`
   width: 67%;
   margin-left: 20px;
-  font-size: 16px;
+  margin-right: 20px;
+  font-size: ${fontSizes.base}px
   white-space: normal;
   word-break: break-all;
   text-decoration: underline;
@@ -71,23 +63,21 @@ const TextingCampaignRow = ({ campaign }: Props) => {
 
   return (
     <Row onClick={handleEvent}>
-      <MessageCell>
-        <BodyText>{truncate(message, 60)}</BodyText>
-      </MessageCell>
+      <MessageCell>{truncate(message, 60)}</MessageCell>
 
       {status === 'sent' && (
         <>
           <Cell>
-            <DateTime>
+            <MetaInfoCell>
               <FormattedDate value={sent_at} />
               &nbsp;
               <FormattedTime value={sent_at} />
-            </DateTime>
+            </MetaInfoCell>
           </Cell>
           <Cell>
-            <SentText>
+            <MetaInfoCell>
               <p>{phone_numbers.length}</p>
-            </SentText>
+            </MetaInfoCell>
           </Cell>
         </>
       )}
