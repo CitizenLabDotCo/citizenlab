@@ -104,59 +104,52 @@ const NewSMSCampaign = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           defaultMessage: 'Create new SMS description',
         }}
       />
-      <Section>
-        <SectionField>
-          <TextingHeader
-            headerMessage="New SMS campaign"
-            onClickGoBack={clHistory.goBack}
+      <TextingHeader
+        headerMessage="New SMS campaign"
+        onClickGoBack={clHistory.goBack}
+      />
+      <StyledForm onSubmit={handleOnSubmit}>
+        <Box marginBottom="20px">
+          <Label>
+            Enter a list of phone numbers. Separate each number by a comma and
+            include the international dialing code (eg. +1).
+          </Label>
+          <TextArea
+            rows={8}
+            maxRows={8}
+            value={inputPhoneNumbers}
+            onChange={handleInputPhoneNumbersChange}
           />
-        </SectionField>
-        <StyledForm onSubmit={handleOnSubmit}>
-          <SectionField>
-            <Label>
-              Enter a list of phone numbers. Separate each number by a comma and
-              include the international dialing code (eg. +1).
-            </Label>
-            <TextArea
-              rows={8}
-              maxRows={8}
-              value={inputPhoneNumbers}
-              onChange={handleInputPhoneNumbersChange}
-            />
-            {hasInvalidPhoneNumbersError && (
-              <Error text={formatMessage(messages.invalidPhoneNumbers)} />
-            )}
-          </SectionField>
-          <SectionField>
-            <Label>
-              Message <IconTooltip content="Help goes here" />
-            </Label>
-            <TextArea
-              rows={8}
-              maxRows={8}
-              value={inputMessage}
-              onChange={handleInputMessageChange}
-            />
-            <RemainingCharacters
-              remainingChars={remainingChars}
-              overCharacterLimit={overCharacterLimit}
-            />
-          </SectionField>
-
-          <SectionField>
-            <Box maxWidth="250px">
-              <Button
-                buttonStyle="primary"
-                size="2"
-                type="submit"
-                text={'Preview SMS'}
-                onClick={handleOnSubmit}
-                disabled={!isSubmitButtonEnabled}
-              />
-            </Box>
-          </SectionField>
-        </StyledForm>
-      </Section>
+          {hasInvalidPhoneNumbersError && (
+            <Error text={formatMessage(messages.invalidPhoneNumbers)} />
+          )}
+        </Box>
+        <Box marginBottom="30px">
+          <Label>
+            Message <IconTooltip content="Help goes here" />
+          </Label>
+          <TextArea
+            rows={8}
+            maxRows={8}
+            value={inputMessage}
+            onChange={handleInputMessageChange}
+          />
+          <RemainingCharacters
+            remainingChars={remainingChars}
+            overCharacterLimit={overCharacterLimit}
+          />
+        </Box>
+        <Box display="flex" justifyContent="flex-start">
+          <Button
+            buttonStyle="primary"
+            size="2"
+            type="submit"
+            text={'Preview SMS'}
+            onClick={handleOnSubmit}
+            disabled={!isSubmitButtonEnabled}
+          />
+        </Box>
+      </StyledForm>
     </>
   );
 };
