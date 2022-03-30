@@ -69,9 +69,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
             &nbsp;
             <FormattedTime value={sent_at} />
           </MetaInfoCell>
-          <MetaInfoCell>
-            <p>{phone_numbers.length}</p>
-          </MetaInfoCell>
+          <MetaInfoCell>{phone_numbers.length}</MetaInfoCell>
         </>
       )}
 
