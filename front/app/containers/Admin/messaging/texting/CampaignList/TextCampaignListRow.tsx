@@ -43,7 +43,7 @@ const SentText = styled.div`
 `;
 
 const Cell = styled.td`
-  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const MessageCell = styled(Cell)`
@@ -53,7 +53,10 @@ const MessageCell = styled(Cell)`
   white-space: normal;
   word-break: break-all;
   text-decoration: underline;
-  padding-left: 0;
+`;
+
+const StatusCell = styled(Cell)`
+  padding-right: 0;
 `;
 
 const TextingCampaignRow = ({ campaign }: Props) => {
@@ -96,9 +99,9 @@ const TextingCampaignRow = ({ campaign }: Props) => {
         </>
       )}
 
-      <Cell>
+      <StatusCell>
         <FormattedStatusLabel campaignStatus={status} />
-      </Cell>
+      </StatusCell>
     </Row>
   );
 };
