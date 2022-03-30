@@ -30,14 +30,12 @@ interface IContentBuilderLayoutObject {
   enabled?: string;
 }
 
-// ts-prune-ignore-next
 export function contentBuilderLayoutStream({ projectId, code }) {
   return streams.get<IContentBuilderLayout>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
   });
 }
 
-// ts-prune-ignore-next
 export function addContentBuilderLayout(
   { projectId, code },
   object: IContentBuilderLayoutObject
