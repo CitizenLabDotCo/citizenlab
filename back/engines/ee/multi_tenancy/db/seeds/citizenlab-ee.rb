@@ -445,7 +445,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
       },
       texting: {
         enabled: true,
-        allowed: true
+        allowed: true,
+        from_number: '+12345678912',
+        monthly_sms_segments_limit: 100_000
       }
     }
   })
