@@ -43,22 +43,53 @@ const RenderNode = ({ render }) => {
     isDeletable: id && query.node(id).isDeletable(),
   }));
 
-  const { id, name } = useNode((node) => ({
+  const { id, name, isHover } = useNode((node) => ({
+    isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
   }));
 
+  const parentNode = parentId && node(parentId).get();
+  const parentNodeName = parentNode && parentNode.data.name;
+
+  // Handle two column hover state
   useEffect(() => {
-    if (isActive && parentId && name === CONTAINER) {
-      const parentNode = node(parentId).get();
-      parentNode.data.name === TWO_COLUMNS && selectNode(parentId);
+    const parentNodeElement = document.getElementById(parentId);
+
+    if (parentNodeName === TWO_COLUMNS && isHover) {
+      parentNodeElement?.setAttribute(
+        'style',
+        `border: 1px solid ${colors.adminTextColor}`
+      );
+    } else {
+      parentNodeElement?.removeAttribute('style');
+    }
+  }, [isHover, id, parentNodeName, parentId]);
+
+  // Handle selected state
+  useEffect(() => {
+    if (isActive && name === CONTAINER && parentNode) {
+      parentNodeName === TWO_COLUMNS && selectNode(parentId);
     }
   });
 
   const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const isTwoColumn = name === TWO_COLUMNS;
+  const solidBorderIsVisible =
+    nodeNameIsVisible ||
+    (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS);
 
   return (
-    <Box position="relative">
+    <Box
+      id={id}
+      position="relative"
+      border={`1px ${
+        solidBorderIsVisible
+          ? `solid ${colors.adminTextColor}`
+          : name !== TWO_COLUMNS
+          ? `dashed ${colors.separation}`
+          : `solid transparent`
+      } `}
+      m="4px"
+    >
       {nodeNameIsVisible && (
         <Box
           p="4px"
@@ -66,23 +97,12 @@ const RenderNode = ({ render }) => {
           color="#fff"
           position="absolute"
           top="-28px"
-          left="4px"
+          left="-1px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      <Box
-        border={`1px solid${
-          nodeNameIsVisible
-            ? colors.adminTextColor
-            : !isTwoColumn
-            ? colors.separation
-            : undefined
-        }`}
-        m={!isTwoColumn ? '4px' : undefined}
-      >
-        {render}
-      </Box>
+      {render}
     </Box>
   );
 };
