@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 
-export interface IBuilderLayoutData {
+export interface IContentBuilderLayoutData {
   type: 'project';
   id: string;
   attributes: {
@@ -13,30 +13,30 @@ export interface IBuilderLayoutData {
   };
 }
 
-export interface IBuilderLayout {
-  data: IBuilderLayoutData;
+export interface IContentBuilderLayout {
+  data: IContentBuilderLayoutData;
 }
 
-export function builderLayoutStream(projectId: string, code: string) {
-  return streams.get<IBuilderLayout>({
+export function contentBuilderLayoutStream(projectId: string, code: string) {
+  return streams.get<IContentBuilderLayout>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
   });
 }
 
-export function updateBuilderLayout(
+export function updateContentBuilderLayout(
   projectId: string,
   code: string,
   dataId: string,
-  object: IBuilderLayout
+  object: IContentBuilderLayout
 ) {
-  return streams.update<IBuilderLayout>(
+  return streams.update<IContentBuilderLayout>(
     `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}/upsert`,
     dataId,
     { layout: object }
   );
 }
 
-export function deleteBuilderLayout(
+export function deleteContentBuilderLayout(
   projectId: string,
   code: string,
   dataId: string

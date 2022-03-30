@@ -1,25 +1,26 @@
 import { useState, useEffect } from 'react';
 import {
-  builderLayoutStream,
-  IBuilderLayout,
+  contentBuilderLayoutStream,
+  IContentBuilderLayout,
 } from '../services/ContentBuilder';
 
-const useBuilderLayout = (id: string, code: string) => {
-  const [builderLayout, setBuilderLayout] = useState<
-    IBuilderLayout | undefined | null | Error
+const useContentBuilderLayout = (id: string, code: string) => {
+  const [contentBuilderLayout, setContentBuilderLayout] = useState<
+    IContentBuilderLayout | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    const subscription = builderLayoutStream(id, code).observable.subscribe(
-      (builderLayout) => {
-        setBuilderLayout(builderLayout);
-      }
-    );
+    const subscription = contentBuilderLayoutStream(
+      id,
+      code
+    ).observable.subscribe((contentBuilderLayout) => {
+      setContentBuilderLayout(contentBuilderLayout);
+    });
 
     return () => subscription.unsubscribe();
   }, [id, code]);
 
-  return builderLayout;
+  return contentBuilderLayout;
 };
 
-export default useBuilderLayout;
+export default useContentBuilderLayout;

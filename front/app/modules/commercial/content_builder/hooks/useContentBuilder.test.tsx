@@ -1,13 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useBuilderLayout from './useContentBuilder';
+import useContentBuilderLayout from './useContentBuilder';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { builderLayoutStream } from '../services/ContentBuilder';
+import { contentBuilderLayoutStream } from '../services/ContentBuilder';
 
-const viewId = 'TestID';
+const projectId = 'TestID';
 const code = 'TestCode';
 
-const mockBuilderLayout = {
+const mockContentBuilderLayout = {
   data: {
     id: 'testID',
     code: 'TestCode',
@@ -15,12 +15,12 @@ const mockBuilderLayout = {
 };
 
 const mockObservable = new Observable((subscriber) => {
-  subscriber.next(mockBuilderLayout);
+  subscriber.next(mockContentBuilderLayout);
 }).pipe(delay(1));
 
 jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
   return {
-    builderLayoutStream: jest.fn(() => {
+    contentBuilderLayoutStream: jest.fn(() => {
       return {
         observable: mockObservable,
       };
@@ -28,9 +28,9 @@ jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
   };
 });
 
-describe('useBuilderLayout', () => {
-  it('should call BuilderContentStream with correct arguments', () => {
-    renderHook(() => useBuilderLayout(viewId, code));
-    expect(builderLayoutStream).toHaveBeenCalledWith(viewId, code);
+describe('useContentBuilderLayout', () => {
+  it('should call contentBuilderLayoutStream with correct arguments', () => {
+    renderHook(() => useContentBuilderLayout(projectId, code));
+    expect(contentBuilderLayoutStream).toHaveBeenCalledWith(projectId, code);
   });
 });
