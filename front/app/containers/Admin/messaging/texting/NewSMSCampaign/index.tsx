@@ -115,8 +115,7 @@ const TextCreation = () => {
             overCharacterLimit={overCharacterLimit}
           />
         </Box>
-
-        <Box maxWidth="250px">
+        <Box display="flex" justifyContent="flex-start">
           <Button
             buttonStyle="primary"
             size="2"
