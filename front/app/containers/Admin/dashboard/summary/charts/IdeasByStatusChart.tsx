@@ -5,7 +5,7 @@ import { isEmpty, map, orderBy } from 'lodash-es';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
