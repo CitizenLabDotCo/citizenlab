@@ -1,3 +1,4 @@
+import { SerializedNode } from '@craftjs/core';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams from 'utils/streams';
@@ -5,7 +6,7 @@ import streams from 'utils/streams';
 export const PROJECT_DESCRIPTION_CODE = 'project_description';
 
 type JsonMultiloc = {
-  [key in Locale]?: Record<string, unknown>;
+  [key in Locale]?: Record<string, SerializedNode>;
 };
 
 export interface IContentBuilderLayoutData {
@@ -43,6 +44,6 @@ export function addContentBuilderLayout(
 ) {
   return streams.add<IContentBuilderLayout>(
     `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}/upsert`,
-    { layout: object }
+    { content_builder_layout: object }
   );
 }

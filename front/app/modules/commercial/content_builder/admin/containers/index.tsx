@@ -1,8 +1,5 @@
 import React from 'react';
-import { Editor, Frame, Element } from '@craftjs/core';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
+import { Editor } from '@craftjs/core';
 
 // styles
 import styled from 'styled-components';
@@ -20,38 +17,20 @@ import Text from '../components/CraftComponents/Text';
 import TwoColumn from '../components/CraftComponents/TwoColumn';
 import RenderNode from '../components/RenderNode';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
-
-// hooks
-import useLocale from 'hooks/useLocale';
-import useContentBuilderLayout from '../../hooks/useContentBuilder';
-import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
-
-// router
-import { withRouter, WithRouterProps } from 'react-router';
+import ContentBuilderFrame from '../components/ContentBuilderFrame';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
 `;
 
-const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
-  const data = useContentBuilderLayout({
-    projectId,
-    code: PROJECT_DESCRIPTION_CODE,
-  });
-  const locale = useLocale();
-
-  const editorData =
-    !isNilOrError(data) && !isNilOrError(locale)
-      ? JSON.stringify(data[locale])
-      : undefined;
-  console.log(editorData);
+const ContentBuilderPage = () => {
   return (
     <Box display="flex" flexDirection="column" w="100%">
-      <ContentBuilderTopBar />
       <Editor
         resolver={{ Box, Container, TwoColumn, Text }}
         onRender={RenderNode}
       >
+        <ContentBuilderTopBar />
         <Box display="flex">
           <Box
             flex="0 0 auto"
@@ -67,17 +46,7 @@ const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
           </Box>
           <StyledRightColumn>
             <Box paddingTop="20px">
-              <Frame json={editorData}>
-                <Element
-                  is="div"
-                  canvas
-                  style={{
-                    padding: '4px',
-                    minHeight: '300px',
-                    backgroundColor: '#fff',
-                  }}
-                />
-              </Frame>
+              <ContentBuilderFrame />
             </Box>
           </StyledRightColumn>
           <ContentBuilderSettings />
@@ -87,4 +56,4 @@ const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(ContentBuilderPage);
+export default ContentBuilderPage;
