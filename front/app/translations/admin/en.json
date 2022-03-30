@@ -1374,6 +1374,7 @@
   "app.modules.navbar.admin.containers.pageTitle": "Navigation bar and platform pages",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later.",
+  "containers.Admin.messaging.texting.invalidPhoneNumbers": "One or more of the phone numbers are invalid.",
   "containers.Admin.onboarding.HTMLDescription": "This page will be your guide",
   "containers.Admin.onboarding.HTMLTitle": "Welcome to the admin panel",
   "containers.Admin.onboarding.decideArticle1Description2": "Add tags to posts, move posts from one phase to another, change their status or mark them as spam.",
