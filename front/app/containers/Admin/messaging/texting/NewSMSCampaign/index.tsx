@@ -10,7 +10,6 @@ import {
   IconTooltip,
   Error,
 } from '@citizenlab/cl2-component-library';
-import { Section, SectionField } from 'components/admin/Section';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import RemainingCharacters from '../components/RemainingCharacters';
