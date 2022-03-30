@@ -197,22 +197,10 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
             onChange={handleInputMessageChange}
           />
           {isDraft && (
-            <>
-              <Box maxWidth="250px">
-                <Button
-                  buttonStyle="primary"
-                  size="2"
-                  type="submit"
-                  text={'Update and Preview SMS'}
-                  onClick={handleOnSubmit}
-                  disabled={isButtonDisabled}
-                />
-              </Box>
-              <RemainingCharacters
-                remainingChars={remainingChars}
-                overCharacterLimit={overCharacterLimit}
-              />
-            </>
+            <RemainingCharacters
+              remainingChars={remainingChars}
+              overCharacterLimit={overCharacterLimit}
+            />
           )}
         </Box>
 
@@ -224,6 +212,7 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
               type="submit"
               text={'Update and Preview SMS'}
               onClick={handleOnSubmit}
+              disabled={isButtonDisabled}
             />
           </Box>
         )}
