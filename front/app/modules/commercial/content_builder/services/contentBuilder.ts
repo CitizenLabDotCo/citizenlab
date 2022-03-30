@@ -28,7 +28,7 @@ export function contentBuilderLayoutStream({ projectId, code }) {
   });
 }
 
-export function updateContentBuilderLayout(
+export function addContentBuilderLayout(
   { projectId, code },
   object: IContentBuilderLayout
 ) {

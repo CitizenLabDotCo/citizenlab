@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   contentBuilderLayoutStream,
   IContentBuilderLayout,
-} from '../services/ContentBuilder';
+} from '../services/contentBuilder';
 
 const useContentBuilderLayout = ({ id, code }) => {
   const [contentBuilderLayout, setContentBuilderLayout] = useState<

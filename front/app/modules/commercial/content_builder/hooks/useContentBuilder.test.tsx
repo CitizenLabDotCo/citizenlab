@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import useContentBuilderLayout from './useContentBuilder';
 import { Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { contentBuilderLayoutStream } from '../services/ContentBuilder';
+import { contentBuilderLayoutStream } from '../services/contentBuilder';
 
 const projectId = 'TestID';
 const code = 'TestCode';
@@ -10,7 +10,14 @@ const code = 'TestCode';
 const mockContentBuilderLayout = {
   data: {
     id: 'testID',
-    code: 'TestCode',
+    type: 'content_builder_layout',
+    attributes: {
+      craftjs_jsonmultiloc: '',
+      code: 'TextCode',
+      enabled: 'true',
+      created_at: '2021-05-18T16:07:49.156Z',
+      updated_at: '2021-05-18T16:07:49.156Z',
+    },
   },
 };
 
