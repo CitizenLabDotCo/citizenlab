@@ -70,7 +70,6 @@ const ContentBuilderToggle = ({
   }, [onMount, featureEnabled]);
 
   const locale = useLocale();
-  const [loading, setLoading] = useState(false);
   const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
     useState(false);
   const route = `/admin/content-builder/projects/${params.projectId}/description`;
@@ -82,19 +81,16 @@ const ContentBuilderToggle = ({
     return null;
   }
 
-  const addNewLayout = async (projectId: string) => {
+  const createNewLayout = async (projectId: string) => {
     if (!isNilOrError(locale)) {
       try {
-        setLoading(true);
-        const json = '{}';
         await addContentBuilderLayout(
           { projectId, code: PROJECT_DESCRIPTION_CODE },
-          { craftjs_jsonmultiloc: { [locale]: JSON.parse(json) } }
+          { craftjs_jsonmultiloc: { [locale]: JSON.parse('{}') } }
         );
       } catch {
         // Do nothing
       }
-      setLoading(false);
     }
   };
 
