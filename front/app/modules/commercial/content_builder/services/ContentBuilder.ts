@@ -1,11 +1,16 @@
 import { API_PATH } from 'containers/App/constants';
+import { Locale } from 'typings';
 import streams from 'utils/streams';
 
+type JsonMultiloc = {
+  [key in Locale]?: Record<string, unknown>;
+};
+
 export interface IContentBuilderLayoutData {
-  type: 'project';
+  type: 'content_builder_layout';
   id: string;
   attributes: {
-    craftjs_jsonmultiloc: JSON;
+    craftjs_jsonmultiloc: JsonMultiloc;
     code: string;
     enabled: boolean;
     created_at: string;
@@ -17,32 +22,18 @@ export interface IContentBuilderLayout {
   data: IContentBuilderLayoutData;
 }
 
-export function contentBuilderLayoutStream(projectId: string, code: string) {
+export function contentBuilderLayoutStream({ projectId, code }) {
   return streams.get<IContentBuilderLayout>({
     apiEndpoint: `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
   });
 }
 
 export function updateContentBuilderLayout(
-  projectId: string,
-  code: string,
-  dataId: string,
+  { projectId, code },
   object: IContentBuilderLayout
 ) {
-  return streams.update<IContentBuilderLayout>(
+  return streams.add<IContentBuilderLayout>(
     `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}/upsert`,
-    dataId,
     { layout: object }
-  );
-}
-
-export function deleteContentBuilderLayout(
-  projectId: string,
-  code: string,
-  dataId: string
-) {
-  return streams.delete(
-    `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
-    dataId
   );
 }

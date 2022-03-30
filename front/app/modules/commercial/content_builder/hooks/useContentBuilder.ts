@@ -4,16 +4,16 @@ import {
   IContentBuilderLayout,
 } from '../services/ContentBuilder';
 
-const useContentBuilderLayout = (id: string, code: string) => {
+const useContentBuilderLayout = ({ id, code }) => {
   const [contentBuilderLayout, setContentBuilderLayout] = useState<
     IContentBuilderLayout | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
-    const subscription = contentBuilderLayoutStream(
-      id,
-      code
-    ).observable.subscribe((contentBuilderLayout) => {
+    const subscription = contentBuilderLayoutStream({
+      projectId: id,
+      code,
+    }).observable.subscribe((contentBuilderLayout) => {
       setContentBuilderLayout(contentBuilderLayout);
     });
 

@@ -30,7 +30,7 @@ jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
 
 describe('useContentBuilderLayout', () => {
   it('should call contentBuilderLayoutStream with correct arguments', () => {
-    renderHook(() => useContentBuilderLayout(projectId, code));
+    renderHook(() => useContentBuilderLayout({ id: projectId, code }));
     expect(contentBuilderLayoutStream).toHaveBeenCalledWith(projectId, code);
   });
 });
