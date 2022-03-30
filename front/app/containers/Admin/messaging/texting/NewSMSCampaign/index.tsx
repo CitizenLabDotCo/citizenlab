@@ -23,8 +23,7 @@ const StyledForm = styled.form`
   width: 500px;
 `;
 
-// enough to fit 3 messages, actual functionality TBD in subsequent ticket
-const MAX_CHAR_COUNT = 480;
+const MAX_CHAR_COUNT = 320;
 
 const NewSMSCampaign = () => {
   const [inputPhoneNumbers, setInputPhoneNumbers] = useState<string | null>(
@@ -54,7 +53,7 @@ const NewSMSCampaign = () => {
       const { id } = result.data;
       const url = `/admin/messaging/texting/${id}/preview`;
       clHistory.replace(url);
-    } catch (error) {
+    } catch (e: unknown) {
       // handle error here in subsequent ticket
       // console.log('something broke', error);
     }
