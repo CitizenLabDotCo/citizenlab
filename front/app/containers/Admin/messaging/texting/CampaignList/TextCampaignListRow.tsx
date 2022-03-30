@@ -97,7 +97,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
       )}
 
       <Cell>
-        <FormattedStatusLabel campaignStatus={status} />
+        <FormattedStatusLabel width="100px" campaignStatus={status} />
       </Cell>
     </Row>
   );
