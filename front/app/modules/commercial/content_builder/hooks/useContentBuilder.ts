@@ -1,24 +1,26 @@
+// ts-prune-ignore-next
 import { useState, useEffect } from 'react';
 import {
   contentBuilderLayoutStream,
   IContentBuilderLayout,
 } from '../services/contentBuilder';
 
-const useContentBuilderLayout = ({ id, code }) => {
+// ts-prune-ignore-next
+const useContentBuilderLayout = ({ projectId, code }) => {
   const [contentBuilderLayout, setContentBuilderLayout] = useState<
     IContentBuilderLayout | undefined | null | Error
   >(undefined);
 
   useEffect(() => {
     const subscription = contentBuilderLayoutStream({
-      projectId: id,
+      projectId,
       code,
     }).observable.subscribe((contentBuilderLayout) => {
       setContentBuilderLayout(contentBuilderLayout);
     });
 
     return () => subscription.unsubscribe();
-  }, [id, code]);
+  }, [projectId, code]);
 
   return contentBuilderLayout;
 };

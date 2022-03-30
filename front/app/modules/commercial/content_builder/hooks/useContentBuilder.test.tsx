@@ -25,7 +25,7 @@ const mockObservable = new Observable((subscriber) => {
   subscriber.next(mockContentBuilderLayout);
 }).pipe(delay(1));
 
-jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
+jest.mock('modules/commercial/content_builder/services/contentBuilder', () => {
   return {
     contentBuilderLayoutStream: jest.fn(() => {
       return {
@@ -37,7 +37,10 @@ jest.mock('modules/commercial/content_builder/services/ContentBuilder', () => {
 
 describe('useContentBuilderLayout', () => {
   it('should call contentBuilderLayoutStream with correct arguments', () => {
-    renderHook(() => useContentBuilderLayout({ id: projectId, code }));
-    expect(contentBuilderLayoutStream).toHaveBeenCalledWith(projectId, code);
+    renderHook(() => useContentBuilderLayout({ projectId, code }));
+    expect(contentBuilderLayoutStream).toHaveBeenCalledWith({
+      projectId,
+      code,
+    });
   });
 });
