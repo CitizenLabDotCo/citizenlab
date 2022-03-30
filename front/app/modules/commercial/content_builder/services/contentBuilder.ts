@@ -22,6 +22,13 @@ export interface IContentBuilderLayout {
   data: IContentBuilderLayoutData;
 }
 
+interface IContentBuilderLayoutObject {
+  attributes: {
+    craftjs_jsonmultiloc?: JsonMultiloc;
+    enabled?: string;
+  };
+}
+
 // ts-prune-ignore-next
 export function contentBuilderLayoutStream({ projectId, code }) {
   return streams.get<IContentBuilderLayout>({
@@ -32,7 +39,7 @@ export function contentBuilderLayoutStream({ projectId, code }) {
 // ts-prune-ignore-next
 export function addContentBuilderLayout(
   { projectId, code },
-  object: IContentBuilderLayout
+  object: IContentBuilderLayoutObject
 ) {
   return streams.add<IContentBuilderLayout>(
     `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}/upsert`,
