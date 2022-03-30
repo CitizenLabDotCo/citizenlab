@@ -12,6 +12,8 @@ window.confirm = jest.fn(() => true);
 global.URL.createObjectURL = jest.fn();
 Element.prototype.scrollTo = jest.fn();
 Element.prototype.scrollIntoView = jest.fn();
+JSON.parse = jest.fn();
+JSON.stringify = jest.fn();
 
 const AllTheProviders = ({ children }) => {
   return (

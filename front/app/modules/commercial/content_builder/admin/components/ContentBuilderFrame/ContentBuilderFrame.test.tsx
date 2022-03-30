@@ -46,13 +46,13 @@ jest.mock('react-router', () => {
   };
 });
 
-const mockSerialize = jest.fn();
+const mockDeserialize = jest.fn();
 
 jest.mock('@craftjs/core', () => {
   const originalModule = jest.requireActual('@craftjs/core');
   return {
     ...originalModule,
-    useEditor: () => ({ actions: { deserialize: mockSerialize } }),
+    useEditor: () => ({ actions: { deserialize: mockDeserialize } }),
   };
 });
 
@@ -63,7 +63,7 @@ describe('ContentBuilderFrame', () => {
         <ContentBuilderFrame />
       </Editor>
     );
-    expect(mockSerialize).toHaveBeenCalledWith(
+    expect(mockDeserialize).toHaveBeenCalledWith(
       mockEditorData.attributes.craftjs_jsonmultiloc.en
     );
   });
@@ -82,6 +82,6 @@ describe('ContentBuilderFrame', () => {
         <ContentBuilderFrame />
       </Editor>
     );
-    expect(mockSerialize).not.toHaveBeenCalled();
+    expect(mockDeserialize).not.toHaveBeenCalled();
   });
 });
