@@ -27,14 +27,13 @@ const Row = styled.tr`
   cursor: pointer;
 `;
 
-const MetaInfoCell = styled.div`
-  text-align: left;
-  white-space: nowrap;
-  margin-right: 20px;
-`;
-
 const Cell = styled.td`
   padding-right: 20px;
+`;
+
+const MetaInfoCell = styled(Cell)`
+  text-align: left;
+  white-space: nowrap;
 `;
 
 const MessageCell = styled(Cell)`
@@ -67,18 +66,14 @@ const TextingCampaignRow = ({ campaign }: Props) => {
 
       {status === 'sent' && (
         <>
-          <Cell>
-            <MetaInfoCell>
-              <FormattedDate value={sent_at} />
-              &nbsp;
-              <FormattedTime value={sent_at} />
-            </MetaInfoCell>
-          </Cell>
-          <Cell>
-            <MetaInfoCell>
-              <p>{phone_numbers.length}</p>
-            </MetaInfoCell>
-          </Cell>
+          <MetaInfoCell>
+            <FormattedDate value={sent_at} />
+            &nbsp;
+            <FormattedTime value={sent_at} />
+          </MetaInfoCell>
+          <MetaInfoCell>
+            <p>{phone_numbers.length}</p>
+          </MetaInfoCell>
         </>
       )}
 
