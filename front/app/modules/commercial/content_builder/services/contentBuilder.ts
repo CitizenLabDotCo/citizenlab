@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams from 'utils/streams';
 
+export const PROJECT_DESCRIPTION_CODE = 'project_description';
+
 type JsonMultiloc = {
   [key in Locale]?: Record<string, unknown>;
 };
