@@ -23,10 +23,8 @@ export interface IContentBuilderLayout {
 }
 
 interface IContentBuilderLayoutObject {
-  attributes: {
-    craftjs_jsonmultiloc?: JsonMultiloc;
-    enabled?: string;
-  };
+  craftjs_jsonmultiloc?: JsonMultiloc;
+  enabled?: string;
 }
 
 // ts-prune-ignore-next
