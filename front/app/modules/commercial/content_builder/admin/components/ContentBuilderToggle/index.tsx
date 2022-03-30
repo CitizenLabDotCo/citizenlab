@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocale from 'hooks/useLocale';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -17,11 +18,18 @@ import { fontSizes } from 'utils/styleUtils';
 // Components
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import {
+  addContentBuilderLayout,
+  PROJECT_DESCRIPTION_CODE,
+} from 'modules/commercial/content_builder/services/contentBuilder';
 
 // Messages
 import messages from '../../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+
+// Helpers
+import { isNilOrError } from 'utils/helperUtils';
 
 type ContentBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -61,6 +69,8 @@ const ContentBuilderToggle = ({
     onMount();
   }, [onMount, featureEnabled]);
 
+  const locale = useLocale();
+  const [loading, setLoading] = useState(false);
   const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
     useState(false);
   const route = `/admin/content-builder/projects/${params.projectId}/description`;
@@ -71,6 +81,22 @@ const ContentBuilderToggle = ({
   if (!featureEnabled) {
     return null;
   }
+
+  const addNewLayout = async (projectId: string) => {
+    if (!isNilOrError(locale)) {
+      try {
+        setLoading(true);
+        const json = '{}';
+        await addContentBuilderLayout(
+          { projectId, code: PROJECT_DESCRIPTION_CODE },
+          { craftjs_jsonmultiloc: { [locale]: JSON.parse(json) } }
+        );
+      } catch {
+        // Do nothing
+      }
+      setLoading(false);
+    }
+  };
 
   return (
     <Box data-testid="contentBuilderToggle">
