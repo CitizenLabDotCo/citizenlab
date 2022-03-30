@@ -43,14 +43,14 @@ module Texting
 
     # we don't want the same recipient to get 2 messages
     def format_phone_numbers
-      self.phone_numbers = phone_numbers.uniq { |number| number.gsub(/[-\s]/, '') }
+      self.phone_numbers = phone_numbers.uniq { |number| Texting::PhoneNumber.normalize(number) }
     end
 
     def validate_phone_numbers
       return unless phone_numbers_changed?
 
       codes = AppConfiguration.instance.settings('texting', 'recipient_country_calling_codes')
-      invalid_numbers = phone_numbers.reject { |number| Texting::PhoneNumber.valid?(number, codes) }
+      invalid_numbers = phone_numbers.reject { |number| Texting::PhoneNumber.valid?(number, country_codes: codes) }
       errors.add(:phone_numbers, :invalid, invalid_numbers: invalid_numbers) if invalid_numbers.any?
     end
   end

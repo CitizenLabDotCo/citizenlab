@@ -8,7 +8,11 @@ resource 'Texting campaigns' do
     token = Knock::AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
 
-    SettingsService.new.activate_feature!('texting')
+    config = AppConfiguration.instance
+    config.settings['texting'] = {
+      allowed: true, enabled: true, from_number: '+12345678912', monthly_sms_segments_limit: 100
+    }
+    config.save!
   end
 
   get '/web_api/v1/texting_campaigns' do
@@ -100,6 +104,26 @@ resource 'Texting campaigns' do
       do_request
       expect(response_status).to eq 200
       expect(campaign.reload.status).to eq('sending')
+    end
+
+    example '[error] Returns an error when there are too many segments in queue' do
+      numbers = Array.new(Texting::Sms.provider.class::SEGMENTS_QUEUE + 1) { |i| "+123456#{10_000 + i}" }
+      campaign.update!(phone_numbers: numbers)
+
+      do_request
+      expect(response_status).to eq 422
+      expect(campaign.reload.status).to eq('draft')
+    end
+
+    example '[error] Returns an error when monthly limit reached for this platform' do
+      campaign.update!(message: '1' * 161)
+      config = AppConfiguration.instance
+      config.settings['texting']['monthly_sms_segments_limit'] = 1
+      config.save!
+
+      do_request
+      expect(response_status).to eq 422
+      expect(campaign.reload.status).to eq('draft')
     end
   end
 

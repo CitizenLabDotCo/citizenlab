@@ -4,7 +4,7 @@ class Texting::Sms::Providers::Twilio
   # https://support.twilio.com/hc/en-us/articles/115002943027-Understanding-Twilio-Rate-Limits-and-Message-Queues
   QUEUE_DURATION = 4.hours
   TOLL_FREE_SEGMENTS_PER_SECOND = 3 # We start with using Toll-free number in the US
-  SEGMENTS_QUEUE = QUEUE_DURATION * TOLL_FREE_SEGMENTS_PER_SECOND
+  SEGMENTS_QUEUE = (QUEUE_DURATION * TOLL_FREE_SEGMENTS_PER_SECOND).to_i
 
   def send_msg(message, phone_number, status_callback: nil)
     rest_client.messages.create(body: message, to: phone_number, from: from, status_callback: status_callback)
