@@ -16,8 +16,6 @@ export interface IContentBuilderLayoutData {
     craftjs_jsonmultiloc: JsonMultiloc;
     code: string;
     enabled: boolean;
-    created_at: string;
-    updated_at: string;
   };
 }
 
