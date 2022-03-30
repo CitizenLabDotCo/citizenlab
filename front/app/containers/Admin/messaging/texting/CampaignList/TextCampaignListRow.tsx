@@ -38,8 +38,6 @@ const MetaInfoCell = styled(Cell)`
 
 const MessageCell = styled(Cell)`
   width: 67%;
-  margin-left: 20px;
-  margin-right: 20px;
   font-size: ${fontSizes.base}px;
   white-space: normal;
   word-break: break-all;
