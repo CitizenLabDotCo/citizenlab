@@ -48,11 +48,11 @@ const TableHeader = styled.th`
   text-align: left;
   padding: 15px 0;
   font-size: ${fontSizes.base}px;
-  padding-left: 20px;
+  padding-right: 20px;
 `;
 
-const MessageTableHeader = styled(TableHeader)`
-  padding-left: 0;
+const StatusTableHeader = styled(TableHeader)`
+  padding-right: 0;
 `;
 
 const TextingCampaignsList = () => {
@@ -94,10 +94,10 @@ const TextingCampaignsList = () => {
       <Table>
         <thead>
           <tr>
-            <MessageTableHeader>Message</MessageTableHeader>
+            <TableHeader>Message</TableHeader>
             <TableHeader>Date sent</TableHeader>
             <TableHeader>Recipients</TableHeader>
-            <TableHeader>Status</TableHeader>
+            <StatusTableHeader>Status</StatusTableHeader>
           </tr>
         </thead>
         {textingCampaigns.map((campaign) => {
