@@ -86,6 +86,29 @@ const PhoneMessage = styled.div`
   }
 `;
 
+const InformativeTableRow = ({
+  title,
+  content,
+}: {
+  title: string;
+  content: string;
+}): JSX.Element => {
+  return (
+    <tr>
+      <td>
+        <Text fontSize="m" color="adminTextColor" as="span" fontWeight="bold">
+          {title}
+        </Text>
+      </td>
+      <td>
+        <Text fontSize="m" color="adminTextColor" as="span">
+          {content}
+        </Text>
+      </td>
+    </tr>
+  );
+};
+
 const TextMessagePreview = (props: WithRouterProps) => {
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
     useState(false);
@@ -178,41 +201,16 @@ const TextMessagePreview = (props: WithRouterProps) => {
       </TextingHeader>
       <StatusTable>
         <tbody>
-          <tr>
-            <td>
-              <Text
-                fontSize="m"
-                color="adminTextColor"
-                as="span"
-                fontWeight="bold"
-              >
-                Sending to:
-              </Text>
-            </td>
-            <td>
-              <Text fontSize="m" color="adminTextColor" as="span">
-                {phone_numbers.length} people
-              </Text>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <Text
-                fontSize="m"
-                color="adminTextColor"
-                as="span"
-                fontWeight="bold"
-              >
-                Usage:
-              </Text>
-            </td>
-            <td>
-              <Text fontSize="m" color="adminTextColor" as="span">
-                {message.length} Characters ({Math.ceil(message.length / 160)}{' '}
-                segments)
-              </Text>
-            </td>
-          </tr>
+          <InformativeTableRow
+            title="Sending to:"
+            content={`${phone_numbers.length} people`}
+          />
+          <InformativeTableRow
+            title="Usage"
+            content={`${message.length} Characters (${Math.ceil(
+              message.length / 160
+            )} segments)`}
+          />
         </tbody>
       </StatusTable>
 
@@ -225,6 +223,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
           border="21px solid black"
           borderRadius="33px"
           position="relative"
+          marginBottom="25px"
         >
           {/* Phone Bezel */}
           <Box
@@ -242,7 +241,6 @@ const TextMessagePreview = (props: WithRouterProps) => {
           </Box>
         </Box>
         <Button
-          marginTop="25px"
           onClick={openDeleteModal}
           buttonStyle="delete"
           size="1"

@@ -202,12 +202,12 @@ const CreatedSMSCampaignForm = (props: WithRouterProps) => {
         </Box>
 
         {isDraft && (
-          <Box maxWidth="250px">
+          <Box display="flex" justifyContent="flex-start">
             <Button
               buttonStyle="primary"
               size="2"
               type="submit"
-              text={'Update and Preview SMS'}
+              text={'Update and Preview SMS Long Text'}
               onClick={handleOnSubmit}
             />
           </Box>
