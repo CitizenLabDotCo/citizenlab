@@ -68,7 +68,7 @@ export default () => ({
     {
       path: 'texting/:campaignId/preview',
       component: Loadable({
-        loader: () => import('./texting/PreviewMessage'),
+        loader: () => import('./texting/SMSCampaignPreview'),
         loading: () => null,
       }),
     },

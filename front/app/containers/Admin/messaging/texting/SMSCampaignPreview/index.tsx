@@ -109,7 +109,7 @@ const InformativeTableRow = ({
   );
 };
 
-const TextMessagePreview = (props: WithRouterProps) => {
+const SMSCampaignPreview = (props: WithRouterProps) => {
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
@@ -320,4 +320,4 @@ const TextMessagePreview = (props: WithRouterProps) => {
   );
 };
 
-export default withRouter(TextMessagePreview);
+export default withRouter(SMSCampaignPreview);
