@@ -100,9 +100,13 @@ const TextingCampaignsList = () => {
             <StatusTableHeader>Status</StatusTableHeader>
           </tr>
         </thead>
-        {textingCampaigns.map((campaign) => {
-          return <TextCampaignListRow key={campaign.id} campaign={campaign} />;
-        })}
+        <tbody>
+          {textingCampaigns.map((campaign) => {
+            return (
+              <TextCampaignListRow key={campaign.id} campaign={campaign} />
+            );
+          })}
+        </tbody>
       </Table>
     </>
   );
