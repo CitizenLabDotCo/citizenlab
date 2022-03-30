@@ -181,7 +181,7 @@
   "app.containers.Admin.Campaigns.deliveryStatus_opened": "Opened",
   "app.containers.Admin.Campaigns.deliveryStatus_sent": "Sent",
   "app.containers.Admin.Campaigns.noAccess": "We're sorry, but it seems like you don't have access to the emails section",
-  "app.containers.Admin.Campaigns.tabAutomated": "Automated",
+  "app.containers.Admin.Campaigns.tabAutomated": "Аутоматизовано",
   "app.containers.Admin.Campaigns.tabCustom": "Custom",
   "app.containers.Admin.Insights.Details.categoriesCancelScanButton": "Прекид",
   "app.containers.Admin.Insights.Details.categoriesEmptyButton": "Create tags",
