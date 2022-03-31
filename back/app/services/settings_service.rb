@@ -87,4 +87,22 @@ class SettingsService
     feature_settings['enabled'] = false if feature_settings
     config.save!
   end
+
+  def minimal_required_settings(locales: ['en'], lifecycle_stage: 'demo')
+    {
+      core: {
+        enabled: true,
+        allowed: true,
+        organization_type: 'generic',
+        timezone: 'Brussels',
+        currency: 'EUR',
+        locales: locales,
+        color_main: '#335533',
+        color_secondary: Faker::Color.hex_color,
+        color_text: Faker::Color.hex_color,
+        lifecycle_stage: lifecycle_stage,
+        display_header_avatars: true
+      }
+    }
+  end
 end
