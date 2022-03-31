@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -89,6 +89,10 @@ const PhoneMessage = styled.div`
   }
 `;
 
+type SMSCampaignBaseError = {
+  error: 'too_many_total_segments' | 'monthly_limit_reached';
+};
+
 const InformativeTableRow = ({
   title,
   content,
@@ -119,6 +123,9 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
     useState(false);
   const [sendCampaignButtonIsDisabled, setSendCampaignButtonIsDisabled] =
     useState(false);
+  const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
+  const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
+    useState(false);
 
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
@@ -132,7 +139,22 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
       const url = `/admin/messaging/texting/${campaignId}`;
       clHistory.replace(url);
     } catch (e) {
-      // console.log('fail', e);
+      const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
+        e.json.errors.base;
+      const tooManySegmentsError = smsCampaignBaseErrors?.find(
+        (smsCampaignBaseError) =>
+          smsCampaignBaseError.error === 'too_many_total_segments'
+      );
+      const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
+        (smsCampaignBaseError) =>
+          smsCampaignBaseError.error === 'monthly_limit_reached'
+      );
+      if (tooManySegmentsError) {
+        setHasTooManySegmentsError(true);
+      }
+      if (monthlyLimitReachedError) {
+        setHasMonthlyLimitReachedError(true);
+      }
     }
   };
 
@@ -287,6 +309,10 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
               Send Now
             </StyledModalButton>
           </Box>
+          {hasTooManySegmentsError && <Error text="Too many segments error" />}
+          {hasMonthlyLimitReachedError && (
+            <Error text="Monthly limits exceeded error" />
+          )}
         </Box>
       </Modal>
 
