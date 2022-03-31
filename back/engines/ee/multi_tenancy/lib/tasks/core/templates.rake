@@ -97,7 +97,10 @@ namespace :templates do
     tn_attributes = {
       name: name,
       host: "#{name}.localhost",
-      settings: { core: { allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo' } }
+      settings: SettingsService.new.minimal_required_settings(
+        locales: locales,
+        lifecycle_stage: 'demo'
+      )
     }
     puts "#{name}: #{tn_attributes}" # temporary for debugging
     tn = Tenant.create! tn_attributes

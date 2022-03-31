@@ -9,12 +9,14 @@ FactoryBot.define do
 
     name { Faker::Address.city }
     sequence(:host) { |n| "tenant-#{n}.citizenlab.co" }
-    settings { minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
+    settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
   end
 
   factory :test_tenant, class: Tenant do
     name { 'test-tenant' }
     host { 'example.org' }
-    settings { minimal_required_settings(locales: %w[en fr-FR nl-NL], lifecycle_stage: 'active') }
+    settings do
+      SettingsService.new.minimal_required_settings(locales: %w[en fr-FR nl-NL], lifecycle_stage: 'active')
+    end
   end
 end
