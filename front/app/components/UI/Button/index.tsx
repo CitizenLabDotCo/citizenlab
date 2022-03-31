@@ -11,7 +11,7 @@ import {
 interface Props extends Omit<ButtonProps, 'locale'> {}
 
 interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
-  'data-testid': string;
+  'data-testid?': string;
 }
 
 type ButtonStyles = ComponentLibraryButtonStyles;

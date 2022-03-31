@@ -69,6 +69,14 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
+jest.mock('@craftjs/core', () => {
+  const originalModule = jest.requireActual('@craftjs/core');
+  return {
+    ...originalModule,
+    useEditor: () => ({ query: { serialize: jest.fn(() => '{}') } }),
+  };
+});
+
 describe('ContentBuilderTopBar', () => {
   it('renders with correct project name', () => {
     render(
@@ -96,10 +104,10 @@ describe('ContentBuilderTopBar', () => {
     await act(async () => {
       fireEvent.click(screen.getByTestId('contentBuilderTopBarSaveButton'));
     });
-    // craftjs_jsonmultiloc en value is undefined because we are mocking away the serialization logic
+
     expect(addContentBuilderLayout).toHaveBeenCalledWith(
       { code: 'project_description', projectId: 'id' },
-      { craftjs_jsonmultiloc: { en: undefined } }
+      { craftjs_jsonmultiloc: { en: {} } }
     );
   });
 });
