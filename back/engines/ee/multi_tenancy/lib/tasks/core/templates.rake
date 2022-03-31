@@ -35,7 +35,7 @@ namespace :templates do
   end
 
   task :verify, [:output_file] => [:environment] do |t, args|
-    pool_size = 4
+    pool_size = 1 # 4 # Debugging
     failed_templates = []
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
@@ -102,7 +102,6 @@ namespace :templates do
         lifecycle_stage: 'demo'
       )
     }
-    puts "#{name}: #{tn_attributes}" # temporary for debugging
     tn = Tenant.create! tn_attributes
 
     Apartment::Tenant.switch(tn.schema_name) do

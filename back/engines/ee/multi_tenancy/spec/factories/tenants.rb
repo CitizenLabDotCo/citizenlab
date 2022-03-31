@@ -25,7 +25,8 @@ FactoryBot.define do
             'en' => 'Liege',
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
-          }
+          },
+          organization_type: 'medium_city'
         },
         initiatives: {
           enabled: true,
