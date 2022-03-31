@@ -75,7 +75,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
     >
       <Box
         p="15px"
-        w="220px"
+        w="210px"
         h="100%"
         borderRight={`1px solid ${colors.mediumGrey}`}
         display="flex"
