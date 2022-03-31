@@ -120,11 +120,11 @@ namespace :cl2_back do
           allowed: true
         },
         satismeter: {
-          enabled: true,
+          enabled: false,
           allowed: true
         },
         google_analytics: {
-          enabled: true,
+          enabled: false,
           allowed: true
         },
         google_tag_manager: {
