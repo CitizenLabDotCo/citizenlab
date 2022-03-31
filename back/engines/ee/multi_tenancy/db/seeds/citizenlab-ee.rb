@@ -102,32 +102,25 @@ def generate_file_attributes
   }
 end
 
-
 if ['public','example_org'].include? Apartment::Tenant.current
   # rake db:reset clears all instances before repopulating the db.
   CommonPassword.initialize!
 
-  t = Tenant.create!({
+  t = Tenant.create!(
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
     host: 'localhost',
-    logo: Rails.root.join("spec/fixtures/logo.png").open,
-    header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+    logo: Rails.root.join('spec/fixtures/logo.png').open,
+    header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
     created_at: Faker::Date.between(from: Time.now - 1.year, to: Time.now),
-    settings: {
+    settings: SettingsService.new.minimal_required_settings(
+      locales: SEED_LOCALES,
+      lifecycle_stage: 'active'
+    ).deep_merge({
       core: {
-        allowed: true,
-        enabled: true,
-        locales: SEED_LOCALES,
-        organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
-        organization_name: create_for_tenant_locales{Faker::Address.city},
-        lifecycle_stage: 'active',
-        display_header_avatars: true,
-        timezone: "Brussels",
-        currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
-        color_main: '#0A5159',
-        color_secondary: '#008292',
-        color_text: '#333',
+        organization_type: %w[small medium large].include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : 'generic',
+        organization_name: create_for_tenant_locales { Faker::Address.city },
+        currency: CL2_SUPPORTED_CURRENCIES.sample
       },
       customizable_homepage_banner: {
         allowed: true,
@@ -177,10 +170,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       maps: {
         enabled: true,
         allowed: true,
-        tile_provider: "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=***REMOVED***",
+        tile_provider: 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=***REMOVED***',
         map_center: {
-          lat: "50.8503",
-          long: "4.3517"
+          lat: '50.8503',
+          long: '4.3517'
         },
         zoom_level: 12,
         osm_relation_id: 2404021
@@ -280,18 +273,18 @@ if ['public','example_org'].include? Apartment::Tenant.current
       satismeter: {
         enabled: true,
         allowed: true,
-        write_key: ENV.fetch("DEFAULT_SATISMETER_WRITE_KEY")
+        write_key: ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY')
       },
       google_analytics: {
         enabled: true,
         allowed: true,
-        tracking_id: ENV.fetch("DEFAULT_GA_TRACKING_ID")
+        tracking_id: ENV.fetch('DEFAULT_GA_TRACKING_ID')
       },
       google_tag_manager: {
         enabled: true,
         allowed: true,
         destinations: 'InvasiveTracking',
-        container_id: ENV.fetch("DEFAULT_GTM_CONTAINER_ID")
+        container_id: ENV.fetch('DEFAULT_GTM_CONTAINER_ID')
       },
       matomo: {
         enabled: true,
@@ -395,13 +388,13 @@ if ['public','example_org'].include? Apartment::Tenant.current
           },
           {
             name: 'id_card_lookup',
-            method_name_multiloc: {en: 'Enter social security number'},
-            card_id_multiloc: {en: 'Social security number'},
-            card_id_placeholder: "xx-xxxxx-xx",
+            method_name_multiloc: { en: 'Enter social security number' },
+            card_id_multiloc: { en: 'Social security number' },
+            card_id_placeholder: 'xx-xxxxx-xx',
             card_id_tooltip_multiloc: {
               en: 'You can find this number on you ID card. We check your number without storing it.'
             },
-            explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
+            explainer_image_url: 'http://localhost:4000/id_card_explainer.jpg'
           },
           {
             name: 'franceconnect'
@@ -411,9 +404,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
             client_id: 'fake_client_id',
             client_secret: 'fake_client_secret',
             domain: 'fake_domain',
-            method_name_multiloc: {en: 'Verify with Auth0'}
-          },
-        ],
+            method_name_multiloc: { en: 'Verify with Auth0' }
+          }
+        ]
       },
       volunteering: {
         enabled: true,
@@ -445,65 +438,29 @@ if ['public','example_org'].include? Apartment::Tenant.current
       },
       texting: {
         enabled: true,
-        allowed: true
+        allowed: true,
+        from_number: '+12345678912',
+        monthly_sms_segments_limit: 100_000
       }
     }
-  })
+  ))
 
-  Tenant.create!({
+  Tenant.create!(
     id: '07ff8088-cc78-4307-9a1c-ebb6fb836f96',
     name: 'empty',
     host: 'empty.localhost',
     logo: Rails.root.join('spec/fixtures/logo.png').open,
     header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
     created_at: Faker::Date.between(from: Time.now - 1.year, to: Time.now),
-    settings: {
-      core: {
-        allowed: true,
-        enabled: true,
-        locales: %w[en nl-BE],
-        organization_type: 'small_city',
-        organization_name: {
-          'en' => Faker::Address.city,
-          'nl-BE' => Faker::Address.city,
-          'fr-FR' => Faker::Address.city
-        },
-        timezone: 'Brussels',
-        currency: CL2_SUPPORTED_CURRENCIES.sample,
-        color_main: Faker::Color.hex_color,
-        color_secondary: Faker::Color.hex_color,
-        color_text: Faker::Color.hex_color,
-        lifecycle_stage: 'active',
-        display_header_avatars: true
-      },
-      customizable_homepage_banner: {
-        allowed: true,
-        enabled: true,
-        layout: 'full_width_banner_layout',
-        cta_signed_out_type: 'sign_up_button',
-        cta_signed_in_type: 'no_button'
-      },
-      facebook_login: {
-        allowed: true,
-        enabled: true,
-        app_id: '307796929633098',
-        app_secret: '***REMOVED***'
-      },
-      private_projects: {
-        enabled: true,
-        allowed: true
-      }
-    }
-  })
+    settings: SettingsService.new.minimal_required_settings(locales: %w[en nl-BE], lifecycle_stage: 'active')
+  )
 end
 
 admin = {
   id: '386d255e-2ff1-4192-8e50-b3022576be50',
   email: 'admin@citizenlab.co',
   password: 'democracy2.0',
-  roles: [
-    {type: 'admin'},
-  ],
+  roles: [{ type: 'admin' }],
   locale: 'en'
 }
 moderator = {
