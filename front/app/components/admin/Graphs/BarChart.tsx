@@ -5,10 +5,12 @@ import {
   ResponsiveContainer,
   BarChart as _BarChart,
   Bar,
-  Tooltip as _Tooltip,
   XAxis,
   YAxis,
   Cell,
+  Tooltip as _Tooltip,
+  LabelList as _LabelList,
+  LabelProps,
 } from 'recharts';
 
 // hooks
@@ -103,6 +105,14 @@ const BarChart = ({
 };
 
 export default BarChart;
+
+export const LabelList = (props: Omit<LabelProps, 'viewBox'>) => {
+  const { chartLabelSize, chartLabelColor }: any = useTheme();
+
+  return (
+    <_LabelList fill={chartLabelColor} fontSize={chartLabelSize} {...props} />
+  );
+};
 
 interface TooltipProps {
   labelFormatter?: (label: any) => React.ReactNode;
