@@ -54,14 +54,23 @@ const SMSCampaignForm = ({
     }
   }, [campaign]);
 
+  // update validation on loading a draft message
+  useEffect(() => {
+    setRemainingChars(MAX_CHAR_COUNT - (inputMessage?.length || 0));
+  }, [inputMessage]);
+
+  useEffect(() => {
+    if (!isNilOrError(inputPhoneNumbers)) {
+      setHasPhoneNumbers(inputPhoneNumbers.length > 0);
+    }
+  }, [inputPhoneNumbers]);
+
   const handleInputPhoneNumbersChange = (value: string) => {
     setInputPhoneNumbers(value);
-    setHasPhoneNumbers(value.length > 0);
   };
 
   const handleInputMessageChange = (value: string) => {
     setInputMessage(value);
-    setRemainingChars(MAX_CHAR_COUNT - (inputMessage?.length || 0));
   };
 
   const handleOnSubmit = async (event: React.FormEvent) => {
