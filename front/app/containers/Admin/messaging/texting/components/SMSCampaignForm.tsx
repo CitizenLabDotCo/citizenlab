@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { CLError } from 'typings';
 
 // components
 import TextArea from 'components/UI/TextArea';
@@ -23,16 +22,31 @@ import {
   ITextingCampaignData,
 } from 'services/textingCampaigns';
 
-// i18n
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
-
 interface Props {
   className?: string;
   formIsLocked?: boolean;
   campaign?: ITextingCampaignData;
 }
+
+type InvalidPhoneNumberError = {
+  error: 'invalid';
+  invalid_numbers: string[];
+};
+type PhoneNumberError = InvalidPhoneNumberError;
+
+// For completeness:
+//
+// // This error should normally not be returned as we disable
+// // the submit button if message is too long
+// type TooLongMessageError = {
+//   error: 'too_long';
+//   // character count of message
+//   count: number;
+// };
+
+// type MessageError = TooLongMessageError;
+
+// type SMSCampaignError = PhoneNumberError | MessageError;
 
 const MAX_CHAR_COUNT = 320;
 
@@ -40,8 +54,7 @@ const SMSCampaignForm = ({
   className,
   formIsLocked = false,
   campaign,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+}: Props) => {
   const campaignId = !isNilOrError(campaign) ? campaign.id : null;
   const [inputPhoneNumbers, setInputPhoneNumbers] = useState<string | null>(
     null
@@ -88,9 +101,17 @@ const SMSCampaignForm = ({
       const url = `/admin/messaging/texting/${id}/preview`;
       clHistory.replace(url);
     } catch (e) {
-      const errors = e.json.errors.map((error: CLError) => error.error);
+      const invalidPhoneNumberError: InvalidPhoneNumberError | undefined =
+        e.json.errors.phone_numbers?.find(
+          // at this stage there's only 1 possible phone number error (invalid)
+          // so if the phone_numbers key is on e.json.errors, this line should
+          // always find an InvalidPhoneNumberError. The undefined lies in not
+          // finding the phone_numbers key on the e.json.errors object.
+          (phoneNumberError: PhoneNumberError) =>
+            phoneNumberError.error === 'invalid'
+        );
 
-      if (errors.includes('invalid_phone_numbers')) {
+      if (invalidPhoneNumberError) {
         setHasInvalidPhoneNumbersError(true);
       }
     }
@@ -115,7 +136,7 @@ const SMSCampaignForm = ({
           onChange={handleInputPhoneNumbersChange}
         />
         {hasInvalidPhoneNumbersError && (
-          <Error text={formatMessage(messages.invalidPhoneNumbers)} />
+          <Error text={'One or more of the phone numbers are invalid.'} />
         )}
       </Box>
       <Box marginBottom="30px">
@@ -153,4 +174,4 @@ const SMSCampaignForm = ({
   );
 };
 
-export default injectIntl(SMSCampaignForm);
+export default SMSCampaignForm;
