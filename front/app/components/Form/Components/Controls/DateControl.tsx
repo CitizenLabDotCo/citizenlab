@@ -28,16 +28,17 @@ const DateControl = ({
   schema,
   id,
   required,
+  label,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-
+  console.log(label, getLabel);
   return (
     <>
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">

@@ -41,7 +41,7 @@ export const InputControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">
