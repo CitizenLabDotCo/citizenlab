@@ -167,6 +167,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   if (isNilOrError(campaign)) return null;
 
   const { message, phone_numbers } = campaign.attributes;
+  const segmentCount = Math.ceil(message.length / 160);
 
   return (
     <>
@@ -207,9 +208,9 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
           />
           <InformativeTableRow
             title="Usage"
-            content={`${message.length} characters (${Math.ceil(
-              message.length / 160
-            )} segments)`}
+            content={`${message.length} characters (${segmentCount} ${
+              segmentCount === 1 ? 'segment' : 'segments'
+            })`}
           />
         </tbody>
       </StatusTable>
@@ -257,8 +258,8 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
       >
         <Box padding="30px">
           <SendNowWarning>
-            Do you want to send this message to {phone_numbers.length} phone
-            numbers now?
+            Do you want to send this message to {phone_numbers.length}{' '}
+            {phone_numbers.length === 1 ? 'phone number' : 'phone numbers'} now?
           </SendNowWarning>
           <Box
             display="flex"
