@@ -30,6 +30,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Helpers
 import { isNilOrError } from 'utils/helperUtils';
+import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 
 type ContentBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
@@ -62,31 +63,38 @@ const ContentBuilderToggle = ({
   labelTooltipText,
   onMount,
 }: ContentBuilderToggleProps) => {
+  const locale = useLocale();
   const featureEnabled = useFeatureFlag({ name: 'content_builder' });
+  const contentBuilderLayout = useContentBuilderLayout({
+    projectId: `${params.projectId}`,
+    code: PROJECT_DESCRIPTION_CODE,
+  });
+  const route = `/admin/content-builder/projects/${params.projectId}/description`;
+  const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
+    useState(false);
+
+  console.log(contentBuilderLayout);
 
   useEffect(() => {
     if (!featureEnabled) return;
     onMount();
   }, [onMount, featureEnabled]);
 
-  const locale = useLocale();
-  const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
-    useState(false);
-  const route = `/admin/content-builder/projects/${params.projectId}/description`;
-  const toggleContentBuilderLinkVisible = () => {
-    setContentBuilderLinkVisible(!contentBuilderLinkVisible);
-  };
-
   if (!featureEnabled) {
     return null;
   }
 
-  const createNewLayout = async (projectId: string) => {
+  const toggleContentBuilderLinkVisible = () => {
+    setContentBuilderLinkVisible(!contentBuilderLinkVisible);
+    createNewLayout(contentBuilderLinkVisible);
+  };
+
+  const createNewLayout = async (enabled: boolean) => {
     if (!isNilOrError(locale)) {
       try {
         await addContentBuilderLayout(
-          { projectId, code: PROJECT_DESCRIPTION_CODE },
-          { craftjs_jsonmultiloc: { [locale]: JSON.parse('{}') } }
+          { projectId: params.projectId, code: PROJECT_DESCRIPTION_CODE },
+          { enabled }
         );
       } catch {
         // Do nothing

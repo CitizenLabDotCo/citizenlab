@@ -27,7 +27,7 @@ export interface IContentBuilderLayout {
 
 interface IContentBuilderLayoutObject {
   craftjs_jsonmultiloc?: JsonMultiloc;
-  enabled?: string;
+  enabled?: boolean;
 }
 
 export function contentBuilderLayoutStream({ projectId, code }) {
@@ -36,12 +36,18 @@ export function contentBuilderLayoutStream({ projectId, code }) {
   });
 }
 
-export function addContentBuilderLayout(
+export async function addContentBuilderLayout(
   { projectId, code },
   object: IContentBuilderLayoutObject
 ) {
-  return streams.add<IContentBuilderLayout>(
+  const response = await streams.add<IContentBuilderLayout>(
     `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}/upsert`,
     { content_builder_layout: object }
   );
+  streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/projects/${projectId}/content_builder_layouts/${code}`,
+    ],
+  });
+  return response;
 }
