@@ -45,6 +45,7 @@ class ErrorReporter
     # Avoid passing manually created errors here like `ErrorReporter.report(RuntimeError.new('message')`
     # (though it would work), because it does not contain the backtrace, so it will be harder to debug.
     # Use `ErrorReporter.report_msg('message')` instead.
+    # Look for `Sentry.set_tags` in the code to see the reported tags.
     def report(error, extra: {})
       Sentry::Rails.capture_exception(error, extra: extra)
       Rails.logger.error(

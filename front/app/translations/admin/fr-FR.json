@@ -1308,6 +1308,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 colonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Description du projet",
   "app.containers.admin.ContentBuilder.text": "Texte",
+  "app.containers.admin.ContentBuilder.textValue": "This is some text. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 colonnes",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Ajouter un statut",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Le statut par défaut ne peut pas être supprimé.",

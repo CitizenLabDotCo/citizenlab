@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 
 interface FormattedStatusLabelProps {
+  width?: string;
   campaignStatus: ITextingCampaignStatuses;
 }
 
@@ -26,6 +27,7 @@ const FormattedStatusLabel = (
     case 'draft':
       return (
         <StatusLabel
+          width={props.width}
           backgroundColor={colors.adminOrangeIcons}
           text={<FormattedMessage {...messages.draft} />}
         />
@@ -33,6 +35,7 @@ const FormattedStatusLabel = (
     case 'sending':
       return (
         <StatusLabel
+          width={props.width}
           backgroundColor={colors.adminMenuBackground}
           text={<FormattedMessage {...messages.sending} />}
         />
@@ -40,6 +43,7 @@ const FormattedStatusLabel = (
     case 'sent':
       return (
         <StatusLabel
+          width={props.width}
           backgroundColor={colors.clGreenSuccess}
           text={<FormattedMessage {...messages.sent} />}
         />
@@ -47,6 +51,7 @@ const FormattedStatusLabel = (
     case 'failed':
       return (
         <StatusLabel
+          width={props.width}
           backgroundColor={colors.clRedError}
           text={<FormattedMessage {...messages.failed} />}
         />

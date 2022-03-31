@@ -1,4 +1,5 @@
 import React from 'react';
+import Text from '../Text';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -19,7 +20,9 @@ const Container: UserComponent = ({ children }) => {
 };
 
 Container.craft = {
-  // Component options can be added here
+  rules: {
+    canMoveIn: (nodes) => nodes.every((node) => node.data.type === Text),
+  },
 };
 
 export default Container;

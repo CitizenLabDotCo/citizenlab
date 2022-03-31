@@ -1308,6 +1308,7 @@
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
   "app.containers.admin.ContentBuilder.projectDescription": "Projektbeskrivelse",
   "app.containers.admin.ContentBuilder.text": "Tekst",
+  "app.containers.admin.ContentBuilder.textValue": "This is some text. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 kolonne",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Tilføj status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Standardstatus kan ikke slettes.",

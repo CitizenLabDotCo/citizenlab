@@ -27,7 +27,7 @@ class SettingsService
       required_settings.each do |setting|
         if settings.dig(feature, setting).nil?
           default_value = schema.dig('properties', feature, 'properties', setting, 'default')
-          res[feature][setting] = default_value if default_value
+          res[feature][setting] = default_value unless default_value.nil?
         end
       end
     end
