@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // Components
 import { Box, Icon, IconNames, Text } from '@citizenlab/cl2-component-library';
@@ -9,10 +10,15 @@ interface Props {
   icon: IconNames;
 }
 
+const StyledBox = styled(Box)`
+  &:hover {
+    background-color: ${colors.emailBg};
+  }
+`;
+
 const ToolboxItem = ({ icon, label }: Props) => {
   return (
-    <Box
-      marginBottom="16px"
+    <StyledBox
       width="100%"
       display="flex"
       paddingLeft="10px"
@@ -25,8 +31,8 @@ const ToolboxItem = ({ icon, label }: Props) => {
         fill={colors.adminTextColor}
         name={icon}
       />
-      <Text color="adminTextColor">{label}</Text>
-    </Box>
+      <Text color="text">{label}</Text>
+    </StyledBox>
   );
 };
 
