@@ -72,10 +72,11 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const solidBorderIsVisible =
-    nodeNameIsVisible ||
-    (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS);
+  const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
+  const nodeIsHovered =
+    isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
+
+  const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 
   return (
     <Box
@@ -90,7 +91,7 @@ const RenderNode = ({ render }) => {
       } `}
       m="4px"
     >
-      {nodeNameIsVisible && (
+      {nodeIsSelected && (
         <Box
           p="4px"
           bgColor={colors.adminTextColor}
