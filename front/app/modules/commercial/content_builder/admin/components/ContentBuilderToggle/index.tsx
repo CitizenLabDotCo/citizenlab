@@ -9,7 +9,6 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useLocale from 'hooks/useLocale';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -63,42 +62,46 @@ const ContentBuilderToggle = ({
   labelTooltipText,
   onMount,
 }: ContentBuilderToggleProps) => {
-  const locale = useLocale();
   const featureEnabled = useFeatureFlag({ name: 'content_builder' });
   const contentBuilderLayout = useContentBuilderLayout({
     projectId: `${params.projectId}`,
     code: PROJECT_DESCRIPTION_CODE,
   });
   const route = `/admin/content-builder/projects/${params.projectId}/description`;
-  const [contentBuilderLinkVisible, setContentBuilderLinkVisible] =
-    useState(false);
-
-  console.log(contentBuilderLayout);
+  const [contentBuilderLinkVisible, setContentBuilderLinkVisible] = useState<
+    boolean | null
+  >(null);
 
   useEffect(() => {
     if (!featureEnabled) return;
     onMount();
   }, [onMount, featureEnabled]);
 
-  if (!featureEnabled) {
+  useEffect(() => {
+    if (!isNilOrError(contentBuilderLayout)) {
+      const contentBuilderEnabled =
+        contentBuilderLayout.data.attributes.enabled;
+      setContentBuilderLinkVisible(contentBuilderEnabled);
+    }
+  }, [contentBuilderLayout]);
+
+  if (!featureEnabled || isNilOrError(contentBuilderLayout)) {
     return null;
   }
 
   const toggleContentBuilderLinkVisible = () => {
+    toggleLayoutEnabledStatus(!contentBuilderLinkVisible);
     setContentBuilderLinkVisible(!contentBuilderLinkVisible);
-    createNewLayout(contentBuilderLinkVisible);
   };
 
-  const createNewLayout = async (enabled: boolean) => {
-    if (!isNilOrError(locale)) {
-      try {
-        await addContentBuilderLayout(
-          { projectId: params.projectId, code: PROJECT_DESCRIPTION_CODE },
-          { enabled }
-        );
-      } catch {
-        // Do nothing
-      }
+  const toggleLayoutEnabledStatus = async (enabled: boolean) => {
+    try {
+      await addContentBuilderLayout(
+        { projectId: params.projectId, code: PROJECT_DESCRIPTION_CODE },
+        { enabled }
+      );
+    } catch {
+      // Do nothing
     }
   };
 
@@ -106,7 +109,7 @@ const ContentBuilderToggle = ({
     <Box data-testid="contentBuilderToggle">
       <Box display="flex" gap="12px">
         <StyledToggle
-          checked={contentBuilderLinkVisible}
+          checked={!!contentBuilderLinkVisible}
           label={formatMessage(messages.toggleLabel)}
           onChange={toggleContentBuilderLinkVisible}
         />
