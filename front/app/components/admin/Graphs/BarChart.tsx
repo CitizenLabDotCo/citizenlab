@@ -8,18 +8,43 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  Cell,
 } from 'recharts';
 
 // hooks
 import { useTheme } from 'styled-components';
 
+// utils
+import {
+  Data,
+  Mapping,
+  Layout,
+  BarProps,
+  parseMapping,
+  getRechartsLayout,
+  parseBarProps,
+} from './barChartUtils';
+
 interface Props {
   height?: string | number;
-  data: any[];
+  data?: Data;
+  mapping?: Mapping;
+  layout?: Layout;
+  bars?: BarProps;
+  labels?: React.ReactNode;
   className?: string;
+  // ref?:
 }
 
-const _BarChart = ({ height, data, className }: Props) => {
+const _BarChart = ({
+  height,
+  data,
+  mapping,
+  layout,
+  bars,
+  labels,
+  className,
+}: Props) => {
   const {
     chartLabelSize,
     chartLabelColor,
@@ -27,32 +52,49 @@ const _BarChart = ({ height, data, className }: Props) => {
     animationBegin,
     animationDuration,
     newBarFill,
-  }: any = useTheme;
+  }: any = useTheme();
+
+  const { length, fill } = parseMapping(mapping);
+  const rechartsLayout = getRechartsLayout(layout);
+  const parsedBarProps = parseBarProps(newBarFill, bars);
 
   return (
     <ResponsiveContainer className={className} height={height}>
-      <BarChart data={data} ref={this.currentChart}>
+      <BarChart
+        data={data}
+        layout={rechartsLayout}
+        // ref={this.currentChart}
+      >
         <Bar
-          dataKey="value"
-          name={graphTitle}
-          fill={newBarFill}
+          dataKey={length}
           animationDuration={animationDuration}
           animationBegin={animationBegin}
-          isAnimationActive={true}
-        />
+          {...parsedBarProps}
+        >
+          {labels}
+
+          {fill &&
+            data &&
+            data.map((row, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={row[fill] || parsedBarProps.fill}
+              />
+            ))}
+        </Bar>
+
         <XAxis
-          dataKey="name"
+          dataKey={layout === 'vertical' ? 'name' : length}
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
           tick={{ transform: 'translate(0, 7)' }}
-          tickFormatter={this.formatTick}
         />
-        <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
-        <Tooltip
-          isAnimationActive={false}
-          labelFormatter={this.formatLabel}
-          cursor={{ fill: barHoverColor }}
+        <YAxis
+          dataKey={layout === 'horizontal' ? 'name' : length}
+          stroke={chartLabelColor}
+          fontSize={chartLabelSize}
         />
+        <Tooltip isAnimationActive={false} cursor={{ fill: barHoverColor }} />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -127,10 +127,11 @@ export class IdeasByStatusChart extends React.PureComponent<
                 <Bar
                   dataKey="value"
                   name={unitName}
-                  fill={chartFill}
+                  // fill={chartFill}
                   barSize={barSize}
                   animationDuration={animationDuration}
                   animationBegin={animationBegin}
+                  fill="green"
                 >
                   <LabelList
                     position="right"
