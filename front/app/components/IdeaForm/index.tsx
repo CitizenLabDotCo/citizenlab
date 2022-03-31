@@ -751,7 +751,7 @@ class IdeaForm extends PureComponent<
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.title?.description
+                    ?.properties?.title_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -814,7 +814,7 @@ class IdeaForm extends PureComponent<
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.body?.description
+                    ?.properties?.body_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -955,7 +955,7 @@ class IdeaForm extends PureComponent<
                     subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
-                      ]?.properties?.location?.description
+                      ]?.properties?.location_description?.description
                     }
                     subtextSupportsHtml={true}
                     htmlFor="idea-form-location-input-field"
@@ -989,7 +989,7 @@ class IdeaForm extends PureComponent<
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.images?.description
+                    ?.properties?.idea_images_attributes?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -1018,7 +1018,7 @@ class IdeaForm extends PureComponent<
                   subtextValue={
                     ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                       locale || ''
-                    ]?.properties?.attachments?.description
+                    ]?.properties?.idea_files_attributes?.description
                   }
                   subtextSupportsHtml={true}
                   htmlFor="idea-form-file-uploader"
