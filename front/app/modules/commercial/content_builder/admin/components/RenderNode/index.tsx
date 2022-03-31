@@ -31,6 +31,10 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
   }
 };
 
+const StyledBox = styled(Box)`
+  cursor: move;
+`;
+
 const RenderNode = ({ render }) => {
   const {
     isActive,
@@ -78,10 +82,6 @@ const RenderNode = ({ render }) => {
     isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
 
   const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
-
-  const StyledBox = styled(Box)`
-    cursor: move;
-  `;
 
   return (
     <StyledBox

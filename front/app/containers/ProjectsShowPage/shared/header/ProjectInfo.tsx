@@ -30,6 +30,7 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Outlet from 'components/Outlet';
 
 const desktopCollapsedDescriptionMaxHeight = 380;
 const mobileCollapsedDescriptionMaxHeight = 180;
@@ -157,6 +158,7 @@ interface Props {
 }
 
 const ProjectInfo = memo<Props>(({ projectId, className }) => {
+  const [moduleActive, setModuleActive] = useState(false);
   const theme: any = useTheme();
   const project = useProject({ projectId });
   const projectFiles = useProjectFiles(projectId);
@@ -188,97 +190,107 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
     }
   };
 
+  const setModuleToActive = () => setModuleActive(true);
+
   if (!isNilOrError(project)) {
     return (
       <Container className={`${className || ''} e2e-project-info`}>
         <Fragment name={`projects/${project.id}/info`}>
-          <Left>
-            <ProjectTitle>
-              <T value={project.attributes.title_multiloc} />
-            </ProjectTitle>
+          <Outlet
+            id="app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder"
+            onMount={setModuleToActive}
+          />
+          {!moduleActive && (
+            <>
+              <Left>
+                <ProjectTitle>
+                  <T value={project.attributes.title_multiloc} />
+                </ProjectTitle>
 
-            {smallerThanLargeTablet && (
-              <StyledProjectArchivedIndicator projectId={projectId} />
-            )}
+                {smallerThanLargeTablet && (
+                  <StyledProjectArchivedIndicator projectId={projectId} />
+                )}
 
-            <ProjectDescription
-              className={expanded ? 'expanded' : ''}
-              maxHeight={collapsedDescriptionMaxHeight}
-            >
-              {!isEmpty(project.attributes.description_multiloc) && (
-                <>
-                  <ReactResizeDetector
-                    handleWidth
-                    handleHeight
-                    onResize={onResize}
-                  >
-                    <div id="e2e-project-description">
-                      <QuillEditedContent
-                        fontSize="m"
-                        textColor={theme.colorText}
+                <ProjectDescription
+                  className={expanded ? 'expanded' : ''}
+                  maxHeight={collapsedDescriptionMaxHeight}
+                >
+                  {!isEmpty(project.attributes.description_multiloc) && (
+                    <>
+                      <ReactResizeDetector
+                        handleWidth
+                        handleHeight
+                        onResize={onResize}
                       >
-                        <T
-                          value={project.attributes.description_multiloc}
-                          supportHtml={true}
-                        />
-                      </QuillEditedContent>
-                      {!isNilOrError(projectFiles) &&
-                        projectFiles &&
-                        projectFiles.data.length > 0 && (
-                          <FileAttachments files={projectFiles.data} />
-                        )}
-                    </div>
-                  </ReactResizeDetector>
-                  {descriptionHeight &&
-                    descriptionHeight > collapsedDescriptionMaxHeight &&
-                    !expanded && (
-                      <ReadMoreOuterWrapper>
-                        <ReadMoreInnerWrapper>
-                          <ReadMoreButton
-                            id="e2e-project-description-read-more-button"
-                            buttonStyle="text"
-                            onClick={toggleExpandCollapse}
-                            textDecoration="underline"
-                            textDecorationHover="underline"
-                            textColor={colors.label}
-                            textHoverColor={theme.colorText}
-                            fontWeight="500"
-                            fontSize={`${fontSizes.m}px`}
-                            padding="0"
+                        <div id="e2e-project-description">
+                          <QuillEditedContent
+                            fontSize="m"
+                            textColor={theme.colorText}
                           >
-                            <FormattedMessage {...messages.readMore} />
-                          </ReadMoreButton>
-                        </ReadMoreInnerWrapper>
-                      </ReadMoreOuterWrapper>
-                    )}
-                  {descriptionHeight &&
-                    descriptionHeight > collapsedDescriptionMaxHeight &&
-                    expanded && (
-                      <CollapseButtonWrapper>
-                        <CollapseButton
-                          id="e2e-project-description-see-less-button"
-                          buttonStyle="text"
-                          onClick={toggleExpandCollapse}
-                          textDecoration="underline"
-                          textDecorationHover="underline"
-                          textColor={colors.label}
-                          textHoverColor={theme.colorText}
-                          fontWeight="500"
-                          fontSize={`${fontSizes.m}px`}
-                          padding="0"
-                        >
-                          <FormattedMessage {...messages.seeLess} />
-                        </CollapseButton>
-                      </CollapseButtonWrapper>
-                    )}
-                </>
-              )}
-            </ProjectDescription>
-          </Left>
+                            <T
+                              value={project.attributes.description_multiloc}
+                              supportHtml={true}
+                            />
+                          </QuillEditedContent>
+                          {!isNilOrError(projectFiles) &&
+                            projectFiles &&
+                            projectFiles.data.length > 0 && (
+                              <FileAttachments files={projectFiles.data} />
+                            )}
+                        </div>
+                      </ReactResizeDetector>
+                      {descriptionHeight &&
+                        descriptionHeight > collapsedDescriptionMaxHeight &&
+                        !expanded && (
+                          <ReadMoreOuterWrapper>
+                            <ReadMoreInnerWrapper>
+                              <ReadMoreButton
+                                id="e2e-project-description-read-more-button"
+                                buttonStyle="text"
+                                onClick={toggleExpandCollapse}
+                                textDecoration="underline"
+                                textDecorationHover="underline"
+                                textColor={colors.label}
+                                textHoverColor={theme.colorText}
+                                fontWeight="500"
+                                fontSize={`${fontSizes.m}px`}
+                                padding="0"
+                              >
+                                <FormattedMessage {...messages.readMore} />
+                              </ReadMoreButton>
+                            </ReadMoreInnerWrapper>
+                          </ReadMoreOuterWrapper>
+                        )}
+                      {descriptionHeight &&
+                        descriptionHeight > collapsedDescriptionMaxHeight &&
+                        expanded && (
+                          <CollapseButtonWrapper>
+                            <CollapseButton
+                              id="e2e-project-description-see-less-button"
+                              buttonStyle="text"
+                              onClick={toggleExpandCollapse}
+                              textDecoration="underline"
+                              textDecorationHover="underline"
+                              textColor={colors.label}
+                              textHoverColor={theme.colorText}
+                              fontWeight="500"
+                              fontSize={`${fontSizes.m}px`}
+                              padding="0"
+                            >
+                              <FormattedMessage {...messages.seeLess} />
+                            </CollapseButton>
+                          </CollapseButtonWrapper>
+                        )}
+                    </>
+                  )}
+                </ProjectDescription>
+              </Left>
 
-          <Right>
-            <ProjectInfoSideBar projectId={project.id} />
-          </Right>
+              <Right>
+                <ProjectInfoSideBar projectId={project.id} />
+              </Right>
+            </>
+          )}
         </Fragment>
       </Container>
     );
