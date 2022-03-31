@@ -9,6 +9,12 @@ resource 'Manifest' do
   end
 
   get 'web_api/v1/manifest.json' do
+    before do
+      config = AppConfiguration.instance
+      config.settings['core']['color_main'] = '#335533'
+      config.save!
+    end
+
     example_request 'Get the manifest' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -18,7 +24,7 @@ resource 'Manifest' do
         start_url: 'http://example.org/?utm_source=manifest',
         background_color: '#FFFFFF',
         display: 'standalone',
-        theme_color: '#0A5159'
+        theme_color: '#335533'
       })
     end
   end
