@@ -97,7 +97,7 @@ const SMSCampaignForm = ({
   };
 
   const overCharacterLimit = remainingChars < 0;
-  const isButtonDisabled = overCharacterLimit || hasPhoneNumbers;
+  const isButtonDisabled = overCharacterLimit || !hasPhoneNumbers;
 
   return (
     <form className={className} onSubmit={handleOnSubmit}>
