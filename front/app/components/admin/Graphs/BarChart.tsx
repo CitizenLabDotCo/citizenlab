@@ -3,9 +3,9 @@ import React from 'react';
 // components
 import {
   ResponsiveContainer,
-  BarChart,
+  BarChart as _BarChart,
   Bar,
-  Tooltip,
+  Tooltip as _Tooltip,
   XAxis,
   YAxis,
   Cell,
@@ -34,11 +34,12 @@ interface Props {
   margin?: Margin;
   bars?: BarProps;
   labels?: React.ReactNode;
+  tooltip?: React.ReactNode;
   className?: string;
   ref?: any;
 }
 
-const _BarChart = ({
+const BarChart = ({
   height,
   data,
   mapping,
@@ -46,13 +47,13 @@ const _BarChart = ({
   margin,
   bars,
   labels,
+  tooltip,
   className,
   ref,
 }: Props) => {
   const {
     chartLabelSize,
     chartLabelColor,
-    barHoverColor,
     animationBegin,
     animationDuration,
     newBarFill,
@@ -64,7 +65,7 @@ const _BarChart = ({
 
   return (
     <ResponsiveContainer className={className} height={height}>
-      <BarChart data={data} layout={rechartsLayout} margin={margin} ref={ref}>
+      <_BarChart data={data} layout={rechartsLayout} margin={margin} ref={ref}>
         <Bar
           dataKey={length}
           animationDuration={animationDuration}
@@ -94,10 +95,27 @@ const _BarChart = ({
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
         />
-        <Tooltip isAnimationActive={false} cursor={{ fill: barHoverColor }} />
-      </BarChart>
+
+        {tooltip}
+      </_BarChart>
     </ResponsiveContainer>
   );
 };
 
-export default _BarChart;
+export default BarChart;
+
+interface TooltipProps {
+  labelFormatter?: (label: any) => React.ReactNode;
+}
+
+export const Tooltip = (props: TooltipProps) => {
+  const { barHoverColor }: any = useTheme();
+
+  return (
+    <_Tooltip
+      isAnimationActive={false}
+      cursor={{ fill: barHoverColor }}
+      {...props}
+    />
+  );
+};
