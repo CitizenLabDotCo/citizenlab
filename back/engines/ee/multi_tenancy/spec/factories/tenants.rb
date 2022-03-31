@@ -16,7 +16,26 @@ FactoryBot.define do
     name { 'test-tenant' }
     host { 'example.org' }
     settings do
-      SettingsService.new.minimal_required_settings(locales: %w[en fr-FR nl-NL], lifecycle_stage: 'active')
+      SettingsService.new.minimal_required_settings(
+        locales: %w[en fr-FR nl-NL],
+        lifecycle_stage: 'active'
+      ).deep_merge({
+        core: {
+          organization_name: {
+            'en' => 'Liege',
+            'nl-NL' => 'Luik',
+            'fr-FR' => 'Liege'
+          }
+        },
+        initiatives: {
+          enabled: true,
+          allowed: true,
+          voting_threshold: 300,
+          days_limit: 90,
+          threshold_reached_message: { 'en' => 'Threshold reached' },
+          eligibility_criteria: { 'en' => 'Eligibility criteria' }
+        }
+      })
     end
   end
 end
