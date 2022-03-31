@@ -98,7 +98,12 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             </>
           )}
         </Box>
-        <Button buttonStyle="primary" processing={loading} onClick={handleSave}>
+        <Button
+          buttonStyle="primary"
+          processing={loading}
+          onClick={handleSave}
+          data-testid="contentBuilderTopBarSaveButton"
+        >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
       </Box>

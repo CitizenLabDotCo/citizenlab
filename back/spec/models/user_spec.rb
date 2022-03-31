@@ -103,7 +103,8 @@ RSpec.describe User, type: :model do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'minimum_length' => 5
+        'minimum_length' => 5,
+        'phone' => false
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -116,7 +117,8 @@ RSpec.describe User, type: :model do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'minimum_length' => 5
+        'minimum_length' => 5,
+        'phone' => false
       }
       AppConfiguration.instance.update! settings: settings
 
