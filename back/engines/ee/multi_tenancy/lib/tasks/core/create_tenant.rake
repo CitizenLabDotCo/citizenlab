@@ -8,28 +8,16 @@ namespace :cl2_back do
 
     Tenant.find_by(host: host)&.destroy!
 
-    tenant = Tenant.create!(
-      name: host,
-      host: host,
-      logo: Rails.root.join('spec/fixtures/logo.png').open,
-      header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
-      settings: {
+    settings = SettingsService.new.minimal_required_settings(
+      locales: %w[en nl-BE nl-NL fr-BE],
+      lifecycle_stage: 'not_applicable'
+    ).deep_merge(
+      {
         core: {
-          allowed: true,
-          enabled: true,
-          lifecycle_stage: 'not_applicable',
-          display_header_avatars: true,
-          locales: %w[en nl-BE nl-NL fr-BE],
-          organization_type: 'medium_city',
           organization_name: {
             'en' => 'Wonderville',
             'nl-BE' => 'Mirakelgem'
           },
-          timezone: 'Brussels',
-          currency: 'EUR',
-          color_main: '#163A7D',
-          color_secondary: '#CF4040',
-          color_text: '#163A7D',
           signup_helper_text: {
             en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
           }
@@ -304,6 +292,13 @@ namespace :cl2_back do
           monthly_sms_segments_limit: 100_000
         }
       }
+    )
+    tenant = Tenant.create!(
+      name: host,
+      host: host,
+      logo: Rails.root.join('spec/fixtures/logo.png').open,
+      header_bg: Rails.root.join('spec/fixtures/header.jpg').open,
+      settings: settings
     )
 
     side_fx_tenant = MultiTenancy::SideFxTenantService.new
