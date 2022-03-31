@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// Hooks
+// hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
+import { useEditor } from '@craftjs/core';
+import useLocale from 'hooks/useLocale';
 
-// Components
+// components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 
-// Styling
+// styling
 import { colors } from 'utils/styleUtils';
 import {
   Box,
@@ -18,23 +20,48 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 
-// Utils
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// routing
+import clHistory from 'utils/cl-router/history';
 import { withRouter } from 'react-router';
 
-// libraries
-import clHistory from 'utils/cl-router/history';
+// services
+import {
+  addContentBuilderLayout,
+  PROJECT_DESCRIPTION_CODE,
+} from '../../../services/contentBuilder';
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
+  const [loading, setLoading] = useState(false);
+
+  const { query } = useEditor();
   const localize = useLocalize();
+  const locale = useLocale();
   const project = useProject({ projectId });
 
   const goBack = () => {
     clHistory.goBack();
+  };
+
+  const handleSave = async () => {
+    if (!isNilOrError(locale)) {
+      try {
+        setLoading(true);
+        await addContentBuilderLayout(
+          { projectId, code: PROJECT_DESCRIPTION_CODE },
+          { craftjs_jsonmultiloc: { [locale]: JSON.parse(query.serialize()) } }
+        );
+      } catch {
+        // Do nothing
+      }
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,7 +75,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
     >
       <Box
         p="15px"
-        w="220px"
+        w="210px"
         h="100%"
         borderRight={`1px solid ${colors.mediumGrey}`}
         display="flex"
@@ -71,7 +98,12 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             </>
           )}
         </Box>
-        <Button buttonStyle="primary" onClick={goBack}>
+        <Button
+          buttonStyle="primary"
+          processing={loading}
+          onClick={handleSave}
+          data-testid="contentBuilderTopBarSaveButton"
+        >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
       </Box>
