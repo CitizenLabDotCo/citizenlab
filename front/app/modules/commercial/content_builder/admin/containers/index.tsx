@@ -35,7 +35,7 @@ const ContentBuilderPage = () => {
           <Box
             flex="0 0 auto"
             h="100%"
-            w="220px"
+            w="210px"
             display="flex"
             flexDirection="column"
             alignItems="center"
