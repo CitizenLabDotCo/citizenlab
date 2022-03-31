@@ -35,15 +35,15 @@ const getTitleMessage = (
 ) => {
   switch (campaignStatus) {
     case 'draft':
-      return 'Draft SMS Campaign';
+      return 'Draft SMS';
     case 'sending':
-      return 'Sending SMS Campaign';
+      return 'Sending SMS';
     case 'sent':
-      return 'Sent SMS Campaign';
+      return 'Sent SMS';
     case 'failed':
-      return 'Failed SMS Campaign';
+      return 'Failed SMS';
     default:
-      return 'Created SMS Campaign';
+      return 'Created SMS';
   }
 };
 
@@ -95,10 +95,10 @@ const ExistingSMSCampaign = (props: WithRouterProps) => {
   return (
     <>
       <HelmetIntl
-        title={{ id: 'test', defaultMessage: 'View SMS campaign' }}
+        title={{ id: 'test', defaultMessage: 'View SMS' }}
         description={{
           id: 'test',
-          defaultMessage: 'View SMS campaign description',
+          defaultMessage: 'View SMS',
         }}
       />
       <TextingHeader

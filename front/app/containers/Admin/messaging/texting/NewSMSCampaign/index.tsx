@@ -25,10 +25,7 @@ const NewSMSCampaign = () => {
           defaultMessage: 'Create new SMS description',
         }}
       />
-      <TextingHeader
-        headerMessage="New SMS campaign"
-        onClickGoBack={clHistory.goBack}
-      />
+      <TextingHeader headerMessage="New SMS" onClickGoBack={clHistory.goBack} />
       <StyledSMSCampaignForm />
     </>
   );

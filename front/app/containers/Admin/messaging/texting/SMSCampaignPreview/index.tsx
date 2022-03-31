@@ -178,7 +178,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         }}
       />
       <TextingHeader
-        headerMessage="Preview SMS message"
+        headerMessage="Preview SMS"
         onClickGoBack={goBackToCampaignView}
         showHorizontalRule
       >
@@ -203,11 +203,11 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         <tbody>
           <InformativeTableRow
             title="Sending to:"
-            content={`${phone_numbers.length} people`}
+            content={`${phone_numbers.length} phone numbers`}
           />
           <InformativeTableRow
             title="Usage"
-            content={`${message.length} Characters (${Math.ceil(
+            content={`${message.length} characters (${Math.ceil(
               message.length / 160
             )} segments)`}
           />
@@ -223,7 +223,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
           border="21px solid black"
           borderRadius="33px"
           position="relative"
-          marginBottom="25px"
+          marginBottom="35px"
         >
           {/* Phone Bezel */}
           <Box
@@ -253,11 +253,12 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
       <Modal
         opened={confirmationModalIsVisible}
         close={closeSendConfirmationModal}
-        header={'Confirm Text Sending'}
+        header={'Confirm sending SMS'}
       >
         <Box padding="30px">
           <SendNowWarning>
-            Do you want to send this message to 1,920 people now?
+            Do you want to send this message to {phone_numbers.length} phone
+            numbers now?
           </SendNowWarning>
           <Box
             display="flex"
@@ -287,7 +288,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
       <Modal
         opened={deleteCampaignModalIsVisible}
         close={closeDeleteModal}
-        header={'Delete Draft Text'}
+        header={'Delete draft SMS'}
       >
         <Box padding="30px">
           <SendNowWarning>

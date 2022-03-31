@@ -4,12 +4,7 @@ import { CLError } from 'typings';
 // components
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
-import {
-  Label,
-  Box,
-  IconTooltip,
-  Error,
-} from '@citizenlab/cl2-component-library';
+import { Label, Box, Error } from '@citizenlab/cl2-component-library';
 import RemainingCharacters from '../components/RemainingCharacters';
 
 // utils
@@ -98,6 +93,10 @@ const SMSCampaignForm = ({
 
   const overCharacterLimit = remainingChars < 0;
   const isButtonDisabled = overCharacterLimit || !hasPhoneNumbers;
+  // no campaign = creating new SMS, campaign = updating existing draft
+  const buttonCopy = isNilOrError(campaignId)
+    ? 'Preview SMS'
+    : 'Update and preview SMS';
 
   return (
     <form className={className} onSubmit={handleOnSubmit}>
@@ -119,9 +118,7 @@ const SMSCampaignForm = ({
         )}
       </Box>
       <Box marginBottom="30px">
-        <Label>
-          Message <IconTooltip content="Help goes here" />
-        </Label>
+        <Label>Message</Label>
         <TextArea
           rows={8}
           maxRows={8}
@@ -143,7 +140,7 @@ const SMSCampaignForm = ({
             buttonStyle="primary"
             size="2"
             type="submit"
-            text={'Update and Preview SMS'}
+            text={buttonCopy}
             onClick={handleOnSubmit}
             disabled={isButtonDisabled}
           />
