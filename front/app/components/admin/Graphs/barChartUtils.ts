@@ -26,6 +26,14 @@ export type Layout = 'horizontal' | 'vertical';
 export const getRechartsLayout = (layout?: Layout) =>
   layout === 'vertical' ? 'horizontal' : 'vertical';
 
+// MARGIN
+export interface Margin {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+}
+
 // BARS
 export interface BarProps {
   name?: string;

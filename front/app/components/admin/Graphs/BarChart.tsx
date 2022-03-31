@@ -19,6 +19,7 @@ import {
   Data,
   Mapping,
   Layout,
+  Margin,
   BarProps,
   parseMapping,
   getRechartsLayout,
@@ -30,10 +31,11 @@ interface Props {
   data?: Data;
   mapping?: Mapping;
   layout?: Layout;
+  margin?: Margin;
   bars?: BarProps;
   labels?: React.ReactNode;
   className?: string;
-  // ref?:
+  ref?: any;
 }
 
 const _BarChart = ({
@@ -41,9 +43,11 @@ const _BarChart = ({
   data,
   mapping,
   layout,
+  margin,
   bars,
   labels,
   className,
+  ref,
 }: Props) => {
   const {
     chartLabelSize,
@@ -60,11 +64,7 @@ const _BarChart = ({
 
   return (
     <ResponsiveContainer className={className} height={height}>
-      <BarChart
-        data={data}
-        layout={rechartsLayout}
-        // ref={this.currentChart}
-      >
+      <BarChart data={data} layout={rechartsLayout} margin={margin} ref={ref}>
         <Bar
           dataKey={length}
           animationDuration={animationDuration}
