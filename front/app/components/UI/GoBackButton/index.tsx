@@ -28,6 +28,7 @@ export default class GoBackButton extends PureComponent<Props, State> {
           size="2"
           padding="0px"
           text={<FormattedMessage {...messages.goBack} />}
+          data-testid="goBackButton"
         />
       </Container>
     );

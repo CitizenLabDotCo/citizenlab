@@ -15,7 +15,10 @@ import clHistory from 'utils/cl-router/history';
 import useTextingCampaign from 'hooks/useTextingCampaign';
 
 // services
-import { deleteTextingCampaign } from 'services/textingCampaigns';
+import {
+  deleteTextingCampaign,
+  sendTextingCampaign,
+} from 'services/textingCampaigns';
 
 // styling
 import styled from 'styled-components';
@@ -114,17 +117,20 @@ const TextMessagePreview = (props: WithRouterProps) => {
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
     useState(false);
+  const [sendCampaignButtonIsDisabled, setSendCampaignButtonIsDisabled] =
+    useState(false);
 
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
+    setSendCampaignButtonIsDisabled(true);
     // console.log('disable send button here');
     try {
-      // console.log('implement send BE call here');
-      // console.log(
-      // 'if successful, redirect to the view page for the newly created draft message'
-      // );
+      await sendTextingCampaign(campaignId);
+      // redirect to in-progress campaign page
+      const url = `/admin/messaging/texting/${campaignId}`;
+      clHistory.replace(url);
     } catch (e) {
       // console.log('fail', e);
     }
@@ -132,7 +138,6 @@ const TextMessagePreview = (props: WithRouterProps) => {
 
   const confirmDeleteTextingCampaign = async () => {
     try {
-      // const result = await deleteTextingCampaign(campaignId);
       await deleteTextingCampaign(campaignId);
       // console.log('successful delete', result);
       const url = `/admin/messaging/texting`;
@@ -257,7 +262,8 @@ const TextMessagePreview = (props: WithRouterProps) => {
       >
         <Box padding="30px">
           <SendNowWarning>
-            Do you want to send this message to 1,920 people now?
+            Do you want to send this message to {phone_numbers.length} people
+            now?
           </SendNowWarning>
           <Box
             display="flex"
@@ -276,6 +282,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
               onClick={confirmSendTextingCampaign}
               icon="send"
               iconPos="right"
+              disabled={sendCampaignButtonIsDisabled}
             >
               Send Now
             </StyledModalButton>
