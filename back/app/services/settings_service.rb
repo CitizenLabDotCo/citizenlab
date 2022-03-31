@@ -97,9 +97,9 @@ class SettingsService
         timezone: 'Brussels',
         currency: 'EUR',
         locales: locales,
-        color_main: '#335533',
-        color_secondary: Faker::Color.hex_color,
-        color_text: Faker::Color.hex_color,
+        color_main: '#0A5159',
+        color_secondary: '#008292',
+        color_text: '#333',
         lifecycle_stage: lifecycle_stage,
         display_header_avatars: true
       }
