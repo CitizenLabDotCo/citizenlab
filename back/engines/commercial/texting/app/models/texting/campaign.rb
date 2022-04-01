@@ -51,7 +51,7 @@ module Texting
 
       codes = AppConfiguration.instance.settings('texting', 'recipient_country_calling_codes')
       invalid_numbers = phone_numbers.reject { |number| Texting::PhoneNumber.valid?(number, country_codes: codes) }
-      # This error is dealt with in the front end in handleSubmit 
+      # This error is dealt with in handleSubmit 
       # of front/app/containers/Admin/messaging/texting/components/SMSCampaignForm.tsx
       errors.add(:phone_numbers, :invalid, invalid_numbers: invalid_numbers) if invalid_numbers.any?
     end
