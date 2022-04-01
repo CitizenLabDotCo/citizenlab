@@ -258,5 +258,6 @@
   },
   "resolutions": {
     "react-test-renderer": "16.14.0"
-  }
+  },
+  "optionalDependencies": { "fsevents": "^2" }
 }
