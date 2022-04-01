@@ -376,6 +376,7 @@ export class CustomFieldsComparison extends React.PureComponent<
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
                   type="number"
+                  tick={{ transform: 'translate(0, 7)' }}
                 />
               </BarChart>
             </ResponsiveContainer>
