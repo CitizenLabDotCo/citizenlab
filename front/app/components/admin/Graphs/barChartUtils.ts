@@ -59,3 +59,12 @@ export const parseBarProps = (
   const { size, ...otherBarProps } = barProps;
   return { ...defaultBarProps, barSize: size, ...otherBarProps };
 };
+
+// AXES
+export interface AxisProps {
+  tickFormatter?: (value: any) => string;
+  type?: 'number' | 'category';
+  width?: number;
+  tickLine?: boolean;
+  hide?: boolean;
+}

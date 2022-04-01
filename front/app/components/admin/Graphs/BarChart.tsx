@@ -23,6 +23,7 @@ import {
   Layout,
   Margin,
   BarProps,
+  AxisProps,
   parseMapping,
   getRechartsLayout,
   parseBarProps,
@@ -35,6 +36,8 @@ interface Props {
   layout?: Layout;
   margin?: Margin;
   bars?: BarProps;
+  xaxis?: AxisProps;
+  yaxis?: AxisProps;
   labels?: React.ReactNode;
   tooltip?: React.ReactNode;
   className?: string;
@@ -48,6 +51,8 @@ const BarChart = ({
   layout,
   margin,
   bars,
+  xaxis,
+  yaxis,
   labels,
   tooltip,
   className,
@@ -91,11 +96,13 @@ const BarChart = ({
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
           tick={{ transform: 'translate(0, 7)' }}
+          {...xaxis}
         />
         <YAxis
           dataKey={layout === 'horizontal' ? 'name' : length}
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
+          {...yaxis}
         />
 
         {tooltip}
