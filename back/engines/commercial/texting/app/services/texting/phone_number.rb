@@ -2,6 +2,8 @@ class Texting::PhoneNumber
   class << self
     # I tried to use phonelib and telephone_number gems, but they're super slow (1000 numbers per second).
     # Current implementation is ~100x faster.
+    # If conditions change, the error message in 
+    # front/app/containers/Admin/messaging/texting/components/SMSCampaignForm.tsx may need to be updated.
     def valid?(number, country_codes: [])
       min_length = 7 # pretty random
       max_length = 15 # https://en.wikipedia.org/wiki/E.164
