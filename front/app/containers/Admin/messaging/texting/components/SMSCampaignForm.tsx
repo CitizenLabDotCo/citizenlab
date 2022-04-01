@@ -64,6 +64,7 @@ const SMSCampaignForm = ({
   const [hasPhoneNumbers, setHasPhoneNumbers] = useState(false);
   const [hasInvalidPhoneNumbersError, setHasInvalidPhoneNumbersError] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isNilOrError(campaign)) {
@@ -89,6 +90,7 @@ const SMSCampaignForm = ({
 
     const splitNumbers = inputPhoneNumbers.split(',');
     try {
+      setIsLoading(true);
       // if there's a campaignId and in this function,
       // we're in a draft campaign. Otherwise it's a new campaign.
       const result = campaignId
@@ -101,6 +103,7 @@ const SMSCampaignForm = ({
       const url = `/admin/messaging/texting/${id}/preview`;
       clHistory.replace(url);
     } catch (e) {
+      setIsLoading(false);
       const invalidPhoneNumberError: InvalidPhoneNumberError | undefined =
         e.json.errors.phone_numbers?.find(
           // at this stage there's only 1 possible phone number error (invalid)
@@ -167,6 +170,7 @@ const SMSCampaignForm = ({
             text={'Update and Preview SMS'}
             onClick={handleOnSubmit}
             disabled={isButtonDisabled}
+            processing={isLoading}
           />
         </Box>
       )}

@@ -126,19 +126,20 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
   const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
     setSendCampaignButtonIsDisabled(true);
-    // console.log('disable send button here');
     try {
+      setIsLoading(true);
       await sendTextingCampaign(campaignId);
-      // redirect to in-progress campaign page
       const url = `/admin/messaging/texting/${campaignId}`;
       clHistory.replace(url);
     } catch (e) {
+      setIsLoading(false);
       const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
         e.json.errors.base;
       const tooManySegmentsError = smsCampaignBaseErrors?.find(
@@ -160,12 +161,12 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
 
   const confirmDeleteTextingCampaign = async () => {
     try {
+      setIsLoading(true);
       await deleteTextingCampaign(campaignId);
-      // console.log('successful delete', result);
       const url = `/admin/messaging/texting`;
       clHistory.replace(url);
     } catch (e) {
-      // console.log('fail', e);
+      setIsLoading(false);
     }
   };
 
@@ -305,6 +306,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
               icon="send"
               iconPos="right"
               disabled={sendCampaignButtonIsDisabled}
+              processing={isLoading}
             >
               Send Now
             </StyledModalButton>
