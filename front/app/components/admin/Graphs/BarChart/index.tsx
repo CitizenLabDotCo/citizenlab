@@ -104,7 +104,6 @@ const BarChart = ({
           {labels}
 
           {fill &&
-            data &&
             data.map((row, index) => (
               <Cell
                 key={`cell-${index}`}
