@@ -19,7 +19,7 @@ import { NoDataContainer } from 'components/admin/GraphWrappers';
 import { useTheme } from 'styled-components';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
@@ -33,7 +33,7 @@ import {
   parseMapping,
   getRechartsLayout,
   parseBarProps,
-} from './barChartUtils';
+} from './utils';
 
 interface Props {
   height?: string | number;
