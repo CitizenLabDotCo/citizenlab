@@ -21,6 +21,9 @@ class Texting::Sms::Providers::Twilio
 
   def request_valid?(request)
     signature = request.headers['X-Twilio-Signature']
+    puts "request.original_url #{request.original_url}, request.request_parameters #{request.request_parameters}, signature #{signature}"
+    Rails.logger.info "request.original_url #{request.original_url}, request.request_parameters #{request.request_parameters}, signature #{signature}"
+    Rails.logger.error "request.original_url #{request.original_url}, request.request_parameters #{request.request_parameters}, signature #{signature}"
     return false if signature.blank?
 
     validator = Twilio::Security::RequestValidator.new(auth_token)
