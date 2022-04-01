@@ -65,7 +65,7 @@ resource 'Texting campaigns' do
     context 'when a phone number is invalid' do
       let(:phone_numbers) { ['+123'] }
 
-      example_request 'Does not create a campaign' do
+      example_request '[error] Does not create a campaign with invalid phone number' do
         expect(response_status).to eq 422
 
         expect(json_response_body.dig(:errors, :phone_numbers).first).to include(
@@ -109,7 +109,7 @@ resource 'Texting campaigns' do
 
     let(:id) { campaign.id }
 
-    example 'Start sending a campaign' do
+    example 'Send a campaign' do
       twilio_client = Twilio::REST::Client.new
       expect(Twilio::REST::Client).to receive(:new).once.and_return(twilio_client)
       twilio_options = hash_including(body: campaign.message, to: campaign.phone_numbers.first)
@@ -121,7 +121,7 @@ resource 'Texting campaigns' do
       expect(campaign.reload.status).to eq('sending')
     end
 
-    example '[error] Returns an error when there are too many segments in queue' do
+    example '[error] Send when there are too many segments in queue' do
       numbers = Array.new(Texting::Sms.provider.class::SEGMENTS_QUEUE + 1) { |i| "+123456#{10_000 + i}" }
       campaign.update!(phone_numbers: numbers)
 
@@ -130,7 +130,7 @@ resource 'Texting campaigns' do
       expect(campaign.reload.status).to eq('draft')
     end
 
-    example '[error] Returns an error when monthly limit reached for this platform' do
+    example '[error] Send when monthly limit reached for this platform' do
       campaign.update!(message: '1' * 161)
       config = AppConfiguration.instance
       config.settings['texting']['monthly_sms_segments_limit'] = 1
