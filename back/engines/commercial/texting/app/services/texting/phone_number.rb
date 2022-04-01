@@ -1,21 +1,26 @@
 class Texting::PhoneNumber
+  MIN_LENGTH = 7 # pretty random
+  MAX_LENGTH = 15 # https://en.wikipedia.org/wiki/E.164
+
   class << self
     # I tried to use phonelib and telephone_number gems, but they're super slow (1000 numbers per second).
     # Current implementation is ~100x faster.
     def valid?(number, country_codes: [])
-      min_length = 7 # pretty random
-      max_length = 15 # https://en.wikipedia.org/wiki/E.164
       codes_regex =
         if country_codes.present?
           "(#{country_codes.map { |code| Regexp.escape(code) }.join('|')})"
         else
           '\+'
         end
-      number.match?(/\A#{codes_regex}\d{#{min_length},#{max_length}}\Z/)
+      number.match?(/\A#{codes_regex}\d{#{MIN_LENGTH},#{MAX_LENGTH}}\Z/)
     end
 
     def normalize(number)
       number.gsub(/[-\s]/, '')
+    end
+
+    def requirements(country_codes: [])
+      { min_length: MIN_LENGTH, max_length: MAX_LENGTH, valid_country_codes: country_codes }
     end
   end
 end

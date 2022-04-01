@@ -71,7 +71,7 @@ module Texting
     def mark_as_sent
       campaign = Campaign.find(params[:id])
       if Texting::Sms.provider.request_valid?(request)
-        campaign.update!(status: Texting::Campaign.statuses.fetch(:sent), sent_at: Time.zone.now)
+        campaign.update!(status: Texting::Campaign.statuses.fetch(:sent), sent_at: Time.zone.now) if campaign.sending?
         head :ok
       else
         head :unauthorized
