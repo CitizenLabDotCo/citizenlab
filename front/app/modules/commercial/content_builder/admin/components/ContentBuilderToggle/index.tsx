@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 // Hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 
 // Utils
 import Link from 'utils/cl-router/Link';
@@ -30,7 +31,6 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Helpers
 import { isNil, isNilOrError } from 'utils/helperUtils';
-import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 
 type ContentBuilderToggleProps = {
   valueMultiloc: Multiloc | undefined | null;
