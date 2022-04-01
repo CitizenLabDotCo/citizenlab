@@ -86,7 +86,6 @@ describe('ContentBuilderToggle', () => {
       />
     );
     const toggle = screen.getByRole('checkbox');
-    expect(mockContentBuilderLayoutData.data.attributes.enabled).toEqual(false);
     expect(screen.queryByText('QuillLabel')).toBeInTheDocument();
     toggle.click();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
