@@ -80,7 +80,7 @@ const BarChart = ({
     return (
       <NoDataContainer>
         {emptyContainerContent ? (
-          { emptyContainerContent }
+          <>{emptyContainerContent}</>
         ) : (
           <FormattedMessage {...messages.noData} />
         )}
