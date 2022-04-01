@@ -1,19 +1,19 @@
-import {
-  addContentBuilderLayout,
-  IContentBuilderLayoutObject,
-} from 'modules/commercial/content_builder/services/contentBuilder';
+import { addContentBuilderLayout } from 'modules/commercial/content_builder/services/contentBuilder';
 import React from 'react';
 import { Multiloc } from 'typings';
 import { render, screen } from 'utils/testUtils/rtl';
 import ContentBuilderToggle from './';
 
-const mockContentBuilderLayoutData = {
+const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
   data: {
     attributes: {
       enabled: false,
     },
   },
 };
+
+let mockContentBuilderLayoutData: any = DEFAULT_CONTENT_BUILDER_LAYOUT_DATA;
+
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
 jest.mock('utils/cl-router/history');
@@ -68,10 +68,9 @@ describe('ContentBuilderToggle', () => {
     expect(screen.queryByText('LinkText')).not.toBeInTheDocument();
     toggle.click();
     expect(screen.queryByText('LinkText')).toBeInTheDocument();
-    const mockLayoutData = { enabled: true } as IContentBuilderLayoutObject;
     expect(addContentBuilderLayout).toHaveBeenCalledWith(
       { projectId: 'projectId', code: undefined },
-      mockLayoutData
+      { enabled: true }
     );
   });
   it('shows confirm Quill editor appropriately when builder option toggled', () => {
@@ -89,10 +88,28 @@ describe('ContentBuilderToggle', () => {
     expect(screen.queryByText('QuillLabel')).toBeInTheDocument();
     toggle.click();
     expect(screen.queryByText('QuillLabel')).not.toBeInTheDocument();
-    const mockLayoutData = { enabled: true } as IContentBuilderLayoutObject;
     expect(addContentBuilderLayout).toHaveBeenCalledWith(
       { projectId: 'projectId', code: undefined },
-      mockLayoutData
+      { enabled: true }
+    );
+  });
+  it('handles ContentBuilderLayout error', () => {
+    render(
+      <ContentBuilderToggle
+        valueMultiloc={multiloc}
+        onChange={dummyFunction}
+        label={'QuillLabel'}
+        labelTooltipText={'LabelTooltipText'}
+        onMount={dummyFunction}
+        {...routerProps}
+      />
+    );
+    mockContentBuilderLayoutData = new Error();
+    const toggle = screen.getByRole('checkbox');
+    toggle.click();
+    expect(addContentBuilderLayout).toHaveBeenCalledWith(
+      { projectId: 'projectId', code: undefined },
+      { enabled: true }
     );
   });
   it('does not render component when feature flag is not active', () => {

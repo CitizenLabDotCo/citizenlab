@@ -86,7 +86,7 @@ const ContentBuilderToggle = ({
     }
   }, [contentBuilderLayout]);
 
-  if (!featureEnabled || isNil(contentBuilderLayout)) {
+  if (!featureEnabled) {
     return null;
   }
 
