@@ -46,11 +46,15 @@ const ContentPreview = ({ projectId, projectTitle }: ContentPreviewProps) => {
 
   return (
     <Box>
-      <Title variant="h1">{localize(projectTitle)}</Title>
       {contentBuilderContent ? (
-        <Editor isPreview={true}>
-          <ContentBuilderFrame projectId={projectId} />
-        </Editor>
+        <>
+          <Title color="text" variant="h1">
+            {localize(projectTitle)}
+          </Title>
+          <Editor isPreview={true}>
+            <ContentBuilderFrame projectId={projectId} />
+          </Editor>
+        </>
       ) : (
         <ProjectInfo projectId={projectId} />
       )}
