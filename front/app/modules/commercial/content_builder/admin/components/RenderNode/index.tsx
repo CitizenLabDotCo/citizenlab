@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -78,8 +79,12 @@ const RenderNode = ({ render }) => {
 
   const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 
+  const StyledBox = styled(Box)`
+    cursor: move;
+  `;
+
   return (
-    <Box
+    <StyledBox
       id={id}
       position="relative"
       border={`1px ${
@@ -104,7 +109,7 @@ const RenderNode = ({ render }) => {
         </Box>
       )}
       {render}
-    </Box>
+    </StyledBox>
   );
 };
 
