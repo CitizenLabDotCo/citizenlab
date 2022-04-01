@@ -82,7 +82,7 @@
     "json-stable-stringify": "1.0.1",
     "jwt-decode": "3.1.2",
     "leaflet": "1.7.1",
-    "leaflet-active-area": "1.2.0",
+    "leaflet-active-area": "1.2.1",
     "leaflet.markercluster": "1.5.3",
     "lodash-es": "4.17.21",
     "moment": "2.29.1",
