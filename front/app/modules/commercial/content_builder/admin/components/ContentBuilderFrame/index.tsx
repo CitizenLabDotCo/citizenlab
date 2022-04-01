@@ -9,10 +9,7 @@ import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
 
-// router
-import { withRouter, WithRouterProps } from 'react-router';
-
-const ContentBuilderFrame = ({ params: { projectId } }: WithRouterProps) => {
+const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
   const { actions } = useEditor();
   const data = useContentBuilderLayout({
     projectId,
@@ -45,4 +42,4 @@ const ContentBuilderFrame = ({ params: { projectId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(ContentBuilderFrame);
+export default ContentBuilderFrame;
