@@ -1,11 +1,15 @@
 module Texting
   class SendCampaignJob < ApplicationJob
+    perform_retries false
+
     def run(campaign)
       provider = Texting::Sms.provider
-      campaign.phone_numbers.each_with_index do |number, index|
+      sent_statuses = campaign.phone_numbers.map.with_index do |number, index|
         callback = status_callback(campaign) if index + 1 == campaign.phone_numbers.length
         provider.send_msg(campaign.message, number, status_callback: callback)
       end
+
+      campaign.update!(status: Texting::Campaign.statuses.fetch(:failed)) if sent_statuses.none?
     end
 
     private

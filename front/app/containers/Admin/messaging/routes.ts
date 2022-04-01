@@ -68,14 +68,14 @@ export default () => ({
     {
       path: 'texting/:campaignId/preview',
       component: Loadable({
-        loader: () => import('./texting/PreviewMessage'),
+        loader: () => import('./texting/SMSCampaignPreview'),
         loading: () => null,
       }),
     },
     {
       path: 'texting/:campaignId',
       component: Loadable({
-        loader: () => import('./texting/CreatedSMSCampaignForm'),
+        loader: () => import('./texting/ExistingSMSCampaign'),
         loading: () => null,
       }),
     },

@@ -2,7 +2,7 @@ module Texting
   class SideFxCampaignService < BaseSideFxService
 
     def after_send(campaign, user)
-      LogActivityJob.perform_later(campaign, 'sent', user, campaign.updated_at.to_i)
+      LogActivityJob.perform_later(campaign, 'do_send', user, campaign.updated_at.to_i)
     end
 
     private
