@@ -240,7 +240,7 @@
     "rimraf": "3.0.2",
     "shelljs": "0.8.5",
     "style-loader": "^3.3.1",
-    "styled-components": "5.3.3",
+    "styled-components": "5.3.5",
     "terser-webpack-plugin": "5.3.1",
     "ts-jest": "^27.1.2",
     "ts-loader": "^9.2.6",
