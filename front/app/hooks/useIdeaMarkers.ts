@@ -41,7 +41,13 @@ export default function useIdeaMarkers({
     });
 
     return () => subscription.unsubscribe();
-  }, [phaseId, projectIds, sort, search, topics]);
+  }, [
+    phaseId,
+    JSON.stringify(projectIds),
+    sort,
+    search,
+    JSON.stringify(topics),
+  ]);
 
   return ideaMarkers;
 }
