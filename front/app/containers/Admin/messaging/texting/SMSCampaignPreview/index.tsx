@@ -121,8 +121,6 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
     useState(false);
-  const [sendCampaignButtonIsDisabled, setSendCampaignButtonIsDisabled] =
-    useState(false);
   const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
   const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
     useState(false);
@@ -132,7 +130,6 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
-    setSendCampaignButtonIsDisabled(true);
     try {
       setIsLoading(true);
       await sendTextingCampaign(campaignId);
@@ -195,6 +192,8 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   if (isNilOrError(campaign)) return null;
 
   const { message, phone_numbers } = campaign.attributes;
+  const sendCampaignButtonIsDisabled =
+    hasTooManySegmentsError || hasMonthlyLimitReachedError;
 
   return (
     <>
