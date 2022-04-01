@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -15,7 +15,10 @@ import clHistory from 'utils/cl-router/history';
 import useTextingCampaign from 'hooks/useTextingCampaign';
 
 // services
-import { deleteTextingCampaign } from 'services/textingCampaigns';
+import {
+  deleteTextingCampaign,
+  sendTextingCampaign,
+} from 'services/textingCampaigns';
 
 // styling
 import styled from 'styled-components';
@@ -86,6 +89,10 @@ const PhoneMessage = styled.div`
   }
 `;
 
+type SMSCampaignBaseError = {
+  error: 'too_many_total_segments' | 'monthly_limit_reached';
+};
+
 const InformativeTableRow = ({
   title,
   content,
@@ -114,31 +121,49 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
     useState(false);
+  const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
+  const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
+    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
-    // console.log('disable send button here');
     try {
-      // console.log('implement send BE call here');
-      // console.log(
-      // 'if successful, redirect to the view page for the newly created draft message'
-      // );
+      setIsLoading(true);
+      await sendTextingCampaign(campaignId);
+      const url = `/admin/messaging/texting/${campaignId}`;
+      clHistory.replace(url);
     } catch (e) {
-      // console.log('fail', e);
+      setIsLoading(false);
+      const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
+        e.json.errors.base;
+      const tooManySegmentsError = smsCampaignBaseErrors?.find(
+        (smsCampaignBaseError) =>
+          smsCampaignBaseError.error === 'too_many_total_segments'
+      );
+      const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
+        (smsCampaignBaseError) =>
+          smsCampaignBaseError.error === 'monthly_limit_reached'
+      );
+      if (tooManySegmentsError) {
+        setHasTooManySegmentsError(true);
+      }
+      if (monthlyLimitReachedError) {
+        setHasMonthlyLimitReachedError(true);
+      }
     }
   };
 
   const confirmDeleteTextingCampaign = async () => {
     try {
-      // const result = await deleteTextingCampaign(campaignId);
+      setIsLoading(true);
       await deleteTextingCampaign(campaignId);
-      // console.log('successful delete', result);
       const url = `/admin/messaging/texting`;
       clHistory.replace(url);
     } catch (e) {
-      // console.log('fail', e);
+      setIsLoading(false);
     }
   };
 
@@ -171,6 +196,8 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   const segmentPlural = segmentCount === 1 ? 'segment' : 'segments';
   const phoneNumberPlural =
     phone_numbers.length === 1 ? 'phone number' : 'phone numbers';
+  const sendCampaignButtonIsDisabled =
+    hasTooManySegmentsError || hasMonthlyLimitReachedError;
 
   return (
     <>
@@ -279,10 +306,16 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
               onClick={confirmSendTextingCampaign}
               icon="send"
               iconPos="right"
+              disabled={sendCampaignButtonIsDisabled}
+              processing={isLoading}
             >
               Send Now
             </StyledModalButton>
           </Box>
+          {hasTooManySegmentsError && <Error text="Too many segments error" />}
+          {hasMonthlyLimitReachedError && (
+            <Error text="Monthly limits exceeded error" />
+          )}
         </Box>
       </Modal>
 

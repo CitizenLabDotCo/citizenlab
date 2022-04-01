@@ -7,7 +7,7 @@ import TextingHeader from '../components/TextingHeader';
 import FormattedStatusLabel from '../components/FormattedStatusLabel';
 import SMSCampaignForm from '../components/SMSCampaignForm';
 // i18n
-import { FormattedDate } from 'react-intl';
+import { FormattedTime, FormattedDate } from 'react-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -52,31 +52,37 @@ const getAdditionalInfoByStatus = (campaign: ITextingCampaignData) => {
     case 'draft':
       return (
         <>
-          Created at: <FormattedDate value={campaign.attributes.created_at} />
+          Created at: <FormattedTime value={campaign.attributes.created_at} />,{' '}
+          <FormattedDate value={campaign.attributes.created_at} />
         </>
       );
     case 'sending':
       return (
         <>
-          Sent at: <FormattedDate value={campaign.attributes.sent_at} />
+          Began sending at:{' '}
+          <FormattedTime value={campaign.attributes.updated_at} />,{' '}
+          <FormattedDate value={campaign.attributes.updated_at} />
         </>
       );
     case 'sent':
       return (
         <>
-          Sent at: <FormattedDate value={campaign.attributes.sent_at} />
+          Sent at: <FormattedTime value={campaign.attributes.sent_at} />,{' '}
+          <FormattedDate value={campaign.attributes.sent_at} />,
         </>
       );
     case 'failed':
       return (
         <>
-          Created at: <FormattedDate value={campaign.attributes.created_at} />
+          Created at: <FormattedTime value={campaign.attributes.created_at} />,{' '}
+          <FormattedDate value={campaign.attributes.created_at} />
         </>
       );
     default:
       return (
         <>
-          Created at: <FormattedDate value={campaign.attributes.created_at} />
+          Created at: <FormattedTime value={campaign.attributes.created_at} />,{' '}
+          <FormattedDate value={campaign.attributes.created_at} />
         </>
       );
   }

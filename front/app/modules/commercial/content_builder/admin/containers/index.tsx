@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor, Frame, Element } from '@craftjs/core';
+import { Editor } from '@craftjs/core';
 
 // styles
 import styled from 'styled-components';
@@ -17,6 +17,7 @@ import Text from '../components/CraftComponents/Text';
 import TwoColumn from '../components/CraftComponents/TwoColumn';
 import RenderNode from '../components/RenderNode';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
+import ContentBuilderFrame from '../components/ContentBuilderFrame';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
@@ -25,16 +26,16 @@ const StyledRightColumn = styled(RightColumn)`
 const ContentBuilderPage = () => {
   return (
     <Box display="flex" flexDirection="column" w="100%">
-      <ContentBuilderTopBar />
       <Editor
         resolver={{ Box, Container, TwoColumn, Text }}
         onRender={RenderNode}
       >
+        <ContentBuilderTopBar />
         <Box display="flex">
           <Box
             flex="0 0 auto"
             h="100%"
-            w="220px"
+            w="210px"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -45,17 +46,7 @@ const ContentBuilderPage = () => {
           </Box>
           <StyledRightColumn>
             <Box paddingTop="20px">
-              <Frame>
-                <Element
-                  is="div"
-                  canvas
-                  style={{
-                    padding: '4px',
-                    minHeight: '300px',
-                    backgroundColor: '#fff',
-                  }}
-                />
-              </Frame>
+              <ContentBuilderFrame />
             </Box>
           </StyledRightColumn>
           <ContentBuilderSettings />

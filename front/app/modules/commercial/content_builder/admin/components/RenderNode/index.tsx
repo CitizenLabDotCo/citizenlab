@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -72,13 +73,18 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const solidBorderIsVisible =
-    nodeNameIsVisible ||
-    (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS);
+  const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
+  const nodeIsHovered =
+    isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
+
+  const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
+
+  const StyledBox = styled(Box)`
+    cursor: move;
+  `;
 
   return (
-    <Box
+    <StyledBox
       id={id}
       position="relative"
       border={`1px ${
@@ -90,7 +96,7 @@ const RenderNode = ({ render }) => {
       } `}
       m="4px"
     >
-      {nodeNameIsVisible && (
+      {nodeIsSelected && (
         <Box
           p="4px"
           bgColor={colors.adminTextColor}
@@ -103,7 +109,7 @@ const RenderNode = ({ render }) => {
         </Box>
       )}
       {render}
-    </Box>
+    </StyledBox>
   );
 };
 

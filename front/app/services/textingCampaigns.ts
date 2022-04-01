@@ -81,3 +81,18 @@ export const deleteTextingCampaign = async (campaignId: string) => {
 
   return result;
 };
+
+export const sendTextingCampaign = async (campaignId: string) => {
+  const result = await streams.add(
+    `${apiEndpoint}/${campaignId}/send`,
+    // no body required, just POST to /send
+    {}
+  );
+
+  // campaign should be status "Sending" now, re-fetch the entity from BE
+  await streams.fetchAllWith({
+    apiEndpoint: [apiEndpoint, `${apiEndpoint}/${campaignId}`],
+  });
+
+  return result;
+};
