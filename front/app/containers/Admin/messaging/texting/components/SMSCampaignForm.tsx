@@ -3,12 +3,7 @@ import React, { useState, useEffect } from 'react';
 // components
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
-import {
-  Label,
-  Box,
-  IconTooltip,
-  Error,
-} from '@citizenlab/cl2-component-library';
+import { Label, Box, Error } from '@citizenlab/cl2-component-library';
 import RemainingCharacters from '../components/RemainingCharacters';
 
 // utils
@@ -73,15 +68,24 @@ const SMSCampaignForm = ({
     }
   }, [campaign]);
 
+  // update validation on loading a draft message
+  useEffect(() => {
+    setRemainingChars(MAX_CHAR_COUNT - (inputMessage?.length || 0));
+  }, [inputMessage]);
+
+  useEffect(() => {
+    if (!isNilOrError(inputPhoneNumbers)) {
+      setHasPhoneNumbers(inputPhoneNumbers.length > 0);
+    }
+  }, [inputPhoneNumbers]);
+
   const handleInputPhoneNumbersChange = (value: string) => {
     setHasInvalidPhoneNumbersError(false);
     setInputPhoneNumbers(value);
-    setHasPhoneNumbers(value.length > 0);
   };
 
   const handleInputMessageChange = (value: string) => {
     setInputMessage(value);
-    setRemainingChars(MAX_CHAR_COUNT - (inputMessage?.length || 0));
   };
 
   const handleOnSubmit = async (event: React.FormEvent) => {
@@ -121,6 +125,10 @@ const SMSCampaignForm = ({
     }
   };
 
+  // no campaign = creating new SMS, campaign = updating existing draft
+  const buttonCopy = isNilOrError(campaignId)
+    ? 'Preview SMS'
+    : 'Update and preview SMS';
   const messageIsPastCharacterLimit = remainingChars < 0;
   const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
   const hasMessageError = messageIsPastCharacterLimit;
@@ -146,9 +154,7 @@ const SMSCampaignForm = ({
         )}
       </Box>
       <Box marginBottom="30px">
-        <Label>
-          Message <IconTooltip content="Help goes here" />
-        </Label>
+        <Label>Message</Label>
         <TextArea
           rows={8}
           maxRows={8}
@@ -170,7 +176,7 @@ const SMSCampaignForm = ({
             buttonStyle="primary"
             size="2"
             type="submit"
-            text={'Update and Preview SMS'}
+            text={buttonCopy}
             onClick={handleOnSubmit}
             disabled={isButtonDisabled}
             processing={isLoading}

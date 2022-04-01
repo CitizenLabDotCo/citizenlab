@@ -192,6 +192,10 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
   if (isNilOrError(campaign)) return null;
 
   const { message, phone_numbers } = campaign.attributes;
+  const segmentCount = Math.ceil(message.length / 160);
+  const segmentPlural = segmentCount === 1 ? 'segment' : 'segments';
+  const phoneNumberPlural =
+    phone_numbers.length === 1 ? 'phone number' : 'phone numbers';
   const sendCampaignButtonIsDisabled =
     hasTooManySegmentsError || hasMonthlyLimitReachedError;
 
@@ -205,7 +209,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         }}
       />
       <TextingHeader
-        headerMessage="Preview SMS message"
+        headerMessage="Preview SMS"
         onClickGoBack={goBackToCampaignView}
         showHorizontalRule
       >
@@ -230,13 +234,11 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
         <tbody>
           <InformativeTableRow
             title="Sending to:"
-            content={`${phone_numbers.length} people`}
+            content={`${phone_numbers.length} ${phoneNumberPlural}`}
           />
           <InformativeTableRow
             title="Usage"
-            content={`${message.length} Characters (${Math.ceil(
-              message.length / 160
-            )} segments)`}
+            content={`${message.length} characters (${segmentCount} ${segmentPlural})`}
           />
         </tbody>
       </StatusTable>
@@ -250,7 +252,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
           border="21px solid black"
           borderRadius="33px"
           position="relative"
-          marginBottom="25px"
+          marginBottom="35px"
         >
           {/* Phone Bezel */}
           <Box
@@ -280,12 +282,12 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
       <Modal
         opened={confirmationModalIsVisible}
         close={closeSendConfirmationModal}
-        header={'Confirm Text Sending'}
+        header={'Confirm sending SMS'}
       >
         <Box padding="30px">
           <SendNowWarning>
-            Do you want to send this message to {phone_numbers.length} people
-            now?
+            Do you want to send this message to {phone_numbers.length}{' '}
+            {phoneNumberPlural} now?
           </SendNowWarning>
           <Box
             display="flex"
@@ -321,7 +323,7 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
       <Modal
         opened={deleteCampaignModalIsVisible}
         close={closeDeleteModal}
-        header={'Delete Draft Text'}
+        header={'Delete draft SMS'}
       >
         <Box padding="30px">
           <SendNowWarning>
