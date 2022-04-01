@@ -48,14 +48,14 @@ interface Props {
   tooltip?: React.ReactNode;
   emptyContainerContent?: React.ReactNode;
   className?: string;
-  ref?: any;
+  innerRef?: any;
 }
 
 const BarChart = ({
   height,
   data,
   mapping,
-  layout,
+  layout = 'vertical',
   margin,
   bars,
   xaxis,
@@ -64,7 +64,7 @@ const BarChart = ({
   tooltip,
   emptyContainerContent,
   className,
-  ref,
+  innerRef,
 }: Props) => {
   const {
     chartLabelSize,
@@ -94,7 +94,12 @@ const BarChart = ({
 
   return (
     <ResponsiveContainer className={className} height={height}>
-      <_BarChart data={data} layout={rechartsLayout} margin={margin} ref={ref}>
+      <_BarChart
+        data={data}
+        layout={rechartsLayout}
+        margin={margin}
+        ref={innerRef}
+      >
         <Bar
           dataKey={length}
           animationDuration={animationDuration}

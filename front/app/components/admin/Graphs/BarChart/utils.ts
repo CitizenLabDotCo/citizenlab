@@ -23,7 +23,7 @@ export type Layout = 'horizontal' | 'vertical';
 // For some reason, in recharts a 'horizontal' bar chart
 // actually means a 'vertical' bar chart. For our own API
 // we use the correct terminology
-export const getRechartsLayout = (layout?: Layout) =>
+export const getRechartsLayout = (layout: Layout) =>
   layout === 'vertical' ? 'horizontal' : 'vertical';
 
 // MARGIN
