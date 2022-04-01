@@ -74,6 +74,7 @@ const SMSCampaignForm = ({
   }, [campaign]);
 
   const handleInputPhoneNumbersChange = (value: string) => {
+    setHasInvalidPhoneNumbersError(false);
     setInputPhoneNumbers(value);
     setHasPhoneNumbers(value.length > 0);
   };
