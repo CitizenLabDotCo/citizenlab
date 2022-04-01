@@ -121,8 +121,10 @@ const SMSCampaignForm = ({
     }
   };
 
-  const overCharacterLimit = remainingChars < 0;
-  const isButtonDisabled = overCharacterLimit || !hasPhoneNumbers;
+  const messageIsPastCharacterLimit = remainingChars < 0;
+  const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
+  const hasMessageError = messageIsPastCharacterLimit;
+  const isButtonDisabled = hasMessageError || hasPhoneNumbersError;
 
   return (
     <form className={className} onSubmit={handleOnSubmit}>
@@ -157,7 +159,7 @@ const SMSCampaignForm = ({
         {!formIsLocked && (
           <RemainingCharacters
             remainingChars={remainingChars}
-            overCharacterLimit={overCharacterLimit}
+            overCharacterLimit={messageIsPastCharacterLimit}
           />
         )}
       </Box>
