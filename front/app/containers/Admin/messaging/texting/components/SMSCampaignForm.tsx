@@ -142,7 +142,7 @@ const SMSCampaignForm = ({
         <Label>
           {formIsLocked
             ? 'Sent to:'
-            : 'Enter a list of phone numbers. Separate each number by a comma and include the international dialing code (eg. +1).'}
+            : 'Enter a list of phone numbers. Separate each number by a comma.'}
         </Label>
         <TextArea
           rows={8}

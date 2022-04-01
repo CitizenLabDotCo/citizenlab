@@ -143,7 +143,7 @@ resource 'Texting campaigns' do
   end
 
   # To test locally without stubs:
-  # 1. Run ngrok
+  # 1. ngrok http 4000
   # 2.
   <<-DOC
   Tenant.find_by(host: 'localhost').tap(&:switch!)
