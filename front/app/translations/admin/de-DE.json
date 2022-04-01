@@ -1108,7 +1108,7 @@
   "app.containers.AdminPage.SettingsPage.logo": "Logo",
   "app.containers.AdminPage.SettingsPage.noHeader": "Bitte lade ein Kopfzeilenbild hoch (1440 x 480)",
   "app.containers.AdminPage.SettingsPage.noLogo": "Bitte laden Sie ein Logo hoch",
-  "app.containers.AdminPage.SettingsPage.no_button": "Kein Schaltfläche",
+  "app.containers.AdminPage.SettingsPage.no_button": "Keine Schaltfläche",
   "app.containers.AdminPage.SettingsPage.organizationName": "Name der Stadt oder Organisation",
   "app.containers.AdminPage.SettingsPage.pageTitle": "Einstellungen",
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
