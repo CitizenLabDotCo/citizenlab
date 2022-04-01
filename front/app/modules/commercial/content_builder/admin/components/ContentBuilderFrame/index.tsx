@@ -34,7 +34,7 @@ const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
         canvas
         style={{
           padding: '4px',
-          minHeight: '300px',
+          minHeight: '160px',
           backgroundColor: '#fff',
         }}
       />

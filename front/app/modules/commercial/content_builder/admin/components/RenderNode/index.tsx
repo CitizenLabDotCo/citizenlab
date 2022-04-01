@@ -32,7 +32,7 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
 };
 
 const StyledBox = styled(Box)`
-  cursor: move;
+  cursor: ${({ isRoot }: { isRoot: boolean }) => (isRoot ? 'auto' : 'move')};
 `;
 
 const RenderNode = ({ render }) => {
@@ -63,7 +63,7 @@ const RenderNode = ({ render }) => {
     if (parentNodeName === TWO_COLUMNS && isHover) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.adminTextColor}`
+        `border: 1px solid ${colors.adminTextColor} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -95,6 +95,7 @@ const RenderNode = ({ render }) => {
           : `solid transparent`
       } `}
       m="4px"
+      isRoot={id === ROOT_NODE}
     >
       {nodeIsSelected && (
         <Box
