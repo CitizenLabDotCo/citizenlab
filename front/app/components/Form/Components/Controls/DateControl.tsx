@@ -28,10 +28,8 @@ const DateControl = ({
   schema,
   id,
   required,
-  label,
 }: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-  console.log(label, getLabel);
   return (
     <>
       <FormLabel
