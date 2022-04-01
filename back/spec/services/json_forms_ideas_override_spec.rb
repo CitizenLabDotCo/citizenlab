@@ -14,19 +14,7 @@ describe 'JsonFormsService ideas overrides' do
   let(:fields) { IdeaCustomFieldsService.new.all_fields(custom_form) }
   let(:user) { create(:user) }
 
-
   describe 'topic_ids field' do
-    before do
-      cf2 = create(:custom_field, resource: custom_form, code: nil, key: 'field_1')
-    end
-    it 'only includes the topics associated with the current project' do
-      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, :custom_field_values, :properties)).to match ({"field_1"=>{:type=>"string"}})
-    end
-  end
-
-  describe 'additional field' do
     before do
       # project = create(:project)
       @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2, project: project)

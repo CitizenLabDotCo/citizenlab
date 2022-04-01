@@ -541,7 +541,6 @@ resource 'Ideas' do
       parameter :budget, "The budget needed to realize the idea, as determined by the city"
       parameter :idea_images_attributes, "an array of base64 images to create"
       parameter :idea_files_attributes, "an array of base64 files to create"
-      parameter :custom_field_values, "a json representing custom fields"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -578,20 +577,6 @@ resource 'Ideas' do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
-      end
-    end
-
-    describe do
-      before do
-        create(:custom_field_extra_custom_form, resource: create(:custom_form, project: project))
-      end
-
-      let(:custom_field_values) { { 'extra_field' => 'test value'} }
-
-      example_request 'Create an idea with extra fields' do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h). to match custom_field_values
       end
     end
 
@@ -749,7 +734,6 @@ resource 'Ideas' do
       parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
       parameter :location_description, 'A human readable description of the location the idea applies to'
       parameter :budget, 'The budget needed to realize the idea, as determined by the city'
-      parameter :custom_field_values, "a json representing custom fields"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -772,21 +756,6 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-      end
-
-      describe do
-        before do
-          create(:custom_field_extra_custom_form, resource: create(:custom_form, project: @project))
-          @idea.update! custom_field_values: { 'extra_field' => 'test value'}
-        end
-
-        let(:custom_field_values) { { 'extra_field' => 'Changed Value'} }
-
-        example_request 'Update extra fields in an idea' do
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h). to match custom_field_values
-        end
       end
 
       example 'Check for the automatic creation of an upvote by the author when the publication status of an idea is updated from draft to published', document: false do
