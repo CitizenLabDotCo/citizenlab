@@ -23,7 +23,7 @@ export interface IContentBuilderLayout {
   data: IContentBuilderLayoutData;
 }
 
-interface IContentBuilderLayoutObject {
+export interface IContentBuilderLayoutObject {
   craftjs_jsonmultiloc?: JsonMultiloc;
   enabled?: boolean;
 }

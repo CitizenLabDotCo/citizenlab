@@ -16,6 +16,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // Components
 import { Toggle, IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import {
   addContentBuilderLayout,
@@ -116,7 +117,12 @@ const ContentBuilderToggle = ({
         <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
       </Box>
       {contentBuilderLinkVisible && (
-        <StyledLink to={route}>{formatMessage(messages.linkText)}</StyledLink>
+        <>
+          <Box marginBottom="20px">
+            <Warning>{formatMessage(messages.layoutBuilderWarning)}</Warning>
+          </Box>
+          <StyledLink to={route}>{formatMessage(messages.linkText)}</StyledLink>
+        </>
       )}
       {!contentBuilderLinkVisible && (
         <QuillMultilocWithLocaleSwitcher
