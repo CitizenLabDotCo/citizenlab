@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEmpty } from 'lodash-es';
 
 // components
 import {
@@ -12,9 +13,14 @@ import {
   LabelList as _LabelList,
   LabelProps,
 } from 'recharts';
+import { NoDataContainer } from 'components/admin/GraphWrappers';
 
 // hooks
 import { useTheme } from 'styled-components';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import {
@@ -31,7 +37,7 @@ import {
 
 interface Props {
   height?: string | number;
-  data?: Data;
+  data?: Data | null;
   mapping?: Mapping;
   layout?: Layout;
   margin?: Margin;
@@ -40,6 +46,7 @@ interface Props {
   yaxis?: AxisProps;
   labels?: React.ReactNode;
   tooltip?: React.ReactNode;
+  emptyContainerContent?: React.ReactNode;
   className?: string;
   ref?: any;
 }
@@ -55,6 +62,7 @@ const BarChart = ({
   yaxis,
   labels,
   tooltip,
+  emptyContainerContent,
   className,
   ref,
 }: Props) => {
@@ -65,6 +73,20 @@ const BarChart = ({
     animationDuration,
     newBarFill,
   }: any = useTheme();
+
+  const noData = !data || data.every(isEmpty) || data.length <= 0;
+
+  if (noData) {
+    return (
+      <NoDataContainer>
+        {emptyContainerContent ? (
+          { emptyContainerContent }
+        ) : (
+          <FormattedMessage {...messages.noData} />
+        )}
+      </NoDataContainer>
+    );
+  }
 
   const { length, fill } = parseMapping(mapping);
   const rechartsLayout = getRechartsLayout(layout);
