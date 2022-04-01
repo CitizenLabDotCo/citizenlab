@@ -29,7 +29,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // Helpers
-import { isNilOrError } from 'utils/helperUtils';
+import { isNil, isNilOrError } from 'utils/helperUtils';
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 
 type ContentBuilderToggleProps = {
@@ -86,7 +86,7 @@ const ContentBuilderToggle = ({
     }
   }, [contentBuilderLayout]);
 
-  if (!featureEnabled || isNilOrError(contentBuilderLayout)) {
+  if (!featureEnabled || isNil(contentBuilderLayout)) {
     return null;
   }
 
@@ -108,14 +108,16 @@ const ContentBuilderToggle = ({
 
   return (
     <Box data-testid="contentBuilderToggle">
-      <Box display="flex" gap="12px">
-        <StyledToggle
-          checked={!!contentBuilderLinkVisible}
-          label={formatMessage(messages.toggleLabel)}
-          onChange={toggleContentBuilderLinkVisible}
-        />
-        <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
-      </Box>
+      {!isNil(contentBuilderLayout) && (
+        <Box display="flex" gap="12px">
+          <StyledToggle
+            checked={!!contentBuilderLinkVisible}
+            label={formatMessage(messages.toggleLabel)}
+            onChange={toggleContentBuilderLinkVisible}
+          />
+          <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
+        </Box>
+      )}
       {contentBuilderLinkVisible && (
         <>
           <Box marginBottom="20px">
