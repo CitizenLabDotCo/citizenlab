@@ -74,7 +74,7 @@ describe('ContentBuilderToggle', () => {
       mockLayoutData
     );
   });
-  it('shows confirm Quill editor appropriately when builder option toggled', async () => {
+  it('shows confirm Quill editor appropriately when builder option toggled', () => {
     render(
       <ContentBuilderToggle
         valueMultiloc={multiloc}
