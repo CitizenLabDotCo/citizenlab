@@ -2,7 +2,15 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+
+## 2022-03-29
+
+### Changed
+
+- Vienna Saml button is temporarily disactivated
 
 ## 2022-03-24
 

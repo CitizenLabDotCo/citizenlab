@@ -47,6 +47,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.1.0'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
+  gem 'rspec-its'
   gem 'rubocop-ast', '~> 0.7.1', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -166,8 +167,6 @@ gem 'mjml-rails', '~> 4.4'
 
 require 'json'
 if File.exist? '../citizenlab.config.ee.json'
-  # This branch must be used because the latest version (2.1.1)
-  # requires activerecord < 6.0.
   gem 'ros-apartment', require: 'apartment'
 
   # Upstream actionpack-cloudfront depends on ActionController::Helpers, which

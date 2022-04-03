@@ -1,5 +1,6 @@
 {
   "description": "Schema for validating the settings on a tenant",
+  "$schema": "<%= TenantSchema::ExtendedSchema::SCHEMA_URL %>",
   "type": "object",
   "required": ["core"],
   "additionalProperties": false,
@@ -293,7 +294,6 @@
         "description":	"Allow users to register and sign in through their Facebook account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["app_id"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -315,7 +315,6 @@
         "description":  "Allow users to register and sign in through their Google account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -337,7 +336,6 @@
         "description":  "Allow users to register and sign in with Azure Active Directory.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["tenant", "client_id", "logo_url", "login_mechanism_name"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -530,7 +528,7 @@
         "title": "Proposals",
         "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },

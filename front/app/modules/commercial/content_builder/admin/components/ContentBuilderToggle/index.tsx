@@ -32,11 +32,6 @@ type ContentBuilderToggleProps = {
 } & WithRouterProps &
   InjectedIntlProps;
 
-const StyledBox = styled(Box)`
-  display: flex;
-  gap: 10px;
-`;
-
 const StyledToggle = styled(Toggle)`
   margin-bottom: 30px;
 `;
@@ -79,14 +74,14 @@ const ContentBuilderToggle = ({
 
   return (
     <Box data-testid="contentBuilderToggle">
-      <StyledBox>
+      <Box display="flex" gap="12px">
         <StyledToggle
           checked={contentBuilderLinkVisible}
           label={formatMessage(messages.toggleLabel)}
           onChange={toggleContentBuilderLinkVisible}
         />
         <StyledIconTooltip content={formatMessage(messages.toggleTooltip)} />
-      </StyledBox>
+      </Box>
       {contentBuilderLinkVisible && (
         <StyledLink to={route}>{formatMessage(messages.linkText)}</StyledLink>
       )}

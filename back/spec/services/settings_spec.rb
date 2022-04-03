@@ -48,7 +48,7 @@ describe SettingsService do
     let(:schema) {{
       "properties" => {
         "feature1" => {
-          "required-settings" => ["setting1", "setting2"],
+          "required-settings" => ["setting1", "setting2", "setting4"],
           "properties" => {
             "setting1" => {
               "type" => "string",
@@ -60,6 +60,10 @@ describe SettingsService do
             },
             "setting3" => {
               "type" => "string"
+            },
+            "setting4" => {
+              "type" => "boolean",
+              "default" => false
             }
           }
         }
@@ -74,7 +78,8 @@ describe SettingsService do
       expected_settings = {
         "feature1" => {
           "setting1" => "default_value_setting_1",
-          "setting2" => true
+          "setting2" => true,
+          "setting4" => false
         }
       }
       expect(ss.add_missing_settings(settings, schema)).to eq expected_settings
@@ -85,7 +90,8 @@ describe SettingsService do
         "feature1" => {
           "setting1" => "non-default",
           "setting2" => false,
-          "setting3" => "somevalue"
+          "setting3" => "somevalue",
+          "setting4" => true
         }
       }
       expect(ss.add_missing_settings(settings, schema)).to eq settings
