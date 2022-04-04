@@ -109,6 +109,8 @@ const SMSCampaignForm = ({
       clHistory.replace(url);
     } catch (e) {
       setIsLoading(false);
+      // This error is added to the response in back/engines/commercial/texting/app/models/texting/campaign.rb
+      // Conditions are in back/engines/commercial/texting/app/services/texting/phone_number.rb
       const invalidPhoneNumberError: InvalidPhoneNumberError | undefined =
         e.json.errors.phone_numbers?.find(
           // at this stage there's only 1 possible phone number error (invalid)
@@ -140,7 +142,7 @@ const SMSCampaignForm = ({
         <Label>
           {formIsLocked
             ? 'Sent to:'
-            : 'Enter a list of phone numbers. Separate each number by a comma and include the international dialing code (eg. +1).'}
+            : 'Enter a list of phone numbers. Separate each number by a comma.'}
         </Label>
         <TextArea
           rows={8}

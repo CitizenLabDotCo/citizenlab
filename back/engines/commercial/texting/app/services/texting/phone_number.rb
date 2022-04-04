@@ -5,18 +5,20 @@ class Texting::PhoneNumber
   class << self
     # I tried to use phonelib and telephone_number gems, but they're super slow (1000 numbers per second).
     # Current implementation is ~100x faster.
+    # If conditions change, the error message in
+    # front/app/containers/Admin/messaging/texting/components/SMSCampaignForm.tsx may need to be updated.
     def valid?(number, country_codes: [])
       codes_regex =
         if country_codes.present?
           "(#{country_codes.map { |code| Regexp.escape(code) }.join('|')})"
         else
-          '\+'
+          '\+?'
         end
-      number.match?(/\A#{codes_regex}\d{#{MIN_LENGTH},#{MAX_LENGTH}}\Z/)
+      normalize(number).match?(/\A#{codes_regex}\d{#{MIN_LENGTH},#{MAX_LENGTH}}\Z/)
     end
 
     def normalize(number)
-      number.gsub(/[-\s]/, '')
+      number.gsub(/[-\s()]/, '')
     end
 
     def requirements(country_codes: [])

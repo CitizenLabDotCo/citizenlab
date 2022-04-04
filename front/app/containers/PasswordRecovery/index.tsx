@@ -203,7 +203,8 @@ class PasswordRecovery extends React.PureComponent<
               <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
               <StyledInput
                 id="email"
-                type="text"
+                type="email"
+                autocomplete="email"
                 value={email}
                 error={errorMessage}
                 placeholder={emailPlaceholder}
