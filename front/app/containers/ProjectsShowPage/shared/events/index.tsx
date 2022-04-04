@@ -97,7 +97,7 @@ const EventsContainer = memo<Props>(
       }
 
       setTimeout(() => {
-        scrollToElement({ id: scrollToEventId });
+        scrollToElement({ id: scrollToEventId, shouldFocus: true });
       }, 100);
 
       setScrollToEventId(null);
