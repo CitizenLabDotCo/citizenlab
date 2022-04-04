@@ -43,10 +43,12 @@ interface Props {
 }
 
 function getNewFlow(flow: TSignUpInFlow) {
-  if (flow === 'signup') return 'signin';
-  if (flow === 'signin') return 'signup';
-
-  return undefined;
+  switch (flow) {
+    case 'signup':
+      return 'signin';
+    case 'signin':
+      return 'signup';
+  }
 }
 
 const SignUpIn = memo<Props>(
