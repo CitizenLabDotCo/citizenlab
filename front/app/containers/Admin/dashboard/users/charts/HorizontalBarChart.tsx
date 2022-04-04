@@ -3,7 +3,6 @@ import React from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-// import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
