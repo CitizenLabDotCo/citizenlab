@@ -19,7 +19,7 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import { Tooltip, LabelList } from 'recharts';
-import BarChart from 'components/admin/Graphs/BarChart';
+import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IUserCustomFieldData } from '../../services/userCustomFields';
@@ -312,10 +312,8 @@ export class CustomFieldsComparison extends React.PureComponent<
             layout="horizontal"
             innerRef={this.currentChart}
             margin={{
-              top: 20,
-              right: 30,
+              ...DEFAULT_MARGIN,
               left: 20,
-              bottom: 5,
             }}
             bars={{ name: formatMessage(messages.participants), size: barSize }}
             mapping={{ length: 'participants' }}

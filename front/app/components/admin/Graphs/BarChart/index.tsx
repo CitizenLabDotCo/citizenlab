@@ -154,3 +154,10 @@ const BarChart = ({
 };
 
 export default BarChart;
+
+export const DEFAULT_MARGIN: Margin = {
+  top: 20,
+  right: 30,
+  left: 10,
+  bottom: 5,
+};

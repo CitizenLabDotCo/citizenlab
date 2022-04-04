@@ -18,7 +18,7 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
+import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
 import { LabelList } from 'recharts';
 
 // resources
@@ -99,12 +99,7 @@ export class HorizontalBarChart extends React.PureComponent<
             height={serie.length > 1 ? serie.length * 50 : 100}
             data={serie}
             layout="horizontal"
-            margin={{
-              top: 20,
-              right: 30,
-              left: 10,
-              bottom: 5,
-            }}
+            margin={DEFAULT_MARGIN}
             bars={{ name: unitName, size: graphUnit === 'ideas' ? 5 : barSize }}
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} position="right" />}

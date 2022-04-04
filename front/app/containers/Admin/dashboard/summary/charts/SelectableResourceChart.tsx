@@ -25,7 +25,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
-import BarChart from 'components/admin/Graphs/BarChart';
+import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
 
 const SHiddenLabel = styled(HiddenLabel)`
   flex: 1;
@@ -193,12 +193,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
             data={convertedSerie}
             layout="horizontal"
             innerRef={this.currentChart}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 10,
-              bottom: 5,
-            }}
+            margin={DEFAULT_MARGIN}
             bars={{ name: unitName, size: barSize }}
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} position="right" />}
