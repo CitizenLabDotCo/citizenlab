@@ -24,7 +24,8 @@ import {
   GraphCardHeader,
   GraphCardTitle,
 } from 'components/admin/GraphWrappers';
-import BarChart, { Tooltip } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { Tooltip } from 'recharts';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -234,7 +235,9 @@ class BarChartActiveUsersByTime extends React.PureComponent<
             data={serie}
             innerRef={this.currentChart}
             xaxis={{ tickFormatter: this.formatTick }}
-            tooltip={<Tooltip labelFormatter={this.formatLabel} />}
+            renderTooltip={(props) => (
+              <Tooltip {...props} labelFormatter={this.formatLabel} />
+            )}
           />
         </GraphCardInner>
       </GraphCard>

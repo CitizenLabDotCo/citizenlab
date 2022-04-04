@@ -16,23 +16,25 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
-  BarChart,
-  Bar,
+  //   BarChart,
+  //   Bar,
   Tooltip,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
+  //   XAxis,
+  //   YAxis,
+  //   ResponsiveContainer,
   LabelList,
 } from 'recharts';
 import {
   GraphCard,
-  NoDataContainer,
+  // NoDataContainer,
   GraphCardInner,
   GraphCardHeaderWithFilter,
 } from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
+
+import BarChart from 'components/admin/Graphs/BarChart';
 
 const SHiddenLabel = styled(HiddenLabel)`
   flex: 1;
@@ -120,12 +122,12 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
   }
   render() {
     const {
-      barHoverColor,
-      chartLabelSize,
-      chartLabelColor,
-      animationBegin,
-      animationDuration,
-      newBarFill,
+      // barHoverColor,
+      // chartLabelSize,
+      // chartLabelColor,
+      // animationBegin,
+      // animationDuration,
+      // newBarFill,
       barSize,
     } = this.props['theme'];
     const {
@@ -196,7 +198,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               />
             )}
           </GraphCardHeaderWithFilter>
-          {!serie ? (
+          {/* {!serie ? (
             <NoDataContainer>
               {currentFilter && selectedCount ? (
                 <FormattedMessage
@@ -266,7 +268,47 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
                 </BarChart>
               </ResponsiveContainer>
             </>
+          )} */}
+          {serie && currentFilter && (
+            <FormattedMessage
+              tagName="p"
+              {...messages.totalCount}
+              values={{ selectedCount, selectedName, selectedResourceName }}
+            />
           )}
+          <BarChart
+            height={serie && serie.length > 1 ? serie.length * 50 : 100}
+            data={convertedSerie}
+            layout="horizontal"
+            innerRef={this.currentChart}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 10,
+              bottom: 5,
+            }}
+            bars={{ name: unitName, size: barSize }}
+            xaxis={{ type: 'number' }}
+            yaxis={{ type: 'category', width: 150, tickLine: false }}
+            renderLabels={(props) => <LabelList {...props} position="right" />}
+            renderTooltip={(props) => <Tooltip {...props} />}
+            emptyContainerContent={
+              <>
+                {currentFilter && selectedCount ? (
+                  <FormattedMessage
+                    {...messages.totalCount}
+                    values={{
+                      selectedCount,
+                      selectedName,
+                      selectedResourceName,
+                    }}
+                  />
+                ) : (
+                  <FormattedMessage {...messages.noData} />
+                )}
+              </>
+            }
+          />
         </GraphCardInner>
       </GraphCard>
     );

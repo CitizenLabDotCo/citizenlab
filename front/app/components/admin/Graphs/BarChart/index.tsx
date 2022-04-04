@@ -9,9 +9,6 @@ import {
   XAxis,
   YAxis,
   Cell,
-  Tooltip as _Tooltip,
-  LabelList as _LabelList,
-  LabelProps,
 } from 'recharts';
 import { NoDataContainer } from 'components/admin/GraphWrappers';
 
@@ -35,6 +32,16 @@ import {
   parseBarProps,
 } from './utils';
 
+interface RenderLabelsProps {
+  fill: string;
+  fontSize: number;
+}
+
+interface RenderTooltipProps {
+  isAnimationActive: false;
+  cursor: { fill: string };
+}
+
 interface Props {
   height?: string | number;
   data?: Data | null;
@@ -44,8 +51,8 @@ interface Props {
   bars?: BarProps;
   xaxis?: AxisProps;
   yaxis?: AxisProps;
-  labels?: React.ReactNode;
-  tooltip?: React.ReactNode;
+  renderLabels?: (props: RenderLabelsProps) => React.ReactNode;
+  renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
   emptyContainerContent?: React.ReactNode;
   className?: string;
   innerRef?: any;
@@ -60,8 +67,8 @@ const BarChart = ({
   bars,
   xaxis,
   yaxis,
-  labels,
-  tooltip,
+  renderLabels,
+  renderTooltip,
   emptyContainerContent,
   className,
   innerRef,
@@ -72,6 +79,7 @@ const BarChart = ({
     animationBegin,
     animationDuration,
     newBarFill,
+    barHoverColor,
   }: any = useTheme();
 
   const noData = !data || data.every(isEmpty) || data.length <= 0;
@@ -106,7 +114,8 @@ const BarChart = ({
           animationBegin={animationBegin}
           {...parsedBarProps}
         >
-          {labels}
+          {renderLabels &&
+            renderLabels({ fill: chartLabelColor, fontSize: chartLabelSize })}
 
           {fill &&
             data.map((row, index) => (
@@ -131,34 +140,14 @@ const BarChart = ({
           {...yaxis}
         />
 
-        {tooltip}
+        {renderTooltip &&
+          renderTooltip({
+            isAnimationActive: false,
+            cursor: { fill: barHoverColor },
+          })}
       </_BarChart>
     </ResponsiveContainer>
   );
 };
 
 export default BarChart;
-
-export const LabelList = (props: Omit<LabelProps, 'viewBox'>) => {
-  const { chartLabelSize, chartLabelColor }: any = useTheme();
-
-  return (
-    <_LabelList fill={chartLabelColor} fontSize={chartLabelSize} {...props} />
-  );
-};
-
-interface TooltipProps {
-  labelFormatter?: (label: any) => React.ReactNode;
-}
-
-export const Tooltip = (props: TooltipProps) => {
-  const { barHoverColor }: any = useTheme();
-
-  return (
-    <_Tooltip
-      isAnimationActive={false}
-      cursor={{ fill: barHoverColor }}
-      {...props}
-    />
-  );
-};
