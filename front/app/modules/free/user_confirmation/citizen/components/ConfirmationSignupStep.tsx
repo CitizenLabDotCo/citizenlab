@@ -144,7 +144,7 @@ const ConfirmationSignupStep = ({
       isActive,
       canTriggerRegistration: true,
     });
-  }, [onData]);
+  }, []);
 
   if (step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
     return null;
