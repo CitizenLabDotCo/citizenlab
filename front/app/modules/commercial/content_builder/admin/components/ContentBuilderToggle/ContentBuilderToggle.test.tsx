@@ -12,7 +12,10 @@ const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
   },
 };
 
-let mockContentBuilderLayoutData: any = DEFAULT_CONTENT_BUILDER_LAYOUT_DATA;
+let mockContentBuilderLayoutData:
+  | typeof DEFAULT_CONTENT_BUILDER_LAYOUT_DATA
+  | Error;
+mockContentBuilderLayoutData = DEFAULT_CONTENT_BUILDER_LAYOUT_DATA;
 
 jest.mock('utils/cl-intl');
 jest.mock('services/appConfiguration');
