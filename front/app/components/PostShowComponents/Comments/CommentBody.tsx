@@ -131,9 +131,13 @@ class CommentBody extends PureComponent<Props, State> {
       this.setEditableCommentContent();
     }
 
-    // if props have changed and editing is true, focus the text
+    // if props have changed and editing is now true, focus the text
     // input box for accessability purposes
-    if (this.props.editing && !isNilOrError(this.state.textAreaRef)) {
+    if (
+      !prevProps.editing &&
+      this.props.editing &&
+      !isNilOrError(this.state.textAreaRef)
+    ) {
       this.state.textAreaRef.focus();
     }
   }
