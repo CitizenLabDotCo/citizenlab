@@ -6,7 +6,7 @@ import useProject from 'hooks/useProject';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
-import ContentPreview from './ContentPreview';
+import Preview from './Preview';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,19 +27,15 @@ const ContentBuilderPreview = ({
     onMount();
   }, [onMount, featureEnabled]);
 
-  if (!featureEnabled) {
+  if (!featureEnabled || isNilOrError(project)) {
     return null;
   }
 
-  if (isNilOrError(project)) return null;
-
   return (
-    <>
-      <ContentPreview
-        projectId={project.id}
-        projectTitle={project.attributes.title_multiloc}
-      />
-    </>
+    <Preview
+      projectId={project.id}
+      projectTitle={project.attributes.title_multiloc}
+    />
   );
 };
 
