@@ -221,10 +221,11 @@ const ConfirmationSignupStep = ({
     setChangingEmail(false);
   }
 
+  const inModal = true;
   return (
-    <FormContainer id="e2e-confirmation-form" inModal={true}>
+    <FormContainer id="e2e-confirmation-form" inModal={inModal}>
       {changingEmail ? (
-        <Form inModal={true} onSubmit={handleEmailSubmit}>
+        <Form inModal={inModal} onSubmit={handleEmailSubmit}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>
@@ -268,7 +269,7 @@ const ConfirmationSignupStep = ({
           </FooterNotes>
         </Form>
       ) : (
-        <Form inModal onSubmit={handleSubmitConfirmation}>
+        <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>
