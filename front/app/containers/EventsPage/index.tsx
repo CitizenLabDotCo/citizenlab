@@ -10,6 +10,8 @@ import PastEvents from './PastEvents';
 // styling
 import styled from 'styled-components';
 
+const Container = styled.main``;
+
 const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
@@ -20,11 +22,13 @@ export default () => (
   <>
     <EventsPageMeta />
 
-    <SectionContainer>
-      <StyledContentContainer>
-        <UpcomingEvents />
-        <PastEvents />
-      </StyledContentContainer>
-    </SectionContainer>
+    <Container>
+      <SectionContainer>
+        <StyledContentContainer>
+          <UpcomingEvents />
+          <PastEvents />
+        </StyledContentContainer>
+      </SectionContainer>
+    </Container>
   </>
 );
