@@ -19,12 +19,12 @@ class Texting::Sms::Providers::Twilio
     segments_count > SEGMENTS_QUEUE
   end
 
-  def request_valid?(request)
+  def request_valid?(url, request)
     signature = request.headers['X-Twilio-Signature']
     return false if signature.blank?
 
     validator = Twilio::Security::RequestValidator.new(auth_token)
-    validator.validate(request.original_url, request.request_parameters, signature)
+    validator.validate(url, request.request_parameters, signature)
   end
 
   private
