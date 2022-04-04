@@ -238,6 +238,7 @@ const ConfirmationSignupStep = ({
             </StyledLabel>
             <Input
               type="email"
+              autocomplete="email"
               value={newEmail}
               onChange={handleEmailChange}
               placeholder={formatMessage(messages.emailPlaceholder)}
