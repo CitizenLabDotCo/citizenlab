@@ -157,7 +157,7 @@ const CommentsSection = memo<Props>(
       return (
         <Container className={className || ''}>
           <Header>
-            <Title variant="h2">
+            <Title variant="h2" id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />
               {commentCount > 0 && (
                 <CommentCount>({commentCount})</CommentCount>
