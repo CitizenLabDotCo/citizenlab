@@ -43,7 +43,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
   return (
     <Box data-testid="contentBuilderPreview">
       {loadingContentBuilderLayout && <Spinner />}
-      {contentBuilderContent ? (
+      {!loadingContentBuilderLayout && contentBuilderContent && (
         <Box data-testid="contentBuilderPreviewContent">
           <Title color="text" variant="h1">
             {localize(projectTitle)}
@@ -52,7 +52,8 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
             <ContentBuilderFrame projectId={projectId} />
           </Editor>
         </Box>
-      ) : (
+      )}
+      {!loadingContentBuilderLayout && !contentBuilderContent && (
         <Box data-testid="contentBuilderProjectDescription">
           <ProjectInfo projectId={projectId} />
         </Box>
