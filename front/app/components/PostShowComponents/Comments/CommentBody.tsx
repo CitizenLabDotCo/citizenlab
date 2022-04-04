@@ -88,6 +88,7 @@ export interface State {
   translateButtonClicked: boolean;
   processing: boolean;
   apiErrors: CLErrors | null;
+  textAreaRef?: HTMLTextAreaElement | null;
 }
 
 class CommentBody extends PureComponent<Props, State> {
@@ -101,6 +102,7 @@ class CommentBody extends PureComponent<Props, State> {
       translateButtonClicked: false,
       processing: false,
       apiErrors: null,
+      textAreaRef: null,
     };
   }
 
@@ -127,6 +129,12 @@ class CommentBody extends PureComponent<Props, State> {
     if (prevProps.comment !== this.props.comment) {
       this.setCommentContent();
       this.setEditableCommentContent();
+    }
+
+    // if props have changed and editing is true, focus the text
+    // input box for accessability purposes
+    if (this.props.editing && !isNilOrError(this.state.textAreaRef)) {
+      this.state.textAreaRef.focus();
     }
   }
 
@@ -176,6 +184,10 @@ class CommentBody extends PureComponent<Props, State> {
     }
 
     this.setState({ editableCommentContent });
+  };
+
+  setTextAreaRef = (ref: HTMLTextAreaElement) => {
+    this.setState({ textAreaRef: ref });
   };
 
   onEditableCommentContentChange = (editableCommentContent: string) => {
@@ -277,6 +289,7 @@ class CommentBody extends PureComponent<Props, State> {
                 onChange={this.onEditableCommentContentChange}
                 padding="15px"
                 fontWeight="300"
+                getTextareaRef={this.setTextAreaRef}
               />
             </QuillEditedContent>
             <ButtonsWrapper>
