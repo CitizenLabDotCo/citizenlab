@@ -288,8 +288,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
               bottom: 5,
             }}
             bars={{ name: unitName, size: barSize }}
-            xaxis={{ type: 'number' }}
-            yaxis={{ type: 'category', width: 150, tickLine: false }}
+            yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} position="right" />}
             renderTooltip={(props) => <Tooltip {...props} />}
             emptyContainerContent={

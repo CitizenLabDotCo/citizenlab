@@ -128,6 +128,7 @@ const BarChart = ({
 
         <XAxis
           dataKey={layout === 'vertical' ? 'name' : length}
+          type={layout === 'vertical' ? 'category' : 'number'}
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
           tick={{ transform: 'translate(0, 7)' }}
@@ -135,6 +136,7 @@ const BarChart = ({
         />
         <YAxis
           dataKey={layout === 'horizontal' ? 'name' : length}
+          type={layout === 'horizontal' ? 'category' : 'number'}
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
           {...yaxis}
