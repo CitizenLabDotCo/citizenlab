@@ -109,6 +109,12 @@ const BarChart = ({
         margin={margin}
         ref={innerRef}
       >
+        {renderTooltip &&
+          renderTooltip({
+            isAnimationActive: false,
+            cursor: { fill: barHoverColor },
+          })}
+
         <Bar
           dataKey={length}
           animationDuration={animationDuration}
@@ -142,12 +148,6 @@ const BarChart = ({
           fontSize={chartLabelSize}
           {...yaxis}
         />
-
-        {renderTooltip &&
-          renderTooltip({
-            isAnimationActive: false,
-            cursor: { fill: barHoverColor },
-          })}
       </_BarChart>
     </ResponsiveContainer>
   );
