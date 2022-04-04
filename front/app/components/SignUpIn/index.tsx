@@ -58,9 +58,7 @@ const SignUpIn = memo<Props>(
     customSignUpHeader,
     onSignUpInCompleted,
     className,
-  }) => {
-    const tenant = useAppConfiguration();
-    const { windowHeight } = useWindowSize();
+  const appConfiguration = useAppConfiguration();
 
     const onToggleSelectedMethod = () => {
       const flow = getNewFlow(metaData.flow);
@@ -70,8 +68,7 @@ const SignUpIn = memo<Props>(
       });
     };
 
-    if (!isNilOrError(tenant)) {
-      return (
+  if (!isNilOrError(appConfiguration)) {
         <Container className={className}>
           {metaData.flow === 'signup' ? (
             <SignUp
