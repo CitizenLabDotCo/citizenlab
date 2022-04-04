@@ -31,6 +31,7 @@ import {
   getRechartsLayout,
   parseBarProps,
 } from './utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface RenderLabelsProps {
   fill: string;
@@ -44,7 +45,7 @@ interface RenderTooltipProps {
 
 interface Props {
   height?: string | number;
-  data?: Data | null;
+  data?: Data | null | Error;
   mapping?: Mapping;
   layout?: Layout;
   margin?: Margin;
@@ -82,7 +83,7 @@ const BarChart = ({
     barHoverColor,
   }: any = useTheme();
 
-  const noData = !data || data.every(isEmpty) || data.length <= 0;
+  const noData = isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
 
   if (noData) {
     return (
