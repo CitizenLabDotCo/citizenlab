@@ -40,6 +40,7 @@ export interface BarProps {
   size?: number;
   fill?: string;
   opacity?: string | number;
+  isAnimationActive?: boolean;
 }
 
 interface ParsedBarProps {
@@ -47,6 +48,7 @@ interface ParsedBarProps {
   barSize?: number;
   fill: string;
   opacity?: string | number;
+  isAnimationActive?: boolean;
 }
 
 export const parseBarProps = (

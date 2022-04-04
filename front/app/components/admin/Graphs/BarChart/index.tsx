@@ -44,6 +44,7 @@ interface RenderTooltipProps {
 }
 
 interface Props {
+  width?: string | number;
   height?: string | number;
   data?: Data | null | Error;
   mapping?: Mapping;
@@ -60,6 +61,7 @@ interface Props {
 }
 
 const BarChart = ({
+  width,
   height,
   data,
   mapping,
@@ -102,7 +104,7 @@ const BarChart = ({
   const parsedBarProps = parseBarProps(newBarFill, bars);
 
   return (
-    <ResponsiveContainer className={className} height={height}>
+    <ResponsiveContainer className={className} width={width} height={height}>
       <_BarChart
         data={data}
         layout={rechartsLayout}
