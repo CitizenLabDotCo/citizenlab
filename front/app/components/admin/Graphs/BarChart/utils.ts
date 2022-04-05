@@ -43,12 +43,9 @@ export interface BarProps {
   isAnimationActive?: boolean;
 }
 
-interface ParsedBarProps {
-  name?: string;
+interface ParsedBarProps extends Omit<BarProps, 'fill' | 'size'> {
   barSize?: number;
   fill: string;
-  opacity?: string | number;
-  isAnimationActive?: boolean;
 }
 
 export const parseBarProps = (
