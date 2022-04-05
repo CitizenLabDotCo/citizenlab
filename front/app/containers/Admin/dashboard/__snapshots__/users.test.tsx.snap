@@ -24,12 +24,12 @@ Array [
 
 exports[`<UsersDashboard /> renders correctly 1`] = `
 <Fragment>
-  <Chart__ControlBar>
+  <GraphWrappers__ControlBar>
     <TimeControl
       endAtMoment={"2010-01-01T04:06:07.000Z"}
       onChange={[Function]}
     />
-  </Chart__ControlBar>
+  </GraphWrappers__ControlBar>
   <ChartFilters
     groupFilterOptions={
       Array [
@@ -49,11 +49,11 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
     projectFilterOptions={null}
     topicFilterOptions={null}
   />
-  <Chart__GraphsContainer>
+  <GraphWrappers__GraphsContainer>
     <Outlet
       endAt="2010-01-01T04:06:07.000Z"
       id="app.containers.Admin.dashboard.users.graphs"
     />
-  </Chart__GraphsContainer>
+  </GraphWrappers__GraphsContainer>
 </Fragment>
 `;
