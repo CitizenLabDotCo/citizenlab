@@ -6,6 +6,7 @@
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
 - Fixed SurveyMonkey container height so survey questions are visible
+- Added additional areas of focus and outline to scroll-to links and buttons in editing Comments, Ideas display, and Events display for a11y compatability
 
 ## 2022-03-29
 
