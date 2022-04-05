@@ -102,7 +102,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
       []
     );
 
-    const handleOnSubmit = useCallback(() => {
+    const handleOnSubmit = useCallback(async () => {
       const { description_preview_multiloc, description_multiloc } = formValues;
 
       if (
@@ -115,21 +115,20 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>(
         setErrors({});
         setSuccess(false);
 
-        updateProject(project.id, {
-          description_multiloc,
-          description_preview_multiloc,
-        })
-          .then(() => {
-            setProcessing(false);
-            setErrors({});
-            setTouched(false);
-            setSuccess(true);
-          })
-          .catch((errorResponse) => {
-            setProcessing(false);
-            setErrors(errorResponse?.json?.errors || {});
-            setSuccess(false);
+        try {
+          await updateProject(project.id, {
+            description_multiloc,
+            description_preview_multiloc,
           });
+          setProcessing(false);
+          setErrors({});
+          setTouched(false);
+          setSuccess(true);
+        } catch (errorResponse) {
+          setProcessing(false);
+          setErrors(errorResponse?.json?.errors || {});
+          setSuccess(false);
+        }
       }
     }, [project, formValues, processing]);
 

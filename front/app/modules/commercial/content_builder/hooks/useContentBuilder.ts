@@ -1,11 +1,9 @@
-// ts-prune-ignore-next
 import { useState, useEffect } from 'react';
 import {
   contentBuilderLayoutStream,
   IContentBuilderLayout,
 } from '../services/contentBuilder';
 
-// ts-prune-ignore-next
 const useContentBuilderLayout = ({ projectId, code }) => {
   const [contentBuilderLayout, setContentBuilderLayout] = useState<
     IContentBuilderLayout | undefined | null | Error

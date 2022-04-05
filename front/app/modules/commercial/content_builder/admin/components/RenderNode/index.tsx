@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import styled from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -30,6 +31,10 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
   }
 };
 
+const StyledBox = styled(Box)`
+  cursor: ${({ isRoot }: { isRoot: boolean }) => (isRoot ? 'auto' : 'move')};
+`;
+
 const RenderNode = ({ render }) => {
   const {
     isActive,
@@ -58,7 +63,7 @@ const RenderNode = ({ render }) => {
     if (parentNodeName === TWO_COLUMNS && isHover) {
       parentNodeElement?.setAttribute(
         'style',
-        `border: 1px solid ${colors.adminTextColor}`
+        `border: 1px solid ${colors.adminTextColor} `
       );
     } else {
       parentNodeElement?.removeAttribute('style');
@@ -72,13 +77,14 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeNameIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const solidBorderIsVisible =
-    nodeNameIsVisible ||
-    (isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS);
+  const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
+  const nodeIsHovered =
+    isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
+
+  const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 
   return (
-    <Box
+    <StyledBox
       id={id}
       position="relative"
       border={`1px ${
@@ -89,8 +95,9 @@ const RenderNode = ({ render }) => {
           : `solid transparent`
       } `}
       m="4px"
+      isRoot={id === ROOT_NODE}
     >
-      {nodeNameIsVisible && (
+      {nodeIsSelected && (
         <Box
           p="4px"
           bgColor={colors.adminTextColor}
@@ -103,7 +110,7 @@ const RenderNode = ({ render }) => {
         </Box>
       )}
       {render}
-    </Box>
+    </StyledBox>
   );
 };
 

@@ -11,23 +11,15 @@ CommonPassword.initialize!
 AppConfiguration.create!(
   name: 'local',
   host: ENV.fetch('CL_SETTINGS_HOST'),
-  settings: {
+  settings: SettingsService.new.minimal_required_settings(
+    locales: [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')],
+    lifecycle_stage: 'active'
+  ).deep_merge({
     core: {
-      allowed: true,
-      enabled: true,
-      locales: [ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en')],
-      organization_type: 'small_city',
-      organization_name: {
-        'en' => Faker::Address.city,
-      },
+      organization_name: { 'en' => Faker::Address.city },
       timezone: ENV.fetch('CL_SETTINGS_CORE_TIMEZONE', 'Brussels'),
       currency: ENV.fetch('CL_SETTINGS_CORE_CURRENCY', 'EUR'),
-      color_main: '#163A7D',
-      color_secondary: '#CF4040',
-      color_text: '#163A7D',
-      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL'),
-      lifecycle_stage: 'active',
-      display_header_avatars: true
+      reply_to_email: ENV.fetch('DEFAULT_FROM_EMAIL')
     },
     customizable_homepage_banner: {
       allowed: true,
@@ -38,7 +30,9 @@ AppConfiguration.create!(
     },
     password_login: {
       enabled: true,
-      allowed: true
+      allowed: true,
+      phone: false,
+      minimum_length: 8
     },
     facebook_login: {
       enabled: ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED', 'false') == 'true',
@@ -74,8 +68,14 @@ AppConfiguration.create!(
       allowed: true,
       voting_threshold: 300,
       days_limit: 90,
-      threshold_reached_message: MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message', locales: CL2_SUPPORTED_LOCALES),
-      eligibility_criteria: MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria', locales: CL2_SUPPORTED_LOCALES)
+      threshold_reached_message: MultilocService.new.i18n_to_multiloc(
+        'initiatives.default_threshold_reached_message',
+        locales: CL2_SUPPORTED_LOCALES
+      ),
+      eligibility_criteria: MultilocService.new.i18n_to_multiloc(
+        'initiatives.default_eligibility_criteria',
+        locales: CL2_SUPPORTED_LOCALES
+      )
     },
     surveys: {
       enabled: true,
@@ -170,7 +170,7 @@ AppConfiguration.create!(
       allowed: true
     }
   }
-)
+))
 
 # Creates a default admin account.
 User.create!(
@@ -178,11 +178,9 @@ User.create!(
   password: ENV.fetch('INITIAL_ADMIN_PASSWORD'),
   first_name: ENV.fetch('INITIAL_ADMIN_FIRST_NAME'),
   last_name: ENV.fetch('INITIAL_ADMIN_LAST_NAME'),
-  roles: [
-    {type: 'admin'},
-  ],
+  roles: [{ type: 'admin' }],
   locale: ENV.fetch('CL_SETTINGS_CORE_LOCALES_0', 'en'),
-  registration_completed_at: Time.now
+  registration_completed_at: Time.zone.now
 )
 
 # Creates idea statuses.
