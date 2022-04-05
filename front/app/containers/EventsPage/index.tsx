@@ -11,8 +11,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 // styling
 import styled from 'styled-components';
 
-//const Container = styled.main``;
-
 const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
