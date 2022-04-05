@@ -144,6 +144,7 @@ const ConfirmationSignupStep = ({
       isActive,
       canTriggerRegistration: true,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
