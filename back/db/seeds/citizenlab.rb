@@ -30,7 +30,9 @@ AppConfiguration.create!(
     },
     password_login: {
       enabled: true,
-      allowed: true
+      allowed: true,
+      phone: false,
+      minimum_length: 8
     },
     facebook_login: {
       enabled: ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED', 'false') == 'true',

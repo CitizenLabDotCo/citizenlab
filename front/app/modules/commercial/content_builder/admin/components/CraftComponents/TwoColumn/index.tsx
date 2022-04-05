@@ -17,7 +17,7 @@ const TwoColumn: UserComponent = () => {
     <Box
       ref={(ref) => ref && connect(drag(ref))}
       flexDirection={isLargeTablet ? 'column' : 'row'}
-      minHeight="100px"
+      minHeight="40px"
       display="flex"
       w="100%"
       gap="4px"

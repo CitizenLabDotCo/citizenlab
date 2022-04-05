@@ -2,6 +2,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ContentBuilderToggle from 'modules/commercial/content_builder/admin/components/ContentBuilderToggle';
 import ContentBuilderLayout from 'modules/commercial/content_builder/admin/components/ContentBuilderLayout';
+import ContentBuilderPreview from 'modules/commercial/content_builder/admin/components/ContentBuilderPreview';
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -18,6 +19,11 @@ const configuration: ModuleConfiguration = {
       props
     ) => {
       return <ContentBuilderToggle {...props} />;
+    },
+    'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': (
+      props
+    ) => {
+      return <ContentBuilderPreview {...props} />;
     },
     'app.containers.Admin.contentBuilderLayout': ({
       onMount,
