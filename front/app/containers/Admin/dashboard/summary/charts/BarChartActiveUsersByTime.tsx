@@ -4,10 +4,8 @@ import { Subscription } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
 
 // intl
-// import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-// import messages from '../../messages';
 import moment from 'moment';
 
 // typings
