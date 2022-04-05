@@ -20,18 +20,20 @@ import {
 } from 'components/admin/GraphWrappers';
 import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
 import { LabelList } from 'recharts';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // types
 import { IStreamParams, IStream } from 'utils/streams';
-
 import { IGraphFormat } from 'typings';
-import ReportExportMenu from 'components/admin/ReportExportMenu';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 interface DataProps {
-  serie: IGraphFormat;
+  serie?: IGraphFormat | null | Error;
 }
 
 export interface ISupportedDataTypeMap {}
@@ -78,7 +80,9 @@ export class HorizontalBarChart extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages[graphUnit]);
 
@@ -96,7 +100,7 @@ export class HorizontalBarChart extends React.PureComponent<
             )}
           </GraphCardHeader>
           <BarChart
-            height={serie.length > 1 ? serie.length * 50 : 100}
+            height={!noData && serie.length > 1 ? serie.length * 50 : 100}
             data={serie}
             layout="horizontal"
             margin={DEFAULT_MARGIN}

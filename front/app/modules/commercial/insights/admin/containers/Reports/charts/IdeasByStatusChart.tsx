@@ -29,8 +29,11 @@ import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
 import { IGraphFormat } from 'typings';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 interface DataProps {
-  serie: IGraphFormat;
+  serie?: IGraphFormat | null | Error;
 }
 
 interface InputProps {
@@ -64,7 +67,9 @@ export class IdeasByStatusChart extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
     const sortedByValue = orderBy(serie, ['value'], ['desc']);
@@ -87,7 +92,11 @@ export class IdeasByStatusChart extends React.PureComponent<
             )}
           </GraphCardHeader>
           <BarChart
-            height={sortedByValue.length > 1 ? sortedByValue.length * 50 : 100}
+            height={
+              !noData && sortedByValue.length > 1
+                ? sortedByValue.length * 50
+                : 100
+            }
             data={sortedByValue}
             layout="horizontal"
             innerRef={this.currentChart}
