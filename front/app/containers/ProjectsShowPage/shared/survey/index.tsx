@@ -201,12 +201,6 @@ class Survey extends PureComponent<Props, State> {
       ) {
         return (
           <Container className={className || ''}>
-            {/*
-            <ProjectPageSectionTitle>
-              <FormattedMessage {...messages.survey} />
-            </ProjectPageSectionTitle>
-            */}
-
             <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
