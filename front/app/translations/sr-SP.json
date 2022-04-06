@@ -1196,7 +1196,6 @@
   "app.containers.UsersEditPage.contactUs": "Други разлог за напуштање? {feedbackLink} и можда можемо да вам помогнемо.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Жао нам је што одлазите.",
   "app.containers.UsersEditPage.deleteMyAccount": "Обриши мој налог",
-  "app.containers.UsersEditPage.deleteProfileError": "Дошло је до грешке приликом брисања вашег налога, молимо вас да покушате касније.",
   "app.containers.UsersEditPage.deleteYourAccount": "Обришите ваш налог",
   "app.containers.UsersEditPage.deletionSection": "Обришите ваш налог",
   "app.containers.UsersEditPage.deletionSubtitle": "Ова акција се не може поништити. Садржај који сте објавили на платформи ће бити анониман. Ако желите избрисати сав свој садржај, можете нас контактирати на support@citizenlab.co.",

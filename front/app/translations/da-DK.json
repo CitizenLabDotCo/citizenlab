@@ -1196,7 +1196,6 @@
   "app.containers.UsersEditPage.contactUs": "Endnu en grund til at gå? {feedbackLink}, så kan vi måske hjælpe.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Vi er kede af, at du forlader os. ",
   "app.containers.UsersEditPage.deleteMyAccount": "Slet min konto ",
-  "app.containers.UsersEditPage.deleteProfileError": "Der var problemer med at slette din konto, prøv venligst igen senere.",
   "app.containers.UsersEditPage.deleteYourAccount": "Slet din konto ",
   "app.containers.UsersEditPage.deletionSection": "Slet din konto",
   "app.containers.UsersEditPage.deletionSubtitle": "Denne handling kan ikke fortrydes. Det indhold du udgiver på platformen vil blive anonymiseret. Hvis du ønsker at slette alt dit indhold, kan du kontakte os på support@citizenlab.co.",

@@ -1196,7 +1196,6 @@
   "app.containers.UsersEditPage.contactUs": "Inny powód opuszczenia platformy? {feedbackLink}, może będziemy mogli pomóc.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Przykro nam, że nas opuszczasz.",
   "app.containers.UsersEditPage.deleteMyAccount": "Usuń moje konto",
-  "app.containers.UsersEditPage.deleteProfileError": "Zaistniał problem z usunięciem konta, proszę spróbuj ponownie później.",
   "app.containers.UsersEditPage.deleteYourAccount": "Usuń swoje konto",
   "app.containers.UsersEditPage.deletionSection": "Usuń swoje konto",
   "app.containers.UsersEditPage.deletionSubtitle": "Ta akcja nie może zostać cofnięta. Treści opublikowane na platformie będą anonimizowane. Jeśli chcesz usunąć wszystkie swoje treści, możesz skontaktować się z nami pod adresem support@citizenlab.co.",

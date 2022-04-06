@@ -1196,7 +1196,6 @@
   "app.containers.UsersEditPage.contactUs": "ألديك سبب آخر للمغادرة؟ قد نتمكن من مساعدتك {feedbackLink}.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "نأسف لرحيلك.",
   "app.containers.UsersEditPage.deleteMyAccount": "احذف حسابي",
-  "app.containers.UsersEditPage.deleteProfileError": "حدث خطأ أثناء حذف حسابك، يُرجى المحاولة مجددًا في وقت لاحق.",
   "app.containers.UsersEditPage.deleteYourAccount": "احذف حسابك",
   "app.containers.UsersEditPage.deletionSection": "احذف حسابك",
   "app.containers.UsersEditPage.deletionSubtitle": "لا يمكن التراجع عن هذا الإجراء. سيتم إخفاء هويتك للمحتوى الذي نشرته على المنصة. إذا كنت ترغب في حذف كل المحتوى الخاص بك، يمكنك الاتصال بنا على support@citizenlab.co.",

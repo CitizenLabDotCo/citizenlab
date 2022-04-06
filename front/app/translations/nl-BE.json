@@ -1196,7 +1196,6 @@
   "app.containers.UsersEditPage.contactUs": "Een andere reden om te vertrekken? {feedbackLink} en misschien kunnen we je helpen.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "We vinden het jammer je te zien vertrekken.",
   "app.containers.UsersEditPage.deleteMyAccount": "Verwijder mijn profiel",
-  "app.containers.UsersEditPage.deleteProfileError": "Er ging iets fout bij het verwijderen van je account, probeer later nog eens opnieuw.",
   "app.containers.UsersEditPage.deleteYourAccount": "Verwijder je profiel",
   "app.containers.UsersEditPage.deletionSection": "Verwijder je profiel",
   "app.containers.UsersEditPage.deletionSubtitle": "Dit kan niet ongedaan worden gemaakt. Alles wat je op dit platform plaatste, wordt anoniem gemaakt. Als je het ook wil verwijderen, kan je ons contacteren via support@citizenlab.co.",
