@@ -11,10 +11,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.titleMessaging',
     defaultMessage: 'Messaging',
   },
-  subtitleEmails: {
-    id: 'app.containers.Admin.emails.subtitleEmails',
+  subtitleMessaging: {
+    id: 'app.containers.Admin.emails.subtitleMessaging',
     defaultMessage:
-      'Compose your own emails to be sent out to all users or to particular groups. And control what automated emails your users receive.',
+      'Send out your own messages and control what automated messages your users receive.',
   },
   helmetTitle: {
     id: 'app.containers.Admin.messaging.helmetTitle',

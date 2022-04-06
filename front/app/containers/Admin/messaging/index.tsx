@@ -76,12 +76,7 @@ class MessagingDashboard extends React.PureComponent<
         <TabbedResource
           resource={{
             title: formatMessage(messages.titleMessaging),
-            // note: update subtitle once SMS feature is live.
-            // right now it's accurate in only referring to email functionality
-            // It may even be better to make the subtitle content sensitive to each of the possible messaging features
-            // and display different copy depending on which messaging feature(s) is/are active:
-            // Manual emails / automated emails / SMS
-            subtitle: formatMessage(messages.subtitleEmails),
+            subtitle: formatMessage(messages.subtitleMessaging),
           }}
           tabs={this.tabs()}
         >
