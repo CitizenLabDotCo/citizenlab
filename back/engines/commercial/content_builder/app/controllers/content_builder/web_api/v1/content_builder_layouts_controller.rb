@@ -4,6 +4,7 @@ module ContentBuilder
       class ContentBuilderLayoutsController < ApplicationController
         before_action :project_exists
         before_action :set_layout, only: %i[show destroy]
+        skip_before_action :authenticate_user, only: %i[show]
 
         def show
           render json: WebApi::V1::LayoutSerializer.new(
