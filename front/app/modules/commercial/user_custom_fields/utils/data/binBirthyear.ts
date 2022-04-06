@@ -1,6 +1,6 @@
 import moment from 'moment';
+import { RawData } from './typings';
 
-type Data = Record<string, number>;
 type BinFunction = (birthYear: string) => string | null;
 
 interface BinOptions {
@@ -9,7 +9,7 @@ interface BinOptions {
   missing?: string;
 }
 
-const binBirthyear = (data: Data, binOptions?: BinOptions) => {
+const binBirthyear = (data: RawData, binOptions?: BinOptions) => {
   const { binFunction, bins, missing } = {
     binFunction: defaultBinFunction,
     bins: defaultBins,
@@ -60,5 +60,5 @@ const initBinsMap = (bins: string[], missing: string) => {
   return Object.fromEntries([...bins, missing].map((bin) => [bin, 0]));
 };
 
-const toSeries = (data: Data) =>
+const toSeries = (data: RawData) =>
   Object.entries(data).map(([name, value]) => ({ name, value }));
