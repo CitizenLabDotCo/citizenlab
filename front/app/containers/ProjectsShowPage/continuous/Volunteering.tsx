@@ -45,9 +45,6 @@ const VolunteeringContainer = memo<Props>(({ projectId, className }) => {
       >
         <StyledContentContainer maxWidth={maxPageWidth}>
           <SectionContainer>
-            <ScreenReaderOnly>
-              <FormattedMessage tagName="h2" {...messages.invisibleTitlePoll} />
-            </ScreenReaderOnly>
             <Volunteering
               type="project"
               projectId={project.id}
