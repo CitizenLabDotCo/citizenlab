@@ -1,5 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { isFunction } from 'lodash-es';
+import React, { memo, useState, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -97,9 +96,8 @@ const SignUpInModal = memo<Props>(
       }
     };
 
-    const onSignUpInCompleted = useCallback(() => {
+    const onSignUpInCompleted = () => {
       closeSignUpInModal();
-      const hasAction = isFunction(metaData?.action);
       const requiresVerification = !!metaData?.verification;
 
       const authUserIsVerified =
@@ -111,10 +109,10 @@ const SignUpInModal = memo<Props>(
       }
       // Temporary fix end
 
-      if (hasAction && (!requiresVerification || authUserIsVerified)) {
+      if (!requiresVerification || authUserIsVerified) {
         metaData?.action?.();
       }
-    }, [metaData, authUser]);
+    };
 
     return (
       <Modal
