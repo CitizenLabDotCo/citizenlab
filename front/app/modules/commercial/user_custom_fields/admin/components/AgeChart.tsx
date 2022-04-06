@@ -18,7 +18,7 @@ import BarChartByCategory from 'containers/Admin/dashboard/users/charts/BarChart
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import binBirthyear from '../../utils/data/binBirthyear';
+import { binBirthyear } from '../../utils/data';
 
 interface Props {
   startAt: string | null | undefined;

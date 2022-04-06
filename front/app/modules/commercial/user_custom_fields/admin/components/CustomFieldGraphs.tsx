@@ -1,8 +1,7 @@
 // libraries
 import React from 'react';
-import { isEmpty, map, range, forOwn, get, orderBy } from 'lodash-es';
+import { isEmpty, map, orderBy } from 'lodash-es';
 import { Subscription, combineLatest } from 'rxjs';
-import moment from 'moment';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -56,7 +55,7 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import binBirthyear from '../../utils/data/binBirthyear';
+import { binBirthyear, rename, join } from '../../utils/data';
 
 // hooks
 import useUserCustomFields from '../../hooks/useUserCustomFields';
@@ -170,44 +169,19 @@ export class CustomFieldsComparison extends React.PureComponent<
     } = this.props;
 
     if (customField.attributes.code === 'birthyear') {
-      const currentYear = moment().year();
+      const options = { missing: formatMessage(messages._blank) };
 
-      return [
-        ...range(0, 100, 10).map((minAge) => {
-          let totalNumberOfUsers = 0;
-          let paticipants = 0;
-          const maxAge = minAge + 9;
+      const binnedTotal = binBirthyear(totalSerie.series.users, options);
+      const binnedParticipants = binBirthyear(
+        participantSerie.series.users,
+        options
+      );
 
-          forOwn(totalSerie.series.users, (userCount, birthYear) => {
-            const age = currentYear - parseInt(birthYear, 10);
-
-            if (age >= minAge && age <= maxAge) {
-              totalNumberOfUsers += userCount;
-            }
-          });
-
-          forOwn(participantSerie.series.users, (userCount, birthYear) => {
-            const age = currentYear - parseInt(birthYear, 10);
-
-            if (age >= minAge && age <= maxAge) {
-              paticipants += userCount;
-            }
-          });
-
-          return {
-            name: `${minAge} - ${maxAge}`,
-            total: totalNumberOfUsers,
-            participants: paticipants,
-            code: `${minAge}`,
-          };
-        }),
-        {
-          name: formatMessage(messages._blank),
-          total: get(totalSerie.series.users, '_blank', 0),
-          participants: get(participantSerie.series.users, '_blank', 0),
-          code: '',
-        },
-      ];
+      return join(
+        rename(binnedTotal, { value: 'total' }),
+        rename(binnedParticipants, { value: 'participants' }),
+        { by: 'name' }
+      );
     } else if (customField.attributes.code === 'gender') {
       const res = Object.keys(genderColors).map((gender) => ({
         total: totalSerie.series.users[gender] || 0,
