@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 type Props = SignUpStepOutletProps;
 
-const VerificationSignUpSteps = ({
+const VerificationSignUpStep = ({
   metaData,
   onCompleted,
   onSkipped,
@@ -65,4 +65,4 @@ const VerificationSignUpSteps = ({
   );
 };
 
-export default VerificationSignUpSteps;
+export default VerificationSignUpStep;
