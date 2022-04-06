@@ -7,7 +7,7 @@
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
 - Fixed SurveyMonkey container height so survey questions are visible
 - Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
-- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
 
 ## 2022-03-29
 
