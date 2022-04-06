@@ -190,6 +190,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                       <QuillEditedContent
                         fontSize="m"
                         textColor={theme.colorText}
+                        disableTabbing={!expanded}
                       >
                         <T
                           value={project.attributes.description_multiloc}
