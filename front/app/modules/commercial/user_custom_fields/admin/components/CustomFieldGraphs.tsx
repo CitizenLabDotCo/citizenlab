@@ -1,11 +1,15 @@
 // libraries
 import React from 'react';
 import { isEmpty, map, range, forOwn, get, orderBy } from 'lodash-es';
+import { Subscription, combineLatest } from 'rxjs';
+import moment from 'moment';
 
-// intl
+// i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import T from 'components/T';
 
 // styling
 import { withTheme } from 'styled-components';
@@ -30,8 +34,11 @@ import {
 } from 'components/admin/Chart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+// typings
 import { IUserCustomFieldData } from '../../services/userCustomFields';
-import { Subscription, combineLatest } from 'rxjs';
+import { IStream } from 'utils/streams';
+
+// services
 import {
   IUsersByRegistrationField,
   usersByRegFieldStream,
@@ -47,12 +54,12 @@ import {
   IUsersByBirthyear,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-import T from 'components/T';
+import binBirthyear from '../../utils/data/binBirthyear';
+
+// hooks
 import useUserCustomFields from '../../hooks/useUserCustomFields';
-import { IStream } from 'utils/streams';
 
 type ISupportedDataType =
   | IUsersByRegistrationField
