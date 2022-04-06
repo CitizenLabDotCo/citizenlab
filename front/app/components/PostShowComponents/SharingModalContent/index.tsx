@@ -243,7 +243,7 @@ class SharingModalContent extends PureComponent<
     ) {
       return (
         <Container className={className}>
-          <Rocket src={rocket} alt="rocket" />
+          <Rocket src={rocket} alt="" />
           <Title className={`e2e-${postType}-social-sharing-modal-title`}>
             {title}
           </Title>
