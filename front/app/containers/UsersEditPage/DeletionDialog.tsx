@@ -61,7 +61,7 @@ const DeletionDialog = ({
   };
 
   if (!isNilOrError(appConfiguration)) {
-    const logo = appConfiguration.data.attributes.logo?.medium || null;
+    const logo = appConfiguration.data.attributes.logo?.medium;
     return (
       <Container>
         {logo && <Logo src={logo} alt={formatMessage(messages.logoAltText)} />}
