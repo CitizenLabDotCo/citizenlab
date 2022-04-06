@@ -24,6 +24,7 @@ describe('binBirthyear', () => {
     2003: 3,
     2004: 4,
     2019: 2,
+    missing: 3,
   };
 
   it('works with default bins', () => {
@@ -38,6 +39,7 @@ describe('binBirthyear', () => {
       { name: '70 - 79', value: 0 },
       { name: '80 - 89', value: 0 },
       { name: '90+', value: 2 },
+      { name: '_blank', value: 3 },
     ];
 
     expect(binBirthyear(data)).toEqual(expectedOutput);
@@ -45,14 +47,36 @@ describe('binBirthyear', () => {
 
   it('works with custom bins', () => {
     const bins = ['0 - 29', '29+'];
-    const binFunction = (year: string) =>
-      parseInt(year, 10) > 1993 ? '0 - 29' : '29+';
+    const binFunction = (year: string) => {
+      const yearNumber = parseInt(year, 10);
+      if (isNaN(yearNumber)) return null;
+      return yearNumber > 1993 ? '0 - 29' : '29+';
+    };
 
     const expectedOutput = [
       { name: '0 - 29', value: 9 },
       { name: '29+', value: 15 },
+      { name: '_blank', value: 3 },
     ];
 
     expect(binBirthyear(data, { binFunction, bins })).toEqual(expectedOutput);
+  });
+
+  it('works with custom blank bin name', () => {
+    const expectedOutput = [
+      { name: '0 - 9', value: 2 },
+      { name: '10 - 19', value: 7 },
+      { name: '20 - 29', value: 0 },
+      { name: '30 - 39', value: 13 },
+      { name: '40 - 49', value: 0 },
+      { name: '50 - 59', value: 0 },
+      { name: '60 - 69', value: 0 },
+      { name: '70 - 79', value: 0 },
+      { name: '80 - 89', value: 0 },
+      { name: '90+', value: 2 },
+      { name: 'TEST', value: 3 },
+    ];
+
+    expect(binBirthyear(data, { missing: 'TEST' })).toEqual(expectedOutput);
   });
 });

@@ -1,24 +1,26 @@
 import moment from 'moment';
 
 type Data = Record<string, number>;
-type BinFunction = (birthYear: string) => string;
+type BinFunction = (birthYear: string) => string | null;
 
 interface BinOptions {
-  binFunction: BinFunction;
-  bins: string[];
+  binFunction?: BinFunction;
+  bins?: string[];
+  missing?: string;
 }
 
-const binBirthyear = (
-  data: Data,
-  { binFunction, bins }: BinOptions = {
+const binBirthyear = (data: Data, binOptions?: BinOptions) => {
+  const { binFunction, bins, missing } = {
     binFunction: defaultBinFunction,
     bins: defaultBins,
-  }
-) => {
-  const binsMap = initBins(bins);
+    missing: '_blank',
+    ...binOptions,
+  };
+
+  const binsMap = initBinsMap(bins, missing);
 
   for (const birthYear in data) {
-    const bin = binFunction(birthYear);
+    const bin = binFunction(birthYear) || missing;
     const count = data[birthYear];
     binsMap[bin] += count;
   }
@@ -31,6 +33,8 @@ export default binBirthyear;
 export const defaultBinFunction: BinFunction = (birthYear: string) => {
   const currentYear = moment().year();
   const age = currentYear - parseInt(birthYear, 10);
+
+  if (isNaN(age)) return null;
 
   if (age < 10) return '0 - 9';
   if (age >= 90) return '90+';
@@ -52,7 +56,9 @@ const defaultBins = [
   '90+',
 ];
 
-const initBins = (bins: string[]) =>
-  Object.fromEntries(bins.map((bin) => [bin, 0]));
+const initBinsMap = (bins: string[], missing: string) => {
+  return Object.fromEntries([...bins, missing].map((bin) => [bin, 0]));
+};
+
 const toSeries = (data: Data) =>
   Object.entries(data).map(([name, value]) => ({ name, value }));
