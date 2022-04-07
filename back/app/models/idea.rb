@@ -81,7 +81,7 @@ class Idea < ApplicationRecord
 
   validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
 
-  validate :custom_field_values, on: :publication, json: {
+  validates :custom_field_values, on: :publication, json: {
     schema: -> {
       extra_fields = CustomForm.where(project: project)&.first.custom_fields.find_all { |f| f.code == nil }
       CustomFieldService.new.fields_to_json_schema(extra_fields)

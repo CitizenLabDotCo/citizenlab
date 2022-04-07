@@ -96,6 +96,15 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/content_builder
+  specs:
+    content_builder (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/custom_idea_statuses
   specs:
     custom_idea_statuses (0.1.0)
@@ -219,6 +228,13 @@ PATH
       rails (~> 6.1)
       savon (~> 2.12.0)
       verification
+
+PATH
+  remote: engines/commercial/id_vienna_saml
+  specs:
+    id_vienna_saml (1.0.0)
+      omniauth-saml (~> 1.10.3)
+      rails (~> 6.1)
 
 PATH
   remote: engines/commercial/idea_assignment
@@ -1146,6 +1162,7 @@ DEPENDENCIES
   byebug
   carrierwave!
   carrierwave-base64 (~> 2.10)
+  content_builder!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
@@ -1173,6 +1190,7 @@ DEPENDENCIES
   id_franceconnect!
   id_gent_rrn!
   id_id_card_lookup!
+  id_vienna_saml!
   idea_assignment!
   idea_custom_fields!
   insights!
@@ -1258,6 +1276,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   test-prof (~> 1.0)
+  texting!
   user_confirmation!
   user_custom_fields!
   verification!

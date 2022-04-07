@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_24_073642) do
+ActiveRecord::Schema.define(version: 2022_03_25_093826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -383,6 +383,7 @@ ActiveRecord::Schema.define(version: 2022_03_24_073642) do
     t.uuid "assignee_id"
     t.datetime "assigned_at"
     t.integer "proposed_budget"
+    t.jsonb "custom_field_values", default: {}
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
