@@ -8,8 +8,8 @@ import { fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
-import { signOutAndDeleteAccountPart1 } from 'services/auth';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import eventEmitter from 'utils/eventEmitter';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -56,7 +56,7 @@ const DeletionDialog = ({
   const appConfiguration = useAppConfiguration();
 
   const deleteProfile = () => {
-    signOutAndDeleteAccountPart1();
+    eventEmitter.emit('deleteProfileAndShowSuccessModal');
     closeDialog();
   };
 

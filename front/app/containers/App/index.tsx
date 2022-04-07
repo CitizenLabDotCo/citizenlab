@@ -49,7 +49,7 @@ import { IUser } from 'services/users';
 import {
   authUserStream,
   signOut,
-  signOutAndDeleteAccountPart2,
+  signOutAndDeleteAccount,
 } from 'services/auth';
 import {
   currentAppConfigurationStream,
@@ -274,21 +274,23 @@ class App extends PureComponent<Props, State> {
         this.closePostPageModal();
       }),
 
-      eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
-        signOutAndDeleteAccountPart2().then((success) => {
-          if (success) {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: true,
-            });
-          } else {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: false,
-            });
-          }
-        });
-      }),
+      eventEmitter
+        .observeEvent('deleteProfileAndShowSuccessModal')
+        .subscribe(() => {
+          signOutAndDeleteAccount().then((success) => {
+            if (success) {
+              this.setState({
+                userDeletedModalOpened: true,
+                userActuallyDeleted: true,
+              });
+            } else {
+              this.setState({
+                userDeletedModalOpened: true,
+                userActuallyDeleted: false,
+              });
+            }
+          });
+        }),
 
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
         // Sometimes we need to still open the sign up/in modal

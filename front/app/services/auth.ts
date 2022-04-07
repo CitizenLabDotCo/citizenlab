@@ -115,12 +115,7 @@ export function signOut() {
   }
 }
 
-export function signOutAndDeleteAccountPart1() {
-  setTimeout(() => eventEmitter.emit('tryAndDeleteProfile'), 500);
-  clHistory.push('/');
-}
-
-export function signOutAndDeleteAccountPart2() {
+export function signOutAndDeleteAccount() {
   return new Promise((resolve, _reject) => {
     const jwt = getJwt();
 
