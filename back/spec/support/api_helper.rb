@@ -8,14 +8,10 @@ module ApiHelper
   end
 
   def assert_status(code)
-    expect(response.status).to eq(code)
+    expect(status).to eq code
   end
 
-  def assert_count(json_response, expected)
-    expect(json_response[:data].count).to eq(expected)
-  end
+  # def assert_count(json_response, expected)
+  #   expect(json_response[:data].count).to eq(expected)
+  # end
 end
-
-# RSpec.configure do |config|
-#   config.include ApiHelper
-# end

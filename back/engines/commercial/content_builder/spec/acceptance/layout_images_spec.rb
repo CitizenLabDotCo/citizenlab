@@ -4,43 +4,42 @@ require 'rspec_api_documentation/dsl'
 resource 'ContentBuilderLayoutImages' do
   explanation 'Images that occur in content builder layouts.'
 
-  before { header 'Content-Type', 'application/json' }
+  before { set_api_content_type }
 
-  context 'when not authorized' do
+  post 'web_api/v1/content_builder_layout_images' do
+    with_options scope: :layout_image do
+      parameter :image, 'The base64 encoded image.', required: true
+    end
     let(:image) { encode_image_as_base64 'image13.png' }
 
-    post 'web_api/v1/content_builder_layout_images' do
+    context 'when not authorized' do
       example_request '[error] Try to create a layout for a project without authorization' do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
-  end
 
-  context 'when authorized' do
-    let(:user) { create :admin }
+    context 'when authorized' do
+      before { admin_header_token }
 
-    before do
-      token = Knock::AuthToken.new(payload: user.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
+      example_request 'Create an image for a layout' do
+        assert_status 201
 
-    describe 'POST' do
-      with_options scope: :layout_image do
-        parameter :image, 'The base64 encoded image.', required: true
+        json_response = json_parse response_body
+        expect(json_response).to include(
+          {
+            data: {
+              id: be_a(String),
+              type: 'layout_image',
+              attributes: {
+                code: be_a(String),
+                image_url: be_a(String),
+                created_at: match(time_regex),
+                updated_at: match(time_regex)
+              }
+            }
+          }
+        )
       end
-      let(:image) { encode_image_as_base64 'image13.png' }
-
-      post 'web_api/v1/content_builder_layout_images' do
-        example_request 'Create an image for a layout' do
-          expect(status).to eq 201
-        end
-      end
     end
-  end
-
-  private
-
-  def encode_image_as_base64(filename)
-    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
   end
 end
