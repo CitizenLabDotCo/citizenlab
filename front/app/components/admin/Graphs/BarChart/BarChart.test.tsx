@@ -9,17 +9,18 @@ jest.mock('utils/cl-intl');
 describe('<BarChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {
-      render(<BarChart />);
-      expect(
-        screen.getByText('No data available with the current filters.')
-      ).toBeInTheDocument();
+      render(<BarChart emptyContainerContent={'No data available'} />);
+      expect(screen.getByText('No data available')).toBeInTheDocument();
     });
 
     it('renders empty state message if data is Error', () => {
-      render(<BarChart data={new Error()} />);
-      expect(
-        screen.getByText('No data available with the current filters.')
-      ).toBeInTheDocument();
+      render(
+        <BarChart
+          data={new Error()}
+          emptyContainerContent={'No data available'}
+        />
+      );
+      expect(screen.getByText('No data available')).toBeInTheDocument();
     });
   });
 
@@ -162,6 +163,12 @@ describe('<BarChart />', () => {
     });
 
     it('renders correctly with custom mapping', () => {
+      const data = [
+        { name: 'a', y: 4 },
+        { name: 'b', y: 7.24 },
+        { name: 'c', y: 10 },
+      ];
+
       render(
         <BarChart
           width={400}
