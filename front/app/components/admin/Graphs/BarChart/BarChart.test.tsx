@@ -126,13 +126,13 @@ describe('<BarChart />', () => {
   });
 
   describe('Labels', () => {
-    it('does not render labels without providing renderLabels', () => {
-      const data = [
-        { name: 'a', value: 4 },
-        { name: 'b', value: 7.24 },
-        { name: 'c', value: 10 },
-      ];
+    const data = [
+      { name: 'a', value: 4 },
+      { name: 'b', value: 7.24 },
+      { name: 'c', value: 10 },
+    ];
 
+    it('does not render labels without providing renderLabels', () => {
       render(
         <BarChart
           width={400}
@@ -147,12 +147,6 @@ describe('<BarChart />', () => {
     });
 
     it('renders correctly with default column names', () => {
-      const data = [
-        { name: 'a', value: 4 },
-        { name: 'b', value: 7.24 },
-        { name: 'c', value: 10 },
-      ];
-
       render(
         <BarChart
           width={400}
@@ -168,12 +162,6 @@ describe('<BarChart />', () => {
     });
 
     it('renders correctly with custom mapping', () => {
-      const data = [
-        { name: 'a', y: 4 },
-        { name: 'b', y: 7.24 },
-        { name: 'c', y: 10 },
-      ];
-
       render(
         <BarChart
           width={400}
