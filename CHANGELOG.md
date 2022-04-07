@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- Added support for the Croatian language to the platform
+
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
