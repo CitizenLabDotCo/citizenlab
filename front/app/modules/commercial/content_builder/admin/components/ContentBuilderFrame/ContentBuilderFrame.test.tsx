@@ -33,19 +33,6 @@ jest.mock('../../../hooks/useContentBuilder', () => {
   return jest.fn(() => ({ data: mockEditorData }));
 });
 
-const mockParams = { projectId: 'id' };
-
-jest.mock('react-router', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} params={mockParams} />;
-      };
-    },
-    Link: () => 'LinkText',
-  };
-});
-
 const mockDeserialize = jest.fn();
 
 jest.mock('@craftjs/core', () => {
@@ -60,7 +47,7 @@ describe('ContentBuilderFrame', () => {
   it('calls deserialize correctly when there is data', () => {
     render(
       <Editor>
-        <ContentBuilderFrame />
+        <ContentBuilderFrame projectId="id" />
       </Editor>
     );
     expect(mockDeserialize).toHaveBeenCalledWith(
@@ -79,7 +66,7 @@ describe('ContentBuilderFrame', () => {
     };
     render(
       <Editor>
-        <ContentBuilderFrame />
+        <ContentBuilderFrame projectId="id" />
       </Editor>
     );
     expect(mockDeserialize).not.toHaveBeenCalled();

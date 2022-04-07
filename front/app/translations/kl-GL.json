@@ -1194,7 +1194,6 @@
   "app.containers.UsersEditPage.contactUs": "Ilaajunnaarnissannut peqqut? Una tooruk {feedbackLink}, taava immaqa ikiorsinnaavatsigit.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Ajuusaarpugut qimaleratsigut",
   "app.containers.UsersEditPage.deleteMyAccount": "Kontora peeruk",
-  "app.containers.UsersEditPage.deleteProfileError": "Kontuit peernerani ajornartorsiuteqarpoq, kinguninngua misileeqqigit. ",
   "app.containers.UsersEditPage.deleteYourAccount": "Kontut peeruk",
   "app.containers.UsersEditPage.deletionSection": "Kontut peeruk",
   "app.containers.UsersEditPage.deletionSubtitle": "Iliuuseq una aaqqeqqinneqarsinnaanngilaq. Isaaffimmut imarisat saqqummersitatit kinaassutsit pillugu ilisarnarunnaarsinneqassapput. Imarisat tamaasa peerusukkukkit attavigisigut ugguuna support@citizenlab.co.",

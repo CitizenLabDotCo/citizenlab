@@ -4,18 +4,22 @@ import { adopt } from 'react-adopt';
 import moment, { Moment } from 'moment';
 
 // components
-import { GraphsContainer, ControlBar, Column } from 'components/admin/Chart';
+import {
+  GraphsContainer,
+  ControlBar,
+  Column,
+} from 'components/admin/GraphWrappers';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
-import LineBarChart from './charts/LineBarChart';
 import ChartFilters from '../components/ChartFilters';
+import TimeControl from '../components/TimeControl';
+import LineBarChart from './charts/LineBarChart';
+import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
 import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
-
 import LineBarChartVotesByTime from './charts/LineBarChartVotesByTime';
-import TimeControl from '../components/TimeControl';
+import IdeasByStatusChart from './charts/IdeasByStatusChart';
 
 // typings
 import { IOption } from 'typings';
@@ -52,7 +56,6 @@ import {
   ideasByTimeStream,
   usersByTimeXlsxEndpoint,
 } from 'services/stats';
-import IdeasByStatusChart from '../components/IdeasByStatusChart';
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 

@@ -1194,7 +1194,6 @@
   "app.containers.UsersEditPage.contactUs": "Du gehst aus einem anderen Grund? {feedbackLink} und vielleicht können wir Ihnen helfen.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Wir bedauern es sehr, dich gehen zu sehen.",
   "app.containers.UsersEditPage.deleteMyAccount": "Meinen Account löschen",
-  "app.containers.UsersEditPage.deleteProfileError": "Es gab ein Problem bei der Löschung Ihres Kontos. Bitte versuchen Sie es später noch einmal.",
   "app.containers.UsersEditPage.deleteYourAccount": "Ihr Konto löschen",
   "app.containers.UsersEditPage.deletionSection": "Ihren Account löschen",
   "app.containers.UsersEditPage.deletionSubtitle": "Diese Aktion kann nicht rückgängig gemacht werden. Die Inhalte, die Sie auf der Plattform veröffentlicht haben, werden anonymisiert. Wenn Sie alle Ihre Inhalte löschen möchten, können Sie uns unter support@citizenlab.co kontaktieren.",

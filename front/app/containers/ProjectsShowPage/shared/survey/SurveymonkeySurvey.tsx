@@ -7,9 +7,11 @@ const SurveyContainer = styled.div`
   .smcx-widget {
     max-width: none;
     z-index: 1;
+    min-height: 800px;
   }
   .smcx-embed > .smcx-iframe-container {
     max-width: none;
+    min-height: 800px;
   }
 `;
 

@@ -1194,7 +1194,6 @@
   "app.containers.UsersEditPage.contactUs": "Aveți un alt motiv pentru a ne părăsi? {feedbackLink} și poate vă putem ajuta.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Ne pare rău sa te vedem că pleci.",
   "app.containers.UsersEditPage.deleteMyAccount": "Șterge contul meu",
-  "app.containers.UsersEditPage.deleteProfileError": "A apărut o problemă la ștergerea contului dvs., vă rugăm să încercați din nou mai târziu.",
   "app.containers.UsersEditPage.deleteYourAccount": "Șterge contul",
   "app.containers.UsersEditPage.deletionSection": "Șterge contul",
   "app.containers.UsersEditPage.deletionSubtitle": "Această acțiune nu poate fi anulată. Conținutul publicat pe platformă va fi anonim. Dacă doriți să ștergeți tot conținutul, puteți să ne contactați la adresa de e-mail: support@citizenlab.co.",

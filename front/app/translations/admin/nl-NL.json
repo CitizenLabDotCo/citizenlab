@@ -705,6 +705,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Weergegeven op de projectkaart op de homepagina.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Weergegeven op de projectpagina. Beschrijf duidelijk waarover je project gaat, wat je verwacht van je gebruikers en wat zij mogen verwachten van jou.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Er ging iets mis. Probeer het opnieuw.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Wijzig beschrijving in de paginabouwer",
   "app.containers.AdminPage.ProjectDescription.save": "Opslaan",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Je wijzigingen werden opgeslagen.",

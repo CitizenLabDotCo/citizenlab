@@ -157,7 +157,7 @@ class Banner extends PureComponent<Props> {
     );
 
     return (
-      <Container role="dialog" id="e2e-cookie-banner">
+      <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
         <ContentContainer mode="page">
           <ContentContainerInner>
             <Left>

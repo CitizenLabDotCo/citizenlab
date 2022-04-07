@@ -70,7 +70,8 @@ module Texting
     # SMS provider calls it
     def mark_as_sent
       campaign = Campaign.find(params[:id])
-      if Texting::Sms.provider.request_valid?(request)
+      url = Texting::WebhookUrlGenerator.new.mark_campaign_as_sent(campaign)
+      if Texting::Sms.provider.request_valid?(url, request)
         campaign.update!(status: Texting::Campaign.statuses.fetch(:sent), sent_at: Time.zone.now) if campaign.sending?
         head :ok
       else

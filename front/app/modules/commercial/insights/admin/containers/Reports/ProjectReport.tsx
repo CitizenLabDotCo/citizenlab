@@ -11,7 +11,7 @@ import messages from './messages';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import { GraphsContainer } from 'components/admin/Chart';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
 
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -158,11 +158,12 @@ const ProjectReport = memo(
     }));
 
     // deduplicated non-null participations methods in this project
-    const participationMethods = (isTimelineProject
-      ? isNilOrError(phases)
-        ? []
-        : phases.map((phase) => phase.attributes.participation_method)
-      : [project.attributes.participation_method]
+    const participationMethods = (
+      isTimelineProject
+        ? isNilOrError(phases)
+          ? []
+          : phases.map((phase) => phase.attributes.participation_method)
+        : [project.attributes.participation_method]
     ).filter(
       (el, i, arr) => el && arr.indexOf(el) === i
     ) as ParticipationMethod[];

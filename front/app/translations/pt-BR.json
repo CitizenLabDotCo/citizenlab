@@ -1194,7 +1194,6 @@
   "app.containers.UsersEditPage.contactUs": "Outra razão para sair? {feedbackLink} e talvez nós possamos ajudar.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Lamentamos vê-lo partir.",
   "app.containers.UsersEditPage.deleteMyAccount": "Excluir a minha conta",
-  "app.containers.UsersEditPage.deleteProfileError": "Ocorreu um erro ao deletar a sua conta, por favor tente novamente mais tarde.",
   "app.containers.UsersEditPage.deleteYourAccount": "Excluir minha conta",
   "app.containers.UsersEditPage.deletionSection": "Excluir minha conta",
   "app.containers.UsersEditPage.deletionSubtitle": "Esta acção não pode ser desfeita. O conteúdo que você publicou na plataforma vai ficar anónimo. Se desejar apagar todo o seu conteúdo, pode contactar-nos em support@citizenlab.co.",

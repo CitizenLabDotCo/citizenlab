@@ -1242,7 +1242,6 @@
   "app.containers.UsersEditPage.contactUs": "Another reason to leave? {feedbackLink} and maybe we can help.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "We are sorry to see you go.",
   "app.containers.UsersEditPage.deleteMyAccount": "Delete my account",
-  "app.containers.UsersEditPage.deleteProfileError": "There was an issue deleting your account, please try again later.",
   "app.containers.UsersEditPage.deleteYourAccount": "Delete your account",
   "app.containers.UsersEditPage.deletionSection": "Delete your account",
   "app.containers.UsersEditPage.deletionSubtitle": "This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.",

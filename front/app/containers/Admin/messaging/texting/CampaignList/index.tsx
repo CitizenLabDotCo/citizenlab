@@ -73,6 +73,7 @@ const TextingCampaignsList = () => {
           buttonStyle="cl-blue"
           icon="plus-circle"
           linkTo="/admin/messaging/texting/new"
+          id="e2e-add-text-campaign-button"
         >
           <FormattedMessage {...messages.addTextButton} />
         </Button>
@@ -87,6 +88,7 @@ const TextingCampaignsList = () => {
           buttonStyle="cl-blue"
           icon="plus-circle"
           linkTo="/admin/messaging/texting/new"
+          id="e2e-add-text-campaign-button"
         >
           <FormattedMessage {...messages.addTextButton} />
         </Button>

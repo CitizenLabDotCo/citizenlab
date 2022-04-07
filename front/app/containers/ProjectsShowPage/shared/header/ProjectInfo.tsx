@@ -13,7 +13,7 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // hooks
 import useProject from 'hooks/useProject';
 import useProjectFiles from 'hooks/useProjectFiles';
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Title } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -72,32 +72,6 @@ const Right = styled.div`
     flex: 1 1 auto;
     width: 100%;
     margin-left: 0px;
-  `}
-`;
-
-const ProjectTitle = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: normal;
-  font-weight: 500;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  margin: 0;
-  margin-bottom: 27px;
-  padding: 0;
-
-  ${isRtl`
-    text-align: right;
-  `}
-
-  ${media.smallerThan1280px`
-    font-size: ${fontSizes.xxl}px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
   `}
 `;
 
@@ -193,9 +167,9 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
       <Container className={`${className || ''} e2e-project-info`}>
         <Fragment name={`projects/${project.id}/info`}>
           <Left>
-            <ProjectTitle>
+            <Title variant="h1" color="text">
               <T value={project.attributes.title_multiloc} />
-            </ProjectTitle>
+            </Title>
 
             {smallerThanLargeTablet && (
               <StyledProjectArchivedIndicator projectId={projectId} />
