@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Sukces",
   "app.components.admin.FormikSubmitWrapper.messageError": "Wystąpił błąd podczas zapisywania",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Pomyślnie zapisano",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "1 wkład",
   "app.components.admin.PostManager.PostPreview.assignee": "Moderator",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Anuluj edycję",
