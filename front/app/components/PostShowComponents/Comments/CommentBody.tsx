@@ -93,6 +93,7 @@ export interface State {
 
 class CommentBody extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
+  textAreaRef: HTMLTextAreaElement;
 
   constructor(props) {
     super(props);
@@ -129,16 +130,6 @@ class CommentBody extends PureComponent<Props, State> {
     if (prevProps.comment !== this.props.comment) {
       this.setCommentContent();
       this.setEditableCommentContent();
-    }
-
-    // if props have changed and editing is now true, focus the text
-    // input box for accessability purposes
-    if (
-      !prevProps.editing &&
-      this.props.editing &&
-      !isNilOrError(this.state.textAreaRef)
-    ) {
-      this.state.textAreaRef.focus();
     }
   }
 
@@ -191,7 +182,21 @@ class CommentBody extends PureComponent<Props, State> {
   };
 
   setTextAreaRef = (ref: HTMLTextAreaElement) => {
-    this.setState({ textAreaRef: ref });
+    this.textAreaRef = ref;
+    this.focusEndOfEditingArea();
+  };
+
+  focusEndOfEditingArea = () => {
+    if (isNilOrError(this.textAreaRef) || !this.props.editing) return;
+    this.textAreaRef.focus();
+
+    // set caret to end if text content exists
+    if (!isNilOrError(this.textAreaRef.textContent)) {
+      this.textAreaRef.setSelectionRange(
+        this.textAreaRef.textContent.length,
+        this.textAreaRef.textContent.length
+      );
+    }
   };
 
   onEditableCommentContentChange = (editableCommentContent: string) => {
