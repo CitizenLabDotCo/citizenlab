@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Succes",
   "app.components.admin.FormikSubmitWrapper.messageError": "Der var en fejl under lagring",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Gemte med succes",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "1 indgang",
   "app.components.admin.PostManager.PostPreview.assignee": "Modtager",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuller redigering",
