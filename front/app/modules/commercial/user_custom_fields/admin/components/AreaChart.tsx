@@ -1,5 +1,6 @@
 // Libraries
 import React from 'react';
+import { orderBy } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -19,7 +20,7 @@ import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/Horizont
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { convertDomicileData, AreaValue } from '../../utils/data';
+import { convertDomicileData } from '../../utils/data';
 
 interface Props {
   startAt: string | null | undefined;
@@ -45,12 +46,14 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
       outside: formatMessage(messages.otherArea),
     };
 
-    const parseName = (key: string, value?: AreaValue) =>
+    const parseName = (key, value) =>
       key in defaultMessages
         ? defaultMessages[key]
-        : localize(value && value.title_multiloc);
+        : localize(value.title_multiloc);
 
-    return convertDomicileData(areas, series.users, parseName);
+    const res = convertDomicileData(areas, series.users, parseName);
+    const sortedByValue = orderBy(res, 'value', 'desc');
+    return sortedByValue.length > 0 ? sortedByValue : null;
   };
 
   return (
