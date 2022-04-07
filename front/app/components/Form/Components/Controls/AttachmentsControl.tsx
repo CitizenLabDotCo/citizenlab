@@ -15,7 +15,7 @@ import { FormContext } from 'components/Form/contexts';
 import useResourceFiles from 'hooks/useResourceFiles';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-import { deleteIdeaFile } from 'services/ideaFiles';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 import { Box } from '@citizenlab/cl2-component-library';
 
 const AttachmentsControl = ({
@@ -38,31 +38,36 @@ const AttachmentsControl = ({
 
   const handleFileOnAdd = (fileToAdd: UploadFile) => {
     const oldData = data ?? [];
-    handleChange(path, [
-      ...oldData,
-      {
-        file_by_content: {
-          content: fileToAdd.base64,
+    if (inputId) {
+      addIdeaFile(inputId, fileToAdd.base64, fileToAdd.name);
+    } else {
+      handleChange(path, [
+        ...oldData,
+        {
+          file_by_content: {
+            content: fileToAdd.base64,
+            name: fileToAdd.filename,
+          },
           name: fileToAdd.filename,
         },
-        name: fileToAdd.filename,
-      },
-    ]);
+      ]);
+    }
     setFiles((files) => [...files, fileToAdd]);
     setDidBlur(true);
   };
   const handleFileOnRemove = (fileToRemove: UploadFile) => {
     if (inputId && fileToRemove.remote) {
       deleteIdeaFile(inputId, fileToRemove.id as string);
+    } else {
+      handleChange(
+        path,
+        data?.length === 1
+          ? undefined
+          : data.filter(
+              (file) => file.file_by_content.content !== fileToRemove.base64
+            )
+      );
     }
-    handleChange(
-      path,
-      data?.length === 1
-        ? undefined
-        : data.filter(
-            (file) => file.file_by_content.content !== fileToRemove.base64
-          )
-    );
     setFiles((files) =>
       files.filter((file) => file.base64 !== fileToRemove.base64)
     );
@@ -94,7 +99,7 @@ const AttachmentsControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <FileUploader

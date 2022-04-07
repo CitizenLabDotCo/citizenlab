@@ -118,9 +118,8 @@ module JsonFormsIdeasOverrides
         {
           type: 'Control',
           scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
-          options: { locale: locale, trim_on_blur: true },
+          options: { locale: locale, trim_on_blur: true, description: handle_description(field, locale) },
           label: handle_title(field, locale),
-          description: handle_description(field, locale),
         }
       end
     }
@@ -151,9 +150,8 @@ module JsonFormsIdeasOverrides
           type: 'Control',
           locale: locale,
           scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
-          options: { locale: locale, render: 'WYSIWYG' },
+          options: { locale: locale, render: 'WYSIWYG', description: handle_description(field, locale) },
           label: handle_title(field, locale),
-          description: handle_description(field, locale),
         }
       end
     }

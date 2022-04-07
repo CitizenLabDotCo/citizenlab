@@ -102,7 +102,7 @@ class JsonFormsService
       type: 'Control',
       scope: "#{previousScope || '#/properties/'}#{field.key}",
       label: handle_title(field, locale),
-      description: handle_description(field, locale),
+      options: { description: handle_description(field, locale)},
     }
   end
 
@@ -112,6 +112,7 @@ class JsonFormsService
     {
       **base_ui_schema_field(field, locale, previousScope),
       options: {
+        **base_ui_schema_field(field, locale)[:options],
         transform: 'trim_on_blur'
       }
     }
@@ -141,6 +142,7 @@ class JsonFormsService
     {
       **base_ui_schema_field(field, locale, previousScope),
       options: {
+        **base_ui_schema_field(field, locale)[:options],
         textarea: true,
         transform: 'trim_on_blur'
       }
@@ -159,6 +161,7 @@ class JsonFormsService
     {
       **base_ui_schema_field(field, locale, previousScope),
       options: {
+        **base_ui_schema_field(field, locale)[:options],
         render: 'WYSIWYG'
       }
     }
@@ -195,9 +198,8 @@ class JsonFormsService
         {
           type: 'Control',
           scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
-          options: { locale: map_locale, trim_on_blur: true },
+          options: { locale: map_locale, trim_on_blur: true, description: handle_description(field, locale) },
           label: handle_title(field, locale),
-          description: handle_description(field, locale),
         }
       end
     }
@@ -228,9 +230,8 @@ class JsonFormsService
         {
           type: 'Control',
           scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
-          options: { locale: map_locale, trim_on_blur: true, textarea: true, },
+          options: { locale: map_locale, trim_on_blur: true, textarea: true, description: handle_description(field, locale) },
           label: handle_title(field, locale),
-          description: handle_description(field, locale),
         }
       end
     }
@@ -261,9 +262,8 @@ class JsonFormsService
         {
           type: 'Control',
           scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
-          options: { locale: map_locale, trim_on_blur: true, render: 'WYSIWYG' },
+          options: { locale: map_locale, trim_on_blur: true, render: 'WYSIWYG', description: handle_description(field, locale) },
           label: handle_title(field, locale),
-          description: handle_description(field, locale),
         }
       end
     }

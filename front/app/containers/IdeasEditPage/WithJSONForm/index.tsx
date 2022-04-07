@@ -56,16 +56,12 @@ const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
             if (idea.attributes?.[prop]) {
               return [prop, idea.attributes?.[prop]];
             } else if (
-              prop.endsWith('_ids') &&
-              Array.isArray(
-                idea.relationships?.[prop.replace('_ids', 's')]?.data
-              )
+              prop === 'topic_ids' &&
+              Array.isArray(idea.relationships?.topics?.data)
             ) {
               return [
                 prop,
-                idea.relationships?.[prop.replace('_ids', 's')].data.map(
-                  (rel) => rel.id
-                ),
+                idea.relationships?.topics?.data.map((rel) => rel.id),
               ];
             } else return [prop, undefined];
           })
