@@ -3,8 +3,8 @@ import React from 'react';
 import { isEmpty, map, orderBy } from 'lodash-es';
 import { Subscription, combineLatest } from 'rxjs';
 
-// i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+// intl
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -16,21 +16,13 @@ import { withTheme } from 'styled-components';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
-  BarChart,
-  Bar,
-  Tooltip,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  LabelList,
-} from 'recharts';
-import {
-  NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
+import { Tooltip, LabelList } from 'recharts';
+import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
@@ -278,14 +270,7 @@ export class CustomFieldsComparison extends React.PureComponent<
     const noData =
       !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
 
-    const {
-      chartLabelSize,
-      chartLabelColor,
-      animationBegin,
-      animationDuration,
-      newBarFill,
-      barSize,
-    } = this.props['theme'];
+    const { barSize } = this.props['theme'];
 
     const xlsxEndpoint =
       customFieldEndpoints[customField.attributes.code || 'no_code']
@@ -309,25 +294,20 @@ export class CustomFieldsComparison extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {noData ? (
-            <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
-            </NoDataContainer>
-          ) : (
-            <ResponsiveContainer
-              height={serie.length > 1 ? serie.length * 50 : 100}
-            >
-              <BarChart
-                data={serie}
-                layout="vertical"
-                ref={this.currentChart}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
+          <BarChart
+            height={serie && serie.length > 1 ? serie.length * 50 : 100}
+            data={serie}
+            layout="horizontal"
+            innerRef={this.currentChart}
+            margin={{
+              ...DEFAULT_MARGIN,
+              left: 20,
+            }}
+            bars={{ name: formatMessage(messages.participants), size: barSize }}
+            mapping={{ length: 'participants' }}
+            yaxis={{ width: 150, tickLine: false }}
+            renderTooltip={() => (
+              <>
                 <Tooltip
                   content={({ active, payload, label }: TooltipProps) => (
                     <CustomTooltip
@@ -338,36 +318,10 @@ export class CustomFieldsComparison extends React.PureComponent<
                     />
                   )}
                 />
-                <Bar
-                  dataKey="participants"
-                  name={formatMessage(messages.participants)}
-                  fill={newBarFill}
-                  barSize={barSize}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                >
-                  <LabelList
-                    position="right"
-                    fontSize={chartLabelSize}
-                    fill={chartLabelColor}
-                  />
-                </Bar>
-                <YAxis
-                  dataKey="name"
-                  type="category"
-                  width={150}
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tickLine={false}
-                />
-                <XAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  type="number"
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
+              </>
+            )}
+            renderLabels={(props) => <LabelList {...props} position="right" />}
+          />
         </GraphCardInner>
       </GraphCard>
     );
