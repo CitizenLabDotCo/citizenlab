@@ -28,11 +28,11 @@ resource 'ContentBuilderLayouts' do
             data: {
               id: layout.id,
               type: 'content_builder_layout',
-              attributes: {
+              attributes: hash_including(
                 code: code,
                 created_at: match(time_regex),
                 updated_at: match(time_regex)
-              }
+              )
             }
           }
         )
