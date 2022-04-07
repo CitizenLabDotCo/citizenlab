@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import { isEmpty } from 'lodash-es';
 
 // components
@@ -57,7 +57,7 @@ interface Props {
   renderTooltip?: (props: RenderTooltipProps) => React.ReactNode;
   emptyContainerContent?: React.ReactNode;
   className?: string;
-  innerRef?: any;
+  innerRef?: RefObject<any>;
 }
 
 const BarChart = ({
