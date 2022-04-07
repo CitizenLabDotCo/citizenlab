@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Gespeichert!",
   "app.components.admin.FormikSubmitWrapper.messageError": "Es ist ein Fehler beim Speichern aufgetreten",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Erfolgreich gespeichert",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "1 Eingabe",
   "app.components.admin.PostManager.PostPreview.assignee": "Zugewiesen an",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Bearbeitung abbrechen",
