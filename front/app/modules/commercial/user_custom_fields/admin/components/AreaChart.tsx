@@ -1,6 +1,5 @@
 // Libraries
 import React from 'react';
-import { map, orderBy } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -20,6 +19,7 @@ import HorizontalBarChart from 'containers/Admin/dashboard/users/charts/Horizont
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { convertDomicileData, AreaValue } from '../../utils/data';
 
 interface Props {
   startAt: string | null | undefined;
@@ -36,34 +36,21 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   } = props;
 
   const convertToGraphFormat = (data: IUsersByDomicile) => {
-    if (!isNilOrError(data)) {
-      const { series, areas } = data;
+    if (isNilOrError(data)) return null;
 
-      const res = map(areas, (value, key) => ({
-        value: series.users[key] || 0,
-        name: localize(value.title_multiloc),
-        code: key,
-      }));
+    const { series, areas } = data;
 
-      if (series.users['_blank']) {
-        res.push({
-          value: series.users['_blank'],
-          name: formatMessage(messages._blank),
-          code: '_blank',
-        });
-      }
-      if (series.users['outside']) {
-        res.push({
-          value: series.users['outside'],
-          name: formatMessage(messages.otherArea),
-          code: 'outside',
-        });
-      }
-      const sortedByValue = orderBy(res, 'value', 'desc');
-      return sortedByValue.length > 0 ? sortedByValue : null;
-    }
+    const defaultMessages = {
+      _blank: formatMessage(messages._blank),
+      outside: formatMessage(messages.otherArea),
+    };
 
-    return null;
+    const parseName = (key: string, value?: AreaValue) =>
+      key in defaultMessages
+        ? defaultMessages[key]
+        : localize(value && value.title_multiloc);
+
+    return convertDomicileData(areas, series.users, parseName);
   };
 
   return (
