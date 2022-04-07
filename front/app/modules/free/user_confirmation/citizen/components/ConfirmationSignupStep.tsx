@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import { CONFIRMATION_STEP_NAME } from '../../index';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -79,7 +79,7 @@ const FooterNotes = styled.div`
 
 const FooterNote = styled.p`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
 
   &:not(:last-child) {
@@ -88,7 +88,7 @@ const FooterNote = styled.p`
 `;
 
 const FooterNoteLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   padding-left: 4px;
   color: ${({ theme }) => theme.colorText};
   text-decoration: underline;
@@ -110,31 +110,30 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
   margin-right: 4px;
 `;
 
-type Props = SignUpStepOutletProps & InjectedIntlProps;
+type Props = Pick<SignUpStepOutletProps, 'onCompleted' | 'onData' | 'step'>;
 
 const isActive = (authUser: TAuthUser) => {
   return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
 };
 
 const ConfirmationSignupStep = ({
-  intl: { formatMessage },
   onCompleted,
-  ...props
-}: Props) => {
+  onData,
+  step,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
   });
-  const [newEmail, setNewEmail] = useState<string | null | undefined>(
-    undefined
-  );
+  const [newEmail, setNewEmail] = useState<string | null>(null);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
-  const [processing, setProcessing] = useState<boolean>(false);
-  const [changingEmail, setChangingEmail] = useState<boolean>(false);
-  const [codeResent, setCodeResent] = useState<boolean>(false);
+  const [processing, setProcessing] = useState(false);
+  const [changingEmail, setChangingEmail] = useState(false);
+  const [codeResent, setCodeResent] = useState(false);
 
   useEffect(() => {
-    props.onData({
+    onData({
       key: CONFIRMATION_STEP_NAME,
       position: 4,
       stepDescriptionMessage: messages.confirmYourAccount,
@@ -148,7 +147,7 @@ const ConfirmationSignupStep = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (props.step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
+  if (step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
     return null;
   }
 
@@ -177,7 +176,7 @@ const ConfirmationSignupStep = ({
       });
   }
 
-  function handleResendCode(e) {
+  function handleResendCode(e: FormEvent) {
     e.preventDefault();
     setProcessing(true);
 
@@ -209,24 +208,25 @@ const ConfirmationSignupStep = ({
       });
   }
 
-  function handleEmailChange(email) {
+  function handleEmailChange(email: string) {
     setNewEmail(email);
   }
 
-  function handleShowEmailInput(e) {
+  function handleShowEmailInput(e: FormEvent) {
     e.preventDefault();
     setChangingEmail(true);
   }
 
-  function handleBackToCode(e) {
+  function handleBackToCode(e: FormEvent) {
     e.preventDefault();
     setChangingEmail(false);
   }
 
+  const inModal = true;
   return (
-    <FormContainer id="e2e-confirmation-form" inModal={true}>
+    <FormContainer id="e2e-confirmation-form" inModal={inModal}>
       {changingEmail ? (
-        <Form inModal={true} onSubmit={handleEmailSubmit}>
+        <Form inModal={inModal} onSubmit={handleEmailSubmit}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>
@@ -238,6 +238,7 @@ const ConfirmationSignupStep = ({
             </StyledLabel>
             <Input
               type="email"
+              autocomplete="email"
               value={newEmail}
               onChange={handleEmailChange}
               placeholder={formatMessage(messages.emailPlaceholder)}
@@ -269,7 +270,7 @@ const ConfirmationSignupStep = ({
           </FooterNotes>
         </Form>
       ) : (
-        <Form inModal={true} onSubmit={handleSubmitConfirmation}>
+        <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
             <StyledLabel>
               <LabelTextContainer>

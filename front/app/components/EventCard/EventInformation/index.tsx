@@ -100,7 +100,7 @@ const StyledIcon = styled(Icon)`
 
 const EventDescription = styled.div``;
 
-const SMALL_LINE_HEIGHT = fontSizes.small + 2.45;
+const SMALL_LINE_HEIGHT = fontSizes.s + 2.45;
 
 interface IStyledT {
   hideTextOverflow?: boolean;
@@ -129,7 +129,7 @@ const StyledT = styled(T)<IStyledT>`
   }}
 
   p {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     line-height: ${SMALL_LINE_HEIGHT}px;
   }
 
@@ -258,8 +258,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
             <StyledIcon
               name="clock-solid"
               fill={colors.label}
-              width={`${fontSizes.medium}px`}
-              height={`${fontSizes.medium}px`}
+              width={`${fontSizes.m}px`}
+              height={`${fontSizes.m}px`}
               marginRight="6px"
             />
             {eventDateTime}
@@ -269,8 +269,8 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
             <Location>
               <StyledIcon
                 name="mapmarker"
-                width={`${fontSizes.medium}px`}
-                height={`${fontSizes.medium}px`}
+                width={`${fontSizes.m}px`}
+                height={`${fontSizes.m}px`}
                 marginRight="6px"
               />
               <T value={event.attributes.location_multiloc} />

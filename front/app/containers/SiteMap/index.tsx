@@ -106,7 +106,7 @@ export const H3 = styled.h3`
 `;
 
 export const H4 = styled.h4`
-  font-size: ${fontSizes.large}px !important;
+  font-size: ${fontSizes.l}px !important;
 `;
 
 const NavItem = styled.button`

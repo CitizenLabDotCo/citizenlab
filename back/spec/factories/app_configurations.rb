@@ -35,7 +35,14 @@ FactoryBot.define do
           'enabled' => true,
           'allowed' => true,
           'voting_threshold' => 300,
-          'days_limit' => 90
+          'days_limit' => 90,
+          'threshold_reached_message' =>
+            MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
+                                                 locales: %i[en nl-BE fr-FR]),
+          'eligibility_criteria' =>
+            MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
+                                                 locales: %i[en nl-BE fr-FR])
+
         }
       }
     end
@@ -76,7 +83,13 @@ FactoryBot.define do
           'enabled' => true,
           'allowed' => true,
           'voting_threshold' => 300,
-          'days_limit' => 90
+          'days_limit' => 90,
+          'threshold_reached_message' =>
+            MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
+                                                 locales: %i[en nl-BE fr-FR]),
+          'eligibility_criteria' =>
+            MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
+                                                 locales: %i[en nl-BE fr-FR])
         }
       }
     end

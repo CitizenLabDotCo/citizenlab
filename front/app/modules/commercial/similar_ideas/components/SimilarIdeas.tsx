@@ -31,7 +31,7 @@ const IdeaList = styled.ul`
 
 const IdeaListItem = styled.li`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -45,7 +45,7 @@ const IdeaListItem = styled.li`
 
 const IdeaLink = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   text-decoration: underline;
 

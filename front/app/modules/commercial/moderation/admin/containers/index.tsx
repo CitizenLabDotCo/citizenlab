@@ -174,7 +174,7 @@ const EmptyIcon = styled(Icon)`
 const EmptyMessage = styled.div`
   max-width: 350px;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 500;
   text-align: center;

@@ -26,7 +26,7 @@ const Container = styled.div`
 
 const Topic = styled.div`
   color: ${({ theme }) => theme.colorSecondary};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   padding: 6px 12px;
   margin-right: 5px;

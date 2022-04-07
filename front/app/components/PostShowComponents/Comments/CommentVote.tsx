@@ -61,7 +61,7 @@ const UpvoteIcon = styled(Icon)`
 
 const UpvoteButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   display: flex;
   align-items: center;

@@ -374,6 +374,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer>
               <Input
                 type="email"
+                autocomplete="email"
                 name="email"
                 id="email"
                 value={values.email}

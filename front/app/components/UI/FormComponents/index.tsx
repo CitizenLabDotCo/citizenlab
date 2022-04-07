@@ -107,7 +107,7 @@ export const FormLabelStyled = styled(Box)`
 
 export const FormSubtextStyled = styled.div`
   width: 100%;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   color: ${colors.label};
   font-weight: 300;
   line-height: normal;

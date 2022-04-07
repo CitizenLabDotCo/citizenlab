@@ -50,7 +50,7 @@ const MessageContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 400;
 `;
 

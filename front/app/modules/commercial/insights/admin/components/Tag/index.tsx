@@ -60,7 +60,7 @@ const StyledTag = styled(Box)<{ variant: Variant; size: Size }>`
   ${({ variant, onClick, theme, size }) => css`
     border-radius: ${theme.borderRadius};
     cursor: default;
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     font-weight: normal;
     display: inline-block;
     padding: 4px 12px;

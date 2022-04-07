@@ -16,6 +16,7 @@ type Props = {
   canManageManualCampaigns: boolean | null;
   manualEmailingEnabled: boolean | null;
   automatedEmailingEnabled: boolean | null;
+  textingEnabled: boolean | null;
 };
 
 interface State {}
@@ -30,13 +31,20 @@ class MessagingDashboard extends React.PureComponent<
       location: { pathname },
     } = this.props;
     const tabs: any = [];
+
     if (
       this.props.canManageManualCampaigns &&
       this.props.manualEmailingEnabled
     ) {
       tabs.push({
-        label: formatMessage(messages.tabCustom),
+        label: formatMessage(messages.tabCustomEmail),
         url: '/admin/messaging/emails/custom',
+      });
+    }
+    if (this.props.textingEnabled) {
+      tabs.push({
+        label: formatMessage(messages.tabTexting),
+        url: '/admin/messaging/texting',
       });
     }
     if (
@@ -44,7 +52,7 @@ class MessagingDashboard extends React.PureComponent<
       this.props.automatedEmailingEnabled
     ) {
       tabs.push({
-        label: formatMessage(messages.tabAutomated),
+        label: formatMessage(messages.tabAutomatedEmails),
         url: '/admin/messaging/emails/automated',
       });
     }
@@ -70,6 +78,9 @@ class MessagingDashboard extends React.PureComponent<
             title: formatMessage(messages.titleMessaging),
             // note: update subtitle once SMS feature is live.
             // right now it's accurate in only referring to email functionality
+            // It may even be better to make the subtitle content sensitive to each of the possible messaging features
+            // and display different copy depending on which messaging feature(s) is/are active:
+            // Manual emails / automated emails / SMS
             subtitle: formatMessage(messages.subtitleEmails),
           }}
           tabs={this.tabs()}
@@ -102,6 +113,7 @@ const Data = adopt<Props>({
   automatedEmailingEnabled: (
     <GetFeatureFlag name="automated_emailing_control" />
   ),
+  textingEnabled: <GetFeatureFlag name="texting" />,
 });
 
 export default (inputProps) => (

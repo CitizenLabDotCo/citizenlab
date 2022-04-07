@@ -41,7 +41,7 @@ const StyledDropdownListItem = styled(DropdownListItem)`
 `;
 
 const StyledLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   color: ${colors.label};
   text-align: left;
@@ -88,7 +88,7 @@ const ProjectsDropdown = ({
     <DropdownWrapper>
       <Button
         buttonStyle="secondary-outlined"
-        fontSize={`${fontSizes.small}px`}
+        fontSize={`${fontSizes.s}px`}
         padding="4px 6px"
         data-testid="insightsProjectDropdown"
         icon="link"

@@ -54,7 +54,7 @@ const Container = styled.div`
 const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
 `;
@@ -145,7 +145,7 @@ const Toggles = styled.div`
 const LocaleSwitcherLabelText = styled.span`
   font-weight: 500;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
 `;
 
 const ToggleContainer = styled.div`

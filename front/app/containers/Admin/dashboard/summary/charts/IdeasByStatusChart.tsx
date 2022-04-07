@@ -5,7 +5,7 @@ import { isEmpty, map, orderBy } from 'lodash-es';
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // styling
 import { withTheme } from 'styled-components';
@@ -13,22 +13,13 @@ import { withTheme } from 'styled-components';
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
-  BarChart,
-  Bar,
-  Tooltip,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  Cell,
-  LabelList,
-} from 'recharts';
-import {
-  NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
+import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import { Tooltip, LabelList } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -63,15 +54,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 
   render() {
-    const {
-      chartFill,
-      chartLabelSize,
-      chartLabelColor,
-      barHoverColor,
-      animationBegin,
-      animationDuration,
-      barSize,
-    } = this.props['theme'];
+    const { chartFill, barSize } = this.props['theme'];
     const {
       currentGroupFilterLabel,
       currentGroupFilter,
@@ -103,71 +86,23 @@ export class IdeasByStatusChart extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {noData ? (
-            <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
-            </NoDataContainer>
-          ) : (
-            <ResponsiveContainer
-              height={
-                sortedByValue.length > 1 ? sortedByValue.length * 50 : 100
-              }
-            >
-              <BarChart
-                data={sortedByValue}
-                layout="vertical"
-                ref={this.currentChart}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 10,
-                  bottom: 5,
-                }}
-              >
-                <Bar
-                  dataKey="value"
-                  name={unitName}
-                  fill={chartFill}
-                  barSize={barSize}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                >
-                  <LabelList
-                    position="right"
-                    fontSize={chartLabelSize}
-                    fill={chartLabelColor}
-                  />
-                  {sortedByValue.map((entry, index) => {
-                    return (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={(entry.color && entry.color) || chartFill}
-                        opacity={0.8}
-                      />
-                    );
-                  })}
-                </Bar>
-                <YAxis
-                  dataKey="name"
-                  type="category"
-                  width={150}
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tickLine={false}
-                />
-                <XAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  type="number"
-                  tick={{ transform: 'translate(0, 7)' }}
-                />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{ fill: barHoverColor }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
+          <BarChart
+            height={sortedByValue.length > 1 ? sortedByValue.length * 50 : 100}
+            data={sortedByValue}
+            layout="horizontal"
+            innerRef={this.currentChart}
+            margin={DEFAULT_MARGIN}
+            mapping={{ fill: 'color' }}
+            bars={{
+              name: unitName,
+              fill: chartFill,
+              size: barSize,
+              opacity: 0.8,
+            }}
+            yaxis={{ width: 150, tickLine: false }}
+            renderLabels={(props) => <LabelList {...props} position="right" />}
+            renderTooltip={(props) => <Tooltip {...props} />}
+          />
         </GraphCardInner>
       </GraphCard>
     );

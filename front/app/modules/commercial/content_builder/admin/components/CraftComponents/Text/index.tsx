@@ -33,6 +33,7 @@ const TextSettings = () => {
     <Box background="#ffffff" marginBottom="20px">
       <QuillEditor
         noImages
+        noVideos
         id="quill-editor"
         value={text}
         onChange={(value) => {

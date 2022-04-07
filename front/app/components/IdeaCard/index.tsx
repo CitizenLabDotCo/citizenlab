@@ -44,7 +44,7 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const Body = styled.div`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 300;
   color: ${colors.label};
   display: -webkit-box;
@@ -59,7 +59,7 @@ const Body = styled.div`
 `;
 
 const StyledUserName = styled(UserName)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   color: ${colors.label};
   font-weight: 500;

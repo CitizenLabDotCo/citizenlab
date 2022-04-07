@@ -1,0 +1,212 @@
+require 'rails_helper'
+
+# These tests do not verify the response bodies. See the acceptance tests for that.
+# The purpose of these tests is to describe that the side fx service hooks are triggered.
+
+RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, type: :controller do
+  routes { ContentBuilder::Engine.routes }
+  let(:user) { create(:admin) }
+
+  before do
+    token = Knock::AuthToken.new(payload: user.to_token_payload).token
+    request.headers['Authorization'] = "Bearer #{token}"
+  end
+
+  describe 'upsert for create' do
+    let(:project) { create(:project) }
+    let(:project_id) { project.id }
+    let(:code) { 'project_description' }
+
+    context 'when saving is successful' do
+      it 'triggers before_create and after_create hooks on the side fx service around saving the layout' do
+        attributes = {
+          content_buildable_type: Project.name,
+          content_buildable_id: project_id,
+          code: code,
+          enabled: true
+        }
+        layout = ::ContentBuilder::Layout.new(attributes)
+        expect(::ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
+        service = controller.send(:side_fx_service)
+
+        expect(service).to receive(:before_create).with(
+          layout,
+          user
+        ).ordered.and_call_original
+        expect(layout).to receive(:save).ordered.and_call_original
+        expect(service).to receive(:after_create).with(
+          layout,
+          user
+        ).ordered.and_call_original
+
+        params = {
+          project_id: project_id,
+          code: code,
+          content_builder_layout: { enabled: true }
+        }
+        post :upsert, params: params, format: :json
+        expect(response.status).to eq(201)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+      end
+    end
+
+    context 'when saving is unsuccessful' do
+      it 'triggers the before_create hook before saving, but not the after_create hook after saving' do
+        attributes = {
+          content_buildable_type: Project.name,
+          content_buildable_id: project_id,
+          code: code,
+          enabled: true
+        }
+        layout = ::ContentBuilder::Layout.new(attributes)
+        expect(::ContentBuilder::Layout).to receive(:new).with(attributes).ordered.and_return layout
+        service = controller.send(:side_fx_service)
+
+        expect(service).to receive(:before_create).with(
+          an_instance_of(::ContentBuilder::Layout),
+          user
+        ).ordered.and_call_original
+        expect(layout).to receive(:save).ordered.and_return false
+        expect(service).not_to receive(:after_create)
+
+        params = {
+          project_id: project_id,
+          code: code,
+          content_builder_layout: { enabled: true }
+        }
+        post :upsert, params: params, format: :json
+        expect(response.status).to eq(422)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+      end
+    end
+  end
+
+  describe 'upsert for update' do
+    let(:layout) { create(:layout) }
+    let(:project_id) { layout.content_buildable_id }
+    let(:code) { layout.code }
+
+    context 'when saving is successful' do
+      it 'triggers the before_update and after_update hooks on the side fx service around saving the layout' do
+        attributes = {
+          content_buildable_type: Project.name,
+          content_buildable_id: project_id,
+          code: code
+        }
+        service = controller.send(:side_fx_service)
+
+        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(service).to receive(:before_update).with(
+          layout,
+          user
+        ).ordered.and_call_original
+        expect(layout).to receive(:save).ordered.and_return true
+        expect(service).to receive(:after_update).with(
+          layout,
+          user
+        ).ordered.and_call_original
+
+        params = {
+          project_id: project_id,
+          code: code,
+          content_builder_layout: { enabled: false }
+        }
+        post :upsert, params: params, format: :json
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+      end
+    end
+
+    context 'when saving is unsuccessful' do
+      it 'triggers the before_update hook before saving, but not the after_update hook after saving' do
+        attributes = {
+          content_buildable_type: Project.name,
+          content_buildable_id: project_id,
+          code: code
+        }
+        service = controller.send(:side_fx_service)
+
+        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+        expect(service).to receive(:before_update).with(
+          layout,
+          user
+        ).ordered.and_call_original
+        expect(layout).to receive(:save).ordered.and_return false
+        expect(service).not_to receive(:after_update)
+
+        params = {
+          project_id: project_id,
+          code: code,
+          content_builder_layout: { enabled: false }
+        }
+        post :upsert, params: params, format: :json
+        expect(response.status).to eq(422)
+        expect(response.content_type).to eq 'application/json; charset=utf-8'
+      end
+    end
+  end
+
+  describe 'destroy' do
+    let(:layout) { create(:layout) }
+    let(:project_id) { layout.content_buildable_id }
+    let(:code) { layout.code }
+
+    context 'when destroying is successful' do
+      it 'triggers before_destroy and after_destroy hooks on the side fx service around destroying the layout' do
+        attributes = {
+          content_buildable_type: Project.name,
+          content_buildable_id: project_id,
+          code: code
+        }
+        service = controller.send(:side_fx_service)
+        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+
+        expect(service).to receive(:before_destroy).with(
+          layout,
+          user
+        ).ordered.and_call_original
+        expect(layout).to receive(:destroy).ordered.and_call_original
+        expect(service).to receive(:after_destroy).with(
+          layout,
+          user
+        ).ordered.and_call_original
+
+        params = {
+          project_id: project_id,
+          code: code
+        }
+        delete :destroy, params: params, format: :json
+        expect(response.status).to eq(200)
+        expect(response.content_type).to eq 'application/json'
+      end
+    end
+
+    context 'when destroying is unsuccessful' do
+      it 'triggers the before_destroy hook before destroying, but not the after_destroy hook after destroying' do
+        attributes = {
+          content_buildable_type: Project.name,
+          content_buildable_id: project_id,
+          code: code
+        }
+        service = controller.send(:side_fx_service)
+        expect(::ContentBuilder::Layout).to receive(:find_by!).with(attributes).ordered.and_return layout
+
+        expect(service).to receive(:before_destroy).with(
+          layout,
+          user
+        ).ordered.and_call_original
+        expect(layout).to receive(:destroy).ordered.and_return layout
+        expect(layout).to receive(:destroyed?).ordered.and_return false
+        expect(service).not_to receive(:after_destroy)
+
+        params = {
+          project_id: project_id,
+          code: code
+        }
+        delete :destroy, params: params, format: :json
+        expect(response.status).to eq(500)
+        expect(response.content_type).to eq 'application/json'
+      end
+    end
+  end
+end

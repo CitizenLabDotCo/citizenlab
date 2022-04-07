@@ -61,7 +61,7 @@ const EmptyMessageTitle = styled.h2`
   margin-bottom: 5px;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large}px;
+    font-size: ${fontSizes.l}px;
   `};
 `;
 

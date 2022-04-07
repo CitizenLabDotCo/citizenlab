@@ -3,32 +3,21 @@ import React from 'react';
 import { isEmpty } from 'lodash-es';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-
-// styling
-import { withTheme } from 'styled-components';
 
 // components
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 import {
-  BarChart,
-  Bar,
-  Tooltip,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  LabelList,
-} from 'recharts';
-import {
   IGraphUnit,
-  NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCard,
   GraphCardInner,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
+import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import { Tooltip, LabelList } from 'recharts';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -44,7 +33,8 @@ interface DataProps {
 
 export interface ISupportedDataTypeMap {}
 
-export type ISupportedDataType = ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
+export type ISupportedDataType =
+  ISupportedDataTypeMap[keyof ISupportedDataTypeMap];
 
 interface InputProps {
   stream: (
@@ -74,14 +64,6 @@ export class BarChartByCategory extends React.PureComponent<
     this.currentChart = React.createRef();
   }
   render() {
-    const {
-      newBarFill,
-      chartLabelSize,
-      chartLabelColor,
-      barHoverColor,
-      animationBegin,
-      animationDuration,
-    } = this.props['theme'];
     const {
       currentGroupFilterLabel,
       currentGroupFilter,
@@ -113,62 +95,21 @@ export class BarChartByCategory extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          {noData ? (
-            <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
-            </NoDataContainer>
-          ) : (
-            <ResponsiveContainer>
-              <BarChart
-                data={serie}
-                ref={this.currentChart}
-                layout="horizontal"
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 10,
-                  bottom: 5,
-                }}
-              >
-                <Bar
-                  dataKey="value"
-                  name={unitName}
-                  fill={newBarFill}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                  isAnimationActive={true}
-                >
-                  <LabelList
-                    fill={chartLabelColor}
-                    fontSize={chartLabelSize}
-                    position="top"
-                  />
-                </Bar>
-                <XAxis
-                  dataKey="name"
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                  tick={{ transform: 'translate(0, 7)' }}
-                />
-                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{
-                    fill: barHoverColor,
-                  }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          )}
+          <BarChart
+            data={serie}
+            innerRef={this.currentChart}
+            margin={DEFAULT_MARGIN}
+            bars={{ name: unitName }}
+            renderLabels={(props) => <LabelList {...props} position="top" />}
+            renderTooltip={(props) => <Tooltip {...props} />}
+          />
         </GraphCardInner>
       </GraphCard>
     );
   }
 }
 
-const BarChartByCategoryWithHoCs = injectIntl<Props>(
-  withTheme(BarChartByCategory as any) as any
-);
+const BarChartByCategoryWithHoCs = injectIntl<Props>(BarChartByCategory);
 
 const WrappedBarChartByCategory = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>

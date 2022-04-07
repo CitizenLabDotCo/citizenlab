@@ -22,7 +22,7 @@ const UserWrapper = styled.div`
   display: flex;
   align-items: center;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   margin-top: -4px;
   margin-bottom: -6px;
 
@@ -60,7 +60,7 @@ const PostedBy = memo<Props & InjectedIntlProps>(
           isLinkToProfile={true}
           underline={true}
           color={colors.label}
-          fontSize={fontSizes.small}
+          fontSize={fontSizes.s}
         />
       );
       const date = (

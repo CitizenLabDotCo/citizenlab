@@ -43,7 +43,7 @@ const HomeIcon = styled(Icon)`
 
 const Separator = styled.div`
   margin: 0 15px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 300;
   line-height: normal;
 
@@ -53,7 +53,7 @@ const Separator = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   color: ${colors.label};
   text-decoration: none;
   white-space: nowrap;

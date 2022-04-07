@@ -135,7 +135,7 @@ const CommentIcon = styled(Icon)`
 
 const FooterValue = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small + 1}px;
+  font-size: ${fontSizes.s + 1}px;
   line-height: normal;
   font-weight: 400;
 `;

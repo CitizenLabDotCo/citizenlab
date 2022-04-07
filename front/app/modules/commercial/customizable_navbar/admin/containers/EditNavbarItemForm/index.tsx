@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
-import { Formik, FormikProps } from 'formik';
+import { Formik, FormikActions, FormikProps } from 'formik';
 
 // components
 import NavbarItemForm, {
@@ -42,7 +42,7 @@ const EditNavbarItemForm = ({ params: { navbarItemId } }: WithRouterProps) => {
 
   const handleSubmit = async (
     values: FormValues,
-    { setSubmitting, setStatus }
+    { setSubmitting, setStatus }: FormikActions<FormValues>
   ) => {
     try {
       await updateNavbarItem(

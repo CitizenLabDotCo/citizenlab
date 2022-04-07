@@ -159,7 +159,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
               <div>
                 <QuillEditedContent
                   textColor={theme.colorText}
-                  fontSize={windowWidth <= 1439 ? 'base' : 'medium'}
+                  fontSize="m"
                   className="e2e-folder-description"
                 >
                   <T
@@ -188,7 +188,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                       textColor={colors.label}
                       textHoverColor={theme.colorText}
                       fontWeight="500"
-                      fontSize={`${fontSizes.medium}px`}
+                      fontSize={`${fontSizes.m}px`}
                       padding="0"
                     >
                       <FormattedMessage {...messages.readMore} />
@@ -209,7 +209,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                     textColor={colors.label}
                     textHoverColor={theme.colorText}
                     fontWeight="500"
-                    fontSize={`${fontSizes.medium}px`}
+                    fontSize={`${fontSizes.m}px`}
                     padding="0"
                   >
                     <FormattedMessage {...messages.seeLess} />

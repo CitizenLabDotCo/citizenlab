@@ -85,7 +85,8 @@ resource 'Users' do
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
-            "phone_email_pattern" => "phone+__PHONE__@test.com"
+            "phone_email_pattern" => "phone+__PHONE__@test.com",
+            "minimum_length" => 6
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -180,7 +181,8 @@ resource 'Users' do
           settings['password_login'] = {
             'enabled' => true,
             'allowed' => true,
-            'minimum_length' => 5
+            'minimum_length' => 5,
+            'phone' => false
           }
           AppConfiguration.instance.update! settings: settings
         end
@@ -222,7 +224,8 @@ resource 'Users' do
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
-            "phone_email_pattern" => "phone+__PHONE__@test.com"
+            "phone_email_pattern" => "phone+__PHONE__@test.com",
+            "minimum_length" => 6
           }
           AppConfiguration.instance.update!(settings: settings)
         end

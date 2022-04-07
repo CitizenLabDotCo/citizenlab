@@ -32,7 +32,7 @@ const IdeaNotFoundWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 4rem;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 

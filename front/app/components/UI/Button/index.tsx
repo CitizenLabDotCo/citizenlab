@@ -10,7 +10,9 @@ import {
 
 interface Props extends Omit<ButtonProps, 'locale'> {}
 
-interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {}
+interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
+  'data-testid'?: string;
+}
 
 type ButtonStyles = ComponentLibraryButtonStyles;
 

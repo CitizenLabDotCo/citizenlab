@@ -3,7 +3,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 export const SectionTitle = styled.h2`
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   display: flex;
   align-items: baseline;
   margin: 0;

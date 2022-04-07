@@ -201,6 +201,7 @@ export interface IAppConfigurationSettings {
     widget_title?: Multiloc;
   };
   customizable_navbar?: AppConfigurationFeature;
+  texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
 }
 

@@ -38,7 +38,7 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n
@@ -186,8 +186,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
     };
 
     const barStreamObservable = votesByTimeStream(queryParameters).observable;
-    const lineStreamObservable = votesByTimeCumulativeStream(queryParameters)
-      .observable;
+    const lineStreamObservable =
+      votesByTimeCumulativeStream(queryParameters).observable;
     this.combined$ = combineLatest([
       barStreamObservable,
       lineStreamObservable,
@@ -265,11 +265,8 @@ class LineBarChartVotesByTime extends React.PureComponent<
     const { serie } = this.state;
     const formattedNumbers = this.getFormattedNumbers(serie);
     const { className, resolution } = this.props;
-    const {
-      totalNumber,
-      formattedSerieChange,
-      typeOfChange,
-    } = formattedNumbers;
+    const { totalNumber, formattedSerieChange, typeOfChange } =
+      formattedNumbers;
 
     return (
       <GraphCard className={className}>
