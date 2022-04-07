@@ -30,6 +30,11 @@ interface Props {
   className?: string;
 }
 
+export const fallbackMessages = {
+  _blank: messages._blank,
+  outside: messages.otherArea,
+};
+
 const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   const {
     intl: { formatMessage },
@@ -41,14 +46,9 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
 
     const { series, areas } = data;
 
-    const defaultMessages = {
-      _blank: formatMessage(messages._blank),
-      outside: formatMessage(messages.otherArea),
-    };
-
     const parseName = (key, value) =>
-      key in defaultMessages
-        ? defaultMessages[key]
+      key in fallbackMessages
+        ? formatMessage(fallbackMessages[key])
         : localize(value.title_multiloc);
 
     const res = convertDomicileData(areas, series.users, parseName);

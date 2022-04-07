@@ -55,7 +55,14 @@ import {
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { binBirthyear, rename, join } from '../../utils/data';
+import {
+  binBirthyear,
+  rename,
+  join,
+  convertDomicileData,
+  Series,
+} from '../../utils/data';
+import { fallbackMessages } from './AreaChart';
 
 // hooks
 import useUserCustomFields from '../../hooks/useUserCustomFields';
@@ -87,6 +94,13 @@ const customFieldEndpoints = {
     xlsxEndpoint: usersByDomicileXlsxEndpoint,
   },
 };
+
+const joinTotalAndParticipants = (total: Series, participants: Series) =>
+  join(
+    rename(total, { value: 'total' }),
+    rename(participants, { value: 'participants' }),
+    { by: 'name' }
+  );
 
 interface Props {
   customField: IUserCustomFieldData;
@@ -177,11 +191,7 @@ export class CustomFieldsComparison extends React.PureComponent<
         options
       );
 
-      return join(
-        rename(binnedTotal, { value: 'total' }),
-        rename(binnedParticipants, { value: 'participants' }),
-        { by: 'name' }
-      );
+      return joinTotalAndParticipants(binnedTotal, binnedParticipants);
     } else if (customField.attributes.code === 'gender') {
       const res = Object.keys(genderColors).map((gender) => ({
         total: totalSerie.series.users[gender] || 0,
@@ -191,26 +201,23 @@ export class CustomFieldsComparison extends React.PureComponent<
       }));
       return res.length > 0 ? res : null;
     } else if (customField.attributes.code === 'domicile') {
-      const res = map((totalSerie as IUsersByDomicile).areas, (value, key) => ({
-        total: totalSerie.series.users[key] || 0,
-        participants: participantSerie.series.users[key] || 0,
-        name: localize(value.title_multiloc),
-        code: key,
-      }));
+      const parseName = (key, value) =>
+        key in fallbackMessages
+          ? formatMessage(fallbackMessages[key])
+          : localize(value.title_multiloc);
 
-      res.push({
-        total: totalSerie.series.users['_blank'] || 0,
-        participants: participantSerie.series.users['_blank'] || 0,
-        name: formatMessage(messages._blank),
-        code: '_blank',
-      });
-
-      res.push({
-        total: totalSerie.series.users['outside'] || 0,
-        participants: participantSerie.series.users['outside'] || 0,
-        name: formatMessage(messages.otherArea),
-        code: 'outside',
-      });
+      const areas = (totalSerie as IUsersByDomicile).areas;
+      const resTotal = convertDomicileData(
+        areas,
+        totalSerie.series.users,
+        parseName
+      );
+      const resParticipants = convertDomicileData(
+        areas,
+        participantSerie.series.users,
+        parseName
+      );
+      const res = joinTotalAndParticipants(resTotal, resParticipants);
 
       const sortedByParticipants = orderBy(res, 'participants', 'desc');
       return sortedByParticipants;

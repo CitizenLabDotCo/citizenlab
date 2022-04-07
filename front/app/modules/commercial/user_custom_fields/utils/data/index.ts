@@ -5,3 +5,4 @@ export {
   default as convertDomicileData,
   AreaValue,
 } from './convertDomicileData';
+export * from './typings';
