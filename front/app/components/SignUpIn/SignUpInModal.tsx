@@ -1,4 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
+import { signOutAndDeleteAccount } from 'services/auth';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -57,15 +58,6 @@ const SignUpInModal = memo<Props>(
         ? 820
         : 580;
 
-    const verificationWithoutError =
-      signUpActiveStep === 'verification' && metaData?.error !== true;
-
-    const registrationNotCompleted =
-      !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
-
-    const modalCannotBeClosed =
-      verificationWithoutError || registrationNotCompleted;
-
     useEffect(() => {
       if (isMounted()) {
         onMounted?.();
@@ -90,6 +82,13 @@ const SignUpInModal = memo<Props>(
 
     const onClose = () => {
       closeSignUpInModal();
+
+      const signedUpButNotCompleted =
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
+      if (signedUpButNotCompleted) {
+        signOutAndDeleteAccount();
+      }
 
       if (onDeclineInvitation && metaData?.isInvitation) {
         onDeclineInvitation();
