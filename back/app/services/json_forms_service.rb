@@ -97,7 +97,7 @@ class JsonFormsService
     end
   end
 
-  def base_ui_schema_field(field, locale, previousScope)
+  def base_ui_schema_field(field, locale, previousScope = nil)
     {
       type: 'Control',
       scope: "#{previousScope || '#/properties/'}#{field.key}",
