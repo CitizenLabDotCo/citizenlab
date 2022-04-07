@@ -705,6 +705,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Shown on the project card on the home page.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Shown on the project page. Clearly describe what the project is about, what you expect from your users and what they can expect from you.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Something went wrong, please try again later",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Edit description in page builder",
   "app.containers.AdminPage.ProjectDescription.save": "Lagre",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Your changes have been saved.",

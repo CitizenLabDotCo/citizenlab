@@ -1196,7 +1196,6 @@
   "app.containers.UsersEditPage.contactUs": "Une autre raison pour partir ? {feedbackLink} et peut-être pouvons-nous vous aider.",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Nous sommes désolé de vous voir partir.",
   "app.containers.UsersEditPage.deleteMyAccount": "Supprimer mon compte",
-  "app.containers.UsersEditPage.deleteProfileError": "Une erreur est survenue lors de la suppression de votre compte, veuillez réessayer.",
   "app.containers.UsersEditPage.deleteYourAccount": "Supprimer mon compte",
   "app.containers.UsersEditPage.deletionSection": "Supprimer mon compte",
   "app.containers.UsersEditPage.deletionSubtitle": "Cette action est irréversible. Le contenu publié sur la plateforme sera anonymisé. Si vous souhaitez supprimer tout votre contenu, vous pouvez nous contacter à support@citizenlab.co.",

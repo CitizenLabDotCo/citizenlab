@@ -61,6 +61,20 @@ resource 'Texting campaigns' do
       expect(campaign.phone_numbers).to match_array(phone_numbers)
       expect(campaign.message).to eq(message)
     end
+
+    context 'when a phone number is invalid' do
+      let(:phone_numbers) { ['+123'] }
+
+      example_request '[error] Does not create a campaign with invalid phone number' do
+        expect(response_status).to eq 422
+
+        expect(json_response_body.dig(:errors, :phone_numbers).first).to include(
+          :min_length, :max_length, :valid_country_codes, invalid_numbers: phone_numbers, error: 'invalid'
+        )
+        campaign = Texting::Campaign.last
+        expect(campaign).to eq(nil)
+      end
+    end
   end
 
   patch 'web_api/v1/texting_campaigns/:id' do
@@ -74,15 +88,16 @@ resource 'Texting campaigns' do
     end
 
     let(:id) { campaign.id }
-    let(:phone_numbers) { ['+12345678911', '+12345678922'] }
+    let(:phone_numbers) { ['+12345678911', ' +12345678922'] }
     let(:message) { 'Join our platform!' }
 
     example_request 'Update a campaign' do
       expect(response_status).to eq 200
-      expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(phone_numbers)
+      formatted_phone_numbers = ['+12345678911', '+12345678922']
+      expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(formatted_phone_numbers)
       expect(json_response_body.dig(:data, :attributes, :message)).to eq(message)
 
-      expect(campaign.reload.phone_numbers).to match_array(phone_numbers)
+      expect(campaign.reload.phone_numbers).to match_array(formatted_phone_numbers)
       expect(campaign.message).to eq(message)
     end
   end
@@ -94,7 +109,7 @@ resource 'Texting campaigns' do
 
     let(:id) { campaign.id }
 
-    example 'Start sending a campaign' do
+    example 'Send a campaign' do
       twilio_client = Twilio::REST::Client.new
       expect(Twilio::REST::Client).to receive(:new).once.and_return(twilio_client)
       twilio_options = hash_including(body: campaign.message, to: campaign.phone_numbers.first)
@@ -106,7 +121,7 @@ resource 'Texting campaigns' do
       expect(campaign.reload.status).to eq('sending')
     end
 
-    example '[error] Returns an error when there are too many segments in queue' do
+    example '[error] Send when there are too many segments in queue' do
       numbers = Array.new(Texting::Sms.provider.class::SEGMENTS_QUEUE + 1) { |i| "+123456#{10_000 + i}" }
       campaign.update!(phone_numbers: numbers)
 
@@ -115,7 +130,7 @@ resource 'Texting campaigns' do
       expect(campaign.reload.status).to eq('draft')
     end
 
-    example '[error] Returns an error when monthly limit reached for this platform' do
+    example '[error] Send when monthly limit reached for this platform' do
       campaign.update!(message: '1' * 161)
       config = AppConfiguration.instance
       config.settings['texting']['monthly_sms_segments_limit'] = 1
@@ -128,10 +143,16 @@ resource 'Texting campaigns' do
   end
 
   # To test locally without stubs:
-  # 1. Run ngrok
-  # 2. Tenant.find_by(host: 'localhost').update!(host: 'd635-31-179-57-73.ngrok.io')
+  # 1. ngrok http 4000
+  # 2.
+  <<-DOC
+  Tenant.find_by(host: 'localhost').tap(&:switch!)
+  c = AppConfiguration.instance
+  c.settings['texting']['from_number'] = '+1 844 513 0718' # or other number from https://console.twilio.com/us1/develop/phone-numbers?frameUrl=%2Fconsole%2Fphone-numbers%2Fincoming%3Fx-target-region%3Dus1
+  c.update!(host: 'd635-31-179-57-73.ngrok.io')
+  DOC
   # 3. Add to .env-back: OVERRIDE_HOST=d635-31-179-57-73.ngrok.io
-  # 4. Texting::SendCampaignJob.perform_now(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello'))
+  # 4. Texting::SendCampaignJob.perform_now(Texting::Campaign.create!(phone_numbers: ['+YOUR_NUMBER'], message: 'Hello', status: :sending))
   # 5. See the console logs and a message on your phone
   post 'web_api/v1/texting_campaigns/:id/mark_as_sent', document: false do
     let(:campaign) do

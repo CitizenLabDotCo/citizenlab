@@ -3,13 +3,13 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/texting_campaigns`;
 
-export type ITextingCampaignStatuses = 'draft' | 'sending' | 'sent' | 'failed';
+export type TTextingCampaignStatus = 'draft' | 'sending' | 'sent' | 'failed';
 
 export interface ITextingCampaignData {
   id: string;
   attributes: {
     message: string;
-    status: ITextingCampaignStatuses;
+    status: TTextingCampaignStatus;
     sent_at: string;
     created_at: string;
     updated_at: string;

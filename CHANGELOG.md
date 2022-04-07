@@ -2,7 +2,15 @@
 
 ## Next release
 
-/
+### Added
+
+- Added support for the Croatian language to the platform
+
+### Fixed
+
+- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+- Fixed SurveyMonkey container height so survey questions are visible
+- Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
 
 ## 2022-03-29
 

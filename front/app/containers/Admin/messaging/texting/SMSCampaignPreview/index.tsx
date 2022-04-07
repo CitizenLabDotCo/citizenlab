@@ -5,7 +5,7 @@ import Button from 'components/UI/Button';
 import HelmetIntl from 'components/HelmetIntl';
 import TextingHeader from '../components/TextingHeader';
 import Modal from 'components/UI/Modal';
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 
 // utils
 import { withRouter, WithRouterProps } from 'react-router';
@@ -89,6 +89,10 @@ const PhoneMessage = styled.div`
   }
 `;
 
+type SMSCampaignBaseError = {
+  error: 'too_many_total_segments' | 'monthly_limit_reached';
+};
+
 const InformativeTableRow = ({
   title,
   content,
@@ -112,38 +116,54 @@ const InformativeTableRow = ({
   );
 };
 
-const TextMessagePreview = (props: WithRouterProps) => {
+const SMSCampaignPreview = (props: WithRouterProps) => {
   const [confirmationModalIsVisible, setConfirmationModalVisible] =
     useState(false);
   const [deleteCampaignModalIsVisible, setDeleteCampaignModalVisible] =
     useState(false);
-  const [sendCampaignButtonIsDisabled, setSendCampaignButtonIsDisabled] =
+  const [hasTooManySegmentsError, setHasTooManySegmentsError] = useState(false);
+  const [hasMonthlyLimitReachedError, setHasMonthlyLimitReachedError] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { campaignId } = props.params;
   const campaign = useTextingCampaign(campaignId);
 
   const confirmSendTextingCampaign = async () => {
-    setSendCampaignButtonIsDisabled(true);
-    // console.log('disable send button here');
     try {
+      setIsLoading(true);
       await sendTextingCampaign(campaignId);
-      // redirect to in-progress campaign page
       const url = `/admin/messaging/texting/${campaignId}`;
       clHistory.replace(url);
     } catch (e) {
-      // console.log('fail', e);
+      setIsLoading(false);
+      const smsCampaignBaseErrors: SMSCampaignBaseError[] | undefined =
+        e.json.errors.base;
+      const tooManySegmentsError = smsCampaignBaseErrors?.find(
+        (smsCampaignBaseError) =>
+          smsCampaignBaseError.error === 'too_many_total_segments'
+      );
+      const monthlyLimitReachedError = smsCampaignBaseErrors?.find(
+        (smsCampaignBaseError) =>
+          smsCampaignBaseError.error === 'monthly_limit_reached'
+      );
+      if (tooManySegmentsError) {
+        setHasTooManySegmentsError(true);
+      }
+      if (monthlyLimitReachedError) {
+        setHasMonthlyLimitReachedError(true);
+      }
     }
   };
 
   const confirmDeleteTextingCampaign = async () => {
     try {
+      setIsLoading(true);
       await deleteTextingCampaign(campaignId);
-      // console.log('successful delete', result);
       const url = `/admin/messaging/texting`;
       clHistory.replace(url);
     } catch (e) {
-      // console.log('fail', e);
+      setIsLoading(false);
     }
   };
 
@@ -172,6 +192,12 @@ const TextMessagePreview = (props: WithRouterProps) => {
   if (isNilOrError(campaign)) return null;
 
   const { message, phone_numbers } = campaign.attributes;
+  const segmentCount = Math.ceil(message.length / 160);
+  const segmentPlural = segmentCount === 1 ? 'segment' : 'segments';
+  const phoneNumberPlural =
+    phone_numbers.length === 1 ? 'phone number' : 'phone numbers';
+  const sendCampaignButtonIsDisabled =
+    hasTooManySegmentsError || hasMonthlyLimitReachedError;
 
   return (
     <>
@@ -183,7 +209,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
         }}
       />
       <TextingHeader
-        headerMessage="Preview SMS message"
+        headerMessage="Preview SMS"
         onClickGoBack={goBackToCampaignView}
         showHorizontalRule
       >
@@ -208,13 +234,11 @@ const TextMessagePreview = (props: WithRouterProps) => {
         <tbody>
           <InformativeTableRow
             title="Sending to:"
-            content={`${phone_numbers.length} people`}
+            content={`${phone_numbers.length} ${phoneNumberPlural}`}
           />
           <InformativeTableRow
             title="Usage"
-            content={`${message.length} Characters (${Math.ceil(
-              message.length / 160
-            )} segments)`}
+            content={`${message.length} characters (${segmentCount} ${segmentPlural})`}
           />
         </tbody>
       </StatusTable>
@@ -228,7 +252,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
           border="21px solid black"
           borderRadius="33px"
           position="relative"
-          marginBottom="25px"
+          marginBottom="35px"
         >
           {/* Phone Bezel */}
           <Box
@@ -258,12 +282,12 @@ const TextMessagePreview = (props: WithRouterProps) => {
       <Modal
         opened={confirmationModalIsVisible}
         close={closeSendConfirmationModal}
-        header={'Confirm Text Sending'}
+        header={'Confirm sending SMS'}
       >
         <Box padding="30px">
           <SendNowWarning>
-            Do you want to send this message to {phone_numbers.length} people
-            now?
+            Do you want to send this message to {phone_numbers.length}{' '}
+            {phoneNumberPlural} now?
           </SendNowWarning>
           <Box
             display="flex"
@@ -283,10 +307,15 @@ const TextMessagePreview = (props: WithRouterProps) => {
               icon="send"
               iconPos="right"
               disabled={sendCampaignButtonIsDisabled}
+              processing={isLoading}
             >
               Send Now
             </StyledModalButton>
           </Box>
+          {hasTooManySegmentsError && <Error text="Too many segments error" />}
+          {hasMonthlyLimitReachedError && (
+            <Error text="Monthly limits exceeded error" />
+          )}
         </Box>
       </Modal>
 
@@ -294,7 +323,7 @@ const TextMessagePreview = (props: WithRouterProps) => {
       <Modal
         opened={deleteCampaignModalIsVisible}
         close={closeDeleteModal}
-        header={'Delete Draft Text'}
+        header={'Delete draft SMS'}
       >
         <Box padding="30px">
           <SendNowWarning>
@@ -327,4 +356,4 @@ const TextMessagePreview = (props: WithRouterProps) => {
   );
 };
 
-export default withRouter(TextMessagePreview);
+export default withRouter(SMSCampaignPreview);

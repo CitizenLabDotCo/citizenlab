@@ -705,6 +705,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "يظهر هذا الوصف في النظرة العامة على المشروع في الصفحة الرئيسية.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "يظهر هذا الوصف في صفحة المعلومات الخاصة بالمشروع.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "حدث خطأ ما. يُرجى المحاولة مجددًا.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Edit description in page builder",
   "app.containers.AdminPage.ProjectDescription.save": "حفظ",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "تم حفظ التغييرات.",

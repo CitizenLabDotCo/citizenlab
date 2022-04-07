@@ -16,10 +16,9 @@ module Texting
     enum status: {
       draft: 'draft',
       sending: 'sending',
+      failed: 'failed',
       sent: 'sent'
     }.freeze
-
-    before_validation :format_phone_numbers
 
     validates :phone_numbers, :message, :status, presence: true
     # https://support.twilio.com/hc/en-us/articles/360033806753-Maximum-Message-Length-with-Twilio-Programmable-Messaging
@@ -35,23 +34,28 @@ module Texting
            .where('sent_at > ?', Time.zone.now.beginning_of_month).sum(&:segments_count)
     end
 
+    def phone_numbers=(value)
+      new_value = value.map(&:strip).uniq { |number| Texting::PhoneNumber.normalize(number) }
+      super(new_value)
+    end
+
     def segments_count
       phone_numbers.count * Sms.segments_count(message)
     end
 
     private
 
-    # we don't want the same recipient to get 2 messages
-    def format_phone_numbers
-      self.phone_numbers = phone_numbers.uniq { |number| Texting::PhoneNumber.normalize(number) }
-    end
-
     def validate_phone_numbers
       return unless phone_numbers_changed?
 
       codes = AppConfiguration.instance.settings('texting', 'recipient_country_calling_codes')
       invalid_numbers = phone_numbers.reject { |number| Texting::PhoneNumber.valid?(number, country_codes: codes) }
-      errors.add(:phone_numbers, :invalid, invalid_numbers: invalid_numbers) if invalid_numbers.any?
+      return unless invalid_numbers.any?
+
+      options = Texting::PhoneNumber.requirements(country_codes: codes).merge(invalid_numbers: invalid_numbers)
+      # This error is dealt with in handleSubmit 
+      # of front/app/containers/Admin/messaging/texting/components/SMSCampaignForm.tsx
+      errors.add(:phone_numbers, :invalid, options)
     end
   end
 end

@@ -5,7 +5,7 @@ import {
 } from 'services/textingCampaigns';
 import { isNilOrError } from 'utils/helperUtils';
 
-export default function useTextingCampaigns(campaignId) {
+export default function useTextingCampaign(campaignId: string) {
   const [textingCampaign, setTextingCampaign] = useState<
     ITextingCampaignData | undefined | null | Error
   >(undefined);

@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { useState, memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
 
@@ -89,6 +89,8 @@ interface Props {
 
 const ProjectHeader = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
+    const [moduleActive, setModuleActive] = useState(false);
+
     const locale = useLocale();
     const project = useProject({ projectId });
     const authUser = useAuthUser();
@@ -99,6 +101,8 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
       const userCanEditProject =
         !isNilOrError(authUser) &&
         canModerateProject(project.id, { data: authUser });
+
+      const setModuleToActive = () => setModuleActive(true);
 
       return (
         <Container className={className || ''}>
@@ -140,7 +144,11 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
               projectId={projectId}
               hasHeaderImage={!!projectHeaderImageLargeUrl}
             />
-            <ProjectInfo projectId={projectId} />
+            {!moduleActive && <ProjectInfo projectId={projectId} />}
+            <Outlet
+              id="app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder"
+              onMount={setModuleToActive}
+            />
           </ContentContainer>
         </Container>
       );
