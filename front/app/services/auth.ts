@@ -7,7 +7,6 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import eventEmitter from 'utils/eventEmitter';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
