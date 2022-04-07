@@ -9,7 +9,7 @@ import { Table, Input, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
-import { Icon } from '@citizenlab/cl2-component-library';
+import { Icon, Label } from '@citizenlab/cl2-component-library';
 import Row from './Row';
 
 // resources
@@ -122,7 +122,11 @@ class InvitesTable extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']}>
           <HeaderContainer>
+            <Label htmlFor="search-input" hidden>
+              <FormattedMessage {...messages.searchForUsers} />
+            </Label>
             <Input
+              id="search-input"
               icon="search"
               onChange={this.handleChangeSearchTerm}
               size="large"
