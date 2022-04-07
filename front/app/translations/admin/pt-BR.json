@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Sucesso",
   "app.components.admin.FormikSubmitWrapper.messageError": "Ocorreu um erro ao salvar",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Salvo com sucesso",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "1 entrada",
   "app.components.admin.PostManager.PostPreview.assignee": "Atribuído",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancelar edição",
