@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash-es';
 // components
 import {
   ResponsiveContainer,
-  BarChart as _BarChart,
+  BarChart as RechartsBarChart,
   Bar,
   XAxis,
   YAxis,
@@ -105,7 +105,7 @@ const BarChart = ({
 
   return (
     <ResponsiveContainer className={className} width={width} height={height}>
-      <_BarChart
+      <RechartsBarChart
         data={data}
         layout={rechartsLayout}
         margin={margin}
@@ -150,7 +150,7 @@ const BarChart = ({
           fontSize={chartLabelSize}
           {...yaxis}
         />
-      </_BarChart>
+      </RechartsBarChart>
     </ResponsiveContainer>
   );
 };
