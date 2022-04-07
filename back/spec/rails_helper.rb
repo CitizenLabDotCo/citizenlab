@@ -71,6 +71,7 @@ RSpec.configure do |config|
   config.include GeneralHelper
   config.include ApiHelper
   config.include ApiAuthenticationHelper
+  config.include AcceptanceHelper
   config.include ImageHelper
   config.include TenantHelper
   config.include AppConfigurationHelper

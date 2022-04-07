@@ -1,15 +1,15 @@
 module AcceptanceHelper
-  # def json_response_body
-  #   json_parse(response_body)
-  # end
+  def json_response_body
+    json_parse(response_body)
+  end
 
-  # def response_data
-  #   json_response_body[:data]
-  # end
+  def response_data
+    json_response_body[:data]
+  end
 
-  # def response_ids
-  #   response_data.map { |record| record[:id] }
-  # end
+  def response_ids
+    response_data.map { |record| record[:id] }
+  end
 
   # def response_length
   #   response_data.length
