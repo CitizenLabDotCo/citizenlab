@@ -298,11 +298,16 @@ class App extends PureComponent<Props, State> {
         // But in that case, componentDidUpdate is somehow called before
         // the modal is closed which overwrites the metaData.
         // This slightly dirty hack covers that case.
-        if (metaData) return;
-
-        setTimeout(() => {
-          this.forceUpdate();
-        }, 1);
+        if (metaData) {
+          return;
+        } else {
+          // if metaData is undefined, it means we're closing
+          // the sign up/in modal.
+          this.setState({ signUpInModalMounted: false });
+          setTimeout(() => {
+            this.forceUpdate();
+          }, 1);
+        }
       }),
     ];
   }
