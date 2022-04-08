@@ -41,7 +41,16 @@ resource 'Confirmations' do
 
       example 'returns an code.blank error code when no code is passed' do
         do_request(confirmation: { code: nil })
-        expect(response_errors_for(:code, :blank)).to be_present
+
+        expect(status).to eq 422
+        json_response = json_parse response_body
+        expect(json_response).to include(
+          errors: hash_including(
+            code: array_including(
+              { error: 'blank' }
+            )
+          )
+        )
       end
 
       example 'returns an unprocessable entity status when the code is invalid' do
@@ -51,7 +60,16 @@ resource 'Confirmations' do
 
       example 'returns an code.invalid error code when the code is invalid' do
         do_request(confirmation: { code: 'badcode' })
-        expect(response_errors_for(:code, :invalid)).to be_present
+
+        expect(status).to eq 422
+        json_response = json_parse response_body
+        expect(json_response).to include(
+          errors: hash_including(
+            code: array_including(
+              { error: 'invalid' }
+            )
+          )
+        )
       end
     end
   end

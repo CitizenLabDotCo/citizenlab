@@ -58,7 +58,15 @@ resource 'Code Resends' do
         end
 
         example 'returns an code.blank error code when no code is passed' do
-          expect(response_errors_for(:email, :invalid)).to be_present
+          expect(status).to eq 422
+          json_response = json_parse response_body
+          expect(json_response).to include(
+            errors: hash_including(
+              email: array_including(
+                hash_including(error: 'invalid')
+              )
+            )
+          )
         end
       end
 
