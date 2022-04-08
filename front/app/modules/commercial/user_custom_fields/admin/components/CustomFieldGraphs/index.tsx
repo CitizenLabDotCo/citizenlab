@@ -6,6 +6,7 @@ import CustomFieldGraph from './CustomFieldGraph';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isEqual } from 'lodash-es';
 
 // hooks
 import useUserCustomFields from '../../../hooks/useUserCustomFields';
@@ -33,8 +34,6 @@ const CustomFieldGraphs = ({
 
   if (
     participationMethods !== ['information'] &&
-    startAt &&
-    endAt &&
     !isNilOrError(userCustomFields)
   ) {
     return (
