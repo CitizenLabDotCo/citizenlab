@@ -705,7 +705,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Wird auf der Projektkarte auf der Startseite angezeigt.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Wird auf der Projektseite angezeigt. Beschreiben Sie klar und deutlich, worum es bei dem Projekt geht, was Sie von Ihren Benutzern erwarten und was diese von Ihnen erwarten können.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Wenn Sie den Seitenersteller verwenden, können Sie erweiterte Layoutoptionen nutzen. Für Sprachen, für die kein Inhalt im Seitenersteller verfügbar ist, wird stattdessen der reguläre Inhalt der Projektbeschreibung angezeigt.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Beschreibung im Page Builder bearbeiten",
   "app.containers.AdminPage.ProjectDescription.save": "Speichern",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
