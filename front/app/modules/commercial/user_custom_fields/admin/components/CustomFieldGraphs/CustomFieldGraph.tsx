@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
-import { Subscription, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -26,7 +26,7 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IUserCustomFieldData } from '../../../services/userCustomFields';
-import { IStream } from 'utils/streams';
+import { IStreamParams, IStream } from 'utils/streams';
 
 // services
 import {
@@ -43,10 +43,18 @@ import {
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import createConvertAndMergeSeries, {
-  TConvertAndMergeSeries,
+  ISupportedDataType,
+  TOutput,
 } from './convertAndMergeSeries';
 
-const customFieldEndpoints = {
+interface ICustomFieldEndpoint {
+  stream: (streamParams: IStreamParams | null) => IStream<ISupportedDataType>;
+  xlsxEndpoint: string;
+}
+
+type TAllowedCode = 'gender' | 'birthyear' | 'domicile';
+
+const customFieldEndpoints: Record<TAllowedCode, ICustomFieldEndpoint> = {
   gender: {
     stream: usersByGenderStream,
     xlsxEndpoint: usersByGenderXlsxEndpoint,
@@ -68,10 +76,6 @@ interface InputProps {
 }
 
 type Props = InputProps & InjectedIntlProps & InjectedLocalized;
-
-interface State {
-  serie: any;
-}
 
 interface TooltipProps {
   payload: { name?: string; value?: string; payload?: { total: number } }[];
@@ -101,147 +105,129 @@ const CustomTooltip = ({
   return null;
 };
 
-export class CustomFieldsGraph extends React.PureComponent<Props, State> {
-  combined$: Subscription;
-  currentChart: React.RefObject<any>;
-  convertAndMergeSeries: TConvertAndMergeSeries;
+const createCombinedStream = (
+  customField: IUserCustomFieldData,
+  currentProject?: string
+) => {
+  const { code } = customField.attributes;
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      serie: null,
-    };
+  const stream =
+    code && code in customFieldEndpoints
+      ? customFieldEndpoints[code as TAllowedCode].stream
+      : usersByRegFieldStream;
 
-    this.currentChart = React.createRef();
+  const totalUsersStream = stream(null, customField.id);
+  const participantsStream = stream(
+    { queryParameters: { project: currentProject } },
+    customField.id
+  );
 
-    const {
-      localize,
-      intl: { formatMessage },
-    } = props;
-    this.convertAndMergeSeries = createConvertAndMergeSeries({
+  return combineLatest([
+    totalUsersStream.observable,
+    participantsStream.observable,
+  ]);
+};
+
+const CustomFieldsGraph = ({
+  customField,
+  currentProject,
+  localize,
+  intl: { formatMessage },
+  className,
+  theme: { barSize },
+}: Props & { theme: any }) => {
+  const [serie, setSerie] = useState<TOutput | null>(null);
+  const currentChartRef = useRef();
+  const convertAndMergeSeriesRef = useRef(
+    createConvertAndMergeSeries({
       localize,
       formatMessage,
-    });
-  }
+    })
+  );
+  const convertAndMergeSeries = convertAndMergeSeriesRef.current;
 
-  componentDidMount() {
-    this.resubscribe();
-  }
+  useEffect(() => {
+    const combinedStream = createCombinedStream(customField, currentProject);
 
-  componentDidUpdate(prevProps: Props) {
-    const { currentProject } = this.props;
+    const subscription = combinedStream.subscribe(
+      ([totalSerie, participantSerie]) => {
+        if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
+          const { code } = customField.attributes;
 
-    if (currentProject !== prevProps.currentProject) {
-      this.resubscribe();
-    }
-  }
+          const convertedAndMergedSeries = convertAndMergeSeries(
+            totalSerie,
+            participantSerie,
+            code
+          );
 
-  componentWillUnmount() {
-    this.combined$.unsubscribe();
-  }
-
-  resubscribe() {
-    const { customField, currentProject } = this.props;
-
-    if (this.combined$) {
-      this.combined$.unsubscribe();
-    }
-    const stream =
-      customFieldEndpoints[customField.attributes?.code || 'no_code']?.stream ||
-      usersByRegFieldStream;
-
-    const totalUsersStream: IStream<any> = stream(null, customField.id);
-    const participantsStream: IStream<any> = stream(
-      { queryParameters: { project: currentProject } },
-      customField.id
-    );
-    this.combined$ = combineLatest([
-      totalUsersStream.observable,
-      participantsStream.observable,
-    ]).subscribe(([totalSerie, participantSerie]) => {
-      if (!isNilOrError(totalSerie) && !isNilOrError(participantSerie)) {
-        const { code } = customField.attributes;
-
-        const convertedAndMergedSeries = this.convertAndMergeSeries(
-          totalSerie,
-          participantSerie,
-          code
-        );
-
-        this.setState({ serie: convertedAndMergedSeries });
+          setSerie(convertedAndMergedSeries);
+        }
       }
-    });
-  }
-  render() {
-    const { serie } = this.state;
-    const {
-      className,
-      customField,
-      intl: { formatMessage },
-      localize,
-      currentProject,
-    } = this.props;
-
-    const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
-
-    const { barSize } = this.props['theme'];
-
-    const xlsxEndpoint =
-      customFieldEndpoints[customField.attributes.code || 'no_code']
-        ?.xlsxEndpoint || usersByRegFieldXlsxEndpoint(customField.id);
-
-    return (
-      <GraphCard className={`dynamicHeight ${className}`}>
-        <GraphCardInner>
-          <GraphCardHeader>
-            <GraphCardTitle>
-              <T value={customField.attributes.title_multiloc} />
-            </GraphCardTitle>
-            {!noData && (
-              <ReportExportMenu
-                name={formatMessage(messages.customFieldTitleExport, {
-                  fieldName: localize(customField.attributes.title_multiloc),
-                })}
-                svgNode={this.currentChart}
-                xlsxEndpoint={xlsxEndpoint}
-                currentProjectFilter={currentProject}
-              />
-            )}
-          </GraphCardHeader>
-          <BarChart
-            height={serie && serie.length > 1 ? serie.length * 50 : 100}
-            data={serie}
-            layout="horizontal"
-            innerRef={this.currentChart}
-            margin={{
-              ...DEFAULT_MARGIN,
-              left: 20,
-            }}
-            bars={{ name: formatMessage(messages.participants), size: barSize }}
-            mapping={{ length: 'participants' }}
-            yaxis={{ width: 150, tickLine: false }}
-            renderTooltip={() => (
-              <>
-                <Tooltip
-                  content={({ active, payload, label }: TooltipProps) => (
-                    <CustomTooltip
-                      label={label}
-                      active={active}
-                      payload={payload}
-                      totalLabel={formatMessage(messages.totalUsers)}
-                    />
-                  )}
-                />
-              </>
-            )}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
-          />
-        </GraphCardInner>
-      </GraphCard>
     );
-  }
-}
+
+    return () => subscription.unsubscribe();
+  }, [customField, currentProject]);
+
+  const noData =
+    !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+
+  const { code } = customField.attributes;
+
+  const xlsxEndpoint =
+    code && code in customFieldEndpoints
+      ? customFieldEndpoints[code as TAllowedCode].xlsxEndpoint
+      : usersByRegFieldXlsxEndpoint(customField.id);
+
+  return (
+    <GraphCard className={`dynamicHeight ${className}`}>
+      <GraphCardInner>
+        <GraphCardHeader>
+          <GraphCardTitle>
+            <T value={customField.attributes.title_multiloc} />
+          </GraphCardTitle>
+          {!noData && (
+            <ReportExportMenu
+              name={formatMessage(messages.customFieldTitleExport, {
+                fieldName: localize(customField.attributes.title_multiloc),
+              })}
+              svgNode={currentChartRef}
+              xlsxEndpoint={xlsxEndpoint}
+              currentProjectFilter={currentProject}
+            />
+          )}
+        </GraphCardHeader>
+        <BarChart
+          height={serie && serie.length > 1 ? serie.length * 50 : 100}
+          data={serie}
+          layout="horizontal"
+          innerRef={currentChartRef}
+          margin={{
+            ...DEFAULT_MARGIN,
+            left: 20,
+          }}
+          bars={{ name: formatMessage(messages.participants), size: barSize }}
+          mapping={{ length: 'participants' }}
+          yaxis={{ width: 150, tickLine: false }}
+          renderTooltip={() => (
+            <>
+              <Tooltip
+                content={({ active, payload, label }: TooltipProps) => (
+                  <CustomTooltip
+                    label={label}
+                    active={active}
+                    payload={payload}
+                    totalLabel={formatMessage(messages.totalUsers)}
+                  />
+                )}
+              />
+            </>
+          )}
+          renderLabels={(props) => <LabelList {...props} position="right" />}
+        />
+      </GraphCardInner>
+    </GraphCard>
+  );
+};
 
 export default injectLocalize<InputProps>(
   injectIntl<InputProps & InjectedLocalized>(

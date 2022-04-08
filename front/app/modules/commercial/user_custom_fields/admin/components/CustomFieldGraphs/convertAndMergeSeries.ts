@@ -23,7 +23,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
 import { InjectedLocalized } from 'utils/localize';
 
-type ISupportedDataType =
+export type ISupportedDataType =
   | IUsersByRegistrationField
   | IUsersByGender
   | IUsersByDomicile
@@ -34,7 +34,7 @@ interface IParameters {
   localize: InjectedLocalized['localize'];
 }
 
-type TOutput = {
+export type TOutput = {
   total: number;
   participants: number;
   name: string;
