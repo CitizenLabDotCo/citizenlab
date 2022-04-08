@@ -705,7 +705,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Se muestra en la ficha de proyecto en la página de inicio.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Se muestra en la página del proyecto. Describa claramente de que se trata el proyecto, qué esperas de los usuarios y lo que pueden esperar de usted.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Algo salió mal, por favor inténtalo más tarde",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "El uso del constructor de páginas le permitirá utilizar opciones de diseño más avanzadas. Para los idiomas en los que no se cuente con contenido en el constructor de páginas, se mostrará en su lugar el contenido normal de la descripción del proyecto.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Editar la descripción en el constructor de páginas",
   "app.containers.AdminPage.ProjectDescription.save": "Guardar",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Los cambios han sido guardados.",
