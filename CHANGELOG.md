@@ -5,14 +5,20 @@
 ### Added
 
 - Added support for the Croatian language to the platform
+- It's now possible can now escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
 
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
-- Fixed SurveyMonkey container height so survey questions are visible
 - Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
 - Fixed accessibility issue in modal window used to report a proposal as spam
 - Fixed accessibility contrast issue for social media buttons
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
 
 ## 2022-03-29
 
