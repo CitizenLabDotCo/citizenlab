@@ -706,7 +706,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Vises på projektkortet på startsiden.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Vises på projektsiden. Beskriv klart og tydeligt, hvad projektet handler om, hvad du forventer af dine brugere, og hvad de kan forvente af dig.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Noget gik galt, prøv venligst igen senere",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Ved at bruge side builderen kan du bruge mere avancerede layoutmuligheder. På sprog, hvor der ikke er noget indhold tilgængeligt i sideopbyggeren, vises det almindelige indhold i projektbeskrivelsen i stedet.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Rediger beskrivelse i side builder",
   "app.containers.AdminPage.ProjectDescription.save": "Gem",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Dine ændringer er blevet gemt.",
