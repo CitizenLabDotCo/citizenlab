@@ -72,14 +72,19 @@ const createConvertAndMergeSeries =
       );
 
       return joinTotalAndParticipants(binnedTotal, binnedParticipants);
-    } else if (code === 'gender') {
+    }
+
+    if (code === 'gender') {
       const res = GENDER_COLUMNS.map((gender) => ({
         total: totalSerie.series.users[gender] || 0,
         participants: participantSerie.series.users[gender] || 0,
         name: formatMessage(messages[gender]),
       }));
+
       return res.length > 0 ? res : null;
-    } else if (code === 'domicile') {
+    }
+
+    if (code === 'domicile') {
       const parseName = (key, value) =>
         key in fallbackMessages
           ? formatMessage(fallbackMessages[key])
@@ -100,19 +105,19 @@ const createConvertAndMergeSeries =
 
       const sortedByParticipants = orderBy(res, 'participants', 'desc');
       return sortedByParticipants;
-    } else {
-      const res = map(
-        (totalSerie as IUsersByRegistrationField).options,
-        (value, key) => ({
-          total: totalSerie.series.users[key] || 0,
-          participants: participantSerie.series.users[key] || 0,
-          name: localize(value.title_multiloc),
-        })
-      );
-
-      const sortedByParticipants = orderBy(res, 'participants', 'desc');
-      return sortedByParticipants;
     }
+
+    const res = map(
+      (totalSerie as IUsersByRegistrationField).options,
+      (value, key) => ({
+        total: totalSerie.series.users[key] || 0,
+        participants: participantSerie.series.users[key] || 0,
+        name: localize(value.title_multiloc),
+      })
+    );
+
+    const sortedByParticipants = orderBy(res, 'participants', 'desc');
+    return sortedByParticipants;
   };
 
 export default createConvertAndMergeSeries;
