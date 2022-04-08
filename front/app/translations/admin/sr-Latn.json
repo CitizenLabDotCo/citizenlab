@@ -706,7 +706,7 @@
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Ovaj opis se prikazuje na pregledu projekata u okviru početne stranice.",
   "app.containers.AdminPage.ProjectDescription.descriptionTooltip": "Ovaj opis se prikazuje na stranici za informacije u okviru projekta.",
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Došlo je do greške. Molimo pokušajte kasnije.",
-  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
+  "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Upotreba kreatora sadržaja omogućiće vam da koristite naprednije opcije rasporeda. Za jezike kod kojih nema dostupnog sadržaja u kreatoru sadržaja, prikazaće se redovan sadržaj opisa projekta.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Uredite opis u kreatoru sadržaja",
   "app.containers.AdminPage.ProjectDescription.save": "Sačuvajte",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Vaše izmene su sačuvane.",
