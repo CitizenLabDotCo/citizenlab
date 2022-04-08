@@ -59,6 +59,10 @@ export default defineMessages({
     id: 'app.components.ConfirmationModal.emailPlaceholder',
     defaultMessage: 'Insert your email here',
   },
+  emailAddress: {
+    id: 'app.components.ConfirmationModal.emailAddress',
+    defaultMessage: 'Email Address',
+  },
   confirmationCodeSent: {
     id: 'app.components.ConfirmationModal.confirmationCodeSent',
     defaultMessage: 'New code sent',

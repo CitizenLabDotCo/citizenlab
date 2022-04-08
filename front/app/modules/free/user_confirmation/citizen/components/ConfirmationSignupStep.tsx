@@ -22,6 +22,7 @@ import { darken } from 'polished';
 import { Icon, Input, Label, Text } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
+import { FormLabel } from 'components/UI/FormComponents';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
@@ -47,11 +48,12 @@ export const FormField = styled.div`
 
 export const StyledLabel = styled(Label)`
   display: block;
-  text-align: center;
+  text-align: left;
 `;
 
 export const StyledText = styled(Text)`
   text-align: center;
+  margin-bottom: 2rem;
 `;
 
 export const LabelTextContainer = styled.div`
@@ -238,20 +240,12 @@ const ConfirmationSignupStep = ({
                 values={{ userEmail: user.attributes.email }}
               />
             </StyledText>
-            <StyledLabel>
-              <LabelTextContainer>
-                <FormattedMessage
-                  {...messages.pleaseInsertYourNewEmail}
-                  values={{ userEmail: user.attributes.email }}
-                />
-              </LabelTextContainer>
-            </StyledLabel>
+            <FormLabel labelMessage={messages.emailAddress} htmlFor="email" />
             <Input
               type="email"
               autocomplete="email"
               value={newEmail}
               onChange={handleEmailChange}
-              placeholder={formatMessage(messages.emailPlaceholder)}
             />
             {apiErrors.email && (
               <Error
