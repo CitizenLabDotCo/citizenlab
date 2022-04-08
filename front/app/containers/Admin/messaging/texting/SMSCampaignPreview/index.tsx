@@ -312,9 +312,11 @@ const SMSCampaignPreview = (props: WithRouterProps) => {
               Send Now
             </StyledModalButton>
           </Box>
-          {hasTooManySegmentsError && <Error text="Too many segments error" />}
+          {hasTooManySegmentsError && (
+            <Error text="Your SMS can't be sent. Please make the message shorter and try again or speak to your GovSuccess manager." />
+          )}
           {hasMonthlyLimitReachedError && (
-            <Error text="Monthly limits exceeded error" />
+            <Error text="Your SMS can't be sent as your platform's monthly limit has been reached. Please try again later or speak to your GovSuccess manager." />
           )}
         </Box>
       </Modal>
