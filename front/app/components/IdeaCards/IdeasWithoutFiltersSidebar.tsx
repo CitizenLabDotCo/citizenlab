@@ -1,4 +1,4 @@
-import React, { PureComponent, lazy, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -12,8 +12,7 @@ import SelectSort from './SortFilterDropdown';
 import ProjectFilterDropdown from 'components/ProjectFilterDropdown';
 import SearchInput from 'components/UI/SearchInput';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-const IdeasMap = lazy(() => import('components/IdeasMap'));
-import IdeasList from './IdeasList';
+import IdeasView from './IdeasView';
 
 // resources
 import GetWindowSize, {
@@ -32,8 +31,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -46,7 +44,6 @@ import {
   ideaDefaultSortMethodFallback,
 } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-import { withRouter, WithRouterProps } from 'react-router';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 const Container = styled.div`
@@ -163,6 +160,7 @@ interface InputProps extends GetIdeasInputProps {
   participationContextType?: IParticipationContextType | null;
   className?: string;
   allowProjectsFilter?: boolean;
+  projectId?: string;
 }
 
 interface DataProps {
@@ -175,70 +173,60 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  selectedView: 'card' | 'map';
-}
+const IdeasWithoutFiltersSidebar = ({
+  showViewToggle = false,
+  defaultView,
+  defaultSortingMethod,
+  windowSize,
+  ideas,
+  className,
+  allowProjectsFilter,
+  project,
+  ideaCustomFieldsSchemas,
+  locale,
+  participationMethod,
+  participationContextId,
+  participationContextType,
+  projectId,
+}: Props) => {
+  const [selectedView, setSelectedView] = useState<'card' | 'map'>('card');
 
-class IdeasWithoutFiltersSidebar extends PureComponent<
-  Props & InjectedIntlProps,
-  State
-> {
-  static defaultProps = {
-    showViewToggle: false,
+  useEffect(() => {
+    setSelectedView(defaultView || 'card');
+  }, [defaultView]);
+
+  const handleSearchOnChange = (search: string) => {
+    ideas.onChangeSearchTerm(search);
   };
 
-  constructor(props: Props & InjectedIntlProps) {
-    super(props);
-    this.state = {
-      selectedView: props.defaultView || 'card',
-    };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.phaseId !== prevProps.phaseId) {
-      this.setState({ selectedView: this.props.defaultView || 'card' });
-    }
-  }
-
-  loadMore = () => {
-    trackEventByName(tracks.loadMoreIdeas);
-    this.props.ideas.onLoadMore();
+  const handleProjectsOnChange = (projectIds: string[]) => {
+    ideas.onChangeProjects(projectIds);
   };
 
-  handleSearchOnChange = (search: string) => {
-    this.props.ideas.onChangeSearchTerm(search);
-  };
-
-  handleProjectsOnChange = (projectIds: string[]) => {
-    this.props.ideas.onChangeProjects(projectIds);
-  };
-
-  handleSortOnChange = (sort: Sort) => {
+  const handleSortOnChange = (sort: Sort) => {
     trackEventByName(tracks.sortingFilter, {
       sort,
     });
-    this.props.ideas.onChangeSorting(sort);
+    ideas.onChangeSorting(sort);
   };
 
-  handleTopicsOnChange = (topics: string[]) => {
+  const handleTopicsOnChange = (topics: string[]) => {
     trackEventByName(tracks.topicsFilter, {
       topics,
     });
-    this.props.ideas.onChangeTopics(topics);
+    ideas.onChangeTopics(topics);
   };
 
-  selectView = (selectedView: 'card' | 'map') => {
-    this.setState({ selectedView });
+  const selectView = (selectedView: 'card' | 'map') => {
+    setSelectedView(selectedView);
   };
 
-  isFieldEnabled = (fieldCode: CustomFieldCodes) => {
+  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
     /*
       If IdeaCards are used in a location that's not inside a project,
       and has no ideaCustomFields settings as such,
       we fall back to true
     */
-
-    const { ideaCustomFieldsSchemas, locale } = this.props;
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       return (
@@ -251,45 +239,35 @@ class IdeasWithoutFiltersSidebar extends PureComponent<
     return true;
   };
 
-  render() {
-    const { selectedView } = this.state;
-    const {
-      participationMethod,
-      participationContextId,
-      participationContextType,
-      defaultSortingMethod,
-      windowSize,
-      ideas,
-      className,
-      allowProjectsFilter,
-      showViewToggle,
-      project,
-    } = this.props;
-    const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
-    const hasIdeas = !isNilOrError(list) && list.length > 0;
-    const locationEnabled = this.isFieldEnabled('location');
-    const topicsEnabled = this.isFieldEnabled('topic_ids');
-    const showViewButtons = !!(locationEnabled && showViewToggle);
-    const showListView =
-      !locationEnabled || (locationEnabled && selectedView === 'card');
-    const showMapView = locationEnabled && selectedView === 'map';
-    const smallerThanBigTablet = !!(
-      windowSize && windowSize <= viewportWidths.largeTablet
-    );
-    const smallerThanSmallTablet = !!(
-      windowSize && windowSize <= viewportWidths.smallTablet
-    );
-    const biggerThanSmallTablet = !!(
-      windowSize && windowSize >= viewportWidths.smallTablet
-    );
-    const biggerThanLargeTablet = !!(
-      windowSize && windowSize >= viewportWidths.largeTablet
-    );
-    const smallerThan1100px = !!(windowSize && windowSize <= 1100);
-    const smallerThanPhone = !!(
-      windowSize && windowSize <= viewportWidths.phone
-    );
+  const {
+    list,
+    hasMore,
+    querying,
+    queryParameters: { phase: phaseId },
+  } = ideas;
 
+  const locationEnabled = isFieldEnabled('location');
+  const topicsEnabled = isFieldEnabled('topic_ids');
+  const showViewButtons = !!(locationEnabled && showViewToggle);
+  const showListView =
+    !locationEnabled || (locationEnabled && selectedView === 'card');
+  const showMapView = locationEnabled && selectedView === 'map';
+  const smallerThanBigTablet = !!(
+    windowSize && windowSize <= viewportWidths.largeTablet
+  );
+  const smallerThanSmallTablet = !!(
+    windowSize && windowSize <= viewportWidths.smallTablet
+  );
+  const biggerThanSmallTablet = !!(
+    windowSize && windowSize >= viewportWidths.smallTablet
+  );
+  const biggerThanLargeTablet = !!(
+    windowSize && windowSize >= viewportWidths.largeTablet
+  );
+  const smallerThan1100px = !!(windowSize && windowSize <= 1100);
+  const smallerThanPhone = !!(windowSize && windowSize <= viewportWidths.phone);
+
+  if (list) {
     return (
       <Container
         id="e2e-ideas-container"
@@ -303,14 +281,14 @@ class IdeasWithoutFiltersSidebar extends PureComponent<
             {showViewButtons && smallerThanSmallTablet && (
               <MobileViewButtons
                 selectedView={selectedView}
-                onClick={this.selectView}
+                onClick={selectView}
               />
             )}
 
             {!showMapView && (
               <StyledSearchInput
                 className="e2e-search-ideas-input"
-                onChange={this.handleSearchOnChange}
+                onChange={handleSearchOnChange}
               />
             )}
           </LeftFilterArea>
@@ -322,21 +300,21 @@ class IdeasWithoutFiltersSidebar extends PureComponent<
               }`}
             >
               <SelectSort
-                onChange={this.handleSortOnChange}
+                onChange={handleSortOnChange}
                 alignment={biggerThanLargeTablet ? 'right' : 'left'}
                 defaultSortingMethod={defaultSortingMethod || null}
               />
               {allowProjectsFilter && (
                 <ProjectFilterDropdown
                   title={<FormattedMessage {...messages.projectFilterTitle} />}
-                  onChange={this.handleProjectsOnChange}
+                  onChange={handleProjectsOnChange}
                 />
               )}
-              {topicsEnabled && (
+              {topicsEnabled && !isNilOrError(project) && (
                 <TopicFilterDropdown
-                  onChange={this.handleTopicsOnChange}
+                  onChange={handleTopicsOnChange}
                   alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={!isNilOrError(project) ? project.id : null}
+                  projectId={project.id}
                 />
               )}
             </DropdownFilters>
@@ -344,54 +322,44 @@ class IdeasWithoutFiltersSidebar extends PureComponent<
             {showViewButtons && !smallerThanSmallTablet && (
               <DesktopViewButtons
                 selectedView={selectedView}
-                onClick={this.selectView}
+                onClick={selectView}
               />
             )}
           </RightFilterArea>
         </FiltersArea>
-        {showListView && list && (
-          <IdeasList
-            ariaLabelledBy={'view-tab-1'}
-            id={'view-panel-1'}
-            querying={querying}
-            onLoadMore={this.props.ideas.onLoadMore}
-            hasMore={hasMore}
-            hasIdeas={hasIdeas}
-            loadingMore={loadingMore}
-            list={list}
-            participationMethod={participationMethod}
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-            tabIndex={0}
-            hideImage={smallerThanBigTablet && biggerThanSmallTablet}
-            hideImagePlaceholder={smallerThanBigTablet}
-            hideIdeaStatus={
-              (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
-            }
-          />
-        )}
-        {showMapView && (
-          <Suspense fallback={false}>
-            <IdeasMap
-              ariaLabelledBy={'view-tab-2'}
-              id={'view-panel-2'}
-              projectIds={queryParameters.projects}
-              phaseId={queryParameters.phase}
-              tabIndex={0}
-            />
-          </Suspense>
-        )}
+        <IdeasView
+          list={list}
+          querying={querying}
+          onLoadMore={ideas.onLoadMore}
+          hasMore={hasMore}
+          loadingMore={querying}
+          hideImage={smallerThanBigTablet && biggerThanSmallTablet}
+          hideImagePlaceholder={smallerThanBigTablet}
+          hideIdeaStatus={
+            (biggerThanLargeTablet && smallerThan1100px) || smallerThanPhone
+          }
+          showListView={showListView}
+          showMapView={showMapView}
+          projectId={projectId}
+          phaseId={phaseId || undefined}
+          participationMethod={participationMethod}
+          participationContextId={participationContextId}
+          participationContextType={participationContextType}
+        />
       </Container>
     );
   }
-}
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  return null;
+};
+
+const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  ideas: ({ render, ...getIdeasInputProps }) => (
+  ideas: ({ render, projectId, ...getIdeasInputProps }) => (
     <GetIdeas
       {...getIdeasInputProps}
+      projectIds={projectId ? [projectId] : 'all'}
       pageSize={24}
       sort={
         getIdeasInputProps.defaultSortingMethod || ideaDefaultSortMethodFallback
@@ -400,28 +368,22 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
       {render}
     </GetIdeas>
   ),
-  project: ({ params, render }) => (
-    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  project: ({ render, projectId }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
   ),
-  ideaCustomFieldsSchemas: ({ project, render }) => {
+  ideaCustomFieldsSchemas: ({ render, projectId }) => {
     return (
-      <GetIdeaCustomFieldsSchemas
-        projectId={!isNilOrError(project) ? project.id : null}
-      >
+      <GetIdeaCustomFieldsSchemas projectId={projectId || null}>
         {render}
       </GetIdeaCustomFieldsSchemas>
     );
   },
 });
 
-const IdeasWithoutFiltersSidebarWithHoCs = injectIntl(
-  IdeasWithoutFiltersSidebar
-);
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
-      <IdeasWithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
+    {(dataProps: DataProps) => (
+      <IdeasWithoutFiltersSidebar {...inputProps} {...dataProps} />
     )}
   </Data>
-));
+);

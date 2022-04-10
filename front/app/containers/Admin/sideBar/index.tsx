@@ -251,15 +251,15 @@ class Sidebar extends PureComponent<
             ),
         },
         {
-          name: 'emails',
-          link: '/admin/emails',
+          name: 'messaging',
+          link: '/admin/messaging',
           iconName: 'emails',
-          message: 'emails',
+          message: 'messaging',
           isActive: (pathName) =>
             pathName.startsWith(
               `${
                 getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/emails`
+              }/admin/messaging`
             ),
         },
         {

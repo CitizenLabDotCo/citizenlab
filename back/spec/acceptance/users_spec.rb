@@ -1,20 +1,17 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
-resource "Users" do
-
-  explanation "Citizens and city administrators."
+resource 'Users' do
+  explanation 'Citizens and city administrators.'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
   end
 
-  context "when not authenticated" do
-
-    get "web_api/v1/users/me" do
-      example_request "[error] Get the authenticated user" do
-        expect(status).to eq(404)
+  context 'when not authenticated' do
+    get 'web_api/v1/users/me' do
+      example_request '[error] Get the authenticated user' do
+        expect(status).to eq 401
       end
     end
 
@@ -88,7 +85,8 @@ resource "Users" do
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
-            "phone_email_pattern" => "phone+__PHONE__@test.com"
+            "phone_email_pattern" => "phone+__PHONE__@test.com",
+            "minimum_length" => 6
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -183,7 +181,8 @@ resource "Users" do
           settings['password_login'] = {
             'enabled' => true,
             'allowed' => true,
-            'minimum_length' => 5
+            'minimum_length' => 5,
+            'phone' => false
           }
           AppConfiguration.instance.update! settings: settings
         end
@@ -225,7 +224,8 @@ resource "Users" do
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
-            "phone_email_pattern" => "phone+__PHONE__@test.com"
+            "phone_email_pattern" => "phone+__PHONE__@test.com",
+            "minimum_length" => 6
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -692,23 +692,15 @@ resource "Users" do
         let(:birthyear_cf) { create(:custom_field_birthyear) }
         let(:custom_field_values) {{
           cf.key => "new value",
-          birthyear_cf.key => 1969,
+          birthyear_cf.key => birthyear
         }}
         let(:first_name) { 'Raymond' }
         let(:last_name) { 'Betancourt' }
         let(:email) { 'ray.mond@rocks.com' }
         let(:locale) { 'fr-FR' }
+        let(:birthyear) { 1969 }
 
-        example "Can't change birthyear of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
-          create(:verification, method_name: 'franceconnect', user: @user)
-          @user.update!(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
-          do_request
-          expect(response_status).to eq 200
-          @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq "new value"
-          expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
-        end
-  
+
         example "Can change many attributes of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
           do_request
@@ -718,6 +710,26 @@ resource "Users" do
           expect(@user.last_name).to eq last_name
           expect(@user.email).to eq email
           expect(@user.locale).to eq locale
+          expect(@user.birthyear).to eq birthyear
+        end
+      end
+
+      describe do
+        let(:cf) { create(:custom_field) }
+        let(:gender_cf) { create(:custom_field_gender) }
+        let(:custom_field_values) {{
+          cf.key => "new value",
+          gender_cf.key => 'female'
+        }}
+
+        example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
+          create(:verification, method_name: 'bogus', user: @user)
+          @user.update!(custom_field_values: {cf.key => "original value", gender_cf.key => 'male'})
+          do_request
+          expect(response_status).to eq 200
+          @user.reload
+          expect(@user.custom_field_values[cf.key]).to eq "new value"
+          expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
         end
       end
     end
@@ -755,23 +767,23 @@ resource "Users" do
 
       describe do
         let(:cf) { create(:custom_field) }
-        let(:birthyear_cf) { create(:custom_field_birthyear) }
+        let(:gender_cf) { create(:custom_field_gender) }
         let(:custom_field_values) {{
           cf.key => "new value",
-          birthyear_cf.key => 1969,
+          gender_cf.key => 'female',
         }}
 
-        example "Can't change some custom_field_values of a user verified with FranceConnect", document: false, skip: !CitizenLab.ee? do
+        example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           @user.update!(
             registration_completed_at: nil,
-            custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}
+            custom_field_values: {cf.key => "original value", gender_cf.key => 'male'}
           )
-          create(:verification, method_name: 'franceconnect', user: @user)
+          create(:verification, method_name: 'bogus', user: @user)
           do_request
           expect(response_status).to eq 200
           @user.reload
           expect(@user.custom_field_values[cf.key]).to eq "new value"
-          expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
+          expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
         end
       end
     end

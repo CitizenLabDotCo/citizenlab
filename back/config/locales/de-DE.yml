@@ -89,7 +89,7 @@ de:
       title: Fragen & Antworten
   projects:
     open_idea_project_title: Offene Ideen-Box
-    open_idea_project_description_preview: Vielleicht hast du eine Idee, das nicht zu einem der bestehenden Projekte passt? Dann poste es hier, sammel Unterstützung und bringe es bis auf die politische Agenda!
+    open_idea_project_description_preview: Vielleicht haben Sie eine Idee, die nicht zu einem der bestehenden Projekte passt? Dann posten Sie sie hier, sammeln Sie Unterstützung und bringen Sie sie auf die politische Tagesordnung!
     open_idea_project_description: >
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
   events:
@@ -138,9 +138,9 @@ de:
     education:
       ISCED2: Sekundarstufe I
       ISCED3: Sekundarstufe II
-      ISCED4: Postsekundäre Bildung
-      ISCED5: Kurze tertiäre Bildungsprogramme (ISCED-Stufe 5)
-      ISCED6: Bachelor oder gleichwertig
+      ISCED4: Ausbildung oder Lehre
+      ISCED5: Abschluss an Berufsschule, Kolleg oder ähnlichem
+      ISCED6: Bachelor oder gleichwertiger Abschluss
       ISCED7: Master oder gleichwertiger Abschluss
       ISCED8: Doktortitel oder anderer gleichwertiger Abschluss
   initiatives:
@@ -151,6 +151,6 @@ de:
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Ihr Passwort zurücksetzen'
-      message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform von %{organizationName} beantragt. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in 1 Stunde ab.'
+      message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform von %{organizationName} beantragt. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.'
       subject: '%{organizationName}: Ihr Passwort zurücksetzen'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'

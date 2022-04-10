@@ -180,10 +180,10 @@ describe Verification::VerificationService do
       end
     end
 
-    context "for a user only verified with franceconnect" do
+    context "for a user only verified with bogus" do
       it "returns some locked custom field keys" do
-        verification = create(:verification, method_name: 'franceconnect')
-        expect(service.locked_custom_fields(verification.user)).to match_array [:birthyear]
+        verification = create(:verification, method_name: 'bogus')
+        expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
       end
     end
   end

@@ -1,5 +1,6 @@
 {
   "description": "Schema for validating the settings on a tenant",
+  "$schema": "<%= TenantSchema::ExtendedSchema::SCHEMA_URL %>",
   "type": "object",
   "required": ["core"],
   "additionalProperties": false,
@@ -165,6 +166,11 @@
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
           },
+          "topics_term": {
+            "title": "Tag Units",
+            "description": "What a tag unit should be called on this platform (e.g., departments, themes, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'tags'.",
+            "$ref": "#/definitions/multiloc_string"
+          },
           "topic_term": {
             "title": "Tag Unit",
             "description": "What a tag unit should be called on this platform (e.g., department, theme, etc.). Input the singular form here with all lowercase letters. If left blank, this field defaults to 'tag'.",
@@ -288,7 +294,6 @@
         "description":	"Allow users to register and sign in through their Facebook account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["app_id"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -310,7 +315,6 @@
         "description":  "Allow users to register and sign in through their Google account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -332,7 +336,6 @@
         "description":  "Allow users to register and sign in with Azure Active Directory.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["tenant", "client_id", "logo_url", "login_mechanism_name"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -525,7 +528,7 @@
         "title": "Proposals",
         "description":  "Allow proposals. Disabling this feature doesn't remove the corresponding item from the navbar",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria"],
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true },
@@ -1007,7 +1010,16 @@
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
-    "smart_survey_surveys": ["surveys"]
+    "smart_survey_surveys": ["surveys"],
+
+    "id_auth0": ["verification"],
+    "id_bogus": ["verification"],
+    "id_bosa_fas": ["verification"],
+    "id_clave_unica": ["verification"],
+    "id_cow": ["verification"],
+    "id_franceconnect": ["verification"],
+    "id_gent_rrn": ["verification"],
+    "id_id_card_lookup": ["verification"]
   },
   "definitions": {
     "multiloc_string": {

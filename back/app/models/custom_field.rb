@@ -27,21 +27,20 @@ class CustomField < ApplicationRecord
   has_many :custom_field_options, dependent: :destroy
   belongs_to :resource, polymorphic: true, optional: true
 
-  FIELDABLE_TYPES = %w(User CustomForm)
-  INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
-  CODES = %w(gender birthyear domicile education title body topic_ids location proposed_budget images attachments)
+  FIELDABLE_TYPES = %w[User CustomForm].freeze
+  INPUT_TYPES = %w[text number multiline_text select multiselect checkbox date files].freeze
+  CODES = %w[gender birthyear domicile education title body topic_ids location proposed_budget images attachments].freeze
 
-  validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
-  validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
-    message: "only letters, numbers and underscore" }
+  validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
+  validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
+    message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :description_multiloc, multiloc: {presence: false}
-  validates :required, inclusion: {in: [true, false]}
-  validates :enabled, inclusion: {in: [true, false]}
-  validates :hidden, inclusion: {in: [true, false]}
-  validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
-
+  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
+  validates :required, inclusion: { in: [true, false] }
+  validates :enabled, inclusion: { in: [true, false] }
+  validates :hidden, inclusion: { in: [true, false] }
+  validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -56,7 +55,7 @@ class CustomField < ApplicationRecord
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }
 
   def support_options?
-    %w(select multiselect).include?(input_type)
+    %w[select multiselect].include?(input_type)
   end
 
   def built_in?
@@ -66,25 +65,22 @@ class CustomField < ApplicationRecord
   private
 
   def set_default_enabled
-    self.enabled = true if self.enabled.nil?
+    self.enabled = true if enabled.nil?
   end
 
   def generate_key
-    if !self.key
+    if !key
       self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
-        self.class.find_by(key: key_proposal, resource_type: self.resource_type)
+        self.class.find_by(key: key_proposal, resource_type: resource_type)
       end
     end
   end
 
   def sanitize_description_multiloc
     service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      self.description_multiloc,
-      %i{decoration link list title}
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
+    self.description_multiloc = service.sanitize_multiloc description_multiloc, %i[decoration link list title]
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
+    self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 end
 

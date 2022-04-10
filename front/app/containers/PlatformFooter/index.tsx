@@ -80,7 +80,7 @@ const PagesNavList = styled.ul`
     margin-right: 10px;
     &:after {
       color: ${colors.label};
-      font-size: ${fontSizes.small}px;
+      font-size: ${fontSizes.s}px;
       font-weight: 400;
       content: '•';
       margin-left: 10px;
@@ -97,7 +97,7 @@ const PagesNavList = styled.ul`
 
 const PagesNavListItem = styled.li`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
   list-style: none;
@@ -107,7 +107,7 @@ const PagesNavListItem = styled.li`
 
 const StyledButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   hyphens: auto;
@@ -124,7 +124,7 @@ const StyledButton = styled.button`
 const linkStyle = css`
   color: ${colors.label};
   font-weight: 400;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: 21px;
   text-decoration: none;
   hyphens: auto;
@@ -176,7 +176,7 @@ const PoweredBy = styled.div`
 
 const PoweredByText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   margin-right: 8px;

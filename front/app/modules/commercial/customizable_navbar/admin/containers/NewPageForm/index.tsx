@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // services
-import { createPage } from '../../../services/pages';
+import { createPage } from 'services/pages';
 import { handleAddPageFiles } from 'services/pageFiles';
 
 // hooks

@@ -42,7 +42,7 @@ const PostedByText = styled.div`
 `;
 
 const AboutInitiativesLink = styled(Link)`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   color: ${colors.clGreyOnGreyBackground};
   text-decoration: underline;
 

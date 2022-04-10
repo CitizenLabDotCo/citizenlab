@@ -166,7 +166,7 @@ const ReportExportMenu: React.SFC<
                 onClick={handleDownloadSvg}
                 buttonStyle="text"
                 padding="0"
-                fontSize={`${fontSizes.small}px`}
+                fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadAsImage} />
               </Button>
@@ -177,7 +177,7 @@ const ReportExportMenu: React.SFC<
                 buttonStyle="text"
                 processing={exportingXls}
                 padding="0"
-                fontSize={`${fontSizes.small}px`}
+                fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadXlsx} />
               </Button>

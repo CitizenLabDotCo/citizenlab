@@ -18,7 +18,7 @@ import Consent from 'components/SignUpIn/SignUp/Consent';
 import { Options, Option } from 'components/SignUpIn/styles';
 
 // utils
-import { isValidEmail } from 'utils/validate';
+import { isValidEmail, isValidPhoneNumber } from 'utils/validate';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -113,7 +113,7 @@ type State = {
   token: string | null | undefined;
   firstName: string | null;
   lastName: string | null;
-  email: string | null | undefined;
+  emailOrPhoneNumber: string | null | undefined;
   password: string | null;
   tacAccepted: boolean;
   privacyAccepted: boolean;
@@ -121,7 +121,7 @@ type State = {
   invitationRedeemError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
-  emailError: string | null;
+  emailOrPhoneNumberError: string | null;
   privacyError: boolean;
   hasMinimumLengthError: boolean;
   tacError: boolean;
@@ -141,7 +141,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       token: props.metaData.token,
       firstName: null,
       lastName: null,
-      email: null,
+      emailOrPhoneNumber: null,
       password: null,
       tacAccepted: false,
       privacyAccepted: false,
@@ -149,7 +149,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       invitationRedeemError: null,
       firstNameError: null,
       lastNameError: null,
-      emailError: null,
+      emailOrPhoneNumberError: null,
       hasMinimumLengthError: false,
       tacError: false,
       privacyError: false,
@@ -183,7 +183,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
           this.setState({
             firstName: response.data.attributes.first_name || null,
             lastName: response.data.attributes.last_name || null,
-            email: response.data.attributes.email || null,
+            emailOrPhoneNumber: response.data.attributes.email || null,
           });
         })
         .catch(() => {
@@ -230,8 +230,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleEmailOnChange = (email: string) => {
     this.setState((state) => ({
-      email,
-      emailError: null,
+      emailOrPhoneNumber: email,
+      emailOrPhoneNumberError: null,
       unknownError: null,
       apiErrors: state.apiErrors
         ? set(state.apiErrors, 'json.errors.email', null)
@@ -297,30 +297,39 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }
   };
 
-  handleOnSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const { tenant } = this.props;
-    const { isInvitation } = this.props.metaData;
-    const { formatMessage } = this.props.intl;
-    const { locale } = this.props;
+  validate = (isPhoneSignupEnabled: boolean) => {
     const {
       token,
       firstName,
       lastName,
-      email,
+      emailOrPhoneNumber,
       password,
       tacAccepted,
       privacyAccepted,
-      processing,
     } = this.state;
-    let invitationRedeemError =
+    const {
+      metaData: { isInvitation },
+      intl: { formatMessage },
+      tenant,
+    } = this.props;
+
+    const invitationRedeemError =
       isInvitation && !token ? formatMessage(messages.emptyTokenError) : null;
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const hasEmailError = !phone && (!email || !isValidEmail(email));
-    const emailError = hasEmailError
-      ? formatMessage(messages.emailError)
+    const hasValidPhoneNumber = emailOrPhoneNumber
+      ? isValidPhoneNumber(emailOrPhoneNumber)
+      : false;
+    const hasValidEmail = emailOrPhoneNumber
+      ? isValidEmail(emailOrPhoneNumber)
+      : false;
+    const hasEmailOrPhoneNumberValidationError = isPhoneSignupEnabled
+      ? !hasValidEmail && !hasValidPhoneNumber
+      : !hasValidEmail;
+    const emailOrPhoneNumberError = hasEmailOrPhoneNumberValidationError
+      ? formatMessage(
+          isPhoneSignupEnabled
+            ? messages.emailOrPhoneNumberError
+            : messages.emailError
+        )
       : null;
     const firstNameError = !firstName
       ? formatMessage(messages.emptyFirstNameError)
@@ -340,81 +349,125 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
 
-    if (this.firstNameInputElement && firstNameError) {
-      this.firstNameInputElement.focus();
-    } else if (this.lastNameInputElement && lastNameError) {
-      this.lastNameInputElement.focus();
-    } else if (this.emailInputElement && emailError) {
-      this.emailInputElement.focus();
-    } else if (this.passwordInputElement && hasMinimumLengthError) {
-      this.passwordInputElement.focus();
-    }
-
-    const hasErrors = [
-      invitationRedeemError,
-      emailError,
-      firstNameError,
-      lastNameError,
-      hasMinimumLengthError,
-      tacError,
-      privacyError,
-    ].some((error) => error);
-
     this.setState({
       invitationRedeemError,
-      emailError,
+      emailOrPhoneNumberError,
       firstNameError,
       lastNameError,
       hasMinimumLengthError,
       tacError,
       privacyError,
     });
+  };
 
-    if (
-      !hasErrors &&
-      !processing &&
-      firstName &&
-      lastName &&
-      email &&
-      password &&
-      locale
-    ) {
-      try {
-        this.setState({ processing: true, unknownError: null });
-        await signUp(
-          firstName,
-          lastName,
-          email,
-          password,
-          locale,
-          isInvitation,
-          token
-        );
-        this.setState({ processing: false });
-        trackEventByName(tracks.signUpEmailPasswordStepCompleted);
-        this.props.onCompleted();
-      } catch (errors) {
-        trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
+  focusFirstInputWithError = () => {
+    const {
+      firstNameError,
+      lastNameError,
+      emailOrPhoneNumberError,
+      hasMinimumLengthError,
+    } = this.state;
 
-        // custom error handling for invitation codes
-        if (get(errors, 'json.errors.base[0].error') === 'token_not_found') {
-          invitationRedeemError = formatMessage(messages.tokenNotFoundError);
-        }
-
-        if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
-          invitationRedeemError = formatMessage(
-            messages.tokenAlreadyAcceptedError
-          );
-        }
-
-        this.setState({
-          invitationRedeemError,
-          processing: false,
-          apiErrors: errors,
-        });
-      }
+    if (this.firstNameInputElement && firstNameError) {
+      this.firstNameInputElement.focus();
+    } else if (this.lastNameInputElement && lastNameError) {
+      this.lastNameInputElement.focus();
+    } else if (this.emailInputElement && emailOrPhoneNumberError) {
+      this.emailInputElement.focus();
+    } else if (this.passwordInputElement && hasMinimumLengthError) {
+      this.passwordInputElement.focus();
     }
   };
+
+  handleOnSubmit =
+    (isPhoneSignupEnabled: boolean) => async (event: React.FormEvent) => {
+      event.preventDefault();
+
+      const {
+        metaData: { isInvitation },
+        intl: { formatMessage },
+        locale,
+      } = this.props;
+      const {
+        token,
+        firstName,
+        lastName,
+        emailOrPhoneNumber,
+        password,
+        processing,
+        invitationRedeemError,
+        emailOrPhoneNumberError,
+        firstNameError,
+        lastNameError,
+        hasMinimumLengthError,
+        tacError,
+        privacyError,
+      } = this.state;
+
+      this.validate(isPhoneSignupEnabled);
+
+      const hasErrors = [
+        invitationRedeemError,
+        emailOrPhoneNumberError,
+        firstNameError,
+        lastNameError,
+        hasMinimumLengthError,
+        tacError,
+        privacyError,
+      ].some((error) => error);
+
+      if (hasErrors) {
+        this.focusFirstInputWithError();
+      }
+
+      if (
+        !hasErrors &&
+        !processing &&
+        firstName &&
+        lastName &&
+        emailOrPhoneNumber &&
+        password &&
+        locale
+      ) {
+        try {
+          this.setState({ processing: true, unknownError: null });
+          await signUp(
+            firstName,
+            lastName,
+            emailOrPhoneNumber,
+            password,
+            locale,
+            isInvitation,
+            token
+          );
+          this.setState({ processing: false });
+          trackEventByName(tracks.signUpEmailPasswordStepCompleted);
+          this.props.onCompleted();
+        } catch (errors) {
+          trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
+
+          // custom error handling for invitation codes
+          if (get(errors, 'json.errors.base[0].error') === 'token_not_found') {
+            this.setState({
+              invitationRedeemError: formatMessage(messages.tokenNotFoundError),
+            });
+          }
+
+          if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
+            this.setState({
+              invitationRedeemError: formatMessage(
+                messages.tokenAlreadyAcceptedError
+              ),
+            });
+          }
+
+          this.setState({
+            processing: false,
+            apiErrors: errors,
+          });
+        }
+      }
+    };
 
   goBackToSignUpOptions = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -460,18 +513,20 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       token,
       firstName,
       lastName,
-      email,
+      emailOrPhoneNumber,
       password,
       processing,
       invitationRedeemError,
       firstNameError,
       lastNameError,
-      emailError,
+      emailOrPhoneNumberError,
       hasMinimumLengthError,
       apiErrors,
     } = this.state;
-    const phone =
-      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const isPhoneSignupEnabled =
+      !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone
+        ? tenant.attributes.settings.password_login.phone
+        : false;
     const enabledProviders = [
       passwordLoginEnabled,
       googleLoginEnabled,
@@ -514,7 +569,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         <>
           <Form
             id="e2e-signup-password"
-            onSubmit={this.handleOnSubmit}
+            onSubmit={this.handleOnSubmit(isPhoneSignupEnabled)}
             noValidate={true}
           >
             {isInvitation && !this.props.metaData.token && (
@@ -587,15 +642,17 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             <FormElement id="e2e-email-container">
               <FormLabel
                 labelMessage={
-                  phone ? messages.emailOrPhoneLabel : messages.emailLabel
+                  isPhoneSignupEnabled
+                    ? messages.emailOrPhoneLabel
+                    : messages.emailLabel
                 }
                 htmlFor="email"
               />
               <Input
                 type="email"
                 id="email"
-                value={email}
-                error={emailError}
+                value={emailOrPhoneNumber}
+                error={emailOrPhoneNumberError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
                 setRef={this.handleEmailInputSetRef}
@@ -646,7 +703,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   text={formatMessage(
                     hasNextStep ? messages.nextStep : messages.signUp2
                   )}
-                  onClick={this.handleOnSubmit}
+                  onClick={this.handleOnSubmit(isPhoneSignupEnabled)}
                 />
               </ButtonWrapper>
             </FormElement>
@@ -694,10 +751,12 @@ const Data = adopt<DataProps, InputProps>({
   franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
-const PasswordSignupWithHoC = injectIntl<Props>(PasswordSignup);
+const PasswordSignupWithHoC = injectIntl(PasswordSignup);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataprops) => <PasswordSignupWithHoC {...inputProps} {...dataprops} />}
+    {(dataprops: DataProps) => (
+      <PasswordSignupWithHoC {...inputProps} {...dataprops} />
+    )}
   </Data>
 );

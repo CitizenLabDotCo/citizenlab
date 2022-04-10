@@ -38,6 +38,8 @@ jest.mock('services/pages', () => {
   };
 });
 
+jest.mock('services/locale');
+
 describe('usePages', () => {
   describe('no ids', () => {
     it('should call listPages', () => {

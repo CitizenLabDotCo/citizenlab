@@ -41,7 +41,7 @@ class AppConfiguration < ApplicationRecord
 
   validates :host, presence: true
   validate :validate_host_format
-  validates :homepage_info_multiloc, multiloc: { presence: false }
+  validates :homepage_info_multiloc, multiloc: { presence: false, html: true }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
   validate :validate_customizable_homepage_banner

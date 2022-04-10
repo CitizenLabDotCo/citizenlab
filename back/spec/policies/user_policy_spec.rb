@@ -1,12 +1,13 @@
 require 'rails_helper'
 
 describe UserPolicy do
-  subject { UserPolicy.new(current_user, subject_user) }
-  let(:scope) { UserPolicy::Scope.new(current_user, User) }
+  subject { described_class.new current_user, subject_user }
 
-  context "for a visitor" do
+  let(:scope) { UserPolicy::Scope.new current_user, User }
+
+  context 'for a visitor' do
     let(:current_user) { nil }
-    let(:subject_user) { create(:user) }
+    let(:subject_user) { create :user }
 
     it { should     permit(:show)    }
     it { should     permit(:create)  }
@@ -15,16 +16,16 @@ describe UserPolicy do
     it { should_not permit(:index) }
     it { should_not permit(:index_xlsx) }
 
-    it "should index the user through the scope" do
-      subject_user.save
-      expect(scope.resolve.size).to eq 1
+    it 'should not index the user through the scope' do
+      subject_user.save!
+      expect(scope.resolve.size).to eq 0
     end
   end
 
-  context "for a user" do
-    let(:current_user) { create(:user) }
+  context 'for a user' do
+    let(:current_user) { create :user }
 
-    context "on theirself" do
+    context 'on theirself' do
       let(:subject_user) { current_user }
 
       it { should     permit(:show)    }
@@ -34,14 +35,14 @@ describe UserPolicy do
       it { should_not permit(:index) }
       it { should_not permit(:index_xlsx) }
 
-      it "should index the user through the scope" do
-        subject_user.save
-        expect(scope.resolve.size).to eq 1
+      it 'should not index the user through the scope' do
+        subject_user.save!
+        expect(scope.resolve.size).to eq 0
       end
     end
 
-    context "on someone else" do
-      let(:subject_user) { create(:user) }
+    context 'on someone else' do
+      let(:subject_user) { create :user }
 
       it { should     permit(:show)    }
       it { should     permit(:create)  }
@@ -50,17 +51,17 @@ describe UserPolicy do
       it { should_not permit(:index) }
       it { should_not permit(:index_xlsx) }
 
-      it "should index the users through the scope" do
-        subject_user.save
-        expect(scope.resolve.size).to eq 2
+      it 'should index the users through the scope' do
+        subject_user.save!
+        expect(scope.resolve.size).to eq 0
       end
     end
   end
 
-  context "for an admin" do
-    let(:current_user) { create(:admin) }
+  context 'for an admin' do
+    let(:current_user) { create :admin }
 
-    context "on theirself" do
+    context 'on theirself' do
       let(:subject_user) { current_user }
 
       it { should permit(:show)    }
@@ -70,14 +71,14 @@ describe UserPolicy do
       it { should permit(:index) }
       it { should permit(:index_xlsx) }
 
-      it "should index the user through the scope" do
-        subject_user.save
+      it 'should index the user through the scope' do
+        subject_user.save!
         expect(scope.resolve.size).to eq 1
       end
     end
 
-    context "on someone else" do
-      let(:subject_user) { create(:user) }
+    context 'on someone else' do
+      let(:subject_user) { create :user }
 
       it { should permit(:show)    }
       it { should permit(:create)  }
@@ -86,11 +87,10 @@ describe UserPolicy do
       it { should permit(:index) }
       it { should permit(:index_xlsx) }
 
-      it "should index the users through the scope" do
-        subject_user.save
+      it 'should index the users through the scope' do
+        subject_user.save!
         expect(scope.resolve.size).to eq 2
       end
     end
   end
-
 end

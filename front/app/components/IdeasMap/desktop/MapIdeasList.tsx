@@ -12,7 +12,6 @@ import IdeaMapCard from '../IdeaMapCard';
 import useLocale from 'hooks/useLocale';
 import useIdeaMarkers from 'hooks/useIdeaMarkers';
 import useProject from 'hooks/useProject';
-import usePhase from 'hooks/usePhase';
 import useIdeaCustomFieldsSchemas from 'hooks/useIdeaCustomFieldsSchemas';
 
 // events
@@ -122,146 +121,134 @@ const EmptyMessageLine = styled.div`
 `;
 
 interface Props {
-  projectIds: string[];
   projectId: string;
-  phaseId?: string | null;
+  phaseId?: string;
   className?: string;
 }
 
-const MapIdeasList = memo<Props>(
-  ({ projectIds, projectId, phaseId, className }) => {
-    const locale = useLocale();
-    const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
-    const project = useProject({ projectId });
-    const phase = usePhase(phaseId || null);
+const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
+  const locale = useLocale();
+  const ideaCustomFieldsSchemas = useIdeaCustomFieldsSchemas({ projectId });
+  const project = useProject({ projectId });
 
-    // ideaMarkers
-    const [search, setSearch] = useState<string | null>(null);
-    const [topics, setTopics] = useState<string[]>([]);
-    const [sort, setSort] = useState<Sort>(
-      project?.attributes.ideas_order || ideaDefaultSortMethodFallback
-    );
-    const ideaMarkers = useIdeaMarkers({
-      projectIds,
-      phaseId,
-      sort,
-      search,
-      topics,
-    });
+  // ideaMarkers
+  const [search, setSearch] = useState<string | null>(null);
+  const [topics, setTopics] = useState<string[]>([]);
+  const [sort, setSort] = useState<Sort>(
+    project?.attributes.ideas_order || ideaDefaultSortMethodFallback
+  );
+  const ideaMarkers = useIdeaMarkers({
+    projectIds: [projectId],
+    phaseId,
+    sort,
+    search,
+    topics,
+  });
 
-    const isFiltered = (search && search.length > 0) || topics.length > 0;
-    const isPBProject =
-      phase === null &&
-      !isNilOrError(project) &&
-      project.attributes.participation_method === 'budgeting';
-    const isPBPhase =
-      !isNilOrError(phase) &&
-      phase.attributes.participation_method === 'budgeting';
-    const isPBIdea = isNilOrError(phase) ? isPBProject : isPBPhase;
+  const isFiltered = (search && search.length > 0) || topics.length > 0;
 
-    const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
-      if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-        return (
-          ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
-            'ui:widget'
-          ] !== 'hidden'
-        );
-      }
+  const isFieldEnabled = (fieldCode: CustomFieldCodes) => {
+    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
+      return (
+        ideaCustomFieldsSchemas.ui_schema_multiloc?.[locale]?.[fieldCode]?.[
+          'ui:widget'
+        ] !== 'hidden'
+      );
+    }
 
-      return true;
+    return true;
+  };
+
+  const topicsEnabled = isFieldEnabled('topic_ids');
+
+  useEffect(() => {
+    const subscriptions = [
+      ideasSearch$.subscribe((search) => {
+        setSearch(search);
+      }),
+      ideasSort$.subscribe((sort) => {
+        setSort(sort);
+      }),
+      ideasTopics$.subscribe((topics) => {
+        setTopics(topics);
+      }),
+    ];
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
     };
+  }, []);
 
-    const topicsEnabled = isFieldEnabled('topic_ids');
+  const handleSearchOnChange = (newSearchValue: string) => {
+    setIdeasSearch(newSearchValue || null);
+  };
 
-    useEffect(() => {
-      const subscriptions = [
-        ideasSearch$.subscribe((search) => {
-          setSearch(search);
-        }),
-        ideasSort$.subscribe((sort) => {
-          setSort(sort);
-        }),
-        ideasTopics$.subscribe((topics) => {
-          setTopics(topics);
-        }),
-      ];
+  const handleSortOnChange = (newSort: Sort) => {
+    setIdeasSort(newSort);
+  };
 
-      return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
-      };
-    }, []);
+  const handleTopicsOnChange = (newTopics: string[]) => {
+    setIdeasTopics(newTopics);
+  };
 
-    const handleSearchOnChange = (newSearchValue: string) => {
-      setIdeasSearch(newSearchValue || null);
-    };
-
-    const handleSortOnChange = (newSort: Sort) => {
-      setIdeasSort(newSort);
-    };
-
-    const handleTopicsOnChange = (newTopics: string[]) => {
-      setIdeasTopics(newTopics);
-    };
-
-    return (
-      <Container className={className || ''}>
-        <Header>
-          <DropdownFilters>
-            <SelectSort
-              onChange={handleSortOnChange}
+  return (
+    <Container className={className || ''}>
+      <Header>
+        <DropdownFilters>
+          <SelectSort
+            onChange={handleSortOnChange}
+            alignment="left"
+            defaultSortingMethod={
+              project?.attributes.ideas_order || ideaDefaultSortMethodFallback
+            }
+          />
+          {topicsEnabled && (
+            <TopicFilterDropdown
+              onChange={handleTopicsOnChange}
               alignment="left"
-              defaultSortingMethod={
-                project?.attributes.ideas_order || ideaDefaultSortMethodFallback
-              }
+              projectId={projectId}
             />
-            {topicsEnabled && (
-              <TopicFilterDropdown
-                onChange={handleTopicsOnChange}
-                alignment="left"
-                projectId={projectId}
-              />
-            )}
-          </DropdownFilters>
-
-          <StyledSearchInput onChange={handleSearchOnChange} />
-        </Header>
-
-        <IdeaMapCards>
-          {ideaMarkers === undefined && (
-            <Loading>
-              <Spinner />
-            </Loading>
           )}
+        </DropdownFilters>
 
-          {ideaMarkers &&
-            ideaMarkers.length > 0 &&
-            ideaMarkers.map((ideaMarker) => (
-              <StyledIdeaMapCard
-                projectId={projectId}
-                ideaMarker={ideaMarker}
-                key={ideaMarker.id}
-                isPBIdea={isPBIdea}
-              />
-            ))}
+        <StyledSearchInput onChange={handleSearchOnChange} />
+      </Header>
 
-          {(ideaMarkers === null || ideaMarkers?.length === 0) && (
-            <EmptyContainer>
-              <IdeaIcon ariaHidden name="idea" />
-              <EmptyMessage>
-                <EmptyMessageLine>
-                  <FormattedMessage
-                    {...(isFiltered
-                      ? messages.noFilteredResults
-                      : messages.noResults)}
-                  />
-                </EmptyMessageLine>
-              </EmptyMessage>
-            </EmptyContainer>
-          )}
-        </IdeaMapCards>
-      </Container>
-    );
-  }
-);
+      <IdeaMapCards>
+        {ideaMarkers === undefined && (
+          <Loading>
+            <Spinner />
+          </Loading>
+        )}
+
+        {ideaMarkers &&
+          ideaMarkers.length > 0 &&
+          ideaMarkers.map((ideaMarker) => (
+            <StyledIdeaMapCard
+              projectId={projectId}
+              ideaMarker={ideaMarker}
+              key={ideaMarker.id}
+              phaseId={phaseId}
+            />
+          ))}
+
+        {(ideaMarkers === null || ideaMarkers?.length === 0) && (
+          <EmptyContainer>
+            <IdeaIcon ariaHidden name="idea" />
+            <EmptyMessage>
+              <EmptyMessageLine>
+                <FormattedMessage
+                  {...(isFiltered
+                    ? messages.noFilteredResults
+                    : messages.noResults)}
+                />
+              </EmptyMessageLine>
+            </EmptyMessage>
+          </EmptyContainer>
+        )}
+      </IdeaMapCards>
+    </Container>
+  );
+});
 
 export default MapIdeasList;

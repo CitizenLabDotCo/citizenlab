@@ -5,7 +5,6 @@ import T from 'components/T';
 import useTopics from 'hooks/useTopics';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { ITopicData } from 'services/topics';
 
 const StyledLabel = styled(Label)`
   white-space: nowrap;
@@ -18,9 +17,6 @@ interface Props {
 
 const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
   const topics = useTopics({ topicIds: selectedTopics });
-  const processedTopics = !isNilOrError(topics)
-    ? (topics.filter((topic) => !isNilOrError(topic)) as ITopicData[])
-    : null;
 
   const handleTopicDelete = useCallback(
     (topicId: string) => (event: FormEvent) => {
@@ -31,10 +27,10 @@ const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
     [selectedTopics, onUpdateTopics]
   );
 
-  if (processedTopics) {
+  if (!isNilOrError(topics)) {
     return (
       <>
-        {processedTopics.map((topic) => {
+        {topics.map((topic) => {
           return (
             <StyledLabel key={topic.id} color="teal" basic={true}>
               <T value={topic.attributes.title_multiloc} />

@@ -18,12 +18,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id: publications.select(:publication_id))
-                       .includes(:project_images, :phases, :areas, projects_allowed_input_topics: [:topic], admin_publication: [:children])
+                       .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
 
     if params[:search].present?
       @projects = @projects.search_by_all(params[:search])
-    else 
+    else
       @projects = @projects.ordered
     end
 
@@ -47,7 +47,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: fastjson_params(instance_options),
-      include: %i[admin_publication project_images current_phase allowed_input_topics projects_allowed_input_topics]
+      include: %i[admin_publication project_images current_phase]
     )
   end
 
@@ -55,7 +55,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: fastjson_params,
-      include: %i[admin_publication project_images current_phase allowed_input_topics projects_allowed_input_topics]
+      include: %i[admin_publication project_images current_phase]
     ).serialized_json
   end
 
@@ -86,6 +86,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     sidefx = SideFxProjectService.new
 
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
+    params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
 
     project_params = permitted_attributes(Project)
 

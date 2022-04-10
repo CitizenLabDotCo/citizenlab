@@ -54,7 +54,7 @@ class Phase < ApplicationRecord
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
@@ -92,7 +92,7 @@ class Phase < ApplicationRecord
   def ends_before?(date)
     end_at.iso8601 < date.to_date.iso8601
   end
-  
+
   def permission_scope
     self
   end

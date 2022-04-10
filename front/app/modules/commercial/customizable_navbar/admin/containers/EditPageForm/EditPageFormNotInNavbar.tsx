@@ -15,7 +15,7 @@ import clHistory from 'utils/cl-router/history';
 import { NAVIGATION_PATH } from '..';
 
 // services
-import { updatePage } from '../../../services/pages';
+import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks

@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useBreakpoint } from '@citizenlab/cl2-component-library';
+
+// services
+import { coreSettings } from 'services/appConfiguration';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useTopics from 'hooks/useTopics';
+import useAreas from 'hooks/useAreas';
+import useLocalize from 'hooks/useLocalize';
 
 // components
 import Tabs from './Tabs';
 import { ScreenReaderOnly } from 'utils/a11y';
+import SelectTopics from './SelectTopics';
 import SelectAreas from './SelectAreas';
 
 // styling
 import styled from 'styled-components';
-import { media, isRtl, fontSizes } from 'utils/styleUtils';
+import { media, isRtl, fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from '../../messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // utils
-import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { getShowFilters, getShowFiltersLabel } from './show';
 
 // typings
 import { IStatusCounts } from 'hooks/useAdminPublicationsStatusCounts';
@@ -34,12 +41,12 @@ const Title = styled.h2<{ hasPublications: boolean }>`
   padding: 0;
   width: 100%;
   text-align: center;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 
   ${media.smallerThanMinTablet`
     text-align: left;
     margin-bottom: ${({ hasPublications }) =>
-      hasPublications ? '36' : '22'}px;
+      hasPublications ? '36' : '20'}px;
     margin-left: 4px;
   `}
 `;
@@ -69,23 +76,47 @@ const DesktopFilters = styled.div`
   display: flex;
   align-items: center;
 
+  border-bottom: 3px solid transparent;
+
+  height: 68px;
+
+  ${media.smallerThanMinTablet`
+    height: 52px;
+  `}
+
   ${isRtl`
     justify-content: flex-start;
   `}
 `;
 
+const StyledSelectTopics = styled(SelectTopics)`
+  margin-right: 13px !important;
+`;
+
+const FiltersLabel = styled.div`
+  margin-right: 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizes.base}px;
+  color: ${colors.label};
+  transform: translateY(-1px);
+`;
+
 const MobileFilters = styled.div`
   display: block;
-  margin-top: 21px;
+  margin-top: 20px;
 `;
 
 interface Props {
   className?: string;
   currentTab: PublicationTab;
   statusCounts: IStatusCounts;
+  noAdminPublicationsAtAll: boolean;
   availableTabs: PublicationTab[];
   showTitle: boolean;
   hasPublications: boolean;
+  onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeTab: (tab: PublicationTab) => void;
 }
@@ -94,31 +125,56 @@ const Header = ({
   className,
   currentTab,
   statusCounts,
+  noAdminPublicationsAtAll,
   availableTabs,
   showTitle,
   hasPublications,
+  onChangeTopics,
   onChangeAreas,
   onChangeTab,
-}: Props) => {
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
   const smallerThanXlPhone = useBreakpoint('xlPhone');
+  const smallerThanMinTablet = useBreakpoint('smallTablet');
+  const topics = useTopics({ forHomepageFilter: true });
+  const areas = useAreas({ forHomepageFilter: true });
+  const localize = useLocalize();
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
 
   if (isNilOrError(appConfiguration)) return null;
 
   const customCurrentlyWorkingOn =
-    appConfiguration.data.attributes.settings.core.currently_working_on_text;
+    coreSettings(appConfiguration).currently_working_on_text;
+  const fallback = formatMessage(messages.currentlyWorkingOn);
+  const currentlyWorkingOnText = localize(customCurrentlyWorkingOn, {
+    fallback,
+  });
 
-  const currentlyWorkingOnText =
-    customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn) ? (
-      <T value={customCurrentlyWorkingOn} />
-    ) : (
-      <FormattedMessage {...messages.currentlyWorkingOn} />
-    );
+  const showTabs = !noAdminPublicationsAtAll;
+  const showFilters = getShowFilters({
+    smallerThanXlPhone,
+    hasPublications,
+    statusCounts,
+    selectedTopics,
+    selectedAreas,
+  });
+  const showFiltersLabel = getShowFiltersLabel(
+    topics,
+    areas,
+    smallerThanMinTablet
+  );
 
-  const showTabs = statusCounts.all > 0;
-  const showFilters = smallerThanXlPhone
-    ? hasPublications
-    : statusCounts.all > 0;
+  const handleOnChangeTopics = (selectedTopics: string[]) => {
+    setSelectedTopics(selectedTopics);
+    onChangeTopics(selectedTopics);
+  };
+
+  const handleOnChangeAreas = (selectedAreas: string[]) => {
+    setSelectedAreas(selectedAreas);
+    onChangeAreas(selectedAreas);
+  };
 
   return (
     <div className={className}>
@@ -136,7 +192,17 @@ const Header = ({
       <Container>
         {!smallerThanXlPhone && showFilters && (
           <DesktopFilters>
-            <SelectAreas onChangeAreas={onChangeAreas} />
+            {showFiltersLabel && (
+              <FiltersLabel>{formatMessage(messages.filterBy)}</FiltersLabel>
+            )}
+            <StyledSelectTopics
+              selectedTopics={selectedTopics}
+              onChangeTopics={handleOnChangeTopics}
+            />
+            <SelectAreas
+              selectedAreas={selectedAreas}
+              onChangeAreas={handleOnChangeAreas}
+            />
           </DesktopFilters>
         )}
 
@@ -152,11 +218,18 @@ const Header = ({
 
       {smallerThanXlPhone && showFilters && (
         <MobileFilters>
-          <SelectAreas onChangeAreas={onChangeAreas} />
+          <StyledSelectTopics
+            selectedTopics={selectedTopics}
+            onChangeTopics={handleOnChangeTopics}
+          />
+          <SelectAreas
+            selectedAreas={selectedAreas}
+            onChangeAreas={handleOnChangeAreas}
+          />
         </MobileFilters>
       )}
     </div>
   );
 };
 
-export default Header;
+export default injectIntl(Header);

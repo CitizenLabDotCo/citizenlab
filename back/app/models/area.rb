@@ -20,8 +20,8 @@ class Area < ApplicationRecord
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
 
-  validates :title_multiloc, presence: true, multiloc: {presence: true}
-  validates :description_multiloc, multiloc: {presence: false}
+  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
@@ -36,17 +36,16 @@ class Area < ApplicationRecord
   def sanitize_description_multiloc
     service = SanitizationService.new
     self.description_multiloc = service.sanitize_multiloc(
-      self.description_multiloc,
-      %i{title alignment list decoration link image video}
+      description_multiloc,
+      %i[title alignment list decoration link image video]
     )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(self.description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
+    self.description_multiloc = service.remove_multiloc_empty_trailing_tags description_multiloc
+    self.description_multiloc = service.linkify_multiloc description_multiloc
   end
 
   def strip_title
-    self.title_multiloc.each do |key, value|
-      self.title_multiloc[key] = value.strip
+    title_multiloc.each do |key, value|
+      title_multiloc[key] = value.strip
     end
   end
-
 end

@@ -113,7 +113,7 @@ const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
 `;
 
 const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
-  flex: 0 0 800px;
+  flex: 0 1 800px;
   width: 800px;
   padding: 20px;
   padding-bottom: 0px;
@@ -143,7 +143,7 @@ const NotFoundWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 4rem;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 

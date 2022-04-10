@@ -34,7 +34,7 @@ const NotFoundContainer = styled.main`
   flex-direction: column;
   align-items: center;
   padding-top: 4rem;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 

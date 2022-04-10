@@ -9,7 +9,8 @@ import invitationsRoutes from './invitations/routes';
 import projectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
-import emailsRoutes from './emails/routes';
+import pagesRoutes from './pages/routes';
+import messagingsRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 
 import moduleConfiguration from 'modules';
@@ -89,8 +90,9 @@ export default () => ({
     projectsRoutes(),
     settingsRoutes(),
     settingsAreasRoutes(),
+    pagesRoutes(),
     invitationsRoutes(),
-    emailsRoutes(),
+    messagingsRoutes(),
     ideasRoutes(),
     {
       path: 'workshops',

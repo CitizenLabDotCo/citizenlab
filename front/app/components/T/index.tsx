@@ -2,7 +2,7 @@ import React, { createElement } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Multiloc, Locale } from 'typings';
-import { getLocalized } from 'utils/i18n';
+import { getLocalizedWithFallback } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 
@@ -18,6 +18,8 @@ type Props = {
   graphql?: boolean;
   onClick?: () => void;
   wrapInDiv?: boolean;
+  /** fallback string if undefined multiloc, missing locale or empty string */
+  fallback?: string;
 };
 
 type State = {
@@ -76,12 +78,15 @@ export default class T extends React.PureComponent<Props, State> {
         supportHtml,
         onClick,
         wrapInDiv,
+        fallback,
       } = this.props;
-      const localizedText = getLocalized(
+
+      const localizedText = getLocalizedWithFallback(
         value,
         locale,
         currentTenantLocales,
-        maxLength
+        maxLength,
+        fallback
       );
 
       if (children) {

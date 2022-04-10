@@ -23,7 +23,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 import Outlet from 'components/Outlet';
 import { ContextShape } from 'components/Verification/verificationModalEvents';
 
@@ -109,7 +109,7 @@ const Context = styled.div`
 
 const ContextLabel = styled.div`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   margin-bottom: 17px;
@@ -117,7 +117,7 @@ const ContextLabel = styled.div`
 
 const ContextItem = styled.span`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   border-radius: ${(props) => props.theme.borderRadius};
   border: 1px solid #ccc;
@@ -170,7 +170,7 @@ interface Props {
   showHeader?: boolean;
   skippable?: boolean;
   inModal: boolean;
-  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
+  onMethodSelected: (selectedMethod: TVerificationMethod) => void;
   onSkipped?: () => void;
   className?: string;
 }
@@ -194,12 +194,9 @@ const VerificationMethods = memo<Props>(
       !isNilOrError(participationConditions) &&
       participationConditions.length > 0;
 
-    const handleOnMethodSelected = useCallback(
-      (method: IVerificationMethod) => () => {
-        onMethodSelected(method);
-      },
-      [onMethodSelected]
-    );
+    const handleOnMethodSelected = (method: TVerificationMethod) => {
+      onMethodSelected(method);
+    };
 
     const onSkipButtonClicked = useCallback(() => {
       onSkipped?.();
@@ -285,15 +282,11 @@ const VerificationMethods = memo<Props>(
                 inModal ? 'inModal' : ''
               }`}
             >
-              {verificationMethods.data.map((method, index) => (
-                <Outlet
-                  key={method.id}
-                  id="app.components.VerificationModal.button"
-                  method={method}
-                  onMethodSelected={handleOnMethodSelected(method)}
-                  last={index + 1 === verificationMethods.data.length}
-                />
-              ))}
+              <Outlet
+                id="app.components.VerificationModal.buttons"
+                onClick={handleOnMethodSelected}
+                verificationMethods={verificationMethods}
+              />
             </ButtonsContainer>
           </Content>
 

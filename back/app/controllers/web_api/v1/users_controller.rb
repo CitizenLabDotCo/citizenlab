@@ -1,13 +1,13 @@
 class WebApi::V1::UsersController < ::ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
-  skip_after_action :verify_authorized, only: :index_xlsx
-  skip_before_action :authenticate_user # TODO: temp fix to pass tests
+  skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     authorize :user, :index?
-    @users = policy_scope(User)
+
+    @users = policy_scope User
 
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
@@ -51,7 +51,8 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def index_xlsx
     authorize :user, :index_xlsx?
-    @users = policy_scope(User).all
+
+    @users = policy_scope User
     @users = @users.active unless params[:include_inactive]
 
     @users = @users.in_group(Group.find(params[:group])) if params[:group]

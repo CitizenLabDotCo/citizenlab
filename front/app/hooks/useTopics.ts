@@ -1,51 +1,45 @@
 import { useState, useEffect } from 'react';
-import { projectTopicsStream } from 'services/projectTopics';
 import {
   ITopicData,
   topicByIdStream,
   topicsStream,
   Code,
+  ITopicsQueryParams,
 } from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { map } from 'rxjs/operators';
+import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
-interface Parameters {
-  projectId?: string;
+export interface Parameters {
+  /** Don't use the ids and the query parameters (code, exclude_code, sort) together.
+   *  Only one of the two at a time.
+   */
   topicIds?: string[];
   code?: Code;
-  exclude_code?: Code;
+  excludeCode?: Code;
   sort?: 'new' | 'custom';
+  forHomepageFilter?: boolean;
 }
 
-export default function useTopics(parameters: Parameters) {
-  const { projectId, topicIds, code, exclude_code, sort } = parameters;
-  const [topics, setTopics] = useState<
-    (ITopicData | Error)[] | undefined | null | Error
-  >(undefined);
-  const queryParameters = { code, exclude_code, sort };
+export default function useTopics(parameters: Parameters = {}) {
+  const { topicIds, code, excludeCode, sort, forHomepageFilter } = parameters;
+  const [topics, setTopics] = useState<ITopicData[] | NilOrError>(undefined);
+
+  const topicIdsStringified = JSON.stringify(topicIds);
+
+  const queryParameters: ITopicsQueryParams = {
+    code,
+    exclude_code: excludeCode,
+    sort,
+    for_homepage_filter: forHomepageFilter,
+  };
+
+  const queryParametersStringified = JSON.stringify(queryParameters);
 
   useEffect(() => {
     let observable: Observable<(ITopicData | Error)[] | null> = of(null);
 
-    if (projectId) {
-      observable = projectTopicsStream(projectId).observable.pipe(
-        map((topics) =>
-          topics.data
-            .filter((topic) => topic)
-            .map((topic) => topic.relationships.topic.data.id)
-        ),
-        switchMap((topicIds) => {
-          return combineLatest(
-            topicIds.map((topicId) =>
-              topicByIdStream(topicId).observable.pipe(
-                map((topic) => (!isNilOrError(topic) ? topic.data : topic))
-              )
-            )
-          );
-        })
-      );
-    } else if (topicIds) {
+    if (topicIds) {
       if (topicIds.length > 0) {
         observable = combineLatest(
           topicIds.map((id) =>
@@ -61,13 +55,13 @@ export default function useTopics(parameters: Parameters) {
       );
     }
 
-    const subscription = observable.subscribe((topics) => {
-      setTopics(topics);
-    });
+    const subscription = observable.subscribe(
+      reduceErrors<ITopicData>(setTopics)
+    );
 
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topicIds]);
+  }, [topicIdsStringified, queryParametersStringified]);
 
   return topics;
 }

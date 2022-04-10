@@ -260,17 +260,11 @@ class InvitesService
       fail_now
     else
       invites = hash_array.map do |invite_params|
-        build_invite(invite_params, default_params, inviter)
-      end
-      # Since invites will later be created in a single transaction, the
-      # normal mechanism for generating slugs could result in non-unique
-      # slugs. Therefore we generate the slugs manually
+      build_invite(invite_params, default_params, inviter)
+    end
+
       invitees = invites.map(&:invitee)
-      invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.full_name}) do |(invitee, slug)|
-        if invitee.full_name.present?
-          invitee.slug = slug
-        end
-      end
+      UserSlugService.new.generate_slugs(invitees)
       invites
     end
   end

@@ -27,7 +27,7 @@ import {
   GraphCardTitle,
   GraphCardHeader,
   NoDataContainer,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -64,7 +64,7 @@ const Row = styled.div`
 
 const TopicName = styled.div`
   padding: 1px;
-  font-size: ${fontSizes.small};
+  font-size: ${fontSizes.s};
   word-break: break-all;
   width: auto;
   height: 20px;

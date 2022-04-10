@@ -18,6 +18,7 @@ interface Props {
 
 export default (props: Props) => {
   const { type, selection, resetSelection, handleClickEdit } = props;
+  const postId = [...selection][0];
   return (
     <Container>
       {selection.size > 1 && (
@@ -27,10 +28,10 @@ export default (props: Props) => {
           resetSelection={resetSelection}
         />
       )}
-      {selection.size === 1 && (
+      {selection.size === 1 && postId && (
         <ActionBarSingle
           type={type}
-          postId={[...selection][0]}
+          postId={postId}
           resetSelection={resetSelection}
           handleClickEdit={handleClickEdit}
         />

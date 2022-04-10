@@ -96,6 +96,15 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
+  remote: engines/commercial/content_builder
+  specs:
+    content_builder (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      pundit (~> 2.0)
+      rails (~> 6.1)
+      ros-apartment (>= 2.9.0)
+
+PATH
   remote: engines/commercial/custom_idea_statuses
   specs:
     custom_idea_statuses (0.1.0)
@@ -306,6 +315,14 @@ PATH
   specs:
     smart_groups (0.1.0)
       rails (~> 6.1)
+
+PATH
+  remote: engines/commercial/texting
+  specs:
+    texting (0.1.0)
+      rails (~> 6.1)
+      smstools (~> 0.2.2)
+      twilio-ruby (~> 5.65)
 
 PATH
   remote: engines/commercial/user_custom_fields
@@ -933,6 +950,9 @@ GEM
     rspec-expectations (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
+    rspec-its (1.3.0)
+      rspec-core (>= 3.0.0)
+      rspec-expectations (>= 3.0.0)
     rspec-mocks (3.10.3)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
@@ -1040,6 +1060,7 @@ GEM
       rack (~> 2.2)
       rack-protection (= 2.1.0)
       tilt (~> 2.0)
+    smstools (0.2.2)
     socksify (1.7.1)
     sorted_set (1.0.3)
       rbtree
@@ -1070,6 +1091,10 @@ GEM
     tilt (2.0.10)
     tomlrb (2.0.1)
     trailblazer-option (0.1.1)
+    twilio-ruby (5.65.1)
+      faraday (>= 0.9, < 2.0)
+      jwt (>= 1.5, <= 2.5)
+      nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
@@ -1137,6 +1162,7 @@ DEPENDENCIES
   byebug
   carrierwave!
   carrierwave-base64 (~> 2.10)
+  content_builder!
   counter_culture (~> 2.8)
   custom_idea_statuses!
   custom_maps!
@@ -1223,6 +1249,7 @@ DEPENDENCIES
   rgeo-geojson
   rinku (~> 2)
   ros-apartment
+  rspec-its
   rspec-parameterized
   rspec-rails (~> 5.1.0)
   rspec-sqlimit
@@ -1249,6 +1276,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   test-prof (~> 1.0)
+  texting!
   user_confirmation!
   user_custom_fields!
   verification!

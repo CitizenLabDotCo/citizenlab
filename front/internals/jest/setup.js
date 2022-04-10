@@ -7,3 +7,4 @@ configure({ adapter: new Adapter() });
 
 jest.mock('polished');
 jest.mock('modules');
+jest.mock('quill-blot-formatter');

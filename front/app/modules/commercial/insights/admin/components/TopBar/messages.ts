@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.components.TopBar.renameModalCancel',
     defaultMessage: 'Cancel',
   },
+  linkedProjects: {
+    id: 'app.containers.Admin.Insights.components.TopBar.linkedProjects',
+    defaultMessage: 'Linked projects ({numberOfProjects})',
+  },
 });

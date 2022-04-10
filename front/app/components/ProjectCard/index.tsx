@@ -275,7 +275,7 @@ const Countdown = styled.div`
 
 const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   margin-bottom: 7px;
 `;
@@ -304,7 +304,7 @@ const ProgressBarOverlay: any = styled.div`
 const ProjectLabel = styled.div`
   // darkened to have higher chances of solid color contrast
   color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-align: center;
   white-space: nowrap;
@@ -404,7 +404,7 @@ const ContentFooterRight = styled(ContentFooterSection)``;
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 500;
   text-transform: uppercase;
   display: flex;

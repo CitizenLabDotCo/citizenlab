@@ -29,7 +29,7 @@ const ProjectButton = ({ projectId }: ProjectButtonProps) => {
   return (
     <Button
       buttonStyle="secondary-outlined"
-      fontSize={`${fontSizes.small}px`}
+      fontSize={`${fontSizes.s}px`}
       padding="4px 6px"
       linkTo={`/projects/${project.attributes.slug}`}
       data-testid="insightsProjectButton"

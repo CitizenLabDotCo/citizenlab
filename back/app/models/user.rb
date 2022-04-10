@@ -151,7 +151,7 @@ class User < ApplicationRecord
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
-  validates :bio_multiloc, multiloc: { presence: false }
+  validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
@@ -299,20 +299,12 @@ class User < ApplicationRecord
     false
   end
 
-  def admin_or_moderator?(project_id)
-    admin? || (project_id && project_moderator?(project_id))
-  end
-
-  def active_admin_or_moderator?(project_id)
-    active? && admin_or_moderator?(project_id)
+  def normal_user?
+    !admin?
   end
 
   def moderatable_project_ids # TODO include folders?
     []
-  end
-
-  def moderatable_projects
-    Project.none
   end
 
   def add_role(type, options = {})
@@ -362,11 +354,7 @@ class User < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
-      self.slug = SecureRandom.uuid
-    elsif first_name.present?
-      self.slug = SlugService.new.generate_slug self, full_name
-    end
+    self.slug = UserSlugService.new.generate_slug(self, full_name) if first_name.present?
   end
 
   def sanitize_bio_multiloc

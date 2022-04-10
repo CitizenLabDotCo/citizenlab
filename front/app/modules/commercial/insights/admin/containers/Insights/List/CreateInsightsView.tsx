@@ -130,7 +130,7 @@ const AnimatedFieldset = styled.fieldset`
 
 const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)`
   label {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     color: ${colors.adminTextColor};
   }
 `;

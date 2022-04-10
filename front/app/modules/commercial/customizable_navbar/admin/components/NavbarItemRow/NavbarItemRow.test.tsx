@@ -104,25 +104,8 @@ describe('<NavbarItemRow />', () => {
     expect(onClickRemoveButton).toHaveBeenCalledTimes(1);
   });
 
-  it('render view button', () => {
-    render(<NavbarItemRow title={title} />);
+  it('render view button if viewButtonLink is provided', () => {
+    render(<NavbarItemRow title={title} viewButtonLink={'/some/link'} />);
     expect(screen.getByText('View')).toBeInTheDocument();
-  });
-
-  it('calls onClickViewButton when view button is clicked', () => {
-    const onClickViewButton = jest.fn();
-
-    render(
-      <NavbarItemRow
-        title={title}
-        showViewButton
-        onClickViewButton={onClickViewButton}
-      />
-    );
-
-    const viewButton = screen.getByText('View');
-    fireEvent.click(viewButton);
-
-    expect(onClickViewButton).toHaveBeenCalledTimes(1);
   });
 });

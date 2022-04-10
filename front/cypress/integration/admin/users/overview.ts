@@ -1,4 +1,4 @@
-describe.skip('/admin/users/ page', () => {
+describe('/admin/users/ page', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/users');
@@ -6,7 +6,7 @@ describe.skip('/admin/users/ page', () => {
 
   it('Displays the main elements', () => {
     cy.get('#sidebar').find('.active').contains('Users');
-    cy.get('.e2e-left-panel').find('.active').contains('Users');
+    cy.get('.e2e-left-panel').find('.active').contains('users');
     cy.get('.e2e-user-table').find('.e2e-user-table-row');
   });
 

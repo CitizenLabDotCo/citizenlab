@@ -18,12 +18,13 @@ class IdeaCommentPolicy < ApplicationPolicy
 
   def create?
     (
-      user&.active? && 
+      user&.active? &&
       (record.author_id == user.id) &&
       ProjectPolicy.new(user, record.post.project).show? &&
       check_commenting_allowed(record, user)
-    ) || 
-    user&.active_admin_or_moderator?(record.post.project.id)
+    ) || (
+      user&.active? && UserRoleService.new.can_moderate?(record.post, user)
+    )
   end
 
   def children?
@@ -46,12 +47,10 @@ class IdeaCommentPolicy < ApplicationPolicy
     false
   end
 
-
   private
 
-  def check_commenting_allowed comment, user
+  def check_commenting_allowed(comment, user)
     pcs = ParticipationContextService.new
     !pcs.commenting_disabled_reason_for_idea comment.post, user
   end
-
 end

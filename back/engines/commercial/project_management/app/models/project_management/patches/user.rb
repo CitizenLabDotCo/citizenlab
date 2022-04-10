@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module ProjectManagement
   module Patches
     module User
@@ -24,20 +22,16 @@ module ProjectManagement
         end
       end
 
-      def moderatable_project_ids
-        roles.select { |role| role['type'] == 'project_moderator' }.pluck("project_id").compact
-      end
-
-      def moderatable_project_ids_was
-        roles_was.select { |role| role['type'] == 'project_moderator' }.pluck("project_id").compact
-      end
-
-      def moderatable_projects
-        ::Project.where(id: moderatable_project_ids)
-      end
-
       def project_moderator?(project_id = nil)
         project_id ? moderatable_project_ids.include?(project_id) : moderatable_project_ids.present?
+      end
+
+      def normal_user?
+        super && moderatable_project_ids.blank?
+      end
+
+      def moderatable_project_ids
+        roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
       end
     end
   end

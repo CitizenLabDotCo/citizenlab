@@ -119,7 +119,7 @@ class CommentingInitiativesDisabled extends PureComponent<Props> {
                     <FormattedMessage {...messages.signInLinkText} />
                   </button>
                 ),
-                verificationLink: (
+                verifyIdentityLink: (
                   <button onClick={this.onVerify}>
                     <FormattedMessage {...messages.verifyIdentityLinkText} />
                   </button>

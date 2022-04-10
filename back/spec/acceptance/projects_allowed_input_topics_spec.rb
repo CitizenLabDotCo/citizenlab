@@ -11,19 +11,6 @@ resource "ProjectsAllowedInputTopics" do
     @projects_allowed_input_topics = create_list(:projects_allowed_input_topic, 2)
   end
 
-  get "web_api/v1/projects_allowed_input_topics" do
-    with_options scope: :page do
-      parameter :number, "Page number"
-      parameter :size, "Number of topics per page"
-    end
-
-    example_request "List all projects allowed input topics" do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-    end
-  end
-
   get "web_api/v1/projects/:id/projects_allowed_input_topics" do
     with_options scope: :page do
       parameter :number, "Page number"

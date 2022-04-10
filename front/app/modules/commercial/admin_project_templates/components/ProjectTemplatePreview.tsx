@@ -147,7 +147,7 @@ const MetaInfoLeft = styled.div`
 
 const Department = styled.div`
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   white-space: nowrap;
@@ -166,7 +166,7 @@ const MetaInfoRight = styled.div`
 
 const MetaInfoRightBox = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: normal;
   display: flex;
@@ -208,7 +208,7 @@ const PhaseBar = styled.button`
   width: 100%;
   height: 24px;
   color: #fff;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   display: flex;
   align-items: center;

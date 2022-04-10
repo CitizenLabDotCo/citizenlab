@@ -63,10 +63,6 @@ export default defineMessages({
     defaultMessage:
       'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step',
   },
-  engageArticle1Link: {
-    id: 'containers.Admin.onboarding.engageArticle1Link',
-    defaultMessage: '/admin/invitations',
-  },
   engageArticle1Title: {
     id: 'containers.Admin.onboarding.engageArticle1Title',
     defaultMessage: 'Involve admins and project moderators',
@@ -76,10 +72,6 @@ export default defineMessages({
     defaultMessage:
       'Send them an invitation, give them admin or moderator rights and add a brief personal message explaining what they can do.',
   },
-  engageArticle2Link: {
-    id: 'containers.Admin.onboarding.engageArticle2Link',
-    defaultMessage: '/admin/invitations',
-  },
   engageArticle2Title: {
     id: 'containers.Admin.onboarding.engageArticle2Title',
     defaultMessage: 'Invite your target audience',
@@ -88,10 +80,6 @@ export default defineMessages({
     id: 'containers.Admin.onboarding.engageArticle2Description',
     defaultMessage:
       'Add a personal message with a clear call-to-action. If you have a list of email addresses from people that participated in an offline event, easily add this list to the platform.',
-  },
-  engageArticle3Link: {
-    id: 'containers.Admin.onboarding.engageArticle3Link',
-    defaultMessage: '/admin/emails/custom',
   },
   engageArticle3Title: {
     id: 'containers.Admin.onboarding.engageArticle3Title',

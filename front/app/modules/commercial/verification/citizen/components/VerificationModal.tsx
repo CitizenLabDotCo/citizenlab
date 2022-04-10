@@ -16,7 +16,7 @@ import { useWindowSize } from '@citizenlab/cl2-component-library';
 import {
   ContextShape,
   IVerificationError,
-  TVerificationSteps,
+  TVerificationStep,
 } from 'components/Verification/verificationModalEvents';
 
 import {
@@ -50,7 +50,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   const { windowWidth } = useWindowSize();
 
   const isMounted = useIsMounted();
-  const [activeStep, setActiveStep] = useState<TVerificationSteps>(null);
+  const [activeStep, setActiveStep] = useState<TVerificationStep>(null);
   const [context, setContext] = useState<ContextShape>(null);
   const [error, setError] = useState<IVerificationError>(null);
   const opened = !!activeStep;

@@ -14,39 +14,42 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { UploadFile, Locale } from 'typings';
-import { IProjectFormState, IProject } from 'services/projects';
+import {
+  IProjectFormState,
+  IProject,
+  IUpdatedProjectProperties,
+} from 'services/projects';
 import { IAppConfiguration } from 'services/appConfiguration';
 import { IAreas } from 'services/areas';
 
-export const getDefaultState = () =>
-  ({
-    processing: false,
-    project: undefined,
-    publicationStatus: 'draft',
-    projectType: 'timeline',
-    projectAttributesDiff: {
-      admin_publication_attributes: {
-        publication_status: 'draft',
-      },
+export const getDefaultState = (): IProjectFormState => ({
+  processing: false,
+  project: undefined,
+  publicationStatus: 'draft',
+  projectType: 'timeline',
+  projectAttributesDiff: {
+    admin_publication_attributes: {
+      publication_status: 'draft',
     },
-    projectHeaderImage: null,
-    presentationMode: 'card',
-    projectImages: [],
-    projectImagesToRemove: [],
-    projectFiles: [],
-    projectFilesToRemove: [],
-    titleError: null,
-    apiErrors: {},
-    saved: false,
-    areas: [],
-    areaType: 'all',
-    locale: 'en',
-    currentTenant: null,
-    areasOptions: [],
-    submitState: 'disabled',
-    slug: null,
-    showSlugErrorMessage: false,
-  } as IProjectFormState);
+  },
+  projectHeaderImage: null,
+  presentationMode: 'card',
+  projectImages: [],
+  projectImagesToRemove: [],
+  projectFiles: [],
+  projectFilesToRemove: [],
+  titleError: null,
+  apiErrors: {},
+  saved: false,
+  areas: [],
+  areaType: 'all',
+  locale: 'en',
+  currentTenant: null,
+  areasOptions: [],
+  submitState: 'disabled',
+  slug: null,
+  showSlugErrorMessage: false,
+});
 
 export function initSubscriptions(
   locale$: Observable<Locale>,
@@ -228,3 +231,16 @@ export function initSubscriptions(
     }),
   ];
 }
+
+export const getSelectedTopicIds = (
+  projectAttributesDiff: IUpdatedProjectProperties,
+  project: IProject | null | undefined
+) => {
+  if (projectAttributesDiff.topic_ids) return projectAttributesDiff.topic_ids;
+
+  if (project) {
+    return project.data.relationships.topics.data.map((topic) => topic.id);
+  }
+
+  return [];
+};

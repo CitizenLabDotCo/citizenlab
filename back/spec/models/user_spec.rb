@@ -32,6 +32,11 @@ RSpec.describe User, type: :model do
       invitee = create(:invited_user)
       expect(invitee.invitee_invite.invitee.id).to eq invitee.id
     end
+
+    it 'does not generate a slug if no names given' do
+      invitee = create(:invited_user, first_name: nil, last_name: nil)
+      expect(invitee.slug).to be_nil
+    end
   end
 
   describe "user password authentication" do
@@ -98,7 +103,8 @@ RSpec.describe User, type: :model do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'minimum_length' => 5
+        'minimum_length' => 5,
+        'phone' => false
       }
       AppConfiguration.instance.update! settings: settings
 
@@ -111,7 +117,8 @@ RSpec.describe User, type: :model do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'minimum_length' => 5
+        'minimum_length' => 5,
+        'phone' => false
       }
       AppConfiguration.instance.update! settings: settings
 

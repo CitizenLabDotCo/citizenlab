@@ -8,16 +8,28 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user&.admin?
+        scope.all
+      elsif user && !user.normal_user?
+        role_service = UserRoleService.new
+        scope_for_moderator = scope.none
+        projects = role_service.moderatable_projects user
+        projects.each do |project|
+          scope_for_moderator = scope_for_moderator.or role_service.moderators_for_project(project, scope)
+        end
+        scope_for_moderator.or scope.where(id: ParticipantsService.new.projects_participants(projects))
+      else
+        scope.none
+      end
     end
   end
 
   def index?
-    user&.active? && user.admin?
+    user&.active? && !user.normal_user?
   end
 
   def index_xlsx?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def create?
@@ -45,7 +57,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-     record.id == user&.id || (user&.active? && user.admin?)
+    record.id == user&.id || (user&.active? && user.admin?)
   end
 
   def ideas_count?

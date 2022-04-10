@@ -108,7 +108,7 @@ const IdeaTitle = styled.div`
 
 const IdeaBudget = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: 18px;
   text-align: left;

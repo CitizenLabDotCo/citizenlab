@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_02_143958) do
+ActiveRecord::Schema.define(version: 2022_03_24_073642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -141,6 +141,17 @@ ActiveRecord::Schema.define(version: 2022_03_02_143958) do
   create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "password"
     t.index ["password"], name: "index_common_passwords_on_password"
+  end
+
+  create_table "content_builder_layouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "craftjs_jsonmultiloc", default: {}
+    t.string "content_buildable_type", null: false
+    t.uuid "content_buildable_id", null: false
+    t.string "code", null: false
+    t.boolean "enabled", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_buildable_type", "content_buildable_id", "code"], name: "index_content_builder_layouts_content_buidable_type_id_code", unique: true
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -924,6 +935,15 @@ ActiveRecord::Schema.define(version: 2022_03_02_143958) do
     t.index ["topic_id"], name: "index_projects_allowed_input_topics_on_topic_id"
   end
 
+  create_table "projects_topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "topic_id", null: false
+    t.uuid "project_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_projects_topics_on_project_id"
+    t.index ["topic_id"], name: "index_projects_topics_on_topic_id"
+  end
+
   create_table "public_api_api_clients", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "secret"
@@ -1039,6 +1059,15 @@ ActiveRecord::Schema.define(version: 2022_03_02_143958) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "text_reference", null: false
+  end
+
+  create_table "texting_campaigns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "phone_numbers", default: [], null: false, array: true
+    t.text "message", null: false
+    t.datetime "sent_at"
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1203,6 +1232,8 @@ ActiveRecord::Schema.define(version: 2022_03_02_143958) do
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_allowed_input_topics", "projects"
   add_foreign_key "projects_allowed_input_topics", "topics"
+  add_foreign_key "projects_topics", "projects"
+  add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
   add_foreign_key "static_page_files", "static_pages"

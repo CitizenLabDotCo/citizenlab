@@ -113,12 +113,6 @@
     :versions: []
     :when: 2021-02-24 13:52:04.031811239 Z
 - - :approve
-  - admin_api
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-02-24 13:55:48.746984657 Z
-- - :approve
   - email_campaigns
   - :who: 
     :why: 
@@ -178,15 +172,3 @@
     :why: 
     :versions: []
     :when: 2021-03-28 18:10:30.586364420 Z
-- - :approve
-  - flag_inappropriate_content
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-05-11 15:00:39.937376600 Z
-- - :approve
-  - customizable_navbar
-  - :who: 
-    :why: 
-    :versions: []
-    :when: 2021-11-09 09:25:16.353406441 Z

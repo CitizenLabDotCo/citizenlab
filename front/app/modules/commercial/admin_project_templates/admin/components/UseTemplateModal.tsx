@@ -73,7 +73,7 @@ const SuccessIcon = styled(Icon)`
 
 const SuccessText = styled.div`
   color: ${colors.clGreenSuccess};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 400;
   text-align: center;
   display: flex;

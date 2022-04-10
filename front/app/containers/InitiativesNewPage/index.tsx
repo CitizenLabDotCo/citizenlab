@@ -147,7 +147,7 @@ export class InitiativesNewPage extends React.PureComponent<
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  topics: <GetTopics exclude_code={'custom'} />,
+  topics: <GetTopics excludeCode={'custom'} />,
   previousPathName: ({ render }) => (
     <PreviousPathnameContext.Consumer>
       {render as any}

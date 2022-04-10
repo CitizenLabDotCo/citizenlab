@@ -1,6 +1,6 @@
 module AdminApi
   class TenantsController < AdminApiController
-    before_action :set_tenant, only: %i[show update destroy]
+    before_action :set_tenant, only: %i[show update remove_locale destroy]
     skip_around_action :switch_tenant
 
     def index
@@ -27,14 +27,15 @@ module AdminApi
     end
 
     def update
-      success, tenant, config = tenant_service.update_tenant(@tenant, legacy_tenant_params)
-      if success
-        tenant_json = AdminApi::TenantSerializer.new(tenant, app_configuration: config).to_json
-        render json: tenant_json, status: :ok
-      else
-        tenant.errors.merge!(config.errors)
-        render json: { errors: tenant.errors.details }, status: :unprocessable_entity
-      end
+      update_tenant legacy_tenant_params
+    end
+
+    def remove_locale
+      tenant_service.replace_locale_occurences! @tenant, remove_locale_params[:remove_locale], remove_locale_params[:replacing_locale]
+
+      settings = @tenant.settings
+      settings['core']['locales'].delete remove_locale_params[:remove_locale]
+      update_tenant settings: settings
     end
 
     def destroy
@@ -58,7 +59,7 @@ module AdminApi
 
     # Helper function to serialize an enumeration of tenants efficiently.
     # It works by batch loading app configurations to avoid n+1 queries.
-    # It could be move to a dedicated service if it keeps growing, but 
+    # It could be move to a dedicated service if it keeps growing, but
     # keeping things simple for now.
     #
     # @param [Enumerable<Tenant>] tenants
@@ -69,6 +70,17 @@ module AdminApi
 
       tenants.zip(configs).map do |tenant, config|
         AdminApi::TenantSerializer.new(tenant, app_configuration: config)
+      end
+    end
+
+    def update_tenant(attributes)
+      success, tenant, config = tenant_service.update_tenant @tenant, attributes
+      if success
+        tenant_json = AdminApi::TenantSerializer.new(tenant, app_configuration: config).to_json
+        render json: tenant_json, status: :ok
+      else
+        tenant.errors.merge! config.errors
+        render json: { errors: tenant.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -87,6 +99,13 @@ module AdminApi
 
     def tenant_params
       @tenant_params ||= params.require(:tenant).permit(:name, :host)
+    end
+
+    def remove_locale_params
+      params.require(:tenant).permit(
+        :remove_locale,
+        :replacing_locale
+      )
     end
 
     def tenant_service

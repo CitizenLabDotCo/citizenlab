@@ -14,6 +14,7 @@ import {
 import Modal from 'components/UI/Modal';
 import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';
+import ProjectsDropdown from './ProjectsDropdown';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -115,11 +116,17 @@ const TopBar = ({
     <Container data-testid="insightsTopBar">
       <TitleContainer>
         <h1>{view?.data.attributes.name}</h1>
-        {projectIds &&
-          projectIds.length > 0 &&
-          projectIds.map((projectId) => (
-            <ProjectButton key={projectId} projectId={projectId} />
-          ))}
+        {projectIds && projectIds.length > 0 && (
+          <>
+            {projectIds.length === 1 && (
+              <ProjectButton projectId={projectIds[0]} />
+            )}
+
+            {projectIds.length > 1 && (
+              <ProjectsDropdown projectIds={projectIds} />
+            )}
+          </>
+        )}
       </TitleContainer>
       <DropdownWrapper>
         {formatMessage(messages.options)}

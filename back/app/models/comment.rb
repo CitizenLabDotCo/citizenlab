@@ -33,7 +33,6 @@
 #  fk_rails_...  (author_id => users.id)
 #
 class Comment < ApplicationRecord
-
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :author, class_name: 'User', optional: true
@@ -75,17 +74,16 @@ class Comment < ApplicationRecord
 
   PUBLICATION_STATUSES = %w(published deleted)
 
-  validates :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
+  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+  validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
 
-  scope :published, -> {where publication_status: 'published'}
-
+  scope :published, -> { where publication_status: 'published' }
 
   def published?
-    self.publication_status == 'published'
+    publication_status == 'published'
   end
 
   def author_name
@@ -100,12 +98,9 @@ class Comment < ApplicationRecord
 
   def sanitize_body_multiloc
     service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      self.body_multiloc,
-      %i{mention}
-    )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+    self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
+    self.body_multiloc = service.linkify_multiloc body_multiloc
   end
 
   def remove_notifications
@@ -115,7 +110,6 @@ class Comment < ApplicationRecord
       end
     end
   end
-
 end
 
 Comment.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'

@@ -4,7 +4,7 @@ class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
 
   def index
     @projects_allowed_input_topics = policy_scope(ProjectsAllowedInputTopic)
-    @projects_allowed_input_topics = @projects_allowed_input_topics.where(project_id: params[:project_id]) if params[:project_id].present?
+    @projects_allowed_input_topics = @projects_allowed_input_topics.where(project_id: params[:project_id])
 
     @projects_allowed_input_topics = paginate @projects_allowed_input_topics.order(:ordering)
 

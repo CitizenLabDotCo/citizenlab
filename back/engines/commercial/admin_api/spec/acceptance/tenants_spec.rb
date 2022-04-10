@@ -63,6 +63,29 @@ resource 'Tenants', admin_api: true do
     end
   end
 
+  patch 'admin_api/tenants/:tenant_id/remove_locale' do
+    with_options scope: :tenant do
+      parameter :remove_locale, 'Locale to be removed from the tenant settings'
+      parameter :replacing_locale, 'Replace references to the removed locale by this locale'
+    end
+    ValidationErrorHelper.new.error_fields self, Tenant
+
+    before do
+      settings = tenant.settings
+      settings['core']['locales'] = %w[en es-ES]
+      tenant.update! settings: settings
+      tenant.switch { create(:user, locale: 'en') }
+    end
+
+    let(:remove_locale) { 'en' }
+    let(:replacing_locale) { 'es-ES' }
+
+    example_request 'Updating a tenant to remove locales used by some users' do
+      expect(status).to eq 200
+      expect(tenant.reload.settings.dig('core', 'locales')).to match_array %w[es-ES]
+    end
+  end
+
   post 'admin_api/tenants' do
     let(:new_tenant) { build(:tenant) }
 

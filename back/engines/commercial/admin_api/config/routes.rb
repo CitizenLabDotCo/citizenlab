@@ -3,6 +3,7 @@ AdminApi::Engine.routes.draw do
     get :settings_schema, on: :collection
     get :style_schema, on: :collection
     get :templates, on: :collection
+    patch :remove_locale, on: :member
   end
 
   resources :projects, only: [:index] do

@@ -86,7 +86,7 @@ const ToggleContainer: any = styled.div`
 `;
 
 const StyledLabel = styled.label`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   line-height: 20px;
   padding-left: 10px;

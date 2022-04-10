@@ -1,16 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  noResultsFound: {
-    id: 'app.components.IdeasShowPage.noResultsFound',
-    defaultMessage: 'No results found.',
+  sorryNoAccess: {
+    id: 'app.components.IdeasShowPage.sorryNoAccess',
+    defaultMessage:
+      "Sorry, you can't access this page. You may need to log in or sign up to access it.",
   },
-  goBack: {
-    id: 'app.components.IdeasShowPage.goBack',
-    defaultMessage: 'Go back',
+  signUp: {
+    id: 'app.components.IdeasShowPage.signUp',
+    defaultMessage: 'Sign Up',
   },
-  goBackToList: {
-    id: 'app.components.IdeasShowPage.goBackToList',
-    defaultMessage: 'Go back to the list',
+  signIn: {
+    id: 'app.components.IdeasShowPage.signIn',
+    defaultMessage: 'Log in if you already have an account',
   },
 });

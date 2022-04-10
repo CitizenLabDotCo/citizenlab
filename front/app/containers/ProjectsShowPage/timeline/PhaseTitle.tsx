@@ -80,7 +80,7 @@ const HeaderTitleWrapper = styled.div`
 
 const HeaderTitle = styled.h2`
   color: ${colors.label};
-  font-size: ${fontSizes.large + 1}px;
+  font-size: ${fontSizes.l + 1}px;
   line-height: normal;
   font-weight: 600;
   margin: 0;

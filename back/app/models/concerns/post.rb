@@ -4,7 +4,7 @@ module Post
   include PgSearch::Model
   extend ActiveSupport::Concern
 
-  PUBLICATION_STATUSES = %w(draft published closed spam)
+  PUBLICATION_STATUSES = %w[draft published closed spam].freeze
 
   included do
     pg_search_scope :search_by_all,
@@ -46,30 +46,28 @@ module Post
 
     with_options unless: :draft? do |post|
       post.validates :title_multiloc, presence: true, multiloc: { presence: true }
-      post.validates :body_multiloc, presence: true, multiloc: { presence: true }
+      post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
       post.validates :author, presence: true, on: :publication
       post.validates :slug, uniqueness: true, presence: true
 
       post.before_validation :strip_title
       post.before_validation :generate_slug
-      post.after_validation :set_published_at, if: ->(post){ post.published? && post.publication_status_changed? }
-      post.after_validation :set_assigned_at, if: ->(post){ post.assignee_id && post.assignee_id_changed? }
+      post.after_validation :set_published_at, if: ->(post) { post.published? && post.publication_status_changed? }
+      post.after_validation :set_assigned_at, if: ->(post) { post.assignee_id && post.assignee_id_changed? }
     end
 
-
-    scope :with_bounding_box, (Proc.new do |coordinates|
+    scope :with_bounding_box, (proc do |coordinates|
       x1, y1, x2, y2 = JSON.parse(coordinates)
       where('ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)', x1, y1, x2, y2)
     end)
 
-    scope :published, -> {where publication_status: 'published'}
+    scope :published, -> { where publication_status: 'published' }
 
     scope :order_new, -> (direction=:desc) { order(published_at: direction) }
     scope :order_random, -> {
       modulus = RandomOrderingService.new.modulus_of_the_day
       order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))
     }
-
 
     def location_point_geojson
       RGeo::GeoJSON.encode(location_point) if location_point.present?
@@ -80,11 +78,11 @@ module Post
     end
 
     def draft?
-      self.publication_status == 'draft'
+      publication_status == 'draft'
     end
 
     def published?
-      self.publication_status == 'published'
+      publication_status == 'published'
     end
 
     def score
@@ -95,28 +93,27 @@ module Post
       @author_name ||= author.nil? ? nil : author.full_name
     end
 
-
     private
 
     def strip_title
-      self.title_multiloc.each do |key, value|
-        self.title_multiloc[key] = value.strip
+      title_multiloc.each do |key, value|
+        title_multiloc[key] = value.strip
       end
     end
 
     def generate_slug
-      if !self.slug
-        title = MultilocService.new.t self.title_multiloc, self.author
+      if !slug
+        title = MultilocService.new.t title_multiloc, author
         self.slug ||= SlugService.new.generate_slug self, title
       end
     end
 
     def set_published_at
-      self.published_at ||= Time.now
+      self.published_at ||= Time.zone.now
     end
 
     def set_assigned_at
-      self.assigned_at ||= Time.now
+      self.assigned_at ||= Time.zone.now
     end
 
     def remove_notifications
@@ -126,6 +123,5 @@ module Post
         end
       end
     end
-
   end
 end

@@ -476,7 +476,7 @@ pl:
       commented: "%{authorFirstName} skomentował:"
       preheader: "Tygodniowy przegląd %{organizationName}"
       title_your_weekly_report: "Dowiedz się, co wydarzyło się w zeszłym tygodniu"
-      intro_text: "Here's a summary of what happened on the participation platform of %{organizationName}."
+      intro_text: "Oto podsumowanie tego, co wydarzyło się na platformie uczestnictwa %{organizationName}."
       cta_go_to_the_platform: "Przejdź na platformę"
       title_no_activity_past_week: "Brak aktywności w ciągu ostatniego tygodnia"
       title_proposals: "Proposals started"
@@ -486,13 +486,13 @@ pl:
       today_by_author: "Dzisiaj wg %{author}"
       yesterday_by_author: "Wczoraj przez %{author}"
       x_days_ago_by_author: "%{x} dni temu wg %{author}"
-      trending_ideas: "Trending ideas"
-      trending_ideas_text: "Interested in what’s been happening on the platform? Here are the three most trending ideas and what people are saying about them."
+      trending_ideas: "Modne pomysły"
+      trending_ideas_text: "Interesuje Cię, co się dzieje na platformie? Oto trzy najmodniejsze pomysły i to, co ludzie o nich mówią."
       no_notifications: "No notifications"
       one_notification: "1 notification"
-      multiple_notifications: "%{notifCount} notifications"
-      no_unread_notifications: "You've got no unread notifications. However, we invite you to visit the platform to discover what’s happening."
-      unread_notifications: "You've got unread notifications. We invite you to visit the platform to discover what’s happening."
+      multiple_notifications: "Powiadomienia: %{notifCount}"
+      no_unread_notifications: "Nie masz żadnych nieprzeczytanych powiadomień. Odwiedź platformę, aby wnieść swój wkład i wygenerować nowe powiadomienia!"
+      unread_notifications: "Masz nieprzeczytane powiadomienia. Odwiedź platformę, aby dowiedzieć się, co się dzieje!"
     threshold_reached_for_admin:
       by_author: 'wg %{authorName}'
       cta_process_initiative: 'Skieruj tę inicjatywę do dalszych kroków'

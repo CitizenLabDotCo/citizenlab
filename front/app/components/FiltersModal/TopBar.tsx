@@ -49,7 +49,7 @@ const Left = styled.div`
 
 const Center = styled.h1`
   flex: 1;
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 500;
   display: flex;
   align-items: center;

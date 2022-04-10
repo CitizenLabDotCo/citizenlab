@@ -3,13 +3,14 @@ import { parse } from 'qs';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { SSOParams } from 'services/singleSignOn';
 import clHistory from 'utils/cl-router/history';
+import { TAuthUser } from 'containers/App';
 
 export default function openSignUpInModalIfNecessary(
-  authUser,
-  isAuthError,
-  isInvitation,
-  signUpInModalMounted,
-  search
+  authUser: TAuthUser,
+  isAuthError: boolean,
+  isInvitation: boolean,
+  signUpInModalMounted: boolean,
+  search: string
 ) {
   // here we check all the possible conditions that could potentially trigger the sign-up and/or verification flow to appear
   if (
@@ -31,7 +32,6 @@ export default function openSignUpInModalIfNecessary(
     // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
     const shouldCompleteRegistration =
       !authUser?.data.attributes.registration_completed_at;
-
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
       sso_response,

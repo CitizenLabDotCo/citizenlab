@@ -25,7 +25,7 @@ class StaticPage < ApplicationRecord
   accepts_nested_attributes_for :text_images
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :body_multiloc, presence: true, multiloc: { presence: true }
+  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
   validates :slug, presence: true, uniqueness: true
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, if: ->(page) { !page.custom? }

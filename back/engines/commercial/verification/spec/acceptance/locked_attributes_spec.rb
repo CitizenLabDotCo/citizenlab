@@ -43,20 +43,15 @@ resource "Users - Locked attributes" do
 
   get "web_api/v1/users/custom_fields/json_forms_schema", document: false do
     before do
-      # Franceconnect locks the `birthyear` custom_field
-      create(:custom_field_birthyear)
+      # Bogus locks the `gender` custom_field
       create(:custom_field_gender)
-      create(:verification, method_name: 'franceconnect', user: @user)
+      create(:verification, method_name: 'bogus', user: @user)
     end
 
     example_request "Jsonforms UI schema marks the locked fields" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === "#/properties/birthyear"}[:options]).to include({
-        readonly: true,
-        verificationLocked: true
-      })
-      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === "#/properties/gender"}[:options].to_h).not_to include({
+      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === "#/properties/gender"}[:options].to_h).to include({
         readonly: true,
         verificationLocked: true
       })
