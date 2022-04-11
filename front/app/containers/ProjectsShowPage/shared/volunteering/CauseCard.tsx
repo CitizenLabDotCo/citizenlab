@@ -9,7 +9,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import Image from 'components/UI/Image';
-import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
+import { Icon, useWindowSize, Label } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
@@ -221,7 +221,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -234,7 +234,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <PlaceholderIcon name="volunteer-hand" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -250,7 +250,12 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <Title>
             <T value={cause.attributes.title_multiloc} />
           </Title>
-
+          <Label hidden>
+            <FormattedMessage
+              {...messages.xVolunteers}
+              values={{ x: cause.attributes.volunteers_count }}
+            />
+          </Label>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
               <QuillEditedContent textColor={theme.colorText}>
