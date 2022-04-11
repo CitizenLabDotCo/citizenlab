@@ -100,7 +100,8 @@ resource 'Tenants', admin_api: true do
 
       do_request tenant: new_tenant.attributes
       expect(response_status).to eq 422
-      expect(json_response_body[:errors][:host][0][:error]).to eq('taken')
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:host, 'taken')
     end
 
     example '[error] Cannot create tenant with invalid setting' do
