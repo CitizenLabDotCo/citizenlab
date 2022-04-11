@@ -59,21 +59,16 @@ export default defineMessages({
     id: 'app.components.ConfirmationModal.emailPlaceholder',
     defaultMessage: 'Insert your email here',
   },
-  emailAddress: {
-    id: 'app.components.ConfirmationModal.emailAddress',
-    defaultMessage: 'Email Address',
+  email: {
+    id: 'app.components.ConfirmationModal.email',
+    defaultMessage: 'Email',
   },
   confirmationCodeSent: {
     id: 'app.components.ConfirmationModal.confirmationCodeSent',
     defaultMessage: 'New code sent',
   },
-  insertYour4DigitCodeHere: {
-    id: 'app.components.ConfirmationModal.insertYour4DigitCodeHere',
-    defaultMessage: 'Insert your 4 digit code here.',
-  },
-  weAskEveryoneToConfirmTheirEmail: {
-    id: 'app.components.ConfirmationModal.weAskEveryoneToConfirmTheirEmail',
-    defaultMessage:
-      'We ask everyone to confirm their email address to help create a trusted community.',
+  codeInput: {
+    id: 'app.components.ConfirmationModal.codeInput',
+    defaultMessage: 'Code',
   },
 });
