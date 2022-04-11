@@ -44,7 +44,7 @@ resource 'IdeaImage' do
     end
     ValidationErrorHelper.new.error_fields(self, IdeaImage)
     let(:idea_id) { @idea.id }
-    let(:image) { file_as_base64('image13.png') }
+    let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
 
     example_request 'Add an image to an idea' do
@@ -63,7 +63,7 @@ resource 'IdeaImage' do
     ValidationErrorHelper.new.error_fields(self, IdeaImage)
     let(:idea_id) { @idea.id }
     let(:image_id) { IdeaImage.first.id }
-    let(:image) { file_as_base64('image14.png') }
+    let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
 
     example_request 'Update an image for an idea' do

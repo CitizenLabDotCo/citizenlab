@@ -43,7 +43,7 @@ resource "ProjectFolderImage" do
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
-    let(:image) { png_image_as_base64("image13.png") }
+    let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
 
     example_request "Add an image to a project_folder" do
@@ -65,7 +65,7 @@ resource "ProjectFolderImage" do
     end
 
     describe do
-      let(:image) { file_as_base64('afvalkalender.pdf', 'application/pdf') }
+      let(:image) { file_as_base64 'afvalkalender.pdf', 'application/pdf' }
 
       example_request "[error] Add an invalid image type to a project_folder" do
         expect(response_status).to eq 422
@@ -83,7 +83,7 @@ resource "ProjectFolderImage" do
     ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
     let(:image_id) { ProjectFolders::Image.first.id }
-    let(:image) { png_image_as_base64("image14.png") }
+    let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
 
     example_request "Edit an image for a project_folder" do

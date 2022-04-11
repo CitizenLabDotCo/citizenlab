@@ -47,7 +47,7 @@ resource "EventFile" do
     let(:event_id) { @event.id }
     let(:ordering) { 1 }
     let(:name) { 'afvalkalender.pdf' }
-    let(:file) { file_as_base64(name, 'application/pdf') }
+    let(:file) { file_as_base64 name, 'application/pdf' }
 
     example_request "Add a file attachment to an event" do
       expect(response_status).to eq 201
@@ -59,7 +59,7 @@ resource "EventFile" do
     end
 
     describe do
-      let(:file) { file_as_base64('keylogger.exe', 'application/octet-stream') }
+      let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
       let(:name) { 'keylogger.exe' }
 
       example_request "[error] Add an unsupported file extension as attachment to an event" do

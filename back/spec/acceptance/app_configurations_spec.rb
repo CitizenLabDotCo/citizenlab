@@ -79,9 +79,9 @@ resource 'AppConfigurations' do
 
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
 
-    let(:logo) { png_image_as_base64('logo.png') }
-    let(:header_bg) { file_as_base64('header.jpg', 'image/jpeg') }
-    let(:favicon) { png_image_as_base64('favicon.png') }
+    let(:logo) { png_image_as_base64 'logo.png' }
+    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+    let(:favicon) { png_image_as_base64 'favicon.png' }
     let(:homepage_info_multiloc) do
       {
         'en' => 'Awesome homepage info'

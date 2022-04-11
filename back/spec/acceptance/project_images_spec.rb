@@ -43,7 +43,7 @@ resource "ProjectImage" do
     end
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
     let(:project_id) { @project.id }
-    let(:image) { png_image_as_base64('image13.png') }
+    let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
 
     example_request "Add an image to a project" do
@@ -65,7 +65,7 @@ resource "ProjectImage" do
     end
 
     describe do
-      let(:image) { file_as_base64('afvalkalender.pdf', 'application/pdf') }
+      let(:image) { file_as_base64 'afvalkalender.pdf', 'application/pdf' }
 
       example_request "[error] Add an invalid image type to a project" do
         expect(response_status).to eq 422
@@ -84,7 +84,7 @@ resource "ProjectImage" do
     ValidationErrorHelper.new.error_fields(self, ProjectImage)
     let(:project_id) { @project.id }
     let(:image_id) { ProjectImage.first.id }
-    let(:image) { png_image_as_base64('image14.png') }
+    let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
 
     example_request "Edit an image for a project" do

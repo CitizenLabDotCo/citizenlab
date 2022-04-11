@@ -133,7 +133,7 @@ resource 'Users' do
       let(:email) { Faker::Internet.email }
       let(:password) { Faker::Internet.password }
       let(:locale) { "en" }
-      let(:avatar) { png_image_as_base64 }
+      let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
 
       example_request "Create a user" do
         expect(response_status).to eq 201

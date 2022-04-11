@@ -340,7 +340,7 @@ resource "Initiatives" do
     let(:body_multiloc) { initiative.body_multiloc }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
     let(:location_description) { "Stanley Road 4" }
-    let(:header_bg) { file_as_base64('header.jpg') }
+    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:assignee_id) { create(:admin).id }
@@ -437,7 +437,7 @@ resource "Initiatives" do
     let(:id) { @initiative.id }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
     let(:location_description) { "Watkins Road 8" }
-    let(:header_bg) { file_as_base64('header.jpg') }
+    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
 
@@ -469,7 +469,8 @@ resource "Initiatives" do
 
     describe do
       let(:id) { @initiative.id }
-      let(:header_bg) { file_as_base64('header.jpg') }
+      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+
       example "The header image can be updated and the file is present", document: false do
         do_request
         expect(@initiative.reload.header_bg_url).to be_present
@@ -480,7 +481,7 @@ resource "Initiatives" do
     describe do
       let(:id) { @initiative.id }
       example "The header image can be removed" do
-        @initiative.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
+        @initiative.update!(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
         expect(@initiative.reload.header_bg_url).to be_present
         do_request initiative: {header_bg: nil}
         expect(@initiative.reload.header_bg_url).to be nil

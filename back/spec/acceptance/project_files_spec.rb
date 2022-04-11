@@ -46,7 +46,7 @@ resource "ProjectFile" do
     let(:project_id) { @project.id }
     let(:ordering) { 1 }
     let(:name) { 'afvalkalender.pdf' }
-    let(:file) { file_as_base64(name, 'application/pdf') }
+    let(:file) { file_as_base64 name, 'application/pdf' }
 
     example_request "Add a file attachment to a project" do
       expect(response_status).to eq 201
@@ -58,7 +58,7 @@ resource "ProjectFile" do
     end
 
     describe do
-      let(:file) { file_as_base64('keylogger.exe', 'application/octet-stream') }
+      let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
       let(:name) { 'keylogger.exe' }
 
       example_request "[error] Add an unsupported file extension as attachment to a project" do
