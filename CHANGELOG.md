@@ -12,13 +12,18 @@
 
 ### Fixed
 
-- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
 - Added additional areas of focus and outline to scroll-to links and buttons in editing Comments, Ideas display, and Events display for a11y compatability
 - Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
 - Fixed accessibility issue in modal window used to report a proposal as spam
 - Fixed accessibility contrast issue for social media buttons
 - Fixed accessibility issue in map ideas search
 - The widget no longer links to ideas with the wrong domain
+
+## 2022-04-01
+
+### Fixed
+
+- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
 
 ## 2022-03-29
 
