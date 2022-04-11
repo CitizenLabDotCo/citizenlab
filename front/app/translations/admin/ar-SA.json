@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "نجاح",
   "app.components.admin.FormikSubmitWrapper.messageError": "حدث خطأ أثناء الحفظ",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "تم الحفظ بنجاح",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "مُدخل 1 ",
   "app.components.admin.PostManager.PostPreview.assignee": "المعيّن إليه",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "إلغاء التعديل",
