@@ -15,6 +15,7 @@
 - Fixed accessibility issue in modal window used to report a proposal as spam
 - Fixed accessibility contrast issue for social media buttons
 - Fixed accessibility issue regarding missing screen reader labels on text boxes
+- Fixed bug in idea form for missing Proposed Budget field even when enabled
 - Fixed accessibility issue in map ideas search
 - The widget no longer links to ideas with the wrong domain
 
