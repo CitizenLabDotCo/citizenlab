@@ -46,8 +46,8 @@ resource "PhaseFile" do
     ValidationErrorHelper.new.error_fields(self, PhaseFile)
     let(:phase_id) { @phase.id }
     let(:ordering) { 1 }
-    let(:name) { "afvalkalender.pdf" }
-    let(:file) { encode_pdf_file_as_base64(name) }
+    let(:name) { 'afvalkalender.pdf' }
+    let(:file) { file_as_base64(name, 'application/pdf') }
 
     example_request "Add a file attachment to a phase" do
       expect(response_status).to eq 201
@@ -59,7 +59,7 @@ resource "PhaseFile" do
     end
 
     describe do
-      let(:file) { encode_exe_file_as_base64("keylogger.exe") }
+      let(:file) { file_as_base64('keylogger.exe', 'application/octet-stream') }
       let(:name) { 'keylogger.exe' }
 
       example_request "[error] Add an unsupported file extension as attachment to a phase" do
@@ -91,20 +91,4 @@ resource "PhaseFile" do
       expect{PhaseFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
-
-  private
-
-  def encode_pdf_file_as_base64 filename
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
-  def encode_exe_file_as_base64 filename
-    "data:application/octet-stream;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
-  def encode_image_as_base64 filename
-    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
 end

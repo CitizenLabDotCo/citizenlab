@@ -133,7 +133,7 @@ resource 'Users' do
       let(:email) { Faker::Internet.email }
       let(:password) { Faker::Internet.password }
       let(:locale) { "en" }
-      let(:avatar) { base64_encoded_image }
+      let(:avatar) { png_image_as_base64 }
 
       example_request "Create a user" do
         expect(response_status).to eq 201
@@ -870,16 +870,5 @@ resource 'Users' do
         expect(json_response.dig(:count)).to eq 2
       end
     end
-  end
-
-
-  private
-
-  def base64_encoded_image
-    "data:image/jpeg;base64,#{encode_image_as_base64("lorem-ipsum.jpg")}"
-  end
-
-  def encode_image_as_base64(filename)
-    Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))
   end
 end

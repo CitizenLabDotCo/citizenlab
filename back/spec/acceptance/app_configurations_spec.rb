@@ -79,9 +79,9 @@ resource 'AppConfigurations' do
 
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
 
-    let(:logo) { base64_encoded_image('logo.png', 'image/png') }
-    let(:header_bg) { base64_encoded_image('header.jpg', 'image/jpeg') }
-    let(:favicon) { base64_encoded_image('favicon.png', 'image/png') }
+    let(:logo) { png_image_as_base64('logo.png') }
+    let(:header_bg) { file_as_base64('header.jpg', 'image/jpeg') }
+    let(:favicon) { png_image_as_base64('favicon.png') }
     let(:homepage_info_multiloc) do
       {
         'en' => 'Awesome homepage info'
@@ -172,15 +172,5 @@ resource 'AppConfigurations' do
         expect(configuration.reload.favicon_url).to be nil
       end
     end
-  end
-
-  private
-
-  def base64_encoded_image(filename, mime)
-    "data:#{mime};base64,#{encode_image_as_base64(filename)}"
-  end
-
-  def encode_image_as_base64(filename)
-    Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))
   end
 end

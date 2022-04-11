@@ -45,8 +45,8 @@ resource "ProjectFile" do
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
     let(:project_id) { @project.id }
     let(:ordering) { 1 }
-    let(:name) { "afvalkalender.pdf" }
-    let(:file) { encode_pdf_file_as_base64(name) }
+    let(:name) { 'afvalkalender.pdf' }
+    let(:file) { file_as_base64(name, 'application/pdf') }
 
     example_request "Add a file attachment to a project" do
       expect(response_status).to eq 201
@@ -58,8 +58,8 @@ resource "ProjectFile" do
     end
 
     describe do
-      let(:file) { encode_exe_file_as_base64("keylogger.exe") } # don't worry, it's not really a keylogger ;-)
-      let(:name) { "keylogger.exe" }
+      let(:file) { file_as_base64('keylogger.exe', 'application/octet-stream') }
+      let(:name) { 'keylogger.exe' }
 
       example_request "[error] Add an unsupported file extension as attachment to a project" do
         expect(response_status).to eq 422
@@ -101,9 +101,4 @@ resource "ProjectFile" do
   def encode_exe_file_as_base64 filename
     "data:application/octet-stream;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
   end
-
-  def encode_image_as_base64 filename
-    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
 end

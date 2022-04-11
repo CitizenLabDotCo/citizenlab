@@ -270,7 +270,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg') }
+        let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
@@ -312,7 +312,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg') }
+        let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:process_type) { project.process_type }
@@ -440,7 +440,7 @@ resource 'Projects' do
       let(:description_multiloc) { { 'en' => 'Changed body' } }
       let(:description_preview_multiloc) { @project.description_preview_multiloc }
       let(:slug) { 'changed-title' }
-      let(:header_bg) { encode_image_as_base64('header.jpg') }
+      let(:header_bg) { png_image_as_base64('header.jpg') }
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:topic_ids) { create_list(:topic, 2).map(&:id) }
       let(:visible_to) { 'groups' }
@@ -668,8 +668,4 @@ resource 'Projects' do
       end
     end
   end
-end
-
-def encode_image_as_base64(filename)
-  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
 end
