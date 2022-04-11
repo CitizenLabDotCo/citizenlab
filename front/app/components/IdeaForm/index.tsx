@@ -404,7 +404,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const locationRequired = this.isFieldRequired(
-        'location',
+        'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -422,7 +422,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const imagesRequired = this.isFieldRequired(
-        'images',
+        'idea_images_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -440,7 +440,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const attachmentsRequired = this.isFieldRequired(
-        'attachments',
+        'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -700,12 +700,12 @@ class IdeaForm extends PureComponent<
         locale
       );
       const locationEnabled = this.isFieldEnabled(
-        'location',
+        'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
       const attachmentsEnabled = this.isFieldEnabled(
-        'attachments',
+        'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -744,14 +744,14 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.title}
                 optional={
                   !this.isFieldRequired(
-                    'title',
+                    'title_multiloc',
                     ideaCustomFieldsSchemas,
                     locale
                   )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.title?.description
+                    ?.properties?.title_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -806,11 +806,15 @@ class IdeaForm extends PureComponent<
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
                 optional={
-                  !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
+                  !this.isFieldRequired(
+                    'body_multiloc',
+                    ideaCustomFieldsSchemas,
+                    locale
+                  )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.body?.description
+                    ?.properties?.body_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -911,7 +915,7 @@ class IdeaForm extends PureComponent<
               )}
 
               {showTopics && (
-                <FormElement>
+                <FormElement id="e2e-idea-topics-input">
                   <FormLabel
                     htmlFor="topics"
                     labelMessage={messages.topicsTitle}
@@ -935,7 +939,7 @@ class IdeaForm extends PureComponent<
                     availableTopics={allowedTopics}
                   />
                   {topicsError && (
-                    <Error id="e2e-new-idea-topics-error" text={topicsError} />
+                    <Error className="e2e-error-message" text={topicsError} />
                   )}
                 </FormElement>
               )}
@@ -946,7 +950,7 @@ class IdeaForm extends PureComponent<
                     labelMessage={messages.locationTitle}
                     optional={
                       !this.isFieldRequired(
-                        'location',
+                        'location_description',
                         ideaCustomFieldsSchemas,
                         locale
                       )
@@ -954,7 +958,7 @@ class IdeaForm extends PureComponent<
                     subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
-                      ]?.properties?.location?.description
+                      ]?.properties?.location_description?.description
                     }
                     subtextSupportsHtml={true}
                     htmlFor="idea-form-location-input-field"
@@ -981,14 +985,14 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.imageUploadTitle}
                 optional={
                   !this.isFieldRequired(
-                    'images',
+                    'idea_images_attributes',
                     ideaCustomFieldsSchemas,
                     locale
                   )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.images?.description
+                    ?.properties?.idea_images_attributes?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -1009,7 +1013,7 @@ class IdeaForm extends PureComponent<
                   labelMessage={messages.otherFilesTitle}
                   optional={
                     !this.isFieldRequired(
-                      'attachments',
+                      'idea_files_attributes',
                       ideaCustomFieldsSchemas,
                       locale
                     )
@@ -1017,7 +1021,7 @@ class IdeaForm extends PureComponent<
                   subtextValue={
                     ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                       locale || ''
-                    ]?.properties?.attachments?.description
+                    ]?.properties?.idea_files_attributes?.description
                   }
                   subtextSupportsHtml={true}
                   htmlFor="idea-form-file-uploader"
