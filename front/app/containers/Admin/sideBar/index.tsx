@@ -361,20 +361,15 @@ class Sidebar extends PureComponent<
             }
           })}
           <Spacer />
-          <HasPermission
-            item={{ type: 'route', path: '/admin/guide' }}
-            action="access"
+          <GetStartedLink
+            href={formatMessage(messages.linkToSupportCenter)}
+            target="_blank"
           >
-            <GetStartedLink
-              href={formatMessage(messages.linkToSupportCenter)}
-              target="_blank"
-            >
-              <IconWrapper>
-                <Icon name="circleInfo" />
-              </IconWrapper>
-              <Text>{formatMessage({ ...messages.guide })}</Text>
-            </GetStartedLink>
-          </HasPermission>
+            <IconWrapper>
+              <Icon name="circleInfo" />
+            </IconWrapper>
+            <Text>{formatMessage({ ...messages.guide })}</Text>
+          </GetStartedLink>
         </MenuInner>
       </Menu>
     );
