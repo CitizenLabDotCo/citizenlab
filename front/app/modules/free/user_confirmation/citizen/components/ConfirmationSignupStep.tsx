@@ -24,14 +24,14 @@ import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import { FormLabel } from 'components/UI/FormComponents';
 
-export const FormContainer = styled.div<{ inModal: boolean }>`
+const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
   margin-bottom: 60px;
 `;
 
-export const Form = styled.form<{ inModal: boolean }>`
+const Form = styled.form<{ inModal: boolean }>`
   width: 100%;
   max-width: ${(props) => (props.inModal ? '380px' : 'unset')};
   display: flex;
@@ -40,23 +40,23 @@ export const Form = styled.form<{ inModal: boolean }>`
   margin: 2rem 0;
 `;
 
-export const FormField = styled.div`
+const FormField = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
 `;
 
-export const StyledLabel = styled(Label)`
+const StyledLabel = styled(Label)`
   display: block;
   text-align: left;
 `;
 
-export const StyledText = styled(Text)`
+const StyledText = styled(Text)`
   text-align: center;
   margin-bottom: 2rem;
 `;
 
-export const LabelTextContainer = styled.div`
+const LabelTextContainer = styled.div`
   display: block;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 1.5rem;
@@ -67,13 +67,13 @@ export const LabelTextContainer = styled.div`
   }
 `;
 
-export const Footer = styled.div`
+const Footer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 10px;
 `;
 
-export const SubmitButton = styled(Button)`
+const SubmitButton = styled(Button)`
   width: 100%;
   margin: 0.75rem 0;
 `;
