@@ -1,5 +1,6 @@
 // libraries
 import React from 'react';
+import { isEqual } from 'lodash-es';
 
 // components
 import CustomFieldGraph from './CustomFieldGraph';
@@ -13,6 +14,7 @@ import useUserCustomFields from '../../../hooks/useUserCustomFields';
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
+import { IUserCustomFieldData } from '../../../services/userCustomFields';
 
 interface Props {
   startAt: string;
@@ -32,32 +34,38 @@ const CustomFieldGraphs = ({
   });
 
   if (
-    participationMethods !== ['information'] &&
-    !isNilOrError(userCustomFields)
+    isEqual(participationMethods, ['information']) ||
+    isNilOrError(userCustomFields)
   ) {
-    return (
-      <>
-        {userCustomFields.map(
-          (customField) =>
-            // only show enabled fields, only supported number field is birthyear.
-            customField.attributes.enabled &&
-            (customField.attributes.input_type === 'number'
-              ? customField.attributes.code === 'birthyear'
-              : true) && (
-              <CustomFieldGraph
-                startAt={startAt}
-                endAt={endAt}
-                customField={customField}
-                currentProject={project.id}
-                key={customField.id}
-              />
-            )
-        )}
-      </>
-    );
+    return null;
   }
 
-  return null;
+  return (
+    <>
+      {userCustomFields.filter(allowedField).map((customField) => (
+        <CustomFieldGraph
+          startAt={startAt}
+          endAt={endAt}
+          customField={customField}
+          currentProject={project.id}
+          key={customField.id}
+        />
+      ))}
+    </>
+  );
+};
+
+// Only show enabled fields, only supported number field is birthyear.
+const allowedField = ({
+  attributes: { enabled, input_type, code },
+}: IUserCustomFieldData) => {
+  if (!enabled) return false;
+
+  if (input_type === 'number') {
+    return code === 'birthyear';
+  }
+
+  return true;
 };
 
 export default CustomFieldGraphs;
