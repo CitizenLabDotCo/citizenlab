@@ -11,7 +11,6 @@ import { getUrlLocale } from 'services/locale';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import MenuItem from './MenuItem';
-import HasPermission from 'components/HasPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
