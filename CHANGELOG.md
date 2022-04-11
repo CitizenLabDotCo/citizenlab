@@ -19,17 +19,17 @@
 - Fixed accessibility issue in map ideas search
 - The widget no longer links to ideas with the wrong domain
 
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
+
 ## 2022-04-01
 
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
-
-## 2022-03-29
-
-### Fixed
-
-- Fixed SurveyMonkey container height so survey questions are visible
 
 ## 2022-03-29
 
