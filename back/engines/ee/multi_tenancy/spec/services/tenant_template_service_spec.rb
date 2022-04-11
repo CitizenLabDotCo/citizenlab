@@ -54,13 +54,13 @@ describe MultiTenancy::TenantTemplateService do
           custom_field:
             - resource_type: CustomForm
               resource_ref: *1
-              key: body
+              key: body_multiloc
               input_type: multiline_text
               title_multiloc:
                 en: Description
               description_multiloc:
                 nl-BE: Debitis expedita qui nostrum.
-              code: body
+              code: body_multiloc
             - resource_type: CustomForm
               resource_ref: *2
               key: title
