@@ -14,6 +14,7 @@ module IdeaCustomFields
       private
 
       def custom_and_default_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
+        # Some fields exist but should not be shown in the input form settings, and we filter them here when the filter_unmodifiable flag is true
         db_cfs = custom_form.custom_fields
         db_cfs = db_cfs.where.not(code: ['location_point_geojson', 'author_id', 'budget']).or(db_cfs.where(code: nil)) if filter_unmodifiable
         db_cfs = db_cfs.merge(custom_fields_scope) if custom_fields_scope
