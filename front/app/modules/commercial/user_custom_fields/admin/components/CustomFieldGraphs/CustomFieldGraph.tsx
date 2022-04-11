@@ -90,7 +90,7 @@ const CustomTooltip = ({
   active,
   totalLabel,
 }: TooltipProps) => {
-  if (active) {
+  if (active && payload[0]) {
     return (
       <Box bgColor="#fff" border="1px solid #cccccc" p="10px">
         <h4 style={{ fontWeight: 600 }}>{label}</h4>
