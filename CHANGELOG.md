@@ -14,6 +14,7 @@
 - Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
 - Fixed accessibility issue in modal window used to report a proposal as spam
 - Fixed accessibility contrast issue for social media buttons
+- Fixed bug in idea form for missing Proposed Budget field even when enabled
 - Fixed accessibility issue in map ideas search
 - The widget no longer links to ideas with the wrong domain
 
