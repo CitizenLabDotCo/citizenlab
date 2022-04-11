@@ -388,7 +388,6 @@
   "app.containers.Admin.Invitations.saveErrorMessage": "One or more errors occurred and the invitations were not sent out. Please correct the error(s) listed below and try again.",
   "app.containers.Admin.Invitations.saveSuccess": "Success!",
   "app.containers.Admin.Invitations.saveSuccessMessage": "Invitation successfully sent out.",
-  "app.containers.Admin.Invitations.searchForUsers": "Search for users",
   "app.containers.Admin.Invitations.supportPage": "support page",
   "app.containers.Admin.Invitations.supportPageLinkText": "Visit the support page",
   "app.containers.Admin.Invitations.tabAllInvitations": "All invitations",
