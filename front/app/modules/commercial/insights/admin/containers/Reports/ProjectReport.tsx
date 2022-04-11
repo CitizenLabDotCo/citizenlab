@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import useLocalize from 'hooks/useLocalize';
+import { isEqual } from 'lodash-es';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -226,7 +227,7 @@ const ProjectReport = memo(
           </Section>
         )}
 
-        {participationMethods !== ['information'] && startAt && endAt && (
+        {!isEqual(participationMethods, ['information']) && startAt && endAt && (
           <Section>
             <SectionTitle>
               <FormattedMessage {...messages.sectionWho} />
