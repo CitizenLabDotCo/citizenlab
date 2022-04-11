@@ -5,12 +5,13 @@ import { isEmpty } from 'lodash-es';
 import { saveAs } from 'file-saver';
 
 // components
-import { Table, Input, Popup } from 'semantic-ui-react';
+import { Table, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import { Icon } from '@citizenlab/cl2-component-library';
 import Row from './Row';
+import SearchInput from 'components/UI/SearchInput';
 
 // resources
 import GetInvites, {
@@ -101,8 +102,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
     this.props.onChangeSorting(sortAttribute);
   };
 
-  handleChangeSearchTerm = (event) => {
-    const searchValue = event.target.value;
+  handleChangeSearchTerm = (searchValue: string) => {
     this.setState({ searchValue });
     this.props.onChangeSearchTerm(searchValue);
   };
@@ -122,12 +122,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']}>
           <HeaderContainer>
-            <Input
-              icon="search"
-              onChange={this.handleChangeSearchTerm}
-              size="large"
-            />
-
+            <SearchInput onChange={this.handleChangeSearchTerm} />
             <Button
               buttonStyle="cl-blue"
               icon="download"
