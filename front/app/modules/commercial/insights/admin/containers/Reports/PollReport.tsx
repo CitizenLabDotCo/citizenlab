@@ -10,7 +10,7 @@ import {
   GraphCardInner,
   GraphsContainer,
   NoDataContainer,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import QuestionReport from './QuestionReport';
 import { SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

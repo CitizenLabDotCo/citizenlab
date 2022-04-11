@@ -11,7 +11,7 @@ import messages from './messages';
 import ResolutionControl, {
   IResolution,
 } from 'components/admin/ResolutionControl';
-import { GraphsContainer } from 'components/admin/Chart';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
 
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
