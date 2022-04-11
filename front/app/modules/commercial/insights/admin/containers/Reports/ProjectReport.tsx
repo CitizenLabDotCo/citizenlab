@@ -93,23 +93,21 @@ const ProjectReport = memo(
     mostVotedIdeas,
     intl: { formatMessage, formatDate },
   }: Props & InjectedIntlProps & WithRouterProps) => {
-    if (isNilOrError(project)) return null;
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const localize = useLocalize();
 
-    const isTimelineProject = project.attributes.process_type === 'timeline';
-
     // set time boundaries
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [resolution, setResolution] = useState<IResolution>('month');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [startAt, setStartAt] = useState<string | null | undefined>(null);
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [endAt, setEndAt] = useState<string | null>(null);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const isTimelineProject = isNilOrError(project)
+      ? null
+      : project.attributes.process_type === 'timeline';
+
     useEffect(() => {
+      if (isTimelineProject === null) return;
+      if (isNilOrError(project)) return;
+
       if (isTimelineProject) {
         if (!isNilOrError(phases) && phases.length > 0) {
           const startAt = phases[0].attributes.start_at;
@@ -130,6 +128,8 @@ const ProjectReport = memo(
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [project, phases]);
+
+    if (isNilOrError(project)) return null;
 
     const getResolution = (start, end) => {
       const timeDiff = moment.duration(end.diff(start));
