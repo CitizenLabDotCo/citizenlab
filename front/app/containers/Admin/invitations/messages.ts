@@ -218,8 +218,4 @@ export default defineMessages({
     id: 'UI.FormComponents.required',
     defaultMessage: 'required',
   },
-  searchForUsers: {
-    id: 'app.containers.Admin.Invitations.searchForUsers',
-    defaultMessage: 'Search for users',
-  },
 });
