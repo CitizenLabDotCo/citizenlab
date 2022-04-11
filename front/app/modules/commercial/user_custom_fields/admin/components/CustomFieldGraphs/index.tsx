@@ -14,7 +14,10 @@ import useUserCustomFields from '../../../hooks/useUserCustomFields';
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { IProjectData } from 'services/projects';
-import { IUserCustomFieldData } from '../../../services/userCustomFields';
+import {
+  IUserCustomFieldData,
+  IUserCustomFieldInputType,
+} from '../../../services/userCustomFields';
 
 interface Props {
   startAt: string;
@@ -23,6 +26,13 @@ interface Props {
   project: IProjectData;
 }
 
+const INPUT_TYPES: IUserCustomFieldInputType[] = [
+  'select',
+  'multiselect',
+  'checkbox',
+  'number',
+];
+
 const CustomFieldGraphs = ({
   participationMethods,
   startAt,
@@ -30,7 +40,7 @@ const CustomFieldGraphs = ({
   project,
 }: Props) => {
   const userCustomFields = useUserCustomFields({
-    inputTypes: ['select', 'multiselect', 'checkbox', 'number'],
+    inputTypes: INPUT_TYPES,
   });
 
   if (
