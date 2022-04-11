@@ -6,7 +6,6 @@ import CustomFieldGraph from './CustomFieldGraph';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual } from 'lodash-es';
 
 // hooks
 import useUserCustomFields from '../../../hooks/useUserCustomFields';
@@ -24,8 +23,8 @@ interface Props {
 
 const CustomFieldGraphs = ({
   participationMethods,
-  startAt,
-  endAt,
+  // startAt,
+  // endAt,
   project,
 }: Props) => {
   const userCustomFields = useUserCustomFields({
