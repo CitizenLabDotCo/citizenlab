@@ -44,13 +44,7 @@ resource 'Confirmations' do
 
         expect(status).to eq 422
         json_response = json_parse response_body
-        expect(json_response).to include(
-          errors: hash_including(
-            code: array_including(
-              { error: 'blank' }
-            )
-          )
-        )
+        expect(json_response).to include_response_error(:code, 'blank')
       end
 
       example 'returns an unprocessable entity status when the code is invalid' do
@@ -63,13 +57,7 @@ resource 'Confirmations' do
 
         expect(status).to eq 422
         json_response = json_parse response_body
-        expect(json_response).to include(
-          errors: hash_including(
-            code: array_including(
-              { error: 'invalid' }
-            )
-          )
-        )
+        expect(json_response).to include_response_error(:code, 'invalid')
       end
     end
   end
