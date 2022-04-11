@@ -1,21 +1,15 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { adopt } from 'react-adopt';
-import GetAppConfiguration, {
-  GetAppConfigurationChildProps,
-} from 'resources/GetAppConfiguration';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 import { fontSizes } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
-import Error from 'components/UI/Error';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
 import { signOutAndDeleteAccountPart1 } from 'services/auth';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -51,55 +45,26 @@ const ButtonsContainer = styled.div`
   display: flex;
 `;
 
-interface InputProps {
+interface Props {
   closeDialog: () => void;
 }
 
-interface DataProps {
-  tenant: GetAppConfigurationChildProps;
-  authUser: GetAuthUserChildProps;
-}
+const DeletionDialog = ({
+  closeDialog,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const appConfiguration = useAppConfiguration();
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  error: boolean;
-  processing: boolean;
-}
-
-class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: false,
-      processing: false,
-    };
-  }
-
-  deleteProfile = () => {
+  const deleteProfile = () => {
     signOutAndDeleteAccountPart1();
-    this.props.closeDialog();
+    closeDialog();
   };
 
-  render() {
-    const {
-      tenant,
-      intl: { formatMessage },
-    } = this.props;
-    const { processing, error } = this.state;
-    const tenantLogo = !isNilOrError(tenant)
-      ? get(
-          tenant.attributes.logo,
-          'medium',
-          get(tenant.attributes.logo, 'small')
-        )
-      : null;
-
+  if (!isNilOrError(appConfiguration)) {
+    const logo = appConfiguration.data.attributes.logo?.medium;
     return (
       <Container>
-        {tenantLogo && (
-          <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
-        )}
+        {logo && <Logo src={logo} alt={formatMessage(messages.logoAltText)} />}
         <Styledh1>
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
@@ -143,43 +108,27 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
           <Button
             buttonStyle="delete"
             id="deletion"
-            onClick={this.deleteProfile}
+            onClick={deleteProfile}
             width="auto"
             justifyWrapper="left"
-            processing={processing}
             className="e2e-delete-profile-confirm"
           >
             <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
           <Button
             buttonStyle="text"
-            onClick={this.props.closeDialog}
+            onClick={closeDialog}
             width="auto"
             justifyWrapper="left"
-            processing={processing}
           >
             <FormattedMessage {...messages.cancel} />
           </Button>
         </ButtonsContainer>
-        {error && (
-          <Error text={<FormattedMessage {...messages.deleteProfileError} />} />
-        )}
       </Container>
     );
   }
-}
 
-const DeletionDialogWithIntl = injectIntl(DeletionDialog);
+  return null;
+};
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetAppConfiguration />,
-  authUser: <GetAuthUser />,
-});
-
-const WrappedDeletionDialog = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => <DeletionDialogWithIntl {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-export default WrappedDeletionDialog;
+export default injectIntl(DeletionDialog);
