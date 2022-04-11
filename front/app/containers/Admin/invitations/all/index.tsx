@@ -102,8 +102,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
     this.props.onChangeSorting(sortAttribute);
   };
 
-  handleChangeSearchTerm = (searchTerm: string) => {
-    const searchValue = searchTerm;
+  handleChangeSearchTerm = (searchValue: string) => {
     this.setState({ searchValue });
     this.props.onChangeSearchTerm(searchValue);
   };
