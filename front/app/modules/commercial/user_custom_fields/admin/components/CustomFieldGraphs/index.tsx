@@ -23,8 +23,8 @@ interface Props {
 
 const CustomFieldGraphs = ({
   participationMethods,
-  // startAt,
-  // endAt,
+  startAt,
+  endAt,
   project,
 }: Props) => {
   const userCustomFields = useUserCustomFields({
@@ -45,6 +45,8 @@ const CustomFieldGraphs = ({
               ? customField.attributes.code === 'birthyear'
               : true) && (
               <CustomFieldGraph
+                startAt={startAt}
+                endAt={endAt}
                 customField={customField}
                 currentProject={project.id}
                 key={customField.id}

@@ -70,6 +70,8 @@ const customFieldEndpoints: Record<TAllowedCode, ICustomFieldEndpoint> = {
 };
 
 interface InputProps {
+  startAt: string;
+  endAt: string;
   customField: IUserCustomFieldData;
   currentProject: string | undefined;
   className?: string;
@@ -107,6 +109,7 @@ const CustomTooltip = ({
 
 const createCombinedStream = (
   customField: IUserCustomFieldData,
+  { startAt, endAt }: { startAt: string; endAt: string },
   currentProject?: string
 ) => {
   const { code } = customField.attributes;
@@ -117,8 +120,15 @@ const createCombinedStream = (
       : usersByRegFieldStream;
 
   const totalUsersStream = stream(null, customField.id);
+
   const participantsStream = stream(
-    { queryParameters: { project: currentProject } },
+    {
+      queryParameters: {
+        start_at: startAt,
+        end_at: endAt,
+        project: currentProject,
+      },
+    },
     customField.id
   );
 
@@ -129,6 +139,8 @@ const createCombinedStream = (
 };
 
 const CustomFieldsGraph = ({
+  startAt,
+  endAt,
   customField,
   currentProject,
   localize,
@@ -147,7 +159,11 @@ const CustomFieldsGraph = ({
   const convertAndMergeSeries = convertAndMergeSeriesRef.current;
 
   useEffect(() => {
-    const combinedStream = createCombinedStream(customField, currentProject);
+    const combinedStream = createCombinedStream(
+      customField,
+      { startAt, endAt },
+      currentProject
+    );
 
     const subscription = combinedStream.subscribe(
       ([totalSerie, participantSerie]) => {
