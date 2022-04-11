@@ -124,7 +124,8 @@ export default defineMessages({
     defaultMessage: 'Content moderation',
   },
   registrationHelperTextDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.registrationHelperTextDescription',
+    id:
+      'app.containers.AdminPage.SettingsPage.registrationHelperTextDescription',
     defaultMessage:
       'Provide a short description at the top of your registration form.',
   },
@@ -133,7 +134,8 @@ export default defineMessages({
     defaultMessage: 'Profanity blocker',
   },
   profanityBlockerSettingDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
+    id:
+      'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
     defaultMessage:
       'Block input, proposals and comments containing the most commonly reported offensive words',
   },
