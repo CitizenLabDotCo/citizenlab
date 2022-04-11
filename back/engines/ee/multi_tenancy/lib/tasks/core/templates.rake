@@ -35,7 +35,7 @@ namespace :templates do
   end
 
   task :verify, [:output_file] => [:environment] do |t, args|
-    pool_size = 4
+    pool_size = 1 # 4 # Debugging
     failed_templates = []
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
@@ -94,11 +94,15 @@ namespace :templates do
     locales = service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
     name = template.split('_').join('')
-    tn = Tenant.create!(
+    tn_attributes = {
       name: name,
       host: "#{name}.localhost",
-      settings: { core: { allowed: true, enabled: true, locales: locales, lifecycle_stage: 'demo' } }
-    )
+      settings: SettingsService.new.minimal_required_settings(
+        locales: locales,
+        lifecycle_stage: 'demo'
+      )
+    }
+    tn = Tenant.create! tn_attributes
 
     Apartment::Tenant.switch(tn.schema_name) do
       puts "Verifying #{template}"

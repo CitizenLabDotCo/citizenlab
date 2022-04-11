@@ -25,13 +25,6 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'organization_type' => 'medium_city',
             'display_header_avatars' => true
           },
-        'customizable_homepage_banner' => {
-          'allowed' => true,
-          'enabled' => true,
-          'layout' => 'full_width_banner_layout',
-          'cta_signed_out_type' => 'sign_up_button',
-          'cta_signed_in_type' => 'no_button'
-        },
         'initiatives' =>
           { 'allowed' => true,
             'enabled' => true,
