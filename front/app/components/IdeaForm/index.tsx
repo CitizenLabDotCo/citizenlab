@@ -842,7 +842,10 @@ class IdeaForm extends PureComponent<
             </FormElement>
           </StyledFormSection>
 
-          {(showPBBudget || showTopics || showLocation) && (
+          {(showPBBudget ||
+            showTopics ||
+            showLocation ||
+            showproposedBudget) && (
             <StyledFormSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />
               {showPBBudget && (
