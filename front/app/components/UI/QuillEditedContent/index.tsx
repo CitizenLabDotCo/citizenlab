@@ -39,16 +39,17 @@ const QuillEditedContent = ({
 }: Props) => {
   const containerRef = useRef<HTMLElement | null>(null);
 
+  const tabbableElements = containerRef.current?.querySelectorAll(
+    'a, iframe, button, input, select, textarea'
+  );
+
   useEffect(() => {
-    const tabbableElements = containerRef.current?.querySelectorAll(
-      'a, iframe, button, input, select, textarea'
-    );
     if (tabbableElements) {
       for (const item of tabbableElements) {
         item.setAttribute('tabindex', disableTabbing ? '-1' : '0');
       }
     }
-  }, [disableTabbing]);
+  }, [disableTabbing, tabbableElements]);
 
   return (
     <Container
