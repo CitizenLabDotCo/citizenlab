@@ -1,11 +1,14 @@
 // libraries
 import React from 'react';
-import { isEmpty, map, range, forOwn, get, orderBy } from 'lodash-es';
+import { isEmpty, map, orderBy } from 'lodash-es';
+import { Subscription, combineLatest } from 'rxjs';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from 'containers/Admin/dashboard/messages';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import T from 'components/T';
 
 // styling
 import { withTheme } from 'styled-components';
@@ -22,8 +25,11 @@ import { Tooltip, LabelList } from 'recharts';
 import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
+// typings
 import { IUserCustomFieldData } from '../../services/userCustomFields';
-import { Subscription, combineLatest } from 'rxjs';
+import { IStream } from 'utils/streams';
+
+// services
 import {
   IUsersByRegistrationField,
   usersByRegFieldStream,
@@ -39,12 +45,19 @@ import {
   IUsersByBirthyear,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import moment from 'moment';
-import T from 'components/T';
+import {
+  binBirthyear,
+  rename,
+  join,
+  convertDomicileData,
+  Series,
+} from '../../utils/data';
+import { fallbackMessages } from './AreaChart';
+
+// hooks
 import useUserCustomFields from '../../hooks/useUserCustomFields';
-import { IStream } from 'utils/streams';
 
 type ISupportedDataType =
   | IUsersByRegistrationField
@@ -73,6 +86,13 @@ const customFieldEndpoints = {
     xlsxEndpoint: usersByDomicileXlsxEndpoint,
   },
 };
+
+const joinTotalAndParticipants = (total: Series, participants: Series) =>
+  join(
+    rename(total, { value: 'total' }),
+    rename(participants, { value: 'participants' }),
+    { by: 'name' }
+  );
 
 interface Props {
   customField: IUserCustomFieldData;
@@ -155,44 +175,15 @@ export class CustomFieldsComparison extends React.PureComponent<
     } = this.props;
 
     if (customField.attributes.code === 'birthyear') {
-      const currentYear = moment().year();
+      const options = { missing: formatMessage(messages._blank) };
 
-      return [
-        ...range(0, 100, 10).map((minAge) => {
-          let totalNumberOfUsers = 0;
-          let paticipants = 0;
-          const maxAge = minAge + 9;
+      const binnedTotal = binBirthyear(totalSerie.series.users, options);
+      const binnedParticipants = binBirthyear(
+        participantSerie.series.users,
+        options
+      );
 
-          forOwn(totalSerie.series.users, (userCount, birthYear) => {
-            const age = currentYear - parseInt(birthYear, 10);
-
-            if (age >= minAge && age <= maxAge) {
-              totalNumberOfUsers += userCount;
-            }
-          });
-
-          forOwn(participantSerie.series.users, (userCount, birthYear) => {
-            const age = currentYear - parseInt(birthYear, 10);
-
-            if (age >= minAge && age <= maxAge) {
-              paticipants += userCount;
-            }
-          });
-
-          return {
-            name: `${minAge} - ${maxAge}`,
-            total: totalNumberOfUsers,
-            participants: paticipants,
-            code: `${minAge}`,
-          };
-        }),
-        {
-          name: formatMessage(messages._blank),
-          total: get(totalSerie.series.users, '_blank', 0),
-          participants: get(participantSerie.series.users, '_blank', 0),
-          code: '',
-        },
-      ];
+      return joinTotalAndParticipants(binnedTotal, binnedParticipants);
     } else if (customField.attributes.code === 'gender') {
       const res = Object.keys(genderColors).map((gender) => ({
         total: totalSerie.series.users[gender] || 0,
@@ -202,26 +193,23 @@ export class CustomFieldsComparison extends React.PureComponent<
       }));
       return res.length > 0 ? res : null;
     } else if (customField.attributes.code === 'domicile') {
-      const res = map((totalSerie as IUsersByDomicile).areas, (value, key) => ({
-        total: totalSerie.series.users[key] || 0,
-        participants: participantSerie.series.users[key] || 0,
-        name: localize(value.title_multiloc),
-        code: key,
-      }));
+      const parseName = (key, value) =>
+        key in fallbackMessages
+          ? formatMessage(fallbackMessages[key])
+          : localize(value.title_multiloc);
 
-      res.push({
-        total: totalSerie.series.users['_blank'] || 0,
-        participants: participantSerie.series.users['_blank'] || 0,
-        name: formatMessage(messages._blank),
-        code: '_blank',
-      });
-
-      res.push({
-        total: totalSerie.series.users['outside'] || 0,
-        participants: participantSerie.series.users['outside'] || 0,
-        name: formatMessage(messages.otherArea),
-        code: 'outside',
-      });
+      const areas = (totalSerie as IUsersByDomicile).areas;
+      const resTotal = convertDomicileData(
+        areas,
+        totalSerie.series.users,
+        parseName
+      );
+      const resParticipants = convertDomicileData(
+        areas,
+        participantSerie.series.users,
+        parseName
+      );
+      const res = joinTotalAndParticipants(resTotal, resParticipants);
 
       const sortedByParticipants = orderBy(res, 'participants', 'desc');
       return sortedByParticipants;
