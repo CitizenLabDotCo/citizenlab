@@ -73,6 +73,9 @@ module MultiTenancy
             end
             json_info = {
               error_message: e.message,
+              app_config_host: AppConfiguration.instance.host, # temporary for debugging
+              app_config_settings: AppConfiguration.instance.settings, # temporary for debugging
+              tenant_host: Tenant.current.host, # temporary for debugging
               tenant_settings: Tenant.current.settings, # temporary for debugging
               table_names: table_names, # temporary for debugging
               model_class: model_class.name,

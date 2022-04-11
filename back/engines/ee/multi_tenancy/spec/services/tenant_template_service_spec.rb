@@ -27,16 +27,7 @@ describe MultiTenancy::TenantTemplateService do
         name = template.split('_').join('')
         locales = MultiTenancy::TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
         locales = ['en'] if locales.blank?
-        Tenant.create!(
-          name: name,
-          host: "#{name}.localhost",
-          settings: {
-            core: {
-              allowed: true, enabled: true, locales: locales,
-              lifecycle_stage: 'active'
-            }
-          }
-        )
+        create(:tenant, name: name, host: "#{name}.localhost", locales: locales, lifecycle: 'active')
         Apartment::Tenant.switch("#{name}_localhost") do
           service.resolve_and_apply_template template
         end
