@@ -182,7 +182,8 @@ const CustomFieldsGraph = ({
     );
 
     return () => subscription.unsubscribe();
-  }, [customField, currentProject]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [customField, currentProject, startAt, endAt]);
 
   const noData =
     !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
