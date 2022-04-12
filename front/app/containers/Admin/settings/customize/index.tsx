@@ -195,10 +195,8 @@ class SettingsCustomizeTab extends PureComponent<
           );
         }
 
-        const {
-          newEventsNavbarItemEnabled,
-          newAllInputNavbarItemEnabled,
-        } = this.state;
+        const { newEventsNavbarItemEnabled, newAllInputNavbarItemEnabled } =
+          this.state;
 
         if (newEventsNavbarItemEnabled !== null) {
           await toggleEvents({ enabled: newEventsNavbarItemEnabled });
@@ -233,27 +231,26 @@ class SettingsCustomizeTab extends PureComponent<
     );
   };
 
-  handleSettingOnChange = (settingName: TAppConfigurationSetting) => (
-    settingKey: string,
-    newSettingValue: any
-  ) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: {
-          ...state.attributesDiff,
-          settings: {
-            ...state.settings,
-            ...get(state.attributesDiff, 'settings', {}),
-            [settingName]: {
-              ...get(state.settings, settingName, {}),
-              ...get(state.attributesDiff, `settings.${settingName}`, {}),
-              [settingKey]: newSettingValue,
+  handleSettingOnChange =
+    (settingName: TAppConfigurationSetting) =>
+    (settingKey: string, newSettingValue: any) => {
+      this.setState((state) => {
+        return {
+          attributesDiff: {
+            ...state.attributesDiff,
+            settings: {
+              ...state.settings,
+              ...get(state.attributesDiff, 'settings', {}),
+              [settingName]: {
+                ...get(state.settings, settingName, {}),
+                ...get(state.attributesDiff, `settings.${settingName}`, {}),
+                [settingKey]: newSettingValue,
+              },
             },
           },
-        },
-      };
-    });
-  };
+        };
+      });
+    };
 
   render() {
     const { locale, tenant } = this.state;
