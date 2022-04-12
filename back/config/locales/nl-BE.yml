@@ -113,6 +113,9 @@ nl-BE:
       body:
         title: Beschrijving
         description:
+      author_id:
+        title: Auteur
+        description:
       topic_ids:
         title: Tags
         description:
@@ -122,12 +125,36 @@ nl-BE:
       proposed_budget:
         title: Voorgesteld budget
         description:
+      budget:
+        title: Bedrag
+        description:
       images:
         title: Afbeeldingen
         description:
       attachments:
         title: Bijlagen
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
+      details:
+        title: Details
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Man
