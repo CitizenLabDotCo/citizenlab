@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Fixed
+
+- Fixed accessibility issue regarding element order for screen readers in volunteer card
 
 ## 2022-04-11
 
