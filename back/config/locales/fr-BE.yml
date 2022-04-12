@@ -113,6 +113,9 @@ fr-BE:
       body:
         title: Description complète
         description:
+      author_id:
+        title: Auteur
+        description:
       topic_ids:
         title: Étiquettes
         description:
@@ -122,12 +125,36 @@ fr-BE:
       proposed_budget:
         title: Proposition de budget
         description:
+      budget:
+        title: Budget
+        description:
       images:
         title: Images
         description:
       attachments:
         title: Pièces jointes
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
+      details:
+        title: Détails
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Masculin

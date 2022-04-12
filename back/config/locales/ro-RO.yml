@@ -113,6 +113,9 @@ ro:
       body:
         title: Descriere
         description:
+      author_id:
+        title: Author
+        description:
       topic_ids:
         title: Subiecte
         description:
@@ -122,12 +125,36 @@ ro:
       proposed_budget:
         title: Buget propus
         description:
+      budget:
+        title: Buget
+        description:
       images:
         title: Imagini
         description:
       attachments:
         title: Fișiere atașate
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
+      details:
+        title: Detalii
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Masculin
