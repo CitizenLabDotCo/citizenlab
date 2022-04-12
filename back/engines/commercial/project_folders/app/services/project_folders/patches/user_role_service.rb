@@ -45,6 +45,10 @@ module ProjectFolders
 
         super.or(scope.where(admin_publication: admin_publications))
       end
+
+      def moderates_something?(user)
+        super || user.project_folder_moderator?
+      end
     end
   end
 end

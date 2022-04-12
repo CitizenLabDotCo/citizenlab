@@ -20,6 +20,10 @@ module ProjectManagement
 
         super.or scope.where(id: user.moderatable_project_ids)
       end
+
+      def moderates_something?(user)
+        super || user.project_moderator?
+      end
     end
   end
 end

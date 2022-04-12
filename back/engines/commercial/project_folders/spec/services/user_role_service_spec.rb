@@ -102,4 +102,10 @@ describe UserRoleService do
       end
     end
   end
+
+  describe 'moderates_something?' do
+    it 'permits folders moderators' do
+      expect(service.moderates_something?(create(:project_folder_moderator))).to be_truthy
+    end
+  end
 end

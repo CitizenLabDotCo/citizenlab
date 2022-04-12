@@ -90,15 +90,4 @@ resource "ProjectFile" do
       expect{ProjectFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
-
-  private
-
-  def encode_pdf_file_as_base64 filename
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
-  def encode_exe_file_as_base64 filename
-    "data:application/octet-stream;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
 end
