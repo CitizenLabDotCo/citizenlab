@@ -161,7 +161,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                   textColor={theme.colorText}
                   fontSize="m"
                   className="e2e-folder-description"
-                  disableTabbing={expanded}
+                  disableTabbing={!expanded}
                 >
                   <T
                     value={projectFolder.attributes.description_multiloc}
