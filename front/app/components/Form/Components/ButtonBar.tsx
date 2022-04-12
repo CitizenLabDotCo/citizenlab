@@ -9,12 +9,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import { Box } from '@citizenlab/cl2-component-library';
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   buttonText?: string | ReactElement;
   apiErrors: boolean;
-  valid: boolean;
   processing: boolean;
   onSubmit: () => Promise<void>;
 }
@@ -25,16 +24,9 @@ export default memo(
     buttonText = <FormattedMessage {...messages.submit} />,
     onSubmit,
     apiErrors,
-    valid,
   }: Props) => (
-    <>
-      <Box
-        maxWidth="740px"
-        display="flex"
-        alignItems="center"
-        padding="10px 30px"
-        margin="auto"
-      >
+    <Box width="100%" background="#fff" border-top="solid 1px #ddd">
+      <Box maxWidth="740px" display="flex" padding="10px 30px" margin="auto">
         <Button
           className="e2e-submit-idea-form"
           processing={processing}
@@ -42,7 +34,6 @@ export default memo(
           marginRight="10px"
           onClick={onSubmit}
           type="submit"
-          disabled={!valid}
         />
         {apiErrors && (
           <Error
@@ -53,6 +44,6 @@ export default memo(
           />
         )}
       </Box>
-    </>
+    </Box>
   )
 );

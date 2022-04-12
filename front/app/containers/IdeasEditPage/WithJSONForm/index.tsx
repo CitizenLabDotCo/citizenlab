@@ -1,10 +1,8 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { PreviousPathnameContext } from 'context';
 
 import { WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-
-import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
 
 import { isError, isNilOrError } from 'utils/helperUtils';
 import useAuthUser from 'hooks/useAuthUser';
@@ -15,79 +13,59 @@ import { getInputTerm } from 'services/participationContexts';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import ideaFormMessages from 'containers/IdeasNewPage/messages';
 
-import IdeasNewMeta from '../IdeasNewMeta';
 import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
-import { addIdea } from 'services/ideas';
-import { geocode, reverseGeocode } from 'utils/locationTools';
-
-// for getting inital state from previous page
-import { parse } from 'qs';
+import { updateIdea } from 'services/ideas';
+import { geocode } from 'utils/locationTools';
+import useIdea from 'hooks/useIdea';
+import IdeasEditMeta from '../IdeasEditMeta';
+import { usePermission } from 'services/permissions';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
-const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
+const IdeasEditPageWithJSONForm = ({ params: { ideaId } }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
   const authUser = useAuthUser();
-  const project = useProject({ projectSlug: params.slug });
+  const idea = useIdea({ ideaId });
+  const project = useProject({
+    projectId: isNilOrError(idea) ? null : idea.relationships.project.data.id,
+  });
 
   const phases = usePhases(project?.id);
   const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
+  const permisison = usePermission({
+    item: isNilOrError(idea) ? null : idea,
+    action: 'edit',
+    context: idea,
+  });
 
   useEffect(() => {
-    const isPrivilegedUser =
-      !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) ||
-        isModerator({ data: authUser }) ||
-        isSuperAdmin({ data: authUser }));
-
-    if (
-      !isPrivilegedUser &&
-      (authUser === null ||
-        (!isNilOrError(project) &&
-          !project.attributes.action_descriptor.posting_idea.enabled))
-    ) {
+    if (!isNilOrError(idea) && !permisison) {
       clHistory.replace(previousPathName || (!authUser ? '/sign-up' : '/'));
     }
-  }, [authUser, project, previousPathName]);
+  }, [authUser, idea, previousPathName, permisison]);
 
-  const search = location.search;
-  // Click on map flow :
-  // clicked location is passed in url params
-  // reverse goecode them and use them as initial data
-  const [processingLocation, setProcessingLocation] = useState(Boolean(search));
-  const [initialFormData, setInitialFormData] = useState({});
-
-  useEffect(() => {
-    const { lat, lng } = parse(search, {
-      ignoreQueryPrefix: true,
-      decoder: (str, _defaultEncoder, _charset, type) => {
-        return type === 'value' ? parseFloat(str) : str;
-      },
-    }) as { [key: string]: string | number };
-
-    if (lat && lng) {
-      setInitialFormData((initialFormData) => ({
-        ...initialFormData,
-        location_point_geojson: {
-          type: 'Point',
-          coordinates: [lng, lat],
-        },
-      }));
-    }
-
-    if (typeof lat === 'number' && typeof lng === 'number') {
-      reverseGeocode(lat, lng).then((address) => {
-        setInitialFormData((initialFormData) => ({
-          ...initialFormData,
-          location_description: address,
-        }));
-        setProcessingLocation(false);
-      });
-    }
-  }, [search]);
+  const initialFormData =
+    isNilOrError(idea) || !schema
+      ? null
+      : Object.fromEntries(
+          Object.keys(schema.properties).map((prop) => {
+            if (idea.attributes?.[prop]) {
+              return [prop, idea.attributes?.[prop]];
+            } else if (
+              prop === 'topic_ids' &&
+              Array.isArray(idea.relationships?.topics?.data)
+            ) {
+              return [
+                prop,
+                idea.relationships?.topics?.data.map((rel) => rel.id),
+              ];
+            } else return [prop, undefined];
+          })
+        );
 
   const onSubmit = async (data) => {
     let location_point_geojson;
@@ -96,26 +74,26 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
       location_point_geojson = await geocode(data.location_description);
     }
 
-    const idea = await addIdea({
+    const idea = await updateIdea(ideaId, {
       ...data,
       location_point_geojson,
       project_id: project?.id,
       publication_status: 'published',
     });
-    const ideaId = idea.data.id;
 
     clHistory.push({
       pathname: `/ideas/${idea.data.attributes.slug}`,
-      search: `?new_idea_id=${ideaId}`,
     });
   };
 
   const getApiErrorMessage: ApiErrorGetter = useCallback(
     (error) => {
       return (
-        messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
-        messages[`api_error_${error}`] ||
-        messages[`api_error_invalid`]
+        ideaFormMessages[
+          `api_error_${uiSchema?.options?.inputTerm}_${error}`
+        ] ||
+        ideaFormMessages[`api_error_${error}`] ||
+        ideaFormMessages[`api_error_invalid`]
       );
     },
     [uiSchema]
@@ -143,22 +121,22 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   );
 
   return (
-    <PageContainer id="e2e-idea-new-page">
-      {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
+    <PageContainer overflow="hidden" id="e2e-idea-edit-page">
+      {!isNilOrError(project) && !isNilOrError(idea) && schema && uiSchema ? (
         <>
-          <IdeasNewMeta />
+          <IdeasEditMeta ideaId={ideaId} projectId={project.id} />
           <Form
             schema={schema}
             uiSchema={uiSchema}
             onSubmit={onSubmit}
             initialFormData={initialFormData}
+            inputId={idea.id}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
-            inputId={undefined}
             title={
               <FormattedMessage
                 {...{
-                  idea: messages.ideaFormTitle,
+                  idea: messages.formTitle,
                   option: messages.optionFormTitle,
                   project: messages.projectFormTitle,
                   question: messages.questionFormTitle,
@@ -182,4 +160,4 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   );
 };
 
-export default IdeasNewPageWithJSONForm;
+export default IdeasEditPageWithJSONForm;
