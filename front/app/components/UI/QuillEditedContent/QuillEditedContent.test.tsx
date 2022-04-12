@@ -9,7 +9,9 @@ describe('QuillEditedContent component', () => {
 
     const { rerender } = render(
       <QuillEditedContent>
-        <a data-testid="link">link</a>
+        <a href="www.google.com" data-testid="link">
+          link
+        </a>
         <button data-testid="button">button</button>
         <iframe data-testid="iframe">
           <div>iframe content</div>
@@ -19,7 +21,9 @@ describe('QuillEditedContent component', () => {
 
     rerender(
       <QuillEditedContent disableTabbing={false}>
-        <a data-testid="link">link</a>
+        <a href="www.google.com" data-testid="link">
+          link
+        </a>
         <button data-testid="button">button</button>
         <iframe data-testid="iframe">
           <div>iframe content</div>
@@ -35,7 +39,9 @@ describe('QuillEditedContent component', () => {
 
     rerender(
       <QuillEditedContent disableTabbing={true}>
-        <a data-testid="link">link</a>
+        <a href="www.google.com" data-testid="link">
+          link
+        </a>
         <button data-testid="button">button</button>
         <iframe data-testid="iframe">
           <div>iframe content</div>
@@ -51,7 +57,9 @@ describe('QuillEditedContent component', () => {
 
     rerender(
       <QuillEditedContent disableTabbing={false}>
-        <a data-testid="link">link</a>
+        <a href="www.google.com" data-testid="link">
+          link
+        </a>
         <button data-testid="button">button</button>
         <iframe data-testid="iframe">
           <div>iframe content</div>
