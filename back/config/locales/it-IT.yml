@@ -113,6 +113,9 @@ it:
       body:
         title: Descrizione
         description:
+      author_id:
+        title: Autore
+        description:
       topic_ids:
         title: Argomenti
         description:
@@ -122,12 +125,36 @@ it:
       proposed_budget:
         title: Bilancio proposto
         description:
+      budget:
+        title: Bilancio
+        description:
       images:
         title: Immagini
         description:
       attachments:
         title: Allegati
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
+      details:
+        title: Dettagli
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Maschio

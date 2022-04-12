@@ -21,7 +21,7 @@ export function scrollToElement({
 
   if (shouldFocus) {
     // make sure the element has a tabindex so it can be focused
-    element.setAttribute('tabindex', '0');
+    element.setAttribute('tabindex', '-1');
     element.focus();
   }
 }
