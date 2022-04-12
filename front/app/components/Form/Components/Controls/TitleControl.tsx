@@ -1,21 +1,17 @@
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
-import {
-  ControlProps,
-  isControl,
-  RankedTester,
-  rankWith,
-} from '@jsonforms/core';
+import { Box, Input } from '@citizenlab/cl2-component-library';
+import { ControlProps, RankedTester, rankWith } from '@jsonforms/core';
 import React, { useCallback, useState } from 'react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
+import {
+  sanitizeForClassname,
+  getFieldNameFromPath,
+} from 'utils/JSONFormUtils';
 import { isString } from 'utils/helperUtils';
-import messages from './messages';
+import VerificationIcon from '../VerificationIcon';
 
-export const InputControl = ({
+export const TitleControl = ({
   data,
   handleChange,
   path,
@@ -25,32 +21,31 @@ export const InputControl = ({
   required,
   uischema,
   label,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   const onChange = useCallback(
-    (value: string) =>
+    (value: string) => {
       handleChange(
         path,
         schema.type === 'number' && value ? parseInt(value, 10) : value
-      ),
+      );
+    },
     [schema.type, handleChange, path]
   );
-
   return (
-    <>
+    <Box id="e2e-idea-title-input">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={label}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">
         <Input
           data-testid="inputControl"
           id={sanitizeForClassname(id)}
-          className={`input_field_root_${label}`}
           type={schema.type === 'number' ? 'number' : 'text'}
           value={data}
           onChange={onChange}
@@ -63,19 +58,17 @@ export const InputControl = ({
           }}
           disabled={uischema?.options?.readonly}
         />
-        {uischema?.options?.verificationLocked && (
-          <IconTooltip
-            content={<FormattedMessage {...messages.blockedVerified} />}
-            icon="lock"
-            marginLeft="5px"
-          />
-        )}
+        <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
-    </>
+    </Box>
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(InputControl));
+export default withJsonFormsControlProps(TitleControl);
 
-export const inputControlTester: RankedTester = rankWith(3, isControl);
+export const titleControlTester: RankedTester = rankWith(1000, (uischema) =>
+  (uischema as any)?.scope
+    ? getFieldNameFromPath((uischema as any)?.scope) === 'title_multiloc'
+    : false
+);

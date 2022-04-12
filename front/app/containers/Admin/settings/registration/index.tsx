@@ -48,10 +48,13 @@ const SettingsRegistrationTab = (_props: Props) => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const [isFormSaved, setIsFormSaved] = useState(false);
   const [errors, setErrors] = useState<{ [fieldName: string]: CLError[] }>({});
-  const [attributesDiff, setAttributesDiff] =
-    useState<IUpdatedAppConfigurationProperties>({});
-  const [latestAppConfigSettings, setLatestAppConfigSettings] =
-    useState<IAppConfigurationSettings | null>(null);
+  const [attributesDiff, setAttributesDiff] = useState<
+    IUpdatedAppConfigurationProperties
+  >({});
+  const [
+    latestAppConfigSettings,
+    setLatestAppConfigSettings,
+  ] = useState<IAppConfigurationSettings | null>(null);
 
   useEffect(() => {
     if (!isNilOrError(appConfig)) {
@@ -74,38 +77,40 @@ const SettingsRegistrationTab = (_props: Props) => {
     });
   }, [attributesDiff]);
 
-  const handleCoreSettingWithMultilocOnChange =
-    (coreSetting: TAppConfigurationSettingCore) => (multiloc: Multiloc) => {
-      const newAttributesDiff = {
-        ...attributesDiff,
-        settings: {
-          ...attributesDiff.settings,
-          core: {
-            ...(attributesDiff.settings?.core || {}),
-            // needed because otherwise the useEffect that uses
-            // setLatestAppConfigSettings will replace the entire core
-            // setting with just our 1 setting whenever we change one of the fields
-            ...latestAppConfigSettings?.core,
-            [coreSetting]: multiloc,
-          },
+  const handleCoreSettingWithMultilocOnChange = (
+    coreSetting: TAppConfigurationSettingCore
+  ) => (multiloc: Multiloc) => {
+    const newAttributesDiff = {
+      ...attributesDiff,
+      settings: {
+        ...attributesDiff.settings,
+        core: {
+          ...(attributesDiff.settings?.core || {}),
+          // needed because otherwise the useEffect that uses
+          // setLatestAppConfigSettings will replace the entire core
+          // setting with just our 1 setting whenever we change one of the fields
+          ...latestAppConfigSettings?.core,
+          [coreSetting]: multiloc,
         },
-      };
-
-      setAttributesDiff(newAttributesDiff);
+      },
     };
 
-  const handleSettingOnChange =
-    (setting: TAppConfigurationSetting) => (value: any) => {
-      const newAttributesDiff = {
-        ...attributesDiff,
-        settings: {
-          ...(attributesDiff.settings || {}),
-          [setting]: value,
-        },
-      };
+    setAttributesDiff(newAttributesDiff);
+  };
 
-      setAttributesDiff(newAttributesDiff);
+  const handleSettingOnChange = (setting: TAppConfigurationSetting) => (
+    value: any
+  ) => {
+    const newAttributesDiff = {
+      ...attributesDiff,
+      settings: {
+        ...(attributesDiff.settings || {}),
+        [setting]: value,
+      },
     };
+
+    setAttributesDiff(newAttributesDiff);
+  };
 
   const handleSubmit = async (event?: React.FormEvent<HTMLFormElement>) => {
     if (event) {

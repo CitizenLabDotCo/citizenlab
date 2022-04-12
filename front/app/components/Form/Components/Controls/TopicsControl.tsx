@@ -5,12 +5,13 @@ import {
   rankWith,
   ControlProps,
 } from '@jsonforms/core';
-import React from 'react';
+import React, { useState } from 'react';
 
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
+import { Box } from '@citizenlab/cl2-component-library';
 
 const TopicsControl = ({
   data: selectedTopicIds = [],
@@ -22,19 +23,24 @@ const TopicsControl = ({
   id,
   required,
 }: ControlProps) => {
-  const availableTopics = uischema?.options?.available_topics ?? [];
+  const availableTopics =
+    (!Array.isArray(schema.items) &&
+      (schema.items?.oneOf as { const: string; title: string }[])) ||
+    [];
 
   const handleTopicsChange = (topicIds: string[]) => {
     handleChange(path, topicIds);
+    setDidBlur(true);
   };
+  const [didBlur, setDidBlur] = useState(false);
 
   return (
-    <>
+    <Box id="e2e-idea-topics-input">
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <TopicsPicker
@@ -43,14 +49,14 @@ const TopicsControl = ({
         availableTopics={availableTopics}
         id={sanitizeForClassname(id)}
       />
-      <ErrorDisplay fieldPath={path} ajvErrors={errors} />
-    </>
+      <ErrorDisplay fieldPath={path} ajvErrors={errors} didBlur={didBlur} />
+    </Box>
   );
 };
 
 export default withJsonFormsControlProps(TopicsControl);
 
 export const topicsControlTester: RankedTester = rankWith(
-  4,
+  1000,
   scopeEndsWith('topic_ids')
 );

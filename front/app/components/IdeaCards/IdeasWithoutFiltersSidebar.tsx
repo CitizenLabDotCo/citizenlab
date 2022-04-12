@@ -246,7 +246,7 @@ const IdeasWithoutFiltersSidebar = ({
     queryParameters: { phase: phaseId },
   } = ideas;
 
-  const locationEnabled = isFieldEnabled('location');
+  const locationEnabled = isFieldEnabled('location_description');
   const topicsEnabled = isFieldEnabled('topic_ids');
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
