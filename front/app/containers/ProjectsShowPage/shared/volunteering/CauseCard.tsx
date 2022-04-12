@@ -9,7 +9,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // components
 import Image from 'components/UI/Image';
-import { Icon, useWindowSize, Label } from '@citizenlab/cl2-component-library';
+import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
@@ -17,6 +17,7 @@ import Warning from 'components/UI/Warning';
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -250,12 +251,12 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <Title>
             <T value={cause.attributes.title_multiloc} />
           </Title>
-          <Label hidden>
+          <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVolunteers}
               values={{ x: cause.attributes.volunteers_count }}
             />
-          </Label>
+          </ScreenReaderOnly>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
               <QuillEditedContent textColor={theme.colorText}>
