@@ -33,10 +33,8 @@ module AdminApi
     field :created_at, String, null: false
     field :href, String, null: true
 
-    @@frontend_service = Frontend::UrlService.new
     def href
-      @@frontend_service.model_to_url(object)
+      Frontend::UrlService.new.model_to_url(object)
     end
-
   end
 end

@@ -246,7 +246,6 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
-  'app.containers.Admin.guide.SetupSection': Record<string, any>;
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
     projectId?: string | null;

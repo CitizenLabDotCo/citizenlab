@@ -1,19 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  setupArticle3Link: {
-    id: 'containers.Admin.onboarding.setupArticle3Link',
-    defaultMessage: '/admin/settings/widgets',
-  },
-  setupArticle3Title: {
-    id: 'containers.Admin.onboarding.setupArticle3Title',
-    defaultMessage: 'Link the platform to third party websites using a widget',
-  },
-  setupArticle3Description: {
-    id: 'containers.Admin.onboarding.setupArticle3Description',
-    defaultMessage:
-      'A personalized widget brings people from other websites to your platform.',
-  },
   tabWidgets: {
     id: 'app.containers.AdminPage.SettingsPage.tabWidgets',
     defaultMessage: 'Widgets',

@@ -2,6 +2,7 @@ class CustomFieldService
   include CustomFieldUserOverrides
 
   def initialize
+    ActiveSupport::Deprecation.warn('CustomFieldService is deprecated. Use JsonFormsService instead.')
     @multiloc_service = MultilocService.new
   end
 
@@ -25,10 +26,13 @@ class CustomFieldService
       type: "object",
       additionalProperties: false,
       properties: fields.inject({}) do |memo, field|
-        override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
+        override_method_code = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
+        override_method_type = "#{field.resource_type.underscore}_#{field.input_type}_to_json_schema_field"
         memo[field.key] =
-          if field.code && self.respond_to?(override_method, true)
-            send(override_method, field, locale)
+          if field.code && self.respond_to?(override_method_code, true)
+            send(override_method_code, field, locale)
+          elsif field.input_type && self.respond_to?(override_method_type, true)
+            send(override_method_type, field, locale)
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
           end
@@ -249,22 +253,110 @@ class CustomFieldService
     }
   end
 
-  # *** files ***
 
-  def files_to_ui_schema_field(field, locale)
-    base_ui_schema_field(field, locale)
-  end
 
-  def files_to_json_schema_field(field, locale)
-    {
-      title: handle_title(field, locale),
-      description: handle_description(field, locale),
-      type: "array",
-      items: {
-        type: "string",
-        format: "data-url",
+    # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
+
+    # *** html ***
+
+    def html_to_ui_schema_field(field, locale)
+      base_ui_schema_field(field, locale)
+    end
+
+    def html_to_json_schema_field(field, locale)
+      {
+        title: handle_title(field, locale),
+        description: handle_description(field, locale),
+        type: 'string'
       }
-    }
-  end
+    end
+
+    # *** text_multiloc ***
+
+    def text_multiloc_to_ui_schema_field(field, locale)
+      base_ui_schema_field(field, locale)
+    end
+
+    def text_multiloc_to_json_schema_field(field, locale)
+      {
+        title: handle_title(field, locale),
+        description: handle_description(field, locale),
+        type: 'string'
+      }
+    end
+
+    # *** multiline_text_multiloc ***
+
+    def multiline_text_multiloc_to_ui_schema_field(field, locale)
+      base_ui_schema_field(field, locale)
+    end
+
+    def multiline_text_multiloc_to_json_schema_field(field, locale)
+      {
+        title: handle_title(field, locale),
+        description: handle_description(field, locale),
+        type: 'string'
+      }
+    end
+
+    # *** html_multiloc ***
+
+    def html_multiloc_to_ui_schema_field(field, locale)
+      base_ui_schema_field(field, locale)
+    end
+
+    def html_multiloc_to_json_schema_field(field, locale)
+      {
+        title: handle_title(field, locale),
+        description: handle_description(field, locale),
+        type: 'string'
+      }
+    end
+
+    # *** point ***
+
+    def point_to_ui_schema_field(field, locale)
+      Hash.new.tap do |ui_schema|
+        ui_schema[:'ui:widget'] = 'hidden'
+      end
+    end
+
+    def point_to_json_schema_field(field, locale)
+      {
+        type: 'string'
+      }
+    end
+
+    # *** files ***
+
+    def files_to_ui_schema_field(field, locale)
+      base_ui_schema_field(field, locale)
+    end
+
+    def files_to_json_schema_field(field, locale)
+      {
+        title: handle_title(field, locale),
+        description: handle_description(field, locale),
+        type: "array",
+        items: {
+          type: "string",
+          format: "data-url",
+        }
+      }
+    end
+
+    # *** image files ***
+
+    def image_files_to_ui_schema_field(field, locale)
+      base_ui_schema_field(field, locale)
+    end
+
+    def image_files_to_json_schema_field(field, locale)
+      {
+        title: handle_title(field, locale),
+        description: handle_description(field, locale),
+        type: 'string'
+      }
+    end
 
 end
