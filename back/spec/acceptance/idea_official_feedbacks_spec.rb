@@ -103,7 +103,7 @@ resource 'OfficialFeedback' do
 
         example_request '[error] Create an invalid official feedback on an idea' do
           expect(response_status).to eq 422
-          expect(json_response.dig(:errors, :body_multiloc)).to eq [{ error: 'blank' }]
+          expect(json_response).to include_response_error(:body_multiloc, 'blank')
         end
       end
     end

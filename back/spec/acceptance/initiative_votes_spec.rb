@@ -106,8 +106,8 @@ resource 'Votes' do
       @initiative.votes.create(user: @user, mode: 'up')
       do_request
       expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq 'already_upvoted'
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:base, 'already_upvoted')
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
     end

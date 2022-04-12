@@ -186,12 +186,13 @@ resource 'Users' do
           }
           AppConfiguration.instance.update! settings: settings
         end
-        let(:password) { "ab" }
 
-        example_request "[error] Create an invalid user", document: false do
+        let(:password) { 'ab' }
+
+        example_request '[error] Create an invalid user', document: false do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :password)).to eq [{:error=>"too_short", :count=>5}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:password, 'too_short', count: 5)
         end
       end
 
@@ -199,10 +200,15 @@ resource 'Users' do
         let!(:invitee) { create(:invited_user) }
         let(:email) { invitee.email }
 
-        example_request "[error] Registering an invited user" do
+        example_request '[error] Registering an invited user' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :email)).to include({error: "taken_by_invite", value: email, inviter_email: invitee.invitee_invite.inviter.email})
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(
+            :email,
+            'taken_by_invite',
+            value: email,
+            inviter_email: invitee.invitee_invite.inviter.email
+          )
         end
       end
 

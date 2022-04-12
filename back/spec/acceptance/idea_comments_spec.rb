@@ -297,12 +297,12 @@ resource "Comments" do
       end
 
       describe do
-        let(:body_multiloc) { {"fr-FR" => ""} }
+        let(:body_multiloc) { { 'fr-FR' => '' } }
 
-        example_request "[error] Create an invalid comment" do
+        example_request '[error] Create an invalid comment' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :body_multiloc)).to eq [{error: 'blank'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:body_multiloc, 'blank')
         end
       end
 
@@ -310,7 +310,7 @@ resource "Comments" do
         before do
           project = create(:project_with_past_phases)
           @idea.project = project
-          @idea.save
+          @idea.save!
         end
         
         example_request "[error] Create a comment on an idea in an inactive project" do

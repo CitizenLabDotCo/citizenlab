@@ -54,23 +54,23 @@ resource "ProjectImage" do
     end
 
     describe do
-      let(:ordering) { "five" }
+      let(:ordering) { 'five' }
       let(:image) { nil }
 
-      example_request "[error] Add an invalid image to a project" do
+      example_request '[error] Add an invalid image to a project' do
         expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:ordering)).to eq [{:error=>"not_a_number", :value=>"five"}]
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:ordering, 'not_a_number', value: 'five')
       end
     end
 
     describe do
       let(:image) { file_as_base64 'afvalkalender.pdf', 'application/pdf' }
 
-      example_request "[error] Add an invalid image type to a project" do
+      example_request '[error] Add an invalid image type to a project' do
         expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:image)).to include({:error=>"extension_whitelist_error"})
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:image, 'extension_whitelist_error')
       end
     end
   end

@@ -83,7 +83,7 @@ resource 'StaticPages' do
 
         example_request '[error] Create an invalid static page', document: false do
           expect(response_status).to eq 422
-          expect(json_response.dig(:errors, :slug)).to eq [{ error: 'blank' }]
+          expect(json_response).to include_response_error(:slug, 'blank')
         end
       end
     end

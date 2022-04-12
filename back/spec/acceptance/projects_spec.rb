@@ -366,7 +366,7 @@ resource 'Projects' do
             create(:project, slug: 'this-is-taken')
             do_request
             expect(response_status).to eq 422
-            expect(json_response.dig(:errors, :slug)).to eq [{ error: 'taken', value: 'this-is-taken' }]
+            expect(json_response).to include_response_error(:slug, 'taken', value: 'this-is-taken')
           end
         end
 

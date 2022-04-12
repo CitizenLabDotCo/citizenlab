@@ -30,7 +30,7 @@ resource "Onboarding campaigns" do
 
     context "for a user with a complete profile" do
       before do
-        @user.update(bio_multiloc: {en: 'I love scrabble'})
+        @user.update!(bio_multiloc: {en: 'I love scrabble'})
         AppConfiguration.instance.tap do |cfg|
           cfg.settings['core']['custom_onboarding_message'] = { en: "Dance like noone is watching" }
           cfg.settings['core']['custom_onboarding_button'] = { en: "Click here" }
@@ -62,7 +62,7 @@ resource "Onboarding campaigns" do
 
   post "web_api/v1/onboarding_campaigns/:campaign_name/dismissal" do
     context "for a user with an incomplete profile" do
-      let (:campaign_name) { 'complete_profile' }
+      let(:campaign_name) { 'complete_profile' }
 
       describe "the first time" do
         example_request "Create an onboarding campaign dismissal" do
@@ -75,10 +75,10 @@ resource "Onboarding campaigns" do
           Onboarding::CampaignDismissal.create(campaign_name: campaign_name, user: @user)
         end
 
-        example_request "[error] Create an onboarding campaign dismissal for the same campaign twice" do
+        example_request '[error] Create an onboarding campaign dismissal for the same campaign twice' do
           expect(status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response[:errors]).to match({:campaign_name=>[{:error=>"taken", :value=>"complete_profile"}]})
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:campaign_name, 'taken', value: 'complete_profile')
         end
       end
     end

@@ -67,14 +67,14 @@ resource "User Custom Field Options" do
       end
 
       describe do
-        let(:key) { "No spaces allowed" }
-        let(:title_multiloc) { {'en' => ""} }
+        let(:key) { 'No spaces allowed' }
+        let(:title_multiloc) { { 'en' => '' } }
 
-        example_request "[error] Create an invalid custom field option", document: false do
+        example_request '[error] Create an invalid custom field option', document: false do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :key)).to eq [{error: 'invalid', value: key}]
-          expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:key, 'invalid', value: key)
+          expect(json_response).to include_response_error(:title_multiloc, 'blank')
         end
       end
     end

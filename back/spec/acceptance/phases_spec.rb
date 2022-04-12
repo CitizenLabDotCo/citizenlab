@@ -118,10 +118,10 @@ resource "Phases" do
       describe do
         let(:start_at) { nil }
 
-        example_request "[error] Create an invalid phase", document: false do
+        example_request '[error] Create an invalid phase', document: false do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :start_at)).to eq [{error: 'blank'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:start_at, 'blank')
         end
       end
 
@@ -133,10 +133,10 @@ resource "Phases" do
         let(:start_at) { Time.now }
         let(:end_at) { Time.now + 4.days }
 
-        example_request "[error] Create an overlapping phase" do
+        example_request '[error] Create an overlapping phase' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_overlapping_phases'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'has_other_overlapping_phases')
         end
       end
 
@@ -180,11 +180,11 @@ resource "Phases" do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
 
-        example "[error] Create multiple budgeting phases", document: false do
+        example '[error] Create multiple budgeting phases', document: false do
           do_request
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_budgeting_phases'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'has_other_budgeting_phases')
         end
       end
 

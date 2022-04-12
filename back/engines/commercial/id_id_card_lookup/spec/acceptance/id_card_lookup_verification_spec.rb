@@ -43,41 +43,44 @@ resource "Verifications" do
     end
 
     describe do
-      let(:card_id) { "234.532345-345" }
-      example_request "[error] Verify with id_card_lookup without a match" do
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :base => [{ :error => "no_match" }] } })
+      let(:card_id) { '234.532345-345' }
+
+      example_request '[error] Verify with id_card_lookup without a match' do
+        expect(status).to eq 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'no_match')
       end
     end
 
     describe do
-      let(:card_id) { "" }
-      example_request "[error] Verify with id_card_lookup using empty card_id" do
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :card_id => [{ :error => "invalid" }] } })
+      let(:card_id) { '' }
+
+      example_request '[error] Verify with id_card_lookup using empty card_id' do
+        expect(status).to eq 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:card_id, 'invalid')
       end
     end
 
     describe do
       before do
-        other_user = create(:user)
-        @card_id = "123.46234-78B"
-        id_card = create(:id_id_card_lookup_id_card, card_id: @card_id)
+        other_user = create :user
+        @card_id = '123.46234-78B'
+        create :id_id_card_lookup_id_card, card_id: @card_id
         Verification::VerificationService.new.verify_sync(
           user: other_user,
-          method_name: "id_card_lookup",
+          method_name: 'id_card_lookup',
           verification_parameters: { card_id: @card_id }
         )
       end
-      let(:card_id) { "123.4623478B" }
-      example_request "[error] Verify with id_card_lookup using credentials that are already taken (2nd call)" do
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :base => [{ :error => "taken" }] } })
+
+      let(:card_id) { '123.4623478B' }
+
+      example_request '[error] Verify with id_card_lookup using credentials that are already taken (2nd call)' do
+        expect(status).to eq 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'taken')
       end
     end
   end
-
 end

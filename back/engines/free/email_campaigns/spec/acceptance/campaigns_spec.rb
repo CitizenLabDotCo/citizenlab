@@ -156,8 +156,8 @@ resource 'Campaigns' do
       campaign.update_columns(author_id: nil, sender: 'author')
       do_request
       expect(response_status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:author][0][:error]).to eq 'blank'
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:author, 'blank')
     end
   end
 

@@ -122,15 +122,15 @@ resource "Events" do
 
       describe do
         let(:project_id) { @project.id }
-        let(:title_multiloc) { {'en' => ""} }
+        let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
         let(:end_at) { event.start_at - 1.day}
 
-        example_request "[error] Create an invalid event" do
+        example_request '[error] Create an invalid event' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
-          expect(json_response.dig(:errors, :start_at)).to eq [{error: 'after_end_at'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:title_multiloc, 'blank')
+          expect(json_response).to include_response_error(:start_at, 'after_end_at')
         end
       end
     end

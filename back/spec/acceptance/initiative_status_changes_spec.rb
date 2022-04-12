@@ -116,20 +116,20 @@ resource "InitiativeStatusChange" do
       describe do
         let(:initiative_status_id) { @status_expired.id }
 
-        example_request "[error] Create a status change through an invalid transition" do
+        example_request '[error] Create a status change through an invalid transition' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'initiative_status_transition_not_allowed'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'initiative_status_transition_not_allowed')
         end
       end
 
       describe do
         let(:initiative_status_id) { @status_threshold_reached.id }
 
-        example_request "[error] Create a status change to the same status" do
+        example_request '[error] Create a status change to the same status' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'initiative_status_transition_without_change'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'initiative_status_transition_without_change')
         end
       end
     end

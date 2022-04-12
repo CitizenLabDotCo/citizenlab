@@ -62,10 +62,10 @@ resource "EventFile" do
       let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
       let(:name) { 'keylogger.exe' }
 
-      example_request "[error] Add an unsupported file extension as attachment to an event" do
+      example_request '[error] Add an unsupported file extension as attachment to an event' do
         expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:file)).to include({:error=>"extension_whitelist_error"})
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
       end
     end
 
@@ -78,14 +78,14 @@ resource "EventFile" do
     end
 
     describe do
-      example "[error] Add a file of which the size is too large" do
+      example '[error] Add a file of which the size is too large' do
         # mock the size_range method of EventFileUploader to have 3 bytes as maximum size
         expect_any_instance_of(EventFileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
         expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:file)).to include({:error=>"max_size_error"})
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:file, 'max_size_error')
       end
     end
   end

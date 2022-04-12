@@ -604,8 +604,8 @@ resource 'Ideas' do
 
       example_request '[error] Creating an invalid idea' do
         expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:publication_status, 'inclusion', value: 'fake_status')
       end
     end
 
@@ -708,8 +708,8 @@ resource 'Ideas' do
 
         example_request '[error] Creating an idea linked to a phase from a different project' do
           expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :ideas_phases)).to eq [{error: 'invalid'}]
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:ideas_phases, 'invalid')
         end
       end
     end
