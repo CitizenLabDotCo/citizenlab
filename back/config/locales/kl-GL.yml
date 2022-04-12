@@ -113,6 +113,9 @@ kl:
       body:
         title: Nassuiaat
         description:
+      author_id:
+        title: Allattoq
+        description:
       topic_ids:
         title: 'Sammisassat imaat:'
         description:
@@ -122,12 +125,36 @@ kl:
       proposed_budget:
         title: Proposed Budget
         description:
+      budget:
+        title: Missingersuusiaq
+        description:
       images:
         title: Assit
         description:
       attachments:
         title: Filit ilanngussat
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
+      details:
+        title: Immikkuualuttut
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Angut
