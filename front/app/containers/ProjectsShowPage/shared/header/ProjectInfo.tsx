@@ -197,11 +197,6 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                           supportHtml={true}
                         />
                       </QuillEditedContent>
-                      {!isNilOrError(projectFiles) &&
-                        projectFiles &&
-                        projectFiles.data.length > 0 && (
-                          <FileAttachments files={projectFiles.data} />
-                        )}
                     </div>
                   </ReactResizeDetector>
                   {descriptionHeight &&
@@ -249,8 +244,12 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
                 </>
               )}
             </ProjectDescription>
+            {!isNilOrError(projectFiles) &&
+              projectFiles &&
+              projectFiles.data.length > 0 && (
+                <FileAttachments files={projectFiles.data} />
+              )}
           </Left>
-
           <Right>
             <ProjectInfoSideBar projectId={project.id} />
           </Right>
