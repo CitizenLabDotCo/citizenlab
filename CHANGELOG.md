@@ -14,6 +14,7 @@
 - Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
 - Fixed accessibility issue in modal window used to report a proposal as spam
 - Fixed accessibility contrast issue for social media buttons
+- Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
 
 ## 2022-03-29
 
