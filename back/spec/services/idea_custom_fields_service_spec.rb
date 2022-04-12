@@ -14,13 +14,16 @@ describe IdeaCustomFieldsService do
       custom_form = create(:custom_form)
       output = service.all_fields(custom_form)
       expect(output.map(&:code)).to eq [
-        'title',
-        'body',
+        'title_multiloc',
+        'body_multiloc',
+        'author_id',
+        'budget',
         'proposed_budget',
         'topic_ids',
-        'location',
-        'images',
-        'attachments',
+        'location_description',
+        'location_point_geojson',
+        'idea_images_attributes',
+        'idea_files_attributes',
       ]
     end
   end

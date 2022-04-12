@@ -2,28 +2,21 @@ import { withJsonFormsControlProps } from '@jsonforms/react';
 import {
   ControlProps,
   isPrimitiveArrayControl,
-  JsonSchema7,
   RankedTester,
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import ErrorDisplay from './ErrorDisplay';
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import ErrorDisplay from '../ErrorDisplay';
+import { Box } from '@citizenlab/cl2-component-library';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import styled from 'styled-components';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import messages from './messages';
+import VerificationIcon from '../VerificationIcon';
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
 `;
-
-interface ControlPropsV7 extends ControlProps {
-  schema: JsonSchema7;
-}
 
 const MultiSelectControl = ({
   data,
@@ -34,7 +27,7 @@ const MultiSelectControl = ({
   uischema,
   required,
   id,
-}: ControlPropsV7 & InjectedIntlProps) => {
+}: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
   const options =
     (!Array.isArray(schema.items) &&
@@ -50,7 +43,7 @@ const MultiSelectControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row" overflow="visible">
@@ -67,20 +60,14 @@ const MultiSelectControl = ({
           inputId={sanitizeForClassname(id)}
           disabled={uischema?.options?.readonly}
         />
-        {uischema?.options?.verificationLocked && (
-          <IconTooltip
-            content={<FormattedMessage {...messages.blockedVerified} />}
-            icon="lock"
-            marginLeft="5px"
-          />
-        )}
+        <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
   );
 };
 
-export default withJsonFormsControlProps(injectIntl(MultiSelectControl));
+export default withJsonFormsControlProps(MultiSelectControl);
 
 export const multiSelectControlTester: RankedTester = rankWith(
   4,
