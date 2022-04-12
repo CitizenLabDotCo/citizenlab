@@ -113,6 +113,9 @@
       body:
         title: Beskrivelse
         description:
+      author_id:
+        title: Forfatter
+        description:
       topic_ids:
         title: Emner
         description:
@@ -122,12 +125,36 @@
       proposed_budget:
         title: Proposed Budget
         description:
+      budget:
+        title: Budsjett
+        description:
       images:
         title: Bilder
         description:
       attachments:
         title: Vedlegg
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea ?
+        question:
+          title: What is your question ?
+        contribution:
+          title: What is your contribution ?
+        project:
+          title: What is your project ?
+        issue:
+          title: What is your issue ?
+        option:
+          title: What is your option ?
+      details:
+        title: Detaljer
+      attachements:
+        title: Images and Attachements
+      extra:
+        title: Additional information
   custom_field_options:
     gender:
       male: Mann
