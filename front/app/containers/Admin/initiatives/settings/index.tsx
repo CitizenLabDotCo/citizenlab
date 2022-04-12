@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import useNavbarItemEnabled from 'hooks/useNavbarItemEnabled';
 import usePage from 'hooks/usePage';
 
 // services
@@ -19,7 +18,7 @@ import {
   Section,
 } from 'components/admin/Section';
 import Warning from 'components/UI/Warning';
-import EnableSwitch from './EnableSwitch';
+import ProposalsFeatureToggle from './ProposalsFeatureToggle';
 import VotingThreshold from './VotingThreshold';
 import VotingLimit from './VotingLimit';
 import ThresholdReachedMessage from './ThresholdReachedMessage';
@@ -58,7 +57,6 @@ type ProposalsSettingName = keyof ProposalsSettings;
 
 const InitiativesSettingsPage = () => {
   const appConfiguration = useAppConfiguration();
-  const proposalsNavbarItemEnabled = useNavbarItemEnabled('proposals');
   const proposalsPage = usePage({ pageSlug: 'initiatives' });
 
   const remoteProposalsSettings = useMemo(() => {
@@ -215,11 +213,6 @@ const InitiativesSettingsPage = () => {
     }
   };
 
-  const toggleEnableSwitch = () => {
-    setNewProposalsNavbarItemEnabled(!newProposalsNavbarItemEnabled);
-    setSuccess(false);
-  };
-
   const updateProposalsSetting = (settingName: ProposalsSettingName) => {
     return (value) => {
       setLocalProposalsSettings({
@@ -237,6 +230,10 @@ const InitiativesSettingsPage = () => {
 
   return (
     <Container>
+      <ProposalsFeatureToggle
+        enabled={localProposalsFeatureEnabled}
+        onToggle={onToggle}
+      />
       <SectionTitle>
         <FormattedMessage {...messages.settingsTabTitle} />
       </SectionTitle>
@@ -245,11 +242,6 @@ const InitiativesSettingsPage = () => {
       </SectionDescription>
 
       <Section>
-        <EnableSwitch
-          enabled={newProposalsNavbarItemEnabled}
-          onToggle={toggleEnableSwitch}
-        />
-
         <VotingThreshold
           value={localProposalsSettings.voting_threshold}
           onChange={updateProposalsSetting('voting_threshold')}
