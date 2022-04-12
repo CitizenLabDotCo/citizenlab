@@ -4,10 +4,10 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
-import messages from './messages';
+import messages from '../messages';
 import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { getDefaultApiErrorMessage } from 'utils/errorUtils';
-import { APIErrorsContext, FormContext } from './contexts';
+import { APIErrorsContext, FormContext } from '../contexts';
 import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 import Link from 'utils/cl-router/Link';
 
@@ -120,7 +120,6 @@ const Bullet = styled.span`
 interface Props {
   fieldPath: string;
   ajvErrors?: string;
-  className?: string;
   didBlur?: boolean;
 }
 
@@ -158,14 +157,14 @@ export default ({ fieldPath, ajvErrors, didBlur }: Props) => {
       enter={true}
       exit={true}
     >
-      <Container role="alert">
-        <ContainerInner className="e2e-error-message">
+      <Container role="alert" className="e2e-error-message">
+        <ContainerInner>
           <ErrorIcon name="error" />
 
           <ErrorMessageText>
             <ErrorList>
               {ajvErrors && (
-                <ErrorListItem key={'FEVal'}>
+                <ErrorListItem key={'FEErrors'}>
                   {dedupApiErrors?.length > 0 && <Bullet aria-hidden>•</Bullet>}
                   {ajvErrors}
                 </ErrorListItem>

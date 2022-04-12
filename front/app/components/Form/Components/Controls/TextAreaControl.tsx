@@ -6,16 +6,14 @@ import {
   rankWith,
 } from '@jsonforms/core';
 import React, { useState } from 'react';
-import { InjectedIntlProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 import TextArea from 'components/UI/TextArea';
 import { isString } from 'utils/helperUtils';
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
-import messages from './messages';
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import VerificationIcon from '../VerificationIcon';
 
 const StyledTextArea = styled(TextArea)`
   flex-grow: 1;
@@ -30,7 +28,7 @@ const TextAreaControl = ({
   id,
   required,
   uischema,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
 
   return (
@@ -39,7 +37,7 @@ const TextAreaControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">
@@ -56,13 +54,7 @@ const TextAreaControl = ({
           }}
           disabled={uischema?.options?.readonly}
         />
-        {uischema?.options?.verificationLocked && (
-          <IconTooltip
-            content={<FormattedMessage {...messages.blockedVerified} />}
-            icon="lock"
-            marginLeft="5px"
-          />
-        )}
+        <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
@@ -72,6 +64,6 @@ const TextAreaControl = ({
 export default withJsonFormsControlProps(TextAreaControl);
 
 export const textAreaControlTester: RankedTester = rankWith(
-  4,
+  10,
   optionIs('textarea', true)
 );
