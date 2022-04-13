@@ -11,7 +11,7 @@ describe UserRoleService do
     end
 
     it 'denies other project moderators' do
-      expect(service.can_moderate_project? project, create(:project_moderator, projects: [create(:project)])).to be_falsey
+      expect(service.can_moderate_project? project, create(:project_moderator, projects: [create(:project)])).to be false
     end
   end
 
