@@ -1,14 +1,26 @@
 import React from 'react';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
-import styled from 'styled-components';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import messages from './messages';
+
+// styles
+import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+// components
 import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
+
+// services
 import { signOutAndDeleteAccountPart1 } from 'services/auth';
+
+// hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
 
 const Container = styled.div`
@@ -51,8 +63,8 @@ interface Props {
 
 const DeletionDialog = ({
   closeDialog,
-  intl: { formatMessage },
-}: Props & InjectedIntlProps) => {
+  localize,
+}: Props & InjectedLocalized) => {
   const appConfiguration = useAppConfiguration();
 
   const deleteProfile = () => {
@@ -62,9 +74,13 @@ const DeletionDialog = ({
 
   if (!isNilOrError(appConfiguration)) {
     const logo = appConfiguration.data.attributes.logo?.medium;
+    // just the org's name works fine as alt text for a11y purposes
+    const localizedOrgName = localize(
+      appConfiguration.data.attributes.settings.core.organization_name
+    );
     return (
       <Container>
-        {logo && <Logo src={logo} alt={formatMessage(messages.logoAltText)} />}
+        {logo && <Logo src={logo} alt={localizedOrgName} />}
         <Styledh1>
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
@@ -131,4 +147,4 @@ const DeletionDialog = ({
   return null;
 };
 
-export default injectIntl(DeletionDialog);
+export default injectLocalize(DeletionDialog);
