@@ -9,7 +9,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
 import ChartFilters from '../components/ChartFilters';
-import { GraphsContainer, ControlBar } from 'components/admin/Chart';
+import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
 import TimeControl from '../components/TimeControl';
 import Outlet from 'components/Outlet';
 
