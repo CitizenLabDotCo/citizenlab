@@ -929,7 +929,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Umetnite URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Servis",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Možete pronaći više informacija o integraciji ankete {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "http://support.citizenlab.co/articles/1641202-how-to-embed-a-survey-in-a-project-or-in-a-timeline-phase",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/articles/1641202-embedding-your-typeform-survey-in-a-project-phase",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "ovde",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
