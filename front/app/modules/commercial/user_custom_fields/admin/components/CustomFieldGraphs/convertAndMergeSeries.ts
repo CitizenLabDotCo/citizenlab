@@ -46,7 +46,19 @@ export type TConvertAndMergeSeries = (
   code: TCustomFieldCode | null
 ) => TOutput;
 
-const GENDER_COLUMNS = ['male', 'female', 'unspecified', '_blank'];
+type Gender = 'male' | 'female' | 'unspecified' | '_blank';
+
+const GENDER_COLUMNS: Gender[] = ['male', 'female', 'unspecified', '_blank'];
+
+const GENDER_MESSAGES: Record<
+  Gender,
+  ReactIntl.FormattedMessage.MessageDescriptor
+> = {
+  male: messages.male,
+  female: messages.female,
+  unspecified: messages.unspecified,
+  _blank: messages._blank,
+};
 
 const joinTotalAndParticipants = (total: Series, participants: Series) =>
   join(
@@ -78,7 +90,7 @@ const createConvertAndMergeSeries =
       return GENDER_COLUMNS.map((gender) => ({
         total: totalSerie.series.users[gender] || 0,
         participants: participantSerie.series.users[gender] || 0,
-        name: formatMessage(messages[gender]),
+        name: formatMessage(GENDER_MESSAGES[gender]),
       }));
     }
 
@@ -94,11 +106,13 @@ const createConvertAndMergeSeries =
         totalSerie.series.users,
         parseName
       );
+
       const resParticipants = convertDomicileData(
         areas,
         participantSerie.series.users,
         parseName
       );
+
       const res = joinTotalAndParticipants(resTotal, resParticipants);
 
       return orderBy(res, 'participants', 'desc');
