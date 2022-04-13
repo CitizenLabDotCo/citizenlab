@@ -4,9 +4,13 @@ import React from 'react';
 import {
   Box,
   Radio,
-  Label,
+  Title,
   useBreakpoint,
+  Icon,
 } from '@citizenlab/cl2-component-library';
+
+// utils
+import { colors } from 'utils/styleUtils';
 
 // craft
 import { useNode, UserComponent, Element } from '@craftjs/core';
@@ -54,10 +58,10 @@ const TwoColumnSettings = () => {
   }));
 
   return (
-    <Box marginTop="-20px" marginBottom="30px">
-      <Label>
+    <Box marginTop="-30px" marginBottom="30px">
+      <Title variant="h4" as="h3">
         <FormattedMessage {...messages.columnLayoutRadioLabel} />
-      </Label>
+      </Title>
       <Radio
         onChange={(value) => {
           setProp((props) => (props.columnLayout = value));
@@ -65,7 +69,14 @@ const TwoColumnSettings = () => {
         id="layout-1-1"
         name="columnLayout"
         value={'1-1'}
-        label={'1-1'}
+        label={
+          <Icon
+            width="20px"
+            height="20px"
+            fill={colors.adminTextColor}
+            name="column2"
+          />
+        }
         isRequired
         currentValue={columnLayout}
       />
@@ -77,7 +88,14 @@ const TwoColumnSettings = () => {
         id="layout-2-1"
         name="columnLayout"
         value="2-1"
-        label={'2-1'}
+        label={
+          <Icon
+            width="20px"
+            height="20px"
+            fill={colors.adminTextColor}
+            name="column2"
+          />
+        }
         isRequired
       />
       <Radio
@@ -88,7 +106,14 @@ const TwoColumnSettings = () => {
         id="layout-1-2"
         name="columnLayout"
         value="1-2"
-        label={'1-2'}
+        label={
+          <Icon
+            width="20px"
+            height="20px"
+            fill={colors.adminTextColor}
+            name="column2"
+          />
+        }
         isRequired
       />
     </Box>
