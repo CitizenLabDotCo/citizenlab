@@ -138,23 +138,23 @@ es-CL:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: '¿Cuál es su idea?'
         question:
-          title: What is your question ?
+          title: '¿Cuál es su pregunta?'
         contribution:
-          title: What is your contribution ?
+          title: '¿Cuál es su contribución?'
         project:
-          title: What is your project ?
+          title: '¿Cuál es su proyecto?'
         issue:
-          title: What is your issue ?
+          title: '¿Cuál es su asunto?'
         option:
-          title: What is your option ?
+          title: '¿Cuál es su opción?'
       details:
         title: Detalles
       attachements:
-        title: Images and Attachements
+        title: Imágenes y archivos adjuntos
       extra:
-        title: Additional information
+        title: Información adicional
   custom_field_options:
     gender:
       male: Hombre
