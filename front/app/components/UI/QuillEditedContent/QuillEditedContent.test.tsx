@@ -3,7 +3,7 @@ import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import QuillEditedContent from '.';
 
 describe('QuillEditedContent component', () => {
-  it('Should change tabIndex on children properly', async () => {
+  it('Should change tabIndex on children properly', () => {
     // multiple rerenders to simulate a user showing/hiding the contentnt multiple times
 
     const { rerender } = render(
@@ -26,14 +26,9 @@ describe('QuillEditedContent component', () => {
       </QuillEditedContent>
     );
 
-    await waitFor(() => {
-      expect(screen.getByRole('link')).toHaveAttribute('tabindex', '0');
-      expect(screen.getByRole('button')).toHaveAttribute('tabindex', '0');
-      expect(screen.getByTitle('youtube embed')).toHaveAttribute(
-        'tabindex',
-        '0'
-      );
-    });
+    expect(screen.getByRole('link')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('button')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByTitle('youtube embed')).toHaveAttribute('tabindex', '0');
 
     rerender(
       <QuillEditedContent disableTabbing={true}>
@@ -45,14 +40,12 @@ describe('QuillEditedContent component', () => {
       </QuillEditedContent>
     );
 
-    await waitFor(() => {
-      expect(screen.getByRole('link')).toHaveAttribute('tabindex', '-1');
-      expect(screen.getByRole('button')).toHaveAttribute('tabindex', '-1');
-      expect(screen.getByTitle('youtube embed')).toHaveAttribute(
-        'tabindex',
-        '-1'
-      );
-    });
+    expect(screen.getByRole('link')).toHaveAttribute('tabindex', '-1');
+    expect(screen.getByRole('button')).toHaveAttribute('tabindex', '-1');
+    expect(screen.getByTitle('youtube embed')).toHaveAttribute(
+      'tabindex',
+      '-1'
+    );
 
     rerender(
       <QuillEditedContent disableTabbing={false}>
@@ -64,13 +57,8 @@ describe('QuillEditedContent component', () => {
       </QuillEditedContent>
     );
 
-    await waitFor(() => {
-      expect(screen.getByRole('link')).toHaveAttribute('tabindex', '0');
-      expect(screen.getByRole('button')).toHaveAttribute('tabindex', '0');
-      expect(screen.getByTitle('youtube embed')).toHaveAttribute(
-        'tabindex',
-        '0'
-      );
-    });
+    expect(screen.getByRole('link')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByRole('button')).toHaveAttribute('tabindex', '0');
+    expect(screen.getByTitle('youtube embed')).toHaveAttribute('tabindex', '0');
   });
 });
