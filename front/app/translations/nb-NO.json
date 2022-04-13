@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Publisert av:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brukere",
   "app.components.CityLogoSection.iframeTitle": "Mer informasjon om {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo of {orgName}",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke mulig å kommentere i nåværende fase.",
   "app.components.Comments.commentingDisabledInactiveProject": "Det er ikke mulig å kommentere da prosjektet ikke er aktiv for øyeblikket.",

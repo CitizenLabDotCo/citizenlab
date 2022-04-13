@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Geplaatst door:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
   "app.components.CityLogoSection.iframeTitle": "Meer informatie over {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo van {orgName}",
   "app.components.Comments.cancel": "Annuleer",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Reageren is in de huidige fase niet mogelijk.",
   "app.components.Comments.commentingDisabledInactiveProject": "Reageren is niet mogelijk omdat dit project momenteel niet actief is.",
