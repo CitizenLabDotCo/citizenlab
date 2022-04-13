@@ -13,6 +13,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
+import ThreeColumn from '../CraftComponents/ThreeColumn';
 
 // Intl
 import messages from '../../messages';
@@ -52,6 +53,20 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem icon="column2" label={formatMessage(messages.twoColumn)} />
+      </DraggableElement>
+      <DraggableElement
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element canvas is={ThreeColumn} id="threeColumn" />
+          )
+        }
+      >
+        <ToolboxItem
+          icon="column2"
+          label={formatMessage(messages.threeColumn)}
+        />
       </DraggableElement>
       <DraggableElement
         ref={(ref) =>

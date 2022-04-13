@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
     defaultMessage: '2 column',
   },
+  threeColumn: {
+    id: 'app.containers.admin.ContentBuilder.threeColumnLayout',
+    defaultMessage: '3 column',
+  },
   text: {
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',

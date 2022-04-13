@@ -16,9 +16,14 @@ import messages from '../../messages';
 
 const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
+const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
 
-type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS | typeof TEXT;
+type ComponentNamesType =
+  | typeof CONTAINER
+  | typeof TWO_COLUMNS
+  | typeof THREE_COLUMNS
+  | typeof TEXT;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -26,6 +31,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.oneColumn;
     case TWO_COLUMNS:
       return messages.twoColumn;
+    case THREE_COLUMNS:
+      return messages.threeColumn;
     case TEXT:
       return messages.text;
   }
@@ -60,7 +67,10 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
-    if (parentNodeName === TWO_COLUMNS && isHover) {
+    if (
+      (parentNodeName === TWO_COLUMNS && isHover) ||
+      (parentNodeName === THREE_COLUMNS && isHover)
+    ) {
       parentNodeElement?.setAttribute(
         'style',
         `border: 1px solid ${colors.adminTextColor} `
@@ -74,12 +84,16 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     if (isActive && name === CONTAINER && parentNode) {
       parentNodeName === TWO_COLUMNS && selectNode(parentId);
+      parentNodeName === THREE_COLUMNS && selectNode(parentId);
     }
   });
 
   const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
   const nodeIsHovered =
-    isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
+    isHover &&
+    id !== ROOT_NODE &&
+    parentNodeName !== TWO_COLUMNS &&
+    parentNodeName !== THREE_COLUMNS;
 
   const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 
@@ -90,7 +104,7 @@ const RenderNode = ({ render }) => {
       border={`1px ${
         solidBorderIsVisible
           ? `solid ${colors.adminTextColor}`
-          : name !== TWO_COLUMNS
+          : name !== TWO_COLUMNS && name !== THREE_COLUMNS
           ? `dashed ${colors.separation}`
           : `solid transparent`
       } `}
