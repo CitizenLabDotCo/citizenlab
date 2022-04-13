@@ -138,23 +138,23 @@ de:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Was ist Ihre Idee?
         question:
-          title: What is your question ?
+          title: Was ist Ihre Frage?
         contribution:
-          title: What is your contribution ?
+          title: Was ist Ihr Beitrag?
         project:
-          title: What is your project ?
+          title: Was ist Ihr Projekt?
         issue:
-          title: What is your issue ?
+          title: Was ist Ihr Problem?
         option:
-          title: What is your option ?
+          title: Was ist Ihre Option?
       details:
         title: Details
       attachements:
-        title: Images and Attachements
+        title: Bilder und Anhänge
       extra:
-        title: Additional information
+        title: Zusätzliche Informationen
   custom_field_options:
     gender:
       male: Männlich
