@@ -1311,6 +1311,7 @@
   "app.containers.admin.ContentBuilder.projectDescription": "Project description",
   "app.containers.admin.ContentBuilder.text": "Text",
   "app.containers.admin.ContentBuilder.textValue": "This is some text. You can edit and format it by using the editor in the panel on the right.",
+  "app.containers.admin.ContentBuilder.threeColumnLayout": "3 column",
   "app.containers.admin.ContentBuilder.twoColumnLayout": "2 column",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
