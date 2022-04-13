@@ -138,23 +138,23 @@ nl-BE:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Wat is je idee?
         question:
-          title: What is your question ?
+          title: Wat is je vraag?
         contribution:
-          title: What is your contribution ?
+          title: Wat is je bijdrage?
         project:
-          title: What is your project ?
+          title: Wat is je project?
         issue:
-          title: What is your issue ?
+          title: Wat is je probleem?
         option:
-          title: What is your option ?
+          title: Wat is je optie?
       details:
         title: Details
       attachements:
-        title: Images and Attachements
+        title: Afbeeldingen en bijlagen
       extra:
-        title: Additional information
+        title: Extra informatie
   custom_field_options:
     gender:
       male: Man
