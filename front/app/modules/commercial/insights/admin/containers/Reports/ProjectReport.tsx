@@ -99,6 +99,17 @@ const PARTICIPATION_METHOD_MESSAGES: Record<
   volunteering: messages.volunteering,
 };
 
+const getResolution = (start: moment.Moment, end: moment.Moment) => {
+  const timeDiff = moment.duration(end.diff(start));
+  return timeDiff
+    ? timeDiff.asMonths() > 6
+      ? 'month'
+      : timeDiff.asWeeks() > 4
+      ? 'week'
+      : 'day'
+    : 'month';
+};
+
 const ProjectReport = memo(
   ({
     project,
@@ -142,17 +153,6 @@ const ProjectReport = memo(
     }, [project, phases]);
 
     if (isNilOrError(project)) return null;
-
-    const getResolution = (start, end) => {
-      const timeDiff = moment.duration(end.diff(start));
-      return timeDiff
-        ? timeDiff.asMonths() > 6
-          ? 'month'
-          : timeDiff.asWeeks() > 4
-          ? 'week'
-          : 'day'
-        : 'month';
-    };
 
     const formatDateLabel = (date) =>
       formatDate(date, {
