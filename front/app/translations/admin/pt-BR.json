@@ -929,7 +929,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL de incorporação",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Serviço",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Você pode encontrar mais informações sobre como incorporar uma pesquisa {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/articles/1641202-embedding-your-typeform-survey-in-a-project-phase",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "Aqui",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
