@@ -46,7 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Opgeslagen!",
   "app.components.admin.FormikSubmitWrapper.messageError": "Er is een fout opgetreden tijdens het opslaan",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Succesvol opgeslagen",
-  "app.components.admin.Graphs": "No data available with the current filters.",
+  "app.components.admin.Graphs": "Geen gegevens beschikbaar met de huidige filters.",
   "app.components.admin.InputManager.onePost": "1 bijdrage",
   "app.components.admin.PostManager.PostPreview.assignee": "Toegewezen aan",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annuleer de wijzigingen",
