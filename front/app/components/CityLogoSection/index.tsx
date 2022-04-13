@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -50,54 +50,50 @@ const TenantLogo = injectIntl(
 
 interface Props {}
 
-const CityLogoSection = memo(
-  injectLocalize(
-    ({
-      localize,
-      intl: { formatMessage },
-    }: Props & InjectedIntlProps & InjectedLocalized) => {
-      const locale = useLocale();
-      const appConfiguration = useAppConfiguration();
+const CityLogoSection = ({
+  localize,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps & InjectedLocalized) => {
+  const locale = useLocale();
+  const appConfiguration = useAppConfiguration();
 
-      if (!isNilOrError(appConfiguration)) {
-        const currentTenantLogo =
-          appConfiguration.data.attributes.logo?.medium || null;
-        const tenantSite =
-          appConfiguration.data.attributes.settings.core.organization_site;
-        const footerLocale = `footer-city-logo-${locale}`;
-        const localizedOrgName = localize(
-          appConfiguration.data.attributes.settings.core.organization_name
-        );
+  if (!isNilOrError(appConfiguration)) {
+    const currentTenantLogo =
+      appConfiguration.data.attributes.logo?.medium || null;
+    const tenantSite =
+      appConfiguration.data.attributes.settings.core.organization_site;
+    const footerLocale = `footer-city-logo-${locale}`;
+    const localizedOrgName = localize(
+      appConfiguration.data.attributes.settings.core.organization_name
+    );
 
-        if (currentTenantLogo) {
-          return (
-            <Fragment
-              title={formatMessage(messages.iframeTitle)}
-              name={footerLocale}
-            >
-              <Container id="hook-footer-logo">
-                {tenantSite ? (
-                  <LogoLink href={tenantSite} target="_blank">
-                    <TenantLogo
-                      src={currentTenantLogo}
-                      localizedOrgName={localizedOrgName}
-                    />
-                  </LogoLink>
-                ) : (
-                  <TenantLogo
-                    localizedOrgName={localizedOrgName}
-                    src={currentTenantLogo}
-                  />
-                )}
-              </Container>
-            </Fragment>
-          );
-        }
-      }
-
-      return null;
+    if (currentTenantLogo) {
+      return (
+        <Fragment
+          title={formatMessage(messages.iframeTitle)}
+          name={footerLocale}
+        >
+          <Container id="hook-footer-logo">
+            {tenantSite ? (
+              <LogoLink href={tenantSite} target="_blank">
+                <TenantLogo
+                  src={currentTenantLogo}
+                  localizedOrgName={localizedOrgName}
+                />
+              </LogoLink>
+            ) : (
+              <TenantLogo
+                localizedOrgName={localizedOrgName}
+                src={currentTenantLogo}
+              />
+            )}
+          </Container>
+        </Fragment>
+      );
     }
-  )
-);
+  }
 
-export default injectIntl(CityLogoSection);
+  return null;
+};
+
+export default injectLocalize(injectIntl(CityLogoSection));
