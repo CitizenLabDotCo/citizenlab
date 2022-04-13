@@ -58,7 +58,7 @@ const TwoColumnSettings = () => {
   }));
 
   return (
-    <Box marginTop="-30px" marginBottom="30px">
+    <Box mt="-30px" mb="30px">
       <Title variant="h4" as="h3">
         <FormattedMessage {...messages.columnLayoutRadioLabel} />
       </Title>
@@ -93,7 +93,7 @@ const TwoColumnSettings = () => {
             width="20px"
             height="20px"
             fill={colors.adminTextColor}
-            name="column2"
+            name="column2Variant2-1"
           />
         }
         isRequired
@@ -111,7 +111,7 @@ const TwoColumnSettings = () => {
             width="20px"
             height="20px"
             fill={colors.adminTextColor}
-            name="column2"
+            name="column2Variant1-2"
           />
         }
         isRequired

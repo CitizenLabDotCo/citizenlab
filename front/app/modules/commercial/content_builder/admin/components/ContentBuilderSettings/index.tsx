@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Title, Box } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // craft
@@ -46,9 +46,9 @@ const ContentBuilderSettings = () => {
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
       <Box pb="20px">
-        <h2>
+        <Title variant="h2">
           <FormattedMessage {...getComponentNameMessage(selected.name)} />
-        </h2>
+        </Title>
       </Box>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
