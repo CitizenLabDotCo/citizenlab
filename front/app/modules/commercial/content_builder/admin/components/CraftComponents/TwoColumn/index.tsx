@@ -32,12 +32,12 @@ const TwoColumn: UserComponent = ({ columnLayout }) => {
       gap="4px"
     >
       <Box
-        flex={columnLayout == '1-1' ? '1' : columnLayout == '1-2' ? '1' : '2'}
+        flex={columnLayout === '1-1' ? '1' : columnLayout === '1-2' ? '1' : '2'}
       >
         <Element id="column1" is={Container} canvas />
       </Box>
       <Box
-        flex={columnLayout == '1-1' ? '1' : columnLayout == '1-2' ? '2' : '1'}
+        flex={columnLayout === '1-1' ? '1' : columnLayout === '1-2' ? '2' : '1'}
       >
         <Element id="column2" is={Container} canvas />
       </Box>
