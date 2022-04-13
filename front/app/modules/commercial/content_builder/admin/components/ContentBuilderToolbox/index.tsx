@@ -31,7 +31,7 @@ const ContentBuilderToolbox = ({
   const { connectors } = useEditor();
 
   return (
-    <Box w="100%" display="inline" marginTop="20px">
+    <Box w="100%" display="inline">
       <DraggableElement
         ref={(ref) =>
           ref &&
