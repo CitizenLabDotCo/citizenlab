@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Langue",
   "app.containers.UsersEditPage.lastName": "Nom",
   "app.containers.UsersEditPage.loading": "Chargement...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo de {orgName}",
   "app.containers.UsersEditPage.messageError": "Nous n'avons pas pu enregistrer votre profil. Réessayez plus tard ou contactez support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Votre profil a été enregistré ",
   "app.containers.UsersEditPage.metaDescription": "Voici la page de paramétrage du profil de {firstName} {lastName} sur la plateforme de participation en ligne de {tenantName}. Ici, vous pouvez vérifier votre identité, modifier les informations de votre compte, supprimer votre compte et modifier vos préférences de courrier électronique.",

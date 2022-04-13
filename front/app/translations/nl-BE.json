@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Taal",
   "app.containers.UsersEditPage.lastName": "Achternaam",
   "app.containers.UsersEditPage.loading": "Bezig met laden...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo van {orgName}",
   "app.containers.UsersEditPage.messageError": "We konden je profiel niet opslaan. Probeer het later opnieuw of contacteer support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Je profielgegevens zijn opgeslagen.",
   "app.containers.UsersEditPage.metaDescription": "Dit is de instellingen pagina voor het profiel van {firstName} {lastName} op het online participatieplatform van {tenantName}. Hier kan je je identiteit verifiëren, je profielinformatie aanpassen, je profiel verwijderen en je e-mailvoorkeuren aanpassen.",

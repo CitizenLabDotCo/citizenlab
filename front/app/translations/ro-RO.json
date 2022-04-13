@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Limbă",
   "app.containers.UsersEditPage.lastName": "Numele de familie",
   "app.containers.UsersEditPage.loading": "Se încarcă...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo of {orgName}",
   "app.containers.UsersEditPage.messageError": "Nu am putut salva profilul tău. Încercați din nou mai târziu sau trimiteți un e-mail la adresa: support@citizenlab.co de contact.",
   "app.containers.UsersEditPage.messageSuccess": "Profilul tău a fost salvat.",
   "app.containers.UsersEditPage.metaDescription": "Aceasta este pagina de setări a profilului lui {firstName} {lastName} de pe platforma de participare online a {tenantName}. Aici vă puteți confirma identitatea, modifica informațiile contului, șterge contul sau modifica preferințele de e-mail.",

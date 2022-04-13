@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Język",
   "app.containers.UsersEditPage.lastName": "Nazwisko",
   "app.containers.UsersEditPage.loading": "Ładowanie...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo {orgName}",
   "app.containers.UsersEditPage.messageError": "Nie byliśmy w stanie zapisać Twoich zmian. Spróbuj ponownie później lub skontaktuj się z support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Twój profil został zapisany.",
   "app.containers.UsersEditPage.metaDescription": "Jest to strona ustawień profilu {firstName} {lastName} na platformie uczestnictwa online {tenantName}. Tutaj możesz zweryfikować swoją tożsamość, edytować informacje o swoim koncie, usunąć swoje konto i edytować preferencje dotyczące poczty elektronicznej.",

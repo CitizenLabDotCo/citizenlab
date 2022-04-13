@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Sprache",
   "app.containers.UsersEditPage.lastName": "Nachname",
   "app.containers.UsersEditPage.loading": "Lädt...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo von {orgName}",
   "app.containers.UsersEditPage.messageError": "Wir konnten Ihr Profil nicht speichern. Versuchen Sie es später noch einmal oder kontaktieren Sie support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Ihr Profil wurde gespeichert.",
   "app.containers.UsersEditPage.metaDescription": "Dies ist die Seite mit den Profileinstellungen von {firstName} {lastName} auf der Online-Beteiligungsplattform von {tenantName}. Hier können Sie Ihre Identität überprüfen, Ihre Kontoinformationen bearbeiten, Ihr Konto löschen und Ihre E-Mail-Einstellungen ändern.",

@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Språk",
   "app.containers.UsersEditPage.lastName": "Etternavn",
   "app.containers.UsersEditPage.loading": "Laster inn...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo of {orgName}",
   "app.containers.UsersEditPage.messageError": "Vi kunne dessverre ikke lagre profilen din. Prøv igjen senere eller kontakt support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Profilen din er lagret.",
   "app.containers.UsersEditPage.metaDescription": "Dette er siden med profilinnstillinger for {firstName} {lastName} på den digitale innbyggerplattformen for {tenantName}. Her kan du bekrefte identiteten din, redigere kontoopplysningene dine, slette kontoen din og redigere dine e-postinnstillinger.",
