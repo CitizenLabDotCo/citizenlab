@@ -62,7 +62,7 @@ describe('binBirthyear', () => {
     expect(binBirthyear(data, { binFunction, bins })).toEqual(expectedOutput);
   });
 
-  it('works with custom blank bin name', () => {
+  it('works with custom missing bin name', () => {
     const expectedOutput = [
       { name: '0 - 9', value: 2 },
       { name: '10 - 19', value: 7 },
@@ -77,6 +77,6 @@ describe('binBirthyear', () => {
       { name: 'TEST', value: 3 },
     ];
 
-    expect(binBirthyear(data, { missing: 'TEST' })).toEqual(expectedOutput);
+    expect(binBirthyear(data, { missingBin: 'TEST' })).toEqual(expectedOutput);
   });
 });

@@ -6,27 +6,27 @@ type BinFunction = (birthYear: string) => string | null;
 type BinOptions = BinOptionsDefault | BinOptionsCustom;
 
 interface BinOptionsDefault {
-  missing?: string;
+  missingBin?: string;
 }
 
 interface BinOptionsCustom {
   binFunction: BinFunction;
   bins: string[];
-  missing?: string;
+  missingBin?: string;
 }
 
 const binBirthyear = (data: RawData, binOptions?: BinOptions) => {
-  const { binFunction, bins, missing } = {
+  const { binFunction, bins, missingBin } = {
     binFunction: defaultBinFunction,
     bins: defaultBins,
-    missing: '_blank',
+    missingBin: '_blank',
     ...binOptions,
   };
 
-  const binsMap = initBinsMap(bins, missing);
+  const binsMap = initBinsMap(bins, missingBin);
 
   for (const birthYear in data) {
-    const bin = binFunction(birthYear) || missing;
+    const bin = binFunction(birthYear) || missingBin;
     const count = data[birthYear];
     binsMap[bin] += count;
   }
