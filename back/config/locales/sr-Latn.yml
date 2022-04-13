@@ -138,23 +138,23 @@ sr-Latn:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Šta je vaša ideja ?
         question:
-          title: What is your question ?
+          title: Šta je vaše pitanje ?
         contribution:
-          title: What is your contribution ?
+          title: Šta je vaš prilog ?
         project:
-          title: What is your project ?
+          title: Šta je vaš projekat ?
         issue:
-          title: What is your issue ?
+          title: Šta je vaša tema ?
         option:
-          title: What is your option ?
+          title: Šta je vaša opcija ?
       details:
         title: Detalji
       attachements:
-        title: Images and Attachements
+        title: Slike i prilozi
       extra:
-        title: Additional information
+        title: Dodatne informacije
   custom_field_options:
     gender:
       male: Muškarac
