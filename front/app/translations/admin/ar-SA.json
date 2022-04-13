@@ -929,7 +929,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL مضمن",
   "app.containers.AdminPage.ProjectEdit.surveyService": "الخدمة",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "يمكنك معرفة المزيد من المعلومات حول كيفية تضمين الاستبيان {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "http://support.citizenlab.co/articles/1641202-how-to-embed-a-survey-in-a-project-or-in-a-timeline-phase",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "هنا",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
