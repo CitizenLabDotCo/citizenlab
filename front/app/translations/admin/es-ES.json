@@ -928,7 +928,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL incrustada",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Servicio",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Elegir qué herramienta de encuesta desea incrustar. Toda la información se encuentra a {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/es/articles/1641202-como-integrar-una-encuesta-en-un-proyecto-o-en-una-fase-de-la-linea-de-tiempo",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "aquí",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
