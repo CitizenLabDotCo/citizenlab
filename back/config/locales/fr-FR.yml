@@ -138,23 +138,23 @@ fr:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Quelle est votre idée ?
         question:
-          title: What is your question ?
+          title: Quelle est votre question ?
         contribution:
-          title: What is your contribution ?
+          title: Quelle est votre contribution ?
         project:
-          title: What is your project ?
+          title: Quel est votre projet ?
         issue:
-          title: What is your issue ?
+          title: Quel est votre problème ?
         option:
-          title: What is your option ?
+          title: Quelle est votre option ?
       details:
         title: Détails
       attachements:
-        title: Images and Attachements
+        title: Images et pièces jointes
       extra:
-        title: Additional information
+        title: Informations complémentaires
   custom_field_options:
     gender:
       male: Masculin
