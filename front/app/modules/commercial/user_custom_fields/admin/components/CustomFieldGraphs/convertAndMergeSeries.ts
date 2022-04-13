@@ -44,7 +44,7 @@ export type TConvertAndMergeSeries = (
   totalSerie: ISupportedDataType,
   participantSerie: ISupportedDataType,
   code: TCustomFieldCode | null
-) => TOutput | null;
+) => TOutput;
 
 const GENDER_COLUMNS = ['male', 'female', 'unspecified', '_blank'];
 
@@ -75,13 +75,11 @@ const createConvertAndMergeSeries =
     }
 
     if (code === 'gender') {
-      const res = GENDER_COLUMNS.map((gender) => ({
+      return GENDER_COLUMNS.map((gender) => ({
         total: totalSerie.series.users[gender] || 0,
         participants: participantSerie.series.users[gender] || 0,
         name: formatMessage(messages[gender]),
       }));
-
-      return res.length > 0 ? res : null;
     }
 
     if (code === 'domicile') {
@@ -103,8 +101,7 @@ const createConvertAndMergeSeries =
       );
       const res = joinTotalAndParticipants(resTotal, resParticipants);
 
-      const sortedByParticipants = orderBy(res, 'participants', 'desc');
-      return sortedByParticipants;
+      return orderBy(res, 'participants', 'desc');
     }
 
     const res = map(
@@ -116,8 +113,7 @@ const createConvertAndMergeSeries =
       })
     );
 
-    const sortedByParticipants = orderBy(res, 'participants', 'desc');
-    return sortedByParticipants;
+    return orderBy(res, 'participants', 'desc');
   };
 
 export default createConvertAndMergeSeries;
