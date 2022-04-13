@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Jezik",
   "app.containers.UsersEditPage.lastName": "Prezime",
   "app.containers.UsersEditPage.loading": "Učitavanje...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo {orgName}",
   "app.containers.UsersEditPage.messageError": "Nismo uspeli da sačuvamo vaš profil. Pokušajte kasnije ili kontaktirajte support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Vaš profil je sačuvan",
   "app.containers.UsersEditPage.metaDescription": "Ovo je stranica za podešavanje profila od {firstName} {lastName} na online participativnoj platformi od {tenantName}. Ovde možete verifikovati svoj identitet, obrisati informacije o vašem nalogu, izbrisati nalog i menjati vaše email preferencije.",

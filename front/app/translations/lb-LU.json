@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Sproochen",
   "app.containers.UsersEditPage.lastName": "Familljennumm",
   "app.containers.UsersEditPage.loading": "Lueden...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo vun {orgName}",
   "app.containers.UsersEditPage.messageError": "Mir konnten Äre Profil net späicheren. Probéiert méi spéit nach eng Kéier oder kontaktéiert support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Äre Profil gouf gespäichert.",
   "app.containers.UsersEditPage.metaDescription": "Dëst ass d’Säit fir d’Profilastellunge vum {firstName} {lastName} op der participativer Plattform vum {tenantName}. Hei kënnt Dir Är Identitéit iwwerpréiwen, Är Kontinformatioune beaarbechten, Äre Kont läschen an Är E-Mail-Präferenzen upassen.",

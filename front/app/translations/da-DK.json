@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Sprog",
   "app.containers.UsersEditPage.lastName": "Efternavn",
   "app.containers.UsersEditPage.loading": "Indlæser...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo fra {orgName}",
   "app.containers.UsersEditPage.messageError": "Vi kunne ikke gemme din profil. Prøv igen senere eller kontakt support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Din profil er blevet gemt.",
   "app.containers.UsersEditPage.metaDescription": "Dette er siden med profilindstillinger for {firstName} {lastName} på online dialogplatformen for {tenantName}. Her kan du bekræfte din identitet, redigere dine kontooplysninger, slette din konto og redigere dine e-mailpræferencer.",

@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Language",
   "app.containers.UsersEditPage.lastName": "Last name",
   "app.containers.UsersEditPage.loading": "Loading...",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo of {orgName}",
   "app.containers.UsersEditPage.messageError": "We weren't able to save your profile. Try again later or contact support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Your profile has been saved.",
   "app.containers.UsersEditPage.metaDescription": "This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.",

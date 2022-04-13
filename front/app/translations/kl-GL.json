@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Oqaatsit ",
   "app.containers.UsersEditPage.lastName": "Kinguliaqut",
   "app.containers.UsersEditPage.loading": "Atuaaneq …",
-  "app.containers.UsersEditPage.logoImgAltText": "{orgName}-p ilisarnaataa",
   "app.containers.UsersEditPage.messageError": "Profilit toqqorsinnaanngilarput. Kingusinnerulaartukkut misileqqigit imaluunniit attavigisigut ugguna support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Profilit toqqorneqarpoq",
   "app.containers.UsersEditPage.metaDescription": "Una qupperneq tassaavoq uuma {firstName} {lastName} peqataasut isaaffianni profilianut inissiissutinik uunga allattuiffik {tenantName}. Uani kinaassutsit uppernarsarsinnaavat, kontunnut paasissutissat aaqqissinnaavatit, kontut peersinnaavat aamma e-mailinik nassiusarninnut/pisarninnut paasissutissat aaqqissinnaavatit. ",

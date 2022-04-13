@@ -1258,7 +1258,6 @@
   "app.containers.UsersEditPage.language": "Idioma",
   "app.containers.UsersEditPage.lastName": "Sobrenome",
   "app.containers.UsersEditPage.loading": "Carregando…",
-  "app.containers.UsersEditPage.logoImgAltText": "Logo d(a) e {orgName}",
   "app.containers.UsersEditPage.messageError": "Não pudimos salvar as suas alteraçoes. Tente novamente mais tarde ou contacte support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "O seu perfil foi salvo.",
   "app.containers.UsersEditPage.metaDescription": "Esta é a página de configurações de perfil de {firstName} {lastName} na plataforma de participação online de {tenantName}. Aqui você pode verificar seu usuário, editar as informações de sua conta, excluir sua conta e editar suas preferências de e-mail.",
