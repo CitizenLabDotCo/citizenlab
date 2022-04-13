@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "iluatsilluarpoq",
   "app.components.admin.FormikSubmitWrapper.messageError": "There was an error during saving",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Saved successfully",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "1 input",
   "app.components.admin.PostManager.PostPreview.assignee": "Assignee",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancel edit",

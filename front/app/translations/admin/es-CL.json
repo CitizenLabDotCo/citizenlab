@@ -46,6 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Éxito",
   "app.components.admin.FormikSubmitWrapper.messageError": "Se produjo un error al guardar",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Guardado exitosamente",
+  "app.components.admin.Graphs": "No data available with the current filters.",
   "app.components.admin.InputManager.onePost": "Una entrada",
   "app.components.admin.PostManager.PostPreview.assignee": "Asignado",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Cancelar la edición",
