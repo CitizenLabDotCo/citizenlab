@@ -928,7 +928,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Indlejre URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Du kan finde flere information om, hvordan du indlejrer en undersøgelse {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/da/articles/1641202-hvordan-integrerer-du-din-typeform-survey-i-en-projekt-fase",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "her",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
