@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 import QuillEditedContent from '.';
 
 describe('QuillEditedContent component', () => {
