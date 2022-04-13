@@ -38,7 +38,7 @@
   "app.components.ConfirmationModal.cancel": "Anuluj",
   "app.components.ConfirmationModal.changeYourEmail": "Zmień swój adres e-mail.",
   "app.components.ConfirmationModal.close": "Zamknij",
-  "app.components.ConfirmationModal.codeInput": "Code",
+  "app.components.ConfirmationModal.codeInput": "Kod",
   "app.components.ConfirmationModal.confirmYourAccount": "Potwierdź swój adres e-mail",
   "app.components.ConfirmationModal.confirmationCodeSent": "Nowy kod wysłany",
   "app.components.ConfirmationModal.didntGetAnEmail": "Nie otrzymałeś e-maila?",
