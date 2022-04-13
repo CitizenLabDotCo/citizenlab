@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Postado por",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} participantes",
   "app.components.CityLogoSection.iframeTitle": "Mais informações sobre {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo d(a) e {orgName}",
   "app.components.Comments.cancel": "Cancelar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Não é possível comentar na fase atual.",
   "app.components.Comments.commentingDisabledInactiveProject": "Não é possível comentar porque esse projeto não está disponível no momento.",

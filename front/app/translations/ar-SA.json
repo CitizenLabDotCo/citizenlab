@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "تم النشر بواسطة:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} من المستخدمين",
   "app.components.CityLogoSection.iframeTitle": "المزيد من المعلومات حول {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo of {orgName}",
   "app.components.Comments.cancel": "إلغاء",
   "app.components.Comments.commentingDisabledInCurrentPhase": "التعليق غير ممكن في المرحلة الحالية.",
   "app.components.Comments.commentingDisabledInactiveProject": "التعليق غير ممكن لأن هذا المشروع غير نشط حالياً. ",

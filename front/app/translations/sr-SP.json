@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Autor objave:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} учесника",
   "app.components.CityLogoSection.iframeTitle": "Више информација о {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Логотип {orgName}",
   "app.components.Comments.cancel": "Прекид",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Коментарисање није могуће у овој фази.",
   "app.components.Comments.commentingDisabledInactiveProject": "Коментарисање није могуће јер пројекат није тренутно активан.",

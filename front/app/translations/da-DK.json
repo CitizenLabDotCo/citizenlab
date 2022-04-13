@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Sendt af:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brugere\n",
   "app.components.CityLogoSection.iframeTitle": "Flere oplysninger om {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo fra {orgName}",
   "app.components.Comments.cancel": "Annuller",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke muligt at kommentere i den aktuelle fase.",
   "app.components.Comments.commentingDisabledInactiveProject": "Det er ikke muligt at kommentere, fordi dette projekt i øjeblikket ikke er aktivt.",

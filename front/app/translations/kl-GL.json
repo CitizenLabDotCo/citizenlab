@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Nassiunneqarpoq:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} atuisut\n",
   "app.components.CityLogoSection.iframeTitle": "{orgName} pillugu paasissutissat amerlanerit",
-  "app.components.CityLogoSection.logoImgAltText": "{orgName}-p ilisarnaataa",
   "app.components.Comments.cancel": "Atorunnaarsiguk",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Immikkoortumi massakkut atuuttumi oqaasertaliineq ajornarallarpoq.",
   "app.components.Comments.commentingDisabledInactiveProject": "Suliap ammannginnera pissutaalluni oqaasertaliisoqarsinnanngilaq.",

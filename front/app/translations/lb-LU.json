@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Gepost vun:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} Participanten",
   "app.components.CityLogoSection.iframeTitle": "Weider Informatiounen iwwer {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo vun {orgName}",
   "app.components.Comments.cancel": "Ofbriechen",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Kommentéieren ass an der aktueller Phas net méiglech.",
   "app.components.Comments.commentingDisabledInactiveProject": "Kommentéieren ass net méiglech, well dëse Projet momentan net aktiv ass.",

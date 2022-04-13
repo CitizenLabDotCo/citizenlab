@@ -15,7 +15,6 @@
   "app.components.Author.a11y_postedBy": "Postat de:",
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} utilizatori",
   "app.components.CityLogoSection.iframeTitle": "Mai multe informații despre {orgName}",
-  "app.components.CityLogoSection.logoImgAltText": "Logo of {orgName}",
   "app.components.Comments.cancel": "Anulare",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Nu este posibilă lăsarea comentariilor în această fază.",
   "app.components.Comments.commentingDisabledInactiveProject": "Nu puteți comenta, deoarece acest proiect nu este încă activ.",
