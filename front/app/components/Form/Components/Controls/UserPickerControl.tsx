@@ -8,9 +8,9 @@ import {
 import React from 'react';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import ErrorDisplay from './ErrorDisplay';
+import ErrorDisplay from '../ErrorDisplay';
 import UserSelect from 'components/UI/UserSelect';
-import messages from './messages';
+import messages from '../../messages';
 import { FormLabel } from 'components/UI/FormComponents';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
 
@@ -31,7 +31,7 @@ const UserPickerControl = ({
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <UserSelect
@@ -48,6 +48,6 @@ const UserPickerControl = ({
 export default withJsonFormsControlProps(injectIntl(UserPickerControl));
 
 export const userPickerControlTester: RankedTester = rankWith(
-  4,
+  1000,
   scopeEndsWith('author_id')
 );

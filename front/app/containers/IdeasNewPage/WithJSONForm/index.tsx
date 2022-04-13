@@ -17,17 +17,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 import IdeasNewMeta from '../IdeasNewMeta';
-import Form, { AjvErrorGetter } from 'components/Form';
+import Form, { AjvErrorGetter, ApiErrorGetter } from 'components/Form';
 
 import PageContainer from 'components/UI/PageContainer';
-import { Box } from '@citizenlab/cl2-component-library';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import { addIdea } from 'services/ideas';
 import { geocode, reverseGeocode } from 'utils/locationTools';
 
 // for getting inital state from previous page
 import { parse } from 'qs';
-import { ApiErrorGetter } from 'components/Form/contexts';
+import { getFieldNameFromPath } from 'utils/JSONFormUtils';
 
 const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const previousPathName = useContext(PreviousPathnameContext);
@@ -35,7 +34,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   const project = useProject({ projectSlug: params.slug });
 
   const phases = usePhases(project?.id);
-  const { schema, uiSchema } = useInputSchema(project?.id);
+  const { schema, uiSchema, inputSchemaError } = useInputSchema(project?.id);
 
   useEffect(() => {
     const isPrivilegedUser =
@@ -111,8 +110,8 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     });
   };
 
-  const getAjvErrorMessage: AjvErrorGetter = useCallback(
-    (error, _uischema) => {
+  const getApiErrorMessage: ApiErrorGetter = useCallback(
+    (error) => {
       return (
         messages[`api_error_${uiSchema?.options?.inputTerm}_${error}`] ||
         messages[`api_error_${error}`] ||
@@ -122,13 +121,21 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
     [uiSchema]
   );
 
-  const getApiErrorMessage: ApiErrorGetter = useCallback(
-    (error, field) => {
+  const getAjvErrorMessage: AjvErrorGetter = useCallback(
+    (error) => {
       return (
         messages[
-          `ajv_error_${uiSchema?.options?.inputTerm}_${field}_${error}`
+          `ajv_error_${uiSchema?.options?.inputTerm}_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
         ] ||
-        messages[`ajv_error_${field}_${error}`] ||
+        messages[
+          `ajv_error_${
+            getFieldNameFromPath(error.instancePath) ||
+            error?.params?.missingProperty
+          }_${error.keyword}`
+        ] ||
         undefined
       );
     },
@@ -136,7 +143,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   );
 
   return (
-    <PageContainer overflow="hidden">
+    <PageContainer id="e2e-idea-new-page">
       {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
         <>
           <IdeasNewMeta />
@@ -147,6 +154,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             initialFormData={initialFormData}
             getAjvErrorMessage={getAjvErrorMessage}
             getApiErrorMessage={getApiErrorMessage}
+            inputId={undefined}
             title={
               <FormattedMessage
                 {...{
@@ -167,9 +175,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
             }
           />
         </>
-      ) : isError(project) ? (
-        <Box>Please try again</Box>
-      ) : (
+      ) : isError(project) || inputSchemaError ? null : (
         <FullPageSpinner />
       )}
     </PageContainer>
