@@ -80,7 +80,7 @@ interface InputProps {
 type Props = InputProps & InjectedIntlProps & InjectedLocalized;
 
 interface TooltipProps {
-  payload: { name?: string; value?: string; payload?: { total: number } }[];
+  payload?: { name?: string; value?: string; payload?: { total: number } }[];
   label?: string;
   active?: boolean;
   totalLabel: string;
@@ -92,7 +92,7 @@ const CustomTooltip = ({
   active,
   totalLabel,
 }: TooltipProps) => {
-  if (active && payload[0]) {
+  if (active && payload && payload[0]) {
     return (
       <Box bgColor="#fff" border="1px solid #cccccc" p="10px">
         <h4 style={{ fontWeight: 600 }}>{label}</h4>
