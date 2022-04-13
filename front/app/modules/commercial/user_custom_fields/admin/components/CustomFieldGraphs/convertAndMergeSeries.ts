@@ -63,7 +63,7 @@ const createConvertAndMergeSeries =
     code: TCustomFieldCode
   ) => {
     if (code === 'birthyear') {
-      const options = { missing: formatMessage(messages._blank) };
+      const options = { missingBin: formatMessage(messages._blank) };
 
       const binnedTotal = binBirthyear(totalSerie.series.users, options);
       const binnedParticipants = binBirthyear(
