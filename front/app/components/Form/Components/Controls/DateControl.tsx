@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 
 import { withJsonFormsControlProps } from '@jsonforms/react';
-import { Box, DateInput, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, DateInput } from '@citizenlab/cl2-component-library';
 import {
   ControlProps,
   RankedTester,
@@ -10,12 +10,10 @@ import {
   isDateControl,
 } from '@jsonforms/core';
 import { FormLabel } from 'components/UI/FormComponents';
-import ErrorDisplay from './ErrorDisplay';
-import { InjectedIntlProps } from 'react-intl';
+import ErrorDisplay from '../ErrorDisplay';
 import { getLabel, sanitizeForClassname } from 'utils/JSONFormUtils';
-import messages from './messages';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
+import VerificationIcon from '../VerificationIcon';
 
 const StyledDateInput = styled(DateInput)`
   flex-grow: 1;
@@ -30,16 +28,15 @@ const DateControl = ({
   schema,
   id,
   required,
-}: ControlProps & InjectedIntlProps) => {
+}: ControlProps) => {
   const [didBlur, setDidBlur] = useState(false);
-
   return (
     <>
       <FormLabel
         htmlFor={sanitizeForClassname(id)}
         labelValue={getLabel(uischema, schema, path)}
         optional={!required}
-        subtextValue={schema.description}
+        subtextValue={uischema.options?.description}
         subtextSupportsHtml
       />
       <Box display="flex" flexDirection="row">
@@ -52,13 +49,7 @@ const DateControl = ({
           }}
           disabled={uischema?.options?.readonly}
         />
-        {uischema?.options?.verificationLocked && (
-          <IconTooltip
-            content={<FormattedMessage {...messages.blockedVerified} />}
-            icon="lock"
-            marginLeft="5px"
-          />
-        )}
+        <VerificationIcon show={uischema?.options?.verificationLocked} />
       </Box>
       <ErrorDisplay ajvErrors={errors} fieldPath={path} didBlur={didBlur} />
     </>
