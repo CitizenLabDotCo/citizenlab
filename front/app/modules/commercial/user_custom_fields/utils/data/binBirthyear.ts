@@ -3,9 +3,15 @@ import { RawData } from './typings';
 
 type BinFunction = (birthYear: string) => string | null;
 
-interface BinOptions {
-  binFunction?: BinFunction;
-  bins?: string[];
+type BinOptions = BinOptionsDefault | BinOptionsCustom;
+
+interface BinOptionsDefault {
+  missing?: string;
+}
+
+interface BinOptionsCustom {
+  binFunction: BinFunction;
+  bins: string[];
   missing?: string;
 }
 
