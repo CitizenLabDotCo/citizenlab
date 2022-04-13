@@ -87,6 +87,18 @@ interface Props {
   project: GetProjectChildProps;
 }
 
+const PARTICIPATION_METHOD_MESSAGES: Record<
+  ParticipationMethod,
+  ReactIntl.FormattedMessage.MessageDescriptor
+> = {
+  ideation: messages.ideationAndFeedback,
+  information: messages.information,
+  survey: messages.survey,
+  budgeting: messages.budgeting,
+  poll: messages.poll,
+  volunteering: messages.volunteering,
+};
+
 const ProjectReport = memo(
   ({
     project,
@@ -106,7 +118,6 @@ const ProjectReport = memo(
       : project.attributes.process_type === 'timeline';
 
     useEffect(() => {
-      if (isTimelineProject === null) return;
       if (isNilOrError(project)) return;
 
       if (isTimelineProject) {
@@ -170,16 +181,8 @@ const ProjectReport = memo(
     ) as ParticipationMethod[];
 
     const projectTitle = localize(project.attributes.title_multiloc);
-    const participationMethodMessages: {
-      [key in ParticipationMethod]: ReactIntl.FormattedMessage.MessageDescriptor;
-    } = {
-      ideation: messages.ideationAndFeedback,
-      information: messages.information,
-      survey: messages.survey,
-      budgeting: messages.budgeting,
-      poll: messages.poll,
-      volunteering: messages.volunteering,
-    };
+
+    const timeBoundariesSet = !!(startAt && endAt);
 
     return (
       <>
@@ -212,7 +215,7 @@ const ProjectReport = memo(
                         />
                       </p>
                       <FormattedMessage
-                        {...participationMethodMessages[
+                        {...PARTICIPATION_METHOD_MESSAGES[
                           phase.attributes.participation_method
                         ]}
                       />
@@ -227,7 +230,7 @@ const ProjectReport = memo(
           </Section>
         )}
 
-        {!isEqual(participationMethods, ['information']) && startAt && endAt && (
+        {!isEqual(participationMethods, ['information']) && timeBoundariesSet && (
           <Section>
             <SectionTitle>
               <FormattedMessage {...messages.sectionWho} />
@@ -257,13 +260,13 @@ const ProjectReport = memo(
         )}
 
         <Section>
-          {((participationMethods.includes('ideation') && startAt && endAt) ||
+          {((participationMethods.includes('ideation') && timeBoundariesSet) ||
             participationMethods.includes('poll')) && (
             <SectionTitle>
               <FormattedMessage {...messages.sectionWhatInput} />
             </SectionTitle>
           )}
-          {participationMethods.includes('ideation') && startAt && endAt && (
+          {participationMethods.includes('ideation') && timeBoundariesSet && (
             <GraphsContainer>
               <LineBarChart
                 graphTitle={formatMessage(messages.inputs)}
