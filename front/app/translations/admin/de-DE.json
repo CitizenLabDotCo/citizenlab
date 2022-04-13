@@ -929,7 +929,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL einbetten",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Weitere Informationen zum Einbetten einer Umfrage finden Sie {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/de/articles/1641202-einbettung-ihrer-typeform-umfrage-in-ein-projekt-oder-eine-projektphase",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "hier",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
