@@ -11,8 +11,8 @@ const convertAndMergeSeries = createConvertAndMergeSeries({
 describe('createConvertAndMergeSeries', () => {
   it('works with birthyear', () => {
     const output = convertAndMergeSeries(
-      { series: { users: { '1999': 6, '2004': 6 } } },
-      { series: { users: { '1999': 2, '2004': 3 } } },
+      { series: { users: { 1999: 6, 2004: 6 } } },
+      { series: { users: { 1999: 2, 2004: 3 } } },
       'birthyear'
     );
 
