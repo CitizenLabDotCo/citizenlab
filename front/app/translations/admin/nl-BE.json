@@ -928,7 +928,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Embed URL",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Programma",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Bepaal welk enquêteprogramma je wil gebruiken. Je vindt alle informatie {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/nl/articles/1641202-hoe-voeg-je-een-typeform-enquete-toe-aan-een-project-fase",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "hier",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
