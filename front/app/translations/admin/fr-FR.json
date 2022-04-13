@@ -928,7 +928,7 @@
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "URL incorporée",
   "app.containers.AdminPage.ProjectEdit.surveyService": "Service",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltip": "Choisissez quel outil d'enquête vous souhaitez utiliser. Des informations supplémentaires peuvent être trouvées {surveyServiceTooltipLink}.",
-  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/en/collections/2792112-participation-methods#surveys",
+  "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink": "https://support.citizenlab.co/fr/articles/1641202-comment-integrer-une-enquete-typeform-a-un-phase-de-votre-projet-de-participation",
   "app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText": "ici",
   "app.containers.AdminPage.ProjectEdit.survey_monkey": "Survey Monkey",
   "app.containers.AdminPage.ProjectEdit.survey_xact": "SurveyXact",
