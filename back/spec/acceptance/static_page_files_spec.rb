@@ -17,7 +17,7 @@ resource 'StaticPageFile' do
     let(:page_id) { @page.id }
 
     example_request 'List all file attachments of a static page' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse response_body
       expect(json_response[:data].size).to eq 2
     end
@@ -28,7 +28,7 @@ resource 'StaticPageFile' do
     let(:file_id) { StaticPageFile.first.id }
 
     example_request 'Get one file of a static page' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
@@ -47,7 +47,7 @@ resource 'StaticPageFile' do
     let(:file) { file_as_base64 name, 'application/pdf' }
 
     example_request 'Add a file attachment to a page' do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :file)).to be_present
       expect(json_response.dig(:data, :attributes, :ordering)).to eq 1
@@ -60,7 +60,7 @@ resource 'StaticPageFile' do
       let(:file) { file_as_base64 name, 'application/octet-stream' }
 
       example_request '[error] Add an unsupported file extension as attachment to a page' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
       end
@@ -72,7 +72,7 @@ resource 'StaticPageFile' do
         expect_any_instance_of(StaticPageFileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'max_size_error')
       end

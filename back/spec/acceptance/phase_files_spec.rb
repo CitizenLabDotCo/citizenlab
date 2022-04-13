@@ -20,7 +20,7 @@ resource "PhaseFile" do
     let(:phase_id) { @phase.id }
 
     example_request "List all file attachments of a phase" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -31,7 +31,7 @@ resource "PhaseFile" do
     let(:file_id) { PhaseFile.first.id }
 
     example_request "Get one file of a phase" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
     end
@@ -50,7 +50,7 @@ resource "PhaseFile" do
     let(:file) { file_as_base64 name, 'application/pdf' }
 
     example_request "Add a file attachment to a phase" do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
@@ -63,7 +63,7 @@ resource "PhaseFile" do
       let(:name) { 'keylogger.exe' }
 
       example_request '[error] Add an unsupported file extension as attachment to a phase' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
       end
@@ -75,7 +75,7 @@ resource "PhaseFile" do
         expect_any_instance_of(PhaseFileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'max_size_error')
       end

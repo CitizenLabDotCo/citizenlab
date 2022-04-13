@@ -29,7 +29,7 @@ resource "Events" do
       let(:project_ids) { [@project.id] }
 
       example_request "List all events of a project" do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
       end
@@ -37,7 +37,7 @@ resource "Events" do
 
     context 'not passing project ids' do
       example_request "List all events" do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
       end
@@ -56,7 +56,7 @@ resource "Events" do
         let(:project_publication_statuses) { ['published'] }
 
         example_request "List only events of published projects" do
-          expect(status).to eq(200)
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
         end
@@ -64,7 +64,7 @@ resource "Events" do
 
       context 'not passing project publication statuses' do
         example_request "List all events" do
-          expect(status).to eq(200)
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 6
         end
@@ -110,7 +110,7 @@ resource "Events" do
         let(:end_at) { event.end_at }
 
         example_request "Create an event for a project" do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
@@ -127,7 +127,7 @@ resource "Events" do
         let(:end_at) { event.start_at - 1.day}
 
         example_request '[error] Create an invalid event' do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
           expect(json_response).to include_response_error(:start_at, 'after_end_at')
@@ -151,7 +151,7 @@ resource "Events" do
       let(:location_multiloc) { build(:event).location_multiloc }
 
       example_request "Update an event" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
       end
@@ -161,7 +161,7 @@ resource "Events" do
       let(:event) { create(:event, project: @project) }
       let(:id) { event.id }
       example_request "Delete a event" do
-        expect(response_status).to eq 200
+        assert_status 200
         expect{Event.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
       end
     end

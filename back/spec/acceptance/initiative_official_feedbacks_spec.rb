@@ -21,7 +21,7 @@ resource "OfficialFeedback" do
     let(:initiative_id) { @initiative.id }
 
     example_request "List all official feedback of an initiative" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
       expect(json_response.dig(:data,0,:attributes,:body_multiloc)).to be_present
@@ -33,7 +33,7 @@ resource "OfficialFeedback" do
     let(:id) { @feedbacks.first.id }
 
     example_request "Get one official feedback on an initiative by id" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @feedbacks.first.id
     end
@@ -59,7 +59,7 @@ resource "OfficialFeedback" do
       let(:author_multiloc) { feedback.author_multiloc }
 
       example_request "Create an official feedback on an initiative" do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
@@ -72,7 +72,7 @@ resource "OfficialFeedback" do
         let(:body_multiloc) { {"en" => ""} }
 
         example_request "[error] Create an invalid official feedback on an initiative" do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:body_multiloc, 'blank')
         end

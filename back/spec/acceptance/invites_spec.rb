@@ -29,7 +29,7 @@ resource "Invites" do
         let!(:invites) { create_list(:invite, 5) }
 
         example_request "List all invites" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq invites.size
         end
@@ -41,7 +41,7 @@ resource "Invites" do
         let(:search) { invite.invitee.last_name[0..6] }
 
         example_request "Search for invites" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq 1
           expect(json_response.dig(:data).first[:relationships][:invitee][:data][:id]).to eq invite.invitee.id
@@ -55,7 +55,7 @@ resource "Invites" do
         let(:sort) { '-email' }
 
         example_request "List all invites by combining filter, sort and search", document: false do
-          expect(response_status).to eq 200
+          assert_status 200
         end
       end
 
@@ -66,7 +66,7 @@ resource "Invites" do
         let(:sort) { 'email' }
 
         example_request "List all invites sorted by email" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq 3
           expect(json_response.dig(:data).map{|d| d[:id]}).to match_array [invite1.id, invite2.id, invite3.id]
@@ -79,7 +79,7 @@ resource "Invites" do
         let(:invite_status) { 'accepted' }
 
         example_request "List all invites that have been accepted" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data).size).to eq accepted_invites.size
           expect(json_response.dig(:data).map{|d| d[:id]}).to match_array accepted_invites.map(&:id)
@@ -140,7 +140,7 @@ resource "Invites" do
 
         example_request "Bulk invite multiple users" do
           aggregate_failures "testing response" do
-            expect(response_status).to eq 200
+            assert_status 200
             expect(Invite.count).to eq 6
             expect(Invite.all.map { |i| i.invitee.email }).to match_array emails
             expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
@@ -163,7 +163,7 @@ resource "Invites" do
         ]}
 
         example_request "[error] Bulk invite multiple users" do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse(response_body)
           expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["emails_duplicate", "invalid_email"]
         end
@@ -208,7 +208,7 @@ resource "Invites" do
         let(:invite_text) { "Welcome, my friend!" }
 
         example_request "Bulk invite multiple users with xlsx file" do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(Invite.count).to eq 6
           expect(Invite.all.map{|i| i.invitee.email}).to match_array hash_array.map{|h| h[:email]}
           expect(Invite.all.map{|i| i.invitee.groups.map(&:id)}.flatten.uniq).to match_array Group.all.map(&:id)
@@ -231,7 +231,7 @@ resource "Invites" do
         ]}
 
         example_request "[error] Bulk invite users with xlsx file" do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse(response_body)
           expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["unknown_group", "malformed_groups_value", "malformed_admin_value", "emails_duplicate", "invalid_email", "unknown_locale"]
         end
@@ -240,7 +240,7 @@ resource "Invites" do
 
     get "web_api/v1/invites/example_xlsx" do
       example_request "Get the example xlsx" do
-        expect(response_status).to eq 200
+        assert_status 200
       end
     end
 
@@ -248,7 +248,7 @@ resource "Invites" do
       let(:id) { create(:invite).id }
 
       example_request "Delete an invite" do
-        expect(response_status).to eq 200
+        assert_status 200
         expect{Invite.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(Invite.count).to eq 0
       end

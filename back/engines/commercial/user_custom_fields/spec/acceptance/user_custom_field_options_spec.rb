@@ -21,7 +21,7 @@ resource "User Custom Field Options" do
     let(:custom_field_id) { @custom_field.id }
 
     example_request "List all custom field options for a field" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
     end
@@ -59,7 +59,7 @@ resource "User Custom Field Options" do
         let(:title_multiloc) { custom_field_option.title_multiloc }
 
         example_request "Create a custom field option" do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:key)).to match key
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -71,7 +71,7 @@ resource "User Custom Field Options" do
         let(:title_multiloc) { { 'en' => '' } }
 
         example_request '[error] Create an invalid custom field option', document: false do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:key, 'invalid', value: key)
           expect(json_response).to include_response_error(:title_multiloc, 'blank')
@@ -127,7 +127,7 @@ resource "User Custom Field Options" do
             {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
           ])
           do_request
-          expect(response_status).to eq 422
+          assert_status 422
           expect(CustomFieldOption.find(id)).to be_present
         end
       end

@@ -20,7 +20,7 @@ resource "EventFile" do
     let(:event_id) { @event.id }
 
     example_request "List all file attachments of an event" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -31,7 +31,7 @@ resource "EventFile" do
     let(:file_id) { EventFile.first.id }
 
     example_request "Get one file of an event" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
     end
@@ -63,7 +63,7 @@ resource "EventFile" do
       let(:name) { 'keylogger.exe' }
 
       example_request '[error] Add an unsupported file extension as attachment to an event' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
       end
@@ -73,7 +73,7 @@ resource "EventFile" do
       let(:file) { "data:application/pdf;base64,===" }
 
       example_request "[error] Add a file of which the size is too small" do
-        expect(response_status).to eq 422
+        assert_status 422
       end
     end
 
@@ -83,7 +83,7 @@ resource "EventFile" do
         expect_any_instance_of(EventFileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'max_size_error')
       end
@@ -95,7 +95,7 @@ resource "EventFile" do
     let(:file_id) { EventFile.first.id }
 
     example_request "Delete a file attachment from an event" do
-      expect(response_status).to eq 200
+      assert_status 200
       expect{EventFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end

@@ -11,7 +11,7 @@ resource 'Users' do
   context 'when not authenticated' do
     get 'web_api/v1/users/me' do
       example_request '[error] Get the authenticated user' do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -27,7 +27,7 @@ resource 'Users' do
       parameter :can_moderate, "Filter out admins and moderators", required: false
 
       example_request "[error] List all users" do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -36,7 +36,7 @@ resource 'Users' do
       parameter :users, "Filter out only users with the provided user ids", required: false
 
       example_request "[error] XLSX export" do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -66,7 +66,7 @@ resource 'Users' do
         let(:password) { 'supersecret' }
 
         example_request "Authenticate a registered user" do
-          expect(status).to eq(201)
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:jwt)).to be_present
         end
@@ -74,7 +74,7 @@ resource 'Users' do
         example "[error] Authenticate an invited user" do
           @user.update! invite_status: 'pending'
           do_request
-          expect(status).to eq(404)
+          assert_status 404
         end
       end
 
@@ -96,7 +96,7 @@ resource 'Users' do
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
           example_request "Authenticate a registered user by phone number", document: false do
-            expect(status).to eq(201)
+            assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:jwt)).to be_present
           end
@@ -107,7 +107,7 @@ resource 'Users' do
           let(:email) { user.email }
           let(:password) { 'supersecret' }
           example_request "Authenticate a registered user by email", document: false do
-            expect(status).to eq(201)
+            assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:jwt)).to be_present
           end
@@ -136,7 +136,7 @@ resource 'Users' do
       let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
 
       example_request "Create a user" do
-        expect(response_status).to eq 201
+        assert_status 201
       end
 
       context 'when the user_confirmation module is active' do
@@ -145,7 +145,7 @@ resource 'Users' do
         end
 
         example_request 'Registration is not completed by default' do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
         end
@@ -157,7 +157,7 @@ resource 'Users' do
         end
 
         example_request 'Requires confirmation' do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
         end
@@ -169,7 +169,7 @@ resource 'Users' do
         example "creates a user, but not an admin", document: false do
           create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
           do_request
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :roles)).to be_empty
         end
@@ -190,7 +190,7 @@ resource 'Users' do
         let(:password) { 'ab' }
 
         example_request '[error] Create an invalid user', document: false do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:password, 'too_short', count: 5)
         end
@@ -201,7 +201,7 @@ resource 'Users' do
         let(:email) { invitee.email }
 
         example_request '[error] Registering an invited user' do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(
             :email,
@@ -219,7 +219,7 @@ resource 'Users' do
         let(:email) { 'jEzUs@citizenlab.co' }
 
         example_request "[error] Registering a user with case insensitive email duplicate", document: false do
-          expect(response_status).to eq 422
+          assert_status 422
         end
       end
 
@@ -239,7 +239,7 @@ resource 'Users' do
         describe do
           let(:email) { "someone@citizenlab.co" }
           example_request "Register with email when an email is passed", document: false do
-            expect(response_status).to eq 201
+            assert_status 201
             json_response = json_parse(response_body)
             expect(User.find_by(email: email)).to be_present
           end
@@ -248,7 +248,7 @@ resource 'Users' do
         describe do
           let(:email) { "+32 487 36 58 98" }
           example_request "Registers a user with a phone number in the email when a phone number is passed", document: false do
-            expect(response_status).to eq 201
+            assert_status 201
             json_response = json_parse(response_body)
             expect(User.find_by(email: "phone+32487365898@test.com")).to be_present
           end
@@ -483,7 +483,7 @@ resource 'Users' do
       end
       example "Get all users as non-admin", document: false do
         do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -763,7 +763,7 @@ resource 'Users' do
       example "[error] Complete the registration of a user fails if not all required fields are provided" do
         @user.update! registration_completed_at: nil
         do_request(user: {custom_field_values: {cf2.key => nil}})
-        expect(response_status).to eq 422
+        assert_status 422
       end
 
       example "[error] Complete the registration of a user fails if the user has already completed signup" do

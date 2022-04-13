@@ -19,7 +19,7 @@ resource "Onboarding campaigns" do
 
     context "for a user with an incomplete profile" do
       example_request "Get the current onboarding campaign" do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data][:attributes][:name]).to eq 'complete_profile'
         expect(json_response[:data][:attributes][:cta_message_multiloc]).to be_nil
@@ -40,7 +40,7 @@ resource "Onboarding campaigns" do
 
       example "Get the current onboarding campaign for a user with a complete profile" do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data][:attributes][:name]).to eq 'custom_cta'
         expect(json_response[:data][:attributes][:cta_message_multiloc][:en]).to eq "Dance like noone is watching"
@@ -55,7 +55,7 @@ resource "Onboarding campaigns" do
       end
 
       example_request "[error] returns 401 Unauthorized response" do
-        expect(status).to eq(401)
+        assert_status 401
       end
     end
   end
@@ -66,7 +66,7 @@ resource "Onboarding campaigns" do
 
       describe "the first time" do
         example_request "Create an onboarding campaign dismissal" do
-          expect(status).to eq 200
+          assert_status 200
         end
       end
 
@@ -76,7 +76,7 @@ resource "Onboarding campaigns" do
         end
 
         example_request '[error] Create an onboarding campaign dismissal for the same campaign twice' do
-          expect(status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:campaign_name, 'taken', value: 'complete_profile')
         end

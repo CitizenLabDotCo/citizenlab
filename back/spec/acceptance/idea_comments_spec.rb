@@ -273,7 +273,7 @@ resource "Comments" do
       let(:body_multiloc) { comment.body_multiloc }
 
       example_request "Create a comment on an idea" do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
@@ -286,7 +286,7 @@ resource "Comments" do
         let(:parent_id) { create(:comment, post: @idea).id }
 
         example_request "Create a comment on a comment" do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
           expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
@@ -300,7 +300,7 @@ resource "Comments" do
         let(:body_multiloc) { { 'fr-FR' => '' } }
 
         example_request '[error] Create an invalid comment' do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:body_multiloc, 'blank')
         end
@@ -327,7 +327,7 @@ resource "Comments" do
 
         example "Commenting should be enabled by default in a budgeting project", document: false do
           do_request
-          expect(response_status).to eq 201
+          assert_status 201
         end
       end
 
@@ -337,7 +337,7 @@ resource "Comments" do
         let(:body_multiloc) {{'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker'}} 
 
         example_request "[error] Create a comment with blocked words" do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse(response_body)
           blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
           expect(blocked_error).to be_present
@@ -365,7 +365,7 @@ resource "Comments" do
         token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
       end
     end
 

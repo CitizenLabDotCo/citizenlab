@@ -27,7 +27,7 @@ resource 'Verifications' do
       let(:desired_error) { nil }
 
       example_request 'Fake verify with bogus' do
-        expect(status).to eq 201
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
         expect(@user.custom_field_values['gender']).to eq 'female'
@@ -40,7 +40,7 @@ resource 'Verifications' do
       let(:desired_error) { nil }
 
       example_request "Fake verify with bogus for a user that didn't complete her registation yet" do
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.last_name).to eq 'BOGUS'
         expect(@user.custom_field_values['gender']).to eq 'female'
@@ -51,7 +51,7 @@ resource 'Verifications' do
       let(:desired_error) { 'no_match' }
 
       example_request '[error] Fake verify with bogus without a match' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'no_match')
       end
@@ -61,7 +61,7 @@ resource 'Verifications' do
       let(:desired_error) { 'not_entitled' }
 
       example_request "[error] Fake verify with bogus with a match that's not entitled to verification" do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'not_entitled')
       end
@@ -71,7 +71,7 @@ resource 'Verifications' do
       let(:desired_error) { 'any_none_suported_value' }
 
       example_request '[error] Fake verify with bogus using invalid desired_error' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:desired_error, 'invalid')
       end
@@ -90,7 +90,7 @@ resource 'Verifications' do
       let(:desired_error) { 'taken' }
 
       example_request '[error] Fake verify with bogus using credentials that are already taken (2nd call)' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'taken')
       end

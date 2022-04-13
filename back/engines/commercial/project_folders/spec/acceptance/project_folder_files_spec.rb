@@ -49,7 +49,7 @@ resource "ProjectFolderFile" do
     let(:file) { file_as_base64 name, 'application/pdf' }
 
     example_request "Add a file attachment to a folder" do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
@@ -62,7 +62,7 @@ resource "ProjectFolderFile" do
       let(:file) { file_as_base64 name, 'application/octet-stream' }
 
       example_request '[error] Add an unsupported file extension as attachment to a folder' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
       end
@@ -74,7 +74,7 @@ resource "ProjectFolderFile" do
         expect_any_instance_of(ProjectFolders::FileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:file, 'max_size_error')
       end

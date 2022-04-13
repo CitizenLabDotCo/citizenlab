@@ -48,7 +48,7 @@ resource 'Verifications' do
                                                                       'wijkNr' => '5' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
                                                                method_name: 'gent_rrn',
@@ -69,7 +69,7 @@ resource 'Verifications' do
                                                                       'wijkNr' => '15' } }.to_json, headers: { 'Content-Type' => 'application/json' })
 
         do_request
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
                                                                method_name: 'gent_rrn',
@@ -89,7 +89,7 @@ resource 'Verifications' do
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR11'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
-        expect(status).to eq 422
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
@@ -105,7 +105,7 @@ resource 'Verifications' do
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR12'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
-        expect(status).to eq 422
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
@@ -118,7 +118,7 @@ resource 'Verifications' do
 
       example '[error] Verify with an invalid rrn' do
         do_request
-        expect(status).to eq 422
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
@@ -134,7 +134,7 @@ resource 'Verifications' do
           .to_return(status: 200, body: { 'verificatieResultaat' => { 'geldig' => false,
                                                                       'redenNietGeldig' => ['ERR10'] } }.to_json, headers: { 'Content-Type' => 'application/json' })
         do_request
-        expect(status).to eq 422
+        assert_status 422
         expect(@user.reload.verified).to be false
         expect(@user.custom_field_values[@custom_field.key]).to be_nil
         json_response = json_parse response_body
@@ -160,7 +160,7 @@ resource 'Verifications' do
 
       example '[error] Verify with an rrn that has already been taken' do
         do_request
-        expect(status).to eq 422
+        assert_status 422
         expect(@user.reload.verified).to be false
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'taken')

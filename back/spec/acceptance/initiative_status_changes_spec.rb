@@ -27,7 +27,7 @@ resource "InitiativeStatusChange" do
     let(:initiative_id) { @initiative.id }
 
     example_request "List all status changes of an initiative" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response.dig(:data,0,:attributes,:created_at)).to be_present
@@ -44,7 +44,7 @@ resource "InitiativeStatusChange" do
     let(:id) { @changes.first.id }
 
     example_request "Get one status changes on an initiative by id" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @changes.first.id
     end
@@ -87,7 +87,7 @@ resource "InitiativeStatusChange" do
       let(:author_multiloc) { feedback.author_multiloc }
 
       example_request "Create a status change on an initiative with new feedback" do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
         expect(@initiative.reload.official_feedbacks_count).to eq 1
@@ -99,7 +99,7 @@ resource "InitiativeStatusChange" do
         let(:author_multiloc) { nil }
 
         example_request "Create a status change on an initiative using an existing feedback" do
-          expect(response_status).to eq 201
+          assert_status 201
           expect(@initiative.reload.official_feedbacks_count).to eq 1
         end
       end
@@ -109,7 +109,7 @@ resource "InitiativeStatusChange" do
         let(:author_multiloc) { nil }
 
         example_request "[error] Create a status change on an initiative without feedback" do
-          expect(response_status).to eq 422
+          assert_status 422
         end
       end
 
@@ -117,7 +117,7 @@ resource "InitiativeStatusChange" do
         let(:initiative_status_id) { @status_expired.id }
 
         example_request '[error] Create a status change through an invalid transition' do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'initiative_status_transition_not_allowed')
         end
@@ -127,7 +127,7 @@ resource "InitiativeStatusChange" do
         let(:initiative_status_id) { @status_threshold_reached.id }
 
         example_request '[error] Create a status change to the same status' do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:base, 'initiative_status_transition_without_change')
         end

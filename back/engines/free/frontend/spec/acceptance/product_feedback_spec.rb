@@ -30,14 +30,14 @@ resource "Product Feedback" do
 
     example "Create new product feedback" do
       do_request
-      expect(status).to eq(200)
+      assert_status 200
     end
 
     describe 'errors' do
       let(:question) { nil }
 
       example_request '[error] Create new product feedback without question' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:question, 'blank')
       end

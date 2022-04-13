@@ -37,7 +37,7 @@ resource "Verifications" do
       end
       let(:card_id) { @card_id }
       example_request "Verify with id_card_lookup" do
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
       end
     end
@@ -46,7 +46,7 @@ resource "Verifications" do
       let(:card_id) { '234.532345-345' }
 
       example_request '[error] Verify with id_card_lookup without a match' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'no_match')
       end
@@ -56,7 +56,7 @@ resource "Verifications" do
       let(:card_id) { '' }
 
       example_request '[error] Verify with id_card_lookup using empty card_id' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:card_id, 'invalid')
       end
@@ -77,7 +77,7 @@ resource "Verifications" do
       let(:card_id) { '123.4623478B' }
 
       example_request '[error] Verify with id_card_lookup using credentials that are already taken (2nd call)' do
-        expect(status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:base, 'taken')
       end

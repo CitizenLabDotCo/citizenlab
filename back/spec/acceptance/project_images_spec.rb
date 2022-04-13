@@ -19,7 +19,7 @@ resource "ProjectImage" do
     let(:project_id) { @project.id }
 
     example_request "List all images of a project" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -30,7 +30,7 @@ resource "ProjectImage" do
     let(:image_id) { ProjectImage.first.id }
 
     example_request "Get one image of a project" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
     end
@@ -47,7 +47,7 @@ resource "ProjectImage" do
     let(:ordering) { 1 }
 
     example_request "Add an image to a project" do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
@@ -58,7 +58,7 @@ resource "ProjectImage" do
       let(:image) { nil }
 
       example_request '[error] Add an invalid image to a project' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:ordering, 'not_a_number', value: 'five')
       end
@@ -68,7 +68,7 @@ resource "ProjectImage" do
       let(:image) { file_as_base64 'afvalkalender.pdf', 'application/pdf' }
 
       example_request '[error] Add an invalid image type to a project' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:image, 'extension_whitelist_error')
       end

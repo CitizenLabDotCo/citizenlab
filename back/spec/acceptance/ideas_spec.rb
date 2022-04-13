@@ -559,7 +559,7 @@ resource 'Ideas' do
 
     describe do
       example_request 'Create an idea' do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
@@ -588,7 +588,7 @@ resource 'Ideas' do
       end
 
       example_request 'Creates an idea', document: false do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
@@ -603,7 +603,7 @@ resource 'Ideas' do
       let(:publication_status) { 'fake_status' }
 
       example_request '[error] Creating an invalid idea' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:publication_status, 'inclusion', value: 'fake_status')
       end
@@ -613,7 +613,7 @@ resource 'Ideas' do
       let(:idea_images_attributes) { [{ image: Base64.encode64(Rails.root.join("spec/fixtures/image#{rand(20)}.png").open.read) }] }
 
       example_request 'Create an idea with an image' do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
       end
@@ -623,7 +623,7 @@ resource 'Ideas' do
       let(:idea_files_attributes) { [{ name: 'afvalkalender.pdf', file: encode_file_as_base64('afvalkalender.pdf') }] }
 
       example_request 'Create an idea with a file' do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(Idea.find(json_response.dig(:data, :id)).idea_files.size).to eq 1
       end
@@ -664,7 +664,7 @@ resource 'Ideas' do
       example 'Create an idea in a project with groups posting permission' do
         group.add_member(@user).save!
         do_request
-        expect(response_status).to eq 201
+        assert_status 201
       end
     end
 
@@ -675,7 +675,7 @@ resource 'Ideas' do
       let(:body_multiloc) {{'fr-FR' => 'co'+'cksu'+'cker'}}
 
       example_request '[error] Create an idea with blocked words' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
         expect(blocked_error).to be_present
@@ -695,7 +695,7 @@ resource 'Ideas' do
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
         example_request "Creating an idea in specific phases" do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
         end
@@ -707,7 +707,7 @@ resource 'Ideas' do
         let(:phase_ids) { [other_project.phases.first.id] }
 
         example_request '[error] Creating an idea linked to a phase from a different project' do
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse response_body
           expect(json_response).to include_response_error(:ideas_phases, 'invalid')
         end
