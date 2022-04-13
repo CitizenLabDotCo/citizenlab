@@ -38,7 +38,7 @@
   "app.components.ConfirmationModal.cancel": "Прекид",
   "app.components.ConfirmationModal.changeYourEmail": "Промените ваш емаил.",
   "app.components.ConfirmationModal.close": "Затвори",
-  "app.components.ConfirmationModal.codeInput": "Code",
+  "app.components.ConfirmationModal.codeInput": "Kôд",
   "app.components.ConfirmationModal.confirmYourAccount": "Потврдите вашу емаил адресу",
   "app.components.ConfirmationModal.confirmationCodeSent": "Нови код је послат",
   "app.components.ConfirmationModal.didntGetAnEmail": "Нисте примили емаил?",
