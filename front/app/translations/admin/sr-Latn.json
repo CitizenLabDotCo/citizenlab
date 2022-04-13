@@ -46,7 +46,7 @@
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Uspeh",
   "app.components.admin.FormikSubmitWrapper.messageError": "Došlo je do greške prilikom čuvanja",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Uspešno sačuvano",
-  "app.components.admin.Graphs": "No data available with the current filters.",
+  "app.components.admin.Graphs": "Nema dostupnih podataka za trenutne filtere.",
   "app.components.admin.InputManager.onePost": "1 unos",
   "app.components.admin.PostManager.PostPreview.assignee": "Zadužena osoba",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Prekinite izmene",
