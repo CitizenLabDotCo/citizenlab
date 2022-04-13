@@ -48,7 +48,7 @@ const ContentBuilderToolbox = ({
           ref &&
           connectors.create(
             ref,
-            <Element canvas is={TwoColumn} id="twoColumn" />
+            <Element canvas is={TwoColumn} columnLayout="1-1" id="twoColumn" />
           )
         }
       >

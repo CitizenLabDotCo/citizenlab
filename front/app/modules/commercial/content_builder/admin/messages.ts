@@ -48,4 +48,8 @@ export default defineMessages({
     defaultMessage:
       'Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.',
   },
+  columnLayoutRadioLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
+    defaultMessage: 'Column layout',
+  },
 });
