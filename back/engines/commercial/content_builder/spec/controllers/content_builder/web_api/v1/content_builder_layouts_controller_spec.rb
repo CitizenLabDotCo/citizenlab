@@ -45,7 +45,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { enabled: true }
         }
         post :upsert, params: params, format: :json
-        assert_status 201
+        expect(response.status).to eq(201)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { enabled: true }
         }
         post :upsert, params: params, format: :json
-        assert_status 422
+        expect(response.status).to eq(422)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
       end
     end
@@ -112,7 +112,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { enabled: false }
         }
         post :upsert, params: params, format: :json
-        assert_status 200
+        expect(response.status).to eq(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
       end
     end
@@ -140,7 +140,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           content_builder_layout: { enabled: false }
         }
         post :upsert, params: params, format: :json
-        assert_status 422
+        expect(response.status).to eq(422)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
       end
     end
@@ -176,7 +176,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
           code: code
         }
         delete :destroy, params: params, format: :json
-        assert_status 200
+        expect(response.status).to eq(200)
         expect(response.content_type).to eq 'application/json'
       end
     end
