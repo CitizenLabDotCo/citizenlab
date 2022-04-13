@@ -701,6 +701,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Here are the projects you are managing on the platform.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projects",
   "app.containers.AdminPage.ProjectDashboard.published": "Published",
+  "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Column layout",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Description",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Homepage description",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip": "Shown on the project card on the home page.",
