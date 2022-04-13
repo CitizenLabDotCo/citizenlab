@@ -175,7 +175,7 @@ export class CustomFieldsComparison extends React.PureComponent<
     } = this.props;
 
     if (customField.attributes.code === 'birthyear') {
-      const options = { missing: formatMessage(messages._blank) };
+      const options = { missingBin: formatMessage(messages._blank) };
 
       const binnedTotal = binBirthyear(totalSerie.series.users, options);
       const binnedParticipants = binBirthyear(

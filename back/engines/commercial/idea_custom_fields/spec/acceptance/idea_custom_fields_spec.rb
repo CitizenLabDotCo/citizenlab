@@ -21,7 +21,7 @@ resource "Idea Custom Fields" do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
 
-      example_request "List all custom fields for a project" do
+      example_request "List all allowed custom fields for a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
@@ -48,7 +48,7 @@ resource "Idea Custom Fields" do
       end
 
       let(:project_id) { project.id }
-      let(:code) { 'location' }
+      let(:code) { 'location_description' }
       let(:required) { true }
       let(:enabled) { false }
       let(:description_multiloc) { {"en" => "New description"} }

@@ -17,6 +17,7 @@ import Warning from 'components/UI/Warning';
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
 import { openSignUpInModal } from 'components/SignUpIn/events';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -221,7 +222,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <StyledImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -234,7 +235,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <PlaceholderIcon name="volunteer-hand" />
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
-              <VolunteersCountText>
+              <VolunteersCountText aria-hidden="true">
                 <FormattedMessage
                   {...messages.xVolunteers}
                   values={{ x: cause.attributes.volunteers_count }}
@@ -250,7 +251,12 @@ const CauseCard = memo<Props>(({ cause, className }) => {
           <Title>
             <T value={cause.attributes.title_multiloc} />
           </Title>
-
+          <ScreenReaderOnly>
+            <FormattedMessage
+              {...messages.xVolunteers}
+              values={{ x: cause.attributes.volunteers_count }}
+            />
+          </ScreenReaderOnly>
           {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
               <QuillEditedContent textColor={theme.colorText}>

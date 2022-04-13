@@ -33,7 +33,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
     if (isNilOrError(data)) return null;
 
     return binBirthyear(data.series.users, {
-      missing: props.intl.formatMessage(messages._blank),
+      missingBin: props.intl.formatMessage(messages._blank),
     });
   };
 

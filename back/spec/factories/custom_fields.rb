@@ -6,7 +6,7 @@ FactoryBot.define do
       "en" => "Did you attend"
     }}
     description_multiloc {{
-      "en" => "Which councils are you attending in our city?"  
+      "en" => "Which councils are you attending in our city?"
     }}
     required { false }
     input_type { "text" }
@@ -15,12 +15,22 @@ FactoryBot.define do
       association :resource, factory: :custom_form
     end
 
+    factory :custom_field_extra_custom_form do
+      title_multiloc {{
+        "en" => "An extra question"
+      }}
+      required { false }
+      input_type { "select" }
+      enabled { true }
+      resource { create(:custom_form) }
+    end
+
     factory :custom_field_select do
       title_multiloc {{
         "en" => "Member of councils?"
       }}
       description_multiloc {{
-        "en" => "Which councils are you attending in our city?"  
+        "en" => "Which councils are you attending in our city?"
       }}
       required { false }
       input_type { "select" }
