@@ -134,7 +134,10 @@ const SMSCampaignForm = ({
   const messageIsPastCharacterLimit = remainingChars < 0;
   const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
   const hasMessageError = messageIsPastCharacterLimit;
-  const isButtonDisabled = hasMessageError || hasPhoneNumbersError;
+  const messageIsEmpty =
+    isNilOrError(inputMessage) || inputMessage.length === 0;
+  const isButtonDisabled =
+    hasMessageError || hasPhoneNumbersError || messageIsEmpty;
 
   return (
     <form className={className} onSubmit={handleOnSubmit}>
