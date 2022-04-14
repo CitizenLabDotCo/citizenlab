@@ -21,7 +21,8 @@ import {
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
 import { Tooltip, LabelList } from 'recharts';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 // typings
@@ -219,7 +220,7 @@ const CustomFieldsGraph = ({
           layout="horizontal"
           innerRef={currentChartRef}
           margin={{
-            ...DEFAULT_MARGIN,
+            ...DEFAULT_BAR_CHART_MARGIN,
             left: 20,
           }}
           bars={{ name: formatMessage(messages.participants), size: barSize }}

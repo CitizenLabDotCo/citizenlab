@@ -58,14 +58,6 @@ export type Layout = 'horizontal' | 'vertical';
 export const getRechartsLayout = (layout: Layout) =>
   layout === 'vertical' ? 'horizontal' : 'vertical';
 
-// MARGIN
-export interface Margin {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
-
 // AXES
 export interface AxisProps {
   tickFormatter?: (value: any) => string;

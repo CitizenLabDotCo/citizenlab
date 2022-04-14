@@ -27,10 +27,12 @@ import {
   Mapping,
   Data,
   Layout,
-  Margin,
   AxisProps,
 } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { Margin } from 'components/admin/Graphs/constants';
 
 interface RenderLabelsProps {
   fill: string;
