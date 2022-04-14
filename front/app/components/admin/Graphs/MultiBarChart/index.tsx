@@ -121,12 +121,12 @@ const BarChart = ({
             cursor: { fill: barHoverColor },
           })}
 
-        {parsedBarProps.map((categoryProps, index) => (
+        {parsedBarProps.map((parallelBarProps, index) => (
           <Bar
             dataKey={length[index]}
             animationDuration={animationDuration}
             animationBegin={animationBegin}
-            {...categoryProps}
+            {...parallelBarProps}
             key={index}
           >
             {renderLabels &&
@@ -140,7 +140,7 @@ const BarChart = ({
               data.map((row, fillIndex) => (
                 <Cell
                   key={`cell-${index}-${fillIndex}`}
-                  fill={row[fill[index]] || categoryProps.fill}
+                  fill={row[fill[index]] || parallelBarProps.fill}
                 />
               ))}
           </Bar>
