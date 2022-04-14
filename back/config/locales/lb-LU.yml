@@ -113,6 +113,9 @@ lb:
       body:
         title: Beschreiwung
         description:
+      author_id:
+        title: Auteur
+        description:
       topic_ids:
         title: Themen
         description:
@@ -122,12 +125,36 @@ lb:
       proposed_budget:
         title: Proposéierte Budget
         description:
+      budget:
+        title: Budget
+        description:
       images:
         title: Biller
         description:
       attachments:
         title: Annexen
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Wat ass Är Iddi?
+        question:
+          title: Wat ass Är Fro?
+        contribution:
+          title: Wat ass Äre Bäitrag ?
+        project:
+          title: Wat ass Äre Projet?
+        issue:
+          title: Wat ass Är Ugeleeënheet ?
+        option:
+          title: Wat ass Är Optioun?
+      details:
+        title: Detailer
+      attachements:
+        title: Biller an Annexen
+      extra:
+        title: Zousätzlech Informatiounen
   custom_field_options:
     gender:
       male: Männlech
