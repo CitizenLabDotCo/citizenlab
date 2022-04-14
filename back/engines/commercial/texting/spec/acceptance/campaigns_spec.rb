@@ -26,7 +26,7 @@ resource 'Texting campaigns' do
     end
 
     example_request 'List all texting campaigns' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -37,7 +37,7 @@ resource 'Texting campaigns' do
     let(:id) { campaign.id }
 
     example_request 'Get one campaign by id' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq id
     end
@@ -53,7 +53,7 @@ resource 'Texting campaigns' do
     let(:message) { 'Join our platform!' }
 
     example_request 'Create a campaign' do
-      expect(response_status).to eq 201
+      assert_status 201
       expect(json_response_body.dig(:data, :attributes, :phone_numbers)).to match_array(phone_numbers)
       expect(json_response_body.dig(:data, :attributes, :message)).to eq(message)
 
@@ -66,7 +66,7 @@ resource 'Texting campaigns' do
       let(:phone_numbers) { ['+123'] }
 
       example_request '[error] Does not create a campaign with invalid phone number' do
-        expect(response_status).to eq 422
+        assert_status 422
 
         expect(json_response_body.dig(:errors, :phone_numbers).first).to include(
           :min_length, :max_length, :valid_country_codes, invalid_numbers: phone_numbers, error: 'invalid'
@@ -126,7 +126,7 @@ resource 'Texting campaigns' do
       campaign.update!(phone_numbers: numbers)
 
       do_request
-      expect(response_status).to eq 422
+      assert_status 422
       expect(campaign.reload.status).to eq('draft')
     end
 
@@ -137,7 +137,7 @@ resource 'Texting campaigns' do
       config.save!
 
       do_request
-      expect(response_status).to eq 422
+      assert_status 422
       expect(campaign.reload.status).to eq('draft')
     end
   end

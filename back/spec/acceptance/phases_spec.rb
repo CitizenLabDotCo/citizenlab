@@ -20,7 +20,7 @@ resource "Phases" do
     let(:project_id) { @project.id }
 
     example_request "List all phases of a project" do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -32,7 +32,7 @@ resource "Phases" do
     example "Get one phase by id" do
       create_list(:idea, 2, project: @project, phases: @phases)
       do_request
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
 
       expect(json_response.dig(:data, :id)).to eq @phases.first.id
@@ -98,7 +98,7 @@ resource "Phases" do
       let(:end_at) { phase.end_at }
 
       example_request "Create a phase for a project" do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
@@ -118,10 +118,10 @@ resource "Phases" do
       describe do
         let(:start_at) { nil }
 
-        example_request "[error] Create an invalid phase", document: false do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :start_at)).to eq [{error: 'blank'}]
+        example_request '[error] Create an invalid phase', document: false do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:start_at, 'blank')
         end
       end
 
@@ -133,10 +133,10 @@ resource "Phases" do
         let(:start_at) { Time.now }
         let(:end_at) { Time.now + 4.days }
 
-        example_request "[error] Create an overlapping phase" do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_overlapping_phases'}]
+        example_request '[error] Create an overlapping phase' do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'has_other_overlapping_phases')
         end
       end
 
@@ -146,7 +146,7 @@ resource "Phases" do
         let(:survey_service) { 'typeform' }
 
         example_request "Create a survey phase", document: false do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:survey_embed_url)).to eq survey_embed_url
           expect(json_response.dig(:data,:attributes,:survey_service)).to eq survey_service
@@ -160,7 +160,7 @@ resource "Phases" do
 
         example "Create a participatory budgeting phase", document: false do
           do_request
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
           expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
@@ -180,11 +180,11 @@ resource "Phases" do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
 
-        example "[error] Create multiple budgeting phases", document: false do
+        example '[error] Create multiple budgeting phases', document: false do
           do_request
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_budgeting_phases'}]
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, 'has_other_budgeting_phases')
         end
       end
 
@@ -196,7 +196,7 @@ resource "Phases" do
         example "Create a phase with text image", document: false do
           ti_count = TextImage.count
           do_request
-          expect(response_status).to eq 201
+          assert_status 201
           expect(TextImage.count).to eq (ti_count + 1)
         end
 
@@ -204,7 +204,7 @@ resource "Phases" do
           ti_count = TextImage.count
           do_request phase: {start_at: nil, end_at: nil}
 
-          expect(response_status).to eq 422
+          assert_status 422
           json_response = json_parse(response_body)
           expect(json_response[:errors].keys & [:start_at, :end_at]).to be_present
           expect(TextImage.count).to eq ti_count
