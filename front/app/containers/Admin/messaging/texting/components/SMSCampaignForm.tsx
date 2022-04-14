@@ -132,12 +132,11 @@ const SMSCampaignForm = ({
     ? 'Preview SMS'
     : 'Update and preview SMS';
   const messageIsPastCharacterLimit = remainingChars < 0;
-  const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
-  const hasMessageError = messageIsPastCharacterLimit;
   const messageIsEmpty =
     isNilOrError(inputMessage) || inputMessage.length === 0;
-  const isButtonDisabled =
-    hasMessageError || hasPhoneNumbersError || messageIsEmpty;
+  const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
+  const hasMessageError = messageIsPastCharacterLimit || messageIsEmpty;
+  const isButtonDisabled = hasMessageError || hasPhoneNumbersError;
 
   return (
     <form className={className} onSubmit={handleOnSubmit}>
