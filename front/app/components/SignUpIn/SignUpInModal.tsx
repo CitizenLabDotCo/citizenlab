@@ -62,7 +62,7 @@ const SignUpInModal = memo<Props>(
       if (isMounted()) {
         onMounted?.();
       }
-    }, [onMounted]);
+    }, [onMounted, isMounted]);
 
     useEffect(() => {
       const subscriptions = [
@@ -78,19 +78,19 @@ const SignUpInModal = memo<Props>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
     }, [authUser]);
 
-    const onClose = () => {
-      closeSignUpInModal();
-
+    const onClose = async () => {
       const signedUpButNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
       if (signedUpButNotCompleted) {
-        signOutAndDeleteAccount();
+        await signOutAndDeleteAccount();
       }
 
       if (onDeclineInvitation && metaData?.isInvitation) {
         onDeclineInvitation();
       }
+
+      closeSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
