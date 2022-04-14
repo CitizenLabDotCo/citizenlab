@@ -13,19 +13,35 @@ export interface BarProps {
   isAnimationActive?: boolean;
 }
 
-interface ParsedBarProps extends Omit<BarProps, 'fill' | 'size'> {
-  barSize?: number[];
-  fill: string[];
+interface CategoryProps {
+  name?: string;
+  barSize?: number;
+  fill?: string;
+  opacity?: string | number;
+  isAnimationActive?: boolean;
 }
+
+type ParsedBarProps = CategoryProps[];
 
 export const parseBarProps = (
   defaultFill: string,
-  numberOfBars: number,
-  barProps?: BarProps
+  numberOfCategories: number,
+  barProps: BarProps = {}
 ): ParsedBarProps => {
-  const defaultBarProps = { fill: Array(numberOfBars).fill(defaultFill) };
-  if (!barProps) return defaultBarProps;
+  const parsedBarProps: ParsedBarProps = [];
+  const { name, size, fill, opacity, isAnimationActive } = barProps;
 
-  const { size, ...otherBarProps } = barProps;
-  return { ...defaultBarProps, barSize: size, ...otherBarProps };
+  for (let i = 0; i < numberOfCategories; i++) {
+    const categoryProps: CategoryProps = {
+      name,
+      barSize: size?.[i],
+      fill: fill?.[i] ?? defaultFill,
+      opacity: opacity?.[i],
+      isAnimationActive,
+    };
+
+    parsedBarProps.push(categoryProps);
+  }
+
+  return parsedBarProps;
 };

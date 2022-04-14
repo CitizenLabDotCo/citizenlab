@@ -114,26 +114,29 @@ const BarChart = ({
             cursor: { fill: barHoverColor },
           })}
 
-        <Bar
-          dataKey={length}
-          animationDuration={animationDuration}
-          animationBegin={animationBegin}
-          {...parsedBarProps}
-        >
-          {renderLabels &&
-            renderLabels({ fill: chartLabelColor, fontSize: chartLabelSize })}
+        {parsedBarProps.map((categoryProps, index) => (
+          <Bar
+            dataKey={length[index]}
+            animationDuration={animationDuration}
+            animationBegin={animationBegin}
+            {...categoryProps}
+            key={index}
+          >
+            {renderLabels &&
+              renderLabels({ fill: chartLabelColor, fontSize: chartLabelSize })}
 
-          {fill &&
-            data.map((row, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={row[fill] || parsedBarProps.fill}
-              />
-            ))}
-        </Bar>
+            {fill &&
+              data.map((row, fillIndex) => (
+                <Cell
+                  key={`cell-${index}-${fillIndex}`}
+                  fill={row[fill[index]] || categoryProps.fill}
+                />
+              ))}
+          </Bar>
+        ))}
 
         <XAxis
-          dataKey={layout === 'vertical' ? 'name' : length}
+          dataKey={layout === 'vertical' ? 'name' : undefined}
           type={layout === 'vertical' ? 'category' : 'number'}
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
@@ -141,7 +144,7 @@ const BarChart = ({
           {...xaxis}
         />
         <YAxis
-          dataKey={layout === 'horizontal' ? 'name' : length}
+          dataKey={layout === 'horizontal' ? 'name' : undefined}
           type={layout === 'horizontal' ? 'category' : 'number'}
           stroke={chartLabelColor}
           fontSize={chartLabelSize}
