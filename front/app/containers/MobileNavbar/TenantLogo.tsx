@@ -2,11 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
-// i18n
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 const Logo = styled.img`
   max-width: 100%;
@@ -20,8 +18,9 @@ interface Props {
   className?: string;
 }
 
-const TenantLogo = ({ className, localize }: Props & InjectedLocalized) => {
+const TenantLogo = ({ className }: Props) => {
   const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
     const tenantLogo = appConfiguration.data.attributes.logo?.medium;
@@ -45,4 +44,4 @@ const TenantLogo = ({ className, localize }: Props & InjectedLocalized) => {
   return null;
 };
 
-export default injectLocalize(TenantLogo);
+export default TenantLogo;

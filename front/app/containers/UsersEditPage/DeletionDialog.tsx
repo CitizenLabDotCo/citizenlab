@@ -5,7 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // styles
@@ -22,6 +21,7 @@ import { signOutAndDeleteAccountPart1 } from 'services/auth';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
   padding: 0px 10px;
@@ -61,11 +61,9 @@ interface Props {
   closeDialog: () => void;
 }
 
-const DeletionDialog = ({
-  closeDialog,
-  localize,
-}: Props & InjectedLocalized) => {
+const DeletionDialog = ({ closeDialog }: Props) => {
   const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
   const deleteProfile = () => {
     signOutAndDeleteAccountPart1();
@@ -147,4 +145,4 @@ const DeletionDialog = ({
   return null;
 };
 
-export default injectLocalize(DeletionDialog);
+export default DeletionDialog;

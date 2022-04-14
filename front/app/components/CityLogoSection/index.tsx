@@ -35,19 +35,6 @@ const LogoLink = styled.a`
   cursor: pointer;
 `;
 
-const TenantLogo = injectIntl(
-  ({ src, localizedOrgName }: { src: string; localizedOrgName: string }) => {
-    return (
-      <Image
-        src={src}
-        alt={localizedOrgName}
-        height="100px"
-        marginBottom="20px"
-      />
-    );
-  }
-);
-
 interface Props {}
 
 const CityLogoSection = ({
@@ -68,6 +55,15 @@ const CityLogoSection = ({
     );
 
     if (currentTenantLogo) {
+      const tenantImage = (
+        <Image
+          src={currentTenantLogo}
+          alt={localizedOrgName}
+          height="100px"
+          marginBottom="20px"
+        />
+      );
+
       return (
         <Fragment
           title={formatMessage(messages.iframeTitle)}
@@ -76,16 +72,10 @@ const CityLogoSection = ({
           <Container id="hook-footer-logo">
             {tenantSite ? (
               <LogoLink href={tenantSite} target="_blank">
-                <TenantLogo
-                  src={currentTenantLogo}
-                  localizedOrgName={localizedOrgName}
-                />
+                {tenantImage}
               </LogoLink>
             ) : (
-              <TenantLogo
-                localizedOrgName={localizedOrgName}
-                src={currentTenantLogo}
-              />
+              { tenantImage }
             )}
           </Container>
         </Fragment>
