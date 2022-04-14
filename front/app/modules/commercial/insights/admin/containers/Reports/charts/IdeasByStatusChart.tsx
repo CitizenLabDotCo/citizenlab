@@ -110,7 +110,7 @@ export class IdeasByStatusChart extends React.PureComponent<
             }}
             mapping={{ fill: 'color' }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
+            renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}
           />
         </GraphCardInner>

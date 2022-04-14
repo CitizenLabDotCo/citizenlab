@@ -37,6 +37,7 @@ import { Margin } from 'components/admin/Graphs/constants';
 interface RenderLabelsProps {
   fill: string;
   fontSize: number;
+  position: 'top' | 'right';
 }
 
 interface RenderTooltipProps {
@@ -104,6 +105,9 @@ const BarChart = ({
   const rechartsLayout = getRechartsLayout(layout);
   const parsedBarProps = parseBarProps(newBarFill, length.length, bars);
 
+  const labelPosition: 'top' | 'right' =
+    layout === 'vertical' ? 'top' : 'right';
+
   return (
     <ResponsiveContainer className={className} width={width} height={height}>
       <RechartsBarChart
@@ -127,7 +131,11 @@ const BarChart = ({
             key={index}
           >
             {renderLabels &&
-              renderLabels({ fill: chartLabelColor, fontSize: chartLabelSize })}
+              renderLabels({
+                fill: chartLabelColor,
+                fontSize: chartLabelSize,
+                position: labelPosition,
+              })}
 
             {fill &&
               data.map((row, fillIndex) => (

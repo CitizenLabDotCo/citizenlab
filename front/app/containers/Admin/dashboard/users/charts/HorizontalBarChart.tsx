@@ -107,7 +107,7 @@ export class HorizontalBarChart extends React.PureComponent<
             margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{ name: unitName, size: graphUnit === 'ideas' ? 5 : barSize }}
             yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} position="right" />}
+            renderLabels={(props) => <LabelList {...props} />}
           />
         </GraphCardInner>
       </GraphCard>

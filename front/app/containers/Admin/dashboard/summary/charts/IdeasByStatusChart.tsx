@@ -18,7 +18,8 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart from 'components/admin/Graphs/BarChart';
+// import BarChart from 'components/admin/Graphs/BarChart';
+import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Tooltip, LabelList } from 'recharts';
 
@@ -55,7 +56,7 @@ export class IdeasByStatusChart extends React.PureComponent<
   }
 
   render() {
-    const { chartFill, barSize } = this.props['theme'];
+    // const { chartFill, barSize } = this.props['theme'];
     const {
       currentGroupFilterLabel,
       currentGroupFilter,
@@ -87,7 +88,22 @@ export class IdeasByStatusChart extends React.PureComponent<
               />
             )}
           </GraphCardHeader>
-          <BarChart
+          <MultiBarChart
+            height={sortedByValue.length > 1 ? sortedByValue.length * 50 : 100}
+            data={sortedByValue}
+            layout="vertical"
+            innerRef={this.currentChart}
+            margin={DEFAULT_BAR_CHART_MARGIN}
+            mapping={{ length: ['value', 'value'] }}
+            bars={{
+              name: unitName,
+              fill: ['red', 'green'],
+            }}
+            yaxis={{ width: 150, tickLine: false }}
+            renderLabels={(props) => <LabelList {...props} />}
+            renderTooltip={(props) => <Tooltip {...props} />}
+          />
+          {/* <BarChart
             height={sortedByValue.length > 1 ? sortedByValue.length * 50 : 100}
             data={sortedByValue}
             layout="horizontal"
@@ -103,7 +119,7 @@ export class IdeasByStatusChart extends React.PureComponent<
             yaxis={{ width: 150, tickLine: false }}
             renderLabels={(props) => <LabelList {...props} position="right" />}
             renderTooltip={(props) => <Tooltip {...props} />}
-          />
+          /> */}
         </GraphCardInner>
       </GraphCard>
     );

@@ -101,7 +101,7 @@ export class BarChartByCategory extends React.PureComponent<
             innerRef={this.currentChart}
             margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{ name: unitName }}
-            renderLabels={(props) => <LabelList {...props} position="top" />}
+            renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}
           />
         </GraphCardInner>

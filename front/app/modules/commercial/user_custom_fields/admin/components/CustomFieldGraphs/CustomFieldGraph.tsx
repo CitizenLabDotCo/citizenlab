@@ -240,7 +240,7 @@ const CustomFieldsGraph = ({
               />
             </>
           )}
-          renderLabels={(props) => <LabelList {...props} position="right" />}
+          renderLabels={(props) => <LabelList {...props} />}
         />
       </GraphCardInner>
     </GraphCard>
