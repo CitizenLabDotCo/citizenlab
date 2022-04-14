@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
   },
+  image: {
+    id: 'app.containers.admin.ContentBuilder.image',
+    defaultMessage: 'Image',
+  },
   textValue: {
     id: 'app.containers.admin.ContentBuilder.textValue',
     defaultMessage:
