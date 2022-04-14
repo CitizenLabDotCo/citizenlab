@@ -138,23 +138,23 @@ lb:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: Wat ass Är Iddi?
         question:
-          title: What is your question ?
+          title: Wat ass Är Fro?
         contribution:
-          title: What is your contribution ?
+          title: Wat ass Äre Bäitrag ?
         project:
-          title: What is your project ?
+          title: Wat ass Äre Projet?
         issue:
-          title: What is your issue ?
+          title: Wat ass Är Ugeleeënheet ?
         option:
-          title: What is your option ?
+          title: Wat ass Är Optioun?
       details:
         title: Detailer
       attachements:
-        title: Images and Attachements
+        title: Biller an Annexen
       extra:
-        title: Additional information
+        title: Zousätzlech Informatiounen
   custom_field_options:
     gender:
       male: Männlech
