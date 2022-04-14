@@ -140,9 +140,12 @@ describe('<MultiBarChart />', () => {
       const bars = container.querySelectorAll('path');
       expect(bars).toHaveLength(6);
 
+      // value1
       expect(bars[0]).toHaveAttribute('width', barWidths[0]);
       expect(bars[1]).toHaveAttribute('width', barWidths[1]);
       expect(bars[2]).toHaveAttribute('width', barWidths[2]);
+
+      // value2
       expect(bars[3]).toHaveAttribute('width', barWidths[2]);
       expect(bars[4]).toHaveAttribute('width', barWidths[0]);
       expect(bars[5]).toHaveAttribute('width', barWidths[1]);
