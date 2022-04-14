@@ -502,7 +502,6 @@
   "app.containers.Admin.emails.sending": "Sending",
   "app.containers.Admin.emails.sent": "Nassiunneqarpoq",
   "app.containers.Admin.emails.statsButton": "Statistics",
-  "app.containers.Admin.emails.subtitleEmails": "Send out your own emails and control what automated emails your users receive.",
   "app.containers.Admin.emails.titleMessaging": "Messaging",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
   "app.containers.Admin.ideas.tabStatuses": "Statuses",

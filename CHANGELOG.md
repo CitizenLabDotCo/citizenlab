@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Changed titles on the admin messaging page to accomodate both SMS and email campaigns
+
 ### Fixed
 
 - Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
