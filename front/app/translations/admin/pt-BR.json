@@ -502,6 +502,7 @@
   "app.containers.Admin.emails.sending": "Sending",
   "app.containers.Admin.emails.sent": "Enviado",
   "app.containers.Admin.emails.statsButton": "Estatísticas",
+  "app.containers.Admin.emails.subtitleMessaging": "Envie as suas próprias mensagens e controle que mensagens automáticas os usuários recebem.",
   "app.containers.Admin.emails.titleMessaging": "Messaging",
   "app.containers.Admin.emails.toAllUsers": "Quer enviar este email para todos os usuários?",
   "app.containers.Admin.ideas.tabStatuses": "Status",
