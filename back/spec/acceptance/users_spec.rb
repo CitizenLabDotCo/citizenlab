@@ -314,12 +314,14 @@ resource 'Users' do
           expect(json_response[:data][0][:id]).to eq u1.id
         end
 
-        example "List all users sorted by last_name" do
+        example 'List all users sorted by last_name' do
           do_request sort: 'last_name'
+
+          assert_status 200
           json_response = json_parse(response_body)
 
-          correctly_sorted = User.all.sort_by{|u| u.last_name}
-          expect(json_response[:data].map{|u| u[:id]}).to eq correctly_sorted.map(&:id)
+          sorted_last_names = User.pluck(:last_name).sort
+          expect(json_response[:data].map { |u| u.dig(:attributes, :last_name) }).to eq sorted_last_names
         end
 
         example "List all users in group" do
