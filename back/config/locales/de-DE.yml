@@ -113,6 +113,9 @@ de:
       body:
         title: Beschreibung
         description:
+      author_id:
+        title: Autor
+        description:
       topic_ids:
         title: Themen
         description:
@@ -122,12 +125,36 @@ de:
       proposed_budget:
         title: Vorgeschlagenes Budget
         description:
+      budget:
+        title: Haushalt
+        description:
       images:
         title: Bilder
         description:
       attachments:
         title: Anhänge
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Was ist Ihre Idee?
+        question:
+          title: Was ist Ihre Frage?
+        contribution:
+          title: Was ist Ihr Beitrag?
+        project:
+          title: Was ist Ihr Projekt?
+        issue:
+          title: Was ist Ihr Problem?
+        option:
+          title: Was ist Ihre Option?
+      details:
+        title: Details
+      attachements:
+        title: Bilder und Anhänge
+      extra:
+        title: Zusätzliche Informationen
   custom_field_options:
     gender:
       male: Männlich
