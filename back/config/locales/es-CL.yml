@@ -113,6 +113,9 @@ es-CL:
       body:
         title: Descripción
         description:
+      author_id:
+        title: Autor
+        description:
       topic_ids:
         title: Temas
         description:
@@ -122,12 +125,36 @@ es-CL:
       proposed_budget:
         title: Proyecto de presupuesto
         description:
+      budget:
+        title: Presupuesto
+        description:
       images:
         title: Imágenes
         description:
       attachments:
         title: Archivos adjuntos
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: '¿Cuál es su idea?'
+        question:
+          title: '¿Cuál es su pregunta?'
+        contribution:
+          title: '¿Cuál es su contribución?'
+        project:
+          title: '¿Cuál es su proyecto?'
+        issue:
+          title: '¿Cuál es su asunto?'
+        option:
+          title: '¿Cuál es su opción?'
+      details:
+        title: Detalles
+      attachements:
+        title: Imágenes y archivos adjuntos
+      extra:
+        title: Información adicional
   custom_field_options:
     gender:
       male: Hombre

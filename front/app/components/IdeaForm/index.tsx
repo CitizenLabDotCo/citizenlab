@@ -718,7 +718,7 @@ class IdeaForm extends PureComponent<
       const showTopics =
         topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
-      const showProposedBudget = proposedBudgetEnabled;
+      const showproposedBudget = proposedBudgetEnabled;
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
@@ -846,10 +846,7 @@ class IdeaForm extends PureComponent<
             </FormElement>
           </StyledFormSection>
 
-          {(showPBBudget ||
-            showTopics ||
-            showLocation ||
-            showProposedBudget) && (
+          {(showPBBudget || showTopics || showLocation) && (
             <StyledFormSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />
               {showPBBudget && (
@@ -879,7 +876,7 @@ class IdeaForm extends PureComponent<
                 </HasPermission>
               )}
 
-              {showProposedBudget && (
+              {showproposedBudget && (
                 <FormElement>
                   <FormLabel
                     htmlFor="estimated-budget"
