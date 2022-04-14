@@ -62,7 +62,6 @@ const SignUpInModal = memo<Props>(
       if (isMounted()) {
         onMounted?.();
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMounted]);
 
     useEffect(() => {
@@ -77,7 +76,6 @@ const SignUpInModal = memo<Props>(
 
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authUser]);
 
     const onClose = () => {
