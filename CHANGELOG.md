@@ -5,7 +5,7 @@
 ### Added
 
 - Added support for the Croatian language to the platform
-- It's now possible can now escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
+- It's now possible to escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
 
 ### Fixed
 
