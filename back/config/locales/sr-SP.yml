@@ -113,6 +113,9 @@ sr-SP:
       body:
         title: Опис
         description:
+      author_id:
+        title: Аутор
+        description:
       topic_ids:
         title: Теме
         description:
@@ -122,12 +125,36 @@ sr-SP:
       proposed_budget:
         title: Предложени буџет
         description:
+      budget:
+        title: Буџет
+        description:
       images:
         title: Слике
         description:
       attachments:
         title: Прилози
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Шта је ваша идеја ?
+        question:
+          title: Шта је ваше питање ?
+        contribution:
+          title: Шта је ваш прилог ?
+        project:
+          title: Шта је ваш пројекат ?
+        issue:
+          title: Шта је ваша тема ?
+        option:
+          title: Шта је ваша опција ?
+      details:
+        title: Детаљи
+      attachements:
+        title: Слике и прилози
+      extra:
+        title: Додатне информације
   custom_field_options:
     gender:
       male: Мушкарац
