@@ -18,7 +18,7 @@ describe('Existing Timeline project', () => {
     cy.get('#e2e-project-sidebar-share-button');
     cy.get('#e2e-project-see-ideas-button');
     cy.get('#project-ideabutton');
-    cy.get('#e2e-project-description')
+    cy.get('.e2e-project-info')
       .contains('20190110_rueil_intermediaire.pdf')
       .should('have.attr', 'href');
   });
