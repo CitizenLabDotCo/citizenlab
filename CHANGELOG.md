@@ -2,6 +2,8 @@
 
 ## Next release
 
+- Dynamic idea form has limited support for extra fields
+
 ### Added
 
 - Added support for the Croatian language to the platform
