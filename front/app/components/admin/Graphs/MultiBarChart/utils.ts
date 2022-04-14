@@ -1,3 +1,6 @@
+// DATA
+export type Data = { name: string; [key: string]: any }[];
+
 // MAPPING
 export interface Mapping {
   length: string[];
@@ -45,3 +48,29 @@ export const parseBarProps = (
 
   return parsedBarProps;
 };
+
+// LAYOUT
+export type Layout = 'horizontal' | 'vertical';
+
+// For some reason, in recharts a 'horizontal' bar chart
+// actually means a 'vertical' bar chart. For our own API
+// we use the correct terminology
+export const getRechartsLayout = (layout: Layout) =>
+  layout === 'vertical' ? 'horizontal' : 'vertical';
+
+// MARGIN
+export interface Margin {
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+}
+
+// AXES
+export interface AxisProps {
+  tickFormatter?: (value: any) => string;
+  type?: 'number' | 'category';
+  width?: number;
+  tickLine?: boolean;
+  hide?: boolean;
+}

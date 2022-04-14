@@ -20,14 +20,16 @@ import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { Mapping, BarProps, parseBarProps } from './utils';
 import {
+  parseBarProps,
+  BarProps,
+  getRechartsLayout,
+  Mapping,
   Data,
   Layout,
   Margin,
   AxisProps,
-  getRechartsLayout,
-} from '../BarChart/utils';
+} from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface RenderLabelsProps {
@@ -40,7 +42,7 @@ interface RenderTooltipProps {
   cursor: { fill: string };
 }
 
-interface Props {
+export interface Props {
   width?: string | number;
   height?: string | number;
   data?: Data | null | Error;
