@@ -44,7 +44,7 @@ resource 'InitiativeImage' do
     ValidationErrorHelper.new.error_fields(self, InitiativeImage)
 
     let(:initiative_id) { @initiative.id }
-    let(:image) { encode_image_as_base64('image13.png') }
+    let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
 
     example_request 'Add an image to an initiative' do
@@ -64,7 +64,7 @@ resource 'InitiativeImage' do
 
     let(:initiative_id) { @initiative.id }
     let(:image_id) { InitiativeImage.first.id }
-    let(:image) { encode_image_as_base64('image14.png') }
+    let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
 
     example_request 'Update an image for an initiative' do
@@ -83,11 +83,5 @@ resource 'InitiativeImage' do
       expect(response_status).to eq 200
       expect { InitiativeImage.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
-  end
-
-  private
-
-  def encode_image_as_base64(filename)
-    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
   end
 end
