@@ -1,0 +1,28 @@
+custom_fields:
+  -
+    title_multiloc:
+      en: 'Extra text field'
+    description_multiloc: # optional
+      en: '<p>Extra field</p>'
+    ordering: 100 #to be safe, start at 100 for extras
+    input_type: 'text'
+    enabled: true
+    required: false
+  -
+    title_multiloc:
+      en: 'Extra multiloc field'
+    description_multiloc:
+      en: '<p>Extra field</p>'
+    ordering: 101
+    input_type: 'html_multiloc'
+    enabled: true
+    required: false
+  -
+    title_multiloc:
+      en: 'Extra checkbox field'
+    description_multiloc:
+      en: '<p>Extra field</p>'
+    ordering: 102
+    input_type: 'checkbox'
+    enabled: true
+    required: false
