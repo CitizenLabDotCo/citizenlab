@@ -6,6 +6,7 @@
 
 - Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
 - Fixed accessibility issue regarding element order for screen readers in volunteer card
+- Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
 
 ## 2022-04-11
 
