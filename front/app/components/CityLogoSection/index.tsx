@@ -8,12 +8,12 @@ import { Image } from '@citizenlab/cl2-component-library';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useLocalize from 'hooks/useLocalize';
 
 // style
 import styled from 'styled-components';
@@ -51,11 +51,11 @@ const TenantLogo = injectIntl(
 interface Props {}
 
 const CityLogoSection = ({
-  localize,
   intl: { formatMessage },
-}: Props & InjectedIntlProps & InjectedLocalized) => {
+}: Props & InjectedIntlProps) => {
   const locale = useLocale();
   const appConfiguration = useAppConfiguration();
+  const localize = useLocalize();
 
   if (!isNilOrError(appConfiguration)) {
     const currentTenantLogo =
@@ -96,4 +96,4 @@ const CityLogoSection = ({
   return null;
 };
 
-export default injectLocalize(injectIntl(CityLogoSection));
+export default injectIntl(CityLogoSection);
