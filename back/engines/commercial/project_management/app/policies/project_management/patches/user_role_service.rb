@@ -4,7 +4,7 @@ module ProjectManagement
   module Patches
     module UserRoleService
       def can_moderate_project?(project, user)
-        super || !!(project.id && user.project_moderator?(project.id))
+        super || (project.persisted? && user.project_moderator?(project.id))
       end
 
       def moderators_for_project(project, scope = ::User)
