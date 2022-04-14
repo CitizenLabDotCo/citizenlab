@@ -129,8 +129,8 @@ interface State {
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
   visible: boolean;
-  userDeletedModalOpened: boolean;
-  userActuallyDeleted: boolean;
+  userDeletedSuccessfullyModalOpened: boolean;
+  userSuccessfullyDeleted: boolean;
   signUpInModalMounted: boolean;
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
@@ -153,8 +153,8 @@ class App extends PureComponent<Props, State> {
       modalSlug: null,
       modalType: null,
       visible: true,
-      userDeletedModalOpened: false,
-      userActuallyDeleted: false,
+      userDeletedSuccessfullyModalOpened: false,
+      userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
       verificationModalMounted: false,
       navbarRef: null,
@@ -280,13 +280,13 @@ class App extends PureComponent<Props, State> {
           signOutAndDeleteAccount().then((success) => {
             if (success) {
               this.setState({
-                userDeletedModalOpened: true,
-                userActuallyDeleted: true,
+                userDeletedSuccessfullyModalOpened: true,
+                userSuccessfullyDeleted: true,
               });
             } else {
               this.setState({
-                userDeletedModalOpened: true,
-                userActuallyDeleted: false,
+                userDeletedSuccessfullyModalOpened: true,
+                userSuccessfullyDeleted: false,
               });
             }
           });
@@ -399,7 +399,7 @@ class App extends PureComponent<Props, State> {
   };
 
   closeUserDeletedModal = () => {
-    this.setState({ userDeletedModalOpened: false });
+    this.setState({ userDeletedSuccessfullyModalOpened: false });
   };
 
   setNavbarRef = (navbarRef: HTMLElement) => {
@@ -433,8 +433,8 @@ class App extends PureComponent<Props, State> {
       modalSlug,
       modalType,
       visible,
-      userDeletedModalOpened,
-      userActuallyDeleted,
+      userDeletedSuccessfullyModalOpened,
+      userSuccessfullyDeleted,
       navbarRef,
       mobileNavbarRef,
     } = this.state;
@@ -486,11 +486,11 @@ class App extends PureComponent<Props, State> {
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <LoadableModal
-                      opened={userDeletedModalOpened}
+                      opened={userDeletedSuccessfullyModalOpened}
                       close={this.closeUserDeletedModal}
                     >
                       <LoadableUserDeleted
-                        userActuallyDeleted={userActuallyDeleted}
+                        userSuccessfullyDeleted={userSuccessfullyDeleted}
                       />
                     </LoadableModal>
                   </ErrorBoundary>
