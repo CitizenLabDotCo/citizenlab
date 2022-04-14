@@ -423,7 +423,7 @@ pl:
       subject: '%{projectName} wszedł w nowy etap'
       preheader: 'Rozpoczął się nowy etap projektu %{projectName}'
     project_phase_upcoming:
-      cta_view_phase: 'Ustawić ten nowy etap'
+      cta_view_phase: 'Sprawdź następny etap'
       event_description: 'Projekt "%{projectName}" wkrótce wejdzie w nowy etap. Upewnij się, że wszystko jest przygotowane: Czy opis jest odpowiedni? Czy wybrane pomysły zostały przeniesione do nowego etapu? Czy chcesz poinformować swoich obywateli o specyfice tego etapu poprzez specjalną kampanię e-mailową?'
       main_header: '%{firstName}, projekt wkrótce przejdzie do nowego etapu'
       new_phase: 'Projekt wejdzie w etap "%{phaseTitle}"'
