@@ -502,7 +502,7 @@
   "app.containers.Admin.emails.sending": "Senden",
   "app.containers.Admin.emails.sent": "Gesendet",
   "app.containers.Admin.emails.statsButton": "Statistik",
-  "app.containers.Admin.emails.subtitleEmails": "Versenden Sie Ihre eigenen E-Mails und kontrollieren Sie, welche automatisierten E-Mails Ihre Benutzer:innen erhalten.",
+  "app.containers.Admin.emails.subtitleMessaging": "Versenden Sie Ihre eigenen Nachrichten und kontrollieren Sie, welche automatischen Nachrichten Ihre Nutzer erhalten.",
   "app.containers.Admin.emails.titleMessaging": "Nachrichten",
   "app.containers.Admin.emails.toAllUsers": "Möchten Sie diese E-Mail an alle registrierten Benutzer:innen senden?",
   "app.containers.Admin.ideas.tabStatuses": "Status",
