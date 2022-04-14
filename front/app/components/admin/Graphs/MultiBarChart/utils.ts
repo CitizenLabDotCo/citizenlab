@@ -28,13 +28,13 @@ type ParsedBarProps = CategoryProps[];
 
 export const parseBarProps = (
   defaultFill: string,
-  numberOfCategories: number,
+  numberOfParallelBars: number,
   barProps: BarProps = {}
 ): ParsedBarProps => {
   const parsedBarProps: ParsedBarProps = [];
   const { name, size, fill, opacity, isAnimationActive } = barProps;
 
-  for (let i = 0; i < numberOfCategories; i++) {
+  for (let i = 0; i < numberOfParallelBars; i++) {
     const categoryProps: CategoryProps = {
       name: name?.[i],
       barSize: size?.[i],
