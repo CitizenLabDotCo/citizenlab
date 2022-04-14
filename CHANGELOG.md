@@ -10,7 +10,8 @@
 
 - Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
 - Fixed accessibility issue regarding element order for screen readers in volunteer card
-- In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now).
+- Properly disable SMS create/edit button if the message is empty
+- In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
 
 ## 2022-04-11
 
