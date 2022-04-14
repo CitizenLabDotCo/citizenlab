@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- Changed titles on the admin messaging page to accomodate both SMS and email campaigns
+
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
