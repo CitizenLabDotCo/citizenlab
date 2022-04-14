@@ -502,7 +502,7 @@
   "app.containers.Admin.emails.sending": "Šalje se",
   "app.containers.Admin.emails.sent": "Poslato",
   "app.containers.Admin.emails.statsButton": "Statistika",
-  "app.containers.Admin.emails.subtitleEmails": "Pošaljite vaše email poruke i odredite koje automatske poruke vaši korisnici dobijaju.",
+  "app.containers.Admin.emails.subtitleMessaging": "Šaljite sopstvene poruke i kontrolišite koje automatske poruke primaju vaši korisnici.",
   "app.containers.Admin.emails.titleMessaging": "Slanje poruka",
   "app.containers.Admin.emails.toAllUsers": "Da li želite da pošaljete ovaj email svim korisnicima?",
   "app.containers.Admin.ideas.tabStatuses": "Statusi",

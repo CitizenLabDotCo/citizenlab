@@ -502,7 +502,7 @@
   "app.containers.Admin.emails.sending": "Verzenden",
   "app.containers.Admin.emails.sent": "Verzonden",
   "app.containers.Admin.emails.statsButton": "Statistieken",
-  "app.containers.Admin.emails.subtitleEmails": "Maak zelf e-mails aan die naar alle gebruikers of naar bepaalde groepen worden verzonden. En beheer de e-mails die je gebruikers automatisch ontvangen.",
+  "app.containers.Admin.emails.subtitleMessaging": "Verstuur je eigen berichten en bepaal welke geautomatiseerde berichten je gebruikers ontvangen.",
   "app.containers.Admin.emails.titleMessaging": "Berichten",
   "app.containers.Admin.emails.toAllUsers": "Wil je deze e-mail naar alle gebruikers sturen?",
   "app.containers.Admin.ideas.tabStatuses": "Statussen",

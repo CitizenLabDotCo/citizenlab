@@ -482,7 +482,6 @@
   "app.containers.Admin.emails.senderRecipients": "Sender and recipients",
   "app.containers.Admin.emails.sent": "Sent",
   "app.containers.Admin.emails.statsButton": "Statistics",
-  "app.containers.Admin.emails.subtitleEmails": "Send out your own emails and control what automated emails your users receive.",
   "app.containers.Admin.emails.toAllUsers": "Do you want to send this email to all registered users?",
   "app.containers.Admin.ideas.tabStatuses": "Statuses",
   "app.containers.Admin.initiatives.addNewProposal": "Add a proposal",
