@@ -132,7 +132,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
       this.props;
 
     return (
-      <Wrapper fullWidth={!!buttonProps.fullWidth}>
+      <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
           buttonStyle={style}

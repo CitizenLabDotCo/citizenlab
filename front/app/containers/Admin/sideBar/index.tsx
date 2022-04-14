@@ -11,7 +11,6 @@ import { getUrlLocale } from 'services/locale';
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import MenuItem from './MenuItem';
-import HasPermission from 'components/HasPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -361,20 +360,15 @@ class Sidebar extends PureComponent<
             }
           })}
           <Spacer />
-          <HasPermission
-            item={{ type: 'route', path: '/admin/guide' }}
-            action="access"
+          <GetStartedLink
+            href={formatMessage(messages.linkToSupportCenter)}
+            target="_blank"
           >
-            <GetStartedLink
-              href={formatMessage(messages.linkToSupportCenter)}
-              target="_blank"
-            >
-              <IconWrapper>
-                <Icon name="circleInfo" />
-              </IconWrapper>
-              <Text>{formatMessage({ ...messages.guide })}</Text>
-            </GetStartedLink>
-          </HasPermission>
+            <IconWrapper>
+              <Icon name="circleInfo" />
+            </IconWrapper>
+            <Text>{formatMessage({ ...messages.guide })}</Text>
+          </GetStartedLink>
         </MenuInner>
       </Menu>
     );
