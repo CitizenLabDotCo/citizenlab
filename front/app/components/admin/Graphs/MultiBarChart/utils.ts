@@ -9,7 +9,7 @@ export interface Mapping {
 
 // BARS
 export interface BarProps {
-  name?: string;
+  name?: string[];
   size?: number[];
   fill?: string[];
   opacity?: (string | number)[];
@@ -36,7 +36,7 @@ export const parseBarProps = (
 
   for (let i = 0; i < numberOfCategories; i++) {
     const categoryProps: CategoryProps = {
-      name,
+      name: name?.[i],
       barSize: size?.[i],
       fill: fill?.[i] ?? defaultFill,
       opacity: opacity?.[i],

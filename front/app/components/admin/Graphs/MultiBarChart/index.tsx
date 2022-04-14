@@ -105,8 +105,7 @@ const BarChart = ({
   const rechartsLayout = getRechartsLayout(layout);
   const parsedBarProps = parseBarProps(newBarFill, length.length, bars);
 
-  const labelPosition: 'top' | 'right' =
-    layout === 'vertical' ? 'top' : 'right';
+  const labelPosition = layout === 'vertical' ? 'top' : 'right';
 
   return (
     <ResponsiveContainer className={className} width={width} height={height}>

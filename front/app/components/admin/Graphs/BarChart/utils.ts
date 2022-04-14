@@ -39,7 +39,7 @@ export const convertBarProps = (
   const { name, size, fill, opacity, isAnimationActive } = barProps;
 
   return {
-    name,
+    name: wrapIfAvailable(name),
     size: wrapIfAvailable(size),
     fill: wrapIfAvailable(fill),
     opacity: wrapIfAvailable(opacity),
