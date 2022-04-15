@@ -16,8 +16,8 @@ export default function useProjectAllowedInputTopics(projectId: string) {
   useEffect(() => {
     const subscription = listProjectAllowedInputTopics(
       projectId
-    ).observable.subscribe((projectAllowedInputTopicsResponse) => {
-      setProjectAllowedInputTopics(projectAllowedInputTopicsResponse.data);
+    ).observable.subscribe((response) => {
+      setProjectAllowedInputTopics(response.data);
     });
 
     return () => subscription.unsubscribe();
