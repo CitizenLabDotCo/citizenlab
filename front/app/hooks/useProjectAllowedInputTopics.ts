@@ -4,7 +4,6 @@ import {
   listProjectAllowedInputTopics,
 } from 'services/projectAllowedInputTopics';
 import { NilOrError } from 'utils/helperUtils';
-// import { orderingIsValid } from 'components/admin/ResourceList/utils';
 
 export type IProjectAllowedInputTopicsState =
   | IProjectAllowedInputTopic[]

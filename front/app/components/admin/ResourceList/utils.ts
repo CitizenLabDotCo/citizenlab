@@ -12,20 +12,3 @@ export const itemOrderWasUpdated = (
 
   return false;
 };
-
-// export const orderingIsValid = (items: Item[]) => {
-//   let lastHighest = -1;
-
-//   for (let i = 0; i < items.length; i++) {
-//     const item = items[i];
-//     const { ordering } = item.attributes;
-
-//     if (ordering <= lastHighest) {
-//       return false;
-//     }
-
-//     lastHighest = ordering;
-//   }
-
-//   return true;
-// };
