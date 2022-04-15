@@ -1307,6 +1307,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
   "app.containers.admin.ContentBuilder.delete": "Delete",
+  "app.containers.admin.ContentBuilder.image": "Image",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 column",
   "app.containers.admin.ContentBuilder.projectDescription": "Project description",
   "app.containers.admin.ContentBuilder.text": "Text",
