@@ -234,7 +234,7 @@ export const FormLabel = memo<
         </StyledSpan>
         {optional && (
           <OptionalText>
-            {' ('}
+            &nbsp;{'('}
             <FormattedMessage {...messages.optional} />
             {')'}
           </OptionalText>

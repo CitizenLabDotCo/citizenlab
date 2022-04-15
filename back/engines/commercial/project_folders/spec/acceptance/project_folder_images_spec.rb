@@ -43,34 +43,34 @@ resource "ProjectFolderImage" do
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
-    let(:image) { encode_image_as_base64("image13.png") }
+    let(:image) { png_image_as_base64 'image13.png' }
     let(:ordering) { 1 }
 
     example_request "Add an image to a project_folder" do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
     end
 
     describe do
-      let(:ordering) { "five" }
+      let(:ordering) { 'five' }
       let(:image) { nil }
 
-      example_request "[error] Add an invalid image to a project_folder" do
-        expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:ordering)).to eq [{:error=>"not_a_number", :value=>"five"}]
+      example_request '[error] Add an invalid image to a project_folder' do
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:ordering, 'not_a_number', value: 'five')
       end
     end
 
     describe do
-      let(:image) { encode_file_as_base64("afvalkalender.pdf") }
+      let(:image) { file_as_base64 'afvalkalender.pdf', 'application/pdf' }
 
-      example_request "[error] Add an invalid image type to a project_folder" do
-        expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:image)).to include({:error=>"extension_whitelist_error"})
+      example_request '[error] Add an invalid image type to a project_folder' do
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:image, 'extension_whitelist_error')
       end
     end
   end
@@ -83,7 +83,7 @@ resource "ProjectFolderImage" do
     ValidationErrorHelper.new.error_fields(self, ProjectFolders::Image)
     let(:project_folder_id) { @project_folder.id }
     let(:image_id) { ProjectFolders::Image.first.id }
-    let(:image) { encode_image_as_base64("image14.png") }
+    let(:image) { png_image_as_base64 'image14.png' }
     let(:ordering) { 2 }
 
     example_request "Edit an image for a project_folder" do
@@ -103,16 +103,4 @@ resource "ProjectFolderImage" do
       expect{ProjectFolders::Image.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
-
-  private
-
-  def encode_image_as_base64 filename
-    "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
-  def encode_file_as_base64 filename
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
-  end
-
 end

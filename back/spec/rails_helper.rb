@@ -68,12 +68,12 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include GeneralHelper
   config.include ApiHelper
   config.include ApiAuthenticationHelper
+  config.include Base64Helper
   config.include TenantHelper
-  config.include AcceptanceHelper
   config.include AppConfigurationHelper
-  config.include GeneralHelper
 end
 
 ActiveJob::Base.queue_adapter = :test

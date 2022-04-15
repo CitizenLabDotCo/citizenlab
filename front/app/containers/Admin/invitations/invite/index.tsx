@@ -746,7 +746,7 @@ class Invitations extends React.PureComponent<
             {selectedView === 'text' && (
               <>
                 <SectionField>
-                  <Label>
+                  <Label htmlFor="e2e-emails">
                     <FormattedMessage {...messages.emailListLabel} />
                   </Label>
                   <TextArea

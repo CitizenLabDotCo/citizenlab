@@ -221,7 +221,7 @@ const CompactIdeaCard = memo<Props>(
                   style="numeric"
                 />
               </TimeAgo>
-              {bodyText}
+              <span aria-hidden> {bodyText}</span>
             </Body>
           </BodyWrapper>
         }

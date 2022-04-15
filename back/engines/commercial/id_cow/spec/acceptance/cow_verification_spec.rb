@@ -59,7 +59,7 @@ resource "Verifications" do
     #   let(:run) { "14.533.402-0" }
     #   let(:id_serial) { "518.137.850" }
     #   example_request "Verify with cow for real" do
-    #     expect(status).to eq(201)
+    #     assert_status 201
     #     expect(@user.reload.verified).to be true
     #     expect(@user.verifications.first).to have_attributes({
     #       method_name: "cow",
@@ -84,7 +84,7 @@ resource "Verifications" do
              })
              .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml"))
         do_request
-        expect(status).to eq(201)
+        assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
           method_name: "cow",
@@ -109,9 +109,9 @@ resource "Verifications" do
              })
              .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml"))
         do_request
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :base => [{ :error => "no_match" }] } })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'no_match')
       end
     end
 
@@ -129,9 +129,9 @@ resource "Verifications" do
              })
              .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml"))
         do_request
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :base => [{ :error => "not_entitled" }] } })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'not_entitled')
       end
     end
 
@@ -139,9 +139,9 @@ resource "Verifications" do
       let(:run) { "125.326.452-1" }
       let(:id_serial) { "A001529382" }
       example_request "[error] Verify with cow using invalid run" do
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :run => [{ :error => "invalid" }] } })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:run, 'invalid')
       end
     end
 
@@ -149,9 +149,9 @@ resource "Verifications" do
       let(:run) { "12.025.365-6" }
       let(:id_serial) { "" }
       example_request "[error] Verify with cow using invalid id_serial" do
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :id_serial => [{ :error => "invalid" }] } })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:id_serial, 'invalid')
       end
     end
 
@@ -177,11 +177,10 @@ resource "Verifications" do
              .with(message: :any)
              .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml"))
         do_request
-        expect(status).to eq (422)
-        json_response = json_parse(response_body)
-        expect(json_response).to eq ({ :errors => { :base => [{ :error => "taken" }] } })
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:base, 'taken')
       end
     end
   end
-
 end

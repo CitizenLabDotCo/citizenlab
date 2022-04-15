@@ -30,7 +30,7 @@ resource 'Map Layers' do
       let(:id)    { layer.id }
 
       example_request 'Get a map layer of a project' do
-        expect(status).to eq 200
+        assert_status 200
         expect(attributes['title_multiloc']).to   eq layer.title_multiloc
         expect(attributes['geojson']).to          eq layer.geojson
         expect(attributes['default_enabled']).to  eq layer.default_enabled
@@ -116,7 +116,7 @@ resource 'Map Layers' do
         let(:geojson) { layer_attributes[:geojson] }
 
         example_request 'Creates a map layer successfully using a geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq true
@@ -135,7 +135,7 @@ resource 'Map Layers' do
 
         example_request 'Creates a map layer successfully using a geojson file' do
           geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq true
@@ -155,7 +155,7 @@ resource 'Map Layers' do
         end
 
         example_request 'Creates a map layer successfully using the geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq true
@@ -166,7 +166,7 @@ resource 'Map Layers' do
 
       context 'when passing no geojson object or file' do
         example_request 'Fails to update a map layer' do
-          expect(status).to eq 422
+          assert_status 422
         end
       end
     end
@@ -194,7 +194,7 @@ resource 'Map Layers' do
         let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
 
         example_request 'Updates a map layer successfully using a geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq default_enabled
@@ -213,7 +213,7 @@ resource 'Map Layers' do
 
         example_request 'Updates a map layer successfully using a geojson file' do
           geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq default_enabled
@@ -233,7 +233,7 @@ resource 'Map Layers' do
         end
 
         example_request 'Updates a map layer successfully using the geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq default_enabled
@@ -244,7 +244,7 @@ resource 'Map Layers' do
 
       context 'when passing no geojson object or file' do
         example_request 'Fails to create a map layer' do
-          expect(status).to eq 422
+          assert_status 422
         end
       end
     end
@@ -327,7 +327,7 @@ resource 'Map Layers' do
         let(:geojson) { layer_attributes[:geojson] }
 
         example_request 'Creates a map layer successfully using a geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq true
@@ -346,7 +346,7 @@ resource 'Map Layers' do
 
         example_request 'Creates a map layer successfully using a geojson file' do
           geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq true
@@ -366,7 +366,7 @@ resource 'Map Layers' do
         end
 
         example_request 'Creates a map layer successfully using the geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq true
@@ -377,7 +377,7 @@ resource 'Map Layers' do
 
       context 'when passing no geojson object or file' do
         example_request 'Fails to update a map layer' do
-          expect(status).to eq 422
+          assert_status 422
         end
       end
     end
@@ -405,7 +405,7 @@ resource 'Map Layers' do
         let(:geojson) { JSON.parse(File.read(CustomMaps::Engine.root.join('spec/fixtures/brussels-districts.geojson'))) }
 
         example_request 'Updates a map layer successfully using a geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq default_enabled
@@ -424,7 +424,7 @@ resource 'Map Layers' do
 
         example_request 'Updates a map layer successfully using a geojson file' do
           geojson = JSON.parse(Base64.decode64(geojson_file[:base64].gsub('data:application/json;base64,', '')))
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq default_enabled
@@ -444,7 +444,7 @@ resource 'Map Layers' do
         end
 
         example_request 'Updates a map layer successfully using the geojson object' do
-          expect(status).to eq 200
+          assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
           expect(attributes['default_enabled']).to eq default_enabled
@@ -455,7 +455,7 @@ resource 'Map Layers' do
 
       context 'when passing no geojson object or file' do
         example_request 'Fails to create a map layer' do
-          expect(status).to eq 422
+          assert_status 422
         end
       end
     end
