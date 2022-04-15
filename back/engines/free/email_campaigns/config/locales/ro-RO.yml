@@ -1,7 +1,7 @@
 ro:
   email_campaigns:
     campaign_type_description:
-      "manual": Mesaje oficiale
+      "manual": Mesajele oficiale
       "admin_rights_received": Drepturi de administrator primite
       "comment_deleted_by_admin": Ștergerea comentariului meu
       "comment_marked_as_spam": Comentează raportul de spam
@@ -505,7 +505,7 @@ ro:
       action_comment: '%{textComment} idei existente'
       action_published_idea: 'Idee publicată'
       action_send_email: 'Trimiteți contactelor dvs. un %{sendEmailLink}'
-      action_share_fb: 'Lasă-ți prietenii acum pe %{fbLink}'
+      action_share_fb: 'Anunță-ți prietenii pe %{fbLink}'
       action_share_link: 'Partajează-l prin orice canal copiind %{link}'
       action_share_twitter: 'Informează-ți urmăritorii pe %{twitterLink}'
       add_image: 'Adăugați o imagine'
@@ -528,7 +528,7 @@ ro:
       action_add_image: '%{addImageLink} pentru a crește vizibilitatea'
       action_published_idea: 'Idee publicată'
       action_send_email: 'Trimiteți contactelor dvs. un %{sendEmailLink}'
-      action_share_fb: 'Lasă-ți prietenii acum pe %{fbLink}'
+      action_share_fb: 'Anunță-ți prietenii pe %{fbLink}'
       action_share_link: 'Partajează-l prin orice canal copiind %{link}'
       action_share_twitter: 'Informează-ți urmăritorii pe %{twitterLink}'
       add_image: 'Adăugați o imagine'
