@@ -313,7 +313,7 @@ class XlsxService
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }
 
-    idea_custom_fields&.map do |field|
+    idea_custom_fields.map do |field|
 
       column_name = multiloc_service.t(field.title_multiloc)
       value_getter = #lambda that gets a record and returns the field value

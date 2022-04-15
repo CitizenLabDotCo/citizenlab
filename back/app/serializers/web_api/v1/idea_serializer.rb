@@ -11,8 +11,8 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :custom_field_values do |object|
-    custom_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
-    CustomFieldService.remove_disabled_custom_fields(custom_field_values)
+    visible_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+    CustomFieldService.remove_disabled_custom_fields(visible_field_values)
   end
 
   attribute :action_descriptor do |object, params|

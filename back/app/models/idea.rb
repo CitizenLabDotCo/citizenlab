@@ -83,7 +83,7 @@ class Idea < ApplicationRecord
 
   validates :custom_field_values, on: :publication, json: {
     schema: -> {
-      extra_fields = CustomForm.where(project: project)&.first.custom_fields.find_all { |f| f.code == nil }
+      extra_fields = CustomForm.where(project: project).first.custom_fields.select { |f| f.code.nil? }
       CustomFieldService.new.fields_to_json_schema(extra_fields)
      },
     message: ->(errors) { errors }

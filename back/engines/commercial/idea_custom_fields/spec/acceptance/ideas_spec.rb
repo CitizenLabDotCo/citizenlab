@@ -8,8 +8,7 @@ resource 'Ideas' do
 
   before do
     header 'Content-Type', 'application/json'
-    @user = user
-    token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+    token = Knock::AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
 
@@ -45,7 +44,7 @@ resource 'Ideas' do
       let(:custom_field_values) { { 'extra_field' => 'test value'} }
 
       example_request 'Create an idea with extra fields' do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h). to match custom_field_values
       end
@@ -55,7 +54,7 @@ resource 'Ideas' do
   patch 'web_api/v1/ideas/:id' do
     before do
       @project = create(:continuous_project)
-      @idea =  create(:idea, author: @user, project: @project)
+      @idea =  create(:idea, author: user, project: @project)
     end
 
     with_options scope: :idea do
@@ -73,7 +72,7 @@ resource 'Ideas' do
       let(:custom_field_values) { { 'extra_field' => 'Changed Value'} }
 
       example_request 'Update extra fields in an idea' do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h). to match custom_field_values
       end

@@ -108,7 +108,9 @@ class WebApi::V1::IdeasController < ApplicationController
   def create
     service = SideFxIdeaService.new
 
-    CustomFieldService.new.cleanup_custom_field_values! params[:idea][:custom_field_values]
+    if params[:idea][:custom_field_values]
+      CustomFieldService.new.cleanup_custom_field_values! params[:idea][:custom_field_values]
+    end
 
     @idea = Idea.new idea_params
     @idea.author ||= current_user
@@ -146,7 +148,9 @@ class WebApi::V1::IdeasController < ApplicationController
 
     idea_params.to_h
     idea_params[:custom_field_values] = @idea.custom_field_values.merge(idea_params[:custom_field_values] || {})
-    CustomFieldService.new.cleanup_custom_field_values! idea_params[:custom_field_values]
+    if idea_params[:custom_field_values]
+      CustomFieldService.new.cleanup_custom_field_values! idea_params[:custom_field_values]
+    end
 
     @idea.assign_attributes idea_params
     authorize @idea
@@ -194,7 +198,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def idea_attributes
     project = @idea&.project || Project.find(params.dig(:idea, :project_id))
-    custom_form = project.custom_form || CustomForm.new(project: @project)
+    custom_form = project.custom_form || CustomForm.new(project: project)
     allowed_custom_field_keys = IdeaCustomFieldsService.new.allowed_custom_field_keys custom_form
 
     attributes = [
@@ -253,10 +257,9 @@ class WebApi::V1::IdeasController < ApplicationController
     # the custom field value updates cleared out by the
     # policy (which should stay like before instead of
     # being cleared out).
-    if @idea&.custom_field_values && params[:idea][:custom_field_values]
-      (@idea.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
-        params[:idea][:custom_field_values][clear_key] = nil
-      end
+    return unless @idea&.custom_field_values.present? && params[:idea][:custom_field_values].present?
+    (@idea.custom_field_values.keys - (params[:idea][:custom_field_values].keys || [])).each do |clear_key|
+      params[:idea][:custom_field_values][clear_key] = nil
     end
   end
 end

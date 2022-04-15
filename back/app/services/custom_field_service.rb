@@ -85,7 +85,7 @@ class CustomFieldService
   end
 
   def cleanup_custom_field_values!(custom_field_values)
-    custom_field_values&.keys&.each do |key|
+    custom_field_values.keys.each do |key|
       if custom_field_values[key].nil?
         custom_field_values.delete key
       end

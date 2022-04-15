@@ -1,6 +1,6 @@
 module JsonFormsIdeasOverrides
 
-  def custom_form_to_ui_schema fields, locale='en'
+  def custom_form_to_ui_schema(fields, locale='en')
     project = fields.first.resource.project
     input_term = project.process_type == 'continuous' ? project.input_term : TimelineService.new.current_phase(project)&.input_term || 'idea'
     {
@@ -50,26 +50,26 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_to_json_schema fields, locale='en'
+  def custom_form_to_json_schema(fields, locale='en')
     {
-      type: "object",
+      type: 'object',
       additionalProperties: false,
       properties: fields.select(&:built_in?).inject({}) do |memo, field|
         override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         memo[field.key] =
-          if field.code && self.respond_to?(override_method, true)
+          if field.code && respond_to?(override_method, true)
             send(override_method, field, locale)
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
           end
         memo.tap do |properties|
           properties[:custom_field_values] = {
-            type: "object",
+            type: 'object',
             additionalProperties: false,
-            properties: fields.reject(&:built_in?).inject({}) do |mem, field|
+            properties: fields.reject(&:built_in?).each_with_object do |mem, field|
               override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
               mem[field.key] =
-                if field.code && self.respond_to?(override_method, true)
+                if field.code && respond_to?(override_method, true)
                   send(override_method, field, locale)
                 else
                   send("#{field.input_type}_to_json_schema_field", field, locale)
@@ -87,13 +87,13 @@ module JsonFormsIdeasOverrides
 
   private
 
-  def drop_empty_categories categories
+  def drop_empty_categories(categories)
     categories.reject do |category|
       category[:elements].empty?
     end
   end
 
-  def custom_form_title_multiloc_to_json_schema_field field, locale
+  def custom_form_title_multiloc_to_json_schema_field(field, locale)
     {
       type: 'object',
       minProperties: 1,
@@ -110,7 +110,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_title_multiloc_to_ui_schema_field field, locale, previousScope
+  def custom_form_title_multiloc_to_ui_schema_field(field, locale, previousScope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -125,7 +125,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_json_schema_field field, locale
+  def custom_form_body_multiloc_to_json_schema_field(field, locale)
     {
       type: 'object',
       minProperties: 1,
@@ -141,7 +141,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_ui_schema_field field, locale, previousScope
+  def custom_form_body_multiloc_to_ui_schema_field(field, locale, previousScope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -157,7 +157,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_topic_ids_to_json_schema_field field, locale
+  def custom_form_topic_ids_to_json_schema_field(field, locale)
     topics = field.resource.project&.allowed_input_topics
     {
       type: "array",
@@ -178,13 +178,13 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_location_point_geojson_to_ui_schema_field field, locale
+  def custom_form_location_point_geojson_to_ui_schema_field(field, locale)
     {}
   end
 
   # Some custom fields have to exist but are only shown to admins, like the author picker when the feature is enabled and the budget fields in pb contexts. (not to confuse with the proposed_budget visible to everyone, when enabled, whatever the feature flag, which is weird, but seems to be the expected behaviour).
   # A good solution would be to add this info to the CustomField model. Like adminOnly and a feature name to enable or disable automatically, but this would have to be done right to build the foundations of a permission system informing who can modify the field, access the data filled in through the field, or fill the field in themselves, and that was out of scope.
-  def custom_form_allowed_fields configuration, fields, current_user
+  def custom_form_allowed_fields(configuration, fields, current_user)
     fields.filter { |f|
       f.code != 'author_id' && f.code != 'budget' || (
         f.code == 'author_id'&&
