@@ -39,4 +39,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.linkText',
     defaultMessage: 'Edit description in page builder',
   },
+  layoutBuilderWarning: {
+    id: 'app.containers.AdminPage.ProjectDescription.layoutBuilderWarning',
+    defaultMessage:
+      'Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.',
+  },
 });

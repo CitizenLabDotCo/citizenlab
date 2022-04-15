@@ -85,15 +85,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.deleteYourAccount',
     defaultMessage: 'Delete your account',
   },
-  deleteProfileError: {
-    id: 'app.containers.UsersEditPage.deleteProfileError',
-    defaultMessage:
-      'There was an issue deleting your profile, please try again later.',
-  },
-  logoAltText: {
-    id: 'app.containers.UsersEditPage.logoImgAltText',
-    defaultMessage: 'Logo of {orgName}',
-  },
   deleteAccountSubtext: {
     id: 'app.containers.UsersEditPage.deleteAccountSubtext',
     defaultMessage: 'We are sorry to see you go.',

@@ -132,8 +132,10 @@ const SMSCampaignForm = ({
     ? 'Preview SMS'
     : 'Update and preview SMS';
   const messageIsPastCharacterLimit = remainingChars < 0;
+  const messageIsEmpty =
+    isNilOrError(inputMessage) || inputMessage.length === 0;
   const hasPhoneNumbersError = !hasPhoneNumbers || hasInvalidPhoneNumbersError;
-  const hasMessageError = messageIsPastCharacterLimit;
+  const hasMessageError = messageIsPastCharacterLimit || messageIsEmpty;
   const isButtonDisabled = hasMessageError || hasPhoneNumbersError;
 
   return (
@@ -150,6 +152,7 @@ const SMSCampaignForm = ({
           value={inputPhoneNumbers}
           disabled={formIsLocked}
           onChange={handleInputPhoneNumbersChange}
+          id="e2e-sms-campaign-form-phone-numbers"
         />
         {hasInvalidPhoneNumbersError && (
           <Error text={'One or more of the phone numbers are invalid.'} />
@@ -163,6 +166,7 @@ const SMSCampaignForm = ({
           value={inputMessage}
           disabled={formIsLocked}
           onChange={handleInputMessageChange}
+          id="e2e-sms-campaign-form-message"
         />
         {!formIsLocked && (
           <RemainingCharacters
@@ -182,6 +186,7 @@ const SMSCampaignForm = ({
             onClick={handleOnSubmit}
             disabled={isButtonDisabled}
             processing={isLoading}
+            id="e2e-sms-campaign-form-submit"
           />
         </Box>
       )}

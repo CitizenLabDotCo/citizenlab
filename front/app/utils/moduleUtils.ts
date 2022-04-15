@@ -143,6 +143,9 @@ export type OutletsPropertyMap = {
     label: string;
     labelTooltipText: string;
   };
+  'app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder': {
+    onMount: () => void;
+  };
   'app.components.ProjectAndFolderCards.card': {
     publication: IAdminPublicationContent;
     size: 'small' | 'medium' | 'large';
@@ -243,7 +246,6 @@ export type OutletsPropertyMap = {
       >
     ) => void;
   };
-  'app.containers.Admin.guide.SetupSection': Record<string, any>;
   'app.components.Map.leafletConfig': {
     onLeafletConfigChange: (newLeafletConfig: ILeafletMapConfig) => void;
     projectId?: string | null;

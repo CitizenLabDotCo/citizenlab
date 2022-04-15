@@ -281,7 +281,10 @@ const EventInformation = memo<Props & InjectedIntlProps>((props) => {
 
       {showDescription && (
         <EventDescription>
-          <QuillEditedContent textColor={theme.colorText}>
+          <QuillEditedContent
+            disableTabbing={hideTextOverflow && textOverflow}
+            textColor={theme.colorText}
+          >
             <StyledT
               value={event.attributes.description_multiloc}
               supportHtml={true}

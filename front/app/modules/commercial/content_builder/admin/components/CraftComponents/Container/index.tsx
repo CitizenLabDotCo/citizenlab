@@ -13,7 +13,7 @@ const Container: UserComponent = ({ children }) => {
   } = useNode();
 
   return (
-    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="100px" w="100%">
+    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="40px" w="100%">
       {children}
     </Box>
   );

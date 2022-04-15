@@ -36,7 +36,7 @@ resource 'Votes' do
     let(:id) { @votes.first.id }
 
     example_request 'Get one vote on an idea by id' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
     end
@@ -57,7 +57,7 @@ resource 'Votes' do
     let(:mode) { 'up' }
 
     example_request 'Create a vote to an idea' do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
@@ -71,12 +71,12 @@ resource 'Votes' do
 
       example '[error] Upvote the same idea', document: false do
         do_request mode: 'up'
-        expect(status).to eq 422
+        assert_status 422
       end
 
       example '[error] Downvote the same idea', document: false do
         do_request mode: 'down'
-        expect(status).to eq 422
+        assert_status 422
       end
     end
   end
@@ -107,9 +107,9 @@ resource 'Votes' do
     example '[error] Upvote an idea that you upvoted before' do
       @idea.votes.create(user: @user, mode: 'up')
       do_request
-      expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq 'already_upvoted'
+      assert_status 422
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:base, 'already_upvoted')
       expect(@idea.reload.upvotes_count).to eq 3
       expect(@idea.reload.downvotes_count).to eq 0
     end
@@ -188,9 +188,9 @@ resource 'Votes' do
     example '[error] Downvote an idea that you downvoted before' do
       @idea.votes.create(user: @user, mode: 'down')
       do_request
-      expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq 'already_downvoted'
+      assert_status 422
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:base, 'already_downvoted')
       expect(@idea.reload.upvotes_count).to eq 2
       expect(@idea.reload.downvotes_count).to eq 1
     end
