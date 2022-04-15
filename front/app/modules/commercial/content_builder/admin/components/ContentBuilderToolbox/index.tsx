@@ -73,7 +73,10 @@ const ContentBuilderToolbox = ({
       <DraggableElement
         ref={(ref) =>
           ref &&
-          connectors.create(ref, <Element canvas is={Image} id="image" />)
+          connectors.create(
+            ref,
+            <Element canvas is={Image} id="image" alt="" />
+          )
         }
       >
         <ToolboxItem icon="text" label={formatMessage(messages.image)} />
