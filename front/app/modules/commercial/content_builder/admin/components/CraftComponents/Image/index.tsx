@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 // image upload
+import { addContentBuilderImage } from 'modules/commercial/content_builder/services/contentBuilderImages';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
@@ -16,14 +17,29 @@ import { UploadFile } from 'typings';
 // craft
 import { useNode } from '@craftjs/core';
 
-const Image = ({ imageUrl, alt = '' }: { imageUrl?: string; alt: string }) => {
+const Image = ({
+  imageUrl,
+  alt = '',
+  dataCode,
+}: {
+  imageUrl?: string;
+  alt: string;
+  dataCode?: string;
+}) => {
   const {
     connectors: { connect, drag },
   } = useNode();
 
   return (
     <Box minHeight="26px" ref={(ref: any) => connect(drag(ref))}>
-      {imageUrl && <ImageComponent width="100%" src={imageUrl} alt={alt} />}
+      {imageUrl && (
+        <ImageComponent
+          width="100%"
+          src={imageUrl}
+          alt={alt}
+          data-code={dataCode}
+        />
+      )}
     </Box>
   );
 };
@@ -50,12 +66,22 @@ const ImageSettings = () => {
     }
   }, [imageUrl]);
 
-  const handleOnAdd = (imageFiles: UploadFile[]) => {
-    setProp((props) => (props.imageUrl = imageFiles[0].base64));
+  const handleOnAdd = async (imageFiles: UploadFile[]) => {
     setImageFiles(imageFiles);
+
+    try {
+      const response = await addContentBuilderImage(imageFiles[0].base64);
+      setProp((props) => {
+        props.dataCode = response.data.attributes.code;
+        props.imageUrl = response.data.attributes.image_url;
+      });
+    } catch {
+      // Do nothing
+    }
   };
 
   const handleOnRemove = () => {
+    setProp((props) => (props.imageUrl = undefined));
     setImageFiles([]);
   };
 
@@ -67,13 +93,14 @@ const ImageSettings = () => {
     <Box marginBottom="20px">
       <ImagesDropzone
         images={imageFiles}
-        imagePreviewRatio={1}
+        imagePreviewRatio={1 / 2}
         maxImagePreviewWidth="360px"
         objectFit="contain"
         acceptedFileTypes="image/jpg, image/jpeg, image/png"
         onAdd={handleOnAdd}
         onRemove={handleOnRemove}
       />
+      <Box mb="12px" />
       <Input
         type="text"
         id="imageAltTextInput"
