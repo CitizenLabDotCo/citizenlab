@@ -6,8 +6,6 @@ require 'rspec_api_documentation/dsl'
 resource 'ContentBuilderLayouts' do
   explanation 'Content builder layouts for projects.'
 
-  let(:time_regex) { /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/ }
-
   before do
     header 'Content-Type', 'application/json'
   end

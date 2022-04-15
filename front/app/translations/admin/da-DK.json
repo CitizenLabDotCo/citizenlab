@@ -502,6 +502,7 @@
   "app.containers.Admin.emails.sending": "Afsendelse",
   "app.containers.Admin.emails.sent": "Sendt",
   "app.containers.Admin.emails.statsButton": "Statistik",
+  "app.containers.Admin.emails.subtitleMessaging": "Send dine egne meddelelser, og styr hvilke automatiske meddelelser dine brugere modtager.",
   "app.containers.Admin.emails.titleMessaging": "Meddelelser",
   "app.containers.Admin.emails.toAllUsers": "Ønsker du at sende denne e-mail til alle registrerede brugere?",
   "app.containers.Admin.ideas.tabStatuses": "Statusser",
