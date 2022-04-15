@@ -76,7 +76,7 @@ resource "Stats - Comments" do
       before { admin_header_token }
 
       example_request "Count all comments" do
-        expect(response_status).to eq 200
+        assert_status 200
         expect(json_response[:count]).to eq 2
       end
     end
@@ -91,7 +91,7 @@ resource "Stats - Comments" do
       end
 
       example_request "Count all comments (as a moderator)", document: false do
-        expect(response_status).to eq 200
+        assert_status 200
         expect(json_response[:count]).to eq 2
       end
     end
@@ -134,7 +134,7 @@ resource "Stats - Comments" do
 
           it "returns no entries" do
             do_request
-            expect(response_status).to eq 200
+            assert_status 200
 
             expect(json_response).to eq({series: {comments: {}}})
           end
@@ -145,7 +145,7 @@ resource "Stats - Comments" do
           let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
           example_request "Comments by time" do
-            expect(response_status).to eq 200
+            assert_status 200
 
             expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
             expect(json_response[:series][:comments].values.inject(&:+)).to eq 5
@@ -172,7 +172,7 @@ resource "Stats - Comments" do
 
           it "returns no entries" do
             do_request
-            expect(response_status).to eq 200
+            assert_status 200
             expect(json_response).to eq({series: { comments: {} }})
           end
         end
@@ -182,7 +182,7 @@ resource "Stats - Comments" do
           let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
           example_request "Comments by time (cumulative)" do
-            expect(response_status).to eq 200
+            assert_status 200
 
             expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
             expect(json_response[:series][:comments].values.uniq).to eq json_response[:series][:comments].values.uniq.sort
@@ -203,7 +203,7 @@ resource "Stats - Comments" do
         let(:project) { @project.id }
 
         example_request "Count all comments filtered by project", document: false do
-          expect(response_status).to eq 200
+          assert_status 200
 
           expect(json_response[:series][:comments].values.last).to eq 1
         end
@@ -227,7 +227,7 @@ resource "Stats - Comments" do
           let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
           example_request "Comments by time" do
-            expect(response_status).to eq 200
+            assert_status 200
             worksheets = RubyXL::Parser.parse_buffer(response_body)
             worksheet = worksheets.worksheets[0]
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
@@ -244,7 +244,7 @@ resource "Stats - Comments" do
 
           it "returns no entries" do
             do_request
-            expect(response_status).to eq 422
+            assert_status 422
           end
         end
       end
@@ -267,7 +267,7 @@ resource "Stats - Comments" do
           let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
           example_request "Comments by time (cumulative)" do
-            expect(response_status).to eq 200
+            assert_status 200
             worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
             # monotonically increasing
@@ -285,7 +285,7 @@ resource "Stats - Comments" do
 
           it "returns no entries" do
             do_request
-            expect(response_status).to eq 422
+            assert_status 422
           end
         end
       end
@@ -303,7 +303,7 @@ resource "Stats - Comments" do
         let(:project) { @project.id }
 
         example_request "Count all comments filtered by project", document: false do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
           amount_col = worksheet.map {|col| col.cells[1].value}
@@ -327,7 +327,7 @@ resource "Stats - Comments" do
       describe "without time filters" do
         example "Comments by topic", document: false do
           do_request
-          expect(response_status).to eq 200
+          assert_status 200
         end
       end
 
@@ -354,7 +354,7 @@ resource "Stats - Comments" do
         end
 
         example_request "Comments by topic" do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(json_response[:series][:comments].stringify_keys).to match({
             @topic1.id => 3,
             @topic2.id => 2
@@ -379,7 +379,7 @@ resource "Stats - Comments" do
         let(:project) { @project.id }
 
         example_request "Comments by topic filtered by project" do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
         end
       end
@@ -400,7 +400,7 @@ resource "Stats - Comments" do
         let(:group) { @group.id }
 
         example_request "Comments by topic filtered by group" do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
         end
       end
@@ -421,7 +421,7 @@ resource "Stats - Comments" do
       describe "without time filters" do
         example "Comments by topic", document: false do
           do_request
-          expect(response_status).to eq 200
+          assert_status 200
         end
       end
 
@@ -448,7 +448,7 @@ resource "Stats - Comments" do
         end
 
         example_request "Comments by topic" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
 
@@ -477,7 +477,7 @@ resource "Stats - Comments" do
         let(:project) { @project.id }
 
         example_request "Comments by topic filtered by project" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
 
@@ -503,7 +503,7 @@ resource "Stats - Comments" do
         let(:group) { @group.id }
 
         example_request "Comments by topic filtered by group" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
 
@@ -573,7 +573,7 @@ resource "Stats - Comments" do
         let(:topic) { @topic.id }
 
         example_request "Comments by project filtered by topic" do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
         end
       end
@@ -595,7 +595,7 @@ resource "Stats - Comments" do
         let(:group) { @group.id }
 
         example_request "Comments by project filtered by group" do
-          expect(response_status).to eq 200
+          assert_status 200
           expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
         end
       end
@@ -632,7 +632,7 @@ resource "Stats - Comments" do
         end
 
         example_request "Comments by project" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
           project_id_col = worksheet.map {|col| col.cells[1].value}
@@ -668,7 +668,7 @@ resource "Stats - Comments" do
         let(:topic) { @topic.id }
 
         example_request "Comments by project filtered by topic" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
 
@@ -695,7 +695,7 @@ resource "Stats - Comments" do
         let(:group) { @group.id }
 
         example_request "Comments by project filtered by group" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
 

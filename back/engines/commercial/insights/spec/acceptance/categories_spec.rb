@@ -27,7 +27,7 @@ resource 'Categories' do
       let(:name) { '' }
 
       example_request 'returns unprocessable-entity error', document: false do
-        expect(status).to eq(422)
+        assert_status 422
       end
     end
   end
@@ -41,13 +41,13 @@ resource 'Categories' do
       before { admin_header_token }
 
       example_request 'lists all categories of a view' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].pluck(:id)).to match_array(categories.pluck(:id))
       end
 
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
-        expect(status).to eq(404)
+        assert_status 404
       end
     end
 
@@ -76,7 +76,7 @@ resource 'Categories' do
       end
 
       example_request 'gets one category by id' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response).to match(expected_response)
       end
     end
@@ -197,7 +197,7 @@ resource 'Categories' do
 
       example_request 'updates a category' do
         expect(name).not_to eq(previous_name) # making sure we didn't reuse the same name by mistake
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response).to match(expected_response)
       end
 
@@ -216,7 +216,7 @@ resource 'Categories' do
       before { admin_header_token }
 
       example_request 'deletes a category' do
-        expect(status).to eq(200)
+        assert_status 200
         expect { category.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -233,19 +233,19 @@ resource 'Categories' do
       before { admin_header_token }
 
       example_request 'deletes all categories of a view' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(view.categories).to be_empty
       end
 
       example 'sets all inputs as unprocessed', document: false do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
         expect(Insights::ProcessedFlag.where(view: view)).to be_empty
       end
 
       example 'returns 404 if the view does not exist', document: false do
         do_request(view_id: 'bad-uuid')
-        expect(status).to eq(404)
+        assert_status 404
       end
     end
 

@@ -11,6 +11,7 @@ module IdeaCustomFields
                                                .order(:ordering)
 
       if IdeaCustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
+        # Some fields exist but should not be shown in the input form settings, and we filter them
         @custom_fields = IdeaCustomFieldsService.new.all_fields(@custom_form, custom_fields_scope: @custom_fields, filter_unmodifiable: true)
       end
       render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json

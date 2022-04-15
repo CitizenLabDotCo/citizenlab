@@ -89,10 +89,6 @@ class Idea < ApplicationRecord
     message: ->(errors) { errors }
   }, if: %i[custom_field_values_changed?]
 
-  # TODO change this to only validate on controller operations
-  #https://github.dev/CitizenLabDotCo/citizenlab/blob/a8c608ba4a053759336fcf0f8a88c07806c5b281/back/engines/free/polls/app/controllers/polls/web_api/v1/responses_controller.rb#L31
-# https://github.dev/CitizenLabDotCo/citizenlab/blob/a8c608ba4a053759336fcf0f8a88c07806c5b281/back/engines/free/polls/app/models/polls/response.rb#L28#
-
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true

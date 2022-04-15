@@ -38,31 +38,34 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
     // sort by newest first
     cy.get('#e2e-ideas-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
-    cy.wait(1000);
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card').first().contains(ideaTitle);
+    cy.get('.e2e-idea-card').should((cards) => {
+      expect(cards.first()).to.contain(ideaTitle);
+    });
 
     // sort by most voted
     cy.get('#e2e-ideas-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-popular').click();
-    cy.wait(1000);
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card')
-      .first()
-      .contains('Repellendus reprehenderit quae voluptas quia.');
+    cy.get('.e2e-idea-card').should((cards) => {
+      expect(cards.first()).to.contain(
+        'Repellendus reprehenderit quae voluptas quia.'
+      );
+    });
 
     // sort by oldest first
     cy.get('#e2e-ideas-sort-dropdown').click();
     cy.get('.e2e-sort-items').find('.e2e-sort-item-old').click();
-    cy.wait(1000);
 
     // find and check first idea card
     cy.get('#e2e-ideas-list');
-    cy.get('.e2e-idea-card').first().contains('Very Old Idea');
+    cy.get('.e2e-idea-card').should((cards) => {
+      expect(cards.first()).to.contain('Very Old Idea');
+    });
   });
 
   it('lets you filter the ideas by topic', () => {
@@ -84,10 +87,8 @@ describe('Idea cards without filter sidebar pagination', () => {
     cy.visit('/ideas');
     cy.get('#e2e-idea-cards-show-more-button').click();
     cy.get('#e2e-ideas-list');
-    cy.wait(4000);
-    cy.get('#e2e-ideas-list')
-      .find('.e2e-idea-card')
-      .its('length')
-      .should('be.gte', 24);
+    cy.get('.e2e-idea-card').should((cards) => {
+      expect(cards.length).to.be.gte(24);
+    });
   });
 });

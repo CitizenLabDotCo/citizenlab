@@ -23,7 +23,7 @@ resource "Volunteering Volunteers" do
       let(:cause_id) { cause.id }
 
       example_request "Create a volunteer with the current user" do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
         expect(json_response.dig(:data,:relationships,:cause,:data,:id)).to eq cause.id
@@ -32,7 +32,7 @@ resource "Volunteering Volunteers" do
       example "[error] Create a volunteer with the current user again" do
         create(:volunteer, user: @user, cause: cause)
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
       end
     end
 
@@ -45,7 +45,7 @@ resource "Volunteering Volunteers" do
       example "Delete the volunteering of the current user" do
         old_count = Volunteering::Volunteer.count
         do_request
-        expect(response_status).to eq 200
+        assert_status 200
         expect{volunteer.reload}.to raise_error(ActiveRecord::RecordNotFound)
         expect(Volunteering::Volunteer.count).to eq (old_count - 1)
       end
@@ -75,7 +75,7 @@ resource "Volunteering Volunteers" do
       let (:cause_id) { @cause.id }
 
       example_request "List all volunteers for a cause as an admin" do
-        expect(status).to eq(200)
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response.dig(:data).map{|d| d[:relationships][:user][:data][:id]}).to match_array @volunteers.map(&:user_id)
@@ -97,7 +97,7 @@ resource "Volunteering Volunteers" do
       let (:participation_context_id) { @project.id }
 
       example_request "XLSX export all volunteers of a project" do
-        expect(status).to eq 200
+        assert_status 200
         worksheets = RubyXL::Parser.parse_buffer(response_body).worksheets
         expect(worksheets.size).to eq 2
         # sheet names can only be 31 characters long
@@ -119,7 +119,7 @@ resource "Volunteering Volunteers" do
         end
         
         example_request '[error] XLSX export by a normal user', document: false do
-          expect(status).to eq 401
+          assert_status 401
         end
       end
     end

@@ -55,7 +55,7 @@ resource "Stats - Users" do
     time_boundary_parameters self
 
     example_request "Count all users" do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:count]).to eq User.active.count
     end
@@ -73,7 +73,7 @@ resource "Stats - Users" do
 
       it "returns no entries" do
         do_request
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to eq({series: { users: {} }})
       end
@@ -84,7 +84,7 @@ resource "Stats - Users" do
 
       example "without filters", document: false do
         do_request
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].values.inject(&:+)).to eq 11
       end
@@ -96,7 +96,7 @@ resource "Stats - Users" do
       let(:interval) { 'day' }
 
       example_request "Users by time" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.inject(&:+)).to eq 9
@@ -118,7 +118,7 @@ resource "Stats - Users" do
       let(:project) { @project.id }
 
       example_request "Users by time filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.inject(&:+)).to eq 3
@@ -142,7 +142,7 @@ resource "Stats - Users" do
       let(:group) { @group1.id }
 
       example_request "Users by time filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.inject(&:+)).to eq 1
@@ -173,7 +173,7 @@ resource "Stats - Users" do
       let(:topic) { @topic1.id }
 
       example_request "Users by time filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.inject(&:+)).to eq 3
@@ -193,7 +193,7 @@ resource "Stats - Users" do
       example "without filters", document: false do
         do_request
 
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
 
         amount_col = worksheet.map {|col| col.cells[1].value}
@@ -209,7 +209,7 @@ resource "Stats - Users" do
 
       it "returns no entries" do
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
       end
     end
 
@@ -219,7 +219,7 @@ resource "Stats - Users" do
       let(:interval) { 'day' }
 
       example_request "Users by time" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
@@ -244,7 +244,7 @@ resource "Stats - Users" do
       let(:project) { @project.id }
 
       example_request "Users by time filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
@@ -271,7 +271,7 @@ resource "Stats - Users" do
       let(:group) { @group1.id }
 
       example_request "Users by time filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
@@ -305,7 +305,7 @@ resource "Stats - Users" do
       let(:topic) { @topic1.id }
 
       example_request "Users by time filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
@@ -328,7 +328,7 @@ resource "Stats - Users" do
       let(:interval) { 'day' }
 
       example_request "Users by time (cumulative)" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         # monotonically increasing
@@ -352,7 +352,7 @@ resource "Stats - Users" do
       let(:project) { @project.id }
 
       example_request "Users by time (cumulative) filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         # monotonically increasing
@@ -378,7 +378,7 @@ resource "Stats - Users" do
       let(:group) { @group1.id }
 
       example_request "Users by time (cumulative) filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         # monotonically increasing
@@ -411,7 +411,7 @@ resource "Stats - Users" do
       let(:topic) { @topic1.id }
 
       example_request "Users by time (cumulative) filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         # monotonically increasing
@@ -433,7 +433,7 @@ resource "Stats - Users" do
       let(:interval) { 'day' }
 
       example_request "Users by time (cumulative) as xlsx" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
@@ -460,7 +460,7 @@ resource "Stats - Users" do
       let(:project) { @project.id }
 
       example_request "Users by time (cumulative) filtered by project as xlsx" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
@@ -489,7 +489,7 @@ resource "Stats - Users" do
       let(:group) { @group1.id }
 
       example_request "Users by time (cumulative) filtered by group as xlsx" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
@@ -525,7 +525,7 @@ resource "Stats - Users" do
       let(:topic) { @topic1.id }
 
       example_request "Users by time (cumulative) filtered by topic as xlsx" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
@@ -564,7 +564,7 @@ resource "Stats - Users" do
 
 
       example_request "Active users by time" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.inject(&:+)).to eq 4
@@ -589,7 +589,7 @@ resource "Stats - Users" do
       let(:project) { @project.id }
 
       example_request "Active users by time filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.inject(&:+)).to eq 1
@@ -616,7 +616,7 @@ resource "Stats - Users" do
       let(:group) { @group1.id }
 
       example_request "Active users by time filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
@@ -650,7 +650,7 @@ resource "Stats - Users" do
       let(:topic) { @topic1.id }
 
       example_request "Active users by time filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
@@ -685,7 +685,7 @@ resource "Stats - Users" do
 
 
       example_request "Active users by time" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
@@ -725,7 +725,7 @@ resource "Stats - Users" do
     let(:group) { @group.id }
 
     example_request "List 10 best user engagement scores" do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].map{|d| d[:attributes][:sum_score]}).to eq([6, 4])
       expect(json_response[:data].map{|d| d[:relationships][:user][:data][:id]}).to eq([@u2.id, @u1.id])
@@ -758,7 +758,7 @@ resource "Stats - Users" do
 
 
       example_request "Active users by time" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.last()).to eq 4
@@ -783,7 +783,7 @@ resource "Stats - Users" do
       let(:project) { @project.id }
 
       example_request "Active users by time filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.last()).to eq 1
@@ -810,7 +810,7 @@ resource "Stats - Users" do
       let(:group) { @group1.id }
 
       example_request "Active users by time filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
@@ -844,7 +844,7 @@ resource "Stats - Users" do
       let(:topic) { @topic1.id }
 
       example_request "Active users by time filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
@@ -882,7 +882,7 @@ resource "Stats - Users" do
     let(:group) { @group.id }
 
     example_request "List 10 best user engagement scores" do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].map{|d| d[:attributes][:sum_score]}).to eq([6, 4])
       expect(json_response[:data].map{|d| d[:relationships][:user][:data][:id]}).to eq([@u2.id, @u1.id])
