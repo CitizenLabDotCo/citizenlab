@@ -20,7 +20,7 @@ const TwoColumn: UserComponent = () => {
       minHeight="40px"
       display="flex"
       w="100%"
-      gap="4px"
+      gap="8px"
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />

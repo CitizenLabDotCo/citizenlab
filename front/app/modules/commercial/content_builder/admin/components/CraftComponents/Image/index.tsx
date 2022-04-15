@@ -81,7 +81,11 @@ const ImageSettings = () => {
   };
 
   const handleOnRemove = () => {
-    setProp((props) => (props.imageUrl = undefined));
+    setProp((props) => {
+      props.imageUrl = undefined;
+      props.dataCode = undefined;
+      props.alt = '';
+    });
     setImageFiles([]);
   };
 
@@ -101,17 +105,19 @@ const ImageSettings = () => {
         onRemove={handleOnRemove}
       />
       <Box mb="12px" />
-      <Input
-        type="text"
-        id="imageAltTextInput"
-        onChange={handleChange}
-        value={alt}
-        label={
-          <span>
-            label <IconTooltip icon="info3" content="info" />
-          </span>
-        }
-      />
+      {imageFiles.length > 0 && (
+        <Input
+          type="text"
+          id="imageAltTextInput"
+          onChange={handleChange}
+          value={alt}
+          label={
+            <span>
+              label <IconTooltip icon="info3" content="info" />
+            </span>
+          }
+        />
+      )}
     </Box>
   );
 };
