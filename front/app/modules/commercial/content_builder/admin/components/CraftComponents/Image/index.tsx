@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // components
 import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
 // craft
@@ -27,10 +28,21 @@ const ImageSettings = () => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const {
     actions: { setProp },
-    //  imageUrl,
+    imageUrl,
   } = useNode((node) => ({
     imageUrl: node.data.props.imageUrl,
   }));
+
+  useEffect(() => {
+    if (imageUrl) {
+      (async () => {
+        const imageFile = await convertUrlToUploadFile(imageUrl);
+        if (imageFile) {
+          setImageFiles([imageFile]);
+        }
+      })();
+    }
+  }, [imageUrl]);
 
   const handleOnAdd = (imageFiles: UploadFile[]) => {
     setProp((props) => (props.imageUrl = imageFiles[0].base64));
