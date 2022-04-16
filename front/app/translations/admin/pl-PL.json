@@ -1241,7 +1241,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_issue": "Prześlij swoją sprawę",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_option": "Prześlij swoją opcję",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_project": "Prześlij swój projekt",
-  "app.containers.AdminPage.groups.permissions.permissionAction_submit_question": "Prześlij swoje zagadnienie",
+  "app.containers.AdminPage.groups.permissions.permissionAction_submit_question": "Prześlij swoje pytanie",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_poll": "Weź udział w sondażu",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey": "Weź udział w ankiecie",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_contributions": "Zagłosuj na wkłady",
