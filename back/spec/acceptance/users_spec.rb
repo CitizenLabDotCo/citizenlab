@@ -11,7 +11,7 @@ resource 'Users' do
   context 'when not authenticated' do
     get 'web_api/v1/users/me' do
       example_request '[error] Get the authenticated user' do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -27,7 +27,7 @@ resource 'Users' do
       parameter :can_moderate, "Filter out admins and moderators", required: false
 
       example_request "[error] List all users" do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -36,7 +36,7 @@ resource 'Users' do
       parameter :users, "Filter out only users with the provided user ids", required: false
 
       example_request "[error] XLSX export" do
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -66,7 +66,7 @@ resource 'Users' do
         let(:password) { 'supersecret' }
 
         example_request "Authenticate a registered user" do
-          expect(status).to eq(201)
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:jwt)).to be_present
         end
@@ -74,7 +74,7 @@ resource 'Users' do
         example "[error] Authenticate an invited user" do
           @user.update! invite_status: 'pending'
           do_request
-          expect(status).to eq(404)
+          assert_status 404
         end
       end
 
@@ -85,7 +85,8 @@ resource 'Users' do
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
-            "phone_email_pattern" => "phone+__PHONE__@test.com"
+            "phone_email_pattern" => "phone+__PHONE__@test.com",
+            "minimum_length" => 6
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -95,7 +96,7 @@ resource 'Users' do
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
           example_request "Authenticate a registered user by phone number", document: false do
-            expect(status).to eq(201)
+            assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:jwt)).to be_present
           end
@@ -106,7 +107,7 @@ resource 'Users' do
           let(:email) { user.email }
           let(:password) { 'supersecret' }
           example_request "Authenticate a registered user by email", document: false do
-            expect(status).to eq(201)
+            assert_status 201
             json_response = json_parse(response_body)
             expect(json_response.dig(:jwt)).to be_present
           end
@@ -132,10 +133,10 @@ resource 'Users' do
       let(:email) { Faker::Internet.email }
       let(:password) { Faker::Internet.password }
       let(:locale) { "en" }
-      let(:avatar) { base64_encoded_image }
+      let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
 
       example_request "Create a user" do
-        expect(response_status).to eq 201
+        assert_status 201
       end
 
       context 'when the user_confirmation module is active' do
@@ -144,7 +145,7 @@ resource 'Users' do
         end
 
         example_request 'Registration is not completed by default' do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
         end
@@ -156,7 +157,7 @@ resource 'Users' do
         end
 
         example_request 'Requires confirmation' do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
         end
@@ -168,7 +169,7 @@ resource 'Users' do
         example "creates a user, but not an admin", document: false do
           create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
           do_request
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :roles)).to be_empty
         end
@@ -180,16 +181,18 @@ resource 'Users' do
           settings['password_login'] = {
             'enabled' => true,
             'allowed' => true,
-            'minimum_length' => 5
+            'minimum_length' => 5,
+            'phone' => false
           }
           AppConfiguration.instance.update! settings: settings
         end
-        let(:password) { "ab" }
 
-        example_request "[error] Create an invalid user", document: false do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :password)).to eq [{:error=>"too_short", :count=>5}]
+        let(:password) { 'ab' }
+
+        example_request '[error] Create an invalid user', document: false do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:password, 'too_short', count: 5)
         end
       end
 
@@ -197,10 +200,15 @@ resource 'Users' do
         let!(:invitee) { create(:invited_user) }
         let(:email) { invitee.email }
 
-        example_request "[error] Registering an invited user" do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :email)).to include({error: "taken_by_invite", value: email, inviter_email: invitee.invitee_invite.inviter.email})
+        example_request '[error] Registering an invited user' do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(
+            :email,
+            'taken_by_invite',
+            value: email,
+            inviter_email: invitee.invitee_invite.inviter.email
+          )
         end
       end
 
@@ -211,7 +219,7 @@ resource 'Users' do
         let(:email) { 'jEzUs@citizenlab.co' }
 
         example_request "[error] Registering a user with case insensitive email duplicate", document: false do
-          expect(response_status).to eq 422
+          assert_status 422
         end
       end
 
@@ -222,7 +230,8 @@ resource 'Users' do
             "allowed" => true,
             "enabled" => true,
             "phone" => true,
-            "phone_email_pattern" => "phone+__PHONE__@test.com"
+            "phone_email_pattern" => "phone+__PHONE__@test.com",
+            "minimum_length" => 6
           }
           AppConfiguration.instance.update!(settings: settings)
         end
@@ -230,7 +239,7 @@ resource 'Users' do
         describe do
           let(:email) { "someone@citizenlab.co" }
           example_request "Register with email when an email is passed", document: false do
-            expect(response_status).to eq 201
+            assert_status 201
             json_response = json_parse(response_body)
             expect(User.find_by(email: email)).to be_present
           end
@@ -239,7 +248,7 @@ resource 'Users' do
         describe do
           let(:email) { "+32 487 36 58 98" }
           example_request "Registers a user with a phone number in the email when a phone number is passed", document: false do
-            expect(response_status).to eq 201
+            assert_status 201
             json_response = json_parse(response_body)
             expect(User.find_by(email: "phone+32487365898@test.com")).to be_present
           end
@@ -305,12 +314,14 @@ resource 'Users' do
           expect(json_response[:data][0][:id]).to eq u1.id
         end
 
-        example "List all users sorted by last_name" do
+        example 'List all users sorted by last_name' do
           do_request sort: 'last_name'
+
+          assert_status 200
           json_response = json_parse(response_body)
 
-          correctly_sorted = User.all.sort_by{|u| u.last_name}
-          expect(json_response[:data].map{|u| u[:id]}).to eq correctly_sorted.map(&:id)
+          sorted_last_names = User.pluck(:last_name).sort
+          expect(json_response[:data].map { |u| u.dig(:attributes, :last_name) }).to eq sorted_last_names
         end
 
         example "List all users in group" do
@@ -474,7 +485,7 @@ resource 'Users' do
       end
       example "Get all users as non-admin", document: false do
         do_request
-        expect(status).to eq 401
+        assert_status 401
       end
     end
 
@@ -754,7 +765,7 @@ resource 'Users' do
       example "[error] Complete the registration of a user fails if not all required fields are provided" do
         @user.update! registration_completed_at: nil
         do_request(user: {custom_field_values: {cf2.key => nil}})
-        expect(response_status).to eq 422
+        assert_status 422
       end
 
       example "[error] Complete the registration of a user fails if the user has already completed signup" do
@@ -867,16 +878,5 @@ resource 'Users' do
         expect(json_response.dig(:count)).to eq 2
       end
     end
-  end
-
-
-  private
-
-  def base64_encoded_image
-    "data:image/jpeg;base64,#{encode_image_as_base64("lorem-ipsum.jpg")}"
-  end
-
-  def encode_image_as_base64(filename)
-    Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))
   end
 end

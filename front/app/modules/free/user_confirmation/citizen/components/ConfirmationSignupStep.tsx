@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import { CONFIRMATION_STEP_NAME } from '../../index';
 import { SignUpStepOutletProps } from 'utils/moduleUtils';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import messages from './messages';
@@ -19,18 +18,25 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-import { Icon, Input, Label } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Input,
+  Label,
+  Success,
+} from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
+import { FormLabel } from 'components/UI/FormComponents';
 
-export const FormContainer = styled.div<{ inModal: boolean }>`
+const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: ${(props) => (props.inModal ? 'center' : 'stretch')};
   margin-bottom: 60px;
 `;
 
-export const Form = styled.form<{ inModal: boolean }>`
+const Form = styled.form<{ inModal: boolean }>`
   width: 100%;
   max-width: ${(props) => (props.inModal ? '380px' : 'unset')};
   display: flex;
@@ -39,35 +45,24 @@ export const Form = styled.form<{ inModal: boolean }>`
   margin: 2rem 0;
 `;
 
-export const FormField = styled.div`
+const FormField = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
 `;
 
-export const StyledLabel = styled(Label)`
+const StyledLabel = styled(Label)`
   display: block;
-  text-align: center;
+  text-align: left;
 `;
 
-export const LabelTextContainer = styled.div`
-  display: block;
-  color: ${({ theme }) => theme.colorText};
-  margin-bottom: 1.5rem;
-  font-size: ${fontSizes.base};
-
-  &:last-child {
-    margin-bottom: 1rem;
-  }
-`;
-
-export const Footer = styled.div`
+const Footer = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 10px;
 `;
 
-export const SubmitButton = styled(Button)`
+const SubmitButton = styled(Button)`
   width: 100%;
   margin: 0.75rem 0;
 `;
@@ -110,31 +105,25 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
   margin-right: 4px;
 `;
 
-type Props = SignUpStepOutletProps & InjectedIntlProps;
+type Props = Pick<SignUpStepOutletProps, 'onCompleted' | 'onData' | 'step'>;
 
 const isActive = (authUser: TAuthUser) => {
   return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
 };
 
-const ConfirmationSignupStep = ({
-  intl: { formatMessage },
-  onCompleted,
-  ...props
-}: Props) => {
+const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
   const user = useAuthUser();
   const [confirmation, setConfirmation] = useState<IConfirmation>({
     code: null,
   });
-  const [newEmail, setNewEmail] = useState<string | null | undefined>(
-    undefined
-  );
+  const [newEmail, setNewEmail] = useState<string | null>(null);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
-  const [processing, setProcessing] = useState<boolean>(false);
-  const [changingEmail, setChangingEmail] = useState<boolean>(false);
-  const [codeResent, setCodeResent] = useState<boolean>(false);
+  const [processing, setProcessing] = useState(false);
+  const [changingEmail, setChangingEmail] = useState(false);
+  const [codeResent, setCodeResent] = useState(false);
 
   useEffect(() => {
-    props.onData({
+    onData({
       key: CONFIRMATION_STEP_NAME,
       position: 4,
       stepDescriptionMessage: messages.confirmYourAccount,
@@ -148,7 +137,7 @@ const ConfirmationSignupStep = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (props.step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
+  if (step !== CONFIRMATION_STEP_NAME || isNilOrError(user)) {
     return null;
   }
 
@@ -177,7 +166,7 @@ const ConfirmationSignupStep = ({
       });
   }
 
-  function handleResendCode(e) {
+  function handleResendCode(e: FormEvent) {
     e.preventDefault();
     setProcessing(true);
 
@@ -209,38 +198,33 @@ const ConfirmationSignupStep = ({
       });
   }
 
-  function handleEmailChange(email) {
+  function handleEmailChange(email: string) {
     setNewEmail(email);
   }
 
-  function handleShowEmailInput(e) {
+  function handleShowEmailInput(e: FormEvent) {
     e.preventDefault();
     setChangingEmail(true);
   }
 
-  function handleBackToCode(e) {
+  function handleBackToCode(e: FormEvent) {
     e.preventDefault();
     setChangingEmail(false);
   }
 
+  const inModal = true;
   return (
-    <FormContainer id="e2e-confirmation-form" inModal={true}>
+    <FormContainer id="e2e-confirmation-form" inModal={inModal}>
       {changingEmail ? (
-        <Form inModal={true} onSubmit={handleEmailSubmit}>
+        <Form inModal={inModal} onSubmit={handleEmailSubmit}>
           <FormField>
-            <StyledLabel>
-              <LabelTextContainer>
-                <FormattedMessage
-                  {...messages.pleaseInsertYourNewEmail}
-                  values={{ userEmail: user.attributes.email }}
-                />
-              </LabelTextContainer>
-            </StyledLabel>
+            <FormLabel labelMessage={messages.email} htmlFor="email-code" />
             <Input
+              id="email-code"
               type="email"
+              autocomplete="email"
               value={newEmail}
               onChange={handleEmailChange}
-              placeholder={formatMessage(messages.emailPlaceholder)}
             />
             {apiErrors.email && (
               <Error
@@ -269,25 +253,27 @@ const ConfirmationSignupStep = ({
           </FooterNotes>
         </Form>
       ) : (
-        <Form inModal={true} onSubmit={handleSubmitConfirmation}>
+        <Form inModal={inModal} onSubmit={handleSubmitConfirmation}>
           <FormField>
-            <StyledLabel>
-              <LabelTextContainer>
-                <FormattedMessage
-                  {...messages.weAskEveryoneToConfirmTheirEmail}
-                />
-              </LabelTextContainer>
-              <LabelTextContainer>
-                <FormattedMessage
-                  {...messages.anExampleCodeHasBeenSent}
-                  values={{ userEmail: user.attributes.email }}
-                />
-              </LabelTextContainer>
+            <Box display="flex" alignItems="center" mb="20px">
+              <Icon width="30px" height="30px" name="checkmark-full" />
+              <Success
+                text={
+                  <FormattedMessage
+                    {...messages.anExampleCodeHasBeenSent}
+                    values={{
+                      userEmail: <strong>{user.attributes.email}</strong>,
+                    }}
+                  />
+                }
+              />
+            </Box>
+            <StyledLabel htmlFor="e2e-confirmation-code-input">
+              <FormattedMessage {...messages.codeInput} />
             </StyledLabel>
             <Input
               id="e2e-confirmation-code-input"
               type="text"
-              placeholder={formatMessage(messages.insertYour4DigitCodeHere)}
               value={confirmation.code}
               onChange={handleCodeChange}
             />
@@ -336,4 +322,4 @@ const ConfirmationSignupStep = ({
   );
 };
 
-export default injectIntl(ConfirmationSignupStep);
+export default ConfirmationSignupStep;

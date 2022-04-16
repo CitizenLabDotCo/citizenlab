@@ -1,4 +1,5 @@
 import React from 'react';
+import Text from '../Text';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -12,14 +13,16 @@ const Container: UserComponent = ({ children }) => {
   } = useNode();
 
   return (
-    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="100px" w="100%">
+    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="40px" w="100%">
       {children}
     </Box>
   );
 };
 
 Container.craft = {
-  // Component options can be added here
+  rules: {
+    canMoveIn: (nodes) => nodes.every((node) => node.data.type === Text),
+  },
 };
 
 export default Container;

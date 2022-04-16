@@ -17,6 +17,13 @@ import TwoColumn from '../CraftComponents/TwoColumn';
 // Intl
 import messages from '../../messages';
 
+// Styles
+import styled from 'styled-components';
+
+const DraggableElement = styled.div`
+  cursor: move;
+`;
+
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
@@ -24,7 +31,7 @@ const ContentBuilderToolbox = ({
 
   return (
     <Box w="100%" display="inline" marginTop="20px">
-      <div
+      <DraggableElement
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -34,8 +41,8 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem icon="column1" label={formatMessage(messages.oneColumn)} />
-      </div>
-      <div
+      </DraggableElement>
+      <DraggableElement
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -45,15 +52,23 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem icon="column2" label={formatMessage(messages.twoColumn)} />
-      </div>
-      <div
+      </DraggableElement>
+      <DraggableElement
         ref={(ref) =>
           ref &&
-          connectors.create(ref, <Element canvas is={Text} id="text" text="" />)
+          connectors.create(
+            ref,
+            <Element
+              canvas
+              is={Text}
+              id="text"
+              text={formatMessage(messages.textValue)}
+            />
+          )
         }
       >
         <ToolboxItem icon="text" label={formatMessage(messages.text)} />
-      </div>
+      </DraggableElement>
     </Box>
   );
 };

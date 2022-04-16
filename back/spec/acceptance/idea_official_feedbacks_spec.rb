@@ -24,7 +24,7 @@ resource 'OfficialFeedback' do
     let(:idea_id) { @idea.id }
 
     example_request 'List all official feedback of an idea' do
-      expect(status).to eq(200)
+      assert_status 200
       expect(json_response[:data].size).to eq 2
       expect(json_response.dig(:data, 0, :attributes, :body_multiloc)).to be_present
       expect(json_response.dig(:data, 0, :attributes, :author_multiloc)).to be_present
@@ -90,7 +90,7 @@ resource 'OfficialFeedback' do
       let(:author_multiloc) { feedback.author_multiloc }
 
       example_request 'Create an official feedback on an idea' do
-        expect(response_status).to eq 201
+        assert_status 201
         expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data, :attributes, :author_multiloc).stringify_keys).to match author_multiloc
@@ -102,8 +102,8 @@ resource 'OfficialFeedback' do
         let(:body_multiloc) { { 'en' => '' } }
 
         example_request '[error] Create an invalid official feedback on an idea' do
-          expect(response_status).to eq 422
-          expect(json_response.dig(:errors, :body_multiloc)).to eq [{ error: 'blank' }]
+          assert_status 422
+          expect(json_response).to include_response_error(:body_multiloc, 'blank')
         end
       end
     end
@@ -120,7 +120,7 @@ resource 'OfficialFeedback' do
       let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
       example_request 'Update an official feedback for an idea' do
-        expect(response_status).to eq 200
+        assert_status 200
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(@idea.reload.official_feedbacks_count).to eq 3
       end
@@ -130,7 +130,7 @@ resource 'OfficialFeedback' do
       let(:official_feedback) { create(:official_feedback, user: @user, post: @idea) }
       let(:id) { official_feedback.id }
       example_request 'Delete an official feedback from an idea' do
-        expect(response_status).to eq 200
+        assert_status 200
         expect { OfficialFeedback.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(@idea.reload.official_feedbacks_count).to eq 2
       end

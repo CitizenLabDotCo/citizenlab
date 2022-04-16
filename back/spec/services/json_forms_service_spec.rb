@@ -4,8 +4,9 @@ describe JsonFormsService do
   let(:service) { JsonFormsService.new }
   let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
   let(:locale) { "en" }
+  let(:user) { create(:user) }
 
-  describe "fields_to_json_schema_multiloc" do
+  describe "fields_to_ui_schema_multiloc" do
 
     let (:title_multiloc) {{'en' => 'size', 'nl-NL' => 'grootte'}}
     let (:description_multiloc) {{'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}}
@@ -18,35 +19,25 @@ describe JsonFormsService do
       )
     ]}
     it "creates localized schemas with titles and descriptions for all languages" do
-      schema = service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
-      expect(schema['en'][:properties]['field1'][:title]).to eq title_multiloc['en']
-      expect(schema['nl-NL'][:properties]['field1'][:title]).to eq title_multiloc['nl-NL']
-      expect(schema['en'][:properties]['field1'][:description]).to eq description_multiloc['en']
-      expect(schema['nl-NL'][:properties]['field1'][:description]).to eq description_multiloc['nl-NL']
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc]
+      expect(ui_schema['en'][:elements][0][:label]).to eq title_multiloc['en']
+      expect(ui_schema['nl-NL'][:elements][0][:label]).to eq title_multiloc['nl-NL']
+      expect(ui_schema['en'][:elements][0][:options][:description]).to eq description_multiloc['en']
+      expect(ui_schema['nl-NL'][:elements][0][:options][:description]).to eq description_multiloc['nl-NL']
     end
   end
 
-  describe "fields_to_json_schema" do
+  describe "fields_to_json_schema_multiloc" do
 
-    it "creates the valid empty schema on empty fields" do
-      schema = service.fields_to_json_schema([], locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema).to match({
-        type: "object",
-        properties: {},
-        :additionalProperties => false,
-      })
+    it "returns nil empty fields" do
+      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
+      expect(schema).to eq nil
     end
 
     it "creates the valid empty schema on a disabled field" do
       create(:custom_field, enabled: false)
-      schema = service.fields_to_json_schema([], locale)
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema).to match({
-        type: "object",
-        properties: {},
-        :additionalProperties => false,
-      })
+      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
+      expect(schema).to eq nil
     end
 
     it "creates a valid schema with all input types" do
@@ -69,23 +60,18 @@ describe JsonFormsService do
       create(:custom_field_option, key: 'option_a', custom_field: fields[7], ordering: 1)
       create(:custom_field_option, key: 'option_b', custom_field: fields[7], ordering: 2)
 
-      schema = service.fields_to_json_schema(fields, locale)
+      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         {:type=>"object",
          :additionalProperties=>false,
          :properties=>
           {"field1"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"string"},
+            { :type=>"string" },
            "field2"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"string"},
+           { :type=>"string" },
            "field3"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
+            {
              :type=>"string",
              :oneOf => [
               {
@@ -103,8 +89,7 @@ describe JsonFormsService do
              ],
             },
            "field4"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
+            {
              :type=>"array",
              :uniqueItems=>true,
              :minItems=>0,
@@ -123,22 +108,14 @@ describe JsonFormsService do
              }
               },
            "field5"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"boolean"},
+            { :type=>"boolean" },
            "field6"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"string",
+            {:type=>"string",
              :format=>"date"},
             "field7"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"number"},
+            {:type=>"number"},
            "field8"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"array",
+            {:type=>"array",
              :uniqueItems=>true,
              :minItems=>1,
              :items=>
@@ -156,14 +133,28 @@ describe JsonFormsService do
              }
             },
             "field9"=>
-            {:title=>"Did you attend",
-             :description=>"Which councils are you attending in our city?",
-             :type=>"array",
-             :items=>{
-               :type=>"string"
-              }},
-           },
-         :required=>["field2","field8","field9"]}
+            {:type=>"array",
+             :items=>
+              {:properties=>
+                {:file_by_content=>
+                  {:properties=>
+                    {:file=>
+                      {:type=>"string"},
+                    :name=>
+                      {:type=>"string"}
+                    },
+                  :type=>"object",
+                  },
+                  :name=>
+                  {:type=>"string"},
+                },
+                :type=>"object"
+              },
+              :type=>"array"
+            }
+          },
+         :required=>["field2","field8","field9"]
+        }
       )
     end
 
@@ -181,47 +172,66 @@ describe JsonFormsService do
         create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
         create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
       ]
-      field5.insert_at(3)
-      field6.insert_at(3)
       create(:custom_field_option, key: 'option1', custom_field: fields[2])
       create(:custom_field_option, key: 'option2', custom_field: fields[2])
       create(:custom_field_option, key: 'option3', custom_field: fields[3])
       create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
-      ui_schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
+
+      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields.map(&:reload), user)[:ui_schema_multiloc]['en']
       expect(ui_schema[:type]).to be_present
       expect(ui_schema[:options]).to be_present
       expect(ui_schema[:elements]).to match([
         {
           type: 'Control',
           scope: '#/properties/field1',
+          label: 'Did you attend',
           options: {
+            description: 'Which councils are you attending in our city?',
             transform: "trim_on_blur"
           }
         },
         {
-        type: 'Control',
-        scope: '#/properties/field2',
-        options: {
-          textarea: true,
-          transform: "trim_on_blur"
+          type: 'Control',
+          scope: '#/properties/field2',
+          label: 'Did you attend',
+          options: {
+            description: 'Which councils are you attending in our city?',
+            textarea: true,
+            transform: "trim_on_blur"
           }
         },
         {
           type: 'Control',
+          label: 'Did you attend',
+          options: {
+            description: 'Which councils are you attending in our city?'
+          },
           scope: '#/properties/field3',
         },
         {
           type: 'Control',
-          scope: '#/properties/field6',
+          label: 'Did you attend',
+          options: {
+            description: 'Which councils are you attending in our city?'
+          },
+          scope: '#/properties/field4',
         },
         {
           type: 'Control',
+          label: 'Did you attend',
+          options: {
+            description: 'Which councils are you attending in our city?'
+          },
           scope: '#/properties/field5',
         },
         {
           type: 'Control',
-          scope: '#/properties/field4',
+          label: 'Did you attend',
+          options: {
+            description: 'Which councils are you attending in our city?'
+          },
+          scope: '#/properties/field6',
         }]
       )
     end

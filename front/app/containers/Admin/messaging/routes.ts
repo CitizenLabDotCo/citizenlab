@@ -54,7 +54,28 @@ export default () => ({
     {
       path: 'texting',
       component: Loadable({
-        loader: () => import('./texting/CampaignList/TextCampaignList'),
+        loader: () => import('./texting/CampaignList'),
+        loading: () => null,
+      }),
+    },
+    {
+      path: 'texting/new',
+      component: Loadable({
+        loader: () => import('./texting/NewSMSCampaign'),
+        loading: () => null,
+      }),
+    },
+    {
+      path: 'texting/:campaignId/preview',
+      component: Loadable({
+        loader: () => import('./texting/SMSCampaignPreview'),
+        loading: () => null,
+      }),
+    },
+    {
+      path: 'texting/:campaignId',
+      component: Loadable({
+        loader: () => import('./texting/ExistingSMSCampaign'),
         loading: () => null,
       }),
     },

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_08_184000) do
+ActiveRecord::Schema.define(version: 2022_04_07_131522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -141,6 +141,24 @@ ActiveRecord::Schema.define(version: 2022_03_08_184000) do
   create_table "common_passwords", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "password"
     t.index ["password"], name: "index_common_passwords_on_password"
+  end
+
+  create_table "content_builder_layout_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "image"
+    t.string "code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "content_builder_layouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "craftjs_jsonmultiloc", default: {}
+    t.string "content_buildable_type", null: false
+    t.uuid "content_buildable_id", null: false
+    t.string "code", null: false
+    t.boolean "enabled", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["content_buildable_type", "content_buildable_id", "code"], name: "index_content_builder_layouts_content_buidable_type_id_code", unique: true
   end
 
   create_table "custom_field_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -24,12 +24,12 @@ pt:
       "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que eu votei favoravelmente
       "new_idea_for_admin": Nova idéia em um projeto que eu dirigi
       "new_initiative_for_admin": Nova proposta
-      "official_feedback_on_commented_idea": Actualização sobre uma ideia que comentei
+      "official_feedback_on_commented_idea": Atualização sobre uma ideia que comentei
       "official_feedback_on_commented_initiative": Atualização sobre uma proposta que comentei
       "official_feedback_on_voted_idea": Atualização sobre uma idéia que eu votei
-      "official_feedback_on_voted_initiative": Actualização sobre uma proposta que votei
-      "official_feedback_on_your_idea": Actualização da minha ideia
-      "official_feedback_on_your_initiative": Actualização sobre a minha proposta
+      "official_feedback_on_voted_initiative": Atualização sobre uma proposta que votei
+      "official_feedback_on_your_idea": Atualização da minha ideia
+      "official_feedback_on_your_initiative": Atualização sobre a minha proposta
       "password_reset": Redefinir a senha
       "project_moderation_rights_received": Direitos de moderação de projetos recebidos
       "project_folder_moderation_rights_received": Direitos de moderação da pasta de projetos recebidos
@@ -96,7 +96,7 @@ pt:
       "moderator_digest": Resumo semanal - gestores de projeto
       "assignee_digest": Visão geral semanal das ideias atribuídas - administradores e gestores de projeto
       "user_digest": Visão geral semanal - todos os usuários
-      "your_proposed_initiatives_digest": Visão geral semanal das suas propostas - todos os usuários
+      "your_proposed_initiatives_digest": Visão semanal das suas propostas - todos os usuários
     footer:
       "link_privacy_policy": "Política de Privacidade"
       "link_terms_conditions": "Termos e condições"
@@ -369,7 +369,7 @@ pt:
       event_description: '%{officialName} Reagiu sobre a sua idéia ''%{ideaTitle}''. Clique no botão embaixo para entrar na conversa com %{officialName}.'
       main_header: 'Você recebeu uma atualização de %{organizationName}'
       subject: 'Você recebeu uma atualização de %{organizationName}'
-      preheader: '%{officialName} deixou uma actualização oficial sobre a sua idéia'
+      preheader: '%{officialName} deixou uma atualização oficial sobre a sua idéia'
     official_feedback_on_voted_initiative:
       by_author: 'por %{authorName}'
       updated: '%{officialName} escreveu:'
@@ -384,7 +384,7 @@ pt:
       event_description: '%{officialName} deu uma atualização sobre sua proposta ''%{initiativeTitle}''. Clique no botão embaixo para entrar na conversa com '' %{organizationName}.'
       main_header: 'Você recebeu uma atualização de %{officialName}'
       subject: 'Você recebeu uma atualização de %{organizationName}'
-      preheader: '%{officialName} deixou uma actualização oficial sobre a sua proposta'
+      preheader: '%{officialName} deixou uma atualização oficial sobre a sua proposta'
     project_moderation_rights_received:
       cta_moderate_project: 'Moderar este projeto'
       message_you_became_moderator: 'Um administrador da plataforma de %{organizationName} acabou de fazer você gerente do seguinte projeto:'
@@ -543,7 +543,7 @@ pt:
       subject: 'A sua idéia na plataforma de %{organizationName}'
       message_next_steps: ""
     your_proposed_initiatives_digest:
-      subject: 'Actualização semanal da sua proposta'
+      subject: 'Atualização semanal da sua proposta'
       preheader: 'O que aconteceu à sua proposta da semana passada?'
       title_your_weekly_report: 'Como tem sido a sua proposta?'
       text_introduction: 'Encontre os números-chave abaixo e vá para a página da sua proposta para agir e reunir apoio suficiente a tempo.'

@@ -4,7 +4,7 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import styled from 'styled-components';
-import PostManager from 'components/admin/PostManager';
+import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -12,6 +12,8 @@ const StyledDiv = styled.div`
 
 export default class InitiativesManagePage extends PureComponent {
   render() {
+    const defaultFilterMenu = 'statuses';
+    const visibleFilterMenus: TFilterMenu[] = [defaultFilterMenu, 'topics'];
     return (
       <>
         <StyledDiv>
@@ -25,7 +27,8 @@ export default class InitiativesManagePage extends PureComponent {
 
         <PostManager
           type="Initiatives"
-          visibleFilterMenus={['statuses', 'topics']}
+          visibleFilterMenus={visibleFilterMenus}
+          defaultFilterMenu={defaultFilterMenu}
         />
       </>
     );

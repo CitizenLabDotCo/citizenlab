@@ -12,7 +12,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
-import PostManager from 'components/admin/PostManager';
+import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -40,6 +40,17 @@ class AdminProjectIdeas extends React.PureComponent<
 > {
   render() {
     const { project, phases } = this.props;
+    const defaultTimelineProjectVisibleFilterMenu = 'phases';
+    const defaultContinuousProjectVisibleFilterMenu = 'statuses';
+    const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
+      defaultTimelineProjectVisibleFilterMenu,
+      'statuses',
+      'topics',
+    ];
+    const continuousProjectVisibleFilterMenus: TFilterMenu[] = [
+      defaultContinuousProjectVisibleFilterMenu,
+      'topics',
+    ];
 
     return (
       <>
@@ -58,9 +69,14 @@ class AdminProjectIdeas extends React.PureComponent<
             projectId={project.id}
             phases={phases}
             visibleFilterMenus={
-              project && project.attributes.process_type === 'timeline'
-                ? ['phases', 'statuses', 'topics']
-                : ['statuses', 'topics']
+              project.attributes.process_type === 'timeline'
+                ? timelineProjectVisibleFilterMenus
+                : continuousProjectVisibleFilterMenus
+            }
+            defaultFilterMenu={
+              project.attributes.process_type === 'timeline'
+                ? defaultTimelineProjectVisibleFilterMenu
+                : defaultContinuousProjectVisibleFilterMenu
             }
           />
         )}
