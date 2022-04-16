@@ -488,7 +488,7 @@ pl:
       x_days_ago_by_author: "%{x} dni temu wg %{author}"
       trending_ideas: "Modne pomysły"
       trending_ideas_text: "Interesuje Cię, co się dzieje na platformie? Oto trzy najmodniejsze pomysły i to, co ludzie o nich mówią."
-      no_notifications: "No notifications"
+      no_notifications: "Brak powiadomień"
       one_notification: "1 notification"
       multiple_notifications: "Powiadomienia: %{notifCount}"
       no_unread_notifications: "Nie masz żadnych nieprzeczytanych powiadomień. Odwiedź platformę, aby wnieść swój wkład i wygenerować nowe powiadomienia!"
