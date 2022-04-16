@@ -171,7 +171,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "Wymagany jest budżet minimalny",
   "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Opcja",
   "app.components.app.containers.AdminPage.ProjectEdit.projectTerm": "Projekt",
-  "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Zagadnienie",
+  "app.components.app.containers.AdminPage.ProjectEdit.questionTerm": "Pytanie",
   "app.containers.Admin.Campaigns.campaignFrom": "Od:",
   "app.containers.Admin.Campaigns.campaignTo": "Do:",
   "app.containers.Admin.Campaigns.deliveryStatus_accepted": "Przyjęte",
