@@ -1000,7 +1000,19 @@
             }
           }
         }
-      }
+      },
+
+      "representativeness": {
+        "type": "object",
+        "title": "Representativeness (experimental)",
+        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
     },
   "dependencies": {
     "typeform_surveys": ["surveys"],
