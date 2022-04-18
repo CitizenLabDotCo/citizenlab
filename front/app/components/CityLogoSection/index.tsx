@@ -75,7 +75,7 @@ const CityLogoSection = ({
                 {tenantImage}
               </LogoLink>
             ) : (
-              { tenantImage }
+              tenantImage
             )}
           </Container>
         </Fragment>

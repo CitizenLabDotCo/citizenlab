@@ -16,6 +16,10 @@ import { UploadFile } from 'typings';
 
 // craft
 import { useNode } from '@craftjs/core';
+import messages from '../../../messages';
+
+// intl
+import { injectIntl } from 'utils/cl-intl';
 
 const Image = ({
   imageUrl,
@@ -44,7 +48,7 @@ const Image = ({
   );
 };
 
-const ImageSettings = () => {
+const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   const [imageFiles, setImageFiles] = useState<UploadFile[]>([]);
   const {
     actions: { setProp },
@@ -113,14 +117,18 @@ const ImageSettings = () => {
           value={alt}
           label={
             <span>
-              label <IconTooltip icon="info3" content="info" />
+              {formatMessage(messages.imageAltTextLabel)}{' '}
+              <IconTooltip
+                icon="info3"
+                content={formatMessage(messages.imageAltTextTooltip)}
+              />
             </span>
           }
         />
       )}
     </Box>
   );
-};
+});
 
 Image.craft = {
   props: {
