@@ -85,7 +85,7 @@
     "leaflet-active-area": "1.2.1",
     "leaflet.markercluster": "1.5.3",
     "lodash-es": "4.17.21",
-    "moment": "2.29.1",
+    "moment": "2.29.2",
     "moment-timezone": "0.5.34",
     "path-to-regexp": "6.2.0",
     "polished": "^4.1.3",
