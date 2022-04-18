@@ -1,11 +1,12 @@
 import React from 'react';
+
+// hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-interface Props {
-  children?: React.ReactNode;
-}
+// components
+import { GraphsContainer, ControlBar } from 'components/admin/GraphWrappers';
 
-export default ({ children }: Props) => {
+export default () => {
   const customFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
   const representativenessActive = useFeatureFlag({
     name: 'representativeness',
@@ -15,5 +16,11 @@ export default ({ children }: Props) => {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <ControlBar>TEST</ControlBar>
+
+      <GraphsContainer>TEST 2</GraphsContainer>
+    </>
+  );
 };
