@@ -2,7 +2,6 @@ import React from 'react';
 
 // components
 import { Title, Box, Text } from '@citizenlab/cl2-component-library';
-import Link from 'utils/cl-router/Link';
 
 // i18n
 import messages from './messages';
@@ -20,14 +19,14 @@ const Header = () => {
             {...messages.pageDescription}
             values={{
               representativenessArticleLink: (
-                <Link
-                  to="https://en.wikipedia.org/wiki/Chi-squared_test"
+                <a
+                  href="https://en.wikipedia.org/wiki/Chi-squared_test"
                   target="_blank"
                 >
                   <FormattedMessage
                     {...messages.representativenessArticleLink}
                   />
-                </Link>
+                </a>
               ),
             }}
           />
