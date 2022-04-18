@@ -292,8 +292,8 @@ namespace :cl2_back do
           monthly_sms_segments_limit: 100_000
         },
         representativeness: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         }
       }
     )
