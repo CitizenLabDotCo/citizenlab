@@ -15,10 +15,5 @@ export default ({ children }: Props) => {
     return null;
   }
 
-  return (
-    <>
-      TEST
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
