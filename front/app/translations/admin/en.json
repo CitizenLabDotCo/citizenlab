@@ -606,6 +606,7 @@
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Discover what's happening on your platform.",
   "app.containers.AdminPage.DashboardPage.tabMap": "Map",
   "app.containers.AdminPage.DashboardPage.tabReports": "Reports",
+  "app.containers.AdminPage.DashboardPage.tabRepresentativeness": "Representativeness",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Summary",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Users",
   "app.containers.AdminPage.DashboardPage.thenLoadingMessage": "Fun Fact: it will probably be way faster the next time you come here!",
