@@ -14,4 +14,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.representativeness.representativenessArticleLink',
     defaultMessage: 'here',
   },
+  projectSelectLabel: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.projectSelectLabel',
+    defaultMessage: 'Project',
+  },
+  userGroupSelectLabel: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.userGroupSelectLabel',
+    defaultMessage: 'User group',
+  },
 });
