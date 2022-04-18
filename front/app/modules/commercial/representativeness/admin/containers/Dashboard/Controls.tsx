@@ -4,7 +4,7 @@ import React from 'react';
 import useAdminPublications from 'hooks/useAdminPublications';
 import useLocalize from 'hooks/useLocalize';
 
-// resouces
+// resources
 import GetGroups, { GroupsListState } from 'resources/GetGroups';
 
 // components
