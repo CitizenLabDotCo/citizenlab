@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Netwerk",
   "app.containers.Admin.Insights.Details.networkError": "Er ging iets mis bij het creëren van je visualisatie. Probeer eerst je pagina te refreshen. Laat je gegevens {link} na en we nemen contact met je op.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "hier",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Overzicht kernwoorden",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Dit overzicht toont de meest populaire trefwoorden gevonden in dit project. Meer informatie vind je {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "hier",
