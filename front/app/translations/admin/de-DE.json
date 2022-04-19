@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Netzwerk",
   "app.containers.Admin.Insights.Details.networkError": "Beim Versuch, Ihre Visualisierung zu erstellen, ist etwas schief gelaufen. Hinterlassen Sie Ihre Daten {link} und wir melden uns bei Ihnen.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "hier",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Übersicht Schlagwörter",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Diese Karte zeigt die beliebtesten Schlagwörter, die in diesem Projekt gefunden wurden. Weitere Informationen {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "hier",
