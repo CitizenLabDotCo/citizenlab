@@ -48,8 +48,7 @@ describe('Admin: add project and edit description', () => {
       cy.get('*[class^="ContentBuilderToggle__StyledLink"]').click();
 
       // Drag and drop components into the page
-      cy.get('#toolbox-item-Text').drag('#ROOT');
-      cy.get('#toolbox-item-Text').drop();
+      cy.get('#toolbox-item-Text').dragAndDrop('#content-builder-frame');
     });
   });
 });

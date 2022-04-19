@@ -22,6 +22,40 @@ declare global {
   }
 }
 
+export interface DropOptions {
+  position: 'right' | 'left' | 'right' | 'above' | 'below' | 'inside';
+}
+
+/**
+ * Get either the 'success' or 'error' drop indicator
+ * Use the indicatorColors parameter when you have overwritten the indicator colors
+ * @example cy.getDropIndicator('success')
+ */
+Cypress.Commands.add(
+  'getDropIndicator',
+  (
+    indicator: 'error' | 'success',
+    indicatorColors: Record<'error' | 'success', string> = {
+      error: 'red',
+      success: 'rgb(98, 196, 98)',
+    }
+  ) => {
+    // in some cases rendering the indicator is slower than cypress, so we have to add a short wait
+    cy.wait(250);
+
+    return cy.get('div').filter((index, element) => {
+      return (
+        // the next.js render indicator shares some of the styles but additionally has an id
+        element.id === '' &&
+        element.classList.length === 0 &&
+        element.style.position === 'fixed' &&
+        element.style.zIndex === '99999' &&
+        element.style.backgroundColor === indicatorColors[indicator]
+      );
+    });
+  }
+);
+
 class DummyDataTransfer {
   data = {};
 
@@ -180,5 +214,26 @@ Cypress.Commands.add(
         });
       }
     });
+  }
+);
+
+/**
+ * Use this command to drop a component that has previously been dragged with the command `dragOver`
+ *
+ * If you just want to drag and drop a component use the `dragAndDrop` command instead.
+ *  
+ * @example ```
+ *  cy.get('source').dragOver('target');
+ *  cy.get('source').drop();
+ * ```
+
+ */
+Cypress.Commands.add(
+  'drop',
+  {
+    prevSubject: true,
+  },
+  (subject) => {
+    cy.get(subject).trigger('dragend', { force: true });
   }
 );
