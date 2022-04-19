@@ -1,12 +1,16 @@
 import {
   Mapping as ConvertedMapping,
   BarProps as ConvertedBarProps,
+  DataRow,
 } from 'components/admin/Graphs/MultiBarChart/utils';
 
 // MAPPING
+type MappingFunction = (row: DataRow) => string;
+type Fill = string | MappingFunction;
+
 export interface Mapping {
   length?: string;
-  fill?: string;
+  fill?: Fill;
 }
 
 export const convertMapping = (mapping?: Mapping): ConvertedMapping => {
@@ -18,7 +22,7 @@ export const convertMapping = (mapping?: Mapping): ConvertedMapping => {
 
   return {
     length: wrapIfAvailable(mapping.length) ?? ['value'],
-    fill: wrapIfAvailable(mapping.fill),
+    fill: convertFill(mapping.fill),
   };
 };
 
@@ -50,3 +54,8 @@ export const convertBarProps = (
 // UTILS
 const wrapIfAvailable = <T>(value?: T): T[] | undefined =>
   value ? [value] : undefined;
+
+const convertFill = (fill?: Fill) =>
+  fill instanceof Function
+    ? (row: DataRow) => [fill(row)]
+    : wrapIfAvailable(fill);

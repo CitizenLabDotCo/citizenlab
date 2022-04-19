@@ -100,6 +100,27 @@ describe('<BarChart />', () => {
       expect(bars[1]).toHaveAttribute('color', 'blue');
       expect(bars[2]).toHaveAttribute('color', 'green');
     });
+
+    it('renders correctly when fill mapping is function', () => {
+      const { container } = render(
+        <BarChart
+          width={200}
+          height={250}
+          mapping={{
+            fill: (row) => (row.name === 'a' ? 'green' : 'orange'),
+          }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(3);
+
+      expect(bars[0]).toHaveAttribute('fill', 'green');
+      expect(bars[1]).toHaveAttribute('fill', 'orange');
+      expect(bars[2]).toHaveAttribute('fill', 'orange');
+    });
   });
 
   describe('Horizontal layout', () => {

@@ -1,5 +1,5 @@
 // DATA
-type DataRow = { name: string; [key: string]: any };
+export type DataRow = { name: string; [key: string]: any };
 export type Data = DataRow[];
 
 // MAPPING
