@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Network",
   "app.containers.Admin.Insights.Details.networkError": "Something went wrong. Try to refresh your page first. Leave your details {link} and we’ll get back to you.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "här",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Keywords map",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "This map shows the most popular keywords found in this project. More information {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "här",
