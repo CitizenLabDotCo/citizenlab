@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Attaveqaatit",
   "app.containers.Admin.Insights.Details.networkError": "Ajortoqarpoq Qupperneq misilillugu nutarteruk. Paasissutissat ilinnut tunngasut tunniutikkit {link}, taava uterfigineqarumaarputit.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "uani",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Oqaatsimut najoqqutassamut allattuiffik",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Allattuiffiup takutippai suliniummi uani oqaatsit najoqqutassat nuannarineqarnerpaat. Suli paasissutissat {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "uani",
