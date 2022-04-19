@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Réseau",
   "app.containers.Admin.Insights.Details.networkError": "Quelque chose s'est mal passé lors de la création de votre visualisation. Essayez d'abord de rafraîchir votre page. Laissez vos coordonnées {link} et nous vous contacterons.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "ici",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Aperçu des mots clés",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Cette aperçu montre les mots-clés les plus populaires trouvés dans ce projet. Plus d'informations {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "ici",
