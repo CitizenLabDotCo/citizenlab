@@ -119,6 +119,32 @@ describe('<MultiBarChart />', () => {
       expect(bars[4]).toHaveAttribute('fill', 'green');
       expect(bars[5]).toHaveAttribute('fill', 'red');
     });
+
+    it('renders correctly when fill mapping is function', () => {
+      const { container } = render(
+        <MultiBarChart
+          width={200}
+          height={250}
+          mapping={{
+            length: ['value1', 'value2'],
+            fill: (row) =>
+              row.name === 'a' ? ['red', 'blue'] : ['green', 'orange'],
+          }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(6);
+
+      expect(bars[0]).toHaveAttribute('fill', 'red');
+      expect(bars[1]).toHaveAttribute('fill', 'green');
+      expect(bars[2]).toHaveAttribute('fill', 'green');
+      expect(bars[3]).toHaveAttribute('fill', 'blue');
+      expect(bars[4]).toHaveAttribute('fill', 'orange');
+      expect(bars[5]).toHaveAttribute('fill', 'orange');
+    });
   });
 
   describe('Horizontal layout', () => {

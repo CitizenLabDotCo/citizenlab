@@ -25,6 +25,7 @@ import {
   BarProps,
   getRechartsLayout,
   Mapping,
+  getFill,
   Data,
   Layout,
   AxisProps,
@@ -140,7 +141,7 @@ const BarChart = ({
               data.map((row, fillIndex) => (
                 <Cell
                   key={`cell-${index}-${fillIndex}`}
-                  fill={row[fill[index]] || parallelBarProps.fill}
+                  fill={getFill(row, fill, index) || parallelBarProps.fill}
                 />
               ))}
           </Bar>

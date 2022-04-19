@@ -1,11 +1,20 @@
 // DATA
-export type Data = { name: string; [key: string]: any }[];
+type DataRow = { name: string; [key: string]: any };
+export type Data = DataRow[];
 
 // MAPPING
+type MappingFunction = (row: DataRow) => string[];
+type Fill = string[] | MappingFunction;
+
 export interface Mapping {
   length: string[];
-  fill?: string[];
+  fill?: Fill;
 }
+
+export const getFill = (row: DataRow, fill: Fill, index: number) => {
+  if (fill instanceof Array) return row[fill[index]];
+  if (fill instanceof Function) return fill(row)[index];
+};
 
 // BARS
 export interface BarProps {
