@@ -103,6 +103,16 @@ class IdeasFinder < ApplicationFinder
     return unless location_required
     @records.where.not(location_point: nil)
   end
+
+  def filter_can_moderate_condition(can_moderate)
+    return unless current_user && can_moderate
+
+    where(project: user_role_service.moderatable_projects(current_user, Project))
+  end
+
+  def user_role_service
+    @user_role_service ||= UserRoleService.new
+  end
 end
 
 IdeasFinder.include_if_ee('IdeaAssignment::Extensions::IdeasFinder')

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeasFinder do
-  subject(:result) { described_class.find(params, **options) }
+  subject(:result) { described_class.new(params, **options) }
 
   let(:params) { {} }
   let(:options) { {} }
@@ -497,6 +497,26 @@ describe IdeasFinder do
 
     it 'is successful' do
       expect(result).to be_a_success
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
+  describe '#filter_can_moderate_condition' do
+    let(:user_role_service) { result.send(:user_role_service) }
+    let(:project_ids) { [Project.first.id] }
+    let(:expected_record_ids) { Idea.where(project_id: project_ids).pluck(:id) }
+
+    before do
+      params[:filter_can_moderate] = true
+      allow(user_role_service).to receive(
+        :can_moderate?
+      ).with(
+        layout.content_buildable,
+        user
+      ).and_return can_moderate
     end
 
     it 'returns the correct records' do

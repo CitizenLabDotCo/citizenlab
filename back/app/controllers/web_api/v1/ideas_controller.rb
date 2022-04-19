@@ -9,6 +9,8 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
+    params['moderator'] = current_user if params[:filter_can_moderate]
+
     @result = IdeasFinder.find(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
