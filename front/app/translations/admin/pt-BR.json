@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Rede",
   "app.containers.Admin.Insights.Details.networkError": "Alguma coisa deu errado. Tente atualizar a sua página primeiro. Deixe os seus dados {link} e nós entraremos em contato.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "aqui",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Mapa de palavras-chave",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Este mapa mostra as palavras-chave mais populares encontradas neste projeto. Mais informações {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "aqui",
