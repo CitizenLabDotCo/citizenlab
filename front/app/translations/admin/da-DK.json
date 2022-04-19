@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Netværk",
   "app.containers.Admin.Insights.Details.networkError": "Noget gik galt. Prøv først at opdatere din side. Efterlad dine information {link}, så vender vi tilbage til dig.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "her",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Nøgleords kort",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Dette kort viser de mest populære søgeord, der er fundet i dette projekt. Flere oplysninger {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "her",
