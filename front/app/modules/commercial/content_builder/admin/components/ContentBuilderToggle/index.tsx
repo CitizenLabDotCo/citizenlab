@@ -111,6 +111,7 @@ const ContentBuilderToggle = ({
       {!isNil(contentBuilderLayout) && (
         <Box display="flex" gap="12px">
           <StyledToggle
+            id="toggle-enable-content-builder"
             checked={!!contentBuilderLinkVisible}
             label={formatMessage(messages.toggleLabel)}
             onChange={toggleContentBuilderLinkVisible}

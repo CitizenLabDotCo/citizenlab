@@ -1,0 +1,55 @@
+import { randomString } from '../../../support/commands';
+
+const projectTitleEN = randomString();
+const projectTitleNLBE = randomString();
+const projectTitleNLNL = randomString();
+const projectTitleFRBE = randomString();
+
+describe('Admin: add project and edit description', () => {
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
+  it('creates a draft project', () => {
+    cy.visit('/admin/projects/');
+    cy.get('.e2e-create-project-expand-collapse-button').click();
+    cy.wait(1000);
+    cy.get('.e2e-create-project-tabs .last').click();
+    cy.wait(1000);
+    cy.get('.e2e-project-general-form');
+
+    // Select 'Draft' publication status
+    cy.get('.e2e-projecstatus-draft').click();
+
+    // Type random project titles for these required fields
+    cy.get('#project-title').type(projectTitleEN);
+    cy.get('.e2e-localeswitcher.nl-BE').click();
+    cy.get('#project-title').type(projectTitleNLBE);
+    cy.get('.e2e-localeswitcher.nl-NL').click();
+    cy.get('#project-title').type(projectTitleNLNL);
+    cy.get('.e2e-localeswitcher.fr-BE').click();
+    cy.get('#project-title').type(projectTitleFRBE);
+
+    // Submit project
+    cy.get('.e2e-submit-wrapper-button').click();
+
+    cy.wait(2000);
+
+    // Project should appear on top of the Published projects
+    cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
+  });
+  it('edits project description in content builder', () => {
+    cy.url().then((url) => {
+      const baseUrl = url.substring(0, url.lastIndexOf('/') + 1);
+      cy.visit(`${baseUrl}description`);
+      cy.get('[id$=toggle-enable-content-builder]')
+        .find('input')
+        .click({ force: true });
+      cy.get('*[class^="ContentBuilderToggle__StyledLink"]').click();
+
+      // Drag and drop components into the page
+      cy.get('#toolbox-item-Text').drag('#ROOT');
+      cy.get('#toolbox-item-Text').drop();
+    });
+  });
+});

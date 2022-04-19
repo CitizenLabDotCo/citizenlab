@@ -99,6 +99,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           )}
         </Box>
         <Button
+          id="contentBuilderTopBarSaveButton"
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}
