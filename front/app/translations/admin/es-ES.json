@@ -216,7 +216,7 @@
   "app.containers.Admin.Insights.Details.network": "Red",
   "app.containers.Admin.Insights.Details.networkError": "Algo ha ido mal al intentar crear tu visualización. Intenta actualizar tu página primero. Envíanos tus datos en {link} y nos pondremos en contacto contigo.",
   "app.containers.Admin.Insights.Details.networkErrorLink": "aquí",
-  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd\"",
+  "app.containers.Admin.Insights.Details.networkErrorLinkUrl": "https://citizenlabco.typeform.com/to/V2cPZ0rd",
   "app.containers.Admin.Insights.Details.networkTitle": "Mapa de palabras clave",
   "app.containers.Admin.Insights.Details.networkTitleTooltip": "Este mapa muestra las palabras clave más populares encontradas en este proyecto. Más información {link}.",
   "app.containers.Admin.Insights.Details.networkTitleTooltipLink": "aquí",
