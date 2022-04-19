@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent } from 'react';
+import React, { useRef, PureComponent } from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // resource
@@ -24,26 +24,8 @@ import {
 import { IResolution } from 'components/admin/ResolutionControl';
 import { Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
-
 import BarChart from 'components/admin/Graphs/BarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
-
-const SHiddenLabel = styled(HiddenLabel)`
-  flex: 1;
-  margin-right: 15px;
-  @media (max-width: 1300px) {
-    width: 100%;
-  }
-`;
-
-const GraphCardTitle = styled.h3`
-  margin: 0;
-  margin-right: 15px;
-
-  ${media.smallerThan1280px`
-    margin-bottom: 15px;
-  `}
-`;
 
 // typings
 import {
@@ -63,6 +45,23 @@ import {
 import { IStreamParams, IStream } from 'utils/streams';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
+
+const SHiddenLabel = styled(HiddenLabel)`
+  flex: 1;
+  margin-right: 15px;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
+`;
+
+const GraphCardTitle = styled.h3`
+  margin: 0;
+  margin-right: 15px;
+
+  ${media.smallerThan1280px`
+    margin-bottom: 15px;
+  `}
+`;
 
 interface DataProps {
   serie: IGraphFormat;
@@ -105,6 +104,36 @@ interface InputProps extends QueryProps {
 }
 
 interface Props extends InputProps, DataProps {}
+
+const RESOURCE_MESSAGES: Record<
+  IResource,
+  ReactIntl.FormattedMessage.MessageDescriptor
+> = {
+  ideas: messages.inputs,
+  comments: messages.comments,
+  votes: messages.votes,
+};
+
+const _SelectableResourceChart = ({
+  className,
+  onResourceByXChange,
+  currentSelectedResource,
+  resourceOptions,
+  intl: { formatMessage },
+  currentFilter,
+  byWhat,
+  convertSerie,
+  serie,
+}: Props & InjectedIntlProps) => {
+  const currentChart = useRef();
+  const { barSize }: any = useTheme();
+
+  const selectedResourceName = formatMessage(
+    RESOURCE_MESSAGES[currentSelectedResource]
+  );
+
+  return <></>;
+};
 
 class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
   currentChart: React.RefObject<any>;
