@@ -6,11 +6,11 @@ import { Editor as CraftEditor } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-
 import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
+import Image from '../CraftComponents/Image';
 import RenderNode from '../RenderNode';
 
 type EditorProps = {
@@ -20,7 +20,7 @@ type EditorProps = {
 const Editor: React.FC<EditorProps> = ({ isPreview, children }) => {
   return (
     <CraftEditor
-      resolver={{ Box, Container, TwoColumn, ThreeColumn, Text }}
+      resolver={{ Box, Container, TwoColumn, ThreeColumn, Text, Image }}
       onRender={isPreview ? undefined : RenderNode}
     >
       {children}

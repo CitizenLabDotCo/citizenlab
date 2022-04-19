@@ -71,7 +71,7 @@ resource 'StaticPages' do
       let(:body_multiloc) { page.body_multiloc }
 
       example_request 'Create a static page' do
-        expect(response_status).to eq 201
+        assert_status 201
 
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match page.title_multiloc
         expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match page.body_multiloc
@@ -82,8 +82,8 @@ resource 'StaticPages' do
         let(:slug) { '' }
 
         example_request '[error] Create an invalid static page', document: false do
-          expect(response_status).to eq 422
-          expect(json_response.dig(:errors, :slug)).to eq [{ error: 'blank' }]
+          assert_status 422
+          expect(json_response).to include_response_error(:slug, 'blank')
         end
       end
     end
@@ -113,7 +113,7 @@ resource 'StaticPages' do
       let(:id) { page.id }
 
       example_request 'Delete a static page' do
-        expect(response_status).to eq 200
+        assert_status 200
         expect { page.reload }.to raise_error ActiveRecord::RecordNotFound
       end
     end

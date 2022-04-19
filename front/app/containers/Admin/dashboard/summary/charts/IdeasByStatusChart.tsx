@@ -18,7 +18,8 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Tooltip, LabelList } from 'recharts';
 
 // resources
@@ -91,7 +92,7 @@ export class IdeasByStatusChart extends React.PureComponent<
             data={sortedByValue}
             layout="horizontal"
             innerRef={this.currentChart}
-            margin={DEFAULT_MARGIN}
+            margin={DEFAULT_BAR_CHART_MARGIN}
             mapping={{ fill: 'color' }}
             bars={{
               name: unitName,

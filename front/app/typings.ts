@@ -167,7 +167,7 @@ export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type IGraphPoint = {
   name: string;
   value: number;
-  code: string;
+  code?: string;
   color?: string;
   ordering?: number;
 };

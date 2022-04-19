@@ -14,6 +14,7 @@ import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
+import Image from '../CraftComponents/Image';
 
 // Intl
 import messages from '../../messages';
@@ -83,6 +84,17 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem icon="text" label={formatMessage(messages.text)} />
+      </DraggableElement>
+      <DraggableElement
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element canvas is={Image} id="image" alt="" />
+          )
+        }
+      >
+        <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>
     </Box>
   );

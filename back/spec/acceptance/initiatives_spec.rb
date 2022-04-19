@@ -202,7 +202,7 @@ resource "Initiatives" do
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
     example_request "XLSX export" do
-      expect(status).to eq 200
+      assert_status 200
     end
 
     describe do
@@ -212,7 +212,7 @@ resource "Initiatives" do
       let(:initiatives) { @selected_initiatives.map(&:id) }
       
       example_request 'XLSX export by initiative ids' do
-        expect(status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq (@selected_initiatives.size + 1)
       end
@@ -262,7 +262,7 @@ resource "Initiatives" do
     parameter :publication_status, "Return only initiatives with the specified publication status; returns all pusblished initiatives by default", required: false
 
     example_request "List initiative counts per filter option" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
 
       expect(json_response[:initiative_status_id][@s1.id.to_sym]).to eq 1
@@ -276,12 +276,12 @@ resource "Initiatives" do
 
     example "List initiative counts per filter option on topic" do
       do_request topics: [@t1.id]
-      expect(status).to eq 200
+      assert_status 200
     end
 
     example "List initiative counts per filter option on area" do
       do_request areas: [@a1.id]
-      expect(status).to eq 200
+      assert_status 200
     end
   end
 
@@ -290,7 +290,7 @@ resource "Initiatives" do
     let(:id) {initiative.id}
 
     example_request "Get one initiative by id" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq initiative.id
     end
@@ -300,7 +300,7 @@ resource "Initiatives" do
     let(:slug) {@initiatives.first.slug}
 
     example_request "Get one initiative by slug" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @initiatives.first.id
     end
@@ -310,7 +310,7 @@ resource "Initiatives" do
 
       example "[error] Get an unexisting initiative", document: false do
         do_request
-        expect(status).to eq 404
+        assert_status 404
       end
     end
   end
@@ -340,7 +340,7 @@ resource "Initiatives" do
     let(:body_multiloc) { initiative.body_multiloc }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
     let(:location_description) { "Stanley Road 4" }
-    let(:header_bg) { encode_image_as_base64("header.jpg")}
+    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:assignee_id) { create(:admin).id }
@@ -352,7 +352,7 @@ resource "Initiatives" do
       end
 
       example_request "Create an initiative" do
-        expect(response_status).to eq 201
+        assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
@@ -389,13 +389,13 @@ resource "Initiatives" do
 
       example '[error] Not authorized to create an initiative', document: false do
         do_request
-        expect(response_status).to eq 401
+        assert_status 401
       end
 
       example 'Create an initiative (group permission)' do
         group.add_member(@user).save!
         do_request
-        expect(response_status).to eq 201
+        assert_status 201
       end
     end
 
@@ -405,7 +405,7 @@ resource "Initiatives" do
       let(:location_description) {'fu'+'ck'}
 
       example_request "[error] Create an initiative with blocked words" do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
         expect(blocked_error).to be_present
@@ -437,7 +437,7 @@ resource "Initiatives" do
     let(:id) { @initiative.id }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
     let(:location_description) { "Watkins Road 8" }
-    let(:header_bg) { encode_image_as_base64("header.jpg")}
+    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
 
@@ -469,7 +469,8 @@ resource "Initiatives" do
 
     describe do
       let(:id) { @initiative.id }
-      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+
       example "The header image can be updated and the file is present", document: false do
         do_request
         expect(@initiative.reload.header_bg_url).to be_present
@@ -480,7 +481,7 @@ resource "Initiatives" do
     describe do
       let(:id) { @initiative.id }
       example "The header image can be removed" do
-        @initiative.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
+        @initiative.update!(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
         expect(@initiative.reload.header_bg_url).to be_present
         do_request initiative: {header_bg: nil}
         expect(@initiative.reload.header_bg_url).to be nil
@@ -516,7 +517,7 @@ resource "Initiatives" do
 
   patch "web_api/v1/initiatives/:id" do
     before do
-      @initiative =  create(:initiative, author: @user, publication_status: 'draft')
+      @initiative = create(:initiative, author: @user, publication_status: 'draft')
     end
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :initiative
     
@@ -558,7 +559,7 @@ resource "Initiatives" do
     let(:id) { @initiative.id }
 
     example_request "Allowed transitions" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response).to eq ({
         **InitiativeStatus.where(code: 'answered').ids.map{ |id|
@@ -570,9 +571,4 @@ resource "Initiatives" do
       })
     end
   end
-
-end
-
-def encode_image_as_base64 filename
-  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
 end

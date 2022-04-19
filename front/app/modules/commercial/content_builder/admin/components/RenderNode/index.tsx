@@ -18,12 +18,14 @@ const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
 const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
+const IMAGE = 'Image';
 
 type ComponentNamesType =
   | typeof CONTAINER
   | typeof TWO_COLUMNS
   | typeof THREE_COLUMNS
-  | typeof TEXT;
+  | typeof TEXT
+  | typeof IMAGE;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -35,6 +37,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.threeColumn;
     case TEXT:
       return messages.text;
+    case IMAGE:
+      return messages.image;
   }
 };
 
