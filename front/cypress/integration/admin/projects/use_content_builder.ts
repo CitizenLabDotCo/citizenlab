@@ -32,11 +32,7 @@ describe('Admin: add project and edit description', () => {
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button').click();
-
-    cy.wait(2000);
-
-    // Project should appear on top of the Published projects
-    cy.get('#e2e-admin-projects-list-unsortable').contains(projectTitleEN);
+    cy.wait(4000);
   });
   it('edits project description in content builder', () => {
     cy.url().then((url) => {
@@ -48,7 +44,9 @@ describe('Admin: add project and edit description', () => {
       cy.get('*[class^="ContentBuilderToggle__StyledLink"]').click();
 
       // Drag and drop components into the page
-      cy.get('#toolbox-item-Text').dragAndDrop('#content-builder-frame');
+      cy.get('#draggable-text').dragAndDrop('#content-builder-frame', {
+        position: 'inside',
+      });
     });
   });
 });

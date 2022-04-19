@@ -136,7 +136,6 @@
     "whatwg-fetch": "3.6.2"
   },
   "devDependencies": {
-    "@4tw/cypress-drag-drop": "^2.1.0",
     "@babel/cli": "7.x",
     "@babel/core": "7.x",
     "@babel/node": "7.x",
