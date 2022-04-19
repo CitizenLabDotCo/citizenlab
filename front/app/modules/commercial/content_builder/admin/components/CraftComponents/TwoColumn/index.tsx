@@ -35,14 +35,10 @@ const TwoColumn: UserComponent = ({ columnLayout }) => {
       w="100%"
       gap="4px"
     >
-      <Box
-        flex={columnLayout === '1-1' ? '1' : columnLayout === '1-2' ? '1' : '2'}
-      >
+      <Box flex={columnLayout === '2-1' ? '2' : '1'}>
         <Element id="column1" is={Container} canvas />
       </Box>
-      <Box
-        flex={columnLayout === '1-1' ? '1' : columnLayout === '1-2' ? '2' : '1'}
-      >
+      <Box flex={columnLayout === '1-2' ? '2' : '1'}>
         <Element id="column2" is={Container} canvas />
       </Box>
     </Box>
@@ -58,7 +54,7 @@ const TwoColumnSettings = () => {
   }));
 
   return (
-    <Box mt="-30px" mb="30px">
+    <Box mb="30px">
       <Title variant="h4" as="h3">
         <FormattedMessage {...messages.columnLayoutRadioLabel} />
       </Title>
@@ -71,6 +67,8 @@ const TwoColumnSettings = () => {
         value={'1-1'}
         label={
           <Icon
+            title={<FormattedMessage {...messages.twoEvenColumn} />}
+            ariaHidden={false}
             width="20px"
             height="20px"
             fill={colors.adminTextColor}
@@ -90,6 +88,8 @@ const TwoColumnSettings = () => {
         value="2-1"
         label={
           <Icon
+            title={<FormattedMessage {...messages.twoColumnVariant2and1} />}
+            ariaHidden={false}
             width="20px"
             height="20px"
             fill={colors.adminTextColor}
@@ -108,6 +108,8 @@ const TwoColumnSettings = () => {
         value="1-2"
         label={
           <Icon
+            title={<FormattedMessage {...messages.twoColumnVariant1and2} />}
+            ariaHidden={false}
             width="20px"
             height="20px"
             fill={colors.adminTextColor}

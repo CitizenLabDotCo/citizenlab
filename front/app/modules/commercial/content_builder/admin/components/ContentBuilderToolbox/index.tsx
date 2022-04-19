@@ -64,7 +64,7 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem
-          icon="column2"
+          icon="column3"
           label={formatMessage(messages.threeColumn)}
         />
       </DraggableElement>
