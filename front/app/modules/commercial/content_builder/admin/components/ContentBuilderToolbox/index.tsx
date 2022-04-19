@@ -79,7 +79,7 @@ const ContentBuilderToolbox = ({
           )
         }
       >
-        <ToolboxItem icon="text" label={formatMessage(messages.image)} />
+        <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>
     </Box>
   );
