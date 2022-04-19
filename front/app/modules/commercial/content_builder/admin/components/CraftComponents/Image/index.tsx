@@ -30,12 +30,8 @@ const Image = ({
   alt: string;
   dataCode?: string;
 }) => {
-  const {
-    connectors: { connect, drag },
-  } = useNode();
-
   return (
-    <Box minHeight="26px" ref={(ref: any) => connect(drag(ref))}>
+    <Box minHeight="26px">
       {imageUrl && (
         <ImageComponent
           width="100%"
