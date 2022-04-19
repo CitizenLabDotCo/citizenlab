@@ -59,7 +59,12 @@ const RenderNode = ({ render }) => {
     isDeletable: id && query.node(id).isDeletable(),
   }));
 
-  const { id, name, isHover } = useNode((node) => ({
+  const {
+    id,
+    name,
+    isHover,
+    connectors: { connect, drag },
+  } = useNode((node) => ({
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
   }));
@@ -103,6 +108,7 @@ const RenderNode = ({ render }) => {
 
   return (
     <StyledBox
+      ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
       border={`1px ${

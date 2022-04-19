@@ -22,6 +22,7 @@ const Editor: React.FC<EditorProps> = ({ isPreview, children }) => {
     <CraftEditor
       resolver={{ Box, Container, TwoColumn, ThreeColumn, Text, Image }}
       onRender={isPreview ? undefined : RenderNode}
+      enabled={isPreview ? false : true}
     >
       {children}
     </CraftEditor>

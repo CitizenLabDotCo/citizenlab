@@ -45,11 +45,9 @@ const ContentBuilderSettings = () => {
 
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
-      <Box pb="20px">
-        <Title variant="h2">
-          <FormattedMessage {...getComponentNameMessage(selected.name)} />
-        </Title>
-      </Box>
+      <Title variant="h2">
+        <FormattedMessage {...getComponentNameMessage(selected.name)} />
+      </Title>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
         <Box display="flex">
