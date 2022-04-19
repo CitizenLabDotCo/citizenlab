@@ -51,7 +51,7 @@ resource "Stats - Votes" do
 
     example "Count all votes" do
       do_request
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:up)).to eq 3
       expect(json_response.dig(:down)).to eq 2
@@ -88,7 +88,7 @@ resource "Stats - Votes" do
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by birthyear" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
@@ -121,7 +121,7 @@ resource "Stats - Votes" do
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by domicile" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
@@ -152,7 +152,7 @@ resource "Stats - Votes" do
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by education" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
@@ -183,7 +183,7 @@ resource "Stats - Votes" do
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by gender" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
@@ -220,7 +220,7 @@ resource "Stats - Votes" do
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by custom field" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
@@ -255,7 +255,7 @@ resource "Stats - Votes" do
         let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
         example_request "Votes by time" do
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
             expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
@@ -272,7 +272,7 @@ resource "Stats - Votes" do
 
         it "returns no results" do
           do_request
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response).to match({
             series: {
@@ -298,7 +298,7 @@ resource "Stats - Votes" do
         let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
         example_request "Votes by time" do
-          expect(response_status).to eq 200
+          assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           aggregate_failures 'check worksheet contents' do
             expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
@@ -324,7 +324,7 @@ resource "Stats - Votes" do
 
         it "returns no results" do
           do_request
-          expect(response_status).to eq 422
+          assert_status 422
         end
       end
     end
@@ -341,7 +341,7 @@ resource "Stats - Votes" do
       let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
 
       example_request "Votes by time (cumulative)" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:up].values.last).to eq 4
         expect(json_response[:series][:down].values.last).to eq 2
@@ -374,7 +374,7 @@ resource "Stats - Votes" do
       let!(:vote4) { create(:vote, votable: idea3) }
 
       example_request "Votes by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].stringify_keys).to match({
           topic1.id => 3,
@@ -397,7 +397,7 @@ resource "Stats - Votes" do
       let(:project) { @project.id }
 
       example_request "Votes by topic filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 2
       end
@@ -416,7 +416,7 @@ resource "Stats - Votes" do
       let(:group) { @group.id }
 
       example_request "Votes by topic filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 2
       end
@@ -446,7 +446,7 @@ resource "Stats - Votes" do
       let!(:vote4) { create(:vote, votable: idea3) }
 
       example_request "Votes by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
 
@@ -473,7 +473,7 @@ resource "Stats - Votes" do
       let(:project) { @project.id }
 
       example_request "Votes by topic filtered by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
 
@@ -496,7 +496,7 @@ resource "Stats - Votes" do
       let(:group) { @group.id }
 
       example_request "Votes by topic filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
 
@@ -528,7 +528,7 @@ resource "Stats - Votes" do
       let!(:vote4) { create(:vote, votable: idea3) }
 
       example_request "Votes by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].stringify_keys).to match({
           project1.id => 3,
@@ -554,7 +554,7 @@ resource "Stats - Votes" do
       let(:topic) { @topic.id }
 
       example_request "Votes by project filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 1
       end
@@ -574,7 +574,7 @@ resource "Stats - Votes" do
       let(:group) { @group.id }
 
       example_request "Votes by project filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 1
       end
@@ -602,7 +602,7 @@ resource "Stats - Votes" do
       let!(:vote4) { create(:vote, votable: idea3) }
 
       example_request "Votes by project" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
 
@@ -632,7 +632,7 @@ resource "Stats - Votes" do
       let(:topic) { @topic.id }
 
       example_request "Votes by project filtered by topic" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
 
@@ -656,7 +656,7 @@ resource "Stats - Votes" do
       let(:group) { @group.id }
 
       example_request "Votes by project filtered by group" do
-        expect(response_status).to eq 200
+        assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
 

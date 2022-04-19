@@ -2,17 +2,47 @@
 
 ## Next release
 
-### Added
+### Changed
 
-- Added support for the Croatian language to the platform
+- Changed titles on the admin messaging page to accomodate both SMS and email campaigns
 - It's now possible to escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
 
 ### Fixed
 
-- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+- Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
+- Fixed accessibility issue regarding element order for screen readers in volunteer card
+- Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
+- Properly disable SMS create/edit button if the message is empty
+- In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
+
+## 2022-04-11
+
+### Added
+
+- Added support for the Croatian language to the platform
+
+### Fixed
+
+- Added additional areas of focus and outline to scroll-to links and buttons in editing Comments, Ideas display, and Events display for a11y compatability
 - Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
 - Fixed accessibility issue in modal window used to report a proposal as spam
 - Fixed accessibility contrast issue for social media buttons
+- Fixed accessibility issue regarding missing screen reader labels on text boxes
+- Fixed bug in idea form for missing Proposed Budget field even when enabled
+- Fixed accessibility issue in map ideas search
+- The widget no longer links to ideas with the wrong domain
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
+
+## 2022-04-01
+
+### Fixed
+
+- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
 
 ## 2022-04-04
 

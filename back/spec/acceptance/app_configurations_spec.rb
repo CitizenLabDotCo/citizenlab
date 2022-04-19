@@ -33,7 +33,7 @@ resource 'AppConfigurations' do
     end
 
     example_request 'Get the current configuration' do
-      expect(response_status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({}) if CitizenLab.ee?
@@ -79,9 +79,9 @@ resource 'AppConfigurations' do
 
     ValidationErrorHelper.new.error_fields(self, AppConfiguration)
 
-    let(:logo) { base64_encoded_image('logo.png', 'image/png') }
-    let(:header_bg) { base64_encoded_image('header.jpg', 'image/jpeg') }
-    let(:favicon) { base64_encoded_image('favicon.png', 'image/png') }
+    let(:logo) { png_image_as_base64 'logo.png' }
+    let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+    let(:favicon) { png_image_as_base64 'favicon.png' }
     let(:homepage_info_multiloc) do
       {
         'en' => 'Awesome homepage info'
@@ -105,7 +105,7 @@ resource 'AppConfigurations' do
     end
 
     example_request 'Update the app configuration' do
-      expect(response_status).to eq 200
+      assert_status 200
 
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :attributes, :settings, :core, :organization_name, :en)).to eq 'TestTown'
@@ -124,7 +124,7 @@ resource 'AppConfigurations' do
 
       example '[error] Updating the configuration with unsupported features fails', document: false do
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
       end
@@ -137,7 +137,7 @@ resource 'AppConfigurations' do
 
       example '[error] Updating the configuration with unsupported settings fails', document: false do
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :settings)).to be_present
       end
@@ -172,15 +172,5 @@ resource 'AppConfigurations' do
         expect(configuration.reload.favicon_url).to be nil
       end
     end
-  end
-
-  private
-
-  def base64_encoded_image(filename, mime)
-    "data:#{mime};base64,#{encode_image_as_base64(filename)}"
-  end
-
-  def encode_image_as_base64(filename)
-    Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))
   end
 end

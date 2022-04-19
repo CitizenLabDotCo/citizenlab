@@ -52,6 +52,10 @@ class UserRoleService
       scope.none
     end
   end
+
+  def moderates_something?(user)
+    user.admin?
+  end
 end
 
 UserRoleService.prepend_if_ee 'ProjectManagement::Patches::UserRoleService'

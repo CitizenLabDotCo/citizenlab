@@ -28,10 +28,8 @@ module UserCustomFields
     def json_forms_schema
       authorize :custom_field, policy_class: UserCustomFieldPolicy
       fields = CustomField.with_resource_type(@resource_type)
-      json_schema_multiloc = json_forms_service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)
-      ui_schema_multiloc = get_json_forms_ui_schema_multiloc(fields)
 
-      render json: { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
+      render json: ui_and_json_multiloc_schemas(fields, current_user)
     end
 
     def show
@@ -101,8 +99,8 @@ module UserCustomFields
       custom_field_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
     end
 
-    def get_json_forms_ui_schema_multiloc(fields)
-      json_forms_service.fields_to_ui_schema_multiloc(AppConfiguration.instance, fields)
+    def ui_and_json_multiloc_schemas(fields, current_user)
+      json_forms_service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, current_user)
     end
 
     def custom_field_service
