@@ -150,12 +150,10 @@ const getMapping = (
   fill: string,
   highlightFill: string,
   currentFilter?: string
-) => {
-  if (!currentFilter) return;
-  return {
-    fill: (row) => (row.name === currentFilter ? highlightFill : fill),
-  };
-};
+) =>
+  currentFilter
+    ? { fill: (row) => (row.name === currentFilter ? highlightFill : fill) }
+    : undefined;
 
 const SelectableResourceChart = ({
   className,
