@@ -146,19 +146,30 @@ const XLSX_ENDPOINTS_MAP: Record<string, string> = {
   votesProject: votesByProjectXlsxEndpoint,
 };
 
+const getMapping = (
+  fill: string,
+  highlightFill: string,
+  currentFilter?: string
+) => {
+  if (!currentFilter) return;
+  return {
+    fill: (row) => (row.name === currentFilter ? highlightFill : fill),
+  };
+};
+
 const SelectableResourceChart = ({
   className,
   onResourceByXChange,
   currentSelectedResource,
   resourceOptions,
-  // currentFilter,
+  currentFilter,
   byWhat,
   serie,
   intl: { formatMessage },
   ...reportExportMenuProps
 }: Props & InjectedIntlProps) => {
   const currentChart = useRef();
-  const { barSize }: any = useTheme();
+  const { barSize, newBarFill }: any = useTheme();
 
   const unitName = formatMessage(RESOURCE_MESSAGES[currentSelectedResource]);
 
@@ -197,6 +208,7 @@ const SelectableResourceChart = ({
           layout="horizontal"
           innerRef={currentChart}
           margin={DEFAULT_BAR_CHART_MARGIN}
+          mapping={getMapping(newBarFill, 'red', currentFilter)}
           bars={{ name: unitName, size: barSize }}
           yaxis={{ width: 150, tickLine: false }}
           renderLabels={(props) => <LabelList {...props} />}
