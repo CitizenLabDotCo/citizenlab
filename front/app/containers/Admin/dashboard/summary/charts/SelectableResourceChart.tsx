@@ -1,5 +1,4 @@
-// libraries
-import React, { useRef, PureComponent } from 'react';
+import React, { useRef } from 'react';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -7,10 +6,10 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import styled, { withTheme, useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-// resource
+// resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
@@ -46,6 +45,9 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
+
 const SHiddenLabel = styled(HiddenLabel)`
   flex: 1;
   margin-right: 15px;
@@ -64,7 +66,7 @@ const GraphCardTitle = styled.h3`
 `;
 
 interface DataProps {
-  serie: IGraphFormat;
+  serie: IGraphFormat | NilOrError;
 }
 
 type ISupportedData =
@@ -75,13 +77,15 @@ type ISupportedData =
   | IVotesByProject
   | ICommentsByProject;
 
+type ByWhat = 'Topic' | 'Project';
+
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
   stream: (streamParams?: IStreamParams | null) => IStream<ISupportedData>;
   convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | undefined;
-  byWhat: 'Topic' | 'Project';
+  byWhat: ByWhat;
   currentProjectFilter: string | undefined;
   currentGroupFilter: string | undefined;
   currentTopicFilter: string | undefined;
@@ -114,145 +118,102 @@ const RESOURCE_MESSAGES: Record<
   votes: messages.votes,
 };
 
-const _SelectableResourceChart = ({
+const TITLE_MESSAGES: Record<
+  ByWhat,
+  ReactIntl.FormattedMessage.MessageDescriptor
+> = {
+  Topic: messages.participationPerTopic,
+  Project: messages.participationPerProject,
+};
+
+const HIDDEN_LABEL_MESSAGES: Record<
+  ByWhat,
+  ReactIntl.FormattedMessage.MessageDescriptor
+> = {
+  Topic: messages.hiddenLabelPickResourceByTopic,
+  Project: messages.hiddenLabelPickResourceByProject,
+};
+
+const REPORT_EXPORT_MENU_NAME_MESSAGES: Record<
+  ByWhat,
+  ReactIntl.FormattedMessage.MessageDescriptor
+> = {
+  Topic: messages.participationPerTopic,
+  Project: messages.participationPerProject,
+};
+
+const XLSX_ENDPOINTS_MAP: Record<string, string> = {
+  ideasTopic: ideasByTopicXlsxEndpoint,
+  commentsTopic: commentsByTopicXlsxEndpoint,
+  votesTopic: votesByTopicXlsxEndpoint,
+  ideasProject: ideasByProjectXlsxEndpoint,
+  commentsProject: commentsByProjectXlsxEndpoint,
+  votesProject: votesByProjectXlsxEndpoint,
+};
+
+const SelectableResourceChart = ({
   className,
   onResourceByXChange,
   currentSelectedResource,
   resourceOptions,
-  intl: { formatMessage },
-  currentFilter,
+  // currentFilter,
   byWhat,
-  convertSerie,
   serie,
+  intl: { formatMessage },
+  ...reportExportMenuProps
 }: Props & InjectedIntlProps) => {
   const currentChart = useRef();
   const { barSize }: any = useTheme();
 
-  const selectedResourceName = formatMessage(
-    RESOURCE_MESSAGES[currentSelectedResource]
-  );
+  const unitName = formatMessage(RESOURCE_MESSAGES[currentSelectedResource]);
 
-  return <></>;
-};
+  const xlsxEndpoint = XLSX_ENDPOINTS_MAP[currentSelectedResource + byWhat];
 
-class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
-  currentChart: React.RefObject<any>;
-  constructor(props: Props & InjectedIntlProps) {
-    super(props as any);
-    this.currentChart = React.createRef();
-  }
-  render() {
-    const { barSize } = this.props['theme'];
-    const {
-      className,
-      onResourceByXChange,
-      currentSelectedResource,
-      resourceOptions,
-      intl: { formatMessage },
-      currentFilter,
-      byWhat,
-      convertSerie,
-      serie,
-    } = this.props;
-    const selectedResourceName =
-      currentSelectedResource &&
-      formatMessage(
-        {
-          ideas: messages.inputs,
-          comments: messages.comments,
-          votes: messages.votes,
-        }[currentSelectedResource]
-      );
-    const { convertedSerie, selectedCount, selectedName } = convertSerie(serie);
-    const unitName =
-      currentFilter && serie
-        ? formatMessage(messages.resourceByDifference, {
-            selectedResourceName,
-            selectedName,
-          })
-        : selectedResourceName;
-
-    const xlsxEndpointTable = {
-      ideasTopic: ideasByTopicXlsxEndpoint,
-      commentsTopic: commentsByTopicXlsxEndpoint,
-      votesTopic: votesByTopicXlsxEndpoint,
-      ideasProject: ideasByProjectXlsxEndpoint,
-      commentsProject: commentsByProjectXlsxEndpoint,
-      votesProject: votesByProjectXlsxEndpoint,
-    };
-
-    return (
-      <GraphCard className={className}>
-        <GraphCardInner>
-          <GraphCardHeaderWithFilter>
-            <GraphCardTitle>
-              <FormattedMessage {...messages[`participationPer${byWhat}`]} />
-            </GraphCardTitle>
-            <SHiddenLabel>
-              <FormattedMessage
-                {...messages[`hiddenLabelPickResourceBy${byWhat}`]}
-              />
-              <Select
-                id={`select${byWhat}`}
-                onChange={onResourceByXChange}
-                value={currentSelectedResource}
-                options={resourceOptions}
-              />
-            </SHiddenLabel>
-            {serie && (
-              <ReportExportMenu
-                className=""
-                svgNode={this.currentChart}
-                name={formatMessage(messages[`participationPer${byWhat}`])}
-                {...this.props}
-                xlsxEndpoint={
-                  xlsxEndpointTable[currentSelectedResource + byWhat]
-                }
-              />
-            )}
-          </GraphCardHeaderWithFilter>
-          {serie && currentFilter && (
-            <FormattedMessage
-              tagName="p"
-              {...messages.totalCount}
-              values={{ selectedCount, selectedName, selectedResourceName }}
+  return (
+    <GraphCard className={className}>
+      <GraphCardInner>
+        <GraphCardHeaderWithFilter>
+          <GraphCardTitle>
+            <FormattedMessage {...TITLE_MESSAGES[byWhat]} />
+          </GraphCardTitle>
+          <SHiddenLabel>
+            <FormattedMessage {...HIDDEN_LABEL_MESSAGES[byWhat]} />
+            <Select
+              id={`select${byWhat}`}
+              onChange={onResourceByXChange}
+              value={currentSelectedResource}
+              options={resourceOptions}
+            />
+          </SHiddenLabel>
+          {!isNilOrError(serie) && (
+            <ReportExportMenu
+              svgNode={currentChart}
+              name={formatMessage(REPORT_EXPORT_MENU_NAME_MESSAGES[byWhat])}
+              xlsxEndpoint={xlsxEndpoint}
+              {...reportExportMenuProps}
             />
           )}
-          <BarChart
-            height={serie && serie.length > 1 ? serie.length * 50 : 100}
-            data={convertedSerie}
-            layout="horizontal"
-            innerRef={this.currentChart}
-            margin={DEFAULT_BAR_CHART_MARGIN}
-            bars={{ name: unitName, size: barSize }}
-            yaxis={{ width: 150, tickLine: false }}
-            renderLabels={(props) => <LabelList {...props} />}
-            renderTooltip={(props) => <Tooltip {...props} />}
-            emptyContainerContent={
-              <>
-                {currentFilter && selectedCount ? (
-                  <FormattedMessage
-                    {...messages.totalCount}
-                    values={{
-                      selectedCount,
-                      selectedName,
-                      selectedResourceName,
-                    }}
-                  />
-                ) : (
-                  <FormattedMessage {...messages.noData} />
-                )}
-              </>
-            }
-          />
-        </GraphCardInner>
-      </GraphCard>
-    );
-  }
-}
+        </GraphCardHeaderWithFilter>
+        <BarChart
+          height={
+            !isNilOrError(serie) && serie.length > 1 ? serie.length * 50 : 100
+          }
+          data={serie}
+          layout="horizontal"
+          innerRef={currentChart}
+          margin={DEFAULT_BAR_CHART_MARGIN}
+          bars={{ name: unitName, size: barSize }}
+          yaxis={{ width: 150, tickLine: false }}
+          renderLabels={(props) => <LabelList {...props} />}
+          renderTooltip={(props) => <Tooltip {...props} />}
+        />
+      </GraphCardInner>
+    </GraphCard>
+  );
+};
 
 const SelectableResourceChartWithHoCs = injectIntl<Props>(
-  withTheme(SelectableResourceChart as any) as any
+  SelectableResourceChart
 );
 
 export default (inputProps: InputProps) => (
