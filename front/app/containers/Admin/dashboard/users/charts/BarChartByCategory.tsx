@@ -16,7 +16,8 @@ import {
   GraphCard,
   GraphCardInner,
 } from 'components/admin/GraphWrappers';
-import BarChart, { DEFAULT_MARGIN } from 'components/admin/Graphs/BarChart';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { Tooltip, LabelList } from 'recharts';
 
 // resources
@@ -98,9 +99,9 @@ export class BarChartByCategory extends React.PureComponent<
           <BarChart
             data={serie}
             innerRef={this.currentChart}
-            margin={DEFAULT_MARGIN}
+            margin={DEFAULT_BAR_CHART_MARGIN}
             bars={{ name: unitName }}
-            renderLabels={(props) => <LabelList {...props} position="top" />}
+            renderLabels={(props) => <LabelList {...props} />}
             renderTooltip={(props) => <Tooltip {...props} />}
           />
         </GraphCardInner>

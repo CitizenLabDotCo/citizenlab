@@ -113,6 +113,9 @@ sr-Latn:
       body:
         title: Opis
         description:
+      author_id:
+        title: Autor
+        description:
       topic_ids:
         title: Tema
         description:
@@ -122,12 +125,36 @@ sr-Latn:
       proposed_budget:
         title: Predloženi budžet
         description:
+      budget:
+        title: Budžet
+        description:
       images:
         title: Slike
         description:
       attachments:
         title: Prilozi
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Šta je vaša ideja ?
+        question:
+          title: Šta je vaše pitanje ?
+        contribution:
+          title: Šta je vaš prilog ?
+        project:
+          title: Šta je vaš projekat ?
+        issue:
+          title: Šta je vaša tema ?
+        option:
+          title: Šta je vaša opcija ?
+      details:
+        title: Detalji
+      attachements:
+        title: Slike i prilozi
+      extra:
+        title: Dodatne informacije
   custom_field_options:
     gender:
       male: Muškarac

@@ -110,14 +110,6 @@ export default () => ({
         delay: 500,
       }),
     },
-    {
-      path: 'guide',
-      component: Loadable({
-        loader: () => import('containers/Admin/guide'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
     ...moduleConfiguration.routes.admin,
   ],
 });

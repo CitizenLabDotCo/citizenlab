@@ -45,7 +45,7 @@ resource "User Custom Fields" do
     let(:id) { @custom_fields.first.id }
 
     example_request "Get one custom field by id" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @custom_fields.first.id
     end
@@ -56,7 +56,7 @@ resource "User Custom Fields" do
       create(:custom_field)
     end
     example_request "Get the react-jsonschema-form json schema and ui schema for the custom fields" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:json_schema_multiloc)).to be_present
       expect(json_response.dig(:ui_schema_multiloc)).to be_present
@@ -68,7 +68,7 @@ resource "User Custom Fields" do
       create(:custom_field)
     end
     example_request "Get the jsonforms.io json schema and ui schema for the custom fields" do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:json_schema_multiloc)).to be_present
       expect(json_response.dig(:json_schema_multiloc, :en, :properties).size).to eq 4
@@ -106,7 +106,7 @@ resource "User Custom Fields" do
         let(:enabled) { custom_field.enabled }
 
         example_request "Create a custom field" do
-          expect(response_status).to eq 201
+          assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:key)).to match key
           expect(json_response.dig(:data,:attributes,:input_type)).to match input_type
@@ -119,14 +119,14 @@ resource "User Custom Fields" do
       end
 
       describe do
-        let(:key) { "No spaces allowed" }
-        let(:title_multiloc) { {'en' => ""} }
+        let(:key) { 'No spaces allowed' }
+        let(:title_multiloc) { { 'en' => '' } }
 
-        example_request "[error] Create an invalid custom field", document: false do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :key)).to eq [{error: 'invalid', value: key}]
-          expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'blank'}]
+        example_request '[error] Create an invalid custom field', document: false do
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:key, 'invalid', value: key)
+          expect(json_response).to include_response_error(:title_multiloc, 'blank')
         end
       end
     end
@@ -188,7 +188,7 @@ resource "User Custom Fields" do
             {ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty'}
           ])
           do_request
-          expect(response_status).to eq 422
+          assert_status 422
           expect(CustomField.find(id)).to be_present
         end
       end

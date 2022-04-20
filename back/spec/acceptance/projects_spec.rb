@@ -37,7 +37,7 @@ resource 'Projects' do
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
       example_request 'List all projects (default behaviour)' do
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 7
         expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
       end
@@ -119,7 +119,7 @@ resource 'Projects' do
 
       example 'Admins can moderate all projects', document: false do
         do_request filter_can_moderate: true, publication_statuses: ['published']
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 4
       end
 
@@ -270,7 +270,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg') }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:topic_ids) { create_list(:topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
@@ -279,7 +279,7 @@ resource 'Projects' do
         let(:default_assignee_id) { create(:admin).id } if CitizenLab.ee?
 
         example_request 'Create a timeline project' do
-          expect(response_status).to eq 201
+          assert_status 201
           expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
@@ -299,7 +299,7 @@ resource 'Projects' do
         example 'Create a project in a folder', skip: !CitizenLab.ee? do
           folder = create(:project_folder)
           do_request folder_id: folder.id
-          expect(response_status).to eq 201
+          assert_status 201
           # New folder projects are added to the top
           expect(json_response[:included].find do |inc|
                    inc[:type] == 'admin_publication'
@@ -312,7 +312,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg') }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:process_type) { project.process_type }
@@ -326,7 +326,7 @@ resource 'Projects' do
         let(:ideas_order) { 'new' }
 
         example_request 'Create a continuous project' do
-          expect(response_status).to eq 201
+          assert_status 201
           expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
@@ -365,8 +365,8 @@ resource 'Projects' do
           example '[error] Create an invalid project', document: false do
             create(:project, slug: 'this-is-taken')
             do_request
-            expect(response_status).to eq 422
-            expect(json_response.dig(:errors, :slug)).to eq [{ error: 'taken', value: 'this-is-taken' }]
+            assert_status 422
+            expect(json_response).to include_response_error(:slug, 'taken', value: 'this-is-taken')
           end
         end
 
@@ -378,7 +378,7 @@ resource 'Projects' do
           example 'Create a project with text image', document: false do
             ti_count = TextImage.count
             do_request
-            expect(response_status).to eq 201
+            assert_status 201
             expect(TextImage.count).to eq(ti_count + 1)
           end
 
@@ -386,7 +386,7 @@ resource 'Projects' do
             ti_count = TextImage.count
             do_request project: { title_multiloc: nil }
 
-            expect(response_status).to eq 422
+            assert_status 422
             expect(json_response[:errors][:title_multiloc]).to be_present
             expect(TextImage.count).to eq ti_count
           end
@@ -440,7 +440,7 @@ resource 'Projects' do
       let(:description_multiloc) { { 'en' => 'Changed body' } }
       let(:description_preview_multiloc) { @project.description_preview_multiloc }
       let(:slug) { 'changed-title' }
-      let(:header_bg) { encode_image_as_base64('header.jpg') }
+      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:topic_ids) { create_list(:topic, 2).map(&:id) }
       let(:visible_to) { 'groups' }
@@ -537,7 +537,7 @@ resource 'Projects' do
 
       describe do
         example 'The header image can be removed' do
-          @project.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+          @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
           expect(@project.reload.header_bg_url).to be_present
           do_request project: { header_bg: nil }
           expect(@project.reload.header_bg_url).to be nil
@@ -582,7 +582,7 @@ resource 'Projects' do
         @moderator.save!
 
         do_request filter_can_moderate: true
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq n_moderating_projects + 1
       end
     end
@@ -599,7 +599,7 @@ resource 'Projects' do
 
       example 'Admins moderate all projects', document: false do
         do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq @projects.size
       end
     end
@@ -614,7 +614,7 @@ resource 'Projects' do
       example 'Get projects with access rights' do
         project = create(:project)
         do_request
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 1
       end
 
@@ -645,7 +645,7 @@ resource 'Projects' do
         %w[published published draft published archived published archived]
           .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 0
       end
     end
@@ -663,13 +663,9 @@ resource 'Projects' do
 
       example 'List all projects the current user can moderate', document: false, skip: !CitizenLab.ee? do
         do_request
-        expect(status).to eq(200)
+        assert_status 200
         expect(json_response[:data].size).to eq 0
       end
     end
   end
-end
-
-def encode_image_as_base64(filename)
-  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
 end
