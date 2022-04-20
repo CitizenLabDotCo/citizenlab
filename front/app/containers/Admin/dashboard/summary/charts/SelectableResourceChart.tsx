@@ -48,14 +48,6 @@ import { IGraphFormat, IOption } from 'typings';
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-const SHiddenLabel = styled(HiddenLabel)`
-  flex: 1;
-  margin-right: 15px;
-  @media (max-width: 1300px) {
-    width: 100%;
-  }
-`;
-
 const GraphCardTitle = styled.h3`
   margin: 0;
   margin-right: 15px;
@@ -63,6 +55,14 @@ const GraphCardTitle = styled.h3`
   ${media.smallerThan1280px`
     margin-bottom: 15px;
   `}
+`;
+
+const SHiddenLabel = styled(HiddenLabel)`
+  flex: 1;
+  margin-right: 15px;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
 `;
 
 interface DataProps {
