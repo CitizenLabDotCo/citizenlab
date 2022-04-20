@@ -25,7 +25,7 @@ import {
   BarProps,
   getRechartsLayout,
   Mapping,
-  getFill,
+  applyChannel,
   Data,
   Layout,
   AxisProps,
@@ -102,7 +102,7 @@ const BarChart = ({
     );
   }
 
-  const { length, fill } = mapping;
+  const { length, fill, opacity } = mapping;
   const rechartsLayout = getRechartsLayout(layout);
   const parsedBarProps = parseBarProps(newBarFill, length.length, bars);
 
@@ -137,11 +137,12 @@ const BarChart = ({
                 position: labelPosition,
               })}
 
-            {fill &&
+            {(fill || opacity) &&
               data.map((row, fillIndex) => (
                 <Cell
                   key={`cell-${index}-${fillIndex}`}
-                  fill={getFill(row, fill, index) || parallelBarProps.fill}
+                  fill={applyChannel(row, index, fill) || parallelBarProps.fill}
+                  opacity={applyChannel(row, index, opacity) || 1}
                 />
               ))}
           </Bar>
