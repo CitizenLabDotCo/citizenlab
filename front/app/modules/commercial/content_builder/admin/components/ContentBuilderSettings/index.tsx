@@ -48,8 +48,7 @@ const ContentBuilderSettings = () => {
       mt="70px"
       position="sticky"
       zIndex="2"
-      top="0"
-      bgColor={colors.adminDarkBackground}
+      top="-100px"
       p="20px"
       w="400px"
     >

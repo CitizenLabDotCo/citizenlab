@@ -47,7 +47,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
               <ContentBuilderFrame projectId={projectId} />
             </Box>
           </StyledRightColumn>
-          <Box>
+          <Box bgColor={colors.adminDarkBackground} h="100%">
             <ContentBuilderSettings />
           </Box>
         </Box>
