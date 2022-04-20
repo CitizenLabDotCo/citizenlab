@@ -161,7 +161,6 @@ const SelectableResourceChart = ({
   const { barSize, newBarFill }: any = useTheme();
 
   const unitName = formatMessage(RESOURCE_MESSAGES[currentSelectedResource]);
-
   const xlsxEndpoint = XLSX_ENDPOINTS_MAP[currentSelectedResource + byWhat];
 
   return (
