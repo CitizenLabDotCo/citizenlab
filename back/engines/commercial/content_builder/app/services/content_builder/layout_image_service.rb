@@ -7,7 +7,7 @@ module ContentBuilder
 
         image_elements(content).each do |img_elt|
           if attribute? img_elt, image_attribute_for_element
-            if !attribute? img_elt, code_attribute_for_element
+            unless attribute? img_elt, code_attribute_for_element
               content_image = create_image! img_elt, imageable, field
               set_attribute! img_elt, code_attribute_for_element, content_image[code_attribute_for_model]
             end
