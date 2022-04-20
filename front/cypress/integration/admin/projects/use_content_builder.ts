@@ -17,11 +17,9 @@ describe('Admin: add project and edit description', () => {
     cy.get('.e2e-create-project-tabs .last').click();
     cy.wait(1000);
     cy.get('.e2e-project-general-form');
-
-    // Select 'Draft' publication status
     cy.get('.e2e-projecstatus-draft').click();
 
-    // Type random project titles for these required fields
+    // Random project titles for these required fields
     cy.get('#project-title').type(projectTitleEN);
     cy.get('.e2e-localeswitcher.nl-BE').click();
     cy.get('#project-title').type(projectTitleNLBE);
@@ -32,7 +30,7 @@ describe('Admin: add project and edit description', () => {
 
     // Submit project
     cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait(4000);
+    cy.wait(2000);
   });
   it('edits project description in content builder', () => {
     cy.url().then((url) => {
@@ -48,5 +46,20 @@ describe('Admin: add project and edit description', () => {
         position: 'inside',
       });
     });
+  });
+  it('checks that live content is displayed properly', () => {
+    // Save content
+    cy.get('#contentBuilderTopBarSaveButton').click();
+
+    // Navigate to live project page
+    cy.get('[data-testid="goBackButton"] .button', {
+      withinSubject: null,
+    }).click();
+    cy.get('#to-project').click();
+
+    // Check builder content is displayed
+    cy.contains(
+      'This is some text. You can edit and format it by using the editor in the panel on the right.'
+    ).should('be.visible');
   });
 });
