@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 // components
-import { Select } from '@citizenlab/cl2-component-library';
+import { Box, Select } from '@citizenlab/cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
 // typings
@@ -16,10 +16,6 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-`;
-
-const FilterContainer = styled.div`
-  width: 32%;
 `;
 
 interface Props {
@@ -36,64 +32,62 @@ interface Props {
   onTopicFilter?: ((filter: IOption) => void) | null;
 }
 
-export default class ChartFilters extends PureComponent<Props> {
-  render() {
-    const {
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter,
-      projectFilterOptions,
-      groupFilterOptions,
-      topicFilterOptions,
-      onProjectFilter,
-      onGroupFilter,
-      onTopicFilter,
-    } = this.props;
+const ChartFilters = ({
+  currentProjectFilter,
+  currentGroupFilter,
+  currentTopicFilter,
+  projectFilterOptions,
+  groupFilterOptions,
+  topicFilterOptions,
+  onProjectFilter,
+  onGroupFilter,
+  onTopicFilter,
+}: Props) => {
+  return (
+    <Container>
+      {projectFilterOptions && onProjectFilter && (
+        <Box width="32%">
+          <HiddenLabel>
+            <FormattedMessage {...messages.hiddenLabelProjectFilter} />
+            <Select
+              id="projectFilter"
+              onChange={onProjectFilter}
+              value={currentProjectFilter || ''}
+              options={projectFilterOptions}
+            />
+          </HiddenLabel>
+        </Box>
+      )}
 
-    return (
-      <Container>
-        {projectFilterOptions && onProjectFilter && (
-          <FilterContainer>
-            <HiddenLabel>
-              <FormattedMessage {...messages.hiddenLabelProjectFilter} />
-              <Select
-                id="projectFilter"
-                onChange={onProjectFilter}
-                value={currentProjectFilter || ''}
-                options={projectFilterOptions}
-              />
-            </HiddenLabel>
-          </FilterContainer>
-        )}
+      {groupFilterOptions && onGroupFilter && (
+        <Box width="32%">
+          <HiddenLabel>
+            <FormattedMessage {...messages.hiddenLabelGroupFilter} />
+            <Select
+              id="groupFilter"
+              onChange={onGroupFilter}
+              value={currentGroupFilter || ''}
+              options={groupFilterOptions}
+            />
+          </HiddenLabel>
+        </Box>
+      )}
 
-        {groupFilterOptions && onGroupFilter && (
-          <FilterContainer>
-            <HiddenLabel>
-              <FormattedMessage {...messages.hiddenLabelGroupFilter} />
-              <Select
-                id="groupFilter"
-                onChange={onGroupFilter}
-                value={currentGroupFilter || ''}
-                options={groupFilterOptions}
-              />
-            </HiddenLabel>
-          </FilterContainer>
-        )}
+      {topicFilterOptions && onTopicFilter && (
+        <Box width="32%">
+          <HiddenLabel>
+            <FormattedMessage {...messages.hiddenLabelTopicFilter} />
+            <Select
+              id="topicFilter"
+              onChange={onTopicFilter}
+              value={currentTopicFilter || ''}
+              options={topicFilterOptions}
+            />
+          </HiddenLabel>
+        </Box>
+      )}
+    </Container>
+  );
+};
 
-        {topicFilterOptions && onTopicFilter && (
-          <FilterContainer>
-            <HiddenLabel>
-              <FormattedMessage {...messages.hiddenLabelTopicFilter} />
-              <Select
-                id="topicFilter"
-                onChange={onTopicFilter}
-                value={currentTopicFilter || ''}
-                options={topicFilterOptions}
-              />
-            </HiddenLabel>
-          </FilterContainer>
-        )}
-      </Container>
-    );
-  }
-}
+export default ChartFilters;
