@@ -12,12 +12,13 @@ import { Box } from '@citizenlab/cl2-component-library';
 // craft
 import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
-import ContentBuilderSettings from '../components/ContentBuilderSettings';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 import ContentBuilderFrame from '../components/ContentBuilderFrame';
+import ContentBuilderSettings from '../components/ContentBuilderSettings';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
+  z-index: 2;
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
@@ -27,6 +28,9 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
         <ContentBuilderTopBar />
         <Box display="flex">
           <Box
+            mt="78px"
+            position="fixed"
+            zIndex="2"
             flex="0 0 auto"
             h="100%"
             w="210px"
@@ -39,11 +43,13 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             <ContentBuilderToolbox />
           </Box>
           <StyledRightColumn>
-            <Box paddingTop="20px">
+            <Box ml="210px" mt="70px" mb="20px" pt="20px">
               <ContentBuilderFrame projectId={projectId} />
             </Box>
           </StyledRightColumn>
-          <ContentBuilderSettings />
+          <Box>
+            <ContentBuilderSettings />
+          </Box>
         </Box>
       </Editor>
     </Box>

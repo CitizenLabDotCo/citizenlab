@@ -44,7 +44,15 @@ const ContentBuilderSettings = () => {
   });
 
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
-    <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
+    <StyledBox
+      mt="70px"
+      position="sticky"
+      zIndex="2"
+      top="0"
+      bgColor={colors.adminDarkBackground}
+      p="20px"
+      w="400px"
+    >
       <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />
       </Title>
