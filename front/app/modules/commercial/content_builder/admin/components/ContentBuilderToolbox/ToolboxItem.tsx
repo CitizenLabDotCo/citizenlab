@@ -19,7 +19,6 @@ const StyledBox = styled(Box)`
 const ToolboxItem = ({ icon, label }: Props) => {
   return (
     <StyledBox
-      id={`toolbox-item-${label}`}
       width="100%"
       display="flex"
       paddingLeft="10px"
