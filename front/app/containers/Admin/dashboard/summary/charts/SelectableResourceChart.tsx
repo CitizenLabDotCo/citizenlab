@@ -86,12 +86,12 @@ interface QueryProps {
   convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | undefined;
   byWhat: ByWhat;
-  currentProjectFilter: string | undefined;
-  currentGroupFilter: string | undefined;
-  currentTopicFilter: string | undefined;
-  currentProjectFilterLabel: string | undefined;
-  currentGroupFilterLabel: string | undefined;
-  currentTopicFilterLabel: string | undefined;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
+  currentProjectFilterLabel?: string;
+  currentGroupFilterLabel?: string;
+  currentTopicFilterLabel?: string;
   resolution: IResolution;
 }
 
@@ -146,15 +146,6 @@ const XLSX_ENDPOINTS_MAP: Record<string, string> = {
   votesProject: votesByProjectXlsxEndpoint,
 };
 
-const getMapping = (
-  fill: string,
-  highlightFill: string,
-  currentFilter?: string
-) =>
-  currentFilter
-    ? { fill: (row) => (row.name === currentFilter ? highlightFill : fill) }
-    : undefined;
-
 const SelectableResourceChart = ({
   className,
   onResourceByXChange,
@@ -206,7 +197,9 @@ const SelectableResourceChart = ({
           layout="horizontal"
           innerRef={currentChart}
           margin={DEFAULT_BAR_CHART_MARGIN}
-          mapping={getMapping(newBarFill, 'red', currentFilter)}
+          mapping={{
+            fill: (row) => (row.code === currentFilter ? 'red' : newBarFill),
+          }}
           bars={{ name: unitName, size: barSize }}
           yaxis={{ width: 150, tickLine: false }}
           renderLabels={(props) => <LabelList {...props} />}

@@ -71,9 +71,9 @@ const SelectableResourceByTopicChart = ({
       currentResourceByTopic === 'votes' ? 'total' : currentResourceByTopic;
 
     const mapped = map(series[dataKey], (count: number, topicId: string) => ({
-      name: localize(topics[topicId].title_multiloc) as string,
-      value: count as number,
-      code: topicId as string,
+      name: localize(topics[topicId].title_multiloc),
+      value: count,
+      code: topicId,
     }));
 
     const sortedByValue = orderBy(mapped, 'value', 'desc');
@@ -87,7 +87,6 @@ const SelectableResourceByTopicChart = ({
       stream={getCurrentStream(currentResourceByTopic)}
       convertToGraphFormat={convertToGraphFormat}
       currentFilter={currentTopicFilter}
-      currentTopicFilter={currentTopicFilter}
       byWhat="Topic"
       {...otherProps}
     />

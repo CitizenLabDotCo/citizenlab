@@ -72,9 +72,9 @@ const SelectableResourceByProjectChart = ({
       currentResourceByProject === 'votes' ? 'total' : currentResourceByProject;
 
     const mapped = map(series[dataKey], (count: number, projectId: string) => ({
-      name: localize(projects[projectId].title_multiloc) as string,
-      value: count as number,
-      code: projectId as string,
+      name: localize(projects[projectId].title_multiloc),
+      value: count,
+      code: projectId,
     }));
 
     const sortedByValue = orderBy(mapped, 'value', 'desc');
@@ -88,7 +88,6 @@ const SelectableResourceByProjectChart = ({
       stream={getCurrentStream(currentResourceByProject)}
       convertToGraphFormat={convertToGraphFormat}
       currentFilter={currentProjectFilter}
-      currentProjectFilter={currentProjectFilter}
       byWhat="Project"
       {...otherProps}
     />
