@@ -349,6 +349,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const tacError = !tacAccepted;
     const privacyError = !privacyAccepted;
 
+    // set individual errors on state so the proper
+    // error messages can be shown in the UI
     this.setState({
       invitationRedeemError,
       emailOrPhoneNumberError,
@@ -359,8 +361,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       privacyError,
     });
 
-    // temporary bug fix CL 636
-    return {
+    // compute if any errors exist on the current form
+    const hasErrors = [
       invitationRedeemError,
       emailOrPhoneNumberError,
       firstNameError,
@@ -368,7 +370,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       hasMinimumLengthError,
       tacError,
       privacyError,
-    };
+    ].some((error) => error);
+
+    // and return validation status as a boolean
+    return hasErrors;
   };
 
   focusFirstInputWithError = () => {
@@ -409,27 +414,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         processing,
       } = this.state;
 
-      // get these directly from the validate function
-      // rather than pulling from state, to make sure we have updated data
-      const {
-        invitationRedeemError,
-        emailOrPhoneNumberError,
-        firstNameError,
-        lastNameError,
-        hasMinimumLengthError,
-        tacError,
-        privacyError,
-      } = this.validate(isPhoneSignupEnabled);
-
-      const hasErrors = [
-        invitationRedeemError,
-        emailOrPhoneNumberError,
-        firstNameError,
-        lastNameError,
-        hasMinimumLengthError,
-        tacError,
-        privacyError,
-      ].some((error) => error);
+      const hasErrors = this.validate(isPhoneSignupEnabled);
 
       if (hasErrors) {
         this.focusFirstInputWithError();
