@@ -105,9 +105,13 @@ class IdeasFinder < ApplicationFinder
   end
 
   def filter_can_moderate_condition(can_moderate)
-    return unless current_user && can_moderate
+    return unless can_moderate
 
-    where(project: user_role_service.moderatable_projects(current_user, Project))
+    if current_user
+      where(project: user_role_service.moderatable_projects(current_user))
+    else
+      records.none
+    end
   end
 
   def user_role_service

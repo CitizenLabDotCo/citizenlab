@@ -9,9 +9,7 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    params['moderator'] = current_user if params[:filter_can_moderate]
-
-    @result = IdeasFinder.find(
+    @result = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
@@ -23,43 +21,43 @@ class WebApi::V1::IdeasController < ApplicationController
           author: [:unread_notifications]
         }
       ]
-    )
+    ).find
     @ideas = @result.records
 
     render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
   end
 
   def index_mini
-    @result = IdeasFinder.find(
+    @result = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: %i[idea_trending_info]
-    )
+    ).find
     @ideas = @result.records
 
     render json: linked_json(@ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
   end
 
   def index_idea_markers
-    @ideas = IdeasFinder.find(
+    @ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: %i[author topics areas project idea_status idea_files]
-    ).records
+    ).find.records
 
     render json: linked_json(@ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
-    @result = IdeasFinder.find(
+    @result = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: %i[author topics areas project idea_status idea_files],
       paginate: false
-    )
+    ).find
     @ideas = @result.records
 
     I18n.with_locale(current_user&.locale) do
@@ -69,7 +67,12 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    @result = IdeasFinder.find(params, scope: policy_scope(Idea), current_user: current_user, includes: %i[idea_trending_info])
+    @result = IdeasFinder.new(
+      params,
+      scope: policy_scope(Idea),
+      current_user: current_user,
+      includes: %i[idea_trending_info]
+    ).find
     @ideas = @result.records.where(publication_status: 'published')
     counts = {
       'idea_status_id' => {},

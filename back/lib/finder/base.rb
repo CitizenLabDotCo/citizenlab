@@ -12,6 +12,8 @@ module Finder
     include Finder::Inflectors
     include Finder::Sortable
 
+    attr_reader :records
+
     def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
       @current_user      = current_user
@@ -20,28 +22,27 @@ module Finder
       @paginate          = paginate
     end
 
+    def find
+      do_find
+    rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
+      raise Finder::Error, e
+    end
+
     protected
 
-    attr_reader :params, :records, :current_user, :paginate
+    attr_reader :params, :current_user, :paginate
     alias paginate? paginate
 
     delegate :table_name, to: :_klass
 
     private
 
-    def find
-      do_find
-      result.records = records
-    rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
-      raise Finder::Error, e
-    end
-
     def do_find
       _abort_if_records_class_invalid
       _filter_records
       _sort_records
-      _count_records
       _paginate_records
+      @records
     end
 
     def _abort_if_records_class_invalid
@@ -58,10 +59,6 @@ module Finder
 
         @records = new_records if new_records
       end
-    end
-
-    def _count_records
-      result.count = records.length
     end
 
     def _paginate_records
