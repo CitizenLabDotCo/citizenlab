@@ -2,6 +2,9 @@
 
 ## Next release
 
+
+## 2022-04-20
+
 ### Changed
 
 - Changed titles on the admin messaging page to accomodate both SMS and email campaigns
