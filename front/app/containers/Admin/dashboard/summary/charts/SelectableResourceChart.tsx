@@ -158,7 +158,7 @@ const SelectableResourceChart = ({
   ...reportExportMenuProps
 }: Props & InjectedIntlProps) => {
   const currentChart = useRef();
-  const { barSize, newBarFill }: any = useTheme();
+  const { barSize }: any = useTheme();
 
   const unitName = formatMessage(RESOURCE_MESSAGES[currentSelectedResource]);
   const xlsxEndpoint = XLSX_ENDPOINTS_MAP[currentSelectedResource + byWhat];
@@ -197,7 +197,9 @@ const SelectableResourceChart = ({
           innerRef={currentChart}
           margin={DEFAULT_BAR_CHART_MARGIN}
           mapping={{
-            fill: (row) => (row.code === currentFilter ? 'red' : newBarFill),
+            opacity: currentFilter
+              ? (row) => (row.code === currentFilter ? 1 : 0.5)
+              : undefined,
           }}
           bars={{ name: unitName, size: barSize }}
           yaxis={{ width: 150, tickLine: false }}
