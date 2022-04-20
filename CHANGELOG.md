@@ -2,6 +2,9 @@
 
 ## Next release
 
+
+## 2022-04-20
+
 ### Changed
 
 - Changed titles on the admin messaging page to accomodate both SMS and email campaigns
@@ -13,6 +16,7 @@
 - Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
 - Properly disable SMS create/edit button if the message is empty
 - In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
+- Fixed a bug in the password signup flow where a user could skip accepting terms and conditions and privacy policy
 
 ## 2022-04-11
 
