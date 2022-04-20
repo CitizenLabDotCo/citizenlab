@@ -358,6 +358,17 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacError,
       privacyError,
     });
+
+    // temporary bug fix CL 636
+    return {
+      invitationRedeemError,
+      emailOrPhoneNumberError,
+      firstNameError,
+      lastNameError,
+      hasMinimumLengthError,
+      tacError,
+      privacyError,
+    };
   };
 
   focusFirstInputWithError = () => {
@@ -388,6 +399,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         intl: { formatMessage },
         locale,
       } = this.props;
+
       const {
         token,
         firstName,
@@ -395,6 +407,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         emailOrPhoneNumber,
         password,
         processing,
+      } = this.state;
+
+      // get these directly from the validate function
+      // rather than pulling from state, to make sure we have updated data
+      const {
         invitationRedeemError,
         emailOrPhoneNumberError,
         firstNameError,
@@ -402,9 +419,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         hasMinimumLengthError,
         tacError,
         privacyError,
-      } = this.state;
-
-      this.validate(isPhoneSignupEnabled);
+      } = this.validate(isPhoneSignupEnabled);
 
       const hasErrors = [
         invitationRedeemError,
