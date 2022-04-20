@@ -802,7 +802,7 @@
   "app.containers.IdeasShow.commentCTA": "Kommentieren",
   "app.containers.IdeasShow.contributionEmailSharingBody": "Unterstützen Sie den Beitrag „{postTitle}“ unter {postUrl}!",
   "app.containers.IdeasShow.contributionEmailSharingSubject": "Unterstützen Sie diesen Beitrag: {postTitle}\n",
-  "app.containers.IdeasShow.contributionSharingModalTitle": "Vielen Dank für das Einsenden Ihres Beitrags!\n",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "Vielen Dank für die Einsendung Ihres Beitrags!",
   "app.containers.IdeasShow.contributionTwitterMessage": "Unterstützen Sie diesen Beitrag: {postTitle}\n",
   "app.containers.IdeasShow.contributionWhatsAppMessage": "Unterstützen Sie diesen Beitrag: {postTitle}\n",
   "app.containers.IdeasShow.currentStatus": "Derzeitiger Status ",
