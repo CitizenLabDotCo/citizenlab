@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'callable'
 require 'finder/error'
 require 'finder/helpers'
 require 'finder/inflectors'
@@ -9,13 +8,9 @@ require 'finder/sortable'
 module Finder
   ## Finder::Base
   class Base
-    include Callable
     include Finder::Helpers
     include Finder::Inflectors
     include Finder::Sortable
-
-    ## You can now use #find instead of call.
-    callable_with :find, error_class: Finder::Error, default_error: 'Something went wrong'
 
     def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
