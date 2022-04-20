@@ -121,6 +121,52 @@ describe('<BarChart />', () => {
       expect(bars[1]).toHaveAttribute('fill', 'orange');
       expect(bars[2]).toHaveAttribute('fill', 'orange');
     });
+
+    it('renders correctly with opacity mapping', () => {
+      const data = [
+        { name: 'a', value: 4, opacity: 1 },
+        { name: 'b', value: 10, opacity: 0.4 },
+        { name: 'c', value: 7, opacity: 0.7 },
+      ];
+
+      const { container } = render(
+        <BarChart
+          width={200}
+          height={250}
+          mapping={{ opacity: 'opacity' }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(3);
+
+      expect(bars[0]).toHaveAttribute('opacity', '1');
+      expect(bars[1]).toHaveAttribute('opacity', '0.4');
+      expect(bars[2]).toHaveAttribute('opacity', '0.7');
+    });
+
+    it('renders correctly when opacity mapping is function', () => {
+      const { container } = render(
+        <BarChart
+          width={200}
+          height={250}
+          mapping={{
+            opacity: (row) => (row.name === 'a' ? 1 : 0.8),
+          }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(3);
+
+      expect(bars[0]).toHaveAttribute('opacity', '1');
+      expect(bars[1]).toHaveAttribute('opacity', '0.8');
+      expect(bars[2]).toHaveAttribute('opacity', '0.8');
+    });
   });
 
   describe('Horizontal layout', () => {

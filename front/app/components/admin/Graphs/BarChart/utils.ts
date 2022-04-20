@@ -5,12 +5,13 @@ import {
 } from 'components/admin/Graphs/MultiBarChart/utils';
 
 // MAPPING
-type MappingFunction = (row: DataRow) => string;
-type Fill = string | MappingFunction;
+type MappingFunction<T> = (row: DataRow) => T;
+type Channel<T> = string | MappingFunction<T>;
 
 export interface Mapping {
   length?: string;
-  fill?: Fill;
+  fill?: Channel<string>;
+  opacity?: Channel<number>;
 }
 
 export const convertMapping = (mapping?: Mapping): ConvertedMapping => {
@@ -22,7 +23,8 @@ export const convertMapping = (mapping?: Mapping): ConvertedMapping => {
 
   return {
     length: wrapIfAvailable(mapping.length) ?? ['value'],
-    fill: convertFill(mapping.fill),
+    fill: convertChannel(mapping.fill),
+    opacity: convertChannel(mapping.opacity),
   };
 };
 
@@ -55,7 +57,7 @@ export const convertBarProps = (
 const wrapIfAvailable = <T>(value?: T): T[] | undefined =>
   value ? [value] : undefined;
 
-const convertFill = (fill?: Fill) =>
-  fill instanceof Function
-    ? (row: DataRow) => [fill(row)]
-    : wrapIfAvailable(fill);
+const convertChannel = <T>(channel?: Channel<T>) =>
+  channel instanceof Function
+    ? (row: DataRow) => [channel(row)]
+    : wrapIfAvailable(channel);
