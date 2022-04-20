@@ -96,11 +96,6 @@ interface QueryProps {
 }
 
 interface InputProps extends QueryProps {
-  convertSerie: (serie: IGraphFormat | null) => {
-    convertedSerie: IGraphFormat | null;
-    selectedCount: any;
-    selectedName: any;
-  };
   className?: string;
   onResourceByXChange: (option: IOption) => void;
   currentSelectedResource: IResource;
