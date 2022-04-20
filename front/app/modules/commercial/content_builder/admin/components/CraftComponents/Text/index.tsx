@@ -8,13 +8,15 @@ import QuillEditor from 'components/UI/QuillEditor';
 import { useNode } from '@craftjs/core';
 import { Box } from '@citizenlab/cl2-component-library';
 
+// hooks
+import { useTheme } from 'styled-components';
+
 const Text = ({ text }) => {
-  const {
-    connectors: { connect, drag },
-  } = useNode();
+  const theme: any = useTheme();
+
   return (
-    <Box minHeight="26px" ref={(ref: any) => connect(drag(ref))}>
-      <QuillEditedContent>
+    <Box minHeight="26px">
+      <QuillEditedContent textColor={theme.colorText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>
     </Box>
