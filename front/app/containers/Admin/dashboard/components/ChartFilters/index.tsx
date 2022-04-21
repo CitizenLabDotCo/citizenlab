@@ -10,12 +10,12 @@ import TopicFilter from './TopicFilter';
 import { IOption } from 'typings';
 
 interface Props {
-  currentProjectFilter?: string | null;
-  currentGroupFilter?: string | null;
-  currentTopicFilter?: string | null;
-  onProjectFilter?: ((filter: IOption) => void) | null;
-  onGroupFilter?: ((filter: IOption) => void) | null;
-  onTopicFilter?: ((filter: IOption) => void) | null;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
+  onProjectFilter?: (filter: IOption) => void;
+  onGroupFilter?: (filter: IOption) => void;
+  onTopicFilter?: (filter: IOption) => void;
   onlyModerator?: boolean;
 }
 
