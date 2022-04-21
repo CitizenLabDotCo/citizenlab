@@ -152,7 +152,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   };
 
   handleChangeTimeRange = (
-    startAtMoment: Moment | null | undefined,
+    startAtMoment: Moment | null,
     endAtMoment: Moment | null
   ) => {
     const timeDiff =

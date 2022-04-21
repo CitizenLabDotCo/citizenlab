@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment, { Moment } from 'moment';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -14,8 +15,18 @@ import ChartFilters from '../../components/ChartFilters';
 // import { trackEventByName } from 'utils/analytics';
 
 const RepresentativenessDashboard = () => {
+  const [startAtMoment, setStartAtMoment] = useState<Moment | null>();
+  const [endAtMoment, setEndAtMoment] = useState<Moment | null>(moment());
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
   const [currentGroupFilter, setCurrentGroupFilter] = useState<string>();
+
+  const onChangeTimeRange = (
+    startAtMoment: Moment | null,
+    endAtMoment: Moment | null
+  ) => {
+    setStartAtMoment(startAtMoment);
+    setEndAtMoment(endAtMoment);
+  };
 
   const onProjectFilter = ({ value }) => {
     setCurrentProjectFilter(value);
@@ -30,14 +41,17 @@ const RepresentativenessDashboard = () => {
       <Box width="100%">
         <Header />
         <ChartFilters
+          startAtMoment={startAtMoment}
+          endAtMoment={endAtMoment}
           currentProjectFilter={currentProjectFilter}
           currentGroupFilter={currentGroupFilter}
+          onChangeTimeRange={onChangeTimeRange}
           onProjectFilter={onProjectFilter}
           onGroupFilter={onGroupFilter}
         />
       </Box>
 
-      <GraphsContainer>TODO</GraphsContainer>
+      <GraphsContainer>{/* TODO */}</GraphsContainer>
     </>
   );
 };
