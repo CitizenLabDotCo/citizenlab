@@ -14,10 +14,6 @@ describe <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%
   end
 
   context 'when no params or options are received' do
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'returns all' do
       expect(result.count).to eq <%= class_name.singularize %>.count
     end
@@ -28,10 +24,6 @@ describe <% if @module_name.present? %><%= @module_name.camelize %>::<% end %><%
 
     before do
       params[:<%= method %>] = '<%= method %>'
-    end
-
-    it 'is successful' do
-      expect(result).to be_a_success
     end
 
     it 'returns the correct records' do

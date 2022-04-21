@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe InitiativesFinder do
-  subject(:result) { described_class.find(params, **options) }
+  subject(:result) { described_class.new(params, **options) }
 
-  let(:record_ids) { result.records.pluck(:id) }
+  let(:record_ids) { result.find_records.pluck(:id) }
   let(:options) { {} }
   let(:params) { {} }
 
@@ -14,9 +14,6 @@ describe InitiativesFinder do
   end
 
   context 'without passing params' do
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'returns all initiatives' do
       expect(result.records.count).to eq Initiative.count
@@ -32,9 +29,6 @@ describe InitiativesFinder do
       params[:sort] = 'new'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'new\'' do
       expect(record_ids).to eq Initiative.order_new(:desc).pluck(:id)
@@ -46,9 +40,6 @@ describe InitiativesFinder do
       params[:sort] = '-new'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'-new\'' do
       expect(record_ids).to eq Initiative.order_new(:asc).pluck(:id)
@@ -60,9 +51,6 @@ describe InitiativesFinder do
       params[:sort] = 'status'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'status\'' do
       expect(record_ids).to eq Initiative.order_status(:asc).pluck(:id)
@@ -74,9 +62,6 @@ describe InitiativesFinder do
       params[:sort] = '-status'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'-status\'' do
       expect(record_ids).to eq Initiative.order_status(:desc).pluck(:id)
@@ -88,9 +73,6 @@ describe InitiativesFinder do
       params[:sort] = 'upvotes_count'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'upvotes_count\'' do
       expect(record_ids).to eq Initiative.order(upvotes_count: :asc).pluck(:id)
@@ -102,9 +84,6 @@ describe InitiativesFinder do
       params[:sort] = '-upvotes_count'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'-upvotes_count\'' do
       expect(record_ids).to eq Initiative.order(upvotes_count: :desc).pluck(:id)
@@ -117,19 +96,11 @@ describe InitiativesFinder do
       options[:includes] = %i[author]
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'author_name\'' do
       expect(record_ids).to eq Initiative.includes(:author)
                                          .order('users.first_name ASC', 'users.last_name ASC')
                                          .pluck(:id)
-    end
-
-    it 'fails without a join table' do
-      options[:includes] = []
-      expect(result).to be_a_failure
     end
   end
 
@@ -139,19 +110,11 @@ describe InitiativesFinder do
       options[:includes] = %i[author]
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'author_name\'' do
       expect(record_ids).to eq Initiative.includes(:author)
                                          .order('users.first_name DESC', 'users.last_name DESC')
                                          .pluck(:id)
-    end
-
-    it 'fails without a join table' do
-      options[:includes] = []
-      expect(result).to be_a_failure
     end
   end
 
@@ -160,9 +123,6 @@ describe InitiativesFinder do
       params[:sort] = 'random'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'sorts initiatives by \'random\'' do
       expect(record_ids).to eq Initiative.order_random.pluck(:id)
@@ -176,9 +136,6 @@ describe InitiativesFinder do
       params[:topics] = topic_ids
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by topics' do
       expect(record_ids).to match_array Initiative.with_some_topics(topic_ids)
@@ -192,9 +149,6 @@ describe InitiativesFinder do
       params[:areas] = area_ids
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by areas' do
       expect(record_ids).to match_array Initiative.with_some_areas(area_ids)
@@ -208,9 +162,6 @@ describe InitiativesFinder do
       params[:initiative_status] = initiative_status_id
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by initiative_status' do
       filtered_ids = Initiative
@@ -228,9 +179,6 @@ describe InitiativesFinder do
       params[:assignee] = assignee_id
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by assignee' do
       expect(record_ids).to eq Initiative.where(assignee_id: assignee_id).pluck(:id)
@@ -248,10 +196,6 @@ describe InitiativesFinder do
         params[:feedback_needed] = true
       end
 
-      it 'is successful' do
-        expect(result).to be_a_success
-      end
-
       it 'filters by feedback needed' do
         expect(record_ids).to match_array Initiative.feedback_needed.pluck(:id)
       end
@@ -262,10 +206,6 @@ describe InitiativesFinder do
         create(:initiative, initiative_status: initiative_status)
         create(:initiative, initiative_status: feedback_needed_initiative_status)
         params[:feedback_needed] = false
-      end
-
-      it 'is successful' do
-        expect(result).to be_a_success
       end
 
       it 'filters by feedback not needed' do
@@ -282,9 +222,6 @@ describe InitiativesFinder do
       params[:author] = author.id
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by author' do
       expect(record_ids).to match_array Initiative.where(author_id: author.id).pluck(:id)
@@ -292,8 +229,16 @@ describe InitiativesFinder do
   end
 
   describe '#search_condition' do
-    it 'filters by search param' do
-      expect(result).to be_a_success
+    let(:slug) { 'slug_1' }
+    let(:expected_record_ids) { Initiative.search_by_all(slug).pluck(:id) }
+
+    before do
+      params[:search] = slug
+    end
+
+    it 'returns the correct records' do
+      create(:initiative, slug: slug)
+      expect(record_ids).to match_array expected_record_ids
     end
   end
 
@@ -305,9 +250,6 @@ describe InitiativesFinder do
       params[:publication_status] = publication_status
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by publication_status' do
       expect(record_ids).to match_array Initiative.where(publication_status: publication_status).pluck(:id)
@@ -321,9 +263,6 @@ describe InitiativesFinder do
       params[:bounding_box] = bounding_box
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by bounding_box' do
       expect(record_ids).to match_array Initiative.with_bounding_box(bounding_box).pluck(:id)
@@ -337,9 +276,6 @@ describe InitiativesFinder do
       params[:initiatives] = ids
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
 
     it 'filters by initiatives' do
       expect(record_ids).to match_array Initiative.where(id: ids).pluck(:id)

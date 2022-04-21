@@ -6,7 +6,6 @@ require 'finder/inflectors'
 require 'finder/sortable'
 
 module Finder
-  ## Finder::Base
   class Base
     include Finder::Helpers
     include Finder::Inflectors
@@ -28,6 +27,11 @@ module Finder
       raise Finder::Error, e
     end
 
+    def find_records
+      find
+      records
+    end
+
     protected
 
     attr_reader :params, :current_user, :paginate
@@ -42,7 +46,6 @@ module Finder
       _filter_records
       _sort_records
       _paginate_records
-      @records
     end
 
     def _abort_if_records_class_invalid

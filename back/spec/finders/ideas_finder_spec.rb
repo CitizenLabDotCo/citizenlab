@@ -7,7 +7,7 @@ describe IdeasFinder do
 
   let(:params) { {} }
   let(:options) { {} }
-  let(:result_record_ids) { finder.find.records.pluck(:id) }
+  let(:result_record_ids) { finder.find_records.pluck(:id) }
 
   before_all do
     create_list(:idea_with_topics, 5, project: create(:project_with_phases))

@@ -8,32 +8,36 @@ class WebApi::V1::InitiativesController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @result = InitiativesFinder.find(params, current_user: current_user,
-                                             scope: policy_scope(Initiative),
-                                             includes: %i[author assignee topics areas])
-    @initiatives = @result.records
-    render json: linked_json(@initiatives, WebApi::V1::InitiativeSerializer, serialization_options)
+    initiatives = InitiativesFinder.new(
+      params,
+      current_user: current_user,
+      scope: policy_scope(Initiative),
+      includes: %i[author assignee topics areas]
+    ).find_records
+    render json: linked_json(initiatives, WebApi::V1::InitiativeSerializer, serialization_options_for(initiatives))
   end
 
   def index_initiative_markers
-    @result = InitiativesFinder.find(params, current_user: current_user, scope: policy_scope(Initiative))
-    @initiatives = @result.records
-    render json: linked_json(@initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
+    initiatives = InitiativesFinder.new(
+      params,
+      current_user: current_user,
+      scope: policy_scope(Initiative)
+    ).find_records
+    render json: linked_json(initiatives, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
     authorize :initiative, :index_xlsx?
-    @result = InitiativesFinder.find(
+    initiatives = InitiativesFinder.new(
       params,
       current_user: current_user,
       scope: policy_scope(Initiative).where(publication_status: 'published'),
       includes: %i[author initiative_status topics areas],
       paginate: false
-    )
-    @initiatives = @result.records
+    ).find_records
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_initiatives_xlsx @initiatives,
+      xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
                                                        view_private_attributes: Pundit.policy!(current_user,
                                                                                                User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -42,16 +46,16 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def filter_counts
-    @initiatives = policy_scope(Initiative)
+    initiatives = policy_scope(Initiative)
     search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-    @initiatives = PostsFilteringService.new.apply_common_initiative_index_filters @initiatives, params,
+    initiatives = PostsFilteringService.new.apply_common_initiative_index_filters initiatives, params,
                                                                                    search_last_names
     counts = {
       'initiative_status_id' => {},
       'area_id' => {},
       'topic_id' => {}
     }
-    @initiatives
+    initiatives
       .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
@@ -64,7 +68,7 @@ class WebApi::V1::InitiativesController < ApplicationController
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = @initiatives.count
+    counts['total'] = initiatives.count
     render json: counts
   end
 
@@ -174,11 +178,11 @@ class WebApi::V1::InitiativesController < ApplicationController
     authorize @initiative
   end
 
-  def serialization_options
+  def serialization_options_for(initiatives)
     default_params = fastjson_params(pcs: ParticipationContextService.new)
 
     if current_user
-      votes = current_user.votes.where(votable_id: @initiatives.pluck(:id), votable_type: 'Initiative')
+      votes = current_user.votes.where(votable_id: initiatives.pluck(:id), votable_type: 'Initiative')
       .index_by { |vote| vote.votable_id }
       { params: default_params.merge(vbii: votes), include: %i[author user_vote initiative_images assignee] }
     else

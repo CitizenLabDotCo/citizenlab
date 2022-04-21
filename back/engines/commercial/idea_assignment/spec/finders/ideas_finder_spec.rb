@@ -22,10 +22,6 @@ describe IdeasFinder do
       params[:assignee] = assignee.id
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'returns the correct records' do
       expect(result_record_ids).to match_array expected_record_ids
     end
