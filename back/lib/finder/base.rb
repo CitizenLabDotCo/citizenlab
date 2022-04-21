@@ -21,12 +21,6 @@ module Finder
       @paginate          = paginate
     end
 
-    def find
-      do_find
-    rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
-      raise Finder::Error, e
-    end
-
     def find_records
       find
       records
@@ -41,11 +35,13 @@ module Finder
 
     private
 
-    def do_find
+    def find
       _abort_if_records_class_invalid
       _filter_records
       _sort_records
       _paginate_records
+    rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
+      raise Finder::Error, e
     end
 
     def _abort_if_records_class_invalid

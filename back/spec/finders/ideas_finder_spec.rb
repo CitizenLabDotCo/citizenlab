@@ -189,7 +189,7 @@ describe IdeasFinder do
 
   context 'when no params or options are received' do
     it 'returns all' do
-      expect(finder.find.count).to eq Idea.count
+      expect(finder.find_records.count).to eq Idea.count
     end
   end
 
