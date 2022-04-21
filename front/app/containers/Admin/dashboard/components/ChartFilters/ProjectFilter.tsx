@@ -43,13 +43,13 @@ const generateProjectOptions = (
   localize: Localize,
   formatMessage: InjectedIntlProps['intl']['formatMessage']
 ): IOption[] => {
-  let projectOptions = projectsList.map((project) => ({
+  const projectOptions = projectsList.map((project) => ({
     value: project.id,
     label: localize(project.attributes.title_multiloc),
   }));
 
   if (!onlyModerator) {
-    projectOptions = [
+    return [
       { value: '', label: formatMessage(messages.allProjects) },
       ...projectOptions,
     ];
@@ -91,13 +91,13 @@ const ProjectFilter = ({
   );
 };
 
+const ProjectFilterWithIntl = injectIntl(ProjectFilter);
+
 const publicationStatuses: PublicationStatus[] = [
   'draft',
   'published',
   'archived',
 ];
-
-const ProjectFilterWithIntl = injectIntl(ProjectFilter);
 
 export default (props: InputProps) => (
   <GetProjects
