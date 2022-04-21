@@ -1237,7 +1237,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_questions": "Fragen kommentieren",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal": "Einen Vorschlag veröffentlichen",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_contribution": "Ihren Beitrag abschicken\n",
-  "app.containers.AdminPage.groups.permissions.permissionAction_submit_idea": "Reichen Sie Ihre Idee ein",
+  "app.containers.AdminPage.groups.permissions.permissionAction_submit_idea": "Idee einreichen",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_issue": "Ihre Meinung abschicken",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_option": "Ihre Option abschicken",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_project": "Reichen Sie Ihr Projekt ein\n",
