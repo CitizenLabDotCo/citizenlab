@@ -3,8 +3,8 @@ class WebApi::V1::EventsController < ApplicationController
   skip_before_action :authenticate_user
 
   def index
-    @events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
-    render json: linked_json(@events, WebApi::V1::EventSerializer, params: fastjson_params)
+    events = EventsFinder.new(params, scope: policy_scope(Event), current_user: current_user).find_records
+    render json: linked_json(events, WebApi::V1::EventSerializer, params: fastjson_params)
   end
 
   def show

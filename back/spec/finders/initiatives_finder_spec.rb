@@ -3,20 +3,19 @@
 require 'rails_helper'
 
 describe InitiativesFinder do
-  subject(:result) { described_class.new(params, **options) }
+  subject(:finder) { described_class.new(params, **options) }
 
-  let(:record_ids) { result.find_records.pluck(:id) }
+  let(:record_ids) { finder.find_records.pluck(:id) }
   let(:options) { {} }
   let(:params) { {} }
 
   before_all do
-    @initiatives = create_list(:initiative, 3)
+    create_list(:initiative, 3)
   end
 
   context 'without passing params' do
-
     it 'returns all initiatives' do
-      expect(result.records.count).to eq Initiative.count
+      expect(finder.records.count).to eq Initiative.count
     end
 
     it 'sorts initiatives by \'new\'' do
@@ -29,7 +28,6 @@ describe InitiativesFinder do
       params[:sort] = 'new'
     end
 
-
     it 'sorts initiatives by \'new\'' do
       expect(record_ids).to eq Initiative.order_new(:desc).pluck(:id)
     end
@@ -39,7 +37,6 @@ describe InitiativesFinder do
     before do
       params[:sort] = '-new'
     end
-
 
     it 'sorts initiatives by \'-new\'' do
       expect(record_ids).to eq Initiative.order_new(:asc).pluck(:id)
@@ -51,7 +48,6 @@ describe InitiativesFinder do
       params[:sort] = 'status'
     end
 
-
     it 'sorts initiatives by \'status\'' do
       expect(record_ids).to eq Initiative.order_status(:asc).pluck(:id)
     end
@@ -61,7 +57,6 @@ describe InitiativesFinder do
     before do
       params[:sort] = '-status'
     end
-
 
     it 'sorts initiatives by \'-status\'' do
       expect(record_ids).to eq Initiative.order_status(:desc).pluck(:id)
@@ -73,7 +68,6 @@ describe InitiativesFinder do
       params[:sort] = 'upvotes_count'
     end
 
-
     it 'sorts initiatives by \'upvotes_count\'' do
       expect(record_ids).to eq Initiative.order(upvotes_count: :asc).pluck(:id)
     end
@@ -83,7 +77,6 @@ describe InitiativesFinder do
     before do
       params[:sort] = '-upvotes_count'
     end
-
 
     it 'sorts initiatives by \'-upvotes_count\'' do
       expect(record_ids).to eq Initiative.order(upvotes_count: :desc).pluck(:id)
@@ -95,7 +88,6 @@ describe InitiativesFinder do
       params[:sort] = 'author_name'
       options[:includes] = %i[author]
     end
-
 
     it 'sorts initiatives by \'author_name\'' do
       expect(record_ids).to eq Initiative.includes(:author)
@@ -110,7 +102,6 @@ describe InitiativesFinder do
       options[:includes] = %i[author]
     end
 
-
     it 'sorts initiatives by \'author_name\'' do
       expect(record_ids).to eq Initiative.includes(:author)
                                          .order('users.first_name DESC', 'users.last_name DESC')
@@ -122,7 +113,6 @@ describe InitiativesFinder do
     before do
       params[:sort] = 'random'
     end
-
 
     it 'sorts initiatives by \'random\'' do
       expect(record_ids).to eq Initiative.order_random.pluck(:id)
@@ -136,7 +126,6 @@ describe InitiativesFinder do
       params[:topics] = topic_ids
     end
 
-
     it 'filters by topics' do
       expect(record_ids).to match_array Initiative.with_some_topics(topic_ids)
     end
@@ -149,7 +138,6 @@ describe InitiativesFinder do
       params[:areas] = area_ids
     end
 
-
     it 'filters by areas' do
       expect(record_ids).to match_array Initiative.with_some_areas(area_ids)
     end
@@ -161,7 +149,6 @@ describe InitiativesFinder do
     before do
       params[:initiative_status] = initiative_status_id
     end
-
 
     it 'filters by initiative_status' do
       filtered_ids = Initiative
@@ -178,7 +165,6 @@ describe InitiativesFinder do
     before do
       params[:assignee] = assignee_id
     end
-
 
     it 'filters by assignee' do
       expect(record_ids).to eq Initiative.where(assignee_id: assignee_id).pluck(:id)
@@ -222,7 +208,6 @@ describe InitiativesFinder do
       params[:author] = author.id
     end
 
-
     it 'filters by author' do
       expect(record_ids).to match_array Initiative.where(author_id: author.id).pluck(:id)
     end
@@ -250,7 +235,6 @@ describe InitiativesFinder do
       params[:publication_status] = publication_status
     end
 
-
     it 'filters by publication_status' do
       expect(record_ids).to match_array Initiative.where(publication_status: publication_status).pluck(:id)
     end
@@ -263,7 +247,6 @@ describe InitiativesFinder do
       params[:bounding_box] = bounding_box
     end
 
-
     it 'filters by bounding_box' do
       expect(record_ids).to match_array Initiative.with_bounding_box(bounding_box).pluck(:id)
     end
@@ -275,7 +258,6 @@ describe InitiativesFinder do
     before do
       params[:initiatives] = ids
     end
-
 
     it 'filters by initiatives' do
       expect(record_ids).to match_array Initiative.where(id: ids).pluck(:id)

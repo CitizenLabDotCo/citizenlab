@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 describe EventsFinder do
-  subject(:result) { described_class.new(params, **options) }
+  subject(:finder) { described_class.new(params, **options) }
 
   let(:params) { {} }
   let(:options) { {} }
-  let(:result_record_ids) { result.find_records.pluck(:id) }
+  let(:result_record_ids) { finder.find_records.pluck(:id) }
 
   before do
     create_list(:event, 5)
@@ -15,7 +15,7 @@ describe EventsFinder do
 
   context 'when no params or options are received' do
     it 'returns all' do
-      expect(result.find_records.count).to eq Event.count
+      expect(finder.find_records.count).to eq Event.count
     end
   end
 
