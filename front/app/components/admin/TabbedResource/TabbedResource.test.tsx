@@ -48,12 +48,9 @@ describe('<TabbedResource />', () => {
     const routerProps = getRouterProps('continuousInformation');
 
     const { container } = render(
-      <TabbedResource
-        resource={fakeResource}
-        tabs={fakeTabs}
-        children={children}
-        {...routerProps}
-      />
+      <TabbedResource resource={fakeResource} tabs={fakeTabs} {...routerProps}>
+        {children}
+      </TabbedResource>
     );
 
     expect(container.getElementsByClassName('active')).toHaveLength(1);
@@ -80,9 +77,10 @@ describe('<TabbedResource />', () => {
       <TabbedResource
         resource={fakeResource}
         tabs={tabsIncludingOneWithStatusLabel}
-        children={children}
         {...routerProps}
-      />
+      >
+        {children}
+      </TabbedResource>
     );
     expect(screen.getByText('Beta Tag')).toBeInTheDocument();
   });
