@@ -119,6 +119,88 @@ describe('<MultiBarChart />', () => {
       expect(bars[4]).toHaveAttribute('fill', 'green');
       expect(bars[5]).toHaveAttribute('fill', 'red');
     });
+
+    it('renders correctly when fill mapping is function', () => {
+      const { container } = render(
+        <MultiBarChart
+          width={200}
+          height={250}
+          mapping={{
+            length: ['value1', 'value2'],
+            fill: (row) =>
+              row.name === 'a' ? ['red', 'blue'] : ['green', 'orange'],
+          }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(6);
+
+      expect(bars[0]).toHaveAttribute('fill', 'red');
+      expect(bars[1]).toHaveAttribute('fill', 'green');
+      expect(bars[2]).toHaveAttribute('fill', 'green');
+      expect(bars[3]).toHaveAttribute('fill', 'blue');
+      expect(bars[4]).toHaveAttribute('fill', 'orange');
+      expect(bars[5]).toHaveAttribute('fill', 'orange');
+    });
+
+    it('renders correctly with opacity mapping', () => {
+      const data = [
+        { name: 'a', value1: 4, value2: 7, opacity1: 1, opacity2: 0.8 },
+        { name: 'b', value1: 10, value2: 4, opacity1: 0.5, opacity2: 0.3 },
+        { name: 'c', value1: 7, value2: 10, opacity1: 0.7, opacity2: 0.4 },
+      ];
+
+      const { container } = render(
+        <MultiBarChart
+          width={200}
+          height={250}
+          mapping={{
+            length: ['value1', 'value2'],
+            opacity: ['opacity1', 'opacity2'],
+          }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(6);
+
+      expect(bars[0]).toHaveAttribute('opacity', '1');
+      expect(bars[1]).toHaveAttribute('opacity', '0.5');
+      expect(bars[2]).toHaveAttribute('opacity', '0.7');
+      expect(bars[3]).toHaveAttribute('opacity', '0.8');
+      expect(bars[4]).toHaveAttribute('opacity', '0.3');
+      expect(bars[5]).toHaveAttribute('opacity', '0.4');
+    });
+
+    it('renders correctly when opacity mapping is function', () => {
+      const { container } = render(
+        <MultiBarChart
+          width={200}
+          height={250}
+          mapping={{
+            length: ['value1', 'value2'],
+            opacity: (row) => (row.name === 'a' ? [1, 0.5] : [0.8, 0.6]),
+          }}
+          data={data}
+          bars={{ isAnimationActive: false }}
+        />
+      );
+
+      const bars = container.querySelectorAll('path');
+      expect(bars).toHaveLength(6);
+
+      expect(bars[0]).toHaveAttribute('opacity', '1');
+      expect(bars[1]).toHaveAttribute('opacity', '0.8');
+      expect(bars[2]).toHaveAttribute('opacity', '0.8');
+      expect(bars[3]).toHaveAttribute('opacity', '0.5');
+      expect(bars[4]).toHaveAttribute('opacity', '0.6');
+      expect(bars[5]).toHaveAttribute('opacity', '0.6');
+    });
   });
 
   describe('Horizontal layout', () => {
