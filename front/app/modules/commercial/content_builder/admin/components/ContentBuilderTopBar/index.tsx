@@ -99,7 +99,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           )}
         </Box>
         <Button
-          id="contentBuilderTopBarSaveButton"
+          id="e2e-content-builder-topbar-save"
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}

@@ -42,14 +42,14 @@ describe('Admin: add project and edit description', () => {
       cy.get('*[class^="ContentBuilderToggle__StyledLink"]').click();
 
       // Drag and drop components into the page
-      cy.get('#draggable-text').dragAndDrop('#content-builder-frame', {
+      cy.get('#draggable-text').dragAndDrop('#e2e-content-builder-frame', {
         position: 'inside',
       });
     });
   });
   it('checks that live content is displayed properly', () => {
     // Save content
-    cy.get('#contentBuilderTopBarSaveButton').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
 
     // Navigate to live project page
     cy.get('[data-testid="goBackButton"] .button', {
