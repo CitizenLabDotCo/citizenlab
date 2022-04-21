@@ -15,7 +15,7 @@ const getRouterProps = (tabId, tabName?: string) =>
 
 const children = (
   <>
-    <div>hi</div>
+    <div>Child Content</div>
   </>
 );
 
@@ -60,6 +60,7 @@ describe('<TabbedResource />', () => {
     expect(screen.getByText('Third Tab')).toBeInTheDocument();
     expect(screen.getByText('Tab page')).toBeInTheDocument();
     expect(screen.getByText('Fake Tab Page')).toBeInTheDocument();
+    expect(screen.getByText('Child Content')).toBeInTheDocument();
   });
 
   it('renders properly with an optional status label', () => {
