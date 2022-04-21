@@ -20,7 +20,7 @@ import { IProjectData } from 'services/projects';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../../messages';
+import messages from './messages';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
