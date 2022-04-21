@@ -118,23 +118,25 @@ function getRegularExpression(tabUrl: string) {
   return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
 
-const FormattedTabLink = ({ tab }: { tab: ITab }) => {
-  if (!isNilOrError(tab.statusLabel)) {
+const FormattedTabLink = ({
+  tab: { url, label, statusLabel },
+}: {
+  tab: ITab;
+}) => {
+  if (!isNilOrError(statusLabel)) {
     return (
-      <>
-        <Link to={tab.url}>
-          {tab.label}
-          <StatusLabelWithMargin
-            text={tab.statusLabel}
-            backgroundColor={colors.adminBackground}
-            variant="outlined"
-          />
-        </Link>
-      </>
+      <Link to={url}>
+        {label}
+        <StatusLabelWithMargin
+          text={statusLabel}
+          backgroundColor={colors.adminBackground}
+          variant="outlined"
+        />
+      </Link>
     );
   }
 
-  return <Link to={tab.url}>{tab.label}</Link>;
+  return <Link to={url}>{label}</Link>;
 };
 
 class TabbedResource extends React.PureComponent<
@@ -186,16 +188,17 @@ class TabbedResource extends React.PureComponent<
                     </Tab>
                   </FeatureFlag>
                 );
-              } else {
-                return (
-                  <Tab
-                    key={tab.url}
-                    className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                  >
-                    <FormattedTabLink tab={tab} />
-                  </Tab>
-                );
               }
+
+              // no feature, just return tab with label
+              return (
+                <Tab
+                  key={tab.url}
+                  className={`${tab.name} ${this.activeClassForTab(tab)}`}
+                >
+                  <FormattedTabLink tab={tab} />
+                </Tab>
+              );
             })}
           </TabbedNav>
         )}
