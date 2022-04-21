@@ -47,13 +47,13 @@ const ContentBuilderSettings = () => {
 
   useEffect(() => {
     const vh = document.documentElement.clientHeight;
-    setTopVal(topOffset > vh ? (topOffset - vh) * -1 : 90);
+    setTopVal(topOffset > vh ? topOffset - vh : 160);
   }, [topOffset]);
 
   const measuredRef = (node: HTMLDivElement | null) => {
     if (node !== null) {
       const topOffset = node.getBoundingClientRect().top;
-      setTopOffset(topOffset);
+      setTopOffset(topOffset - 20); // Show full button
     }
   };
 
@@ -66,7 +66,7 @@ const ContentBuilderSettings = () => {
       p="20px"
       w="400px"
     >
-      <Title mt="70px" variant="h2">
+      <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />
       </Title>
       {selected.settings && React.createElement(selected.settings)}

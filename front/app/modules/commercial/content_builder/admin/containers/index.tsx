@@ -26,9 +26,8 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
     <Box display="flex" flexDirection="column" w="100%">
       <Editor isPreview={false}>
         <ContentBuilderTopBar />
-        <Box display="flex">
+        <Box mt="78px" display="flex">
           <Box
-            mt="78px"
             position="fixed"
             zIndex="2"
             flex="0 0 auto"
