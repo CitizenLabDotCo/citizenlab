@@ -11,7 +11,6 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
-import { HiddenLabel } from 'utils/a11y';
 
 // typings
 import { IOption } from 'typings';
@@ -78,16 +77,13 @@ const ProjectFilter = ({
 
   return (
     <Box width="32%">
-      <HiddenLabel>
-        <FormattedMessage {...messages.hiddenLabelProjectFilter} />
-        <Select
-          id="projectFilter"
-          label={<FormattedMessage {...messages.labelProjectFilter} />}
-          onChange={onProjectFilter}
-          value={currentProjectFilter || ''}
-          options={projectFilterOptions}
-        />
-      </HiddenLabel>
+      <Select
+        id="projectFilter"
+        label={<FormattedMessage {...messages.labelProjectFilter} />}
+        onChange={onProjectFilter}
+        value={currentProjectFilter || ''}
+        options={projectFilterOptions}
+      />
     </Box>
   );
 };

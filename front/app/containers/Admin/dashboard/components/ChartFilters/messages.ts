@@ -5,36 +5,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.allGroups',
     defaultMessage: 'All Groups',
   },
-  hiddenLabelGroupFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter',
-    defaultMessage: 'Pick group filter',
-  },
   labelGroupFilter: {
     id: 'app.containers.AdminPage.DashboardPage.labelGroupFilter',
-    defaultMessage: 'User group',
+    defaultMessage: 'Select user group',
   },
   allProjects: {
     id: 'app.containers.AdminPage.DashboardPage.allProjects',
     defaultMessage: 'All Projects',
   },
-  hiddenLabelProjectFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelProjectFilter',
-    defaultMessage: 'Pick project filter',
-  },
   labelProjectFilter: {
     id: 'app.containers.AdminPage.DashboardPage.labelProjectFilter',
-    defaultMessage: 'Project',
+    defaultMessage: 'Select project',
   },
   allTopics: {
     id: 'app.containers.AdminPage.DashboardPage.allTopics',
     defaultMessage: 'All Topics',
   },
-  hiddenLabelTopicFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelTopicFilter',
-    defaultMessage: 'Pick topic filter',
-  },
   labelTopicFilter: {
     id: 'app.containers.AdminPage.DashboardPage.labelTopicFilter',
-    defaultMessage: 'Topic',
+    defaultMessage: 'Select topic',
   },
 });

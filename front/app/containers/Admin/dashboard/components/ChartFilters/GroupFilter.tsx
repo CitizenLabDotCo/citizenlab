@@ -8,7 +8,6 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
-import { HiddenLabel } from 'utils/a11y';
 
 // typings
 import { IOption } from 'typings';
@@ -67,16 +66,13 @@ const GroupFilter = ({
 
   return (
     <Box width="32%">
-      <HiddenLabel>
-        <FormattedMessage {...messages.hiddenLabelGroupFilter} />
-        <Select
-          id="groupFilter"
-          label={<FormattedMessage {...messages.labelGroupFilter} />}
-          onChange={onGroupFilter}
-          value={currentGroupFilter || ''}
-          options={groupFilterOptions}
-        />
-      </HiddenLabel>
+      <Select
+        id="groupFilter"
+        label={<FormattedMessage {...messages.labelGroupFilter} />}
+        onChange={onGroupFilter}
+        value={currentGroupFilter || ''}
+        options={groupFilterOptions}
+      />
     </Box>
   );
 };

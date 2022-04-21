@@ -8,7 +8,6 @@ import useLocalize, { Localize } from 'hooks/useLocalize';
 
 // components
 import { Box, Select } from '@citizenlab/cl2-component-library';
-import { HiddenLabel } from 'utils/a11y';
 
 // typings
 import { IOption } from 'typings';
@@ -67,16 +66,13 @@ const TopicFilter = ({
 
   return (
     <Box width="32%">
-      <HiddenLabel>
-        <FormattedMessage {...messages.hiddenLabelTopicFilter} />
-        <Select
-          id="topicFilter"
-          label={<FormattedMessage {...messages.labelTopicFilter} />}
-          onChange={onTopicFilter}
-          value={currentTopicFilter || ''}
-          options={topicFilterOptions}
-        />
-      </HiddenLabel>
+      <Select
+        id="topicFilter"
+        label={<FormattedMessage {...messages.labelTopicFilter} />}
+        onChange={onTopicFilter}
+        value={currentTopicFilter || ''}
+        options={topicFilterOptions}
+      />
     </Box>
   );
 };
