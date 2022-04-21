@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -22,10 +22,20 @@ const StyledBox = styled(Box)`
 `;
 
 const ContentBuilderSettings = () => {
+  // const [topVal, setTopVal] = useState(0);
+  const topVal = 90;
+
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useLayoutEffect(() => {
+    console.log(
+      document.getElementById('settings-box')?.getBoundingClientRect()
+    );
+  });
+
   const { actions, selected, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selected;
-
     if (currentNodeId) {
       selected = {
         id: currentNodeId,
@@ -43,21 +53,53 @@ const ContentBuilderSettings = () => {
     };
   });
 
+  /*   const measuredRef = useCallback((node: HTMLElement) => {
+      if (node !== null) {
+        setTopVal(node.getBoundingClientRect().height);
+  
+        // Determine location of Delete button
+        let topOffset = 0;
+        if (!isNil(node)) {
+          topOffset = node.getBoundingClientRect().y;
+        }
+  
+        console.log("NODE:");
+        console.log(node);
+        console.log("NODE Y VAL:");
+        console.log(node.getBoundingClientRect().y);
+  
+        // Determine view height
+        const vh = document.documentElement.clientHeight;
+  
+        // Determine offset between button and view height (bottom of screen)
+        setTopVal(90);
+  
+        // If button is not visible on the screen, find the correct offset for Top
+        if (topOffset > vh) {
+          setTopVal((topOffset - vh) * -1);
+        }
+  
+        console.log("vh: %d", vh);
+        console.log("TopOffset: %d", topOffset);
+        console.log("TopVal: %d", topVal);
+      }
+    }, [topVal, selected]); */
+
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox
-      mt="70px"
+      id="settings-box"
       position="sticky"
+      top={`${topVal}px`}
       zIndex="2"
-      top="-100px"
       p="20px"
       w="400px"
     >
-      <Title variant="h2">
+      <Title mt="70px" variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />
       </Title>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
-        <Box display="flex">
+        <Box ref={ref} display="flex">
           <Button
             icon="delete"
             buttonStyle="primary-outlined"
