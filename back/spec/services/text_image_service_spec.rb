@@ -1,17 +1,16 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe TextImageService do
-  let(:service) { TextImageService.new }
+  let(:service) { described_class.new }
 
-  describe "swap_data_images" do
-
-    it "returns exactly the same input languages" do
+  describe 'swap_data_images' do
+    it 'returns exactly the same input locales' do
       imageable = build(:project)
       output = service.swap_data_images(imageable, :description_multiloc)
       expect(output.keys).to eq imageable.description_multiloc.keys
     end
 
-    it "creates TextImage objects" do
+    it 'creates TextImage objects' do
       project = build(:project)
       field = :description_multiloc
       project.description_multiloc = {

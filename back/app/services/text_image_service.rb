@@ -1,95 +1,75 @@
-class TextImageService
+class TextImageService < ContentImageService
+  protected
 
-  def swap_data_images imageable, field
-    multiloc = imageable.send(field)
-    multiloc.each_with_object({}) do |(locale, text), output|
-      doc = Nokogiri::HTML.fragment(text)
-      if doc.errors.any?
-        Rails.logger.debug doc.errors
-        return multiloc
-      end
+  def decode_content(html_string)
+    html_doc = Nokogiri::HTML.fragment html_string
+    if html_doc.errors.any?
+      Sentry.capture_exception(
+        Exception.new('Syntax error in HTML multiloc'),
+        extra: { parse_errors: html_doc.errors }
+      )
+      return nil
+    end
+    html_doc
+  end
 
-      # When the frontend returns the rendered src attribute.
-      doc.css("img")
-        .select{|img| img.has_attribute?('src') && img.has_attribute?('data-cl2-text-image-text-reference') }
-        .each do |img|
-          img.remove_attribute('src')
-        end
+  def encode_content(html_doc)
+    html_doc.to_s
+  end
 
-      # When the user inserted new images in the text.
-      doc.css("img")
-        .select{|img| img.has_attribute?('src') }
-        .each do |img|
-          img_src = img.attr('src')
-          text_image = if img_src =~ /^data:image\/([a-zA-Z]*);base64,.*$/
-            TextImage.create!(
-              imageable: imageable,
-              imageable_field: field,
-              image: img_src
-            )
-          else
-            TextImage.create!(
-              imageable: imageable,
-              imageable_field: field,
-              remote_image_url: img_src
-            )
-          end
-          img.set_attribute('data-cl2-text-image-text-reference', text_image.text_reference)
-          img.remove_attribute('src')
-        end
+  def image_elements(html_doc)
+    html_doc.css 'img'
+  end
 
-      output[locale] = doc.to_s
+  def content_image_class
+    TextImage
+  end
+
+  def image_attributes(html_doc, imageable, field)
+    img_atrs = { imageable: imageable, imageable_field: field }
+
+    img_src = get_attribute html_doc, image_attribute_for_element
+    img_key = img_src.match?(%r{^data:image/([a-zA-Z]*);base64,.*$}) ? :image : :remote_image_url
+    img_atrs[img_key] = img_src
+
+    img_atrs
+  end
+
+  def attribute?(html_doc, image_attribute)
+    html_doc.has_attribute? image_attribute
+  end
+
+  def get_attribute(html_doc, image_attribute)
+    html_doc.attr image_attribute
+  end
+
+  def set_attribute!(html_doc, attribute, value)
+    html_doc.set_attribute attribute, value
+  end
+
+  def remove_attribute!(html_doc, attribute)
+    html_doc.remove_attribute attribute
+  end
+
+  def code_attribute_for_element
+    'data-cl2-text-image-text-reference'
+  end
+
+  def code_attribute_for_model
+    'text_reference'
+  end
+
+  def could_include_images?(html_string)
+    html_string.include? code_attribute_for_element
+  end
+
+  def precompute_for_rendering(_multiloc, imageable, _field)
+    @precomputed_text_images = imageable.text_images.index_by do |ti|
+      ti[code_attribute_for_model]
     end
   end
 
-  def render_data_images imageable, field
-    multiloc = imageable.send(field)
-
-    if multiloc.values.any?{|text| text.include? 'data-cl2-text-image-text-reference'}
-      prefetched_text_images = imageable.text_images.map do |ti|
-        [ti.text_reference, ti]
-      end.to_h
-      
-      multiloc.each_with_object({}) do |(locale, text), output|
-        doc = Nokogiri::HTML.fragment(text)
-        if doc.errors.any?
-          Sentry.capture_exception(
-            Exception.new('Syntax error in HTML multiloc'),
-            extra: {
-              imageable_type: imageable.class,
-              imageable_id: imageable.id,
-              imageable_created_at: imageable.created_at,
-              imageable_field: field,
-              tenant_created_at: AppConfiguration.instance.created_at
-            })
-          return multiloc
-        end
-
-        doc.css("img")
-          .select{|img| img.has_attribute?('data-cl2-text-image-text-reference') }
-          .each do |img|
-            text_reference = img.attr('data-cl2-text-image-text-reference')
-            text_image = prefetched_text_images[text_reference]
-            if text_image
-              img.set_attribute('src', text_image.image.url)
-            else
-              Sentry.capture_exception(
-                Exception.new('No text image found with reference'),
-                extra: {
-                  text_reference: text_reference,
-                  imageable_type: imageable.class,
-                  imageable_id: imageable.id,
-                  imageable_created_at: imageable.created_at,
-                  imageable_field: field,
-                  tenant_created_at: AppConfiguration.instance.created_at
-                })
-            end
-          end
-
-        output[locale] = doc.to_s
-      end
-    else
-      multiloc
-    end
+  def fetch_content_image(code)
+    @precomputed_text_images[code] || content_image_class.find_by(code_attribute_for_model => code)
   end
 end
