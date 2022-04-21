@@ -18,7 +18,7 @@ import ContentBuilderSettings from '../components/ContentBuilderSettings';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
-  z-index: 2;
+  z-index: 1;
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
