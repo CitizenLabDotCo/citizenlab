@@ -18,7 +18,7 @@ import { IOption } from 'typings';
 import { IProjectData } from 'services/projects';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -79,7 +79,7 @@ const ProjectFilter = ({
   return (
     <Box width="32%">
       <HiddenLabel>
-        {formatMessage(messages.hiddenLabelProjectFilter)}
+        <FormattedMessage {...messages.hiddenLabelProjectFilter} />
         <Select
           id="projectFilter"
           onChange={onProjectFilter}

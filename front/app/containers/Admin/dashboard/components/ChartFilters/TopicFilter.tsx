@@ -15,7 +15,7 @@ import { IOption } from 'typings';
 import { ITopicData } from 'services/topics';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -68,7 +68,7 @@ const TopicFilter = ({
   return (
     <Box width="32%">
       <HiddenLabel>
-        {formatMessage(messages.hiddenLabelTopicFilter)}
+        <FormattedMessage {...messages.hiddenLabelTopicFilter} />
         <Select
           id="topicFilter"
           onChange={onTopicFilter}

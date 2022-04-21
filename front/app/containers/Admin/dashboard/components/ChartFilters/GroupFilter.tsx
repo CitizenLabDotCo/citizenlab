@@ -15,7 +15,7 @@ import { IOption } from 'typings';
 import { IGroupData } from 'services/groups';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -68,7 +68,7 @@ const GroupFilter = ({
   return (
     <Box width="32%">
       <HiddenLabel>
-        {formatMessage(messages.hiddenLabelGroupFilter)}
+        <FormattedMessage {...messages.hiddenLabelGroupFilter} />
         <Select
           id="groupFilter"
           onChange={onGroupFilter}
