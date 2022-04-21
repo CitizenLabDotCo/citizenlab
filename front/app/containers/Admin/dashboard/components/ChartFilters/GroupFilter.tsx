@@ -28,7 +28,6 @@ interface DataProps {
 
 interface InputProps {
   currentGroupFilter?: string | null;
-  onlyModerator?: boolean;
   onGroupFilter: (filter: IOption) => void;
 }
 
