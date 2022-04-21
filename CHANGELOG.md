@@ -5,13 +5,13 @@
 ### Changed
 
 - 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
+- It's now possible to escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
 
 ## 2022-04-20
 
 ### Changed
 
 - Changed titles on the admin messaging page to accomodate both SMS and email campaigns
-- It's now possible to escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
 
 ### Fixed
 
