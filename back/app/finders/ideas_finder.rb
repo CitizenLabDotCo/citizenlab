@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-## IdeasFinder.find
 class IdeasFinder < ApplicationFinder
   sortable_attributes 'upvotes_count', 'downvotes_count', 'baskets_count'
 

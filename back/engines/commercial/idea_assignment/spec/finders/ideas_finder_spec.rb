@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 describe IdeasFinder do
-  subject(:result) { described_class.find(params, **options) }
+  subject(:result) { described_class.new(params, **options) }
 
   let(:params) { {} }
   let(:options) { {} }
-  let(:result_record_ids) { result.records.pluck(:id) }
+  let(:result_record_ids) { result.find_records.pluck(:id) }
   let(:assignee) { create(:admin) }
 
   before do
