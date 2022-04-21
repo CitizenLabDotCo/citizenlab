@@ -82,6 +82,7 @@ const ProjectFilter = ({
         <FormattedMessage {...messages.hiddenLabelProjectFilter} />
         <Select
           id="projectFilter"
+          label={<FormattedMessage {...messages.labelProjectFilter} />}
           onChange={onProjectFilter}
           value={currentProjectFilter || ''}
           options={projectFilterOptions}

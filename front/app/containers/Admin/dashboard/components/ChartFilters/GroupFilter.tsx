@@ -71,6 +71,7 @@ const GroupFilter = ({
         <FormattedMessage {...messages.hiddenLabelGroupFilter} />
         <Select
           id="groupFilter"
+          label={<FormattedMessage {...messages.labelGroupFilter} />}
           onChange={onGroupFilter}
           value={currentGroupFilter || ''}
           options={groupFilterOptions}

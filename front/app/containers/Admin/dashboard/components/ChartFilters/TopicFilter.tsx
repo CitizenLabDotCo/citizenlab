@@ -71,6 +71,7 @@ const TopicFilter = ({
         <FormattedMessage {...messages.hiddenLabelTopicFilter} />
         <Select
           id="topicFilter"
+          label={<FormattedMessage {...messages.labelTopicFilter} />}
           onChange={onTopicFilter}
           value={currentTopicFilter || ''}
           options={topicFilterOptions}
