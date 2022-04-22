@@ -3,13 +3,8 @@ class TextImageService < ContentImageService
 
   def decode_content(html_string)
     html_doc = Nokogiri::HTML.fragment html_string
-    if html_doc.errors.any?
-      Sentry.capture_exception(
-        Exception.new('Syntax error in HTML multiloc'),
-        extra: { parse_errors: html_doc.errors }
-      )
-      return nil
-    end
+    raise ContentImageService::DecodingError.new parse_errors: html_doc.errors if html_doc.errors.any?
+
     html_doc
   end
 

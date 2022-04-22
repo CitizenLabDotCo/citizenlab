@@ -1,9 +1,23 @@
 class ContentImageService
+  class DecodingError < StandardError
+    def initialize(options = {})
+      super
+      @parse_errors = options.fetch :parse_errors, nil
+    end
+
+    attr_reader :parse_errors
+  end
+
   def swap_data_images(imageable, field)
     multiloc = imageable.send field
     multiloc.each_with_object({}) do |(locale, encoded_content), output|
-      content = decode_content encoded_content
-      return multiloc if content.nil?
+      content = begin
+        decode_content encoded_content
+      rescue DecodingError => e
+        Sentry.capture_exception(e, extra: { parse_errors: e.parse_errors })
+        output[locale] = encoded_content
+        next
+      end
 
       image_elements(content).each do |img_elt|
         next if !attribute? img_elt, image_attribute_for_element
