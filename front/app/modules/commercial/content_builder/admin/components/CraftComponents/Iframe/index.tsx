@@ -2,41 +2,49 @@ import React from 'react';
 
 // components
 import { Box, Input } from '@citizenlab/cl2-component-library';
-import Iframe from 'react-iframe';
+
+// Intl
+import messages from '../../../messages';
+import { injectIntl } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';
 
-const CraftIframe = ({ url, height }) => {
+const CraftIframe = ({ embedCode, height }) => {
+  // Insert height and width into the <iframe>
+  console.log(height);
+
   return (
     <Box minHeight="26px">
-      <Iframe url={url} height={height} width="100%" />
+      <div dangerouslySetInnerHTML={{ __html: embedCode }} />
     </Box>
   );
 };
 
-const CraftIframeSettings = () => {
+const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   const {
     actions: { setProp },
-    url,
+    embedCode,
     height,
   } = useNode((node) => ({
-    url: node.data.props.url,
+    embedCode: node.data.props.embedCode,
     height: node.data.props.height,
   }));
 
   return (
     <Box marginBottom="20px">
       <Input
-        label="URL"
+        label={formatMessage(messages.embedCodeLabel)}
+        placeholder={formatMessage(messages.embedCodePlaceholder)}
         type="text"
-        value={url}
+        value={embedCode}
         onChange={(value) => {
-          setProp((props) => (props.url = value));
+          setProp((props) => (props.embedCode = value));
         }}
       />
       <Input
-        label="Height"
+        label={formatMessage(messages.embedHeightLabel)}
+        placeholder={formatMessage(messages.embedHeightPlaceholder)}
         type="text"
         value={height}
         onChange={(value) => {
@@ -45,11 +53,11 @@ const CraftIframeSettings = () => {
       />
     </Box>
   );
-};
+});
 
 CraftIframe.craft = {
   props: {
-    url: '',
+    embedCode: '',
     height: '',
   },
   related: {

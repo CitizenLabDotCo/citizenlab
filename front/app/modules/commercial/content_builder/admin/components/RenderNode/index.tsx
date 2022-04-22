@@ -42,7 +42,7 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
     case IMAGE:
       return messages.image;
     case IFRAME:
-      return messages.iframe;
+      return messages.embed;
   }
 };
 

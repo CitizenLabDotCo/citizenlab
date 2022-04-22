@@ -33,9 +33,25 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
   },
-  iframe: {
-    id: 'app.containers.admin.ContentBuilder.iframe',
-    defaultMessage: 'Iframe',
+  embed: {
+    id: 'app.containers.admin.ContentBuilder.embed',
+    defaultMessage: 'Embed',
+  },
+  embedCodeLabel: {
+    id: 'app.containers.admin.ContentBuilder.embedCodeLabel',
+    defaultMessage: 'Add your code',
+  },
+  embedHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.embedHeightLabel',
+    defaultMessage: 'Height',
+  },
+  embedCodePlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.embedCodePlaceholder',
+    defaultMessage: '<iframe> ... <iframe>',
+  },
+  embedHeightPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.embedHeightPlaceholder',
+    defaultMessage: 'e.g. 120px',
   },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
