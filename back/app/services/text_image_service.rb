@@ -26,13 +26,11 @@ class TextImageService < ContentImageService
   end
 
   def image_attributes(html_doc, imageable, field)
-    img_atrs = { imageable: imageable, imageable_field: field }
-
-    img_src = get_attribute html_doc, image_attribute_for_element
-    img_key = img_src.match?(%r{^data:image/([a-zA-Z]*);base64,.*$}) ? :image : :remote_image_url
-    img_atrs[img_key] = img_src
-
-    img_atrs
+    { imageable: imageable, imageable_field: field }.tap do |img_atrs|
+      img_src = get_attribute html_doc, image_attribute_for_element
+      img_key = img_src.match?(%r{^data:image/([a-zA-Z]*);base64,.*$}) ? :image : :remote_image_url
+      img_atrs[img_key] = img_src
+    end
   end
 
   def attribute?(html_doc, image_attribute)

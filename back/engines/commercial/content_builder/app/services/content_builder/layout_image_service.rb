@@ -12,7 +12,7 @@ module ContentBuilder
       LayoutImage
     end
 
-    def image_attributes(img_elt, _, _)
+    def image_attributes(img_elt, _imageable, _field)
       { remote_image_url: img_elt[image_attribute] }
     end
 
