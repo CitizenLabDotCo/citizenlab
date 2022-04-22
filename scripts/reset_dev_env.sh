@@ -25,6 +25,7 @@ git stash
 git checkout "$EE_BRANCH"
 git pull || true # do not exit on error (maybe there's no remote branch)
 
+sh scripts/disable_ee.sh # remove multi_tenancy code
 sh scripts/enable_ee.sh
 
 
