@@ -57,7 +57,7 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
     # added to reproduce the bug and test the fix
     it 'handles gracefully absent projects' do
       Project.find(moderator.roles[0]['project_id']).destroy!
-      commands = campaign.reload.generate_commands(recipient: moderator).first
+      commands = campaign.reload.generate_commands(recipient: moderator.reload).first
       expect(commands).to be_blank
     end
   end
