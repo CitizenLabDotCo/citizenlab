@@ -103,7 +103,7 @@ jobs:
     environment:
       RAILS_ENV: development
     steps:
-      - run: bundle exec rubocop -P --format simple --format html --out rubocop.html
+      - run: bundle exec rubocop -P --format simple
 
   back-test:
     resource_class: small
