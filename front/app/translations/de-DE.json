@@ -67,7 +67,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.back": "Zurück",
   "app.components.ConsentManager.Modal.PreferencesDialog.cancel": "Abbrechen",
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "Nicht zulassen",
-  "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funktionale",
+  "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Funktional",
   "app.components.ConsentManager.Modal.PreferencesDialog.functionalPurpose": "Dies ist erforderlich, um grundlegende Funktionen der Website zu aktivieren und zu überwachen. Einige der hier aufgeführten Werkzeuge treffen möglicherweise nicht auf Sie zu. Bitte lesen Sie unsere Cookie-Richtlinie für weitere Informationen.",
   "app.components.ConsentManager.Modal.PreferencesDialog.google_tag_manager": "Google Tag Manager ({destinations})",
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Erforderlich",
