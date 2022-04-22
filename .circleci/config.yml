@@ -93,6 +93,18 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-essential:$CIRCLE_SHA1
 
+  back-lint:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: $CIRCLE_SHA1
+    working_directory: /cl2_back
+    parallelism: 4
+    environment:
+      RAILS_ENV: development
+    steps:
+      - run: bundle exec rubocop -P --format simple --format html --out rubocop.html
+
   back-test:
     resource_class: small
     executor:
@@ -355,6 +367,15 @@ workflows:
               ignore:
                 - crowdin_master
                 - /l10n_.*/
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - /l10n_.*/
       - back-test:
           context: docker-hub-access
           requires:
@@ -466,6 +487,14 @@ workflows:
             branches:
               only:
                 - production
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
       - back-test:
           context: docker-hub-access
           requires:
@@ -490,6 +519,7 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
+            - back-lint
             - back-test
             - back-license-check
           filters:
@@ -504,6 +534,7 @@ workflows:
             - front-build
             - front-detect-deadcode
             - front-lint
+            - back-lint
             - back-test
             - back-license-check
           filters:
