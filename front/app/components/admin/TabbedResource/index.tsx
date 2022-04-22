@@ -17,9 +17,6 @@ import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
 import { StatusLabel } from '@citizenlab/cl2-component-library';
 
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-
 const ResourceHeader = styled.div`
   display: flex;
   align-items: flex-end;
@@ -123,7 +120,7 @@ const FormattedTabLink = ({
 }: {
   tab: ITab;
 }) => {
-  if (!isNilOrError(statusLabel)) {
+  if (statusLabel) {
     return (
       <Link to={url}>
         {label}
