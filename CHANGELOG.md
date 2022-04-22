@@ -13,6 +13,7 @@
 - Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
 - Properly disable SMS create/edit button if the message is empty
 - In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
+- Improved input manager so that "All projects" can handle many projects.
 
 ## 2022-04-11
 
