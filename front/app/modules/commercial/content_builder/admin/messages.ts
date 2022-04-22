@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
   },
+  iframe: {
+    id: 'app.containers.admin.ContentBuilder.iframe',
+    defaultMessage: 'Iframe',
+  },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',

@@ -19,13 +19,15 @@ const TWO_COLUMNS = 'TwoColumn';
 const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
 const IMAGE = 'Image';
+const IFRAME = 'CraftIframe';
 
 type ComponentNamesType =
   | typeof CONTAINER
   | typeof TWO_COLUMNS
   | typeof THREE_COLUMNS
   | typeof TEXT
-  | typeof IMAGE;
+  | typeof IMAGE
+  | typeof IFRAME;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -39,6 +41,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.text;
     case IMAGE:
       return messages.image;
+    case IFRAME:
+      return messages.iframe;
   }
 };
 
@@ -72,7 +76,7 @@ const RenderNode = ({ render }) => {
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
 
-  // Handle two column hover state
+  // Handle multi-column hover state
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 

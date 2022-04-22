@@ -15,6 +15,7 @@ import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
+import CraftIframe from '../CraftComponents/Iframe';
 
 // Intl
 import messages from '../../messages';
@@ -103,6 +104,22 @@ const ContentBuilderToolbox = ({
         }}
       >
         <ToolboxItem icon="image" label={formatMessage(messages.image)} />
+      </DraggableElement>
+      <DraggableElement
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element is={CraftIframe} id="CraftIframe" url="" height="" />,
+            {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            }
+          )
+        }
+      >
+        <ToolboxItem icon="text" label={formatMessage(messages.iframe)} />
       </DraggableElement>
     </Box>
   );

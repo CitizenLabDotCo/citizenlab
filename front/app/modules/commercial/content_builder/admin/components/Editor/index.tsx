@@ -12,6 +12,7 @@ import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import RenderNode from '../RenderNode';
+import CraftIframe from '../CraftComponents/Iframe';
 
 type EditorProps = {
   isPreview: boolean;
@@ -20,7 +21,15 @@ type EditorProps = {
 const Editor: React.FC<EditorProps> = ({ isPreview, children }) => {
   return (
     <CraftEditor
-      resolver={{ Box, Container, TwoColumn, ThreeColumn, Text, Image }}
+      resolver={{
+        Box,
+        Container,
+        TwoColumn,
+        ThreeColumn,
+        Text,
+        Image,
+        CraftIframe,
+      }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}
     >
