@@ -4,18 +4,14 @@ import React from 'react';
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 // craft
-import { useNode, UserComponent, Element } from '@craftjs/core';
+import { UserComponent, Element } from '@craftjs/core';
 import Container from '../Container';
 
 const ThreeColumn: UserComponent = () => {
   const isLargeTablet = useBreakpoint('largeTablet');
-  const {
-    connectors: { drag, connect },
-  } = useNode();
 
   return (
     <Box
-      ref={(ref) => ref && connect(drag(ref))}
       flexDirection={isLargeTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"

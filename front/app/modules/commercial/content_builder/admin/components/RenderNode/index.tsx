@@ -18,12 +18,14 @@ const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
 const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
+const IMAGE = 'Image';
 
 type ComponentNamesType =
   | typeof CONTAINER
   | typeof TWO_COLUMNS
   | typeof THREE_COLUMNS
-  | typeof TEXT;
+  | typeof TEXT
+  | typeof IMAGE;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -35,6 +37,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.threeColumn;
     case TEXT:
       return messages.text;
+    case IMAGE:
+      return messages.image;
   }
 };
 
@@ -55,7 +59,12 @@ const RenderNode = ({ render }) => {
     isDeletable: id && query.node(id).isDeletable(),
   }));
 
-  const { id, name, isHover } = useNode((node) => ({
+  const {
+    id,
+    name,
+    isHover,
+    connectors: { connect, drag },
+  } = useNode((node) => ({
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
   }));
@@ -99,6 +108,7 @@ const RenderNode = ({ render }) => {
 
   return (
     <StyledBox
+      ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
       border={`1px ${

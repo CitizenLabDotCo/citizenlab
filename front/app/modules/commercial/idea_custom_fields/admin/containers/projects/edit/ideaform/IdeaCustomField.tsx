@@ -30,7 +30,6 @@ const QuillMutilocWithLocaleSwitcher = lazy(
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
@@ -173,13 +172,13 @@ interface Props {
 
 const disablableFields = [
   'topic_ids',
-  'location',
-  'attachments',
+  'location_description',
+  'idea_files_attributes',
   'proposed_budget',
 ];
 const alwaysRequiredFields = ['title', 'body'];
 
-const IdeaCustomField = memo<Props & InjectedLocalized>(
+export default memo<Props>(
   ({
     ideaCustomField,
     collapsed,
@@ -187,7 +186,6 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
     onChange,
     onCollapseExpand,
     className,
-    localize,
   }) => {
     const canSetEnabled = disablableFields.find(
       (field) => field === ideaCustomField.attributes.key
@@ -248,9 +246,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
             onClick={handleCollapseExpand}
             className={`
             ${collapsed ? 'collapsed' : 'expanded'}
-            e2e-${localize(
-              ideaCustomField.attributes.title_multiloc
-            ).toLowerCase()}-setting-collapsed
+            e2e-${ideaCustomField.attributes.code}-setting-collapsed
           `}
           >
             <CustomFieldTitle>
@@ -279,9 +275,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         label={<FormattedMessage {...messages.enabled} />}
                         labelTextColor={colors.adminTextColor}
                         className={`
-                        e2e-${localize(
-                          ideaCustomField.attributes.title_multiloc
-                        ).toLowerCase()}-enabled-toggle-label
+                        e2e-${ideaCustomField.attributes.code}-enabled-toggle-label
                       `}
                       />
                       <IconTooltip
@@ -301,9 +295,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
                         label={<FormattedMessage {...messages.required} />}
                         labelTextColor={colors.adminTextColor}
                         className={`
-                        e2e-${localize(
-                          ideaCustomField.attributes.title_multiloc
-                        ).toLowerCase()}-required-toggle-label
+                          e2e-${ideaCustomField.attributes.code}-required-toggle-label
                       `}
                       />
                       <IconTooltip
@@ -344,5 +336,3 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(
     return null;
   }
 );
-
-export default injectLocalize(IdeaCustomField);

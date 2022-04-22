@@ -22,18 +22,14 @@ import messages from '../../../messages';
 
 const TwoColumn: UserComponent = ({ columnLayout }) => {
   const isLargeTablet = useBreakpoint('largeTablet');
-  const {
-    connectors: { drag, connect },
-  } = useNode();
 
   return (
     <Box
-      ref={(ref) => ref && connect(drag(ref))}
       flexDirection={isLargeTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"
       w="100%"
-      gap="4px"
+      gap="8px"
     >
       <Box flex={columnLayout === '2-1' ? '2' : '1'}>
         <Element id="column1" is={Container} canvas />

@@ -14,6 +14,7 @@ import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
+import Image from '../CraftComponents/Image';
 
 // Intl
 import messages from '../../messages';
@@ -28,7 +29,10 @@ const DraggableElement = styled.div`
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  const { connectors } = useEditor();
+  const {
+    connectors,
+    actions: { selectNode },
+  } = useEditor();
 
   return (
     <Box w="100%" display="inline">
@@ -75,15 +79,31 @@ const ContentBuilderToolbox = ({
           connectors.create(
             ref,
             <Element
-              canvas
               is={Text}
               id="text"
               text={formatMessage(messages.textValue)}
-            />
+            />,
+            {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            }
           )
         }
       >
         <ToolboxItem icon="text" label={formatMessage(messages.text)} />
+      </DraggableElement>
+      <DraggableElement
+        ref={(ref) => {
+          ref &&
+            connectors.create(ref, <Element is={Image} id="image" alt="" />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            });
+        }}
+      >
+        <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>
     </Box>
   );
