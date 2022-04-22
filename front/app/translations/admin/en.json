@@ -1306,6 +1306,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
   "app.containers.admin.ContentBuilder.delete": "Delete",
+  "app.containers.admin.ContentBuilder.iframe": "Iframe",
   "app.containers.admin.ContentBuilder.image": "Image",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Short description of the image",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Adding \"alt text\" for images is important to make your platform accessible for users using screen readers.",
