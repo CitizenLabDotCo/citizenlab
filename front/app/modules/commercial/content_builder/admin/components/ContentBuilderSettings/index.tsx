@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // styles
 import styled from 'styled-components';
@@ -22,9 +22,6 @@ const StyledBox = styled(Box)`
 `;
 
 const ContentBuilderSettings = () => {
-  const [topOffset, setTopOffset] = useState(0);
-  const [topVal, setTopVal] = useState(90);
-
   const { actions, selected, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selected;
@@ -45,23 +42,11 @@ const ContentBuilderSettings = () => {
     };
   });
 
-  useEffect(() => {
-    const vh = document.documentElement.clientHeight;
-    setTopVal(topOffset > vh ? topOffset - vh : 160);
-  }, [topOffset]);
-
-  const measuredRef = (node: HTMLDivElement | null) => {
-    if (node !== null) {
-      const topOffset = node.getBoundingClientRect().top;
-      setTopOffset(topOffset - 20); // Show full button
-    }
-  };
-
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox
       id="settings-box"
       position="sticky"
-      top={`${topVal}px`}
+      top="160px"
       zIndex="2"
       p="20px"
       w="400px"
@@ -71,7 +56,7 @@ const ContentBuilderSettings = () => {
       </Title>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
-        <Box display="flex" ref={measuredRef}>
+        <Box display="flex">
           <Button
             icon="delete"
             buttonStyle="primary-outlined"
