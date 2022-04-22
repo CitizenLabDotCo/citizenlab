@@ -23,8 +23,8 @@ Container.craft = {
       nodes.every(
         (node) =>
           node.data.type === Text ||
-          node.data.type === Image ||
-          node.data.type === CraftIframe
+          node.data.type === CraftIframe ||
+          node.data.type === Image
       ),
   },
 };
