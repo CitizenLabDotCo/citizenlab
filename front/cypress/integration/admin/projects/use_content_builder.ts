@@ -1,56 +1,55 @@
 import { randomString } from '../../../support/commands';
 
-const projectTitleEN = randomString();
-const projectTitleNLBE = randomString();
-const projectTitleNLNL = randomString();
-const projectTitleFRBE = randomString();
-
 describe('Admin: add project and edit description', () => {
+  let projectId = '';
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
-
-  it('creates a draft project', () => {
-    cy.visit('/admin/projects/');
-    cy.get('.e2e-create-project-expand-collapse-button').click();
-    cy.wait(1000);
-    cy.get('.e2e-create-project-tabs .last').click();
-    cy.wait(1000);
-    cy.get('.e2e-project-general-form');
-    cy.get('.e2e-projecstatus-draft').click();
-
-    // Random project titles for these required fields
-    cy.get('#project-title').type(projectTitleEN);
-    cy.get('.e2e-localeswitcher.nl-BE').click();
-    cy.get('#project-title').type(projectTitleNLBE);
-    cy.get('.e2e-localeswitcher.nl-NL').click();
-    cy.get('#project-title').type(projectTitleNLNL);
-    cy.get('.e2e-localeswitcher.fr-BE').click();
-    cy.get('#project-title').type(projectTitleFRBE);
-
-    // Submit project
-    cy.get('.e2e-submit-wrapper-button').click();
-    cy.wait(2000);
+  after(() => {
+    cy.apiRemoveProject(projectId);
   });
-  it('edits project description in content builder', () => {
-    cy.url().then((url) => {
-      const baseUrl = url.substring(0, url.lastIndexOf('/') + 1);
-      cy.visit(`${baseUrl}description`);
-      cy.get('[id$=toggle-enable-content-builder]')
-        .find('input')
-        .click({ force: true });
-      cy.get('*[class^="ContentBuilderToggle__StyledLink"]').click();
+  it('creates a sample project', () => {
+    cy.visit('/admin/projects/');
+    cy.getAuthUser().then((user) => {
+      const projectTitle = randomString();
+      const projectDescriptionPreview = randomString();
+      const projectDescription = randomString();
+      const userId = user.body.data.id;
 
-      // Drag and drop components into the page
-      cy.get('#draggable-text').dragAndDrop('#e2e-content-builder-frame', {
-        position: 'inside',
+      cy.apiCreateProject({
+        type: 'continuous',
+        title: projectTitle,
+        descriptionPreview: projectDescriptionPreview,
+        description: projectDescription,
+        publicationStatus: 'published',
+        participationMethod: 'ideation',
+        assigneeId: userId,
+      }).then((project) => {
+        projectId = project.body.data.id;
+        cy.visit(`/admin/projects/${projectId}/description`);
       });
     });
   });
-  it('checks that live content is displayed properly', () => {
+  it('edits project description in content builder', () => {
+    cy.get('#e2e-toggle-enable-content-builder')
+      .find('input')
+      .click({ force: true });
+    cy.get('#e2e-content-builder-link').click();
+
+    // Drag and drop components into the page
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+
+    // Edit the content
+    cy.get('#e2e-text-box').click();
+    cy.get('#quill-editor').click();
+    cy.get('#quill-editor').type('Edited text.');
+
     // Save content
     cy.get('#e2e-content-builder-topbar-save').click();
-
+  });
+  it('checks that live content is displayed properly', () => {
     // Navigate to live project page
     cy.get('[data-testid="goBackButton"] .button', {
       withinSubject: null,
@@ -58,8 +57,6 @@ describe('Admin: add project and edit description', () => {
     cy.get('#to-project').click();
 
     // Check builder content is displayed
-    cy.contains(
-      'This is some text. You can edit and format it by using the editor in the panel on the right.'
-    ).should('be.visible');
+    cy.contains('Edited text.').should('be.visible');
   });
 });
