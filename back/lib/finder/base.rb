@@ -11,8 +11,6 @@ module Finder
     include Finder::Inflectors
     include Finder::Sortable
 
-    attr_reader :records
-
     def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
       @current_user      = current_user
@@ -28,7 +26,7 @@ module Finder
 
     protected
 
-    attr_reader :params, :current_user, :paginate
+    attr_reader :params, :records, :current_user, :paginate
     alias paginate? paginate
 
     delegate :table_name, to: :_klass

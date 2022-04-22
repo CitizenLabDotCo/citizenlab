@@ -15,7 +15,7 @@ describe InitiativesFinder do
 
   context 'without passing params' do
     it 'returns all initiatives' do
-      expect(finder.records.count).to eq Initiative.count
+      expect(finder.find_records.count).to eq Initiative.count
     end
 
     it 'sorts initiatives by \'new\'' do
