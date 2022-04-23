@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe InitiativeStatusService do
   let(:service) { InitiativeStatusService.new }
 
-  describe "#automated_transitions!" do
+  describe '#automated_transitions!' do
     before do
       @initiative = create(:initiative)
       configuration = AppConfiguration.instance
@@ -12,8 +12,8 @@ describe InitiativeStatusService do
         allowed: true,
         voting_threshold: 2,
         days_limit: 20,
-        threshold_reached_message: {"en" => "Threshold reached"},
-        eligibility_criteria: {"en" => "Eligibility criteria"}
+        threshold_reached_message: {'en' => 'Threshold reached'},
+        eligibility_criteria: {'en' => 'Eligibility criteria'}
       }
       configuration.save!
 
@@ -24,7 +24,7 @@ describe InitiativeStatusService do
       @status_ineligible = create(:initiative_status_ineligible)
     end
 
-    it "transitions when voting threshold was reached" do 
+    it 'transitions when voting threshold was reached' do 
       create(
         :initiative_status_change, 
         initiative: @initiative, initiative_status: @status_proposed
@@ -36,7 +36,7 @@ describe InitiativeStatusService do
       expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
     end
 
-    it "transitions when expired" do 
+    it 'transitions when expired' do 
       create(
         :initiative_status_change, 
         initiative: @initiative, initiative_status: @status_proposed
@@ -48,7 +48,7 @@ describe InitiativeStatusService do
       end
     end
 
-    it "remains proposed if not expired nor threshold reached" do 
+    it 'remains proposed if not expired nor threshold reached' do 
       create(
         :initiative_status_change, 
         initiative: @initiative, initiative_status: @status_proposed
@@ -63,7 +63,7 @@ describe InitiativeStatusService do
 
   end
 
-  describe "transition_type" do
+  describe 'transition_type' do
     before do
       @status_proposed = create(:initiative_status_proposed)
       @status_expired = create(:initiative_status_expired)
@@ -72,11 +72,11 @@ describe InitiativeStatusService do
       @status_ineligible = create(:initiative_status_ineligible)
     end
 
-    it "labels the threshold_reached status as automatic" do
+    it 'labels the threshold_reached status as automatic' do
       expect(service.transition_type(@status_threshold_reached)).to eq 'automatic'
     end
 
-    it "labels the ineligible status as manual" do
+    it 'labels the ineligible status as manual' do
       expect(service.transition_type(@status_ineligible)).to eq 'manual'
     end
   end

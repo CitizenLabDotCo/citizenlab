@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Polls::Response, type: :model do
 
-  describe "Default factory" do
-    it "is valid" do
+  describe 'Default factory' do
+    it 'is valid' do
       expect(build(:poll_response)).to be_valid
     end
   end
 
   describe do
-    it "adds an error when the user already responded to the poll" do
+    it 'adds an error when the user already responded to the poll' do
       pc = create(:continuous_poll_project)
       q1 = create(:poll_question, :with_options, participation_context: pc)
       user = create(:user)
@@ -21,13 +21,13 @@ RSpec.describe Polls::Response, type: :model do
     end
   end
 
-  describe "validate_option_count" do
-    context "on a single_option question" do
+  describe 'validate_option_count' do
+    context 'on a single_option question' do
       let!(:pc) { create(:continuous_poll_project) }
       let!(:q1) { create(:poll_question, :with_options, participation_context: pc) }
       let!(:q2) { create(:poll_question, :with_options, participation_context: pc) }
 
-      it "adds no error when all questions are answered" do
+      it 'adds no error when all questions are answered' do
         response = build(
           :poll_response,
           participation_context: pc,
@@ -39,7 +39,7 @@ RSpec.describe Polls::Response, type: :model do
         expect(response.valid?(:response_submission)).to be true
       end
 
-      it "adds an error when not all questions are answered" do
+      it 'adds an error when not all questions are answered' do
         response = build(
           :poll_response,
           participation_context: pc,
@@ -51,7 +51,7 @@ RSpec.describe Polls::Response, type: :model do
         expect(response.errors.details).to eq({:base => [{:error=>:too_few_options}]})
       end
 
-      it "adds an error when a question is answered with multiple options" do
+      it 'adds an error when a question is answered with multiple options' do
         response = build(
           :poll_response,
           participation_context: pc,
@@ -66,12 +66,12 @@ RSpec.describe Polls::Response, type: :model do
       end
     end
 
-    context "on a multiple_options response" do
+    context 'on a multiple_options response' do
       let!(:pc) { create(:continuous_poll_project) }
       let!(:q1) { create(:poll_question_multiple_options, :with_options, participation_context: pc) }
       let!(:q2) { create(:poll_question_multiple_options, :with_options, participation_context: pc) }
 
-      it "adds no error when all questions are answered" do
+      it 'adds no error when all questions are answered' do
         response = build(
           :poll_response,
           participation_context: pc,
@@ -84,7 +84,7 @@ RSpec.describe Polls::Response, type: :model do
         expect(response.valid?(:response_submission)).to be true
       end
 
-      it "adds an error when not all questions are answered" do
+      it 'adds an error when not all questions are answered' do
         response = build(
           :poll_response,
           participation_context: pc,

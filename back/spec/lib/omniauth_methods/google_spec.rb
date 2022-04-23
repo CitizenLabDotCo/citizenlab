@@ -1,17 +1,17 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe OmniauthMethods::Google do
 
-  describe "profile_to_user_attrs" do
+  describe 'profile_to_user_attrs' do
 
-    it "correctly interprets gender, locale and image for google" do
+    it 'correctly interprets gender, locale and image for google' do
       auth = OpenStruct.new({
         provider: 'google',
         info: OpenStruct.new({
-          "first_name" => 'Jos',
-          "last_name" => 'Jossens',
-          "email" => 'jos@josnet.com',
-          "image" => 'http://www.josnet.com/my-picture'
+          'first_name' => 'Jos',
+          'last_name' => 'Jossens',
+          'email' => 'jos@josnet.com',
+          'image' => 'http://www.josnet.com/my-picture'
         }),
         extra: OpenStruct.new({
           raw_info: OpenStruct.new({

@@ -16,11 +16,11 @@ describe ProjectPolicy do
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
-    it "should not index the project"  do
+    it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
     end
 
-    it "should not include the user in the users that have access" do
+    it 'should not include the user in the users that have access' do
       expect(inverse_scope.resolve).not_to include(user)
     end
   end
@@ -37,11 +37,11 @@ describe ProjectPolicy do
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
 
-    it "should index the project"  do
+    it 'should index the project'  do
       expect(scope.resolve.size).to eq 1
     end
 
-    it "should include the user in the users that have access" do
+    it 'should include the user in the users that have access' do
       expect(inverse_scope.resolve).to include(user)
     end
   end

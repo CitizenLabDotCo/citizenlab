@@ -29,8 +29,8 @@ module IdFranceconnect
         acr_values: 'eidas1',
         client_signing_alg: :HS256, # hashing function of France Connect
         client_options: {
-          identifier: configuration.settings("franceconnect_login", "identifier"),
-          secret: configuration.settings("franceconnect_login", "secret"),
+          identifier: configuration.settings('franceconnect_login', 'identifier'),
+          secret: configuration.settings('franceconnect_login', 'secret'),
           scheme: 'https',
           host: host,
           port: 443,
@@ -59,10 +59,10 @@ module IdFranceconnect
     end
 
     def host
-      case AppConfiguration.instance.settings("franceconnect_login", "environment")
-      when "integration" then
+      case AppConfiguration.instance.settings('franceconnect_login', 'environment')
+      when 'integration' then
         'fcp.integ01.dev-franceconnect.fr'
-      when "production" then
+      when 'production' then
         'app.franceconnect.gouv.fr'
       end
     end

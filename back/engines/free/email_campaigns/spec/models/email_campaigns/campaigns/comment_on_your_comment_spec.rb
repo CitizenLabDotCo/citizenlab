@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
-  describe "CommentOnYourComment Campaign default factory" do
-    it "is valid" do
+  describe 'CommentOnYourComment Campaign default factory' do
+    it 'is valid' do
       expect(build(:comment_on_your_comment_campaign)).to be_valid
     end
   end
@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
     let(:notification) { create(:comment_on_your_comment) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
-  	it "generates a command with the desired payload and tracked content" do
+  	it 'generates a command with the desired payload and tracked content' do
   		command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity
@@ -26,7 +26,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
       	).to eq(notification.comment.body_multiloc)
     end
 
-    it "generates a command with an abbreviated name" do
+    it 'generates a command with an abbreviated name' do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
 
       expect(notification.recipient.admin?).to be false

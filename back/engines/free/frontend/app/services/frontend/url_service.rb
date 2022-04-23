@@ -149,7 +149,7 @@ module Frontend
     def config_from_options(options)
       tenant = options[:tenant]
       if tenant # Show a deprecation message is tenant options is used
-        ActiveSupport::Deprecation.warn(":tenant options is deprecated, use :app_configuration instead.") # MT_TODO to be removed
+        ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
       options[:app_configuration] || tenant&.configuration || app_config_instance # TODO OS remove: tenant&.configuration
     end

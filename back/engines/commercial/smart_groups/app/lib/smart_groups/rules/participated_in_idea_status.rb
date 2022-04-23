@@ -17,45 +17,45 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
             },
-            "value" => {
-              "description" => "The id of an idea status",
-              "type" => "string"
+            'value' => {
+              'description' => 'The id of an idea status',
+              'type' => 'string'
             }
           },
         },
         {
-          "type": "object",
-          "required" => ["ruleType", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": MULTIVALUE_PREDICATES,
             },
-            "value" => {
-              "description" => "The ids of some of the idea statuses",
-              "type" => "array",
-              "items" => {
-                "type" => "string"
+            'value' => {
+              'description' => 'The ids of some of the idea statuses',
+              'type' => 'array',
+              'items' => {
+                'type' => 'string'
               },
-              "uniqueItems" => true,
-              "minItems" => 1
+              'uniqueItems' => true,
+              'minItems' => 1
             }
           },
         }

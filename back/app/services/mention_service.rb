@@ -11,7 +11,7 @@ class MentionService
   # @return [User::ActiveRecord_Relation] users
   def extract_expanded_mention_users text
     doc = Nokogiri::HTML.fragment(text)
-    expanded_mentions = doc.css("span.cl-mention-user")
+    expanded_mentions = doc.css('span.cl-mention-user')
     user_ids = expanded_mentions.map do |mention|
       mention.attr('data-user-id')
     end
@@ -78,9 +78,9 @@ class MentionService
   # @return [String] text without mention tags
   def remove_expanded_mentions text
     doc = Nokogiri::HTML.fragment(text)
-    expanded_mentions = doc.css("span.cl-mention-user")
+    expanded_mentions = doc.css('span.cl-mention-user')
     expanded_mentions.each do |el|
-      user = User.find_by(id: el.attributes["data-user-id"].inner_html)
+      user = User.find_by(id: el.attributes['data-user-id'].inner_html)
       if user
         el.replace(user_to_mention(user))
       else

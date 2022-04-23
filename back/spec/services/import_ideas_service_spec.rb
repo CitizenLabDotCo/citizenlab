@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe ImportIdeasService do
   let(:service) { ImportIdeasService.new }
@@ -16,16 +16,16 @@ describe ImportIdeasService do
     create_list(:user, 5)
   end
 
-  describe "ideas importation", slow_test: true do
+  describe 'ideas importation', slow_test: true do
 
-    it "creates all ideas if correctly formatted" do
+    it 'creates all ideas if correctly formatted' do
       n = 10
       idea_data = generate_idea_data(n)
       service.import_ideas(idea_data)
       expect(Idea.count).to eq(n)
     end
 
-    it "aborts successfully" do
+    it 'aborts successfully' do
       idea_data = generate_idea_data(6)
       idea_data[3][:user_email] = 'nonexistinguser@citizenlab.co'
       expect { service.import_ideas(idea_data) }.to raise_error(RuntimeError)

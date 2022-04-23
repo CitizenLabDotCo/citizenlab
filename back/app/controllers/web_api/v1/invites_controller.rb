@@ -19,33 +19,33 @@ class WebApi::V1::InvitesController < ApplicationController
       @invites = @invites.search_by_all(params[:search])
       # Started happening when moved from rails 5.1 -> 5.2
       # https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Table+Aliasing
-      @invites = @invites.where("invitees_invites.invite_status = ?", params[:invite_status]) if params[:invite_status].present?
+      @invites = @invites.where('invitees_invites.invite_status = ?', params[:invite_status]) if params[:invite_status].present?
     else
-      @invites = @invites.where("users.invite_status = ?", params[:invite_status]) if params[:invite_status].present?
+      @invites = @invites.where('users.invite_status = ?', params[:invite_status]) if params[:invite_status].present?
     end
 
     if params[:sort].present? && !params[:search].present?
       @invites = case params[:sort]
-        when "created_at"
+        when 'created_at'
           @invites.order(created_at: :asc)
-        when "-created_at"
+        when '-created_at'
           @invites.order(created_at: :desc)
-        when "last_name"
-          @invites.order("users.last_name asc")
-        when "-last_name"
-          @invites.order("users.last_name desc")
-        when "email"
-          @invites.order("users.email asc")
-        when "-email"
-          @invites.order("users.email desc")
-        when "invite_status"
-          @invites.order("users.invite_status asc")
-        when "-invite_status"
-          @invites.order("users.invite_status desc")
+        when 'last_name'
+          @invites.order('users.last_name asc')
+        when '-last_name'
+          @invites.order('users.last_name desc')
+        when 'email'
+          @invites.order('users.email asc')
+        when '-email'
+          @invites.order('users.email desc')
+        when 'invite_status'
+          @invites.order('users.invite_status asc')
+        when '-invite_status'
+          @invites.order('users.invite_status desc')
         when nil
           @invites
         else
-          raise "Unsupported sort method"
+          raise 'Unsupported sort method'
       end
     end
 
@@ -66,7 +66,7 @@ class WebApi::V1::InvitesController < ApplicationController
   def bulk_create
     authorize :invite
     InvitesService.new.bulk_create(
-      bulk_create_params[:emails].map{|e| {"email" => e}},
+      bulk_create_params[:emails].map{|e| {'email' => e}},
       bulk_create_params.except(:emails).stringify_keys,
       current_user
     )

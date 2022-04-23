@@ -113,15 +113,15 @@ module UserCustomFields
           serie = users_by_domicile_serie
           res = Area.all.map {  |area|
             {
-              "area_id" => area.id,
-              "area" => @@multiloc_service.t(area.title_multiloc),
-              "users" => serie.find{|entry| entry[0] == area.id}&.at(1) || 0
+              'area_id' => area.id,
+              'area' => @@multiloc_service.t(area.title_multiloc),
+              'users' => serie.find{|entry| entry[0] == area.id}&.at(1) || 0
             }
           }
           res.push({
-            "area_id" => "_blank",
-            "area" => "unknown",
-            "users" => serie.delete(nil) || 0
+            'area_id' => '_blank',
+            'area' => 'unknown',
+            'users' => serie.delete(nil) || 0
             }) unless serie.empty?
 
           xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'

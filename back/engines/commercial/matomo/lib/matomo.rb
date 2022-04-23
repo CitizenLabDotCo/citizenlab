@@ -1,4 +1,4 @@
-require "matomo/engine"
+require 'matomo/engine'
 
 module Matomo
   # Your code goes here...

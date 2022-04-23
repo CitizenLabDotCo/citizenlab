@@ -10,14 +10,14 @@ class TextImageService
       end
 
       # When the frontend returns the rendered src attribute.
-      doc.css("img")
+      doc.css('img')
         .select{|img| img.has_attribute?('src') && img.has_attribute?('data-cl2-text-image-text-reference') }
         .each do |img|
           img.remove_attribute('src')
         end
 
       # When the user inserted new images in the text.
-      doc.css("img")
+      doc.css('img')
         .select{|img| img.has_attribute?('src') }
         .each do |img|
           img_src = img.attr('src')
@@ -65,7 +65,7 @@ class TextImageService
           return multiloc
         end
 
-        doc.css("img")
+        doc.css('img')
           .select{|img| img.has_attribute?('data-cl2-text-image-text-reference') }
           .each do |img|
             text_reference = img.attr('data-cl2-text-image-text-reference')

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::IdeaMarkedAsSpam, type: :model do
-  describe "IdeaMarkedAsSpam Campaign default factory" do
-    it "is valid" do
+  describe 'IdeaMarkedAsSpam Campaign default factory' do
+    it 'is valid' do
       expect(build(:idea_marked_as_spam_campaign)).to be_valid
     end
   end
@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaMarkedAsSpam, type: :model do
     let(:notification) { create(:idea_marked_as_spam) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
-  	it "generates a command with the desired payload and tracked content" do
+  	it 'generates a command with the desired payload and tracked content' do
   		command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity

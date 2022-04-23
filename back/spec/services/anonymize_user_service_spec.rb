@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe AnonymizeUserService do
   let(:service) { AnonymizeUserService.new }
 
-  describe "#anonymized_attributes" do
+  describe '#anonymized_attributes' do
     before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
