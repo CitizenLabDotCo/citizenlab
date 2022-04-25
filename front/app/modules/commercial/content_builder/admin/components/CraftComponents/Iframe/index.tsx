@@ -45,41 +45,45 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   }));
 
   return (
-    <Box marginBottom="20px">
-      <Input
-        label={
-          <span>
-            {formatMessage(messages.embedCodeLabel)}{' '}
-            <IconTooltip
-              icon="info3"
-              content={formatMessage(messages.embedCodeLabelTooltip)}
-            />
-          </span>
-        }
-        placeholder={formatMessage(messages.embedCodePlaceholder)}
-        type="text"
-        value={embedCode}
-        onChange={(value) => {
-          setProp((props) => (props.embedCode = value));
-        }}
-      />
-      <Input
-        label={
-          <span>
-            {formatMessage(messages.embedHeightLabel)}{' '}
-            <IconTooltip
-              icon="info3"
-              content={formatMessage(messages.embedHeightLabelTooltip)}
-            />
-          </span>
-        }
-        placeholder={formatMessage(messages.embedHeightPlaceholder)}
-        type="text"
-        value={height}
-        onChange={(value) => {
-          setProp((props) => (props.height = value));
-        }}
-      />
+    <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
+      <Box flex="0 0 100%">
+        <Input
+          label={
+            <span>
+              {formatMessage(messages.embedCodeLabel)}{' '}
+              <IconTooltip
+                icon="info3"
+                content={formatMessage(messages.embedCodeLabelTooltip)}
+              />
+            </span>
+          }
+          placeholder={formatMessage(messages.embedCodePlaceholder)}
+          type="text"
+          value={embedCode}
+          onChange={(value) => {
+            setProp((props) => (props.embedCode = value));
+          }}
+        />
+      </Box>
+      <Box flex="0 0 100%">
+        <Input
+          label={
+            <span>
+              {formatMessage(messages.embedHeightLabel)}{' '}
+              <IconTooltip
+                icon="info3"
+                content={formatMessage(messages.embedHeightLabelTooltip)}
+              />
+            </span>
+          }
+          placeholder={formatMessage(messages.embedHeightPlaceholder)}
+          type="text"
+          value={height}
+          onChange={(value) => {
+            setProp((props) => (props.height = value));
+          }}
+        />
+      </Box>
     </Box>
   );
 });
