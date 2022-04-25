@@ -36,10 +36,10 @@ class JsonFormsService
   def fields_to_json_schema_multiloc(configuration, fields)
     configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
       override_method = "#{fields.first.resource_type.underscore}_to_json_schema"
-      if self.respond_to?(override_method, true)
-        obj[locale] = send(override_method, fields, locale)
+      obj[locale] = if respond_to?(override_method, true)
+        send(override_method, fields, locale)
       else
-        obj[locale] = fields_to_json_schema(fields, locale)
+        fields_to_json_schema(fields, locale)
       end
     end
   end
@@ -48,15 +48,13 @@ class JsonFormsService
     {
       type: "object",
       additionalProperties: false,
-      properties: fields.inject({}) do |memo, field|
+      properties: fields.each_with_object({}) do |field, accu|
         override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
-        memo[field.key] =
-          if field.code && self.respond_to?(override_method, true)
-            send(override_method, field, locale)
-          else
-            send("#{field.input_type}_to_json_schema_field", field, locale)
-          end
-        memo
+        accu[field.key] = if field.code && respond_to?(override_method, true)
+          send(override_method, field, locale)
+        else
+          send("#{field.input_type}_to_json_schema_field", field, locale)
+        end
       end
     }.tap do |output|
       required = fields.select(&:enabled).select(&:required).map(&:key)
