@@ -1,11 +1,26 @@
 // DATA
-export type Data = { name: string; [key: string]: any }[];
+export type DataRow = { name: string; [key: string]: any };
+export type Data = DataRow[];
 
 // MAPPING
+type MappingFunction<T> = (row: DataRow) => T[];
+type Channel<T> = string[] | MappingFunction<T>;
+
 export interface Mapping {
   length: string[];
-  fill?: string[];
+  fill?: Channel<string>;
+  opacity?: Channel<number>;
 }
+
+export const applyChannel = <T>(
+  row: DataRow,
+  index: number,
+  channel?: Channel<T>
+): T | undefined => {
+  if (channel instanceof Array) return row[channel[index]];
+  if (channel instanceof Function) return channel(row)[index];
+  return;
+};
 
 // BARS
 export interface BarProps {

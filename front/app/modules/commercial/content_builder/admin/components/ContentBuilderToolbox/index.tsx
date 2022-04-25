@@ -29,7 +29,10 @@ const DraggableElement = styled.div`
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  const { connectors } = useEditor();
+  const {
+    connectors,
+    actions: { selectNode },
+  } = useEditor();
 
   return (
     <Box w="100%" display="inline">
@@ -75,24 +78,29 @@ const ContentBuilderToolbox = ({
           connectors.create(
             ref,
             <Element
-              canvas
               is={Text}
               id="text"
               text={formatMessage(messages.textValue)}
-            />
+            />,
+            {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            }
           )
         }
       >
         <ToolboxItem icon="text" label={formatMessage(messages.text)} />
       </DraggableElement>
       <DraggableElement
-        ref={(ref) =>
+        ref={(ref) => {
           ref &&
-          connectors.create(
-            ref,
-            <Element canvas is={Image} id="image" alt="" />
-          )
-        }
+            connectors.create(ref, <Element is={Image} id="image" alt="" />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            });
+        }}
       >
         <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>

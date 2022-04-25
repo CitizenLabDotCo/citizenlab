@@ -2,6 +2,14 @@
 
 ## Next release
 
+### Changed
+
+- 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
+- Added property for status label to Tab component, and used this to add "Beta" flag to feature flagged SMS feature
+
+### Fixed
+
+- Improved input manager so that "All projects" can handle many projects.
 
 ## 2022-04-20
 

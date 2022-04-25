@@ -41,7 +41,7 @@ resource 'Ideas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+      expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
     end
 
     example 'Don\'t list drafts (default behaviour)', document: false do
