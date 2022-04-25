@@ -15,14 +15,14 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
                                  .where(published_at: @start_at..@end_at)
-    @result = IdeasFinder.find(params, scope: ideas, current_user: current_user)
+    @result = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     render json: { count: @result.count }
   end
 
   def ideas_by_topic_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -59,7 +59,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_project_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -93,7 +93,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_area_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -126,7 +126,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_status_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     ideas
       .where(published_at: @start_at..@end_at)
@@ -180,7 +180,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_time_cumulative_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     @@stats_service.group_by_time_cumulative(
       ideas,
@@ -193,7 +193,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_time_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.find(params, scope: ideas, current_user: current_user).records
+    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     @@stats_service.group_by_time(
       ideas,

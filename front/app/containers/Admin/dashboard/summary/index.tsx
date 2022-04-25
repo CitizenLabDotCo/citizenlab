@@ -412,7 +412,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 className="dynamicHeight fullWidth e2e-resource-by-project-chart"
                 onResourceByProjectChange={this.onResourceByProjectChange}
                 resourceOptions={this.resourceOptions}
-                projectOptions={projectFilterOptions}
                 startAt={startAt}
                 endAt={endAt}
                 {...this.state}
@@ -427,7 +426,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               />
               <SelectableResourceByTopicChart
                 className="fullWidth dynamicHeight e2e-resource-by-topic-chart"
-                topicOptions={topicFilterOptions}
                 onResourceByTopicChange={this.onResourceByTopicChange}
                 resourceOptions={this.resourceOptions}
                 startAt={startAt}

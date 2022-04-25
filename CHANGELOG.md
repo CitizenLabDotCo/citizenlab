@@ -4,6 +4,18 @@
 
 ### Changed
 
+- 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
+- Added property for status label to Tab component, and used this to add "Beta" flag to feature flagged SMS feature
+
+### Fixed
+
+- Improved input manager so that "All projects" can handle many projects.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
+
+## 2022-04-20
+
+### Changed
+
 - Changed titles on the admin messaging page to accomodate both SMS and email campaigns
 
 ### Fixed
@@ -13,7 +25,7 @@
 - Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
 - Properly disable SMS create/edit button if the message is empty
 - In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
-- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
+- Fixed a bug in the password signup flow where a user could skip accepting terms and conditions and privacy policy
 
 ## 2022-04-11
 
