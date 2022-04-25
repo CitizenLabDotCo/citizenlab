@@ -22,11 +22,10 @@ Container.craft = {
   rules: {
     canMoveIn: (nodes) =>
       nodes.every(
-        (node) =>
-          node.data.type === Text ||
-          node.data.type === CraftIframe ||
-          node.data.type === AboutBox ||
-          node.data.type === Image
+        ((node) => node.data.type === AboutBox) ||
+          ((node) => node.data.type === Text) ||
+          ((node) => node.data.type === CraftIframe) ||
+          ((node) => node.data.type === Image)
       ),
   },
 };
