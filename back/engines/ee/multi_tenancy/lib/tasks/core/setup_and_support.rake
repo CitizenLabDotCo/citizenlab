@@ -225,10 +225,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       users = User.where(email: emails)
       group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
-      users.each do |u|
-        group.add_member u
-      end
-      group.save!
+      group.update!(memberships_count: users.count)
     end
   end
 
