@@ -41,9 +41,18 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.embedCodeLabel',
     defaultMessage: 'Add your code',
   },
+  embedCodeLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.embedCodeLabelTooltip',
+    defaultMessage:
+      'You can embed another HTML document into this one using an <iframe>, for example a YouTube video.',
+  },
   embedHeightLabel: {
     id: 'app.containers.admin.ContentBuilder.embedHeightLabel',
     defaultMessage: 'Height',
+  },
+  embedHeightLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.embedHeightLabelTooltip',
+    defaultMessage: 'Height of the iframe window.',
   },
   embedCodePlaceholder: {
     id: 'app.containers.admin.ContentBuilder.embedCodePlaceholder',

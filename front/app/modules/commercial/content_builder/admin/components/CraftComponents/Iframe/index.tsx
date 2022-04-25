@@ -1,9 +1,12 @@
 import React from 'react';
 
-// components
-import { Box, Input } from '@citizenlab/cl2-component-library';
+// utils
+import { isNil } from 'lodash-es';
 
-// Intl
+// components
+import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
+
+// intl
 import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
@@ -11,14 +14,24 @@ import { injectIntl } from 'utils/cl-intl';
 import { useNode } from '@craftjs/core';
 
 const CraftIframe = ({ embedCode, height }) => {
-  // Insert height and width into the <iframe>
-  console.log(height);
+  const iframeElement = document.createElement('div');
+  iframeElement.innerHTML = embedCode.trim();
+  iframeElement.firstElementChild?.setAttribute('height', height);
+  iframeElement.firstElementChild?.setAttribute('width', '100%');
 
-  return (
-    <Box minHeight="26px">
-      <div dangerouslySetInnerHTML={{ __html: embedCode }} />
-    </Box>
-  );
+  if (!isNil(iframeElement)) {
+    return (
+      <Box minHeight="26px">
+        <div dangerouslySetInnerHTML={{ __html: iframeElement.outerHTML }} />
+      </Box>
+    );
+  } else {
+    return (
+      <Box minHeight="26px">
+        <div dangerouslySetInnerHTML={{ __html: embedCode }} />
+      </Box>
+    );
+  }
 };
 
 const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
@@ -34,7 +47,15 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   return (
     <Box marginBottom="20px">
       <Input
-        label={formatMessage(messages.embedCodeLabel)}
+        label={
+          <span>
+            {formatMessage(messages.embedCodeLabel)}{' '}
+            <IconTooltip
+              icon="info3"
+              content={formatMessage(messages.embedCodeLabelTooltip)}
+            />
+          </span>
+        }
         placeholder={formatMessage(messages.embedCodePlaceholder)}
         type="text"
         value={embedCode}
@@ -43,7 +64,15 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         }}
       />
       <Input
-        label={formatMessage(messages.embedHeightLabel)}
+        label={
+          <span>
+            {formatMessage(messages.embedHeightLabel)}{' '}
+            <IconTooltip
+              icon="info3"
+              content={formatMessage(messages.embedHeightLabelTooltip)}
+            />
+          </span>
+        }
         placeholder={formatMessage(messages.embedHeightPlaceholder)}
         type="text"
         value={height}

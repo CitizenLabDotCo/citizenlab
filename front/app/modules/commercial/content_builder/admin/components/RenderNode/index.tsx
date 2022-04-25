@@ -137,7 +137,9 @@ const RenderNode = ({ render }) => {
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      {render}
+      <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>
+        {render}
+      </div>
     </StyledBox>
   );
 };
