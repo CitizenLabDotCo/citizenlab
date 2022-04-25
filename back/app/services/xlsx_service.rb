@@ -305,45 +305,44 @@ class XlsxService
 
   # @param [Symbol] record_to_user
   # @param [Boolean] view_private_attributes
-  def custom_form_custom_field_columns record_to_idea, ideas
-
-    projects = ideas.map { |idea| idea.project }
+  def custom_form_custom_field_columns(record_to_idea, ideas)
+    projects = ideas.map(&:project)
     idea_custom_fields = CustomField.where(resource: CustomForm.where(project: projects))
 
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }
 
     idea_custom_fields.map do |field|
-
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = #lambda that gets a record and returns the field value
-        if field.support_options? #field with option
-          lambda do |record|
-            idea = record.send(record_to_idea)
-
-            if idea && idea.custom_field_values[field.key]
-              if idea.custom_field_values[field.key].kind_of?(Array)
-                idea.custom_field_values[field.key].map { |key|
-                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-                }.join(', ')
-              elsif idea.custom_field_values[field.key].kind_of?(String)
-                multiloc_service.t(options[namespace(field.id, idea.custom_field_values[field.key])]&.title_multiloc)
-              end
-            end
-          end
-        else # all other custom fields
-          lambda do |record|
-            idea = record.send(record_to_idea)
-
-            idea && idea.custom_field_values[field.key]
-          end
-        end
-
-      { header: column_name, f: value_getter }
+      { header: column_name, f: value_getter(field, record_to_idea, options) }
     end
   end
 
   private
+
+  def value_getter(field, record_to_idea)
+    if field.support_options? # field with option
+      lambda do |record|
+        idea = record.send(record_to_idea)
+        if idea && idea.custom_field_values[field.key]
+          case idea.custom_field_values[field.key]
+          when Array
+            idea.custom_field_values[field.key].map do |key|
+              multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+            end.join(', ')
+          when String
+            multiloc_service.t(options[namespace(field.id, idea.custom_field_values[field.key])]&.title_multiloc)
+          end
+        end
+      end
+    else # all other custom fields
+      lambda do |record|
+        idea = record.send(record_to_idea)
+
+        idea && idea.custom_field_values[field.key]
+      end
+    end
+  end
 
   def private_attributes
     custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
