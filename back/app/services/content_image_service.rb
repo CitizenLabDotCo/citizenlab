@@ -48,7 +48,7 @@ class ContentImageService
         code = get_attribute img_elt, code_attribute_for_element
         content_image = fetch_content_image code
         if content_image.present?
-          set_attribute! img_elt, image_attribute_for_element, content_image.image.url
+          set_attribute! img_elt, image_attribute_for_element, content_image_url(content_image)
         else
           Sentry.capture_exception( # TODO: in separate method
             Exception.new('No content image found with code'),
@@ -130,5 +130,9 @@ class ContentImageService
 
   def fetch_content_image(code)
     content_image_class.find_by code_attribute_for_model => code
+  end
+
+  def content_image_url(content_image)
+    content_image.image.url
   end
 end
