@@ -597,7 +597,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchten Sie erhalten? ",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Benachrichtigungen",
   "app.containers.CampaignsConsentForm.officialCategory": "Offizielle Mitteilungen",
-  "app.containers.CampaignsConsentForm.ownCategory": "Mit dem eigenen Beitrag verknüpft ",
+  "app.containers.CampaignsConsentForm.ownCategory": "Benachrichtigungen zu meinen Beiträgen",
   "app.containers.CampaignsConsentForm.submit": "Speichern",
   "app.containers.CampaignsConsentForm.votedCategory": "Updates zu einem Beitrag für den Sie abgestimmt haben",
   "app.containers.CampaignsConsentForm.weeklyCategory": "Wöchentliche Übersichten",
