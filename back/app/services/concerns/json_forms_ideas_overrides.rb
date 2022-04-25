@@ -54,27 +54,26 @@ module JsonFormsIdeasOverrides
     {
       type: 'object',
       additionalProperties: false,
-      properties: fields.select(&:built_in?).inject({}) do |memo, field|
-        override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
-        memo[field.key] =
-          if field.code && respond_to?(override_method, true)
-            send(override_method, field, locale)
+      properties: fields.select(&:built_in?).inject({}) do |memo, built_in_field|
+        override_method = "#{built_in_field.resource_type.underscore}_#{built_in_field.code}_to_json_schema_field"
+        memo[built_in_field.key] =
+          if built_in_field.code && respond_to?(override_method, true)
+            send(override_method, built_in_field, locale)
           else
-            send("#{field.input_type}_to_json_schema_field", field, locale)
+            send("#{built_in_field.input_type}_to_json_schema_field", built_in_field, locale)
           end
         memo.tap do |properties|
           properties[:custom_field_values] = {
             type: 'object',
             additionalProperties: false,
-            properties: fields.reject(&:built_in?).each_with_object do |mem, field|
+            properties: fields.reject(&:built_in?).each_with_object do |field, accu|
               override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
-              mem[field.key] =
+              accu[field.key] =
                 if field.code && respond_to?(override_method, true)
                   send(override_method, field, locale)
                 else
                   send("#{field.input_type}_to_json_schema_field", field, locale)
                 end
-              mem
             end
           }
         end
