@@ -271,35 +271,9 @@ class XlsxService
     user_custom_fields&.map do |field|
 
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = #lambda that gets a record and returns the field value
-        if field.key == 'domicile'  # 'domicile' is a special case
-          lambda do |record|
-            user = record.send(record_to_user)
-            multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
-          end
-        elsif field.support_options? #field with option
-          lambda do |record|
-            user = record.send(record_to_user)
+      
 
-            if user && user.custom_field_values[field.key]
-              if user.custom_field_values[field.key].kind_of?(Array)
-                user.custom_field_values[field.key].map { |key|
-                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-                }.join(', ')
-              elsif user.custom_field_values[field.key].kind_of?(String)
-                multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
-              end
-            end
-          end
-        else # all other custom fields
-          lambda do |record|
-            user = record.send(record_to_user)
-
-            user && user.custom_field_values[field.key]
-          end
-        end
-
-      { header: column_name, f: value_getter }
+      { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
   end
 
@@ -314,31 +288,53 @@ class XlsxService
 
     idea_custom_fields.map do |field|
       column_name = multiloc_service.t(field.title_multiloc)
-      { header: column_name, f: value_getter(field, record_to_idea, options) }
+      { header: column_name, f: value_getter_for_custom_form_custom_field_columns(field, record_to_idea, options) }
     end
   end
 
   private
 
-  def value_getter(field, record_to_idea)
+  def title_multiloc_for(record, field, options)
+    return unless record
+
+    case record.custom_field_values[field.key]
+    when Array
+      record.custom_field_values[field.key].map do |key|
+        multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+      end.join(', ')
+    when String
+      multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
+    end
+  end
+
+  def value_getter_for_user_custom_field_columns(field, record_to_user, options)
+    if field.key == 'domicile' # 'domicile' is a special case
+      lambda do |record|
+        user = record.send(record_to_user)
+        multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
+      end
+    elsif field.support_options? # field with option
+      lambda do |record|
+        user = record.send(record_to_user)
+        title_multiloc_for user, field, options
+      end
+    else # all other custom fields
+      lambda do |record|
+        user = record.send(record_to_user)
+        user && user.custom_field_values[field.key]
+      end
+    end
+  end
+
+  def value_getter_for_custom_form_custom_field_columns(field, record_to_idea, options)
     if field.support_options? # field with option
       lambda do |record|
         idea = record.send(record_to_idea)
-        if idea && idea.custom_field_values[field.key]
-          case idea.custom_field_values[field.key]
-          when Array
-            idea.custom_field_values[field.key].map do |key|
-              multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-            end.join(', ')
-          when String
-            multiloc_service.t(options[namespace(field.id, idea.custom_field_values[field.key])]&.title_multiloc)
-          end
-        end
+        title_multiloc_for idea, field, options
       end
     else # all other custom fields
       lambda do |record|
         idea = record.send(record_to_idea)
-
         idea && idea.custom_field_values[field.key]
       end
     end
