@@ -68,7 +68,7 @@ module JsonFormsIdeasOverrides
           properties[:custom_field_values] = {
             type: 'object',
             additionalProperties: false,
-            properties: fields.reject(&:built_in?).each_with_object do |field, accu|
+            properties: fields.reject(&:built_in?).each_with_object({}) do |field, accu|
               override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
               accu[field.key] =
                 if field.code && respond_to?(override_method, true)
