@@ -1,5 +1,6 @@
 import React from 'react';
 
+// routing
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
@@ -14,6 +15,7 @@ import { ITab } from 'typings';
 import FeatureFlag from 'components/FeatureFlag';
 import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
+import { StatusLabel } from '@citizenlab/cl2-component-library';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -95,6 +97,10 @@ const ChildWrapper = styled.div`
   }
 `;
 
+const StatusLabelWithMargin = styled(StatusLabel)`
+  margin-left: 12px;
+`;
+
 type Props = {
   resource: {
     title: string;
@@ -108,6 +114,27 @@ interface State {}
 function getRegularExpression(tabUrl: string) {
   return new RegExp(`^/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(/)?$`);
 }
+
+const FormattedTabLink = ({
+  tab: { url, label, statusLabel },
+}: {
+  tab: ITab;
+}) => {
+  if (statusLabel) {
+    return (
+      <Link to={url}>
+        {label}
+        <StatusLabelWithMargin
+          text={statusLabel}
+          backgroundColor={colors.adminBackground}
+          variant="outlined"
+        />
+      </Link>
+    );
+  }
+
+  return <Link to={url}>{label}</Link>;
+};
 
 class TabbedResource extends React.PureComponent<
   Props & WithRouterProps,
@@ -154,20 +181,21 @@ class TabbedResource extends React.PureComponent<
                       key={tab.url}
                       className={`${tab.name} ${this.activeClassForTab(tab)}`}
                     >
-                      <Link to={tab.url}>{tab.label}</Link>
+                      <FormattedTabLink tab={tab} />
                     </Tab>
                   </FeatureFlag>
                 );
-              } else {
-                return (
-                  <Tab
-                    key={tab.url}
-                    className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                  >
-                    <Link to={tab.url}>{tab.label}</Link>
-                  </Tab>
-                );
               }
+
+              // no feature, just return tab with label
+              return (
+                <Tab
+                  key={tab.url}
+                  className={`${tab.name} ${this.activeClassForTab(tab)}`}
+                >
+                  <FormattedTabLink tab={tab} />
+                </Tab>
+              );
             })}
           </TabbedNav>
         )}
