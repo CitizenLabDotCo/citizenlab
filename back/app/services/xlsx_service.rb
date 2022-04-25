@@ -347,12 +347,12 @@ class XlsxService
     custom_field_attrs + %w[email gender birthyear domicile education Email author_email author_id assignee_email]
   end
 
-  def header_style(s)
-    s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
+  def header_style(style)
+    style.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
   end
 
-  def convert_to_text_long_lines html
-    convert_to_text(html).gsub(/\n/, ' ')
+  def convert_to_text_long_lines(html)
+    convert_to_text(html).tr("\n", ' ')
   end
 
   # Sheet names, derived from Cause titles for example, can only be 31 characters long,
