@@ -20,6 +20,7 @@ const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
 const IMAGE = 'Image';
 const IFRAME = 'CraftIframe';
+const ABOUTBOX = 'AboutBox';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -27,7 +28,8 @@ type ComponentNamesType =
   | typeof THREE_COLUMNS
   | typeof TEXT
   | typeof IMAGE
-  | typeof IFRAME;
+  | typeof IFRAME
+  | typeof ABOUTBOX;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -43,6 +45,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.image;
     case IFRAME:
       return messages.embed;
+    case ABOUTBOX:
+      return messages.aboutBox;
   }
 };
 

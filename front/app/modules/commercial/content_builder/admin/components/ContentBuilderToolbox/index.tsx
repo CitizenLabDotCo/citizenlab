@@ -16,6 +16,7 @@ import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import CraftIframe from '../CraftComponents/Iframe';
+import AboutBox from '../CraftComponents/AboutBox';
 
 // Intl
 import messages from '../../messages';
@@ -27,9 +28,14 @@ const DraggableElement = styled.div`
   cursor: move;
 `;
 
+interface IParameters {
+  projectId: string;
+}
+
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+  projectId,
+}: InjectedIntlProps & IParameters) => {
   const {
     connectors,
     actions: { selectNode },
@@ -125,6 +131,22 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem icon="code" label={formatMessage(messages.embed)} />
+      </DraggableElement>
+      <DraggableElement
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element is={AboutBox} id="AboutBox" projectId={projectId} />,
+            {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            }
+          )
+        }
+      >
+        <ToolboxItem icon="info" label={formatMessage(messages.aboutBox)} />
       </DraggableElement>
     </Box>
   );
