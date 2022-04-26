@@ -84,6 +84,10 @@ const SignUpInModal = memo<Props>(
         !authUser.attributes.registration_completed_at;
       if (signedUpButNotCompleted) {
         await signOut();
+        // We need to await signOut. If authUser would be there
+        // when openSignUpInModalIfNecessary in App/index.tsx gets called,
+        // it would cause openSignUpInModalIfNecessary to open the modal again.
+        // This happens because the user is indeed not completely registered/verified (see openSignUpInModalIfNecessary).
       }
 
       if (onDeclineInvitation && metaData?.isInvitation) {
