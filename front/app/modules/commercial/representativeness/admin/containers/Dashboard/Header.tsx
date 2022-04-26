@@ -21,6 +21,7 @@ const Header = () => (
               <a
                 href="https://en.wikipedia.org/wiki/Chi-squared_test"
                 target="_blank"
+                rel="noreferrer"
               >
                 <FormattedMessage {...messages.representativenessArticleLink} />
               </a>
