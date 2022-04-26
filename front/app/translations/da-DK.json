@@ -1244,7 +1244,7 @@
   "app.containers.UsersEditPage.deleteYourAccount": "Slet din konto ",
   "app.containers.UsersEditPage.deletionSection": "Slet din konto ",
   "app.containers.UsersEditPage.deletionSubtitle": "Denne handling kan ikke fortrydes. Det indhold du udgiver på platformen vil blive anonymiseret. Hvis du ønsker at slette alt dit indhold, kan du kontakte os på support@citizenlab.co.",
-  "app.containers.UsersEditPage.domicile": "Bopæl",
+  "app.containers.UsersEditPage.domicile": "Lokalområde",
   "app.containers.UsersEditPage.email": "E-mail",
   "app.containers.UsersEditPage.feedbackLinkText": "Klik her",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
