@@ -45,11 +45,14 @@ const ContentBuilderSettings = () => {
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox
       id="settings-box"
-      position="sticky"
-      top="160px"
+      position="fixed"
+      right="0"
+      top="156px"
       zIndex="2"
       p="20px"
       w="400px"
+      h="100%"
+      background={colors.adminDarkBackground}
     >
       <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />

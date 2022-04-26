@@ -18,7 +18,10 @@ import ContentBuilderSettings from '../components/ContentBuilderSettings';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
-  z-index: 1;
+  z-index: 2;
+  margin: 0 !important;
+  max-width: 100% !important;
+  align-items: center;
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
@@ -29,7 +32,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
         <Box mt="78px" display="flex">
           <Box
             position="fixed"
-            zIndex="2"
+            zIndex="3"
             flex="0 0 auto"
             h="100%"
             w="210px"
@@ -42,13 +45,9 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             <ContentBuilderToolbox />
           </Box>
           <StyledRightColumn>
-            <Box ml="210px" mt="70px" mb="20px" pt="20px">
-              <ContentBuilderFrame projectId={projectId} />
-            </Box>
+            <ContentBuilderFrame projectId={projectId} />
           </StyledRightColumn>
-          <Box bgColor={colors.adminDarkBackground} h="100%">
-            <ContentBuilderSettings />
-          </Box>
+          <ContentBuilderSettings />
         </Box>
       </Editor>
     </Box>
