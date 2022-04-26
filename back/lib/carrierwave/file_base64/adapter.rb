@@ -32,4 +32,3 @@ module Carrierwave
     end
   end
 end
-

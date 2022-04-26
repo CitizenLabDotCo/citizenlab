@@ -58,6 +58,9 @@ Layout/FirstHashElementIndentation:
 Layout/EmptyLines:
   Enabled: true
 
+Layout/TrailingEmptyLines:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

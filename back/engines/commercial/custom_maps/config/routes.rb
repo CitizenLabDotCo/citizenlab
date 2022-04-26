@@ -17,4 +17,3 @@ end
 Rails.application.routes.draw do
   mount CustomMaps::Engine => '', as: 'custom_maps'
 end
-

@@ -125,4 +125,3 @@ module Insights
     end
   end
 end
-

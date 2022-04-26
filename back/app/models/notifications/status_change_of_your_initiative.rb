@@ -76,4 +76,3 @@ module Notifications
     end
   end
 end
-

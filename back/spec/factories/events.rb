@@ -17,4 +17,3 @@ FactoryBot.define do
     end_at { '2017-05-01 22:00' }
   end
 end
-

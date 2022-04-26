@@ -79,4 +79,3 @@ describe ProjectImagePolicy do
     end
   end
 end
-

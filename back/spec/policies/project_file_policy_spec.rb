@@ -79,4 +79,3 @@ describe ProjectFilePolicy do
     end
   end
 end
-

@@ -45,4 +45,3 @@ RSpec.describe Insights::CategoryImporter do
     end
   end
 end
-
