@@ -53,7 +53,7 @@ resource 'Areas' do
       example_request 'Create an area' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -72,8 +72,8 @@ resource 'Areas' do
       example_request 'Update an area' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
       end
     end
 

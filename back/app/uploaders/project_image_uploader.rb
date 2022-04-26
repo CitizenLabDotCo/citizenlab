@@ -5,11 +5,11 @@ class ProjectImageUploader < BaseImageUploader
   end
 
   version :medium do
-    process safe_resize_to_fill_for_gif: [575,575]
+    process safe_resize_to_fill_for_gif: [575, 575]
   end
 
   version :large do
-    process safe_resize_to_fill_for_gif: [1200,1200]
+    process safe_resize_to_fill_for_gif: [1200, 1200]
   end
 
   def extension_allowlist

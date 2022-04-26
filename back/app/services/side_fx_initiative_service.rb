@@ -24,7 +24,7 @@ class SideFxInitiativeService
   end
 
   def after_update(initiative, user)
-    if initiative.publication_status_previous_change == ['draft','published']
+    if initiative.publication_status_previous_change == ['draft', 'published']
       after_publish initiative, user
     elsif initiative.published?
       LogActivityJob.perform_later(initiative, 'changed', user, initiative.updated_at.to_i)

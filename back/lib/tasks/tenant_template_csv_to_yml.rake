@@ -8,7 +8,7 @@ require 'redcarpet'
 
 namespace :tenant_template do
   desc 'Converts tenant templates from csv files to a yml file, working in the specified folder'
-  task :csv_to_yml, [:path,:locale] => [:environment] do |t, args|
+  task :csv_to_yml, [:path, :locale] => [:environment] do |t, args|
   	locales = args[:locale].split ' '
     yml_base = YAML.load_file('config/tenant_templates/base.yml')
 
@@ -57,7 +57,7 @@ namespace :tenant_template do
 
   def make_multiloc(value, locales)
     locales.map do |locale|
-      [locale,value]
+      [locale, value]
     end.to_h
   end
 
@@ -196,7 +196,7 @@ namespace :tenant_template do
 
 
   def zip_min(l1, l2)
-    len = [l1.size,l2.size].min
+    len = [l1.size, l2.size].min
     l1.take(len).zip l2.take(len)
   end
 

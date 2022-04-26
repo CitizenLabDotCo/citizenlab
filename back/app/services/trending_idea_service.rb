@@ -64,7 +64,7 @@ class TrendingIdeaService
   private
 
   def trending_score_formula(votes_diff, mean_activity_at)
-    [(1 + votes_diff), 1].max / [mean_activity_at,1].max
+    [(1 + votes_diff), 1].max / [mean_activity_at, 1].max
   end
 
   def activity_ago(iteratables)

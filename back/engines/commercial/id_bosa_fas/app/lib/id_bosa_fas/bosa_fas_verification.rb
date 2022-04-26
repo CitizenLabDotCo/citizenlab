@@ -25,7 +25,7 @@ module IdBosaFas
     end
 
     def profile_to_uid(auth)
-      auth['uid'] || auth.dig('extra','raw_info','egovNRN')
+      auth['uid'] || auth.dig('extra', 'raw_info', 'egovNRN')
     end
 
     def locked_attributes

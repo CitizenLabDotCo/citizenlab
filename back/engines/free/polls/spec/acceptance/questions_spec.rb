@@ -27,7 +27,7 @@ resource 'Poll Questions' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data).map { |d| d[:relationships][:options][:data].size }).to eq [3,3,3]
+      expect(json_response.dig(:data).map { |d| d[:relationships][:options][:data].size }).to eq [3, 3, 3]
       expect(json_response.dig(:included).map { |i| i[:id] }).to match_array @questions.flat_map { |q| q.options.map(&:id) }
     end
   end
@@ -49,7 +49,7 @@ resource 'Poll Questions' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data).map { |d| d[:relationships][:options][:data].size }).to eq [3,3,3]
+      expect(json_response.dig(:data).map { |d| d[:relationships][:options][:data].size }).to eq [3, 3, 3]
       expect(json_response.dig(:included).map { |i| i[:id] }).to match_array @questions.flat_map { |q| q.options.map(&:id) }
     end
   end
@@ -95,12 +95,12 @@ resource 'Poll Questions' do
       example_request 'Create a question' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq 0
-        expect(json_response.dig(:data,:attributes,:question_type)).to eq question_type
-        expect(json_response.dig(:data,:attributes,:max_options)).to be_nil
-        expect(json_response.dig(:data,:relationships,:participation_context, :data, :type)).to eq 'project'
-        expect(json_response.dig(:data,:relationships,:participation_context, :data, :id)).to eq participation_context_id
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
+        expect(json_response.dig(:data, :attributes, :question_type)).to eq question_type
+        expect(json_response.dig(:data, :attributes, :max_options)).to be_nil
+        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'project'
+        expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
       end
     end
 
@@ -121,9 +121,9 @@ resource 'Poll Questions' do
       example_request 'Update a question' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:question_type)).to eq question_type
-        expect(json_response.dig(:data,:attributes,:max_options)).to eq max_options
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :question_type)).to eq question_type
+        expect(json_response.dig(:data, :attributes, :max_options)).to eq max_options
       end
     end
 
@@ -143,7 +143,7 @@ resource 'Poll Questions' do
       example_request 'Reorder a question' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(Polls::Question.order(:ordering)[1].id).to eq id
         expect(Polls::Question.order(:ordering).map(&:ordering)).to eq (0..2).to_a
       end

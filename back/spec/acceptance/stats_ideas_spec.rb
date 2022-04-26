@@ -44,7 +44,7 @@ resource 'Stats - Ideas' do
     @token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
 
     AppConfiguration.instance.update!(created_at: now - 3.year)
-    @timezone = AppConfiguration.instance.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     @project1 = create(:project)
     @project2 = create(:project)
@@ -425,7 +425,7 @@ resource 'Stats - Ideas' do
 
         idea_col = worksheet.map { |col| col.cells[2].value }
         header, *ideas = idea_col
-        expect(ideas).to match_array [5,5,1]
+        expect(ideas).to match_array [5, 5, 1]
       end
     end
 

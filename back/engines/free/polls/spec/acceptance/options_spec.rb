@@ -66,9 +66,9 @@ resource 'Poll Options' do
       example_request 'Create an option' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq 0
-        expect(json_response.dig(:data,:relationships,:question, :data, :id)).to eq question.id
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
+        expect(json_response.dig(:data, :relationships, :question, :data, :id)).to eq question.id
       end
     end
 
@@ -85,7 +85,7 @@ resource 'Poll Options' do
       example_request 'Update an option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -105,7 +105,7 @@ resource 'Poll Options' do
       example_request 'Reorder an option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(@question.options.order(:ordering)[1].id).to eq id
         expect(@question.options.order(:ordering).map(&:ordering)).to eq (0..2).to_a
       end

@@ -198,7 +198,7 @@ RSpec.describe User, type: :model do
   describe 'locale' do
     before do
       settings = AppConfiguration.instance.settings
-      settings['core']['locales'] = ['en','nl-BE','fr-FR']
+      settings['core']['locales'] = ['en', 'nl-BE', 'fr-FR']
       AppConfiguration.instance.update!(settings: settings)
     end
 

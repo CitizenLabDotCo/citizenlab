@@ -33,7 +33,7 @@ resource 'Stats - Users' do
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 2.year)
-    @timezone = AppConfiguration.instance.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.days) do
       create(:user)

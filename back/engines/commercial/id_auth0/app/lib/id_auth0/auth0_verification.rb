@@ -36,7 +36,7 @@ module IdAuth0
     end
 
     def profile_to_uid(auth)
-      auth['uid'] || auth.dig('extra','raw_info','user_id')
+      auth['uid'] || auth.dig('extra', 'raw_info', 'user_id')
     end
 
     def locked_attributes

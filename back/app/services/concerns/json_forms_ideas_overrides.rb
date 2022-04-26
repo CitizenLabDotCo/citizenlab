@@ -62,7 +62,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         [
           locale,
           {
@@ -79,7 +79,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         {
           type: 'Control',
           scope: "#/properties/#{field.key}/properties/#{locale}",
@@ -94,7 +94,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         [
           locale,
           {
@@ -110,7 +110,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         {
           type: 'Control',
           locale: locale,

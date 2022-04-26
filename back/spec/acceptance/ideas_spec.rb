@@ -83,7 +83,7 @@ resource 'Ideas' do
 
       i1 = @ideas[0]
       i1.project.update!(allowed_input_topics: Topic.all)
-      i1.topics = [t1,t3]
+      i1.topics = [t1, t3]
       i1.save!
       i2 = @ideas[1]
       i2.project.update!(allowed_input_topics: Topic.all)
@@ -91,7 +91,7 @@ resource 'Ideas' do
       i2.save!
       i3 = @ideas[3]
       i3.project.update!(allowed_input_topics: Topic.all)
-      i3.topics = [t3,t1,t2]
+      i3.topics = [t3, t1, t2]
       i3.save!
 
       do_request topics: [t1.id, t2.id]
@@ -561,11 +561,11 @@ resource 'Ideas' do
       example_request 'Create an idea' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
       end
 
@@ -590,11 +590,11 @@ resource 'Ideas' do
       example_request 'Creates an idea', document: false do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
       end
     end
@@ -697,7 +697,7 @@ resource 'Ideas' do
         example_request 'Creating an idea in specific phases' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map { |d| d[:id] }).to match_array phase_ids
+          expect(json_response.dig(:data, :relationships, :phases, :data).map { |d| d[:id] }).to match_array phase_ids
         end
       end
 

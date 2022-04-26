@@ -280,18 +280,18 @@ resource 'Projects' do
 
         example_request 'Create a timeline project' do
           assert_status 201
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
-          expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
+          expect(json_response.dig(:data, :attributes, :process_type)).to eq 'timeline'
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
           expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'draft'
           if CitizenLab.ee?
             expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
           end
-          expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
+          expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
         end
@@ -327,24 +327,24 @@ resource 'Projects' do
 
         example_request 'Create a continuous project' do
           assert_status 201
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
-          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
-          expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
-          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
-          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
-          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
-          expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
-          expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
+          expect(json_response.dig(:data, :attributes, :process_type)).to eq process_type
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq visible_to
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
+          expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
+          expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+          expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
+          expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to eq true
+          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
+          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
         end
 
         context 'when not admin' do
@@ -459,20 +459,20 @@ resource 'Projects' do
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq 'Changed title'
-        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq 'Changed body'
-        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data,:attributes,:slug)).to eq 'changed-title'
-        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
-        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-        expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-        expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
-        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
-        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
-        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
+        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+        expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+        expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
+        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
+        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
+        expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq 'card'
         expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'archived'
         if CitizenLab.ee?
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id

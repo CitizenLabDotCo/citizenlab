@@ -80,7 +80,7 @@ describe MentionService do
     it 'processes multiple mentions as it should' do
       result = service.process_mentions("#{@u1_mention} and #{@u2_mention} are sitting in a tree")
       expect(result[0]).to eq "#{@u1_mention_expanded} and #{@u2_mention_expanded} are sitting in a tree"
-      expect(result[1]).to match_array([@u1.id,@u2.id])
+      expect(result[1]).to match_array([@u1.id, @u2.id])
     end
 
     it 'only returns new unexpanded mentions as users' do

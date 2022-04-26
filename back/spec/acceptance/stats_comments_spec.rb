@@ -54,7 +54,7 @@ resource 'Stats - Comments' do
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
   before do
-    @timezone = AppConfiguration.instance.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core', 'timezone')
     AppConfiguration.instance.update!(created_at: now - 3.month)
     create(:comment, publication_status: 'deleted')
   end
@@ -645,7 +645,7 @@ resource 'Stats - Comments' do
 
           comment_col = worksheet.map { |col| col.cells[2].value }
           header, *comments = comment_col
-          expect(comments).to match_array [3,1]
+          expect(comments).to match_array [3, 1]
         end
 
       end

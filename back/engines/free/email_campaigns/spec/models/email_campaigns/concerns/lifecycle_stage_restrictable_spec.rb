@@ -6,7 +6,7 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
   before do
     class LifecycleStageActiveAndDemoCampaign < EmailCampaigns::Campaign
       include EmailCampaigns::LifecycleStageRestrictable
-      allow_lifecycle_stages only: ['demo','active']
+      allow_lifecycle_stages only: ['demo', 'active']
     end
 
     class LifecycleStageNotChurnedCampaign < EmailCampaigns::Campaign

@@ -24,8 +24,8 @@ resource 'OfficialFeedback' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response.dig(:data,0,:attributes,:body_multiloc)).to be_present
-      expect(json_response.dig(:data,0,:attributes,:author_multiloc)).to be_present
+      expect(json_response.dig(:data, 0, :attributes, :body_multiloc)).to be_present
+      expect(json_response.dig(:data, 0, :attributes, :author_multiloc)).to be_present
     end
   end
 
@@ -61,10 +61,10 @@ resource 'OfficialFeedback' do
       example_request 'Create an official feedback on an initiative' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data,:attributes,:author_multiloc).stringify_keys).to match author_multiloc
-        expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :attributes, :author_multiloc).stringify_keys).to match author_multiloc
+        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
         expect(@initiative.reload.official_feedbacks_count).to eq 3
       end
 
@@ -93,7 +93,7 @@ resource 'OfficialFeedback' do
       example_request 'Update an official feedback for an initiative' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(@initiative.reload.official_feedbacks_count).to eq 3
       end
     end

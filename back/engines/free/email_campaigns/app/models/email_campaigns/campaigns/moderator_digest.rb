@@ -45,7 +45,7 @@ module EmailCampaigns
     end
 
     def self.default_schedule
-      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core','timezone')).local(2019)) do |s|
+      IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2019)) do |s|
         s.add_recurrence_rule(
           IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
         )
@@ -134,12 +134,12 @@ module EmailCampaigns
     end
 
     def has_nonzero_statistics(statistics)
-      !( (statistics.dig(:activities,:new_ideas,:increase) == 0) &&
-         (statistics.dig(:activities,:new_ideas,:increase) == 0) &&
-         (statistics.dig(:activities,:new_comments,:increase) == 0) &&
-         (statistics.dig(:users,:new_visitors,:increase) == 0) &&
-         (statistics.dig(:users,:new_users,:increase) == 0) &&
-         (statistics.dig(:users,:active_users,:increase) == 0)
+      !( (statistics.dig(:activities, :new_ideas, :increase) == 0) &&
+         (statistics.dig(:activities, :new_ideas, :increase) == 0) &&
+         (statistics.dig(:activities, :new_comments, :increase) == 0) &&
+         (statistics.dig(:users, :new_visitors, :increase) == 0) &&
+         (statistics.dig(:users, :new_users, :increase) == 0) &&
+         (statistics.dig(:users, :active_users, :increase) == 0)
          )
     end
 

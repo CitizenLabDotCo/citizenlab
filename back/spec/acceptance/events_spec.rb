@@ -112,11 +112,11 @@ resource 'Events' do
         example_request 'Create an event for a project' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
-          expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
-          expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.iso8601(3)
+          expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.iso8601(3)
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         end
       end
 
@@ -153,7 +153,7 @@ resource 'Events' do
       example_request 'Update an event' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
+        expect(json_response.dig(:data, :attributes, :location_multiloc).stringify_keys).to match location_multiloc
       end
     end
 

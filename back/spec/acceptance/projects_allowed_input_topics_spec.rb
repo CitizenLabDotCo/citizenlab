@@ -85,7 +85,7 @@ resource 'ProjectsAllowedInputTopics' do
       example_request 'Reorder a project allowed input topic' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
       end
     end
   end

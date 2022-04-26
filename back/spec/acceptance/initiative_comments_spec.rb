@@ -217,10 +217,10 @@ resource 'Comments' do
       example_request 'Create a comment on an initiative' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data,:relationships,:parent,:data)).to be_nil
-        expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
+        expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq @user.id
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :relationships, :parent, :data)).to be_nil
+        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
         expect(@initiative.reload.comments_count).to eq 1
       end
     end
@@ -256,7 +256,7 @@ resource 'Comments' do
       example_request 'Update a comment on an initiative' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(@initiative.reload.comments_count).to eq 1
       end
 

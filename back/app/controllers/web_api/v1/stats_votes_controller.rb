@@ -225,7 +225,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .where(created_at: @start_at..@end_at)
       .where(votable_id: apply_idea_filters(policy_scope(Idea), filter_params))
       .left_outer_joins(:user)
-      .group('mode',"users.custom_field_values->>'#{key}'")
+      .group('mode', "users.custom_field_values->>'#{key}'")
       .order(Arel.sql("users.custom_field_values->>'#{key}'"))
       .count
     data = %w(up down).map do |mode|
@@ -234,14 +234,14 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
         serie.keys.select do |key_mode, _|
           key_mode == mode
         end.map do |_, value|
-          [(value || '_blank'), serie[[mode,value]]]
+          [(value || '_blank'), serie[[mode, value]]]
         end.to_h
       ]
     end.to_h
     data['total'] = (data['up'].keys + data['down'].keys).uniq.map do |key|
       [
         key,
-        (data.dig('up',key) || 0) + (data.dig('down',key) || 0)
+        (data.dig('up', key) || 0) + (data.dig('down', key) || 0)
       ]
     end.to_h
 
@@ -256,7 +256,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     response = {
       'up' => {},
       'down' => {},
-      'total' => Hash.new { |hash,key| hash[key] = 0 }
+      'total' => Hash.new { |hash, key| hash[key] = 0 }
     }
     serie.each_with_object(response) do |((mode, date), count), object|
       object[mode][date] = count

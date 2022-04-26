@@ -21,7 +21,7 @@ module IdClaveUnica
     end
 
     def profile_to_uid(auth)
-      auth['uid'] || auth.dig('extra','raw_info','RolUnico','numero')
+      auth['uid'] || auth.dig('extra', 'raw_info', 'RolUnico', 'numero')
     end
 
     def locked_attributes

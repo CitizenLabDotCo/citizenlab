@@ -108,13 +108,13 @@ resource 'User Custom Fields' do
         example_request 'Create a custom field' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:key)).to match key
-          expect(json_response.dig(:data,:attributes,:input_type)).to match input_type
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:hidden)).to be false
-          expect(json_response.dig(:data,:attributes,:required)).to match required
-          expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
+          expect(json_response.dig(:data, :attributes, :key)).to match key
+          expect(json_response.dig(:data, :attributes, :input_type)).to match input_type
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :hidden)).to be false
+          expect(json_response.dig(:data, :attributes, :required)).to match required
+          expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
         end
       end
 
@@ -149,10 +149,10 @@ resource 'User Custom Fields' do
       example_request 'Update a custom field' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:required)).to match required
-        expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :required)).to match required
+        expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
       end
     end
 
@@ -167,7 +167,7 @@ resource 'User Custom Fields' do
       example_request 'Reorder a custom field' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
         expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end

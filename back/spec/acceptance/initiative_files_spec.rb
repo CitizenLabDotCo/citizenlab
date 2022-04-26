@@ -32,7 +32,7 @@ resource 'InitiativeFile' do
     example_request 'Get one file attachment of an initiative by id' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
+      expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
   end
 
@@ -52,9 +52,9 @@ resource 'InitiativeFile' do
     example_request 'Add a file attachment to an initiative' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
+      expect(json_response.dig(:data, :attributes, :file)).to be_present
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+      expect(json_response.dig(:data, :attributes, :name)).to eq(name)
     end
   end
 

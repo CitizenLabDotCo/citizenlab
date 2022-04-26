@@ -32,7 +32,7 @@ resource 'ProjectFile' do
     example_request 'Get one file of a project' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
+      expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
   end
 
@@ -51,10 +51,10 @@ resource 'ProjectFile' do
     example_request 'Add a file attachment to a project' do
       assert_status 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-      expect(json_response.dig(:data,:attributes,:size)).to be_present
+      expect(json_response.dig(:data, :attributes, :file)).to be_present
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+      expect(json_response.dig(:data, :attributes, :name)).to eq(name)
+      expect(json_response.dig(:data, :attributes, :size)).to be_present
     end
 
     describe do

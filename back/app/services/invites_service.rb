@@ -78,7 +78,7 @@ class InvitesService
   end
 
   def generate_token
-    ([*('a'..'z'),*('0'..'9')]).sample(9).join
+    ([*('a'..'z'), *('0'..'9')]).sample(9).join
   end
 
   def bulk_create_xlsx(file, default_params={}, inviter=nil)

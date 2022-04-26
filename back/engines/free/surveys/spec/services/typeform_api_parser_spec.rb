@@ -49,7 +49,7 @@ describe Surveys::TypeformApiParser do
           'properties' =>
            { 'start_at_one' => true,
             'steps' => 5,
-            'labels' => { 'left' => 'Unclear','right' => 'Super clear' } },
+            'labels' => { 'left' => 'Unclear', 'right' => 'Super clear' } },
           'validations' => { 'required' => false },
           'type' => 'opinion_scale' },
          { 'id' => 'swUKkFYpGsmy',
@@ -58,7 +58,7 @@ describe Surveys::TypeformApiParser do
           'properties' =>
            { 'start_at_one' => true,
             'steps' => 5,
-            'labels' => { 'left' => 'Not at all','right' => 'Very much so' } },
+            'labels' => { 'left' => 'Not at all', 'right' => 'Very much so' } },
           'validations' => { 'required' => false },
           'type' => 'opinion_scale' },
          { 'id' => 'yS0DggYfRZM7',
@@ -67,7 +67,7 @@ describe Surveys::TypeformApiParser do
           'properties' =>
            { 'start_at_one' => true,
             'steps' => 5,
-            'labels' => { 'left' => 'Too easy','center' => 'Just right','right' => 'Way too hard' } },
+            'labels' => { 'left' => 'Too easy', 'center' => 'Just right', 'right' => 'Way too hard' } },
           'validations' => { 'required' => false },
           'type' => 'opinion_scale' }] },
         "type":'group' },

@@ -7,7 +7,7 @@ resource 'ProjectFolder' do
   before do
     header 'Content-Type', 'application/json'
 
-    @projects = ['published','published','draft','published','archived','archived','published']
+    @projects = ['published', 'published', 'draft', 'published', 'archived', 'archived', 'published']
       .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
     @folders = [
       create(:project_folder, projects: @projects.take(3)),
@@ -92,9 +92,9 @@ resource 'ProjectFolder' do
       example_request 'Create a folder' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'draft'
         # New folders are added to the top
         expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
@@ -127,8 +127,8 @@ resource 'ProjectFolder' do
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'archived'
       end
     end

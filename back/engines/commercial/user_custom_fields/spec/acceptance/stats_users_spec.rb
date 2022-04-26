@@ -29,7 +29,7 @@ resource 'Stats - Users' do
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
     Tenant.current.update!(created_at: now - 2.year)
-    @timezone = AppConfiguration.instance.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     travel_to(start_at - 1.day) { create(:user) }
     travel_to(end_at + 1.day) { create(:user) }

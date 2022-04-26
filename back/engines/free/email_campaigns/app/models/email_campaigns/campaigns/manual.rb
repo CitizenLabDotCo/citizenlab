@@ -32,7 +32,7 @@ module EmailCampaigns
     include RecipientConfigurable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages except: ['trial','churned']
+    allow_lifecycle_stages except: ['trial', 'churned']
 
     recipient_filter :user_filter_no_invitees
 

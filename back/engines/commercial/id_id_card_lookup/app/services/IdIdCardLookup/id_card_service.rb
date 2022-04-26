@@ -6,7 +6,7 @@ module IdIdCardLookup
     end
 
     def normalize(card_id)
-      card_id.gsub(/[^0-9a-z]/i,'').downcase
+      card_id.gsub(/[^0-9a-z]/i, '').downcase
     end
 
     private

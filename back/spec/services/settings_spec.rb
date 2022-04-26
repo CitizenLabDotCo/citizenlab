@@ -11,7 +11,7 @@ describe SettingsService do
       },
       'dependencies' => {
         'b' => ['a'],
-        'c' => ['a','b'],
+        'c' => ['a', 'b'],
       }
     }
   end
@@ -20,12 +20,12 @@ describe SettingsService do
 
     it 'adds the missing features to empty settings' do
       settings = ss.add_missing_features({}, schema1)
-      expect(settings).to include('a','b','c')
+      expect(settings).to include('a', 'b', 'c')
     end
 
     it 'adds missing features to existing settings' do
       settings = ss.add_missing_features({ a: {} }, schema1)
-      expect(settings).to include('a','b','c')
+      expect(settings).to include('a', 'b', 'c')
     end
 
     it 'makes missing features to unallowed and unenabled' do

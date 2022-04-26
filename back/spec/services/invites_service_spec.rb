@@ -5,7 +5,7 @@ describe InvitesService do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = ['fr','en','nl']
+    settings['core']['locales'] = ['fr', 'en', 'nl']
     AppConfiguration.instance.update(settings: settings)
   end
 
@@ -24,7 +24,7 @@ describe InvitesService do
           admin: rand(5) == 0 ? true : nil,
           groups: rand(3) == 0 ? rand(3).times.map { Group.offset(rand(Group.count)).first.title_multiloc.values.first }.uniq.join(',') : nil
         }
-      end + [{},{},{}]).shuffle }
+      end + [{}, {}, {}]).shuffle }
       let(:inviter) { create(:user) }
 
       it 'correctly creates invites when all is fine' do
@@ -280,7 +280,7 @@ describe InvitesService do
         expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:emails_duplicate]
-        expect(service.errors.first.rows).to eq [2,3,5]
+        expect(service.errors.first.rows).to eq [2, 3, 5]
         expect(service.errors.first.value).to eq 'someuser@somedomain.com'
       end
     end

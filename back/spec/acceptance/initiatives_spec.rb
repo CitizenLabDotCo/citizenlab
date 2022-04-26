@@ -9,7 +9,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:initiative, publication_status: ps) }
+    @initiatives = ['published', 'published', 'draft', 'published', 'spam', 'published', 'published'].map { |ps|  create(:initiative, publication_status: ps) }
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
@@ -34,7 +34,7 @@ resource 'Initiatives' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+      expect(json_response[:data].map { |d| d.dig(:attributes, :publication_status) }).to all(eq 'published')
     end
 
     example "Don't list drafts (default behaviour)", document: false do
@@ -160,7 +160,7 @@ resource 'Initiatives' do
 
   get 'web_api/v1/initiatives/as_markers' do
     before do
-      locations = [[51.044039,3.716964],[50.845552,4.357355],[50.640255,5.571848],[50.950772,4.308304],[51.215929,4.422602],[50.453848,3.952217],[-27.148983,-109.424659]] 
+      locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]] 
       placenames = ['Ghent', 'Brussels', 'Liège', 'Meise', 'Antwerp', 'Mons', 'Hanga Roa']
       @initiatives.each do |i|
         i.location_point_geojson = { 'type' => 'Point', 'coordinates' => locations.pop }
@@ -354,11 +354,11 @@ resource 'Initiatives' do
       example_request 'Create an initiative' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
-        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
-        expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
       example 'Check for the automatic creation of an upvote by the author when an initiative is created', document: false do
@@ -374,7 +374,7 @@ resource 'Initiatives' do
       example 'Check for the automatic assignement of the default assignee', document: false do
         do_request(initiative: { assignee_id: nil })
         json_response = json_parse(response_body) 
-        expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq @first_admin.id
+        expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq @first_admin.id
       end
     end
 
@@ -447,11 +447,11 @@ resource 'Initiatives' do
       example_request 'Update an initiative' do
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq 'Changed title'
-        expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
-        expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
-        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
       end
 
       example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
@@ -498,8 +498,8 @@ resource 'Initiatives' do
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
       end
     end
 
@@ -510,7 +510,7 @@ resource 'Initiatives' do
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+        expect(json_response.dig(:data, :relationships, :assignee)).to be_nil
       end
     end
   end
@@ -527,7 +527,7 @@ resource 'Initiatives' do
     example_request 'Change the publication status' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'published'
+      expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
     end
   end
 

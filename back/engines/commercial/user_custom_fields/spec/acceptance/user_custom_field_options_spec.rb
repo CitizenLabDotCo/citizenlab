@@ -61,8 +61,8 @@ resource 'User Custom Field Options' do
         example_request 'Create a custom field option' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:key)).to match key
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :key)).to match key
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         end
       end
 
@@ -91,7 +91,7 @@ resource 'User Custom Field Options' do
       example_request 'Update a custom field option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -106,7 +106,7 @@ resource 'User Custom Field Options' do
       example_request 'Reorder a custom field option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(@custom_field.custom_field_options.order(:ordering)[1].id).to eq id
         expect(@custom_field.custom_field_options.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end

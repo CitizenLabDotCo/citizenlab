@@ -131,7 +131,7 @@ describe CustomFieldService do
                :format => 'data-url',
               } },
            },
-         :required => ['field2','field8','field9'] }
+         :required => ['field2', 'field8', 'field9'] }
       )
     end
 

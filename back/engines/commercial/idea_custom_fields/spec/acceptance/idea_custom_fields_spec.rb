@@ -60,10 +60,10 @@ resource 'Idea Custom Fields' do
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:code)).to eq code
-          expect(json_response.dig(:data,:attributes,:required)).to eq required
-          expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :code)).to eq code
+          expect(json_response.dig(:data, :attributes, :required)).to eq required
+          expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
           expect(CustomForm.count).to eq 1
           expect(project.reload.custom_form).to eq CustomForm.first
@@ -78,10 +78,10 @@ resource 'Idea Custom Fields' do
           example_request 'Update a built-in custom field' do
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:attributes,:code)).to eq code
-            expect(json_response.dig(:data,:attributes,:required)).to eq required
-            expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
-            expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+            expect(json_response.dig(:data, :attributes, :code)).to eq code
+            expect(json_response.dig(:data, :attributes, :required)).to eq required
+            expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
+            expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end
         end
@@ -92,11 +92,11 @@ resource 'Idea Custom Fields' do
             do_request
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:id)).to eq cf.id
-            expect(json_response.dig(:data,:attributes,:code)).to eq code
-            expect(json_response.dig(:data,:attributes,:required)).to eq required
-            expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
-            expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+            expect(json_response.dig(:data, :id)).to eq cf.id
+            expect(json_response.dig(:data, :attributes, :code)).to eq code
+            expect(json_response.dig(:data, :attributes, :required)).to eq required
+            expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
+            expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end
         end

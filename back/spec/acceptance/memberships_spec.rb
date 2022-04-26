@@ -66,7 +66,7 @@ resource 'Memberships' do
       example_request 'Add a group member' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq user_id
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq user_id
         expect(@group.reload.memberships_count).to eq 6
       end
     end
@@ -150,7 +150,7 @@ resource 'Memberships' do
       example_request 'Add an invitee as a group member', document: false do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq user_id
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq user_id
       end
     end
   end

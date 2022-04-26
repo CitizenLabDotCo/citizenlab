@@ -197,7 +197,7 @@ FactoryBot.define do
 end
 
 def weekly_schedule
-  IceCube::Schedule.new(Time.find_zone('Europe/Brussels').local(2018,8,13,10,0)) do |s|
+  IceCube::Schedule.new(Time.find_zone('Europe/Brussels').local(2018, 8, 13, 10, 0)) do |s|
     s.add_recurrence_rule(
       IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
     )

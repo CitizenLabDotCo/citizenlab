@@ -15,10 +15,10 @@ class WebApi::V1::External::InitiativeSerializer < ActiveModel::Serializer
   end
 
   def latitude
-    RGeo::GeoJSON.encode(object.location_point)&.dig('coordinates',1)
+    RGeo::GeoJSON.encode(object.location_point)&.dig('coordinates', 1)
   end
 
   def longitude
-    RGeo::GeoJSON.encode(object.location_point)&.dig('coordinates',0)
+    RGeo::GeoJSON.encode(object.location_point)&.dig('coordinates', 0)
   end
 end

@@ -51,11 +51,11 @@ RSpec.describe 'Graphql initiatives' do
       response = result
       edges = response.dig('data', 'publicInitiatives', 'edges')
       expect(edges&.size).to eq 5
-      expect(edges&.first&.dig('node','id')).to be_present
-      expect(edges&.first&.dig('node','href')).to be_present
-      expect(edges&.first&.dig('node','titleMultiloc')&.values&.compact&.size).to be >= 1
-      expect(edges&.first&.dig('node','upvotesCount')).to be_present
-      expect(edges&.first&.dig('node','commentsCount')).to be_present
+      expect(edges&.first&.dig('node', 'id')).to be_present
+      expect(edges&.first&.dig('node', 'href')).to be_present
+      expect(edges&.first&.dig('node', 'titleMultiloc')&.values&.compact&.size).to be >= 1
+      expect(edges&.first&.dig('node', 'upvotesCount')).to be_present
+      expect(edges&.first&.dig('node', 'commentsCount')).to be_present
     end
 
   end

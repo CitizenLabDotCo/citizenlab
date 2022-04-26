@@ -55,9 +55,9 @@ resource 'Spam Reports' do
     example_request 'Create a spam report for a comment' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-      expect(json_response.dig(:data,:attributes,:reason_code)).to eq 'other'
-      expect(json_response.dig(:data,:attributes,:other_reason)).to eq 'plagiarism'
+      expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+      expect(json_response.dig(:data, :attributes, :reason_code)).to eq 'other'
+      expect(json_response.dig(:data, :attributes, :other_reason)).to eq 'plagiarism'
     end
   end
 
@@ -75,7 +75,7 @@ resource 'Spam Reports' do
     example_request 'Update a spam report for a comment' do
       expect(status).to be 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:reason_code)).to eq 'inappropriate'
+      expect(json_response.dig(:data, :attributes, :reason_code)).to eq 'inappropriate'
     end
   end
 

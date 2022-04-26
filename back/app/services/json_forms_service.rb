@@ -174,7 +174,7 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         [
           locale,
           {
@@ -189,7 +189,7 @@ class JsonFormsService
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
           scope: "#/properties/#{field.key}/properties/#{locale}",
@@ -206,7 +206,7 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         [
           locale,
           {
@@ -221,7 +221,7 @@ class JsonFormsService
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
           scope: "#/properties/#{field.key}/properties/#{locale}",
@@ -238,7 +238,7 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
+      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         [
           locale,
           {
@@ -253,7 +253,7 @@ class JsonFormsService
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
           scope: "#/properties/#{field.key}/properties/#{locale}",

@@ -100,19 +100,19 @@ resource 'Phases' do
       example_request 'Create a phase for a project' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
-        expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq true
-        expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq true
-        expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq true
-        expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq 'unlimited'
-        expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq 10
-        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
-        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
-        expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.to_s
-        expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.to_s
-        expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
+        expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq true
+        expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq true
+        expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq true
+        expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
+        expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
+        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
+        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
+        expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.to_s
+        expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.to_s
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
       end
 
       describe do
@@ -148,8 +148,8 @@ resource 'Phases' do
         example_request 'Create a survey phase', document: false do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:survey_embed_url)).to eq survey_embed_url
-          expect(json_response.dig(:data,:attributes,:survey_service)).to eq survey_service
+          expect(json_response.dig(:data, :attributes, :survey_embed_url)).to eq survey_embed_url
+          expect(json_response.dig(:data, :attributes, :survey_service)).to eq survey_service
         end
       end
 
@@ -162,11 +162,11 @@ resource 'Phases' do
           do_request
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
+          expect(json_response.dig(:data, :attributes, :max_budget)).to eq max_budget
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
         end
       end
 
@@ -252,14 +252,14 @@ resource 'Phases' do
       example_request 'Update a phase' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
-        expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
-        expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
-        expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-        expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
-        expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
-        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
+        expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+        expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
+        expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
+        expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
+        expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
+        expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
       end
 
       describe do

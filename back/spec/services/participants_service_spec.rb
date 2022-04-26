@@ -42,7 +42,7 @@ describe ParticipantsService do
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
-      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to match_array [pp2.id,pp3.id,pp4.id]
+      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
   end
 
@@ -144,12 +144,12 @@ describe ParticipantsService do
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
       i1 = create(:idea, topics: [t1], author: pp1, project: project)
-      i2 = create(:idea, topics: [t2,t3], author: pp2, project: project)
+      i2 = create(:idea, topics: [t2, t3], author: pp2, project: project)
       i3 = create(:idea, topics: [t3], author: pp1, project: project)
       i4 = create(:idea, topics: [], author: others.first, project: project)
       create(:comment, post: i1, author: pp3)
 
-      expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns only participants for specific actions' do
@@ -181,7 +181,7 @@ describe ParticipantsService do
       i3 = create(:idea, idea_status: s3, author: others.first)
       create(:comment, post: i1, author: pp3)
 
-      expect(service.idea_statuses_participants([s1,s2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns only participants for specific actions' do

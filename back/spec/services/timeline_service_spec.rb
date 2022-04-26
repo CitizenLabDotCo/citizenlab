@@ -5,7 +5,7 @@ describe TimelineService do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = ['fr','en','nl-BE']
+    settings['core']['locales'] = ['fr', 'en', 'nl-BE']
     AppConfiguration.instance.update(settings: settings)
   end
 
@@ -32,10 +32,10 @@ describe TimelineService do
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Brussels'
@@ -56,10 +56,10 @@ describe TimelineService do
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Brussels'
@@ -109,10 +109,10 @@ describe TimelineService do
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      travel_to Time.new(2019,9,9,23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
+      travel_to Time.new(2019, 9, 9, 23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Brussels'
         AppConfiguration.instance.update!(settings: settings)

@@ -30,7 +30,7 @@ resource 'Topics' do
       example_request 'Create a topic' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -49,8 +49,8 @@ resource 'Topics' do
       example_request 'Update a topic' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
       end
 
       context do
@@ -60,7 +60,7 @@ resource 'Topics' do
         example_request 'Rename a default topic does not work', example: false do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match ({ 'en' => 'Drama' })
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match ({ 'en' => 'Drama' })
         end
       end
     end
@@ -76,7 +76,7 @@ resource 'Topics' do
       example_request 'Reorder a topic globally' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
       end
 
       context do

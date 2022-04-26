@@ -27,7 +27,7 @@ FactoryBot.define do
     end
 
     factory :user_with_demographics do
-      gender { ['male','female','unspecified',nil][rand(4)] }
+      gender { ['male', 'female', 'unspecified', nil][rand(4)] }
       birthyear { rand(1) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
       education { rand(1) == 0 ? (rand(6) + 3).to_s : nil }
     end

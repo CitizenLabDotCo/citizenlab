@@ -89,7 +89,7 @@ resource 'Campaign consents' do
       example_request 'Update a campaign consent' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
 
@@ -98,7 +98,7 @@ resource 'Campaign consents' do
       example_request 'Update a campaign consent using an unsubscription token' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
   end
@@ -123,8 +123,8 @@ resource 'Campaign consents' do
       example_request 'Update a campaign consent by campaign id' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:id)).to eq consent.id
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :id)).to eq consent.id
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
 
@@ -133,8 +133,8 @@ resource 'Campaign consents' do
       example_request 'Update a campaign consent by campaign id using an unsubscription token' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:id)).to eq consent.id
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :id)).to eq consent.id
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
   end

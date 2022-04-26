@@ -36,7 +36,7 @@ resource 'Stats - Votes' do
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 3.month)
-    @timezone = AppConfiguration.instance.settings('core','timezone')
+    @timezone = AppConfiguration.instance.settings('core', 'timezone')
     @idea_status = create(:idea_status)
   end
 
@@ -75,7 +75,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, birthyear: 1984)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up',1984],['up',1992],['down',1992],['up',nil]].each do |mode, birthyear|
+        [['up', 1984], ['up', 1992], ['down', 1992], ['up', nil]].each do |mode, birthyear|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if birthyear then create(:user, birthyear: birthyear) else create(:user) end))
         end
@@ -108,7 +108,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, domicile: @eversem)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up',@eversem],['up',@wolvertem],['down',@wolvertem],['up',nil]].each do |mode, domicile|
+        [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if domicile then create(:user, domicile: domicile) else create(:user) end))
         end
@@ -139,7 +139,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, education: '2')
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up','2'],['up','7'],['down','7'],['up',nil]].each do |mode, education|
+        [['up', '2'], ['up', '7'], ['down', '7'], ['up', nil]].each do |mode, education|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if education then create(:user, education: education) else create(:user) end))
         end
@@ -170,7 +170,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, gender: 'female')
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up','female'],['up','male'],['down','male'],['up',nil]].each do |mode, gender|
+        [['up', 'female'], ['up', 'male'], ['down', 'male'], ['up', nil]].each do |mode, gender|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if gender then create(:user, gender: gender) else create(:user) end))
         end
@@ -205,7 +205,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, custom_field_values: { @custom_field.key => @opt1.key })
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up',@opt1],['up',@opt2],['down',@opt2],['down',@opt3],['up',nil]].each do |mode, opt|
+        [['up', @opt1], ['up', @opt2], ['down', @opt2], ['down', @opt3], ['up', nil]].each do |mode, opt|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if opt then create(:user, custom_field_values: { @custom_field.key => opt.key }) else create(:user) end))
         end

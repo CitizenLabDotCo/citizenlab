@@ -32,7 +32,7 @@ module EmailCampaigns
     # start_time, so we force it to be in the timezone from settings.
     def force_schedule_start_in_config_timezone
       ics = ic_schedule
-      ics.start_time = ics.start_time.in_time_zone(AppConfiguration.instance.settings('core','timezone'))
+      ics.start_time = ics.start_time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone'))
       self.ic_schedule = ics
     end
   end

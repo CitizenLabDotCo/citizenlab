@@ -153,7 +153,7 @@ describe JsonFormsService do
               :type => 'array'
             }
           },
-         :required => ['field2','field8','field9']
+         :required => ['field2', 'field8', 'field9']
         }
       )
     end

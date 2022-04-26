@@ -23,7 +23,7 @@ module Surveys
     end
 
     def parse_answers(body)
-      body.dig(:form_response,:answers).map do |answer|
+      body.dig(:form_response, :answers).map do |answer|
         question_id = answer.dig(:field, :id)
         field_definition = find_field_definition(body, question_id)
         value = extract_value_from_answer(answer)

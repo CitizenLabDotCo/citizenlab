@@ -52,12 +52,12 @@ RSpec.describe 'Graphql ideas' do
       response = result
       edges = response.dig('data', 'publicIdeas', 'edges')
       expect(edges&.size).to eq 5
-      expect(edges&.first&.dig('node','id')).to be_present
-      expect(edges&.first&.dig('node','href')).to be_present
-      expect(edges&.first&.dig('node','titleMultiloc')&.values&.compact&.size).to be >= 1
-      expect(edges&.first&.dig('node','upvotesCount')).to be_present
-      expect(edges&.first&.dig('node','downvotesCount')).to be_present
-      expect(edges&.first&.dig('node','commentsCount')).to be_present
+      expect(edges&.first&.dig('node', 'id')).to be_present
+      expect(edges&.first&.dig('node', 'href')).to be_present
+      expect(edges&.first&.dig('node', 'titleMultiloc')&.values&.compact&.size).to be >= 1
+      expect(edges&.first&.dig('node', 'upvotesCount')).to be_present
+      expect(edges&.first&.dig('node', 'downvotesCount')).to be_present
+      expect(edges&.first&.dig('node', 'commentsCount')).to be_present
     end
 
     context do
@@ -83,7 +83,7 @@ RSpec.describe 'Graphql ideas' do
       let!(:i1) { create(:idea, topics: [t1], project: project) }
       let!(:i2) { create(:idea, topics: [t2], project: project) }
       let!(:i3) { create(:idea, topics: [t1], project: project) }
-      let!(:i4) { create(:idea, topics: [t3,t2], project: project) }
+      let!(:i4) { create(:idea, topics: [t3, t2], project: project) }
       let(:variables) { { topics: [t1.id, t3.id] } }
 
       it 'returns public ideas in topics' do

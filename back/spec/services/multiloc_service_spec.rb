@@ -5,7 +5,7 @@ describe MultilocService do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = ['fr-FR','en','nl-BE']
+    settings['core']['locales'] = ['fr-FR', 'en', 'nl-BE']
     AppConfiguration.instance.update(settings: settings)
   end
 

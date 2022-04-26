@@ -343,7 +343,7 @@ resource 'Users' do
           both = create(:project_moderator, manual_groups: [group])
           both.add_role('admin').save!
 
-          group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
+          group_users = [admin, both, moderator] + create_list(:user, 3, manual_groups: [group])
 
           do_request(group: group.id, sort: '-role')
           json_response = json_parse(response_body)
@@ -396,7 +396,7 @@ resource 'Users' do
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id,m1.id,m2.id,@user.id]
+          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id, m1.id, m2.id, @user.id]
         end
 
         example 'List all admins' do

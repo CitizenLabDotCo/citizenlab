@@ -32,34 +32,34 @@ describe 'RequiredSettingsAttribute' do
   } }
 
   it 'validates an object that has the required setting' do
-    expect(JSON::Validator.validate(schema1,data)).to be true
+    expect(JSON::Validator.validate(schema1, data)).to be true
   end
 
   it 'invalidates an object that misses the required setting' do
     data['feature1'].delete 'setting1'
-    expect(JSON::Validator.validate(schema1,data)).to be false
+    expect(JSON::Validator.validate(schema1, data)).to be false
   end
 
   it 'validates an object that misses the required setting but is not enabled' do
     data['feature1']['enabled'] = false
     data['feature1'].delete 'setting1'
-    expect(JSON::Validator.validate(schema1,data)).to be true
+    expect(JSON::Validator.validate(schema1, data)).to be true
   end
 
   it 'validates an object that misses the required setting but is not allowed' do
     data['feature1']['allowed'] = false
     data['feature1'].delete 'setting1'
-    expect(JSON::Validator.validate(schema1,data)).to be true
+    expect(JSON::Validator.validate(schema1, data)).to be true
   end
 
   it 'validates an object that has the required setting but is not enabled' do
     data['feature1']['enabled'] = false
-    expect(JSON::Validator.validate(schema1,data)).to be true
+    expect(JSON::Validator.validate(schema1, data)).to be true
   end
 
   it 'validates an object that has the required setting but is not allowed' do
     data['feature1']['allowed'] = false
-    expect(JSON::Validator.validate(schema1,data)).to be true
+    expect(JSON::Validator.validate(schema1, data)).to be true
   end
   
 end

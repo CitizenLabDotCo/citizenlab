@@ -93,11 +93,11 @@ resource 'Volunteering Causes' do
       example_request 'Create a cause' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq 0
-        expect(json_response.dig(:data,:relationships,:participation_context, :data, :type)).to eq 'project'
-        expect(json_response.dig(:data,:relationships,:participation_context, :data, :id)).to eq participation_context_id
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
+        expect(json_response.dig(:data, :relationships, :participation_context, :data, :type)).to eq 'project'
+        expect(json_response.dig(:data, :relationships, :participation_context, :data, :id)).to eq participation_context_id
       end
     end
 
@@ -118,9 +118,9 @@ resource 'Volunteering Causes' do
       example_request 'Update a cause' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:image)).to be_present
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :image)).to be_present
       end
     end
 
@@ -140,7 +140,7 @@ resource 'Volunteering Causes' do
       example_request 'Reorder a cause' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(Volunteering::Cause.order(:ordering)[1].id).to eq id
         expect(Volunteering::Cause.order(:ordering).map(&:ordering)).to eq (0..2).to_a
       end

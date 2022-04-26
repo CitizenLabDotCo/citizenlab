@@ -48,7 +48,7 @@ class ProfanityService
   end
 
   def without_special_chars(text)
-    text.tr(IGNORE_SPECIAL_CHARS,'')
+    text.tr(IGNORE_SPECIAL_CHARS, '')
   end
 
   def fetch_blocked_words(lang)

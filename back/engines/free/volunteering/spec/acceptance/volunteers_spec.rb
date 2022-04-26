@@ -25,8 +25,8 @@ resource 'Volunteering Volunteers' do
       example_request 'Create a volunteer with the current user' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-        expect(json_response.dig(:data,:relationships,:cause,:data,:id)).to eq cause.id
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+        expect(json_response.dig(:data, :relationships, :cause, :data, :id)).to eq cause.id
       end
 
       example '[error] Create a volunteer with the current user again' do

@@ -69,8 +69,8 @@ resource 'GroupsProjects' do
       example_request 'Add a groups-project' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:group,:data,:id)).to eq group_id
-        expect(json_response.dig(:included).first.dig(:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :relationships, :group, :data, :id)).to eq group_id
+        expect(json_response.dig(:included).first.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 

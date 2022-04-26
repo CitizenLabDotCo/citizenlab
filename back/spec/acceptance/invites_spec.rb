@@ -278,10 +278,10 @@ resource 'Invites' do
       example_request 'Accept an invite' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:accepted_at)).to be_present
+        expect(json_response.dig(:data, :attributes, :accepted_at)).to be_present
         boulettos = json_response.dig(:included).select { |inc| inc[:id] == invite.invitee.id }&.first
-        expect(boulettos&.dig(:attributes,:last_name)).to eq('Boulettos')
-        expect(boulettos&.dig(:attributes,:invite_status)).to eq('accepted')
+        expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
+        expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
         expect(invite.reload.invitee.registration_completed_at).to eq(nil)  # when no custom fields
       end
 

@@ -20,7 +20,7 @@ RSpec.describe Basket, type: :model do
   		travel_to t2 do
   			basket.update(ideas: [i1, i2])
   		end
-  		expect(basket.baskets_ideas.pluck(:created_at).map(&:to_i)).to match_array [t1,t2].map(&:to_i)
+  		expect(basket.baskets_ideas.pluck(:created_at).map(&:to_i)).to match_array [t1, t2].map(&:to_i)
   	end
   end
 
