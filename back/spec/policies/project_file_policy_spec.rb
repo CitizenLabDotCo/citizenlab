@@ -48,8 +48,8 @@ describe ProjectFilePolicy do
     end
   end
 
-   context 'on a file in a private admins project' do
-     let(:project) { create(:private_admins_project) }
+  context 'on a file in a private admins project' do
+    let(:project) { create(:private_admins_project) }
     let!(:file) { create(:project_file, project: project) }
 
     context 'for a user' do
@@ -77,5 +77,5 @@ describe ProjectFilePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-  end
+ end
 end

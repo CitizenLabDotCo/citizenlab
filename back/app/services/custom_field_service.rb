@@ -257,103 +257,103 @@ class CustomFieldService
 
     # *** html ***
 
-    def html_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def html_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def html_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
+  def html_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 
     # *** text_multiloc ***
 
-    def text_multiloc_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def text_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def text_multiloc_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
+  def text_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 
     # *** multiline_text_multiloc ***
 
-    def multiline_text_multiloc_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def multiline_text_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def multiline_text_multiloc_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
+  def multiline_text_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 
     # *** html_multiloc ***
 
-    def html_multiloc_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def html_multiloc_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def html_multiloc_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
+  def html_multiloc_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 
     # *** point ***
 
-    def point_to_ui_schema_field(field, locale)
-      Hash.new.tap do |ui_schema|
-        ui_schema[:'ui:widget'] = 'hidden'
-      end
+  def point_to_ui_schema_field(field, locale)
+    Hash.new.tap do |ui_schema|
+      ui_schema[:'ui:widget'] = 'hidden'
     end
+  end
 
-    def point_to_json_schema_field(field, locale)
-      {
-        type: 'string'
-      }
-    end
+  def point_to_json_schema_field(field, locale)
+    {
+      type: 'string'
+    }
+  end
 
     # *** files ***
 
-    def files_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def files_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'array',
-        items: {
-          type: 'string',
-          format: 'data-url',
-        }
+  def files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'data-url',
       }
-    end
+    }
+  end
 
     # *** image files ***
 
-    def image_files_to_ui_schema_field(field, locale)
-      base_ui_schema_field(field, locale)
-    end
+  def image_files_to_ui_schema_field(field, locale)
+    base_ui_schema_field(field, locale)
+  end
 
-    def image_files_to_json_schema_field(field, locale)
-      {
-        title: handle_title(field, locale),
-        description: handle_description(field, locale),
-        type: 'string'
-      }
-    end
+  def image_files_to_json_schema_field(field, locale)
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: 'string'
+    }
+  end
 end

@@ -134,30 +134,30 @@ resource 'Stats - Users' do
       })
     end
   end
-  describe 'filtered by project' do
-    before do
-      travel_to start_at + 16.days do
-        create_list(:user, 2, birthyear: 1980)
-        create(:user, birthyear: 1976)
-        @group = create(:group)
-        User.all.each { |u| create(:membership, user: u, group: @group) }
-        create(:user, birthyear: 1980)
+    describe 'filtered by project' do
+      before do
+        travel_to start_at + 16.days do
+          create_list(:user, 2, birthyear: 1980)
+          create(:user, birthyear: 1976)
+          @group = create(:group)
+          User.all.each { |u| create(:membership, user: u, group: @group) }
+          create(:user, birthyear: 1980)
+        end
+        travel_to start_at + 18.days do
+          @project = create(:project)
+          @idea1 = create(:idea, project: @project)
+          create(:published_activity, item: @idea1, user: @idea1.author)
+        end
       end
-      travel_to start_at + 18.days do
-        @project = create(:project)
-        @idea1 = create(:idea, project: @project)
-        create(:published_activity, item: @idea1, user: @idea1.author)
+
+      let(:project) { @project.id }
+
+      example_request 'Users by birthyear filtered by project' do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:series][:users].values.inject(&:+)).to eq 1
       end
     end
-
-    let(:project) { @project.id }
-
-    example_request 'Users by birthyear filtered by project' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response[:series][:users].values.inject(&:+)).to eq 1
-    end
-  end
 end
 
   get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do

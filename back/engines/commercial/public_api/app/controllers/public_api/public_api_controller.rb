@@ -13,22 +13,22 @@ module PublicApi
     end
 
     private
-      def extract_locale_from_accept_language_header
-        request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
-      end
+    def extract_locale_from_accept_language_header
+      request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    end
 
-      def pundit_user
-        current_publicapi_apiclient
-      end
+    def pundit_user
+      current_publicapi_apiclient
+    end
 
-      def authenticate_api_client
-        authenticate_for ApiClient
-      end
+    def authenticate_api_client
+      authenticate_for ApiClient
+    end
 
-      def check_api_token
-        unless current_publicapi_apiclient
-          head :unauthorized
-        end
+    def check_api_token
+      unless current_publicapi_apiclient
+        head :unauthorized
       end
+    end
   end
 end

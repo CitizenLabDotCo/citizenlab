@@ -363,10 +363,10 @@ module AdminApi
             'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601,
             'verified'                  => u.verified,
           }
-          if !yml_user['password_digest']
-            yml_user['password'] = SecureRandom.urlsafe_base64 32
-          end
-          yml_user
+           if !yml_user['password_digest']
+             yml_user['password'] = SecureRandom.urlsafe_base64 32
+           end
+           yml_user
         end
         store_ref yml_user, u.id, :user
         yml_user

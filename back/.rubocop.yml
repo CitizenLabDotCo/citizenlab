@@ -61,6 +61,9 @@ Layout/EmptyLines:
 Layout/TrailingEmptyLines:
   Enabled: true
 
+Layout/IndentationConsistency:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

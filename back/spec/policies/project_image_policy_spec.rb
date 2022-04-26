@@ -48,8 +48,8 @@ describe ProjectImagePolicy do
     end
   end
 
-   context 'on an image in a private admins project' do
-     let(:project) { create(:private_admins_project) }
+  context 'on an image in a private admins project' do
+    let(:project) { create(:private_admins_project) }
     let!(:image) { create(:project_image, project: project) }
 
     context 'for a user' do
@@ -77,5 +77,5 @@ describe ProjectImagePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-  end
+ end
 end
