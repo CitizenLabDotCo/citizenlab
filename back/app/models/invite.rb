@@ -63,7 +63,7 @@ class Invite < ApplicationRecord
     service = SanitizationService.new
     self.invite_text = service.sanitize(
       self.invite_text,
-      %i{decoration link}
+      %i[decoration link]
     )
     self.invite_text = service.remove_empty_trailing_tags(self.invite_text)
     self.invite_text = service.linkify(self.invite_text)

@@ -226,7 +226,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .group('mode', "users.custom_field_values->>'#{key}'")
       .order(Arel.sql("users.custom_field_values->>'#{key}'"))
       .count
-    data = %w(up down).map do |mode|
+    data = %w[up down].map do |mode|
       [
         mode,
         serie.keys.select do |key_mode, _|

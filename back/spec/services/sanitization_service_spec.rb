@@ -219,7 +219,7 @@ describe SanitizationService do
         <iframe src="javascript:javascript:alert('ThisPlatformWasHacked!');"></iframe>
         </p>
       HTML
-      features = %i{title alignment list decoration link video}
+      features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
   end

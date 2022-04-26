@@ -3,7 +3,7 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on)
+    PREDICATE_VALUES = %w[is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on]
 
     attr_accessor :predicate, :value
 

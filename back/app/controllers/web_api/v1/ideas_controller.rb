@@ -82,7 +82,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
       .each do |record|
-        %w(idea_status_id area_id topic_id).each do |attribute|
+        %w[idea_status_id area_id topic_id].each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end

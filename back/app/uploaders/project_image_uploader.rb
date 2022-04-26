@@ -12,6 +12,6 @@ class ProjectImageUploader < BaseImageUploader
   end
 
   def extension_allowlist
-    %w(jpg jpeg jpe jif jfif jfi jp2 jpf jpm jpx j2k jxr gif png tif tiff bmp pbm pgm ppm pnm webp heif heic ico tga sgi fits flif sid svg)
+    %w[jpg jpeg jpe jif jfif jfi jp2 jpf jpm jpx j2k jxr gif png tif tiff bmp pbm pgm ppm pnm webp heif heic ico tga sgi fits flif sid svg]
   end
 end

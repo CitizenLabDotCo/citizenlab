@@ -140,7 +140,7 @@ class Initiative < ApplicationRecord
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
       self.body_multiloc,
-      %i{title alignment list decoration link image video}
+      %i[title alignment list decoration link image video]
     )
     self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)

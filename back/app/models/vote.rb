@@ -21,7 +21,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Vote < ApplicationRecord
-  MODES = %w(up down)
+  MODES = %w[up down]
 
   belongs_to :votable, polymorphic: true
   counter_culture :votable,

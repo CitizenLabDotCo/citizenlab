@@ -23,7 +23,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class SpamReport < ApplicationRecord
-  REASON_CODES = %w(wrong_content inappropriate other)
+  REASON_CODES = %w[wrong_content inappropriate other]
 
   belongs_to :spam_reportable, polymorphic: true
   belongs_to :user, optional: true

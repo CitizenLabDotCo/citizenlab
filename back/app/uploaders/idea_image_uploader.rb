@@ -16,6 +16,6 @@ class IdeaImageUploader < BaseImageUploader
   end
 
   def extension_allowlist
-    %w(jpg jpeg gif png bmp)
+    %w[jpg jpeg gif png bmp]
   end
 end

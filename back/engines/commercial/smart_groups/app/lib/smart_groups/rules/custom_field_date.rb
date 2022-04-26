@@ -1,7 +1,7 @@
 module SmartGroups::Rules
   class CustomFieldDate
-    PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w[is_before is_exactly is_after is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
 
     include CustomFieldRule
 

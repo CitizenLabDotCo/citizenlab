@@ -48,7 +48,7 @@ module Moderation
     end
 
     def source_record
-      if %w(Idea Initiative Comment).include? moderatable_type
+      if %w[Idea Initiative Comment].include? moderatable_type
         moderatable_type.constantize.find(id)
       end
     end

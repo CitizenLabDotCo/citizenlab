@@ -17,7 +17,7 @@ RSpec.describe 'Graphql pages' do
 
   describe 'publicPages' do
     let(:query_string) do
-      %|
+      %(
     {
       publicPages {
         edges {
@@ -37,7 +37,7 @@ RSpec.describe 'Graphql pages' do
         }
       }
     }
-    | end
+    ) end
 
     it 'returns all public pages' do
       p1, _p2, _p3 = create_list(:static_page, 3)

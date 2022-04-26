@@ -27,7 +27,7 @@ module EmailCampaigns
     belongs_to :campaign, class_name: 'EmailCampaigns::Campaign'
     belongs_to :user
 
-    DELIVERY_STATUSES = %w(sent bounced failed accepted delivered opened clicked)
+    DELIVERY_STATUSES = %w[sent bounced failed accepted delivered opened clicked]
     validates :delivery_status, presence: true, inclusion: { in: DELIVERY_STATUSES }
     validates :sent_at, presence: true
 

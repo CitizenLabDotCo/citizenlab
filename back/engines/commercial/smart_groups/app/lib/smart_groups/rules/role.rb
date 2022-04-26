@@ -3,14 +3,14 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(
+    PREDICATE_VALUES = %w[
       is_admin
       not_is_admin
       is_project_moderator
       not_is_project_moderator
       is_normal_user
       not_is_normal_user
-    )
+    ]
 
     attr_accessor :predicate
 

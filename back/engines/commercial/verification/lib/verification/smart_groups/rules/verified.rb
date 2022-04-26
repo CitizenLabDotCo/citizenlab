@@ -4,7 +4,7 @@ module Verification
       class Verified
         include ActiveModel::Validations
 
-        PREDICATE_VALUES = %w(is_verified not_is_verified)
+        PREDICATE_VALUES = %w[is_verified not_is_verified]
 
         attr_accessor :predicate, :value
 

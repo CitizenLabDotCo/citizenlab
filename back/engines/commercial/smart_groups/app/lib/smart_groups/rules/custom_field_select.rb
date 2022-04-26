@@ -1,8 +1,8 @@
 module SmartGroups::Rules
   class CustomFieldSelect
-    PREDICATE_VALUES = %w(has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    MULTIVALUE_PREDICATES = %w(is_one_of not_is_one_of)
+    PREDICATE_VALUES = %w[has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
+    MULTIVALUE_PREDICATES = %w[is_one_of not_is_one_of]
 
     include CustomFieldRule
 

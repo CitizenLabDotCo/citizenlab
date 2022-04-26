@@ -35,7 +35,7 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
     it 'returns false for a normal user when the class restricts consentable_roles to project_moderator' do
       user = create(:user)
       ConsentableCampaign.define_singleton_method(:consentable_roles) do
-        %w(project_moderator)
+        %w[project_moderator]
       end
       expect(ConsentableCampaign.consentable_for? user).to eq false
     end
@@ -43,7 +43,7 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
     it 'returns true for an admin when the class restricts consentable_roles to admin' do
       admin = create(:admin)
       ConsentableCampaign.define_singleton_method(:consentable_roles) do
-        %w(admin)
+        %w[admin]
       end
       expect(ConsentableCampaign.consentable_for? admin).to eq true
     end

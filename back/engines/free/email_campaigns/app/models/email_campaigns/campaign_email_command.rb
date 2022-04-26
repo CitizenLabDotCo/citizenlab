@@ -20,14 +20,14 @@
 #
 module EmailCampaigns
   class CampaignEmailCommand < ApplicationRecord
-    CAMPAIGNS = %w(
+    CAMPAIGNS = %w[
       user_platform_digest
       admin_weekly_report
       moderator_digest
       user_activity_on_your_ideas
       user_updates_on_supported_ideas
       user_participation_opportunities
-    )
+    ]
 
     belongs_to :recipient, class_name: 'User'
 

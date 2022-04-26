@@ -25,6 +25,6 @@ class EmailSnippet < ApplicationRecord
   before_validation :sanitize_body
 
   def sanitize_body
-    self.body = @@sanitizer.sanitize(self.body, tags: %w(p b u i em strong a), attributes: %w(href))
+    self.body = @@sanitizer.sanitize(self.body, tags: %w[p b u i em strong a], attributes: %w[href])
   end
 end

@@ -2,7 +2,7 @@ module EmailCampaigns
   module SenderConfigurable
     extend ActiveSupport::Concern
 
-    SENDERS = %w(organization author)
+    SENDERS = %w[organization author]
 
     included do
       validates :author, presence: true, if: :sender_is_author?

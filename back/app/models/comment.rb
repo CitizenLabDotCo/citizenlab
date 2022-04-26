@@ -74,7 +74,7 @@ class Comment < ApplicationRecord
     super
   end
 
-  PUBLICATION_STATUSES = %w(published deleted)
+  PUBLICATION_STATUSES = %w[published deleted]
 
   validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }

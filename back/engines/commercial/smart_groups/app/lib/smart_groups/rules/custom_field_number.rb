@@ -1,7 +1,7 @@
 module SmartGroups::Rules
   class CustomFieldNumber
-    PREDICATE_VALUES = %w(is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w[is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
 
     include CustomFieldRule
 
