@@ -41,6 +41,8 @@ module ProjectFolders
     before_validation :strip_title
     before_validation :set_admin_publication
 
+    after_destroy :remove_moderators
+
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
     end
@@ -98,6 +100,13 @@ module ProjectFolders
         if !notification.update project_folder: nil
           notification.destroy!
         end
+      end
+    end
+
+    def remove_moderators
+      User.project_folder_moderator(id).each do |user|
+        user.delete_role('project_folder_moderator', project_folder_id: id)
+        user.save!
       end
     end
   end
