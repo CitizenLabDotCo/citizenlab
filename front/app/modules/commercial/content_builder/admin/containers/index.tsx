@@ -36,7 +36,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             bgColor={colors.adminDarkBackground}
             borderRight={`1px solid ${colors.mediumGrey}`}
           >
-            <ContentBuilderToolbox projectId={projectId} />
+            <ContentBuilderToolbox />
           </Box>
           <StyledRightColumn>
             <Box paddingTop="20px">

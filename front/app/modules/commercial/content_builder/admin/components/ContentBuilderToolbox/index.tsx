@@ -3,6 +3,9 @@ import React from 'react';
 // Craft
 import { useEditor, Element } from '@craftjs/core';
 
+// Router
+import { withRouter, WithRouterProps } from 'react-router';
+
 // Intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -27,14 +30,12 @@ const DraggableElement = styled.div`
   cursor: move;
 `;
 
-interface IParameters {
-  projectId: string;
-}
-
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
-  projectId,
-}: InjectedIntlProps & IParameters) => {
+  params,
+}: InjectedIntlProps & WithRouterProps) => {
+  const projectId = params.projectId;
+
   const {
     connectors,
     actions: { selectNode },
@@ -131,4 +132,4 @@ const ContentBuilderToolbox = ({
   );
 };
 
-export default injectIntl(ContentBuilderToolbox);
+export default withRouter(injectIntl(ContentBuilderToolbox));
