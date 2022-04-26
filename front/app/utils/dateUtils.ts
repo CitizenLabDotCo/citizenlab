@@ -14,7 +14,7 @@ export function pastPresentOrFuture(input: string | [string, string]) {
 
   // if input is a string representing one date
   if (isString(input)) {
-    const isoDate = getIsoDate(input);
+    const isoDate = getIsoDateUtc(input);
 
     if (isoDate === currentIsoDate) {
       return 'present';
@@ -26,8 +26,8 @@ export function pastPresentOrFuture(input: string | [string, string]) {
   }
 
   // if input is an array with start and end dates
-  const startIsoDate = getIsoDate(input[0]);
-  const endIsoDate = getIsoDate(input[1]);
+  const startIsoDate = getIsoDateUtc(input[0]);
+  const endIsoDate = getIsoDateUtc(input[1]);
 
   if (
     moment(currentIsoDate, 'YYYY-MM-DD').isBetween(
@@ -45,7 +45,15 @@ export function pastPresentOrFuture(input: string | [string, string]) {
   return 'future';
 }
 
+// this is used to display event start/end times, which are stored in UTC time
+// on the backend (ex: "2022-06-02T21:46:00.000Z")
+// so we respect the user's current timezone
 export function getIsoDate(date: string) {
+  // respects user's timezone
+  return moment(new Date(date)).format('YYYY-MM-DD');
+}
+
+export function getIsoDateUtc(date: string) {
   // by using moment.utc, we ignore timezone offsets which could cause bugs
   return moment.utc(new Date(date)).format('YYYY-MM-DD');
 }

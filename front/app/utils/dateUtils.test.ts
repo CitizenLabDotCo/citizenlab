@@ -1,5 +1,6 @@
 import {
   pastPresentOrFuture,
+  getIsoDateUtc,
   getIsoDate,
   getIsoDateForToday,
 } from './dateUtils';
@@ -30,9 +31,15 @@ describe('in America/Santiago time zone', () => {
     });
   });
 
+  describe('getIsoDateUtc', () => {
+    it('returns the correct date formatted, ignoring timezone', () => {
+      expect(getIsoDateUtc('2020-06-15')).toEqual('2020-06-15');
+    });
+  });
+
   describe('getIsoDate', () => {
-    it('returns the correct date formatted', () => {
-      expect(getIsoDate('2020-06-15')).toEqual('2020-06-15');
+    it('returns the correct date formatted, taking into account user timezone', () => {
+      expect(getIsoDate('2020-06-15')).toEqual('2020-06-14');
     });
   });
 
@@ -118,8 +125,14 @@ describe('in Asia/Tokyo time zone', () => {
     });
   });
 
+  describe('getIsoDateUtc', () => {
+    it('returns the correct date formatted, ignoring timezone', () => {
+      expect(getIsoDateUtc('2020-06-15')).toEqual('2020-06-15');
+    });
+  });
+
   describe('getIsoDate', () => {
-    it('returns the correct date formatted', () => {
+    it('returns the correct date formatted, taking into account user timezone', () => {
       expect(getIsoDate('2020-06-15')).toEqual('2020-06-15');
     });
   });
