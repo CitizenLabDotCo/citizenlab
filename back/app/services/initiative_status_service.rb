@@ -73,12 +73,12 @@ class InitiativeStatusService
         # Create the status changes.
         status_id_to = InitiativeStatus.find_by(code: status_code_to)&.id
         if status_id_to
-          changes = InitiativeStatusChange.create!(initiatives.ids.map { |id|
+          changes = InitiativeStatusChange.create!(initiatives.ids.map do |id|
             {
               initiative_id: id,
               initiative_status_id: status_id_to
             }
-          })
+          end)
           # Log the status change activities.
           InitiativeStatusChange.where(id: changes.map(&:id)).includes(:initiative, :initiative_status).each do |change|
             log_status_change change

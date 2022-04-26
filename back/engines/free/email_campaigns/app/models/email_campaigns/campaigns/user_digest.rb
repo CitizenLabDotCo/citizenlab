@@ -74,12 +74,12 @@ module EmailCampaigns
       [{
         event_payload: {
           notifications_count: @notifications_counts[recipient.id],
-          top_ideas: @top_ideas.map { |idea|
+          top_ideas: @top_ideas.map do |idea|
             top_idea_payload idea, recipient
-          },
-          discover_projects: discover_projects.map { |project|
+          end,
+          discover_projects: discover_projects.map do |project|
             discover_projects_payload project, recipient
-          },
+          end,
           new_initiatives: @new_initiatives,
           successful_initiatives: @successful_initiatives
         },
@@ -152,18 +152,18 @@ module EmailCampaigns
         comments_count: idea.comments_count,
         published_at: idea.published_at&.iso8601,
         url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-        idea_images: idea.idea_images.map { |image|
+        idea_images: idea.idea_images.map do |image|
           {
             ordering: image.ordering,
             versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
           }
-        },
+        end,
         top_comments: idea.comments
           .select { |c| c.published? }
           .sort_by { |c| -c.children.size }
-          .take(N_TOP_COMMENTS).map { |comment|
+          .take(N_TOP_COMMENTS).map do |comment|
             top_comment_payload comment, name_service
-          }
+          end
       }
     end
 
@@ -200,12 +200,12 @@ module EmailCampaigns
           author_name: name_service.display_name!(initiative.author),
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
-          images: initiative.initiative_images.map { |image|
+          images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
               versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          },
+          end,
           header_bg: {
             versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           }
@@ -233,12 +233,12 @@ module EmailCampaigns
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
           threshold_reached_at: initiative.threshold_reached_at.iso8601,
-          images: initiative.initiative_images.map { |image|
+          images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
               versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          },
+          end,
           header_bg: {
             versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           }

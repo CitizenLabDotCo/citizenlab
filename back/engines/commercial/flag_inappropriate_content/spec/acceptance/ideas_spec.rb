@@ -35,9 +35,9 @@ resource 'Ideas' do
     let(:location_description) { 'Stanley Road 4' }
 
     example 'Toxicity detection job is enqueued when creating an idea', document: false do
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob)
+      end.to have_enqueued_job(ToxicityDetectionJob)
     end
   end
 
@@ -62,9 +62,9 @@ resource 'Ideas' do
       let(:location_description) { 'Watkins Road 8' }
 
       example 'Toxicity detection job is enqueued when updating an idea\'s title and location description', document: false do
-        expect {
+        expect do
           do_request
-        }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
+        end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
       end
     end
 
@@ -77,9 +77,9 @@ resource 'Ideas' do
         let(:title_multiloc) { { 'en' => 'Changed title' } }
 
         example 'Toxicity detection job is enqueued when updating an idea\'s title and re-verifies all fields', document: false do
-          expect {
+          expect do
             do_request
-          }.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :body_multiloc, :location_description])
+          end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :body_multiloc, :location_description])
         end
       end
 
@@ -87,9 +87,9 @@ resource 'Ideas' do
         let(:budget) { 17 }
 
         example 'No toxicity detection job is enqueued when updating an idea\'s budget', document: false do
-          expect {
+          expect do
             do_request
-          }.not_to have_enqueued_job(ToxicityDetectionJob)
+          end.not_to have_enqueued_job(ToxicityDetectionJob)
         end
       end
     end
@@ -98,9 +98,9 @@ resource 'Ideas' do
       let(:budget) { 11 }
 
       example 'No toxicity detection job is enqueued when updating idea attributes without text', document: false do
-        expect {
+        expect do
           do_request
-        }.not_to have_enqueued_job(ToxicityDetectionJob)
+        end.not_to have_enqueued_job(ToxicityDetectionJob)
       end
     end
   end

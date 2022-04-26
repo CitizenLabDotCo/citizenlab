@@ -130,12 +130,12 @@ resource 'Invites' do
         let(:locale) { 'nl-NL' }
         let(:invite_text) { 'Welcome, my friend!' }
 
-        let(:roles) {
+        let(:roles) do
           [
             { 'type' => 'admin' },
             ({ 'type' => 'project_moderator', 'project_id' => project.id } if CitizenLab.ee?)
           ].compact
-        }
+        end
 
         example_request 'Bulk invite multiple users' do
           aggregate_failures 'testing response' do
@@ -152,13 +152,13 @@ resource 'Invites' do
       end
 
       describe do
-        let(:emails) { [
+        let(:emails) do [
           'someemail@somedomain.net',
           'someemail@somedomain.net',
           'user_at_domain.com',
           create(:user).email,
           create(:invite).invitee.email,
-        ]}
+        ] end
 
         example_request '[error] Bulk invite multiple users' do
           assert_status 422
@@ -190,7 +190,7 @@ resource 'Invites' do
 
       describe do
         let(:users) { build_list(:user, 6) }
-        let(:hash_array) { users.map.with_index do |user, i|
+        let(:hash_array) do users.map.with_index do |user, i|
           {
             email: user.email,
             first_name: rand(3) == 0 ? user.first_name : nil,
@@ -199,7 +199,7 @@ resource 'Invites' do
             admin: i == 0 ? true : nil,
             groups: i == 0 ? create(:group).title_multiloc.values.first : nil
           }
-        end}
+        end end
         let(:group_ids) { [create(:group).id] }
         let(:roles) { [{ 'type' => 'admin' }] }
         let(:locale) { 'en' }
@@ -216,7 +216,7 @@ resource 'Invites' do
       end
 
       describe do
-        let(:hash_array) { [
+        let(:hash_array) do [
           { email: 'someemail@somedomain.net' },
           { email: 'someemail@somedomain.net' },
           { email: 'user_at_domain.com' },
@@ -226,7 +226,7 @@ resource 'Invites' do
           { groups: 'A positive' },
           { groups: 24 },
           { admin: 'nope' },
-        ]}
+        ] end
 
         example_request '[error] Bulk invite users with xlsx file' do
           assert_status 422

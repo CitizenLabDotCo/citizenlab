@@ -698,10 +698,10 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:custom_field_birthyear) }
-        let(:custom_field_values) { {
+        let(:custom_field_values) do {
           cf.key => 'new value',
           birthyear_cf.key => birthyear
-        }}
+        } end
         let(:first_name) { 'Raymond' }
         let(:last_name) { 'Betancourt' }
         let(:email) { 'ray.mond@rocks.com' }
@@ -725,10 +725,10 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) { {
+        let(:custom_field_values) do {
           cf.key => 'new value',
           gender_cf.key => 'female'
-        }}
+        } end
 
         example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'bogus', user: @user)
@@ -776,10 +776,10 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) { {
+        let(:custom_field_values) do {
           cf.key => 'new value',
           gender_cf.key => 'female',
-        }}
+        } end
 
         example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           @user.update!(

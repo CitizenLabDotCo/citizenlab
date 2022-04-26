@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Surveys::TypeformWebhookParser do
   let(:service) { Surveys::TypeformWebhookParser.new }
-  let(:body) { {
+  let(:body) do {
     event_id: 'LtWXD3crgy',
     event_type: 'form_response',
     form_response: {
@@ -221,7 +221,7 @@ describe Surveys::TypeformWebhookParser do
         }
       ]
     }
-  }}
+  } end
 
   it 'generates the correct survey response' do
     response = service.body_to_response(body)

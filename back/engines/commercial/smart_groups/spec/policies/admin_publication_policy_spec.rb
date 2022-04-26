@@ -6,9 +6,9 @@ describe AdminPublicationPolicy do
 
   context "for a user on a private groups project where she's no member of a rules group with access" do
     let!(:user) { create(:user, email: 'not-user@test.com') }
-    let!(:group) { create(:smart_group, rules: [
+    let!(:group) do create(:smart_group, rules: [
       { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-    ])}
+    ]) end
     let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 
     it { should_not permit(:reorder) }

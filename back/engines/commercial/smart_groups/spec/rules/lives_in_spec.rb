@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::LivesIn do
-  let(:valid_json_rule) { {
+  let(:valid_json_rule) do {
     'ruleType' => 'lives_in',
     'predicate' => 'has_value',
     'value' => create(:area).id
-  }}
+  } end
   let(:valid_rule) { SmartGroups::Rules::LivesIn.from_json(valid_json_rule) }
 
   describe 'from_json' do
@@ -51,7 +51,7 @@ describe SmartGroups::Rules::LivesIn do
 
     let!(:area1) { create(:area) }
     let!(:area2) { create(:area) }
-    let!(:users) {
+    let!(:users) do
       users = build_list(:user, 5)
       users[0][:custom_field_values] = { 'domicile' => 'outside' }
       users[1][:custom_field_values] = { 'domicile' => area1.id }
@@ -59,7 +59,7 @@ describe SmartGroups::Rules::LivesIn do
       users[3][:custom_field_values] = nil
       users[4][:custom_field_values] = { 'domicile' => area1.id }
       users.each(&:save!)
-    }
+    end
 
     it "correctly filters on 'has_value' predicate" do
       rule = SmartGroups::Rules::LivesIn.new('has_value', area1.id)
@@ -106,50 +106,50 @@ describe SmartGroups::Rules::LivesIn do
       )
     end
 
-    let(:area) { create(:area, title_multiloc: {
+    let(:area) do create(:area, title_multiloc: {
       'en'    => 'Brussels',
       'fr-FR' => 'Bruxelles',
       'nl-NL' => 'Brussel'
-    })}
+    }) end
 
-    let(:lives_in_has_value_rule) { SmartGroups::Rules::LivesIn.from_json({
+    let(:lives_in_has_value_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'has_value',
       'value'     => area.id
-    })}
-    let(:lives_in_outside_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_outside_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'has_value',
       'value'     => 'outside'
-    })}
-    let(:lives_in_not_has_value_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_not_has_value_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'not_has_value',
       'value'     => area.id
-    })}
-    let(:lives_in_not_outside_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_not_outside_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'not_has_value',
       'value'     => 'outside'
-    })}
-    let(:lives_in_is_one_of_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_is_one_of_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'      => 'lives_in',
       'predicate'     => 'is_one_of',
       'value'         => [area.id, 'outside']
-    })}
-    let(:lives_in_not_is_one_of_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_not_is_one_of_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'      => 'lives_in',
       'predicate'     => 'not_is_one_of',
       'value'         => [area.id]
-    })}
-    let(:lives_in_is_empty_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_is_empty_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'is_empty'
-    })}
-    let(:lives_in_not_is_empty_rule) { SmartGroups::Rules::LivesIn.from_json({
+    }) end
+    let(:lives_in_not_is_empty_rule) do SmartGroups::Rules::LivesIn.from_json({
       'ruleType'  => 'lives_in',
       'predicate' => 'not_is_empty'
-    })}
+    }) end
 
     it 'successfully translates different combinations of rules' do
       expect(lives_in_has_value_rule.description_multiloc).to eq ({

@@ -144,7 +144,7 @@ class InvitesService
   #
   # @return [Hash<String, String>] Mapping from field key to field type
   def custom_field_types
-    custom_field_schema[:properties].transform_values do |field_schema| field_schema[:type] end
+    custom_field_schema[:properties].transform_values { |field_schema| field_schema[:type] }
   end
 
   # @return [Array<String>]

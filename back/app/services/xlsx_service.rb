@@ -281,9 +281,9 @@ class XlsxService
 
             if user && user.custom_field_values[field.key]
               if user.custom_field_values[field.key].kind_of?(Array)
-                user.custom_field_values[field.key].map { |key|
+                user.custom_field_values[field.key].map do |key|
                   multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-                }.join(', ')
+                end.join(', ')
               elsif user.custom_field_values[field.key].kind_of?(String)
                 multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
               end

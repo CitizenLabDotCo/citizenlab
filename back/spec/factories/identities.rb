@@ -6,7 +6,7 @@ FactoryBot.define do
 
     factory :facebook_identity do
       provider { 'facebook' }
-      auth_hash { {
+      auth_hash do {
         "uid": '10214227319468725',
         "info": {
           "email": 'Aaron.Kraus@telenet.be',
@@ -42,7 +42,7 @@ FactoryBot.define do
           "expires": true,
           "expires_at": 1526632531
         }
-      }}
+      } end
     end
 
     factory :franceconnect_identity do

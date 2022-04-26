@@ -89,13 +89,13 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_topic_as_xlsx
     serie = comments_by_topic_serie
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    res = serie.map { |topic_id, count|
+    res = serie.map do |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
         'topic_id' => topic_id,
         'comments' => count
       }
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'comments', 'topic'
 
@@ -125,13 +125,13 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_project_as_xlsx
     serie = comments_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    res = serie.map { |project_id, count|
+    res = serie.map do |project_id, count|
       {
         'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
         'project_id' => project_id,
         'comments' => count
       }
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'comments', 'project'
 

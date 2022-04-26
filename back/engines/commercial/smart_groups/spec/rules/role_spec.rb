@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::Role do
-  let(:valid_json_rule) { {
+  let(:valid_json_rule) do {
     'ruleType' => 'role',
     'predicate' => 'is_admin'
-  }}
+  } end
   let(:valid_rule) { SmartGroups::Rules::Role.from_json(valid_json_rule) }
 
   describe 'from_json' do
@@ -27,14 +27,14 @@ describe SmartGroups::Rules::Role do
   end
 
   describe 'filter' do
-    let!(:users) {
+    let!(:users) do
       mortals = create_list(:user, 3)
       admins = create_list(:admin, 2)
       moderators = create_list(:project_moderator, 2)
       admin_and_moderator = create(:project_moderator)
       admin_and_moderator.update(roles: admin_and_moderator.roles + [{ type: 'admin' }])
       mortals + admins + moderators + [admin_and_moderator]
-    }
+    end
 
     it "correctly filters on 'is_admin' predicate" do
       rule = SmartGroups::Rules::Role.new('is_admin')
@@ -68,30 +68,30 @@ describe SmartGroups::Rules::Role do
   end
 
   describe 'description_multiloc' do
-    let(:role_is_admin_rule) { SmartGroups::Rules::Role.from_json({
+    let(:role_is_admin_rule) do SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_admin'
-    })}
-    let(:role_not_is_admin_rule) { SmartGroups::Rules::Role.from_json({
+    }) end
+    let(:role_not_is_admin_rule) do SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_admin'
-    })}
-    let(:role_is_project_moderator_rule) { SmartGroups::Rules::Role.from_json({
+    }) end
+    let(:role_is_project_moderator_rule) do SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_project_moderator'
-    })}
-    let(:role_not_is_project_moderator_rule) { SmartGroups::Rules::Role.from_json({
+    }) end
+    let(:role_not_is_project_moderator_rule) do SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_project_moderator'
-    })}
-    let(:role_is_normal_user_rule) { SmartGroups::Rules::Role.from_json({
+    }) end
+    let(:role_is_normal_user_rule) do SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_normal_user'
-    })}
-    let(:role_not_is_normal_user_rule) { SmartGroups::Rules::Role.from_json({
+    }) end
+    let(:role_not_is_normal_user_rule) do SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_normal_user'
-    })}
+    }) end
 
     it 'successfully translates different combinations of rules' do
       # Stubbing the translations so the specs don't depend on those.

@@ -66,12 +66,12 @@ module EmailCampaigns
         succesful_assigned_initiatives: succesful_assigned_initiatives(recipient: recipient, time: time)
       }
       tracked_content = {
-        idea_ids: assigned[:assigned_ideas].map { |i|
+        idea_ids: assigned[:assigned_ideas].map do |i|
           i[:id]
-        }.compact,
-        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map { |i|
+        end.compact,
+        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map do |i|
           i[:id]
-        }.compact,
+        end.compact,
       }
       if assigned.values.any?(&:present?)
         [{
@@ -129,12 +129,12 @@ module EmailCampaigns
             author_name: name_service.display_name!(initiative.author),
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
-            images: initiative.initiative_images.map { |image|
+            images: initiative.initiative_images.map do |image|
               {
                 ordering: image.ordering,
                 versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
-            },
+            end,
             header_bg: {
               versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
@@ -166,12 +166,12 @@ module EmailCampaigns
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
             threshold_reached_at: initiative.threshold_reached_at&.iso8601,
-            images: initiative.initiative_images.map { |image|
+            images: initiative.initiative_images.map do |image|
               {
                 ordering: image.ordering,
                 versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
-            },
+            end,
             header_bg: {
               versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }

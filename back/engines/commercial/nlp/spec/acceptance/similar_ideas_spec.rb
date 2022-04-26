@@ -26,9 +26,9 @@ resource 'SimilarIdeas' do
       let(:idea_id) { @idea.id }
 
       example 'List all similar ideas' do
-        allow_any_instance_of(NLP::Api).to receive(:similarity).and_return(@ideas.map { |i|
+        allow_any_instance_of(NLP::Api).to receive(:similarity).and_return(@ideas.map do |i|
           { 'id' => i.id, 'score' => 0.27 }
-        })
+        end)
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)

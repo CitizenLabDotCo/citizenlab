@@ -44,13 +44,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
 
     res = []
-    serie.each { |topic_id, count|
+    serie.each do |topic_id, count|
       res.push({
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
         'topic_id' => topic_id,
         'ideas' => count
       })
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'topic'
 
@@ -78,13 +78,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
 
-    res = serie.map { |project_id, count|
+    res = serie.map do |project_id, count|
       {
         'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
         'project_id' => project_id,
         'ideas' => count
       }
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'project'
 
@@ -111,13 +111,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_area_as_xlsx
     res = []
-    ideas_by_area_serie.each { |area_id, count|
+    ideas_by_area_serie.each do |area_id, count|
       res.push({
         'area' => @@multiloc_service.t(Area.find(area_id).title_multiloc),
         'area_id' => area_id,
         'ideas' => count
       })
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'area'
 
@@ -143,13 +143,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_status_as_xlsx
     res = []
-    ideas_by_status_serie.each { |status_id, count|
+    ideas_by_status_serie.each do |status_id, count|
       res.push({
         'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
         'status_id' => status_id,
         'ideas' => count
       })
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'status'
 

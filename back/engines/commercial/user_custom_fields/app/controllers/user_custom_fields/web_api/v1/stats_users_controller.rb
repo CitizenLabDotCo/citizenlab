@@ -111,13 +111,13 @@ module UserCustomFields
 
         def users_by_domicile_as_xlsx
           serie = users_by_domicile_serie
-          res = Area.all.map {  |area|
+          res = Area.all.map do  |area|
             {
               'area_id' => area.id,
               'area' => @@multiloc_service.t(area.title_multiloc),
               'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
             }
-          }
+          end
           res.push({
             'area_id' => '_blank',
             'area' => 'unknown',
@@ -228,13 +228,13 @@ module UserCustomFields
             serie = users_by_custom_field_serie
             options = @custom_field.custom_field_options.select(:key, :title_multiloc)
 
-            res = options.map { |option|
+            res = options.map do |option|
               {
                 'option_id' => option.key,
                 'option' => @@multiloc_service.t(option.title_multiloc),
                 'users' => serie[option.key] || 0
               }
-            }
+            end
             res.push({
               'option_id' => '_blank',
               'option' => 'unknown',

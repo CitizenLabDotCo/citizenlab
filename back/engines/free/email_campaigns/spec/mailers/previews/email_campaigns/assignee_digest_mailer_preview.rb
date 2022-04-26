@@ -8,7 +8,7 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          assigned_ideas: ideas.map { |idea| {
+          assigned_ideas: ideas.map do |idea| {
             id: idea.id,
             title_multiloc: idea.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(idea),
@@ -18,8 +18,8 @@ module EmailCampaigns
             upvotes_count: idea.upvotes_count,
             downvotes_count: idea.downvotes_count,
             comments_count: idea.comments_count,
-          }},
-          assigned_initiatives: initiatives.map { |initiative| {
+          } end,
+          assigned_initiatives: initiatives.map do |initiative| {
             id: initiative.id,
             title_multiloc: initiative.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(initiative),
@@ -28,17 +28,17 @@ module EmailCampaigns
             author_name: name_service.display_name!(initiative.author),
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
-            images: initiative.initiative_images.map { |image|
+            images: initiative.initiative_images.map do |image|
               {
                 ordering: image.ordering,
                 versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
-            },
+            end,
             header_bg: {
               versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          }},
-          succesful_assigned_initiatives: initiatives.map { |initiative| {
+          } end,
+          succesful_assigned_initiatives: initiatives.map do |initiative| {
             id: initiative.id,
             title_multiloc: initiative.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(initiative),
@@ -48,16 +48,16 @@ module EmailCampaigns
             upvotes_count: initiative.upvotes_count,
             comments_count: initiative.comments_count,
             threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
-            images: initiative.initiative_images.map { |image|
+            images: initiative.initiative_images.map do |image|
               {
                 ordering: image.ordering,
                 versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
-            },
+            end,
             header_bg: {
               versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          }},
+          } end,
           need_feedback_assigned_ideas_count: 5
         }
       }

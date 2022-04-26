@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Graphql pages' do
   let(:context) { {} }
   let(:variables) { {} }
-  let(:result) {
+  let(:result) do
     res = AdminApi::Schema.execute(
       query_string,
       context: context,
@@ -13,10 +13,10 @@ RSpec.describe 'Graphql pages' do
       pp res
     end
     res
-  }
+  end
 
   describe 'publicPages' do
-    let(:query_string) { %|
+    let(:query_string) do %|
     {
       publicPages {
         edges {
@@ -36,7 +36,7 @@ RSpec.describe 'Graphql pages' do
         }
       }
     }
-    |}
+    | end
 
 
     it 'returns all public pages' do

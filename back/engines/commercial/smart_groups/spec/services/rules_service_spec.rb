@@ -9,7 +9,7 @@ describe SmartGroups::RulesService do
   let(:options) { create_list(:custom_field_option, 3) }
   let(:cf3) { create(:custom_field_select) }
   let(:options) { create_list(:custom_field_option, 3, custom_field: cf3 ) }
-  let!(:users) {
+  let!(:users) do
     users = build_list(:admin, 4)
     users[0].custom_field_values[cf1.key] = 'one'
     users[0].custom_field_values[cf2.key] = 'a'
@@ -28,14 +28,14 @@ describe SmartGroups::RulesService do
     users[3].custom_field_values[cf3.key] = options[2].key
 
     users.each(&:save)
-  }
+  end
 
-  let(:rules) { [
+  let(:rules) do [
     { 'ruleType' => 'custom_field_text', 'customFieldId' => cf1.id, 'predicate' => 'is', 'value' => 'three' },
     { 'ruleType' => 'custom_field_text', 'customFieldId' => cf2.id, 'predicate' => 'is', 'value' => 'a' },
     { 'ruleType' => 'custom_field_select', 'customFieldId' => cf3.id, 'predicate' => 'has_value', 'value' => options[1].id },
     { 'ruleType' => 'role', 'predicate' => 'is_admin' }
-  ]}
+  ] end
 
   describe 'generate_rules_json_schema' do
     let!(:cf1) { create(:custom_field) }

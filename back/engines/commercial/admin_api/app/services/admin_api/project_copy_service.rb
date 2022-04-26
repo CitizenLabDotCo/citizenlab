@@ -137,7 +137,7 @@ module AdminApi
         'process_type'                 => @project.process_type,
         'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
         'custom_form_ref'              => lookup_ref(@project.custom_form_id, :custom_form),
-        'text_images_attributes'       => @project.text_images.map { |ti|
+        'text_images_attributes'       => @project.text_images.map do |ti|
           {
             'imageable_field'          => ti.imageable_field,
             'remote_image_url'         => ti.image_url,
@@ -145,7 +145,7 @@ module AdminApi
             'created_at'               => ti.created_at.to_s,
             'updated_at'               => ti.updated_at.to_s
           }
-        }
+        end
       })
       yml_project['slug'] = new_slug if new_slug.present?
       store_ref yml_project, @project.id, :project
@@ -192,7 +192,7 @@ module AdminApi
           'end_at'                 => shift_timestamp(p.end_at, shift_timestamps)&.iso8601,
           'created_at'             => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
           'updated_at'             => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-          'text_images_attributes' => p.text_images.map { |ti|
+          'text_images_attributes' => p.text_images.map do |ti|
             {
               'imageable_field'    => ti.imageable_field,
               'remote_image_url'   => ti.image_url,
@@ -200,7 +200,7 @@ module AdminApi
               'created_at'         => ti.created_at.to_s,
               'updated_at'         => ti.updated_at.to_s
             }
-          }
+          end
         })
         store_ref yml_phase, p.id, :phase
         yml_phase
@@ -401,7 +401,7 @@ module AdminApi
           'end_at'                 => shift_timestamp(e.end_at, shift_timestamps)&.iso8601,
           'created_at'             => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
           'updated_at'             => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601,
-          'text_images_attributes' => e.text_images.map { |ti|
+          'text_images_attributes' => e.text_images.map do |ti|
             {
               'imageable_field'    => ti.imageable_field,
               'remote_image_url'   => ti.image_url,
@@ -409,7 +409,7 @@ module AdminApi
               'created_at'         => ti.created_at.to_s,
               'updated_at'         => ti.updated_at.to_s
             }
-          }
+          end
         }
         store_ref yml_event, e.id, :event
         yml_event
@@ -459,7 +459,7 @@ module AdminApi
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
           'proposed_budget' => i.proposed_budget,
-          'text_images_attributes' => i.text_images.map { |i|
+          'text_images_attributes' => i.text_images.map do |i|
             {
               'imageable_field'          => i.imageable_field,
               'remote_image_url'         => i.image_url,
@@ -467,7 +467,7 @@ module AdminApi
               'created_at'               => i.created_at.to_s,
               'updated_at'               => i.updated_at.to_s
             }
-          }
+          end
         }
         store_ref yml_idea, i.id, :idea
         yml_idea

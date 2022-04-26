@@ -2,16 +2,16 @@ require 'rails_helper'
 
 RSpec.describe 'Graphql folder' do
   let(:context) { {} }
-  let(:result) {
+  let(:result) do
     AdminApi::Schema.execute(
       query_string,
       context: context,
       variables: variables
     )
-  }
+  end
 
   describe 'folder' do
-    let(:query_string) { %|
+    let(:query_string) do %|
       query projectFolderQuery($id: ID!) {
         projectFolder(id: $id) {
           id
@@ -19,7 +19,7 @@ RSpec.describe 'Graphql folder' do
           publicationStatus
         }
       }
-    |}
+    | end
 
 
     let(:folder) { create(:project_folder) }

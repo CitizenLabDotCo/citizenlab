@@ -68,7 +68,7 @@ describe Surveys::Typeform::Api do
   end
 
   describe 'responses' do
-    let (:responses_body) {
+    let (:responses_body) do
       {
         'items' => [{
           'answers' => [{
@@ -122,7 +122,7 @@ describe Surveys::Typeform::Api do
         'page_count' => 1,
         'total_items' => 2
       }
-    }
+    end
 
     it 'fetches respones' do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}/responses")
@@ -140,7 +140,7 @@ describe Surveys::Typeform::Api do
 
 
   describe 'all_responses' do
-    let (:responses_body1) {
+    let (:responses_body1) do
       {
         'items' => [{
           'token' => '7f8835f008ac92737c675f2ff94af43b'
@@ -148,9 +148,9 @@ describe Surveys::Typeform::Api do
         'page_count' => 2,
         'total_items' => 2
       }
-    }
+    end
 
-    let (:responses_body2) {
+    let (:responses_body2) do
       {
         'items' => [{
           'token' => '475451e1cf8c3f13aad47330e8abc9b2'
@@ -158,7 +158,7 @@ describe Surveys::Typeform::Api do
         'page_count' => 1,
         'total_items' => 2
       }
-    }
+    end
 
     it 'aggregates all the pages' do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}/responses")
@@ -189,7 +189,7 @@ describe Surveys::Typeform::Api do
   end
 
   describe 'form' do
-    let(:form_body) { {
+    let(:form_body) do {
       'id' => 'USLYB6',
       'title' => 'webhooks dev',
       'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },
@@ -243,7 +243,7 @@ describe Surveys::Typeform::Api do
         'validations' => { 'required' => false },
         'type' => 'multiple_choice' }],
       '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
-    }}
+    } end
 
     it 'gets a form' do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}")

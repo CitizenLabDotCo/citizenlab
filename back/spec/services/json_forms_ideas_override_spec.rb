@@ -34,15 +34,15 @@ describe 'JsonFormsService ideas overrides' do
     before { SettingsService.new.activate_feature! 'participatory_budgeting' }
 
     let(:continuous_pb_project_fields) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:continuous_budgeting_project))) }
-    let(:timeline_pb_project_fields) {
+    let(:timeline_pb_project_fields) do
       project_with_phases = create(:project_with_phases)
       project_with_phases.phases[0].update(participation_method: 'budgeting')
       IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_phases))
-     }
-    let(:timeline_ideas_project_fields) {
+     end
+    let(:timeline_ideas_project_fields) do
       project_with_phases = create(:project_with_phases)
       IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_phases))
-     }
+     end
 
     it 'is not included for normal users' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
@@ -108,11 +108,11 @@ describe 'JsonFormsService ideas overrides' do
 
   describe 'fields_to_ui_schema' do
     let(:continuous) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:continuous_project, input_term: 'option'))) }
-    let(:timeline) {
+    let(:timeline) do
       project_with_current_phase = create(:project_with_current_phase)
       TimelineService.new.current_phase(project_with_current_phase).update(input_term: 'option')
       IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_current_phase))
-    }
+    end
 
     it 'uses the right input_term in a continuous project' do
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
@@ -125,22 +125,22 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     it 'does not include the details category when there are no fields inside' do
-      continuous.each { |f|
+      continuous.each do |f|
         if ['proposed_budget', 'budget', 'topic_ids', 'location_description'].include?(f.code)
           f.update(enabled: false)
         end
-      }
+      end
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
       expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'details' }).to eq false
       expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
 
     it 'does not include the images and attachments category when there are no fields inside' do
-      continuous.each { |f|
+      continuous.each do |f|
         if ['idea_images_attributes', 'idea_files_attributes'].include?(f.code)
           f.update(enabled: false)
         end
-      }
+      end
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
       expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'attachments' }).to eq false
       expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true

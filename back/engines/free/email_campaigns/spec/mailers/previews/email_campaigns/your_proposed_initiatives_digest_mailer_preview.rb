@@ -6,7 +6,7 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          initiatives: initiatives.map { |initiative|
+          initiatives: initiatives.map do |initiative|
             {
               title_multiloc: initiative.title_multiloc,
               body_multiloc: initiative.body_multiloc,
@@ -18,17 +18,17 @@ module EmailCampaigns
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at&.iso8601,
               status_code: initiative.initiative_status.code,
-              images: initiative.initiative_images.map { |image|
+              images: initiative.initiative_images.map do |image|
                 {
                   ordering: image.ordering,
                   versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
                 }
-              },
+              end,
               header_bg: {
                 versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
             }
-          }
+          end
         }
       }
       campaign = EmailCampaigns::Campaigns::YourProposedInitiativesDigest.first

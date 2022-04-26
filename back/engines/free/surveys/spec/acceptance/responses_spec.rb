@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 resource 'Survey Responses' do
   explanation 'One survey response contains all the answers of a single user on a survey'
 
-  let(:form_body) { {
+  let(:form_body) do {
     'id' => 'USLYB6',
     'title' => 'webhooks dev',
     'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },
@@ -58,9 +58,9 @@ resource 'Survey Responses' do
       'validations' => { 'required' => false },
       'type' => 'multiple_choice' }],
     '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
-  }}
+  } end
 
-  let (:responses_body) {
+  let (:responses_body) do
     {
       'items' => [{
         'answers' => [{
@@ -114,7 +114,7 @@ resource 'Survey Responses' do
       'page_count' => 1,
       'total_items' => 2
     }
-  }
+  end
 
   before do
     @user = create(:admin)

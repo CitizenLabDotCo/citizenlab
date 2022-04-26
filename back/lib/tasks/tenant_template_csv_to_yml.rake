@@ -63,7 +63,7 @@ namespace :tenant_template do
 
 
   def convert_users(csv_users, locales, users_hash)
-    csv_users.map { |csv_user|
+    csv_users.map do |csv_user|
       yml_user = { 'email' => csv_user['Email'],
                    'first_name'        => csv_user['First Name'],
                    'last_name'         => csv_user['Last Name'],
@@ -77,11 +77,11 @@ namespace :tenant_template do
                  }
       users_hash[csv_user['ID']] = yml_user
       yml_user
-    }
+    end
   end
 
   def convert_projects(csv_projects, locales, projects_hash, topics_hash, yml_project_images)
-    csv_projects.map { |csv_project|
+    csv_projects.map do |csv_project|
       yml_project = {	'title_multiloc' => make_multiloc(csv_project['Title'], locales),
                       'description_multiloc' => make_multiloc(md_to_html(csv_project['Description']), locales),
                       'remote_header_bg_url' => csv_project['Background Image URL']
@@ -89,13 +89,13 @@ namespace :tenant_template do
       add_project_images(csv_project, yml_project, yml_project_images)
       projects_hash[csv_project['ID']] = yml_project
       yml_project
-    }
+    end
   end
 
   def convert_ideas(csv_ideas, locales,
                     ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash,
                     yml_votes, yml_ideas_topics, yml_idea_images)
-    csv_ideas.map { |csv_idea|
+    csv_ideas.map do |csv_idea|
       yml_idea = { 'title_multiloc' => make_multiloc(csv_idea['Title'], locales),
                    'body_multiloc' => make_multiloc(md_to_html(csv_idea['Body']), locales),
                    'author_ref'         => users_hash[csv_idea['Author ID']],
@@ -110,11 +110,11 @@ namespace :tenant_template do
       add_idea_images(csv_idea, yml_idea, yml_idea_images)
       ideas_hash[csv_idea['ID']] = yml_idea
       yml_idea
-    }
+    end
   end
 
   def convert_comments(csv_comments, locales, comments_hash, ideas_hash, users_hash)
-    csv_comments.map { |csv_comment|
+    csv_comments.map do |csv_comment|
       yml_comment = {	'body_multiloc' => make_multiloc(md_to_html(csv_comment['Body']), locales),
                       'author_ref' => users_hash[csv_comment['Author ID']],
                       'idea_ref'      => ideas_hash[csv_comment['Idea ID']],
@@ -122,11 +122,11 @@ namespace :tenant_template do
                     }
       comments_hash[csv_comment['ID']] = yml_comment
       yml_comment
-    }
+    end
   end
 
   def convert_events(csv_events, locales, projects_hash)
-    csv_events.map { |csv_event|
+    csv_events.map do |csv_event|
       start_at = Faker::Date.between(from: 1.year.ago, to: 1.year.from_now)
       {	'title_multiloc' => make_multiloc(csv_event['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_event['Description']), locales),
@@ -134,7 +134,7 @@ namespace :tenant_template do
         'project_ref'          => projects_hash[csv_event['Project ID']],
         'start_at'             => start_at,
         'end_at'               => start_at + 1.days
-      }}
+      } end
   end
 
   def convert_phases(csv_phases, locales, projects_hash)
@@ -172,12 +172,12 @@ namespace :tenant_template do
   def generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
     shuffled_users = users_hash.values.shuffle
     vote_modes = Array.new(Integer(csv_idea['Upvotes'] || 0), 'up') + Array.new(Integer(csv_idea['Downvotes'] || 0), 'down')
-    new_votes = zip_min(vote_modes, shuffled_users).map { |z|
+    new_votes = zip_min(vote_modes, shuffled_users).map do |z|
       mode = z[0]
       user = z[1]
       { 'mode'        => mode,
         'user_ref'    => user,
-        'votable_ref' => yml_idea }}
+        'votable_ref' => yml_idea } end
     yml_votes.concat new_votes
   end
 

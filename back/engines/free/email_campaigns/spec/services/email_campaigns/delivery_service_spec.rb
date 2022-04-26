@@ -52,14 +52,14 @@ describe EmailCampaigns::DeliveryService do
   describe 'send_on_activity' do
     let!(:campaign) { create(:project_phase_upcoming_campaign) }
     let(:notification) { create(:project_phase_upcoming) }
-    let(:activity) {
+    let(:activity) do
       Activity.create(
         item: notification,
         item_type: notification.class.name,
         action: 'created',
         acted_at: Time.now
       )
-    }
+    end
     let(:user) { create(:user) }
 
     it 'enqueues an internal event job' do
@@ -71,14 +71,14 @@ describe EmailCampaigns::DeliveryService do
     context 'on project_phase_upcoming notification' do
       let!(:campaign) { create(:project_phase_upcoming_campaign) }
       let(:notification) { create(:project_phase_upcoming) }
-      let(:activity) {
+      let(:activity) do
         Activity.create(
           item: notification,
           item_type: notification.class.name,
           action: 'created',
           acted_at: Time.now
         )
-      }
+      end
       let!(:admin) { create(:admin) }
 
       it 'delays enqueueing a job because the command specifies a delay' do

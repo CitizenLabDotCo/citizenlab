@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Graphql ideas' do
   let(:context) { {} }
   let(:variables) { {} }
-  let(:result) {
+  let(:result) do
     res = AdminApi::Schema.execute(
       query_string,
       context: context,
@@ -13,10 +13,10 @@ RSpec.describe 'Graphql ideas' do
       pp res
     end
     res
-  }
+  end
 
   describe 'publicIdeas' do
-    let(:query_string) { %|
+    let(:query_string) do %|
       query publicIdeas($projects: [ID!], $topics: [ID!], $sort: IdeaSorting) {
         publicIdeas(first: 5, projects: $projects, topics: $topics, sort: $sort) {
           edges {
@@ -43,7 +43,7 @@ RSpec.describe 'Graphql ideas' do
           }
         }
       }
-    |}
+    | end
 
 
     it 'returns all public ideas with fields' do

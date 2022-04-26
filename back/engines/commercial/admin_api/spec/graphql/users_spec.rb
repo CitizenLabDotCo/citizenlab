@@ -2,16 +2,16 @@ require 'rails_helper'
 
 RSpec.describe 'Graphql user' do
   let(:context) { {} }
-  let(:result) {
+  let(:result) do
     AdminApi::Schema.execute(
       query_string,
       context: context,
       variables: variables
     )
-  }
+  end
 
   describe 'user' do
-    let(:query_string) { %|
+    let(:query_string) do %|
       query userQuery($id: ID!) {
         user(id: $id) {
           id
@@ -22,7 +22,7 @@ RSpec.describe 'Graphql user' do
           locale
         }
       }
-    |}
+    | end
 
 
     let(:user) { create(:user) }
@@ -42,13 +42,13 @@ RSpec.describe 'Graphql user' do
   end
 
   describe 'unsubscriptionToken' do
-    let(:query_string) { %|
+    let(:query_string) do %|
       query userQuery($id: ID!) {
         user(id: $id) {
           unsubscriptionToken
         }
       }
-    |}
+    | end
     let(:user) { create(:user) }
     let!(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: user) }
     let(:variables) { { id: user.id } }

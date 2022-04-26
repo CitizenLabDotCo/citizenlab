@@ -129,9 +129,9 @@ resource 'AppConfigurations' do
     end
 
     describe do
-      let(:settings) {
+      let(:settings) do
         { core: { fake_setting: 'should_fail' } }.deep_stringify_keys!
-      }
+      end
 
       example '[error] Updating the configuration with unsupported settings fails', document: false do
         do_request

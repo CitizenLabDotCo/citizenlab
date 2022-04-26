@@ -26,7 +26,7 @@ resource 'Verification Id Cards', admin_api: true do
       @idea_card = create(:id_id_card_lookup_id_card)
     end
 
-    let(:card_ids) { [
+    let(:card_ids) do [
       'aaa1',
       'bbb2',
       'ccc3',
@@ -36,7 +36,7 @@ resource 'Verification Id Cards', admin_api: true do
       'ggg7',
       'hhh8',
       'iii9',
-    ]}
+    ] end
 
     let(:file) { "data:text/csv;base64,#{Base64.encode64(card_ids.join("\n"))}" }
 

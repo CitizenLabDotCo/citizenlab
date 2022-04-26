@@ -26,9 +26,9 @@ resource 'Comments' do
     let(:body_multiloc) { comment.body_multiloc }
 
     example 'Toxicity detection job is enqueued when creating a comment', document: false do
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob)
+      end.to have_enqueued_job(ToxicityDetectionJob)
     end
   end
 
@@ -48,9 +48,9 @@ resource 'Comments' do
     let(:body_multiloc) { { 'en' => 'Changed body' } }
 
     example 'Toxicity detection job is enqueued when updating an comment\'s body', document: false do
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
+      end.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
     end
   end
 end

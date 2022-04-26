@@ -6,7 +6,7 @@ FactoryBot.define do
     external_response_id { 'a3a12ec67a1365927098a606107fac15' }
     started_at { '2019-01-27 08:30' }
     submitted_at { '2019-01-27 08:31' }
-    answers { [
+    answers do [
       {
         'question_id' => 'DlXFaesGBpoF',
         'question_text' => "Thanks, {{answer_60906475}}! What's it like where you live? Tell us in a few sentences.",
@@ -17,6 +17,6 @@ FactoryBot.define do
         'question_text' => "If you're OK with our city management following up if they have further questions, please give us your email address.",
         'value' => 'laura@example.com'
       }
-    ]}
+    ] end
   end
 end

@@ -9,14 +9,14 @@ describe JsonFormsService do
   describe 'fields_to_ui_schema_multiloc' do
     let (:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
     let (:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
-    let(:fields) { [
+    let(:fields) do [
       create(:custom_field,
         key: 'field1',
         input_type: 'text',
         title_multiloc: title_multiloc,
         description_multiloc: description_multiloc
       )
-    ]}
+    ] end
     it 'creates localized schemas with titles and descriptions for all languages' do
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc]
       expect(ui_schema['en'][:elements][0][:label]).to eq title_multiloc['en']

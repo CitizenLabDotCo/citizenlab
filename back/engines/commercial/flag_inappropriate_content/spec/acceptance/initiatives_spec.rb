@@ -28,9 +28,9 @@ resource 'Initiatives' do
     example 'Toxicity detection job is enqueued when creating an initiative', document: false do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob)
+      end.to have_enqueued_job(ToxicityDetectionJob)
     end
   end
 
@@ -55,9 +55,9 @@ resource 'Initiatives' do
       let(:location_description) { 'Watkins Road 8' }
 
       example 'Toxicity detection job is enqueued when updating an initiative\'s title', document: false do
-        expect {
+        expect do
           do_request
-        }.to have_enqueued_job(ToxicityDetectionJob).with(@initiative, attributes: [:location_description])
+        end.to have_enqueued_job(ToxicityDetectionJob).with(@initiative, attributes: [:location_description])
       end
     end
 
@@ -65,9 +65,9 @@ resource 'Initiatives' do
       let(:topic_ids) { [create(:topic).id] }
 
       example 'No toxicity detection job is enqueued when updating initiative attributes without text', document: false do
-        expect {
+        expect do
           do_request
-        }.not_to have_enqueued_job(ToxicityDetectionJob)
+        end.not_to have_enqueued_job(ToxicityDetectionJob)
       end
     end
   end

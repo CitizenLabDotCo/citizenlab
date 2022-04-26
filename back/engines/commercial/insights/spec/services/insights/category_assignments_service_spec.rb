@@ -138,9 +138,9 @@ describe Insights::CategoryAssignmentsService do
       service.add_assignments_batch(inputs, categories)
 
       aggregate_failures 'checking inputs processed flags' do
-        inputs.each { |input|
+        inputs.each do |input|
           expect(input.processed(view)).to eq(true)
-        }
+        end
       end
     end
   end
@@ -192,9 +192,9 @@ describe Insights::CategoryAssignmentsService do
       service.add_suggestions_batch(inputs, categories)
 
       aggregate_failures 'checking inputs processed flags' do
-        inputs.each { |input|
+        inputs.each do |input|
           expect(input.processed(view)).to eq(false)
-        }
+        end
       end
     end
   end

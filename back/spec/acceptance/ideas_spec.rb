@@ -630,9 +630,9 @@ resource 'Ideas' do
     end
 
     describe do
-      let(:project) { create(:project_with_current_phase, current_phase_attrs: {
+      let(:project) do create(:project_with_current_phase, current_phase_attrs: {
         participation_method: 'information'
-      })}
+      }) end
 
       example_request '[error] Creating an idea in a project with an active information phase' do
         expect(response_status).to eq 401

@@ -146,31 +146,31 @@ resource 'Moderators' do
       let(:project_id) { @project.id }
       let(:search) { 'jo' }
       let(:other_project) { create(:project) }
-      let!(:u1) {
+      let!(:u1) do
         create(:user,
           first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com',
           roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
-      }
-      let!(:u2) {
+      end
+      let!(:u2) do
         create(:user,
           first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com',
           roles: [{ 'type' => 'project_moderator', 'project_id' => other_project.id }])
-      }
-      let!(:u3) {
+      end
+      let!(:u3) do
         create(:user,
           first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com',
           roles: [])
-      }
-      let!(:u4) {
+      end
+      let!(:u4) do
         create(:user,
           first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com',
           roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }, { 'type' => 'project_moderator', 'project_id' => other_project.id }])
-      }
-      let!(:u5) {
+      end
+      let!(:u5) do
         create(:user,
           first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com',
           roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
-      }
+      end
 
       example_request 'Search for users and whether or not they are moderator of the project' do
         expect(status).to eq(200)

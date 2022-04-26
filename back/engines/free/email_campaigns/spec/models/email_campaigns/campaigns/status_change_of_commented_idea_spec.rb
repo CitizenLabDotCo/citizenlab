@@ -13,12 +13,12 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :mo
     let(:idea) { create(:idea, idea_status: create(:idea_status)) }
     let!(:comment) { create(:comment, post: idea) }
     let(:initiator) { create(:admin) }
-    let(:activity) {
+    let(:activity) do
       create(
         :activity, item: idea, action: 'changed_status', user: initiator,
         payload: { change: [old_status.id, idea.idea_status.id] }
         )
-    }
+    end
 
     it 'generates a command with the desired payload and tracked content' do
       command = campaign.generate_commands(recipient: comment.author, activity: activity).first

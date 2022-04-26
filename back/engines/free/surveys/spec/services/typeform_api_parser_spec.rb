@@ -8,7 +8,7 @@ describe Surveys::TypeformApiParser do
   let(:service) { Surveys::TypeformApiParser.new(tf_api) }
   let(:form_id) { 'USLYB6' }
 
-  let(:form_response_return_value) { {
+  let(:form_response_return_value) do {
     'id' => 'USLYB6',
     'title' => 'webhooks dev',
     'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },
@@ -97,9 +97,9 @@ describe Surveys::TypeformApiParser do
       'validations' => { 'required' => false },
       'type' => 'multiple_choice' }],
     '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
-  }}
+  } end
 
-  let(:all_responses_return_value) {
+  let(:all_responses_return_value) do
     [{ 'landing_id' => '7f8835f008ac92737c675f2ff94af43b',
       'token' => '7f8835f008ac92737c675f2ff94af43b',
       'response_id' => '7f8835f008ac92737c675f2ff94af43b',
@@ -250,7 +250,7 @@ describe Surveys::TypeformApiParser do
            'ref' => '7eb52f7c-153d-46d4-8dcc-d555599e43ff' },
          'type' => 'choice',
          'choice' => { 'label' => 'tall' } }] }]
-  }
+  end
 
   describe 'get_responses' do
     it "generates valid Surveys::Response's, participation_context excluded" do
