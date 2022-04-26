@@ -40,13 +40,19 @@ describe SmartGroups::Rules::CustomFieldSelect do
     end
 
     it 'successfully validate the valid multi-value rule' do
-      rule = valid_rule.tap { |r| r.predicate = 'is_one_of'; r.value = [options.first.id, options.last.id] }
+      rule = valid_rule.tap do |r|
+        r.predicate = 'is_one_of'
+        r.value = [options.first.id, options.last.id]
+      end
       expect(rule).to be_valid
       expect(build(:smart_group, rules: [rule.as_json])).to be_valid
     end
 
     it 'fails on a non-existing custom field option' do
-      rule = valid_rule.tap { |r| r.predicate = 'is_one_of'; r.value = [options.first.id, 'garbage'] }
+      rule = valid_rule.tap do |r|
+        r.predicate = 'is_one_of'
+        r.value = [options.first.id, 'garbage']
+      end
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end

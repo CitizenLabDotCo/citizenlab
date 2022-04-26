@@ -23,12 +23,18 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it 'reject a rule with a mutli-value predicate and a single value' do
-      rule = valid_json_rule.tap { |r| r['predicate'] = 'in'; r['value'] = IdeaStatus.first.id }
+      rule = valid_json_rule.tap do |r|
+        r['predicate'] = 'in'
+        r['value'] = IdeaStatus.first.id
+      end
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
 
     it 'accepts a rule with a single-value predicate and a single value' do
-      rule = valid_json_rule.tap { |r| r['predicate'] = 'not_in'; r['value'] = IdeaStatus.first.id }
+      rule = valid_json_rule.tap do |r|
+        r['predicate'] = 'not_in'
+        r['value'] = IdeaStatus.first.id
+      end
       expect(SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end

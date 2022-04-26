@@ -22,12 +22,18 @@ describe SmartGroups::Rules::ParticipatedInProject do
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
     it 'rejects a rule with a mutli-value predicate and a single value' do
-      rule = valid_json_rule.tap { |r| r['predicate'] = 'in'; r['value'] = Project.first.id }
+      rule = valid_json_rule.tap do |r|
+        r['predicate'] = 'in'
+        r['value'] = Project.first.id
+      end
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
 
     it 'accepts a rule with a single-value predicate and a single value' do
-      rule = valid_json_rule.tap { |r| r['predicate'] = 'not_in'; r['value'] = Project.first.id }
+      rule = valid_json_rule.tap do |r|
+        r['predicate'] = 'not_in'
+        r['value'] = Project.first.id
+      end
       expect(SmartGroups::Rules::ParticipatedInProject.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end

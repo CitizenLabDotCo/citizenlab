@@ -32,7 +32,7 @@ describe SettingsService do
       expect(settings['a']).to include({
         'allowed' => false,
         'enabled' => false
-      });
+      })
     end
 
     it 'leaves features not in the schema unchanged' do

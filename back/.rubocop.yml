@@ -83,6 +83,9 @@ Layout/CaseIndentation:
   Enabled: true
   EnforcedStyle: end
 
+Style/Semicolon:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

@@ -5,7 +5,7 @@ class InvitesService
 
   MAX_INVITES = 1000
 
-  class InvitesFailedError < RuntimeError;
+  class InvitesFailedError < RuntimeError
     attr_accessor :errors
 
     def initialize(options)
