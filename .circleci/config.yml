@@ -99,7 +99,6 @@ jobs:
       name: cl2-back
       image-tag: $CIRCLE_SHA1
     working_directory: /cl2_back
-    parallelism: 4
     environment:
       RAILS_ENV: development
     steps:
