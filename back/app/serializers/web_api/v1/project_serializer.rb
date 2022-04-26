@@ -53,11 +53,11 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
         disabled_reason: commenting_disabled_reason,
       },
       taking_survey: {
-        enabled:!taking_survey_disabled_reason,
+        enabled: !taking_survey_disabled_reason,
         disabled_reason: taking_survey_disabled_reason
       },
       taking_poll: {
-        enabled:!taking_poll_disabled_reason,
+        enabled: !taking_poll_disabled_reason,
         disabled_reason: taking_poll_disabled_reason
       }
     }

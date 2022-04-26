@@ -71,7 +71,7 @@ module Cl2Back
       config.action_mailer.smtp_settings = {
         address: ENV.fetch('SMTP_ADDRESS'),
         port: ENV.fetch('SMTP_PORT', nil),
-        domain:ENV.fetch('SMTP_DOMAIN', nil),
+        domain: ENV.fetch('SMTP_DOMAIN', nil),
         user_name: ENV.fetch('SMTP_USER_NAME', nil),
         password: ENV.fetch('SMTP_PASSWORD', nil),
         authentication: ENV.fetch('SMTP_AUTHENTICATION', nil)&.to_sym,

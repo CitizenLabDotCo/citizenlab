@@ -295,7 +295,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def render_no_data
     if @no_data
-      render json: { series: { up:{}, down: {}, total: {} } }
+      render json: { series: { up: {}, down: {}, total: {} } }
     end
   end
 
