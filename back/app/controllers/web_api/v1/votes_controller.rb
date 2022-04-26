@@ -111,10 +111,10 @@ class WebApi::V1::VotesController < ApplicationController
     @votable_type = params[:votable]
     @votable_id = params[:"#{@votable_type.underscore}_id"]
     @policy_class = case @votable_type
-      when 'Idea' then IdeaVotePolicy
-      when 'Comment' then CommentVotePolicy
-      when 'Initiative' then InitiativeVotePolicy
-      else raise "#{@votable_type} has no voting policy defined"
+    when 'Idea' then IdeaVotePolicy
+    when 'Comment' then CommentVotePolicy
+    when 'Initiative' then InitiativeVotePolicy
+    else raise "#{@votable_type} has no voting policy defined"
     end
     raise RuntimeError, 'must not be blank' if @votable_type.blank? or @votable_id.blank?
   end

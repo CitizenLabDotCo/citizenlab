@@ -26,26 +26,26 @@ class WebApi::V1::InvitesController < ApplicationController
 
     if params[:sort].present? && !params[:search].present?
       @invites = case params[:sort]
-        when 'created_at'
+      when 'created_at'
           @invites.order(created_at: :asc)
-        when '-created_at'
+      when '-created_at'
           @invites.order(created_at: :desc)
-        when 'last_name'
+      when 'last_name'
           @invites.order('users.last_name asc')
-        when '-last_name'
+      when '-last_name'
           @invites.order('users.last_name desc')
-        when 'email'
+      when 'email'
           @invites.order('users.email asc')
-        when '-email'
+      when '-email'
           @invites.order('users.email desc')
-        when 'invite_status'
+      when 'invite_status'
           @invites.order('users.invite_status asc')
-        when '-invite_status'
+      when '-invite_status'
           @invites.order('users.invite_status desc')
-        when nil
+      when nil
           @invites
-        else
-          raise 'Unsupported sort method'
+      else
+        raise 'Unsupported sort method'
       end
     end
 

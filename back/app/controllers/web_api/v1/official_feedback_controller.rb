@@ -81,9 +81,9 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
 
   def set_policy_class
     @policy_class = case @post_type
-      when 'Idea' then IdeaOfficialFeedbackPolicy
-      when 'Initiative' then InitiativeOfficialFeedbackPolicy
-      else raise "#{@post_type} has no official feedback policy defined"
+    when 'Idea' then IdeaOfficialFeedbackPolicy
+    when 'Initiative' then InitiativeOfficialFeedbackPolicy
+    else raise "#{@post_type} has no official feedback policy defined"
     end
     raise RuntimeError, 'must not be blank' if @post_type.blank?
   end

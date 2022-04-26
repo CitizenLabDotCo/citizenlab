@@ -79,6 +79,10 @@ Style/PercentLiteralDelimiters:
 Layout/SpaceAfterColon:
   Enabled: true
 
+Layout/CaseIndentation:
+  Enabled: true
+  EnforcedStyle: end
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:
