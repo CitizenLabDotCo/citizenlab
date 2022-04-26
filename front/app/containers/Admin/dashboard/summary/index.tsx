@@ -56,15 +56,11 @@ import {
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 
-export interface InputProps {
-  onlyModerator?: boolean;
-}
-
 interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends DataProps {}
 
 interface State {
   resolution: IResolution;
@@ -98,19 +94,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   constructor(props: PropsHithHoCs) {
     super(props);
-    const { onlyModerator } = props;
-    const { projectsList } = props.projects;
     const { formatMessage } = props.intl;
 
     this.state = {
       resolution: 'month',
       startAtMoment: undefined,
       endAtMoment: moment(),
-      currentProjectFilter: onlyModerator
-        ? projectsList && projectsList.length > 0
-          ? projectsList[0].id
-          : undefined
-        : undefined,
+      currentProjectFilter: undefined,
       currentProjectFilterLabel: undefined,
       currentGroupFilter: undefined,
       currentGroupFilterLabel: undefined,
@@ -125,26 +115,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       { value: 'comments', label: formatMessage(messages.comments) },
       { value: 'votes', label: formatMessage(messages.votes) },
     ];
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const {
-      projects: { projectsList },
-      onlyModerator,
-    } = this.props;
-
-    if (
-      projectsList !== prevProps.projects.projectsList &&
-      onlyModerator &&
-      this.state.currentProjectFilter === null
-    ) {
-      this.setState({
-        currentProjectFilter:
-          projectsList && projectsList.length > 0
-            ? projectsList[0].id
-            : undefined,
-      });
-    }
   }
 
   handleChangeResolution = (resolution: IResolution) => {
@@ -347,7 +317,7 @@ const publicationStatuses: PublicationStatus[] = [
   'archived',
 ];
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps>({
   projects: (
     <GetProjects
       publicationStatuses={publicationStatuses}
@@ -363,10 +333,6 @@ const DashboardPageSummaryWithHOCs = injectTracks<Props>({
   trackResourceChange: tracks.choseResource,
 })(localize<Props & Tracks>(injectIntl(DashboardPageSummary)));
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => (
-      <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />
-    )}
-  </Data>
+export default () => (
+  <Data>{(dataProps) => <DashboardPageSummaryWithHOCs {...dataProps} />}</Data>
 );

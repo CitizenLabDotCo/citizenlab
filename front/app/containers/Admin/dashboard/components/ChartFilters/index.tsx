@@ -16,7 +16,6 @@ interface Props {
   onProjectFilter?: (filter: IOption) => void;
   onGroupFilter?: (filter: IOption) => void;
   onTopicFilter?: (filter: IOption) => void;
-  onlyModerator?: boolean;
 }
 
 const ChartFilters = ({
@@ -26,7 +25,6 @@ const ChartFilters = ({
   onProjectFilter,
   onGroupFilter,
   onTopicFilter,
-  onlyModerator,
 }: Props) => {
   return (
     <Box display="flex" width="100%" justifyContent="space-between">
@@ -34,7 +32,6 @@ const ChartFilters = ({
         <ProjectFilter
           currentProjectFilter={currentProjectFilter}
           onProjectFilter={onProjectFilter}
-          onlyModerator={onlyModerator}
         />
       )}
 

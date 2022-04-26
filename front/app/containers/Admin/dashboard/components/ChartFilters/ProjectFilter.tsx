@@ -30,7 +30,6 @@ interface DataProps {
 
 interface InputProps {
   currentProjectFilter?: string | null;
-  onlyModerator?: boolean;
   onProjectFilter: (filter: IOption) => void;
 }
 
@@ -38,7 +37,6 @@ interface Props extends DataProps, InputProps {}
 
 const generateProjectOptions = (
   projectsList: IProjectData[],
-  onlyModerator: boolean | undefined,
   localize: Localize,
   formatMessage: InjectedIntlProps['intl']['formatMessage']
 ): IOption[] => {
@@ -47,20 +45,15 @@ const generateProjectOptions = (
     label: localize(project.attributes.title_multiloc),
   }));
 
-  if (!onlyModerator) {
-    return [
-      { value: '', label: formatMessage(messages.allProjects) },
-      ...projectOptions,
-    ];
-  }
-
-  return projectOptions;
+  return [
+    { value: '', label: formatMessage(messages.allProjects) },
+    ...projectOptions,
+  ];
 };
 
 const ProjectFilter = ({
   projects: { projectsList },
   currentProjectFilter,
-  onlyModerator,
   onProjectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -70,7 +63,6 @@ const ProjectFilter = ({
 
   const projectFilterOptions = generateProjectOptions(
     projectsList,
-    onlyModerator,
     localize,
     formatMessage
   );
