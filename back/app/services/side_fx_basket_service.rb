@@ -22,7 +22,7 @@ class SideFxBasketService
 
   def update_basket_counts
     query =
-    ''"
+      ''"
       UPDATE ideas
       SET baskets_count = counts.count
       FROM (
