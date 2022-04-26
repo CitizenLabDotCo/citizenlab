@@ -14,13 +14,13 @@ class ContentImageService
       content = begin
         decode_content encoded_content
       rescue DecodingError => e
-        Sentry.capture_exception(e, extra: { parse_errors: e.parse_errors })
+        log_decoding_error e
         output[locale] = encoded_content
         next
       end
 
       image_elements(content).each do |img_elt|
-        next if !attribute? img_elt, image_attribute_for_element
+        next unless attribute? img_elt, image_attribute_for_element
 
         unless attribute? img_elt, code_attribute_for_element
           content_image = content_image_class.create! image_attributes(img_elt, imageable, field)
@@ -50,16 +50,7 @@ class ContentImageService
         if content_image.present?
           set_attribute! img_elt, image_attribute_for_element, content_image_url(content_image)
         else
-          Sentry.capture_exception( # TODO: in separate method
-            Exception.new('No content image found with code'),
-            extra: {
-              code: code,
-              imageable_type: imageable.class,
-              imageable_id: imageable.id,
-              imageable_created_at: imageable.created_at,
-              imageable_field: field
-            }
-          )
+          log_content_image_not_found code, imageable, field
         end
       end
       output[locale] = encode_content content
@@ -134,5 +125,24 @@ class ContentImageService
 
   def content_image_url(content_image)
     content_image.image.url
+  end
+
+  private
+
+  def log_decoding_error(error)
+    Sentry.capture_exception(error, extra: { parse_errors: error.parse_errors })
+  end
+
+  def log_content_image_not_found(code, imageable, field)
+    Sentry.capture_exception(
+      Exception.new('No content image found with code'),
+      extra: {
+        code: code,
+        imageable_type: imageable.class,
+        imageable_id: imageable.id,
+        imageable_created_at: imageable.created_at,
+        imageable_field: field
+      }
+    )
   end
 end
