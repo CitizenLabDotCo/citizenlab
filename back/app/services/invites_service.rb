@@ -101,7 +101,6 @@ class InvitesService
     else
       fail_now
     end
-
   rescue InvitesFailedError => e
     e.errors.each do |e|
       e.row && (e.row = (map_rows[e.row] + 2))
