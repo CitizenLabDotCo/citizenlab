@@ -224,11 +224,7 @@ namespace :setup_and_support do
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       users = User.where(email: emails)
-      group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
-      users.each do |u|
-        group.add_member u
-      end
-      group.save!
+      Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
     end
   end
 
@@ -238,8 +234,7 @@ namespace :setup_and_support do
     ids = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       users = User.where(id: ids)
-      group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
-      group.save!
+      Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
     end
   end
 
