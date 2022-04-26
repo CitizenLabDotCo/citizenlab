@@ -31,7 +31,7 @@ export default function openSignUpInModalIfNecessary(
     // shouldCompleteRegistration is set to true when the authUser registration_completed_at attribute is not yet set.
     // when this attribute is undefined the sign-up process has not yet been completed and the user account is not yet valid!
     const shouldCompleteRegistration =
-      !authUser?.data.attributes.registration_completed_at;
+      authUser && !authUser?.data.attributes.registration_completed_at;
     // see services/singleSignOn.ts for the typed interface of all the sso related url params the url can potentially contain
     const {
       sso_response,
@@ -61,7 +61,7 @@ export default function openSignUpInModalIfNecessary(
       }
 
       const shouldVerify =
-        !authUser?.data?.attributes?.verified && sso_verification;
+        authUser && !authUser?.data?.attributes?.verified && sso_verification;
 
       // we do not open the modal when the user gets sent to the '/sign-up' or '/sign-in' urls because
       // on those pages we show the sign-up-in flow directly on the page and not as a modal.
