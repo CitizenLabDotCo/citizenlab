@@ -4,7 +4,8 @@ require 'rspec_api_documentation/dsl'
 resource 'Survey Responses' do
   explanation 'One survey response contains all the answers of a single user on a survey'
 
-  let(:form_body) do {
+  let(:form_body) do
+    {
     'id' => 'USLYB6',
     'title' => 'webhooks dev',
     'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },

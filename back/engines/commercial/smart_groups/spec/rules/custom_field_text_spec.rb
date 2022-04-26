@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldText do
-  let(:valid_json_rule) do {
+  let(:valid_json_rule) do
+    {
     'ruleType' => 'custom_field_text',
     'customFieldId' => create(:custom_field).id,
     'predicate' => 'is',
@@ -91,66 +92,77 @@ describe SmartGroups::Rules::CustomFieldText do
   end
 
   describe 'description_multiloc' do
-    let(:text_field) do create(:custom_field, title_multiloc: {
+    let(:text_field) do
+      create(:custom_field, title_multiloc: {
       'en'    => 'What\'s your favourite Star Wars quote?',
       'fr-FR' => 'Quelle est votre citation Star Wars préférée?',
       'nl-NL' => 'Wat is uw favoriete Star Wars citaat?'
     }) end
 
-    let(:custom_field_text_is_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_is_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'is',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_not_is_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_not_is_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_is',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_contains_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_contains_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'contains',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_not_contains_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_not_contains_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_contains',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_begins_with_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_begins_with_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'begins_with',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_not_begins_with_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_not_begins_with_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_begins_with',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_ends_on_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_ends_on_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'ends_on',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_not_ends_on_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_not_ends_on_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_ends_on',
       'customFieldId' => text_field.id,
       'value'         => 'Never tell me the odds!'
     }) end
-    let(:custom_field_text_is_empty_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_is_empty_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'is_empty',
       'customFieldId' => text_field.id
     }) end
-    let(:custom_field_text_not_is_empty_rule) do SmartGroups::Rules::CustomFieldText.from_json({
+    let(:custom_field_text_not_is_empty_rule) do
+      SmartGroups::Rules::CustomFieldText.from_json({
       'ruleType'      => 'custom_field_text',
       'predicate'     => 'not_is_empty',
       'customFieldId' => text_field.id

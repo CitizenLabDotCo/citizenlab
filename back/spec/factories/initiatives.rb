@@ -1,10 +1,12 @@
 FactoryBot.define do
   factory :initiative do
-    title_multiloc do {
+    title_multiloc do
+      {
       'en' => 'Install water turbines on kanals',
       'nl-BE' => 'Waterturbines op kanalen installeren'
     } end
-    body_multiloc do {
+    body_multiloc do
+      {
       'en' => "<p>Surely we'll gain huge amounts of green energy from this!</p>",
       'nl-BE' => '<p>Hier zullen we vast wel hopen groene energie uit halen!</p>'
     } end

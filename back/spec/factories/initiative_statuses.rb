@@ -1,13 +1,15 @@
 FactoryBot.define do
   factory :initiative_status do
-    title_multiloc do {
+    title_multiloc do
+      {
       'en' => 'Made Joke cry',
       'nl-BE' => 'Deed Joke wenen'
     } end
     ordering { 2 }
     code { 'custom' }
     color { '#AABBCC' }
-    description_multiloc do {
+    description_multiloc do
+      {
       'en' => 'This initiative has made Joke cry',
       'nl-BE' => 'Het initiatief heeft Joke doen wenen'
     } end

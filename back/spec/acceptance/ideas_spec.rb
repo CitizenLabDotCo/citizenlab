@@ -630,7 +630,8 @@ resource 'Ideas' do
     end
 
     describe do
-      let(:project) do create(:project_with_current_phase, current_phase_attrs: {
+      let(:project) do
+        create(:project_with_current_phase, current_phase_attrs: {
         participation_method: 'information'
       }) end
 

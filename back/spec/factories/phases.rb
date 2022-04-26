@@ -3,11 +3,13 @@ FactoryBot.define do
     project
     ideas_order { nil }
     input_term { nil }
-    title_multiloc do {
+    title_multiloc do
+      {
       'en' => 'Idea phase',
       'nl-BE' => 'Ideeën fase'
     } end
-    description_multiloc do {
+    description_multiloc do
+      {
       'en' => "<p>In this phase we gather ideas. Don't be shy, there are no stupid ideas!</p>",
       'nl-BE' => '<p>In deze fase verzamelen we ideeën. Wees niet verlegen, er zijn geen domme ideeën!</p>'
     } end

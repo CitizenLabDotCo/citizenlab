@@ -6,7 +6,8 @@ FactoryBot.define do
 
     factory :facebook_identity do
       provider { 'facebook' }
-      auth_hash do {
+      auth_hash do
+        {
         "uid": '10214227319468725',
         "info": {
           "email": 'Aaron.Kraus@telenet.be',

@@ -16,7 +16,8 @@ RSpec.describe 'Graphql pages' do
   end
 
   describe 'publicPages' do
-    let(:query_string) do %|
+    let(:query_string) do
+      %|
     {
       publicPages {
         edges {

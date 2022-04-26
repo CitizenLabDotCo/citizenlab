@@ -1,13 +1,15 @@
 FactoryBot.define do
   factory :idea_status do
-    title_multiloc do {
+    title_multiloc do
+      {
       'en' => 'At the mayor',
       'nl-BE' => 'Bij de burgemeester'
     } end
     ordering { 2 }
     code { 'custom' }
     color { '#AABBCC' }
-    description_multiloc do {
+    description_multiloc do
+      {
       'en' => 'This idea has been presented to the mayor',
       'nl-BE' => 'Het idee werd voorgesteld aan de burgemeester'
     } end

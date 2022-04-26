@@ -12,7 +12,8 @@ FactoryBot.define do
 
     factory :changed_title_activity do
       action { 'changed_title' }
-      payload do {
+      payload do
+        {
         'change' => [
           { 'en' => 'old title' },
           { 'en' => 'new title' }
@@ -22,7 +23,8 @@ FactoryBot.define do
 
     factory :changed_body_activity do
       action { 'changed_body' }
-      payload do {
+      payload do
+        {
         'change' => [
           { 'en' => 'old body' },
           { 'en' => 'new body' }
@@ -32,7 +34,8 @@ FactoryBot.define do
 
     factory :changed_status_activity do
       action { 'changed_status' }
-      payload do {
+      payload do
+        {
         'change' => [
           'somepreviousstatusid',
           'somenewstatusid'

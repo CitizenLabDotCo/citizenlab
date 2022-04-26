@@ -43,7 +43,8 @@ describe SettingsService do
   end
 
   describe 'add_missing_settings' do
-    let(:schema) do {
+    let(:schema) do
+      {
       'properties' => {
         'feature1' => {
           'required-settings' => ['setting1', 'setting2', 'setting4'],
@@ -144,7 +145,8 @@ describe SettingsService do
   end
 
   describe 'remove_additional_settings' do
-    let(:schema) do {
+    let(:schema) do
+      {
       'type' => 'object',
       'properties' => {
         'a' => {
@@ -176,7 +178,8 @@ describe SettingsService do
   end
 
   describe 'remove_private_settings' do
-    let(:schema) do {
+    let(:schema) do
+      {
       'type' => 'object',
       'properties' => {
         'a' => {

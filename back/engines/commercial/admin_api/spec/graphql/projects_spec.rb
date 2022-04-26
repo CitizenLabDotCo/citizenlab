@@ -11,7 +11,8 @@ RSpec.describe 'Graphql project' do
   end
 
   describe 'project' do
-    let(:query_string) do %|
+    let(:query_string) do
+      %|
       query projectQuery($id: ID!) {
         project(id: $id) {
           id

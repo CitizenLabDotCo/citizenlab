@@ -11,7 +11,8 @@ describe MultilocService do
 
   describe 't' do
     let(:user) { create(:user, locale: 'en') }
-    let(:translations) do {
+    let(:translations) do
+      {
       'nl-BE' => 'woord',
       'fr-FR' => 'mot',
       'en' => 'word'

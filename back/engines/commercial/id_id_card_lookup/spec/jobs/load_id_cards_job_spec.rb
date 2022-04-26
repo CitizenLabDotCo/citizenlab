@@ -4,7 +4,8 @@ RSpec.describe IdIdCardLookup::LoadIdCardsJob, type: :job do
   subject(:job) { IdIdCardLookup::LoadIdCardsJob.new }
 
   describe '#perform' do
-    let(:card_ids) do [
+    let(:card_ids) do
+      [
       'aaa1',
       'bbb2',
       'ccc3',

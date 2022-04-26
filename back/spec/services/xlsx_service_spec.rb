@@ -185,7 +185,8 @@ describe XlsxService do
   end
 
   describe 'hash_to_xlsx' do
-    let(:hash_array) do [
+    let(:hash_array) do
+      [
       { 'a' => 1, 'b' => 'two' },
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
       { 'b' => 'four', 'c' => 'party' },
@@ -203,7 +204,8 @@ describe XlsxService do
   end
 
   describe 'xlsx_to_hash_array' do
-    let(:hash_array) do [
+    let(:hash_array) do
+      [
       { 'a' => 1, 'b' => 'two' },
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
       { 'b' => 'four', 'c' => 'party' },

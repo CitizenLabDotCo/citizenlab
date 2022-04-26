@@ -4,7 +4,8 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
   describe 'validations' do
     let(:custom_field) { create(:custom_field_checkbox) }
 
-    let(:valid_json_rule) do {
+    let(:valid_json_rule) do
+      {
       'ruleType' => 'custom_field_checkbox',
       'customFieldId' => custom_field.id,
       'predicate' => 'is_checked'
@@ -44,18 +45,21 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
   end
 
   describe 'description_multiloc' do
-    let(:checkbox) do create(:custom_field_checkbox, title_multiloc: {
+    let(:checkbox) do
+      create(:custom_field_checkbox, title_multiloc: {
       'en'    => 'I agree to share my cookies',
       'fr-FR' => 'J\'accepte de partager mes biscuits',
       'nl-NL' => 'Ik ga akkoord om mijn koekjes te delen'
     }) end
 
-    let(:custom_field_checkbox_is_checked_rule) do SmartGroups::Rules::CustomFieldCheckbox.from_json({
+    let(:custom_field_checkbox_is_checked_rule) do
+      SmartGroups::Rules::CustomFieldCheckbox.from_json({
       'ruleType'      => 'custom_field_checkbox',
       'predicate'     => 'is_checked',
       'customFieldId' => checkbox.id
     }) end
-    let(:custom_field_checkbox_not_is_checked_rule) do SmartGroups::Rules::CustomFieldCheckbox.from_json({
+    let(:custom_field_checkbox_not_is_checked_rule) do
+      SmartGroups::Rules::CustomFieldCheckbox.from_json({
       'ruleType'      => 'custom_field_checkbox',
       'predicate'     => 'not_is_checked',
       'customFieldId' => checkbox.id

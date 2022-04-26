@@ -16,7 +16,8 @@ RSpec.describe 'Graphql initiatives' do
   end
 
   describe 'publicInitiatives' do
-    let(:query_string) do %|
+    let(:query_string) do
+      %|
       query {
         publicInitiatives(first: 5) {
           edges {

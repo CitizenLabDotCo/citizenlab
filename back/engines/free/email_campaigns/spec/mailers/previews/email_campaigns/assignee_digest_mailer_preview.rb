@@ -8,7 +8,8 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          assigned_ideas: ideas.map do |idea| {
+          assigned_ideas: ideas.map do |idea|
+                            {
             id: idea.id,
             title_multiloc: idea.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(idea),
@@ -19,7 +20,8 @@ module EmailCampaigns
             downvotes_count: idea.downvotes_count,
             comments_count: idea.comments_count,
           } end,
-          assigned_initiatives: initiatives.map do |initiative| {
+          assigned_initiatives: initiatives.map do |initiative|
+                                  {
             id: initiative.id,
             title_multiloc: initiative.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(initiative),
@@ -38,7 +40,8 @@ module EmailCampaigns
               versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
           } end,
-          succesful_assigned_initiatives: initiatives.map do |initiative| {
+          succesful_assigned_initiatives: initiatives.map do |initiative|
+                                            {
             id: initiative.id,
             title_multiloc: initiative.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(initiative),

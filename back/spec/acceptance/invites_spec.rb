@@ -152,7 +152,8 @@ resource 'Invites' do
       end
 
       describe do
-        let(:emails) do [
+        let(:emails) do
+          [
           'someemail@somedomain.net',
           'someemail@somedomain.net',
           'user_at_domain.com',
@@ -190,7 +191,8 @@ resource 'Invites' do
 
       describe do
         let(:users) { build_list(:user, 6) }
-        let(:hash_array) do users.map.with_index do |user, i|
+        let(:hash_array) do
+          users.map.with_index do |user, i|
           {
             email: user.email,
             first_name: rand(3) == 0 ? user.first_name : nil,
@@ -216,7 +218,8 @@ resource 'Invites' do
       end
 
       describe do
-        let(:hash_array) do [
+        let(:hash_array) do
+          [
           { email: 'someemail@somedomain.net' },
           { email: 'someemail@somedomain.net' },
           { email: 'user_at_domain.com' },

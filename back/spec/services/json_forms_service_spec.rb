@@ -9,7 +9,8 @@ describe JsonFormsService do
   describe 'fields_to_ui_schema_multiloc' do
     let (:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
     let (:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
-    let(:fields) do [
+    let(:fields) do
+      [
       create(:custom_field,
         key: 'field1',
         input_type: 'text',

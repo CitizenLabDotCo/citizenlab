@@ -698,7 +698,8 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:custom_field_birthyear) }
-        let(:custom_field_values) do {
+        let(:custom_field_values) do
+          {
           cf.key => 'new value',
           birthyear_cf.key => birthyear
         } end
@@ -724,7 +725,8 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) do {
+        let(:custom_field_values) do
+          {
           cf.key => 'new value',
           gender_cf.key => 'female'
         } end
@@ -775,7 +777,8 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) do {
+        let(:custom_field_values) do
+          {
           cf.key => 'new value',
           gender_cf.key => 'female',
         } end

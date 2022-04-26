@@ -8,7 +8,8 @@ describe Surveys::TypeformApiParser do
   let(:service) { Surveys::TypeformApiParser.new(tf_api) }
   let(:form_id) { 'USLYB6' }
 
-  let(:form_response_return_value) do {
+  let(:form_response_return_value) do
+    {
     'id' => 'USLYB6',
     'title' => 'webhooks dev',
     'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },

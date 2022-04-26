@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInIdeaStatus do
-  let(:valid_json_rule) do {
+  let(:valid_json_rule) do
+    {
     'ruleType' => 'participated_in_idea_status',
     'predicate' => 'in',
     'value' => create_list(:idea_status, 2).map(&:id)
@@ -114,63 +115,75 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   end
 
   describe 'description_multiloc' do
-    let(:garbage_status) do create(:idea_status, title_multiloc: {
+    let(:garbage_status) do
+      create(:idea_status, title_multiloc: {
       'en'    => 'in the garbage can',
       'fr-FR' => 'dans la poubelle',
       'nl-NL' => 'in de prullenmand'
     }) end
-    let(:delayed_status) do create(:idea_status, title_multiloc: {
+    let(:delayed_status) do
+      create(:idea_status, title_multiloc: {
       'en'    => 'delayed',
       'fr-FR' => 'retardé',
       'nl-NL' => 'uitgesteld'
     }) end
 
-    let(:participated_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'in',
       'value'         => [garbage_status.id, delayed_status.id]
     }) end
-    let(:participated_not_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_in',
       'value'         => garbage_status.id
     }) end
-    let(:participated_posted_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_posted_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'posted_in',
       'value'         => [garbage_status.id]
     }) end
-    let(:participated_not_posted_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_posted_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_posted_in',
       'value'         => garbage_status.id
     }) end
-    let(:participated_commented_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_commented_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'commented_in',
       'value'         => [garbage_status.id, delayed_status.id]
     }) end
-    let(:participated_not_commented_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_commented_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_commented_in',
       'value'         => garbage_status.id
     }) end
-    let(:participated_voted_idea_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_voted_idea_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'voted_idea_in',
       'value'         => [garbage_status.id]
     }) end
-    let(:participated_not_voted_idea_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_voted_idea_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_voted_idea_in',
       'value'         => garbage_status.id
     }) end
-    let(:participated_voted_comment_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_voted_comment_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'voted_comment_in',
       'value'         => [garbage_status.id, delayed_status.id]
     }) end
-    let(:participated_not_voted_comment_in_idea_status_in_rule) do SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_voted_comment_in_idea_status_in_rule) do
+      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_voted_comment_in',
       'value'         => garbage_status.id

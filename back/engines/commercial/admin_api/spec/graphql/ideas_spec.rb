@@ -16,7 +16,8 @@ RSpec.describe 'Graphql ideas' do
   end
 
   describe 'publicIdeas' do
-    let(:query_string) do %|
+    let(:query_string) do
+      %|
       query publicIdeas($projects: [ID!], $topics: [ID!], $sort: IdeaSorting) {
         publicIdeas(first: 5, projects: $projects, topics: $topics, sort: $sort) {
           edges {

@@ -187,7 +187,8 @@ resource 'Phases' do
       end
 
       describe do
-        let(:description_multiloc) do {
+        let(:description_multiloc) do
+          {
           'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
         } end
 

@@ -161,8 +161,9 @@ namespace :tenant_template do
 
   def add_project_images(csv_project, yml_project, yml_project_images)
     yml_project_images.concat [csv_project['Image URL']].select { |i| i }
-                                                        .map { |i| { 'remote_image_url' => i.strip,
-                                                                     'project_ref'      => yml_project } }
+                                                        .map { |i|
+                                { 'remote_image_url' => i.strip,
+                                                                     'project_ref' => yml_project } }
   end
 
   def generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
@@ -180,14 +181,16 @@ namespace :tenant_template do
   def add_ideas_topics(csv_idea, yml_idea, topics_hash, yml_ideas_topics)
     yml_ideas_topics.concat [ csv_idea['Topic 1 (Optional)'],
                               csv_idea['Topic 2 (Optional)'] ].select { |t| t && (t != '/') && topics_hash[t] }
-                                                              .map { |t| { 'idea_ref'  => yml_idea,
+                                                              .map { |t|
+                              { 'idea_ref' => yml_idea,
                                                                            'topic_ref' => topics_hash[t] }}
   end
 
   def add_idea_images(csv_idea, yml_idea, yml_idea_images)
     yml_idea_images.concat [csv_idea['Image URL']].select { |i| i }
-                                                  .map { |i| { 'remote_image_url' => i.strip,
-                                                               'idea_ref'         => yml_idea } }
+                                                  .map { |i|
+                             { 'remote_image_url' => i.strip,
+                                                               'idea_ref' => yml_idea } }
   end
 
   def zip_min(l1, l2)

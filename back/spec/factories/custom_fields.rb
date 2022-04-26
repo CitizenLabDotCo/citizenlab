@@ -2,10 +2,12 @@ FactoryBot.define do
   factory :custom_field do
     resource_type { 'User' }
     sequence(:key) { |n| "field_#{n}" }
-    title_multiloc do {
+    title_multiloc do
+      {
       'en' => 'Did you attend'
     } end
-    description_multiloc do {
+    description_multiloc do
+      {
       'en' => 'Which councils are you attending in our city?'
     } end
     required { false }
@@ -16,7 +18,8 @@ FactoryBot.define do
     end
 
     factory :custom_field_extra_custom_form do
-      title_multiloc do {
+      title_multiloc do
+        {
         'en' => 'An extra question'
       } end
       required { false }
@@ -26,10 +29,12 @@ FactoryBot.define do
     end
 
     factory :custom_field_select do
-      title_multiloc do {
+      title_multiloc do
+        {
         'en' => 'Member of councils?'
       } end
-      description_multiloc do {
+      description_multiloc do
+        {
         'en' => 'Which councils are you attending in our city?'
       } end
       required { false }
@@ -38,7 +43,8 @@ FactoryBot.define do
     end
 
     factory :custom_field_multiselect do
-      title_multiloc do {
+      title_multiloc do
+        {
         'en' => 'What languages do you speak?'
       } end
       required { false }
@@ -47,7 +53,8 @@ FactoryBot.define do
     end
 
     factory :custom_field_checkbox do
-      title_multiloc do {
+      title_multiloc do
+        {
         'en' => 'I want to join the army'
       } end
       required { true } # default should be false, right?
@@ -56,7 +63,8 @@ FactoryBot.define do
     end
 
     factory :custom_field_date do
-      title_multiloc do {
+      title_multiloc do
+        {
         'en' => 'When did you last see a mermaid?'
       } end
       required { false }
@@ -65,7 +73,8 @@ FactoryBot.define do
     end
 
     factory :custom_field_number do
-      title_multiloc do {
+      title_multiloc do
+        {
         'en' => 'How many cheese burgers can you put in your mouth without swallowing?'
       } end
       required { false }

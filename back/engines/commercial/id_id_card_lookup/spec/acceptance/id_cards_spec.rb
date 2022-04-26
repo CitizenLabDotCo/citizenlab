@@ -26,7 +26,8 @@ resource 'Verification Id Cards', admin_api: true do
       @idea_card = create(:id_id_card_lookup_id_card)
     end
 
-    let(:card_ids) do [
+    let(:card_ids) do
+      [
       'aaa1',
       'bbb2',
       'ccc3',

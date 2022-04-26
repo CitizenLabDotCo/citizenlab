@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::Role do
-  let(:valid_json_rule) do {
+  let(:valid_json_rule) do
+    {
     'ruleType' => 'role',
     'predicate' => 'is_admin'
   } end
@@ -68,27 +69,33 @@ describe SmartGroups::Rules::Role do
   end
 
   describe 'description_multiloc' do
-    let(:role_is_admin_rule) do SmartGroups::Rules::Role.from_json({
+    let(:role_is_admin_rule) do
+      SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_admin'
     }) end
-    let(:role_not_is_admin_rule) do SmartGroups::Rules::Role.from_json({
+    let(:role_not_is_admin_rule) do
+      SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_admin'
     }) end
-    let(:role_is_project_moderator_rule) do SmartGroups::Rules::Role.from_json({
+    let(:role_is_project_moderator_rule) do
+      SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_project_moderator'
     }) end
-    let(:role_not_is_project_moderator_rule) do SmartGroups::Rules::Role.from_json({
+    let(:role_not_is_project_moderator_rule) do
+      SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_project_moderator'
     }) end
-    let(:role_is_normal_user_rule) do SmartGroups::Rules::Role.from_json({
+    let(:role_is_normal_user_rule) do
+      SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_normal_user'
     }) end
-    let(:role_not_is_normal_user_rule) do SmartGroups::Rules::Role.from_json({
+    let(:role_not_is_normal_user_rule) do
+      SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_normal_user'
     }) end

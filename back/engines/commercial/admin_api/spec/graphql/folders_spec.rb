@@ -11,7 +11,8 @@ RSpec.describe 'Graphql folder' do
   end
 
   describe 'folder' do
-    let(:query_string) do %|
+    let(:query_string) do
+      %|
       query projectFolderQuery($id: ID!) {
         projectFolder(id: $id) {
           id

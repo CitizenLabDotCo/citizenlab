@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe 'RequiredSettingsAttribute' do
-  let(:schema1) do {
+  let(:schema1) do
+    {
     '$schema' => TenantSchema::ExtendedSchema::SCHEMA_URL,
     "type": 'object',
     'properties' => {
@@ -21,7 +22,8 @@ describe 'RequiredSettingsAttribute' do
     }
   } end
 
-  let(:data) do {
+  let(:data) do
+    {
     'feature1' => {
       'allowed' => true,
       'enabled' => true,

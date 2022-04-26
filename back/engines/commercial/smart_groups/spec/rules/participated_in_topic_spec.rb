@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInTopic do
-  let(:valid_json_rule) do {
+  let(:valid_json_rule) do
+    {
     'ruleType' => 'participated_in_topic',
     'predicate' => 'in',
     'value' => create_list(:topic, 2).map(&:id)
@@ -115,63 +116,75 @@ describe SmartGroups::Rules::ParticipatedInTopic do
   end
 
   describe 'description_multiloc' do
-    let(:topic1) do create(:topic, title_multiloc: {
+    let(:topic1) do
+      create(:topic, title_multiloc: {
       'en'    => 'beer',
       'fr-FR' => 'bière',
       'nl-NL' => 'bier'
     }) end
-    let(:topic2) do create(:topic, title_multiloc: {
+    let(:topic2) do
+      create(:topic, title_multiloc: {
       'en'    => 'delayed',
       'fr-FR' => 'retardé',
       'nl-NL' => 'uitgesteld'
     }) end
 
-    let(:participated_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'in',
       'value'         => [topic1.id, topic2.id]
     }) end
-    let(:participated_not_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_not_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'not_in',
       'value'         => topic1.id
     }) end
-    let(:participated_posted_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_posted_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'posted_in',
       'value'         => [topic1.id]
     }) end
-    let(:participated_not_posted_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_not_posted_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'not_posted_in',
       'value'         => topic1.id
     }) end
-    let(:participated_commented_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_commented_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'commented_in',
       'value'         => [topic1.id, topic2.id]
     }) end
-    let(:participated_not_commented_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_not_commented_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'not_commented_in',
       'value'         => topic1.id
     }) end
-    let(:participated_voted_idea_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_voted_idea_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'voted_idea_in',
       'value'         => [topic1.id]
     }) end
-    let(:participated_not_voted_idea_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_not_voted_idea_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'not_voted_idea_in',
       'value'         => topic1.id
     }) end
-    let(:participated_voted_comment_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_voted_comment_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'voted_comment_in',
       'value'         => [topic1.id, topic2.id]
     }) end
-    let(:participated_not_voted_comment_in_topic_in_rule) do SmartGroups::Rules::ParticipatedInTopic.from_json({
+    let(:participated_not_voted_comment_in_topic_in_rule) do
+      SmartGroups::Rules::ParticipatedInTopic.from_json({
       'ruleType'      => 'participated_in_topic',
       'predicate'     => 'not_voted_comment_in',
       'value'         => topic1.id

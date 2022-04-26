@@ -15,7 +15,8 @@ describe InvitesService do
     context do
       let!(:groups) { create_list(:group, 3) }
       let(:users) { build_list(:user, 10) }
-      let(:hash_array) do (users.map do |user|
+      let(:hash_array) do
+        (users.map do |user|
         {
           email: user.email,
           first_name: rand(3) == 0 ? user.first_name : nil,
@@ -54,7 +55,8 @@ describe InvitesService do
         )
       end
 
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'user1@domain.net', text_field: 'some_value' },
 
         { email: 'user2@domain.net', checkbox_field: '1' },
@@ -93,7 +95,8 @@ describe InvitesService do
     end
 
     context 'when email has leading spaces' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: '   user@domain.net' }
       ] end
 
@@ -104,7 +107,8 @@ describe InvitesService do
     end
 
     context 'when email has trailing spaces' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'user@domain.net   ' }
       ] end
 
@@ -126,7 +130,8 @@ describe InvitesService do
         )
       end
 
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
           { email: 'user1@domain.net', number_field: 'nan' },
           { email: 'user2@domain.net', checkbox_field: 'non-truthy' },
       ] end
@@ -170,7 +175,8 @@ describe InvitesService do
     end
 
     context 'with a reference to a non-existing group' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { groups: "The Jackson 5, #{create(:group).title_multiloc.values.first}" }
       ] end
 
@@ -184,7 +190,8 @@ describe InvitesService do
     end
 
     context 'with a malformed groups field' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         {},
         { groups: 24 }
       ] end
@@ -199,7 +206,8 @@ describe InvitesService do
     end
 
     context 'with a malformed admin field' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { admin: 'yup' }
       ] end
 
@@ -213,7 +221,8 @@ describe InvitesService do
     end
 
     context 'with an unknown language value' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { language: 'qq' }
       ] end
 
@@ -227,7 +236,8 @@ describe InvitesService do
     end
 
     context 'with an invalid email field' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'this.can\'t be an email' }
       ] end
 
@@ -242,7 +252,8 @@ describe InvitesService do
 
     context 'with an email that is already used by an active user (case insensitive)' do
       before { create(:user, email: 'someUser@somedomain.com') }
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'john@john.son' },
         { email: 'Someuser@somedomain.com' }
       ] end
@@ -254,7 +265,8 @@ describe InvitesService do
 
     context 'with an email that is already invited' do
       let!(:invite) { create(:invite) }
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: invite.invitee.email }
       ] end
 
@@ -265,7 +277,8 @@ describe InvitesService do
     end
 
     context 'with duplicate emails' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'someuser@somedomain.com' },
         { email: 'someuser@somedomain.com' },
         {},
@@ -282,7 +295,8 @@ describe InvitesService do
     end
 
     context 'with duplicate first and last names' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { first_name: 'John', last_name: 'Johnson' },
         { first_name: 'John', last_name: 'Johnson' },
       ] end
@@ -292,7 +306,8 @@ describe InvitesService do
     end
 
     context 'with send_invite_email set to false' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'test1@example.com', send_invite_email: 'FALSE' },
         { email: 'test2@example.com', send_invite_email: '0' },
         { email: 'test3@example.com', send_invite_email: 'false' },
@@ -305,7 +320,8 @@ describe InvitesService do
     end
 
     context 'with send_invite_email set to true' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'test1@example.com', send_invite_email: 'TRUE' },
         { email: 'test2@example.com', send_invite_email: '1' },
         { email: 'test3@example.com', send_invite_email: 'true' },
@@ -318,7 +334,8 @@ describe InvitesService do
     end
 
     context 'with send_invite_email missing' do
-      let(:hash_array) do [
+      let(:hash_array) do
+        [
         { email: 'test1@example.com' }
       ] end
 
