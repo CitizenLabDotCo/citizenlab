@@ -46,6 +46,7 @@ const EventCard = memo<Props>((props) => {
     const startAtIsoDate = getIsoDate(event.attributes.start_at);
     const endAtIsoDate = getIsoDate(event.attributes.end_at);
     const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
+
     return (
       <Container className={className || ''} id={id}>
         <DateBlocks
