@@ -112,7 +112,7 @@ describe TimelineService do
       phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      travel_to Time.new(2019, 9, 9, 23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
+      travel_to Time.new(2019, 9, 9, 23) do # 11 pm utc = 1 am Brussels == 8pm Santiage
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Brussels'
         AppConfiguration.instance.update!(settings: settings)
