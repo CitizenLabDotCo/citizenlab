@@ -22,7 +22,7 @@
 class Membership < ApplicationRecord
   belongs_to :group
   counter_culture :group, 
-    column_name: proc {|membership| membership&.user&.active? ? "memberships_count" : nil},
+    column_name: proc {|membership| membership&.user&.active? ? 'memberships_count' : nil},
     touch: true
   belongs_to :user
 

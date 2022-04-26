@@ -166,7 +166,7 @@ describe IdeaPolicy do
     end
   end
 
-  context "for an admin on an idea in a private groups project" do
+  context 'for an admin on an idea in a private groups project' do
     let!(:user) { create(:admin) }
     let!(:project) { create(:private_groups_project) }
     let!(:idea) { create(:idea, project: project) }

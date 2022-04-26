@@ -1,6 +1,6 @@
 module AdminApi
   class Types::IdeaType < GraphQL::Schema::Object
-    description "Single unit of citizen input"
+    description 'Single unit of citizen input'
 
     class IdeaPublicationStatus < GraphQL::Schema::Enum
       Idea::PUBLICATION_STATUSES.each do |ps|
@@ -9,7 +9,7 @@ module AdminApi
     end
 
     class IdeaImage < GraphQL::Schema::Object
-      description "An image associates with an idea"
+      description 'An image associates with an idea'
 
       field :id, ID, null: false
       field :ordering, Integer, null: true

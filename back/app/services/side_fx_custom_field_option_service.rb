@@ -6,7 +6,7 @@ class SideFxCustomFieldOptionService
   end
 
   def after_create custom_field_option, current_user
-    LogActivityJob.perform_later(custom_field_option, "created", current_user, custom_field_option.created_at.to_i)
+    LogActivityJob.perform_later(custom_field_option, 'created', current_user, custom_field_option.created_at.to_i)
   end
 
   def after_update custom_field_option, current_user
@@ -21,7 +21,7 @@ class SideFxCustomFieldOptionService
     serialized_custom_field_option = clean_time_attributes(frozen_custom_field_option.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_custom_field_option), 
-      "deleted", 
+      'deleted', 
       current_user, 
       Time.now.to_i, 
       payload: {custom_field_option: serialized_custom_field_option}

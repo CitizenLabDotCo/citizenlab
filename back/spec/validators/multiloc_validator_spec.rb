@@ -34,14 +34,14 @@ describe MultilocValidator do
       nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => nil}
       expect(nonpresence_subject).to be_invalid
 
-      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => false, "nl-BE" => ''}
+      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => false, 'nl-BE' => ''}
       expect(nonpresence_subject).to be_invalid
     end
   end
 
   context 'with one locale value' do
     it 'is valid' do
-      presence_subject.multiloc_field = {"en" => 'somevalue'}
+      presence_subject.multiloc_field = {'en' => 'somevalue'}
       expect(presence_subject).to be_valid
     end
   end

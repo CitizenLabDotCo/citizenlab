@@ -2,12 +2,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "ProjectFile" do
+resource 'ProjectFile' do
 
-  explanation "File attachments."
+  explanation 'File attachments.'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
@@ -15,32 +15,32 @@ resource "ProjectFile" do
     create_list(:project_file, 2, project: @project)
   end
 
-  get "web_api/v1/projects/:project_id/files" do
+  get 'web_api/v1/projects/:project_id/files' do
     let(:project_id) { @project.id }
 
-    example_request "List all file attachments of a project" do
+    example_request 'List all file attachments of a project' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
-  get "web_api/v1/projects/:project_id/files/:file_id" do
+  get 'web_api/v1/projects/:project_id/files/:file_id' do
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
 
-    example_request "Get one file of a project" do
+    example_request 'Get one file of a project' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
     end
   end
 
-  post "web_api/v1/projects/:project_id/files" do
+  post 'web_api/v1/projects/:project_id/files' do
     with_options scope: :file do
-      parameter :file, "The base64 encoded file", required: true
-      parameter :name, "The name of the file, including the file extension", required: true
-      parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
+      parameter :file, 'The base64 encoded file', required: true
+      parameter :name, 'The name of the file, including the file extension', required: true
+      parameter :ordering, 'An integer that is used to order the file attachments within a project', required: false
     end
     ValidationErrorHelper.new.error_fields(self, ProjectFile)
     let(:project_id) { @project.id }
@@ -48,7 +48,7 @@ resource "ProjectFile" do
     let(:name) { 'afvalkalender.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
 
-    example_request "Add a file attachment to a project" do
+    example_request 'Add a file attachment to a project' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -81,11 +81,11 @@ resource "ProjectFile" do
     end
   end
 
-  delete "web_api/v1/projects/:project_id/files/:file_id" do
+  delete 'web_api/v1/projects/:project_id/files/:file_id' do
     let(:project_id) { @project.id }
     let(:file_id) { ProjectFile.first.id }
 
-    example_request "Delete a file attachment from a project" do
+    example_request 'Delete a file attachment from a project' do
       expect(response_status).to eq 200
       expect{ProjectFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end

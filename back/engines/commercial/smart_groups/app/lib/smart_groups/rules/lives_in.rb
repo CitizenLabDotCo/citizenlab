@@ -17,60 +17,60 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
             },
-            "value" => {
-              "description" => "The id of an area",
-              "type" => "string"
+            'value' => {
+              'description' => 'The id of an area',
+              'type' => 'string'
             }
           },
         },
         {
-          "type": "object",
-          "required" => ["ruleType", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": MULTIVALUE_PREDICATES,
             },
-            "value" => {
-              "description" => "The id of an area",
-              "type" => "array",
-              "items" => {
-                "type" => "string"
+            'value' => {
+              'description' => 'The id of an area',
+              'type' => 'array',
+              'items' => {
+                'type' => 'string'
               },
-              "uniqueItems" => true,
-              "minItems" => 1
+              'uniqueItems' => true,
+              'minItems' => 1
             }
           },
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => ['ruleType', 'predicate'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }
@@ -143,7 +143,7 @@ module SmartGroups::Rules
       case value
       when 'outside'
         I18n.with_locale(locale) do
-          I18n.t!("symbols.outside")
+          I18n.t!('symbols.outside')
         end
       else
         Area.find(value).title_multiloc[locale]

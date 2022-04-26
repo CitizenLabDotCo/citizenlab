@@ -7,7 +7,7 @@ module Verification
 
     def after_create verification, current_user
       verification.user.update!(verified: true)
-      LogActivityJob.perform_later(verification, "created", current_user, verification.created_at.to_i, payload: {method: verification.method_name})
+      LogActivityJob.perform_later(verification, 'created', current_user, verification.created_at.to_i, payload: {method: verification.method_name})
       UpdateMemberCountJob.perform_later
     end
   end

@@ -1,4 +1,4 @@
-require "onboarding/engine"
+require 'onboarding/engine'
 
 module Onboarding
   # Your code goes here...

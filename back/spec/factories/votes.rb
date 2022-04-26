@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :vote do
     association :votable, factory: :idea
-    mode { "up" }
+    mode { 'up' }
     user
 
     factory :downvote do
-      mode { "down" }
+      mode { 'down' }
     end
 
     factory :comment_vote do

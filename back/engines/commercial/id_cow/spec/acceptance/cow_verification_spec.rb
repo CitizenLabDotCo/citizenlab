@@ -2,16 +2,16 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'savon/mock/spec_helper'
 
-resource "Verifications" do
+resource 'Verifications' do
 
-  explanation "A Verifications is an attempt from a user to get verified"
+  explanation 'A Verifications is an attempt from a user to get verified'
   include Savon::SpecHelper
 
   before do
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
@@ -22,15 +22,15 @@ resource "Verifications" do
     configuration.save!
   end
 
-  post "web_api/v1/verification_methods/cow/verification" do
+  post 'web_api/v1/verification_methods/cow/verification' do
     with_options scope: :verification do
-      parameter :run, "The RUN number of the citizen", required: true
-      parameter :id_serial, "The ID card serial number of the citizen", required: true
+      parameter :run, 'The RUN number of the citizen', required: true
+      parameter :id_serial, 'The ID card serial number of the citizen', required: true
     end
 
     before do
-      stub_request(:get, "https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl")
-        .to_return(status: 200, body: File.read("engines/commercial/id_cow/spec/fixtures/cow_wsdl.xml"), headers: {})
+      stub_request(:get, 'https://terceros.sidiv.registrocivil.cl:8443/InteroperabilityPlateform/TercerosCOWProxyService?wsdl')
+        .to_return(status: 200, body: File.read('engines/commercial/id_cow/spec/fixtures/cow_wsdl.xml'), headers: {})
       savon.mock!
     end
     after do
@@ -71,23 +71,23 @@ resource "Verifications" do
     # end
 
     describe do
-      let(:run) { "12.025.365-6" }
-      let(:id_serial) { "A001529382" }
-      example "Verify with cow" do
+      let(:run) { '12.025.365-6' }
+      let(:id_serial) { 'A001529382' }
+      example 'Verify with cow' do
         savon.expects(:get_data_document)
              .with(message: {
-               "typens:RUTEmpresa" => 'fake_rut_empresa',
-               "typens:DVEmpresa" => 'k',
-               "typens:CodTipoDocumento" => 'C',
-               "typens:NumRUN" => '12025365',
-               "typens:NumSerie" => 'A001529382',
+               'typens:RUTEmpresa' => 'fake_rut_empresa',
+               'typens:DVEmpresa' => 'k',
+               'typens:CodTipoDocumento' => 'C',
+               'typens:NumRUN' => '12025365',
+               'typens:NumSerie' => 'A001529382',
              })
-             .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml"))
+             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
         assert_status 201
         expect(@user.reload.verified).to be true
         expect(@user.verifications.first).to have_attributes({
-          method_name: "cow",
+          method_name: 'cow',
           user_id: @user.id,
           active: true,
           hashed_uid: '6a35b8e317fad56c885efc7397d8c14b6c4008f549abc5ae27222e8b2e3380c5'
@@ -96,18 +96,18 @@ resource "Verifications" do
     end
 
     describe do
-      let(:run) { "11.111.111-1" }
-      let(:id_serial) { "A001529382" }
-      example "[error] Verify with cow without a match" do
+      let(:run) { '11.111.111-1' }
+      let(:id_serial) { 'A001529382' }
+      example '[error] Verify with cow without a match' do
         savon.expects(:get_data_document)
              .with(message: {
-               "typens:RUTEmpresa" => 'fake_rut_empresa',
-               "typens:DVEmpresa" => 'k',
-               "typens:CodTipoDocumento" => 'C',
-               "typens:NumRUN" => '11111111',
-               "typens:NumSerie" => 'A001529382',
+               'typens:RUTEmpresa' => 'fake_rut_empresa',
+               'typens:DVEmpresa' => 'k',
+               'typens:CodTipoDocumento' => 'C',
+               'typens:NumRUN' => '11111111',
+               'typens:NumSerie' => 'A001529382',
              })
-             .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml"))
+             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -116,18 +116,18 @@ resource "Verifications" do
     end
 
     describe do
-      let(:run) { "11.111.111-1" }
-      let(:id_serial) { "A.001.529.382" }
+      let(:run) { '11.111.111-1' }
+      let(:id_serial) { 'A.001.529.382' }
       example "[error] Verify with cow with a match that's not entitled to verification" do
         savon.expects(:get_data_document)
              .with(message: {
-               "typens:RUTEmpresa" => 'fake_rut_empresa',
-               "typens:DVEmpresa" => 'k',
-               "typens:CodTipoDocumento" => 'C',
-               "typens:NumRUN" => '11111111',
-               "typens:NumSerie" => 'A001529382',
+               'typens:RUTEmpresa' => 'fake_rut_empresa',
+               'typens:DVEmpresa' => 'k',
+               'typens:CodTipoDocumento' => 'C',
+               'typens:NumRUN' => '11111111',
+               'typens:NumSerie' => 'A001529382',
              })
-             .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml"))
+             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -136,9 +136,9 @@ resource "Verifications" do
     end
 
     describe do
-      let(:run) { "125.326.452-1" }
-      let(:id_serial) { "A001529382" }
-      example_request "[error] Verify with cow using invalid run" do
+      let(:run) { '125.326.452-1' }
+      let(:id_serial) { 'A001529382' }
+      example_request '[error] Verify with cow using invalid run' do
         assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:run, 'invalid')
@@ -146,9 +146,9 @@ resource "Verifications" do
     end
 
     describe do
-      let(:run) { "12.025.365-6" }
-      let(:id_serial) { "" }
-      example_request "[error] Verify with cow using invalid id_serial" do
+      let(:run) { '12.025.365-6' }
+      let(:id_serial) { '' }
+      example_request '[error] Verify with cow using invalid id_serial' do
         assert_status 422
         json_response = json_parse response_body
         expect(json_response).to include_response_error(:id_serial, 'invalid')
@@ -158,24 +158,24 @@ resource "Verifications" do
     describe do
       before do
         other_user = create(:user)
-        @run = "12.025.365-6"
-        @id_serial = "A001529382"
+        @run = '12.025.365-6'
+        @id_serial = 'A001529382'
         savon.expects(:get_data_document)
              .with(message: :any)
-             .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml"))
+             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
 
         Verification::VerificationService.new.verify_sync(
           user: other_user,
-          method_name: "cow",
+          method_name: 'cow',
           verification_parameters: { run: @run, id_serial: @id_serial }
         )
       end
       let(:run) { @run }
       let(:id_serial) { @id_serial }
-      example "[error] Verify with cow using credentials that are already taken" do
+      example '[error] Verify with cow using credentials that are already taken' do
         savon.expects(:get_data_document)
              .with(message: :any)
-             .returns(File.read("engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml"))
+             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
