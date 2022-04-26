@@ -1238,7 +1238,7 @@
   "app.containers.UsersEditPage.cancel": "Abbrechen",
   "app.containers.UsersEditPage.clickHereToUpdateVerification": "Bitte hier klicken, um die Verifizierung zu aktualisieren.",
   "app.containers.UsersEditPage.conditionsLinkText": "unsere Nutzungsbedingungen",
-  "app.containers.UsersEditPage.contactUs": "Du gehst aus einem anderen Grund? {feedbackLink} und vielleicht können wir Ihnen helfen.",
+  "app.containers.UsersEditPage.contactUs": "{tenantName, select, wien {Wenn Sie besser verstehen möchten, wie wir mit Ihren Daten umgehen, finden Sie im Footer Informationen zum Impressum und Datenschutz.} other {Du gehst aus einem anderen Grund? {feedbackLink} und vielleicht können wir Ihnen helfen.}}",
   "app.containers.UsersEditPage.deleteAccountSubtext": "Wir bedauern es sehr, dich gehen zu sehen.",
   "app.containers.UsersEditPage.deleteMyAccount": "Meinen Account löschen",
   "app.containers.UsersEditPage.deleteYourAccount": "Dein Konto löschen",
