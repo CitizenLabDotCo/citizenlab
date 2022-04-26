@@ -1,11 +1,11 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe AvatarsService do
   let(:service) { AvatarsService.new }
 
-  describe "avatars_for_project" do
+  describe 'avatars_for_project' do
 
-    it "returns the idea authors in a project" do
+    it 'returns the idea authors in a project' do
       project = create(:project)
       u1, u2, u3, u4, u5 = create_list(:user, 5)
       idea = create(:idea, project: project, author: u1)
@@ -34,9 +34,9 @@ describe AvatarsService do
     end
   end
 
-  describe "avatars_for_idea" do
+  describe 'avatars_for_idea' do
 
-    it "returns the idea and comments authors" do
+    it 'returns the idea and comments authors' do
       idea1, idea2 = create_list(:idea, 2)
       comment1, comment2 = create_list(:comment, 2, post: idea1)
       create(:comment, post: idea2)
@@ -47,7 +47,7 @@ describe AvatarsService do
       expect(result[:users].map(&:id)).to match_array [idea1.author.id, comment1.author.id, comment2.author.id]
     end
 
-    it "does not include authors from deleted comments" do
+    it 'does not include authors from deleted comments' do
       idea = create(:idea)
       comments = create(:comment, post: idea, publication_status: 'deleted')
 
@@ -57,7 +57,7 @@ describe AvatarsService do
       expect(result[:users].map(&:id)).to match_array [idea.author.id]
     end
 
-    it "does not return the voters" do
+    it 'does not return the voters' do
       idea = create(:idea)
       idea_vote = create(:vote, votable: idea)
       comment = create(:comment, post: idea)

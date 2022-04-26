@@ -27,11 +27,11 @@ class ImportIdeasService
 	def convert_idea idea_data
   	d = {}
     if idea_data[:title_multiloc].blank?
-      raise "A title for the idea is mandatory!"
+      raise 'A title for the idea is mandatory!'
     end
   	d[:title_multiloc] = idea_data[:title_multiloc]
     if idea_data[:body_multiloc].blank?
-      raise "A body for the idea is mandatory!"
+      raise 'A body for the idea is mandatory!'
     end
   	d[:body_multiloc] = idea_data[:body_multiloc]
   	d[:topics] = idea_data[:topic_titles].map do |topic_title|
@@ -43,7 +43,7 @@ class ImportIdeasService
   		end.first
   	end.select{ |topic| topic }.uniq{ |topic| topic.id }
   	if !idea_data[:project_title]
-      raise "A project title is mandatory!"
+      raise 'A project title is mandatory!'
     end
   	project_title = idea_data[:project_title].downcase.strip
   	d[:project] = Project.all.select do |project|

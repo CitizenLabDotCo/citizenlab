@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = CustomIdeaStatuses::VERSION
   s.authors     = ['CitizenLab']
   s.summary     = 'CitizenLab extension: Allows customization of idea statuses.'
-  s.licenses    = ["CitizenLab Commercial License V1"]
+  s.licenses    = ['CitizenLab Commercial License V1']
 
   s.files = Dir['{app,config,db,lib}/**/*', 'README.md']
   

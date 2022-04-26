@@ -427,6 +427,7 @@ User.include_if_ee('Verification::Patches::User')
 
 User.include(UserConfirmation::Extensions::User)
 User.prepend_if_ee('MultiTenancy::Patches::User')
+User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('ProjectManagement::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')

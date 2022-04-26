@@ -7,7 +7,7 @@ class PublicApi::V1::ApiTokenController < Knock::AuthTokenController
   end
 
   def entity_name
-    "PublicApi::ApiClient"
+    'PublicApi::ApiClient'
   end
 
   def auth_params

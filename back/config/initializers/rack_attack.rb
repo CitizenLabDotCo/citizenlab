@@ -81,7 +81,7 @@ class Rack::Attack
   throttle('password_reset_email/email', limit: 1, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users/reset_password_email' && req.post?
       begin
-        JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, "")&.presence
+        JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
       rescue JSON::ParserError
       end
     end

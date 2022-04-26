@@ -9,13 +9,13 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
     @campaign = ConsentableCampaign.create
   end
   
-  describe "apply_recipient_filters" do
-    it "includes a user when the she consented with the campaign" do
+  describe 'apply_recipient_filters' do
+    it 'includes a user when the she consented with the campaign' do
       consent = create(:consent, campaign_type: @campaign.type)
       expect(@campaign.apply_recipient_filters.all).to include(consent.user)
     end
 
-    it "includes a user when no consent exists" do
+    it 'includes a user when no consent exists' do
       user = create(:user)
       expect(@campaign.apply_recipient_filters.all).to include(user)
     end
@@ -26,13 +26,13 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
     end
   end
 
-  describe "consentable_for?" do
-    it "returns true when the class does not implement #consentable_roles" do
+  describe 'consentable_for?' do
+    it 'returns true when the class does not implement #consentable_roles' do
       user = create(:user)
       expect(ConsentableCampaign.consentable_for? user).to eq true
     end
 
-    it "returns false for a normal user when the class restricts consentable_roles to project_moderator" do
+    it 'returns false for a normal user when the class restricts consentable_roles to project_moderator' do
       user = create(:user)
       ConsentableCampaign.define_singleton_method(:consentable_roles) do
         %w(project_moderator)
@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
       expect(ConsentableCampaign.consentable_for? user).to eq false
     end
 
-    it "returns true for an admin when the class restricts consentable_roles to admin" do
+    it 'returns true for an admin when the class restricts consentable_roles to admin' do
       admin = create(:admin)
       ConsentableCampaign.define_singleton_method(:consentable_roles) do
         %w(admin)

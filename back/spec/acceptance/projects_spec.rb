@@ -29,9 +29,9 @@ resource 'Projects' do
       end
 
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
-      parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
-      parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
+      parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :search, 'Filter by searching in title_multiloc, description_multiloc and description_preview_multiloc', required: false
 
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
@@ -123,14 +123,14 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 4
       end
 
-      example "Search for projects" do
+      example 'Search for projects' do
         p1 = create(:project, title_multiloc: {
-                "en": "super-specific-title-string",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
+                "en": 'super-specific-title-string',
+                "fr-BE": 'a title',
+                "nl-BE": 'a title'
               })
 
-        do_request search: "super-specific-title-string"
+        do_request search: 'super-specific-title-string'
         json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
         expect(response_ids).to eq [p1.id]
@@ -223,34 +223,34 @@ resource 'Projects' do
     post 'web_api/v1/projects' do
       with_options scope: :project do
         parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
         parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project? Defaults to true", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
         parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
+        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false if CitizenLab.ee?
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for posts.'
 
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false if CitizenLab.ee?
       end
 
       with_options scope: [:project, :admin_publication_attributes] do
@@ -400,33 +400,33 @@ resource 'Projects' do
       end
 
       with_options scope: :project do
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
         parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project?', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project?', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
         parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project?", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
         parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
+        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false if CitizenLab.ee?
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
 
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)" if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)' if CitizenLab.ee?
       end
 
       with_options scope: [:project, :admin_publication_attributes] do
@@ -459,10 +459,10 @@ resource 'Projects' do
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
-        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
+        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq 'Changed title'
+        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq 'Changed body'
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
+        expect(json_response.dig(:data,:attributes,:slug)).to eq 'changed-title'
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
@@ -618,24 +618,24 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example "Search for projects does not return projects with draft status" do
+      example 'Search for projects does not return projects with draft status' do
         p1 = create(:project,
-              admin_publication_attributes: { publication_status: "published" },
+              admin_publication_attributes: { publication_status: 'published' },
               title_multiloc: {
-                "en": "super-specific-title-string-1",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
+                "en": 'super-specific-title-string-1',
+                "fr-BE": 'a title',
+                "nl-BE": 'a title'
               })
 
         create(:project,
-          admin_publication_attributes: { publication_status: "draft" },
+          admin_publication_attributes: { publication_status: 'draft' },
           title_multiloc: {
-            "en": "super-specific-title-string-2",
-            "fr-BE": "a title",
-            "nl-BE": "a title"
+            "en": 'super-specific-title-string-2',
+            "fr-BE": 'a title',
+            "nl-BE": 'a title'
           })
 
-        do_request search: "super-specific-title-string"
+        do_request search: 'super-specific-title-string'
         json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
         expect(response_ids).to eq [p1.id]

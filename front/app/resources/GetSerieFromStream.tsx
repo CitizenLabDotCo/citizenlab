@@ -20,14 +20,14 @@ import {
 } from 'services/stats';
 
 import { IGraphFormat, IParticipationByTopic } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 interface State {
-  serie: IGraphFormat | IParticipationByTopic | null | undefined;
+  unconvertedSerie: ISupportedDataType | NilOrError;
 }
 
 type children = (renderProps: {
-  serie: IGraphFormat | IParticipationByTopic | null | undefined;
+  serie: IGraphFormat | IParticipationByTopic | NilOrError;
 }) => JSX.Element | null;
 
 export interface ISupportedDataTypeMap {
@@ -69,7 +69,7 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      serie: undefined,
+      unconvertedSerie: undefined,
     };
   }
 
@@ -81,7 +81,6 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
       currentProjectFilter,
       currentTopicFilter,
       stream,
-      convertToGraphFormat,
       customId,
     } = this.props;
 
@@ -121,11 +120,8 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
               ).observable
           )
         )
-        .subscribe((serie) => {
-          const convertedSerie = !isNilOrError(serie)
-            ? convertToGraphFormat(serie)
-            : null;
-          this.setState({ serie: convertedSerie });
+        .subscribe((unconvertedSerie: ISupportedDataType | NilOrError) => {
+          this.setState({ unconvertedSerie });
         }),
     ];
   }
@@ -154,9 +150,13 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, convertToGraphFormat } = this.props;
+    const { unconvertedSerie } = this.state;
+
     return (children as children)({
-      ...this.state,
+      serie: isNilOrError(unconvertedSerie)
+        ? unconvertedSerie
+        : convertToGraphFormat(unconvertedSerie),
     });
   }
 }

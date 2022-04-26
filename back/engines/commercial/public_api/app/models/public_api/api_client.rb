@@ -32,15 +32,15 @@ module PublicApi
     end
 
     def self.from_token_request request
-      id = request.params["auth"] && request.params["auth"]["client_id"]
+      id = request.params['auth'] && request.params['auth']['client_id']
       self.find(id)
     end
 
     def self.from_token_payload payload
-      if payload["tenant_id"]
-        self.find_by(id: payload["sub"], tenant_id: payload["tenant_id"])
+      if payload['tenant_id']
+        self.find_by(id: payload['sub'], tenant_id: payload['tenant_id'])
       else
-        self.find(payload["sub"])
+        self.find(payload['sub'])
       end
     end
 

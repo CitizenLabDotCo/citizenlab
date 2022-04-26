@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Permission, type: :model do
-  describe "#for_user" do
+  describe '#for_user' do
     before(:all) do
       # rubocop:disable RSpec/BeforeAfterAll
       @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
@@ -36,13 +36,13 @@ RSpec.describe Permission, type: :model do
     end
     let(:manual_grp) { create(:group) }
 
-    context "when user is admin" do
+    context 'when user is admin' do
       let(:admin) { build(:admin) }
 
       it { expect(described_class.for_user(admin)).to match_array permissions }
     end
 
-    context "when not logged in" do
+    context 'when not logged in' do
       it { expect(described_class.for_user(nil)).to match_array [permissions[0]] }
     end
 

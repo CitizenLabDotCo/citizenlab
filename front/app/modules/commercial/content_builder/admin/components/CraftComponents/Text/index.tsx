@@ -12,13 +12,10 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 const Text = ({ text }) => {
-  const {
-    connectors: { connect, drag },
-  } = useNode();
   const theme: any = useTheme();
 
   return (
-    <Box minHeight="26px" ref={(ref: any) => connect(drag(ref))}>
+    <Box id="e2e-text-box" minHeight="26px">
       <QuillEditedContent textColor={theme.colorText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>

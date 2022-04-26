@@ -192,15 +192,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
   },
-  totalCount: {
-    id: 'app.containers.AdminPage.DashboardPage.totalCount',
-    defaultMessage:
-      '{selectedResourceName} total in {selectedName} : {selectedCount}',
-  },
-  resourceByDifference: {
-    id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
-    defaultMessage: '{selectedResourceName} difference with {selectedName}',
-  },
   // Users Charts
   usersByAgeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
