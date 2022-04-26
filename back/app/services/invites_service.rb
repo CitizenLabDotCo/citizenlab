@@ -105,8 +105,8 @@ class InvitesService
 
   rescue InvitesFailedError => e
     e.errors.each do |e|
-      e.row && (e.row = (map_rows[e.row]+2))
-      e.rows&.map!{ |r| map_rows[r]+2 }
+      e.row && (e.row = (map_rows[e.row] + 2))
+      e.rows&.map!{ |r| map_rows[r] + 2 }
     end
     raise e
   end
@@ -253,7 +253,7 @@ class InvitesService
 
   def build_invites(hash_array, default_params={}, inviter=nil)
     if hash_array.size > MAX_INVITES
-      add_error(:max_invites_limit_exceeded, row: (hash_array.size-1), value: MAX_INVITES)
+      add_error(:max_invites_limit_exceeded, row: (hash_array.size - 1), value: MAX_INVITES)
       fail_now
     elsif hash_array.size == 0
       add_error(:no_invites_specified)
@@ -285,7 +285,7 @@ class InvitesService
       invitee: invitee,
       inviter: inviter,
       invite_text: params['invite_text'] || default_params['invite_text'],
-      send_invite_email: params['send_invite_email'].nil? ? true  : params['send_invite_email']
+      send_invite_email: params['send_invite_email'].nil? ? true : params['send_invite_email']
     )
   end
 

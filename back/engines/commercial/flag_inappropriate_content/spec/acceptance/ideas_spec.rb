@@ -46,7 +46,7 @@ resource 'Ideas' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @idea =  create(:idea, author: @user)
+      @idea = create(:idea, author: @user)
     end
 
     with_options scope: :idea do

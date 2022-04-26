@@ -108,7 +108,7 @@ class AnonymizeUserService
     end
     custom_field_values['gender'] ||= User::GENDERS.sample
     custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values['education'] ||= (rand(7)+2).to_s
+    custom_field_values['education'] ||= (rand(7) + 2).to_s
     custom_field_values
   end
 
@@ -134,7 +134,7 @@ class AnonymizeUserService
 
   # Weighted random sampling [Efraimidis, Spirakis - 2006]
   def weighted_choice(weighted)
-    weighted.max_by { |_, weight| rand ** (1.0 / weight) }.first
+    weighted.max_by { |_, weight| rand**(1.0 / weight) }.first
   end
 
   def random_first_name(gender)

@@ -334,7 +334,7 @@ resource 'Comments' do
       describe do
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
         # Weak attempt to make it less explicit
-        let(:body_multiloc) { { 'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker' } } 
+        let(:body_multiloc) { { 'en' => 'fu' + 'ckin' + 'g co' + 'cksu' + 'cker' } } 
 
         example_request '[error] Create a comment with blocked words' do
           assert_status 422

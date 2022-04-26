@@ -89,7 +89,7 @@ class ImportIdeasService
   		if idea_data[:phase_rank] > project_phases.size
   			raise "Only #{idea_data[:phase_rank]} phases exist within project #{idea_data[:project_title]}"
   		end
-  		phase = project_phases.order(:start_at).all[idea_data[:phase_rank]-1]
+  		phase = project_phases.order(:start_at).all[idea_data[:phase_rank] - 1]
   		if !phase
   			raise "No phase with title #{idea_data[:phase_title]} exists within project #{idea_data[:project_title]}"
   		end

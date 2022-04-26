@@ -21,6 +21,9 @@ Layout/SpaceInsideHashLiteralBraces:
 Layout/SpaceInsideBlockBraces:
   Enabled: true
 
+Layout/SpaceAroundOperators:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

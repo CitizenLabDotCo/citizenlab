@@ -238,7 +238,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
         end.to_h
       ]
     end.to_h
-    data['total'] = (data['up'].keys+data['down'].keys).uniq.map do |key|
+    data['total'] = (data['up'].keys + data['down'].keys).uniq.map do |key|
       [
         key,
         (data.dig('up',key) || 0) + (data.dig('down',key) || 0)
@@ -290,7 +290,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
         mode,
         buckets.map do |value, number|
           denominator = (normalizing_data.dig('total', value) || 0) + 1
-          [value, number.to_f*100/denominator.to_f]
+          [value, number.to_f * 100 / denominator.to_f]
         end.to_h
       ]
     end.to_h

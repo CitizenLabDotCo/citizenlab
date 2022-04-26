@@ -458,8 +458,8 @@ module AdminApi
           'location_point_geojson' => i.location_point_geojson,
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
-          'proposed_budget'       => i.proposed_budget,
-          'text_images_attributes'       => i.text_images.map{ |i|
+          'proposed_budget' => i.proposed_budget,
+          'text_images_attributes' => i.text_images.map{ |i|
             {
               'imageable_field'          => i.imageable_field,
               'remote_image_url'         => i.image_url,
@@ -522,7 +522,7 @@ module AdminApi
     end
 
     def yml_comments shift_timestamps: 0
-      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea')+Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
+      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
           'post_ref'           => lookup_ref(c.post_id, :idea),

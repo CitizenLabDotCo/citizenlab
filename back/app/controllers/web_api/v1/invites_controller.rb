@@ -80,7 +80,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
     # Strip out data;...base64 prefix if it's there
     pure_base64 = if start = bulk_create_xlsx_params[:xlsx].index(';base64,')
-      bulk_create_xlsx_params[:xlsx][(start+8)..-1]
+      bulk_create_xlsx_params[:xlsx][(start + 8)..-1]
     else
       bulk_create_xlsx_params[:xlsx]
     end

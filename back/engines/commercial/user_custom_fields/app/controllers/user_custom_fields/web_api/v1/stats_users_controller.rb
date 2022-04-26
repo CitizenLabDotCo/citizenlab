@@ -237,7 +237,7 @@ module UserCustomFields
             }
             res.push({
               'option_id' => '_blank',
-              'option' =>'unknown',
+              'option' => 'unknown',
               'users' => serie['_blank'] || 0
               })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'

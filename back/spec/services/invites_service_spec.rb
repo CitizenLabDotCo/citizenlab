@@ -153,7 +153,7 @@ describe InvitesService do
     end
 
     context 'with file that exceeds maximum supported number of invites' do
-      let(:hash_array) { (InvitesService::MAX_INVITES+1).times.each.map{ { first_name: 'Jezus' } } }
+      let(:hash_array) { (InvitesService::MAX_INVITES + 1).times.each.map{ { first_name: 'Jezus' } } }
 
       it 'fails with max_invites_limit_exceeded error' do
         expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)

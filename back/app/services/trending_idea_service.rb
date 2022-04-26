@@ -40,8 +40,8 @@ class TrendingIdeaService
     # used for testing purposes
     upvotes_ago = activity_ago idea.upvotes # .select { |v| v.user&.id != idea.author&.id }
     comments_ago = activity_ago idea.comments # .select { |c| c.author&.id != idea.author&.id }
-    last_activity_at = (upvotes_ago+comments_ago+[(Time.now.to_i - idea.published_at.to_i)]).min
-    mean_activity_at = mean(upvotes_ago+comments_ago+[(Time.now.to_i - idea.published_at.to_i)])
+    last_activity_at = (upvotes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)]).min
+    mean_activity_at = mean(upvotes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
     score = trending_score_formula (idea.upvotes_count - idea.downvotes_count), mean_activity_at
     if (idea.upvotes_count - idea.downvotes_count) < 0
       return -1 / score

@@ -67,7 +67,7 @@ class IdeaStatus < ApplicationRecord
       end.to_h
       IdeaStatus.create(
         title_multiloc: title_multiloc,
-        ordering: i+1,
+        ordering: i + 1,
         code: code,
         color: Faker::Color.hex_color,
         description_multiloc: description_multiloc

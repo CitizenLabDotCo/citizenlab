@@ -307,7 +307,7 @@ RSpec.describe User, type: :model do
 
     before do
       10.times do |i|
-        create(rand(2)==0 ? :admin : :user)
+        create(rand(2) == 0 ? :admin : :user)
       end
     end
 

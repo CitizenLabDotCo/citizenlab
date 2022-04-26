@@ -42,7 +42,7 @@ describe ParticipantsService do
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
-      expect(service.participants(since: (Time.now-6.days)).map(&:id)).to match_array [pp2.id,pp3.id,pp4.id]
+      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to match_array [pp2.id,pp3.id,pp4.id]
     end
   end
 
@@ -115,7 +115,7 @@ describe ParticipantsService do
       end
       create(:comment, post: idea, author: pp4)
 
-      expect(service.projects_participants([project], since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.projects_participants([project], since: (Time.now - 5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
 
     it 'returns only participants for specific actions' do

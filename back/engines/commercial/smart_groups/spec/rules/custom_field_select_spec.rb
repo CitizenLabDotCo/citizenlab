@@ -22,33 +22,33 @@ describe SmartGroups::Rules::CustomFieldSelect do
     end
 
     it 'fails on a non-existing custom field' do
-      rule = valid_rule.tap{ |r| r.custom_field_id='garbage' }
+      rule = valid_rule.tap{ |r| r.custom_field_id = 'garbage' }
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
     it 'fails on a non-existing custom field option' do
-      rule = valid_rule.tap{ |r| r.value='garbage' }
+      rule = valid_rule.tap{ |r| r.value = 'garbage' }
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
     it 'fails on a custom field option from another custom field' do
       other_custom_field_option = create(:custom_field_option, custom_field: create(:custom_field_select))
-      rule = valid_rule.tap{ |r| r.value=other_custom_field_option.id }
+      rule = valid_rule.tap{ |r| r.value = other_custom_field_option.id }
       expect(rule).to be_invalid
       # TODO
       # expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
     it 'successfully validate the valid multi-value rule' do
-      rule = valid_rule.tap{ |r| r.predicate='is_one_of'; r.value=[options.first.id, options.last.id] }
+      rule = valid_rule.tap{ |r| r.predicate = 'is_one_of'; r.value = [options.first.id, options.last.id] }
       expect(rule).to be_valid
       expect(build(:smart_group, rules: [rule.as_json])).to be_valid
     end
 
     it 'fails on a non-existing custom field option' do
-      rule = valid_rule.tap{ |r| r.predicate='is_one_of'; r.value=[options.first.id, 'garbage'] }
+      rule = valid_rule.tap{ |r| r.predicate = 'is_one_of'; r.value = [options.first.id, 'garbage'] }
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end

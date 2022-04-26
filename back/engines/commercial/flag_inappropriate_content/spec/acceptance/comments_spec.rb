@@ -15,7 +15,7 @@ resource 'Comments' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @idea =  create(:idea)
+      @idea = create(:idea)
     end
 
     with_options scope: :comment do
@@ -37,7 +37,7 @@ resource 'Comments' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @initiative =  create(:initiative)
+      @initiative = create(:initiative)
       @comment = create(:comment, author: @user, post: @initiative)
     end
 

@@ -68,9 +68,9 @@ RSpec.describe Idea, type: :model do
       t = Time.now
       travel_to t
       idea = create(:idea, publication_status: 'published')
-      travel_to t+1.week
+      travel_to t + 1.week
       idea.update(publication_status: 'closed')
-      travel_to t+1.week
+      travel_to t + 1.week
       idea.update(publication_status: 'published')
       expect(idea.published_at.to_i).to eq t.to_i
       travel_back
@@ -89,7 +89,7 @@ RSpec.describe Idea, type: :model do
   describe 'order_new' do
     before do
       5.times do |i|
-        travel_to Time.now+i.week do
+        travel_to Time.now + i.week do
           create(:idea)
         end
       end

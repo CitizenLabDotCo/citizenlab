@@ -152,7 +152,7 @@ module JsonFormsIdeasOverrides
   def custom_form_allowed_fields configuration, fields, current_user
     fields.filter { |f|
       f.code != 'author_id' && f.code != 'budget' || (
-        f.code == 'author_id'&&
+        f.code == 'author_id' &&
         configuration.feature_activated?('idea_author_change') &&
         current_user != nil &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user)

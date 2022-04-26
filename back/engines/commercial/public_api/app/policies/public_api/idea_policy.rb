@@ -5,7 +5,7 @@ module PublicApi
       attr_reader :api_client, :scope
 
       def initialize(api_client, scope)
-        @api_client  = api_client
+        @api_client = api_client
         @scope = scope
       end
 

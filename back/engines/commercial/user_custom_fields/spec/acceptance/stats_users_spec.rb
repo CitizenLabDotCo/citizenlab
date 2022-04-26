@@ -35,8 +35,8 @@ resource 'Stats - Users' do
     travel_to(end_at + 1.day) { create(:user) }
   end
 
-  let (:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_year }
-  let (:end_at) { (now-1.year).in_time_zone(@timezone).end_of_year }
+  let (:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+  let (:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
   get 'web_api/v1/stats/users_by_gender' do
     time_boundary_parameters self
@@ -223,7 +223,7 @@ end
         series: {
           users: {
             @area1.id.to_sym => 2,
-            @area2.id.to_sym  => 1,
+            @area2.id.to_sym => 1,
             _blank: 0
           }
         }

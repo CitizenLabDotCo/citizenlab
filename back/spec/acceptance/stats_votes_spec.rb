@@ -258,7 +258,7 @@ resource 'Stats - Votes' do
           assert_status 200
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
-            expect(json_response[:series].map{ |mode, values| values.size }.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
+            expect(json_response[:series].map{ |mode, values| values.size }.uniq.first).to eq ((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 1)
             expect(json_response[:series][:up].values.inject(&:+)).to eq 3
             expect(json_response[:series][:down].values.inject(&:+)).to eq 2
             expect(json_response[:series][:total].values.inject(&:+)).to eq 5
@@ -267,8 +267,8 @@ resource 'Stats - Votes' do
       end
 
       describe 'filtered by time outside of the tenant lifecycle' do
-        let(:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_week }
-        let(:end_at) { (now-1.year).in_time_zone(@timezone).end_of_week }
+        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_week }
+        let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_week }
 
         it 'returns no results' do
           do_request
@@ -301,7 +301,7 @@ resource 'Stats - Votes' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           aggregate_failures 'check worksheet contents' do
-            expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+2)
+            expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 2)
 
 
             expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
@@ -319,8 +319,8 @@ resource 'Stats - Votes' do
       end
 
       describe 'filtered by time outside of the tenant lifecycle' do
-        let(:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_week }
-        let(:end_at) { (now-1.year).in_time_zone(@timezone).end_of_week }
+        let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_week }
+        let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_week }
 
         it 'returns no results' do
           do_request

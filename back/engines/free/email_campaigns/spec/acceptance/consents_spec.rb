@@ -20,7 +20,7 @@ resource 'Campaign consents' do
       end
 
       @consents = @campaigns.map.with_index do |campaign, i|
-        create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)
+        create(:consent, user: @user, campaign_type: campaign.type, consented: i % 2 == 0)
       end
     end
 

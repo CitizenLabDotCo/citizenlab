@@ -23,7 +23,7 @@ describe SmartGroups::Rules::Role do
     end
 
     it 'fails on a non-existing predicate' do
-      json_rule = valid_json_rule.tap{ |r| r['predicate']='has_long_toes' }
+      json_rule = valid_json_rule.tap{ |r| r['predicate'] = 'has_long_toes' }
       expect(SmartGroups::Rules::Role.from_json(json_rule)).to be_invalid
       expect(build(:smart_group, rules: [json_rule])).to be_invalid
     end

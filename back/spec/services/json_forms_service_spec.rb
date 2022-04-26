@@ -63,16 +63,16 @@ describe JsonFormsService do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
-        { :type=>'object',
-         :additionalProperties=>false,
-         :properties=>
-          { 'field1'=>
-            { :type=>'string' },
-           'field2'=>
-           { :type=>'string' },
-           'field3'=>
+        { :type => 'object',
+         :additionalProperties => false,
+         :properties =>
+          { 'field1' =>
+            { :type => 'string' },
+           'field2' =>
+           { :type => 'string' },
+           'field3' =>
             {
-             :type=>'string',
+             :type => 'string',
              :oneOf => [
               {
                 :const => 'option_1',
@@ -88,13 +88,13 @@ describe JsonFormsService do
               },
              ],
             },
-           'field4'=>
+           'field4' =>
             {
-             :type=>'array',
-             :uniqueItems=>true,
-             :minItems=>0,
-             :items=>
-              { :type=>'string',
+             :type => 'array',
+             :uniqueItems => true,
+             :minItems => 0,
+             :items =>
+              { :type => 'string',
               :oneOf => [
                 {
                   :const => 'option_a',
@@ -107,19 +107,19 @@ describe JsonFormsService do
                ],
              }
               },
-           'field5'=>
-            { :type=>'boolean' },
-           'field6'=>
-            { :type=>'string',
-             :format=>'date' },
-            'field7'=>
-            { :type=>'number' },
-           'field8'=>
-            { :type=>'array',
-             :uniqueItems=>true,
-             :minItems=>1,
-             :items=>
-              { :type=>'string',
+           'field5' =>
+            { :type => 'boolean' },
+           'field6' =>
+            { :type => 'string',
+             :format => 'date' },
+            'field7' =>
+            { :type => 'number' },
+           'field8' =>
+            { :type => 'array',
+             :uniqueItems => true,
+             :minItems => 1,
+             :items =>
+              { :type => 'string',
               :oneOf => [
                 {
                   :const => 'option_a',
@@ -132,28 +132,28 @@ describe JsonFormsService do
                ],
              }
             },
-            'field9'=>
-            { :type=>'array',
-             :items=>
-              { :properties=>
-                { :file_by_content=>
-                  { :properties=>
-                    { :file=>
-                      { :type=>'string' },
-                    :name=>
-                      { :type=>'string' }
+            'field9' =>
+            { :type => 'array',
+             :items =>
+              { :properties =>
+                { :file_by_content =>
+                  { :properties =>
+                    { :file =>
+                      { :type => 'string' },
+                    :name =>
+                      { :type => 'string' }
                     },
-                  :type=>'object',
+                  :type => 'object',
                   },
-                  :name=>
-                  { :type=>'string' },
+                  :name =>
+                  { :type => 'string' },
                 },
-                :type=>'object'
+                :type => 'object'
               },
-              :type=>'array'
+              :type => 'array'
             }
           },
-         :required=>['field2','field8','field9']
+         :required => ['field2','field8','field9']
         }
       )
     end

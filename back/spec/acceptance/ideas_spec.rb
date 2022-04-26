@@ -671,8 +671,8 @@ resource 'Ideas' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
-      let(:title_multiloc) { { 'nl-BE' => 'Fu'+'ck' } }
-      let(:body_multiloc) { { 'fr-FR' => 'co'+'cksu'+'cker' } }
+      let(:title_multiloc) { { 'nl-BE' => 'Fu' + 'ck' } }
+      let(:body_multiloc) { { 'fr-FR' => 'co' + 'cksu' + 'cker' } }
 
       example_request '[error] Create an idea with blocked words' do
         assert_status 422
