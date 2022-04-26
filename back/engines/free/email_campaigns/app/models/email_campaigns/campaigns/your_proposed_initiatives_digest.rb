@@ -74,11 +74,11 @@ module EmailCampaigns
                 images: initiative.initiative_images.map{ |image|
                   {
                     ordering: image.ordering,
-                    versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                    versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
                   }
                 },
                 header_bg: {
-                  versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                  versions: initiative.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
                 }
               }
             }

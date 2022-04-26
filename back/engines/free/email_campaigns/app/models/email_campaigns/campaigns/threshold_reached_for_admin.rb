@@ -75,11 +75,11 @@ module EmailCampaigns
           post_images: notification.post.initiative_images.map{ |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
             }
           },
           initiative_header_bg: {
-            versions: notification.post.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: notification.post.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
           },
           **assignee_attributes
         }

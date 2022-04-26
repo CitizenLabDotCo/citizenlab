@@ -31,7 +31,7 @@ describe 'JsonFormsService ideas overrides' do
   end
 
   describe 'budget field' do
-    before {SettingsService.new.activate_feature! 'participatory_budgeting'}
+    before { SettingsService.new.activate_feature! 'participatory_budgeting' }
 
     let(:continuous_pb_project_fields) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:continuous_budgeting_project))) }
     let(:timeline_pb_project_fields) {
@@ -51,7 +51,7 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     context 'when admin' do
-      before { user.update!(roles: [{ type: 'admin' }])}
+      before { user.update!(roles: [{ type: 'admin' }]) }
 
       it 'is included in a project that has a PB phase' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline_pb_project_fields, user)[:json_schema_multiloc][locale]
@@ -80,7 +80,7 @@ describe 'JsonFormsService ideas overrides' do
   end
 
   describe 'author_id field' do
-    before {SettingsService.new.activate_feature! 'idea_author_change'}
+    before { SettingsService.new.activate_feature! 'idea_author_change' }
 
     it 'is not inluded for normal users, irrespective of the feature flag' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
@@ -89,7 +89,7 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     context 'when admin' do
-      before { user.update!(roles: [{ type: 'admin' }])}
+      before { user.update!(roles: [{ type: 'admin' }]) }
 
       it 'is included when the feature is active' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]

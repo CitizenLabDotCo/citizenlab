@@ -44,7 +44,7 @@ resource 'Users' do
       before do
         @user = create(:user)
       end
-      let(:id) {@user.id}
+      let(:id) { @user.id }
       example 'Get a non-authenticated user does not expose the email', document: false do
         do_request
         json_response = json_parse(response_body)
@@ -92,7 +92,7 @@ resource 'Users' do
         end
 
         describe do
-          let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret')}
+          let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret') }
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
           example_request 'Authenticate a registered user by phone number', document: false do
@@ -103,7 +103,7 @@ resource 'Users' do
         end
 
         describe do
-          let!(:user) { create(:user, password: 'supersecret')}
+          let!(:user) { create(:user, password: 'supersecret') }
           let(:email) { user.email }
           let(:password) { 'supersecret' }
           example_request 'Authenticate a registered user by email', document: false do
@@ -332,7 +332,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
+          expect(json_response[:data].map{ |u| u[:id] }).to match_array group_users.map(&:id)
         end
 
         example 'List all users in group, ordered by role', skip: !CitizenLab.ee? do
@@ -396,7 +396,7 @@ resource 'Users' do
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,m2.id,@user.id]
+          expect(json_response[:data].map{ |u| u[:id] }).to match_array [a.id,m1.id,m2.id,@user.id]
         end
 
         example 'List all admins' do
@@ -411,7 +411,7 @@ resource 'Users' do
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id, @user.id]
+          expect(json_response[:data].map{ |u| u[:id] }).to match_array [a.id, @user.id]
         end
       end
 
@@ -437,7 +437,7 @@ resource 'Users' do
           example_request 'XLSX export all users from a group' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map{|r| r['id']}).to match_array @members.map(&:id)
+            expect(xlsx_hash.map{ |r| r['id'] }).to match_array @members.map(&:id)
           end
         end
 
@@ -452,7 +452,7 @@ resource 'Users' do
           example_request 'XLSX export all users given a list of user ids' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map{|r| r['id']}).to match_array @selected.map(&:id)
+            expect(xlsx_hash.map{ |r| r['id'] }).to match_array @selected.map(&:id)
           end
         end
 
@@ -472,7 +472,7 @@ resource 'Users' do
           example_request 'XLSX export all users by filtering on both group and user ids', document: false do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map{|r| r['id']}).to match_array (@members.map(&:id) & @selected.map(&:id))
+            expect(xlsx_hash.map{ |r| r['id'] }).to match_array (@members.map(&:id) & @selected.map(&:id))
           end
         end
       end
@@ -698,7 +698,7 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:custom_field_birthyear) }
-        let(:custom_field_values) {{
+        let(:custom_field_values) { {
           cf.key => 'new value',
           birthyear_cf.key => birthyear
         }}
@@ -725,7 +725,7 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) {{
+        let(:custom_field_values) { {
           cf.key => 'new value',
           gender_cf.key => 'female'
         }}
@@ -750,7 +750,7 @@ resource 'Users' do
       let(:cf1) { create(:custom_field ) }
       let(:cf2) { create(:custom_field_multiselect, required: true ) }
       let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
-      let(:custom_field_values) {{ cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] }}
+      let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
 
       example 'Complete the registration of a user' do
         @user.update! registration_completed_at: nil
@@ -776,7 +776,7 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) {{
+        let(:custom_field_values) { {
           cf.key => 'new value',
           gender_cf.key => 'female',
         }}

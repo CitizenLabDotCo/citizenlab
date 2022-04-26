@@ -26,7 +26,7 @@ resource 'Users - Locked attributes' do
       example_request 'List locked built-in attributes' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].map{|d| d[:attributes][:name]}).to eq ['first_name', 'last_name']
+        expect(json_response[:data].map{ |d| d[:attributes][:name] }).to eq ['first_name', 'last_name']
       end
     end
 
@@ -51,7 +51,7 @@ resource 'Users - Locked attributes' do
     example_request 'Jsonforms UI schema marks the locked fields' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === '#/properties/gender'}[:options].to_h).to include({
+      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === '#/properties/gender' }[:options].to_h).to include({
         readonly: true,
         verificationLocked: true
       })

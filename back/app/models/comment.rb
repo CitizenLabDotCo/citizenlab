@@ -40,20 +40,20 @@ class Comment < ApplicationRecord
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
   has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
-  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+  has_one :user_vote, -> (user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
 
   counter_culture :post,
-    column_name: proc {|model| model.published? ? 'comments_count' : nil },
+    column_name: proc { |model| model.published? ? 'comments_count' : nil },
     column_names: {
       ['comments.publication_status = ?', 'published'] => 'comments_count'
     },
     touch: true
   counter_culture [:idea, :project],
-    column_name: proc {|model| model.published? ? 'comments_count' : nil },
+    column_name: proc { |model| model.published? ? 'comments_count' : nil },
     column_names: {
       ['comments.publication_status = ?', 'published'] => 'comments_count'
     },

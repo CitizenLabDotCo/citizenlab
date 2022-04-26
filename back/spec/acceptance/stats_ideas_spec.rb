@@ -117,7 +117,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expected_topics = @ideas_with_topics.flat_map{|i| i.ideas_topics.map(&:topic_id)}.uniq
+        expected_topics = @ideas_with_topics.flat_map{ |i| i.ideas_topics.map(&:topic_id) }.uniq
         expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
         expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
@@ -191,7 +191,7 @@ resource 'Stats - Ideas' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'ideas']
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end
@@ -214,7 +214,7 @@ resource 'Stats - Ideas' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'ideas']
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 2
       end
@@ -305,7 +305,7 @@ resource 'Stats - Ideas' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match_array ['ideas', 'status', 'status_id']
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end
@@ -328,7 +328,7 @@ resource 'Stats - Ideas' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match_array ['status', 'status_id', 'ideas']
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end
@@ -369,7 +369,7 @@ resource 'Stats - Ideas' do
         end
       end
 
-      let(:topic) { @topic.id}
+      let(:topic) { @topic.id }
 
       example_request 'Ideas by project filtered by topic' do
         assert_status 200
@@ -415,15 +415,15 @@ resource 'Stats - Ideas' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'ideas']
-        project_col = worksheet.map {|col| col.cells[1].value}
+        project_col = worksheet.map { |col| col.cells[1].value }
         header, *projects = project_col
         expect(projects).to match_array [@project1.id, @project2.id, @project3.id]
 
-        project_name_col = worksheet.map {|col| col.cells[0].value}
+        project_name_col = worksheet.map { |col| col.cells[0].value }
         header, *project_names = project_name_col
         expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc), multiloc_service.t(@project3.title_multiloc)]
 
-        idea_col = worksheet.map {|col| col.cells[2].value}
+        idea_col = worksheet.map { |col| col.cells[2].value }
         header, *ideas = idea_col
         expect(ideas).to match_array [5,5,1]
       end
@@ -441,13 +441,13 @@ resource 'Stats - Ideas' do
         end
       end
 
-      let(:topic) { @topic.id}
+      let(:topic) { @topic.id }
 
       example_request 'Ideas by project filtered by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'ideas']
-        idea_col = worksheet.map {|col| col.cells[2].value}
+        idea_col = worksheet.map { |col| col.cells[2].value }
         header, *ideas = idea_col
         expect(ideas.inject(&:+)).to eq 1
       end
@@ -472,7 +472,7 @@ resource 'Stats - Ideas' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'ideas']
-        idea_col = worksheet.map {|col| col.cells[2].value}
+        idea_col = worksheet.map { |col| col.cells[2].value }
         header, *ideas = idea_col
         expect(ideas.inject(&:+)).to eq 1
       end
@@ -493,7 +493,7 @@ resource 'Stats - Ideas' do
     example_request 'Ideas by area' do
       assert_status 200
       json_response = json_parse(response_body)
-      expected_areas = @ideas_with_areas.flat_map{|i| i.areas_ideas.map(&:area_id)}.uniq
+      expected_areas = @ideas_with_areas.flat_map{ |i| i.areas_ideas.map(&:area_id) }.uniq
       expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
       expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
     end
@@ -513,13 +513,13 @@ resource 'Stats - Ideas' do
       assert_status 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet[0].cells.map(&:value)).to match ['area', 'area_id', 'ideas']
-      expected_areas = @ideas_with_areas.flat_map{|i| i.areas_ideas.map(&:area_id)}.uniq
+      expected_areas = @ideas_with_areas.flat_map{ |i| i.areas_ideas.map(&:area_id) }.uniq
 
-      area_id_col = worksheet.map {|col| col.cells[1].value}
+      area_id_col = worksheet.map { |col| col.cells[1].value }
       header, *area_ids = area_id_col
       expect(area_ids.map(&:to_s).compact.uniq - expected_areas).to eq []
 
-      idea_col = worksheet.map {|col| col.cells[2].value}
+      idea_col = worksheet.map { |col| col.cells[2].value }
       header, *ideas = idea_col
       expect(ideas.map(&:class).uniq).to eq [Integer]
     end
@@ -545,7 +545,7 @@ resource 'Stats - Ideas' do
 
     describe 'with time filter outside of platform lifetime' do
       let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day}
+      let(:end_at) { now - 10.year + 1.day }
 
       it 'returns no entries' do
         do_request
@@ -646,14 +646,14 @@ resource 'Stats - Ideas' do
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet.count).to eq end_at.yday + 1
       expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-      amount_col = worksheet.map {|col| col.cells[1].value}
+      amount_col = worksheet.map { |col| col.cells[1].value }
       header, *amounts = amount_col
       expect(amounts.inject(&:+)).to eq 11
     end
 
     describe 'with time filter outside of platform lifetime' do
       let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day}
+      let(:end_at) { now - 10.year + 1.day }
       let(:interval) { 'day' }
 
       it 'returns no entries' do
@@ -691,7 +691,7 @@ resource 'Stats - Ideas' do
         expect(worksheet.count).to eq end_at.yday + 1
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
         # monotonically increasing
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
 

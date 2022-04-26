@@ -10,7 +10,7 @@ describe ProjectPolicy do
     let!(:group) { create(:smart_group, rules: [
       { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
     ])}
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
+    let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
@@ -30,7 +30,7 @@ describe ProjectPolicy do
     let!(:group) { create(:smart_group, rules: [
       { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
     ])}
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
+    let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
     it { should permit(:show)    }
     it { should_not permit(:create)  }

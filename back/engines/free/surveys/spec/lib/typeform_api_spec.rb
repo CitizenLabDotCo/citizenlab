@@ -192,7 +192,7 @@ describe Surveys::Typeform::Api do
 
   describe 'form' do
 
-    let(:form_body) {{
+    let(:form_body) { {
       'id'=>'USLYB6',
       'title'=>'webhooks dev',
       'theme'=>{ 'href'=>'https://api.typeform.com/themes/6lPNE6' },

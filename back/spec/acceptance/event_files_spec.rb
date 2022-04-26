@@ -96,7 +96,7 @@ resource 'EventFile' do
 
     example_request 'Delete a file attachment from an event' do
       assert_status 200
-      expect{EventFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ EventFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

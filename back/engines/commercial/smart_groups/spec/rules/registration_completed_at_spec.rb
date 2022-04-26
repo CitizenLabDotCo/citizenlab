@@ -5,7 +5,7 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
 
   describe 'validations' do
 
-    let(:valid_json_rule) {{
+    let(:valid_json_rule) { {
       'ruleType' => 'registration_completed_at',
       'predicate' => 'is_before',
       'value' => (Date.today - 1.day)
@@ -63,26 +63,26 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
 
   describe 'description_multiloc' do
 
-    let(:registration_completed_at_is_before_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_before_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_before',
       'value'         => '2019-11-12'
     })}
-    let(:registration_completed_at_is_after_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_after_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_after',
       'value'         => '2019-11-12'
     })}
-    let(:registration_completed_at_is_exactly_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_exactly_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_exactly',
       'value'         => '2019-11-12'
     })}
-    let(:registration_completed_at_is_empty_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_is_empty_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_empty'
     })}
-    let(:registration_completed_at_not_is_empty_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
+    let(:registration_completed_at_not_is_empty_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'not_is_empty'
     })}

@@ -88,7 +88,7 @@ resource 'PhaseFile' do
 
     example_request 'Delete a file attachment from a phase' do
       expect(response_status).to eq 200
-      expect{PhaseFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ PhaseFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

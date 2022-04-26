@@ -69,7 +69,7 @@ module EmailCampaigns
       @top_ideas ||= top_ideas.all
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @successful_initiatives ||= successful_initiatives(name_service, time: time)
-      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map{|d| d[:id]}.compact
+      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map{ |d| d[:id] }.compact
 
       [{
         event_payload: {
@@ -155,12 +155,12 @@ module EmailCampaigns
         idea_images: idea.idea_images.map{ |image|
           {
             ordering: image.ordering,
-            versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
           }
         },
         top_comments: idea.comments
-          .select{|c| c.published?}
-          .sort_by{|c| -c.children.size}
+          .select{ |c| c.published? }
+          .sort_by{ |c| -c.children.size }
           .take(N_TOP_COMMENTS).map{ |comment|
             top_comment_payload comment, name_service
           }
@@ -174,7 +174,7 @@ module EmailCampaigns
         author_first_name: comment.author&.first_name,
         author_last_name: name_service.last_name!(comment.author),
         author_locale: comment.author&.locale,
-        author_avatar: comment.author.avatar&.versions&.map{|k, v| [k.to_s, v.url]}&.to_h
+        author_avatar: comment.author.avatar&.versions&.map{ |k, v| [k.to_s, v.url] }&.to_h
       }
     end
 
@@ -203,11 +203,11 @@ module EmailCampaigns
           images: initiative.initiative_images.map{ |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
             }
           },
           header_bg: {
-            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
           }
         }
       end
@@ -236,11 +236,11 @@ module EmailCampaigns
           images: initiative.initiative_images.map{ |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
             }
           },
           header_bg: {
-            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
           }
         }
       end

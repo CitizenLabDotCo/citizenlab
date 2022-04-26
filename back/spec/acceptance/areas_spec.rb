@@ -24,7 +24,7 @@ resource 'Areas' do
   end
 
   get 'web_api/v1/areas/:id' do
-    let(:id) {@areas.first.id}
+    let(:id) { @areas.first.id }
 
     example_request 'Get one area by id' do
       expect(status).to eq 200
@@ -98,7 +98,7 @@ resource 'Areas' do
         old_count = Area.count
         do_request
         expect(response_status).to eq 200
-        expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Area.count).to eq (old_count - 1)
       end
 
@@ -108,7 +108,7 @@ resource 'Areas' do
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request
         expect(response_status).to eq 200
-        expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
       end
     end

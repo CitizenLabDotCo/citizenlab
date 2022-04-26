@@ -46,7 +46,7 @@ describe XlsxService do
       title_row = worksheet[0].cells.map(&:value)
       # works because the custom_field_select facory gives it a disting name from other fields
       select_col_index = title_row.find_index(custom_select.title_multiloc['en'])
-      options_col = worksheet.map {|col| col.cells[select_col_index].value}
+      options_col = worksheet.map { |col| col.cells[select_col_index].value }
 
     	expect(title_row).to include(*custom_fields_headers)
     	expect(options_col).to include(custom_options[0].title_multiloc['en'])
@@ -190,7 +190,7 @@ describe XlsxService do
 
   describe 'hash_to_xlsx' do
 
-    let(:hash_array) {[
+    let(:hash_array) { [
       { 'a' => 1, 'b' => 'two' },
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
       { 'b' => 'four', 'c' => 'party' },
@@ -210,7 +210,7 @@ describe XlsxService do
 
   describe 'xlsx_to_hash_array' do
 
-    let(:hash_array) {[
+    let(:hash_array) { [
       { 'a' => 1, 'b' => 'two' },
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
       { 'b' => 'four', 'c' => 'party' },

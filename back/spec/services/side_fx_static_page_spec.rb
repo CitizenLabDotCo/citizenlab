@@ -7,7 +7,7 @@ describe SideFxStaticPageService do
 
   describe 'after_create' do
     it "logs a 'created' action when a page is created" do
-      expect {service.after_create(page, user)}.
+      expect { service.after_create(page, user) }.
         to have_enqueued_job(LogActivityJob).with(page, 'created', user, page.created_at.to_i)
     end
 
@@ -27,7 +27,7 @@ describe SideFxStaticPageService do
   describe 'after_update' do
     it "logs a 'changed' action job when the page has changed" do
       page.update!(title_multiloc: { 'en' => 'changed' })
-      expect {service.after_update(page, user)}.
+      expect { service.after_update(page, user) }.
         to have_enqueued_job(LogActivityJob).with(page, 'changed', user, page.updated_at.to_i)
     end
   end
@@ -36,7 +36,7 @@ describe SideFxStaticPageService do
     it "logs a 'deleted' action job when the page is destroyed" do
       travel_to Time.now do
         frozen_page = page.destroy!
-        expect {service.after_destroy(frozen_page, user)}.
+        expect { service.after_destroy(frozen_page, user) }.
           to have_enqueued_job(LogActivityJob)
       end
     end

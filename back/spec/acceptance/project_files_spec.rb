@@ -87,7 +87,7 @@ resource 'ProjectFile' do
 
     example_request 'Delete a file attachment from a project' do
       expect(response_status).to eq 200
-      expect{ProjectFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ ProjectFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

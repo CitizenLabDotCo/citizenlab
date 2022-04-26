@@ -123,7 +123,7 @@ class Idea < ApplicationRecord
       .where(projects: { admin_publications: { publication_status: publication_status } })
   end)
 
-  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
+  scope :order_popular, -> (direction=:desc) { order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id")) }
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
   scope :order_status, -> (direction=:desc) {

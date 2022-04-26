@@ -27,7 +27,7 @@ resource 'Verification Id Cards', admin_api: true do
       @idea_card = create(:id_id_card_lookup_id_card)
     end
 
-    let(:card_ids) {[
+    let(:card_ids) { [
       'aaa1',
       'bbb2',
       'ccc3',
@@ -42,11 +42,11 @@ resource 'Verification Id Cards', admin_api: true do
     let(:file) { "data:text/csv;base64,#{Base64.encode64(card_ids.join("\n"))}" }
 
     example 'Replaces all id cards with the CSV file contents' do
-      expect{do_request}
+      expect{ do_request }
         .to have_enqueued_job(IdIdCardLookup::LoadIdCardsJob)
         .with(card_ids)
       expect(status).to eq(201)
-      expect{@idea_card.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ @idea_card.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

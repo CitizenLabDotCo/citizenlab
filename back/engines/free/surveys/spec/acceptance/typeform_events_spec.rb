@@ -31,7 +31,7 @@ resource 'Typeform Events' do
       example.metadata[:route] += "?#{url_params.to_query}"
     end
 
-    let(:typeform_event) {{
+    let(:typeform_event) { {
       "event_id": 'LtWXD3crgy',
       "event_type": 'form_response',
       "form_response": {

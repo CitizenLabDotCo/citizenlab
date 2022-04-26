@@ -150,7 +150,7 @@ resource 'Comment Votes' do
     
     example_request 'Delete a vote from a comment' do
       expect(response_status).to eq 200
-      expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

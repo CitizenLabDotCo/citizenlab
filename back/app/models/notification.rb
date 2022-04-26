@@ -66,7 +66,7 @@ class Notification < ApplicationRecord
 
   has_many :activities, as: :item
 
-  scope :unread, -> {where(read_at: nil)}
+  scope :unread, -> { where(read_at: nil) }
 
 
   def event_bus_item_name

@@ -7,7 +7,7 @@ describe SideFxCommentService do
 
   describe 'after_create' do
     it "logs a 'created' action when a comment is created" do
-      expect {service.after_create(comment, user)}.
+      expect { service.after_create(comment, user) }.
         to have_enqueued_job(LogActivityJob).with(comment, 'created', user, comment.updated_at.to_i)
     end
 
@@ -22,7 +22,7 @@ describe SideFxCommentService do
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
       comment.body_multiloc['en'] = "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"
-      expectation = expect {service.after_create(comment, user)}
+      expectation = expect { service.after_create(comment, user) }
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
@@ -33,7 +33,7 @@ describe SideFxCommentService do
 
     it "logs a 'changed' action job when the comment has changed" do
       comment.update(body_multiloc: { 'en': 'changed' })
-      expect {service.after_update(comment, user)}.
+      expect { service.after_update(comment, user) }.
         to have_enqueued_job(LogActivityJob).with(comment, 'changed', user, comment.updated_at.to_i)
     end
 
@@ -50,7 +50,7 @@ describe SideFxCommentService do
       comment = create(:comment, body_multiloc: { en: "#{u1_mention_expanded}" })
 
       comment.update(body_multiloc: { 'en': "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
-      expectation = expect {service.after_update(comment, user)}
+      expectation = expect { service.after_update(comment, user) }
       expectation.to_not have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
@@ -61,7 +61,7 @@ describe SideFxCommentService do
     it "logs a 'deleted' action job when the comment is destroyed" do
       travel_to Time.now do
         frozen_comment = comment.destroy
-        expect {service.after_destroy(frozen_comment, user)}.
+        expect { service.after_destroy(frozen_comment, user) }.
           to have_enqueued_job(LogActivityJob)
       end
     end

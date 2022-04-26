@@ -1,12 +1,12 @@
 FactoryBot.define do
   factory :identity do
     uid { SecureRandom.uuid }
-    auth_hash {{}}
+    auth_hash { {} }
     user
 
     factory :facebook_identity do
       provider { 'facebook' }
-      auth_hash {{
+      auth_hash { {
         "uid": '10214227319468725',
         "info": {
           "email": 'Aaron.Kraus@telenet.be',

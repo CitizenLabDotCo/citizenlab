@@ -23,7 +23,7 @@ RSpec.describe 'Graphql folder' do
 
 
     let(:folder) { create(:project_folder) }
-    let(:variables) { { id: folder.id }}
+    let(:variables) { { id: folder.id } }
 
     it 'returns all folders' do
       response = result

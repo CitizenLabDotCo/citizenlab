@@ -41,7 +41,7 @@ class TimelineService
   end
 
   def other_project_phases phase
-    Phase.where(project_id: phase.project_id).all.select{|p| p.id != phase.id}
+    Phase.where(project_id: phase.project_id).all.select{ |p| p.id != phase.id }
   end
 
   def timeline_active project

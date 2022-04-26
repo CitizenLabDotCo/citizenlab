@@ -114,7 +114,7 @@ describe ProjectPolicy do
 
   context 'for a visitor on a private groups project' do
     let!(:user) { nil }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project) }
 
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
@@ -129,7 +129,7 @@ describe ProjectPolicy do
 
   context "for a user on a private groups project where she's no member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project) }
 
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
@@ -147,7 +147,7 @@ describe ProjectPolicy do
 
   context "for a user on a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project, user: user, groups_count: 2)}
+    let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
 
     it { should permit(:show)    }
     it { should_not permit(:create)  }
@@ -166,7 +166,7 @@ describe ProjectPolicy do
 
   context 'for an admin on a private groups project' do
     let!(:user) { create(:admin) }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project) }
 
     it { should permit(:show)    }
     it { should permit(:create)  }

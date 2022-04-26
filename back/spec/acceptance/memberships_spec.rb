@@ -45,7 +45,7 @@ resource 'Memberships' do
     end
 
     get 'web_api/v1/groups/:group_id/memberships/by_user_id/:user_id' do
-      let(:membership) { create(:membership)}
+      let(:membership) { create(:membership) }
       let(:group_id) { membership.group.id }
       let(:user_id) { membership.user.id }
       example_request 'Get one membership by group id and user id' do
@@ -77,17 +77,17 @@ resource 'Memberships' do
 
       example_request 'Delete a membership' do
         expect(response_status).to eq 200
-        expect{Membership.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Membership.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     delete 'web_api/v1/groups/:group_id/memberships/by_user_id/:user_id' do
-      let(:membership) { create(:membership)}
+      let(:membership) { create(:membership) }
       let(:group_id) { membership.group.id }
       let(:user_id) { membership.user.id }
       example_request 'Delete a membership by group id and user id' do
         expect(response_status).to eq 200
-        expect{Membership.find(membership.id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Membership.find(membership.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 

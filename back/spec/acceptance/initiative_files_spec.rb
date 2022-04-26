@@ -64,7 +64,7 @@ resource 'InitiativeFile' do
 
     example_request 'Delete a file attachment from an initiative' do
       expect(response_status).to eq 200
-      expect{InitiativeFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ InitiativeFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

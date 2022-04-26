@@ -5,7 +5,7 @@ RSpec.describe Notification, type: :model do
 
     let!(:project) { create(:project) }
     let!(:idea) { create(:idea, project: project) }
-    let!(:parent) {create(:comment, post: idea) }
+    let!(:parent) { create(:comment, post: idea) }
     let!(:child) { create(:comment, parent: parent) }
     let!(:initiator) { create(:user) }
     let!(:recipient) { create(:user) }

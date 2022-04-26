@@ -17,11 +17,11 @@ module EmailCampaigns
           post_images: post.initiative_images.map{ |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
             }
           },
           initiative_header_bg: {
-            versions: post.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: post.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
           },
           assignee_first_name: 'Lady',
           assignee_last_name: 'Gaga'

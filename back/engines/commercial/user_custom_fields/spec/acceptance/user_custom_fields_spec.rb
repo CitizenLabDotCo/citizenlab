@@ -179,7 +179,7 @@ resource 'User Custom Fields' do
 
       example_request 'Delete a custom field' do
         expect(response_status).to eq 200
-        expect{CustomField.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       if CitizenLab.ee?

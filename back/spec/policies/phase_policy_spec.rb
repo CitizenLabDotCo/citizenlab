@@ -50,7 +50,7 @@ describe PhasePolicy do
 
   context 'for a visitor on a phase in a private groups project' do
     let!(:user) { nil }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project) }
     let!(:phase) { create(:phase, project: project) }
 
     it { should_not permit(:show)    }
@@ -65,7 +65,7 @@ describe PhasePolicy do
 
   context "for a user on a phase in a private groups project where she's no member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project) }
     let!(:phase) { create(:phase, project: project) }
 
     it { should_not permit(:show)    }
@@ -79,7 +79,7 @@ describe PhasePolicy do
 
   context "for a user on a phase in a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project, user: user)}
+    let!(:project) { create(:private_groups_project, user: user) }
     let!(:phase) { create(:phase, project: project) }
 
     it { should     permit(:show)    }

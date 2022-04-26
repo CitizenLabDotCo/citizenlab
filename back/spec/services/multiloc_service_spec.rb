@@ -11,8 +11,8 @@ describe MultilocService do
 
   describe 't' do
 
-    let(:user) {create(:user, locale: 'en')}
-    let(:translations) {{
+    let(:user) { create(:user, locale: 'en') }
+    let(:translations) { {
       'nl-BE' => 'woord',
       'fr-FR' => 'mot',
       'en' => 'word'
@@ -83,7 +83,7 @@ describe MultilocService do
     end
 
     it 'returns missing strings for a missing translation key' do
-      expect{service.i18n_to_multiloc('not.existing.key')}.to raise_error(I18n::MissingTranslationData)
+      expect{ service.i18n_to_multiloc('not.existing.key') }.to raise_error(I18n::MissingTranslationData)
     end
 
     it 'supports setting the returned locales explicitly' do
@@ -96,7 +96,7 @@ describe MultilocService do
 
   describe 'block_to_multiloc' do
     it 'assembles a multiloc object with a given block' do
-      expect(service.block_to_multiloc{|locale| locale}).to eq({
+      expect(service.block_to_multiloc{ |locale| locale }).to eq({
         'fr-FR' => 'fr-FR',
         'en' => 'en',
         'nl-BE' => 'nl-BE'
@@ -104,7 +104,7 @@ describe MultilocService do
     end
 
     it 'switches the i18n.locale in the given block' do
-      expect(service.block_to_multiloc{|_locale| I18n.locale.to_s}).to eq({
+      expect(service.block_to_multiloc{ |_locale| I18n.locale.to_s }).to eq({
         'fr-FR' => 'fr-FR',
         'en' => 'en',
         'nl-BE' => 'nl-BE'

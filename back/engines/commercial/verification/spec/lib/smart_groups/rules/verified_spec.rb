@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Verification::SmartGroups::Rules::Verified do
 
-  let(:valid_json_rule) {{
+  let(:valid_json_rule) { {
     'ruleType' => 'verified',
     'predicate' => 'is_verified'
   }}

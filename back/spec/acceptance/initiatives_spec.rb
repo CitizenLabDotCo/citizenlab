@@ -9,7 +9,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:initiative, publication_status: ps)}
+    @initiatives = ['published','published','draft','published','spam','published','published'].map { |ps|  create(:initiative, publication_status: ps) }
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
@@ -57,7 +57,7 @@ resource 'Initiatives' do
       do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].map{ |h| h[:id] }).to match_array [i1.id, i2.id]
     end
 
     example 'List all initiatives which match one of the given areas' do
@@ -74,7 +74,7 @@ resource 'Initiatives' do
       do_request areas: [a1.id, a2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].map{ |h| h[:id] }).to match_array [i1.id, i2.id]
     end
 
     example 'List all initiatives for a user' do
@@ -153,8 +153,8 @@ resource 'Initiatives' do
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
-      expect(json_response[:included].map{|i| i[:id]}).to include vote.id
+      expect(json_response[:data].map{ |d| d[:relationships][:user_vote][:data] }.compact.first[:id]).to eq vote.id
+      expect(json_response[:included].map{ |i| i[:id] }).to include vote.id
     end
   end
 
@@ -188,7 +188,7 @@ resource 'Initiatives' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map{|d| d.dig(:attributes, :title_multiloc, :en)}.sort).to match ['Ghent', 'Brussels', 'Liège', 'Meise', 'Mons'].sort
+      expect(json_response[:data].map{ |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match ['Ghent', 'Brussels', 'Liège', 'Meise', 'Mons'].sort
     end
   end
 
@@ -286,8 +286,8 @@ resource 'Initiatives' do
   end
 
   get 'web_api/v1/initiatives/:id' do
-    let(:initiative) {@initiatives.first}
-    let(:id) {initiative.id}
+    let(:initiative) { @initiatives.first }
+    let(:id) { initiative.id }
 
     example_request 'Get one initiative by id' do
       assert_status 200
@@ -297,7 +297,7 @@ resource 'Initiatives' do
   end
 
   get 'web_api/v1/initiatives/by_slug/:slug' do
-    let(:slug) {@initiatives.first.slug}
+    let(:slug) { @initiatives.first.slug }
 
     example_request 'Get one initiative by slug' do
       assert_status 200
@@ -306,7 +306,7 @@ resource 'Initiatives' do
     end
 
     describe do
-      let(:slug) {'unexisting-initiative'}
+      let(:slug) { 'unexisting-initiative' }
 
       example '[error] Get an unexisting initiative', document: false do
         do_request
@@ -356,8 +356,8 @@ resource 'Initiatives' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
         expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
       end
 
@@ -402,14 +402,14 @@ resource 'Initiatives' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
-      let(:location_description) {'fu'+'ck'}
+      let(:location_description) { 'fu'+'ck' }
 
       example_request '[error] Create an initiative with blocked words' do
         assert_status 422
         json_response = json_parse(response_body)
-        blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+        blocked_error = json_response.dig(:errors, :base)&.select{ |err| err[:error] == 'includes_banned_words' }&.first
         expect(blocked_error).to be_present
-        expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to eq(['location_description'])
+        expect(blocked_error.dig(:blocked_words).map{ |bw| bw[:attribute] }.uniq).to eq(['location_description'])
       end
     end
   end
@@ -450,8 +450,8 @@ resource 'Initiatives' do
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq 'Changed title'
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
       end
 
       example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
@@ -498,8 +498,8 @@ resource 'Initiatives' do
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
       end
     end
 
@@ -539,7 +539,7 @@ resource 'Initiatives' do
 
     example_request 'Delete an initiative' do
       expect(response_status).to eq 200
-      expect{Initiative.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{ Initiative.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

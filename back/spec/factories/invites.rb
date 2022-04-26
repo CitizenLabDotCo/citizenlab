@@ -12,7 +12,7 @@ FactoryBot.define do
     end
   
     factory :accepted_invite do
-      invitee {create(:user, invite_status: 'accepted') }
+      invitee { create(:user, invite_status: 'accepted') }
       accepted_at { Time.now-3.weeks }
     end
   end

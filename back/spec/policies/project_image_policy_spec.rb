@@ -6,7 +6,7 @@ describe ProjectImagePolicy do
 
   context 'on an image in a public project' do 
     let(:project) { create(:continuous_project) }
-    let!(:image) { create(:project_image, project: project)}
+    let!(:image) { create(:project_image, project: project) }
 
 	  context 'for a visitor' do 
 	  	let(:user) { nil }
@@ -50,7 +50,7 @@ describe ProjectImagePolicy do
 
 	 context 'on an image in a private admins project' do 
 	 	let(:project) { create(:private_admins_project) }
-    let!(:image) { create(:project_image, project: project)}
+    let!(:image) { create(:project_image, project: project) }
 
     context 'for a user' do
       let(:user) { create(:user) }

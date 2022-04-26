@@ -67,7 +67,7 @@ module EmailCampaigns
         statistics = statistics project
         if has_nonzero_statistics statistics
           top_ideas = top_ideas project, name_service
-          idea_ids = top_ideas.map{|top_idea| top_idea[:id]}
+          idea_ids = top_ideas.map{ |top_idea| top_idea[:id] }
           {
             event_payload: {
               statistics: statistics,
@@ -150,8 +150,8 @@ module EmailCampaigns
     end
 
     def stat_increase ts
-      second_last_agos = ts.select{|t| t > (Time.now - (days_ago * 2))}
-      last_agos = second_last_agos.select{|t| t > (Time.now - days_ago)}
+      second_last_agos = ts.select{ |t| t > (Time.now - (days_ago * 2)) }
+      last_agos = second_last_agos.select{ |t| t > (Time.now - days_ago) }
       {
         increase: last_agos.size,
         past_increase: second_last_agos.size

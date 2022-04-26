@@ -125,7 +125,7 @@ module NLP
 
     # @param [Integer] n maximum number of child nodes per community
     def shrink_communities(n)
-      removed_nodes = communities.flat_map {|c| c.shrink(n) }
+      removed_nodes = communities.flat_map { |c| c.shrink(n) }
       remove_nodes(removed_nodes, update_communities: false)
       self
     end
@@ -180,7 +180,7 @@ module NLP
 
     def update_communities
       communities.each do |c|
-        c.children.select! {|node| @nodes.key?(node.id)}
+        c.children.select! { |node| @nodes.key?(node.id) }
       end
 
       communities.reject! { |c| c.children.blank? }

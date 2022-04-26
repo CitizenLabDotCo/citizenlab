@@ -5,9 +5,9 @@ describe WebApi::V1::InitiativeSerializer do
   context "with 'abbreviated user names' enabled" do
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 
-    let(:jane) { create(:user, first_name: 'Jane', last_name: 'Doe')}
-    let(:john) { create(:user, first_name: 'John', last_name: 'Smith')}
-    let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson')}
+    let(:jane) { create(:user, first_name: 'Jane', last_name: 'Doe') }
+    let(:john) { create(:user, first_name: 'John', last_name: 'Smith') }
+    let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
 
     it 'should abbreviate the author name' do
       jane_initiative = create(:initiative, author: jane)

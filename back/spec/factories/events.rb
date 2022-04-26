@@ -1,15 +1,15 @@
 FactoryBot.define do
   factory :event do
     project
-    title_multiloc {{
+    title_multiloc { {
       'en' => 'Info session',
       'nl-BE' => 'Info avond'
     }}
-    description_multiloc {{
+    description_multiloc { {
       'en' => '<p>Be there and learn everything about our future!</p>',
       'nl-BE' => '<p>Kom en ontdek de toekomst!</p>'
     }}
-    location_multiloc {{
+    location_multiloc { {
       'en' => 'Vogelstraat 4, around the corner',
       'nl-BE' => 'Vogelstraat 4, om de hoek'
     }}

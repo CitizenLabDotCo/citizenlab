@@ -18,8 +18,8 @@ module Volunteering
        end
     end
 
-    attribute :image, if: Proc.new {|object| object.image} do |object|
-      object.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    attribute :image, if: Proc.new { |object| object.image } do |object|
+      object.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
     end
   end
 end

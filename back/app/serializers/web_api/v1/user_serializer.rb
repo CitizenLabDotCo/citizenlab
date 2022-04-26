@@ -20,7 +20,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :avatar, if: Proc.new { |object|
     object.avatar
   } do |object|
-    object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    object.avatar.versions.map{ |k, v| [k.to_s, v.url] }.to_h
   end
 
   attribute :unread_notifications do |object|

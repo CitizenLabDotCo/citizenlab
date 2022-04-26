@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
-  let(:valid_json_rule) {{
+  let(:valid_json_rule) { {
     'ruleType' => 'participated_in_idea_status',
     'predicate' => 'in',
     'value' => create_list(:idea_status, 2).map(&:id)
@@ -25,18 +25,18 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it 'reject a rule with a mutli-value predicate and a single value' do
-      rule = valid_json_rule.tap{|r| r['predicate']='in'; r['value']=IdeaStatus.first.id}
+      rule = valid_json_rule.tap{ |r| r['predicate']='in'; r['value']=IdeaStatus.first.id }
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
 
     it 'accepts a rule with a single-value predicate and a single value' do
-      rule = valid_json_rule.tap{|r| r['predicate']='not_in'; r['value']=IdeaStatus.first.id}
+      rule = valid_json_rule.tap{ |r| r['predicate']='not_in'; r['value']=IdeaStatus.first.id }
       expect(SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
     it 'reject a rule with a single-value predicate and an array of values' do
-      rule = valid_json_rule.tap{|r| r['predicate']='not_in'}
+      rule = valid_json_rule.tap{ |r| r['predicate']='not_in' }
       expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
   end
@@ -131,52 +131,52 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
       'nl-NL' => 'uitgesteld'
     }) }
 
-    let(:participated_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'in',
       'value'         => [garbage_status.id, delayed_status.id]
     })}
-    let(:participated_not_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_in',
       'value'         => garbage_status.id
     })}
-    let(:participated_posted_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_posted_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'posted_in',
       'value'         => [garbage_status.id]
     })}
-    let(:participated_not_posted_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_posted_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_posted_in',
       'value'         => garbage_status.id
     })}
-    let(:participated_commented_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_commented_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'commented_in',
       'value'         => [garbage_status.id, delayed_status.id]
     })}
-    let(:participated_not_commented_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_commented_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_commented_in',
       'value'         => garbage_status.id
     })}
-    let(:participated_voted_idea_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_voted_idea_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'voted_idea_in',
       'value'         => [garbage_status.id]
     })}
-    let(:participated_not_voted_idea_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_voted_idea_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_voted_idea_in',
       'value'         => garbage_status.id
     })}
-    let(:participated_voted_comment_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_voted_comment_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'voted_comment_in',
       'value'         => [garbage_status.id, delayed_status.id]
     })}
-    let(:participated_not_voted_comment_in_idea_status_in_rule) {SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+    let(:participated_not_voted_comment_in_idea_status_in_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
       'ruleType'      => 'participated_in_idea_status',
       'predicate'     => 'not_voted_comment_in',
       'value'         => garbage_status.id

@@ -19,7 +19,7 @@ describe TextImageService do
         'nl-NL' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />',
         'fr-FR' => '<div>no image here</div>',
       }
-      expect { service.swap_data_images(project, field) }.to change{TextImage.count}.from(0).to(2)
+      expect { service.swap_data_images(project, field) }.to change{ TextImage.count }.from(0).to(2)
       expect(TextImage.first).to have_attributes(
         imageable: project,
         imageable_field: field.to_s
@@ -183,7 +183,7 @@ describe TextImageService do
       imageable.update!(description_multiloc: service.swap_data_images(imageable, :description_multiloc))
       # In one query + 4 times:
       # SELECT "public"."tenants".* FROM "public"."tenants" WHERE "public"."tenants"."host" = $1 LIMIT $2; ["example.org", 1]
-      expect{service.render_data_images(imageable, :description_multiloc)['en']}.not_to exceed_query_limit(5)
+      expect{ service.render_data_images(imageable, :description_multiloc)['en'] }.not_to exceed_query_limit(5)
     end
   end
 

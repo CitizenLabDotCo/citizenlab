@@ -12,7 +12,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :header_bg do |object|
-    object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    object.header_bg && object.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
   end
 
   attribute :action_descriptor do |object, params|

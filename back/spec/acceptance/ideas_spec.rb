@@ -97,7 +97,7 @@ resource 'Ideas' do
       do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id, i3.id]
+      expect(json_response[:data].map{ |h| h[:id] }).to match_array [i1.id, i2.id, i3.id]
     end
 
     example 'List all ideas with an area' do
@@ -126,7 +126,7 @@ resource 'Ideas' do
       do_request areas: [a1.id, a2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].map{ |h| h[:id] }).to match_array [i1.id, i2.id]
     end
 
     example 'List all ideas in a project' do
@@ -148,7 +148,7 @@ resource 'Ideas' do
 
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].map{ |d| d[:id] }).to match_array [i1.id, i2.id]
     end
 
     example 'List all ideas in a phase of a project' do
@@ -162,7 +162,7 @@ resource 'Ideas' do
       do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
+      expect(json_response[:data].map{ |d| d[:id] }).to match_array [i2.id, i3.id]
     end
 
     example 'List all ideas in published projects' do
@@ -170,7 +170,7 @@ resource 'Ideas' do
       do_request(project_publication_status: 'published')
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map{|d| d[:id]}).not_to include(idea.id)
+      expect(json_response[:data].map{ |d| d[:id] }).not_to include(idea.id)
     end
 
     example 'List all ideas for an idea status' do
@@ -236,8 +236,8 @@ resource 'Ideas' do
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
-      expect(json_response[:included].map{|i| i[:id]}).to include vote.id
+      expect(json_response[:data].map{ |d| d[:relationships][:user_vote][:data] }.compact.first[:id]).to eq vote.id
+      expect(json_response[:included].map{ |i| i[:id] }).to include vote.id
     end
 
     example 'Search for ideas should work with trending ordering', document: false do
@@ -306,7 +306,7 @@ resource 'Ideas' do
       do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
+      expect(json_response[:data].map{ |d| d[:id] }).to match_array [i2.id, i3.id]
     end
   end
 
@@ -409,7 +409,7 @@ resource 'Ideas' do
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
     parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
-    let(:projects) {[@project.id]}
+    let(:projects) { [@project.id] }
 
     example_request 'List idea counts per filter option' do
       expect(status).to eq 200
@@ -562,8 +562,8 @@ resource 'Ideas' do
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
@@ -591,8 +591,8 @@ resource 'Ideas' do
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:project,:data, :id)).to eq project_id
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data,:attributes,:location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
@@ -671,15 +671,15 @@ resource 'Ideas' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
-      let(:title_multiloc) {{ 'nl-BE' => 'Fu'+'ck' }}
-      let(:body_multiloc) {{ 'fr-FR' => 'co'+'cksu'+'cker' }}
+      let(:title_multiloc) { { 'nl-BE' => 'Fu'+'ck' } }
+      let(:body_multiloc) { { 'fr-FR' => 'co'+'cksu'+'cker' } }
 
       example_request '[error] Create an idea with blocked words' do
         assert_status 422
         json_response = json_parse(response_body)
-        blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+        blocked_error = json_response.dig(:errors, :base)&.select{ |err| err[:error] == 'includes_banned_words' }&.first
         expect(blocked_error).to be_present
-        expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to include('title_multiloc', 'body_multiloc')
+        expect(blocked_error.dig(:blocked_words).map{ |bw| bw[:attribute] }.uniq).to include('title_multiloc', 'body_multiloc')
       end
     end
 
@@ -697,7 +697,7 @@ resource 'Ideas' do
         example_request 'Creating an idea in specific phases' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+          expect(json_response.dig(:data,:relationships,:phases,:data).map{ |d| d[:id] }).to match_array phase_ids
         end
       end
 

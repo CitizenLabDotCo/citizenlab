@@ -6,7 +6,7 @@ describe ProjectFilePolicy do
 
   context 'on a file in a public project' do 
     let(:project) { create(:continuous_project) }
-    let!(:file) { create(:project_file, project: project)}
+    let!(:file) { create(:project_file, project: project) }
 
 	  context 'for a visitor' do 
 	  	let(:user) { nil }
@@ -50,7 +50,7 @@ describe ProjectFilePolicy do
 
 	 context 'on a file in a private admins project' do 
 	 	let(:project) { create(:private_admins_project) }
-    let!(:file) { create(:project_file, project: project)}
+    let!(:file) { create(:project_file, project: project) }
 
     context 'for a user' do
       let(:user) { create(:user) }

@@ -9,7 +9,7 @@ describe SideFxPhaseService do
   describe 'after_create' do
     it "logs a 'created' action when a phase is created" do
       expect(sfx_pc).to receive(:after_create).with(phase, user)
-      expect {service.after_create(phase, user)}.
+      expect { service.after_create(phase, user) }.
         to have_enqueued_job(LogActivityJob).with(phase, 'created', user, phase.created_at.to_i)
     end
 
@@ -32,7 +32,7 @@ describe SideFxPhaseService do
     it "logs a 'changed' action job when the phase has changed" do
       phase.update(title_multiloc: { 'en': 'changed' })
       expect(sfx_pc).to receive(:after_update).with(phase, user)
-      expect {service.after_update(phase, user)}.
+      expect { service.after_update(phase, user) }.
         to have_enqueued_job(LogActivityJob).with(phase, 'changed', user, phase.updated_at.to_i)
     end
   end
@@ -49,7 +49,7 @@ describe SideFxPhaseService do
       travel_to Time.now do
         frozen_phase = phase.destroy
         expect(sfx_pc).to receive(:after_destroy).with(frozen_phase, user)
-        expect {service.after_destroy(frozen_phase, user)}.
+        expect { service.after_destroy(frozen_phase, user) }.
           to have_enqueued_job(LogActivityJob)
       end
     end

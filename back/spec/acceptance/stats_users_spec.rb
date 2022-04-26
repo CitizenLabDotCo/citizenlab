@@ -69,7 +69,7 @@ resource 'Stats - Users' do
 
     describe 'with time filter outside of platform lifetime' do
       let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day}
+      let(:end_at) { now - 10.year + 1.day }
 
       it 'returns no entries' do
         do_request
@@ -196,7 +196,7 @@ resource 'Stats - Users' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
 
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 11
       end
@@ -204,7 +204,7 @@ resource 'Stats - Users' do
 
     describe 'with time filter outside of platform lifetime' do
       let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day}
+      let(:end_at) { now - 10.year + 1.day }
       let(:interval) { 'day' }
 
       it 'returns no entries' do
@@ -223,7 +223,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 9
       end
@@ -248,7 +248,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 3
       end
@@ -275,7 +275,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end
@@ -309,7 +309,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 3
       end
@@ -438,7 +438,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 10
@@ -465,7 +465,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 5
@@ -494,7 +494,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 1
@@ -530,7 +530,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 3
@@ -689,7 +689,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-        amount_col = worksheet.map {|col| col.cells[1].value}
+        amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 4
       end
@@ -727,8 +727,8 @@ resource 'Stats - Users' do
     example_request 'List 10 best user engagement scores' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:attributes][:sum_score]}).to eq([6, 4])
-      expect(json_response[:data].map{|d| d[:relationships][:user][:data][:id]}).to eq([@u2.id, @u1.id])
+      expect(json_response[:data].map{ |d| d[:attributes][:sum_score] }).to eq([6, 4])
+      expect(json_response[:data].map{ |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
       expect(json_response[:included].size).to eq 2
     end
   end
@@ -884,8 +884,8 @@ resource 'Stats - Users' do
     example_request 'List 10 best user engagement scores' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:attributes][:sum_score]}).to eq([6, 4])
-      expect(json_response[:data].map{|d| d[:relationships][:user][:data][:id]}).to eq([@u2.id, @u1.id])
+      expect(json_response[:data].map{ |d| d[:attributes][:sum_score] }).to eq([6, 4])
+      expect(json_response[:data].map{ |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
       expect(json_response[:included].size).to eq 2
     end
   end

@@ -25,7 +25,7 @@ RSpec.describe 'Graphql project' do
 
 
     let(:project) { create(:project) }
-    let(:variables) { { id: project.id }}
+    let(:variables) { { id: project.id } }
 
     it 'returns all projects' do
       response = result

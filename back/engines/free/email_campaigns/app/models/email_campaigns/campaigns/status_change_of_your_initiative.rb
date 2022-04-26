@@ -64,7 +64,7 @@ module EmailCampaigns
           post_images: initiative.initiative_images.map{ |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
             }
           },
           initiative_status_id: status.id,

@@ -17,9 +17,9 @@ resource 'Moderations' do
       example_request 'Moderations include inappropriate content flag' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:included].map{|d| d[:id]}).to include(@flag.id)
-        expect(json_response[:included].map{|d| d.dig(:attributes, :toxicity_label)}).to include('insult')
-        idea_data = json_response[:data].find{|d| d[:id] == @idea.id}
+        expect(json_response[:included].map{ |d| d[:id] }).to include(@flag.id)
+        expect(json_response[:included].map{ |d| d.dig(:attributes, :toxicity_label) }).to include('insult')
+        idea_data = json_response[:data].find{ |d| d[:id] == @idea.id }
         expect(idea_data[:relationships].keys).not_to include(:inappropriate_content_flag)
       end
 
@@ -30,7 +30,7 @@ resource 'Moderations' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].map{|d| d[:id]}).to match_array [@comment.id]
+          expect(json_response[:data].map{ |d| d[:id] }).to match_array [@comment.id]
         end
       end
 
@@ -41,7 +41,7 @@ resource 'Moderations' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].map{|d| d[:id]}).to match_array [@idea.id, @other_idea.id]
+          expect(json_response[:data].map{ |d| d[:id] }).to match_array [@idea.id, @other_idea.id]
         end
       end
     end

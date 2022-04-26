@@ -25,7 +25,7 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   def images
     object.idea_images.map do |idea_image|
-      idea_image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+      idea_image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
     end
   end
 

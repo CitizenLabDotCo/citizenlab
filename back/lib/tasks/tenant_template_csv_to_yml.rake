@@ -47,7 +47,7 @@ namespace :tenant_template do
     yml_models['models']['event']         = (yml_models['models']['event'] || []) + yml_events
     yml_models['models']['phase']         = (yml_models['models']['phase'] || []) + yml_phases
 
-  	File.open("#{args[:path]}/tenant_template.yml", 'w') {|f| f.write yml_models.to_yaml }
+  	File.open("#{args[:path]}/tenant_template.yml", 'w') { |f| f.write yml_models.to_yaml }
   end
 
 
@@ -63,7 +63,7 @@ namespace :tenant_template do
 
 
   def convert_users(csv_users, locales, users_hash)
-  	csv_users.map{|csv_user| 
+  	csv_users.map{ |csv_user| 
   		yml_user = { 'email'             => csv_user['Email'], 
   			  			   'first_name'        => csv_user['First Name'],
   						     'last_name'         => csv_user['Last Name'],
@@ -81,7 +81,7 @@ namespace :tenant_template do
   end
 
   def convert_projects(csv_projects, locales, projects_hash, topics_hash, yml_project_images)
-  	csv_projects.map{|csv_project| 
+  	csv_projects.map{ |csv_project| 
   		yml_project = {	'title_multiloc'       => make_multiloc(csv_project['Title'], locales),
   						        'description_multiloc' => make_multiloc(md_to_html(csv_project['Description']), locales),
   						        'remote_header_bg_url'  => csv_project['Background Image URL']
@@ -95,7 +95,7 @@ namespace :tenant_template do
   def convert_ideas(csv_ideas, locales, 
                     ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash, 
                     yml_votes, yml_ideas_topics, yml_idea_images)
-  	csv_ideas.map{|csv_idea| 
+  	csv_ideas.map{ |csv_idea| 
   		yml_idea = { 'title_multiloc'     => make_multiloc(csv_idea['Title'], locales),
   					       'body_multiloc'      => make_multiloc(md_to_html(csv_idea['Body']), locales),
   				         'author_ref'         => users_hash[csv_idea['Author ID']],
@@ -114,7 +114,7 @@ namespace :tenant_template do
   end
 
   def convert_comments(csv_comments, locales, comments_hash, ideas_hash, users_hash)
-  	csv_comments.map{|csv_comment| 
+  	csv_comments.map{ |csv_comment| 
   		yml_comment = {	'body_multiloc' => make_multiloc(md_to_html(csv_comment['Body']), locales),
   			              'author_ref'    => users_hash[csv_comment['Author ID']],
                       'idea_ref'      => ideas_hash[csv_comment['Idea ID']],
@@ -126,7 +126,7 @@ namespace :tenant_template do
   end
 
   def convert_events(csv_events, locales, projects_hash)
-  	csv_events.map{|csv_event| 
+  	csv_events.map{ |csv_event| 
       start_at = Faker::Date.between(from: 1.year.ago, to: 1.year.from_now)
   		{	'title_multiloc'       => make_multiloc(csv_event['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_event['Description']), locales),
@@ -172,7 +172,7 @@ namespace :tenant_template do
   def generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
   	shuffled_users = users_hash.values.shuffle
   	vote_modes = Array.new(Integer(csv_idea['Upvotes'] || 0), 'up') + Array.new(Integer(csv_idea['Downvotes'] || 0), 'down')
-    new_votes = zip_min(vote_modes, shuffled_users).map {|z|  
+    new_votes = zip_min(vote_modes, shuffled_users).map { |z|  
       mode = z[0]
       user = z[1]
       { 'mode'        => mode,

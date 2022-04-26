@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SmartGroups::Rules::Role do
 
-  let(:valid_json_rule) {{
+  let(:valid_json_rule) { {
     'ruleType' => 'role',
     'predicate' => 'is_admin'
   }}
@@ -23,7 +23,7 @@ describe SmartGroups::Rules::Role do
     end
 
     it 'fails on a non-existing predicate' do
-      json_rule = valid_json_rule.tap{|r| r['predicate']='has_long_toes'}
+      json_rule = valid_json_rule.tap{ |r| r['predicate']='has_long_toes' }
       expect(SmartGroups::Rules::Role.from_json(json_rule)).to be_invalid
       expect(build(:smart_group, rules: [json_rule])).to be_invalid
     end
@@ -74,27 +74,27 @@ describe SmartGroups::Rules::Role do
 
   describe 'description_multiloc' do
 
-    let(:role_is_admin_rule) {SmartGroups::Rules::Role.from_json({
+    let(:role_is_admin_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_admin'
     })}
-    let(:role_not_is_admin_rule) {SmartGroups::Rules::Role.from_json({
+    let(:role_not_is_admin_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_admin'
     })}
-    let(:role_is_project_moderator_rule) {SmartGroups::Rules::Role.from_json({
+    let(:role_is_project_moderator_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_project_moderator'
     })}
-    let(:role_not_is_project_moderator_rule) {SmartGroups::Rules::Role.from_json({
+    let(:role_not_is_project_moderator_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_project_moderator'
     })}
-    let(:role_is_normal_user_rule) {SmartGroups::Rules::Role.from_json({
+    let(:role_is_normal_user_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_normal_user'
     })}
-    let(:role_not_is_normal_user_rule) {SmartGroups::Rules::Role.from_json({
+    let(:role_not_is_normal_user_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'not_is_normal_user'
     })}

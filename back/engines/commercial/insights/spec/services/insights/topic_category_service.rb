@@ -10,7 +10,7 @@ describe Insights::TopicCategoryService do
   let(:project) { create(:project, topics: [topic1, topic2, topic3], ideas: ideas) }
   subject(:service) { described_class.new }
   let(:view) { create(:view, scope: project) }
-  let(:user) {create(:user)}
+  let(:user) { create(:user) }
   let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   describe 'copy_assignments' do

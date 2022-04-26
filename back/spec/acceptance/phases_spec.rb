@@ -189,7 +189,7 @@ resource 'Phases' do
       end
 
       describe do
-        let(:description_multiloc) {{
+        let(:description_multiloc) { {
           'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
         }}
 
@@ -306,7 +306,7 @@ resource 'Phases' do
 
       example_request 'Delete a phase' do
         expect(response_status).to eq 200
-        expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Comment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

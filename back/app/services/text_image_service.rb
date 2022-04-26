@@ -11,14 +11,14 @@ class TextImageService
 
       # When the frontend returns the rendered src attribute.
       doc.css('img')
-        .select{|img| img.has_attribute?('src') && img.has_attribute?('data-cl2-text-image-text-reference') }
+        .select{ |img| img.has_attribute?('src') && img.has_attribute?('data-cl2-text-image-text-reference') }
         .each do |img|
           img.remove_attribute('src')
         end
 
       # When the user inserted new images in the text.
       doc.css('img')
-        .select{|img| img.has_attribute?('src') }
+        .select{ |img| img.has_attribute?('src') }
         .each do |img|
           img_src = img.attr('src')
           text_image = if img_src =~ /^data:image\/([a-zA-Z]*);base64,.*$/
@@ -45,7 +45,7 @@ class TextImageService
   def render_data_images imageable, field
     multiloc = imageable.send(field)
 
-    if multiloc.values.any?{|text| text.include? 'data-cl2-text-image-text-reference'}
+    if multiloc.values.any?{ |text| text.include? 'data-cl2-text-image-text-reference' }
       prefetched_text_images = imageable.text_images.map do |ti|
         [ti.text_reference, ti]
       end.to_h
@@ -66,7 +66,7 @@ class TextImageService
         end
 
         doc.css('img')
-          .select{|img| img.has_attribute?('data-cl2-text-image-text-reference') }
+          .select{ |img| img.has_attribute?('data-cl2-text-image-text-reference') }
           .each do |img|
             text_reference = img.attr('data-cl2-text-image-text-reference')
             text_image = prefetched_text_images[text_reference]

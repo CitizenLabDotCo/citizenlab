@@ -4,10 +4,10 @@ FactoryBot.define do
     author
     sender { 'author' }
     reply_to { 'someguy@somecity.com' }
-    subject_multiloc {{
+    subject_multiloc { {
       'en' => "We're almost done with your feedback"
     }}
-    body_multiloc {{
+    body_multiloc { {
       'en' => 'Time to check it all out!'
     }}
   end

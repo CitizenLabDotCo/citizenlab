@@ -27,8 +27,8 @@ resource 'Poll Questions' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data).map{|d| d[:relationships][:options][:data].size}).to eq [3,3,3]
-      expect(json_response.dig(:included).map{|i| i[:id]}).to match_array @questions.flat_map{|q| q.options.map(&:id)}
+      expect(json_response.dig(:data).map{ |d| d[:relationships][:options][:data].size }).to eq [3,3,3]
+      expect(json_response.dig(:included).map{ |i| i[:id] }).to match_array @questions.flat_map{ |q| q.options.map(&:id) }
     end
   end
 
@@ -49,8 +49,8 @@ resource 'Poll Questions' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data).map{|d| d[:relationships][:options][:data].size}).to eq [3,3,3]
-      expect(json_response.dig(:included).map{|i| i[:id]}).to match_array @questions.flat_map{|q| q.options.map(&:id)}
+      expect(json_response.dig(:data).map{ |d| d[:relationships][:options][:data].size }).to eq [3,3,3]
+      expect(json_response.dig(:included).map{ |i| i[:id] }).to match_array @questions.flat_map{ |q| q.options.map(&:id) }
     end
   end
 
@@ -59,7 +59,7 @@ resource 'Poll Questions' do
       @question = create(:poll_question)
     end
 
-    let(:id) {@question.id}
+    let(:id) { @question.id }
 
     example_request 'Get one question by id' do
       expect(status).to eq 200
@@ -88,8 +88,8 @@ resource 'Poll Questions' do
 
       let(:question) { build(:poll_question) }
       let(:title_multiloc) { question.title_multiloc }
-      let(:participation_context_type) { question.participation_context_type}
-      let(:participation_context_id) { question.participation_context_id}
+      let(:participation_context_type) { question.participation_context_type }
+      let(:participation_context_id) { question.participation_context_id }
       let(:question_type) { question.question_type }
 
       example_request 'Create a question' do
@@ -156,7 +156,7 @@ resource 'Poll Questions' do
         old_count = Polls::Question.count
         do_request
         expect(response_status).to eq 200
-        expect{Polls::Question.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Polls::Question.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Polls::Question.count).to eq (old_count - 1)
       end
     end

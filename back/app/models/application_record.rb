@@ -12,7 +12,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.polymorphic_associations name, as
     ActiveRecord::Base.descendants.select do |claz|
-      claz.reflect_on_all_associations.select{|asc| asc.name == name.to_sym && asc.options[:as] == as.to_sym}.present?
+      claz.reflect_on_all_associations.select{ |asc| asc.name == name.to_sym && asc.options[:as] == as.to_sym }.present?
     end
   end
 

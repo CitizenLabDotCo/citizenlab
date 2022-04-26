@@ -56,7 +56,7 @@ resource 'Volunteering Causes' do
       @cause = create(:cause)
     end
 
-    let(:id) {@cause.id}
+    let(:id) { @cause.id }
 
     example_request 'Get one cause by id' do
       expect(status).to eq 200
@@ -87,8 +87,8 @@ resource 'Volunteering Causes' do
       let(:cause) { build(:cause) }
       let(:title_multiloc) { cause.title_multiloc }
       let(:description_multiloc) { { 'en' => '<b>This is a fine description</b>' } }
-      let(:participation_context_type) { cause.participation_context_type}
-      let(:participation_context_id) { cause.participation_context_id}
+      let(:participation_context_type) { cause.participation_context_type }
+      let(:participation_context_id) { cause.participation_context_id }
 
       example_request 'Create a cause' do
         expect(response_status).to eq 201
@@ -153,7 +153,7 @@ resource 'Volunteering Causes' do
         old_count = Volunteering::Cause.count
         do_request
         expect(response_status).to eq 200
-        expect{Volunteering::Cause.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Volunteering::Cause.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Volunteering::Cause.count).to eq (old_count - 1)
       end
     end

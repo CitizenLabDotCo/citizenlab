@@ -40,13 +40,13 @@ resource 'Volunteering Volunteers' do
 
       let(:cause) { create(:cause) }
       let(:cause_id) { cause.id }
-      let!(:volunteer) { create(:volunteer, user: @user, cause: cause)}
+      let!(:volunteer) { create(:volunteer, user: @user, cause: cause) }
 
       example 'Delete the volunteering of the current user' do
         old_count = Volunteering::Volunteer.count
         do_request
         assert_status 200
-        expect{volunteer.reload}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ volunteer.reload }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Volunteering::Volunteer.count).to eq (old_count - 1)
       end
     end
@@ -78,8 +78,8 @@ resource 'Volunteering Volunteers' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response.dig(:data).map{|d| d[:relationships][:user][:data][:id]}).to match_array @volunteers.map(&:user_id)
-        expect(json_response.dig(:included).map{|i| i[:id]}).to match_array @volunteers.map(&:user_id)
+        expect(json_response.dig(:data).map{ |d| d[:relationships][:user][:data][:id] }).to match_array @volunteers.map(&:user_id)
+        expect(json_response.dig(:included).map{ |i| i[:id] }).to match_array @volunteers.map(&:user_id)
       end
     end
 

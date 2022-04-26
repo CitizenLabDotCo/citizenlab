@@ -114,13 +114,13 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_topic
     serie = votes_by_topic_serie
     topics = Topic.all.select(:id, :title_multiloc)
-    render json: { series: { total: serie }, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h }
+    render json: { series: { total: serie }, topics: topics.map{ |t| [t.id, t.attributes.except('id')] }.to_h }
   end
 
   def votes_by_topic_as_xlsx
     serie = votes_by_topic_serie
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    res = serie.map {|topic_id, count|
+    res = serie.map { |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
         'topic_id' => topic_id,
@@ -151,13 +151,13 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_project
     serie = votes_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { total: serie }, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h }
+    render json: { series: { total: serie }, projects: projects.map{ |p| [p.id, p.attributes.except('id')] }.to_h }
   end
 
   def votes_by_project_as_xlsx
     serie = votes_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    res = serie.map {|project_id, count|
+    res = serie.map { |project_id, count|
       {
         'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
         'project_id' => project_id,
@@ -256,7 +256,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     response = {
       'up' => {},
       'down' => {},
-      'total' => Hash.new{|hash,key| hash[key] = 0}
+      'total' => Hash.new{ |hash,key| hash[key] = 0 }
     }
     serie.each_with_object(response) do |((mode, date), count), object|
       object[mode][date] = count
@@ -267,7 +267,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def double_grouped_by_to_object_array serie
     res = []
     serie.each do |((mode, date), count)|
-      found_index = res.index {|item| item['date'] == date }
+      found_index = res.index { |item| item['date'] == date }
       if found_index
         res[found_index][mode] = count
         res[found_index]['total'] += count

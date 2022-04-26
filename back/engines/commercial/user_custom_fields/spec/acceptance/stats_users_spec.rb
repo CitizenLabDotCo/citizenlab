@@ -48,7 +48,7 @@ resource 'Stats - Users' do
         create_list(:user, 2, gender: 'female')
         create(:user, gender: 'unspecified')
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user)
       end
     end
@@ -81,7 +81,7 @@ resource 'Stats - Users' do
         create_list(:user, 1, gender: 'male')
         create(:user, gender: 'unspecified')
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user)
       end
     end
@@ -93,11 +93,11 @@ resource 'Stats - Users' do
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet[0].cells.map(&:value)).to match ['gender', 'users']
 
-      genders_col = worksheet.map {|col| col.cells[0].value}
+      genders_col = worksheet.map { |col| col.cells[0].value }
       header, *genders = genders_col
       expect(genders).to match_array ['_blank', 'unspecified', 'male', 'female']
 
-      amount_col = worksheet.map {|col| col.cells[1].value}
+      amount_col = worksheet.map { |col| col.cells[1].value }
       header, *amounts = amount_col
       expect(amounts).to match_array [0, 1, 1, 2]
     end
@@ -114,7 +114,7 @@ resource 'Stats - Users' do
         create_list(:user, 2, birthyear: 1980)
         create(:user, birthyear: 1976)
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -141,7 +141,7 @@ resource 'Stats - Users' do
         create_list(:user, 2, birthyear: 1980)
         create(:user, birthyear: 1976)
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
       travel_to start_at + 18.days do
@@ -171,7 +171,7 @@ end
         create_list(:user, 2, birthyear: 1980)
         create(:user, birthyear: 1976)
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -183,11 +183,11 @@ end
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet[0].cells.map(&:value)).to match ['birthyear', 'users']
 
-      birthyears_col = worksheet.map {|col| col.cells[0].value}
+      birthyears_col = worksheet.map { |col| col.cells[0].value }
       header, *birthyears = birthyears_col
       expect(birthyears).to match_array [1976, 1980, '_blank']
 
-      amount_col = worksheet.map {|col| col.cells[1].value}
+      amount_col = worksheet.map { |col| col.cells[1].value }
       header, *amounts = amount_col
       expect(amounts).to match_array [1, 2, 0]
     end
@@ -204,7 +204,7 @@ end
         create_list(:user, 2, domicile: @area1.id)
         create(:user, domicile: @area2.id)
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -242,7 +242,7 @@ end
         create_list(:user, 2, domicile: @area1.id)
         create(:user, domicile: @area2.id)
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -254,11 +254,11 @@ end
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet[0].cells.map(&:value)).to match ['area', 'area_id', 'users']
 
-      areas_col = worksheet.map {|col| col.cells[1].value}
+      areas_col = worksheet.map { |col| col.cells[1].value }
       header, *areas = areas_col
       expect(areas).to match_array [@area1.id, @area2.id, @area3.id, '_blank']
 
-      amount_col = worksheet.map {|col| col.cells[2].value}
+      amount_col = worksheet.map { |col| col.cells[2].value }
       header, *amounts = amount_col
       expect(amounts).to match_array [0, 1, 2, 0]
     end
@@ -274,7 +274,7 @@ end
         create_list(:user, 2, education: '3')
         create(:user, education: '5')
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, education: '3')
       end
     end
@@ -305,7 +305,7 @@ end
         create_list(:user, 2, education: '3')
         create(:user, education: '5')
         @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
+        User.all.each{ |u| create(:membership, user: u, group: @group) }
         create(:user, education: '3')
       end
     end
@@ -317,11 +317,11 @@ end
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet[0].cells.map(&:value)).to match ['education', 'users']
 
-      areas_col = worksheet.map {|col| col.cells[0].value}
+      areas_col = worksheet.map { |col| col.cells[0].value }
       header, *areas = areas_col
       expect(areas).to match_array [3, 5, '_blank']
 
-      amount_col = worksheet.map {|col| col.cells[1].value}
+      amount_col = worksheet.map { |col| col.cells[1].value }
       header, *amounts = amount_col
       expect(amounts).to match_array [2, 1, 0]
     end
@@ -510,15 +510,15 @@ end
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['option', 'option_id', 'users']
 
-        option_titles_col = worksheet.map {|col| col.cells[0].value}
+        option_titles_col = worksheet.map { |col| col.cells[0].value }
         header, *option_titles = option_titles_col
         expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), 'unknown']
 
-        option_ids_col = worksheet.map {|col| col.cells[1].value}
+        option_ids_col = worksheet.map { |col| col.cells[1].value }
         header, *option_ids = option_ids_col
         expect(option_ids).to match_array [@option1.key, @option2.key, @option3.key, '_blank']
 
-        users_col = worksheet.map {|col| col.cells[2].value}
+        users_col = worksheet.map { |col| col.cells[2].value }
         header, *users = users_col
         expect(users).to match_array [0, 1, 1, 1]
       end
@@ -556,11 +556,11 @@ end
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['option', 'option_id', 'users']
 
-        option_titles_col = worksheet.map {|col| col.cells[0].value}
+        option_titles_col = worksheet.map { |col| col.cells[0].value }
         header, *option_titles = option_titles_col
         expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), 'unknown']
 
-        users_col = worksheet.map {|col| col.cells[2].value}
+        users_col = worksheet.map { |col| col.cells[2].value }
         header, *users = users_col
         expect(users).to match_array [0, 2, 1, 1]
       end
@@ -593,11 +593,11 @@ end
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['option', 'users']
 
-        option_ids_col = worksheet.map {|col| col.cells[0].value}
+        option_ids_col = worksheet.map { |col| col.cells[0].value }
         header, *option_ids = option_ids_col
         expect(option_ids).to match_array ['_blank', 'false', 'true']
 
-        users_col = worksheet.map {|col| col.cells[1].value}
+        users_col = worksheet.map { |col| col.cells[1].value }
         header, *users = users_col
         expect(users).to match_array [1, 1, 1]
       end

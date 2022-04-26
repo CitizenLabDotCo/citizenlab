@@ -5,7 +5,7 @@ resource 'Survey Responses' do
 
   explanation 'One survey response contains all the answers of a single user on a survey'
 
-  let(:form_body) {{
+  let(:form_body) { {
     'id'=>'USLYB6',
     'title'=>'webhooks dev',
     'theme'=>{ 'href'=>'https://api.typeform.com/themes/6lPNE6' },

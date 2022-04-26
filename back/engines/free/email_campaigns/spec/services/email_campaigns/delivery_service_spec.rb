@@ -11,16 +11,16 @@ describe EmailCampaigns::DeliveryService do
     it 'returns campaign_types that all have at least 1 campaign_type_description and admin_campaign_type_description translation defined' do
       multiloc_service = MultilocService.new
       service.campaign_types.each do |campaign_type|
-        expect{multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type.constantize.campaign_name}")}
+        expect{ multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type.constantize.campaign_name}") }
           .to_not raise_error
-        expect{multiloc_service.i18n_to_multiloc("email_campaigns.admin_campaign_type_description.#{campaign_type.constantize.campaign_name}")}
+        expect{ multiloc_service.i18n_to_multiloc("email_campaigns.admin_campaign_type_description.#{campaign_type.constantize.campaign_name}") }
           .to_not raise_error
       end
     end
 
     it 'returns campaign_types that are all instantiatable without extra arguments, except for Manual campaign' do
       (service.campaign_types - ['EmailCampaigns::Campaigns::Manual']).each do |campaign_type|
-        expect{campaign_type.constantize.create!}.to_not raise_error
+        expect{ campaign_type.constantize.create! }.to_not raise_error
       end
     end
   end
@@ -31,7 +31,7 @@ describe EmailCampaigns::DeliveryService do
 
     it 'enqueues an internal delivery job' do
       travel_to campaign.ic_schedule.start_time do
-        expect{service.send_on_schedule(Time.now)}
+        expect{ service.send_on_schedule(Time.now) }
           .to have_enqueued_job(ActionMailer::MailDeliveryJob)
           .exactly(1).times
       end
@@ -63,7 +63,7 @@ describe EmailCampaigns::DeliveryService do
     let(:user) { create(:user) }
 
     it 'enqueues an internal event job' do
-      expect{service.send_on_activity(activity)}
+      expect{ service.send_on_activity(activity) }
         .to have_enqueued_job(ActionMailer::MailDeliveryJob)
         .exactly(1).times
     end
@@ -83,7 +83,7 @@ describe EmailCampaigns::DeliveryService do
 
       it 'delays enqueueing a job because the command specifies a delay' do
         travel_to Time.now do
-          expect{service.send_on_activity(activity)}
+          expect{ service.send_on_activity(activity) }
             .to have_enqueued_job(ActionMailer::MailDeliveryJob)
             .exactly(1).times
             .at(Time.now + 8.hours)

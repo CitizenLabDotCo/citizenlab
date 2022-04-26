@@ -56,7 +56,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
     serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments)
-      votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      votes_by_comment_id = votes.map{ |vote| [vote.votable_id, vote] }.to_h
       {
         params: fastjson_params(vbci: votes_by_comment_id), 
         include: [:author, :user_vote]
@@ -113,7 +113,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
     serialization_options = if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
-      votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      votes_by_comment_id = votes.map{ |vote| [vote.votable_id, vote] }.to_h
       {
         params: fastjson_params(vbci: votes_by_comment_id), 
         include: [:author, :user_vote] 

@@ -31,9 +31,9 @@ describe WebApi::V1::Notifications::NotificationSerializer do
   context "with 'abbreviated user names' enabled" do
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 
-    let(:jane) {create(:user, first_name: 'Jane', last_name: 'Doe')}
-    let(:john) {create(:user, first_name: 'John', last_name: 'Smith')}
-    let(:admin) {create(:admin, first_name: 'Almighty', last_name: 'Admin')}
+    let(:jane) { create(:user, first_name: 'Jane', last_name: 'Doe') }
+    let(:john) { create(:user, first_name: 'John', last_name: 'Smith') }
+    let(:admin) { create(:admin, first_name: 'Almighty', last_name: 'Admin') }
 
     it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(

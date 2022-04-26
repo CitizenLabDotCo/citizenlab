@@ -7,7 +7,7 @@ class WebApi::V1::External::InitiativeSerializer < ActiveModel::Serializer
 
 
   def header_bg
-    object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    object.header_bg && object.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
   end
 
   def url

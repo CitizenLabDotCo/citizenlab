@@ -98,7 +98,7 @@ resource 'Topics' do
         old_count = Topic.count
         do_request
         expect(response_status).to eq 200
-        expect{Topic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Topic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Topic.count).to eq (old_count - 1)
       end
 

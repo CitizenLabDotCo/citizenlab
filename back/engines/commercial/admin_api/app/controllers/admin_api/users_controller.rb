@@ -66,7 +66,7 @@ module AdminApi
       simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
       array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
 
-      [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+      [*simple_keys, array_keys.map{ |k| [k, []] }.to_h]
     end
 
     def user_params

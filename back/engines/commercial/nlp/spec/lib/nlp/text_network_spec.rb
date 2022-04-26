@@ -68,7 +68,7 @@ describe NLP::TextNetwork do
       network = build(:nlp_text_network, nb_nodes: 6, nb_communities: 2)
       network.shrink_communities(2)
 
-      child_counts = network.communities.map {|c| c.children.count }
+      child_counts = network.communities.map { |c| c.children.count }
       expect(child_counts).to all(be <= 2)
     end
 

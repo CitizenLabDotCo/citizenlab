@@ -45,7 +45,7 @@ resource 'Ideas' do
     parameter :idea_id, 'The unique ID indentifying the idea', type: 'string', required: true
 
     get 'Retrieve one idea' do
-      let(:idea_id) {@ideas.first.id}
+      let(:idea_id) { @ideas.first.id }
 
       example_request 'Get one idea by id' do
         expect(status).to eq(200)

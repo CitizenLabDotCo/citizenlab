@@ -43,7 +43,7 @@ resource 'Projects' do
   route '/api/v1/projects/:id', 'Projects: Retrieve one project' do
 
     get 'Retrieve one project' do
-      let(:id) {@projects.first.id}
+      let(:id) { @projects.first.id }
 
       example_request 'Get one project by id' do
         expect(status).to eq(200)

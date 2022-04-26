@@ -312,12 +312,12 @@ RSpec.describe User, type: :model do
     end
 
     it 'sorts from higher level roles to lower level roles by default' do
-      serie = User.order_role.map{|u| u.roles.size}
+      serie = User.order_role.map{ |u| u.roles.size }
       expect(serie).to eq serie.sort.reverse
     end
 
     it 'sorts from lower level roles to higher level roles with option asc' do
-      serie = User.order_role(:desc).map{|u| u.roles.size}
+      serie = User.order_role(:desc).map{ |u| u.roles.size }
       expect(serie).to eq serie.sort
     end
 
@@ -329,7 +329,7 @@ RSpec.describe User, type: :model do
       u.custom_field_values = {
         somekey: 'somevalue'
       }
-      expect{ u.save }.to change{ u.errors[:custom_field_values]}
+      expect{ u.save }.to change{ u.errors[:custom_field_values] }
     end
 
     it "doesn't validate when custom_field_values hasn't changed" do
@@ -454,7 +454,7 @@ RSpec.describe User, type: :model do
       strangers = [
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
-        *3.times.map{build_stubbed(:admin)}
+        *3.times.map{ build_stubbed(:admin) }
       ]
       expect(strangers).not_to include(be_super_admin)
     end

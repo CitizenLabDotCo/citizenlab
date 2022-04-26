@@ -258,7 +258,7 @@ resource 'Stats - Votes' do
           assert_status 200
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
-            expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
+            expect(json_response[:series].map{ |mode, values| values.size }.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
             expect(json_response[:series][:up].values.inject(&:+)).to eq 3
             expect(json_response[:series][:down].values.inject(&:+)).to eq 2
             expect(json_response[:series][:total].values.inject(&:+)).to eq 5
@@ -305,13 +305,13 @@ resource 'Stats - Votes' do
 
 
             expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
-            up_col = worksheet.map {|col| col.cells[1].value}
+            up_col = worksheet.map { |col| col.cells[1].value }
             header, *ups = up_col
             expect(ups.inject(&:+)).to eq 3
-            down_col = worksheet.map {|col| col.cells[2].value}
+            down_col = worksheet.map { |col| col.cells[2].value }
             header, *downs = down_col
             expect(downs.inject(&:+)).to eq 2
-            total_col = worksheet.map {|col| col.cells[3].value}
+            total_col = worksheet.map { |col| col.cells[3].value }
             header, *totals = total_col
             expect(totals.inject(&:+)).to eq 5
           end
@@ -338,7 +338,7 @@ resource 'Stats - Votes' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
-      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
+      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) } }
 
       example_request 'Votes by time (cumulative)' do
         assert_status 200
@@ -364,10 +364,10 @@ resource 'Stats - Votes' do
       let!(:topic2) { create(:topic) }
       let!(:topic3) { create(:topic) }
       let!(:project1) { create(:project, allowed_input_topics: [topic1, topic2, topic3]) }
-      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1)}
-      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1)}
-      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1)}
-      let!(:idea4) { create(:idea, idea_status: @idea_status)}
+      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1) }
+      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1) }
+      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1) }
+      let!(:idea4) { create(:idea, idea_status: @idea_status) }
       let!(:vote1) { create(:vote, votable: idea1) }
       let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
       let!(:vote3) { create(:vote, votable: idea2) }
@@ -436,10 +436,10 @@ resource 'Stats - Votes' do
       let!(:topic2) { create(:topic) }
       let!(:topic3) { create(:topic) }
       let!(:project1) { create(:project, allowed_input_topics: [topic1, topic2, topic3]) }
-      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1)}
-      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1)}
-      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1)}
-      let!(:idea4) { create(:idea, idea_status: @idea_status)}
+      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1) }
+      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1) }
+      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1) }
+      let!(:idea4) { create(:idea, idea_status: @idea_status) }
       let!(:vote1) { create(:vote, votable: idea1) }
       let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
       let!(:vote3) { create(:vote, votable: idea2) }
@@ -450,11 +450,11 @@ resource 'Stats - Votes' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
 
-        topic_ids_col = worksheet.map {|col| col.cells[1].value}
+        topic_ids_col = worksheet.map { |col| col.cells[1].value }
         header, *topic_ids = topic_ids_col
         expect(topic_ids).to match_array [topic1.id, topic2.id]
 
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts).to match_array [3, 2]
       end
@@ -477,7 +477,7 @@ resource 'Stats - Votes' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
 
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 2
       end
@@ -500,7 +500,7 @@ resource 'Stats - Votes' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
 
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 2
       end
@@ -606,11 +606,11 @@ resource 'Stats - Votes' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
 
-        project_ids_col = worksheet.map {|col| col.cells[1].value}
+        project_ids_col = worksheet.map { |col| col.cells[1].value }
         header, *project_ids = project_ids_col
         expect(project_ids).to match_array [project1.id, project2.id]
 
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts).to match_array [3, 1]
       end
@@ -636,7 +636,7 @@ resource 'Stats - Votes' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
 
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end
@@ -660,7 +660,7 @@ resource 'Stats - Votes' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
 
-        amount_col = worksheet.map {|col| col.cells[2].value}
+        amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 1
       end

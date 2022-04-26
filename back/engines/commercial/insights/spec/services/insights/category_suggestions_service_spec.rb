@@ -147,8 +147,8 @@ describe Insights::CategorySuggestionsService do
   describe '#input_to_document' do
     subject(:service) { described_class.new }
 
-    let(:title) { 'The title'}
-    let(:body) { 'The body...'}
+    let(:title) { 'The title' }
+    let(:body) { 'The body...' }
     let(:input) do
       create(:idea, body_multiloc: { en: body }, title_multiloc: { en: title })
     end

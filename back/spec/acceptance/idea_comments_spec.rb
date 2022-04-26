@@ -46,7 +46,7 @@ resource 'Comments' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 10
-        expect(json_response[:data].map{|d| d[:id]}).to eq([
+        expect(json_response[:data].map{ |d| d[:id] }).to eq([
           @c1,
           @c2,
           @c1sub1,
@@ -78,7 +78,7 @@ resource 'Comments' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].map{|d| d[:id]}).to eq([
+        expect(json_response[:data].map{ |d| d[:id] }).to eq([
           @c2, 
           @c3, 
           @c3sub1,
@@ -114,7 +114,7 @@ resource 'Comments' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
-      expect(json_response[:data].map{|d| d[:id]}).to eq([
+      expect(json_response[:data].map{ |d| d[:id] }).to eq([
         @csub1,
         @csub2,
         @csub3,
@@ -254,8 +254,8 @@ resource 'Comments' do
         vote = create(:vote, user: @user, votable: comment)
         do_request
         json_response = json_parse(response_body)
-        expect(json_response[:data].map{|d| d[:relationships][:user_vote][:data]}.compact.first[:id]).to eq vote.id
-        expect(json_response[:included].map{|i| i[:id]}).to include vote.id
+        expect(json_response[:data].map{ |d| d[:relationships][:user_vote][:data] }.compact.first[:id]).to eq vote.id
+        expect(json_response[:included].map{ |i| i[:id] }).to include vote.id
       end
     end
 
@@ -334,14 +334,14 @@ resource 'Comments' do
       describe do
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
         # Weak attempt to make it less explicit
-        let(:body_multiloc) {{ 'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker' }} 
+        let(:body_multiloc) { { 'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker' } } 
 
         example_request '[error] Create a comment with blocked words' do
           assert_status 422
           json_response = json_parse(response_body)
-          blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
+          blocked_error = json_response.dig(:errors, :base)&.select{ |err| err[:error] == 'includes_banned_words' }&.first
           expect(blocked_error).to be_present
-          expect(blocked_error.dig(:blocked_words).map{|bw| bw[:attribute]}.uniq).to eq(['body_multiloc'])
+          expect(blocked_error.dig(:blocked_words).map{ |bw| bw[:attribute] }.uniq).to eq(['body_multiloc'])
         end
       end
     end

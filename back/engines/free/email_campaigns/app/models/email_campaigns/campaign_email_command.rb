@@ -48,8 +48,8 @@ module EmailCampaigns
       campaign_email_commands = self.expand_by_content_id(campaign_email_commands, content_class)
       content_ids = campaign_email_commands.map(&"#{content_class.underscore}_id".to_sym)
       content_instances = content_class.constantize.find content_ids
-      filtered_ids = content_instances.select{|inst| yield inst}.map(&:id)
-      campaign_email_commands.select{|cec| filtered_ids.include? cec["#{content_class.underscore}_id".to_sym]}
+      filtered_ids = content_instances.select{ |inst| yield inst }.map(&:id)
+      campaign_email_commands.select{ |cec| filtered_ids.include? cec["#{content_class.underscore}_id".to_sym] }
     end
 
     def self.expand_by_content_id campaign_email_commands=self.all, content_class='Idea'

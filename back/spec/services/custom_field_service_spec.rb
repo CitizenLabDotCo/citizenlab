@@ -7,9 +7,9 @@ describe CustomFieldService do
 
   describe 'fields_to_json_schema_multiloc' do
 
-    let (:title_multiloc) {{ 'en' => 'size', 'nl-NL' => 'grootte' }}
-    let (:description_multiloc) {{ 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' }}
-    let(:fields) {[
+    let (:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
+    let (:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
+    let(:fields) { [
       create(:custom_field,
         key: 'field1',
         input_type: 'text',
@@ -195,7 +195,7 @@ describe CustomFieldService do
 
   describe 'keyify' do
     it 'throws out non-valid chars' do
-      str = (0..255).map{|i| i.chr('UTF-8').to_s}.join # keyify (parameterize call) does not work with ASCII strings
+      str = (0..255).map{ |i| i.chr('UTF-8').to_s }.join # keyify (parameterize call) does not work with ASCII strings
       expect(service.keyify(str)).to eq '0123456789_abcdefghijklmnopqrstuvwxyz___abcdefghijklmnopqrstuvwxyz_aaaaaaaeceeeeiiiidnoooooxouuuuythssaaaaaaaeceeeeiiiidnooooo_ouuuuythy'
     end
   end

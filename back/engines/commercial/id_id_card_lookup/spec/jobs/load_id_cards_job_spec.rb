@@ -6,7 +6,7 @@ RSpec.describe IdIdCardLookup::LoadIdCardsJob, type: :job do
 
   describe '#perform' do
 
-    let(:card_ids) {[
+    let(:card_ids) { [
       'aaa1',
       'bbb2',
       'ccc3',

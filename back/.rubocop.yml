@@ -18,6 +18,9 @@ Style/StringLiterals:
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 
+Layout/SpaceInsideBlockBraces:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

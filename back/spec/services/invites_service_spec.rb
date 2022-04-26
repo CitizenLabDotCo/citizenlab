@@ -14,7 +14,7 @@ describe InvitesService do
 
     context do
       let!(:groups) { create_list(:group, 3) }
-      let(:users) { build_list(:user, 10)}
+      let(:users) { build_list(:user, 10) }
       let(:hash_array) { (users.map do |user|
         {
           email: user.email,
@@ -22,13 +22,13 @@ describe InvitesService do
           last_name: rand(3) == 0 ? user.last_name : nil,
           language: rand(3) == 0 ? user.locale : nil,
           admin: rand(5) == 0 ? true : nil,
-          groups: rand(3) == 0 ? rand(3).times.map{Group.offset(rand(Group.count)).first.title_multiloc.values.first}.uniq.join(',') : nil
+          groups: rand(3) == 0 ? rand(3).times.map{ Group.offset(rand(Group.count)).first.title_multiloc.values.first }.uniq.join(',') : nil
         }
       end + [{},{},{}]).shuffle }
       let(:inviter) { create(:user) }
 
       it 'correctly creates invites when all is fine' do
-        expect{ service.bulk_create_xlsx(xlsx, {}, inviter) }.to change{Invite.count}.from(0).to(10)
+        expect{ service.bulk_create_xlsx(xlsx, {}, inviter) }.to change{ Invite.count }.from(0).to(10)
       end
     end
 
@@ -54,7 +54,7 @@ describe InvitesService do
         )
       end
 
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'user1@domain.net', text_field: 'some_value' },
 
         { email: 'user2@domain.net', checkbox_field: '1' },
@@ -67,7 +67,7 @@ describe InvitesService do
       ]}
 
       it 'initializes custom_field_values with matching column names and appropriate types' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{Invite.count}.from(0).to(7)
+        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{ Invite.count }.from(0).to(7)
 
         user = User.find_by(email: 'user1@domain.net')
         expect(user.custom_field_values).to eq({ 'text_field' => 'some_value' })
@@ -93,7 +93,7 @@ describe InvitesService do
     end
 
     context 'when email has leading spaces' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: '   user@domain.net' }
       ]}
 
@@ -104,7 +104,7 @@ describe InvitesService do
     end
 
     context 'when email has trailing spaces' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'user@domain.net   ' }
       ]}
 
@@ -127,7 +127,7 @@ describe InvitesService do
         )
       end
 
-      let(:hash_array) {[
+      let(:hash_array) { [
           { email: 'user1@domain.net', number_field: 'nan' },
           { email: 'user2@domain.net', checkbox_field: 'non-truthy' },
       ]}
@@ -173,7 +173,7 @@ describe InvitesService do
     end
 
     context 'with a reference to a non-existing group' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { groups: "The Jackson 5, #{create(:group).title_multiloc.values.first}" }
       ]}
 
@@ -187,7 +187,7 @@ describe InvitesService do
     end
 
     context 'with a malformed groups field' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         {},
         { groups: 24 }
       ]}
@@ -202,7 +202,7 @@ describe InvitesService do
     end
 
     context 'with a malformed admin field' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { admin: 'yup' }
       ]}
 
@@ -216,7 +216,7 @@ describe InvitesService do
     end
 
     context 'with an unknown language value' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { language: 'qq' }
       ]}
 
@@ -230,7 +230,7 @@ describe InvitesService do
     end
 
     context 'with an invalid email field' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'this.can\'t be an email' }
       ]}
 
@@ -245,19 +245,19 @@ describe InvitesService do
 
     context 'with an email that is already used by an active user (case insensitive)' do
       before { create(:user, email: 'someUser@somedomain.com') }
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'john@john.son' },
         { email: 'Someuser@somedomain.com' }
       ]}
 
       it "doesn't send out invitations to the existing users" do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(1)
       end
     end
 
     context 'with an email that is already invited' do
       let!(:invite) { create(:invite) }
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: invite.invitee.email }
       ]}
 
@@ -269,7 +269,7 @@ describe InvitesService do
 
 
     context 'with duplicate emails' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'someuser@somedomain.com' },
         { email: 'someuser@somedomain.com' },
         {},
@@ -286,48 +286,48 @@ describe InvitesService do
     end
 
     context 'with duplicate first and last names' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { first_name: 'John', last_name: 'Johnson' },
         { first_name: 'John', last_name: 'Johnson' },
       ]}
       it 'succeeds with unique slugs' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(2)
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(2)
       end
     end
 
     context 'with send_invite_email set to false' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'test1@example.com', send_invite_email: 'FALSE' },
         { email: 'test2@example.com', send_invite_email: '0' },
         { email: 'test3@example.com', send_invite_email: 'false' },
       ]}
 
       it 'sets send_invite_email attribute to false in the invite' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(3)
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(3)
         expect(Invite.all.pluck(:send_invite_email)).to eq [false, false, false]
       end
     end
 
     context 'with send_invite_email set to true' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'test1@example.com', send_invite_email: 'TRUE' },
         { email: 'test2@example.com', send_invite_email: '1' },
         { email: 'test3@example.com', send_invite_email: 'true' },
       ]}
 
       it 'sets send_invite_email attribute to true in the invite' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(3)
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(3)
         expect(Invite.all.pluck(:send_invite_email)).to eq [true, true, true]
       end
     end
 
     context 'with send_invite_email missing' do
-      let(:hash_array) {[
+      let(:hash_array) { [
         { email: 'test1@example.com' }
       ]}
 
       it 'sets send_invite_email attribute to true in the invite' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(1)
         expect(Invite.first.send_invite_email).to be true
       end
     end

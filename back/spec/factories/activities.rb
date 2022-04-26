@@ -3,7 +3,7 @@ FactoryBot.define do
     item_type { 'Idea' }
     item_id { SecureRandom.uuid }
     action { 'published' }
-    acted_at {Time.now}
+    acted_at { Time.now }
     user
 
     factory :published_activity do
@@ -12,7 +12,7 @@ FactoryBot.define do
 
     factory :changed_title_activity do
       action { 'changed_title' }
-      payload {{
+      payload { {
         'change' => [
           { 'en' => 'old title' },
           { 'en' => 'new title' }
@@ -22,7 +22,7 @@ FactoryBot.define do
 
     factory :changed_body_activity do
       action { 'changed_body' }
-      payload {{
+      payload { {
         'change' => [
           { 'en' => 'old body' },
           { 'en' => 'new body' }
@@ -32,7 +32,7 @@ FactoryBot.define do
 
     factory :changed_status_activity do
       action { 'changed_status' }
-      payload {{
+      payload { {
         'change' => [
           'somepreviousstatusid',
           'somenewstatusid'

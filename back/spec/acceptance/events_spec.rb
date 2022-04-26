@@ -124,7 +124,7 @@ resource 'Events' do
         let(:project_id) { @project.id }
         let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
-        let(:end_at) { event.start_at - 1.day}
+        let(:end_at) { event.start_at - 1.day }
 
         example_request '[error] Create an invalid event' do
           assert_status 422
@@ -162,7 +162,7 @@ resource 'Events' do
       let(:id) { event.id }
       example_request 'Delete a event' do
         assert_status 200
-        expect{Event.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect{ Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

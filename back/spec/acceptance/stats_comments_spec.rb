@@ -130,7 +130,7 @@ resource 'Stats - Comments' do
 
         describe 'with time filter outside of platform lifetime' do
           let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day}
+          let(:end_at) { now - 1.year + 1.day }
 
           it 'returns no entries' do
             do_request
@@ -168,7 +168,7 @@ resource 'Stats - Comments' do
 
         describe 'with time filter outside of platform lifetime' do
           let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day}
+          let(:end_at) { now - 1.year + 1.day }
 
           it 'returns no entries' do
             do_request
@@ -232,7 +232,7 @@ resource 'Stats - Comments' do
             worksheet = worksheets.worksheets[0]
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
             expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-            amount_col = worksheet.map {|col| col.cells[1].value}
+            amount_col = worksheet.map { |col| col.cells[1].value }
             header, *amounts = amount_col
             expect(amounts.inject(&:+)).to eq 5
           end
@@ -240,7 +240,7 @@ resource 'Stats - Comments' do
 
         describe 'with time filter outside of platform lifetime' do
           let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day}
+          let(:end_at) { now - 1.year + 1.day }
 
           it 'returns no entries' do
             do_request
@@ -272,7 +272,7 @@ resource 'Stats - Comments' do
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
             # monotonically increasing
             expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-            amount_col = worksheet.map {|col| col.cells[1].value}
+            amount_col = worksheet.map { |col| col.cells[1].value }
             header, *amounts = amount_col
             expect(amounts.sort).to eq amounts
             expect(amounts.last).to eq 6
@@ -281,7 +281,7 @@ resource 'Stats - Comments' do
 
         describe 'with time filter outside of platform lifetime' do
           let(:start_at) { now - 1.year }
-          let(:end_at) { now - 1.year + 1.day}
+          let(:end_at) { now - 1.year + 1.day }
 
           it 'returns no entries' do
             do_request
@@ -306,7 +306,7 @@ resource 'Stats - Comments' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
-          amount_col = worksheet.map {|col| col.cells[1].value}
+          amount_col = worksheet.map { |col| col.cells[1].value }
           header, *amounts = amount_col
           expect(amounts.last).to eq 1
         end
@@ -452,11 +452,11 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
 
-          topic_ids_col = worksheet.map {|col| col.cells[1].value}
+          topic_ids_col = worksheet.map { |col| col.cells[1].value }
           header, *topic_ids = topic_ids_col
           expect(topic_ids).to match_array [@topic1.id, @topic2.id]
 
-          amount_col = worksheet.map {|col| col.cells[2].value}
+          amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
           expect(amounts).to match_array [3, 2]
         end
@@ -481,7 +481,7 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
 
-          amount_col = worksheet.map {|col| col.cells[2].value}
+          amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
           expect(amounts.inject(&:+)).to eq 2
         end
@@ -507,7 +507,7 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
 
-          amount_col = worksheet.map {|col| col.cells[2].value}
+          amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
           expect(amounts.inject(&:+)).to eq 2
         end
@@ -635,15 +635,15 @@ resource 'Stats - Comments' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
-          project_id_col = worksheet.map {|col| col.cells[1].value}
+          project_id_col = worksheet.map { |col| col.cells[1].value }
           header, *project_ids = project_id_col
           expect(project_ids).to match_array [@project1.id, @project2.id]
 
-          project_name_col = worksheet.map {|col| col.cells[0].value}
+          project_name_col = worksheet.map { |col| col.cells[0].value }
           header, *project_names = project_name_col
           expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
 
-          comment_col = worksheet.map {|col| col.cells[2].value}
+          comment_col = worksheet.map { |col| col.cells[2].value }
           header, *comments = comment_col
           expect(comments).to match_array [3,1]
         end
@@ -672,7 +672,7 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
 
-          amount_col = worksheet.map {|col| col.cells[2].value}
+          amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
           expect(amounts.inject(&:+)).to eq 1
         end
@@ -699,7 +699,7 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
 
-          amount_col = worksheet.map {|col| col.cells[2].value}
+          amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
           expect(amounts.inject(&:+)).to eq 1
         end

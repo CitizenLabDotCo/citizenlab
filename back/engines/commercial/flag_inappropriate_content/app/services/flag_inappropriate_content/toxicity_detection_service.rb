@@ -57,7 +57,7 @@ module FlagInappropriateContent
     end
 
     def toxicity_detected? res
-      res.any?{|h| h['is_inappropriate']}
+      res.any?{ |h| h['is_inappropriate'] }
     end
   end
 end

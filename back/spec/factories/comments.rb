@@ -4,7 +4,7 @@ FactoryBot.define do
     association :post, factory: :idea
     parent { nil }
     publication_status { 'published' }
-    body_multiloc {{
+    body_multiloc { {
       'en' => '<p>I think this is a very good idea!</p>',
       'nl-BE' => '<p>Geweldig idee!</p>'
     }}
@@ -30,7 +30,7 @@ FactoryBot.define do
     association :post, factory: :idea
     association :parent, factory: :comment
     publication_status { 'published' }
-    body_multiloc {{
+    body_multiloc { {
       'en' => '<p>After some more thinking, there are some issues actually ...!</p>',
       'nl-BE' => '<p>Na een nachtje slapen moet ik toegeven dat er toch nog wel problemen mee zijn</p>'
     }}

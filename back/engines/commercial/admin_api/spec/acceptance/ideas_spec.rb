@@ -18,7 +18,7 @@ resource 'Idea', admin_api: true do
       expect(json_response[:idea][:id]).to eq idea_id
       expect(json_response[:idea][:title_multiloc].stringify_keys).to eq idea.title_multiloc
       expect(json_response[:idea][:body_multiloc].stringify_keys).to eq idea.body_multiloc
-      expect(json_response[:idea][:topics].map{|t| t[:id]}).to match_array(idea.topic_ids)
+      expect(json_response[:idea][:topics].map{ |t| t[:id] }).to match_array(idea.topic_ids)
       expect(json_response[:idea][:author][:id]).to eq idea.author_id
     end
   end

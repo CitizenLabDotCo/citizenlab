@@ -8,7 +8,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
     let(:custom_field) { create(:custom_field_select) }
     let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
 
-    let(:valid_json_rule) {{
+    let(:valid_json_rule) { {
       'ruleType' => 'custom_field_select',
       'customFieldId' => custom_field.id,
       'predicate' => 'has_value',
@@ -22,33 +22,33 @@ describe SmartGroups::Rules::CustomFieldSelect do
     end
 
     it 'fails on a non-existing custom field' do
-      rule = valid_rule.tap{|r| r.custom_field_id='garbage'}
+      rule = valid_rule.tap{ |r| r.custom_field_id='garbage' }
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
     it 'fails on a non-existing custom field option' do
-      rule = valid_rule.tap{|r| r.value='garbage'}
+      rule = valid_rule.tap{ |r| r.value='garbage' }
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
     it 'fails on a custom field option from another custom field' do
       other_custom_field_option = create(:custom_field_option, custom_field: create(:custom_field_select))
-      rule = valid_rule.tap{|r| r.value=other_custom_field_option.id}
+      rule = valid_rule.tap{ |r| r.value=other_custom_field_option.id }
       expect(rule).to be_invalid
       # TODO
       # expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
     it 'successfully validate the valid multi-value rule' do
-      rule = valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[options.first.id, options.last.id]}
+      rule = valid_rule.tap{ |r| r.predicate='is_one_of'; r.value=[options.first.id, options.last.id] }
       expect(rule).to be_valid
       expect(build(:smart_group, rules: [rule.as_json])).to be_valid
     end
 
     it 'fails on a non-existing custom field option' do
-      rule = valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[options.first.id, 'garbage']}
+      rule = valid_rule.tap{ |r| r.predicate='is_one_of'; r.value=[options.first.id, 'garbage'] }
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
@@ -59,7 +59,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
     context 'on a select field' do
 
       let(:custom_field) { create(:custom_field_select, required: false) }
-      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field )}
+      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field ) }
 
       let!(:users) {
         users = build_list(:user, 5)
@@ -106,7 +106,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
     context 'on a multiselect field' do
 
       let(:custom_field) { create(:custom_field_multiselect, required: false) }
-      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field )}
+      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field ) }
 
       let!(:users) {
         users = build_list(:user, 5)
@@ -154,7 +154,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
   end
 
   describe 'description_multiloc' do
-    let(:custom_field) {create(:custom_field_select, title_multiloc: {
+    let(:custom_field) { create(:custom_field_select, title_multiloc: {
       'en'    => 'Where should we put the immigrants?',
       'fr-FR' => 'Où devrions-nous placer les immigrants?',
       'nl-NL' => 'Waar moeten we de immigraten plaatsen?'
@@ -170,36 +170,36 @@ describe SmartGroups::Rules::CustomFieldSelect do
       'nl-NL' => 'In scholen'
     })}
 
-    let(:custom_field_select_has_value_rule) {SmartGroups::Rules::CustomFieldSelect.from_json({
+    let(:custom_field_select_has_value_rule) { SmartGroups::Rules::CustomFieldSelect.from_json({
       'ruleType'      => 'custom_field_select',
       'predicate'     => 'has_value',
       'customFieldId' => custom_field.id,
       'value'         => train_station.id
     })}
-    let(:custom_field_select_not_has_value_rule) {SmartGroups::Rules::CustomFieldSelect.from_json({
+    let(:custom_field_select_not_has_value_rule) { SmartGroups::Rules::CustomFieldSelect.from_json({
       'ruleType'      => 'custom_field_select',
       'predicate'     => 'not_has_value',
       'customFieldId' => custom_field.id,
       'value'         => train_station.id
     })}
-    let(:custom_field_select_is_one_of_rule) {SmartGroups::Rules::CustomFieldSelect.from_json({
+    let(:custom_field_select_is_one_of_rule) { SmartGroups::Rules::CustomFieldSelect.from_json({
       'ruleType'      => 'custom_field_select',
       'predicate'     => 'is_one_of',
       'customFieldId' => custom_field.id,
       'value'         => [train_station.id]
     })}
-    let(:custom_field_select_not_is_one_of_rule) {SmartGroups::Rules::CustomFieldSelect.from_json({
+    let(:custom_field_select_not_is_one_of_rule) { SmartGroups::Rules::CustomFieldSelect.from_json({
       'ruleType'      => 'custom_field_select',
       'predicate'     => 'not_is_one_of',
       'customFieldId' => custom_field.id,
       'value'         => [train_station.id, schools.id]
     })}
-    let(:custom_field_select_is_empty_rule) {SmartGroups::Rules::CustomFieldSelect.from_json({
+    let(:custom_field_select_is_empty_rule) { SmartGroups::Rules::CustomFieldSelect.from_json({
       'ruleType'      => 'custom_field_select',
       'predicate'     => 'is_empty',
       'customFieldId' => custom_field.id
     })}
-    let(:custom_field_select_not_is_empty_rule) {SmartGroups::Rules::CustomFieldSelect.from_json({
+    let(:custom_field_select_not_is_empty_rule) { SmartGroups::Rules::CustomFieldSelect.from_json({
       'ruleType'      => 'custom_field_select',
       'predicate'     => 'not_is_empty',
       'customFieldId' => custom_field.id

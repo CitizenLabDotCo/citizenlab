@@ -15,9 +15,9 @@ module JsonFormsIdeasOverrides
           label: I18n.t("custom_forms.categories.main_content.#{input_term}.title", locale: locale),
           options: { id: 'mainContent' },
           elements: [
-            yield(fields.find{|f| f.code == 'title_multiloc'}),
-            yield(fields.find{|f| f.code == 'author_id'}),
-            yield(fields.find{|f| f.code == 'body_multiloc'}),
+            yield(fields.find{ |f| f.code == 'title_multiloc' }),
+            yield(fields.find{ |f| f.code == 'author_id' }),
+            yield(fields.find{ |f| f.code == 'body_multiloc' }),
           ].compact
         },
         {
@@ -25,10 +25,10 @@ module JsonFormsIdeasOverrides
           options: { id: 'details' },
           label: I18n.t('custom_forms.categories.details.title', locale: locale),
           elements: [
-            yield(fields.find{|f| f.code == 'proposed_budget'}),
-            yield(fields.find{|f| f.code == 'budget'}),
-            yield(fields.find{|f| f.code == 'topic_ids'}),
-            yield(fields.find{|f| f.code == 'location_description'}),
+            yield(fields.find{ |f| f.code == 'proposed_budget' }),
+            yield(fields.find{ |f| f.code == 'budget' }),
+            yield(fields.find{ |f| f.code == 'topic_ids' }),
+            yield(fields.find{ |f| f.code == 'location_description' }),
           ].compact
         },
         {
@@ -36,15 +36,15 @@ module JsonFormsIdeasOverrides
           label: I18n.t('custom_forms.categories.attachements.title', locale: locale),
           options: { id: 'attachments' },
           elements: [
-            yield(fields.find{|f| f.code == 'idea_images_attributes'}),
-            yield(fields.find{|f| f.code == 'idea_files_attributes'}),
+            yield(fields.find{ |f| f.code == 'idea_images_attributes' }),
+            yield(fields.find{ |f| f.code == 'idea_files_attributes' }),
           ].compact
         },
         {
           type: 'Category',
           options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
-          elements: fields.reject(&:built_in?).map{|f| yield f}
+          elements: fields.reject(&:built_in?).map{ |f| yield f }
         }
       ].compact)
     }
@@ -165,6 +165,6 @@ module JsonFormsIdeasOverrides
           f.resource.project&.participation_method == 'budgeting'
         ) || (
           f.resource.project&.process_type == 'timeline' &&
-          f.resource.project&.phases.any? { |p| p.participation_method == 'budgeting'}) )}
+          f.resource.project&.phases.any? { |p| p.participation_method == 'budgeting' }) )}
   end
 end

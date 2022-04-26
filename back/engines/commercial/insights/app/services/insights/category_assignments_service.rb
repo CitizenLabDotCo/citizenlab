@@ -143,7 +143,7 @@ module Insights
 
     # Updating 'inputs_count' of categories.
     def update_counts_of(categories)
-      categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size })}
+      categories.each { |cat| cat.update({ inputs_count: CategoryAssignment.where(category_id: cat.id).size }) }
     end
 
     def processed_service
