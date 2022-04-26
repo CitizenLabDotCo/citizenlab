@@ -1,5 +1,11 @@
 # Changelog
 
+## Next Release
+
+### Fixed
+
+- Changed our time/date helper utilities to accurately compare dates for phases starting and ending accounting for user's local timezone
+
 ## 2022-04-25
 
 ### Changed
