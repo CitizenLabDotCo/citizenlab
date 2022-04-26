@@ -29,8 +29,8 @@ class BasketsIdea < ApplicationRecord
   private
 
   def idea_with_budget
-  	if !idea.budget
-  		errors.add(:idea, :has_no_budget, message: 'does not have a specified budget')
-  	end
+    if !idea.budget
+      errors.add(:idea, :has_no_budget, message: 'does not have a specified budget')
+    end
   end
 end

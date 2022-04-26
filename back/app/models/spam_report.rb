@@ -34,7 +34,7 @@ class SpamReport < ApplicationRecord
   validates :spam_reportable, presence: true
   validates :reason_code, inclusion: { in: REASON_CODES }, presence: true
   validates_each :other_reason do |record, attr, value|
-  	if (record.reason_code != 'other' && !value.blank?)
+    if (record.reason_code != 'other' && !value.blank?)
       record.errors.add(attr, "must be blank if a different reason code than 'other' was selected")
     end
   end

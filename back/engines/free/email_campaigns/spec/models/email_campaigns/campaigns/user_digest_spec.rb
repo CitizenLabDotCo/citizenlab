@@ -8,8 +8,8 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
   end
 
   describe '#generate_commands' do
-  	let(:campaign) { create(:user_digest_campaign) }
-  	let!(:user) { create(:user) }
+    let(:campaign) { create(:user_digest_campaign) }
+    let!(:user) { create(:user) }
     let!(:new_project) { create(:project, created_at: Time.now - 1.day) }
     let!(:projects) { create_list(:project, 2, created_at: Time.now - 5.days) + [new_project] }
     let!(:top_idea) { create(:idea, project: new_project, published_at: Time.now - 1.hour) }
@@ -20,12 +20,12 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
     let!(:votes) { create_list(:vote, 3, mode: 'up', votable: top_idea) + [top_idea] }
     let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
 
-  	it 'generates a command with the desired payload and tracked content' do
-  		command = campaign.generate_commands(recipient: user).first
+    it 'generates a command with the desired payload and tracked content' do
+      command = campaign.generate_commands(recipient: user).first
 
       expect(
-      	command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
-      	).to include(new_project.created_at.iso8601)
+        command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
+        ).to include(new_project.created_at.iso8601)
       expect(
         command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
         ).not_to include(draft_project.created_at.iso8601)

@@ -7,7 +7,7 @@ describe InitiativeVotePolicy do
   let!(:vote) { create(:vote, votable: votable) }
 
   context 'for a visitor' do
-  	let(:user) { nil }
+    let(:user) { nil }
 
     it { should_not permit(:show) }
     it { should_not permit(:create) }
@@ -21,7 +21,7 @@ describe InitiativeVotePolicy do
   end
 
   context 'for a mortal user on a vote of another user' do
-  	let(:user) { create(:user) }
+    let(:user) { create(:user) }
 
     it { should_not permit(:show) }
     it { should_not permit(:create) }
@@ -35,7 +35,7 @@ describe InitiativeVotePolicy do
   end
 
   context 'for a mortal user who owns the vote' do
-  	let(:user) { vote.user }
+    let(:user) { vote.user }
 
     it { should     permit(:show) }
     it { should     permit(:create) }
@@ -49,7 +49,7 @@ describe InitiativeVotePolicy do
   end
 
   context 'for an admin' do
-  	let(:user) { create(:admin) }
+    let(:user) { create(:admin) }
 
     it { should     permit(:show) }
     it { should_not permit(:create) }

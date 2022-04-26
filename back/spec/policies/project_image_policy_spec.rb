@@ -8,20 +8,20 @@ describe ProjectImagePolicy do
     let(:project) { create(:continuous_project) }
     let!(:image) { create(:project_image, project: project) }
 
-	  context 'for a visitor' do
-	  	let(:user) { nil }
+    context 'for a visitor' do
+      let(:user) { nil }
 
-	    it { should     permit(:show)    }
-	    it { should_not permit(:create)  }
-	    it { should_not permit(:update)  }
-	    it { should_not permit(:destroy) }
+      it { should     permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
 
-	    it 'should index the image' do
-	      expect(scope.resolve.size).to eq 1
-	    end
-	  end
+      it 'should index the image' do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
 
-	  context 'for a mortal user' do
+    context 'for a mortal user' do
       let(:user) { create(:user) }
 
       it { should     permit(:show)    }
@@ -46,10 +46,10 @@ describe ProjectImagePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
-	end
+  end
 
-	 context 'on an image in a private admins project' do
-	 	let(:project) { create(:private_admins_project) }
+   context 'on an image in a private admins project' do
+     let(:project) { create(:private_admins_project) }
     let!(:image) { create(:project_image, project: project) }
 
     context 'for a user' do

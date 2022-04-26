@@ -21,7 +21,7 @@
 class PhaseFile < ApplicationRecord
   EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
 
-	mount_base64_file_uploader :file, PhaseFileUploader
+  mount_base64_file_uploader :file, PhaseFileUploader
   belongs_to :phase
 
   validates :phase, :file, :name, presence: true

@@ -1,5 +1,5 @@
 module Volunteering
-	class CauseImageUploader < BaseImageUploader
+  class CauseImageUploader < BaseImageUploader
 
     version :small do
       process resize_to_fill: [96, 96]

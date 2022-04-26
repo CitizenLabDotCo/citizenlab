@@ -48,8 +48,8 @@ describe XlsxService do
       select_col_index = title_row.find_index(custom_select.title_multiloc['en'])
       options_col = worksheet.map { |col| col.cells[select_col_index].value }
 
-    	expect(title_row).to include(*custom_fields_headers)
-    	expect(options_col).to include(custom_options[0].title_multiloc['en'])
+      expect(title_row).to include(*custom_fields_headers)
+      expect(options_col).to include(custom_options[0].title_multiloc['en'])
     end
 
     describe do

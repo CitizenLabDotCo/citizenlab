@@ -21,7 +21,7 @@
 module EmailCampaigns
   class CampaignEmailCommand < ApplicationRecord
 
-  	CAMPAIGNS = %w(
+    CAMPAIGNS = %w(
       user_platform_digest
       admin_weekly_report
       moderator_digest
@@ -63,7 +63,7 @@ module EmailCampaigns
     private
 
     def set_commanded_at
-    	self.commanded_at = Time.now
+      self.commanded_at = Time.now
     end
 
   end

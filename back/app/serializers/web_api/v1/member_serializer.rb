@@ -14,7 +14,7 @@ class WebApi::V1::MemberSerializer < WebApi::V1::BaseSerializer
   attribute :is_member, if: Proc.new { |object, params|
     params[:group_id]
   } do |object, params|
-  	object.member_of? params[:group_id]
+    object.member_of? params[:group_id]
   end
 
 

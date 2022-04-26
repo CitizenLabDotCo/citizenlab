@@ -1,4 +1,4 @@
 module Verification
-	class VerificationController < ::ApplicationController
-	end
+  class VerificationController < ::ApplicationController
+  end
 end

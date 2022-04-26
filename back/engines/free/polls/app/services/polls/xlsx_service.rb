@@ -1,7 +1,7 @@
 module Polls
-	class XlsxService
+  class XlsxService
 
-		def generate_poll_results_xlsx(participation_context, responses, current_user)
+    def generate_poll_results_xlsx(participation_context, responses, current_user)
       multiloc_service = MultilocService.new
       is_anonymous = participation_context.poll_anonymous?
       questions = Polls::Question
@@ -22,20 +22,20 @@ module Polls
 
     private
 
-		def compute_user_columns(is_anonymous, is_admin)
-			return [] if is_anonymous
+    def compute_user_columns(is_anonymous, is_admin)
+      return [] if is_anonymous
 
-			columns = [
-				{ header: 'User ID',    f: -> (r) { r.user_id }, skip_sanitization: true },
-				{ header: 'First Name', f: -> (r) { r.user.first_name } },
-				{ header: 'Last Name',  f: -> (r) { r.user.last_name } }
-			]
+      columns = [
+        { header: 'User ID',    f: -> (r) { r.user_id }, skip_sanitization: true },
+        { header: 'First Name', f: -> (r) { r.user.first_name } },
+        { header: 'Last Name',  f: -> (r) { r.user.last_name } }
+      ]
 
-			columns << { header: 'Email', f: -> (r) { r.user.email } } if is_admin
+      columns << { header: 'Email', f: -> (r) { r.user.email } } if is_admin
       columns.concat ::XlsxService.new.custom_field_columns :user, is_admin
 
-			columns
-		end
+      columns
+    end
 
     def extract_responses(response_obj, question_id, multiloc_service)
       resp_opts = response_obj.response_options.select { |ro| ro.option.question_id == question_id }
@@ -46,5 +46,5 @@ module Polls
         .join(', ')
     end
 
-	end
+  end
 end
