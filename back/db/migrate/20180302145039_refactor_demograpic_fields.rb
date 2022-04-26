@@ -1,6 +1,6 @@
 class RefactorDemograpicFields < ActiveRecord::Migration[5.1]
 
-  def stringify_values obj
+  def stringify_values(obj)
     obj.map do |k,v|
       [k, v && v.to_s]
     end.to_h

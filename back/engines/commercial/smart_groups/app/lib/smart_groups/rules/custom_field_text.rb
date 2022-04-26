@@ -56,13 +56,13 @@ module SmartGroups::Rules
       'custom_field_text'
     end
 
-    def initialize custom_field_id, predicate, value=nil
+    def initialize(custom_field_id, predicate, value=nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       case predicate

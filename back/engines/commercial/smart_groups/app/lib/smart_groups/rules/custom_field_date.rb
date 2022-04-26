@@ -62,7 +62,7 @@ module SmartGroups::Rules
       'custom_field_date'
     end
 
-    def initialize custom_field_id, predicate, value=nil
+    def initialize(custom_field_id, predicate, value=nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
       if value.class == Time
@@ -72,7 +72,7 @@ module SmartGroups::Rules
       end
     end
 
-    def filter users_scope
+    def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       if custom_field.input_type == 'date'
@@ -94,7 +94,7 @@ module SmartGroups::Rules
     end
 
 
-    def description_value locale
+    def description_value(locale)
       if value.present?
         locale ||= I18n.locale
         I18n.with_locale(locale) do

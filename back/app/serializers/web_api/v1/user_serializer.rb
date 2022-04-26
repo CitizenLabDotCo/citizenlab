@@ -32,7 +32,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
 
-  def self.view_private_attributes? object, params={}
+  def self.view_private_attributes?(object, params={})
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end
 end

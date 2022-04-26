@@ -60,7 +60,7 @@ module Notifications
     EVENT_NAME = 'Project moderation rights received'
 
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       recipient_id = activity.item_id
       initiator_id = activity.user_id
       project_id = activity.payload['project_id']

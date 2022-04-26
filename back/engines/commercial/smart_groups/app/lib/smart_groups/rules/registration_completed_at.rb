@@ -57,16 +57,16 @@ module SmartGroups::Rules
       'registration_completed_at'
     end
 
-    def self.from_json json
+    def self.from_json(json)
       self.new(json['predicate'], json['value'])
     end
 
-    def initialize predicate, value=nil
+    def initialize(predicate, value=nil)
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       case predicate
       when 'is_before'
         users_scope.where('registration_completed_at::date < (?)::date', value)
@@ -83,7 +83,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_property locale
+    def description_property(locale)
       I18n.with_locale(locale) do
         I18n.t!('smart_group_rules.registration_completed_at.property')
       end
@@ -93,7 +93,7 @@ module SmartGroups::Rules
       CustomFieldDate.rule_type
     end
 
-    def description_value locale
+    def description_value(locale)
       if value.present?
         locale ||= I18n.locale
         I18n.with_locale(locale) do

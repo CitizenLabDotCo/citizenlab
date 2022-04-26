@@ -62,7 +62,7 @@ module Notifications
     EVENT_NAME = 'Status change on commented initiative'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       initiative = activity.item
 
       if initiative.present?

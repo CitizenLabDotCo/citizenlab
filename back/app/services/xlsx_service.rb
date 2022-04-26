@@ -315,7 +315,7 @@ class XlsxService
     s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
   end
 
-  def convert_to_text_long_lines html
+  def convert_to_text_long_lines(html)
     convert_to_text(html).gsub(/\n/, ' ')
   end
 

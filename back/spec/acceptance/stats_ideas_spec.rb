@@ -3,29 +3,29 @@ require 'rspec_api_documentation/dsl'
 
 multiloc_service = MultilocService.new
 
-def time_boundary_parameters s
+def time_boundary_parameters(s)
   s.parameter :start_at, 'Date defining from where results should start', required: false
   s.parameter :end_at, 'Date defining till when results should go', required: false
 end
 
-def time_series_parameters s
+def time_series_parameters(s)
   time_boundary_parameters s
   s.parameter :interval, 'Either day, week, month, year', required: true
 end
 
-def project_filter_parameter s
+def project_filter_parameter(s)
   s.parameter :project, 'Project ID. Only count ideas that are in the given project', required: false
 end
 
-def group_filter_parameter s
+def group_filter_parameter(s)
   s.parameter :group, 'Group ID. Only count ideas posted by users in the given group', required: false
 end
 
-def topic_filter_parameter s
+def topic_filter_parameter(s)
   s.parameter :topic, 'Topic ID. Only count ideas that have the given topic assigned', required: false
 end
 
-def feedback_needed_filter_parameter s
+def feedback_needed_filter_parameter(s)
   s.parameter :feedback_needed, 'Only count ideas that need feedback', required: false
 end
 

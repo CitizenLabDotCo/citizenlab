@@ -20,7 +20,7 @@ module IdClaveUnica
       [:client_id, :client_secret]
     end
 
-    def profile_to_uid auth
+    def profile_to_uid(auth)
       auth['uid'] || auth.dig('extra','raw_info','RolUnico','numero')
     end
 

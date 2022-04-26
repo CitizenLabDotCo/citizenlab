@@ -60,7 +60,7 @@ module EmailCampaigns
       'admin'
     end
 
-    def generate_commands recipient:, time: nil
+    def generate_commands(recipient:, time: nil)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.map do |project_id|
         project = Project.find project_id
@@ -87,20 +87,20 @@ module EmailCampaigns
 
     private
 
-    def user_filter_moderator_only users_scope, options={}
+    def user_filter_moderator_only(users_scope, options={})
       users_scope.where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
 
-    def user_filter_no_invitees users_scope, options={}
+    def user_filter_no_invitees(users_scope, options={})
       users_scope.active
     end
 
-    def is_content_worth_sending? _
+    def is_content_worth_sending?(_)
       # TODO figure out which moderator and project we're talking about
       true
     end
 
-    def statistics project
+    def statistics(project)
       ps = ParticipantsService.new
       participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
       participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
@@ -133,7 +133,7 @@ module EmailCampaigns
       }
     end
 
-    def has_nonzero_statistics statistics
+    def has_nonzero_statistics(statistics)
       !( (statistics.dig(:activities,:new_ideas,:increase) == 0) &&
          (statistics.dig(:activities,:new_ideas,:increase) == 0) &&
          (statistics.dig(:activities,:new_comments,:increase) == 0) &&
@@ -149,7 +149,7 @@ module EmailCampaigns
       ((t_2 - t_1) / 1.day).days
     end
 
-    def stat_increase ts
+    def stat_increase(ts)
       second_last_agos = ts.select{ |t| t > (Time.now - (days_ago * 2)) }
       last_agos = second_last_agos.select{ |t| t > (Time.now - days_ago) }
       {
@@ -159,7 +159,7 @@ module EmailCampaigns
     end
 
     # @param [UserDisplayNameService] name_service
-    def top_ideas project, name_service
+    def top_ideas(project, name_service)
       # take N_TOP_IDEAS
       top_ideas = Idea.published.where project_id: project.id
       top_ideas = top_ideas.all.select do |idea|
@@ -187,7 +187,7 @@ module EmailCampaigns
       }
     end
 
-    def idea_activity_count idea
+    def idea_activity_count(idea)
       new_vote_count = idea.votes.where('created_at > ?', Time.now - days_ago).count
       new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
       new_vote_count + new_comments_count

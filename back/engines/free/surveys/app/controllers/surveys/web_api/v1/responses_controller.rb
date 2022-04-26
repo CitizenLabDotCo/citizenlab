@@ -31,7 +31,7 @@ module Surveys
           @participation_context = params[:pc_class].find(params[:participation_context_id])
         end
 
-        def typeform_authorization_error exception
+        def typeform_authorization_error(exception)
           render json: { errors: { base: [{ error: exception.error_key, message: exception.description }] } }, status: 403
         end
       end

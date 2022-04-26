@@ -3,7 +3,7 @@ module BlockingProfanity
 
   class ProfanityBlockedError < StandardError
     attr_reader :blocked_words
-    def initialize blocked_words
+    def initialize(blocked_words)
       super
       @blocked_words = blocked_words
     end
@@ -19,7 +19,7 @@ module BlockingProfanity
     rescue_from ProfanityBlockedError, with: :render_profanity_blocked
   end
 
-  def verify_profanity object
+  def verify_profanity(object)
     return if !AppConfiguration.instance.feature_activated? 'blocking_profanity'
     
     blocked_words = []
@@ -46,7 +46,7 @@ module BlockingProfanity
 
   private
 
-  def render_profanity_blocked exception
+  def render_profanity_blocked(exception)
     render json: { errors: { base: [{ error: :includes_banned_words, blocked_words: exception.blocked_words }] } }, status: 422
   end
 end

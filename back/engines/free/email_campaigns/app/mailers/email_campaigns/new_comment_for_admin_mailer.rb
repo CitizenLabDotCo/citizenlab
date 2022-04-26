@@ -25,7 +25,7 @@ module EmailCampaigns
       })
     end
 
-    def time_ago d
+    def time_ago(d)
       diff_days = ((Time.now - Time.parse(d)) / 1.day)
       if diff_days < 1
         format_message('today')

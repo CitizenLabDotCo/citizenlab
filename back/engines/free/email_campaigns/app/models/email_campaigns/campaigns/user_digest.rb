@@ -58,7 +58,7 @@ module EmailCampaigns
       UserDigestMailer
     end
 
-    def generate_commands recipient:, time: nil
+    def generate_commands(recipient:, time: nil)
       time ||= Time.now
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 
@@ -92,7 +92,7 @@ module EmailCampaigns
     end
 
     # @return [Boolean]
-    def is_content_worth_sending? _
+    def is_content_worth_sending?(_)
       @is_worth_sending ||= TrendingIdeaService.new.filter_trending(
         IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
         ).count('*') >= N_TOP_IDEAS
@@ -100,7 +100,7 @@ module EmailCampaigns
 
     private
 
-    def user_filter_no_invitees users_scope, options={}
+    def user_filter_no_invitees(users_scope, options={})
       users_scope.active
     end
 
@@ -135,13 +135,13 @@ module EmailCampaigns
       res
     end
 
-    def discover_projects projects
+    def discover_projects(projects)
       projects.sort_by do |project|
         project.created_at
       end.reverse.take(N_DISCOVER_PROJECTS)
     end
 
-    def top_idea_payload idea, recipient
+    def top_idea_payload(idea, recipient)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       {
         title_multiloc: idea.title_multiloc,
@@ -167,7 +167,7 @@ module EmailCampaigns
       }
     end
 
-    def top_comment_payload comment, name_service
+    def top_comment_payload(comment, name_service)
       {
         body_multiloc: comment.body_multiloc,
         created_at: comment.created_at.iso8601,
@@ -178,7 +178,7 @@ module EmailCampaigns
       }
     end
 
-    def discover_projects_payload project, recipient
+    def discover_projects_payload(project, recipient)
       {
         title_multiloc: project.title_multiloc,
         url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
@@ -186,7 +186,7 @@ module EmailCampaigns
       }
     end
 
-    def new_initiatives name_service, time:
+    def new_initiatives(name_service, time:)
       InitiativePolicy::Scope.new(nil, Initiative).resolve
         .published
         .where('published_at > ?', (time - 1.week))
@@ -213,7 +213,7 @@ module EmailCampaigns
       end
     end
 
-    def successful_initiatives name_service, time:
+    def successful_initiatives(name_service, time:)
       InitiativePolicy::Scope.new(nil, Initiative).resolve
         .published
         .left_outer_joins(:initiative_status_changes, :initiative_images)

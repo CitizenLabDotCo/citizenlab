@@ -44,7 +44,7 @@ module EmailCampaigns
     ### EmailCampaigns::CampaignEmailCommand.restricted_expand_by_content_id(campaign_email_commands=EmailCampaigns::CampaignEmailCommand.where(campaign: 'admin_weekly_report')) do |idea|
     ###   idea.slug.starts_with? 's'
     ### end
-    def self.restricted_expand_by_content_id campaign_email_commands=self.all, content_class='Idea'
+    def self.restricted_expand_by_content_id(campaign_email_commands=self.all, content_class='Idea')
       campaign_email_commands = self.expand_by_content_id(campaign_email_commands, content_class)
       content_ids = campaign_email_commands.map(&"#{content_class.underscore}_id".to_sym)
       content_instances = content_class.constantize.find content_ids
@@ -52,7 +52,7 @@ module EmailCampaigns
       campaign_email_commands.select{ |cec| filtered_ids.include? cec["#{content_class.underscore}_id".to_sym] }
     end
 
-    def self.expand_by_content_id campaign_email_commands=self.all, content_class='Idea'
+    def self.expand_by_content_id(campaign_email_commands=self.all, content_class='Idea')
       campaign_email_commands.select(
         "email_campaigns_campaign_email_commands.*, 
          jsonb_array_elements(jsonb_extract_path(tracked_content, '#{content_class.underscore}_ids')) as #{content_class.underscore}_id"

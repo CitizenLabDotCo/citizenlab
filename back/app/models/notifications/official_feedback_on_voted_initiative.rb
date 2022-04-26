@@ -62,7 +62,7 @@ module Notifications
     EVENT_NAME = 'Official feedback on voted initiative'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
 

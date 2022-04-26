@@ -140,7 +140,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   private
 
-  def apply_project_filter comments
+  def apply_project_filter(comments)
     if params[:project]
       comments.joins('INNER JOIN ideas ON ideas.id = comments.post_id').where(ideas: { project_id: params[:project] })
     else
@@ -148,7 +148,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     end
   end
 
-  def apply_topic_filter comments
+  def apply_topic_filter(comments)
     if params[:topic]
       comments
         .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
@@ -159,7 +159,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     end
   end
 
-  def apply_group_filter comments
+  def apply_group_filter(comments)
     if params[:group]
       group = Group.find(params[:group])
       comments.where(author_id: group.members)

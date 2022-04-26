@@ -53,7 +53,7 @@ module EmailCampaigns
       YourProposedInitiativesDigestMailer
     end
 
-    def generate_commands recipient:, time: nil
+    def generate_commands(recipient:, time: nil)
       time ||= Time.now
       initiatives = recipient.initiatives.published.proposed.order(:published_at)
       if initiatives.present?
@@ -95,7 +95,7 @@ module EmailCampaigns
 
     private
 
-    def filter_authors_of_proposed_initiatives users_scope, options={}
+    def filter_authors_of_proposed_initiatives(users_scope, options={})
       users_scope.where(id: Initiative.published.proposed.pluck(:author_id))
     end
 

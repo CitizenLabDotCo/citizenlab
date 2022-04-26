@@ -32,7 +32,7 @@ module ProcessableUriDownloader
   # However, they claim the issue is now solved on the
   # master branch, but this is not the case when executing
   # the steps mentioned above.
-  def process_uri uri
+  def process_uri(uri)
     URI.parse uri
   rescue URI::InvalidURIError, Addressable::URI::InvalidURIError
     raise CarrierWave::DownloadError, "couldn't parse URL: #{uri}"

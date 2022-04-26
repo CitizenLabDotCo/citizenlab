@@ -39,16 +39,16 @@ module SmartGroups::Rules
       'email'
     end
 
-    def self.from_json json
+    def self.from_json(json)
       self.new json['predicate'], json['value']
     end
 
-    def initialize predicate, value
+    def initialize(predicate, value)
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       case predicate
       when 'is'
         users_scope.where('email = ?', value)
@@ -75,7 +75,7 @@ module SmartGroups::Rules
       CustomFieldText.rule_type
     end
 
-    def description_property locale
+    def description_property(locale)
       I18n.with_locale(locale) do
         I18n.t!('smart_group_rules.email.property')
       end

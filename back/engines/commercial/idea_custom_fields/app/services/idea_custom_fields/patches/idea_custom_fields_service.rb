@@ -6,7 +6,7 @@ module IdeaCustomFields
         custom_and_default_fields(custom_form, custom_fields_scope: custom_fields_scope, filter_unmodifiable: filter_unmodifiable)
       end
 
-      def find_or_build_field custom_form, code
+      def find_or_build_field(custom_form, code)
         custom_form&.custom_fields&.find_by(code: code) ||
           default_fields(custom_form).find { |bicf| bicf.code == code }
       end

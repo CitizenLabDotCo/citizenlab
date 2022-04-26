@@ -23,7 +23,7 @@ class CommonPassword < ApplicationRecord
     CommonPassword.import pwds
   end
 
-  def self.check password
+  def self.check(password)
     # Returns true when the password is common
     where(password: password).exists?
   end

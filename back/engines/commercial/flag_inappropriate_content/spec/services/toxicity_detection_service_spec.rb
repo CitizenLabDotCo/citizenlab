@@ -89,7 +89,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
 
   private
 
-  def stub_request_toxicity_detection! service
+  def stub_request_toxicity_detection!(service)
     service.stub(:request_toxicity_detection) do |texts|
       texts.map do |text|
         res = {

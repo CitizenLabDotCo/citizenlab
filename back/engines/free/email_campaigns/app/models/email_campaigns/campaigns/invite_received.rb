@@ -43,7 +43,7 @@ module EmailCampaigns
       { 'Invite' => { 'created' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       if activity.item&.invitee_id
         users_scope.where(id: activity.item.invitee_id)
       else
@@ -51,7 +51,7 @@ module EmailCampaigns
       end
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       [{
         event_payload: {
           inviter_first_name: activity.item.inviter&.first_name,
@@ -64,7 +64,7 @@ module EmailCampaigns
       }]
     end
 
-    def check_send_invite_email_toggle activity:, time: nil
+    def check_send_invite_email_toggle(activity:, time: nil)
       !!activity.item&.send_invite_email
     end
   end

@@ -20,11 +20,11 @@ module IdBosaFas
       [:environment, :identifier, :secret]
     end
 
-    def entitled? auth
+    def entitled?(auth)
       true
     end
 
-    def profile_to_uid auth
+    def profile_to_uid(auth)
       auth['uid'] || auth.dig('extra','raw_info','egovNRN')
     end
 

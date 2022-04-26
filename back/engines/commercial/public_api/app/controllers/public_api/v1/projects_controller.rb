@@ -29,7 +29,7 @@ module PublicApi
       authorize PolicyWrappedProject.new(@project)
     end
 
-    def meta_properties relation
+    def meta_properties(relation)
       {
         current_page: relation.current_page,
         total_pages: relation.total_pages

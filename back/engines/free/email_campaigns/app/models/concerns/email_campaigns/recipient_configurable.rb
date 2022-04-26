@@ -11,7 +11,7 @@ module EmailCampaigns
     end
 
 
-    def filter_users_in_groups users_scope, activity: nil, time: nil
+    def filter_users_in_groups(users_scope, activity: nil, time: nil)
       user_ids = groups.map(&:member_ids).inject(:+)&.uniq
       if user_ids
         users_scope

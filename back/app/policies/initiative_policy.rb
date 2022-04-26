@@ -69,7 +69,7 @@ class InitiativePolicy < ApplicationPolicy
 
   private
 
-  def posting_denied_reason user
+  def posting_denied_reason(user)
     'not_signed_in' if !user
   end
   

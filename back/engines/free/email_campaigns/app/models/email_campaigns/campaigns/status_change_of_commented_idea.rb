@@ -44,7 +44,7 @@ module EmailCampaigns
       { 'Idea' => { 'changed_status' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope
         .where(id: activity.item.comments.pluck(:author_id))
         .where.not(id: activity.item.author_id)
@@ -54,7 +54,7 @@ module EmailCampaigns
       'commented'
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       idea = activity.item
       status = idea.idea_status
       [{

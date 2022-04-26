@@ -64,7 +64,7 @@ module Notifications
     EVENT_NAME = 'Comment deleted by admin'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       comment = activity.item
       recipient_id = comment&.author_id
       initiator_id = activity.user_id

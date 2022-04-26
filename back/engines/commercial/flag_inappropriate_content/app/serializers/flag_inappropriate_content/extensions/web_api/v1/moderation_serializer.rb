@@ -3,7 +3,7 @@ module FlagInappropriateContent
     module WebApi
       module V1
         module ModerationSerializer
-          def self.included base
+          def self.included(base)
             base.class_eval do
               has_one :inappropriate_content_flag, if: Proc.new { |record| 
                 record.inappropriate_content_flag.present?

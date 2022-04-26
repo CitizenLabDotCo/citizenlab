@@ -1,6 +1,6 @@
 module FlagInappropriateContent
   class ToxicityDetectionService
-    def flag_toxicity! flaggable, attributes: []
+    def flag_toxicity!(flaggable, attributes: [])
       return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
       flag_service = InappropriateContentFlagService.new
 
@@ -21,7 +21,7 @@ module FlagInappropriateContent
       end
     end
 
-    def extract_toxicity_label res
+    def extract_toxicity_label(res)
       max_predictions = res.select do |re|
         re['is_inappropriate']
       end.map do |re|
@@ -37,7 +37,7 @@ module FlagInappropriateContent
 
     private
 
-    def extract_texts flaggable, attributes
+    def extract_texts(flaggable, attributes)
       texts = []
       attributes.each do |atr|
         next if flaggable[atr].blank?
@@ -51,12 +51,12 @@ module FlagInappropriateContent
       texts
     end
 
-    def request_toxicity_detection texts
+    def request_toxicity_detection(texts)
       @api ||= NLP::Api.new
       @api.toxicity_detection texts
     end
 
-    def toxicity_detected? res
+    def toxicity_detected?(res)
       res.any?{ |h| h['is_inappropriate'] }
     end
   end

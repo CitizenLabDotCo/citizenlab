@@ -58,7 +58,7 @@ module EmailCampaigns
       AssigneeDigestMailer
     end
 
-    def generate_commands recipient:, time: nil
+    def generate_commands(recipient:, time: nil)
       time ||= Time.now
       assigned = {
         assigned_ideas: assigned_ideas(recipient: recipient, time: time),
@@ -88,11 +88,11 @@ module EmailCampaigns
 
     private
 
-    def user_filter_admins_moderators_only users_scope, options={}
+    def user_filter_admins_moderators_only(users_scope, options={})
       users_scope.admin.or(users_scope.project_moderator)
     end
 
-    def assigned_ideas recipient:, time:
+    def assigned_ideas(recipient:, time:)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.assigned_ideas
         .feedback_needed
@@ -113,7 +113,7 @@ module EmailCampaigns
         end
     end
 
-    def assigned_initiatives recipient:, time:
+    def assigned_initiatives(recipient:, time:)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.assigned_initiatives.published
         .where('assigned_at > ?', time - 1.week)
@@ -142,7 +142,7 @@ module EmailCampaigns
       end
     end
 
-    def succesful_assigned_initiatives recipient:, time:
+    def succesful_assigned_initiatives(recipient:, time:)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       threshold_reached_id = InitiativeStatus.where(code: 'threshold_reached').ids.first
       recipient.assigned_initiatives

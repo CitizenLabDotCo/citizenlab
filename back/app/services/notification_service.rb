@@ -34,7 +34,7 @@ class NotificationService
     NOTIFICATION_CLASSES
   end
 
-  def classes_for activity
+  def classes_for(activity)
     notification_classes.select do |klaz|
       klaz::ACTIVITY_TRIGGERS.dig(activity.item_type, activity.action)
     end

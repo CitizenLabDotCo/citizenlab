@@ -22,7 +22,7 @@ class JsonFormsService
 
   private
 
-  def allowed_fields configuration, fields, current_user
+  def allowed_fields(configuration, fields, current_user)
     override_method = "#{fields.first.resource_type.underscore}_allowed_fields"
     if self.respond_to?(override_method, true)
       send(override_method, configuration, fields, current_user)
@@ -170,7 +170,7 @@ class JsonFormsService
 
   # *** text_multiloc ***
 
-  def text_multiloc_to_json_schema_field field, locale
+  def text_multiloc_to_json_schema_field(field, locale)
     {
       type: 'object',
       minProperties: 1,
@@ -185,7 +185,7 @@ class JsonFormsService
     }
   end
 
-  def text_multiloc_to_ui_schema_field field, locale
+  def text_multiloc_to_ui_schema_field(field, locale)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -202,7 +202,7 @@ class JsonFormsService
 
   # *** multiline_text_multiloc ***
 
-  def multiline_text_multiloc_to_json_schema_field field, locale
+  def multiline_text_multiloc_to_json_schema_field(field, locale)
     {
       type: 'object',
       minProperties: 1,
@@ -217,7 +217,7 @@ class JsonFormsService
     }
   end
 
-  def multiline_text_multiloc_to_ui_schema_field field, locale
+  def multiline_text_multiloc_to_ui_schema_field(field, locale)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -234,7 +234,7 @@ class JsonFormsService
 
   # *** html_multiloc ***
 
-  def html_multiloc_to_json_schema_field field, locale
+  def html_multiloc_to_json_schema_field(field, locale)
     {
       type: 'object',
       minProperties: 1,
@@ -249,7 +249,7 @@ class JsonFormsService
     }
   end
 
-  def html_multiloc_to_ui_schema_field field, locale
+  def html_multiloc_to_ui_schema_field(field, locale)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },

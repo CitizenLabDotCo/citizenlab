@@ -1,6 +1,6 @@
 class PhoneService
 
-  def phone_or_email str
+  def phone_or_email(str)
     # If any of these validations change, sync with front-end people. 
     # We use the same ones there for form validation.
     # See front/app/utils/validate.ts
@@ -41,7 +41,7 @@ class PhoneService
     phone_to_email_pattern.gsub('__PHONE__', normalize_phone(str))
   end
 
-  def normalize_phone str
+  def normalize_phone(str)
     str.tr('^0-9', '')
   end
 

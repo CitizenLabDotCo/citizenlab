@@ -37,7 +37,7 @@ module IdCow
       [:run, :id_serial]
     end
 
-    def verify_sync run:, id_serial:
+    def verify_sync(run:, id_serial:)
       raise Verification::VerificationService::ParameterInvalidError.new('run') unless run_valid?(run)
       raise Verification::VerificationService::ParameterInvalidError.new('id_serial') unless id_serial_valid?(id_serial)
 
@@ -46,7 +46,7 @@ module IdCow
 
     private
 
-    def cow_valid_citizen! run, id_serial
+    def cow_valid_citizen!(run, id_serial)
       client = Savon.client(SHARED_SAVON_CONFIG.merge({
         wsse_auth: [config[:api_username], config[:api_password]]
       }))
@@ -91,7 +91,7 @@ module IdCow
     # **Both IndVigencia and IndBloqueo conditions must be met.
 
     # For all other combinations that do not fit in these 4 alternatives, they must be blocked from voting.
-    def valid_response! ind_vigencia: nil, ind_bloqueo: nil, estado_respuesta:
+    def valid_response!(ind_vigencia: nil, ind_bloqueo: nil, estado_respuesta:)
       if estado_respuesta != '000'
         raise Verification::VerificationService::NoMatchError.new
       elsif not(ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo)))
@@ -99,19 +99,19 @@ module IdCow
       end
     end
 
-    def run_valid? run
+    def run_valid?(run)
       run.present? && /^\d{1,2}\.\d{3}\.\d{3}[-][0-9kK]{1}$/.match?(run.strip)
     end
 
-    def clean_run run
+    def clean_run(run)
       run.strip.split('-').first.tr('^0-9', '')
     end
 
-    def id_serial_valid? id_serial
+    def id_serial_valid?(id_serial)
       id_serial.strip.present?
     end
 
-    def clean_id_serial id_serial
+    def clean_id_serial(id_serial)
       id_serial.tr('^0-9a-zA-Z', '')
     end
   end

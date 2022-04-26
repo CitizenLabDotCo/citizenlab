@@ -34,7 +34,7 @@ module Surveys
       head :not_acceptable unless Rack::Utils.secure_compare(actual_signature, received_signature)
     end
 
-    def secure_constantize key
+    def secure_constantize(key)
       CONSTANTIZER.fetch(params[:pc_type])[key]
     end
   end

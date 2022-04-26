@@ -37,15 +37,15 @@ module Verification
           'verified'
         end
 
-        def self.from_json json
+        def self.from_json(json)
           self.new json['predicate']
         end
 
-        def initialize predicate
+        def initialize(predicate)
           self.predicate = predicate
         end
 
-        def filter users_scope
+        def filter(users_scope)
           case predicate
           when 'is_verified'
             users_scope.where('verified = ?', true)

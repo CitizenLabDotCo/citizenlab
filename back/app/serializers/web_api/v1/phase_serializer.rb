@@ -15,7 +15,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     user_basket object, params
   end
   
-  def self.user_basket object, params
+  def self.user_basket(object, params)
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first
     if preloaded_user_basket
       preloaded_user_basket

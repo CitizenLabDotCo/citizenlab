@@ -61,7 +61,7 @@ module Notifications
     EVENT_NAME = 'Idea marked as spam'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       spam_report = activity.item
       if spam_report.spam_reportable_type == 'Idea'
         initiator_id = spam_report.user_id

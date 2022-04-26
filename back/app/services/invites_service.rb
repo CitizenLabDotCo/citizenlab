@@ -9,7 +9,7 @@ class InvitesService
   class InvitesFailedError < RuntimeError;
     attr_accessor :errors
 
-    def initialize options
+    def initialize(options)
       @errors = options[:errors]
     end
 
@@ -29,7 +29,7 @@ class InvitesService
   class InviteError < RuntimeError
     attr_accessor :error_key, :row, :rows, :value, :raw_error, :ignore
 
-    def initialize error_key, options
+    def initialize(error_key, options)
       @error_key = error_key
       @row = options[:row]
       @rows = options[:rows]
@@ -81,7 +81,7 @@ class InvitesService
     ([*('a'..'z'),*('0'..'9')]).sample(9).join
   end
 
-  def bulk_create_xlsx file, default_params={}, inviter=nil
+  def bulk_create_xlsx(file, default_params={}, inviter=nil)
 
     map_rows = []
     old_row = 0
@@ -111,7 +111,7 @@ class InvitesService
     raise e
   end
 
-  def bulk_create hash_array, default_params={}, inviter=nil
+  def bulk_create(hash_array, default_params={}, inviter=nil)
     invites = build_invites(hash_array, default_params, inviter)
     check_invites(invites)
     if @errors.reject(&:ignore).empty?
@@ -152,7 +152,7 @@ class InvitesService
     custom_field_schema[:properties].keys
   end
 
-  def postprocess_xlsx_hash_array hash_array
+  def postprocess_xlsx_hash_array(hash_array)
     hash_array.each.with_index do |hash, row_index|
       @current_row = row_index
       if hash['groups']
@@ -328,7 +328,7 @@ class InvitesService
     end
   end
 
-  def save_invites invites
+  def save_invites(invites)
     ActiveRecord::Base.transaction do
       invites.each do |invite|
         SideFxUserService.new.before_create(invite.invitee, invite.inviter)
@@ -342,7 +342,7 @@ class InvitesService
     end
   end
 
-  def add_error key, options={}
+  def add_error(key, options={})
     @errors << InviteError.new(INVITE_ERRORS[key], options)
   end
 
@@ -350,7 +350,7 @@ class InvitesService
     raise InvitesFailedError.new(errors: @errors)
   end
 
-  def ignored_invites invites
+  def ignored_invites(invites)
     @errors.select(&:ignore).map{ |e| invites[e.row] }
   end
 

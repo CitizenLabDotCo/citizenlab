@@ -27,7 +27,7 @@ class ValidationErrorHelper
 
 
 
-  def model_error_codes model
+  def model_error_codes(model)
     attrs_errs = model.validators.flat_map do |validator| 
         validator.attributes.map{ |a| [a, ERROR_DETAILS[validator.class]] }
       end.select(&:last)
@@ -36,7 +36,7 @@ class ValidationErrorHelper
       .to_h
   end
 
-  def to_h_appended arr
+  def to_h_appended(arr)
     # kind of similar as .to_h but taking care
     # of multiple occurances of the same key
     # all values with the same key are put in a list

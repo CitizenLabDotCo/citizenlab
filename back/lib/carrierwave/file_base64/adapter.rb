@@ -2,7 +2,7 @@ module Carrierwave
   module FileBase64
     module Adapter
 
-      def mount_base64_file_uploader attribute, uploader_class, options={}
+      def mount_base64_file_uploader(attribute, uploader_class, options={})
         mount_uploader attribute, uploader_class, options
 
         self.send(:define_method, "#{attribute}_by_content=") do |file_attributes|

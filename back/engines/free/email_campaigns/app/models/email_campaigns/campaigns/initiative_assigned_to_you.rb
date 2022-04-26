@@ -47,7 +47,7 @@ module EmailCampaigns
       { 'Notifications::InitiativeAssignedToYou' => { 'created' => true } }
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
@@ -55,7 +55,7 @@ module EmailCampaigns
       'admin'
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{

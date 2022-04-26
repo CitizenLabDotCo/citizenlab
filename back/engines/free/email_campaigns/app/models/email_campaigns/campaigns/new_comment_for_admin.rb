@@ -44,7 +44,7 @@ module EmailCampaigns
       ['admin', 'project_moderator']
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       comment = activity.item
       initiator = comment.author
 
@@ -69,7 +69,7 @@ module EmailCampaigns
       NewCommentForAdminMailer
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
       post = comment.post
       [{

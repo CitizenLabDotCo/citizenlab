@@ -61,7 +61,7 @@ module Notifications
     EVENT_NAME = 'Invite accepted'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       invite = activity.item
       recipient_id = invite&.inviter_id
       initiator_id = invite&.invitee_id

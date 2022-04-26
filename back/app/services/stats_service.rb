@@ -1,6 +1,6 @@
 class StatsService
 
-  def group_by_time resource, field, start_at, end_at, interval
+  def group_by_time(resource, field, start_at, end_at, interval)
     resource.send("group_by_#{interval}",
       field, 
       range: start_at..end_at,
@@ -8,7 +8,7 @@ class StatsService
     ).count
   end
 
-  def group_by_time_cumulative resource, field, start_at, end_at, interval
+  def group_by_time_cumulative(resource, field, start_at, end_at, interval)
     serie = group_by_time(resource, field, start_at, end_at, interval)
     count_at_start_at = resource.where("#{field} < ?", start_at).count
     # When the given resource scope is a GROUP BY query
@@ -27,7 +27,7 @@ class StatsService
     serie
   end
 
-  def filter_users_by_topic users_scope, topic_id
+  def filter_users_by_topic(users_scope, topic_id)
     ideas = Idea
       .joins(:ideas_topics)
       .where(ideas_topics: { topic_id: topic_id })

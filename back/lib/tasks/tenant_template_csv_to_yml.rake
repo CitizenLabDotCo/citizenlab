@@ -51,11 +51,11 @@ namespace :tenant_template do
   end
 
 
-  def read_csv name, args
+  def read_csv(name, args)
   	CSV.read("#{args[:path]}/#{name}.csv", { headers: true, col_sep: ',' })
   end
 
-  def make_multiloc value, locales
+  def make_multiloc(value, locales)
     locales.map do |locale|
       [locale,value]
     end.to_h

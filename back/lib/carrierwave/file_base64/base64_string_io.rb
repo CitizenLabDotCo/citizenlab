@@ -5,7 +5,7 @@ module Carrierwave
       attr_reader :file_name
       attr_reader :file_extension
 
-      def initialize encoded_file, file_name, file_extension
+      def initialize(encoded_file, file_name, file_extension)
         @file_name = file_name
         @file_extension = file_extension
 

@@ -3,21 +3,21 @@ require 'rspec_api_documentation/dsl'
 
 multiloc_service = MultilocService.new
 
-def time_boundary_parameters s
+def time_boundary_parameters(s)
   s.parameter :start_at, 'Date defining from where results should start', required: false
   s.parameter :end_at, 'Date defining till when results should go', required: false
 end
 
-def time_series_parameters s
+def time_series_parameters(s)
   time_boundary_parameters s
   s.parameter :interval, 'Either day, week, month, year', required: true
 end
 
-def group_filter_parameter s
+def group_filter_parameter(s)
   s.parameter :group, 'Group ID. Only return users that are a member of the given group', required: false
 end
 
-def topic_filter_parameter s
+def topic_filter_parameter(s)
   s.parameter :topic, 'Topic ID. Only returns users that have posted or commented on ideas in a given topic', required: false
 end
 

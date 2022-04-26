@@ -23,7 +23,7 @@ module IdBogus
       [:desired_error]
     end
 
-    def verify_sync desired_error: nil
+    def verify_sync(desired_error: nil)
       case desired_error
       when 'no_match'
         raise Verification::VerificationService::NoMatchError.new

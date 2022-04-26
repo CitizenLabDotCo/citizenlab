@@ -1,7 +1,7 @@
 module Polls
 	class XlsxService
 
-		def generate_poll_results_xlsx participation_context, responses, current_user
+		def generate_poll_results_xlsx(participation_context, responses, current_user)
       multiloc_service = MultilocService.new
       is_anonymous = participation_context.poll_anonymous?
       questions = Polls::Question

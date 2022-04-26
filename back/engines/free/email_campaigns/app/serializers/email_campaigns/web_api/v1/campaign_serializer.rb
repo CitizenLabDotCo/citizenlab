@@ -56,27 +56,27 @@ module EmailCampaigns
       recipient_configurable? object
     }
 
-    def self.disableable? object
+    def self.disableable?(object)
       object.class.included_modules.include?(Disableable)
     end
 
-    def self.schedulable? object
+    def self.schedulable?(object)
       object.class.included_modules.include?(Schedulable)
     end
 
-    def self.sender_configurable? object
+    def self.sender_configurable?(object)
       object.class.included_modules.include?(SenderConfigurable)
     end
 
-    def self.content_configurable? object
+    def self.content_configurable?(object)
       object.class.included_modules.include?(ContentConfigurable)
     end
 
-    def self.trackable? object
+    def self.trackable?(object)
       object.class.included_modules.include?(Trackable)
     end
 
-    def self.recipient_configurable? object
+    def self.recipient_configurable?(object)
       object.class.included_modules.include?(RecipientConfigurable)
     end
   end

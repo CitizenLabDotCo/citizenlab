@@ -1,6 +1,6 @@
 class TextImageService
 
-  def swap_data_images imageable, field
+  def swap_data_images(imageable, field)
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|
       doc = Nokogiri::HTML.fragment(text)
@@ -42,7 +42,7 @@ class TextImageService
     end
   end
 
-  def render_data_images imageable, field
+  def render_data_images(imageable, field)
     multiloc = imageable.send(field)
 
     if multiloc.values.any?{ |text| text.include? 'data-cl2-text-image-text-reference' }

@@ -53,11 +53,11 @@ module FlagInappropriateContent
         { 'FlagInappropriateContent::Notifications::InappropriateContentFlagged' => { 'created' => true } }
       end
 
-      def filter_notification_recipient users_scope, activity:, time: nil
+      def filter_notification_recipient(users_scope, activity:, time: nil)
         users_scope.where(id: activity.item.recipient_id)
       end
 
-      def generate_commands recipient:, activity:, time: nil
+      def generate_commands(recipient:, activity:, time: nil)
         data = Rails.cache.fetch("campaigns/inappropriate_content_flagged/#{activity.item.inappropriate_content_flag_id}", expires_in: 5.minutes) do
           flag = activity.item.inappropriate_content_flag
           flaggable = flag.flaggable

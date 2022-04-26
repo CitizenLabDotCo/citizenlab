@@ -9,7 +9,7 @@ module EmailCampaigns
       before_validation :force_schedule_start_in_config_timezone
     end
 
-    def filter_campaign_scheduled time:, activity: nil
+    def filter_campaign_scheduled(time:, activity: nil)
       # TODO prevent being here when time is nil
       # This happened when triggering comment on your comment notification
       time = time&.in_time_zone(AppConfiguration.instance.settings('core', 'timezone'))
@@ -24,7 +24,7 @@ module EmailCampaigns
       end
     end
 
-    def ic_schedule= ics
+    def ic_schedule=(ics)
       self.schedule = ics.to_hash
     end
 

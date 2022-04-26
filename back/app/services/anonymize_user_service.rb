@@ -211,7 +211,7 @@ class AnonymizeUserService
     end.to_h
   end
 
-  def random_registration user: nil, start_at: (Time.now - 1.month)
+  def random_registration(user: nil, start_at: (Time.now - 1.month))
     if user
       user[:registration_completed_at]
     else

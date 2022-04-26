@@ -10,7 +10,7 @@ module Volunteering
       cached_user_volunteer object, params
     end
 
-    def self.cached_user_volunteer object, params
+    def self.cached_user_volunteer(object, params)
       if params[:vbci]
         params.dig(:vbci, object.id)
       else

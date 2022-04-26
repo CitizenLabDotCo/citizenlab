@@ -172,7 +172,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   private
 
-  def apply_group_filter votes
+  def apply_group_filter(votes)
     if params[:group]
       group = Group.find(params[:group])
       votes.where(user_id: group.members)
@@ -181,7 +181,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_project_filter votes
+  def apply_project_filter(votes)
     if params[:project]
       votes.where(ideas: { project_id: params[:project] })
     else
@@ -189,7 +189,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_topic_filter votes
+  def apply_topic_filter(votes)
     if params[:topic]
       votes
         .joins('JOIN ideas_topics ON ideas.id = ideas_topics.idea_id')
@@ -199,7 +199,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_idea_filters ideas, filter_params
+  def apply_idea_filters(ideas, filter_params)
     ideas = ideas.where(id: filter_params[:ideas]) if filter_params[:ideas].present?
     ideas = ideas.with_some_topics(Topic.where(id: filter_params[:topics])) if filter_params[:topics].present?
     ideas = ideas.with_some_areas(filter_params[:areas]) if filter_params[:areas].present?
@@ -219,7 +219,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     ideas
   end
 
-  def votes_by_custom_field_key key, filter_params, normalization='absolute'
+  def votes_by_custom_field_key(key, filter_params, normalization='absolute')
     serie = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
@@ -252,7 +252,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
   end
 
-  def double_grouped_by_to_nested_hashes serie
+  def double_grouped_by_to_nested_hashes(serie)
     response = {
       'up' => {},
       'down' => {},
@@ -264,7 +264,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
   end
 
-  def double_grouped_by_to_object_array serie
+  def double_grouped_by_to_object_array(serie)
     res = []
     serie.each do |((mode, date), count)|
       found_index = res.index { |item| item['date'] == date }
@@ -283,7 +283,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
 
-  def normalize_votes data, key
+  def normalize_votes(data, key)
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
     data.map do |mode, buckets|
       [

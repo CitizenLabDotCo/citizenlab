@@ -44,7 +44,7 @@ module EmailCampaigns
       { 'Initiative' => { 'published' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.author_id)
     end
 
@@ -52,7 +52,7 @@ module EmailCampaigns
       'own'
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       initiative = activity.item
       [{
         event_payload: {

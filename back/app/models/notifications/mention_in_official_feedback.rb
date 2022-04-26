@@ -61,7 +61,7 @@ module Notifications
     EVENT_NAME = 'Mention in official feedback'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       official_feedback = activity.item
       recipient_id = activity.payload['mentioned_user']
       initiator_id = official_feedback&.user_id

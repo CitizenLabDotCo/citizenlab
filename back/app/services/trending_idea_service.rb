@@ -55,7 +55,7 @@ class TrendingIdeaService
     score
   end
 
-  def trending? idea
+  def trending?(idea)
     # used for testing purposes
     trending_score(idea) >= 0
   end

@@ -61,7 +61,7 @@ module Notifications
     EVENT_NAME = 'Initiative assigned to you'
 
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       initiative = activity.item
       recipient_id = initiative.assignee_id
       initiator_id = activity.user_id

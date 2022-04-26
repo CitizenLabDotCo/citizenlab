@@ -60,7 +60,7 @@ module Notifications
     EVENT_NAME = 'Comment on your comment'
 
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       comment = activity.item
       recipient_id = comment.parent&.author_id
       initiator_id = comment&.author_id

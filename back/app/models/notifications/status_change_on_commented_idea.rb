@@ -62,7 +62,7 @@ module Notifications
     EVENT_NAME = 'Status change on commented idea'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       idea = activity.item
 
       if idea.present?

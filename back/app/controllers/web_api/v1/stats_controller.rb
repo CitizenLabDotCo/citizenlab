@@ -6,7 +6,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   private
 
-  def range_intersection r1, r2
+  def range_intersection(r1, r2)
     ([r1.begin, r2.begin].max)..([r1.end, r2.end].min)
   end
 

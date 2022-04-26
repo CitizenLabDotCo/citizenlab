@@ -17,7 +17,7 @@ module AdminApi
       argument :id, ID, required: true
     end
 
-    def tenant args
+    def tenant(args)
       Tenant.find(args[:id])
     end
 
@@ -26,7 +26,7 @@ module AdminApi
       argument :host, String, required: true
     end
 
-    def tenant_by_host args
+    def tenant_by_host(args)
       Tenant.find_by(host: args[:host])
     end
 
@@ -48,7 +48,7 @@ module AdminApi
       argument :projects, [ID], required: false
     end
 
-    def public_ideas args={}
+    def public_ideas(args={})
       ideas = ::IdeaPolicy::Scope.new(nil, Idea)
         .resolve
         .includes(:idea_images)
@@ -79,7 +79,7 @@ module AdminApi
 
     field :public_initiatives, Types::InitiativeType.connection_type, null: false
 
-    def public_initiatives args={}
+    def public_initiatives(args={})
       initiatives = ::InitiativePolicy::Scope.new(nil, Initiative)
         .resolve
         .includes(:initiative_images)
@@ -92,7 +92,7 @@ module AdminApi
       argument :id, ID, required: true
     end
 
-    def user args
+    def user(args)
       User.find(args[:id])
     end
 
@@ -100,7 +100,7 @@ module AdminApi
       argument :id, ID, required: true
     end
 
-    def project args
+    def project(args)
       Project.find(args[:id])
     end
 
@@ -114,7 +114,7 @@ module AdminApi
       argument :id, ID, required: true
     end
 
-    def project_folder args
+    def project_folder(args)
       ProjectFolders::Folder.find(args[:id])
     end
 
@@ -129,7 +129,7 @@ module AdminApi
       description 'Find an idea by ID'
     end
 
-    def idea args
+    def idea(args)
       Idea.find(args[:id])
     end
 
@@ -138,7 +138,7 @@ module AdminApi
       description 'Find an initiative by ID'
     end
 
-    def initiative args
+    def initiative(args)
       Initiative.find(args[:id])
     end
 

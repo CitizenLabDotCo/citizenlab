@@ -66,11 +66,11 @@ module SmartGroups::Rules
       'participated_in_topic'
     end
 
-    def self.from_json json
+    def self.from_json(json)
       self.new(json['predicate'], json['value'])
     end
 
-    def initialize predicate, value
+    def initialize(predicate, value)
       self.predicate = predicate
       self.value = value
     end
@@ -79,7 +79,7 @@ module SmartGroups::Rules
       MULTIVALUE_PREDICATES.include? predicate
     end
 
-    def filter users_scope
+    def filter(users_scope)
       participants_service = ParticipantsService.new
 
       case predicate
@@ -118,7 +118,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_value locale
+    def description_value(locale)
       if multivalue_predicate?
         value.map do |v|
           Topic.find(v).title_multiloc[locale]

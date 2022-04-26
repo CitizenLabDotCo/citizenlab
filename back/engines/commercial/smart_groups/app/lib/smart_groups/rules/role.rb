@@ -39,15 +39,15 @@ module SmartGroups::Rules
       'role'
     end
 
-    def self.from_json json
+    def self.from_json(json)
       self.new(json['predicate'])
     end
 
-    def initialize predicate
+    def initialize(predicate)
       self.predicate = predicate
     end
 
-    def filter users_scope
+    def filter(users_scope)
       @predicate
       case predicate
       when 'is_admin'

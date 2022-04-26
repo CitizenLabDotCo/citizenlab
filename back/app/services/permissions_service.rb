@@ -57,7 +57,7 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  def denied_reason user, action, resource=nil
+  def denied_reason(user, action, resource=nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 

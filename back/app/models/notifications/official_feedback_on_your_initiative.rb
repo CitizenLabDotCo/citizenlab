@@ -62,7 +62,7 @@ module Notifications
     EVENT_NAME = 'Official feedback on your initiative'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       official_feedback = activity.item
       if official_feedback.post_type == 'Initiative'
         recipient_id = official_feedback.post.author_id

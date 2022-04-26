@@ -245,7 +245,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   # Merge both arrays in such a way that the order of both is preserved, but
   # the children are directly following their parent
-  def merge_comments root_comments, child_comments
+  def merge_comments(root_comments, child_comments)
     children_by_parent = child_comments.group_by(&:parent_id)
     root_comments.flat_map do |root_comment|
       [root_comment, *children_by_parent[root_comment.id]]

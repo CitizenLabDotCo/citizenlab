@@ -2,7 +2,7 @@ class ImportIdeasService
 
 	MAX_IDEAS = 500
 
-	def import_ideas idea_models_data
+	def import_ideas(idea_models_data)
 		added_idea_ids = []
 		begin
 		  if idea_models_data.size > MAX_IDEAS
@@ -24,7 +24,7 @@ class ImportIdeasService
 
 	private
 
-	def convert_idea idea_data
+	def convert_idea(idea_data)
   	d = {}
     if idea_data[:title_multiloc].blank?
       raise 'A title for the idea is mandatory!'
@@ -98,7 +98,7 @@ class ImportIdeasService
   	idea
   end
 
-  def multiloculate value
+  def multiloculate(value)
   	multiloc = {}
   	AppConfiguration.instance.settings('core', 'locales').each do |loc|
   		multiloc[loc] = value

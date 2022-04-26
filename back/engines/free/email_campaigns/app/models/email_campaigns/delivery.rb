@@ -46,7 +46,7 @@ module EmailCampaigns
       clicked: [:clicked],
     }
 
-    def set_delivery_status s
+    def set_delivery_status(s)
       self.delivery_status =
         if s == 'bounced' || s == 'failed'
           s
@@ -57,7 +57,7 @@ module EmailCampaigns
         end
     end
 
-    def self.status_counts campaign_id
+    def self.status_counts(campaign_id)
       counts = where(campaign_id: campaign_id).group(:delivery_status).count
       total_count = where(campaign_id: campaign_id).count
       {

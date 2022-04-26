@@ -2,7 +2,7 @@ module EmailCampaigns
   module Consentable
     extend ActiveSupport::Concern
 
-    def self.consentable_campaign_types classes, user, service=nil
+    def self.consentable_campaign_types(classes, user, service=nil)
       service ||= DeliveryService.new
       service.campaign_classes
         .select{ |claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user) }
@@ -14,7 +14,7 @@ module EmailCampaigns
     end
 
     class_methods do
-      def consentable_for? user
+      def consentable_for?(user)
         roles = respond_to?(:consentable_roles) ? consentable_roles : []
         return true if roles.blank?
 
@@ -24,7 +24,7 @@ module EmailCampaigns
       end
     end
 
-    def filter_users_with_consent users_scope, options={}
+    def filter_users_with_consent(users_scope, options={})
       users_scope
       .where.not(id: Consent.where(campaign_type: type, consented: false).pluck(:user_id))
     end

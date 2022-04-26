@@ -48,7 +48,7 @@ module EmailCampaigns
       'official'
     end
 
-    def generate_commands recipient:, time: nil, activity: nil
+    def generate_commands(recipient:, time: nil, activity: nil)
       [{
         author: author,
         event_payload: {},
@@ -61,11 +61,11 @@ module EmailCampaigns
 
     private
 
-    def user_filter_no_invitees users_scope, options={}
+    def user_filter_no_invitees(users_scope, options={})
       users_scope.active
     end
 
-    def only_manual_send activity: nil, time: nil
+    def only_manual_send(activity: nil, time: nil)
       !activity && !time
     end
   end

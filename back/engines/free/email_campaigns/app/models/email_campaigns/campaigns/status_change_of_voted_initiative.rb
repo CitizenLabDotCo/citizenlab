@@ -44,7 +44,7 @@ module EmailCampaigns
       { 'Initiative' => { 'changed_status' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope
         .where(id: activity.item.votes.pluck(:user_id))
         .where.not(id: activity.item.author_id)
@@ -55,7 +55,7 @@ module EmailCampaigns
       'voted'
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       initiative = activity.item
       status = initiative.initiative_status
       [{

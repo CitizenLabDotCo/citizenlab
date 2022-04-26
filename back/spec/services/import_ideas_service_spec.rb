@@ -34,7 +34,7 @@ describe ImportIdeasService do
 
   end
 
-  def generate_idea_data n
+  def generate_idea_data(n)
     n.times.map do |_|
       { title_multiloc: { 'en' => "Idea #{rand(100000)}" },
         body_multiloc: { 'en' => Faker::Lorem.sentence },

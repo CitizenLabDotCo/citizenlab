@@ -59,7 +59,7 @@ class InitiativeStatusService
   }
 
 
-  def transition_allowed? initiative, status1, status2, with_feedback: false
+  def transition_allowed?(initiative, status1, status2, with_feedback: false)
     transition_possibility = MANUAL_TRANSITIONS.dig status1.code, status2.code
     transition_possibility && (!transition_possibility[:feedback_required] || with_feedback)
   end
@@ -88,7 +88,7 @@ class InitiativeStatusService
     end
   end
 
-  def allowed_transitions initiative
+  def allowed_transitions(initiative)
     return [] if !initiative.initiative_status_id
     codes = MANUAL_TRANSITIONS[initiative.initiative_status.code]
     InitiativeStatus.where(code: codes.keys).pluck(:code, :id).map do |code, id|
@@ -96,7 +96,7 @@ class InitiativeStatusService
     end.to_h
   end
 
-  def transition_type initiative_status
+  def transition_type(initiative_status)
     if manual_status_ids.include? initiative_status.id
       'manual'
     else
@@ -108,7 +108,7 @@ class InitiativeStatusService
     InitiativeStatus.where(code: MANUAL_TRANSITIONS.values.map(&:keys).flatten.uniq).ids
   end
 
-  def log_status_change change, user: nil
+  def log_status_change(change, user: nil)
     LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
     if change.initiative_status.code == 'threshold_reached'
       LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)

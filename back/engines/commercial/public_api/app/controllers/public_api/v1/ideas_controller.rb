@@ -36,7 +36,7 @@ module PublicApi
       authorize PolicyWrappedIdea.new(@idea)
     end
 
-    def meta_properties relation
+    def meta_properties(relation)
       {
         current_page: relation.current_page,
         total_pages: @total_pages

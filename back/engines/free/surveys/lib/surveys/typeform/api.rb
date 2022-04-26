@@ -6,18 +6,18 @@ module Surveys
 
       base_uri 'https://api.typeform.com'
 
-      def initialize token
+      def initialize(token)
         @token = token
       end
 
-      def webhooks form_id
+      def webhooks(form_id)
         self.class.get(
           "/forms/#{form_id}/webhooks",
           headers: authorized_headers
         )
       end
 
-      def create_or_update_webhook form_id:, tag:, url:, secret: nil, enabled: true
+      def create_or_update_webhook(form_id:, tag:, url:, secret: nil, enabled: true)
         self.class.put(
           "/forms/#{form_id}/webhooks/#{tag}",
           body: {
@@ -31,14 +31,14 @@ module Surveys
         )
       end
 
-      def delete_webhook form_id:, tag:
+      def delete_webhook(form_id:, tag:)
         self.class.delete(
           "/forms/#{form_id}/webhooks/#{tag}",
           headers: authorized_headers
         )
       end
 
-      def responses form_id:, **params
+      def responses(form_id:, **params)
         self.class.get(
           "/forms/#{form_id}/responses",
           query: params,
@@ -46,7 +46,7 @@ module Surveys
         )
       end
 
-      def all_responses form_id:, **params
+      def all_responses(form_id:, **params)
         page_size = params[:page_size] || 1000
         before = nil
         output = []
@@ -66,7 +66,7 @@ module Surveys
         output
       end
 
-      def form form_id:
+      def form(form_id:)
         self.class.get(
           "/forms/#{form_id}",
           headers: authorized_headers

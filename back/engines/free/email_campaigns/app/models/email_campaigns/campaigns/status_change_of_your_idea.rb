@@ -44,7 +44,7 @@ module EmailCampaigns
       { 'Notifications::StatusChangeOfYourIdea' => { 'created' => true } }
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
@@ -52,7 +52,7 @@ module EmailCampaigns
       'own'
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       idea = activity.item.post
       status = idea.idea_status
       [{

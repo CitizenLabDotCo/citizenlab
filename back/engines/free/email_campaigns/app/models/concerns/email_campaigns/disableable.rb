@@ -4,7 +4,7 @@ module EmailCampaigns
 
     # If one instance is enabled, we consider the campaign_type enabled. This
     # returns all campaign_types that are not all disabled
-    def self.enabled_campaign_types instances
+    def self.enabled_campaign_types(instances)
       disabled_types, enabled_types = instances
         .partition{ |campaign| campaign.respond_to?(:filter_enabled?) && !campaign.filter_enabled? }
         .map{ |partition| partition.map(&:type) }
@@ -17,7 +17,7 @@ module EmailCampaigns
       before_send :filter_enabled?
     end
 
-    def filter_enabled? options={}
+    def filter_enabled?(options={})
       self.enabled != false
     end
 

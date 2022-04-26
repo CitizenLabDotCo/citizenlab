@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-def call_pcc pc, service, from, to
+def call_pcc(pc, service, from, to)
   service.participation_context_changed(
     pc,
     from.participation_method,

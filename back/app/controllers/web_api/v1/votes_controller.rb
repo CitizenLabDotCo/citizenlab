@@ -66,7 +66,7 @@ class WebApi::V1::VotesController < ApplicationController
 
   private
 
-  def upsert_vote mode
+  def upsert_vote(mode)
     @old_vote = Vote.find_by(
       user: current_user,
       votable_type: @votable_type,
@@ -119,7 +119,7 @@ class WebApi::V1::VotesController < ApplicationController
     raise RuntimeError, 'must not be blank' if @votable_type.blank? or @votable_id.blank?
   end
 
-  def derive_policy_class votable
+  def derive_policy_class(votable)
     if votable.kind_of? Idea
       IdeaVotePolicy
     elsif votable.kind_of? Comment

@@ -62,7 +62,7 @@ module Notifications
     EVENT_NAME = 'Status change of your idea'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       idea = activity.item
       recipient_id = idea&.author_id
 

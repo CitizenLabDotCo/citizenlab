@@ -81,16 +81,16 @@ module SmartGroups::Rules
       'lives_in'
     end
 
-    def self.from_json json
+    def self.from_json(json)
       self.new(json['predicate'], json['value'])
     end
 
-    def initialize predicate, value=nil
+    def initialize(predicate, value=nil)
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       case predicate
       when 'has_value'
         users_scope.where("custom_field_values->>'domicile' = ?", value)
@@ -109,7 +109,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_property locale
+    def description_property(locale)
       CustomField.with_resource_type('User').find_by(key: 'domicile').title_multiloc[locale]
     end
 
@@ -122,7 +122,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_value locale
+    def description_value(locale)
       if value.is_a? Array
         value.map do |v|
           description_single_value v, locale
@@ -139,7 +139,7 @@ module SmartGroups::Rules
       !VALUELESS_PREDICATES.include?(predicate)
     end
 
-    def description_single_value value, locale
+    def description_single_value(value, locale)
       case value
       when 'outside'
         I18n.with_locale(locale) do

@@ -69,7 +69,7 @@ module MachineTranslations
           }.merge params.require(:machine_translation).permit(:attribute_name, :locale_to).to_h.symbolize_keys
         end
 
-        def secure_constantize key
+        def secure_constantize(key)
           CONSTANTIZER.fetch(params[:translatable_type])[key]
         end
 

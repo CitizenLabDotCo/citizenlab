@@ -104,7 +104,7 @@ describe ProfanityService do
 
   private
 
-  def stub_fetch_blocked_words! service
+  def stub_fetch_blocked_words!(service)
     service.stub(:fetch_blocked_words) do |lang|
       case lang
       when 'fr'

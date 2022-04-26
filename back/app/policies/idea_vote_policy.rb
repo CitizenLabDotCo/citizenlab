@@ -54,7 +54,7 @@ class IdeaVotePolicy < ApplicationPolicy
     active? && owner? && record.votable.present?
   end
 
-  def upsert_vote? mode
+  def upsert_vote?(mode)
     return false if !could_modify?
 
     reason = participation_context_service.idea_voting_disabled_reason_for record, user, mode: mode

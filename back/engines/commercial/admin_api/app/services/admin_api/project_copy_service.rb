@@ -1,7 +1,7 @@
 module AdminApi
   class ProjectCopyService
 
-    def import template
+    def import(template)
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
       project_ids_before = Project.ids
@@ -14,7 +14,7 @@ module AdminApi
       end
     end
 
-    def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil
+    def export(project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil)
       @project = project
       init_refs
       @template = { 'models' => {} }
@@ -61,7 +61,7 @@ module AdminApi
       @refs = {}
     end
 
-    def lookup_ref id, model_name
+    def lookup_ref(id, model_name)
       return nil if !id
       if model_name.kind_of?(Array)
         model_name.each do |n|
@@ -72,12 +72,12 @@ module AdminApi
       end
     end
 
-    def store_ref yml_obj, id, model_name
+    def store_ref(yml_obj, id, model_name)
       @refs[model_name] ||= {}
       @refs[model_name][id] = yml_obj
     end
 
-    def yml_custom_forms shift_timestamps: 0
+    def yml_custom_forms(shift_timestamps: 0)
       return [] if !@project.custom_form_id
       yml_custom_form = {
         'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
@@ -87,7 +87,7 @@ module AdminApi
       [yml_custom_form]
     end
 
-    def yml_custom_fields shift_timestamps: 0
+    def yml_custom_fields(shift_timestamps: 0)
       return [] if !@project.custom_form_id
       CustomField.where(resource: @project.custom_form).map do |c|
         yml_custom_field = {
@@ -108,7 +108,7 @@ module AdminApi
       end
     end
 
-    def yml_custom_field_options shift_timestamps: 0
+    def yml_custom_field_options(shift_timestamps: 0)
       return [] if !@project.custom_form_id
       CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
         yml_custom_field_option = {
@@ -124,7 +124,7 @@ module AdminApi
       end
     end
 
-    def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil
+    def yml_projects(shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil)
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc'               => new_title_multiloc || @project.title_multiloc,
@@ -152,7 +152,7 @@ module AdminApi
       [yml_project]
     end
 
-    def yml_project_files shift_timestamps: 0
+    def yml_project_files(shift_timestamps: 0)
       @project.project_files.map do |p|
         {
           'project_ref'     => lookup_ref(p.project_id, :project),
@@ -165,7 +165,7 @@ module AdminApi
       end
     end
 
-    def yml_project_images shift_timestamps: 0
+    def yml_project_images(shift_timestamps: 0)
       @project.project_images.map do |p|
         {
           'project_ref'      => lookup_ref(p.project_id, :project),
@@ -177,7 +177,7 @@ module AdminApi
       end
     end
 
-    def yml_phases shift_timestamps: 0, timeline_start_at: nil
+    def yml_phases(shift_timestamps: 0, timeline_start_at: nil)
       if timeline_start_at && @project.phases.first
         kickoff_at = @project.phases.first.start_at
         shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
@@ -207,7 +207,7 @@ module AdminApi
       end
     end
 
-    def yml_phase_files shift_timestamps: 0
+    def yml_phase_files(shift_timestamps: 0)
       @project.phases.flat_map(&:phase_files).map do |p|
         {
           'phase_ref'       => lookup_ref(p.phase_id, :phase),
@@ -220,7 +220,7 @@ module AdminApi
       end
     end
 
-    def yml_participation_context pc, shift_timestamps: 0
+    def yml_participation_context(pc, shift_timestamps: 0)
       yml_pc = {
         'presentation_mode'            => pc.presentation_mode,
         'participation_method'         => pc.participation_method,
@@ -243,7 +243,7 @@ module AdminApi
       yml_pc
     end
 
-    def yml_poll_questions shift_timestamps: 0
+    def yml_poll_questions(shift_timestamps: 0)
       participation_context_ids = [@project.id] + @project.phases.ids
       Polls::Question.where(participation_context_id: participation_context_ids).map do |q|
         yml_question = {
@@ -258,7 +258,7 @@ module AdminApi
       end
     end
 
-    def yml_poll_options shift_timestamps: 0
+    def yml_poll_options(shift_timestamps: 0)
       participation_context_ids = [@project.id] + @project.phases.ids
       Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: participation_context_ids }).map do |o|
         yml_option = {
@@ -273,7 +273,7 @@ module AdminApi
       end
     end
 
-    def yml_volunteering_causes shift_timestamps: 0
+    def yml_volunteering_causes(shift_timestamps: 0)
       participation_context_ids = [@project.id] + @project.phases.ids
       Volunteering::Cause.where(participation_context_id: participation_context_ids).map do |c|
         yml_cause = {
@@ -290,7 +290,7 @@ module AdminApi
       end
     end
 
-    def yml_maps_map_configs shift_timestamps: 0
+    def yml_maps_map_configs(shift_timestamps: 0)
       CustomMaps::MapConfig.where(project_id: @project.id).map do |map_config|
         yml_map_config = {
           'project_ref'            => lookup_ref(map_config.project_id, :project),
@@ -305,7 +305,7 @@ module AdminApi
       end
     end
 
-    def yml_maps_layers shift_timestamps: 0
+    def yml_maps_layers(shift_timestamps: 0)
       (@project.map_config&.layers || []).map do |layer|
         yml_layer = {
           'map_config_ref'  => lookup_ref(layer.map_config_id, :maps_map_config),
@@ -320,7 +320,7 @@ module AdminApi
       end
     end
 
-    def yml_maps_legend_items shift_timestamps: 0
+    def yml_maps_legend_items(shift_timestamps: 0)
       (@project.map_config&.legend_items || []).map do |legend_item|
         {
           'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
@@ -332,7 +332,7 @@ module AdminApi
       end
     end
 
-    def yml_users anonymize_users, shift_timestamps: 0
+    def yml_users(anonymize_users, shift_timestamps: 0)
       service = AnonymizeUserService.new
       user_ids = []
       idea_ids = @project.ideas.ids
@@ -375,7 +375,7 @@ module AdminApi
       end
     end
 
-    def yml_baskets shift_timestamps: 0
+    def yml_baskets(shift_timestamps: 0)
       participation_context_ids = [@project.id] + @project.phases.ids
       Basket.where(participation_context_id: participation_context_ids).map do |b|
         yml_basket = {
@@ -390,7 +390,7 @@ module AdminApi
       end
     end
 
-    def yml_events shift_timestamps: 0
+    def yml_events(shift_timestamps: 0)
       @project.events.map do |e|
         yml_event = {
           'project_ref'            => lookup_ref(e.project_id, :project),
@@ -416,7 +416,7 @@ module AdminApi
       end
     end
 
-    def yml_event_files shift_timestamps: 0
+    def yml_event_files(shift_timestamps: 0)
       @project.events.flat_map(&:event_files).map do |e|
         {
           'event_ref'       => lookup_ref(e.event_id, :event),
@@ -429,7 +429,7 @@ module AdminApi
       end
     end
 
-    def yml_permissions shift_timestamps: 0
+    def yml_permissions(shift_timestamps: 0)
       permission_scope_ids = [@project.id] + @project.phases.ids
       Permission.where(permission_scope_id: permission_scope_ids).map do |p|
         yml_permission = {
@@ -444,7 +444,7 @@ module AdminApi
       end
     end
 
-    def yml_ideas shift_timestamps: 0
+    def yml_ideas(shift_timestamps: 0)
       @project.ideas.published.where.not(author_id: nil).map do |i|
         yml_idea = {
           'title_multiloc'         => i.title_multiloc,
@@ -474,7 +474,7 @@ module AdminApi
       end
     end
 
-    def yml_baskets_ideas shift_timestamps: 0
+    def yml_baskets_ideas(shift_timestamps: 0)
       BasketsIdea.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |b|
         if lookup_ref(b.idea_id, :idea)
           {
@@ -485,7 +485,7 @@ module AdminApi
       end
     end
 
-    def yml_idea_files shift_timestamps: 0
+    def yml_idea_files(shift_timestamps: 0)
       IdeaFile.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
           'idea_ref'        => lookup_ref(i.idea_id, :idea),
@@ -498,7 +498,7 @@ module AdminApi
       end
     end
 
-    def yml_idea_images shift_timestamps: 0
+    def yml_idea_images(shift_timestamps: 0)
       IdeaImage.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
           'idea_ref'         => lookup_ref(i.idea_id, :idea),
@@ -510,7 +510,7 @@ module AdminApi
       end
     end
 
-    def yml_ideas_phases shift_timestamps: 0
+    def yml_ideas_phases(shift_timestamps: 0)
       IdeasPhase.where(idea_id: @project.ideas.published.where.not(author_id: nil).ids).map do |i|
         {
           'idea_ref'   => lookup_ref(i.idea_id, :idea),
@@ -521,7 +521,7 @@ module AdminApi
       end
     end
 
-    def yml_comments shift_timestamps: 0
+    def yml_comments(shift_timestamps: 0)
       (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
@@ -538,7 +538,7 @@ module AdminApi
       end
     end
 
-    def yml_official_feedback shift_timestamps: 0
+    def yml_official_feedback(shift_timestamps: 0)
       OfficialFeedback.where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea').map do |o|
         yml_official_feedback = {
           'post_ref'           => lookup_ref(o.post_id, :idea),
@@ -553,7 +553,7 @@ module AdminApi
       end
     end
 
-    def yml_votes shift_timestamps: 0
+    def yml_votes(shift_timestamps: 0)
       idea_ids = @project.ideas.published.where.not(author_id: nil).ids
       comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
       Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
@@ -569,7 +569,7 @@ module AdminApi
       end
     end
 
-    def shift_timestamp value, shift_timestamps
+    def shift_timestamp(value, shift_timestamps)
       value && (value + shift_timestamps.days)
     end
 

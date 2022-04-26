@@ -1,7 +1,7 @@
 # Helpers for handling typeform API responses
 module Surveys::TypeformParser
 
-  def extract_value_from_answer answer
+  def extract_value_from_answer(answer)
     case answer[:type]
       when 'text' 
         answer[:text]

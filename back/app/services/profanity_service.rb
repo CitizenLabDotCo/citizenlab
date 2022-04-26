@@ -3,7 +3,7 @@ class ProfanityService
   IGNORE_SPECIAL_CHARS = '.?¿!,:;\'"(){}[]#@_'
 
 
-  def search_blocked_words text
+  def search_blocked_words(text)
     AppConfiguration.instance.settings.dig('core', 'locales').map do |locale|
       locale.split('-').first
     end.uniq.flat_map do |lang|
@@ -21,7 +21,7 @@ class ProfanityService
   end
 
   # Keeping this when we would go back to regex solution
-  def search_blocked_occurences text
+  def search_blocked_occurences(text)
     AppConfiguration.instance.settings.dig('core', 'locales').map do |locale|
       locale.split('-').first
     end.uniq.flat_map do |lang|
@@ -41,17 +41,17 @@ class ProfanityService
 
   private
 
-  def normalize_text text
+  def normalize_text(text)
     # We could also consider removing accents and
     # substituting digits by resembling letters.
     Nokogiri::HTML(text).text.downcase
   end
 
-  def without_special_chars text
+  def without_special_chars(text)
     text.tr(IGNORE_SPECIAL_CHARS,'')
   end
 
-  def fetch_blocked_words lang
+  def fetch_blocked_words(lang)
     file = Rails.root.join("config/blocked_words/#{lang}.txt")
     file = Rails.root.join('config/blocked_words/en.txt') if !File.exist?(file)
     open(file).readlines.map(&:strip)

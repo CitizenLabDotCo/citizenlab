@@ -1,7 +1,7 @@
 module Surveys
   class XlsxService
 
-    def generate_survey_results_xlsx responses
+    def generate_survey_results_xlsx(responses)
       columns = [
         { header: 'submitted_at', f: -> (r) { r.submitted_at }, skip_sanitization: true },
         { header: 'started_at',   f: -> (r) { r.started_at },   skip_sanitization: true }

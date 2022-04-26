@@ -18,13 +18,13 @@ module SmartGroups::Rules
       # Must be defined here in order to be able
       # to overwrite the same method in
       # DescribableRule.
-      def description_property locale
+      def description_property(locale)
         CustomField.find(custom_field_id).title_multiloc[locale]
       end
     end
 
     class_methods do
-      def from_json json
+      def from_json(json)
         self.new(json['customFieldId'], json['predicate'], json['value'])
       end
     end

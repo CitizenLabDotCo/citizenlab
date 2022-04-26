@@ -1,7 +1,7 @@
 module NLP
   class TenantDumpService
 
-    def dump tenant
+    def dump(tenant)
       Apartment::Tenant.switch(tenant.schema_name) do
         {
           id: tenant.id,
@@ -49,7 +49,7 @@ module NLP
       end
     end
 
-    def encode_comments idea
+    def encode_comments(idea)
       children_map = idea.comments.map{ |c| [c.id,[]] }.to_h
       idea.comments.each do |c|
         if c.parent_id
@@ -59,7 +59,7 @@ module NLP
       loop_encode_comments idea.comments.where(parent_id: nil), children_map
     end
 
-    def loop_encode_comments comments, children_map
+    def loop_encode_comments(comments, children_map)
       comments.sort_by{ |c| c.created_at.to_i }.map do |c|
         {
           id:            c.id,

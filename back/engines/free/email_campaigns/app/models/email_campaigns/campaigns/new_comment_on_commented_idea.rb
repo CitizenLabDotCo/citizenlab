@@ -44,7 +44,7 @@ module EmailCampaigns
       { 'Comment' => { 'created' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope = users_scope
         .where(id: activity.item.post.comments.pluck(:author_id))
         .where.not(id: activity.item.author_id)
@@ -64,7 +64,7 @@ module EmailCampaigns
       NewCommentOnCommentedIdeaMailer
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
       return [] if comment.post_type != 'Idea'
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)

@@ -43,11 +43,11 @@ module EmailCampaigns
       { 'Invite' => { 'not_accepted_since_3_days' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.invitee.id)
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       [{
         event_payload: {
           inviter_first_name: activity.item.inviter.first_name,
@@ -60,7 +60,7 @@ module EmailCampaigns
       }]
     end
 
-    def check_send_invite_email_toggle activity:, time: nil
+    def check_send_invite_email_toggle(activity:, time: nil)
       !!activity.item&.send_invite_email
     end
   end

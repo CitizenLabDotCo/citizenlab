@@ -60,7 +60,7 @@ module Notifications
     EVENT_NAME = 'Threshold reached for admin'
 
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       initiative = activity.item
       initiator_id = activity.user_id
       

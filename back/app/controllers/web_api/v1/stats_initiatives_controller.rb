@@ -84,7 +84,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
 
   private
 
-  def apply_group_filter initiatives
+  def apply_group_filter(initiatives)
     if params[:group]
       group = Group.find(params[:group])
       initiatives.joins(:author).where(author: group.members)
@@ -93,7 +93,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_topic_filter initiatives
+  def apply_topic_filter(initiatives)
     if params[:topic]
       initiatives.with_some_topics([params[:topic]])
     else
@@ -101,7 +101,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_feedback_needed_filter initiatives
+  def apply_feedback_needed_filter(initiatives)
     if params[:feedback_needed].present?
       initiatives.feedback_needed
     else

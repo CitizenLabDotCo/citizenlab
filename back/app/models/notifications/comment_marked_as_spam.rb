@@ -60,7 +60,7 @@ module Notifications
     EVENT_NAME = 'Comment marked as spam'
     
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       spam_report = activity.item
       initiator_id = spam_report&.user_id
       if spam_report.spam_reportable_type == 'Comment' && initiator_id
