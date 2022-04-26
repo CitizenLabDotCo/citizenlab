@@ -10,6 +10,7 @@ AllCops:
   - '**/*.builder'
   - '**/.*.*'
   - '**/bin/**/*'
+  - 'engines/ee/**/*'
 
 Style/StringLiterals:
   Enabled: true
