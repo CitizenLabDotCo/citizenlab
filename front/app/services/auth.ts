@@ -88,7 +88,7 @@ export async function signUp(
   }
 }
 
-export function signOut() {
+export async function signOut() {
   const jwt = getJwt();
 
   if (jwt) {
@@ -101,7 +101,7 @@ export function signOut() {
       const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
       window.location.href = url;
     } else {
-      streams.reset();
+      await streams.reset();
       const { pathname } = removeLocale(location.pathname);
 
       if (

@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { signOutAndDeleteAccount } from 'services/auth';
+import { signOut } from 'services/auth';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -83,7 +83,7 @@ const SignUpInModal = memo<Props>(
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
       if (signedUpButNotCompleted) {
-        await signOutAndDeleteAccount();
+        await signOut();
       }
 
       if (onDeclineInvitation && metaData?.isInvitation) {
