@@ -100,7 +100,7 @@ resource 'ProjectFolderImage' do
 
     example_request 'Delete an image from a project_folder' do
       expect(response_status).to eq 200
-      expect{ ProjectFolders::Image.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { ProjectFolders::Image.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -26,7 +26,7 @@ describe SmartGroups::Rules::CustomFieldText do
     end
 
     it 'fails on a non-existing custom field' do
-      expect(valid_rule.tap{ |r| r.custom_field_id = 'garbage' }).to be_invalid
+      expect(valid_rule.tap { |r| r.custom_field_id = 'garbage' }).to be_invalid
     end
   end
 

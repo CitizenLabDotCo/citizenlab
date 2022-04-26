@@ -77,7 +77,7 @@ resource 'Memberships' do
 
       example_request 'Delete a membership' do
         expect(response_status).to eq 200
-        expect{ Membership.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Membership.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -87,7 +87,7 @@ resource 'Memberships' do
       let(:user_id) { membership.user.id }
       example_request 'Delete a membership by group id and user id' do
         expect(response_status).to eq 200
-        expect{ Membership.find(membership.id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Membership.find(membership.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -121,11 +121,11 @@ resource 'Memberships' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to be >= 4
-        expect(json_response[:data].select{ |d| d[:id] == u1.id }.first.dig(:attributes, :is_member)).to be true
-        expect(json_response[:data].select{ |d| d[:id] == u2.id }.first.dig(:attributes, :is_member)).to be false
-        expect(json_response[:data].select{ |d| d[:id] == u3.id }.first.dig(:attributes, :is_member)).to be false
-        expect(json_response[:data].select{ |d| d[:id] == u4.id }.first.dig(:attributes, :is_member)).to be true
-        expect(json_response[:data].select{ |d| d[:id] == u5.id }.empty?).to be true
+        expect(json_response[:data].select { |d| d[:id] == u1.id }.first.dig(:attributes, :is_member)).to be true
+        expect(json_response[:data].select { |d| d[:id] == u2.id }.first.dig(:attributes, :is_member)).to be false
+        expect(json_response[:data].select { |d| d[:id] == u3.id }.first.dig(:attributes, :is_member)).to be false
+        expect(json_response[:data].select { |d| d[:id] == u4.id }.first.dig(:attributes, :is_member)).to be true
+        expect(json_response[:data].select { |d| d[:id] == u5.id }.empty?).to be true
       end
     end
   end

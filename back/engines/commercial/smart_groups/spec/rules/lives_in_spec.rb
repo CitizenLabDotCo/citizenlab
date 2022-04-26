@@ -17,13 +17,13 @@ describe SmartGroups::Rules::LivesIn do
     end
 
     it 'successfully saves the valid multi-value rule' do
-      json_rule = valid_json_rule.tap{ |r| r['predicate'] = 'is_one_of'; r['value'] = [r['value']] }
+      json_rule = valid_json_rule.tap { |r| r['predicate'] = 'is_one_of'; r['value'] = [r['value']] }
       expect(SmartGroups::Rules::LivesIn.from_json(json_rule)).to be_valid
       expect(build(:smart_group, rules: [json_rule])).to be_valid
     end
 
     it 'fails on saving a non-existing custom field option' do
-      json_rule = valid_json_rule.tap{ |r| r['predicate'] = 'is_one_of'; r['value'] = [r['value'], 'garbage'] }
+      json_rule = valid_json_rule.tap { |r| r['predicate'] = 'is_one_of'; r['value'] = [r['value'], 'garbage'] }
       expect(SmartGroups::Rules::LivesIn.from_json(json_rule)).to be_invalid
       # TODO
       # expect(build(:smart_group, rules: [json_rule])).to be_invalid

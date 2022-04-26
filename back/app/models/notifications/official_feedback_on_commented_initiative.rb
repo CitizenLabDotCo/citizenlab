@@ -73,7 +73,7 @@ module Notifications
           .where(comments: { post: official_feedback.post })
           .distinct
           .ids
-          .select{ |recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id }
+          .select { |recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id }
           .map do |recipient_id|
             self.new(
               recipient_id: recipient_id,

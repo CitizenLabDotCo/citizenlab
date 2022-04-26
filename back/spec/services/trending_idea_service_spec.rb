@@ -11,7 +11,7 @@ describe TrendingIdeaService do
       expected_selection = nil
       travel_to Time.now do
         trending_filter = TrendingIdeaService.new.filter_trending(Idea.all).map(&:id)
-        expected_selection = Idea.all.select{ |i| TrendingIdeaService.new.trending? i }.map(&:id)
+        expected_selection = Idea.all.select { |i| TrendingIdeaService.new.trending? i }.map(&:id)
       end
       expect(trending_filter.size).to eq expected_selection.size
       expect(trending_filter.sort).to eq expected_selection.sort
@@ -32,7 +32,7 @@ describe TrendingIdeaService do
       expected_order = nil
       travel_to Time.now do
         trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea.all).map(&:id)
-        expected_order = Idea.all.sort_by{ |i| TrendingIdeaService.new.trending_score i }.map(&:id).reverse
+        expected_order = Idea.all.sort_by { |i| TrendingIdeaService.new.trending_score i }.map(&:id).reverse
       end
 
       # lines = []

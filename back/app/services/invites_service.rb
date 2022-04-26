@@ -106,7 +106,7 @@ class InvitesService
   rescue InvitesFailedError => e
     e.errors.each do |e|
       e.row && (e.row = (map_rows[e.row] + 2))
-      e.rows&.map!{ |r| map_rows[r] + 2 }
+      e.rows&.map! { |r| map_rows[r] + 2 }
     end
     raise e
   end
@@ -232,7 +232,7 @@ class InvitesService
   def xlsx_groups_to_group_ids(groups)
     groups.split(',').map do |group_title|
       stripped_group_title = group_title.strip
-      group = Group.all.find{ |g| g.title_multiloc.values.map(&:strip).include? stripped_group_title }&.id
+      group = Group.all.find { |g| g.title_multiloc.values.map(&:strip).include? stripped_group_title }&.id
       group || (add_error(:unknown_group, row: @current_row, value: stripped_group_title) && nil)
     end.compact
   rescue Exception => e
@@ -291,10 +291,10 @@ class InvitesService
 
   def check_invites(invites)
     # check duplicate emails
-    invites.each_with_object(Hash.new{ [] }).with_index do |(invite, object), index|
+    invites.each_with_object(Hash.new { [] }).with_index do |(invite, object), index|
       object[invite.invitee.email] += [index]
     end
-    .select{ |email, row_indexes| email && row_indexes.size > 1 }
+    .select { |email, row_indexes| email && row_indexes.size > 1 }
     .each do |email, row_indexes|
       add_error(:emails_duplicate, rows: row_indexes, value: email)
     end
@@ -351,7 +351,7 @@ class InvitesService
   end
 
   def ignored_invites(invites)
-    @errors.select(&:ignore).map{ |e| invites[e.row] }
+    @errors.select(&:ignore).map { |e| invites[e.row] }
   end
 
 end

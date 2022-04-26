@@ -162,7 +162,7 @@ resource 'Events' do
       let(:id) { event.id }
       example_request 'Delete a event' do
         assert_status 200
-        expect{ Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

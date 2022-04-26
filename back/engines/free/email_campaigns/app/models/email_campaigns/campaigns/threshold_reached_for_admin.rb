@@ -72,14 +72,14 @@ module EmailCampaigns
           post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale),
           post_upvotes_count: notification.post.upvotes_count,
           post_comments_count: notification.post.comments_count,
-          post_images: notification.post.initiative_images.map{ |image|
+          post_images: notification.post.initiative_images.map { |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
           },
           initiative_header_bg: {
-            versions: notification.post.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+            versions: notification.post.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           },
           **assignee_attributes
         }

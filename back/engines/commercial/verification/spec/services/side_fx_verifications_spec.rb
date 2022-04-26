@@ -18,7 +18,7 @@ describe Verification::SideFxVerificationService do
     end
 
     it 'schedules an UpdateMemberCountJob' do
-      expect{ service.after_create(verification, user) }
+      expect { service.after_create(verification, user) }
         .to have_enqueued_job(UpdateMemberCountJob)
     end
   end

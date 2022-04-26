@@ -8,7 +8,7 @@ class ProfanityService
       locale.split('-').first
     end.uniq.flat_map do |lang|
       blocked_words = Rails.cache.fetch("#{lang}/blocked_words_set", expires_in: 1.hour) do
-        Set.new(fetch_blocked_words(lang).map{ |w| normalize_text w })
+        Set.new(fetch_blocked_words(lang).map { |w| normalize_text w })
       end
       words = without_special_chars(normalize_text(text)).split ' '
       blocked_words.intersection(words).map do |blocked_word|
@@ -26,8 +26,8 @@ class ProfanityService
       locale.split('-').first
     end.uniq.flat_map do |lang|
       regex = Rails.cache.fetch("#{lang}/blocked_words_regex", expires_in: 1.hour) do
-        blocked_words = fetch_blocked_words(lang).map{ |w| normalize_text w }
-        /(#{blocked_words.map{ |word| Regexp.escape(word) }.join('|')})/
+        blocked_words = fetch_blocked_words(lang).map { |w| normalize_text w }
+        /(#{blocked_words.map { |word| Regexp.escape(word) }.join('|')})/
       end
       normalize_text(text).enum_for(:scan, regex).map do |match| 
         { 

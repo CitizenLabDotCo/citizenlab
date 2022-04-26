@@ -13,10 +13,10 @@ module EmailCampaigns
           post_title_multiloc: idea.title_multiloc,
           post_body_multiloc: idea.body_multiloc,
           post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-          post_images: idea.idea_images.map{ |image|
+          post_images: idea.idea_images.map { |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
           },
           idea_status_id: status.id,

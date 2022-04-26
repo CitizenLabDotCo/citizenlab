@@ -20,7 +20,7 @@ describe 'JsonFormsService user overrides' do
       create_list(:area, 5)
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'domicile', :oneOf).map{ |h| h[:const] }).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
+      expect(schema.dig(:properties, 'domicile', :oneOf).map { |h| h[:const] }).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
     end
 
   end

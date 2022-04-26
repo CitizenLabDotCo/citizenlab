@@ -15,7 +15,7 @@ describe SideFxAreaService do
       group2 = create(:smart_group)
       group3 = create(:group)
       service.before_destroy(area, user)
-      expect{ group1.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { group1.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect(Group.count).to eq 2
     end
   end

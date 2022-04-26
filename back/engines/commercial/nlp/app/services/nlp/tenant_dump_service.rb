@@ -38,8 +38,8 @@ module NLP
           project_id:           idea.project_id,
           author_name:          idea.author_name,
           location_description: idea.location_description,
-          topics:               idea.topics.map{ |top| top.id },
-          areas:                idea.areas.map{ |ar| ar.id },
+          topics:               idea.topics.map { |top| top.id },
+          areas:                idea.areas.map { |ar| ar.id },
           upvotes_count:        idea.upvotes_count,
           downvotes_count:      idea.downvotes_count,
           updated_at:           idea.updated_at.iso8601,
@@ -50,7 +50,7 @@ module NLP
     end
 
     def encode_comments(idea)
-      children_map = idea.comments.map{ |c| [c.id,[]] }.to_h
+      children_map = idea.comments.map { |c| [c.id,[]] }.to_h
       idea.comments.each do |c|
         if c.parent_id
           children_map[c.parent_id] += [c]
@@ -60,7 +60,7 @@ module NLP
     end
 
     def loop_encode_comments(comments, children_map)
-      comments.sort_by{ |c| c.created_at.to_i }.map do |c|
+      comments.sort_by { |c| c.created_at.to_i }.map do |c|
         {
           id:            c.id,
           created_at:    c.created_at.iso8601,
@@ -89,8 +89,8 @@ module NLP
           id:                   project.id,
           title_multiloc:       project.title_multiloc,
           description_multiloc: project.description_multiloc,
-          topics:               project.allowed_input_topics.map{ |top| top.id },
-          areas:                project.areas.map{ |ar| ar.id }
+          topics:               project.allowed_input_topics.map { |top| top.id },
+          areas:                project.areas.map { |ar| ar.id }
         }
         d
       end

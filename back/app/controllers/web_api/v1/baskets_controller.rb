@@ -40,7 +40,7 @@ class WebApi::V1::BasketsController < ApplicationController
           ideas_to_add = new_idea_ids - old_idea_ids
           ideas_to_rmv = old_idea_ids - new_idea_ids
           @basket.baskets_ideas.where(idea_id: ideas_to_rmv).each(&:destroy!)
-          ideas_to_add.each{ |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
+          ideas_to_add.each { |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
         end
         @basket.assign_attributes basket_params.except(:idea_ids)
         save_params = {}

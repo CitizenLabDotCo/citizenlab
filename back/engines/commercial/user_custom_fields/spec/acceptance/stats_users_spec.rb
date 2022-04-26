@@ -48,7 +48,7 @@ resource 'Stats - Users' do
         create_list(:user, 2, gender: 'female')
         create(:user, gender: 'unspecified')
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user)
       end
     end
@@ -81,7 +81,7 @@ resource 'Stats - Users' do
         create_list(:user, 1, gender: 'male')
         create(:user, gender: 'unspecified')
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user)
       end
     end
@@ -114,7 +114,7 @@ resource 'Stats - Users' do
         create_list(:user, 2, birthyear: 1980)
         create(:user, birthyear: 1976)
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -141,7 +141,7 @@ resource 'Stats - Users' do
         create_list(:user, 2, birthyear: 1980)
         create(:user, birthyear: 1976)
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
       travel_to start_at + 18.days do
@@ -171,7 +171,7 @@ end
         create_list(:user, 2, birthyear: 1980)
         create(:user, birthyear: 1976)
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -204,7 +204,7 @@ end
         create_list(:user, 2, domicile: @area1.id)
         create(:user, domicile: @area2.id)
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -242,7 +242,7 @@ end
         create_list(:user, 2, domicile: @area1.id)
         create(:user, domicile: @area2.id)
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, birthyear: 1980)
       end
     end
@@ -274,7 +274,7 @@ end
         create_list(:user, 2, education: '3')
         create(:user, education: '5')
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, education: '3')
       end
     end
@@ -305,7 +305,7 @@ end
         create_list(:user, 2, education: '3')
         create(:user, education: '5')
         @group = create(:group)
-        User.all.each{ |u| create(:membership, user: u, group: @group) }
+        User.all.each { |u| create(:membership, user: u, group: @group) }
         create(:user, education: '3')
       end
     end

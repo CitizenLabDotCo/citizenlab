@@ -106,7 +106,7 @@ module UserCustomFields
         def users_by_domicile
           serie = users_by_domicile_serie
           areas = Area.all.select(:id, :title_multiloc)
-          render json: { series: { users: serie }, areas: areas.map{ |a| [a.id, a.attributes.except('id')] }.to_h }
+          render json: { series: { users: serie }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
         end
 
         def users_by_domicile_as_xlsx
@@ -115,7 +115,7 @@ module UserCustomFields
             {
               'area_id' => area.id,
               'area' => @@multiloc_service.t(area.title_multiloc),
-              'users' => serie.find{ |entry| entry[0] == area.id }&.at(1) || 0
+              'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
             }
           }
           res.push({
@@ -215,7 +215,7 @@ module UserCustomFields
           serie = users_by_custom_field_serie
           if ['select', 'multiselect'].include?(@custom_field.input_type)
             options = @custom_field.custom_field_options.select(:key, :title_multiloc)
-            render json: { series: { users: serie }, options: options.map{ |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
+            render json: { series: { users: serie }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
           else
             render json: { series: { users: serie } }
           end

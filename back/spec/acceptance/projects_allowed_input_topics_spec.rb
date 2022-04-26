@@ -68,7 +68,7 @@ resource 'ProjectsAllowedInputTopics' do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 200
-        expect{ ProjectsAllowedInputTopic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { ProjectsAllowedInputTopic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectsAllowedInputTopic.count).to eq (old_count - 1)
       end
     end

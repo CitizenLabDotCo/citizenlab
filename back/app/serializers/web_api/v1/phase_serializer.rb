@@ -20,7 +20,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     if preloaded_user_basket
       preloaded_user_basket
     else
-      current_user(params)&.baskets&.select{ |basket|
+      current_user(params)&.baskets&.select { |basket|
         (basket.participation_context_id == object.id) && (basket.participation_context_type == 'Phase')
       }&.first
     end

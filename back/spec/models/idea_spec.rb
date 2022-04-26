@@ -115,7 +115,7 @@ RSpec.describe Idea, type: :model do
     before do
       5.times do |i|
         idea = create(:idea)
-        rand(20).times{ create(:vote, votable: idea, mode: ['up','down'][rand(1)]) }
+        rand(20).times { create(:vote, votable: idea, mode: ['up','down'][rand(1)]) }
       end
     end
 
@@ -138,7 +138,7 @@ RSpec.describe Idea, type: :model do
   describe 'order_status' do
     it 'sorts from high status to low status when asked desc' do
       status_sorted = Idea.order_status(:desc).map(&:id)
-      expect(status_sorted).to eq Idea.all.sort_by{ |idea| idea.idea_status.ordering }.map(&:id).reverse
+      expect(status_sorted).to eq Idea.all.sort_by { |idea| idea.idea_status.ordering }.map(&:id).reverse
     end
   end
 
@@ -170,7 +170,7 @@ RSpec.describe Idea, type: :model do
     it 'with an area should succeed' do
       area = create(:area)
       idea = create(:idea, areas: [area])
-      expect{ idea.destroy }.not_to raise_error
+      expect { idea.destroy }.not_to raise_error
     end
   end
 

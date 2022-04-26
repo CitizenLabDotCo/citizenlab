@@ -22,7 +22,7 @@ resource 'Spam Reports' do
     let(:reason_code) { 'wrong_content' }
   
     describe do
-      before{ idea.inappropriate_content_flag&.destroy! }
+      before { idea.inappropriate_content_flag&.destroy! }
 
       example_request 'A new flag is created when spam is reported', document: false do
         expect(response_status).to eq 201
@@ -31,7 +31,7 @@ resource 'Spam Reports' do
     end
 
     describe do
-      before{ create(:inappropriate_content_flag, flaggable: idea) }
+      before { create(:inappropriate_content_flag, flaggable: idea) }
 
       example 'The exisiting flag is reused when spam is reported', document: false do
         count = FlagInappropriateContent::InappropriateContentFlag.count

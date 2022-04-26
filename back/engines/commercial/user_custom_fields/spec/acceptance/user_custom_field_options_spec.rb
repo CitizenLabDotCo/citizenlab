@@ -118,7 +118,7 @@ resource 'User Custom Field Options' do
 
       example_request 'Delete a custom field option' do
         expect(response_status).to eq 200
-        expect{ CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       if CitizenLab.ee?
@@ -138,7 +138,7 @@ resource 'User Custom Field Options' do
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request
         expect(response_status).to eq 200
-        expect{ CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
       end
     end

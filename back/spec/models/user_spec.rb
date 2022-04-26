@@ -154,7 +154,7 @@ RSpec.describe User, type: :model do
 
     it 'is invalid when the user has an unknown role type' do
       u = build(:user, roles: [{ type: 'stonecarver' }])
-      expect{ u.valid? }.to change{ u.errors[:roles] }
+      expect { u.valid? }.to change { u.errors[:roles] }
     end
   end
 
@@ -209,7 +209,7 @@ RSpec.describe User, type: :model do
 
     it "is invalid when it's not one of the configured locales" do
       user = build(:user, locale: 'pt')
-      expect{ user.valid? }.to change{ user.errors[:locale] }
+      expect { user.valid? }.to change { user.errors[:locale] }
     end
   end
 
@@ -247,7 +247,7 @@ RSpec.describe User, type: :model do
 
     it '(gender) is invalid when not male, female or unspecified' do
       user = build(:user, gender: 'somethingelse')
-      expect{ user.valid? }.to change{ user.errors[:gender] }
+      expect { user.valid? }.to change { user.errors[:gender] }
     end
 
     it '(birthyear) is valid when in realistic range' do
@@ -257,18 +257,18 @@ RSpec.describe User, type: :model do
 
     it '(birthyear) is invalid when unrealistic' do
       user = build(:user, birthyear: Time.now.year + 1)
-      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      expect { user.valid? }.to change { user.errors[:birthyear] }
       user = build(:user, birthyear: 1850)
-      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      expect { user.valid? }.to change { user.errors[:birthyear] }
       user = build(:user, birthyear: 'eighteen hundred')
-      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      expect { user.valid? }.to change { user.errors[:birthyear] }
     end
 
     it '(birthyear) is invalid when not an integer' do
       user = build(:user, birthyear: 'eighteen hundred')
-      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      expect { user.valid? }.to change { user.errors[:birthyear] }
       user = build(:user, birthyear: 1930.4)
-      expect{ user.valid? }.to change{ user.errors[:birthyear] }
+      expect { user.valid? }.to change { user.errors[:birthyear] }
     end
 
     it "(domicile) is valid when an area id or 'outside'" do
@@ -279,9 +279,9 @@ RSpec.describe User, type: :model do
 
     it "(domicile) is invalid when not an area id or 'outside'" do
       user = build(:user, domicile: 'somethingelse')
-      expect{ user.valid? }.to change{ user.errors[:domicile] }
+      expect { user.valid? }.to change { user.errors[:domicile] }
       user = build(:user, domicile: 5)
-      expect{ user.valid? }.to change{ user.errors[:domicile] }
+      expect { user.valid? }.to change { user.errors[:domicile] }
     end
 
     it '(education) is valid when an ISCED2011 level' do
@@ -294,11 +294,11 @@ RSpec.describe User, type: :model do
     it '(education) is invalid when not an isced 2011 level' do
       CustomField.find_by(code: 'education').update(enabled: true)
       user = build(:user, education: 'somethingelse')
-      expect{ user.valid? }.to change{ user.errors[:education] }
+      expect { user.valid? }.to change { user.errors[:education] }
       user = build(:user, education: 9)
-      expect{ user.valid? }.to change{ user.errors[:education] }
+      expect { user.valid? }.to change { user.errors[:education] }
       user = build(:user, education: 2.4)
-      expect{ user.valid? }.to change{ user.errors[:education] }
+      expect { user.valid? }.to change { user.errors[:education] }
     end
 
   end
@@ -312,12 +312,12 @@ RSpec.describe User, type: :model do
     end
 
     it 'sorts from higher level roles to lower level roles by default' do
-      serie = User.order_role.map{ |u| u.roles.size }
+      serie = User.order_role.map { |u| u.roles.size }
       expect(serie).to eq serie.sort.reverse
     end
 
     it 'sorts from lower level roles to higher level roles with option asc' do
-      serie = User.order_role(:desc).map{ |u| u.roles.size }
+      serie = User.order_role(:desc).map { |u| u.roles.size }
       expect(serie).to eq serie.sort
     end
 
@@ -329,13 +329,13 @@ RSpec.describe User, type: :model do
       u.custom_field_values = {
         somekey: 'somevalue'
       }
-      expect{ u.save }.to change{ u.errors[:custom_field_values] }
+      expect { u.save }.to change { u.errors[:custom_field_values] }
     end
 
     it "doesn't validate when custom_field_values hasn't changed" do
       u = build(:user, custom_field_values: { somekey: 'somevalue' })
       u.save(validate: false)
-      expect{ u.save }.not_to change{ u.errors[:custom_field_values] }
+      expect { u.save }.not_to change { u.errors[:custom_field_values] }
     end
 
   end
@@ -454,7 +454,7 @@ RSpec.describe User, type: :model do
       strangers = [
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
-        *3.times.map{ build_stubbed(:admin) }
+        *3.times.map { build_stubbed(:admin) }
       ]
       expect(strangers).not_to include(be_super_admin)
     end

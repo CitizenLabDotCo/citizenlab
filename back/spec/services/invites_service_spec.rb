@@ -22,13 +22,13 @@ describe InvitesService do
           last_name: rand(3) == 0 ? user.last_name : nil,
           language: rand(3) == 0 ? user.locale : nil,
           admin: rand(5) == 0 ? true : nil,
-          groups: rand(3) == 0 ? rand(3).times.map{ Group.offset(rand(Group.count)).first.title_multiloc.values.first }.uniq.join(',') : nil
+          groups: rand(3) == 0 ? rand(3).times.map { Group.offset(rand(Group.count)).first.title_multiloc.values.first }.uniq.join(',') : nil
         }
       end + [{},{},{}]).shuffle }
       let(:inviter) { create(:user) }
 
       it 'correctly creates invites when all is fine' do
-        expect{ service.bulk_create_xlsx(xlsx, {}, inviter) }.to change{ Invite.count }.from(0).to(10)
+        expect { service.bulk_create_xlsx(xlsx, {}, inviter) }.to change { Invite.count }.from(0).to(10)
       end
     end
 
@@ -67,7 +67,7 @@ describe InvitesService do
       ]}
 
       it 'initializes custom_field_values with matching column names and appropriate types' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to change{ Invite.count }.from(0).to(7)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to change { Invite.count }.from(0).to(7)
 
         user = User.find_by(email: 'user1@domain.net')
         expect(user.custom_field_values).to eq({ 'text_field' => 'some_value' })
@@ -134,7 +134,7 @@ describe InvitesService do
 
       it "raises 'InviteError' errors" do
 
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
           expect(e).to be_a(InvitesService::InvitesFailedError)
           expect(e.errors.length).to be(2)
 
@@ -153,10 +153,10 @@ describe InvitesService do
     end
 
     context 'with file that exceeds maximum supported number of invites' do
-      let(:hash_array) { (InvitesService::MAX_INVITES + 1).times.each.map{ { first_name: 'Jezus' } } }
+      let(:hash_array) { (InvitesService::MAX_INVITES + 1).times.each.map { { first_name: 'Jezus' } } }
 
       it 'fails with max_invites_limit_exceeded error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:max_invites_limit_exceeded]
       end
@@ -166,7 +166,7 @@ describe InvitesService do
       let(:hash_array) { [] }
 
       it 'fails with no_invites_specified error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:no_invites_specified]
       end
@@ -178,7 +178,7 @@ describe InvitesService do
       ]}
 
       it 'fails with unknown_group error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:unknown_group]
         expect(service.errors.first.row).to eq 2
@@ -193,7 +193,7 @@ describe InvitesService do
       ]}
 
       it 'fails with malformed_groups_value error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:malformed_groups_value]
         expect(service.errors.first.row).to eq 3
@@ -207,7 +207,7 @@ describe InvitesService do
       ]}
 
       it 'fails with malformed_admin_value error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:malformed_admin_value]
         expect(service.errors.first.row).to eq 2
@@ -221,7 +221,7 @@ describe InvitesService do
       ]}
 
       it 'fails with unknown_locale error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:unknown_locale]
         expect(service.errors.first.row).to eq 2
@@ -235,7 +235,7 @@ describe InvitesService do
       ]}
 
       it 'fails with invalid_email error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:invalid_email]
         expect(service.errors.first.row).to eq 2
@@ -251,7 +251,7 @@ describe InvitesService do
       ]}
 
       it "doesn't send out invitations to the existing users" do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(1)
+        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(1)
       end
     end
 
@@ -277,7 +277,7 @@ describe InvitesService do
       ]}
 
       it 'fails with email_duplicate error' do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
         expect(service.errors.size).to eq 1
         expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:emails_duplicate]
         expect(service.errors.first.rows).to eq [2,3,5]
@@ -291,7 +291,7 @@ describe InvitesService do
         { first_name: 'John', last_name: 'Johnson' },
       ]}
       it 'succeeds with unique slugs' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(2)
+        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(2)
       end
     end
 
@@ -303,7 +303,7 @@ describe InvitesService do
       ]}
 
       it 'sets send_invite_email attribute to false in the invite' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(3)
+        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(3)
         expect(Invite.all.pluck(:send_invite_email)).to eq [false, false, false]
       end
     end
@@ -316,7 +316,7 @@ describe InvitesService do
       ]}
 
       it 'sets send_invite_email attribute to true in the invite' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(3)
+        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(3)
         expect(Invite.all.pluck(:send_invite_email)).to eq [true, true, true]
       end
     end
@@ -327,7 +327,7 @@ describe InvitesService do
       ]}
 
       it 'sets send_invite_email attribute to true in the invite' do
-        expect{ service.bulk_create_xlsx(xlsx) }.to change{ Invite.count }.from(0).to(1)
+        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(1)
         expect(Invite.first.send_invite_email).to be true
       end
     end

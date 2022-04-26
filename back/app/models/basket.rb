@@ -31,7 +31,7 @@ class Basket < ApplicationRecord
   scope :submitted, -> { where.not(submitted_at: nil) }
 
   def total_budget
-  	self.ideas.pluck(:budget).compact.inject(0){ |sum,x| sum + x }
+  	self.ideas.pluck(:budget).compact.inject(0) { |sum,x| sum + x }
   end
 
   def budget_exceeds_limit?

@@ -8,7 +8,7 @@ RSpec.describe LogActivityJob, type: :job do
     it 'logs an activity with a GlobalID' do
       idea = create(:idea)
       user = create(:user)
-      expect{ job.perform(idea, 'created', user, Time.now) }.to change{ Activity.count }.from(0).to(1)
+      expect { job.perform(idea, 'created', user, Time.now) }.to change { Activity.count }.from(0).to(1)
     end
 
     it "logs a notification activity with the notification's subclass item_type" do
@@ -22,7 +22,7 @@ RSpec.describe LogActivityJob, type: :job do
       idea = create(:idea)
       frozen_idea = idea.destroy
       user = create(:user)
-      expect{ job.perform("Idea/#{frozen_idea.id}", 'deleted', user, Time.now) }.to change{ Activity.count }.from(0).to(1)
+      expect { job.perform("Idea/#{frozen_idea.id}", 'deleted', user, Time.now) }.to change { Activity.count }.from(0).to(1)
     end
 
     it 'logs an activity when the user is nil' do
@@ -35,7 +35,7 @@ RSpec.describe LogActivityJob, type: :job do
       admin = create(:admin)
       user = create(:user)
       t = Time.now
-      expect{ job.perform(user, 'admin_rights_given', admin, t) }
+      expect { job.perform(user, 'admin_rights_given', admin, t) }
         .to have_enqueued_job(MakeNotificationsForClassJob)
         .with do |notification_class, activity|
           expect(notification_class).to eq 'Notifications::AdminRightsReceived'
@@ -51,25 +51,25 @@ RSpec.describe LogActivityJob, type: :job do
     it 'enqueues a EmailCampaigns::TriggerOnActivityJob' do
       spam_report = create(:spam_report)
       user = create(:user)
-      expect{ job.perform(spam_report, 'created', user, Time.now) }.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
+      expect { job.perform(spam_report, 'created', user, Time.now) }.to have_enqueued_job(EmailCampaigns::TriggerOnActivityJob)
     end
 
     it 'enqueues a PublishActivityToRabbitJob when bunny is initialized' do
       idea = create(:idea)
       user = create(:user)
-      expect{ job.perform(idea, 'created', user, Time.now) }.to have_enqueued_job(PublishActivityToRabbitJob)
+      expect { job.perform(idea, 'created', user, Time.now) }.to have_enqueued_job(PublishActivityToRabbitJob)
     end
 
     it 'enqueues a TrackEventJob when Analytics is initialized' do
       idea = create(:idea)
       user = create(:user)
-      expect{ job.perform(idea, 'created', user, Time.now) }.to have_enqueued_job(TrackEventJob)
+      expect { job.perform(idea, 'created', user, Time.now) }.to have_enqueued_job(TrackEventJob)
     end
 
     it "doesn't enqueue a TrackEventJob when the item is a notification" do
       item = create(:notification)
       user = create(:user)
-      expect{ job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
+      expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
     end
 
   end

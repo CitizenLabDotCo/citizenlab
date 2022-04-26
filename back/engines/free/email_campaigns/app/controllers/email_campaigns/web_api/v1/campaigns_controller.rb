@@ -9,12 +9,12 @@ module EmailCampaigns
         .order(created_at: :desc)
 
       if params[:campaign_names]
-        campaign_types = params[:campaign_names].map{ |name| Campaign.from_campaign_name(name) }
+        campaign_types = params[:campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where(type: campaign_types)
       end
 
       if params[:without_campaign_names]
-        campaign_types = params[:without_campaign_names].map{ |name| Campaign.from_campaign_name(name) }
+        campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 

@@ -20,15 +20,15 @@ module IdeaCustomFields
         db_cfs = db_cfs.merge(custom_fields_scope) if custom_fields_scope
 
         bi_cfs = default_fields(custom_form)
-        bi_cfs = bi_cfs.filter{ |cf| cf.code != 'location_point_geojson' && cf.code != 'author_id' && cf.code != 'budget' } if filter_unmodifiable
+        bi_cfs = bi_cfs.filter { |cf| cf.code != 'location_point_geojson' && cf.code != 'author_id' && cf.code != 'budget' } if filter_unmodifiable
         bi_codes = bi_cfs.map(&:code)
 
 
-        replacing, additional = db_cfs.partition{ |c| bi_codes.include? c.code }
+        replacing, additional = db_cfs.partition { |c| bi_codes.include? c.code }
 
         [
           *bi_cfs.map do |bi_cf|
-            replacing.find{ |c| bi_cf.code == c.code } || bi_cf
+            replacing.find { |c| bi_cf.code == c.code } || bi_cf
           end,
           *additional
         ]

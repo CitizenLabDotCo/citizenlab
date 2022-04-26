@@ -137,7 +137,7 @@ module AdminApi
         'process_type'                 => @project.process_type,
         'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
         'custom_form_ref'              => lookup_ref(@project.custom_form_id, :custom_form),
-        'text_images_attributes'       => @project.text_images.map{ |ti|
+        'text_images_attributes'       => @project.text_images.map { |ti|
           {
             'imageable_field'          => ti.imageable_field,
             'remote_image_url'         => ti.image_url,
@@ -192,7 +192,7 @@ module AdminApi
           'end_at'                 => shift_timestamp(p.end_at, shift_timestamps)&.iso8601,
           'created_at'             => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
           'updated_at'             => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-          'text_images_attributes' => p.text_images.map{ |ti|
+          'text_images_attributes' => p.text_images.map { |ti|
             {
               'imageable_field'    => ti.imageable_field,
               'remote_image_url'   => ti.image_url,
@@ -361,7 +361,7 @@ module AdminApi
             'locale'                    => u.locale,
             'bio_multiloc'              => u.bio_multiloc,
             'cl1_migrated'              => u.cl1_migrated,
-            'custom_field_values'       => u.custom_field_values.delete_if{ |k,v| v.nil? },
+            'custom_field_values'       => u.custom_field_values.delete_if { |k,v| v.nil? },
             'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601,
             'verified'                  => u.verified,
           }
@@ -401,7 +401,7 @@ module AdminApi
           'end_at'                 => shift_timestamp(e.end_at, shift_timestamps)&.iso8601,
           'created_at'             => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
           'updated_at'             => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601,
-          'text_images_attributes' => e.text_images.map{ |ti|
+          'text_images_attributes' => e.text_images.map { |ti|
             {
               'imageable_field'    => ti.imageable_field,
               'remote_image_url'   => ti.image_url,
@@ -459,7 +459,7 @@ module AdminApi
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
           'proposed_budget' => i.proposed_budget,
-          'text_images_attributes' => i.text_images.map{ |i|
+          'text_images_attributes' => i.text_images.map { |i|
             {
               'imageable_field'          => i.imageable_field,
               'remote_image_url'         => i.image_url,

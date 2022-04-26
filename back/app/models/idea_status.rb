@@ -58,11 +58,11 @@ class IdeaStatus < ApplicationRecord
     locales = AppConfiguration.instance.settings('core', 'locales') || CL2_SUPPORTED_LOCALES
     (MINIMUM_REQUIRED_CODES - ['custom']).each.with_index do |code, i|
       title_multiloc = locales.map do |locale|
-        translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}") }
+        translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}") }
         [locale, translation]
       end.to_h
       description_multiloc = locales.map do |locale|
-        translation = I18n.with_locale(locale){ I18n.t("statuses.#{code}_description") }
+        translation = I18n.with_locale(locale) { I18n.t("statuses.#{code}_description") }
         [locale, translation]
       end.to_h
       IdeaStatus.create(

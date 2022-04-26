@@ -151,7 +151,7 @@ describe Verification::VerificationService do
         .with(params2[:verification_parameters])
         .and_return({ uid: '001529382' })
 
-      expect{ service.verify_sync(params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
+      expect { service.verify_sync(params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
 
   end
@@ -200,7 +200,7 @@ describe Verification::VerificationService do
       mthd2 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       service.class.add_method(mthd1)
       service.class.add_method(mthd2)
-      expect(service.all_methods.select{ |m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe' }).to contain_exactly(mthd2)
+      expect(service.all_methods.select { |m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe' }).to contain_exactly(mthd2)
     end
   end
 

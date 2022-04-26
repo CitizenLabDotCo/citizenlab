@@ -39,7 +39,7 @@ resource 'Projects' do
       example_request 'List all projects (default behaviour)' do
         assert_status 200
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| json_response[:included].select{ |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| json_response[:included].select { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
       end
 
       example 'List only projects with specified IDs' do
@@ -52,7 +52,7 @@ resource 'Projects' do
       example 'List all draft or archived projects', document: false do
         do_request(publication_statuses: %w[draft archived])
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| json_response[:included].select{ |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.first.dig(:attributes, :publication_status) }).not_to include('published')
+        expect(json_response[:data].map { |d| json_response[:included].select { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.first.dig(:attributes, :publication_status) }).not_to include('published')
       end
 
       example 'Get all projects on the second page with fixed page size' do
@@ -284,16 +284,16 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
-          expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+          expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
+          expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-          expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'draft'
+          expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'draft'
           if CitizenLab.ee?
             expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
           end
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
           # New projects are added to the top
-          expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
+          expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do
@@ -331,7 +331,7 @@ resource 'Projects' do
           expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
+          expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
           expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
           expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
@@ -463,8 +463,8 @@ resource 'Projects' do
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq 'Changed body'
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:attributes,:slug)).to eq 'changed-title'
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{ |d| d[:id] }).to match_array area_ids
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{ |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data,:relationships,:areas,:data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data,:relationships,:topics,:data).map { |d| d[:id] }).to match_array topic_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
         expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
         expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
@@ -473,7 +473,7 @@ resource 'Projects' do
         expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
         expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
-        expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'archived'
+        expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'archived'
         if CitizenLab.ee?
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
         end
@@ -485,7 +485,7 @@ resource 'Projects' do
         # expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
         expect(Project.find(json_response.dig(:data, :id)).folder.id).to eq folder.id
         # Projects moved into folders are added to the top
-        expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
       end
 
       example 'Remove a project from a folder', skip: !CitizenLab.ee? do
@@ -493,7 +493,7 @@ resource 'Projects' do
         do_request(project: { folder_id: nil })
         expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to eq nil
         # Projects moved out of folders are added to the top
-        expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
       end
 
       example '[error] Put a project in a non-existing folder', skip: !CitizenLab.ee? do

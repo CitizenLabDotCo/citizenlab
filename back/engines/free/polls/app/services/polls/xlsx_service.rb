@@ -38,11 +38,11 @@ module Polls
 		end
 
     def extract_responses(response_obj, question_id, multiloc_service)
-      resp_opts = response_obj.response_options.select{ |ro| ro.option.question_id == question_id }
+      resp_opts = response_obj.response_options.select { |ro| ro.option.question_id == question_id }
       return '' if resp_opts.blank?
 
       resp_opts
-        .map{ |ro| multiloc_service.t(ro.option.title_multiloc) }
+        .map { |ro| multiloc_service.t(ro.option.title_multiloc) }
         .join(', ')
     end
 

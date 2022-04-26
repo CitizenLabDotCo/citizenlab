@@ -153,7 +153,7 @@ resource 'Volunteering Causes' do
         old_count = Volunteering::Cause.count
         do_request
         expect(response_status).to eq 200
-        expect{ Volunteering::Cause.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Volunteering::Cause.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Volunteering::Cause.count).to eq (old_count - 1)
       end
     end

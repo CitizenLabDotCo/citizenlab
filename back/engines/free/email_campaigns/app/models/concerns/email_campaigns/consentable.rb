@@ -5,7 +5,7 @@ module EmailCampaigns
     def self.consentable_campaign_types(classes, user, service=nil)
       service ||= DeliveryService.new
       service.campaign_classes
-        .select{ |claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user) }
+        .select { |claz| claz.respond_to?(:consentable_for?) && claz.consentable_for?(user) }
         .map(&:name)
     end
 

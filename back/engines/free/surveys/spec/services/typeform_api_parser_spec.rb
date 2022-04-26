@@ -270,7 +270,7 @@ describe Surveys::TypeformApiParser do
       responses = service.get_responses(form_id)
       expect(responses).to all(be_a(Surveys::Response))
 
-      responses.each{ |r| r.participation_context = pc }
+      responses.each { |r| r.participation_context = pc }
       expect(responses).to all(be_valid)
     end
   end

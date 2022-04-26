@@ -69,15 +69,15 @@ module EmailCampaigns
       @top_ideas ||= top_ideas.all
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @successful_initiatives ||= successful_initiatives(name_service, time: time)
-      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map{ |d| d[:id] }.compact
+      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map { |d| d[:id] }.compact
 
       [{
         event_payload: {
           notifications_count: @notifications_counts[recipient.id],
-          top_ideas: @top_ideas.map{ |idea|
+          top_ideas: @top_ideas.map { |idea|
             top_idea_payload idea, recipient
           },
-          discover_projects: discover_projects.map{ |project|
+          discover_projects: discover_projects.map { |project|
             discover_projects_payload project, recipient
           },
           new_initiatives: @new_initiatives,
@@ -152,16 +152,16 @@ module EmailCampaigns
         comments_count: idea.comments_count,
         published_at: idea.published_at&.iso8601,
         url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
-        idea_images: idea.idea_images.map{ |image|
+        idea_images: idea.idea_images.map { |image|
           {
             ordering: image.ordering,
-            versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+            versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
           }
         },
         top_comments: idea.comments
-          .select{ |c| c.published? }
-          .sort_by{ |c| -c.children.size }
-          .take(N_TOP_COMMENTS).map{ |comment|
+          .select { |c| c.published? }
+          .sort_by { |c| -c.children.size }
+          .take(N_TOP_COMMENTS).map { |comment|
             top_comment_payload comment, name_service
           }
       }
@@ -174,7 +174,7 @@ module EmailCampaigns
         author_first_name: comment.author&.first_name,
         author_last_name: name_service.last_name!(comment.author),
         author_locale: comment.author&.locale,
-        author_avatar: comment.author.avatar&.versions&.map{ |k, v| [k.to_s, v.url] }&.to_h
+        author_avatar: comment.author.avatar&.versions&.map { |k, v| [k.to_s, v.url] }&.to_h
       }
     end
 
@@ -200,14 +200,14 @@ module EmailCampaigns
           author_name: name_service.display_name!(initiative.author),
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
-          images: initiative.initiative_images.map{ |image|
+          images: initiative.initiative_images.map { |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
           },
           header_bg: {
-            versions: initiative.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           }
         }
       end
@@ -233,14 +233,14 @@ module EmailCampaigns
           upvotes_count: initiative.upvotes_count,
           comments_count: initiative.comments_count,
           threshold_reached_at: initiative.threshold_reached_at.iso8601,
-          images: initiative.initiative_images.map{ |image|
+          images: initiative.initiative_images.map { |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
           },
           header_bg: {
-            versions: initiative.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           }
         }
       end

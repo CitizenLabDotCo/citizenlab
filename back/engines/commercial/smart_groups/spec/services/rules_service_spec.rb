@@ -94,7 +94,7 @@ describe SmartGroups::RulesService do
     end
 
     it 'uses a maximun of 2 queries' do
-      expect{ service.groups_for_user(user) }.not_to exceed_query_limit(2)
+      expect { service.groups_for_user(user) }.not_to exceed_query_limit(2)
     end
 
     it 'accepts an optional scope to limit the groups to search in' do

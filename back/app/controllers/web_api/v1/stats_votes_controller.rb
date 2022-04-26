@@ -114,7 +114,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_topic
     serie = votes_by_topic_serie
     topics = Topic.all.select(:id, :title_multiloc)
-    render json: { series: { total: serie }, topics: topics.map{ |t| [t.id, t.attributes.except('id')] }.to_h }
+    render json: { series: { total: serie }, topics: topics.map { |t| [t.id, t.attributes.except('id')] }.to_h }
   end
 
   def votes_by_topic_as_xlsx
@@ -151,7 +151,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_project
     serie = votes_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { total: serie }, projects: projects.map{ |p| [p.id, p.attributes.except('id')] }.to_h }
+    render json: { series: { total: serie }, projects: projects.map { |p| [p.id, p.attributes.except('id')] }.to_h }
   end
 
   def votes_by_project_as_xlsx
@@ -256,7 +256,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     response = {
       'up' => {},
       'down' => {},
-      'total' => Hash.new{ |hash,key| hash[key] = 0 }
+      'total' => Hash.new { |hash,key| hash[key] = 0 }
     }
     serie.each_with_object(response) do |((mode, date), count), object|
       object[mode][date] = count

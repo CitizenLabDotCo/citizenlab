@@ -117,7 +117,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expected_topics = @ideas_with_topics.flat_map{ |i| i.ideas_topics.map(&:topic_id) }.uniq
+        expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_topics.map(&:topic_id) }.uniq
         expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
         expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
@@ -493,7 +493,7 @@ resource 'Stats - Ideas' do
     example_request 'Ideas by area' do
       assert_status 200
       json_response = json_parse(response_body)
-      expected_areas = @ideas_with_areas.flat_map{ |i| i.areas_ideas.map(&:area_id) }.uniq
+      expected_areas = @ideas_with_areas.flat_map { |i| i.areas_ideas.map(&:area_id) }.uniq
       expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
       expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
     end
@@ -513,7 +513,7 @@ resource 'Stats - Ideas' do
       assert_status 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
       expect(worksheet[0].cells.map(&:value)).to match ['area', 'area_id', 'ideas']
-      expected_areas = @ideas_with_areas.flat_map{ |i| i.areas_ideas.map(&:area_id) }.uniq
+      expected_areas = @ideas_with_areas.flat_map { |i| i.areas_ideas.map(&:area_id) }.uniq
 
       area_id_col = worksheet.map { |col| col.cells[1].value }
       header, *area_ids = area_id_col

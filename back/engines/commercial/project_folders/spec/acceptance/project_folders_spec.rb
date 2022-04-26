@@ -95,9 +95,9 @@ resource 'ProjectFolder' do
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'draft'
+        expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'draft'
         # New folders are added to the top
-        expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :ordering)).to eq 0
       end
     end
 
@@ -129,7 +129,7 @@ resource 'ProjectFolder' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response[:included].select{ |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'archived'
+        expect(json_response[:included].select { |inc| inc[:type] == 'admin_publication' }.first.dig(:attributes, :publication_status)).to eq 'archived'
       end
     end
 

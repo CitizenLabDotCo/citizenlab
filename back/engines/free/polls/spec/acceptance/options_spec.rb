@@ -27,7 +27,7 @@ resource 'Poll Options' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data).map{ |d| d[:relationships][:question][:data][:id] }).to eq [@question.id] * 3
+      expect(json_response.dig(:data).map { |d| d[:relationships][:question][:data][:id] }).to eq [@question.id] * 3
     end
   end
 
@@ -118,7 +118,7 @@ resource 'Poll Options' do
         old_count = Polls::Option.count
         do_request
         expect(response_status).to eq 200
-        expect{ Polls::Option.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Polls::Option.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Polls::Option.count).to eq (old_count - 1)
       end
     end

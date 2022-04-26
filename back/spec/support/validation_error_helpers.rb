@@ -29,10 +29,10 @@ class ValidationErrorHelper
 
   def model_error_codes(model)
     attrs_errs = model.validators.flat_map do |validator| 
-        validator.attributes.map{ |a| [a, ERROR_DETAILS[validator.class]] }
+        validator.attributes.map { |a| [a, ERROR_DETAILS[validator.class]] }
       end.select(&:last)
     to_h_appended(attrs_errs)
-      .map{ |attribute, error_codes| [attribute, error_codes&.flatten&.compact&.uniq] }
+      .map { |attribute, error_codes| [attribute, error_codes&.flatten&.compact&.uniq] }
       .to_h
   end
 
@@ -52,7 +52,7 @@ class ValidationErrorHelper
 
   def error_fields(rspec_context, model)
     model_error_codes(model).each do |attribute, error_codes|
-      rspec_context.response_field attribute, "Array containing objects with signature { error: #{error_codes.map{ |e| "'#{e}'" }.join(' | ')} }", scope: :errors
+      rspec_context.response_field attribute, "Array containing objects with signature { error: #{error_codes.map { |e| "'#{e}'" }.join(' | ')} }", scope: :errors
     end
   end
 end

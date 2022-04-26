@@ -258,7 +258,7 @@ resource 'Stats - Votes' do
           assert_status 200
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
-            expect(json_response[:series].map{ |mode, values| values.size }.uniq.first).to eq ((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 1)
+            expect(json_response[:series].map { |mode, values| values.size }.uniq.first).to eq ((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 1)
             expect(json_response[:series][:up].values.inject(&:+)).to eq 3
             expect(json_response[:series][:down].values.inject(&:+)).to eq 2
             expect(json_response[:series][:total].values.inject(&:+)).to eq 5
@@ -338,7 +338,7 @@ resource 'Stats - Votes' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
-      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) } }
+      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day) { create(:vote) } }
 
       example_request 'Votes by time (cumulative)' do
         assert_status 200

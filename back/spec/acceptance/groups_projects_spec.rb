@@ -80,7 +80,7 @@ resource 'GroupsProjects' do
       
       example_request 'Delete a groups-project' do
         expect(response_status).to eq 200
-        expect{ GroupsProject.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { GroupsProject.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

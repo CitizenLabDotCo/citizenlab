@@ -60,14 +60,14 @@ module EmailCampaigns
           post_title_multiloc: initiative.title_multiloc,
           post_body_multiloc: initiative.body_multiloc,
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-          post_images: initiative.initiative_images.map{ |image|
+          post_images: initiative.initiative_images.map { |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
           },
           initiative_header_bg: {
-            versions: initiative.header_bg.versions.map{ |k, v| [k.to_s, v.url] }.to_h
+            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           },
           initiative_votes_needed: initiative.votes_needed,
           initiative_expires_at: initiative.expires_at.iso8601

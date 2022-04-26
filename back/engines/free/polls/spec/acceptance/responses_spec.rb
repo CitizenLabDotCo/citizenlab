@@ -87,9 +87,9 @@ resource 'Poll Responses' do
         @q1 = create(:poll_question, :with_options, participation_context: @participation_context)
         @q2 = create(:poll_question, :with_options, participation_context: @participation_context)
         @r1 = create(:poll_response, participation_context: @participation_context)
-        @r1.update!(response_options: [@q1,@q2].map{ |q| create(:poll_response_option, response: @r1, option: q.options.first) })
+        @r1.update!(response_options: [@q1,@q2].map { |q| create(:poll_response_option, response: @r1, option: q.options.first) })
         @r2 = create(:poll_response, participation_context: @participation_context)
-        @r2.update!(response_options: [@q1,@q2].map{ |q| create(:poll_response_option, response: @r2, option: q.options.last) })
+        @r2.update!(response_options: [@q1,@q2].map { |q| create(:poll_response_option, response: @r2, option: q.options.last) })
       end
 
       let(:participation_context_id) { @participation_context.id }

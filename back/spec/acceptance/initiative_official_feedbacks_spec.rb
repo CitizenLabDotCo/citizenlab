@@ -103,7 +103,7 @@ resource 'OfficialFeedback' do
       let(:id) { official_feedback.id }
       example_request 'Delete an official feedback from an initiative' do
         expect(response_status).to eq 200
-        expect{ OfficialFeedback.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { OfficialFeedback.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(@initiative.reload.official_feedbacks_count).to eq 2
       end
     end

@@ -22,18 +22,18 @@ describe SmartGroups::Rules::ParticipatedInProject do
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
     it 'rejects a rule with a mutli-value predicate and a single value' do
-      rule = valid_json_rule.tap{ |r| r['predicate'] = 'in'; r['value'] = Project.first.id }
+      rule = valid_json_rule.tap { |r| r['predicate'] = 'in'; r['value'] = Project.first.id }
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
 
     it 'accepts a rule with a single-value predicate and a single value' do
-      rule = valid_json_rule.tap{ |r| r['predicate'] = 'not_in'; r['value'] = Project.first.id }
+      rule = valid_json_rule.tap { |r| r['predicate'] = 'not_in'; r['value'] = Project.first.id }
       expect(SmartGroups::Rules::ParticipatedInProject.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
     it 'rejects a rule with a single-value predicate and an array of values' do
-      rule = valid_json_rule.tap{ |r| r['predicate'] = 'not_in' }
+      rule = valid_json_rule.tap { |r| r['predicate'] = 'not_in' }
       expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
   end
@@ -55,85 +55,85 @@ describe SmartGroups::Rules::ParticipatedInProject do
 
     it "correctly filters on 'in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('in', [@project1.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
     it "correctly filters on 'not_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_in', @project2.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id]
     end
 
     it "correctly filters on 'posted_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('posted_in', [@project1.id, @project2.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_posted_in', @project1.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id, @user3.id]
     end
 
     it "correctly filters on 'commented_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('commented_in', [@project1.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user3.id]
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_commented_in', @project1.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id]
     end
 
     it "correctly filters on 'voted_idea_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('voted_idea_in', [@project1.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id]
     end
 
     it "correctly filters on 'not_voted_idea_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_voted_idea_in', @project1.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id]
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('voted_comment_in', [@project1.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
     it "correctly filters on 'not_voted_comment_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_voted_comment_in', @project2.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
     it "correctly filters on 'budgeted_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('budgeted_in', [@project1.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
     it "correctly filters on 'not_budgeted_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_budgeted_in', @project2.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
     it "correctly filters on 'volunteered_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('volunteered_in', [@project1.id])
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
     it "correctly filters on 'not_volunteered_in' predicate" do
       rule = SmartGroups::Rules::ParticipatedInProject.new('not_volunteered_in', @project2.id)
-      expect{ @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
+      expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
   end

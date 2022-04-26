@@ -98,7 +98,7 @@ resource 'Areas' do
         old_count = Area.count
         do_request
         expect(response_status).to eq 200
-        expect{ Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(Area.count).to eq (old_count - 1)
       end
 
@@ -108,7 +108,7 @@ resource 'Areas' do
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request
         expect(response_status).to eq 200
-        expect{ Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
       end
     end

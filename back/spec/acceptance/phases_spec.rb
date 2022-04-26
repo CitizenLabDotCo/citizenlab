@@ -306,7 +306,7 @@ resource 'Phases' do
 
       example_request 'Delete a phase' do
         expect(response_status).to eq 200
-        expect{ Comment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Comment.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

@@ -24,7 +24,7 @@ class ParticipantsService
       .joins(:activities)
       .where(
         multiwhere, 
-        *ENGAGING_ACTIVITIES.map{ |h| [h[:item_type], h[:action]] }.flatten
+        *ENGAGING_ACTIVITIES.map { |h| [h[:item_type], h[:action]] }.flatten
       ).group('users.id')
     if since
       users.where('activities.acted_at::date >= ?', since)

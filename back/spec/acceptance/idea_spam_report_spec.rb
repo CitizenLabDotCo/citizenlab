@@ -84,7 +84,7 @@ resource 'Spam Reports' do
     
     example_request 'Delete a spam report from an idea' do
       expect(response_status).to eq 200
-      expect{ SpamReport.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { SpamReport.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -13,7 +13,7 @@ module EmailCampaigns
           scope.all
         elsif user&.active? && user.project_moderator?
           projects = Project.where(id: user.moderatable_project_ids)
-          if projects.any?{ |p| p.visible_to == 'public' }
+          if projects.any? { |p| p.visible_to == 'public' }
             scope.where(type: EmailCampaigns::Campaigns::Manual.name)
           else
             accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
@@ -89,7 +89,7 @@ module EmailCampaigns
 
     def moderator_can_access_and_modify?
       projects = Project.where(id: user.moderatable_project_ids)
-      if projects.any?{ |p| p.visible_to == 'public' }
+      if projects.any? { |p| p.visible_to == 'public' }
         true
       elsif record.groups.empty?
         false

@@ -727,8 +727,8 @@ resource 'Stats - Users' do
     example_request 'List 10 best user engagement scores' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{ |d| d[:attributes][:sum_score] }).to eq([6, 4])
-      expect(json_response[:data].map{ |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
+      expect(json_response[:data].map { |d| d[:attributes][:sum_score] }).to eq([6, 4])
+      expect(json_response[:data].map { |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
       expect(json_response[:included].size).to eq 2
     end
   end
@@ -884,8 +884,8 @@ resource 'Stats - Users' do
     example_request 'List 10 best user engagement scores' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{ |d| d[:attributes][:sum_score] }).to eq([6, 4])
-      expect(json_response[:data].map{ |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
+      expect(json_response[:data].map { |d| d[:attributes][:sum_score] }).to eq([6, 4])
+      expect(json_response[:data].map { |d| d[:relationships][:user][:data][:id] }).to eq([@u2.id, @u1.id])
       expect(json_response[:included].size).to eq 2
     end
   end
