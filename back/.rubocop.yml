@@ -50,6 +50,11 @@ Layout/HashAlignment:
   # Discussion needed, because the default will affect a lot of table like hash literals.
   Enabled: false
 
+Layout/FirstHashElementIndentation:
+  # Wait for a decision on Layout/HashAlignment.
+  Enabled: false
+  EnforcedStyle: consistent
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:
