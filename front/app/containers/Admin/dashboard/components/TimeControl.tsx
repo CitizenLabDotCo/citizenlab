@@ -15,10 +15,11 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.div<{ width?: string }>`
   display: flex;
   border-radius: ${(props: any) => props.theme.borderRadius};
   align-items: center;
+  ${({ width }) => (width ? `width: ${width};` : '')}
 `;
 
 const DropdownContainer = styled.div`
@@ -60,6 +61,7 @@ interface Props {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
+  className?: string;
 }
 
 type State = {
@@ -149,11 +151,11 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { dropdownOpened } = this.state;
-    const { startAtMoment, endAtMoment } = this.props;
+    const { className, startAtMoment, endAtMoment } = this.props;
     const activePreset = this.findActivePreset();
 
     return (
-      <Container>
+      <Container className={className}>
         <DropdownContainer>
           <StyledButton
             buttonStyle="text"
