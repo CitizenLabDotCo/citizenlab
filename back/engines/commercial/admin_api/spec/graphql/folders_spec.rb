@@ -33,6 +33,5 @@ RSpec.describe 'Graphql folder' do
         'publicationStatus' => folder.admin_publication.publication_status
       })
     end
-
   end
 end

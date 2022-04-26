@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Surveys::Typeform::Api do
-
   # let(:token) { 'DHsJNboURuCdUpi5oLeLGFr1D9wpuu1xyaWTX5H55v2p' }
   let(:token) { '2mB2YtaeoD7PcNMUE2VLLeScS4abSphUMJM125jujxAs' }
   let(:api) { Surveys::Typeform::Api.new(token) }
@@ -69,7 +68,6 @@ describe Surveys::Typeform::Api do
   end
 
   describe 'responses' do
-
     let (:responses_body) {
       {
         'items' => [{
@@ -191,7 +189,6 @@ describe Surveys::Typeform::Api do
   end
 
   describe 'form' do
-
     let(:form_body) { {
       'id' => 'USLYB6',
       'title' => 'webhooks dev',
@@ -256,6 +253,4 @@ describe Surveys::Typeform::Api do
       expect(form.parsed_response).to eq form_body
     end
   end
-
-
 end

@@ -16,5 +16,4 @@ FactoryBot.define do
       accepted_at { Time.now - 3.weeks }
     end
   end
-
 end

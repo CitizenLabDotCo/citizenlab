@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Notifications::CommentOnYourComment, type: :model do
-
   describe 'make_notifications_on' do
     it 'makes a notification on created comment activity' do
       idea = create(:idea)

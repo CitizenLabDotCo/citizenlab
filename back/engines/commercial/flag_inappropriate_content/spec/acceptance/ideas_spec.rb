@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Ideas' do
-
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
@@ -105,5 +104,4 @@ resource 'Ideas' do
       end
     end
   end
-
 end

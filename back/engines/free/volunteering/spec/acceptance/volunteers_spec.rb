@@ -4,7 +4,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Volunteering Volunteers' do
-
   explanation 'Volunteers are linking causes and users, indicating the user volunteers for the cause'
 
   before do
@@ -16,7 +15,6 @@ resource 'Volunteering Volunteers' do
 
   context 'when normal user' do
     post 'web_api/v1/causes/:cause_id/volunteers' do
-
       ValidationErrorHelper.new.error_fields(self, Volunteering::Volunteer)
 
       let(:cause) { create(:cause) }
@@ -37,7 +35,6 @@ resource 'Volunteering Volunteers' do
     end
 
     delete 'web_api/v1/causes/:cause_id/volunteers' do
-
       let(:cause) { create(:cause) }
       let(:cause_id) { cause.id }
       let!(:volunteer) { create(:volunteer, user: @user, cause: cause) }
@@ -123,6 +120,5 @@ resource 'Volunteering Volunteers' do
         end
       end
     end
-
   end
 end

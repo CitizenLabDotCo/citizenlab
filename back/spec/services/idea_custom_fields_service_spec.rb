@@ -4,7 +4,6 @@ describe IdeaCustomFieldsService do
   let(:service) { IdeaCustomFieldsService.new }
 
   describe 'all_fields' do
-
     it 'outputs valid custom fields' do
       custom_form = create(:custom_form)
       expect(service.all_fields(custom_form)).to all(be_valid)

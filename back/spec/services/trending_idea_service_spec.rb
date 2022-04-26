@@ -90,5 +90,4 @@ describe TrendingIdeaService do
       end
     end
   end
-
 end

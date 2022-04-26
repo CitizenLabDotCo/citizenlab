@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe WebApi::V1::UserSerializer do
-
   context "with 'abbreviated user names' enabled" do
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 
@@ -30,6 +29,5 @@ describe WebApi::V1::UserSerializer do
                       .dig(:data, :attributes, :last_name)
       expect(last_name).to eq 'Anderson'
     end
-
   end
 end

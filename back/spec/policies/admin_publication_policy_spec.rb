@@ -47,7 +47,6 @@ describe AdminPublicationPolicy do
 
       it 'should not index the project holder'  do
         expect(scope.resolve.size).to eq 0
-
       end
     end
 

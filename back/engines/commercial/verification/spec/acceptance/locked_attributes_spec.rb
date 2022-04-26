@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Users - Locked attributes' do
-
   explanation "List the attributes the user can't change in their profile, since they're controlled by a verification method"
 
   before do

@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldNumber do
-
-
   describe 'validations' do
-
     let(:custom_field) { create(:custom_field_number) }
 
     let(:valid_json_rule) { {
@@ -22,9 +19,7 @@ describe SmartGroups::Rules::CustomFieldNumber do
   end
 
   describe 'filter' do
-
     context 'on a number field' do
-
       let(:custom_field) { create(:custom_field_number, required: false) }
 
       let!(:users) {
@@ -76,9 +71,7 @@ describe SmartGroups::Rules::CustomFieldNumber do
         rule = SmartGroups::Rules::CustomFieldNumber.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq 4
       end
-
     end
-
   end
 
   describe 'description_multiloc' do
@@ -178,5 +171,4 @@ describe SmartGroups::Rules::CustomFieldNumber do
       })
     end
   end
-
 end

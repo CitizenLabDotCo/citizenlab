@@ -131,7 +131,6 @@ resource 'Category suggestions for view inputs' do
   end
 
   delete 'web_api/v1/insights/views/:view_id/inputs/:input_id/categories/:category_id' do
-
     context 'when admin' do
       before { admin_header_token }
 

@@ -17,7 +17,6 @@ describe SettingsService do
   end
 
   describe 'add_missing_features' do
-
     it 'adds the missing features to empty settings' do
       settings = ss.add_missing_features({}, schema1)
       expect(settings).to include('a', 'b', 'c')
@@ -41,7 +40,6 @@ describe SettingsService do
       settings = ss.add_missing_features(settings_ext, schema1)
       expect(settings).to include('d')
     end
-
   end
 
   describe 'add_missing_settings' do
@@ -68,7 +66,6 @@ describe SettingsService do
           }
         }
       }
-
     }}
 
     it 'adds required settings with a default' do
@@ -209,5 +206,4 @@ describe SettingsService do
       expect(ss.remove_private_settings(settings, schema)).to eq expected_settings
     end
   end
-
 end

@@ -4,7 +4,6 @@ describe IdeaCustomFieldsService do
   let(:service) { described_class.new }
 
   describe 'all_fields' do
-
     it 'overrides built in custom fields with database custom fields by code' do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title_multiloc')

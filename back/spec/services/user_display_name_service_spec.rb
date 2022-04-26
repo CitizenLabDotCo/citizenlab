@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe UserDisplayNameService do
-
-
   before(:all) do
     @regular_user = build(:user, first_name: 'Regular', last_name: 'User')
     @another_user = build(:user, first_name: 'Another', last_name: 'User')
@@ -10,7 +8,6 @@ describe UserDisplayNameService do
   end
 
   context "when 'abbreviated_user_names' is enabled" do
-
     before(:all) do
       @app_configuration = build(:app_configuration)
       @app_configuration.settings['abbreviated_user_names'] = { 'allowed' => true, 'enabled' => true }
@@ -52,7 +49,6 @@ describe UserDisplayNameService do
   end
 
   context "when 'abbreviated_user_names' is disabled" do
-
     before(:all) do
       @app_configuration = build(:app_configuration)
       @app_configuration.settings['abbreviated_user_names'] = { 'allowed' => false, 'enabled' => false }

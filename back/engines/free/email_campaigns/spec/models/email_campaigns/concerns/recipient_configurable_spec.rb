@@ -43,5 +43,4 @@ RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
       expect(@campaign.apply_recipient_filters).to be_empty
     end
   end
-
 end

@@ -21,6 +21,5 @@ describe AnonymizeUserService do
         expect(User.new(attributes)).to be_valid
       end
     end
-
   end
 end

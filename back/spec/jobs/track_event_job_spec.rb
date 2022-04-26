@@ -4,7 +4,6 @@ require 'rails_helper'
 
 describe TrackEventJob do
   context 'when there is no AppConfiguration' do
-
     before do
       AppConfiguration.instance.destroy
     end

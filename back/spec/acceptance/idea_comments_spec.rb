@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Comments' do
-
   explanation 'Comments permit users to have discussions about content (i.e. ideas).'
 
   before do
@@ -87,7 +86,6 @@ resource 'Comments' do
         ].map(&:id))
       end
     end
-
   end
 
   get 'web_api/v1/comments/:comment_id/children' do
@@ -408,6 +406,5 @@ resource 'Comments' do
     #     expect(@idea.reload.comments_count).to eq 2
     #   end
     # end
-
   end
 end

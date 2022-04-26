@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Poll Options' do
-
   explanation 'Options are the predefined answers users can choose when responding to a poll question. Questions have multiple poll options.'
 
   before do

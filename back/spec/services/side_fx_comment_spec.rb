@@ -26,11 +26,9 @@ describe SideFxCommentService do
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
-
   end
 
   describe 'after_update' do
-
     it "logs a 'changed' action job when the comment has changed" do
       comment.update(body_multiloc: { 'en': 'changed' })
       expect { service.after_update(comment, user) }.
@@ -54,7 +52,6 @@ describe SideFxCommentService do
       expectation.to_not have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
-
   end
 
   describe 'after_destroy' do
@@ -65,7 +62,5 @@ describe SideFxCommentService do
           to have_enqueued_job(LogActivityJob)
       end
     end
-
   end
-
 end

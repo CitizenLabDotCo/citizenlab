@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe MakeNotificationsForClassJob, type: :job do
-
   subject(:job) { MakeNotificationsForClassJob.new }
 
   describe '#perform' do
-
     it 'persists notifications when all are valid' do
       activity = create(:admin_rights_given_activity)
       job.perform(Notifications::AdminRightsReceived.name, activity)
@@ -29,6 +27,5 @@ RSpec.describe MakeNotificationsForClassJob, type: :job do
       expect { job.perform(Notifications::AdminRightsReceived.name, activity) }
         .to have_enqueued_job(LogActivityJob)
     end
-
   end
 end

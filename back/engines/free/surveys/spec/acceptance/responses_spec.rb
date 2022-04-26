@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Survey Responses' do
-
   explanation 'One survey response contains all the answers of a single user on a survey'
 
   let(:form_body) { {
@@ -168,5 +167,4 @@ resource 'Survey Responses' do
       expect(worksheet.count).to eq 3
     end
   end
-
 end

@@ -111,5 +111,4 @@ describe FlagInappropriateContent::ToxicityDetectionService do
       end
     end
   end
-
 end

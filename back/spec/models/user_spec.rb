@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:user)).to be_valid
@@ -81,7 +80,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'password' do
-
     it 'is invalid when set to empty string' do
       u = build(:user, password: '')
       expect(u).to be_invalid
@@ -214,16 +212,13 @@ RSpec.describe User, type: :model do
   end
 
   describe 'slug' do
-
     it 'is generated on create when not given' do
       user = create(:user, slug: nil)
       expect(user.slug).to be_present
     end
-
   end
 
   describe 'avatar' do
-
     it "is blank generated when it's not specified" do
       user = build(:user, avatar: nil)
       user.save
@@ -300,11 +295,9 @@ RSpec.describe User, type: :model do
       user = build(:user, education: 2.4)
       expect { user.valid? }.to change { user.errors[:education] }
     end
-
   end
 
   describe 'order_role' do
-
     before do
       10.times do |i|
         create(rand(2) == 0 ? :admin : :user)
@@ -320,7 +313,6 @@ RSpec.describe User, type: :model do
       serie = User.order_role(:desc).map { |u| u.roles.size }
       expect(serie).to eq serie.sort
     end
-
   end
 
   describe 'custom_field_values' do
@@ -337,7 +329,6 @@ RSpec.describe User, type: :model do
       u.save(validate: false)
       expect { u.save }.not_to change { u.errors[:custom_field_values] }
     end
-
   end
 
   describe 'active?' do
@@ -379,7 +370,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'in_any_group' do
-
     it 'gets the union of all users in the given groups' do
       group1 = create(:group)
       group2 = create(:group)
@@ -392,7 +382,6 @@ RSpec.describe User, type: :model do
   end
 
   describe 'in_any_groups?' do
-
     it 'returns truety iff the user is a member of one of the given groups' do
       group1, group2 = create_list(:group, 2)
       user = create(:user, manual_groups: [group1])
@@ -401,7 +390,6 @@ RSpec.describe User, type: :model do
       expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
       expect(user.in_any_groups?(Group.where(id: group2))).to be_falsy
     end
-
   end
 
   describe '.find_by_cimail' do

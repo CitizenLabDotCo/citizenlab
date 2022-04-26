@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 describe OmniauthMethods::Google do
-
   describe 'profile_to_user_attrs' do
-
     it 'correctly interprets gender, locale and image for google' do
       auth = OpenStruct.new({
         provider: 'google',
@@ -31,5 +29,4 @@ describe OmniauthMethods::Google do
       })
     end
   end
-
 end

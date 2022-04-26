@@ -17,7 +17,6 @@ describe ImportIdeasService do
   end
 
   describe 'ideas importation', slow_test: true do
-
     it 'creates all ideas if correctly formatted' do
       n = 10
       idea_data = generate_idea_data(n)
@@ -31,7 +30,6 @@ describe ImportIdeasService do
       expect { service.import_ideas(idea_data) }.to raise_error(RuntimeError)
       expect(Idea.count).to eq(0)
     end
-
   end
 
   def generate_idea_data(n)
@@ -45,5 +43,4 @@ describe ImportIdeasService do
       }
     end
   end
-
 end

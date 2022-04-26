@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
   describe 'Deleting stuff related to notifications works when' do
-
     let!(:project) { create(:project) }
     let!(:idea) { create(:idea, project: project) }
     let!(:parent) { create(:comment, post: idea) }
@@ -132,6 +131,5 @@ RSpec.describe Notification, type: :model do
       notif = create(:comment_marked_as_spam, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
       recipient.destroy!
     end
-
   end
 end

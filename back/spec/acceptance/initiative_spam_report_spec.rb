@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Spam Reports' do
-
   explanation 'Reporting undesired content (i.e. an initiative).'
 
   before do
@@ -55,7 +54,6 @@ resource 'Spam Reports' do
   end
 
   patch 'web_api/v1/spam_reports/:id' do
-
     with_options scope: :spam_report do
       parameter :reason_code, 'one of [wrong_content, inappropriate, other]', required: true
       parameter :other_reason, "the reason for the spam report, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false

@@ -4,7 +4,6 @@ describe UserCustomFieldService do
   let(:service) { UserCustomFieldService.new }
 
   describe 'delete_custom_field_values' do
-
     it 'deletes the custom field values from all users' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
@@ -17,7 +16,6 @@ describe UserCustomFieldService do
   end
 
   describe 'delete_custom_field_option_values' do
-
     it 'deletes the custom field option values from all users for a multiselect' do
       cf1 = create(:custom_field_multiselect)
       cfo1 = create(:custom_field_option, custom_field: cf1)

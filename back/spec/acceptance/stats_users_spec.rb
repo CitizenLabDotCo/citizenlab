@@ -22,7 +22,6 @@ def topic_filter_parameter(s)
 end
 
 resource 'Stats - Users' do
-
   explanation 'The various stats endpoints can be used to show how certain properties of users.'
 
   let!(:now) { Time.now.in_time_zone(@timezone) }

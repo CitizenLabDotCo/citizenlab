@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Typeform Events' do
-
   explanation 'Endpoint that receives webhook events from Typeform'
 
   before(:all) do
@@ -260,7 +259,5 @@ resource 'Typeform Events' do
         participation_context: @pc
       })
     end
-
   end
-
 end

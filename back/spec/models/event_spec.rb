@@ -8,7 +8,6 @@ RSpec.describe Event, type: :model do
   end
 
   describe 'description sanitizer' do
-
     it 'sanitizes script tags in the description' do
       event = create(:event, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
@@ -22,7 +21,6 @@ RSpec.describe Event, type: :model do
       })
       expect(event.description_multiloc).to eq({ 'en' => '<p>Test<br><br>One<br>Two</p><p>Three</p>' })
     end
-
   end
 
   describe 'timing validation' do

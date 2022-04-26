@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Invites' do
-
   explanation 'Admins can invite people to join the platform.'
 
   before do
@@ -149,7 +148,6 @@ resource 'Invites' do
 
             expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to eq true if CitizenLab.ee?
           end
-
         end
       end
 

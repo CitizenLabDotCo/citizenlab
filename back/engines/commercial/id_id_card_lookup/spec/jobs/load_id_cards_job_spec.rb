@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe IdIdCardLookup::LoadIdCardsJob, type: :job do
-
   subject(:job) { IdIdCardLookup::LoadIdCardsJob.new }
 
   describe '#perform' do
-
     let(:card_ids) { [
       'aaa1',
       'bbb2',

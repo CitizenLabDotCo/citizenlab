@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Verification::SmartGroups::Rules::Verified do
-
   let(:valid_json_rule) { {
     'ruleType' => 'verified',
     'predicate' => 'is_verified'
@@ -9,11 +8,9 @@ describe Verification::SmartGroups::Rules::Verified do
   let(:valid_rule) { Verification::SmartGroups::Rules::Verified.from_json(valid_json_rule) }
 
   describe 'from_json' do
-
     it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
     end
-
   end
 
   describe 'validations' do
@@ -23,7 +20,6 @@ describe Verification::SmartGroups::Rules::Verified do
   end
 
   describe 'filter' do
-
     let!(:users) {
       users = build_list(:user, 3)
       users[0].verified = true
@@ -42,5 +38,4 @@ describe Verification::SmartGroups::Rules::Verified do
       expect(rule.filter(User).count).to eq User.count - 2
     end
   end
-
 end

@@ -14,7 +14,6 @@ resource 'ActionDescriptors' do
   end
 
   get 'web_api/v1/action_descriptors/initiatives' do
-
     example_request 'Get the global action descriptors for initiatives' do
       expect(response_status).to eq 200
       expect(json_response.values.pluck(:enabled).all?).to eq true
@@ -22,7 +21,6 @@ resource 'ActionDescriptors' do
     end
 
     context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
-
       # rubocop:disable RSpec/BeforeAfterAll
       before(:all) do
         @cached_scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)

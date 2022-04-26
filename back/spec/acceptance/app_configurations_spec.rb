@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'AppConfigurations' do
-
   explanation 'AppConfigurations store the global settings of the application.'
 
   before do
@@ -13,7 +12,6 @@ resource 'AppConfigurations' do
   end
 
   get 'web_api/v1/app_configuration' do
-
     AppConfiguration::Settings.json_schema['properties'].each do |feature, feature_descriptor|
       parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
       parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]

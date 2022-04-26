@@ -2,7 +2,6 @@ require 'rails_helper'
 
 
 RSpec.describe EmailCampaigns::Schedulable, type: :model do
-
   before do
     class SchedulableCampaign < EmailCampaigns::Campaign
       include EmailCampaigns::Schedulable
@@ -36,5 +35,4 @@ RSpec.describe EmailCampaigns::Schedulable, type: :model do
       expect(@campaign.reload.ic_schedule.start_time.utc_offset).to eq Time.find_zone(@config_timezone).local(2018, 8, 13).utc_offset
     end
   end
-
 end

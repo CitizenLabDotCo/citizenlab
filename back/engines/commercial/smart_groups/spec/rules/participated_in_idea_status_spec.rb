@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInIdeaStatus do
-
   let(:valid_json_rule) { {
     'ruleType' => 'participated_in_idea_status',
     'predicate' => 'in',
@@ -10,12 +9,10 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   let(:valid_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
 
   describe 'from_json' do
-
     it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
-
   end
 
   describe 'validations' do
@@ -42,7 +39,6 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   end
 
   describe 'filter' do
-
     before do
       @idea_status1 = create(:idea_status)
       @idea_status2 = create(:idea_status)
@@ -54,7 +50,6 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
       @vote = create(:vote, votable: @idea1, user: @user2)
       @comment = create(:comment, post: @idea1, author: @user3)
       @idea2 = create(:idea, idea_status: @idea_status2, author: @user3)
-
     end
 
     it "correctly filters on 'in' predicate" do
@@ -116,7 +111,6 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
     end
-
   end
 
   describe 'description_multiloc' do
@@ -235,5 +229,4 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
       })
     end
   end
-
 end

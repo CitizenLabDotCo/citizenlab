@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Onboarding campaigns' do
-
   explanation 'Indicates which call to action to show to the current user'
 
   before do
@@ -14,7 +13,6 @@ resource 'Onboarding campaigns' do
   end
 
   get 'web_api/v1/onboarding_campaigns/current' do
-
     response_field :name, "One of #{Onboarding::OnboardingService.campaigns.join(' or ')}", scope: :attributes
 
     context 'for a user with an incomplete profile' do
@@ -83,5 +81,4 @@ resource 'Onboarding campaigns' do
       end
     end
   end
-
 end

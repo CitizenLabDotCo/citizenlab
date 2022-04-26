@@ -30,7 +30,6 @@ RSpec.describe Idea, type: :model do
 
   context 'feedback_needed' do
     it 'should select ideas with no official feedback or no idea status change' do
-
       i1 = create(:idea, idea_status: create(:idea_status_proposed))
       create(:official_feedback, post: i1)
       i2 = create(:idea, idea_status: create(:idea_status_accepted))
@@ -78,7 +77,6 @@ RSpec.describe Idea, type: :model do
   end
 
   context 'idea_status' do
-
     it 'gets set to proposed on creation when not set' do
       create(:idea_status, code: 'proposed')
       idea = create(:idea, idea_status: nil)

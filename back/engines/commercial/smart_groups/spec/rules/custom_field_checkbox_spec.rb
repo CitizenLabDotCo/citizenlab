@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldCheckbox do
-
-
   describe 'validations' do
-
     let(:custom_field) { create(:custom_field_checkbox) }
 
     let(:valid_json_rule) { {
@@ -21,9 +18,7 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
   end
 
   describe 'filter' do
-
     context 'on a checkbox field' do
-
       let(:custom_field) { create(:custom_field_checkbox) }
 
       let!(:users) {
@@ -46,7 +41,6 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
         expect(rule.filter(User).count).to eq 3
       end
     end
-
   end
 
   describe 'description_multiloc' do
@@ -80,5 +74,4 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
       })
     end
   end
-
 end

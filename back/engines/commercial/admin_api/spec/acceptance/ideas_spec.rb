@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Idea', admin_api: true do
-
   before do
     header 'Content-Type', 'application/json'
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
@@ -22,5 +21,4 @@ resource 'Idea', admin_api: true do
       expect(json_response[:idea][:author][:id]).to eq idea.author_id
     end
   end
-
 end

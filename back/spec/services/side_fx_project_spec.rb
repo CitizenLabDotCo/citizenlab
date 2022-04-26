@@ -74,5 +74,4 @@ describe SideFxProjectService do
       end
     end
   end
-
 end

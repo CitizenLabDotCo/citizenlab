@@ -6,7 +6,6 @@ describe CustomFieldService do
   let(:locale) { 'en' }
 
   describe 'fields_to_json_schema_multiloc' do
-
     let (:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
     let (:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
     let(:fields) { [
@@ -27,7 +26,6 @@ describe CustomFieldService do
   end
 
   describe 'fields_to_json_schema' do
-
     it 'creates the valid empty schema on empty fields' do
       schema = service.fields_to_json_schema([], locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
@@ -199,5 +197,4 @@ describe CustomFieldService do
       expect(service.keyify(str)).to eq '0123456789_abcdefghijklmnopqrstuvwxyz___abcdefghijklmnopqrstuvwxyz_aaaaaaaeceeeeiiiidnoooooxouuuuythssaaaaaaaeceeeeiiiidnooooo_ouuuuythy'
     end
   end
-
 end

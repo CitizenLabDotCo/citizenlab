@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Ideas' do
-
   before do
     @ideas = create_list(:idea, 5)
     api_token = PublicApi::ApiClient.create
@@ -13,10 +12,7 @@ resource 'Ideas' do
   explanation "Ideas are written inputs created by citizens. The endpoint returns ideas in the a descending 'trending' order, which means that the most relevant ideas at the moment of request will come out on top."
 
   route '/api/v1/ideas', 'Ideas: Listing ideas' do
-
-
     get 'Retrieve a listing of ideas' do
-
       parameter :page_size, 'The number of ideas that should be returned in one response. Defaults to 12, max 24', required: false, type: 'integer'
       parameter :page_number, 'The page to return. Defaults to page 1', required: false, type: 'integer'
 
@@ -35,13 +31,11 @@ resource 'Ideas' do
         expect(json_response[:ideas].size).to eq 2
         expect(json_response[:meta]).to eq({ total_pages: 2, current_page: 2 })
       end
-
     end
   end
 
 
   route '/api/v1/ideas/:idea_id', 'Ideas: Retrieve one idea' do
-
     parameter :idea_id, 'The unique ID indentifying the idea', type: 'string', required: true
 
     get 'Retrieve one idea' do
@@ -53,7 +47,5 @@ resource 'Ideas' do
         expect(json_response[:idea][:id]).to eq idea_id
       end
     end
-
   end
-
 end

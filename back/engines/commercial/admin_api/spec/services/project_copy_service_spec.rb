@@ -4,7 +4,6 @@ describe AdminApi::ProjectCopyService do
   let(:service) { AdminApi::ProjectCopyService.new }
 
   describe 'project copy', slow_test: true do
-
     it 'works' do
       load Rails.root.join('db', 'seeds.rb')
       Apartment::Tenant.switch('localhost') do
@@ -25,7 +24,5 @@ describe AdminApi::ProjectCopyService do
         end
       end
     end
-
   end
-
 end

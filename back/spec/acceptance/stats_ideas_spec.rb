@@ -399,7 +399,6 @@ resource 'Stats - Ideas' do
         expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
       end
     end
-
   end
   get 'web_api/v1/stats/ideas_by_project_as_xlsx' do
     time_boundary_parameters self
@@ -477,7 +476,6 @@ resource 'Stats - Ideas' do
         expect(ideas.inject(&:+)).to eq 1
       end
     end
-
   end
 
   get 'web_api/v1/stats/ideas_by_area' do
@@ -680,7 +678,6 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with time filters' do
-
       let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
       let(:interval) { 'day' }
@@ -698,6 +695,5 @@ resource 'Stats - Ideas' do
         expect(amounts.last).to eq Idea.published.count
       end
     end
-
   end
 end

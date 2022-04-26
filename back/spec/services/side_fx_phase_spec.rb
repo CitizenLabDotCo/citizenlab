@@ -54,5 +54,4 @@ describe SideFxPhaseService do
       end
     end
   end
-
 end

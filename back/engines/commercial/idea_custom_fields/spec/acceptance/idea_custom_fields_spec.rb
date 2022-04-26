@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Idea Custom Fields' do
-
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
 
   before do
@@ -26,7 +25,6 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
       end
-
     end
 
     get 'web_api/v1/projects/:project_id/custom_fields/:id' do
@@ -101,8 +99,6 @@ resource 'Idea Custom Fields' do
           end
         end
       end
-
     end
-
   end
 end

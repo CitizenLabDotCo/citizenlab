@@ -139,5 +139,4 @@ describe TimelineService do
   def create_inactive_phase(project)
     create(:phase_sequence, project: project)
   end
-
 end

@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'ProjectFile' do
-
   explanation 'File attachments.'
 
   before do

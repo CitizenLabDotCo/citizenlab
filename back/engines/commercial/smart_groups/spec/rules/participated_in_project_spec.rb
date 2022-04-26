@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInProject do
-
   let(:valid_json_rule) { {
     'ruleType' => 'participated_in_project',
     'predicate' => 'in',
@@ -39,7 +38,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
   end
 
   describe 'filter' do
-
     before do
       @project1 = create(:project)
       @project2 = create(:project)
@@ -50,7 +48,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
       @vote = create(:vote, votable: @idea1, user: @user2)
       @comment = create(:comment, post: @idea1, author: @user3)
       @idea2 = create(:idea, project: @project2, author: @user3)
-
     end
 
     it "correctly filters on 'in' predicate" do
@@ -275,5 +272,4 @@ describe SmartGroups::Rules::ParticipatedInProject do
       })
     end
   end
-
 end

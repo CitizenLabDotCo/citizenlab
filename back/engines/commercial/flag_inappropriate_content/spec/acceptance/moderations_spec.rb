@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Moderations' do
-
   get 'web_api/v1/moderations' do
     with_options scope: :page do
       parameter :number, 'Page number'
@@ -76,5 +75,4 @@ resource 'Moderations' do
     @flag = create(:inappropriate_content_flag, flaggable: @comment, toxicity_label: 'insult')
     @other_idea = create(:idea, project: @project)
   end
-
 end

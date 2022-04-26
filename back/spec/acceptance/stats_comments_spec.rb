@@ -361,7 +361,6 @@ resource 'Stats - Comments' do
           })
           expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id, @topic3.id]
         end
-
       end
 
       describe 'filtered by project' do
@@ -552,7 +551,6 @@ resource 'Stats - Comments' do
           })
           expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
         end
-
       end
 
       describe 'filtered by topic' do
@@ -647,7 +645,6 @@ resource 'Stats - Comments' do
           header, *comments = comment_col
           expect(comments).to match_array [3, 1]
         end
-
       end
 
       describe 'filtered by topic' do

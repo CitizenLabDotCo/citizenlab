@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'TagSuggestion' do
-
   explanation 'Takes ideas, ask NLP for tag suggestions, create automatic tags and return them.'
 
   before do
@@ -20,7 +19,6 @@ resource 'TagSuggestion' do
     let(:idea_ids) { @ideas.map(&:id) }
 
     describe do
-
       example 'returns tag suggestions' do
         allow_any_instance_of(NLP::TagSuggestionService).to receive(:suggest).and_return([
         {

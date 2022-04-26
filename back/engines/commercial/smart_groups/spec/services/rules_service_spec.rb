@@ -38,7 +38,6 @@ describe SmartGroups::RulesService do
   ]}
 
   describe 'generate_rules_json_schema' do
-
     let!(:cf1) { create(:custom_field) }
 
     it 'generates a valid json schema' do
@@ -72,7 +71,6 @@ describe SmartGroups::RulesService do
       }
       expect(JSON::Validator.validate(schema, [invalid_rule])).to be false
     end
-
   end
 
   describe 'filter' do
@@ -102,5 +100,4 @@ describe SmartGroups::RulesService do
       expect(service.groups_for_user(user, groups)).to eq([group2])
     end
   end
-
 end

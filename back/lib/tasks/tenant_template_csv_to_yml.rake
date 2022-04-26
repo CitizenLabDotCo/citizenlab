@@ -203,5 +203,4 @@ namespace :tenant_template do
   def md_to_html(md)
     md && Redcarpet::Markdown.new(Redcarpet::Render::HTML.new).render(md)
   end
-
 end

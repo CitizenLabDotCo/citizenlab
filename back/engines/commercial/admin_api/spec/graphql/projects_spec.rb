@@ -37,6 +37,5 @@ RSpec.describe 'Graphql project' do
         'processType' => project.process_type
       })
     end
-
   end
 end

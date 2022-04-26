@@ -7,7 +7,6 @@ describe 'JsonFormsService user overrides' do
   let(:user) { create(:user) }
 
   describe 'fields_to_json_schema' do
-
     it 'properly handles the custom behaviour of the birthyear field' do
       fields = [create(:custom_field, key: 'birthyear', code: 'birthyear', input_type: 'number')]
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
@@ -22,7 +21,5 @@ describe 'JsonFormsService user overrides' do
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'domicile', :oneOf).map { |h| h[:const] }).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
     end
-
   end
-
 end

@@ -65,7 +65,4 @@ FactoryBot.define do
       action { 'admin_rights_given' }
     end
   end
-
-
-
 end

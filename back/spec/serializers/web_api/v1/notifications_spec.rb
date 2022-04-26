@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe WebApi::V1::Notifications::NotificationSerializer do
-
   def expect_serializer_to_hide_name(user_1, user_2, admin, notification_factory_name, serializer_class)
     notification = build(notification_factory_name, initiating_user: user_1)
     notification_from_admin = build(notification_factory_name, initiating_user: admin)

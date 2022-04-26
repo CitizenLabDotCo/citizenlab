@@ -22,5 +22,4 @@ describe 'seedfile', slow_test: true do
       expect(EmailCampaigns::Campaign.count).to be > 0
     end
   end
-
 end

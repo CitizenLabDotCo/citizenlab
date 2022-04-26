@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Memberships' do
-
   explanation 'Memberships are associations between groups and users.'
 
   before do
@@ -90,7 +89,6 @@ resource 'Memberships' do
         expect { Membership.find(membership.id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
-
   end
 
   context 'Users search' do

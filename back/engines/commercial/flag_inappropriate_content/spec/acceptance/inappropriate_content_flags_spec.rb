@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Inappropriate content flags' do
-
   before do
     header 'Content-Type', 'application/json'
     @admin = create(:admin)
@@ -45,5 +44,4 @@ resource 'Inappropriate content flags' do
       expect(flag.reload.deleted?).to be_falsey
     end
   end
-
 end

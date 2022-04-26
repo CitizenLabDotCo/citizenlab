@@ -14,7 +14,6 @@ class CreateResponses < ActiveRecord::Migration[5.2]
 
       t.timestamps
       t.index ['participation_context_type', 'participation_context_id'], name: 'index_surveys_responses_on_participation_context'
-
     end
   end
 end

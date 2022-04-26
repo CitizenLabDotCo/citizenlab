@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Polls::PollParticipationContext do
-
   describe 'poll_questions_allowed_in_participation_method' do
     it 'invalidates the participation context when there are poll questions associated to a non-poll participation_method' do
       question = create(:poll_question)
@@ -13,7 +12,6 @@ describe Polls::PollParticipationContext do
   end
 
   describe 'anonymous_immutable_after_responses' do
-
     it 'allows editing poll_anonymous before the first response comes in' do
       pc = create(:continuous_poll_project, poll_anonymous: true)
       question = create(:poll_question, participation_context: pc)

@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::Role do
-
   let(:valid_json_rule) { {
     'ruleType' => 'role',
     'predicate' => 'is_admin'
@@ -9,11 +8,9 @@ describe SmartGroups::Rules::Role do
   let(:valid_rule) { SmartGroups::Rules::Role.from_json(valid_json_rule) }
 
   describe 'from_json' do
-
     it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
     end
-
   end
 
   describe 'validations' do
@@ -30,7 +27,6 @@ describe SmartGroups::Rules::Role do
   end
 
   describe 'filter' do
-
     let!(:users) {
       mortals = create_list(:user, 3)
       admins = create_list(:admin, 2)
@@ -69,11 +65,9 @@ describe SmartGroups::Rules::Role do
       rule = SmartGroups::Rules::Role.new('not_is_normal_user')
       expect(rule.filter(User).count).to eq 5
     end
-
   end
 
   describe 'description_multiloc' do
-
     let(:role_is_admin_rule) { SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_admin'
@@ -135,5 +129,4 @@ describe SmartGroups::Rules::Role do
       })
     end
   end
-
 end

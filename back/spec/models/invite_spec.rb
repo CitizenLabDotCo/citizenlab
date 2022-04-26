@@ -8,7 +8,6 @@ RSpec.describe Invite, type: :model do
   end
 
   describe 'Deleting an invite' do
-
     it 'deletes the invitee when the invite is pending' do
       invite = create(:invite)
       invitee = invite.invitee

@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Moderators' do
-
   explanation 'Moderators can manage (e.g. changing phases, ideas) only certain projects.'
 
   before { header 'Content-Type', 'application/json' }

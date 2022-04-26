@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Avatars' do
-
   explanation 'Avatars are user images user setup in their profile. To edit them, use the users endpoints'
 
   before do
@@ -13,7 +12,6 @@ resource 'Avatars' do
   end
 
   get 'web_api/v1/avatars' do
-
     parameter :limit, 'Number of avatars to return. Defaults to 5. Maximum 10.', default: false
     parameter :context_type, "The context used to look for users. Either 'group', 'project' or 'idea'. Don't specify to not limit the context.", required: false
     parameter :context_id, 'The context used to look for users. A valid ID for the given context_type', required: false
@@ -127,7 +125,6 @@ resource 'Avatars' do
         end
       end
     end
-
   end
 
   get 'web_api/v1/avatars/:id' do
@@ -144,7 +141,5 @@ resource 'Avatars' do
         expect(json_response.dig(:data, :id)).to eq id
       end
     end
-
   end
-
 end

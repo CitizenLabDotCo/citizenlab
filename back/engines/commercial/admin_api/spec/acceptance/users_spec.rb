@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'User', admin_api: true do
-
   before do
     header 'Content-Type', 'application/json'
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
@@ -73,7 +72,6 @@ resource 'User', admin_api: true do
   end
 
   post 'admin_api/users' do
-
     with_options scope: :user do
       parameter :first_name, 'The first name', required: true
       parameter :last_name, 'The last name', required: true
@@ -100,7 +98,6 @@ resource 'User', admin_api: true do
   end
 
   patch 'admin_api/users/:id' do
-
     with_options scope: :user do
       parameter :first_name, 'The first name'
       parameter :last_name, 'The last name'
@@ -127,5 +124,4 @@ resource 'User', admin_api: true do
       end
     end
   end
-
 end

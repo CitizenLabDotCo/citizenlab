@@ -1,5 +1,4 @@
 Polls::Engine.routes.draw do
-
   namespace :web_api, :defaults => { :format => :json } do
     namespace :v1 do
       get 'projects/:project_id/poll_questions' => 'questions#index'
@@ -18,7 +17,6 @@ Polls::Engine.routes.draw do
       post 'phases/:phase_id/poll_responses' => 'responses#create'
       get 'phases/:phase_id/poll_responses/as_xlsx' => 'responses#index_xlsx'
       get 'phases/:phase_id/poll_responses/responses_count' => 'responses#responses_count'
-
     end
   end
 end

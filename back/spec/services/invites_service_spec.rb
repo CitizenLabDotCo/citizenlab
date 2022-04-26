@@ -115,7 +115,6 @@ describe InvitesService do
     end
 
     context 'with custom field that has the wrong type' do
-
       before do
         create(:custom_field,
                key: 'checkbox_field',
@@ -133,7 +132,6 @@ describe InvitesService do
       ]}
 
       it "raises 'InviteError' errors" do
-
         expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error do |e|
           expect(e).to be_a(InvitesService::InvitesFailedError)
           expect(e.errors.length).to be(2)
@@ -147,7 +145,6 @@ describe InvitesService do
           expect(error).to be_a(InvitesService::InviteError)
           expect(error.error_key).to eq('malformed_custom_field_value')
           expect(error.value).to eq('non-truthy')
-
         end
       end
     end

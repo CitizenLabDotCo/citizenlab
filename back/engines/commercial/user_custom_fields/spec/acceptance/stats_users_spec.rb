@@ -13,7 +13,6 @@ def group_filter_parameter(s)
 end
 
 resource 'Stats - Users' do
-
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
   before do
@@ -358,7 +357,6 @@ end
         travel_to(end_at + 1.day) do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
-
       end
 
       let(:group) { @group.id }
@@ -382,7 +380,6 @@ end
           }
         })
       end
-
     end
 
 
@@ -405,7 +402,6 @@ end
         travel_to(end_at + 1.day) do
           create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
         end
-
       end
 
       let(:group) { @group.id }
@@ -499,7 +495,6 @@ end
         travel_to(end_at + 1.day) do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
-
       end
 
       let(:group) { @group.id }
@@ -522,7 +517,6 @@ end
         header, *users = users_col
         expect(users).to match_array [0, 1, 1, 1]
       end
-
     end
 
 
@@ -545,7 +539,6 @@ end
         travel_to(end_at + 1.day) do
           create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
         end
-
       end
 
       let(:group) { @group.id }

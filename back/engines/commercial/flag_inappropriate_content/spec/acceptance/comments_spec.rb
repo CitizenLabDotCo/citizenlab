@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Comments' do
-
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
@@ -54,5 +53,4 @@ resource 'Comments' do
       }.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
     end
   end
-
 end

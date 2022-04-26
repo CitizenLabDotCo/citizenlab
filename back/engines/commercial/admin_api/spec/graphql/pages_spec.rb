@@ -50,6 +50,5 @@ RSpec.describe 'Graphql pages' do
       expect(edges&.first&.dig('node', 'bodyMultiloc', 'en')).to eq p1.body_multiloc['en']
       expect(edges&.first&.dig('node', 'slug')).to eq p1.slug
     end
-
   end
 end

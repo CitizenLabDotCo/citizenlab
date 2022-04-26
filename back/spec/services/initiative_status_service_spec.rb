@@ -60,7 +60,6 @@ describe InitiativeStatusService do
         expect(@initiative.reload.initiative_status.code).to eq 'proposed'
       end
     end
-
   end
 
   describe 'transition_type' do

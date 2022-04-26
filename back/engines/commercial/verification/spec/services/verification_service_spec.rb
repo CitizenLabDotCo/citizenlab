@@ -153,7 +153,6 @@ describe Verification::VerificationService do
 
       expect { service.verify_sync(params2) }.to raise_error(Verification::VerificationService::VerificationTakenError)
     end
-
   end
 
   describe 'locked_attributes' do
@@ -203,5 +202,4 @@ describe Verification::VerificationService do
       expect(service.all_methods.select { |m| m.id == '9fb591e7-f577-40a7-8596-03e406d7eebe' }).to contain_exactly(mthd2)
     end
   end
-
 end

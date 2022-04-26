@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Verifications' do
-
   before do
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token

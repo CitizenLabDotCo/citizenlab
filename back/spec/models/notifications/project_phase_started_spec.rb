@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
-
   describe 'make_notifications_on' do
     it 'makes a notification on phase started activity' do
       user = create(:user)

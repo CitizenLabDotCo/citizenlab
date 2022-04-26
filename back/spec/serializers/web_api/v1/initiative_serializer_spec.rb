@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe WebApi::V1::InitiativeSerializer do
-
   context "with 'abbreviated user names' enabled" do
     before { SettingsService.new.activate_feature! 'abbreviated_user_names' }
 

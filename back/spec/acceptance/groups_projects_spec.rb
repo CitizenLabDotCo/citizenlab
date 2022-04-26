@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'GroupsProjects' do
-
   explanation 'Which groups can access which projects.'
 
   before do

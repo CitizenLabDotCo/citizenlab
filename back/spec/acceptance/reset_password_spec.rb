@@ -3,14 +3,12 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Users' do
-
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user, email: 's.hoorens@gmail.com')
   end
 
   context 'when not authenticated' do
-
     post 'web_api/v1/users/reset_password_email' do
       with_options scope: :user do
         parameter :email, 'The email of the user for whom the password should be reset', required: true

@@ -23,5 +23,4 @@ RSpec.describe EmailCampaigns::SenderConfigurable, type: :model do
       expect(@campaign).to be_valid
     end
   end
-
 end

@@ -79,5 +79,4 @@ RSpec.describe AppConfiguration::Settings do
       expect(config.update(settings: config.settings)).to be_truthy
     end
   end
-
 end

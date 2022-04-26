@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'OfficialFeedback' do
-
   explanation 'Official feedback is input from moderators on content (i.e. ideas), separated from comments.'
 
   before do
@@ -107,7 +106,6 @@ resource 'OfficialFeedback' do
         expect(@initiative.reload.official_feedbacks_count).to eq 2
       end
     end
-
   end
 
   context 'when authenticated as normal user' do

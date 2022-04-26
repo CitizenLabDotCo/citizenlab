@@ -10,7 +10,6 @@ describe MultilocService do
   end
 
   describe 't' do
-
     let(:user) { create(:user, locale: 'en') }
     let(:translations) { {
       'nl-BE' => 'woord',
@@ -125,5 +124,4 @@ describe MultilocService do
       expect(service.is_empty?({ en: 'yes', 'nl-NL' => '' })).to be false
     end
   end
-
 end

@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Invite', admin_api: true do
-
   before do
     header 'Content-Type', 'application/json'
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
@@ -52,6 +51,4 @@ resource 'Invite', admin_api: true do
       end
     end
   end
-
-
 end

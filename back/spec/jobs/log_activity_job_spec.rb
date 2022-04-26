@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe LogActivityJob, type: :job do
-
   subject(:job) { LogActivityJob.new }
 
   describe '#perform' do
@@ -71,6 +70,5 @@ RSpec.describe LogActivityJob, type: :job do
       user = create(:user)
       expect { job.perform(item, 'created', user, Time.now) }.not_to have_enqueued_job(TrackEventJob)
     end
-
   end
 end

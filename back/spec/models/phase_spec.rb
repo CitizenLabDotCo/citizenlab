@@ -10,14 +10,12 @@ RSpec.describe Phase, type: :model do
   end
 
   describe 'description sanitizer' do
-
     it 'sanitizes script tags in the description' do
       phase = create(:phase, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
       expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
-
   end
 
   describe 'timing validation' do

@@ -17,5 +17,4 @@ namespace :matomo_sites do
       end
     end
   end
-
 end

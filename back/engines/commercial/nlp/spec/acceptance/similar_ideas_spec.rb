@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'SimilarIdeas' do
-
   explanation 'Returns ideas that are semantically similar to a given idea'
 
   before do

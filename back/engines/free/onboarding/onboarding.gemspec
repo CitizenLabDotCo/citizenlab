@@ -21,5 +21,4 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'
-
 end

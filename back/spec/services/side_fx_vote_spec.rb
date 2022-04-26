@@ -22,11 +22,9 @@ describe SideFxVoteService do
       expect { service.after_create(vote, user) }.
         to have_enqueued_job(LogActivityJob).with(vote, 'idea_downvoted', user, vote.updated_at.to_i)
     end
-
   end
 
   describe 'after_destroy' do
-
     it "logs a 'canceled_upvote' action job when an upvote is deleted" do
       vote = create(:vote, mode: 'up')
       travel_to Time.now do
@@ -44,6 +42,5 @@ describe SideFxVoteService do
           to have_enqueued_job(LogActivityJob)
       end
     end
-
   end
 end

@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Topics' do
-
   explanation 'E.g. mobility, health, culture...'
 
   before do
@@ -90,7 +89,6 @@ resource 'Topics' do
     end
 
     delete 'web_api/v1/topics/:id' do
-
       let(:topic) { create(:custom_topic) }
       let!(:id) { topic.id }
 
@@ -112,5 +110,4 @@ resource 'Topics' do
       end
     end
   end
-
 end

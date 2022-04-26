@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Verification methods' do
-
   explanation "Verification methods are the channels that lets users prove they're real. (e.g. itsme)"
 
   before do
@@ -42,5 +41,4 @@ resource 'Verification methods' do
       ])
     end
   end
-
 end

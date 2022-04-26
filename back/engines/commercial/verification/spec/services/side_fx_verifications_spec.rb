@@ -22,5 +22,4 @@ describe Verification::SideFxVerificationService do
         .to have_enqueued_job(UpdateMemberCountJob)
     end
   end
-
 end

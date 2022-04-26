@@ -39,7 +39,6 @@ RSpec.describe 'Graphql user' do
         'locale' => user.locale
       })
     end
-
   end
 
   describe 'unsubscriptionToken' do

@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldDate do
-
-
   describe 'validations' do
-
     let(:custom_field) { create(:custom_field_date) }
 
     let(:valid_json_rule) { {
@@ -22,9 +19,7 @@ describe SmartGroups::Rules::CustomFieldDate do
   end
 
   describe 'filter' do
-
     context 'on a date field' do
-
       let(:custom_field) { create(:custom_field_date, required: false) }
 
       let!(:users) {
@@ -61,9 +56,7 @@ describe SmartGroups::Rules::CustomFieldDate do
         rule = SmartGroups::Rules::CustomFieldDate.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
-
     end
-
   end
 
   describe 'description_multiloc' do
@@ -130,5 +123,4 @@ describe SmartGroups::Rules::CustomFieldDate do
       })
     end
   end
-
 end

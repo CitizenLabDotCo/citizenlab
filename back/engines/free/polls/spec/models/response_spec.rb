@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Polls::Response, type: :model do
-
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:poll_response)).to be_valid
@@ -127,7 +126,5 @@ RSpec.describe Polls::Response, type: :model do
         expect(response.errors.details).to eq({ :base => [{ :error => :too_many_options }] })
       end
     end
-
   end
-
 end

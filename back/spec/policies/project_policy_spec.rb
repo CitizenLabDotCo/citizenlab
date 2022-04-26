@@ -90,7 +90,6 @@ describe ProjectPolicy do
       it 'should not include the user in the users that have access' do
         expect(inverse_scope.resolve).not_to include(user)
       end
-
     end
 
     context 'for an admin' do
@@ -181,7 +180,6 @@ describe ProjectPolicy do
     it 'should include the user in the users that have access' do
       expect(inverse_scope.resolve).to include(user)
     end
-
   end
 
   context 'on a draft project' do
@@ -216,7 +214,6 @@ describe ProjectPolicy do
       it 'should not include the user in the users that have access' do
         expect(inverse_scope.resolve).not_to include(user)
       end
-
     end
 
     context 'for an admin' do

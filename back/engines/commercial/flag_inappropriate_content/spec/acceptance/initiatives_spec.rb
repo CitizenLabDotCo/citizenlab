@@ -71,5 +71,4 @@ resource 'Initiatives' do
       end
     end
   end
-
 end

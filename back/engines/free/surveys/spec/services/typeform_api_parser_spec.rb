@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Surveys::TypeformApiParser do
-
   # To test with real API, substitute your API token:
   # let(:tf_api) { Surveys::Typeform::Api.new('2mB2YtaeoD7PcNMUE2VLLeScS4abSphUMJM125jujxAs') }
 
@@ -274,5 +273,4 @@ describe Surveys::TypeformApiParser do
       expect(responses).to all(be_valid)
     end
   end
-
 end

@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'InitiativeFile' do
-
   explanation 'File attachments.'
 
   before do
@@ -74,5 +73,4 @@ resource 'InitiativeFile' do
   def encode_file_as_base64(filename)
     "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", filename)))}"
   end
-
 end

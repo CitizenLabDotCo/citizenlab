@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Verification Id Cards', admin_api: true do
-
   before do
     header 'Content-Type', 'application/json'
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
@@ -61,6 +60,4 @@ resource 'Verification Id Cards', admin_api: true do
       expect(json_response[:count]).to eq 1
     end
   end
-
-
 end

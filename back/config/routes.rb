@@ -16,7 +16,6 @@ Rails.application.routes.draw do
 
   namespace :web_api, :defaults => { :format => :json } do
     namespace :v1 do
-
       concern :votable do
         resources :votes, except: [:update], shallow: true do
           post :up, on: :collection
@@ -28,7 +27,6 @@ Rails.application.routes.draw do
         resources :comments, shallow: true,
           concerns: [:votable, :spam_reportable],
           defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
-
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
@@ -42,7 +40,6 @@ Rails.application.routes.draw do
       resources :ideas,
         concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
-
         resources :images, defaults: { container_type: 'Idea' }
         resources :files, defaults: { container_type: 'Idea' }
 
@@ -56,7 +53,6 @@ Rails.application.routes.draw do
       resources :initiatives,
         concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
-
         resources :images, defaults: { container_type: 'Initiative' }
         resources :files, defaults: { container_type: 'Initiative' }
 

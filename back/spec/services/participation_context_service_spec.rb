@@ -16,7 +16,6 @@ describe ParticipationContextService do
   end
 
   describe 'get_participation_context' do
-
     it 'returns the project for a continuous project' do
       project = create(:continuous_project)
       expect(service.get_participation_context(project)).to eq project
@@ -556,7 +555,6 @@ describe ParticipationContextService do
   end
 
   describe 'budgeting_disabled_reasons' do
-
     context 'for timeline projects' do
       it 'returns nil when the idea is in the current phase and budgeting is allowed' do
         project = create(:project_with_current_phase, phases_config: {

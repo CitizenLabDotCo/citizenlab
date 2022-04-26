@@ -61,6 +61,5 @@ RSpec.describe Comment, type: :model do
     it 'support bulk counter fixing' do
       expect { Comment.counter_culture_fix_counts }.not_to raise_error
     end
-
   end
 end

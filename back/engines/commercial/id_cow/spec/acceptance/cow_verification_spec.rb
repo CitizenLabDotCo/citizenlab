@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 require 'savon/mock/spec_helper'
 
 resource 'Verifications' do
-
   explanation 'A Verifications is an attempt from a user to get verified'
   include Savon::SpecHelper
 

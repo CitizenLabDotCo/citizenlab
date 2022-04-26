@@ -128,5 +128,4 @@ describe ProfanityService do
       end
     end
   end
-
 end

@@ -4,7 +4,6 @@ describe TextImageService do
   let(:service) { TextImageService.new }
 
   describe 'swap_data_images' do
-
     it 'returns exactly the same input languages' do
       imageable = build(:project)
       output = service.swap_data_images(imageable, :description_multiloc)
@@ -155,11 +154,9 @@ describe TextImageService do
       imageable.update!(description_multiloc: { 'en' => input })
       expect(service.swap_data_images(imageable, :description_multiloc)['en']).to eq output
     end
-
   end
 
   describe 'render_data_images' do
-
     it 'adds a src attribute to an img tag' do
       imageable = create(:project)
       text = <<~HTML
@@ -186,5 +183,4 @@ describe TextImageService do
       expect { service.render_data_images(imageable, :description_multiloc)['en'] }.not_to exceed_query_limit(5)
     end
   end
-
 end

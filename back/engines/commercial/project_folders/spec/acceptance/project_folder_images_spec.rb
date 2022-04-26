@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'ProjectFolderImage' do
-
   explanation 'ProjectFolders can have mutliple images.'
 
   before do

@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::RegistrationCompletedAt do
-
-
   describe 'validations' do
-
     let(:valid_json_rule) { {
       'ruleType' => 'registration_completed_at',
       'predicate' => 'is_before',
@@ -19,9 +16,7 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
   end
 
   describe 'filter' do
-
     context 'on registration completion date' do
-
       let!(:users) {
         users = build_list(:user, 5)
         users[0].registration_completed_at = Time.now
@@ -56,13 +51,10 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
         rule = SmartGroups::Rules::RegistrationCompletedAt.new('not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
-
     end
-
   end
 
   describe 'description_multiloc' do
-
     let(:registration_completed_at_is_before_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
       'predicate'     => 'is_before',
@@ -114,7 +106,5 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
         'nl-NL' => 'registratie heeft om het even welke waarde'
       })
     end
-
   end
-
 end

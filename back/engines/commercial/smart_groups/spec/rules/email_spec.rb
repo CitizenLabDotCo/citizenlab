@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::Email do
-
   let(:valid_json_rule) { {
     'ruleType' => 'email',
     'predicate' => 'is',
@@ -10,12 +9,10 @@ describe SmartGroups::Rules::Email do
   let(:valid_rule) { SmartGroups::Rules::Email.from_json(valid_json_rule) }
 
   describe 'from_json' do
-
     it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
-
   end
 
   describe 'validations' do
@@ -26,7 +23,6 @@ describe SmartGroups::Rules::Email do
   end
 
   describe 'filter' do
-
     let!(:users) {
       users = build_list(:user, 5)
       users[0].email = 'hello@citizenlab.co'
@@ -163,5 +159,4 @@ describe SmartGroups::Rules::Email do
       })
     end
   end
-
 end

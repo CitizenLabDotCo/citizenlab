@@ -230,5 +230,4 @@ describe SmartGroups::Rules::ParticipatedInTopic do
       })
     end
   end
-
 end

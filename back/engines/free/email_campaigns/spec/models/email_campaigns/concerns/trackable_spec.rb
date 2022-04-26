@@ -51,5 +51,4 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
       })
     end
   end
-
 end

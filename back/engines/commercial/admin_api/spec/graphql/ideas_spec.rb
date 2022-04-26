@@ -92,6 +92,5 @@ RSpec.describe 'Graphql ideas' do
         expect(edges&.size).to eq 3
       end
     end
-
   end
 end

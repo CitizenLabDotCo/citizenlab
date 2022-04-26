@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'InitiativeStatusChange' do
-
   explanation 'Initiative status changes allow admins to apply manual status changes on initiatives.'
 
   before do

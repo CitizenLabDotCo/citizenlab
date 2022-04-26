@@ -4,7 +4,6 @@ describe MentionService do
   let(:service) { MentionService.new }
 
   describe 'extract_mentions' do
-
     it "return an empty array when there's no mention" do
       result = service.send(:extract_mentions, 'There is no mention in this text')
       expect(result).to eq []
@@ -43,7 +42,6 @@ describe MentionService do
 
 
   describe 'add_span_around' do
-
     it 'Adds a span tag' do
       u = User.create(first_name: 'Koen', last_name: 'Gremmelprez')
       id = u.id
@@ -115,7 +113,6 @@ describe MentionService do
   end
 
   describe 'remove_expanded_mentions' do
-
     it 'removes the expanded mentions' do
       user = create(:user, first_name: 'Jos', last_name: 'Joossens')
       expanded_mention = service.add_span_around(service.user_to_mention(user), user)
@@ -125,7 +122,6 @@ describe MentionService do
   end
 
   context 'with shallow anonymization enabled' do  # aka abbreviated user names
-
     before do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
       @jane = create(:user, first_name: 'Jane', last_name: 'Doe')
@@ -141,6 +137,5 @@ describe MentionService do
       result = service.extract_expanded_mention_users(text)
       expect(result).to match_array [@jane]
     end
-
   end
 end

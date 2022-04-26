@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'RequiredSettingsAttribute' do
-
   let(:schema1) { {
     '$schema' => TenantSchema::ExtendedSchema::SCHEMA_URL,
     "type": 'object',
@@ -61,5 +60,4 @@ describe 'RequiredSettingsAttribute' do
     data['feature1']['allowed'] = false
     expect(JSON::Validator.validate(schema1, data)).to be true
   end
-
 end

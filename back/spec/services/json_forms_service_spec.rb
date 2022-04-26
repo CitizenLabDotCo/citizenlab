@@ -7,7 +7,6 @@ describe JsonFormsService do
   let(:user) { create(:user) }
 
   describe 'fields_to_ui_schema_multiloc' do
-
     let (:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
     let (:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
     let(:fields) { [
@@ -28,7 +27,6 @@ describe JsonFormsService do
   end
 
   describe 'fields_to_json_schema_multiloc' do
-
     it 'returns nil empty fields' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
       expect(schema).to eq nil
@@ -157,7 +155,6 @@ describe JsonFormsService do
         }
       )
     end
-
   end
 
   describe 'fields_to_ui_schema' do
@@ -236,5 +233,4 @@ describe JsonFormsService do
       )
     end
   end
-
 end

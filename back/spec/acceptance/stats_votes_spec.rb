@@ -25,7 +25,6 @@ def topic_filter_parameter(s)
 end
 
 resource 'Stats - Votes' do
-
   explanation 'The various stats endpoints can be used to show how certain properties of votes.'
 
   let!(:now) { Time.now.in_time_zone(@timezone) }
@@ -234,7 +233,6 @@ resource 'Stats - Votes' do
   end
 
   context 'by time' do
-
     before do
       project = create(:project)
       i1, i2 = create_list(:idea, 2, idea_status: @idea_status, project: project)

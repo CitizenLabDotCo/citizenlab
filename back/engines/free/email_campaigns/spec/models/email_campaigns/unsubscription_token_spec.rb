@@ -14,5 +14,4 @@ RSpec.describe EmailCampaigns::UnsubscriptionToken, type: :model do
       expect { token.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 end

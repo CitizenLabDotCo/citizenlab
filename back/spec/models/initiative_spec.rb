@@ -112,5 +112,4 @@ RSpec.describe Initiative, type: :model do
       expect(Initiative.order_status.ids).to eq [i1.id, i2.id, i3.id]
     end
   end
-
 end

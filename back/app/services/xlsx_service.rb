@@ -268,7 +268,6 @@ class XlsxService
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
-
       column_name = multiloc_service.t(field.title_multiloc)
       value_getter = #lambda that gets a record and returns the field value
         if field.key == 'domicile'  # 'domicile' is a special case

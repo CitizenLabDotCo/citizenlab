@@ -65,7 +65,6 @@ describe XlsxService do
   end
 
   describe 'generate_ideas_xlsx' do
-
     before { create_list(:custom_field, 2) }
 
     let(:ideas) do
@@ -119,7 +118,6 @@ describe XlsxService do
   end
 
   describe 'generate_idea_comments_xlsx' do
-
     let(:comments) { create_list(:comment, 5, post: create(:idea)) }
     let(:xlsx) { service.generate_idea_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
@@ -144,7 +142,6 @@ describe XlsxService do
   end
 
   describe 'generate_initiative_comments_xlsx' do
-
     let(:comments) { create_list(:comment, 5, post: create(:initiative)) }
     let(:xlsx) { service.generate_initiative_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
@@ -189,7 +186,6 @@ describe XlsxService do
   end
 
   describe 'hash_to_xlsx' do
-
     let(:hash_array) { [
       { 'a' => 1, 'b' => 'two' },
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
@@ -209,7 +205,6 @@ describe XlsxService do
 
 
   describe 'xlsx_to_hash_array' do
-
     let(:hash_array) { [
       { 'a' => 1, 'b' => 'two' },
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },

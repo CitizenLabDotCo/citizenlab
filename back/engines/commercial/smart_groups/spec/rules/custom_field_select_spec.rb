@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldSelect do
-
-
   describe 'validations' do
-
     let(:custom_field) { create(:custom_field_select) }
     let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
 
@@ -55,9 +52,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
   end
 
   describe 'filter' do
-
     context 'on a select field' do
-
       let(:custom_field) { create(:custom_field_select, required: false) }
       let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field ) }
 
@@ -100,11 +95,9 @@ describe SmartGroups::Rules::CustomFieldSelect do
         rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
-
     end
 
     context 'on a multiselect field' do
-
       let(:custom_field) { create(:custom_field_multiselect, required: false) }
       let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field ) }
 
@@ -147,10 +140,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
         rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq 3
       end
-
     end
-
-
   end
 
   describe 'description_multiloc' do
@@ -240,5 +230,4 @@ describe SmartGroups::Rules::CustomFieldSelect do
       })
     end
   end
-
 end

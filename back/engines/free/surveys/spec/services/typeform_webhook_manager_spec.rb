@@ -68,7 +68,6 @@ describe Surveys::TypeformWebhookManager do
       expect(tf_api).to receive(:create_or_update_webhook)
       call_pcc(to, service, from, to)
     end
-
   end
 
   describe 'participation_context_created' do
@@ -106,7 +105,6 @@ describe Surveys::TypeformWebhookManager do
   end
 
   describe 'embed_url_to_form_id' do
-
     it 'parses simple url correctly' do
       form_id = service.send(:embed_url_to_form_id, 'https://citizenlabco.typeform.com/to/abcdef')
       expect(form_id).to eq('abcdef')
@@ -126,7 +124,5 @@ describe Surveys::TypeformWebhookManager do
       form_id = service.send(:embed_url_to_form_id, 'https://citizenlabco.typeform.com/to/abcdef#name=xxxxx&sexe=xxxxx')
       expect(form_id).to eq('abcdef')
     end
-
   end
-
 end

@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Spam Reports' do
-
   explanation 'Reporting undesired content (i.e. a comment).'
 
   before do

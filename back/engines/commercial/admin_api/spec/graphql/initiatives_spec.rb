@@ -57,6 +57,5 @@ RSpec.describe 'Graphql initiatives' do
       expect(edges&.first&.dig('node', 'upvotesCount')).to be_present
       expect(edges&.first&.dig('node', 'commentsCount')).to be_present
     end
-
   end
 end

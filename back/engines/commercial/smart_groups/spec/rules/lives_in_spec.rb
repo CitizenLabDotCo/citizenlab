@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::LivesIn do
-
   let(:valid_json_rule) { {
     'ruleType' => 'lives_in',
     'predicate' => 'has_value',
@@ -10,7 +9,6 @@ describe SmartGroups::Rules::LivesIn do
   let(:valid_rule) { SmartGroups::Rules::LivesIn.from_json(valid_json_rule) }
 
   describe 'from_json' do
-
     it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
@@ -38,7 +36,6 @@ describe SmartGroups::Rules::LivesIn do
   end
 
   describe 'filter' do
-
     before do
       CustomField.create!(
         resource_type: 'User',
@@ -197,5 +194,4 @@ describe SmartGroups::Rules::LivesIn do
       })
     end
   end
-
 end

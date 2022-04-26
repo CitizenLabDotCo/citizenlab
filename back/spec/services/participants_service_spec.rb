@@ -4,7 +4,6 @@ describe ParticipantsService do
   let(:service) { ParticipantsService.new }
 
   describe 'participants' do
-
     it 'returns participants across the whole platform at any time' do
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
@@ -47,7 +46,6 @@ describe ParticipantsService do
   end
 
   describe 'projects_participants' do
-
     it 'returns participants of a given project at any time' do
       project = create(:continuous_budgeting_project)
       other_project = create(:project)
@@ -136,7 +134,6 @@ describe ParticipantsService do
   end
 
   describe 'topics_participants' do
-
     it 'returns participants of given topics' do
       t1, t2, t3 = create_list(:topic, 3)
       project = create(:project, allowed_input_topics: [t1, t2, t3])
@@ -170,7 +167,6 @@ describe ParticipantsService do
   end
 
   describe 'idea_statuses_participants' do
-
     it 'returns participants of given idea statuses' do
       s1, s2, s3 = create_list(:idea_status, 3)
       participants = create_list(:user, 3)
@@ -202,7 +198,6 @@ describe ParticipantsService do
   end
 
   describe 'filter_engaging_activities' do
-
     it 'does not filter out an upvote' do
       activity = create(:published_activity)
       expect(service.filter_engaging_activities(Activity.all)).to eq [activity]
@@ -215,7 +210,6 @@ describe ParticipantsService do
   end
 
   describe 'with_engagement_scores' do
-
     it 'gives idea publishing a score of 5' do
       activity = create(:published_activity)
       expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 5
@@ -250,5 +244,4 @@ describe ParticipantsService do
       expect(scope.first.score).to be_present
     end
   end
-
 end

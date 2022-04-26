@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Campaign consents' do
-
   explanation 'A consent defines whether a specific user (dis)allows a specific campaign type'
 
   before do
@@ -66,7 +65,6 @@ resource 'Campaign consents' do
         expect(status).to eq 401
       end
     end
-
   end
 
   patch 'web_api/v1/consents/:id' do

@@ -1,6 +1,5 @@
 
 ProjectFolders::Engine::config.to_prepare do
-
   ::WebApi::V1::FilesController.register_container(
       'ProjectFolder',
       ProjectFolders::Folder,
@@ -18,5 +17,4 @@ ProjectFolders::Engine::config.to_prepare do
       :images,
       :project_folder_id
   )
-
 end

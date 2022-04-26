@@ -38,5 +38,4 @@ describe SideFxAreaService do
       end
     end
   end
-
 end

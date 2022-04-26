@@ -41,5 +41,4 @@ describe SideFxStaticPageService do
       end
     end
   end
-
 end

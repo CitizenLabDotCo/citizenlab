@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Initiatives' do
-
   explanation 'Proposals from citizens (but more spontaneous than ideas) to the city.'
 
   before do
@@ -464,7 +463,6 @@ resource 'Initiatives' do
         expect(new_initiative.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
-
     end
 
     describe do

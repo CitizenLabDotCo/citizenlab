@@ -41,5 +41,4 @@ describe SideFxEventService do
       end
     end
   end
-
 end

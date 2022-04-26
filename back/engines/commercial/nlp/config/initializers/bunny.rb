@@ -20,7 +20,6 @@ queue = channel.queue(QUEUE_NAME, durable: true)
                .bind(exchange, routing_key: ROUTING_KEY)
 
 queue.subscribe do |_delivery_info, _properties, payload|
-
   payload = JSON.parse(payload)
 
   puts({

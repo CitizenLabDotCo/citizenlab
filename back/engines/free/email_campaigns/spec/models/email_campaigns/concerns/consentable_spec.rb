@@ -48,5 +48,4 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
       expect(ConsentableCampaign.consentable_for? admin).to eq true
     end
   end
-
 end
