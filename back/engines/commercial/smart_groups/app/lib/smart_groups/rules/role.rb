@@ -19,17 +19,17 @@ module SmartGroups::Rules
 
     def self.to_json_schema
       {
-        "type" => "object",
-        "additionalProperties" => false,
-        "required" => ["ruleType", "predicate"],
-        "properties" => {
-          "ruleType" => {
-            "type" => "string",
-            "enum" => [rule_type]
+        'type' => 'object',
+        'additionalProperties' => false,
+        'required' => ['ruleType', 'predicate'],
+        'properties' => {
+          'ruleType' => {
+            'type' => 'string',
+            'enum' => [rule_type]
           },
-          "predicate" => {
-            "type" => "string",
-            "enum" => PREDICATE_VALUES
+          'predicate' => {
+            'type' => 'string',
+            'enum' => PREDICATE_VALUES
           }
         }
       }

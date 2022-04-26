@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe SegmentRegulationsClient do
   subject(:service) { SegmentRegulationsClient.new(authorization_token: token) }
@@ -23,17 +23,17 @@ RSpec.describe SegmentRegulationsClient do
       service.delete(user_ids)
 
       expect(HTTParty).to have_received(:post) do |url, body:, headers:|
-        expect(url).to eq("https://platform.segmentapis.com/v1beta/workspaces/citizen-lab/regulations")
+        expect(url).to eq('https://platform.segmentapis.com/v1beta/workspaces/citizen-lab/regulations')
 
         body = JSON.parse(body)
         expect(body).to match({
-          "regulation_type" => "Delete",
-          "attributes" => { "name" => "userId", "values" => match_array(user_ids.shuffle) } }
+          'regulation_type' => 'Delete',
+          'attributes' => { 'name' => 'userId', 'values' => match_array(user_ids.shuffle) } }
         )
 
         expect(headers).to eq({
           Authorization: "Bearer #{token}",
-          "Content-Type": "application/json" }
+          "Content-Type": 'application/json' }
         )
       end
     end

@@ -1,4 +1,4 @@
-require "id_cow/engine"
+require 'id_cow/engine'
 require 'savon'
 
 module IdCow

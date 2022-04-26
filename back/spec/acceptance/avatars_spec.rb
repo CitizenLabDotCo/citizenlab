@@ -2,25 +2,25 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Avatars" do
+resource 'Avatars' do
 
-  explanation "Avatars are user images user setup in their profile. To edit them, use the users endpoints"
+  explanation 'Avatars are user images user setup in their profile. To edit them, use the users endpoints'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     @user_without_avatar = create(:user, avatar: nil)
     @users_with_avatar = create_list(:user, 6)
   end
 
-  get "web_api/v1/avatars" do
+  get 'web_api/v1/avatars' do
 
-    parameter :limit, "Number of avatars to return. Defaults to 5. Maximum 10.", default: false
+    parameter :limit, 'Number of avatars to return. Defaults to 5. Maximum 10.', default: false
     parameter :context_type, "The context used to look for users. Either 'group', 'project' or 'idea'. Don't specify to not limit the context.", required: false
-    parameter :context_id, "The context used to look for users. A valid ID for the given context_type", required: false
+    parameter :context_id, 'The context used to look for users. A valid ID for the given context_type', required: false
 
-    response_field :total, "The total count of users in the given context, including those without avatar", scope: :meta
+    response_field :total, 'The total count of users in the given context, including those without avatar', scope: :meta
 
-    example_request "List random user avatars" do
+    example_request 'List random user avatars' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
@@ -53,7 +53,7 @@ resource "Avatars" do
       let!(:author_ids) { 3.times.map{create(:idea, project: project).author.id}}
       let(:limit) { 2 }
 
-      example_request "List random user avatars in a project" do
+      example_request 'List random user avatars in a project' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
@@ -72,7 +72,7 @@ resource "Avatars" do
       let!(:commenter_ids) { 2.times.map{create(:comment, post: idea).author.id}}
       let(:limit) { 2 }
 
-      example_request "List random user avatars on an idea (author and commenters)" do
+      example_request 'List random user avatars on an idea (author and commenters)' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
@@ -91,7 +91,7 @@ resource "Avatars" do
       let!(:commenter_ids) { 2.times.map{create(:comment, post: initiative).author.id}}
       let(:limit) { 2 }
 
-      example_request "List random user avatars on an initiative (author and commenters)" do
+      example_request 'List random user avatars on an initiative (author and commenters)' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
@@ -102,7 +102,7 @@ resource "Avatars" do
       end
     end
 
-    context "as an admin" do
+    context 'as an admin' do
       before do
         @user = create(:admin)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
@@ -116,7 +116,7 @@ resource "Avatars" do
         let!(:other_user) { create(:user) }
         let!(:member_ids) { create_list(:user, 4, manual_groups: [group]).map(&:id) }
 
-        example_request "List random user avatars in a group as an admin" do
+        example_request 'List random user avatars in a group as an admin' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
@@ -130,15 +130,15 @@ resource "Avatars" do
 
   end
 
-  get "web_api/v1/avatars/:id" do
-    parameter :id, "The avatar id is the user id", required: true
+  get 'web_api/v1/avatars/:id' do
+    parameter :id, 'The avatar id is the user id', required: true
 
     let(:user) { create(:user) }
 
     describe do
       let (:id) { user.id }
 
-      example_request "Get a single avatar" do
+      example_request 'Get a single avatar' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id

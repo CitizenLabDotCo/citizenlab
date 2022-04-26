@@ -13,69 +13,69 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              "$ref": '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
             },
-            "value" => {
-              "description" => "The id of one of the options of the custom field",
-              "$ref": "#/definitions/customFieldOptionId"
+            'value' => {
+              'description' => 'The id of one of the options of the custom field',
+              "$ref": '#/definitions/customFieldOptionId'
             }
           },
         },
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              "$ref": '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": MULTIVALUE_PREDICATES,
             },
-            "value" => {
-              "description" => "The ids of some of the options of the custom field",
-              "type" => "array",
-              "items" => {
-                "$ref": "#/definitions/customFieldOptionId"
+            'value' => {
+              'description' => 'The ids of some of the options of the custom field',
+              'type' => 'array',
+              'items' => {
+                "$ref": '#/definitions/customFieldOptionId'
               },
-              "uniqueItems" => true,
-              "minItems" => 1
+              'uniqueItems' => true,
+              'minItems' => 1
             }
           },
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => ['ruleType', 'customFieldId', 'predicate'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              "$ref": '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }

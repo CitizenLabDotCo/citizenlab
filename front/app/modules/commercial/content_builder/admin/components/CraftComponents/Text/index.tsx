@@ -15,7 +15,7 @@ const Text = ({ text }) => {
   const theme: any = useTheme();
 
   return (
-    <Box minHeight="26px">
+    <Box id="e2e-text-box" minHeight="26px">
       <QuillEditedContent textColor={theme.colorText}>
         <div dangerouslySetInnerHTML={{ __html: text }} />
       </QuillEditedContent>

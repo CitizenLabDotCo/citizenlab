@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::Role do
 
@@ -8,28 +8,28 @@ describe SmartGroups::Rules::Role do
   }}
   let(:valid_rule) { SmartGroups::Rules::Role.from_json(valid_json_rule) }
 
-  describe "from_json" do
+  describe 'from_json' do
 
-    it "successfully parses a valid json" do
+    it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
     end
 
   end
 
-  describe "validations" do
-    it "successfully validate the valid rule" do
+  describe 'validations' do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
 
-    it "fails on a non-existing predicate" do
+    it 'fails on a non-existing predicate' do
       json_rule = valid_json_rule.tap{|r| r['predicate']='has_long_toes'}
       expect(SmartGroups::Rules::Role.from_json(json_rule)).to be_invalid
       expect(build(:smart_group, rules: [json_rule])).to be_invalid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
     let!(:users) {
       mortals = create_list(:user, 3)
@@ -72,7 +72,7 @@ describe SmartGroups::Rules::Role do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
 
     let(:role_is_admin_rule) {SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
@@ -99,7 +99,7 @@ describe SmartGroups::Rules::Role do
       'predicate'     => 'not_is_normal_user'
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       # Stubbing the translations so the specs don't depend on those.
       I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
 

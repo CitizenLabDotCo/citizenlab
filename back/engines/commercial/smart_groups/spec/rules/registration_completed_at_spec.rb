@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::RegistrationCompletedAt do
 
 
-  describe "validations" do
+  describe 'validations' do
 
     let(:valid_json_rule) {{
       'ruleType' => 'registration_completed_at',
@@ -12,15 +12,15 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
     }}
     let(:valid_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json(valid_json_rule) }
 
-    it "successfully validate the valid rule" do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
-    context "on registration completion date" do
+    context 'on registration completion date' do
 
       let!(:users) {
         users = build_list(:user, 5)
@@ -61,7 +61,7 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
 
     let(:registration_completed_at_is_before_rule) {SmartGroups::Rules::RegistrationCompletedAt.from_json({
       'ruleType'      => 'registration_completed_at',
@@ -87,7 +87,7 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
       'predicate'     => 'not_is_empty'
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(registration_completed_at_is_before_rule.description_multiloc).to eq ({
         'en'    => 'registration is before 2019-11-12',
         'fr-FR' => 'date d\'inscription est avant 12/11/2019',

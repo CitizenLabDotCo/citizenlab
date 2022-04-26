@@ -16,16 +16,16 @@ module Verification
         def self.to_json_schema
           [
             {
-              "type": "object",
-              "required" => ["ruleType", "predicate"],
-              "additionalProperties" => false,
-              "properties" => {
-                "ruleType" => {
-                  "type" => "string",
-                  "enum" => [rule_type],
+              "type": 'object',
+              'required' => ['ruleType', 'predicate'],
+              'additionalProperties' => false,
+              'properties' => {
+                'ruleType' => {
+                  'type' => 'string',
+                  'enum' => [rule_type],
                 },
-                "predicate" => {
-                  "type": "string",
+                'predicate' => {
+                  "type": 'string',
                   "enum": PREDICATE_VALUES
                 }
               },
@@ -48,9 +48,9 @@ module Verification
         def filter users_scope
           case predicate
           when 'is_verified'
-            users_scope.where("verified = ?", true)
+            users_scope.where('verified = ?', true)
           when 'not_is_verified'
-            users_scope.where("verified = ?", false)
+            users_scope.where('verified = ?', false)
           else
             raise "Unsupported predicate #{predicate}"
           end

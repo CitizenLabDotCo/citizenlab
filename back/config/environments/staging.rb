@@ -45,7 +45,7 @@ Rails.application.configure do
   # when problems arise.
   config.log_level = :info
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     STDOUT.sync = true
     config.rails_semantic_logger.add_file_appender = false
     config.semantic_logger.add_appender(io: STDOUT, level: config.log_level, formatter: :json)

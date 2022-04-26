@@ -1,3 +1,3 @@
 Apartment.configure do |config|
-  config.excluded_models += ["PublicApi::ApiClient", "CommonPassword"]
+  config.excluded_models += ['PublicApi::ApiClient', 'CommonPassword']
 end

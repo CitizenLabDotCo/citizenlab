@@ -5,6 +5,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
 import { UserComponent } from '@craftjs/core';
+import Text from '../Text';
+import Image from '../Image';
 
 const Container: UserComponent = ({ children }) => {
   return (
@@ -16,7 +18,10 @@ const Container: UserComponent = ({ children }) => {
 
 Container.craft = {
   rules: {
-    canMoveIn: (nodes) => nodes.every((node) => node.data.type !== Container),
+    canMoveIn: (nodes) =>
+      nodes.every(
+        (node) => node.data.type === Text || node.data.type === Image
+      ),
   },
 };
 

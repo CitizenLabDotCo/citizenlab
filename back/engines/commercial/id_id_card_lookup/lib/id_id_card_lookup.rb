@@ -1,4 +1,4 @@
-require "id_id_card_lookup/engine"
+require 'id_id_card_lookup/engine'
 require 'savon'
 
 module IdIdCardLookup

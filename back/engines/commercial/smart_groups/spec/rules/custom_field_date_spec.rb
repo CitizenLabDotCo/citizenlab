@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldDate do
 
 
-  describe "validations" do
+  describe 'validations' do
 
     let(:custom_field) { create(:custom_field_date) }
 
@@ -15,15 +15,15 @@ describe SmartGroups::Rules::CustomFieldDate do
     }}
     let(:valid_rule) { SmartGroups::Rules::CustomFieldDate.from_json(valid_json_rule) }
 
-    it "successfully validates a valid rule" do
+    it 'successfully validates a valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
-    context "on a date field" do
+    context 'on a date field' do
 
       let(:custom_field) { create(:custom_field_date, required: false) }
 
@@ -66,7 +66,7 @@ describe SmartGroups::Rules::CustomFieldDate do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:date_picker) {create(:custom_field_date, title_multiloc: {
       'en'    => 'When will we have a new government?',
       'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement?',
@@ -102,7 +102,7 @@ describe SmartGroups::Rules::CustomFieldDate do
       'customFieldId' => date_picker.id
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(custom_field_date_is_before_rule.description_multiloc).to eq ({
         'en'    => 'When will we have a new government? is before 2027-11-08',
         'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement? est avant 08/11/2027',

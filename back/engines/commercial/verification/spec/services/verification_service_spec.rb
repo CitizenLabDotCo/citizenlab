@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe Verification::VerificationService do
   let(:sfxv_service) { instance_double(Verification::SideFxVerificationService) }
@@ -15,10 +15,10 @@ describe Verification::VerificationService do
     configuration.save!
   end
 
-  describe "verify_sync" do
+  describe 'verify_sync' do
     let(:user) { create(:user) }
 
-    it "executes side fx hooks" do
+    it 'executes side fx hooks' do
       params = {
         user: user,
         method_name: 'bogus',
@@ -40,7 +40,7 @@ describe Verification::VerificationService do
       service.verify_sync(params)
     end
 
-    it "updates the user with received attributes from verify_sync" do
+    it 'updates the user with received attributes from verify_sync' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
@@ -62,7 +62,7 @@ describe Verification::VerificationService do
       expect(user.reload.first_name).to eq 'BOB'
     end
 
-    it "updates the user with received custom_field_values from verify_sync" do
+    it 'updates the user with received custom_field_values from verify_sync' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
       cf1 = create(:custom_field)
@@ -95,14 +95,14 @@ describe Verification::VerificationService do
       })
     end
 
-    it "adds a verification" do
+    it 'adds a verification' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
       params = {
         user: user,
         method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        verification_parameters: {run: '12.025.365-6', id_serial: 'A001529382'}
       }
 
       expect(Verification::Verification.count).to eq 0
@@ -123,14 +123,14 @@ describe Verification::VerificationService do
       })
     end
 
-    it "raises a VerificationTakenError when another user verified with that identity" do
+    it 'raises a VerificationTakenError when another user verified with that identity' do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
       params1 = {
         user: create(:user),
         method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        verification_parameters: {run: '12.025.365-6', id_serial: 'A001529382'}
       }
 
       expect_any_instance_of(IdCow::CowVerification)
@@ -143,7 +143,7 @@ describe Verification::VerificationService do
       params2 = {
         user: user,
         method_name: 'cow',
-        verification_parameters: {run: "12.025.365-6", id_serial: "A001529382"}
+        verification_parameters: {run: '12.025.365-6', id_serial: 'A001529382'}
       }
 
       expect_any_instance_of(IdCow::CowVerification)
@@ -156,46 +156,46 @@ describe Verification::VerificationService do
 
   end
 
-  describe "locked_attributes" do
-    context "for a user only authenticated with facebook" do
-      it "returns no locked attributes" do
+  describe 'locked_attributes' do
+    context 'for a user only authenticated with facebook' do
+      it 'returns no locked attributes' do
         identity = create(:facebook_identity)
         expect(service.locked_attributes(identity.user)).to eq []
       end
     end
 
-    context "for a user only verified with bosa_fas" do
-      it "returns some locked attributes" do
+    context 'for a user only verified with bosa_fas' do
+      it 'returns some locked attributes' do
         verification = create(:verification, method_name: 'bosa_fas')
         expect(service.locked_attributes(verification.user)).to match_array [:first_name, :last_name]
       end
     end
   end
 
-  describe "locked_custom_fields" do
-    context "for a user only authenticated with facebook" do
-      it "returns no locked custom field keys" do
+  describe 'locked_custom_fields' do
+    context 'for a user only authenticated with facebook' do
+      it 'returns no locked custom field keys' do
         identity = create(:facebook_identity)
         expect(service.locked_custom_fields(identity.user)).to eq []
       end
     end
 
-    context "for a user only verified with bogus" do
-      it "returns some locked custom field keys" do
+    context 'for a user only verified with bogus' do
+      it 'returns some locked custom field keys' do
         verification = create(:verification, method_name: 'bogus')
         expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
       end
     end
   end
 
-  describe "add_method" do
-    it "adds methods that are exposed through #all_methods" do
+  describe 'add_method' do
+    it 'adds methods that are exposed through #all_methods' do
       mthd = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       service.class.add_method(mthd)
       expect(service.class.all_methods).to include(mthd)
     end
 
-    it "replaces duplicate methods with the same .id" do
+    it 'replaces duplicate methods with the same .id' do
       mthd1 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       mthd2 = OpenStruct.new(id: '9fb591e7-f577-40a7-8596-03e406d7eebe')
       service.class.add_method(mthd1)

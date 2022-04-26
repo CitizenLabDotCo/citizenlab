@@ -77,6 +77,7 @@ export interface InputProps {
   boundingBox?: number[];
   assignee?: string;
   feedbackNeeded?: boolean;
+  filterCanModerate?: boolean;
   // prop mini Gets stripped down ideas containing only title, should never be cached,
   // and is not tested in all scenarios, but improves performance drastically.
   mini?: boolean;
@@ -85,19 +86,20 @@ export interface InputProps {
 export interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
-  projects: string[] | undefined | null;
-  phase: string | undefined | null;
-  author: string | undefined | null;
+  projects?: string[] | null;
+  phase?: string | null;
+  author?: string | null;
   sort: Sort;
-  search: string | undefined | null;
-  topics: string[] | undefined | null;
-  areas: string[] | undefined | null;
-  idea_status: string | undefined | null;
-  publication_status: PublicationStatus | undefined | null;
-  project_publication_status: ProjectPublicationStatus | undefined | null;
-  bounding_box: number[] | undefined | null;
-  assignee: string | undefined | null;
-  feedback_needed: boolean | undefined | null;
+  search?: string | null;
+  topics?: string[] | null;
+  areas?: string[] | null;
+  idea_status?: string | null;
+  publication_status?: PublicationStatus | null;
+  project_publication_status?: ProjectPublicationStatus | null;
+  bounding_box?: number[] | null;
+  assignee?: string | null;
+  feedback_needed?: boolean | null;
+  filter_can_moderate?: boolean | null;
 }
 
 interface IAccumulator {
@@ -174,6 +176,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       bounding_box: undefined,
       assignee: undefined,
       feedback_needed: undefined,
+      filter_can_moderate: undefined,
     };
     const queryParameters = this.getQueryParameters(
       this.defaultQueryParameters,
@@ -344,6 +347,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     bounding_box: this.props.boundingBox,
     assignee: this.props.assignee,
     feedback_needed: this.props.feedbackNeeded,
+    filter_can_moderate: this.props.filterCanModerate,
     search: undefined,
   });
 
@@ -380,6 +384,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       bounding_box: props.boundingBox,
       assignee: props.assignee,
       feedback_needed: props.feedbackNeeded,
+      filter_can_moderate: props.filterCanModerate,
     };
 
     // Omit all queryParameters that are nil.

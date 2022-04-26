@@ -85,7 +85,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       when 'Initiative' then InitiativeOfficialFeedbackPolicy
       else raise "#{@post_type} has no official feedback policy defined"
     end
-    raise RuntimeError, "must not be blank" if @post_type.blank?
+    raise RuntimeError, 'must not be blank' if @post_type.blank?
   end
 
   def official_feedback_params

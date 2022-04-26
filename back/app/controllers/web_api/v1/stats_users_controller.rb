@@ -195,8 +195,8 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .from(scored_activities.select(:user_id).where(acted_at: @start_at..@end_at))
       .group(:user_id)
       .includes(:user)
-      .select("user_id, SUM(score) as sum_score")
-      .order("sum_score DESC")
+      .select('user_id, SUM(score) as sum_score')
+      .order('sum_score DESC')
       .limit(10)
 
     render json: WebApi::V1::EngagementScoreSerializer.new(
@@ -216,7 +216,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: "no data for this period"}, status: :unprocessable_entity
+      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
     end
   end
 
