@@ -103,7 +103,7 @@ ro:
       birthyear:
         title: Anul nașterii
       domicile:
-        title: Locul de reședință
+        title: Domiciliu
       education:
         title: Educație
     ideas:
