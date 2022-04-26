@@ -1244,7 +1244,7 @@
   "app.containers.UsersEditPage.deleteYourAccount": "Șterge contul",
   "app.containers.UsersEditPage.deletionSection": "Șterge contul",
   "app.containers.UsersEditPage.deletionSubtitle": "Această acțiune nu poate fi anulată. Conținutul publicat pe platformă va fi anonim. Dacă doriți să ștergeți tot conținutul, puteți să ne contactați la adresa de e-mail: support@citizenlab.co.",
-  "app.containers.UsersEditPage.domicile": "Locul de reședință",
+  "app.containers.UsersEditPage.domicile": "Domiciliu",
   "app.containers.UsersEditPage.email": "E-mail",
   "app.containers.UsersEditPage.feedbackLinkText": "Anunță-ne",
   "app.containers.UsersEditPage.feedbackLinkUrl": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
