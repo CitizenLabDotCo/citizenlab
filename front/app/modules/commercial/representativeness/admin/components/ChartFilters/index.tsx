@@ -31,24 +31,24 @@ const ChartFilters = ({
   onChangeTimeRange,
   onProjectFilter,
   onGroupFilter,
-}: Props) => {
-  return (
-    <Box display="flex" width="100%" justifyContent="space-between">
-      <TimeControl
-        startAtMoment={startAtMoment}
-        endAtMoment={endAtMoment}
-        onChange={onChangeTimeRange}
-      />
-      <ProjectFilter
-        currentProjectFilter={currentProjectFilter}
-        onProjectFilter={onProjectFilter}
-      />
-      <GroupFilter
-        currentGroupFilter={currentGroupFilter}
-        onGroupFilter={onGroupFilter}
-      />
-    </Box>
-  );
-};
+}: Props) => (
+  <Box display="flex" width="100%" justifyContent="space-between">
+    <TimeControl
+      startAtMoment={startAtMoment}
+      endAtMoment={endAtMoment}
+      onChange={onChangeTimeRange}
+    />
+    <ProjectFilter
+      width="25%"
+      currentProjectFilter={currentProjectFilter}
+      onProjectFilter={onProjectFilter}
+    />
+    <GroupFilter
+      width="25%"
+      currentGroupFilter={currentGroupFilter}
+      onGroupFilter={onGroupFilter}
+    />
+  </Box>
+);
 
 export default ChartFilters;

@@ -26,6 +26,7 @@ interface DataProps {
 }
 
 interface InputProps {
+  width?: string;
   currentTopicFilter?: string | null;
   onTopicFilter: (filter: IOption) => void;
 }
@@ -50,6 +51,7 @@ const generateTopicOptions = (
 
 const TopicFilter = ({
   topics,
+  width,
   currentTopicFilter,
   onTopicFilter,
   intl: { formatMessage },
@@ -65,7 +67,7 @@ const TopicFilter = ({
   );
 
   return (
-    <Box width="32%">
+    <Box width={width || '32%'}>
       <Select
         id="topicFilter"
         label={<FormattedMessage {...messages.labelTopicFilter} />}
