@@ -55,10 +55,8 @@ module Notifications
   class MentionInOfficialFeedback < Notification
     validates :official_feedback, :post, :initiating_user, presence: true
 
-
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in official feedback'
-
 
     def self.make_notifications_on(activity)
       official_feedback = activity.item

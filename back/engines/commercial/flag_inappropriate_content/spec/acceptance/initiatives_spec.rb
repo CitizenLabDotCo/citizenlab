@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
@@ -49,7 +48,6 @@ resource 'Initiatives' do
     end
 
     let(:id) { @initiative.id }
-
 
     describe do
       let(:location_description) { 'Watkins Road 8' }

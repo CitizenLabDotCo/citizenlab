@@ -48,7 +48,6 @@ module EmailCampaigns
       Campaigns::YourProposedInitiativesDigest
     ].freeze
 
-
     def campaign_types
       campaign_classes.map(&:name)
     end

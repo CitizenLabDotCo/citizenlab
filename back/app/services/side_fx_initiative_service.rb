@@ -53,7 +53,6 @@ class SideFxInitiativeService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_initiative), 'deleted', user, Time.now.to_i, payload: { initiative: serialized_initiative })
   end
 
-
   private
 
   def before_publish(initiative, user)

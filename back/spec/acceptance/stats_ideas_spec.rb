@@ -29,7 +29,6 @@ def feedback_needed_filter_parameter(s)
   s.parameter :feedback_needed, 'Only count ideas that need feedback', required: false
 end
 
-
 resource 'Stats - Ideas' do
   explanation 'The various stats endpoints can be used to show certain properties of ideas.'
 

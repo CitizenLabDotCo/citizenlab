@@ -41,7 +41,6 @@ class SpamReport < ApplicationRecord
 
   after_validation :set_reported_at
 
-
   private
 
   def set_reported_at

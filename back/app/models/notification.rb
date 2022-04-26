@@ -67,7 +67,6 @@ class Notification < ApplicationRecord
 
   scope :unread, -> { where(read_at: nil) }
 
-
   def event_bus_item_name
     "Notification for #{event_name}"
   end

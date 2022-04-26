@@ -14,7 +14,6 @@ describe 'JsonFormsService ideas overrides' do
   let(:fields) { IdeaCustomFieldsService.new.all_fields(custom_form) }
   let(:user) { create(:user) }
 
-
   describe 'topic_ids field' do
     before do
       # project = create(:project)

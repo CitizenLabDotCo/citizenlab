@@ -21,7 +21,6 @@ describe Surveys::TypeformWebhookManager do
     let(:from) { build(:continuous_survey_project) }
     let(:to) { build(:continuous_survey_project) }
 
-
     it "doesn't call tf api when no pc is survey related" do
       from = build(:continuous_project)
       to = build(:continuous_project)

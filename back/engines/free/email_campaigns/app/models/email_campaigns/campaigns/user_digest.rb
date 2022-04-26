@@ -41,7 +41,6 @@ module EmailCampaigns
     N_TOP_COMMENTS = ENV.fetch('N_TOP_COMMENTS', 2).to_i
     N_DISCOVER_PROJECTS = ENV.fetch('N_DISCOVER_PROJECTS', 3).to_i
 
-
     def self.default_schedule
       day, hour = [[:thursday, 13], [:saturday, 8]].sample
       IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2020)) do |s|

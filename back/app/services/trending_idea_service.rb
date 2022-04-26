@@ -35,7 +35,6 @@ class TrendingIdeaService
       )
   end
 
-
   def trending_score(idea)
     # used for testing purposes
     upvotes_ago = activity_ago idea.upvotes # .select { |v| v.user&.id != idea.author&.id }
@@ -59,7 +58,6 @@ class TrendingIdeaService
     # used for testing purposes
     trending_score(idea) >= 0
   end
-
 
   private
 

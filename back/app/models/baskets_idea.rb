@@ -25,7 +25,6 @@ class BasketsIdea < ApplicationRecord
   validates :idea, :basket, presence: true
   validate :idea_with_budget
 
-
   private
 
   def idea_with_budget

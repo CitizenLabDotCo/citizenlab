@@ -12,7 +12,6 @@
 class CommonPassword < ApplicationRecord
   COMMON_PASSWORDS_FILE = './public/common_passwords/100k-most-used-passwords-NCSC.txt'
 
-
   def self.initialize!
     CommonPassword.delete_all
     pwds = open(COMMON_PASSWORDS_FILE).readlines.map do |password|

@@ -109,7 +109,6 @@ module EmailCampaigns
       CampaignPolicy
     end
 
-
     protected
 
     def set_enabled

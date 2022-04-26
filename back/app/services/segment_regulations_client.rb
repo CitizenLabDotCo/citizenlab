@@ -46,7 +46,6 @@ class SegmentRegulationsClient
     )
   end
 
-
   # @param [String] regulation_id
   def delete_regulation(regulation_id)
     HTTParty.delete(

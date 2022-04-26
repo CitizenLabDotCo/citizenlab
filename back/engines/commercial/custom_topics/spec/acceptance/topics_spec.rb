@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Topics' do
   explanation 'E.g. mobility, health, culture...'
 

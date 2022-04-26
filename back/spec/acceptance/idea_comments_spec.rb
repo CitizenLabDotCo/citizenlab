@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Comments' do
   explanation 'Comments permit users to have discussions about content (i.e. ideas).'
 

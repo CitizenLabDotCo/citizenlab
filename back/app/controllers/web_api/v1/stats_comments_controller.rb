@@ -38,7 +38,6 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_time.xlsx'
   end
 
-
   def comments_by_time_cumulative_serie
     comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
 

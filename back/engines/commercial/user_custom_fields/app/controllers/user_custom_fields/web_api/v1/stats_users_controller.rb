@@ -4,7 +4,6 @@ module UserCustomFields
       class StatsUsersController < ::WebApi::V1::StatsController
         @@multiloc_service = MultilocService.new
 
-
         def users_by_gender_serie
           users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 

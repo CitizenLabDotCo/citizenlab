@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'InitiativeFile' do
   explanation 'File attachments.'
 
@@ -66,7 +65,6 @@ resource 'InitiativeFile' do
       expect { InitiativeFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
-
 
   private
 

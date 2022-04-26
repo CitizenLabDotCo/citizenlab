@@ -63,7 +63,6 @@ class Initiative < ApplicationRecord
     initiative.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:initiatives_topics)
@@ -118,7 +117,6 @@ class Initiative < ApplicationRecord
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
       .where('initiative_statuses.code = ?', 'proposed')
   }
-
 
   def votes_needed(configuration = AppConfiguration.instance)
     [configuration.settings('initiatives', 'voting_threshold') - upvotes_count, 0].max

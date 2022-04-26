@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 def time_boundary_parameters(s)
   s.parameter :start_at, 'Date defining from where results should start', required: false
   s.parameter :end_at, 'Date defining till when results should go', required: false
@@ -301,7 +300,6 @@ resource 'Stats - Votes' do
           aggregate_failures 'check worksheet contents' do
             expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 2)
 
-
             expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
             up_col = worksheet.map { |col| col.cells[1].value }
             header, *ups = up_col
@@ -347,7 +345,6 @@ resource 'Stats - Votes' do
       end
     end
   end
-
 
   get 'web_api/v1/stats/votes_by_topic' do
     time_boundary_parameters self
@@ -536,7 +533,6 @@ resource 'Stats - Votes' do
       end
     end
 
-
     describe 'filtered by topic' do
       before do
         @topic = create(:topic)
@@ -613,7 +609,6 @@ resource 'Stats - Votes' do
         expect(amounts).to match_array [3, 1]
       end
     end
-
 
     describe 'filtered by topic' do
       before do

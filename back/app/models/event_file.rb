@@ -27,7 +27,6 @@ class EventFile < ApplicationRecord
   validates :event, :file, :name, presence: true
   validate :extension_whitelist
 
-
   private
 
   def extension_whitelist

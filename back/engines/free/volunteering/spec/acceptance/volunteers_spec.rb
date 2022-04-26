@@ -2,7 +2,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Volunteering Volunteers' do
   explanation 'Volunteers are linking causes and users, indicating the user volunteers for the cause'
 
@@ -48,7 +47,6 @@ resource 'Volunteering Volunteers' do
       end
     end
   end
-
 
   context 'when admin' do
     before do

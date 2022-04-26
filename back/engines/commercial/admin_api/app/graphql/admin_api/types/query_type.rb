@@ -21,7 +21,6 @@ module AdminApi
       Tenant.find(args[:id])
     end
 
-
     field :tenant_by_host, Types::TenantType, null: false do
       argument :host, String, required: true
     end

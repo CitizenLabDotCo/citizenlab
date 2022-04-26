@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 describe 'google authentication' do
   before do
     @user = create(:user)
@@ -162,7 +161,6 @@ describe 'google authentication' do
       })
     end
   end
-
 
   it 'successfully registers an invitee' do
     user = create(:invited_user, email: 'boris.brompton@orange.uk')

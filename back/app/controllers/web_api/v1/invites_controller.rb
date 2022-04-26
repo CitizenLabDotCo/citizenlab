@@ -102,7 +102,6 @@ class WebApi::V1::InvitesController < ApplicationController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
   end
 
-
   def accept
     @invite = Invite.find_by(token: params[:token])
     if !@invite

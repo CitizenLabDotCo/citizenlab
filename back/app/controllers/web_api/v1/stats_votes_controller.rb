@@ -93,7 +93,6 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     render json: { series: double_grouped_by_to_nested_hashes(votes_by_time_cumulative_serie) }
   end
 
-
   def votes_by_topic_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
@@ -280,7 +279,6 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
     res
   end
-
 
   def normalize_votes(data, key)
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')

@@ -18,7 +18,6 @@ describe Insights::TopicCategoryService do
       assignment_ids = service.copy_assignments(view, user)
       assignments = Insights::CategoryAssignment.find(assignment_ids)
 
-
       aggregate_failures 'check assignments' do
         expect(assignments.count).to eq(6)
         expect(assignment_service.approved_assignments(ideas[1], view).pluck(:category_id).length).to eq(2)

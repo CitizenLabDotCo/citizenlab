@@ -23,7 +23,6 @@ module FlagInappropriateContent
 
     validates :flaggable, presence: true
 
-
     def deleted?
       !!deleted_at
     end

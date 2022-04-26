@@ -70,7 +70,6 @@ module NLP
       end
     end
 
-
     def encode_areas
       Area.all.map do |area|
         d = {

@@ -32,7 +32,6 @@ class CustomFieldOption < ApplicationRecord
 
   before_validation :generate_key, on: :create
 
-
   private
 
   def belongs_to_select_field

@@ -23,7 +23,6 @@ module IdeaCustomFields
         bi_cfs = bi_cfs.filter { |cf| cf.code != 'location_point_geojson' && cf.code != 'author_id' && cf.code != 'budget' } if filter_unmodifiable
         bi_codes = bi_cfs.map(&:code)
 
-
         replacing, additional = db_cfs.partition { |c| bi_codes.include? c.code }
 
         [

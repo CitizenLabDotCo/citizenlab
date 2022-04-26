@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Moderations' do
   get 'web_api/v1/moderations' do
     with_options scope: :page do

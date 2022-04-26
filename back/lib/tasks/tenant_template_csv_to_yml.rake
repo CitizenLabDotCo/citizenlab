@@ -5,7 +5,6 @@ require 'redcarpet'
 
 ### rake tenant_template:csv_to_yml['tmp','fr-BE fr-FR'] ###
 
-
 namespace :tenant_template do
   desc 'Converts tenant templates from csv files to a yml file, working in the specified folder'
   task :csv_to_yml, [:path, :locale] => [:environment] do |t, args|
@@ -50,7 +49,6 @@ namespace :tenant_template do
     File.open("#{args[:path]}/tenant_template.yml", 'w') { |f| f.write yml_models.to_yaml }
   end
 
-
   def read_csv(name, args)
     CSV.read("#{args[:path]}/#{name}.csv", { headers: true, col_sep: ',' })
   end
@@ -60,7 +58,6 @@ namespace :tenant_template do
       [locale, value]
     end.to_h
   end
-
 
   def convert_users(csv_users, locales, users_hash)
     csv_users.map do |csv_user|
@@ -153,7 +150,6 @@ namespace :tenant_template do
     end
   end
 
-
   def generate_password()
     SecureRandom.urlsafe_base64 8
   end
@@ -193,7 +189,6 @@ namespace :tenant_template do
                                                   .map { |i| { 'remote_image_url' => i.strip,
                                                                'idea_ref'         => yml_idea } }
   end
-
 
   def zip_min(l1, l2)
     len = [l1.size, l2.size].min

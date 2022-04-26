@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'User Custom Fields' do
   explanation 'Fields in forms (e.g. registration) which are customized by the city.'
 

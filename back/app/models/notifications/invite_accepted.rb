@@ -55,10 +55,8 @@ module Notifications
   class InviteAccepted < Notification
     validates :initiating_user, :invite, presence: true
 
-
     ACTIVITY_TRIGGERS = { 'Invite' => { 'accepted' => true } }
     EVENT_NAME = 'Invite accepted'
-
 
     def self.make_notifications_on(activity)
       invite = activity.item

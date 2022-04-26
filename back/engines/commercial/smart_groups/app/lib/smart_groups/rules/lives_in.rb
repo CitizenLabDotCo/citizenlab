@@ -132,7 +132,6 @@ module SmartGroups::Rules
       end
     end
 
-
     private
 
     def needs_value?

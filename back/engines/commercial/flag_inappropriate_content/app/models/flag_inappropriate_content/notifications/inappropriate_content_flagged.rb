@@ -59,7 +59,6 @@ module FlagInappropriateContent
 
       validates :inappropriate_content_flag, presence: true
 
-
       def self.recipient_ids(flaggable)
         ::UserRoleService.new.moderators_for(flaggable).ids
       end

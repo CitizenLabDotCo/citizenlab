@@ -54,7 +54,6 @@ module Insights
       assignments_attrs = inputs.to_a.product(categories)
                                 .map { |input, category| new_assignment_attrs(input, category) }
 
-
       if set_processed
         view_ids = categories.pluck(:view_id).uniq
         processed_service.set_processed(inputs, view_ids)

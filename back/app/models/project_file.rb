@@ -28,7 +28,6 @@ class ProjectFile < ApplicationRecord
   validates :project, :file, :name, presence: true
   validate :extension_whitelist
 
-
   private
 
   def extension_whitelist

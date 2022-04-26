@@ -29,7 +29,6 @@ module ProjectFolders
     validates :project_folder, :file, :name, presence: true
     validate :extension_whitelist
 
-
     private
 
     def extension_whitelist

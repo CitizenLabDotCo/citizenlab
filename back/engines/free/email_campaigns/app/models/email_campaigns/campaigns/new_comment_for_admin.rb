@@ -87,7 +87,6 @@ module EmailCampaigns
       }]
     end
 
-
     protected
 
     def set_enabled

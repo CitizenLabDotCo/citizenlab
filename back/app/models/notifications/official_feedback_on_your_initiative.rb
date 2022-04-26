@@ -56,10 +56,8 @@ module Notifications
     validates :initiating_user, :post, :official_feedback, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
-
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
     EVENT_NAME = 'Official feedback on your initiative'
-
 
     def self.make_notifications_on(activity)
       official_feedback = activity.item

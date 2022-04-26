@@ -444,9 +444,6 @@ describe ParticipationContextService do
     end
   end
 
-
-
-
   describe 'cancelling_votes_disabled_reasons' do
     let(:user) { create(:user) }
     let(:reasons) { ParticipationContextService::VOTING_DISABLED_REASONS }

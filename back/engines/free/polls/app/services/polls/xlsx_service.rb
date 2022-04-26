@@ -18,7 +18,6 @@ module Polls
       ::XlsxService.new.generate_xlsx 'Poll results', columns, responses
     end
 
-
     private
 
     def compute_user_columns(is_anonymous, is_admin)

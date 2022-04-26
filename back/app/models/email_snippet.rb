@@ -22,7 +22,6 @@ class EmailSnippet < ApplicationRecord
   validates :email, :snippet, :locale, :body, presence: true
   validates :locale, inclusion: { in: -> (email_snippet) { AppConfiguration.instance.settings('core', 'locales') } }
 
-
   before_validation :sanitize_body
 
   def sanitize_body

@@ -46,10 +46,8 @@ Rails.application.configure do
   # Previewing mails from all engines.
   config.action_mailer.preview_path = "#{Rails.root}/engines/*/*/spec/mailers/previews"
 
-
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
-
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

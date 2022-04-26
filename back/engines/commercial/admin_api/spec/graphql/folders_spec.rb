@@ -21,7 +21,6 @@ RSpec.describe 'Graphql folder' do
       }
     | end
 
-
     let(:folder) { create(:project_folder) }
     let(:variables) { { id: folder.id } }
 

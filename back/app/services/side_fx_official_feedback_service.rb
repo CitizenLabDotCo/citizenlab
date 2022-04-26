@@ -30,7 +30,6 @@ class SideFxOfficialFeedbackService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_feedback), 'deleted', user, Time.now.to_i, payload: { official_feedback: serialized_feedback })
   end
 
-
   private
 
   def process_mentions(feedback)

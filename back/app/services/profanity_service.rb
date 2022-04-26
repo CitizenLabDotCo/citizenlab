@@ -1,7 +1,6 @@
 class ProfanityService
   IGNORE_SPECIAL_CHARS = '.?¿!,:;\'"(){}[]#@_'
 
-
   def search_blocked_words(text)
     AppConfiguration.instance.settings.dig('core', 'locales').map do |locale|
       locale.split('-').first

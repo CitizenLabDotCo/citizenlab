@@ -78,7 +78,6 @@ class User < ApplicationRecord
       where('lower(email) = lower(?)', email).first
     end
 
-
     # Returns the user record from the database which matches the specified
     # email address (case-insensitive) or raises `ActiveRecord::RecordNotFound`.
     # @param email [String] The email of the user

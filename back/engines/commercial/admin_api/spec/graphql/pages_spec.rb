@@ -38,7 +38,6 @@ RSpec.describe 'Graphql pages' do
     }
     | end
 
-
     it 'returns all public pages' do
       p1, _p2, _p3 = create_list(:static_page, 3)
       response = result

@@ -174,7 +174,6 @@ describe JsonFormsService do
       create(:custom_field_option, key: 'option3', custom_field: fields[3])
       create(:custom_field_option, key: 'option4', custom_field: fields[3])
 
-
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields.map(&:reload), user)[:ui_schema_multiloc]['en']
       expect(ui_schema[:type]).to be_present
       expect(ui_schema[:options]).to be_present

@@ -47,7 +47,6 @@ Rails.application.configure do
   config.log_level = :debug
   config.active_record.verbose_query_logs = true
 
-
   # Comment this out to see the queries in the logs.
   # STDOUT.sync = true
   # config.rails_semantic_logger.add_file_appender = false

@@ -5,7 +5,6 @@ class WebApi::V1::External::InitiativeSerializer < ActiveModel::Serializer
   has_many :areas
   has_many :initiative_images, serializer: WebApi::V1::External::ImageSerializer
 
-
   def header_bg
     object.header_bg && object.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
   end

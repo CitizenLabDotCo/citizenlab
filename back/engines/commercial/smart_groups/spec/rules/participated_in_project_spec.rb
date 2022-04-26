@@ -208,7 +208,6 @@ describe SmartGroups::Rules::ParticipatedInProject do
       'value'         => project1.id
     }) end
 
-
     it 'successfully translates different combinations of rules' do
       expect(participated_in_project_in_rule.description_multiloc).to eq ({
         'en'    => 'Participation in an idea in one of the following projects beer, delayed',

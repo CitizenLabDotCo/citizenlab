@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
   before do
     class ActivityTriggerableCampaign < EmailCampaigns::Campaign

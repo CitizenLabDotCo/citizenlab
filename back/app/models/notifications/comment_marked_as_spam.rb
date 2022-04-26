@@ -58,7 +58,6 @@ module Notifications
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }
     EVENT_NAME = 'Comment marked as spam'
 
-
     def self.make_notifications_on(activity)
       spam_report = activity.item
       initiator_id = spam_report&.user_id

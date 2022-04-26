@@ -153,7 +153,6 @@ module Frontend
       options[:app_configuration] || tenant&.configuration || app_config_instance # TODO OS remove: tenant&.configuration
     end
 
-
     # Memoized database query
     def app_config_instance
       @app_config_instance ||= AppConfiguration.instance

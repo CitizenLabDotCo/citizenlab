@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe EmailCampaigns::Trackable, type: :model do
   before do
     class TrackableCampaign < EmailCampaigns::Campaign

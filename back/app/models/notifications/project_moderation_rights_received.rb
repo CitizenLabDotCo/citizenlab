@@ -58,7 +58,6 @@ module Notifications
     ACTIVITY_TRIGGERS = { 'User' => { 'project_moderation_rights_given' => true } }
     EVENT_NAME = 'Project moderation rights received'
 
-
     def self.make_notifications_on(activity)
       recipient_id = activity.item_id
       initiator_id = activity.user_id

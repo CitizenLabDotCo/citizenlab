@@ -34,7 +34,6 @@ module EmailCampaigns
     before_send :check_send_invite_email_toggle
     recipient_filter :filter_recipient
 
-
     def mailer_class
       InviteReceivedMailer
     end

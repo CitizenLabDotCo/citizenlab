@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
   before do
     class LifecycleStageActiveAndDemoCampaign < EmailCampaigns::Campaign

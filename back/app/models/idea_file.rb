@@ -27,7 +27,6 @@ class IdeaFile < ApplicationRecord
   validates :idea, :name, presence: true
   validate :extension_whitelist
 
-
   private
 
   def extension_whitelist

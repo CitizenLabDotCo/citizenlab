@@ -56,10 +56,8 @@ module Notifications
     validates :comment, :initiating_user, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
-
     ACTIVITY_TRIGGERS = { 'Comment' => { 'created' => true } }
     EVENT_NAME = 'Comment on your initiative'
-
 
     def self.make_notifications_on(activity)
       comment = activity.item

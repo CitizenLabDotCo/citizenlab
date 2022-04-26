@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Notifications' do
   explanation 'Messages from the platform to the user to inform on activities that may be of interest to him/her.'
 

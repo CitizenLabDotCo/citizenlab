@@ -42,8 +42,6 @@ class SideFxCommentService
     LogActivityJob.perform_later(encode_frozen_resource(frozen_comment), 'deleted', user, Time.now.to_i, payload: { comment: serialized_comment })
   end
 
-
-
   private
 
   def check_participation_context(comment, user)

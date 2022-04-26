@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Avatars' do
   explanation 'Avatars are user images user setup in their profile. To edit them, use the users endpoints'
 

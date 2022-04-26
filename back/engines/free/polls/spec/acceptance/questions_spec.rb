@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Poll Questions' do
   explanation 'A poll question has multiple poll options that can be answered by users. It is tied to a participation context with participation_method `poll`'
 

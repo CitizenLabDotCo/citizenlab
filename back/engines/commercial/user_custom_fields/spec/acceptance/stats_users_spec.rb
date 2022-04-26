@@ -382,7 +382,6 @@ end
       end
     end
 
-
     describe 'with multiselect field' do
       before do
         @group = create(:group)
@@ -518,7 +517,6 @@ end
         expect(users).to match_array [0, 1, 1, 1]
       end
     end
-
 
     describe 'with multiselect field' do
       before do

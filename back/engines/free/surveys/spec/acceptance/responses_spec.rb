@@ -131,7 +131,6 @@ resource 'Survey Responses' do
       .to_return(status: 200, headers: { 'Content-Type' => 'application/json' }, body: responses_body.to_json)
   end
 
-
   get 'web_api/v1/projects/:participation_context_id/survey_responses/as_xlsx' do
     let(:pc) { create(:continuous_survey_project) }
     let(:participation_context_id) { pc.id }

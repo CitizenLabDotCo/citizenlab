@@ -40,7 +40,6 @@ describe MentionService do
     end
   end
 
-
   describe 'add_span_around' do
     it 'Adds a span tag' do
       u = User.create(first_name: 'Koen', last_name: 'Gremmelprez')
@@ -52,7 +51,6 @@ describe MentionService do
       expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{id}\" data-user-slug=\"koen-gremmelprez\">@Koen Gremmelprez</span></p>"
     end
   end
-
 
   describe 'process_mentions' do
     before do

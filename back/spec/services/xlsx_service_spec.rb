@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rubyXL'
 
-
 describe XlsxService do
   let(:service) { XlsxService.new }
 
@@ -202,7 +201,6 @@ describe XlsxService do
        expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
     end
   end
-
 
   describe 'xlsx_to_hash_array' do
     let(:hash_array) do [

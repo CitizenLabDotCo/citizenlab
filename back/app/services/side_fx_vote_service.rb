@@ -29,7 +29,6 @@ class SideFxVoteService
     )
   end
 
-
   private
 
   def votable_type(vote)

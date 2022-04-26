@@ -59,7 +59,6 @@ module Notifications
     ACTIVITY_TRIGGERS = { 'Initiative' => { 'changed_assignee' => true } }
     EVENT_NAME = 'Initiative assigned to you'
 
-
     def self.make_notifications_on(activity)
       initiative = activity.item
       recipient_id = initiative.assignee_id

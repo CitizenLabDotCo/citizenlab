@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'InitiativeStatuses' do
   explanation 'Initivative statuses reflect the cities attitude towards an initiative.'
 

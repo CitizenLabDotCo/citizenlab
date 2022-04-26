@@ -68,8 +68,6 @@ module Insights
             )[:inputs].to_h
         end
 
-
-
         # @return [Array<Insights::Category>, nil]
         def categories
           @categories ||= view.categories.find(params[:categories]) if params.key?(:categories)

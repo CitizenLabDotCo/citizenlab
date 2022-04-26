@@ -2,7 +2,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Volunteering Causes' do
   explanation 'Causes are tasks or events users can volunteer for, linked to a volunteering participation context'
 

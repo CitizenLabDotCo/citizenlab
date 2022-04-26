@@ -34,7 +34,6 @@ resource 'Ideas' do
     end
   end
 
-
   route '/api/v1/ideas/:idea_id', 'Ideas: Retrieve one idea' do
     parameter :idea_id, 'The unique ID indentifying the idea', type: 'string', required: true
 

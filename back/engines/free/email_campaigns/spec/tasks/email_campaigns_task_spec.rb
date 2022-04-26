@@ -6,7 +6,6 @@ describe 'rake email_campaigns' do
   end
   let(:task) { Rake::Task[task_name] }
 
-
   describe ':schedule_email_campaigns' do
     let(:task_name) { 'email_campaigns:schedule_email_campaigns' }
 

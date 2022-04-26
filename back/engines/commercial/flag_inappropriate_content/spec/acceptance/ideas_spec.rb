@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'

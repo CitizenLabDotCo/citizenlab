@@ -17,7 +17,6 @@ class WebApi::V1::MemberSerializer < WebApi::V1::BaseSerializer
     object.member_of? params[:group_id]
   end
 
-
   def self.view_private_attributes?(object, params={})
     Pundit.policy!(current_user(params), object).view_private_attributes?
   end

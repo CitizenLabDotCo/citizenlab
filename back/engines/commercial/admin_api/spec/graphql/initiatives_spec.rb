@@ -44,7 +44,6 @@ RSpec.describe 'Graphql initiatives' do
       }
     | end
 
-
     it 'returns all public initiatives with fields' do
       create_list(:initiative, 5)
       create(:initiative, publication_status: 'draft')

@@ -23,7 +23,6 @@ RSpec.describe 'Graphql project' do
       }
     | end
 
-
     let(:project) { create(:project) }
     let(:variables) { { id: project.id } }
 

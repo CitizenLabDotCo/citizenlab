@@ -56,10 +56,8 @@ module Notifications
     validates :post_status, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
-
     ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Status change on voted idea'
-
 
     def self.make_notifications_on(activity)
       idea = activity.item

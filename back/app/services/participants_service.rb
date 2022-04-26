@@ -13,7 +13,6 @@ class ParticipantsService
 
   PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting, :polling, :volunteering]
 
-
   def participants(options={})
     since = options[:since]
     # After https://stackoverflow.com/a/25356375

@@ -53,7 +53,6 @@ module AdminApi
       @template
     end
 
-
     private
 
     def init_refs

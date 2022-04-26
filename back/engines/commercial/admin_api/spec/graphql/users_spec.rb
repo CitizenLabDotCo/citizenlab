@@ -24,7 +24,6 @@ RSpec.describe 'Graphql user' do
       }
     | end
 
-
     let(:user) { create(:user) }
     let(:variables) { { id: user.id } }
 

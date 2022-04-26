@@ -15,7 +15,6 @@ module PublicApi
       end
     end
 
-
     def show?
       # We base this on the same rules a non-authenticated user
       ::IdeaPolicy.new(nil, record).show? && record.published?

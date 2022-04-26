@@ -80,7 +80,6 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     render json: { series: { initiatives: serie } }
   end
 
-
   private
 
   def apply_group_filter(initiatives)

@@ -34,7 +34,6 @@ resource 'Projects' do
     end
   end
 
-
   route '/api/v1/projects/:id', 'Projects: Retrieve one project' do
     get 'Retrieve one project' do
       let(:id) { @projects.first.id }

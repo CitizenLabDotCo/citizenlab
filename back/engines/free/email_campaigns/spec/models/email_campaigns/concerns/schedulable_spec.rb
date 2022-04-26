@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe EmailCampaigns::Schedulable, type: :model do
   before do
     class SchedulableCampaign < EmailCampaigns::Campaign

@@ -29,15 +29,11 @@ module EmailCampaigns
       user_participation_opportunities
     )
 
-
     belongs_to :recipient, class_name: 'User'
 
     validates :campaign, presence: true, inclusion: { in: CAMPAIGNS }
 
     before_validation :set_commanded_at
-
-
-
 
     # Example usage:
     ### EmailCampaigns::CampaignEmailCommand.restricted_expand_by_content_id(campaign_email_commands=EmailCampaigns::CampaignEmailCommand.where(campaign: 'admin_weekly_report')) do |idea|
@@ -57,7 +53,6 @@ module EmailCampaigns
          jsonb_array_elements(jsonb_extract_path(tracked_content, '#{content_class.underscore}_ids')) as #{content_class.underscore}_id"
       )
     end
-
 
     private
 

@@ -84,7 +84,6 @@ module EmailCampaigns
       end.compact
     end
 
-
     private
 
     def user_filter_moderator_only(users_scope, options={})

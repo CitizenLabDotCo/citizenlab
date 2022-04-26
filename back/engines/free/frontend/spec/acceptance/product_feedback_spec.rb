@@ -19,7 +19,6 @@ resource 'Product Feedback' do
     end
     ValidationErrorHelper.new.error_fields(self, Frontend::ProductFeedback)
 
-
     let(:question) { 'found_what_youre_looking_for?' }
     let(:answer) { 'no' }
     let(:page) { 'landing' }

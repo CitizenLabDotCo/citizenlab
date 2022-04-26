@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Onboarding campaigns' do
   explanation 'Indicates which call to action to show to the current user'
 

@@ -253,8 +253,6 @@ class CustomFieldService
     }
   end
 
-
-
     # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
 
     # *** html ***

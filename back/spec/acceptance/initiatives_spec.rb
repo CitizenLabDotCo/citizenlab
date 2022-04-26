@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Initiatives' do
   explanation 'Proposals from citizens (but more spontaneous than ideas) to the city.'
 

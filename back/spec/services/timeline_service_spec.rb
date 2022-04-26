@@ -126,7 +126,6 @@ describe TimelineService do
     end
   end
 
-
   def create_active_phase(project)
     now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(:phase, project: project,
@@ -134,7 +133,6 @@ describe TimelineService do
       end_at: now
     )
   end
-
 
   def create_inactive_phase(project)
     create(:phase_sequence, project: project)

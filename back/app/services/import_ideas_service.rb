@@ -20,7 +20,6 @@ class ImportIdeasService
     end
   end
 
-
   private
 
   def convert_idea(idea_data)

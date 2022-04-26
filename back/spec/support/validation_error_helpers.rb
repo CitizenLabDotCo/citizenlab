@@ -24,8 +24,6 @@ class ValidationErrorHelper
     CarrierWave::Validations::ActiveModel::DownloadValidator => [:download_error]
   }
 
-
-
   def model_error_codes(model)
     attrs_errs = model.validators.flat_map do |validator|
         validator.attributes.map { |a| [a, ERROR_DETAILS[validator.class]] }
@@ -47,7 +45,6 @@ class ValidationErrorHelper
     end
     h
   end
-
 
   def error_fields(rspec_context, model)
     model_error_codes(model).each do |attribute, error_codes|

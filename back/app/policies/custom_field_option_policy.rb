@@ -32,7 +32,6 @@ class CustomFieldOptionPolicy < ApplicationPolicy
     user&.active? && user.admin? && !record.custom_field.code
   end
 
-
   def permitted_attributes_for_create
     [
       :key,

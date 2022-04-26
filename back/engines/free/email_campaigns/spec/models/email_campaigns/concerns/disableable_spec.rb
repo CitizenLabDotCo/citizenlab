@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe EmailCampaigns::Disableable, type: :model do
   before do
     class DisableableCampaign < EmailCampaigns::Campaign

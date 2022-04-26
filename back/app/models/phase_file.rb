@@ -27,7 +27,6 @@ class PhaseFile < ApplicationRecord
   validates :phase, :file, :name, presence: true
   validate :extension_whitelist
 
-
   private
 
   def extension_whitelist

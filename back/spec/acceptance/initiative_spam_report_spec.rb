@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Spam Reports' do
   explanation 'Reporting undesired content (i.e. an initiative).'
 

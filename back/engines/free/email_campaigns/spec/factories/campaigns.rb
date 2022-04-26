@@ -12,7 +12,6 @@ FactoryBot.define do
     } end
   end
 
-
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
     enabled { true }
   end
@@ -168,7 +167,6 @@ FactoryBot.define do
   factory :welcome_campaign, class: EmailCampaigns::Campaigns::Welcome do
     enabled { true }
   end
-
 
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled { true }

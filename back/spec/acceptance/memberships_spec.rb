@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Memberships' do
   explanation 'Memberships are associations between groups and users.'
 

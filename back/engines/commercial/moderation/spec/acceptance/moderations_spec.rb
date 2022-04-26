@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Moderations' do
   explanation 'Moderations are pieces of user-generated content that need to be moderated'
 

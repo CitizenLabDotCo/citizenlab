@@ -39,7 +39,6 @@ class Vote < ApplicationRecord
   scope :up, -> { where mode: 'up' }
   scope :down, -> { where mode: 'down' }
 
-
   def up?
     self.mode == 'up'
   end

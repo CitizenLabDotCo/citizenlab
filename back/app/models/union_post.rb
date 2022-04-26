@@ -22,7 +22,6 @@ class UnionPost < ActiveRecord::Base
 
   has_many :comments
 
-
   # this isn't strictly necessary, but it will prevent
   # rails from calling save, which would fail anyway.
   def readonly?

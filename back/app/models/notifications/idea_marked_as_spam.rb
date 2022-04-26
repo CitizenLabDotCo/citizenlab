@@ -59,7 +59,6 @@ module Notifications
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }
     EVENT_NAME = 'Idea marked as spam'
 
-
     def self.make_notifications_on(activity)
       spam_report = activity.item
       if spam_report.spam_reportable_type == 'Idea'

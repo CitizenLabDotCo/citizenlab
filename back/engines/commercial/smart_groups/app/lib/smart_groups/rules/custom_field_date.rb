@@ -9,7 +9,6 @@ module SmartGroups::Rules
     validates :value, absence: true, unless: :needs_value?
     validates :value, presence: true, if: :needs_value?
 
-
     def self.to_json_schema
       [
         {
@@ -91,7 +90,6 @@ module SmartGroups::Rules
         end
       end
     end
-
 
     def description_value(locale)
       if value.present?

@@ -708,7 +708,6 @@ resource 'Users' do
         let(:locale) { 'fr-FR' }
         let(:birthyear) { 1969 }
 
-
         example 'Can change many attributes of a user verified with FranceConnect', document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
           do_request

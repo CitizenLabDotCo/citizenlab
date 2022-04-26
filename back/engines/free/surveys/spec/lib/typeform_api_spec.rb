@@ -138,7 +138,6 @@ describe Surveys::Typeform::Api do
     end
   end
 
-
   describe 'all_responses' do
     let (:responses_body1) do
       {

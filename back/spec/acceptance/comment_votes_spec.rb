@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Comment Votes' do
   explanation 'Votes are used to express agreement on content (i.e. comments).'
 

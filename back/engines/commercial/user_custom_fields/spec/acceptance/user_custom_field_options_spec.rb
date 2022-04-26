@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'User Custom Field Options' do
   explanation 'Options to choose from in a custom field.'
 

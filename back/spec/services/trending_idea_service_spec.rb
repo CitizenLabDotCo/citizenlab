@@ -64,7 +64,6 @@ describe TrendingIdeaService do
     end
   end
 
-
   def generate_trending_ideas(n)
     n.times do |i|
       published_at = Faker::Time.between(from: 1.years.ago, to: DateTime.now)

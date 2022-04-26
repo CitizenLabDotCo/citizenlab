@@ -561,7 +561,6 @@ resource 'Stats - Users' do
         end
       end
 
-
       example_request 'Active users by time' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -682,7 +681,6 @@ resource 'Stats - Users' do
         end
       end
 
-
       example_request 'Active users by time' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
@@ -754,7 +752,6 @@ resource 'Stats - Users' do
           create_list(:activity, 2)
         end
       end
-
 
       example_request 'Active users by time' do
         assert_status 200

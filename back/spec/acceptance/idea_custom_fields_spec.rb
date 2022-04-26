@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
 

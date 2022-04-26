@@ -36,7 +36,6 @@ module EmailCampaigns
 
     recipient_filter :filter_authors_of_proposed_initiatives
 
-
     def self.default_schedule
       IceCube::Schedule.new(Time.find_zone(AppConfiguration.instance.settings('core', 'timezone')).local(2019)) do |s|
         s.add_recurrence_rule(
@@ -91,7 +90,6 @@ module EmailCampaigns
         []
       end
     end
-
 
     private
 

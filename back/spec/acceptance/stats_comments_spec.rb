@@ -25,7 +25,6 @@ def topic_filter_parameter(s)
   s.parameter :topic, 'Topic ID. Only count comments on ideas that have the given topic assigned', required: false
 end
 
-
 resource 'Stats - Comments' do
   before { header 'Content-Type', 'application/json' }
 
@@ -58,7 +57,6 @@ resource 'Stats - Comments' do
     AppConfiguration.instance.update!(created_at: now - 3.month)
     create(:comment, publication_status: 'deleted')
   end
-
 
   get 'web_api/v1/stats/comments_count' do
     before do
@@ -115,7 +113,6 @@ resource 'Stats - Comments' do
         create(:comment)
       end
     end
-
 
     get 'web_api/v1/stats/comments_by_time' do
       time_series_parameters self
@@ -315,7 +312,6 @@ resource 'Stats - Comments' do
     end
   end
 
-
   get 'web_api/v1/stats/comments_by_topic' do
     time_boundary_parameters self
     project_filter_parameter self
@@ -412,7 +408,6 @@ resource 'Stats - Comments' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
-
 
     context 'when admin' do
       before { admin_header_token }
@@ -521,7 +516,6 @@ resource 'Stats - Comments' do
     topic_filter_parameter self
     group_filter_parameter self
 
-
     context 'when admin' do
       before { admin_header_token }
 
@@ -605,7 +599,6 @@ resource 'Stats - Comments' do
     time_boundary_parameters self
     topic_filter_parameter self
     group_filter_parameter self
-
 
     context 'when admin' do
       before { admin_header_token }

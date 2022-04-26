@@ -45,7 +45,6 @@ RSpec.describe 'Graphql ideas' do
       }
     | end
 
-
     it 'returns all public ideas with fields' do
       create_list(:idea, 5)
       create(:idea, project: create(:private_admins_project))

@@ -264,7 +264,6 @@ describe InvitesService do
       end
     end
 
-
     context 'with duplicate emails' do
       let(:hash_array) do [
         { email: 'someuser@somedomain.com' },
