@@ -63,7 +63,7 @@ resource 'Notifications' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map { |d|d[:attributes][:read_at] }).not_to include nil
+      expect(json_response[:data].map { |d| d[:attributes][:read_at] }).not_to include nil
     end
   end
 

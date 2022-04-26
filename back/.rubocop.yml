@@ -92,6 +92,9 @@ Layout/LeadingEmptyLines:
 Layout/AssignmentIndentation:
   Enabled: true
 
+Layout/SpaceAroundBlockParameters:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:
