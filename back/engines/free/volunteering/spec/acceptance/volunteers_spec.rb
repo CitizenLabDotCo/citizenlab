@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 
 
 resource 'Volunteering Volunteers' do
- 
+
   explanation 'Volunteers are linking causes and users, indicating the user volunteers for the cause'
 
   before do
@@ -112,12 +112,12 @@ resource 'Volunteering Volunteers' do
       end
 
       describe do
-        before do 
+        before do
           @user = create(:user)
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
-        
+
         example_request '[error] XLSX export by a normal user', document: false do
           assert_status 401
         end

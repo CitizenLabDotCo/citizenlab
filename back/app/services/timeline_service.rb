@@ -37,7 +37,7 @@ class TimelineService
   end
 
   def overlaps?(phase1, phase2)
-    !((phase1.end_at.to_date < phase2.start_at.to_date) || (phase2.end_at.to_date < phase1.start_at.to_date)) 
+    !((phase1.end_at.to_date < phase2.start_at.to_date) || (phase2.end_at.to_date < phase1.start_at.to_date))
   end
 
   def other_project_phases(phase)
@@ -48,7 +48,7 @@ class TimelineService
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.continuous? || project.phases.blank?
       nil
-    elsif today > project.phases.maximum(:end_at)  
+    elsif today > project.phases.maximum(:end_at)
       :past
     elsif today < project.phases.minimum(:start_at)
       :future
@@ -60,11 +60,11 @@ class TimelineService
   def timeline_active_on_collection(projects)
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
-    ends = Phase.where(project: projects).group(:project_id).maximum(:end_at) 
+    ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)
     projects.map do |project|
       active = if project.continuous? || project.phases.blank?
         nil
-      elsif today > ends[project.id]  
+      elsif today > ends[project.id]
         :past
       elsif today < starts[project.id]
         :future

@@ -147,30 +147,30 @@ resource 'Moderators' do
       let(:project_id) { @project.id }
       let(:search) { 'jo' }
       let(:other_project) { create(:project) }
-      let!(:u1) { 
-        create(:user, 
-          first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', 
-          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }]) 
+      let!(:u1) {
+        create(:user,
+          first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
       }
-      let!(:u2) { 
-        create(:user, 
-          first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', 
-          roles: [{ 'type' => 'project_moderator', 'project_id' => other_project.id }]) 
+      let!(:u2) {
+        create(:user,
+          first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => other_project.id }])
       }
-      let!(:u3) { 
-        create(:user, 
-          first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', 
-          roles: []) 
+      let!(:u3) {
+        create(:user,
+          first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com',
+          roles: [])
       }
-      let!(:u4) { 
-        create(:user, 
-          first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', 
-          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }, { 'type' => 'project_moderator', 'project_id' => other_project.id }]) 
+      let!(:u4) {
+        create(:user,
+          first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }, { 'type' => 'project_moderator', 'project_id' => other_project.id }])
       }
-      let!(:u5) { 
-        create(:user, 
-          first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', 
-          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }]) 
+      let!(:u5) {
+        create(:user,
+          first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
       }
 
       example_request 'Search for users and whether or not they are moderator of the project' do

@@ -22,11 +22,11 @@ module EmailCampaigns
   class CampaignEmailCommand < ApplicationRecord
 
   	CAMPAIGNS = %w(
-      user_platform_digest 
-      admin_weekly_report 
-      moderator_digest 
-      user_activity_on_your_ideas 
-      user_updates_on_supported_ideas 
+      user_platform_digest
+      admin_weekly_report
+      moderator_digest
+      user_activity_on_your_ideas
+      user_updates_on_supported_ideas
       user_participation_opportunities
     )
 
@@ -39,7 +39,7 @@ module EmailCampaigns
 
 
 
-    
+
     # Example usage:
     ### EmailCampaigns::CampaignEmailCommand.restricted_expand_by_content_id(campaign_email_commands=EmailCampaigns::CampaignEmailCommand.where(campaign: 'admin_weekly_report')) do |idea|
     ###   idea.slug.starts_with? 's'
@@ -54,7 +54,7 @@ module EmailCampaigns
 
     def self.expand_by_content_id(campaign_email_commands=self.all, content_class='Idea')
       campaign_email_commands.select(
-        "email_campaigns_campaign_email_commands.*, 
+        "email_campaigns_campaign_email_commands.*,
          jsonb_array_elements(jsonb_extract_path(tracked_content, '#{content_class.underscore}_ids')) as #{content_class.underscore}_id"
       )
     end

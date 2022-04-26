@@ -6,7 +6,7 @@ describe Verification::VerificationPolicy do
   let(:scope) { Verification::VerificationPolicy::Scope.new(user, Verification::Verification) }
   let!(:verification) { build(:verification) }
 
-  context 'for a visitor' do 
+  context 'for a visitor' do
     let(:user) { nil }
 
     it { should_not permit(:create) }
@@ -16,7 +16,7 @@ describe Verification::VerificationPolicy do
     end
   end
 
-  context 'for a mortal user on a verification of another user' do 
+  context 'for a mortal user on a verification of another user' do
     let(:user) { create(:user) }
 
     it { should_not permit(:create) }
@@ -27,7 +27,7 @@ describe Verification::VerificationPolicy do
     end
   end
 
-  context 'for a mortal user who owns the verification' do 
+  context 'for a mortal user who owns the verification' do
     let(:user) { verification.user }
 
     it { should permit(:create) }

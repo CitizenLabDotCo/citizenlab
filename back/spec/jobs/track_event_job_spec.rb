@@ -10,7 +10,7 @@ describe TrackEventJob do
     end
 
     # using 'build' because 'create' needs the AppConfiguration
-    let(:activity) { build(:activity) } 
+    let(:activity) { build(:activity) }
 
     it 'does not raise a ActiveRecord::RecordNotFound' do
       expect { described_class.perform_now(activity) }.not_to raise_error(ActiveRecord::RecordNotFound)

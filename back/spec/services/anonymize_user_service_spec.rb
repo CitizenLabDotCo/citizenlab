@@ -11,8 +11,8 @@ describe AnonymizeUserService do
       education = create(:custom_field_education, :with_options, enabled: true)
     end
 
-    it "anonymizes confidential parts of the user's attributes" do 
-      10.times do 
+    it "anonymizes confidential parts of the user's attributes" do
+      10.times do
         user = create(:user)
         attributes = service.anonymized_attributes ['en'], user: user
         expect(User.new(attributes)).to be_valid

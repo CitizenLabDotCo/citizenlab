@@ -77,10 +77,10 @@ resource 'Comments' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map { |d| d[:id] }).to eq([
-          @c2, 
-          @c3, 
+          @c2,
+          @c3,
           @c3sub1,
-          @c3sub2, 
+          @c3sub2,
           @c1
         ].map(&:id))
       end
@@ -125,14 +125,14 @@ resource 'Comments' do
 
   get 'web_api/v1/initiatives/comments/as_xlsx' do
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
-    before do 
+    before do
       @user = create(:admin)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
     describe do
-      before do 
+      before do
         @comments = 3.times.map do |i|
           create(:comment, post: create(:initiative))
         end
@@ -146,11 +146,11 @@ resource 'Comments' do
     end
 
     describe do
-      before do 
+      before do
         @comments = create_list(:comment, 4, post: create(:initiative))
       end
       let(:initiatives) { @comments.map(&:post_id) }
-      
+
       example_request 'XLSX export by initiative ids', document: false do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
@@ -159,12 +159,12 @@ resource 'Comments' do
     end
 
     describe do
-      before do 
+      before do
         @user = create(:user)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      
+
       example_request '[error] XLSX export by a normal user', document: false do
         expect(status).to eq 401
       end

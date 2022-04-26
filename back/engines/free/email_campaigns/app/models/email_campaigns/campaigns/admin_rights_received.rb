@@ -50,7 +50,7 @@ module EmailCampaigns
       notification = activity.item
       [{
         event_payload: {
-          
+
         }
       }]
     end

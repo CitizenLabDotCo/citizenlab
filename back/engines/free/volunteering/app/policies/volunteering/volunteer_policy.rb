@@ -25,7 +25,7 @@ module Volunteering
     end
 
     def create?
-      user&.active? && 
+      user&.active? &&
       (record.user_id == user.id) &&
       ProjectPolicy.new(user, record.cause.participation_context.project).show?
     end

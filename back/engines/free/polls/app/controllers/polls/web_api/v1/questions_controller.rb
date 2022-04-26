@@ -58,7 +58,7 @@ module Polls
 							).serialized_json, status: :ok
 					else
 						render json: { errors: @question.errors.details }, status: :unprocessable_entity
-					end						
+					end
 				end
 
 				def reorder

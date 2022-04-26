@@ -116,7 +116,7 @@ resource 'Memberships' do
       let!(:u3) { create(:user, first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', manual_groups: []) }
       let!(:u4) { create(:user, first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', manual_groups: [g1, g2]) }
       let!(:u5) { create(:user, first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', manual_groups: [g1]) }
-      
+
       example_request 'Search for users and see whether or not they are member of the group' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -154,4 +154,4 @@ resource 'Memberships' do
       end
     end
   end
-end 
+end

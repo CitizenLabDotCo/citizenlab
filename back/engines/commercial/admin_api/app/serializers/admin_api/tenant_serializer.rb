@@ -4,7 +4,7 @@ module AdminApi
   # This serializer re-creates legacy serialized tenants. Attributes that are
   # no longer part of the Tenant model are obtained from the AppConfiguration
   # singleton.
-  # 
+  #
   # If you already have the companion AppConfiguration object, you can save
   # one DB query using:
   #   AdminApi::TenantSerializer.new(tenant, app_configuration: config)

@@ -36,7 +36,7 @@ class ImportIdeasService
   	d[:body_multiloc] = idea_data[:body_multiloc]
   	d[:topics] = idea_data[:topic_titles].map do |topic_title|
   		topic_title = topic_title.downcase
-  		Topic.all.select do |topic| 
+  		Topic.all.select do |topic|
   			topic.title_multiloc.values
   			  .map { |v| v.downcase }
   			  .include? topic_title

@@ -23,10 +23,10 @@ class SideFxEventService
   def after_destroy(frozen_event, current_user)
     serialized_event = clean_time_attributes(frozen_event.attributes)
     LogActivityJob.perform_later(
-      encode_frozen_resource(frozen_event), 
-      'deleted', 
-      current_user, 
-      Time.now.to_i, 
+      encode_frozen_resource(frozen_event),
+      'deleted',
+      current_user,
+      Time.now.to_i,
       payload: { event: serialized_event }
     )
   end

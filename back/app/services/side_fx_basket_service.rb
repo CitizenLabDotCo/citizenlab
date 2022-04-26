@@ -16,7 +16,7 @@ class SideFxBasketService
     serialized_basket = clean_time_attributes(frozen_basket.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_basket), 'deleted',
-      user, Time.now.to_i, 
+      user, Time.now.to_i,
       payload: { basket: serialized_basket }
     )
   end

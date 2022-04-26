@@ -68,8 +68,8 @@ module CitizenLab
       def required_settings
         settings.select(&:required).map(&:name)
       end
-      
-      # Mapping from setting name to setting json schema. 
+
+      # Mapping from setting name to setting json schema.
       # @return [Hash<String, Hash>]
       def settings_props
         Hash[settings.map { |setting| [setting.name, setting.schema] }]

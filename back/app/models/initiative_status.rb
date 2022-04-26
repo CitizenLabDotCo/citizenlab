@@ -17,7 +17,7 @@ class InitiativeStatus < ApplicationRecord
 
   has_many :initiative_status_changes, dependent: :nullify
   has_many :initiative_initiative_statuses
-  
+
   has_many :initiatives, through: :initiative_initiative_statuses
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)

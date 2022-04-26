@@ -49,7 +49,7 @@ resource 'Initiatives' do
     end
 
     let(:id) { @initiative.id }
-    
+
 
     describe do
       let(:location_description) { 'Watkins Road 8' }

@@ -7,7 +7,7 @@ module CustomTopics
       def self.prepended(base)
         base.before_validation :set_code
 
-        base.singleton_class.prepend ClassMethods 
+        base.singleton_class.prepend ClassMethods
       end
 
       module ClassMethods

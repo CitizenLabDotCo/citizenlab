@@ -14,7 +14,7 @@ resource 'Activities' do
       create(:changed_body_activity, item: @initiative)
       create(:changed_status_activity, item: @initiative)
     end
-    
+
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of activities per page'

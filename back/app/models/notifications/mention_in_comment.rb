@@ -59,7 +59,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'Comment' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in a comment'
-    
+
 
     def self.make_notifications_on(activity)
       comment = activity.item
@@ -76,7 +76,7 @@ module Notifications
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id
-        end 
+        end
         [self.new(attributes)]
       else
         []

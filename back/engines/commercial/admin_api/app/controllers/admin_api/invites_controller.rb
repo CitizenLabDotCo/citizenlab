@@ -13,8 +13,8 @@ module AdminApi
     def invite_params
       params.require(:invite).permit(
         :email,
-        :first_name, 
-        :last_name, 
+        :first_name,
+        :last_name,
         :locale,
         :invite_text,
         :send_invite_email,

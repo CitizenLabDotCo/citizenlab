@@ -60,7 +60,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
     EVENT_NAME = 'Official feedback on commented idea'
-    
+
 
     def self.make_notifications_on(activity)
       official_feedback = activity.item

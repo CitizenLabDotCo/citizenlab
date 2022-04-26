@@ -13,7 +13,7 @@ resource 'Authentication' do
 
     post 'Authenticate' do
 
-      
+
       before do
         @api_token = PublicApi::ApiClient.create
       end

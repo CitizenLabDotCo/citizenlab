@@ -27,5 +27,5 @@ class CommonPassword < ApplicationRecord
     # Returns true when the password is common
     where(password: password).exists?
   end
-  
+
 end

@@ -34,7 +34,7 @@ class SegmentRegulationsClient
   def delete(user_ids)
     create_regulation(:delete, user_ids)
   end
-  
+
   # @param [Symbol] regulation_type
   # @param [Array<String>] user_ids
   def create_regulation(regulation_type, user_ids)
@@ -47,7 +47,7 @@ class SegmentRegulationsClient
     )
   end
 
-  
+
   # @param [String] regulation_id
   def delete_regulation(regulation_id)
     HTTParty.delete(

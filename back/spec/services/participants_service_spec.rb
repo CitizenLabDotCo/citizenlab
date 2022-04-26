@@ -9,7 +9,7 @@ describe ParticipantsService do
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
-      
+
       travel_to Time.now - 100.days do
         create(:published_activity, user: pp1)
       end
@@ -30,7 +30,7 @@ describe ParticipantsService do
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
-      
+
       travel_to Time.now - 100.days do
         create(:published_activity, user: pp1)
       end
@@ -54,7 +54,7 @@ describe ParticipantsService do
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
-      
+
       idea = nil
       other_idea = nil
       travel_to Time.now - 100.days do
@@ -99,7 +99,7 @@ describe ParticipantsService do
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
-      
+
       idea = nil
       travel_to Time.now - 100.days do
         idea = create(:idea, project: project, author: pp1)

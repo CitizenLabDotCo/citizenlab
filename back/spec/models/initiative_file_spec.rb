@@ -6,9 +6,9 @@ RSpec.describe InitiativeFile, type: :model do
     it 'should accept valid files' do
       initiative = create(:initiative)
       [
-        ['minimal_mp3.mp3',   'audio/mpeg'], 
-        ['minimal_mpeg4.mp4', 'application/mp4'], 
-        ['audio_mp4.mp4',     'audio/mp4'], 
+        ['minimal_mp3.mp3',   'audio/mpeg'],
+        ['minimal_mpeg4.mp4', 'application/mp4'],
+        ['audio_mp4.mp4',     'audio/mp4'],
         ['minimal_pdf.pdf',   'application/pdf'],
         ['david.mp4',         'video/mp4'],
         ['david.mp3',         'audio/mpeg'],
@@ -25,5 +25,5 @@ RSpec.describe InitiativeFile, type: :model do
       end
     end
   end
-  
+
 end

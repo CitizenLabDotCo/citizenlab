@@ -29,7 +29,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_create @feedback, current_user
       render json: WebApi::V1::OfficialFeedbackSerializer.new(
-        @feedback, 
+        @feedback,
         params: fastjson_params
         ).serialized_json, status: :created
     else

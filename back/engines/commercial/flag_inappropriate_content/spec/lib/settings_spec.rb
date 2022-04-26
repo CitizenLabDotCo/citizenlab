@@ -4,7 +4,7 @@ RSpec.describe AppConfiguration::Settings do
   let(:flagging_feature_name) { FlagInappropriateContent::FeatureSpecification.feature_name }
 
   it 'is included in the json schema' do
-    expect(described_class.json_schema['properties']).to include(flagging_feature_name) 
+    expect(described_class.json_schema['properties']).to include(flagging_feature_name)
   end
 
   it 'requires the moderation feature' do

@@ -161,7 +161,7 @@ describe Surveys::Typeform::Api do
         'total_items' => 2
       }
     }
-        
+
     it 'aggregates all the pages' do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}/responses")
         .with(

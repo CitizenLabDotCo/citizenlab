@@ -14,7 +14,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
 
   def show
     render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
-      @change, 
+      @change,
       params: fastjson_params
       ).serialized_json
   end
@@ -37,15 +37,15 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
     authorize @change
     SideFxInitiativeStatusChangeService.new.before_create @change, current_user
     if InitiativeStatusService.new.transition_allowed?(
-      @initiative, 
-      @initiative.initiative_status, 
+      @initiative,
+      @initiative.initiative_status,
       @change.initiative_status,
       with_feedback: (attributes[:official_feedback_attributes].present? || attributes[:official_feedback_id])
       )
       if @change.save
         SideFxInitiativeStatusChangeService.new.after_create @change, current_user
         render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
-          @change, 
+          @change,
           params: fastjson_params
           ).serialized_json, status: :created
       else
@@ -74,7 +74,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       :official_feedback_id,
       official_feedback_attributes: [
         body_multiloc: CL2_SUPPORTED_LOCALES,
-        author_multiloc: CL2_SUPPORTED_LOCALES 
+        author_multiloc: CL2_SUPPORTED_LOCALES
       ]
     )
   end

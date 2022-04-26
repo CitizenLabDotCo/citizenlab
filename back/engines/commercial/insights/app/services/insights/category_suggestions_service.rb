@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Insights
-  # This service provides utils to interact with the nlp service for category 
+  # This service provides utils to interact with the nlp service for category
   # suggestions.
   #
   # It can be used to trigger requests to the nlp service for category

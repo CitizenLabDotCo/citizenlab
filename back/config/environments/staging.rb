@@ -55,7 +55,7 @@ Rails.application.configure do
   config.cache_store = :mem_cache_store,
     ENV.fetch('MEMCACHED_HOST'),
     {
-      namespace: lambda do 
+      namespace: lambda do
         AppConfiguration.instance.id
       rescue ActiveRecord::RecordNotFound
         'public'

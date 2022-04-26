@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Product Feedback' do
- 
+
   explanation 'User feedback about the product itself, that is logged to segment by the backend'
 
   before do
@@ -11,11 +11,11 @@ resource 'Product Feedback' do
 
   post 'web_api/v1/product_feedback' do
     with_options scope: :product_feedback do
-      parameter :question, 'String to uniquely identify this type of question (e.g. `found_what_youre_looking_for?`)', required: true 
-      parameter :answer, 'String to uniquely identify the answer to the question. (e.g. `yes`)', required: true 
-      parameter :page, 'The page on which the question was answered (e.g. `landing`)', required: false 
-      parameter :locale, 'The locale of the user giving feedback. Can we omitted when signed in.', required: false 
-      parameter :email, 'The email of the user giving the feedback. Can be omitted when signed in.', required: false 
+      parameter :question, 'String to uniquely identify this type of question (e.g. `found_what_youre_looking_for?`)', required: true
+      parameter :answer, 'String to uniquely identify the answer to the question. (e.g. `yes`)', required: true
+      parameter :page, 'The page on which the question was answered (e.g. `landing`)', required: false
+      parameter :locale, 'The locale of the user giving feedback. Can we omitted when signed in.', required: false
+      parameter :email, 'The email of the user giving the feedback. Can be omitted when signed in.', required: false
       parameter :message, 'The optional message supplied by the user, to explain the anwer', required: false
     end
     ValidationErrorHelper.new.error_fields(self, Frontend::ProductFeedback)

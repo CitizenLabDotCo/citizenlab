@@ -61,5 +61,5 @@ describe 'RequiredSettingsAttribute' do
     data['feature1']['allowed'] = false
     expect(JSON::Validator.validate(schema1, data)).to be true
   end
-  
+
 end

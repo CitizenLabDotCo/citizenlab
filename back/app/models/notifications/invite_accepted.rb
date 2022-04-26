@@ -59,7 +59,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'Invite' => { 'accepted' => true } }
     EVENT_NAME = 'Invite accepted'
-    
+
 
     def self.make_notifications_on(activity)
       invite = activity.item

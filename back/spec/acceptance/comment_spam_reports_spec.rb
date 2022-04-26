@@ -20,7 +20,7 @@ resource 'Spam Reports' do
       parameter :number, 'Page number'
       parameter :size, 'Number of spam reports per page'
     end
-    
+
     let(:comment_id) { @comment.id }
 
     example_request 'List all spam reports of a comment' do
@@ -51,7 +51,7 @@ resource 'Spam Reports' do
     let(:comment_id) { @comment.id }
     let(:reason_code) { 'other' }
     let(:other_reason) { 'plagiarism' }
-  
+
     example_request 'Create a spam report for a comment' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)

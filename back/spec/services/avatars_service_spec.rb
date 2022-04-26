@@ -18,7 +18,7 @@ describe AvatarsService do
 
       expect(result[:total_count]).to eq 4
       expect(result[:users].size).to eq 2
-      expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2 
+      expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2
     end
 
     it "doesn't return the same user twice" do

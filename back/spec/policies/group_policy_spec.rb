@@ -4,7 +4,7 @@ describe GroupPolicy do
   subject { GroupPolicy.new(user, group) }
   let(:scope) { GroupPolicy::Scope.new(user, Group) }
 
-  context 'on normal group' do 
+  context 'on normal group' do
     let!(:group) { create(:group) }
 
     context 'for a visitor' do

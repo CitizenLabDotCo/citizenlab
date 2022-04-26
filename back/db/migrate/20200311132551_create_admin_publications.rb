@@ -20,7 +20,7 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
     # Migrate existing data
     folder_to_publication_id = {}
     sql = %q(
-      SELECT project_holder_id, project_holder_type 
+      SELECT project_holder_id, project_holder_type
       FROM project_holder_orderings
       ORDER BY ordering DESC;
     )

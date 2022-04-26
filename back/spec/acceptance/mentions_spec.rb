@@ -40,7 +40,7 @@ resource 'Mentions' do
       author_not_mentioned = comment.author
 
       idea_related = comments.map(&:author)
-      
+
       do_request post_id: idea.id, post_type: 'Idea', mention: first_name
 
       json_response = json_parse(response_body)

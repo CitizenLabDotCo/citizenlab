@@ -4,7 +4,7 @@ describe PhasePolicy do
   subject { PhasePolicy.new(user, phase) }
   let(:scope) { PhasePolicy::Scope.new(user, project.phases) }
 
-  context 'on phase in a public project' do 
+  context 'on phase in a public project' do
     let(:project) { create(:project_with_phases, phases_count: 0) }
     let!(:phase) { create(:phase, project: project) }
 

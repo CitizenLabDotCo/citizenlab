@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::Schedulable, type: :model do
     end
     @campaign = SchedulableCampaign.create!(ic_schedule: @schedule)
   end
-  
+
   describe 'run_before_send_hooks' do
     it 'allows sending when and only when the passed time is within half an hour of the scheduled target' do
       time = Time.find_zone(@config_timezone).local(2018, 8, 13, 10)

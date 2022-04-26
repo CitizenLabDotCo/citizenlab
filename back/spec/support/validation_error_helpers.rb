@@ -20,15 +20,15 @@ class ValidationErrorHelper
     ActiveRecord::Validations::AbsenceValidator => [:present],
     MultilocValidator => [:blank, :unsupported_locales, :too_long, :too_short, :wrong_length, :values_not_all_strings],
     JsonValidator => [:invalid_json], # not sure
-    CarrierWave::Validations::ActiveModel::IntegrityValidator => [:integrity_error, :extension_whitelist_error, :extension_blacklist_error, :content_type_whitelist_error, :content_type_blacklist_error, :min_size_error, :max_size_error], 
-    CarrierWave::Validations::ActiveModel::ProcessingValidator => [:processing_error], 
+    CarrierWave::Validations::ActiveModel::IntegrityValidator => [:integrity_error, :extension_whitelist_error, :extension_blacklist_error, :content_type_whitelist_error, :content_type_blacklist_error, :min_size_error, :max_size_error],
+    CarrierWave::Validations::ActiveModel::ProcessingValidator => [:processing_error],
     CarrierWave::Validations::ActiveModel::DownloadValidator => [:download_error]
   }
 
 
 
   def model_error_codes(model)
-    attrs_errs = model.validators.flat_map do |validator| 
+    attrs_errs = model.validators.flat_map do |validator|
         validator.attributes.map { |a| [a, ERROR_DETAILS[validator.class]] }
       end.select(&:last)
     to_h_appended(attrs_errs)

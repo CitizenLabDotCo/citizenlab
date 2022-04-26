@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
     @campaign = ActivityTriggerableCampaign.create!
     @activity = create(:published_activity)
   end
-  
+
   describe 'run_before_send_hooks' do
     it 'returns true when the activity is part of the returned activity_triggers' do
       @campaign.activity_triggers = {

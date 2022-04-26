@@ -56,7 +56,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   def commenting_allowed?(user)
     user # signed-in users can comment
   end
-  
+
   def owner?
     user && (record.author_id == user.id)
   end

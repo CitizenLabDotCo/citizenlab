@@ -34,7 +34,7 @@ class SideFxPhaseService
     serialized_phase = clean_time_attributes(frozen_phase.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_phase), 'deleted',
-      user, Time.now.to_i, 
+      user, Time.now.to_i,
       payload: { phase: serialized_phase }
     )
     @sfx_pc.after_destroy frozen_phase, user

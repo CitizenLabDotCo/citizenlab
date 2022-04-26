@@ -126,7 +126,7 @@ resource 'Survey Responses' do
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV')
       .with(headers: { 'Authorization' => 'Bearer' })
       .to_return(status: 200, headers: { 'Content-Type' => 'application/json' }, body: form_body.to_json)
-      
+
     stub_request(:get, 'https://api.typeform.com/forms/HKGaPV/responses')
       .with(headers: { 'Authorization' => 'Bearer' }, query: { completed: true, page_size: 1000 })
       .to_return(status: 200, headers: { 'Content-Type' => 'application/json' }, body: responses_body.to_json)
@@ -145,12 +145,12 @@ resource 'Survey Responses' do
     end
 
     describe do
-      before do 
+      before do
         @user = create(:user)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      
+
       example_request '[error] XLSX export by a normal user', document: false do
         expect(status).to eq 401
       end

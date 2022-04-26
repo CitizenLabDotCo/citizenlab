@@ -9,7 +9,7 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
 
     @campaign = TrackableCampaign.create!
   end
-  
+
   describe 'sent?' do
     it 'returns true when there are deliveries' do
       create_list(:delivery, 3, campaign: @campaign)

@@ -96,12 +96,12 @@ resource 'Invites' do
       end
 
       describe do
-        before do 
+        before do
           @user = create(:user)
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
-        
+
         example_request '[error] XLSX export by a normal user', document: false do
           expect(status).to eq 401
         end
@@ -287,7 +287,7 @@ resource 'Invites' do
 
       describe do
         let(:email) { 'Super.Boulette@hotmail.com' }
-        
+
         example_request 'Accept an invite using different capitalization for the email', document: false do
           expect(status).to eq 200
         end

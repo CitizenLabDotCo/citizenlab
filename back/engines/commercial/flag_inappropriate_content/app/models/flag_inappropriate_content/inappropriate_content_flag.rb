@@ -22,8 +22,8 @@ module FlagInappropriateContent
     has_many :notifications, foreign_key: :inappropriate_content_flag_id, dependent: :nullify
 
     validates :flaggable, presence: true
-    
-    
+
+
     def deleted?
       !!deleted_at
     end
@@ -34,7 +34,7 @@ module FlagInappropriateContent
       spam_reasons.delete 'other'
       return 'inappropriate' if spam_reasons.empty?
       # return most frequent reason
-      spam_reasons.max_by do |reason| 
+      spam_reasons.max_by do |reason|
         spam_reasons.count reason
       end
     end
@@ -48,6 +48,6 @@ module FlagInappropriateContent
         end
       end
     end
-     
+
   end
 end

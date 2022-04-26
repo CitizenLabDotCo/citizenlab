@@ -77,11 +77,11 @@ resource 'GroupsProjects' do
     delete 'web_api/v1/groups_projects/:id' do
       let(:groups_project) { create(:groups_project) }
       let(:id) { groups_project.id }
-      
+
       example_request 'Delete a groups-project' do
         expect(response_status).to eq 200
         expect { GroupsProject.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
-end 
+end

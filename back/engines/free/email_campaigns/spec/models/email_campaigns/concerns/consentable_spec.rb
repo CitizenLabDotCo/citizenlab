@@ -8,7 +8,7 @@ RSpec.describe EmailCampaigns::Consentable, type: :model do
   before do
     @campaign = ConsentableCampaign.create
   end
-  
+
   describe 'apply_recipient_filters' do
     it 'includes a user when the she consented with the campaign' do
       consent = create(:consent, campaign_type: @campaign.type)

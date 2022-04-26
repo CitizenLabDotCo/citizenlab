@@ -26,7 +26,7 @@ FactoryBot.define do
     after(:create) do |initiative, evaluator|
       if evaluator.initiative_status
         initiative.initiative_status_changes << create(
-          :initiative_status_change, 
+          :initiative_status_change,
           initiative: initiative,
           initiative_status: evaluator.initiative_status,
           official_feedback: nil

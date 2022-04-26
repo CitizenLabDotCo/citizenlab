@@ -8,7 +8,7 @@ describe 'seedfile', slow_test: true do
 
       load Rails.root.join('db', 'seeds.rb')
       expect(AppConfiguration.count).to be(1)
-        
+
       expect(User.admin.count).to be > 0
       expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0

@@ -4,11 +4,11 @@ describe ProjectImagePolicy do
   subject { ProjectImagePolicy.new(user, image) }
   let(:scope) { ProjectImagePolicy::Scope.new(user, project.project_images) }
 
-  context 'on an image in a public project' do 
+  context 'on an image in a public project' do
     let(:project) { create(:continuous_project) }
     let!(:image) { create(:project_image, project: project) }
 
-	  context 'for a visitor' do 
+	  context 'for a visitor' do
 	  	let(:user) { nil }
 
 	    it { should     permit(:show)    }
@@ -48,7 +48,7 @@ describe ProjectImagePolicy do
     end
 	end
 
-	 context 'on an image in a private admins project' do 
+	 context 'on an image in a private admins project' do
 	 	let(:project) { create(:private_admins_project) }
     let!(:image) { create(:project_image, project: project) }
 
@@ -80,4 +80,4 @@ describe ProjectImagePolicy do
   end
 
 end
-    
+

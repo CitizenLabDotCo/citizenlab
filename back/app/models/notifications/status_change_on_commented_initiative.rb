@@ -60,7 +60,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'Initiative' => { 'changed_status' => true } }
     EVENT_NAME = 'Status change on commented initiative'
-    
+
 
     def self.make_notifications_on(activity)
       initiative = activity.item

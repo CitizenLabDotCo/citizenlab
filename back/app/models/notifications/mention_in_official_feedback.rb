@@ -59,7 +59,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in official feedback'
-    
+
 
     def self.make_notifications_on(activity)
       official_feedback = activity.item
@@ -80,7 +80,7 @@ module Notifications
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = official_feedback.post.project_id
-        end 
+        end
         [self.new(attributes)]
       else
         []

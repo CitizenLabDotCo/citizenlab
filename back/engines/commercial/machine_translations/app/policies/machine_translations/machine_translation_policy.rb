@@ -5,7 +5,7 @@ module MachineTranslations
       translatable_policy = case record.translatable_type
       when 'Idea' then IdeaPolicy
       when 'Initiative' then InitiativePolicy
-      when 'Comment' then 
+      when 'Comment' then
         case record.translatable.post_type
         when 'Idea'
           IdeaCommentPolicy

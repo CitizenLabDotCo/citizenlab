@@ -40,7 +40,7 @@ module FlagInappropriateContent
       def self.consentable_roles
         ['admin', 'project_moderator', 'project_folder_moderator']
       end
-      
+
       def self.category
         'admin'
       end
@@ -76,13 +76,13 @@ module FlagInappropriateContent
           flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: recipient.locale)
         }
         case data[:flaggable_type]
-        when Idea.name 
+        when Idea.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
-        when Initiative.name 
+        when Initiative.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
-        when Comment.name 
+        when Comment.name
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
         end
         [{

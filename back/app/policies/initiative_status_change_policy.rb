@@ -17,7 +17,7 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
     end
   end
 
-  def create? 
+  def create?
     user&.active? && user.admin?
   end
 

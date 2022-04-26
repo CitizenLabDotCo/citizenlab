@@ -23,7 +23,7 @@ class ParticipantsService
     users = User
       .joins(:activities)
       .where(
-        multiwhere, 
+        multiwhere,
         *ENGAGING_ACTIVITIES.map { |h| [h[:item_type], h[:action]] }.flatten
       ).group('users.id')
     if since
@@ -56,31 +56,31 @@ class ParticipantsService
     participants = User.none
     # Posting
     if actions.include? :posting
-      ideas_since = if since 
-        ideas.where('created_at::date >= (?)::date', since)  
-      else 
+      ideas_since = if since
+        ideas.where('created_at::date >= (?)::date', since)
+      else
         ideas
       end
       participants = participants.or(User.where(id: ideas_since.select(:author_id)))
     end
     # Commenting
     comments = Comment.where(post_id: ideas)
-    if actions.include? :commenting 
+    if actions.include? :commenting
       comments_since = if since
-        comments.where('created_at::date >= (?)::date', since) 
+        comments.where('created_at::date >= (?)::date', since)
       else
         comments
       end
       participants = participants.or(User.where(id: comments_since.select(:author_id)))
     end
     # Idea voting
-    if actions.include? :idea_voting 
+    if actions.include? :idea_voting
       votes = Vote.where(votable_id: ideas)
       votes = votes.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: votes.select(:user_id)))
     end
     # Comment voting
-    if actions.include? :comment_voting 
+    if actions.include? :comment_voting
       votes = Vote.where(votable_id: comments)
       votes = votes.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: votes.select(:user_id)))
@@ -100,7 +100,7 @@ class ParticipantsService
     ideas = Idea.where(project: projects)
     participants = ideas_participants(ideas, options)
     # Budgeting
-    if actions.include? :budgeting 
+    if actions.include? :budgeting
       baskets = Basket.submitted
       baskets = baskets.where(participation_context: projects)
         .or(baskets.where(participation_context: Phase.where(project: projects)))
@@ -108,7 +108,7 @@ class ParticipantsService
       participants = participants.or(User.where(id: baskets.select(:user_id)))
     end
     # Polling
-    if actions.include? :polling 
+    if actions.include? :polling
       poll_responses = Polls::Response.where(participation_context: projects)
         .or(Polls::Response.where(participation_context: Phase.where(project: projects)))
       poll_responses = poll_responses.where('created_at::date >= (?)::date', since) if since
@@ -154,9 +154,9 @@ class ParticipantsService
   # Adds a `score` field to the results, indicating the engagement score for the activity
   def with_engagement_scores(activities_scope)
     activities_scope
-      .select(''"(CASE 
+      .select(''"(CASE
         #{ENGAGING_ACTIVITIES.map do |activity|
-          "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}" 
+          "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
           end.join(" ")
         }
       ELSE 0 END) as score"'')

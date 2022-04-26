@@ -286,7 +286,7 @@ resource 'Phases' do
             ideas: create_list(:idea, 2, project: @project)
           )
         end
-       
+
         let(:ideas_phase) { phase.ideas[0].ideas_phases.first }
         let(:participation_method) { 'poll' }
 

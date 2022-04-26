@@ -4,7 +4,7 @@ describe EventPolicy do
   subject { EventPolicy.new(user, event) }
   let(:scope) { EventPolicy::Scope.new(user, project.events) }
 
-  context 'on event in a public project' do 
+  context 'on event in a public project' do
     let(:project) { create(:continuous_project) }
     let!(:event) { create(:event, project: project) }
 

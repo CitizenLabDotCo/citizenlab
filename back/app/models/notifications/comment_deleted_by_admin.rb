@@ -62,7 +62,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'Comment' => { 'marked_as_deleted' => true } }
     EVENT_NAME = 'Comment deleted by admin'
-    
+
 
     def self.make_notifications_on(activity)
       comment = activity.item

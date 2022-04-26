@@ -63,7 +63,7 @@ module Notifications
     def self.make_notifications_on(activity)
       initiative = activity.item
       initiator_id = activity.user_id
-      
+
       User.admin.ids.select do |recipient_id|
         recipient_id != initiator_id
       end.map do |recipient_id|

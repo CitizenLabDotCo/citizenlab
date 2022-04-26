@@ -25,6 +25,6 @@ module MachineTranslations
 
 
     private
-    
+
   end
 end

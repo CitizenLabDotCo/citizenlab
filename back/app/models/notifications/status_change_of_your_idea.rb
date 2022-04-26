@@ -60,7 +60,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Status change of your idea'
-    
+
 
     def self.make_notifications_on(activity)
       idea = activity.item

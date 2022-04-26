@@ -12,7 +12,7 @@ module CustomTopics
           if @topic.save
             SideFxTopicService.new.after_create(@topic, current_user)
             render json: ::WebApi::V1::TopicSerializer.new(
-              @topic, 
+              @topic,
               params: fastjson_params
               ).serialized_json, status: :created
           else
@@ -27,7 +27,7 @@ module CustomTopics
           if @topic.save
             SideFxTopicService.new.after_update(@topic, current_user)
             render json: ::WebApi::V1::TopicSerializer.new(
-              @topic, 
+              @topic,
               params: fastjson_params
               ).serialized_json, status: :ok
           else

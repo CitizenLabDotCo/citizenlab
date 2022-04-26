@@ -11,7 +11,7 @@ RSpec.describe Notification, type: :model do
     let!(:recipient) { create(:user) }
     let!(:spam_report) { create(:spam_report) }
     let!(:notification) { create(:comment_marked_as_spam, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report) }
-    
+
 
     it 'deleting recipient of notification' do
       recipient.destroy

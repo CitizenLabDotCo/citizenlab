@@ -24,9 +24,9 @@ describe InitiativeStatusService do
       @status_ineligible = create(:initiative_status_ineligible)
     end
 
-    it 'transitions when voting threshold was reached' do 
+    it 'transitions when voting threshold was reached' do
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_proposed
         )
       create_list(:vote, 3, votable: @initiative, mode: 'up')
@@ -36,9 +36,9 @@ describe InitiativeStatusService do
       expect(@initiative.reload.initiative_status.code).to eq 'threshold_reached'
     end
 
-    it 'transitions when expired' do 
+    it 'transitions when expired' do
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_proposed
         )
 
@@ -48,9 +48,9 @@ describe InitiativeStatusService do
       end
     end
 
-    it 'remains proposed if not expired nor threshold reached' do 
+    it 'remains proposed if not expired nor threshold reached' do
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_proposed
         )
       create_list(:vote, 1, votable: @initiative, mode: 'up')

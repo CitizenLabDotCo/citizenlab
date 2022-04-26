@@ -79,10 +79,10 @@ resource 'Comments' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map { |d| d[:id] }).to eq([
-          @c2, 
-          @c3, 
+          @c2,
+          @c3,
           @c3sub1,
-          @c3sub2, 
+          @c3sub2,
           @c1
         ].map(&:id))
       end
@@ -129,7 +129,7 @@ resource 'Comments' do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
-    before do 
+    before do
       @user = create(:admin)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
@@ -140,7 +140,7 @@ resource 'Comments' do
     end
 
     describe do
-      before do 
+      before do
         @project = create(:project)
         @comments = 3.times.collect do |i|
           create(:comment, post: create(:idea, project: @project))
@@ -156,11 +156,11 @@ resource 'Comments' do
     end
 
     describe do
-      before do 
+      before do
         @comments = create_list(:comment, 4)
       end
       let(:ideas) { @comments.map(&:post_id) }
-      
+
       example_request 'XLSX export by idea ids', document: false do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
@@ -193,12 +193,12 @@ resource 'Comments' do
     end
 
     describe do
-      before do 
+      before do
         @user = create(:user)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      
+
       example_request '[error] XLSX export by a normal user', document: false do
         expect(status).to eq 401
       end
@@ -312,7 +312,7 @@ resource 'Comments' do
           @idea.project = project
           @idea.save!
         end
-        
+
         example_request '[error] Create a comment on an idea in an inactive project' do
           expect(response_status).to be >= 400
         end
@@ -334,7 +334,7 @@ resource 'Comments' do
       describe do
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
         # Weak attempt to make it less explicit
-        let(:body_multiloc) { { 'en' => 'fu' + 'ckin' + 'g co' + 'cksu' + 'cker' } } 
+        let(:body_multiloc) { { 'en' => 'fu' + 'ckin' + 'g co' + 'cksu' + 'cker' } }
 
         example_request '[error] Create a comment with blocked words' do
           assert_status 422

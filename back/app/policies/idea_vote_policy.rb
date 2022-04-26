@@ -28,7 +28,7 @@ class IdeaVotePolicy < ApplicationPolicy
     return false if !could_modify?
 
     reason = participation_context_service.idea_voting_disabled_reason_for record, user
-      
+
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -36,7 +36,7 @@ class IdeaVotePolicy < ApplicationPolicy
     upsert_vote? 'up'
   end
 
-  def down? 
+  def down?
     upsert_vote? 'down'
   end
 

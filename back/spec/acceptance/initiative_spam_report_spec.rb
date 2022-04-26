@@ -45,7 +45,7 @@ resource 'Spam Reports' do
 
     let(:initiative_id) { @initiative.id }
     let(:reason_code) { 'inappropriate' }
-  
+
     example_request 'Create a spam report for an initiative' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
@@ -76,7 +76,7 @@ resource 'Spam Reports' do
   delete 'web_api/v1/spam_reports/:id' do
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: @initiative) }
     let(:id) { spam_report.id }
-    
+
     example_request 'Delete a spam report from an initiative' do
       expect(response_status).to eq 200
       expect { SpamReport.find(id) }.to raise_error(ActiveRecord::RecordNotFound)

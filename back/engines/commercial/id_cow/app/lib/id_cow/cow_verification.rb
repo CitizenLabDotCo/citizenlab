@@ -69,11 +69,11 @@ module IdCow
     end
 
     # A transaction is successful if it meets one of the following rules:
-    # 
+    #
     # 1:
     # Any person with IndVigencia = S can vote.
     # <type:IndVigencia>S</type:IndVigencia>
-    # 
+    #
     # 2:
     # If IndVigencia is not in 'S', check other rules.  Here are the exceptions that allow you to vote:
     #     2.1

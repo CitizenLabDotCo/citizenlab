@@ -28,7 +28,7 @@ describe OmniauthMethods::Google do
         locale: 'fr-FR',
         gender: 'female',
         remote_avatar_url: 'http://www.josnet.com/my-picture',
-      }) 
+      })
     end
   end
 

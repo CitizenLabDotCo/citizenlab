@@ -89,7 +89,7 @@ class TrackSegmentService
     }
   end
 
-  # @return [{Symbol=>Anything}] 
+  # @return [{Symbol=>Anything}]
   def tenant_traits(tenant)
     raise NotImplementedError
   end

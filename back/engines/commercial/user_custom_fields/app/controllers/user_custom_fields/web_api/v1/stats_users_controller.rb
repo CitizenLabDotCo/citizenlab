@@ -153,7 +153,7 @@ module UserCustomFields
 
           serie
         end
-        
+
         def users_by_education
           render json: { series: { users: users_by_education_serie } }
         end

@@ -44,7 +44,7 @@ resource 'Comments' do
     with_options scope: :comment do
       parameter :body_multiloc
     end
-    
+
     let(:id) { @comment.id }
     let(:body_multiloc) { { 'en' => 'Changed body' } }
 
@@ -53,6 +53,6 @@ resource 'Comments' do
         do_request
       }.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
     end
-  end 
+  end
 
 end

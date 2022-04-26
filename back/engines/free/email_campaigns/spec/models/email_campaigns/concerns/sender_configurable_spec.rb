@@ -7,7 +7,7 @@ RSpec.describe EmailCampaigns::SenderConfigurable, type: :model do
       include EmailCampaigns::SenderConfigurable
     end
   end
-  
+
   describe 'validations' do
     it 'is invalid when the campaign is sent from the autor and has no author' do
       @campaign = SenderConfigurableCampaign.new

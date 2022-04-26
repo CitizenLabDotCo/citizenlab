@@ -29,7 +29,7 @@ class ProjectFile < ApplicationRecord
   validate :extension_whitelist
 
 
-  private 
+  private
 
   def extension_whitelist
     if !EXTENSION_WHITELIST.include? self.name.split('.').last.downcase

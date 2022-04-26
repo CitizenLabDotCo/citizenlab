@@ -58,15 +58,15 @@ class WebApi::V1::CommentsController < ApplicationController
       votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.map { |vote| [vote.votable_id, vote] }.to_h
       {
-        params: fastjson_params(vbci: votes_by_comment_id), 
+        params: fastjson_params(vbci: votes_by_comment_id),
         include: [:author, :user_vote]
       }
     else
       { params: fastjson_params, include: [:author] }
     end
-    
-    render json: { 
-      **WebApi::V1::CommentSerializer.new(@comments, serialization_options).serializable_hash, 
+
+    render json: {
+      **WebApi::V1::CommentSerializer.new(@comments, serialization_options).serializable_hash,
       links: page_links(root_comments)
     }
   end
@@ -88,16 +88,16 @@ class WebApi::V1::CommentsController < ApplicationController
       .includes(:author, :"#{@post_type.underscore}")
       .order(:lft)
     if (@post_type == 'Idea') && params[:project].present?
-      @comments = @comments.where(ideas: { project_id: params[:project] }) 
+      @comments = @comments.where(ideas: { project_id: params[:project] })
     end
     @comments = @comments.where(post_id: post_ids) if post_ids.present?
 
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
       xlsx = case @post_type
-        when 'Idea' 
+        when 'Idea'
           service.generate_idea_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
-        when 'Initiative' 
+        when 'Initiative'
           service.generate_initiative_comments_xlsx @comments, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
         else raise "#{@post_type} has no functionality for exporting comments"
       end
@@ -115,8 +115,8 @@ class WebApi::V1::CommentsController < ApplicationController
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.map { |vote| [vote.votable_id, vote] }.to_h
       {
-        params: fastjson_params(vbci: votes_by_comment_id), 
-        include: [:author, :user_vote] 
+        params: fastjson_params(vbci: votes_by_comment_id),
+        include: [:author, :user_vote]
       }
     else
       { params: fastjson_params, include: [:author] }
@@ -175,7 +175,7 @@ class WebApi::V1::CommentsController < ApplicationController
   def mark_as_deleted
     reason_code = params.dig(:comment, :reason_code)
     other_reason = params.dig(:comment, :other_reason)
-    if (@comment.author_id == current_user&.id) || 
+    if (@comment.author_id == current_user&.id) ||
       ((Notifications::CommentDeletedByAdmin::REASON_CODES.include? reason_code) &&
        (reason_code != 'other' || other_reason.present?))
       @comment.publication_status = 'deleted'

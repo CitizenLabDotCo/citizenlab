@@ -27,7 +27,7 @@ resource 'Typeform Events' do
         pc_id: @pc.id,
         pc_type: @pc.class.name,
       }
-      # Hack from https://github.com/zipmark/rspec_api_documentation/issues/342 
+      # Hack from https://github.com/zipmark/rspec_api_documentation/issues/342
       example.metadata[:route] += "?#{url_params.to_query}"
     end
 

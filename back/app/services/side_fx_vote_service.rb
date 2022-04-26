@@ -21,10 +21,10 @@ class SideFxVoteService
     serialized_vote = clean_time_attributes(frozen_vote.attributes)
     type = votable_type(frozen_vote)
     LogActivityJob.perform_later(
-      encode_frozen_resource(frozen_vote), 
-      "canceled_#{type}_#{frozen_vote.mode}vote", 
-      current_user, 
-      Time.now.to_i, 
+      encode_frozen_resource(frozen_vote),
+      "canceled_#{type}_#{frozen_vote.mode}vote",
+      current_user,
+      Time.now.to_i,
       payload: { vote: serialized_vote }
     )
   end

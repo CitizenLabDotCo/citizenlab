@@ -48,7 +48,7 @@ describe MentionService do
       u = User.create(first_name: 'Koen', last_name: 'Gremmelprez')
       id = u.id
       result = service.add_span_around(
-        '<p>This is a html text with a mention to @koen-gremmelprez</p>', 
+        '<p>This is a html text with a mention to @koen-gremmelprez</p>',
         u
       )
       expect(result).to eq "<p>This is a html text with a mention to <span class=\"cl-mention-user\" data-user-id=\"#{id}\" data-user-slug=\"koen-gremmelprez\">@Koen Gremmelprez</span></p>"

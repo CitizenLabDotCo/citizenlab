@@ -106,11 +106,11 @@ class WebApi::V1::InvitesController < ApplicationController
   def accept
     @invite = Invite.find_by(token: params[:token])
     if !@invite
-      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:token_not_found] }] } }, status: :unauthorized 
+      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:token_not_found] }] } }, status: :unauthorized
       return
     end
     if @invite.accepted_at
-      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:already_accepted] }] } }, status: :unauthorized 
+      render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:already_accepted] }] } }, status: :unauthorized
       return
     end
     invitee = @invite.invitee
@@ -127,7 +127,7 @@ class WebApi::V1::InvitesController < ApplicationController
         end
         SideFxInviteService.new.after_accept @invite
         render json: WebApi::V1::InviteSerializer.new(
-          @invite.reload, 
+          @invite.reload,
           params: fastjson_params,
           include: [:invitee]
           ).serialized_json, status: :ok

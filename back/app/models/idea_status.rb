@@ -33,7 +33,7 @@ class IdeaStatus < ApplicationRecord
   before_validation :strip_title
   # abort_if_code_required to be the first before_destroy to be executed, but cannot be prepended.
   before_destroy :abort_if_code_required
-  
+
   # TODO: move to observer, probably not the best solution as is.
   after_commit :move_default_to_top, unless: :default?, on: :update
 

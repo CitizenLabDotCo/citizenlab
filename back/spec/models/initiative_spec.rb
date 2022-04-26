@@ -7,8 +7,8 @@ RSpec.describe Initiative, type: :model do
 
   context 'Default factory' do
     it 'is valid' do
-      # Using create instead of build because it otherwise 
-      # doesn't have status changes yet which are required 
+      # Using create instead of build because it otherwise
+      # doesn't have status changes yet which are required
       # by validation.
       expect(create(:initiative)).to be_valid
     end
@@ -98,15 +98,15 @@ RSpec.describe Initiative, type: :model do
       i1, i2, i3 = create_list(:initiative, 3)
       i1.update! published_at: (Time.now - 3.minutes)
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: i1, initiative_status: proposed
         )
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: i2, initiative_status: proposed
         )
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: i3, initiative_status: threshold_reached
         )
       expect(Initiative.order_status.ids).to eq [i1.id, i2.id, i3.id]

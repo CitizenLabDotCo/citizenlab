@@ -43,7 +43,7 @@ module MachineTranslations
           else
             authorize @translation
           end
-          
+
           # update translation if the original text may have changed
           if @translation.updated_at < @translation.translatable.updated_at
             MachineTranslationService.new.assign_new_translation @translation

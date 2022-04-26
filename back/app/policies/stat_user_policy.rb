@@ -36,7 +36,7 @@ class StatUserPolicy < ApplicationPolicy
   def active_users_by_time?
     show_stats?
   end
-  
+
   def active_users_by_time_cumulative?
     show_stats?
   end

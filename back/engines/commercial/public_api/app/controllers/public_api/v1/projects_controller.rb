@@ -12,14 +12,14 @@ module PublicApi
         .page(params.dig(:page_number))
         .per([params.dig(:page_size)&.to_i || 12, 24].min)
 
-      render json: @projects, 
-        each_serializer: V1::ProjectSerializer, 
+      render json: @projects,
+        each_serializer: V1::ProjectSerializer,
         adapter: :json,
         meta: meta_properties(@projects)
     end
 
     def show
-      render json: @project, 
+      render json: @project,
         serializer: V1::ProjectSerializer,
         adapter: :json
     end

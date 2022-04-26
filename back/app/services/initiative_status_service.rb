@@ -42,7 +42,7 @@ class InitiativeStatusService
       'threshold_reached' => {
         scope_contition: lambda { |initiative_scope|
           initiative_scope.where(
-            'initiatives.upvotes_count >= ?', 
+            'initiatives.upvotes_count >= ?',
             AppConfiguration.instance.settings('initiatives', 'voting_threshold')
             )
         }
@@ -50,7 +50,7 @@ class InitiativeStatusService
       'expired' => {
         scope_contition: lambda { |initiative_scope|
           initiative_scope.where(
-            'initiatives.published_at < ?', 
+            'initiatives.published_at < ?',
             (Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
             )
         }

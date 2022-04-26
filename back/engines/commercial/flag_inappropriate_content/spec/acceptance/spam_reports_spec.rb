@@ -20,7 +20,7 @@ resource 'Spam Reports' do
     let(:idea) { create(:idea) }
     let(:idea_id) { idea.id }
     let(:reason_code) { 'wrong_content' }
-  
+
     describe do
       before { idea.inappropriate_content_flag&.destroy! }
 
@@ -46,7 +46,7 @@ resource 'Spam Reports' do
     let(:idea) { create(:idea) }
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: idea) }
     let(:id) { spam_report.id }
-    
+
     example 'Deleting a spam report also deletes the flag', document: false do
       create(:inappropriate_content_flag, flaggable: idea, toxicity_label: nil)
       do_request

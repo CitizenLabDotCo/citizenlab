@@ -160,7 +160,7 @@ resource 'Initiatives' do
 
   get 'web_api/v1/initiatives/as_markers' do
     before do
-      locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]] 
+      locations = [[51.044039, 3.716964], [50.845552, 4.357355], [50.640255, 5.571848], [50.950772, 4.308304], [51.215929, 4.422602], [50.453848, 3.952217], [-27.148983, -109.424659]]
       placenames = ['Ghent', 'Brussels', 'Liège', 'Meise', 'Antwerp', 'Mons', 'Hanga Roa']
       @initiatives.each do |i|
         i.location_point_geojson = { 'type' => 'Point', 'coordinates' => locations.pop }
@@ -198,7 +198,7 @@ resource 'Initiatives' do
       token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
-    
+
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
     example_request 'XLSX export' do
@@ -206,11 +206,11 @@ resource 'Initiatives' do
     end
 
     describe do
-      before do 
+      before do
         @selected_initiatives = @initiatives.select(&:published?).shuffle.take 2
       end
       let(:initiatives) { @selected_initiatives.map(&:id) }
-      
+
       example_request 'XLSX export by initiative ids' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
@@ -219,12 +219,12 @@ resource 'Initiatives' do
     end
 
     describe do
-      before do 
+      before do
         @user = create(:user)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      
+
       example_request '[error] XLSX export by a normal user', document: false do
         expect(status).to eq 401
       end
@@ -363,7 +363,7 @@ resource 'Initiatives' do
 
       example 'Check for the automatic creation of an upvote by the author when an initiative is created', document: false do
         do_request
-        json_response = json_parse(response_body) 
+        json_response = json_parse(response_body)
         new_initiative = Initiative.find(json_response.dig(:data, :id))
         expect(new_initiative.votes.size).to eq 1
         expect(new_initiative.votes[0].mode).to eq 'up'
@@ -373,7 +373,7 @@ resource 'Initiatives' do
 
       example 'Check for the automatic assignement of the default assignee', document: false do
         do_request(initiative: { assignee_id: nil })
-        json_response = json_parse(response_body) 
+        json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq @first_admin.id
       end
     end
@@ -457,7 +457,7 @@ resource 'Initiatives' do
       example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
         @initiative.update(publication_status: 'draft')
         do_request initiative: { publication_status: 'published' }
-        json_response = json_parse(response_body) 
+        json_response = json_parse(response_body)
         new_initiative = Initiative.find(json_response.dig(:data, :id))
         expect(new_initiative.votes.size).to eq 1
         expect(new_initiative.votes[0].mode).to eq 'up'
@@ -520,7 +520,7 @@ resource 'Initiatives' do
       @initiative = create(:initiative, author: @user, publication_status: 'draft')
     end
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :initiative
-    
+
     let(:id) { @initiative.id }
     let(:publication_status) { 'published' }
 
@@ -552,7 +552,7 @@ resource 'Initiatives' do
       @initiative = create(:initiative)
       threshold_reached = create(:initiative_status_threshold_reached)
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: threshold_reached
         )
     end

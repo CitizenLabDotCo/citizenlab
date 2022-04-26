@@ -20,10 +20,10 @@ class SideFxCustomFieldOptionService
   def after_destroy(frozen_custom_field_option, current_user)
     serialized_custom_field_option = clean_time_attributes(frozen_custom_field_option.attributes)
     LogActivityJob.perform_later(
-      encode_frozen_resource(frozen_custom_field_option), 
-      'deleted', 
-      current_user, 
-      Time.now.to_i, 
+      encode_frozen_resource(frozen_custom_field_option),
+      'deleted',
+      current_user,
+      Time.now.to_i,
       payload: { custom_field_option: serialized_custom_field_option }
     )
   end

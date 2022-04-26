@@ -9,7 +9,7 @@ module NLP
           locale = tenant_locales.first
         end
       end
-      
+
       options = {}
       options[:idea_ids] = idea_ids if idea_ids
       options[:min_score] = min_score if min_score

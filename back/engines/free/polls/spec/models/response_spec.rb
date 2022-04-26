@@ -14,7 +14,7 @@ RSpec.describe Polls::Response, type: :model do
       q1 = create(:poll_question, :with_options, participation_context: pc)
       user = create(:user)
       r1 = create(:poll_response, user: user, participation_context: pc, response_options_attributes: [{ option_id: q1.options.first.id }])
- 
+
       r2 = build(:poll_response, user: user, participation_context: pc, response_options_attributes: [{ option_id: q1.options.first.id }])
       expect(r2.valid?(:response_submission)).to be false
       expect(r2.errors.details[:user]).to eq([{ error: :taken, value: user }])

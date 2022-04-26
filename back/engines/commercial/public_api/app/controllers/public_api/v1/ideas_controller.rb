@@ -18,15 +18,15 @@ module PublicApi
       # the count before the complex query.
       @total_pages = @ideas.total_pages
       @ideas = TrendingIdeaService.new.sort_trending @ideas
-      
-      render json: @ideas, 
-        each_serializer: V1::IdeaSerializer, 
+
+      render json: @ideas,
+        each_serializer: V1::IdeaSerializer,
         adapter: :json,
         meta: meta_properties(@ideas)
     end
 
     def show
-      render json: @idea, 
+      render json: @idea,
         serializer: V1::IdeaSerializer,
         adapter: :json
     end

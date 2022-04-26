@@ -40,7 +40,7 @@ resource 'InitiativeStatusChange' do
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
-    
+
     let(:id) { @changes.first.id }
 
     example_request 'Get one status changes on an initiative by id' do
@@ -63,7 +63,7 @@ resource 'InitiativeStatusChange' do
       @status_ineligible = create(:initiative_status_ineligible)
 
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_threshold_reached
         )
     end
@@ -148,7 +148,7 @@ resource 'InitiativeStatusChange' do
       @status_ineligible = create(:initiative_status_ineligible)
 
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_threshold_reached
         )
     end

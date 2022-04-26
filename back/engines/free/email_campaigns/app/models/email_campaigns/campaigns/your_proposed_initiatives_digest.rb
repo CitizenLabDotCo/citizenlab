@@ -61,7 +61,7 @@ module EmailCampaigns
           event_payload: {
             initiatives: initiatives.includes(:initiative_images).map { |initiative|
               {
-                title_multiloc: initiative.title_multiloc,                
+                title_multiloc: initiative.title_multiloc,
                 body_multiloc: initiative.body_multiloc,
                 url: Frontend::UrlService.new.model_to_url(initiative),
                 published_at: initiative.published_at&.iso8601,

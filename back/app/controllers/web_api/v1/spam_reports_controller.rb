@@ -7,7 +7,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
       .includes(:user)
     @spam_reports = paginate @spam_reports
-      
+
     render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: fastjson_params, include: [:user])
   end
 

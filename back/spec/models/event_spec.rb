@@ -22,7 +22,7 @@ RSpec.describe Event, type: :model do
       })
       expect(event.description_multiloc).to eq({ 'en' => '<p>Test<br><br>One<br>Two</p><p>Three</p>' })
     end
-    
+
   end
 
   describe 'timing validation' do

@@ -39,7 +39,7 @@ resource 'Invite', admin_api: true do
         expect(response_status).to eq 201
         expect(Invite.count).to be 1
         invite = Invite.first
-        
+
         json_response = json_parse(response_body)
         expect(json_response[:token]).to eq invite.token
         expect(json_response[:invite_text]).to eq invite.invite_text

@@ -46,7 +46,7 @@ class ApplicationPolicy
       scope
     end
   end
-  
+
   private
 
   def admin?

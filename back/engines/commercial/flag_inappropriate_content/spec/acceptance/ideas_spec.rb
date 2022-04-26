@@ -70,7 +70,7 @@ resource 'Ideas' do
     end
 
     describe 'when already flagged' do
-      before do 
+      before do
         create(:inappropriate_content_flag, flaggable: @idea, toxicity_label: 'insult')
       end
 

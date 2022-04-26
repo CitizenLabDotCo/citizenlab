@@ -84,7 +84,7 @@ class WebApi::V1::VotesController < ApplicationController
           SideFxVoteService.new.after_destroy(old_vote_frozen, current_user)
         end
         @new_vote = Vote.new(
-          user: current_user, 
+          user: current_user,
           votable_type: @votable_type,
           votable_id: @votable_id,
           mode: mode

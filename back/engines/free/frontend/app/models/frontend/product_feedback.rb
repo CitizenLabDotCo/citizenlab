@@ -8,7 +8,7 @@ module Frontend
     validates :question, :answer, presence: true
     validates :locale, inclusion: { in: CL2_SUPPORTED_LOCALES.map(&:to_s) }, allow_nil: true
     validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
-    
+
     def attributes
       {
         'question' => question,

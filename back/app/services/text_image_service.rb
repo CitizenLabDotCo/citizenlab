@@ -49,7 +49,7 @@ class TextImageService
       prefetched_text_images = imageable.text_images.map do |ti|
         [ti.text_reference, ti]
       end.to_h
-      
+
       multiloc.each_with_object({}) do |(locale, text), output|
         doc = Nokogiri::HTML.fragment(text)
         if doc.errors.any?

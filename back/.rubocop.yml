@@ -33,6 +33,9 @@ Layout/SpaceBeforeBlockBraces:
 Layout/SpaceAfterComma:
   Enabled: true
 
+Layout/TrailingWhitespace:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:
