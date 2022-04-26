@@ -109,7 +109,7 @@ module UserCustomFields
 
         def users_by_domicile_as_xlsx
           serie = users_by_domicile_serie
-          res = Area.all.map do  |area|
+          res = Area.all.map do |area|
             {
               'area_id' => area.id,
               'area' => @@multiloc_service.t(area.title_multiloc),

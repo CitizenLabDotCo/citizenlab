@@ -186,7 +186,7 @@ class InvitesService
   # @return [Hash]
   def coerce_custom_field_types(hash)
     hash.each do |field, value|
-      if (type = custom_field_types[field])  # only runs for custom fields
+      if (type = custom_field_types[field]) # only runs for custom fields
         hash[field] = coerce_value(value, type)
       end
     rescue ArgumentError => e

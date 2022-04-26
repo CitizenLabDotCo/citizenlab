@@ -22,7 +22,7 @@ module Filterer
   end
 
   def filter(object, options={})
-    self.class.filters.inject(object) { |object, filter| filter.apply(object, self, options)  }
+    self.class.filters.inject(object) { |object, filter| filter.apply(object, self, options) }
   end
 
   module ClassMethods

@@ -79,7 +79,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
       .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
       .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
       .each do |record|
         %w(idea_status_id area_id topic_id).each do |attribute|

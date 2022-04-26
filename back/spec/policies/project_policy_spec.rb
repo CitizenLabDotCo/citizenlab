@@ -16,7 +16,7 @@ describe ProjectPolicy do
       it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
-      it 'should index the project'  do
+      it 'should index the project' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -30,7 +30,7 @@ describe ProjectPolicy do
       it { should_not permit(:reorder) }
       it { should_not permit(:destroy) }
 
-      it 'should index the project'  do
+      it 'should index the project' do
         expect(scope.resolve.size).to eq 1
       end
 
@@ -48,7 +48,7 @@ describe ProjectPolicy do
       it { should permit(:reorder) }
       it { should permit(:destroy) }
 
-      it 'should index the project'  do
+      it 'should index the project' do
         expect(scope.resolve.size).to eq 1
       end
 
@@ -101,7 +101,7 @@ describe ProjectPolicy do
       it { should permit(:reorder) }
       it { should permit(:destroy) }
 
-      it 'should index the project'  do
+      it 'should index the project' do
         expect(scope.resolve.size).to eq 1
       end
 
@@ -148,13 +148,13 @@ describe ProjectPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
 
-    it { should permit(:show)    }
+    it { should permit(:show) }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
     it { should_not permit(:reorder) }
     it { should_not permit(:destroy) }
 
-    it 'should index the project'  do
+    it 'should index the project' do
       expect(scope.resolve.size).to eq 1
     end
 
@@ -173,7 +173,7 @@ describe ProjectPolicy do
     it { should permit(:reorder) }
     it { should permit(:destroy) }
 
-    it 'should index the project'  do
+    it 'should index the project' do
       expect(scope.resolve.size).to eq 1
     end
 
@@ -225,7 +225,7 @@ describe ProjectPolicy do
       it { should permit(:reorder) }
       it { should permit(:destroy) }
 
-      it 'should index the project'  do
+      it 'should index the project' do
         expect(scope.resolve.size).to eq 1
       end
 

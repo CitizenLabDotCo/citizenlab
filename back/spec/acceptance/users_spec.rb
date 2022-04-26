@@ -436,7 +436,7 @@ resource 'Users' do
 
           example_request 'XLSX export all users from a group' do
             expect(status).to eq 200
-            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.map { |r| r['id'] }).to match_array @members.map(&:id)
           end
         end
@@ -451,7 +451,7 @@ resource 'Users' do
 
           example_request 'XLSX export all users given a list of user ids' do
             expect(status).to eq 200
-            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.map { |r| r['id'] }).to match_array @selected.map(&:id)
           end
         end
@@ -471,7 +471,7 @@ resource 'Users' do
 
           example_request 'XLSX export all users by filtering on both group and user ids', document: false do
             expect(status).to eq 200
-            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
             expect(xlsx_hash.map { |r| r['id'] }).to match_array (@members.map(&:id) & @selected.map(&:id))
           end
         end

@@ -18,7 +18,7 @@ class IdeasFinder < ApplicationFinder
     Idea.unscoped.where(id: ids).order_as_specified(id: ids)
   }
 
-  sort_scope '-trending',    ->(ideas) {
+  sort_scope '-trending', ->(ideas) {
     ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id).reverse
     Idea.unscoped.where(id: ids).order_as_specified(id: ids)
   }

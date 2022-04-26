@@ -41,7 +41,7 @@ describe InitiativeVotePolicy do
     it { should     permit(:create) }
     it { should     permit(:up) }
     it { expect { policy.down? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { should     permit(:destroy) }
+    it { should permit(:destroy) }
 
     it 'should index the vote' do
       expect(scope.resolve.size).to eq 1

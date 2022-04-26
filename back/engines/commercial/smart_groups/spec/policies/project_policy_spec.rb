@@ -34,12 +34,12 @@ describe ProjectPolicy do
     ]) end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
-    it { should permit(:show)    }
+    it { should permit(:show) }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
 
-    it 'should index the project'  do
+    it 'should index the project' do
       expect(scope.resolve.size).to eq 1
     end
 

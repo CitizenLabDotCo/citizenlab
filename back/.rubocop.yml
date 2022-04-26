@@ -67,6 +67,9 @@ Layout/IndentationConsistency:
 Layout/MultilineBlockLayout:
   Enabled: true
 
+Layout/ExtraSpacing:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

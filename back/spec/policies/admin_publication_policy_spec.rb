@@ -11,7 +11,7 @@ describe AdminPublicationPolicy do
 
       it { should_not permit(:reorder) }
 
-      it 'should index the project holder'  do
+      it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -21,7 +21,7 @@ describe AdminPublicationPolicy do
 
       it { should_not permit(:reorder) }
 
-      it 'should index the project holder'  do
+      it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -31,7 +31,7 @@ describe AdminPublicationPolicy do
 
       it { should permit(:reorder) }
 
-      it 'should index the project holder'  do
+      it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -45,7 +45,7 @@ describe AdminPublicationPolicy do
 
       it { should_not permit(:reorder) }
 
-      it 'should not index the project holder'  do
+      it 'should not index the project holder' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -55,7 +55,7 @@ describe AdminPublicationPolicy do
 
       it { should_not permit(:reorder) }
 
-      it 'should not index the project holder'  do
+      it 'should not index the project holder' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -65,7 +65,7 @@ describe AdminPublicationPolicy do
 
       it { should permit(:reorder) }
 
-      it 'should index the project holder'  do
+      it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -77,7 +77,7 @@ describe AdminPublicationPolicy do
 
     it { should_not permit(:reorder) }
 
-    it 'should not index the project holder'  do
+    it 'should not index the project holder' do
       expect(scope.resolve.size).to eq 0
     end
   end

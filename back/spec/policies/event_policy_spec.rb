@@ -86,7 +86,7 @@ describe EventPolicy do
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
-    it 'should index the event'  do
+    it 'should index the event' do
       expect(scope.resolve.size).to eq 1
     end
   end

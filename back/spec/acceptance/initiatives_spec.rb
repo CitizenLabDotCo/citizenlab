@@ -7,7 +7,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = ['published', 'published', 'draft', 'published', 'spam', 'published', 'published'].map { |ps|  create(:initiative, publication_status: ps) }
+    @initiatives = ['published', 'published', 'draft', 'published', 'spam', 'published', 'published'].map { |ps| create(:initiative, publication_status: ps) }
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"

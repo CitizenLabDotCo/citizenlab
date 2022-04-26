@@ -12,8 +12,8 @@ resource 'Invite', admin_api: true do
     with_options scope: :invite do
       parameter :invitee_id, 'The ID of the user that sends the invite', required: false
       parameter :email, 'The email of the user', required: false
-      parameter :first_name,  'The first_name of the user', required: false
-      parameter :last_name,  'The last_name of the user', required: false
+      parameter :first_name, 'The first_name of the user', required: false
+      parameter :last_name, 'The last_name of the user', required: false
       parameter :locale, 'The locale of the user', required: false
       parameter :invite_text, 'The text in the email', required: false
       parameter :roles, 'The roles of the user', required: false
