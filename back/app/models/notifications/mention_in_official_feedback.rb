@@ -53,7 +53,6 @@
 #
 module Notifications
   class MentionInOfficialFeedback < Notification
-
     validates :official_feedback, :post, :initiating_user, presence: true
 
 
@@ -86,7 +85,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

@@ -1,7 +1,6 @@
 module PublicApi
 
   class V1::IdeasController < PublicApiController
-
     before_action :set_idea, only: [:show]
 
     def index
@@ -42,7 +41,6 @@ module PublicApi
         total_pages: @total_pages
       }
     end
-
   end
 
 end

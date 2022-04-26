@@ -1,6 +1,5 @@
 module NLP
   class TagSuggestionService
-
     def suggest(ideas, locale)
       @api ||= NLP::Api.new
       @texts = parse_ideas ideas, locale

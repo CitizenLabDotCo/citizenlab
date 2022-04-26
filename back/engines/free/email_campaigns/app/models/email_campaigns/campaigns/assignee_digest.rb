@@ -178,6 +178,5 @@ module EmailCampaigns
           }
       end
     end
-
   end
 end

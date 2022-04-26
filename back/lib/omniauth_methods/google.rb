@@ -1,6 +1,5 @@
 module OmniauthMethods
   class Google
-
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       if configuration.feature_activated?('google_login')

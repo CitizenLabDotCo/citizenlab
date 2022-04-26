@@ -1,6 +1,5 @@
 module Volunteering
   class CauseImageUploader < BaseImageUploader
-
     version :small do
       process resize_to_fill: [96, 96]
     end
@@ -20,6 +19,5 @@ module Volunteering
     def extension_allowlist
       %w(jpg jpeg gif png bmp)
     end
-
   end
 end

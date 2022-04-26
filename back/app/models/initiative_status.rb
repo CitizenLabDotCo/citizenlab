@@ -12,7 +12,6 @@
 #  updated_at           :datetime         not null
 #
 class InitiativeStatus < ApplicationRecord
-
   CODES = %w(proposed expired threshold_reached answered ineligible custom)
 
   has_many :initiative_status_changes, dependent: :nullify
@@ -49,5 +48,4 @@ class InitiativeStatus < ApplicationRecord
       end
     end
   end
-
 end

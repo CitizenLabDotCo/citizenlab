@@ -1,5 +1,4 @@
 class StatUserPolicy < ApplicationPolicy
-
   class Scope
     attr_reader :user, :scope
 

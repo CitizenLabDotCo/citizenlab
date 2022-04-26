@@ -53,7 +53,6 @@
 #
 module Notifications
   class StatusChangeOnCommentedIdea < Notification
-
     validates :post_status, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
@@ -81,7 +80,6 @@ module Notifications
         []
       end.compact
     end
-
   end
 end
 

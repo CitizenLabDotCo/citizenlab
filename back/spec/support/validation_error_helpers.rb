@@ -2,7 +2,6 @@
 # validation errors can occur on models.
 
 class ValidationErrorHelper
-
   ERROR_DETAILS = {
     ActiveModel::Validations::AcceptanceValidator => [:accepted],
     ActiveModel::Validations::AbsenceValidator => [:present],

@@ -410,5 +410,4 @@ class JsonFormsService
       }
     }
   end
-
 end

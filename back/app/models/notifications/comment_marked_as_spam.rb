@@ -53,7 +53,6 @@
 #
 module Notifications
   class CommentMarkedAsSpam < MarkedAsSpam
-
     validates :comment, :post, presence: true
 
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }
@@ -87,7 +86,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

@@ -1,5 +1,4 @@
 class TextImageService
-
   def swap_data_images(imageable, field)
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|

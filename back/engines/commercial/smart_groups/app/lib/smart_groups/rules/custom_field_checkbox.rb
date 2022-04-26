@@ -1,6 +1,5 @@
 module SmartGroups::Rules
   class CustomFieldCheckbox
-
     PREDICATE_VALUES = %w(is_checked not_is_checked)
 
     include CustomFieldRule
@@ -59,6 +58,5 @@ module SmartGroups::Rules
     def needs_value?
       false
     end
-
   end
 end

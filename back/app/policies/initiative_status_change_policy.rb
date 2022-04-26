@@ -24,5 +24,4 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
   def show?
     user&.active? && user.admin?
   end
-
 end

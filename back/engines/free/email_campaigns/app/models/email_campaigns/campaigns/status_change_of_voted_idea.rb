@@ -81,6 +81,5 @@ module EmailCampaigns
     def set_enabled
       self.enabled = false if self.enabled.nil?
     end
-
   end
 end

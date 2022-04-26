@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SegmentRegulationsClient
-
   # All deletion and suppression actions in Segment are asynchronous,
   # and categorized as *Regulations*.
   #

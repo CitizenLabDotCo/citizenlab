@@ -1,5 +1,4 @@
 class InitiativeStatusService
-
   MANUAL_TRANSITIONS = {
     'proposed' => {
       'answered' => {
@@ -114,5 +113,4 @@ class InitiativeStatusService
       LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)
     end
   end
-
 end

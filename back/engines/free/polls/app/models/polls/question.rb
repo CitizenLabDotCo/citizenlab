@@ -18,7 +18,6 @@
 #
 module Polls
   class Question < ApplicationRecord
-
     QUESTION_TYPES = %w(single_option multiple_options)
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:participation_context_type, :participation_context_id]

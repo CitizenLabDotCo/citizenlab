@@ -1,5 +1,4 @@
 class InitiativeHeaderBgUploader < BaseImageUploader
-
   version :large do
     process resize_to_fill: [1440, 360]
     # process optimize: [{ quality: 90, quiet: true }]
@@ -14,5 +13,4 @@ class InitiativeHeaderBgUploader < BaseImageUploader
     process resize_to_fill: [520, 250]
     # process optimize: [{ quality: 90, quiet: true }]
   end
-
 end

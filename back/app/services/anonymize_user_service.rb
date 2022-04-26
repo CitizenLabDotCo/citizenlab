@@ -1,5 +1,4 @@
 class AnonymizeUserService
-
   # Commented out so we can restore later. Feel free to delete if
   # this is still here after May 2022.
 

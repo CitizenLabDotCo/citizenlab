@@ -53,7 +53,6 @@
 #
 module Notifications
   class AdminRightsReceived < Notification
-
     ACTIVITY_TRIGGERS = { 'User' => { 'admin_rights_given' => true } }
     EVENT_NAME = 'Admin rights received'
 
@@ -70,6 +69,5 @@ module Notifications
         []
       end
     end
-
   end
 end

@@ -2,7 +2,6 @@
 
 module IdClaveUnica
   class ClaveUnicaOmniauth
-
     include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)
@@ -59,7 +58,6 @@ module IdClaveUnica
 
       "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
     end
-
   end
 
 end

@@ -1,6 +1,5 @@
 module NLP
   class TenantDumpService
-
     def dump(tenant)
       Apartment::Tenant.switch(tenant.schema_name) do
         {
@@ -95,6 +94,5 @@ module NLP
         d
       end
     end
-
   end
 end

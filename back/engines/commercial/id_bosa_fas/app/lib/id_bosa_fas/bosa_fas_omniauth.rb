@@ -2,7 +2,6 @@
 
 module IdBosaFas
   class BosaFasOmniauth
-
     include BosaFasVerification
 
     def profile_to_user_attrs(auth)

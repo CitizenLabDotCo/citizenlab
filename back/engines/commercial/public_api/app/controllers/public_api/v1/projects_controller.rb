@@ -1,7 +1,6 @@
 module PublicApi
 
   class V1::ProjectsController < PublicApiController
-
     before_action :set_project, only: [:show]
 
     def index
@@ -35,7 +34,6 @@ module PublicApi
         total_pages: relation.total_pages
       }
     end
-
   end
 
 end

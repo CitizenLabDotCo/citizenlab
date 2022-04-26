@@ -146,6 +146,5 @@ module AdminApi
     def public_pages
       ::StaticPagePolicy::Scope.new(nil, StaticPage).resolve
     end
-
   end
 end

@@ -1,5 +1,4 @@
 class InitiativeVotePolicy < ApplicationPolicy
-
   class Scope
     attr_reader :user, :scope
 

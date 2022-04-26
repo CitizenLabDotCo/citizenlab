@@ -44,6 +44,5 @@ module Surveys
         field[:id] == field_id
       end
     end
-
   end
 end

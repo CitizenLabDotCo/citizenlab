@@ -1,5 +1,4 @@
 class SideFxInviteService
-
   include SideFxHelper
 
   def after_create(invite, current_user)

@@ -53,7 +53,6 @@
 #
 module Notifications
   class MentionInComment < Notification
-
     validates :initiating_user, :comment, :post, presence: true
 
 
@@ -82,7 +81,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

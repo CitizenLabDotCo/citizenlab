@@ -1,5 +1,4 @@
 class SideFxCommentService
-
   include SideFxHelper
 
   @@mention_service = MentionService.new
@@ -86,7 +85,6 @@ class SideFxCommentService
       LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
-
 end
 
 ::SideFxCommentService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxCommentService')

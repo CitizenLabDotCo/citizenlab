@@ -53,7 +53,6 @@
 #
 module Notifications
   class CommentOnYourComment < Notification
-
     validates :initiating_user, :comment, presence: true
 
     ACTIVITY_TRIGGERS = { 'Comment' => { 'created' => true } }
@@ -82,6 +81,5 @@ module Notifications
         []
       end
     end
-
   end
 end

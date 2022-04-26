@@ -137,6 +137,5 @@ module SmartGroups::Rules
         errors.add(:value, :has_invalid_topic) if !Topic.ids.include?(value)
       end
     end
-
   end
 end

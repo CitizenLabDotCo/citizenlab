@@ -53,7 +53,6 @@
 #
 module Notifications
   class StatusChangeOfYourInitiative < Notification
-
     validates :post_status, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
@@ -77,7 +76,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

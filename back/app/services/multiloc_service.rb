@@ -1,5 +1,4 @@
 class MultilocService
-
   def t(translations, user=nil)
     return nil unless translations
     locales = AppConfiguration.instance.settings('core', 'locales')
@@ -29,5 +28,4 @@ class MultilocService
   def is_empty?(multiloc)
     !multiloc || multiloc.values.all?(&:blank?)
   end
-
 end

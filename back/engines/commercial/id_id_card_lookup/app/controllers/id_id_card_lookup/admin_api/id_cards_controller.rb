@@ -1,7 +1,6 @@
 module IdIdCardLookup
   module AdminApi
     class IdCardsController < ::AdminApi::AdminApiController
-
       def bulk_replace
         file = params[:id_cards][:file]
         parts = file.match(/\Adata:([-\w]+\/[-\w\+\.]+)?;base64,(.*)/m) || []
@@ -20,7 +19,6 @@ module IdIdCardLookup
       def count
         render json: { count: IdCard.count }
       end
-
     end
   end
 end

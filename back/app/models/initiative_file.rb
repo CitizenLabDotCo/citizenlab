@@ -19,7 +19,6 @@
 #  fk_rails_...  (initiative_id => initiatives.id)
 #
 class InitiativeFile < ApplicationRecord
-
   EXTENSION_WHITELIST = %w(pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv)
 
 

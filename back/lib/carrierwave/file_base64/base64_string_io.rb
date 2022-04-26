@@ -1,7 +1,6 @@
 module Carrierwave
   module FileBase64
     class Base64StringIo < StringIO
-
       attr_reader :file_name
       attr_reader :file_extension
 
@@ -19,7 +18,6 @@ module Carrierwave
       def original_filename
         File.basename("#{@file_name}.#{@file_extension}")
       end
-
     end
   end
 end

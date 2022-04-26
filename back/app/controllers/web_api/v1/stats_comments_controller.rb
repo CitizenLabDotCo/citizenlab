@@ -1,5 +1,4 @@
 class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
-
   @@multiloc_service = MultilocService.new
 
   before_action :render_no_data, only: [:comments_by_time, :comments_by_time_cumulative]

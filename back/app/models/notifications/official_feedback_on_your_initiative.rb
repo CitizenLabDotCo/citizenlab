@@ -53,7 +53,6 @@
 #
 module Notifications
   class OfficialFeedbackOnYourInitiative < Notification
-
     validates :initiating_user, :post, :official_feedback, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
@@ -82,7 +81,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

@@ -149,6 +149,5 @@ module SmartGroups::Rules
         errors.add(:value, :has_invalid_project) if !Project.ids.include?(value)
       end
     end
-
   end
 end

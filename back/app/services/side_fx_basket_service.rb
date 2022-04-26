@@ -1,5 +1,4 @@
 class SideFxBasketService
-
   include SideFxHelper
 
   def after_create(basket, user)

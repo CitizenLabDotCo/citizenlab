@@ -52,6 +52,5 @@ module IdeaCustomFields
         ]
       end
     end
-
   end
 end

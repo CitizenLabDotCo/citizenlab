@@ -53,7 +53,6 @@
 #
 module Notifications
   class OfficialFeedbackOnVotedIdea < Notification
-
     validates :initiating_user, :official_feedback, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
@@ -90,6 +89,5 @@ module Notifications
         []
       end.compact
     end
-
   end
 end

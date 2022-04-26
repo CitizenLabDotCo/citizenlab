@@ -1,5 +1,4 @@
 class ImportIdeasService
-
   MAX_IDEAS = 500
 
   def import_ideas(idea_models_data)
@@ -105,5 +104,4 @@ class ImportIdeasService
     end
     multiloc
   end
-
 end

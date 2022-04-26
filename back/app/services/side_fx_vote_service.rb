@@ -35,5 +35,4 @@ class SideFxVoteService
   def votable_type(vote)
     vote.votable_type.underscore
   end
-
 end

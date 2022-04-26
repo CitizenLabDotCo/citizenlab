@@ -69,7 +69,6 @@ module Moderation
         end
       end
     end
-
   end
 end
 

@@ -53,7 +53,6 @@
 #
 module Notifications
   class ThresholdReachedForAdmin < Notification
-
     validates :post, presence: true
 
     ACTIVITY_TRIGGERS = { 'Initiative' => { 'reached_threshold' => true } }
@@ -75,6 +74,5 @@ module Notifications
        )
       end
     end
-
   end
 end

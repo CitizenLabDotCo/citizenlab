@@ -72,7 +72,6 @@ module MachineTranslations
         def secure_constantize(key)
           CONSTANTIZER.fetch(params[:translatable_type])[key]
         end
-
       end
     end
   end

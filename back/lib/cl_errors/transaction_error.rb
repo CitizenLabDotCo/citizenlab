@@ -1,6 +1,5 @@
 module ClErrors
   class TransactionError < StandardError
-
     def initialize(options={})
       super
       @error_key = options.fetch(:error_key, nil)
@@ -14,6 +13,5 @@ module ClErrors
     def code
       @code
     end
-
   end
 end

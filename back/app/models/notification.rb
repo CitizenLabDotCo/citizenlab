@@ -52,7 +52,6 @@
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
 class Notification < ApplicationRecord
-
   belongs_to :recipient, class_name: 'User'
   belongs_to :initiating_user, class_name: 'User', optional: true
   belongs_to :post, polymorphic: true, optional: true

@@ -28,7 +28,6 @@ class SideFxAreaService
     serialized_area = clean_time_attributes(frozen_area.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_area), 'deleted', user, Time.now.to_i, payload: { area: serialized_area })
   end
-
 end
 
 SideFxAreaService.prepend_if_ee('SmartGroups::Patches::SideFxAreaService')

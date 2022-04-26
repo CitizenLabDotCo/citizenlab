@@ -1,5 +1,4 @@
 class ProfanityService
-
   IGNORE_SPECIAL_CHARS = '.?¿!,:;\'"(){}[]#@_'
 
 

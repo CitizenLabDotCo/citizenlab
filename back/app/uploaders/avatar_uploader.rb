@@ -1,5 +1,4 @@
 class AvatarUploader < BaseImageUploader
-
   version :small do
     process resize_to_fill: [32, 32]
   end
@@ -11,5 +10,4 @@ class AvatarUploader < BaseImageUploader
   version :large do
     process resize_to_fill: [640, 640]
   end
-
 end

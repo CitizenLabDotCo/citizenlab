@@ -71,6 +71,5 @@ module UserCustomFields
     def permitted_attributes_for_reorder
       [:ordering]
     end
-
   end
 end

@@ -20,7 +20,6 @@
 #
 module Polls
   class ResponseOption < ApplicationRecord
-
     belongs_to :response, class_name: 'Polls::Response'
     belongs_to :option, class_name: 'Polls::Option'
 
@@ -42,6 +41,5 @@ module Polls
         end
       end
     end
-
   end
 end

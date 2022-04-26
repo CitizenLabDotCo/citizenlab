@@ -1,6 +1,5 @@
 module AdminApi
   class ProjectCopyService
-
     def import(template)
       service = MultiTenancy::TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
@@ -572,6 +571,5 @@ module AdminApi
     def shift_timestamp(value, shift_timestamps)
       value && (value + shift_timestamps.days)
     end
-
   end
 end

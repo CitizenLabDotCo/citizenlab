@@ -1,6 +1,5 @@
 module SmartGroups::Rules
   class CustomFieldDate
-
     PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
 
@@ -108,6 +107,5 @@ module SmartGroups::Rules
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
-
   end
 end

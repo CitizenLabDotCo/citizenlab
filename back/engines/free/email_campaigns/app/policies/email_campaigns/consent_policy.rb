@@ -30,6 +30,5 @@ module EmailCampaigns
     def update_by_campaign_id?
       update?
     end
-
   end
 end

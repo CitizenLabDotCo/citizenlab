@@ -1,6 +1,5 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-
     before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :deliveries, :stats, :destroy]
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 

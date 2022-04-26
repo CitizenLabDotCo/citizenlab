@@ -53,7 +53,6 @@
 #
 module Notifications
   class CommentOnYourInitiative < Notification
-
     validates :comment, :initiating_user, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
@@ -79,7 +78,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

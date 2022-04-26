@@ -3,7 +3,6 @@
 # application configuration and the permissions of the current user.
 
 class UserDisplayNameService
-
   # @param [AppConfiguration] app_configuration
   # @param [User,nil] current_user
   def initialize(app_configuration, current_user = nil)

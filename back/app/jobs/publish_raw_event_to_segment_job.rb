@@ -15,5 +15,4 @@ class PublishRawEventToSegmentJob < ApplicationJob
     end
     Analytics.track(event) if Analytics
   end
-
 end

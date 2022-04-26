@@ -3,7 +3,6 @@
 
 module PublicApi
   class PolicyWrappedIdea < SimpleDelegator
-
     def self.policy_class
       PublicApi::IdeaPolicy
     end

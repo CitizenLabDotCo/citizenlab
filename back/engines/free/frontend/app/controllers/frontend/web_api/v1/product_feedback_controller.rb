@@ -44,7 +44,6 @@ module Frontend
             .require(:product_feedback)
             .permit(:question, :answer, :path, :locale, :email, :message)
         end
-
       end
     end
   end

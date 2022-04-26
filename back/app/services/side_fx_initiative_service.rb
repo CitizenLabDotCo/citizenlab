@@ -88,7 +88,6 @@ class SideFxInitiativeService
   def first_user_initiative?(initiative, user)
     (user.initiatives.size == 1) && (user.initiatives.first.id == initiative.id)
   end
-
 end
 
 ::SideFxInitiativeService.prepend_if_ee('FlagInappropriateContent::Patches::SideFxInitiativeService')

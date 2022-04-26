@@ -1,5 +1,4 @@
 class AuthenticationService
-
   @all_methods = {
     'facebook' => OmniauthMethods::Facebook.new,
     'google' => OmniauthMethods::Google.new,
@@ -34,5 +33,4 @@ class AuthenticationService
   def supports_logout?(provider)
     method_by_provider(provider).respond_to? :logout_url
   end
-
 end

@@ -53,7 +53,6 @@
 #
 module Notifications
   class InviteAccepted < Notification
-
     validates :initiating_user, :invite, presence: true
 
 
@@ -76,7 +75,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

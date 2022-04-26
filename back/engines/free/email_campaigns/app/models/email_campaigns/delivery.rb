@@ -24,7 +24,6 @@
 #
 module EmailCampaigns
   class Delivery < ApplicationRecord
-
     belongs_to :campaign, class_name: 'EmailCampaigns::Campaign'
     belongs_to :user
 
@@ -75,6 +74,5 @@ module EmailCampaigns
     def set_sent_at
       self.sent_at ||= Time.now
     end
-
   end
 end

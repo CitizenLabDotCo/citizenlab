@@ -40,5 +40,4 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
   def href
     Frontend::UrlService.new.model_to_url object
   end
-
 end

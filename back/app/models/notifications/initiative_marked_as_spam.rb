@@ -53,7 +53,6 @@
 #
 module Notifications
   class InitiativeMarkedAsSpam < MarkedAsSpam
-
     validates :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
@@ -77,7 +76,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

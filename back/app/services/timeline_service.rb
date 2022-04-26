@@ -1,5 +1,4 @@
 class TimelineService
-
   def future_phases(project, time=Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     project.phases.select do |phase|
@@ -74,5 +73,4 @@ class TimelineService
       [project.id, active]
     end.to_h
   end
-
 end

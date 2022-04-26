@@ -8,5 +8,4 @@ class WebApi::V1::External::PhaseSerializer < ActiveModel::Serializer
   def project_title_multiloc
     object.project.title_multiloc
   end
-
 end

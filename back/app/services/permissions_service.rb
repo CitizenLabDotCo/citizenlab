@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class PermissionsService
-
   class << self
     def register_scope_type(scope_spec)
       scope_spec_hash[scope_spec.scope_type] = scope_spec

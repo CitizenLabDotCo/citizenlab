@@ -4,7 +4,6 @@ module Frontend
   # The main purpose of this service is to decouple all assumptions the backend
   # makes about the frontend URLs into a single location.
   class UrlService
-
     def model_to_path(model_instance)
       case model_instance
       when Project

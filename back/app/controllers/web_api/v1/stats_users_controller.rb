@@ -1,5 +1,4 @@
 class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
-
   @@multiloc_service = MultilocService.new
 
 
@@ -223,5 +222,4 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   def do_authorize
     authorize :stat_user
   end
-
 end

@@ -101,6 +101,5 @@ module AdminApi
     field :host, String, null: false
     field :logo, TenantLogo, null: true
     field :settings, TenantSettingsSchema, null: false
-
   end
 end

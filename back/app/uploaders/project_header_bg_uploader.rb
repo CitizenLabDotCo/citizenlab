@@ -1,5 +1,4 @@
 class ProjectHeaderBgUploader < BaseImageUploader
-
   version :large do
     process resize_to_fill: [1440, 360]
   end
@@ -11,5 +10,4 @@ class ProjectHeaderBgUploader < BaseImageUploader
   version :small do
     process resize_to_fill: [520, 250]
   end
-
 end

@@ -1,6 +1,5 @@
 module IdIdCardLookup
   class IdCardService
-
     def encode(card_id)
       hash(normalize(card_id))
     end

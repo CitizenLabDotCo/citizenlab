@@ -54,7 +54,6 @@
 module FlagInappropriateContent
   module Notifications
     class InappropriateContentFlagged < Notification
-
       ACTIVITY_TRIGGERS = { 'FlagInappropriateContent::InappropriateContentFlag' => { 'created' => true } }
       EVENT_NAME = 'Inappropriate content flagged'
 
@@ -75,7 +74,6 @@ module FlagInappropriateContent
           )
         end
       end
-
     end
   end
 end

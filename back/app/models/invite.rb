@@ -76,5 +76,4 @@ class Invite < ApplicationRecord
       end
     end
   end
-
 end

@@ -27,5 +27,4 @@ class NotificationPolicy < ApplicationPolicy
   def show?
     record.recipient_id == user.id
   end
-
 end

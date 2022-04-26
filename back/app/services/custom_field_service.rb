@@ -358,5 +358,4 @@ class CustomFieldService
         type: 'string'
       }
     end
-
 end

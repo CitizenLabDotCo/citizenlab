@@ -1,5 +1,4 @@
 class SideFxPhaseService
-
   include SideFxHelper
 
   def initialize(sfx_pc=SideFxParticipationContextService.new)
@@ -39,5 +38,4 @@ class SideFxPhaseService
     )
     @sfx_pc.after_destroy frozen_phase, user
   end
-
 end

@@ -53,7 +53,6 @@
 #
 module Notifications
   class CommentOnYourIdea < Notification
-
     validates :comment, :initiating_user, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
@@ -80,7 +79,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

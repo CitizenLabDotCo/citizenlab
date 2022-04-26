@@ -251,6 +251,5 @@ module EmailCampaigns
       t_2 ||= t_1 + 7.days
       ((t_2 - t_1) / 1.day).days
     end
-
   end
 end

@@ -167,6 +167,5 @@ module SmartGroups::Rules
         end
       end
     end
-
   end
 end

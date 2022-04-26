@@ -30,6 +30,5 @@ module PublicApi
           head :unauthorized
         end
       end
-
   end
 end

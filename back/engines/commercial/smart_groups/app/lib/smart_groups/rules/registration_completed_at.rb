@@ -108,6 +108,5 @@ module SmartGroups::Rules
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
-
   end
 end

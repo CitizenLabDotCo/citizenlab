@@ -1,6 +1,5 @@
 module NLP
   class SimilarityService
-
     def similarity(tenant_id, idea, locale: nil, idea_ids: nil, min_score: nil, max_ideas: nil)
       if !locale
         locale = idea.title_multiloc.keys.first
@@ -29,6 +28,5 @@ module NLP
 
 
     private
-
   end
 end

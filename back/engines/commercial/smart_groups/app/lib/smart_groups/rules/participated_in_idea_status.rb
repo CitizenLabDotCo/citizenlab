@@ -135,6 +135,5 @@ module SmartGroups::Rules
         errors.add(:value, :has_invalid_idea_status) if !IdeaStatus.ids.include?(value)
       end
     end
-
   end
 end

@@ -1,6 +1,5 @@
 module EmailCampaigns
   class DeliveryService
-
     CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,

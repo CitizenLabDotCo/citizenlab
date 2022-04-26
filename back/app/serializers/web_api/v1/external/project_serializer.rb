@@ -14,5 +14,4 @@ class WebApi::V1::External::ProjectSerializer < ActiveModel::Serializer
   def url
     Frontend::UrlService.new.model_to_url object
   end
-
 end

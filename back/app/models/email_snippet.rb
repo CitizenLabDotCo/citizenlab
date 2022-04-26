@@ -17,7 +17,6 @@
 require 'rails-html-sanitizer'
 
 class EmailSnippet < ApplicationRecord
-
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
   validates :email, :snippet, :locale, :body, presence: true
@@ -29,5 +28,4 @@ class EmailSnippet < ApplicationRecord
   def sanitize_body
     self.body = @@sanitizer.sanitize(self.body, tags: %w(p b u i em strong a), attributes: %w(href))
   end
-
 end

@@ -6,6 +6,5 @@ module EmailCampaigns
       service = DeliveryService.new
       service.send_on_activity(activity)
     end
-
   end
 end

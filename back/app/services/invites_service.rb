@@ -1,7 +1,6 @@
 require 'rubyXL'
 
 class InvitesService
-
   attr_accessor :errors
 
   MAX_INVITES = 1000
@@ -353,5 +352,4 @@ class InvitesService
   def ignored_invites(invites)
     @errors.select(&:ignore).map { |e| invites[e.row] }
   end
-
 end

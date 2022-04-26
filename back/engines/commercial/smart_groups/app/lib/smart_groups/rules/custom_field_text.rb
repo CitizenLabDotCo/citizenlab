@@ -1,6 +1,5 @@
 module SmartGroups::Rules
   class CustomFieldText
-
     PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
     VALUELESS_PREDICATES = %w(is_empty not_is_empty)
 
@@ -96,6 +95,5 @@ module SmartGroups::Rules
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
-
   end
 end

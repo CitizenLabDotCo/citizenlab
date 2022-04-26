@@ -87,6 +87,5 @@ module SmartGroups::Rules
     def needs_value?
       true
     end
-
   end
 end

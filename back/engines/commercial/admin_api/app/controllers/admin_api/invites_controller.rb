@@ -1,6 +1,5 @@
 module AdminApi
   class InvitesController < AdminApiController
-
     def create
       invites = InvitesService.new.bulk_create([invite_params])
       render json: invites.first, status: :created

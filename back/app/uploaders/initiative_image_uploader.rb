@@ -1,5 +1,4 @@
 class InitiativeImageUploader < BaseImageUploader
-
   version :small do
     process resize_to_fill: [96, 96]
     # process optimize: [{ quality: 90, quiet: true }]
@@ -22,5 +21,4 @@ class InitiativeImageUploader < BaseImageUploader
   def extension_allowlist
     %w(jpg jpeg gif png bmp)
   end
-
 end

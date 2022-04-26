@@ -66,6 +66,5 @@ module SmartGroups::Rules
         raise "Unsupported predicate #{predicate}"
       end
     end
-
   end
 end

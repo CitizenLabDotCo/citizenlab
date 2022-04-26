@@ -1,5 +1,4 @@
 class WebApi::V1::ImagesController < ApplicationController
-
   CONSTANTIZER = {
     'Idea' => {
       container_class: Idea,

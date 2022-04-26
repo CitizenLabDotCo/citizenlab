@@ -1,5 +1,4 @@
 class UserCustomFieldService
-
   def delete_custom_field_values(field)
     User
       .where("custom_field_values \? '#{field.key}'")
@@ -23,5 +22,4 @@ class UserCustomFieldService
         .update_all("custom_field_values = custom_field_values - '#{field.key}'")
     end
   end
-
 end

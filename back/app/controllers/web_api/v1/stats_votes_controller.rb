@@ -1,5 +1,4 @@
 class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
-
   before_action :render_no_data, only: [
     :votes_by_time,
     :votes_by_time_cumulative,
@@ -311,5 +310,4 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def do_authorize
     authorize :stat_vote
   end
-
 end

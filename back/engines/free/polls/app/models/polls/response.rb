@@ -17,7 +17,6 @@
 #
 module Polls
   class Response < ApplicationRecord
-
     belongs_to :user
     belongs_to :participation_context, polymorphic: true
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy

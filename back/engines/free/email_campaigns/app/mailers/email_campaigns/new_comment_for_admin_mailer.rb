@@ -35,6 +35,5 @@ module EmailCampaigns
         format_message('days_ago', values: { numberOfDays: diff_days.floor })
       end
     end
-
   end
 end

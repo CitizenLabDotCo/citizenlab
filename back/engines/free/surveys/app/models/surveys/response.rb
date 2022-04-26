@@ -22,7 +22,6 @@
 #
 module Surveys
   class Response < ApplicationRecord
-
     belongs_to :user, optional: true
     belongs_to :participation_context, polymorphic: true
 

@@ -61,5 +61,4 @@ class SideFxOfficialFeedbackService
       LogActivityJob.perform_later(feedback, 'mentioned', user, feedback.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
-
 end

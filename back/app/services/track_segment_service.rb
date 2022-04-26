@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class TrackSegmentService
-
   def initialize(segment_client = SEGMENT_CLIENT)
     @tracking_service = TrackingService.new
     @segment_client = segment_client

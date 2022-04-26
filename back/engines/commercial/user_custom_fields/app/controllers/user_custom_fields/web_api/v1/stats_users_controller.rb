@@ -2,7 +2,6 @@ module UserCustomFields
   module WebApi
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
-
         @@multiloc_service = MultilocService.new
 
 
@@ -253,7 +252,6 @@ module UserCustomFields
         def do_authorize
           authorize :'user_custom_fields/stat_user'
         end
-
       end
     end
   end

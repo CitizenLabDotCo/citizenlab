@@ -7,7 +7,6 @@
 #  mean_activity_at :datetime
 #
 class IdeaTrendingInfo < ApplicationRecord
-
   TREND_SINCE_ACTIVITY = 30 * 24 * 60 * 60 # 30 days
 
 
@@ -21,5 +20,4 @@ class IdeaTrendingInfo < ApplicationRecord
   def readonly?
     true
   end
-
 end

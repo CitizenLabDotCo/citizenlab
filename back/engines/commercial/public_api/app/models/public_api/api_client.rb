@@ -19,7 +19,6 @@
 #
 module PublicApi
   class ApiClient < ApplicationRecord
-
     belongs_to :tenant, optional: true
 
     validates :secret, presence: true, length: { minimum: 20 }
@@ -56,6 +55,5 @@ module PublicApi
       def generate_secret
         self.secret ||= SecureRandom.urlsafe_base64(50)
       end
-
   end
 end

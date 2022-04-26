@@ -1,6 +1,4 @@
 class MentionService
-
-
   # @param [User] user
   # @return [String] mention
   def user_to_mention(user)
@@ -104,5 +102,4 @@ class MentionService
   def mention_to_slug(mention)
     mention[1..-1]
   end
-
 end

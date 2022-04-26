@@ -53,7 +53,6 @@
 #
 module Notifications
   class CommentDeletedByAdmin < Notification
-
     REASON_CODES = %w(irrelevant inappropriate other)
 
     validates :comment, :post, presence: true
@@ -87,7 +86,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

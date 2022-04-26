@@ -53,7 +53,6 @@
 #
 module Notifications
   class IdeaMarkedAsSpam < MarkedAsSpam
-
     validates :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
@@ -79,7 +78,6 @@ module Notifications
         []
       end
     end
-
   end
 end
 

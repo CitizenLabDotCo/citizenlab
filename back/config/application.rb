@@ -79,6 +79,5 @@ module Cl2Back
         openssl_verify_mode: ENV.fetch('SMTP_OPENSSL_VERIFY_MODE', nil)
       }.compact
     end
-
   end
 end

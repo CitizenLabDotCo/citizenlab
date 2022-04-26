@@ -16,7 +16,6 @@
 #
 module EmailCampaigns
   class Consent < ApplicationRecord
-
     belongs_to :user
 
     validates :consented, inclusion: { in: [true, false] }

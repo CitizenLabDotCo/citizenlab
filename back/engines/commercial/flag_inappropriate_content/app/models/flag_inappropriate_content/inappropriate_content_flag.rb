@@ -48,6 +48,5 @@ module FlagInappropriateContent
         end
       end
     end
-
   end
 end

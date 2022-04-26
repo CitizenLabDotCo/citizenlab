@@ -4,5 +4,4 @@ class WebApi::V1::PostMarkerSerializer < WebApi::V1::BaseSerializer
   attribute :budget, if: Proc.new { |object, _| object.is_a?(Idea) } do |object|
     object.budget
   end
-
 end

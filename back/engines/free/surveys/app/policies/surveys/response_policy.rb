@@ -20,7 +20,5 @@ module Surveys
     def index_xlsx?
       user&.active? && user.admin?
     end
-
-
   end
 end

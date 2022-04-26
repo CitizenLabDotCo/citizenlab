@@ -1,6 +1,5 @@
 module ProjectFolders
   class SideFxService
-
     include SideFxHelper
 
     def after_create(folder, user)

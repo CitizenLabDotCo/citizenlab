@@ -7,6 +7,5 @@ module EmailCampaigns
       service = DeliveryService.new
       service.send_on_schedule(time)
     end
-
   end
 end

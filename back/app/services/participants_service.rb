@@ -1,5 +1,4 @@
 class ParticipantsService
-
   ENGAGING_ACTIVITIES = [
     { item_type: 'Comment', action: 'created', score: 3 },
     { item_type: 'Idea', action: 'published', score: 5 },
@@ -161,5 +160,4 @@ class ParticipantsService
         }
       ELSE 0 END) as score"'')
   end
-
 end
