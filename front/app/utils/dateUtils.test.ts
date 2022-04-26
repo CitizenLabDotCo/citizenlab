@@ -6,7 +6,7 @@ import {
 import moment from 'moment';
 import 'moment-timezone';
 
-// test date is 1AM, June 15, UTC time (Z)
+// test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';
 
 // the local time in Tokyo should be June 14th 2022, 9pm,
