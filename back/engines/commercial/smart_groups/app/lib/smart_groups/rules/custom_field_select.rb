@@ -140,7 +140,7 @@ module SmartGroups::Rules
     end
 
     def description_value(locale)
-      if self.value.is_a? Array
+      if value.is_a? Array
         value.map do |v|
           CustomFieldOption.find(v).title_multiloc[locale]
         end.join ', '
@@ -157,14 +157,14 @@ module SmartGroups::Rules
 
     def validate_value_inclusion
       if needs_value?
-        custom_field_ids = CustomFieldOption.where(custom_field_id: self.custom_field_id).map(&:id)
-        is_included = if self.value.is_a? Array
-          (self.value - custom_field_ids).blank?
+        custom_field_ids = CustomFieldOption.where(custom_field_id: custom_field_id).map(&:id)
+        is_included = if value.is_a? Array
+          (value - custom_field_ids).blank?
         else
-          custom_field_ids.include? self.value
+          custom_field_ids.include? value
         end
         if !is_included
-          self.errors.add(
+          errors.add(
             :value,
             :inclusion,
             message: 'All values must be existing custom field option IDs'

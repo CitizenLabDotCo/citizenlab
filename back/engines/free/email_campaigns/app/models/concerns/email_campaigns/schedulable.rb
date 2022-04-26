@@ -17,10 +17,10 @@ module EmailCampaigns
     end
 
     def ic_schedule
-      if self.schedule.blank?
+      if schedule.blank?
         self.class.default_schedule
       else
-        IceCube::Schedule.from_hash(self.schedule)
+        IceCube::Schedule.from_hash(schedule)
       end
     end
 

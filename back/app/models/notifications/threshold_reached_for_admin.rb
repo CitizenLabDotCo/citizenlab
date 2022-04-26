@@ -65,7 +65,7 @@ module Notifications
       User.admin.ids.select do |recipient_id|
         recipient_id != initiator_id
       end.map do |recipient_id|
-        self.new(
+        new(
          recipient_id: recipient_id,
          initiating_user_id: initiator_id,
          post: initiative,

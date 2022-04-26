@@ -75,7 +75,7 @@ module Notifications
           .ids
 
         (voter_ids - [initiator_id, *comment_author_ids, official_feedback.post.author_id]).map do |recipient_id|
-          self.new(
+          new(
             recipient_id: recipient_id,
             initiating_user_id: initiator_id,
             post: official_feedback.post,

@@ -71,7 +71,7 @@ module Notifications
           .ids
           .select { |recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id }
           .map do |recipient_id|
-            self.new(
+            new(
               recipient_id: recipient_id,
               initiating_user_id: initiator_id,
               post: official_feedback.post,

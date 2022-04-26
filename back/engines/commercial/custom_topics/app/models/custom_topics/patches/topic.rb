@@ -17,7 +17,7 @@ module CustomTopics
       end
 
       def custom?
-        self.code == CUSTOM_CODE
+        code == CUSTOM_CODE
       end
 
       private

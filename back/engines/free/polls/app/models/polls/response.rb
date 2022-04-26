@@ -31,7 +31,7 @@ module Polls
 
     def validate_participation_context_poll
       if participation_context && !participation_context.poll?
-        self.errors.add(
+        errors.add(
           :participation_context,
           :not_poll,
           message: 'the participation_context does not have the "poll" participation_method'
@@ -51,13 +51,13 @@ module Polls
           selected_options = response_options.select { |ro| ro.option.question_id == question.id }.size
 
           if selected_options < range.min
-            self.errors.add(
+            errors.add(
               :base,
               :too_few_options,
               message: 'some questions have been answered with too few corresponding options'
             )
           elsif selected_options > range.max
-            self.errors.add(
+            errors.add(
               :base,
               :too_many_options,
               message: 'some questions have been answered with too many corresponding options'

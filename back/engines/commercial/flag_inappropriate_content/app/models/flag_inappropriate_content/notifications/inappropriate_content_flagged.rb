@@ -65,8 +65,8 @@ module FlagInappropriateContent
 
       def self.make_notifications_on(activity)
         flag = activity.item
-        self.recipient_ids(flag.flaggable).map do |recipient_id|
-          self.new(
+        recipient_ids(flag.flaggable).map do |recipient_id|
+          new(
             recipient_id: recipient_id,
             initiating_user_id: activity.user_id,
             inappropriate_content_flag: flag

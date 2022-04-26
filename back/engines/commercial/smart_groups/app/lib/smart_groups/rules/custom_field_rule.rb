@@ -25,7 +25,7 @@ module SmartGroups::Rules
 
     class_methods do
       def from_json(json)
-        self.new(json['customFieldId'], json['predicate'], json['value'])
+        new(json['customFieldId'], json['predicate'], json['value'])
       end
     end
 

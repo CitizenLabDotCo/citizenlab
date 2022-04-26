@@ -38,7 +38,7 @@ module Verification
         end
 
         def self.from_json(json)
-          self.new json['predicate']
+          new json['predicate']
         end
 
         def initialize(predicate)

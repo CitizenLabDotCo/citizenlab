@@ -48,11 +48,11 @@ class Invite < ApplicationRecord
   private
 
   def pending?
-    !self.accepted_at
+    !accepted_at
   end
 
   def destroy_invitee
-    self.invitee.destroy
+    invitee.destroy
   end
 
   def generate_token
@@ -62,11 +62,11 @@ class Invite < ApplicationRecord
   def sanitize_invite_text
     service = SanitizationService.new
     self.invite_text = service.sanitize(
-      self.invite_text,
+      invite_text,
       %i[decoration link]
     )
-    self.invite_text = service.remove_empty_trailing_tags(self.invite_text)
-    self.invite_text = service.linkify(self.invite_text)
+    self.invite_text = service.remove_empty_trailing_tags(invite_text)
+    self.invite_text = service.linkify(invite_text)
   end
 
   def remove_notifications

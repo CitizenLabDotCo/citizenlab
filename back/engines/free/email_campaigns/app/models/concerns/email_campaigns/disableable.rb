@@ -18,7 +18,7 @@ module EmailCampaigns
     end
 
     def filter_enabled?(options={})
-      self.enabled != false
+      enabled != false
     end
 
   end

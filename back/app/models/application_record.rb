@@ -24,7 +24,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def valid_attribute?(attribute_name)
-    self.valid?
-    self.errors[attribute_name].blank?.tap { |_| self.errors.clear }
+    valid?
+    errors[attribute_name].blank?.tap { |_| errors.clear }
   end
 end

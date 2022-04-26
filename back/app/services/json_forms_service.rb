@@ -24,7 +24,7 @@ class JsonFormsService
 
   def allowed_fields(configuration, fields, current_user)
     override_method = "#{fields.first.resource_type.underscore}_allowed_fields"
-    if self.respond_to?(override_method, true)
+    if respond_to?(override_method, true)
       send(override_method, configuration, fields, current_user)
     else
       fields
@@ -46,7 +46,7 @@ class JsonFormsService
       properties: fields.inject({}) do |memo, field|
         override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         memo[field.key] =
-          if field.code && self.respond_to?(override_method, true)
+          if field.code && respond_to?(override_method, true)
             send(override_method, field, locale)
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
@@ -73,7 +73,7 @@ class JsonFormsService
       next nil if (!field || !field.enabled || field.hidden)
 
       override_method = "#{fields.first.resource_type.underscore}_#{field.code}_to_ui_schema_field"
-      if field.code && self.respond_to?(override_method, true)
+      if field.code && respond_to?(override_method, true)
         send(override_method, field, locale)
       else
         send("#{field.input_type}_to_ui_schema_field", field, locale)

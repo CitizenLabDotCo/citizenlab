@@ -29,9 +29,9 @@ class CustomFieldService
         override_method_code = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         override_method_type = "#{field.resource_type.underscore}_#{field.input_type}_to_json_schema_field"
         memo[field.key] =
-          if field.code && self.respond_to?(override_method_code, true)
+          if field.code && respond_to?(override_method_code, true)
             send(override_method_code, field, locale)
-          elsif field.input_type && self.respond_to?(override_method_type, true)
+          elsif field.input_type && respond_to?(override_method_type, true)
             send(override_method_type, field, locale)
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
@@ -57,7 +57,7 @@ class CustomFieldService
     fields.inject({}) do |memo, field|
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
-        if field.code && self.respond_to?(override_method, true)
+        if field.code && respond_to?(override_method, true)
           send(override_method, field, locale)
         else
           send("#{field.input_type}_to_ui_schema_field", field, locale)

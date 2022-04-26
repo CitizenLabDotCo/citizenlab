@@ -40,10 +40,10 @@ class Vote < ApplicationRecord
   scope :down, -> { where mode: 'down' }
 
   def up?
-    self.mode == 'up'
+    mode == 'up'
   end
 
   def down?
-    self.mode == 'down'
+    mode == 'down'
   end
 end

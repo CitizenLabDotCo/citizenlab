@@ -101,6 +101,9 @@ Layout/SpaceBeforeComment:
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
   Enabled: true
 
+Style/RedundantSelf:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

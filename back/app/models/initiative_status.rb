@@ -30,14 +30,14 @@ class InitiativeStatus < ApplicationRecord
   before_validation :strip_title
 
   def custom?
-    self.code == 'custom'
+    code == 'custom'
   end
 
   private
 
   def strip_title
-    self.title_multiloc.each do |key, value|
-      self.title_multiloc[key] = value.strip
+    title_multiloc.each do |key, value|
+      title_multiloc[key] = value.strip
     end
   end
 

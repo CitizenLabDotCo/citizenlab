@@ -82,7 +82,7 @@ module SmartGroups::Rules
     end
 
     def self.from_json(json)
-      self.new(json['predicate'], json['value'])
+      new(json['predicate'], json['value'])
     end
 
     def initialize(predicate, value=nil)
@@ -152,13 +152,13 @@ module SmartGroups::Rules
     def validate_value_inclusion
       if needs_value?
         allowed_values = ['outside'] + Area.ids
-        is_included = if self.value.is_a? Array
-          (self.value - allowed_values).blank?
+        is_included = if value.is_a? Array
+          (value - allowed_values).blank?
         else
-          allowed_values.include? self.value
+          allowed_values.include? value
         end
         if !is_included
-          self.errors.add(
+          errors.add(
             :value,
             :inclusion,
             message: 'All values must be existing area IDs or the value "outside"'

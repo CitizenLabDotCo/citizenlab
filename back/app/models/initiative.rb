@@ -139,11 +139,11 @@ class Initiative < ApplicationRecord
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
-      self.body_multiloc,
+      body_multiloc,
       %i[title alignment list decoration link image video]
     )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(body_multiloc)
+    self.body_multiloc = service.linkify_multiloc(body_multiloc)
   end
 
   def assignee_can_moderate_initiatives
@@ -158,8 +158,8 @@ class Initiative < ApplicationRecord
 
   def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
-    if initial_status && self.initiative_status_changes.empty? && !self.draft?
-      self.initiative_status_changes.build(initiative_status: initial_status)
+    if initial_status && initiative_status_changes.empty? && !draft?
+      initiative_status_changes.build(initiative_status: initial_status)
     end
   end
 end

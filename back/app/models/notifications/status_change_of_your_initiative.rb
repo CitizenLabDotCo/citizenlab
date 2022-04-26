@@ -64,7 +64,7 @@ module Notifications
       recipient_id = initiative&.author_id
 
       if initiative && recipient_id
-        [self.new(
+        [new(
            recipient_id: recipient_id,
            initiating_user_id: activity.user_id,
            post: initiative,

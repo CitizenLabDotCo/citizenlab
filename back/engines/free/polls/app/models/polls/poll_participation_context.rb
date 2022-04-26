@@ -14,11 +14,11 @@ module Polls::PollParticipationContext
   end
 
   def poll?
-    self.participation_method == 'poll'
+    participation_method == 'poll'
   end
 
   def poll_anonymous?
-    self.poll_anonymous
+    poll_anonymous
   end
 
   private

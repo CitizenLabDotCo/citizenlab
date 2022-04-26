@@ -63,8 +63,8 @@ module Notifications
       spam_report = activity.item
       if spam_report.spam_reportable_type == 'Initiative'
         initiator_id = spam_report.user_id
-        self.recipient_ids(initiator_id).map do |recipient_id|
-          self.new(
+        recipient_ids(initiator_id).map do |recipient_id|
+          new(
             recipient_id: recipient_id,
             initiating_user_id: initiator_id,
             spam_report: spam_report,

@@ -66,7 +66,7 @@ module EmailCampaigns
     end
 
     def self.campaign_name
-      self.name.split('::').last.underscore
+      name.split('::').last.underscore
     end
 
     def self.from_campaign_name(name)
@@ -75,33 +75,33 @@ module EmailCampaigns
 
     def apply_recipient_filters(activity: nil, time: nil)
       self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
-        self.send(action_symbol, users_scope, { activity: activity, time: time })
+        send(action_symbol, users_scope, { activity: activity, time: time })
       end
     end
 
     def run_before_send_hooks(activity: nil, time: nil)
       self.class.before_send_hooks.all? do |action_symbol|
-        self.send(action_symbol, { activity: activity, time: time })
+        send(action_symbol, { activity: activity, time: time })
       end
     end
 
     def run_after_send_hooks(command)
       self.class.after_send_hooks.each do |action_symbol|
-        self.send(action_symbol, command)
+        send(action_symbol, command)
       end
     end
 
     def self.campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.campaign_type_description.#{self.campaign_name}"
+        "email_campaigns.campaign_type_description.#{campaign_name}"
       )
     end
 
     def self.admin_campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.admin_campaign_type_description.#{self.campaign_name}"
+        "email_campaigns.admin_campaign_type_description.#{campaign_name}"
       )
     end
 
@@ -112,7 +112,7 @@ module EmailCampaigns
     protected
 
     def set_enabled
-      self.enabled = true if self.enabled.nil?
+      self.enabled = true if enabled.nil?
     end
 
     def serialize_campaign(item)

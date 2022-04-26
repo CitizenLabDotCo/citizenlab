@@ -68,7 +68,7 @@ module Notifications
       # initiator
       if recipient_id && initiator_id && recipient_id != initiator_id
         [
-          self.new(
+          new(
            recipient_id: recipient_id,
            post: initiative,
            initiating_user_id: initiator_id

@@ -36,7 +36,7 @@ class CustomFieldOption < ApplicationRecord
 
   def belongs_to_select_field
     if custom_field && !custom_field.support_options?
-      self.errors.add(
+      errors.add(
         :base,
         :option_on_non_select_field,
         message: 'The custom field option you\'re specifying does not belong to a custom field that supports options'
@@ -45,9 +45,9 @@ class CustomFieldOption < ApplicationRecord
   end
 
   def generate_key
-    if !self.key
+    if !key
       self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
-        self.class.find_by(key: key_proposal, custom_field: self.custom_field)
+        self.class.find_by(key: key_proposal, custom_field: custom_field)
       end
     end
   end

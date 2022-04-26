@@ -65,7 +65,7 @@ module Notifications
         recipient_id = official_feedback.post.author_id
         initiator_id = official_feedback&.user_id
         if official_feedback && recipient_id && initiator_id && (recipient_id != initiator_id)
-          [self.new(
+          [new(
              recipient_id: recipient_id,
              initiating_user_id: initiator_id,
              post: official_feedback.post,

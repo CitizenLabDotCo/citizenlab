@@ -195,7 +195,7 @@ module EmailCampaigns
     protected
 
     def set_enabled
-      self.enabled = false if self.enabled.nil?
+      self.enabled = false if enabled.nil?
     end
   end
 end

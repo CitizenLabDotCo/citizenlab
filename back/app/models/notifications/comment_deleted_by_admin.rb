@@ -79,7 +79,7 @@ module Notifications
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id
         end
-        [self.new(attributes)]
+        [new(attributes)]
       else
         []
       end

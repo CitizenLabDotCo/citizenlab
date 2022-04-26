@@ -30,8 +30,8 @@ class PhaseFile < ApplicationRecord
   private
 
   def extension_whitelist
-    if !EXTENSION_WHITELIST.include? self.name.split('.').last.downcase
-      self.errors.add(
+    if !EXTENSION_WHITELIST.include? name.split('.').last.downcase
+      errors.add(
         :file,
         :extension_whitelist_error,
         message: 'Unsupported file extension'
