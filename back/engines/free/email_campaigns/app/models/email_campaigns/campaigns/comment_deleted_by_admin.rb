@@ -39,7 +39,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::CommentDeletedByAdmin' => {'created' => true}}
+      { 'Notifications::CommentDeletedByAdmin' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

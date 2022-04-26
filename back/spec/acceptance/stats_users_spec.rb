@@ -75,7 +75,7 @@ resource 'Stats - Users' do
         do_request
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq({series: { users: {} }})
+        expect(json_response).to eq({ series: { users: {} } })
       end
     end
 

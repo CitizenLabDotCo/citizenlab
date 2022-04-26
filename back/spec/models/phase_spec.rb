@@ -15,7 +15,7 @@ RSpec.describe Phase, type: :model do
       phase = create(:phase, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(phase.description_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
   end
@@ -96,8 +96,8 @@ RSpec.describe Phase, type: :model do
   describe 'max_budget' do
     it 'can be updated in a project with just one phase' do
       project = create(:project_with_current_phase,
-        phases_config: {sequence: 'xc'},
-        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234}
+        phases_config: { sequence: 'xc' },
+        current_phase_attrs: { participation_method: 'budgeting', max_budget: 1234 }
         )
       phase = project.phases.find_by participation_method: 'budgeting'
 

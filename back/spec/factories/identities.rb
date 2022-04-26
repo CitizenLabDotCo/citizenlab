@@ -30,7 +30,7 @@ FactoryBot.define do
               }
             },
             "timezone": 1,
-            "age_range": {"min": 21},
+            "age_range": { "min": 21 },
             "last_name": 'Kraus',
             "first_name": 'Aaron',
             "third_party_id": '-AcY1HSyWpTc72eumxrIlh-YMxk'

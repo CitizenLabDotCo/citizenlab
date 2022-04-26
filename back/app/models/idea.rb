@@ -92,35 +92,35 @@ class Idea < ApplicationRecord
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:ideas_topics)
-    .where(ideas_topics: {topic_id: uniq_topic_ids})
+    .where(ideas_topics: { topic_id: uniq_topic_ids })
     .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
   end)
 
   scope :with_some_topics, (Proc.new do |topics|
-    ideas = joins(:ideas_topics).where(ideas_topics: {topic: topics})
+    ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_ideas)
-    .where(areas_ideas: {area_id: uniq_area_ids})
+    .where(areas_ideas: { area_id: uniq_area_ids })
     .group(:id).having('COUNT(*) = ?', uniq_area_ids.size)
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    with_dups = joins(:areas_ideas).where(areas_ideas: {area_id: area_ids})
+    with_dups = joins(:areas_ideas).where(areas_ideas: { area_id: area_ids })
     where(id: with_dups)
   end)
 
   scope :in_phase, (Proc.new do |phase_id|
     joins(:ideas_phases)
-      .where(ideas_phases: {phase_id: phase_id})
+      .where(ideas_phases: { phase_id: phase_id })
   end)
 
   scope :with_project_publication_status, (Proc.new do |publication_status|
     joins(project: [:admin_publication])
-      .where(projects: {admin_publications: {publication_status: publication_status}})
+      .where(projects: { admin_publications: { publication_status: publication_status } })
   end)
 
   scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
@@ -132,7 +132,7 @@ class Idea < ApplicationRecord
   }
 
   scope :feedback_needed, -> {
-    joins(:idea_status).where(idea_statuses: {code: 'proposed'})
+    joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
 

@@ -11,20 +11,20 @@ describe FlagInappropriateContent::ToxicityDetectionService do
     end
 
     it 'creates a new flag if toxicity was detected' do
-      idea = create(:idea, title_multiloc: {'en' => 'An idea for my fellow wankers'})
+      idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
       service.flag_toxicity! idea, attributes: [:title_multiloc]
       expect(idea.reload.inappropriate_content_flag).to be_present
       expect(idea.reload.inappropriate_content_flag.toxicity_label).to be_present
     end
 
     it 'creates no flag if no toxicity was detected' do
-      idea = create(:idea, title_multiloc: {'en' => 'My innocent idea'}, location_description: 'Wankerford')
+      idea = create(:idea, title_multiloc: { 'en' => 'My innocent idea' }, location_description: 'Wankerford')
       service.flag_toxicity! idea, attributes: [:title_multiloc]
       expect(idea.reload.inappropriate_content_flag).to be_blank
     end
 
     it 'reintroduces a deleted flag if no toxicity was detected' do
-      comment = create(:comment, body_multiloc: {'en' => 'wanker'})
+      comment = create(:comment, body_multiloc: { 'en' => 'wanker' })
       flag = create(:inappropriate_content_flag, flaggable: comment, deleted_at: Time.now)
       service.flag_toxicity! comment, attributes: [:body_multiloc]
       expect(comment.reload.inappropriate_content_flag).to be_present
@@ -34,7 +34,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
 
     it 'creates no flag if flagging feature is disabled' do
       SettingsService.new.deactivate_feature! 'flag_inappropriate_content'
-      idea = create(:idea, title_multiloc: {'en' => 'An idea for my fellow wankers'})
+      idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
       service.flag_toxicity! idea, attributes: [:title_multiloc]
       expect(idea.reload.inappropriate_content_flag).to be_blank
     end

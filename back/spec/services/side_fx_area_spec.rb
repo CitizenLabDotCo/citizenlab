@@ -14,7 +14,7 @@ describe SideFxAreaService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the area has changed" do
-      area.update(title_multiloc: {'en': 'changed'})
+      area.update(title_multiloc: { 'en': 'changed' })
       expect {service.after_update(area, user)}.
         to have_enqueued_job(LogActivityJob).with(area, 'changed', user, area.updated_at.to_i)
     end
@@ -23,7 +23,7 @@ describe SideFxAreaService do
   describe 'before_destroy' do
     it 'destroys custom field option values for domicile that refer to this area' do
       domicile_cf = create(:custom_field_select, code: 'domicile', key: 'domicile')
-      lives_in_area = create(:user, custom_field_values: {domicile_cf.key => area.id})
+      lives_in_area = create(:user, custom_field_values: { domicile_cf.key => area.id })
       service.before_destroy(area, user)
       expect(lives_in_area.reload.custom_field_values).to eq({})
     end

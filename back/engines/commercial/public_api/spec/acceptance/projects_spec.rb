@@ -25,7 +25,7 @@ resource 'Projects' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:projects].size).to eq Project.count
-        expect(json_response[:meta]).to eq({total_pages: 1, current_page: 1})
+        expect(json_response[:meta]).to eq({ total_pages: 1, current_page: 1 })
       end
 
       example 'Get the second page of projects' do
@@ -33,7 +33,7 @@ resource 'Projects' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:projects].size).to eq 2
-        expect(json_response[:meta]).to eq({total_pages: 2, current_page: 2})
+        expect(json_response[:meta]).to eq({ total_pages: 2, current_page: 2 })
       end
 
     end

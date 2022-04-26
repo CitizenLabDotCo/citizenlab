@@ -56,7 +56,7 @@ module Notifications
 
     validates :post, presence: true
 
-    ACTIVITY_TRIGGERS = {'Initiative' => {'reached_threshold' => true}}
+    ACTIVITY_TRIGGERS = { 'Initiative' => { 'reached_threshold' => true } }
     EVENT_NAME = 'Threshold reached for admin'
 
 

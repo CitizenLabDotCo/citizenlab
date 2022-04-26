@@ -27,7 +27,7 @@ class SideFxEventService
       'deleted', 
       current_user, 
       Time.now.to_i, 
-      payload: {event: serialized_event}
+      payload: { event: serialized_event }
     )
   end
 end

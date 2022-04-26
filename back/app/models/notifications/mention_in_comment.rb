@@ -57,7 +57,7 @@ module Notifications
     validates :initiating_user, :comment, :post, presence: true
 
 
-    ACTIVITY_TRIGGERS = {'Comment' => {'mentioned' => true}}
+    ACTIVITY_TRIGGERS = { 'Comment' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in a comment'
     
 

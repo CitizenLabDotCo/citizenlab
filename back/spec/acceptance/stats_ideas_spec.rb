@@ -551,7 +551,7 @@ resource 'Stats - Ideas' do
         do_request
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response).to eq({series: { ideas: {} }})
+        expect(json_response).to eq({ series: { ideas: {} } })
       end
     end
   end

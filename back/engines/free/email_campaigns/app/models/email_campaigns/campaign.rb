@@ -76,13 +76,13 @@ module EmailCampaigns
 
     def apply_recipient_filters activity: nil, time: nil
       self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
-        self.send(action_symbol, users_scope, {activity: activity, time: time})
+        self.send(action_symbol, users_scope, { activity: activity, time: time })
       end
     end
 
     def run_before_send_hooks activity: nil, time: nil
       self.class.before_send_hooks.all? do |action_symbol|
-        self.send(action_symbol, {activity: activity, time: time})
+        self.send(action_symbol, { activity: activity, time: time })
       end
     end
 

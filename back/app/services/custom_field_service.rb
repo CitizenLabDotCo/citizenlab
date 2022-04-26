@@ -167,7 +167,7 @@ class CustomFieldService
     if base[:"ui:widget"]
       base
     else
-      {"ui:widget": 'textarea'}
+      { "ui:widget": 'textarea' }
     end
   end
 

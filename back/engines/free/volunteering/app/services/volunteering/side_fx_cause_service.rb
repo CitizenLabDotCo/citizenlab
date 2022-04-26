@@ -21,7 +21,7 @@ module Volunteering
 
     def after_destroy frozen_cause, user
       serialized_cause = clean_time_attributes(frozen_cause.attributes)
-      LogActivityJob.perform_later(encode_frozen_resource(frozen_cause), 'deleted', user, Time.now.to_i, payload: {cause: serialized_cause})
+      LogActivityJob.perform_later(encode_frozen_resource(frozen_cause), 'deleted', user, Time.now.to_i, payload: { cause: serialized_cause })
     end
   end
 end

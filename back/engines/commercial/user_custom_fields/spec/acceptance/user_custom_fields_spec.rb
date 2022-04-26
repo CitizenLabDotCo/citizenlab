@@ -141,8 +141,8 @@ resource 'User Custom Fields' do
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
       let(:id) { create(:custom_field).id }
-      let(:title_multiloc) { {'en' => 'New title'} }
-      let(:description_multiloc) { {'en' => 'New description'} }
+      let(:title_multiloc) { { 'en' => 'New title' } }
+      let(:description_multiloc) { { 'en' => 'New description' } }
       let(:required) { true }
       let(:enabled) { false }
 
@@ -185,7 +185,7 @@ resource 'User Custom Fields' do
       if CitizenLab.ee?
         example "[error] Delete a custom field that's still referenced in a rules group" do
           group = create(:smart_group, rules: [
-            {ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty'}
+            { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
           ])
           do_request
           assert_status 422

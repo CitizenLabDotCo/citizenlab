@@ -29,7 +29,7 @@ resource 'Invite', admin_api: true do
     let(:last_name) { 'Brijl' }
     let(:locale) { 'nl-NL' }
     let(:invite_text) { 'Welcome to the new world' }
-    let(:roles) { [{type: 'admin'}] }
+    let(:roles) { [{ type: 'admin' }] }
     let(:group) { create(:group) }
     let(:group_ids) { [group.id] }
     let(:send_invite_email) { false }

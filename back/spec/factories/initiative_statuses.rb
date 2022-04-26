@@ -14,27 +14,27 @@ FactoryBot.define do
 
     factory :initiative_status_proposed do
       code { 'proposed' }
-      title_multiloc { {'en' => 'proposed'} }
+      title_multiloc { { 'en' => 'proposed' } }
     end
 
     factory :initiative_status_expired do
       code { 'expired' }
-      title_multiloc { {'en' => 'expired'} }
+      title_multiloc { { 'en' => 'expired' } }
     end
 
     factory :initiative_status_threshold_reached do
       code { 'threshold_reached' }
-      title_multiloc { {'en' => 'threshold_reached'} }
+      title_multiloc { { 'en' => 'threshold_reached' } }
     end
 
     factory :initiative_status_answered do
       code { 'answered' }
-      title_multiloc { {'en' => 'answered'} }
+      title_multiloc { { 'en' => 'answered' } }
     end
 
     factory :initiative_status_ineligible do
       code { 'ineligible' }
-      title_multiloc { {'en' => 'ineligible'} }
+      title_multiloc { { 'en' => 'ineligible' } }
     end
   end
 end

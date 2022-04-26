@@ -20,7 +20,7 @@ module Verification
     belongs_to :user
 
     validates :method_name, :hashed_uid, presence: true
-    validates :active, inclusion: {in: [true, false]}
+    validates :active, inclusion: { in: [true, false] }
 
     scope :active, -> {where(active: true)}
 

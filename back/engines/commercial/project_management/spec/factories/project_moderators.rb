@@ -4,6 +4,6 @@ FactoryBot.define do
       projects { [create(:project)] }
       project_ids { nil }
     end
-    roles { (project_ids || projects&.map(&:id)).uniq.map{|id| {type: 'project_moderator', project_id: id}} }
+    roles { (project_ids || projects&.map(&:id)).uniq.map{|id| { type: 'project_moderator', project_id: id }} }
   end
 end

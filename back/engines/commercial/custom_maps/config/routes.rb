@@ -1,5 +1,5 @@
 CustomMaps::Engine.routes.draw do
-  namespace :web_api, :defaults => {:format => :json} do
+  namespace :web_api, :defaults => { :format => :json } do
     namespace :v1 do
       resources :projects, only: [] do
         resource :map_config, except: %i[index] do

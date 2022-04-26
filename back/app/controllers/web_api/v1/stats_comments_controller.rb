@@ -31,7 +31,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_time
-    render json: {series: {comments: comments_by_time_serie}}
+    render json: { series: { comments: comments_by_time_serie } }
   end
 
   def comments_by_time_as_xlsx
@@ -57,7 +57,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_time_cumulative
-    render json: {series: {comments: comments_by_time_cumulative_serie}}
+    render json: { series: { comments: comments_by_time_cumulative_serie } }
   end
 
   def comments_by_time_cumulative_as_xlsx
@@ -83,7 +83,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_topic
     serie = comments_by_topic_serie
     topics = Topic.pluck :id, :title_multiloc
-    render json: {series: {comments: serie}, topics: topics.map{|id, title_multiloc| [id, {title_multiloc: title_multiloc}]}.to_h}
+    render json: { series: { comments: serie }, topics: topics.map{|id, title_multiloc| [id, { title_multiloc: title_multiloc }]}.to_h }
   end
 
   def comments_by_topic_as_xlsx
@@ -119,7 +119,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_project
     serie = comments_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {comments: serie}, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h}
+    render json: { series: { comments: serie }, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h }
   end
 
   def comments_by_project_as_xlsx
@@ -142,7 +142,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def apply_project_filter comments
     if params[:project]
-      comments.joins('INNER JOIN ideas ON ideas.id = comments.post_id').where(ideas: {project_id: params[:project]})
+      comments.joins('INNER JOIN ideas ON ideas.id = comments.post_id').where(ideas: { project_id: params[:project] })
     else
       comments
     end
@@ -153,7 +153,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       comments
         .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
         .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-        .where(ideas: {ideas_topics: {topic_id: params[:topic]}})
+        .where(ideas: { ideas_topics: { topic_id: params[:topic] } })
     else
       comments
     end
@@ -170,13 +170,13 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def render_no_data
     if @no_data
-      render json: {series: {comments: {}}}
+      render json: { series: { comments: {} } }
     end
   end
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
+      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
     end
   end
 

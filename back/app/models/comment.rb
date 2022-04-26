@@ -61,12 +61,12 @@ class Comment < ApplicationRecord
 
   # This code allows us to do something like comments.include(:idea)
   # After https://stackoverflow.com/a/16124295/3585671
-  belongs_to :idea, -> { joins(:comments).where(comments: {post_type: 'Idea'}) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
+  belongs_to :idea, -> { joins(:comments).where(comments: { post_type: 'Idea' }) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
   def idea
     return unless post_type == 'Idea'
     super
   end
-  belongs_to :initiative, -> { joins(:comments).where(comments: {post_type: 'Initiative'}) }, foreign_key: 'post_id', optional: true, class_name: 'Initiative'
+  belongs_to :initiative, -> { joins(:comments).where(comments: { post_type: 'Initiative' }) }, foreign_key: 'post_id', optional: true, class_name: 'Initiative'
   def initiative
     return unless post_type == 'Initiative'
     super

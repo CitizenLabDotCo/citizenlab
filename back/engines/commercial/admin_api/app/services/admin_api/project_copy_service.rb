@@ -17,7 +17,7 @@ module AdminApi
     def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil
       @project = project
       init_refs
-      @template = {'models' => {}}
+      @template = { 'models' => {} }
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
       @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
@@ -260,7 +260,7 @@ module AdminApi
 
     def yml_poll_options shift_timestamps: 0
       participation_context_ids = [@project.id] + @project.phases.ids
-      Polls::Option.left_outer_joins(:question).where(polls_questions: {participation_context_id: participation_context_ids}).map do |o|
+      Polls::Option.left_outer_joins(:question).where(polls_questions: { participation_context_id: participation_context_ids }).map do |o|
         yml_option = {
           'question_ref'   => lookup_ref(o.question_id, :poll_question),
           'title_multiloc' => o.title_multiloc,

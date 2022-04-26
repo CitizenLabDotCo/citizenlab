@@ -45,7 +45,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::ProjectPhaseUpcoming' => {'created' => true}}
+      { 'Notifications::ProjectPhaseUpcoming' => { 'created' => true } }
     end
 
     def self.category

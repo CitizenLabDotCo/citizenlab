@@ -25,7 +25,7 @@ describe ParticipationContextService do
     it 'returns the active phase for a timeline project' do
       random_title = SecureRandom.uuid
       project = create(:project_with_current_phase, 
-        current_phase_attrs: {title_multiloc: {'en' => random_title} }
+        current_phase_attrs: { title_multiloc: { 'en' => random_title } }
         )
       expect(service.get_participation_context(project)&.title_multiloc.dig('en')).to eq random_title
     end
@@ -36,19 +36,19 @@ describe ParticipationContextService do
     end
 
     it "returns nil for a timeline project that's archived" do
-      project = create(:project_with_current_phase, admin_publication_attributes: {publication_status: 'archived'})
+      project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.get_participation_context(project)).to eq nil
     end
 
     it "returns nil for a continuous project that's archived" do
-      project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.get_participation_context(project)).to eq nil
     end
   end
 
   describe 'posting_idea_disabled_reason_for_project' do
     it 'returns `posting_disabled` when posting is disabled' do
-      project = create(:project_with_current_phase, current_phase_attrs: {posting_enabled: false})
+      project = create(:project_with_current_phase, current_phase_attrs: { posting_enabled: false })
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user))).to eq 'posting_disabled'
     end
 
@@ -89,7 +89,7 @@ describe ParticipationContextService do
 
       it 'returns `commenting_disabled` when commenting is disabled in the current phase' do
         project = create(:project_with_current_phase, 
-          current_phase_attrs: {commenting_enabled: false},
+          current_phase_attrs: { commenting_enabled: false },
         )
         expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'commenting_disabled'
         idea = create(:idea, project: project, phases: [project.phases[2]])
@@ -111,7 +111,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:project_with_current_phase, admin_publication_attributes: {publication_status: 'archived'})
+        project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
         expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'project_inactive'
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
@@ -120,7 +120,7 @@ describe ParticipationContextService do
       it "returns nil when we're in a participatory budgeting context" do
         project = create(
           :project_with_current_phase, 
-          current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
         )
         expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq nil
         idea = create(:idea, project: project, phases: [project.phases[2]])
@@ -155,7 +155,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+        project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
         expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
         idea = create(:idea, project: project)
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
@@ -168,7 +168,7 @@ describe ParticipationContextService do
 
     context 'a vote' do
       it 'returns nil when voting is enabled in the current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: true})
+        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
         idea = create(:idea, project: project, phases: project.phases)
         vote = build(:vote, user: user, votable: idea)
 
@@ -185,8 +185,8 @@ describe ParticipationContextService do
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(:project_with_current_phase, 
-          phases_config: {sequence: 'xxcxx'}, 
-          current_phase_attrs: {voting_enabled: true}
+          phases_config: { sequence: 'xxcxx' }, 
+          current_phase_attrs: { voting_enabled: true }
           )
         idea_phases = project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
@@ -293,8 +293,8 @@ describe ParticipationContextService do
 
       it "returns `idea_not_in_current_phase` when it's not in the current phase" do
         project = create(:project_with_current_phase, 
-          phases_config: {sequence: 'xxcxx'}, 
-          current_phase_attrs: {voting_enabled: true}
+          phases_config: { sequence: 'xxcxx' }, 
+          current_phase_attrs: { voting_enabled: true }
           )
         idea_phases = [project.phases.order(:start_at).first, project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
@@ -323,7 +323,7 @@ describe ParticipationContextService do
       end
 
       it 'returns `project_inactive` when the project is archived' do
-        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+        project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
@@ -358,7 +358,7 @@ describe ParticipationContextService do
 
     context 'a timeline project' do
       it 'returns nil when voting is enabled in the current phase' do
-        project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: true})
+        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: true })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to be_nil
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to be_nil
@@ -366,7 +366,7 @@ describe ParticipationContextService do
 
       it 'returns `project_inactive` when the project is archived' do
         project = create(:project_with_current_phase, 
-          admin_publication_attributes: {publication_status: 'archived'}, current_phase_attrs: {voting_enabled: true})
+          admin_publication_attributes: { publication_status: 'archived' }, current_phase_attrs: { voting_enabled: true })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'project_inactive'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'project_inactive'
@@ -387,14 +387,14 @@ describe ParticipationContextService do
       end
 
       it "returns `not_ideation` when we're in a participatory budgeting context dsofifopwefwe" do
-        project = create(:project_with_current_phase, current_phase_attrs: {participation_method: 'budgeting'})
+        project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'budgeting' })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_ideation'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'not_ideation'
       end
 
       it 'returns `voting_disabled` if voting is disabled' do
-        project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: false})
+        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: false })
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'voting_disabled'
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'down')).to eq 'voting_disabled'
@@ -402,7 +402,7 @@ describe ParticipationContextService do
 
       it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
         project = create(:project_with_current_phase, 
-          current_phase_attrs: {voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1})
+          current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
         create(:vote, mode: 'up', user: user, votable: create(:idea, project: project, phases: project.phases))
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
@@ -413,7 +413,7 @@ describe ParticipationContextService do
     context 'a phase' do
       it 'returns nil when voting is enabled' do
         project = create(:project_with_current_phase, 
-          phases_config: {sequence: 'xcx', c: {voting_enabled: true}, x: {voting_enabled: false}})
+          phases_config: { sequence: 'xcx', c: { voting_enabled: true }, x: { voting_enabled: false } })
         phase = project.phases.order(:start_at)[1]
 
         expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
@@ -422,7 +422,7 @@ describe ParticipationContextService do
 
       it 'returns nil when voting is enabled for that phase, but disabled for the current phase' do
         project = create(:project_with_current_phase, 
-          phases_config: {sequence: 'xxcxx', c: {voting_enabled: false}, x: {voting_enabled: true}})
+          phases_config: { sequence: 'xxcxx', c: { voting_enabled: false }, x: { voting_enabled: true } })
         phase = project.phases.order(:start_at).first
 
         expect(service.idea_voting_disabled_reason_for(phase, user, mode: 'up')).to be_nil
@@ -431,8 +431,8 @@ describe ParticipationContextService do
 
       it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached for that phase' do
         project = create(:project_with_current_phase, 
-          phases_config: {sequence: 'xxcxx', c: {voting_enabled: true}, 
-          x: {voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2}})
+          phases_config: { sequence: 'xxcxx', c: { voting_enabled: true }, 
+          x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } })
         phase = project.phases.order(:start_at).first
         ideas = create_list(:idea, 2, project: project, phases: project.phases)
         ideas.each do |idea|
@@ -466,7 +466,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
-        project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: false})
+        project = create(:project_with_current_phase, current_phase_attrs: { voting_enabled: false })
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:voting_disabled]
       end
@@ -480,7 +480,7 @@ describe ParticipationContextService do
       it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(
           :project_with_current_phase, 
-          current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
         )
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_ideation'
@@ -495,7 +495,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+        project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
@@ -516,7 +516,7 @@ describe ParticipationContextService do
 
   describe 'taking_survey_disabled_reason' do
     it 'returns `not_survey` when the active context is not a survey' do
-      project = create(:project_with_current_phase, current_phase_attrs: {participation_method: 'ideation'})
+      project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
       expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_survey'
     end
 
@@ -526,7 +526,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `project_inactive` when the continuous project is archived' do
-      project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
@@ -550,7 +550,7 @@ describe ParticipationContextService do
     end
 
     it 'returns `project_inactive` when the continuous project is archived' do
-      project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
+      project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
@@ -561,7 +561,7 @@ describe ParticipationContextService do
       it 'returns nil when the idea is in the current phase and budgeting is allowed' do
         project = create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx'
-        }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+        }, current_phase_attrs: { participation_method: 'budgeting', max_budget: 10000 })
         idea = create(:idea, project: project, phases: [project.phases[2]] )
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to be_nil
       end
@@ -569,14 +569,14 @@ describe ParticipationContextService do
       it 'returns `idea_not_in_current_phase` when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of' do
         project = create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx'
-        }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+        }, current_phase_attrs: { participation_method: 'budgeting', max_budget: 10000 })
         idea = create(:idea, project: project, phases: [project.phases[1]])
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
       end
 
       it "returns 'idea_not_in_current_phase' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
         project = create(:project_with_current_phase, 
-          current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10000 })
         phase = project.phases[1]
         permission = phase.permissions.find_by(action: 'budgeting')
         if permission
@@ -603,7 +603,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_budgeting_project, admin_publication_attributes: {publication_status: 'archived'})
+        project = create(:continuous_budgeting_project, admin_publication_attributes: { publication_status: 'archived' })
         idea = create(:idea, project: project)
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end
@@ -615,9 +615,9 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase, 
         phases_config: {
           sequence: 'xcxxxxxy',
-          x: {posting_enabled: false},
-          y: {posting_enabled: true},
-          c: {posting_enabled: false}
+          x: { posting_enabled: false },
+          y: { posting_enabled: true },
+          c: { posting_enabled: false }
         }
       )
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
@@ -627,7 +627,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase, 
         phases_config: {
           sequence: 'xcyyy',
-          y: {posting_enabled: false},
+          y: { posting_enabled: false },
         }
       )
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
@@ -649,9 +649,9 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase, 
         phases_config: {
           sequence: 'xcxxy',
-          x: {voting_enabled: true, downvoting_enabled: false},
-          c: {voting_enabled: false},
-          y: {voting_enabled: true, downvoting_enabled: true}
+          x: { voting_enabled: true, downvoting_enabled: false },
+          c: { voting_enabled: false },
+          y: { voting_enabled: true, downvoting_enabled: true }
         }
       )
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[2]
@@ -662,7 +662,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase, 
         phases_config: {
           sequence: 'xcyy',
-          y: {voting_enabled: false},
+          y: { voting_enabled: false },
         }
       )
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
@@ -687,9 +687,9 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase, 
         phases_config: {
           sequence: 'xcxxxxxy',
-          x: {commenting_enabled: false},
-          y: {commenting_enabled: true},
-          c: {commenting_enabled: false}
+          x: { commenting_enabled: false },
+          y: { commenting_enabled: true },
+          c: { commenting_enabled: false }
         }
       )
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
@@ -699,7 +699,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase, 
         phases_config: {
           sequence: 'xcyyy',
-          y: {commenting_enabled: false},
+          y: { commenting_enabled: false },
         }
       )
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil

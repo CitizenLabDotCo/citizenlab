@@ -26,7 +26,7 @@ RSpec.describe 'Graphql user' do
 
 
     let(:user) { create(:user) }
-    let(:variables) { {id: user.id }}
+    let(:variables) { { id: user.id }}
 
     it 'returns all users' do
       response = result
@@ -52,7 +52,7 @@ RSpec.describe 'Graphql user' do
     |}
     let(:user) { create(:user) }
     let!(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: user) }
-    let(:variables) { {id: user.id }}
+    let(:variables) { { id: user.id }}
 
     it 'returns an unsubscriptionToken' do
       response = result

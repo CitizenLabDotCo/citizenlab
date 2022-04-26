@@ -27,7 +27,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects = @projects.ordered
     end
 
-    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: {search_query: params[:search]}) if params[:search].present?
+    LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
 
     user_baskets = current_user&.baskets
       &.where(participation_context_type: 'Project')

@@ -51,7 +51,7 @@ resource 'Idea Custom Fields' do
       let(:code) { 'location_description' }
       let(:required) { true }
       let(:enabled) { false }
-      let(:description_multiloc) { {'en' => 'New description'} }
+      let(:description_multiloc) { { 'en' => 'New description' } }
 
       context "when the custom_form doesn't exist yet" do
         let(:project) { create(:project) }

@@ -33,7 +33,7 @@ module EmailCampaigns
 
     belongs_to :recipient, class_name: 'User'
 
-    validates :campaign, presence: true, inclusion: {in: CAMPAIGNS}
+    validates :campaign, presence: true, inclusion: { in: CAMPAIGNS }
 
     before_validation :set_commanded_at
 

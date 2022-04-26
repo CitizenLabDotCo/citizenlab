@@ -24,14 +24,14 @@ class SideFxCommentService
   def after_update comment, user
     LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
     if comment.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: {change: comment.body_multiloc_previous_change})
+      LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
       notify_updated_mentioned_users(comment, user)
     end
   end
 
   def after_mark_as_deleted comment, user, reason_code, other_reason
     LogActivityJob.perform_later(comment, 'marked_as_deleted', user, comment.updated_at.to_i, 
-      payload: {reason_code: reason_code, other_reason: other_reason})
+      payload: { reason_code: reason_code, other_reason: other_reason })
   end
 
   def before_destroy comment, user
@@ -40,7 +40,7 @@ class SideFxCommentService
 
   def after_destroy frozen_comment, user
     serialized_comment = clean_time_attributes(frozen_comment.attributes)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_comment), 'deleted', user, Time.now.to_i, payload: {comment: serialized_comment})
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_comment), 'deleted', user, Time.now.to_i, payload: { comment: serialized_comment })
   end
 
 
@@ -71,7 +71,7 @@ class SideFxCommentService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: mentioned_user.id})
+      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
 
@@ -83,7 +83,7 @@ class SideFxCommentService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: mentioned_user.id})
+      LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
 

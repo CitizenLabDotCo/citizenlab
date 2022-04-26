@@ -33,7 +33,7 @@ class AdminPublication < ApplicationRecord
   belongs_to :publication, polymorphic: true, touch: true
 
   validates :publication, presence: true
-  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
+  validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
   validate :parent_allowed_to_have_children
 
   before_validation :set_publication_status, on: :create

@@ -70,7 +70,7 @@ describe SideFxIdeaService do
     it "logs a 'changed' action job when the idea has changed" do
       idea = create(:idea)
       old_idea_title = idea.title_multiloc
-      idea.update(title_multiloc: {'en': 'something else'})
+      idea.update(title_multiloc: { 'en': 'something else' })
       expect {service.after_update(idea, user)}.
         to have_enqueued_job(LogActivityJob).with(idea, 'changed', any_args).exactly(1).times
         .and have_enqueued_job(Seo::ScrapeFacebookJob).exactly(1).times

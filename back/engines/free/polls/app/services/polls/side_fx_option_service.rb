@@ -21,7 +21,7 @@ module Polls
 
 	  def after_destroy frozen_option, user
 	    serialized_question = clean_time_attributes(frozen_option.attributes)
-	    LogActivityJob.perform_later(encode_frozen_resource(frozen_option), 'deleted', user, Time.now.to_i, payload: {option: serialized_question})
+	    LogActivityJob.perform_later(encode_frozen_resource(frozen_option), 'deleted', user, Time.now.to_i, payload: { option: serialized_question })
 	  end
 	end
 end

@@ -10,7 +10,7 @@ describe Verification::VerificationService do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa'}],
+      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }],
     }
     configuration.save!
   end
@@ -22,12 +22,12 @@ describe Verification::VerificationService do
       params = {
         user: user,
         method_name: 'bogus',
-        verification_parameters: {desired_error: nil}
+        verification_parameters: { desired_error: nil }
       }
 
       allow_any_instance_of(IdBogus::BogusVerification)
         .to receive(:verify_sync)
-        .and_return({uid: 'fakeuuid'})
+        .and_return({ uid: 'fakeuuid' })
 
       expect(sfxv_service)
         .to receive(:before_create)
@@ -54,7 +54,7 @@ describe Verification::VerificationService do
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
-          attributes: {first_name: 'BOB'},
+          attributes: { first_name: 'BOB' },
         })
 
       service.verify_sync(params)
@@ -102,7 +102,7 @@ describe Verification::VerificationService do
       params = {
         user: user,
         method_name: 'cow',
-        verification_parameters: {run: '12.025.365-6', id_serial: 'A001529382'}
+        verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
       expect(Verification::Verification.count).to eq 0
@@ -110,7 +110,7 @@ describe Verification::VerificationService do
       expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params[:verification_parameters])
-        .and_return({uid: '001529382'})
+        .and_return({ uid: '001529382' })
 
       service.verify_sync(params)
 
@@ -130,26 +130,26 @@ describe Verification::VerificationService do
       params1 = {
         user: create(:user),
         method_name: 'cow',
-        verification_parameters: {run: '12.025.365-6', id_serial: 'A001529382'}
+        verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
       expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params1[:verification_parameters])
-        .and_return({uid: '001529382'})
+        .and_return({ uid: '001529382' })
 
       service.verify_sync(params1)
 
       params2 = {
         user: user,
         method_name: 'cow',
-        verification_parameters: {run: '12.025.365-6', id_serial: 'A001529382'}
+        verification_parameters: { run: '12.025.365-6', id_serial: 'A001529382' }
       }
 
       expect_any_instance_of(IdCow::CowVerification)
         .to receive(:verify_sync)
         .with(params2[:verification_parameters])
-        .and_return({uid: '001529382'})
+        .and_return({ uid: '001529382' })
 
       expect{service.verify_sync(params2)}.to raise_error(Verification::VerificationService::VerificationTakenError)
     end

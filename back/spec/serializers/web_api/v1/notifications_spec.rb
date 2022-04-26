@@ -6,24 +6,24 @@ describe WebApi::V1::Notifications::NotificationSerializer do
     notification = build(notification_factory_name, initiating_user: user_1)
     notification_from_admin = build(notification_factory_name, initiating_user: admin)
 
-    hash = serializer_class.new(notification, params: {current_user: user_2})
+    hash = serializer_class.new(notification, params: { current_user: user_2 })
     last_name = hash.serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     slug = hash.serializable_hash.dig(:data, :attributes, :initiating_user_slug)
     expect(last_name).to eq "#{user_1.last_name[0]}."
     expect(slug.downcase).not_to include(user_1.last_name.downcase)
 
     last_name = serializer_class
-                    .new(notification, params: {current_user: user_1})
+                    .new(notification, params: { current_user: user_1 })
                     .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq user_1.last_name
 
     last_name = serializer_class
-                    .new(notification, params: {current_user: admin})
+                    .new(notification, params: { current_user: admin })
                     .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq user_1.last_name
 
     last_name = serializer_class
-                    .new(notification_from_admin, params: {current_user: user_2})
+                    .new(notification_from_admin, params: { current_user: user_2 })
                     .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq admin.last_name
   end

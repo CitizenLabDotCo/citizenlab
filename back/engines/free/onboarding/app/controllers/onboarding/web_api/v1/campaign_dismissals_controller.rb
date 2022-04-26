@@ -11,7 +11,7 @@ module Onboarding
           if dismissal.save
             head 200
           else
-            render json: {errors: dismissal.errors.details}, status: :unprocessable_entity
+            render json: { errors: dismissal.errors.details }, status: :unprocessable_entity
           end
         end
       end

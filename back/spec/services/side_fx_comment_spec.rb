@@ -23,8 +23,8 @@ describe SideFxCommentService do
 
       comment.body_multiloc['en'] = "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"
       expectation = expect {service.after_create(comment, user)}
-      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: u1.id})
-      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: u2.id})
+      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
+      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
 
   end
@@ -32,7 +32,7 @@ describe SideFxCommentService do
   describe 'after_update' do
 
     it "logs a 'changed' action job when the comment has changed" do
-      comment.update(body_multiloc: {'en': 'changed'})
+      comment.update(body_multiloc: { 'en': 'changed' })
       expect {service.after_update(comment, user)}.
         to have_enqueued_job(LogActivityJob).with(comment, 'changed', user, comment.updated_at.to_i)
     end
@@ -47,12 +47,12 @@ describe SideFxCommentService do
       u2_mention = mention_service.user_to_mention(u2)
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
-      comment = create(:comment, body_multiloc: {en: "#{u1_mention_expanded}"})
+      comment = create(:comment, body_multiloc: { en: "#{u1_mention_expanded}" })
 
-      comment.update(body_multiloc: {'en': "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}"})
+      comment.update(body_multiloc: { 'en': "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
       expectation = expect {service.after_update(comment, user)}
-      expectation.to_not have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: u1.id})
-      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: u2.id})
+      expectation.to_not have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
+      expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
 
   end

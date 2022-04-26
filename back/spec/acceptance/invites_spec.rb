@@ -203,7 +203,7 @@ resource 'Invites' do
           }
         end}
         let(:group_ids) { [create(:group).id] }
-        let(:roles) {[{'type' => 'admin'}]}
+        let(:roles) {[{ 'type' => 'admin' }]}
         let(:locale) { 'en' }
         let(:invite_text) { 'Welcome, my friend!' }
 
@@ -219,15 +219,15 @@ resource 'Invites' do
 
       describe do
         let(:hash_array) {[
-          {email: 'someemail@somedomain.net'},
-          {email: 'someemail@somedomain.net'},
-          {email: 'user_at_domain.com'},
-          {email: create(:user).email},
-          {email: create(:invite).invitee.email},
-          {locale: 'qq'},
-          {groups: 'A positive'},
-          {groups: 24},
-          {admin: 'nope'},
+          { email: 'someemail@somedomain.net' },
+          { email: 'someemail@somedomain.net' },
+          { email: 'user_at_domain.com' },
+          { email: create(:user).email },
+          { email: create(:invite).invitee.email },
+          { locale: 'qq' },
+          { groups: 'A positive' },
+          { groups: 24 },
+          { admin: 'nope' },
         ]}
 
         example_request '[error] Bulk invite users with xlsx file' do

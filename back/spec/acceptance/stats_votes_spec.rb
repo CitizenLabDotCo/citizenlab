@@ -92,9 +92,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {:"1984" => 2, :"1992" => 1, :"_blank" => 1},
-            down: {:"1984" => 1, :"1992" => 1},
-            total: {:"1984" => 3, :"1992" => 2, :"_blank" => 1}
+            up: { :"1984" => 2, :"1992" => 1, :"_blank" => 1 },
+            down: { :"1984" => 1, :"1992" => 1 },
+            total: { :"1984" => 3, :"1992" => 2, :"_blank" => 1 }
           }
         })
       end
@@ -102,8 +102,8 @@ resource 'Stats - Votes' do
 
     get 'web_api/v1/stats/votes_by_domicile' do
       before do
-       @eversem = create(:area, title_multiloc: {'en' => 'Eversem'}).id
-       @wolvertem = create(:area, title_multiloc: {'en' => 'Wolvertem'}).id
+       @eversem = create(:area, title_multiloc: { 'en' => 'Eversem' }).id
+       @wolvertem = create(:area, title_multiloc: { 'en' => 'Wolvertem' }).id
         @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, domicile: @eversem)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
@@ -125,9 +125,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {@eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1},
-            down: {@eversem.to_sym => 1, @wolvertem.to_sym => 1},
-            total: {@eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1}
+            up: { @eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1 },
+            down: { @eversem.to_sym => 1, @wolvertem.to_sym => 1 },
+            total: { @eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1 }
           }
         })
       end
@@ -156,9 +156,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {:"2" => 2, :"7" => 1, :"_blank" => 1},
-            down: {:"2" => 1, :"7" => 1},
-            total: {:"2" => 3, :"7" => 2, :"_blank" => 1}
+            up: { :"2" => 2, :"7" => 1, :"_blank" => 1 },
+            down: { :"2" => 1, :"7" => 1 },
+            total: { :"2" => 3, :"7" => 2, :"_blank" => 1 }
           }
         })
       end
@@ -187,9 +187,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {:"female" => 2, :"male" => 1, :"_blank" => 1},
-            down: {:"female" => 1, :"male" => 1},
-            total: {:"female" => 3, :"male" => 2, :"_blank" => 1}
+            up: { :"female" => 2, :"male" => 1, :"_blank" => 1 },
+            down: { :"female" => 1, :"male" => 1 },
+            total: { :"female" => 3, :"male" => 2, :"_blank" => 1 }
           }
         })
       end
@@ -202,12 +202,12 @@ resource 'Stats - Votes' do
         @opt2 = create(:custom_field_option, custom_field: @custom_field, key: 'retarded_politician')
         @opt3 = create(:custom_field_option, custom_field: @custom_field, key: 'no')
         @ideas = create_list(:idea, 5, idea_status: @idea_status)
-        @someone = create(:user, custom_field_values: {@custom_field.key => @opt1.key})
+        @someone = create(:user, custom_field_values: { @custom_field.key => @opt1.key })
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [['up',@opt1],['up',@opt2],['down',@opt2],['down',@opt3],['up',nil]].each do |mode, opt|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
-            user: (if opt then create(:user, custom_field_values: {@custom_field.key => opt.key}) else create(:user) end))
+            user: (if opt then create(:user, custom_field_values: { @custom_field.key => opt.key }) else create(:user) end))
         end
       end
       time_boundary_parameters self
@@ -224,9 +224,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: {@opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1},
-            down: {@opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1},
-            total: {@opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1}
+            up: { @opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1 },
+            down: { @opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1 },
+            total: { @opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1 }
           }
         })
       end

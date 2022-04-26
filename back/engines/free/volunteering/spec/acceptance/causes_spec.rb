@@ -86,7 +86,7 @@ resource 'Volunteering Causes' do
 
       let(:cause) { build(:cause) }
       let(:title_multiloc) { cause.title_multiloc }
-      let(:description_multiloc) { {'en' => '<b>This is a fine description</b>'} }
+      let(:description_multiloc) { { 'en' => '<b>This is a fine description</b>' } }
       let(:participation_context_type) { cause.participation_context_type}
       let(:participation_context_id) { cause.participation_context_id}
 
@@ -111,8 +111,8 @@ resource 'Volunteering Causes' do
 
       let(:cause) { create(:cause) }
       let(:id) { cause.id }
-      let(:title_multiloc) { {'en' => 'Shop for your neighbour'} }
-      let(:description_multiloc) { {'en' => "Because it's fun!"} }
+      let(:title_multiloc) { { 'en' => 'Shop for your neighbour' } }
+      let(:description_multiloc) { { 'en' => "Because it's fun!" } }
       let(:image) { "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join("spec", "fixtures", "image14.png")))}" }
 
       example_request 'Update a cause' do

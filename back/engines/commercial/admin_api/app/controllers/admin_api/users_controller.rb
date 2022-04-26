@@ -37,7 +37,7 @@ module AdminApi
         # This uses default model serialization
         render json: @user, status: :created
       else
-        render json: {errors: @user.errors.details}, status: :unprocessable_entity
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module AdminApi
         # This uses default model serialization
         render json: @user, status: :ok
       else
-        render json: {errors: @user.errors.details}, status: :unprocessable_entity
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
     end
 

@@ -48,7 +48,7 @@ resource 'Events' do
         @user = create(:admin)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
-        @project3 = create(:project, { admin_publication_attributes: { publication_status: 'draft' }})
+        @project3 = create(:project, { admin_publication_attributes: { publication_status: 'draft' } })
         @more_events = create_list(:event, 2, project: @project3)
       end
 

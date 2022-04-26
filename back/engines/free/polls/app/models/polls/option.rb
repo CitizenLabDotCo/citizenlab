@@ -24,6 +24,6 @@ module Polls
     belongs_to :question, class_name: 'Polls::Question'
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy
 
-		validates :title_multiloc, presence: true, multiloc: {presence: true}
+		validates :title_multiloc, presence: true, multiloc: { presence: true }
 	end
 end

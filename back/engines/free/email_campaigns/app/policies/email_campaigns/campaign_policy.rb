@@ -22,7 +22,7 @@ module EmailCampaigns
               .pluck(:campaign_id)
             campaigns_without_groups = Campaigns::Manual
               .left_outer_joins(:campaigns_groups)
-              .where(email_campaigns_campaigns_groups: {id: nil})
+              .where(email_campaigns_campaigns_groups: { id: nil })
               .ids
             scope
               .where(type: EmailCampaigns::Campaigns::Manual.name)

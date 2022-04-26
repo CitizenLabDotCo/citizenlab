@@ -28,7 +28,7 @@ resource 'User', admin_api: true do
     end
 
     example 'Get users on first page' do
-      do_request(page: {number: 1, size: 3})
+      do_request(page: { number: 1, size: 3 })
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.size).to eq 3
@@ -88,7 +88,7 @@ resource 'User', admin_api: true do
     let(:last_name) { 'Brijl' }
     let(:email) { 'admin@citizenlab.co' }
     let(:password) { 'nmQuiteP4s' }
-    let(:roles) { [{type: 'admin'}] }
+    let(:roles) { [{ type: 'admin' }] }
 
     describe do
       example_request 'Create a user' do
@@ -114,7 +114,7 @@ resource 'User', admin_api: true do
 
     let(:id) { user.id }
     let(:first_name) { 'Jacqueline' }
-    let(:roles) { [{type: 'admin'}] }
+    let(:roles) { [{ type: 'admin' }] }
     let!(:cf) { create(:custom_field, key: 'favourite_drink') }
     let (:custom_field_values) { { favourite_drink: 'wine' } }
 

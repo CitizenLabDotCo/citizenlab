@@ -16,7 +16,7 @@ class SideFxSpamReportService
       'deleted', 
       current_user, 
       Time.now.to_i, 
-      payload: {spam_report: serialized_spam_report}
+      payload: { spam_report: serialized_spam_report }
     )
   end
 end

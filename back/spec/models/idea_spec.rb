@@ -144,7 +144,7 @@ RSpec.describe Idea, type: :model do
 
   describe 'idea search' do
     it 'should return results with exact prefixes' do
-      create(:idea, title_multiloc: {'nl-BE' => 'Bomen in het park'})
+      create(:idea, title_multiloc: { 'nl-BE' => 'Bomen in het park' })
       srx_results = Idea.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
@@ -155,14 +155,14 @@ RSpec.describe Idea, type: :model do
       idea = create(:idea, body_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(idea.body_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(idea.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
-      expect(idea.body_multiloc).to eq({'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'})
+      expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
     end
   end
 
@@ -176,7 +176,7 @@ RSpec.describe Idea, type: :model do
 
   describe 'title' do
     it 'is stripped from spaces at beginning and ending' do
-      idea = create(:idea, title_multiloc: {'en' => ' my fantastic idea  '})
+      idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
     end
   end
@@ -185,7 +185,7 @@ RSpec.describe Idea, type: :model do
     let(:idea) { build(:idea) }
 
     it 'is invalid if it has no true content' do
-      idea.body_multiloc = {'en' => '<p> </p>'}
+      idea.body_multiloc = { 'en' => '<p> </p>' }
       expect(idea).to be_invalid
     end
   end

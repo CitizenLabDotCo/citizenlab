@@ -34,7 +34,7 @@ module UserCustomFields
         end
 
         def users_by_gender
-          render json: {series: {users: users_by_gender_serie}}
+          render json: { series: { users: users_by_gender_serie } }
         end
 
         def users_by_gender_as_xlsx
@@ -69,7 +69,7 @@ module UserCustomFields
         end
 
         def users_by_birthyear
-          render json: {series: {users: users_by_birthyear_serie}}
+          render json: { series: { users: users_by_birthyear_serie } }
         end
 
         def users_by_birthyear_as_xlsx
@@ -106,7 +106,7 @@ module UserCustomFields
         def users_by_domicile
           serie = users_by_domicile_serie
           areas = Area.all.select(:id, :title_multiloc)
-          render json: {series: {users: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+          render json: { series: { users: serie }, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h }
         end
 
         def users_by_domicile_as_xlsx
@@ -155,7 +155,7 @@ module UserCustomFields
         end
         
         def users_by_education
-          render json: {series: {users: users_by_education_serie}}
+          render json: { series: { users: users_by_education_serie } }
         end
 
         def users_by_education_as_xlsx
@@ -215,9 +215,9 @@ module UserCustomFields
           serie = users_by_custom_field_serie
           if ['select', 'multiselect'].include?(@custom_field.input_type)
             options = @custom_field.custom_field_options.select(:key, :title_multiloc)
-            render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
+            render json: { series: { users: serie }, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h }
           else
-            render json: {series: {users: serie}}
+            render json: { series: { users: serie } }
           end
         end
 

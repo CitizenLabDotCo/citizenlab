@@ -166,7 +166,7 @@ resource 'Ideas' do
     end
 
     example 'List all ideas in published projects' do
-      idea = create(:idea, project: create(:project, admin_publication_attributes: {publication_status: 'archived'}))
+      idea = create(:idea, project: create(:project, admin_publication_attributes: { publication_status: 'archived' }))
       do_request(project_publication_status: 'published')
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
@@ -204,8 +204,8 @@ resource 'Ideas' do
     end
 
     example 'Search for ideas' do
-      i1 = create(:idea, title_multiloc: {en: 'This idea is uniqque'})
-      i2 = create(:idea, title_multiloc: {en: 'This one origiinal'})
+      i1 = create(:idea, title_multiloc: { en: 'This idea is uniqque' })
+      i2 = create(:idea, title_multiloc: { en: 'This one origiinal' })
 
       do_request search: 'uniqque'
       json_response = json_parse(response_body)
@@ -491,12 +491,12 @@ resource 'Ideas' do
         )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
-          data: [{id: topic.id, type: 'topic'}]
+          data: [{ id: topic.id, type: 'topic' }]
         },
-        areas: {data: []},
-        author: {data: {id: idea.author_id, type: 'user'}},
-        idea_status: {data: {id: idea.idea_status_id, type: 'idea_status'}},
-        user_vote: {data: {id: user_vote.id, type: 'vote'}}
+        areas: { data: [] },
+        author: { data: { id: idea.author_id, type: 'user' } },
+        idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
+        user_vote: { data: { id: user_vote.id, type: 'vote' } }
         )
     end
   end
@@ -671,8 +671,8 @@ resource 'Ideas' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
-      let(:title_multiloc) {{'nl-BE' => 'Fu'+'ck'}}
-      let(:body_multiloc) {{'fr-FR' => 'co'+'cksu'+'cker'}}
+      let(:title_multiloc) {{ 'nl-BE' => 'Fu'+'ck' }}
+      let(:body_multiloc) {{ 'fr-FR' => 'co'+'cksu'+'cker' }}
 
       example_request '[error] Create an idea with blocked words' do
         assert_status 422
@@ -691,7 +691,7 @@ resource 'Ideas' do
       end
 
       describe do
-        let(:project) { create(:project_with_current_phase, phases_config: {sequence: 'xxcx'}) }
+        let(:project) { create(:project_with_current_phase, phases_config: { sequence: 'xxcx' }) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
         example_request 'Creating an idea in specific phases' do

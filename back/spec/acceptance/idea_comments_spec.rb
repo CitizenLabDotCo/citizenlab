@@ -224,13 +224,13 @@ resource 'Comments' do
         )
       expect(json_response.dig(:data, :relationships)).to include(
         post: {
-          data: {id: comment.post_id, type: 'idea'}
+          data: { id: comment.post_id, type: 'idea' }
         },
         author: {
-          data: {id: comment.author_id, type: 'user'}
+          data: { id: comment.author_id, type: 'user' }
         },
         parent: {
-          data: {id: parent.id, type: 'comment'}
+          data: { id: parent.id, type: 'comment' }
         })
       expect(json_response.dig(:included, 0, :attributes)).to include(
         first_name: comment.author.first_name,
@@ -334,7 +334,7 @@ resource 'Comments' do
       describe do
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
         # Weak attempt to make it less explicit
-        let(:body_multiloc) {{'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker'}} 
+        let(:body_multiloc) {{ 'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker' }} 
 
         example_request '[error] Create a comment with blocked words' do
           assert_status 422
@@ -380,7 +380,7 @@ resource 'Comments' do
 
       let(:comment) { create(:comment, author: @user, post: @idea) }
       let(:id) { comment.id }
-      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
+      let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
       example_request 'Update a comment on an idea' do
         expect(response_status).to eq 200

@@ -83,9 +83,9 @@ describe SmartGroups::RulesService do
   end
 
   describe 'groups_for_user' do
-    let!(:group1) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'me@test.com'}]) }
-    let!(:group2) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'contains', value: 'me'}]) }
-    let!(:group3) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'you@test.org'}]) }
+    let!(:group1) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'is', value: 'me@test.com' }]) }
+    let!(:group2) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'contains', value: 'me' }]) }
+    let!(:group3) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'is', value: 'you@test.org' }]) }
     let!(:user) { create(:user, email: 'me@test.com') }
 
     it 'returns only the rules groups the user is part of' do

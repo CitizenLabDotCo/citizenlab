@@ -164,7 +164,7 @@ resource 'Users' do
       end
 
       describe 'Creating an admin user' do
-        let(:roles) { [{type: 'admin'}] }
+        let(:roles) { [{ type: 'admin' }] }
 
         example 'creates a user, but not an admin', document: false do
           create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
@@ -288,7 +288,7 @@ resource 'Users' do
         end
 
         example 'Get all users on the second page with fixed page size' do
-          do_request({'page[number]' => 2, 'page[size]' => 2})
+          do_request({ 'page[number]' => 2, 'page[size]' => 2 })
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
@@ -360,13 +360,13 @@ resource 'Users' do
             page_size = 5
             project = create(:project)
             group = create(:smart_group, rules: [
-              {ruleType: 'participated_in_project', predicate: 'in', value: [project.id]}
+              { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
             ])
             (page_size + 1).times.map do |i|
               create(:idea, project: project, author: create(:user))
             end
 
-            do_request(group: group.id, page: {number: 1, size: page_size})
+            do_request(group: group.id, page: { number: 1, size: page_size })
             json_response = json_parse(response_body)
 
             expect(json_response[:links][:next]).to be_present
@@ -640,23 +640,23 @@ resource 'Users' do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).to eq id
-          expect(json_response.dig(:data, :attributes, :roles)).to eq [{type: 'admin'}]
+          expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
         end
       end
 
       describe do
         example "Update a user's custom field values" do
           cf = create(:custom_field)
-          do_request(user: {custom_field_values: {cf.key => 'somevalue'}})
+          do_request(user: { custom_field_values: { cf.key => 'somevalue' } })
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'somevalue'
         end
 
         example "Clear out a user's custom field value" do
           cf = create(:custom_field)
-          @user.update!(custom_field_values: {cf.key => 'somevalue'})
+          @user.update!(custom_field_values: { cf.key => 'somevalue' })
 
-          do_request(user: {custom_field_values: {}})
+          do_request(user: { custom_field_values: {} })
           expect(response_status).to eq 200
           expect(@user.reload.custom_field_values).to eq ({})
         end
@@ -666,7 +666,7 @@ resource 'Users' do
           some_value = 'some_value'
           @user.update!(custom_field_values: { cf.key => some_value })
 
-          do_request(user: {custom_field_values: {cf.key => 'another_value'}})
+          do_request(user: { custom_field_values: { cf.key => 'another_value' } })
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
@@ -676,9 +676,9 @@ resource 'Users' do
         example 'Cannot modify values of disabled custom fields' do
           cf = create(:custom_field, hidden: false, enabled: false)
           some_value = 'some_value'
-          @user.update!(custom_field_values: {cf.key => some_value})
+          @user.update!(custom_field_values: { cf.key => some_value })
 
-          do_request(user: {custom_field_values: {cf.key => 'another_value'}})
+          do_request(user: { custom_field_values: { cf.key => 'another_value' } })
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
@@ -690,7 +690,7 @@ resource 'Users' do
         example 'The user avatar can be removed' do
           @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
           expect(@user.reload.avatar_url).to be_present
-          do_request user: {avatar: nil}
+          do_request user: { avatar: nil }
           expect(@user.reload.avatar_url).to be nil
         end
       end
@@ -732,7 +732,7 @@ resource 'Users' do
 
         example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'bogus', user: @user)
-          @user.update!(custom_field_values: {cf.key => 'original value', gender_cf.key => 'male'})
+          @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
           do_request
           expect(response_status).to eq 200
           @user.reload
@@ -764,7 +764,7 @@ resource 'Users' do
 
       example '[error] Complete the registration of a user fails if not all required fields are provided' do
         @user.update! registration_completed_at: nil
-        do_request(user: {custom_field_values: {cf2.key => nil}})
+        do_request(user: { custom_field_values: { cf2.key => nil } })
         assert_status 422
       end
 
@@ -784,7 +784,7 @@ resource 'Users' do
         example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           @user.update!(
             registration_completed_at: nil,
-            custom_field_values: {cf.key => 'original value', gender_cf.key => 'male'}
+            custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
           )
           create(:verification, method_name: 'bogus', user: @user)
           do_request

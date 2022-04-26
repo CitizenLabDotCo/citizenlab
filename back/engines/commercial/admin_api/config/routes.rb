@@ -27,5 +27,5 @@ AdminApi::Engine.routes.draw do
 end
 
 Rails.application.routes.draw do
-  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: {format: :json}
+  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: { format: :json }
 end

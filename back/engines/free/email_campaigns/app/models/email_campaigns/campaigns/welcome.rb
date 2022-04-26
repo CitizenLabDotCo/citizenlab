@@ -40,7 +40,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'User' => {'completed_registration' => true}}
+      { 'User' => { 'completed_registration' => true } }
     end
 
     def filter_recipient users_scope, activity:, time: nil

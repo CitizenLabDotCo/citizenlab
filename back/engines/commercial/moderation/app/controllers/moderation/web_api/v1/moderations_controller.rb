@@ -48,7 +48,7 @@ module Moderation
 
       index_filter
 
-      render json: {count: @moderations.count}, status: :ok
+      render json: { count: @moderations.count }, status: :ok
     end
 
     def moderation_params

@@ -40,7 +40,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Invite' => {'not_accepted_since_3_days' => true}}
+      { 'Invite' => { 'not_accepted_since_3_days' => true } }
     end
 
     def filter_recipient users_scope, activity:, time: nil

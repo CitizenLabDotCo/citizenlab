@@ -57,7 +57,7 @@ module Notifications
     validates :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
-    ACTIVITY_TRIGGERS = {'SpamReport' => {'created' => true}}
+    ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }
     EVENT_NAME = 'Idea marked as spam'
     
 

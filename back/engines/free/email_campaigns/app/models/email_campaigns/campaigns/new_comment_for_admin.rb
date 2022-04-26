@@ -37,7 +37,7 @@ module EmailCampaigns
     recipient_filter :filter_recipient
 
     def activity_triggers
-      {'Comment' => {'created' => true}}
+      { 'Comment' => { 'created' => true } }
     end
 
     def self.consentable_roles

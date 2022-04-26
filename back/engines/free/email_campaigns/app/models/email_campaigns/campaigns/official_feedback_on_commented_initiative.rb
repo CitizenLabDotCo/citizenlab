@@ -41,7 +41,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::OfficialFeedbackOnCommentedInitiative' => {'created' => true}}
+      { 'Notifications::OfficialFeedbackOnCommentedInitiative' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

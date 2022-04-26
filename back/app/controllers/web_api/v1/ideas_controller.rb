@@ -192,7 +192,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :location_description,
       :proposed_budget,
       [idea_images_attributes: [:image]],
-      [{ idea_files_attributes: [{ file_by_content: [:content, :name]}, :name] }],
+      [{ idea_files_attributes: [{ file_by_content: [:content, :name] }, :name] }],
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,

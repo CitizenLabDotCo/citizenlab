@@ -30,7 +30,7 @@ describe SideFxPhaseService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the phase has changed" do
-      phase.update(title_multiloc: {'en': 'changed'})
+      phase.update(title_multiloc: { 'en': 'changed' })
       expect(sfx_pc).to receive(:after_update).with(phase, user)
       expect {service.after_update(phase, user)}.
         to have_enqueued_job(LogActivityJob).with(phase, 'changed', user, phase.updated_at.to_i)

@@ -76,7 +76,7 @@ RSpec.describe User, type: :model do
     it 'is invalid if the domain is on our blacklist' do
       u1 = build(:user, email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(u1).to be_invalid
-      expect(u1.errors.details[:email]).to eq [{error: :domain_blacklisted, value: '039b1ee.netsolhost.com'}]
+      expect(u1.errors.details[:email]).to eq [{ error: :domain_blacklisted, value: '039b1ee.netsolhost.com' }]
     end
   end
 
@@ -137,7 +137,7 @@ RSpec.describe User, type: :model do
       user = create(:user, bio_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(user.bio_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(user.bio_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
   end
 
@@ -148,19 +148,19 @@ RSpec.describe User, type: :model do
     end
 
     it 'is valid when the user is an admin' do
-      u = build(:user, roles: [{type: 'admin'}])
+      u = build(:user, roles: [{ type: 'admin' }])
       expect(u).to be_valid
     end
 
     it 'is invalid when the user has an unknown role type' do
-      u = build(:user, roles: [{type: 'stonecarver'}])
+      u = build(:user, roles: [{ type: 'stonecarver' }])
       expect{ u.valid? }.to change{ u.errors[:roles] }
     end
   end
 
   describe 'admin?' do
     it 'responds true when the user has the admin role' do
-      u = build(:user, roles: [{type: 'admin'}])
+      u = build(:user, roles: [{ type: 'admin' }])
       expect(u.admin?).to eq true
     end
 
@@ -333,7 +333,7 @@ RSpec.describe User, type: :model do
     end
 
     it "doesn't validate when custom_field_values hasn't changed" do
-      u = build(:user, custom_field_values: {somekey: 'somevalue' })
+      u = build(:user, custom_field_values: { somekey: 'somevalue' })
       u.save(validate: false)
       expect{ u.save }.not_to change{ u.errors[:custom_field_values] }
     end

@@ -21,7 +21,7 @@ class EmailSnippet < ApplicationRecord
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
 
   validates :email, :snippet, :locale, :body, presence: true
-  validates :locale, inclusion: {in: -> (email_snippet) { AppConfiguration.instance.settings('core','locales') } }
+  validates :locale, inclusion: { in: -> (email_snippet) { AppConfiguration.instance.settings('core','locales') } }
 
 
   before_validation :sanitize_body

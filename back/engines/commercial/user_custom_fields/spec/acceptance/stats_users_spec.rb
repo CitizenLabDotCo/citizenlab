@@ -342,21 +342,21 @@ end
         # key. This covers a regressions that mixed up custom field options
         # between fields
         @custom_field2 = create(:custom_field_select)
-        create(:custom_field_option, key: @option1.key, title_multiloc: {en: 'different'}, custom_field: @custom_field2)
+        create(:custom_field_option, key: @option1.key, title_multiloc: { en: 'different' }, custom_field: @custom_field2)
 
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
 
         travel_to(start_at + 4.days) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option2.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option3.key})
+          create(:user, custom_field_values: { @custom_field.key => @option3.key })
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
 
       end
@@ -392,18 +392,18 @@ end
         @custom_field = create(:custom_field_multiselect)
         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
         end
 
         travel_to(start_at + 6.days) do
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key] }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => [@option3.key]})
+          create(:user, custom_field_values: { @custom_field.key => [@option3.key] })
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
         end
 
       end
@@ -436,17 +436,17 @@ end
         @group = create(:group)
         @custom_field = create(:custom_field_checkbox)
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
         end
 
         travel_to(start_at + 24.days) do
-          create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
         end
       end
 
@@ -483,21 +483,21 @@ end
         # key. This covers a regressions that mixed up custom field options
         # between fields
         @custom_field2 = create(:custom_field_select)
-        create(:custom_field_option, key: @option1.key, title_multiloc: {en: 'different'}, custom_field: @custom_field2)
+        create(:custom_field_option, key: @option1.key, title_multiloc: { en: 'different' }, custom_field: @custom_field2)
 
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
 
         travel_to(start_at + 4.days) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option2.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option2.key }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option3.key})
+          create(:user, custom_field_values: { @custom_field.key => @option3.key })
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
 
       end
@@ -532,18 +532,18 @@ end
         @custom_field = create(:custom_field_multiselect)
         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
         end
 
         travel_to(start_at + 6.days) do
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key] }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => [@option3.key]})
+          create(:user, custom_field_values: { @custom_field.key => [@option3.key] })
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
         end
 
       end
@@ -571,17 +571,17 @@ end
         @group = create(:group)
         @custom_field = create(:custom_field_checkbox)
         travel_to(start_at - 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
         end
 
         travel_to(start_at + 24.days) do
-          create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
           create(:user, manual_groups: [@group])
         end
 
         travel_to(end_at + 1.day) do
-          create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => true }, manual_groups: [@group])
         end
       end
 

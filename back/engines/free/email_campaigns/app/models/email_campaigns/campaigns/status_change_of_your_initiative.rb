@@ -41,7 +41,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::StatusChangeOfYourInitiative' => {'created' => true}}
+      { 'Notifications::StatusChangeOfYourInitiative' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

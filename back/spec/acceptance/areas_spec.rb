@@ -66,8 +66,8 @@ resource 'Areas' do
 
       let(:area) { create(:area) }
       let(:id) { area.id }
-      let(:title_multiloc) { {'en' => 'Krypton'} }
-      let(:description_multiloc) { {'en' => 'Home planet of Superman'} }
+      let(:title_multiloc) { { 'en' => 'Krypton' } }
+      let(:description_multiloc) { { 'en' => 'Home planet of Superman' } }
 
       example_request 'Update an area' do
         expect(response_status).to eq 200
@@ -82,7 +82,7 @@ resource 'Areas' do
         CustomField.create!(
           resource_type: 'User',
           key: 'domicile',
-          title_multiloc: {'en' => 'Domicile'},
+          title_multiloc: { 'en' => 'Domicile' },
           input_type: 'select',
           required: false,
           ordering: 2,
@@ -103,7 +103,7 @@ resource 'Areas' do
       end
 
       example "Deleting an area that's still referenced in a user's setting", document: false do
-        custom_field_values = {'domicile' => area.id}
+        custom_field_values = { 'domicile' => area.id }
         user = create(:user, custom_field_values: custom_field_values)
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request

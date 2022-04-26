@@ -25,7 +25,7 @@ module Polls
     belongs_to :option, class_name: 'Polls::Option'
 
 		validates :response, :option, presence: true
-		validates :option, uniqueness: {scope: [:response]}
+		validates :option, uniqueness: { scope: [:response] }
 
 		validate :validate_same_participation_context
 

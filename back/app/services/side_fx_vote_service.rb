@@ -25,7 +25,7 @@ class SideFxVoteService
       "canceled_#{type}_#{frozen_vote.mode}vote", 
       current_user, 
       Time.now.to_i, 
-      payload: {vote: serialized_vote}
+      payload: { vote: serialized_vote }
     )
   end
 

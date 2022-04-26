@@ -22,7 +22,7 @@ module PublicApi
 
     belongs_to :tenant, optional: true
 
-    validates :secret, presence: true, length: {minimum: 20}
+    validates :secret, presence: true, length: { minimum: 20 }
 
     before_validation :generate_secret, on: :create
 

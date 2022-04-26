@@ -56,7 +56,7 @@ module Notifications
 
     validates :project, presence: true
 
-    ACTIVITY_TRIGGERS = {'User' => {'project_moderation_rights_given' => true}}
+    ACTIVITY_TRIGGERS = { 'User' => { 'project_moderation_rights_given' => true } }
     EVENT_NAME = 'Project moderation rights received'
 
 

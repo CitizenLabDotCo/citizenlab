@@ -22,7 +22,7 @@ module ProjectFolders
       LogActivityJob.perform_later(
           encode_frozen_resource(frozen_folder), 'deleted',
           user, Time.now.to_i,
-          payload: {project_folder: serialized_folder}
+          payload: { project_folder: serialized_folder }
       )
     end
 

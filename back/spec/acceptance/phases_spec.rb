@@ -43,7 +43,7 @@ resource 'Phases' do
         )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-          data: {id: @phases.first.project_id, type: 'project'}
+          data: { id: @phases.first.project_id, type: 'project' }
       })
 
       expect(json_response.dig(:data, :relationships, :permissions, :data).size)
@@ -202,7 +202,7 @@ resource 'Phases' do
 
         example '[error] Create a phase with text image without start and end date', document: false do
           ti_count = TextImage.count
-          do_request phase: {start_at: nil, end_at: nil}
+          do_request phase: { start_at: nil, end_at: nil }
 
           assert_status 422
           json_response = json_parse(response_body)

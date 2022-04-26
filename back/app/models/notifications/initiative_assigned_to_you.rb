@@ -57,7 +57,7 @@ module Notifications
     validates :initiating_user, :post, presence: true
     validates :post_type, inclusion: { in: ['Initiative'] }
 
-    ACTIVITY_TRIGGERS = {'Initiative' => {'changed_assignee' => true}}
+    ACTIVITY_TRIGGERS = { 'Initiative' => { 'changed_assignee' => true } }
     EVENT_NAME = 'Initiative assigned to you'
 
 

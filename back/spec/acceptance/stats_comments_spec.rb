@@ -136,7 +136,7 @@ resource 'Stats - Comments' do
             do_request
             assert_status 200
 
-            expect(json_response).to eq({series: {comments: {}}})
+            expect(json_response).to eq({ series: { comments: {} } })
           end
         end
 
@@ -173,7 +173,7 @@ resource 'Stats - Comments' do
           it 'returns no entries' do
             do_request
             assert_status 200
-            expect(json_response).to eq({series: { comments: {} }})
+            expect(json_response).to eq({ series: { comments: {} } })
           end
         end
 

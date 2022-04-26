@@ -58,7 +58,7 @@ module Notifications
     validates :post_type, inclusion: { in: ['Initiative'] }
 
 
-    ACTIVITY_TRIGGERS = {'Comment' => {'created' => true}}
+    ACTIVITY_TRIGGERS = { 'Comment' => { 'created' => true } }
     EVENT_NAME = 'Comment on your initiative'
     
 

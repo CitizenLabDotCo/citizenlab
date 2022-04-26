@@ -35,7 +35,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_topic
     serie = ideas_by_topic_serie
     topics = Topic.pluck :id, :title_multiloc
-    render json: {series: {ideas: serie}, topics: topics.map{|id, title_multiloc| [id, {title_multiloc: title_multiloc}]}.to_h}
+    render json: { series: { ideas: serie }, topics: topics.map{|id, title_multiloc| [id, { title_multiloc: title_multiloc }]}.to_h }
   end
 
   def ideas_by_topic_as_xlsx
@@ -71,7 +71,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h }
   end
 
   def ideas_by_project_as_xlsx
@@ -106,7 +106,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_area
     serie = ideas_by_area_serie
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h }
   end
 
   def ideas_by_area_as_xlsx
@@ -138,7 +138,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_status
     serie = ideas_by_status_serie
     idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
-    render json: {series: {ideas: serie}, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h }
   end
 
   def ideas_by_status_as_xlsx
@@ -157,7 +157,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time
-    render json: {series: {ideas: ideas_by_time_serie}}
+    render json: { series: { ideas: ideas_by_time_serie } }
   end
 
   def ideas_by_time_as_xlsx
@@ -167,7 +167,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time_cumulative
-    render json: {series: {ideas: ideas_by_time_cumulative_serie}}
+    render json: { series: { ideas: ideas_by_time_cumulative_serie } }
   end
 
   def ideas_by_time_cumulative_as_xlsx
@@ -206,13 +206,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def render_no_data
     if @no_data
-      render json: {series: {ideas: {}}}
+      render json: { series: { ideas: {} } }
     end
   end
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
+      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
     end
   end
 

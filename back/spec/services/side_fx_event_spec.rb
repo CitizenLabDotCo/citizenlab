@@ -26,7 +26,7 @@ describe SideFxEventService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the event has changed" do
-      event.update(title_multiloc: {'en': 'changed'})
+      event.update(title_multiloc: { 'en': 'changed' })
       expect {service.after_update(event, user)}.
         to have_enqueued_job(LogActivityJob).with(event, 'changed', user, event.updated_at.to_i)
     end

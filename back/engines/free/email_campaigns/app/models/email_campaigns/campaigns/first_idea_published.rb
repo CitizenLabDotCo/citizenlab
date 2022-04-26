@@ -40,7 +40,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Idea' => {'first_published_by_user' => true}}
+      { 'Idea' => { 'first_published_by_user' => true } }
     end
 
     def filter_recipient users_scope, activity:, time: nil

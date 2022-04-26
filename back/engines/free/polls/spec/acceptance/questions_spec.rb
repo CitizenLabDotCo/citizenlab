@@ -114,7 +114,7 @@ resource 'Poll Questions' do
 
       let(:question) { create(:poll_question) }
       let(:id) { question.id }
-      let(:title_multiloc) { {'en' => 'How green is our city?'} }
+      let(:title_multiloc) { { 'en' => 'How green is our city?' } }
       let(:question_type) { 'multiple_options' }
       let(:max_options) { 2 }
 

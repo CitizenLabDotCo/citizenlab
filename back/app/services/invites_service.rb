@@ -242,7 +242,7 @@ class InvitesService
 
   def xlsx_admin_to_roles(admin)
     if [true, 'TRUE', 'true', '1', 1].include? admin
-      [{'type' => 'admin'}]
+      [{ 'type' => 'admin' }]
     elsif [false, 'FALSE', 'false', '0', 0].include? admin
       []
     else

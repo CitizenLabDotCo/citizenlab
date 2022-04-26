@@ -40,7 +40,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::ProjectModerationRightsReceived' => {'created' => true}}
+      { 'Notifications::ProjectModerationRightsReceived' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

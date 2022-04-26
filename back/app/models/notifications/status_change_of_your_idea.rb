@@ -58,7 +58,7 @@ module Notifications
     validates :post_type, inclusion: { in: ['Idea'] }
 
 
-    ACTIVITY_TRIGGERS = {'Idea' => {'changed_status' => true}}
+    ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Status change of your idea'
     
 

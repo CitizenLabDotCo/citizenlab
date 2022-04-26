@@ -37,7 +37,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def activity_triggers
-      {'Notifications::CommentOnYourIdea' => {'created' => true}}
+      { 'Notifications::CommentOnYourIdea' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

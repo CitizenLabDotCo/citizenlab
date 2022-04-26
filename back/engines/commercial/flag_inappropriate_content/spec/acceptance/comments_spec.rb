@@ -46,7 +46,7 @@ resource 'Comments' do
     end
     
     let(:id) { @comment.id }
-    let(:body_multiloc) { {'en' => 'Changed body'} }
+    let(:body_multiloc) { { 'en' => 'Changed body' } }
 
     example 'Toxicity detection job is enqueued when updating an comment\'s body', document: false do
       expect {

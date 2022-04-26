@@ -23,7 +23,7 @@ module Polls
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy
 
     validates :user, :participation_context, presence: true
-    validates :user, uniqueness: {scope: [:participation_context]}
+    validates :user, uniqueness: { scope: [:participation_context] }
 
     validate :validate_participation_context_poll, on: :response_submission
     validate :validate_option_count, on: :response_submission

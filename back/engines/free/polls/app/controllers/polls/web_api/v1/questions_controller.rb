@@ -71,7 +71,7 @@ module Polls
 							include: [:options]
 							).serialized_json, status: :ok
 			    else
-			      render json: {errors: @question.errors.details}, status: :unprocessable_entity
+			      render json: { errors: @question.errors.details }, status: :unprocessable_entity
 			    end
 				end
 

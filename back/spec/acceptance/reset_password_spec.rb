@@ -23,23 +23,23 @@ resource 'Users' do
 
       describe 'Email matching on password reset' do
         example 'is case insensitive' do
-          do_request(user: {email: 'S.Hoorens@gmail.com'})
+          do_request(user: { email: 'S.Hoorens@gmail.com' })
           expect(status).to eq 202
         end
 
         example 'does not use underscores in a special manner' do
-          do_request(user: {email: 's_hoorens@gmail.com'})
+          do_request(user: { email: 's_hoorens@gmail.com' })
           expect(status).to eq 404
         end
       
         example 'does not use percentages in a special manner' do
-          do_request(user: {email: '%hoorens@gmail.com%'})
+          do_request(user: { email: '%hoorens@gmail.com%' })
           expect(status).to eq 404
         end
       end
 
       example '[error] Request password reset of an invitee' do
-        do_request(user: {email: create(:invited_user).email})
+        do_request(user: { email: create(:invited_user).email })
         expect(status).to eq 404
       end
     end
@@ -64,10 +64,10 @@ resource 'Users' do
       end
 
       example '[error] Reset password using invalid token' do
-        do_request(user: {password: password, token: 'abcabcabc'})
+        do_request(user: { password: password, token: 'abcabcabc' })
         expect(status).to be 401
         json_response = json_parse(response_body)
-        expect(json_response.dig(:errors, :token)).to eq [{error: 'invalid', value: 'abcabcabc'}]
+        expect(json_response.dig(:errors, :token)).to eq [{ error: 'invalid', value: 'abcabcabc' }]
       end
 
       example '[error] Reset password reset of an invitee' do
@@ -75,7 +75,7 @@ resource 'Users' do
         token = ResetPasswordService.new.generate_reset_password_token invitee
         invitee.update!(reset_password_token: token)
 
-        do_request(user: {password: password, token: token})
+        do_request(user: { password: password, token: token })
         expect(status).to eq 401
       end
     end

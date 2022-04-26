@@ -58,7 +58,7 @@ module Notifications
     validates :post_type, inclusion: { in: ['Initiative'] }
 
 
-    ACTIVITY_TRIGGERS = {'OfficialFeedback' => {'created' => true}}
+    ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
     EVENT_NAME = 'Official feedback on commented initiative'
     
 
@@ -70,7 +70,7 @@ module Notifications
       if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.where(official_feedback: official_feedback).exists?
         User.active
           .joins(:comments).merge(Comment.published)
-          .where(comments: {post: official_feedback.post})
+          .where(comments: { post: official_feedback.post })
           .distinct
           .ids
           .select{|recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id}

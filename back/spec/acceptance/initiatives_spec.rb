@@ -119,8 +119,8 @@ resource 'Initiatives' do
 
     example 'Search for initiatives' do
       u = create(:user)
-      i1 = create(:initiative, title_multiloc: {en: 'This initiative is uniqque'})
-      i2 = create(:initiative, title_multiloc: {en: 'This one origiinal'})
+      i1 = create(:initiative, title_multiloc: { en: 'This initiative is uniqque' })
+      i2 = create(:initiative, title_multiloc: { en: 'This one origiinal' })
 
       do_request search: 'uniqque'
       json_response = json_parse(response_body)
@@ -338,7 +338,7 @@ resource 'Initiatives' do
     let(:publication_status) { 'published' }
     let(:title_multiloc) { initiative.title_multiloc }
     let(:body_multiloc) { initiative.body_multiloc }
-    let(:location_point_geojson) { {type: 'Point', coordinates: [51.11520776293035, 3.921154106874878]} }
+    let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
     let(:location_description) { 'Stanley Road 4' }
     let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
@@ -372,7 +372,7 @@ resource 'Initiatives' do
       end
 
       example 'Check for the automatic assignement of the default assignee', document: false do
-        do_request(initiative: {assignee_id: nil})
+        do_request(initiative: { assignee_id: nil })
         json_response = json_parse(response_body) 
         expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq @first_admin.id
       end
@@ -435,14 +435,14 @@ resource 'Initiatives' do
     ValidationErrorHelper.new.error_fields(self, Initiative)
 
     let(:id) { @initiative.id }
-    let(:location_point_geojson) { {type: 'Point', coordinates: [51.4365635, 3.825930459]} }
+    let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
     let(:location_description) { 'Watkins Road 8' }
     let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
     let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
 
     describe do
-      let(:title_multiloc) { {'en' => 'Changed title' } }
+      let(:title_multiloc) { { 'en' => 'Changed title' } }
 
       example_request 'Update an initiative' do
         expect(status).to be 200
@@ -483,7 +483,7 @@ resource 'Initiatives' do
       example 'The header image can be removed' do
         @initiative.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
         expect(@initiative.reload.header_bg_url).to be_present
-        do_request initiative: {header_bg: nil}
+        do_request initiative: { header_bg: nil }
         expect(@initiative.reload.header_bg_url).to be nil
       end
     end

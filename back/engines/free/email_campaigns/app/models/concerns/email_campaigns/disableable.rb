@@ -12,7 +12,7 @@ module EmailCampaigns
     end
 
     included do
-      validates :enabled, inclusion: { in: [true, false]}
+      validates :enabled, inclusion: { in: [true, false] }
 
       before_send :filter_enabled?
     end

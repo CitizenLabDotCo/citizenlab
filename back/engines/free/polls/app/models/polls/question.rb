@@ -26,9 +26,9 @@ module Polls
     belongs_to :participation_context, polymorphic: true
     has_many :options, class_name: 'Polls::Option', dependent: :destroy
 
-		validates :title_multiloc, presence: true, multiloc: {presence: true}
-    validates :question_type, presence: true, inclusion: {in: QUESTION_TYPES}
-    validates :max_options, numericality: {only_integer: true, greater_than_or_equal_to: 1 }, allow_nil: true, if: :multiple_options?
+		validates :title_multiloc, presence: true, multiloc: { presence: true }
+    validates :question_type, presence: true, inclusion: { in: QUESTION_TYPES }
+    validates :max_options, numericality: { only_integer: true, greater_than_or_equal_to: 1 }, allow_nil: true, if: :multiple_options?
 
     def single_option?
       question_type == 'single_option'

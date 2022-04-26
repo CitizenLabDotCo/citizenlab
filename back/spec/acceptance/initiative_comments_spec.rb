@@ -251,7 +251,7 @@ resource 'Comments' do
 
       let(:comment) { create(:comment, author: @user, post: @initiative) }
       let(:id) { comment.id }
-      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
+      let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
       example_request 'Update a comment on an initiative' do
         expect(response_status).to eq 200

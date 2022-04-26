@@ -60,7 +60,7 @@ module Notifications
     validates :reason_code, inclusion: { in: REASON_CODES }, presence: true
 
 
-    ACTIVITY_TRIGGERS = {'Comment' => {'marked_as_deleted' => true}}
+    ACTIVITY_TRIGGERS = { 'Comment' => { 'marked_as_deleted' => true } }
     EVENT_NAME = 'Comment deleted by admin'
     
 

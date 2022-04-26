@@ -14,7 +14,7 @@ module Volunteering
 
     def after_destroy frozen_volunteer, user
       serialized_volunteer = clean_time_attributes(frozen_volunteer.attributes)
-      LogActivityJob.perform_later(encode_frozen_resource(frozen_volunteer), 'deleted', user, Time.now.to_i, payload: {volunteer: serialized_volunteer})
+      LogActivityJob.perform_later(encode_frozen_resource(frozen_volunteer), 'deleted', user, Time.now.to_i, payload: { volunteer: serialized_volunteer })
     end
   end
 end

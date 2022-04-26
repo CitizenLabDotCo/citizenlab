@@ -57,7 +57,7 @@ module Notifications
     validates :initiating_user, :invite, presence: true
 
 
-    ACTIVITY_TRIGGERS = {'Invite' => {'accepted' => true}}
+    ACTIVITY_TRIGGERS = { 'Invite' => { 'accepted' => true } }
     EVENT_NAME = 'Invite accepted'
     
 

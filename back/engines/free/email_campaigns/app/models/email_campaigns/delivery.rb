@@ -29,7 +29,7 @@ module EmailCampaigns
     belongs_to :user
 
     DELIVERY_STATUSES = %w(sent bounced failed accepted delivered opened clicked)
-    validates :delivery_status, presence: true, inclusion: {in: DELIVERY_STATUSES}
+    validates :delivery_status, presence: true, inclusion: { in: DELIVERY_STATUSES }
     validates :sent_at, presence: true
 
     before_validation :set_sent_at

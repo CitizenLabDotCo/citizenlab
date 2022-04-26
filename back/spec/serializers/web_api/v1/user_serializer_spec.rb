@@ -11,7 +11,7 @@ describe WebApi::V1::UserSerializer do
 
     it 'should abbreviate the user name' do
       last_name = WebApi::V1::UserSerializer
-                      .new(jane, params: {current_user: john})
+                      .new(jane, params: { current_user: john })
                       .serializable_hash
                       .dig(:data, :attributes, :last_name)
       expect(last_name).to eq 'D.'
@@ -19,13 +19,13 @@ describe WebApi::V1::UserSerializer do
 
     it 'should not abbreviate user names for admins' do
       last_name = WebApi::V1::UserSerializer
-                      .new(jane, params: {current_user: admin})
+                      .new(jane, params: { current_user: admin })
                       .serializable_hash
                       .dig(:data, :attributes, :last_name)
       expect(last_name).to eq 'Doe'
 
       last_name = WebApi::V1::UserSerializer
-                      .new(admin, params: {current_user: jane})
+                      .new(admin, params: { current_user: jane })
                       .serializable_hash
                       .dig(:data, :attributes, :last_name)
       expect(last_name).to eq 'Anderson'

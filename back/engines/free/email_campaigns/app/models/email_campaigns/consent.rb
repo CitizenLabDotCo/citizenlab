@@ -19,7 +19,7 @@ module EmailCampaigns
 
     belongs_to :user
 
-    validates :consented, inclusion: {in: [true, false]}
+    validates :consented, inclusion: { in: [true, false] }
 
     def self.create_all_for_user! user
       defined_types = where(user_id: user.id).pluck(:campaign_type)&.uniq

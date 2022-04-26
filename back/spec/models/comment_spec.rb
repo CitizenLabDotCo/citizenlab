@@ -12,7 +12,7 @@ RSpec.describe Comment, type: :model do
       comment = create(:comment, body_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(comment.body_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(comment.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
   end
 

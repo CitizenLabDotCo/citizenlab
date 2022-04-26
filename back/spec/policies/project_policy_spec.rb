@@ -185,7 +185,7 @@ describe ProjectPolicy do
   end
 
   context 'on a draft project' do
-    let!(:project) { create(:project, admin_publication_attributes: {publication_status: 'draft'}) }
+    let!(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
     context 'for a visitor' do
       let(:user) { nil }
 

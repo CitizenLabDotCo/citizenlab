@@ -13,7 +13,7 @@ describe UserDisplayNameService do
 
     before(:all) do
       @app_configuration = build(:app_configuration)
-      @app_configuration.settings['abbreviated_user_names'] = {'allowed' => true, 'enabled' => true}
+      @app_configuration.settings['abbreviated_user_names'] = { 'allowed' => true, 'enabled' => true }
     end
 
     it 'admins should see full names' do
@@ -55,7 +55,7 @@ describe UserDisplayNameService do
 
     before(:all) do
       @app_configuration = build(:app_configuration)
-      @app_configuration.settings['abbreviated_user_names'] = {'allowed' => false, 'enabled' => false}
+      @app_configuration.settings['abbreviated_user_names'] = { 'allowed' => false, 'enabled' => false }
     end
 
     it 'admins should see full names' do

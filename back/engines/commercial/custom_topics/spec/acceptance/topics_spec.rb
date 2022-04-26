@@ -43,8 +43,8 @@ resource 'Topics' do
 
       let(:topic) { create(:custom_topic) }
       let(:id) { topic.id }
-      let(:title_multiloc) { {'en' => 'Comedy'} }
-      let(:description_multiloc) { {'en' => 'Stuff that tends to make you laugh'} }
+      let(:title_multiloc) { { 'en' => 'Comedy' } }
+      let(:description_multiloc) { { 'en' => 'Stuff that tends to make you laugh' } }
 
       example_request 'Update a topic' do
         expect(response_status).to eq 200
@@ -54,13 +54,13 @@ resource 'Topics' do
       end
 
       context do
-        let(:topic) { create(:custom_topic, code: 'mobility', title_multiloc: {'en' => 'Drama'}) }
+        let(:topic) { create(:custom_topic, code: 'mobility', title_multiloc: { 'en' => 'Drama' }) }
         let(:id) { topic.id }
 
         example_request 'Rename a default topic does not work', example: false do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match ({'en' => 'Drama'})
+          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match ({ 'en' => 'Drama' })
         end
       end
     end

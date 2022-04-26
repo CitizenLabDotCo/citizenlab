@@ -17,7 +17,7 @@ class IdeaPolicy < ApplicationPolicy
         scope
           .left_outer_joins(project: [:admin_publication])
           .where(publication_status: ['published', 'closed'])
-          .where(projects: {visible_to: 'public', admin_publications: {publication_status: ['published', 'archived']}})
+          .where(projects: { visible_to: 'public', admin_publications: { publication_status: ['published', 'archived'] } })
       end
     end
   end

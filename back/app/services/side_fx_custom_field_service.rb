@@ -24,7 +24,7 @@ class SideFxCustomFieldService
       'deleted', 
       current_user, 
       Time.now.to_i, 
-      payload: {custom_field: serialized_custom_field}
+      payload: { custom_field: serialized_custom_field }
     )
   end
 end

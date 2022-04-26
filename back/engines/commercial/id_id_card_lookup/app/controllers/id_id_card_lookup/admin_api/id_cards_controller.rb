@@ -18,7 +18,7 @@ module IdIdCardLookup
       end
 
       def count
-        render json: {count: IdCard.count}
+        render json: { count: IdCard.count }
       end
 
     end

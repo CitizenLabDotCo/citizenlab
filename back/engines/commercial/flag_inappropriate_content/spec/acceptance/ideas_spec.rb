@@ -59,7 +59,7 @@ resource 'Ideas' do
     let(:id) { @idea.id }
 
     describe do
-      let(:title_multiloc) { {'en' => 'Changed title' } }
+      let(:title_multiloc) { { 'en' => 'Changed title' } }
       let(:location_description) { 'Watkins Road 8' }
 
       example 'Toxicity detection job is enqueued when updating an idea\'s title and location description', document: false do
@@ -75,7 +75,7 @@ resource 'Ideas' do
       end
 
       describe do
-        let(:title_multiloc) { {'en' => 'Changed title' } }
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
 
         example 'Toxicity detection job is enqueued when updating an idea\'s title and re-verifies all fields', document: false do
           expect {

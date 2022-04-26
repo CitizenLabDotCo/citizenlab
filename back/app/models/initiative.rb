@@ -67,26 +67,26 @@ class Initiative < ApplicationRecord
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:initiatives_topics)
-      .where(initiatives_topics: {topic_id: uniq_topic_ids})
+      .where(initiatives_topics: { topic_id: uniq_topic_ids })
       .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
   end)
 
   scope :with_some_topics, (Proc.new do |topic_ids|
     with_dups = joins(:initiatives_topics)
-      .where(initiatives_topics: {topic_id: topic_ids})
+      .where(initiatives_topics: { topic_id: topic_ids })
     where(id: with_dups)
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_initiatives)
-      .where(areas_initiatives: {area_id: uniq_area_ids})
+      .where(areas_initiatives: { area_id: uniq_area_ids })
       .group(:id).having('COUNT(*) = ?', uniq_area_ids.size)
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
     with_dups = joins(:areas_initiatives)
-      .where(areas_initiatives: {area_id: area_ids})
+      .where(areas_initiatives: { area_id: area_ids })
     where(id: with_dups)
   end)
 

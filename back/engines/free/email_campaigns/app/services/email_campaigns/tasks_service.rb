@@ -33,7 +33,7 @@ module EmailCampaigns
     def ensure_unsubscription_tokens
       User
         .left_joins(:email_campaigns_unsubscription_token)
-        .where(email_campaigns_unsubscription_tokens: {token: nil}).ids.each do |user_id|
+        .where(email_campaigns_unsubscription_tokens: { token: nil }).ids.each do |user_id|
         EmailCampaigns::UnsubscriptionToken.create!(user_id: user_id)
       end
     end

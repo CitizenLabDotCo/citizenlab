@@ -70,7 +70,7 @@ module Volunteering
               params: fastjson_params,
               ).serialized_json, status: :ok
           else
-            render json: {errors: @cause.errors.details}, status: :unprocessable_entity
+            render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end
         end
 

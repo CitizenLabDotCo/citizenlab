@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
 
-  namespace :web_api, :defaults => {:format => :json} do
+  namespace :web_api, :defaults => { :format => :json } do
     namespace :v1 do
 
       concern :votable do
@@ -43,8 +43,8 @@ Rails.application.routes.draw do
         concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
 
-        resources :images, defaults: {container_type: 'Idea'}
-        resources :files, defaults: {container_type: 'Idea'}
+        resources :images, defaults: { container_type: 'Idea' }
+        resources :files, defaults: { container_type: 'Idea' }
 
         get :as_xlsx, on: :collection, action: 'index_xlsx'
         get :mini, on: :collection, action: 'index_mini'
@@ -57,8 +57,8 @@ Rails.application.routes.draw do
         concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
-        resources :images, defaults: {container_type: 'Initiative'}
-        resources :files, defaults: {container_type: 'Initiative'}
+        resources :images, defaults: { container_type: 'Initiative' }
+        resources :files, defaults: { container_type: 'Initiative' }
 
         resources :initiative_status_changes, shallow: true, except: [:update, :destroy]
 
@@ -172,7 +172,7 @@ Rails.application.routes.draw do
       end
 
       scope 'stats' do
-        route_params = {controller: 'stats_users'}
+        route_params = { controller: 'stats_users' }
         get 'users_count', **route_params
 
         get 'users_by_time', **route_params
@@ -185,7 +185,7 @@ Rails.application.routes.draw do
         get 'users_by_time_cumulative_as_xlsx', **route_params
         get 'active_users_by_time_as_xlsx', **route_params
 
-        route_params = {controller: 'stats_ideas'}
+        route_params = { controller: 'stats_ideas' }
         get 'ideas_count', **route_params
 
         get 'ideas_by_time', **route_params

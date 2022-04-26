@@ -36,7 +36,7 @@ describe EventsFinder do
 
   describe '#project_publication_statuses_condition' do
     let(:project) { create(:project) }
-    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' }}) }
+    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' } }) }
     let(:expected_record_ids) { Event.where(project: project2).pluck(:id) }
 
     before do

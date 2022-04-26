@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :mo
     let(:activity) {
       create(
         :activity, item: idea, action: 'changed_status', user: initiator,
-        payload: {change: [old_status.id, idea.idea_status.id]}
+        payload: { change: [old_status.id, idea.idea_status.id] }
         )
     }
 

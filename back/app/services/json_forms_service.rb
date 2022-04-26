@@ -97,7 +97,7 @@ class JsonFormsService
       type: 'Control',
       scope: "#/properties/#{field.key}",
       label: handle_title(field, locale),
-      options: { description: handle_description(field, locale)},
+      options: { description: handle_description(field, locale) },
     }
   end
 

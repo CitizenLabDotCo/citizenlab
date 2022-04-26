@@ -58,7 +58,7 @@ module Notifications
     validates :post_type, inclusion: { in: ['Idea'] }
 
 
-    ACTIVITY_TRIGGERS = {'Idea' => {'changed_status' => true}}
+    ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_status' => true } }
     EVENT_NAME = 'Status change on voted idea'
 
 
@@ -66,8 +66,8 @@ module Notifications
       idea = activity.item
 
       if idea.present?
-        comment_author_ids = User.joins(:comments).where(comments: {post: idea}).distinct.ids
-        User.joins(:votes).where(votes: {votable: idea}).distinct.ids.map do |recipient_id|
+        comment_author_ids = User.joins(:comments).where(comments: { post: idea }).distinct.ids
+        User.joins(:votes).where(votes: { votable: idea }).distinct.ids.map do |recipient_id|
           if !(comment_author_ids + [idea.author_id]).include?(recipient_id)
             self.new(
               recipient_id: recipient_id,

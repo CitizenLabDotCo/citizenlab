@@ -26,7 +26,7 @@ describe SideFxStaticPageService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the page has changed" do
-      page.update!(title_multiloc: {'en' => 'changed'})
+      page.update!(title_multiloc: { 'en' => 'changed' })
       expect {service.after_update(page, user)}.
         to have_enqueued_job(LogActivityJob).with(page, 'changed', user, page.updated_at.to_i)
     end

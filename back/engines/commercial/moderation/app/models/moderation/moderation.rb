@@ -26,7 +26,7 @@ module Moderation
 
     pg_search_scope :search_by_all,
         :against => [:content_title_multiloc, :content_body_multiloc],
-        :using => { :tsearch => {:prefix => true} }
+        :using => { :tsearch => { :prefix => true } }
 
     scope :with_moderation_status, (Proc.new do |status|
       moderations = joins("LEFT JOIN moderation_moderation_statuses \
@@ -57,15 +57,15 @@ module Moderation
     def belongs_to preloaded={}
       case moderatable_type
       when 'Idea'
-        {project: {id: project_id, slug: project_slug, title_multiloc: project_title_multiloc}}
+        { project: { id: project_id, slug: project_slug, title_multiloc: project_title_multiloc } }
       when 'Initiative'
         {}
       when 'Comment'
         case post_type
         when 'Idea'
-          {project: {id: project_id, slug: project_slug, title_multiloc: project_title_multiloc}, post_type.underscore.to_sym => {id: post_id, slug: post_slug, title_multiloc: post_title_multiloc}}
+          { project: { id: project_id, slug: project_slug, title_multiloc: project_title_multiloc }, post_type.underscore.to_sym => { id: post_id, slug: post_slug, title_multiloc: post_title_multiloc } }
         when 'Initiative'
-          {post_type.underscore.to_sym => {id: post_id, slug: post_slug, title_multiloc: post_title_multiloc}}
+          { post_type.underscore.to_sym => { id: post_id, slug: post_slug, title_multiloc: post_title_multiloc } }
         end
       end
     end

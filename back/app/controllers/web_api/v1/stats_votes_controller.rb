@@ -24,24 +24,24 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_birthyear
-    render json: {series: votes_by_custom_field_key('birthyear', params, params[:normalization] || 'absolute')}
+    render json: { series: votes_by_custom_field_key('birthyear', params, params[:normalization] || 'absolute') }
   end
 
   def votes_by_domicile
-    render json: {series: votes_by_custom_field_key('domicile', params, params[:normalization] || 'absolute')}
+    render json: { series: votes_by_custom_field_key('domicile', params, params[:normalization] || 'absolute') }
   end
 
   def votes_by_education
-    render json: {series: votes_by_custom_field_key('education', params, params[:normalization] || 'absolute')}
+    render json: { series: votes_by_custom_field_key('education', params, params[:normalization] || 'absolute') }
   end
 
   def votes_by_gender
-    render json: {series: votes_by_custom_field_key('gender', params, params[:normalization] || 'absolute')}
+    render json: { series: votes_by_custom_field_key('gender', params, params[:normalization] || 'absolute') }
   end
 
   def votes_by_custom_field
     custom_field = CustomField.find params[:custom_field]
-    render json: {series: votes_by_custom_field_key(custom_field.key, params, params[:normalization] || 'absolute')}
+    render json: { series: votes_by_custom_field_key(custom_field.key, params, params[:normalization] || 'absolute') }
   end
 
   def votes_by_time_serie
@@ -63,7 +63,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_time
-    render json: {series: double_grouped_by_to_nested_hashes(votes_by_time_serie)}
+    render json: { series: double_grouped_by_to_nested_hashes(votes_by_time_serie) }
   end
 
   def votes_by_time_as_xlsx
@@ -91,7 +91,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_time_cumulative
-    render json: {series: double_grouped_by_to_nested_hashes(votes_by_time_cumulative_serie)}
+    render json: { series: double_grouped_by_to_nested_hashes(votes_by_time_cumulative_serie) }
   end
 
 
@@ -114,7 +114,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_topic
     serie = votes_by_topic_serie
     topics = Topic.all.select(:id, :title_multiloc)
-    render json: {series: {total: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    render json: { series: { total: serie }, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h }
   end
 
   def votes_by_topic_as_xlsx
@@ -151,7 +151,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_project
     serie = votes_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {total: serie}, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h}
+    render json: { series: { total: serie }, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h }
   end
 
   def votes_by_project_as_xlsx
@@ -183,7 +183,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def apply_project_filter votes
     if params[:project]
-      votes.where(ideas: {project_id: params[:project]})
+      votes.where(ideas: { project_id: params[:project] })
     else
       votes
     end
@@ -193,7 +193,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     if params[:topic]
       votes
         .joins('JOIN ideas_topics ON ideas.id = ideas_topics.idea_id')
-        .where(ideas_topics: {topic_id: params[:topic]})
+        .where(ideas_topics: { topic_id: params[:topic] })
     else
       votes
     end
@@ -298,13 +298,13 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def render_no_data
     if @no_data
-      render json: {series: {up:{}, down: {}, total: {}}}
+      render json: { series: { up:{}, down: {}, total: {} } }
     end
   end
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
+      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
     end
   end
 

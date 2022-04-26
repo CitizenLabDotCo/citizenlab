@@ -57,7 +57,7 @@ module Notifications
     validates :official_feedback, :post, :initiating_user, presence: true
 
 
-    ACTIVITY_TRIGGERS = {'OfficialFeedback' => {'mentioned' => true}}
+    ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in official feedback'
     
 

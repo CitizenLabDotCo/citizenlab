@@ -80,7 +80,7 @@ resource 'Poll Options' do
 
       let(:option) { create(:poll_option) }
       let(:id) { option.id }
-      let(:title_multiloc) { {'en' => 'Like totally interesting'} }
+      let(:title_multiloc) { { 'en' => 'Like totally interesting' } }
 
       example_request 'Update an option' do
         expect(response_status).to eq 200

@@ -1,5 +1,5 @@
 UserCustomFields::Engine.routes.draw do
-  namespace :web_api, :defaults => {:format => :json} do
+  namespace :web_api, :defaults => { :format => :json } do
     namespace :v1 do
       scope :users do
         resources :custom_fields, controller: 'user_custom_fields' do
@@ -13,7 +13,7 @@ UserCustomFields::Engine.routes.draw do
       end
 
       scope 'stats' do
-        route_params = {controller: 'stats_users'}
+        route_params = { controller: 'stats_users' }
 
         get 'users_by_gender', **route_params
         get 'users_by_birthyear', **route_params

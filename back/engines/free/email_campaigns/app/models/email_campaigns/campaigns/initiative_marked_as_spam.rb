@@ -45,7 +45,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::InitiativeMarkedAsSpam' => {'created' => true}}
+      { 'Notifications::InitiativeMarkedAsSpam' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

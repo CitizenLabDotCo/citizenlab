@@ -86,7 +86,7 @@ resource 'User Custom Field Options' do
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
       let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
-      let(:title_multiloc) { {'en' => 'New title'} }
+      let(:title_multiloc) { { 'en' => 'New title' } }
 
       example_request 'Update a custom field option' do
         expect(response_status).to eq 200
@@ -124,7 +124,7 @@ resource 'User Custom Field Options' do
       if CitizenLab.ee?
         example "[error] Delete a custom field option that's still referenced in a rules group" do
           group = create(:smart_group, rules: [
-            {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
+            { ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id }
           ])
           do_request
           assert_status 422
@@ -133,7 +133,7 @@ resource 'User Custom Field Options' do
       end
 
       example "Deleting a custom field option that's still referenced in a user's setting", document: false do
-        custom_field_values = {@custom_field.key => custom_field_option.key}
+        custom_field_values = { @custom_field.key => custom_field_option.key }
         user = create(:user, custom_field_values: custom_field_values)
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request

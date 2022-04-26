@@ -41,7 +41,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Idea' => {'changed_status' => true}}
+      { 'Idea' => { 'changed_status' => true } }
     end
 
     def filter_recipient users_scope, activity:, time: nil

@@ -18,7 +18,7 @@ RSpec.describe Area, type: :model do
       area = create(:area, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(area.description_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
   end
 

@@ -69,7 +69,7 @@ resource 'OfficialFeedback' do
       end
 
       describe do
-        let(:body_multiloc) { {'en' => ''} }
+        let(:body_multiloc) { { 'en' => '' } }
 
         example_request '[error] Create an invalid official feedback on an initiative' do
           assert_status 422
@@ -88,7 +88,7 @@ resource 'OfficialFeedback' do
 
       let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
       let(:id) { official_feedback.id }
-      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
+      let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
       example_request 'Update an official feedback for an initiative' do
         expect(response_status).to eq 200

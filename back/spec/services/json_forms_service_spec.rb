@@ -8,8 +8,8 @@ describe JsonFormsService do
 
   describe 'fields_to_ui_schema_multiloc' do
 
-    let (:title_multiloc) {{'en' => 'size', 'nl-NL' => 'grootte'}}
-    let (:description_multiloc) {{'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}}
+    let (:title_multiloc) {{ 'en' => 'size', 'nl-NL' => 'grootte' }}
+    let (:description_multiloc) {{ 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' }}
     let(:fields) {[
       create(:custom_field,
         key: 'field1',
@@ -63,10 +63,10 @@ describe JsonFormsService do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
-        {:type=>'object',
+        { :type=>'object',
          :additionalProperties=>false,
          :properties=>
-          {'field1'=>
+          { 'field1'=>
             { :type=>'string' },
            'field2'=>
            { :type=>'string' },
@@ -94,7 +94,7 @@ describe JsonFormsService do
              :uniqueItems=>true,
              :minItems=>0,
              :items=>
-              {:type=>'string',
+              { :type=>'string',
               :oneOf => [
                 {
                   :const => 'option_a',
@@ -110,16 +110,16 @@ describe JsonFormsService do
            'field5'=>
             { :type=>'boolean' },
            'field6'=>
-            {:type=>'string',
-             :format=>'date'},
+            { :type=>'string',
+             :format=>'date' },
             'field7'=>
-            {:type=>'number'},
+            { :type=>'number' },
            'field8'=>
-            {:type=>'array',
+            { :type=>'array',
              :uniqueItems=>true,
              :minItems=>1,
              :items=>
-              {:type=>'string',
+              { :type=>'string',
               :oneOf => [
                 {
                   :const => 'option_a',
@@ -133,20 +133,20 @@ describe JsonFormsService do
              }
             },
             'field9'=>
-            {:type=>'array',
+            { :type=>'array',
              :items=>
-              {:properties=>
-                {:file_by_content=>
-                  {:properties=>
-                    {:file=>
-                      {:type=>'string'},
+              { :properties=>
+                { :file_by_content=>
+                  { :properties=>
+                    { :file=>
+                      { :type=>'string' },
                     :name=>
-                      {:type=>'string'}
+                      { :type=>'string' }
                     },
                   :type=>'object',
                   },
                   :name=>
-                  {:type=>'string'},
+                  { :type=>'string' },
                 },
                 :type=>'object'
               },

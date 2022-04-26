@@ -86,7 +86,7 @@ resource 'Volunteering Volunteers' do
     get 'web_api/v1/projects/:participation_context_id/volunteers/as_xlsx' do
       before do
         @project = create(:continuous_volunteering_project)
-        @cause1 = create(:cause, title_multiloc: {en: 'For sure works with very long titles too!!!'}, participation_context: @project)
+        @cause1 = create(:cause, title_multiloc: { en: 'For sure works with very long titles too!!!' }, participation_context: @project)
         @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
         @cause2 = create(:cause, participation_context: @project)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)

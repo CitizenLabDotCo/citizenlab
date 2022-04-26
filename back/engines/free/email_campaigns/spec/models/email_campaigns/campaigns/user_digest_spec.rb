@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
     let!(:top_comment) { create(:comment, post: top_idea, created_at: Time.now - 3.minutes) }
     let!(:comments) { create_list(:comment, 3, post: top_idea, parent: top_comment) + create_list(:comment, 5, post: top_idea) + [top_comment] }
     let!(:votes) { create_list(:vote, 3, mode: 'up', votable: top_idea) + [top_idea] }
-    let!(:draft_project) { create(:project, admin_publication_attributes: {publication_status: 'draft'}, created_at: Time.now - 2.minutes) }
+    let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
 
   	it 'generates a command with the desired payload and tracked content' do
   		command = campaign.generate_commands(recipient: user).first

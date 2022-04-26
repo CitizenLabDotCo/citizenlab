@@ -1,15 +1,15 @@
 class ParticipantsService
 
   ENGAGING_ACTIVITIES = [
-    {item_type: 'Comment', action: 'created', score: 3},
-    {item_type: 'Idea', action: 'published', score: 5},
-    {item_type: 'Vote', action: 'idea_upvoted', score: 1},
-    {item_type: 'Vote', action: 'idea_downvoted', score: 1},
-    {item_type: 'Vote', action: 'comment_upvoted', score: 1},
-    {item_type: 'Vote', action: 'comment_downvoted', score: 1},
-    {item_type: 'Basket', action: 'created', score: 3},
-    {item_type: 'Polls::Response', action: 'created', score: 1},
-    {item_type: 'Volunteering::Volunteer', action: 'created', score: 3},
+    { item_type: 'Comment', action: 'created', score: 3 },
+    { item_type: 'Idea', action: 'published', score: 5 },
+    { item_type: 'Vote', action: 'idea_upvoted', score: 1 },
+    { item_type: 'Vote', action: 'idea_downvoted', score: 1 },
+    { item_type: 'Vote', action: 'comment_upvoted', score: 1 },
+    { item_type: 'Vote', action: 'comment_downvoted', score: 1 },
+    { item_type: 'Basket', action: 'created', score: 3 },
+    { item_type: 'Polls::Response', action: 'created', score: 1 },
+    { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 },
   ]
 
   PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting, :polling, :volunteering]
@@ -117,8 +117,8 @@ class ParticipantsService
     # Volunteering
     if actions.include? :volunteering
       volunteering_users = User.joins(volunteers: [:cause])
-      volunteering_users = volunteering_users.where(volunteering_causes: {participation_context: projects})
-        .or(volunteering_users.where(volunteering_causes: {participation_context: Phase.where(project: projects)}))
+      volunteering_users = volunteering_users.where(volunteering_causes: { participation_context: projects })
+        .or(volunteering_users.where(volunteering_causes: { participation_context: Phase.where(project: projects) }))
       participants = participants.or(User.where(id: volunteering_users))
     end
     participants

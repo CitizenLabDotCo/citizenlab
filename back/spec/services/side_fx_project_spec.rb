@@ -37,7 +37,7 @@ describe SideFxProjectService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the project has changed" do
-      project.update(title_multiloc: {'en': 'changed'})
+      project.update(title_multiloc: { 'en': 'changed' })
       expect {service.after_update(project, user)}.
         to have_enqueued_job(LogActivityJob).with(project, 'changed', user, project.updated_at.to_i)
     end

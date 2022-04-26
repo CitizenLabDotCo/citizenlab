@@ -22,7 +22,7 @@ class SideFxProjectsAllowedInputTopicService
 
   def after_destroy frozen_projects_allowed_input_topic, user
     serialized_projects_allowed_input_topic = clean_time_attributes(frozen_projects_allowed_input_topic.attributes)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_projects_allowed_input_topic), 'deleted', user, Time.now.to_i, payload: {projects_allowed_input_topic: serialized_projects_allowed_input_topic})
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_projects_allowed_input_topic), 'deleted', user, Time.now.to_i, payload: { projects_allowed_input_topic: serialized_projects_allowed_input_topic })
   end
 
 end

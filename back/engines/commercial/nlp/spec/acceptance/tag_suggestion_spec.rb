@@ -14,7 +14,7 @@ resource 'TagSuggestion' do
 
   get '/web_api/v1/tag_suggestions' do
     before do
-      @ideas = create_list(:idea, 2, title_multiloc: {'en' => 'I\'m an idea.'})
+      @ideas = create_list(:idea, 2, title_multiloc: { 'en' => 'I\'m an idea.' })
     end
     parameter :idea_ids, 'The ideas to suggest tags for', required: true
     let(:idea_ids) { @ideas.map(&:id) }

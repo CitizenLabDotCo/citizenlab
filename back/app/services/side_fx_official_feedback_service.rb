@@ -27,7 +27,7 @@ class SideFxOfficialFeedbackService
 
   def after_destroy frozen_feedback, user
     serialized_feedback = clean_time_attributes(frozen_feedback.attributes)
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_feedback), 'deleted', user, Time.now.to_i, payload: {official_feedback: serialized_feedback})
+    LogActivityJob.perform_later(encode_frozen_resource(frozen_feedback), 'deleted', user, Time.now.to_i, payload: { official_feedback: serialized_feedback })
   end
 
 
@@ -46,7 +46,7 @@ class SideFxOfficialFeedbackService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(feedback, 'mentioned', user, feedback.created_at.to_i, payload: {mentioned_user: mentioned_user.id})
+      LogActivityJob.perform_later(feedback, 'mentioned', user, feedback.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
 
@@ -58,7 +58,7 @@ class SideFxOfficialFeedbackService
     end
 
     mentioned_users.uniq.each do |mentioned_user|
-      LogActivityJob.perform_later(feedback, 'mentioned', user, feedback.created_at.to_i, payload: {mentioned_user: mentioned_user.id})
+      LogActivityJob.perform_later(feedback, 'mentioned', user, feedback.created_at.to_i, payload: { mentioned_user: mentioned_user.id })
     end
   end
 

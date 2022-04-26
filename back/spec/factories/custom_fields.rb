@@ -75,14 +75,14 @@ FactoryBot.define do
 
     factory :custom_field_birthyear do
       key { 'birthyear' }
-      title_multiloc { {en: 'birthyear' } }
+      title_multiloc { { en: 'birthyear' } }
       input_type { 'number' }
       code { 'birthyear' }
     end
 
     factory :custom_field_gender do
       key { 'gender' }
-      title_multiloc { {'en' => 'gender'} }
+      title_multiloc { { 'en' => 'gender' } }
       code { 'gender' }
       input_type { 'select' }
 
@@ -97,14 +97,14 @@ FactoryBot.define do
 
     factory :custom_field_domicile do
       key { 'domicile' }
-      title_multiloc { {'en' => 'domicile'} }
+      title_multiloc { { 'en' => 'domicile' } }
       code { 'domicile' }
       input_type { 'select' }
     end
 
     factory :custom_field_education do
       key { 'education' }
-      title_multiloc { {'en' => 'education'} }
+      title_multiloc { { 'en' => 'education' } }
       code { 'education' }
       input_type { 'select' }
       enabled { false }

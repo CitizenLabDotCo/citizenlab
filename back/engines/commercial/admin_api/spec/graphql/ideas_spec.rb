@@ -66,7 +66,7 @@ RSpec.describe 'Graphql ideas' do
       let!(:i1) { create(:idea, project: p1) }
       let!(:i2) { create(:idea, project: p2) }
       let!(:i3) { create(:idea, project: p1) }
-      let(:variables) { {projects: [p1.id]} }
+      let(:variables) { { projects: [p1.id] } }
 
       it 'returns public ideas in projects' do
         response = result
@@ -84,7 +84,7 @@ RSpec.describe 'Graphql ideas' do
       let!(:i2) { create(:idea, topics: [t2], project: project) }
       let!(:i3) { create(:idea, topics: [t1], project: project) }
       let!(:i4) { create(:idea, topics: [t3,t2], project: project) }
-      let(:variables) { {topics: [t1.id, t3.id]} }
+      let(:variables) { { topics: [t1.id, t3.id] } }
 
       it 'returns public ideas in topics' do
         response = result

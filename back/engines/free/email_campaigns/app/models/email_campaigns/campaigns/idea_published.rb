@@ -41,7 +41,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Idea' => {'published' => true}}
+      { 'Idea' => { 'published' => true } }
     end
 
     def filter_recipient users_scope, activity:, time: nil

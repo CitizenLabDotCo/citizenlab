@@ -9,15 +9,15 @@ module Post
   included do
     pg_search_scope :search_by_all,
                     against: [:title_multiloc, :body_multiloc],
-                    using: { :tsearch => {:prefix => true} }
+                    using: { :tsearch => { :prefix => true } }
 
     pg_search_scope :restricted_search,
                     against: [:title_multiloc, :body_multiloc],
-                    using: { :tsearch => {:prefix => true} }
+                    using: { :tsearch => { :prefix => true } }
 
     pg_search_scope :search_any_word,
                     against: [:title_multiloc, :body_multiloc],
-                    using: { tsearch: {any_word: true} }
+                    using: { tsearch: { any_word: true } }
 
     # Note from: https://github.com/Casecommons/pg_search
     # > Searching through associations
@@ -42,7 +42,7 @@ module Post
     before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
     has_many :notifications, foreign_key: :post_id, dependent: :nullify
 
-    validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
+    validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
     with_options unless: :draft? do |post|
       post.validates :title_multiloc, presence: true, multiloc: { presence: true }

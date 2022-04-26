@@ -14,8 +14,8 @@ FactoryBot.define do
       action { 'changed_title' }
       payload {{
         'change' => [
-          {'en' => 'old title'},
-          {'en' => 'new title'}
+          { 'en' => 'old title' },
+          { 'en' => 'new title' }
         ]
       }}
     end
@@ -24,8 +24,8 @@ FactoryBot.define do
       action { 'changed_body' }
       payload {{
         'change' => [
-          {'en' => 'old body'},
-          {'en' => 'new body'}
+          { 'en' => 'old body' },
+          { 'en' => 'new body' }
         ]
       }}
     end

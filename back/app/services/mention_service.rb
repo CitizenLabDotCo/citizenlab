@@ -67,7 +67,7 @@ class MentionService
   # @param [Integer] limit
   # @return [Array<User>]
   def users_from_post query, post, limit
-    user_ids = User.joins(:comments).where(comments: {post_id: post.id}).ids.uniq # Commenters' IDs
+    user_ids = User.joins(:comments).where(comments: { post_id: post.id }).ids.uniq # Commenters' IDs
     user_ids << post.author_id if post.author_id
     User.where(id: user_ids).by_username(query).limit(limit).to_a
   end

@@ -51,7 +51,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time
-    render json: {series: {users: users_by_time_serie}}
+    render json: { series: { users: users_by_time_serie } }
   end
 
   def users_by_time_as_xlsx
@@ -86,7 +86,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time_cumulative
-    render json: {series: {users: users_by_time_cumulative_serie}}
+    render json: { series: { users: users_by_time_cumulative_serie } }
   end
 
   def users_by_time_cumulative_as_xlsx
@@ -131,7 +131,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time_cumulative
-    render json: {series: {users: active_users_by_time_cumulative_serie}}
+    render json: { series: { users: active_users_by_time_cumulative_serie } }
   end
 
   def active_users_by_time_serie
@@ -168,7 +168,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time
-    render json: {series: {users: active_users_by_time_serie}}
+    render json: { series: { users: active_users_by_time_serie } }
   end
 
   def active_users_by_time_as_xlsx
@@ -210,13 +210,13 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def render_no_data
     if @no_data
-      render json: {series: {users: {}}}
+      render json: { series: { users: {} } }
     end
   end
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
+      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
     end
   end
 

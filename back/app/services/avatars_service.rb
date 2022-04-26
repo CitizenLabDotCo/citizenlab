@@ -20,7 +20,7 @@ class AvatarsService
 
   def avatars_for_post post, post_type, users: User.active, limit: 5
     Rails.cache.fetch("#{post.cache_key}/avatars", expires_in: 1.day) do
-      commenters = users.joins(:comments).where(comments: {post_id: post.id, post_type: post_type, publication_status: 'published'})
+      commenters = users.joins(:comments).where(comments: { post_id: post.id, post_type: post_type, publication_status: 'published' })
       users_for_post = users.where(id: post.author).or(users.where(id: commenters))
       add_count(users_for_post, limit)
     end

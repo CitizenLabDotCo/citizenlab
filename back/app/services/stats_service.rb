@@ -30,7 +30,7 @@ class StatsService
   def filter_users_by_topic users_scope, topic_id
     ideas = Idea
       .joins(:ideas_topics)
-      .where(ideas_topics: {topic_id: topic_id})
+      .where(ideas_topics: { topic_id: topic_id })
 
     idea_authors = ideas.pluck(:author_id)
     comment_authors = Comment.where(post_id: ideas).pluck(:author_id)

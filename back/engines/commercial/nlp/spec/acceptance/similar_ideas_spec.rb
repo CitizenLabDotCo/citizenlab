@@ -28,7 +28,7 @@ resource 'SimilarIdeas' do
 
       example 'List all similar ideas' do
         allow_any_instance_of(NLP::Api).to receive(:similarity).and_return(@ideas.map{|i| 
-          {'id' => i.id, 'score' => 0.27}
+          { 'id' => i.id, 'score' => 0.27 }
         })
         do_request
         expect(status).to eq 200

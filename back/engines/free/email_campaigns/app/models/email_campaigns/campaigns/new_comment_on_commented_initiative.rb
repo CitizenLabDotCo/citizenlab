@@ -41,7 +41,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Comment' => {'created' => true}}
+      { 'Comment' => { 'created' => true } }
     end
 
     def filter_recipient users_scope, activity:, time: nil

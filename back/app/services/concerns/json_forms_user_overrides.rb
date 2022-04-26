@@ -29,7 +29,7 @@ module JsonFormsUserOverrides
 
   def user_birthyear_to_json_schema_field field, locale
     output = number_to_json_schema_field(field, locale)
-    output[:oneOf] = (1900..(Time.now.year - 12)).to_a.reverse.map{|y| {const: y}}
+    output[:oneOf] = (1900..(Time.now.year - 12)).to_a.reverse.map{|y| { const: y }}
     output
   end
 

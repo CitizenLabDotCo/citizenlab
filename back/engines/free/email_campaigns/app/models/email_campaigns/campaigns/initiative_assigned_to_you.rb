@@ -44,7 +44,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::InitiativeAssignedToYou' => {'created' => true}}
+      { 'Notifications::InitiativeAssignedToYou' => { 'created' => true } }
     end
 
     def filter_notification_recipient users_scope, activity:, time: nil

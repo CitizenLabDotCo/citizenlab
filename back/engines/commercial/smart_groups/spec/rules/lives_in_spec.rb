@@ -43,7 +43,7 @@ describe SmartGroups::Rules::LivesIn do
       CustomField.create!(
         resource_type: 'User',
         key: 'domicile',
-        title_multiloc: {'en' => 'Domicile'},
+        title_multiloc: { 'en' => 'Domicile' },
         input_type: 'select',
         required: false,
         ordering: 2,
@@ -56,11 +56,11 @@ describe SmartGroups::Rules::LivesIn do
     let!(:area2) { create(:area) }
     let!(:users) {
       users = build_list(:user, 5)
-      users[0][:custom_field_values] = {'domicile' => 'outside'}
-      users[1][:custom_field_values] = {'domicile' => area1.id}
-      users[2][:custom_field_values] = {'domicile' => area2.id}
+      users[0][:custom_field_values] = { 'domicile' => 'outside' }
+      users[1][:custom_field_values] = { 'domicile' => area1.id }
+      users[2][:custom_field_values] = { 'domicile' => area2.id }
       users[3][:custom_field_values] = nil
-      users[4][:custom_field_values] = {'domicile' => area1.id}
+      users[4][:custom_field_values] = { 'domicile' => area1.id }
       users.each(&:save!)
     }
 
@@ -100,7 +100,7 @@ describe SmartGroups::Rules::LivesIn do
       CustomField.create!(
         resource_type: 'User',
         key: 'domicile',
-        title_multiloc: {'en' => 'Place of residence', 'fr-FR' => 'Domicile', 'nl-NL' => 'Woonplaats'},
+        title_multiloc: { 'en' => 'Place of residence', 'fr-FR' => 'Domicile', 'nl-NL' => 'Woonplaats' },
         input_type: 'select',
         required: false,
         ordering: 2,

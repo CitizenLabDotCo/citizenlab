@@ -11,7 +11,7 @@ describe 'RequiredSettingsAttribute' do
         'required-settings' => ['setting1'],
         'properties' => {
           'allowed' => { 'type' => 'boolean' },
-          'enabled' => { 'type' => 'boolean'},
+          'enabled' => { 'type' => 'boolean' },
           'setting1' => { 'type' => 'string' },
           'setting2' => { 'type' => 'string' }
         }
