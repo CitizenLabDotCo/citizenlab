@@ -10,6 +10,7 @@ module Carrierwave
 
         description, encoded_bytes = encoded_file.split ','
         raise ArgumentError if !encoded_bytes || encoded_bytes.eql?('(null)')
+
         bytes = ::Base64.decode64 encoded_bytes
 
         super bytes

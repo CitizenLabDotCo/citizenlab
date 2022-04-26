@@ -124,6 +124,7 @@ class WebApi::V1::InvitesController < ApplicationController
         if !@invite.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
+
         SideFxInviteService.new.after_accept @invite
         render json: WebApi::V1::InviteSerializer.new(
           @invite.reload,

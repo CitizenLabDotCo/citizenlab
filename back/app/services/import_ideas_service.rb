@@ -7,6 +7,7 @@ class ImportIdeasService
       if idea_models_data.size > MAX_IDEAS
         raise "The maximal amount of #{MAX_IDEAS} ideas has been exceeded"
       end
+
       idea_models_data.each do |idea_data|
         added_idea_ids.push convert_idea(idea_data).id
         puts "Created #{added_idea_ids.first}"
@@ -27,10 +28,12 @@ class ImportIdeasService
     if idea_data[:title_multiloc].blank?
       raise 'A title for the idea is mandatory!'
     end
+
     d[:title_multiloc] = idea_data[:title_multiloc]
     if idea_data[:body_multiloc].blank?
       raise 'A body for the idea is mandatory!'
     end
+
     d[:body_multiloc] = idea_data[:body_multiloc]
     d[:topics] = idea_data[:topic_titles].map do |topic_title|
       topic_title = topic_title.downcase
@@ -43,6 +46,7 @@ class ImportIdeasService
     if !idea_data[:project_title]
       raise 'A project title is mandatory!'
     end
+
     project_title = idea_data[:project_title].downcase.strip
     d[:project] = Project.all.select do |project|
       project.title_multiloc.values
@@ -52,6 +56,7 @@ class ImportIdeasService
     if !d[:project]
       raise "No project with title #{idea_data[:project_title]} exists"
     end
+
     if idea_data[:user_email]
       d[:author] = User.find_by_cimail idea_data[:user_email]
       if !d[:author]
@@ -87,10 +92,12 @@ class ImportIdeasService
       if idea_data[:phase_rank] > project_phases.size
         raise "Only #{idea_data[:phase_rank]} phases exist within project #{idea_data[:project_title]}"
       end
+
       phase = project_phases.order(:start_at).all[idea_data[:phase_rank] - 1]
       if !phase
         raise "No phase with title #{idea_data[:phase_title]} exists within project #{idea_data[:project_title]}"
       end
+
       IdeasPhase.create!(phase: phase, idea: idea)
     end
     idea

@@ -27,6 +27,7 @@ module BlockingProfanity
     attrs = SUPPORTED_CLASS_ATTRS[object.class.name]
     attrs&.each do |atr|
       next if object[atr].blank?
+
       values = if atr.to_s.ends_with? '_multiloc'
         object[atr]
       else
@@ -34,6 +35,7 @@ module BlockingProfanity
       end
       values.each do |locale, text|
         next if text.blank?
+
         service.search_blocked_words(text)&.each do |result|
           result[:locale] = locale if locale
           result[:attribute] = atr

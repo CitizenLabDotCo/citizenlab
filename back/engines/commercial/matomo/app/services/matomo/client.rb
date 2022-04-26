@@ -13,6 +13,7 @@ module Matomo
     rescue KeyError => e
       raise MissingBaseUriError if e.key == 'MATOMO_HOST'
       raise MissingAuthorizationTokenError if e.key == 'MATOMO_AUTHORIZATION_TOKEN'
+
       raise
     end
 

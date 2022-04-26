@@ -67,6 +67,7 @@ module EmailCampaigns
     def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
       return [] if comment.post_type != 'Idea'
+
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{
         event_payload: {

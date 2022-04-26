@@ -124,6 +124,7 @@ class Initiative < ApplicationRecord
 
   def expires_at(configuration = AppConfiguration.instance)
     return nil unless published?
+
     published_at + configuration.settings('initiatives', 'days_limit').days
   end
 

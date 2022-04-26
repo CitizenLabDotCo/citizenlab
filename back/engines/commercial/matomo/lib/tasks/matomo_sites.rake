@@ -13,6 +13,7 @@ namespace :matomo_sites do
     Tenant.not_deleted.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         next unless tenant.configuration.settings('matomo', 'tenant_site_id') == ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID')
+
         PublishGenericEventToRabbitJob.perform_now({ item_content: tenant }, 'tenant.setup_matomo')
       end
     end

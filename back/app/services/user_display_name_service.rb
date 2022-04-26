@@ -33,6 +33,7 @@ class UserDisplayNameService
   # @return [String,nil]
   def display_name!(user)
     return nil if user.nil?
+
     [user.first_name, last_name(user)].join(' ')
   end
 
@@ -58,6 +59,7 @@ class UserDisplayNameService
   # @return [String]
   def last_name!(user)
     return nil if user&.last_name.nil?
+
     can_see_fullname_of?(user) ? user.last_name : self.class.initial(user.last_name)
   end
 
@@ -71,6 +73,7 @@ class UserDisplayNameService
   # @return [Boolean]
   def can_see_fullname_of?(user)
     return true unless restricted?
+
     user.admin? || (user == @current_user)
   end
 

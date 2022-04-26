@@ -1,6 +1,7 @@
 class MultilocService
   def t(translations, user=nil)
     return nil unless translations
+
     locales = AppConfiguration.instance.settings('core', 'locales')
     user_locale = user&.locale || I18n.locale.to_s
     result = ([user_locale] + locales + translations.keys).each do |locale|

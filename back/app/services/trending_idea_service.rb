@@ -51,6 +51,7 @@ class TrendingIdeaService
     if (Time.now.to_i - idea.created_at.to_i) > IdeaTrendingInfo::TREND_SINCE_ACTIVITY
       return -1 / score
     end
+
     score
   end
 

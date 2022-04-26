@@ -176,6 +176,7 @@ class AnonymizeUserService
     if !res.is_a?(Net::HTTPSuccess)
       raise "API request to eu.ui-avatars.com failed. Code: #{res.code}. Body: #{res.body}."
     end
+
     "data:image/png;base64,#{Base64.encode64 res.body}"
   end
 

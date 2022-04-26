@@ -29,9 +29,11 @@ module FlagInappropriateContent
 
     def reason_code
       return 'inappropriate' if toxicity_label
+
       spam_reasons = flaggable.spam_reports.pluck :reason_code
       spam_reasons.delete 'other'
       return 'inappropriate' if spam_reasons.empty?
+
       # return most frequent reason
       spam_reasons.max_by do |reason|
         spam_reasons.count reason

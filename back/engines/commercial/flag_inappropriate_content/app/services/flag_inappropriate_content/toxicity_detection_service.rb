@@ -2,6 +2,7 @@ module FlagInappropriateContent
   class ToxicityDetectionService
     def flag_toxicity!(flaggable, attributes: [])
       return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
+
       flag_service = InappropriateContentFlagService.new
 
       texts = extract_texts flaggable, attributes
@@ -41,6 +42,7 @@ module FlagInappropriateContent
       texts = []
       attributes.each do |atr|
         next if flaggable[atr].blank?
+
         values = if atr.to_s.ends_with? '_multiloc'
           texts += flaggable[atr].values
         else

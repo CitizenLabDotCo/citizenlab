@@ -61,6 +61,7 @@ module AdminApi
 
     def lookup_ref(id, model_name)
       return nil if !id
+
       if model_name.kind_of?(Array)
         model_name.each do |n|
           return @refs[n][id] if @refs[n][id]
@@ -77,6 +78,7 @@ module AdminApi
 
     def yml_custom_forms(shift_timestamps: 0)
       return [] if !@project.custom_form_id
+
       yml_custom_form = {
         'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
@@ -87,6 +89,7 @@ module AdminApi
 
     def yml_custom_fields(shift_timestamps: 0)
       return [] if !@project.custom_form_id
+
       CustomField.where(resource: @project.custom_form).map do |c|
         yml_custom_field = {
           'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
@@ -108,6 +111,7 @@ module AdminApi
 
     def yml_custom_field_options(shift_timestamps: 0)
       return [] if !@project.custom_form_id
+
       CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
         yml_custom_field_option = {
           'custom_field_ref'     => lookup_ref(c.custom_field_id, :custom_field),

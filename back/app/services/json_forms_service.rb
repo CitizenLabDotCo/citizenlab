@@ -71,6 +71,7 @@ class JsonFormsService
   def fields_to_ui_schema(fields, locale='en')
     send("#{fields.first.resource_type.underscore}_to_ui_schema", fields, locale) do |field|
       next nil if (!field || !field.enabled || field.hidden)
+
       override_method = "#{fields.first.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       if field.code && self.respond_to?(override_method, true)
         send(override_method, field, locale)
