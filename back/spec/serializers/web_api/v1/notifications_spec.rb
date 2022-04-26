@@ -35,35 +35,35 @@ describe WebApi::V1::Notifications::NotificationSerializer do
     let(:john) {create(:user, first_name: 'John', last_name: 'Smith')}
     let(:admin) {create(:admin, first_name: 'Almighty', last_name: 'Admin')}
 
-    it "serializes CommentOnYourComment correctly" do
+    it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(
           john, jane, admin, :comment_on_your_comment,
           WebApi::V1::Notifications::CommentOnYourCommentSerializer
       )
     end
 
-    it "serializes CommentOnYourInitiative correctly" do
+    it 'serializes CommentOnYourInitiative correctly' do
       expect_serializer_to_hide_name(
           john, jane, admin, :comment_on_your_initiative,
           WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
       )
     end
 
-    it "serializes CommentOnYourComment correctly" do
+    it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(
           john, jane, admin, :comment_on_your_idea,
           WebApi::V1::Notifications::CommentOnYourIdeaSerializer
       )
     end
 
-    it "serializes InitiativeAssignedToYouSerializer correctly" do
+    it 'serializes InitiativeAssignedToYouSerializer correctly' do
       expect_serializer_to_hide_name(
           john, jane, admin, :initiative_assigned_to_you,
           WebApi::V1::Notifications::InitiativeAssignedToYouSerializer
       )
     end
 
-    it "serializes MentionInComment correctly" do
+    it 'serializes MentionInComment correctly' do
       expect_serializer_to_hide_name(
           john, jane, admin, :mention_in_comment,
           WebApi::V1::Notifications::MentionInCommentSerializer

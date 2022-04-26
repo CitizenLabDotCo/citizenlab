@@ -19,7 +19,7 @@ namespace :db do
     ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "postgis" SCHEMA shared_extensions;'
   end
 
-  desc "Erase all tables"
+  desc 'Erase all tables'
   task :clear => :environment do
     conn = ActiveRecord::Base.connection
     tables = conn.tables
@@ -30,10 +30,10 @@ namespace :db do
   end
 end
 
-Rake::Task["db:create"].enhance do
-  Rake::Task["db:extensions"].invoke
+Rake::Task['db:create'].enhance do
+  Rake::Task['db:extensions'].invoke
 end
 
-Rake::Task["db:test:purge"].enhance do
-  Rake::Task["db:extensions"].invoke
+Rake::Task['db:test:purge'].enhance do
+  Rake::Task['db:extensions'].invoke
 end

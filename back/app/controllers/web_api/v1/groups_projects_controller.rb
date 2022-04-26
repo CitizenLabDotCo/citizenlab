@@ -7,14 +7,14 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
       .includes(:group)
 
     @groups_projects = case params[:sort]
-      when "new"
+      when 'new'
         @groups_projects.order_new
-      when "-new"
+      when '-new'
         @groups_projects.order_new(:asc)
       when nil
         @groups_projects
       else
-        raise "Unsupported sort method"
+        raise 'Unsupported sort method'
     end
 
     @groups_projects = paginate @groups_projects

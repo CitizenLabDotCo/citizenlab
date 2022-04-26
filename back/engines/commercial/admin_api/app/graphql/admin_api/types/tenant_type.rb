@@ -1,6 +1,6 @@
 module AdminApi
   class Types::TenantType < GraphQL::Schema::Object
-    description "A CitizenLab platform"
+    description 'A CitizenLab platform'
 
     class TenantLogo < GraphQL::Schema::Object
       field :small_url, String, null: false

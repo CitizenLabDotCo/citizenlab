@@ -1,12 +1,12 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe JsonFormsService do
   let(:service) { JsonFormsService.new }
-  let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
-  let(:locale) { "en" }
+  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
+  let(:locale) { 'en' }
   let(:user) { create(:user) }
 
-  describe "fields_to_ui_schema_multiloc" do
+  describe 'fields_to_ui_schema_multiloc' do
 
     let (:title_multiloc) {{'en' => 'size', 'nl-NL' => 'grootte'}}
     let (:description_multiloc) {{'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?'}}
@@ -18,7 +18,7 @@ describe JsonFormsService do
         description_multiloc: description_multiloc
       )
     ]}
-    it "creates localized schemas with titles and descriptions for all languages" do
+    it 'creates localized schemas with titles and descriptions for all languages' do
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc]
       expect(ui_schema['en'][:elements][0][:label]).to eq title_multiloc['en']
       expect(ui_schema['nl-NL'][:elements][0][:label]).to eq title_multiloc['nl-NL']
@@ -27,20 +27,20 @@ describe JsonFormsService do
     end
   end
 
-  describe "fields_to_json_schema_multiloc" do
+  describe 'fields_to_json_schema_multiloc' do
 
-    it "returns nil empty fields" do
+    it 'returns nil empty fields' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
       expect(schema).to eq nil
     end
 
-    it "creates the valid empty schema on a disabled field" do
+    it 'creates the valid empty schema on a disabled field' do
       create(:custom_field, enabled: false)
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
       expect(schema).to eq nil
     end
 
-    it "creates a valid schema with all input types" do
+    it 'creates a valid schema with all input types' do
       fields = [
         create(:custom_field, key: 'field1', input_type: 'text'),
         create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
@@ -63,16 +63,16 @@ describe JsonFormsService do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
-        {:type=>"object",
+        {:type=>'object',
          :additionalProperties=>false,
          :properties=>
-          {"field1"=>
-            { :type=>"string" },
-           "field2"=>
-           { :type=>"string" },
-           "field3"=>
+          {'field1'=>
+            { :type=>'string' },
+           'field2'=>
+           { :type=>'string' },
+           'field3'=>
             {
-             :type=>"string",
+             :type=>'string',
              :oneOf => [
               {
                 :const => 'option_1',
@@ -88,13 +88,13 @@ describe JsonFormsService do
               },
              ],
             },
-           "field4"=>
+           'field4'=>
             {
-             :type=>"array",
+             :type=>'array',
              :uniqueItems=>true,
              :minItems=>0,
              :items=>
-              {:type=>"string",
+              {:type=>'string',
               :oneOf => [
                 {
                   :const => 'option_a',
@@ -107,19 +107,19 @@ describe JsonFormsService do
                ],
              }
               },
-           "field5"=>
-            { :type=>"boolean" },
-           "field6"=>
-            {:type=>"string",
-             :format=>"date"},
-            "field7"=>
-            {:type=>"number"},
-           "field8"=>
-            {:type=>"array",
+           'field5'=>
+            { :type=>'boolean' },
+           'field6'=>
+            {:type=>'string',
+             :format=>'date'},
+            'field7'=>
+            {:type=>'number'},
+           'field8'=>
+            {:type=>'array',
              :uniqueItems=>true,
              :minItems=>1,
              :items=>
-              {:type=>"string",
+              {:type=>'string',
               :oneOf => [
                 {
                   :const => 'option_a',
@@ -132,36 +132,36 @@ describe JsonFormsService do
                ],
              }
             },
-            "field9"=>
-            {:type=>"array",
+            'field9'=>
+            {:type=>'array',
              :items=>
               {:properties=>
                 {:file_by_content=>
                   {:properties=>
                     {:file=>
-                      {:type=>"string"},
+                      {:type=>'string'},
                     :name=>
-                      {:type=>"string"}
+                      {:type=>'string'}
                     },
-                  :type=>"object",
+                  :type=>'object',
                   },
                   :name=>
-                  {:type=>"string"},
+                  {:type=>'string'},
                 },
-                :type=>"object"
+                :type=>'object'
               },
-              :type=>"array"
+              :type=>'array'
             }
           },
-         :required=>["field2","field8","field9"]
+         :required=>['field2','field8','field9']
         }
       )
     end
 
   end
 
-  describe "fields_to_ui_schema" do
-    it "creates a valid ui schema with all input types" do
+  describe 'fields_to_ui_schema' do
+    it 'creates a valid ui schema with all input types' do
       fields = [
         create(:custom_field, key: 'field1', input_type: 'text'),
         create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
@@ -188,7 +188,7 @@ describe JsonFormsService do
           label: 'Did you attend',
           options: {
             description: 'Which councils are you attending in our city?',
-            transform: "trim_on_blur"
+            transform: 'trim_on_blur'
           }
         },
         {
@@ -198,7 +198,7 @@ describe JsonFormsService do
           options: {
             description: 'Which councils are you attending in our city?',
             textarea: true,
-            transform: "trim_on_blur"
+            transform: 'trim_on_blur'
           }
         },
         {

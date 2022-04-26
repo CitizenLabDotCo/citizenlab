@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Notifications::OfficialFeedbackOnVotedInitiative, type: :model do
 
-  describe "make_notifications_on" do
+  describe 'make_notifications_on' do
 
-    it "generates exactly one notification for each user that voted on the initiative" do
+    it 'generates exactly one notification for each user that voted on the initiative' do
       initiative = create(:initiative)
       vote1 = create(:vote, votable: initiative)
       vote2 = create(:vote, votable: initiative)

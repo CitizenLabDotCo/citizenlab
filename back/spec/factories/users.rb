@@ -8,13 +8,13 @@ FactoryBot.define do
       name, domain = Faker::Internet.email.split('@')
       "#{name}#{n}@#{domain}"
     end
-    password { "democracy2.0" }
+    password { 'democracy2.0' }
     roles { [] }
-    locale { "en" }
+    locale { 'en' }
     registration_completed_at { Time.now }
     # Although the avatar is not part of the minimal model, generating it
     # really slows down the tests, so we fix it here
-    avatar { File.open(Rails.root.join("spec/fixtures/robot.jpg")) }
+    avatar { File.open(Rails.root.join('spec/fixtures/robot.jpg')) }
     invite_status { 'accepted' }
 
     factory :admin do

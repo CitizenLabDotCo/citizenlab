@@ -203,8 +203,8 @@ RSpec.configure do |config|
 end
 
 RspecApiDocumentation.configure do |config|
-  config.format = ENV["DOC_FORMAT"] || :html
-  config.docs_dir = Pathname.new(ENV["DOCS_DIR"]) if ENV["DOCS_DIR"]
-  config.api_name = ENV["API_NAME"] || "API documentation"
+  config.format = ENV['DOC_FORMAT'] || :html
+  config.docs_dir = Pathname.new(ENV['DOCS_DIR']) if ENV['DOCS_DIR']
+  config.api_name = ENV['API_NAME'] || 'API documentation'
   config.request_body_formatter = :json
 end

@@ -53,7 +53,7 @@ class SideFxOfficialFeedbackService
   def notify_updated_mentioned_users feedback, user
     old_body_multiloc, new_body_multiloc = feedback.body_multiloc_previous_change
     mentioned_users = new_body_multiloc.flat_map do |locale, new_body|
-      old_body = old_body_multiloc[locale] || ""
+      old_body = old_body_multiloc[locale] || ''
       @@mention_service.new_mentioned_users(old_body, new_body)
     end
 

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe InitiativeFile, type: :model do
 
-  context "file upload" do
-    it "should accept valid files" do
+  context 'file upload' do
+    it 'should accept valid files' do
       initiative = create(:initiative)
       [
         ['minimal_mp3.mp3',   'audio/mpeg'], 

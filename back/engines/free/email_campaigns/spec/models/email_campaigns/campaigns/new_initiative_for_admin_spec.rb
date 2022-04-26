@@ -1,16 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::NewInitiativeForAdmin, type: :model do
-  describe "NewInitiativeForAdmin Campaign default factory" do
-    it "is valid" do
+  describe 'NewInitiativeForAdmin Campaign default factory' do
+    it 'is valid' do
       expect(build(:new_initiative_for_admin_campaign)).to be_valid
     end
   end
 
-  describe "apply_recipient_filters" do
+  describe 'apply_recipient_filters' do
     let(:campaign) { build(:new_initiative_for_admin_campaign) }
 
-    it "filters out normal users" do
+    it 'filters out normal users' do
       initiative = create(:initiative)
       user = create(:user)
       admin = create(:admin)
@@ -19,10 +19,10 @@ RSpec.describe EmailCampaigns::Campaigns::NewInitiativeForAdmin, type: :model do
     end
   end
 
-  describe "apply_recipient_filters" do
+  describe 'apply_recipient_filters' do
     let(:campaign) { build(:new_initiative_for_admin_campaign) }
 
-    it "filters out everyone if the author is admin" do
+    it 'filters out everyone if the author is admin' do
       author = create(:admin)
       initiative = create(:initiative, author: author)
       admin = create(:admin)

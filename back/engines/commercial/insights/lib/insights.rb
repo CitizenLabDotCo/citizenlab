@@ -1,4 +1,4 @@
-require "insights/engine"
+require 'insights/engine'
 
 module Insights
   # Your code goes here...

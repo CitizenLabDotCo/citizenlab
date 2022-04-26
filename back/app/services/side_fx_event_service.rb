@@ -5,7 +5,7 @@ class SideFxEventService
 
   def after_create event, current_user
     event.update!(description_multiloc: TextImageService.new.swap_data_images(event, :description_multiloc))
-    LogActivityJob.perform_later(event, "created", current_user, event.created_at.to_i)
+    LogActivityJob.perform_later(event, 'created', current_user, event.created_at.to_i)
   end
 
   def before_update event, current_user
@@ -24,7 +24,7 @@ class SideFxEventService
     serialized_event = clean_time_attributes(frozen_event.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_event), 
-      "deleted", 
+      'deleted', 
       current_user, 
       Time.now.to_i, 
       payload: {event: serialized_event}

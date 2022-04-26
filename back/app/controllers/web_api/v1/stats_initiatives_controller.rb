@@ -22,8 +22,8 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     serie = initiatives
       .where(published_at: @start_at..@end_at)
       .joins(:initiatives_topics)
-      .group("initiatives_topics.topic_id")
-      .order("initiatives_topics.topic_id")
+      .group('initiatives_topics.topic_id')
+      .order('initiatives_topics.topic_id')
       .count
 
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
@@ -40,8 +40,8 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     serie = initiatives
       .where(published_at: @start_at..@end_at)
       .joins(:areas_initiatives)
-      .group("areas_initiatives.area_id")
-      .order("areas_initiatives.area_id")
+      .group('areas_initiatives.area_id')
+      .order('areas_initiatives.area_id')
       .count
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
     render json: {series: {initiatives: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}

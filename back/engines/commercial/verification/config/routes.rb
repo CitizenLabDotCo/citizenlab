@@ -6,13 +6,13 @@ Verification::Engine.routes.draw do
         .all_methods
         .select{|vm| vm.verification_method_type == :manual_sync}
         .each do |vm|
-        post "verification_methods/#{vm.name}/verification" => "verifications#create", :defaults => { :method_name => vm.name }
+        post "verification_methods/#{vm.name}/verification" => 'verifications#create', :defaults => { :method_name => vm.name }
       end
-      get "users/me/locked_attributes" => "locked_attributes#index"
+      get 'users/me/locked_attributes' => 'locked_attributes#index'
     end
   end
 end
 
 Rails.application.routes.draw do
-  mount Verification::Engine => "", as: 'verification'
+  mount Verification::Engine => '', as: 'verification'
 end

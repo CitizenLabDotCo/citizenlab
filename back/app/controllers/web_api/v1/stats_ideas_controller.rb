@@ -27,8 +27,8 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas
       .where(published_at: @start_at..@end_at)
       .joins(:ideas_topics)
-      .group("ideas_topics.topic_id")
-      .order("ideas_topics.topic_id")
+      .group('ideas_topics.topic_id')
+      .order('ideas_topics.topic_id')
       .count
   end
 
@@ -46,15 +46,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     res = []
     serie.each {|topic_id, count|
       res.push({
-        "topic" => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
-        "topic_id" => topic_id,
-        "ideas" => count
+        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
+        'topic_id' => topic_id,
+        'ideas' => count
       })
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "topic"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'topic'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_topic.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_topic.xlsx'
   end
 
   def ideas_by_project_serie
@@ -80,15 +80,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     res = serie.map {|project_id, count|
       {
-        "project" => @@multiloc_service.t(projects.find(project_id).title_multiloc),
-        "project_id" => project_id,
-        "ideas" => count
+        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
+        'project_id' => project_id,
+        'ideas' => count
       }
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "project"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'project'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_project.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_project.xlsx'
   end
 
   def ideas_by_area_serie
@@ -98,8 +98,8 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas
       .where(published_at: @start_at..@end_at)
       .joins(:areas_ideas)
-      .group("areas_ideas.area_id")
-      .order("areas_ideas.area_id")
+      .group('areas_ideas.area_id')
+      .order('areas_ideas.area_id')
       .count
   end
 
@@ -113,15 +113,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     res = []
     ideas_by_area_serie.each {|area_id, count|
       res.push({
-        "area" => @@multiloc_service.t(Area.find(area_id).title_multiloc),
-        "area_id" => area_id,
-        "ideas" => count
+        'area' => @@multiloc_service.t(Area.find(area_id).title_multiloc),
+        'area_id' => area_id,
+        'ideas' => count
       })
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "area"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'area'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_area.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_area.xlsx'
   end
 
   def ideas_by_status_serie
@@ -145,15 +145,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     res = []
     ideas_by_status_serie.each {|status_id, count|
       res.push({
-        "status" => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
-        "status_id" => status_id,
-        "ideas" => count
+        'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
+        'status_id' => status_id,
+        'ideas' => count
       })
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "ideas", "status"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'status'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "ideas_by_status.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_status.xlsx'
   end
 
   def ideas_by_time
@@ -212,7 +212,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: "no data for this period"}, status: :unprocessable_entity
+      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
     end
   end
 

@@ -1,10 +1,10 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SideFxVoteService do
   let(:service) { SideFxVoteService.new }
   let(:user) { create(:user) }
 
-  describe "after_create" do
+  describe 'after_create' do
     it "logs a 'upvoted' action when a upvote on an idea is created" do
       vote = create(:vote, mode: 'up', votable: create(:idea))
       expect {service.after_create(vote, user)}.
@@ -25,7 +25,7 @@ describe SideFxVoteService do
 
   end
 
-  describe "after_destroy" do
+  describe 'after_destroy' do
 
     it "logs a 'canceled_upvote' action job when an upvote is deleted" do
       vote = create(:vote, mode: 'up')
