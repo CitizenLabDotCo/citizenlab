@@ -335,7 +335,7 @@
   "app.containers.Admin.Insights.description": "Analysieren Sie effizient die Texteingaben auf Ihrer Plattform. Gruppieren Sie einzelne Beiträge, die zusammengehören. Verstehen Sie, was die Teilnehmenden wirklich sagen.",
   "app.containers.Admin.Insights.discover": "Entdecken Sie, wie es funktioniert",
   "app.containers.Admin.Insights.emptyStateAccentText": "über welche Themen",
-  "app.containers.Admin.Insights.emptyStateCreate": "Meine ersten Einblicke erstellen",
+  "app.containers.Admin.Insights.emptyStateCreate": "Meinen ersten Einblick erstellen",
   "app.containers.Admin.Insights.emptyStateTitle": "Finden Sie ganz einfach heraus {accentText} die Teilnehmenden sprechen",
   "app.containers.Admin.Insights.link": "Lesen Sie unseren Support-Leitfaden",
   "app.containers.Admin.Insights.listCreate": "Einblicke erstellen",
