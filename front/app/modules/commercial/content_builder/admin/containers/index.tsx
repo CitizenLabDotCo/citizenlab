@@ -29,7 +29,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
     <Box display="flex" flexDirection="column" w="100%">
       <Editor isPreview={false}>
         <ContentBuilderTopBar />
-        <Box mt="78px" display="flex">
+        <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
           <Box
             position="fixed"
             zIndex="3"
