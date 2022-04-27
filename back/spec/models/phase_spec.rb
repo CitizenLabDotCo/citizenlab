@@ -24,6 +24,7 @@ RSpec.describe Phase, type: :model do
       phase.end_at = phase.start_at
       expect(phase).to be_valid
     end
+
     it 'fails when end_at is before start_at' do
       phase = build(:phase)
       phase.end_at = phase.start_at - 1.day

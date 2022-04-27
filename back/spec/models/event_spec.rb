@@ -29,6 +29,7 @@ RSpec.describe Event, type: :model do
       event.end_at = event.start_at
       expect(event).to be_valid
     end
+
     it 'fails when end_at is before start_at' do
       event = build(:event)
       event.end_at = event.start_at - 1.minute

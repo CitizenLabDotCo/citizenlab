@@ -72,6 +72,7 @@ describe PhasePolicy do
     it { is_expected.to_not permit(:create)  }
     it { is_expected.to_not permit(:update)  }
     it { is_expected.to_not permit(:destroy) }
+
     it 'should not index the phase' do
       expect(scope.resolve.size).to eq 0
     end
@@ -86,6 +87,7 @@ describe PhasePolicy do
     it { is_expected.to_not permit(:create)  }
     it { is_expected.to_not permit(:update)  }
     it { is_expected.to_not permit(:destroy) }
+
     it 'should index the phase' do
       expect(scope.resolve.size).to eq 1
     end

@@ -21,6 +21,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
+
     it 'rejects a rule with a mutli-value predicate and a single value' do
       rule = valid_json_rule.tap do |r|
         r['predicate'] = 'in'

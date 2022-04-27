@@ -137,6 +137,7 @@ describe ProjectPolicy do
     it { is_expected.to_not permit(:update)  }
     it { is_expected.to_not permit(:reorder) }
     it { is_expected.to_not permit(:destroy) }
+
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
     end

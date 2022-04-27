@@ -74,6 +74,7 @@ describe Surveys::TypeformWebhookManager do
       pc = create(:continuous_google_survey_project)
       service.participation_context_created(pc, pc.participation_method, pc.survey_service, pc.survey_embed_url)
     end
+
     it "creates a webhook when it's typeform" do
       pc = create(:continuous_survey_project)
       expect(tf_api).to receive(:create_or_update_webhook)
@@ -86,6 +87,7 @@ describe Surveys::TypeformWebhookManager do
       pc = create(:continuous_google_survey_project)
       service.participation_context_to_be_deleted(pc.id, pc.participation_method, pc.survey_service, pc.survey_embed_url)
     end
+
     it "deletes a webhook when it's typeform" do
       pc = create(:continuous_survey_project)
       expect(tf_api).to receive(:delete_webhook)

@@ -20,6 +20,7 @@ RSpec.describe AppConfiguration::Settings do
       it 'uses only the core json schema settings' do
         expect(described_class.json_schema).to match(described_class.core_settings_json_schema)
       end
+
       it 'uses no extension features' do
         expect(described_class.extension_features_specs).to be_empty
       end
@@ -49,6 +50,7 @@ RSpec.describe AppConfiguration::Settings do
       it 'includes core json schema settings in schema' do
         expect(json_schema).to include(described_class.core_settings_json_schema)
       end
+
       it 'includes feature json schema in properties' do
         expect(json_schema.dig('properties', feature_spec.feature_name)).to eq(feature_spec.json_schema)
       end

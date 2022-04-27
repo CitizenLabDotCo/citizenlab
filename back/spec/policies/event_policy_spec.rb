@@ -72,6 +72,7 @@ describe EventPolicy do
     it { is_expected.to_not permit(:create)  }
     it { is_expected.to_not permit(:update)  }
     it { is_expected.to_not permit(:destroy) }
+
     it 'should not index the event' do
       expect(scope.resolve.size).to eq 0
     end
@@ -86,6 +87,7 @@ describe EventPolicy do
     it { is_expected.to_not permit(:create)  }
     it { is_expected.to_not permit(:update)  }
     it { is_expected.to_not permit(:destroy) }
+
     it 'should index the event' do
       expect(scope.resolve.size).to eq 1
     end
