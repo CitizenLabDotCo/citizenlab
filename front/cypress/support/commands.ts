@@ -1,4 +1,5 @@
 import 'cypress-file-upload';
+import './dnd';
 
 declare global {
   namespace Cypress {

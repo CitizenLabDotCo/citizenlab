@@ -63,7 +63,9 @@ module EmailCampaigns
     def generate_commands recipient:, time: nil
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       recipient.moderatable_project_ids.map do |project_id|
-        project = Project.find project_id
+        project = Project.find_by(id: project_id)
+        next unless project
+
         statistics = statistics project
         if has_nonzero_statistics statistics
           top_ideas = top_ideas project, name_service

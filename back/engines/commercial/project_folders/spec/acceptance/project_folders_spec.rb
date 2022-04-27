@@ -136,12 +136,19 @@ resource 'ProjectFolder' do
     delete 'web_api/v1/project_folders/:id' do
       let(:project_folder) { @folders.first }
       let!(:id) { project_folder.id }
-      let!(:folder_moderators) { create_list(:project_folder_moderator, 3, project_folders: [project_folder]) }
+      let(:project_with_moderator) { project_folder.projects.first }
+
+      before do
+        create_list(:project_folder_moderator, 3, project_folders: [project_folder])
+        create(:project_moderator, projects: [project_with_moderator])
+      end
 
       example 'Delete a folder' do
         old_count = ProjectFolders::Folder.count
         old_publications_count = AdminPublication.count
         old_project_count = Project.count
+        expect(User.project_moderator(project_with_moderator.id).count).to eq 1
+
         do_request
 
         expect(response_status).to eq 200
@@ -150,6 +157,7 @@ resource 'ProjectFolder' do
         expect(AdminPublication.count).to eq(old_publications_count - 4)
         expect(Project.count).to eq(old_project_count - 3)
         expect(User.project_folder_moderator(id).count).to eq 0
+        expect(User.project_moderator(project_with_moderator.id).count).to eq 0
       end
     end
   end

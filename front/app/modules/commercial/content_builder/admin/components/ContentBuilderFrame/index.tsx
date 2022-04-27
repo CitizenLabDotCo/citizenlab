@@ -30,6 +30,7 @@ const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
   return (
     <Frame>
       <Element
+        id="e2e-content-builder-frame"
         is="div"
         canvas
         style={{
