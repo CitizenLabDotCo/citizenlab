@@ -66,6 +66,8 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
 
   return (
     <Box
+      position="fixed"
+      zIndex="3"
       alignItems="center"
       w="100%"
       h={`${stylingConsts.menuHeight}px`}

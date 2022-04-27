@@ -37,6 +37,7 @@ const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
           padding: '4px',
           minHeight: '160px',
           backgroundColor: '#fff',
+          width: '1000px',
         }}
       />
     </Frame>
