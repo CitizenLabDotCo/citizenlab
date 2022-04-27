@@ -301,6 +301,7 @@ describe InvitesService do
         { first_name: 'John', last_name: 'Johnson' },
         { first_name: 'John', last_name: 'Johnson' },
       ] end
+
       it 'succeeds with unique slugs' do
         expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(2)
       end

@@ -150,6 +150,7 @@ describe Insights::CategoryAssignmentsService do
     let(:view) { create(:view) }
     let(:view_id) { view.id }
     let(:categories) { create_list(:category, 3, view: view) }
+
     it 'creates suggestions' do
       assignment_ids = service.add_suggestions_batch(inputs, categories)
       assignments = Insights::CategoryAssignment.find(assignment_ids)

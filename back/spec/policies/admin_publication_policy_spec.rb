@@ -6,6 +6,7 @@ describe AdminPublicationPolicy do
 
   context 'on a public project' do
     let!(:admin_publication) { create(:project).admin_publication }
+
     context 'for a visitor' do
       let(:user) { nil }
 
@@ -40,6 +41,7 @@ describe AdminPublicationPolicy do
   context 'on a private admins project' do
     let!(:project) { create(:private_admins_project) }
     let!(:admin_publication) { project.admin_publication }
+
     context 'for a visitor' do
       let(:user) { nil }
 

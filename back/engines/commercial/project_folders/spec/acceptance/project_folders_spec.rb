@@ -58,6 +58,7 @@ resource 'ProjectFolder' do
 
     describe do
       let(:slug) { 'unexisting-folder' }
+
       example 'Get an unexisting folder by slug', document: false do
         do_request
         expect(status).to eq 404

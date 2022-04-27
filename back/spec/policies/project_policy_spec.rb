@@ -7,6 +7,7 @@ describe ProjectPolicy do
 
   context 'on a public project' do
     let!(:project) { create(:project) }
+
     context 'for a visitor' do
       let(:user) { nil }
 
@@ -60,6 +61,7 @@ describe ProjectPolicy do
 
   context 'on a private admins project' do
     let!(:project) { create(:private_admins_project) }
+
     context 'for a visitor' do
       let(:user) { nil }
 
@@ -184,6 +186,7 @@ describe ProjectPolicy do
 
   context 'on a draft project' do
     let!(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+
     context 'for a visitor' do
       let(:user) { nil }
 

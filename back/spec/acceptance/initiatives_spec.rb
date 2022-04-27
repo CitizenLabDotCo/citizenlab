@@ -479,6 +479,7 @@ resource 'Initiatives' do
 
     describe do
       let(:id) { @initiative.id }
+
       example 'The header image can be removed' do
         @initiative.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
         expect(@initiative.reload.header_bg_url).to be_present

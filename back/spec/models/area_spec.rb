@@ -60,6 +60,7 @@ RSpec.describe Area, type: :model do
 
     context 'when an ordering is given' do
       let(:ordering) { Area.last.ordering + 1 }
+
       subject { create(:area, ordering: ordering) }
 
       it 'should stay as given' do

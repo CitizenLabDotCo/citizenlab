@@ -39,6 +39,7 @@ describe Verification::VerificationPolicy do
 
   context "for a mortal user that didn't complete her registration yet" do
     let(:user) { verification.user }
+
     before do
       user.update!(registration_completed_at: nil)
     end

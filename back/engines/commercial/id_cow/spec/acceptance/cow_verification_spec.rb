@@ -73,6 +73,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '12.025.365-6' }
       let(:id_serial) { 'A001529382' }
+
       example 'Verify with cow' do
         savon.expects(:get_data_document)
              .with(message: {
@@ -98,6 +99,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '11.111.111-1' }
       let(:id_serial) { 'A001529382' }
+
       example '[error] Verify with cow without a match' do
         savon.expects(:get_data_document)
              .with(message: {
@@ -118,6 +120,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '11.111.111-1' }
       let(:id_serial) { 'A.001.529.382' }
+
       example "[error] Verify with cow with a match that's not entitled to verification" do
         savon.expects(:get_data_document)
              .with(message: {
@@ -138,6 +141,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '125.326.452-1' }
       let(:id_serial) { 'A001529382' }
+
       example_request '[error] Verify with cow using invalid run' do
         assert_status 422
         json_response = json_parse response_body
@@ -148,6 +152,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '12.025.365-6' }
       let(:id_serial) { '' }
+
       example_request '[error] Verify with cow using invalid id_serial' do
         assert_status 422
         json_response = json_parse response_body
@@ -173,6 +178,7 @@ resource 'Verifications' do
 
       let(:run) { @run }
       let(:id_serial) { @id_serial }
+
       example '[error] Verify with cow using credentials that are already taken' do
         savon.expects(:get_data_document)
              .with(message: :any)

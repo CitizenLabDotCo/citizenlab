@@ -97,6 +97,7 @@ resource 'Users' do
           let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret') }
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
+
           example_request 'Authenticate a registered user by phone number', document: false do
             assert_status 201
             json_response = json_parse(response_body)
@@ -108,6 +109,7 @@ resource 'Users' do
           let!(:user) { create(:user, password: 'supersecret') }
           let(:email) { user.email }
           let(:password) { 'supersecret' }
+
           example_request 'Authenticate a registered user by email', document: false do
             assert_status 201
             json_response = json_parse(response_body)
@@ -241,6 +243,7 @@ resource 'Users' do
 
         describe do
           let(:email) { 'someone@citizenlab.co' }
+
           example_request 'Register with email when an email is passed', document: false do
             assert_status 201
             json_response = json_parse(response_body)
@@ -250,6 +253,7 @@ resource 'Users' do
 
         describe do
           let(:email) { '+32 487 36 58 98' }
+
           example_request 'Registers a user with a phone number in the email when a phone number is passed', document: false do
             assert_status 201
             json_response = json_parse(response_body)

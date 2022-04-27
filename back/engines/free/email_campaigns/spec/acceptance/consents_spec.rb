@@ -53,6 +53,7 @@ resource 'Campaign consents' do
 
     context 'when using an unsubscription token' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
       example_request 'List all campaign consents using unsubscription token' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
@@ -62,6 +63,7 @@ resource 'Campaign consents' do
 
     context 'with an invalid unsubscription_token' do
       let(:unsubscription_token) { 'garbage' }
+
       example_request 'List all campaigns with an invalid unsubscription token', document: false do
         expect(status).to eq 401
       end
@@ -95,6 +97,7 @@ resource 'Campaign consents' do
 
     context 'when using an unsubscription token' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
       example_request 'Update a campaign consent using an unsubscription token' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
@@ -131,6 +134,7 @@ resource 'Campaign consents' do
 
     context 'when using an unsubscription token' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
       example_request 'Update a campaign consent by campaign id using an unsubscription token' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)

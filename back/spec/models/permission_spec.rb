@@ -54,6 +54,7 @@ RSpec.describe Permission, type: :model do
 
     context 'when user belongs to the authorized manual group' do
       let(:user) { create(:user) }
+
       before { manual_grp.add_member(user).save! }
 
       it {

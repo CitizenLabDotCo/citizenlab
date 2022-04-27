@@ -36,6 +36,7 @@ resource 'Verifications' do
       end
 
       let(:card_id) { @card_id }
+
       example_request 'Verify with id_card_lookup' do
         assert_status 201
         expect(@user.reload.verified).to be true

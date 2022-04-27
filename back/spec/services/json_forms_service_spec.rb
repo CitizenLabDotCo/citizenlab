@@ -18,6 +18,7 @@ describe JsonFormsService do
         description_multiloc: description_multiloc
       )
     ] end
+
     it 'creates localized schemas with titles and descriptions for all languages' do
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc]
       expect(ui_schema['en'][:elements][0][:label]).to eq title_multiloc['en']
