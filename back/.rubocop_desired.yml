@@ -55,3 +55,6 @@ RSpec/FilePath:
 
 RSpec/ExampleWording:
   Enabled: true
+
+RSpec/PredicateMatcher:
+  Enabled: true
