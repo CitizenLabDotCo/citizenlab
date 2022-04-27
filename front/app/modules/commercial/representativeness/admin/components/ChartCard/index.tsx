@@ -9,6 +9,7 @@ import Header from './Header';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import Footer from './Footer';
+import { LabelList } from 'recharts';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
@@ -43,6 +44,9 @@ const ChartCard = ({ customField }: Props) => {
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
         yaxis={{ tickFormatter: formatPercentage }}
+        renderLabels={(props) => (
+          <LabelList {...props} formatter={formatPercentage} />
+        )}
       />
       <Footer fieldIsRequired={customField.attributes.required} />
     </Box>
