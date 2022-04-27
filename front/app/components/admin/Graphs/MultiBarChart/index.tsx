@@ -115,6 +115,7 @@ const BarChart = ({
         layout={rechartsLayout}
         margin={margin}
         ref={innerRef}
+        barGap={0}
       >
         {renderTooltip &&
           renderTooltip({
