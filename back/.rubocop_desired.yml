@@ -13,3 +13,6 @@ Metrics/MethodLength:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
+
+Layout/LineLength:
+  Enabled: true
