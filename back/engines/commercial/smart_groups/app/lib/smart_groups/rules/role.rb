@@ -21,7 +21,7 @@ module SmartGroups::Rules
       {
         'type' => 'object',
         'additionalProperties' => false,
-        'required' => ['ruleType', 'predicate'],
+        'required' => %w[ruleType predicate],
         'properties' => {
           'ruleType' => {
             'type' => 'string',

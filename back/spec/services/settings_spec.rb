@@ -11,7 +11,7 @@ describe SettingsService do
       },
       'dependencies' => {
         'b' => ['a'],
-        'c' => ['a', 'b']
+        'c' => %w[a b]
       }
     }
   end
@@ -47,7 +47,7 @@ describe SettingsService do
       {
       'properties' => {
         'feature1' => {
-          'required-settings' => ['setting1', 'setting2', 'setting4'],
+          'required-settings' => %w[setting1 setting2 setting4],
           'properties' => {
             'setting1' => {
               'type' => 'string',

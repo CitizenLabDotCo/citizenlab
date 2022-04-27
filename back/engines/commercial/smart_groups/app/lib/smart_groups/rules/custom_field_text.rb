@@ -11,7 +11,7 @@ module SmartGroups::Rules
       [
         {
           "type": 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
@@ -32,7 +32,7 @@ module SmartGroups::Rules
         },
         {
           'type' => 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate'],
+          'required' => %w[ruleType customFieldId predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {

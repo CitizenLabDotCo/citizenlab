@@ -394,7 +394,7 @@ class JsonFormsService
 
   def point_to_json_schema_field(field, locale)
     {
-      required: ['type', 'coordinates'],
+      required: %w[type coordinates],
       type: 'object',
       properties: {
         type: {

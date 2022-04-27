@@ -36,7 +36,7 @@ describe MentionService do
 
     it 'returns multiple valid mentions' do
       result = service.send(:extract_mentions, 'This @koen-gremmelprez should trigger and @jan-jansens too')
-      expect(result).to eq ['koen-gremmelprez', 'jan-jansens']
+      expect(result).to eq %w[koen-gremmelprez jan-jansens]
     end
   end
 

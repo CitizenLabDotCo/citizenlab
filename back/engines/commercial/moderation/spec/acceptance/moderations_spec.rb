@@ -75,9 +75,9 @@ resource 'Moderations' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m1.id, @m2.id, @m3.id, @m4.id]
-        expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }).to eq ['Initiative', 'Comment', 'Idea', 'Idea']
+        expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }).to eq %w[Initiative Comment Idea Idea]
         expect(json_response[:data].map { |d| d.dig(:attributes, :content_body_multiloc).stringify_keys['en'] }).to eq ['We must return that CO2 to our atmosphere at all cost', 'I\'m glad there\'s still heroes around', 'They are the true heroes of society', 'They are pretentious donkeys']
-        expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq ['unread', 'unread', 'read', 'read']
+        expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq %w[unread unread read read]
         expect(json_response[:data].map { |d| Time.parse(d.dig(:attributes, :created_at)).to_i }).to eq [@time - 1.minute, @time - 1.hour, @time - 1.day, @time - 2.days].map(&:to_i)
         expect(JSON.parse(JSON.generate(json_response))['data'].map { |d| d.dig('attributes', 'belongs_to') }).to eq [
           {},
@@ -95,7 +95,7 @@ resource 'Moderations' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m1.id, @m2.id]
-          expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq ['unread', 'unread']
+          expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq %w[unread unread]
         end
       end
 
@@ -107,12 +107,12 @@ resource 'Moderations' do
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m3.id, @m4.id]
-          expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq ['read', 'read']
+          expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status) }).to eq %w[read read]
         end
       end
 
       describe do
-        let(:moderatable_types) { ['Idea', 'Comment'] }
+        let(:moderatable_types) { %w[Idea Comment] }
 
         example_request 'List only moderations for ideas or comments' do
           expect(status).to eq(200)
@@ -172,7 +172,7 @@ resource 'Moderations' do
         end
 
         describe do
-          let(:moderatable_types) { ['Idea', 'Comment'] }
+          let(:moderatable_types) { %w[Idea Comment] }
 
           example_request 'Count only moderations for ideas or comments' do
             expect(status).to eq(200)

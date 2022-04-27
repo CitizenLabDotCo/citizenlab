@@ -17,7 +17,7 @@ module Verification
           [
             {
               "type": 'object',
-              'required' => ['ruleType', 'predicate'],
+              'required' => %w[ruleType predicate],
               'additionalProperties' => false,
               'properties' => {
                 'ruleType' => {

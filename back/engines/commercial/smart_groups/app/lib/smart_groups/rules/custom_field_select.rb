@@ -6,14 +6,14 @@ module SmartGroups::Rules
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: ['select', 'multiselect']).map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: %w[select multiselect]).map(&:id) } }
     validate :validate_value_inclusion
 
     def self.to_json_schema
       [
         {
           "type": 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
@@ -35,7 +35,7 @@ module SmartGroups::Rules
         },
         {
           "type": 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
@@ -62,7 +62,7 @@ module SmartGroups::Rules
         },
         {
           'type' => 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate'],
+          'required' => %w[ruleType customFieldId predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {

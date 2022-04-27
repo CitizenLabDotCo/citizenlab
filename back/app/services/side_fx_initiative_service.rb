@@ -18,13 +18,13 @@ class SideFxInitiativeService
 
   def before_update(initiative, user)
     initiative.body_multiloc = TextImageService.new.swap_data_images(initiative, :body_multiloc)
-    if initiative.publication_status_change == ['draft', 'published']
+    if initiative.publication_status_change == %w[draft published]
       before_publish initiative, user
     end
   end
 
   def after_update(initiative, user)
-    if initiative.publication_status_previous_change == ['draft', 'published']
+    if initiative.publication_status_previous_change == %w[draft published]
       after_publish initiative, user
     elsif initiative.published?
       LogActivityJob.perform_later(initiative, 'changed', user, initiative.updated_at.to_i)

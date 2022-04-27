@@ -39,7 +39,7 @@ resource 'Projects' do
       example_request 'List all projects (default behaviour)' do
         assert_status 200
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| json_response[:included].select { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| json_response[:included].select { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.first.dig(:attributes, :publication_status) }.uniq).to match_array %w[published archived draft]
       end
 
       example 'List only projects with specified IDs' do

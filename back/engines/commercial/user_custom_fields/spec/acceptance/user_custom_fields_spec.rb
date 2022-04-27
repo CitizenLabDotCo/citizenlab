@@ -29,7 +29,7 @@ resource 'User Custom Fields' do
         create(:custom_field_date)
       end
 
-      let(:input_types) { ['multiselect', 'checkbox'] }
+      let(:input_types) { %w[multiselect checkbox] }
 
       example_request 'List custom fields filtered by input types' do
         expect(status).to eq(200)

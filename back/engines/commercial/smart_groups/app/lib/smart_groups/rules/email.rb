@@ -16,7 +16,7 @@ module SmartGroups::Rules
       [
         {
           "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {

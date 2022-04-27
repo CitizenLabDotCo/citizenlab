@@ -38,7 +38,7 @@ module FlagInappropriateContent
       recipient_filter :filter_notification_recipient
 
       def self.consentable_roles
-        ['admin', 'project_moderator', 'project_folder_moderator']
+        %w[admin project_moderator project_folder_moderator]
       end
 
       def self.category

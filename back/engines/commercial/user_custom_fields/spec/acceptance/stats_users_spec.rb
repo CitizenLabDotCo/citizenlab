@@ -90,11 +90,11 @@ resource 'Stats - Users' do
     example_request 'Users by gender' do
       expect(response_status).to eq 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match ['gender', 'users']
+      expect(worksheet[0].cells.map(&:value)).to match %w[gender users]
 
       genders_col = worksheet.map { |col| col.cells[0].value }
       header, *genders = genders_col
-      expect(genders).to match_array ['_blank', 'unspecified', 'male', 'female']
+      expect(genders).to match_array %w[_blank unspecified male female]
 
       amount_col = worksheet.map { |col| col.cells[1].value }
       header, *amounts = amount_col
@@ -180,7 +180,7 @@ end
     example_request 'Users by birthyear' do
       expect(response_status).to eq 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match ['birthyear', 'users']
+      expect(worksheet[0].cells.map(&:value)).to match %w[birthyear users]
 
       birthyears_col = worksheet.map { |col| col.cells[0].value }
       header, *birthyears = birthyears_col
@@ -251,7 +251,7 @@ end
     example_request 'Users by domicile' do
       expect(response_status).to eq 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match ['area', 'area_id', 'users']
+      expect(worksheet[0].cells.map(&:value)).to match %w[area area_id users]
 
       areas_col = worksheet.map { |col| col.cells[1].value }
       header, *areas = areas_col
@@ -314,7 +314,7 @@ end
     example_request 'Users by education' do
       expect(response_status).to eq 200
       worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match ['education', 'users']
+      expect(worksheet[0].cells.map(&:value)).to match %w[education users]
 
       areas_col = worksheet.map { |col| col.cells[0].value }
       header, *areas = areas_col
@@ -502,7 +502,7 @@ end
       example_request 'Users by custom field (select)' do
         expect(response_status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['option', 'option_id', 'users']
+        expect(worksheet[0].cells.map(&:value)).to match %w[option option_id users]
 
         option_titles_col = worksheet.map { |col| col.cells[0].value }
         header, *option_titles = option_titles_col
@@ -545,7 +545,7 @@ end
       example_request 'Users by custom field (multiselect)' do
         expect(response_status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['option', 'option_id', 'users']
+        expect(worksheet[0].cells.map(&:value)).to match %w[option option_id users]
 
         option_titles_col = worksheet.map { |col| col.cells[0].value }
         header, *option_titles = option_titles_col
@@ -582,11 +582,11 @@ end
       example_request 'Users by custom field (checkbox)' do
         expect(response_status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['option', 'users']
+        expect(worksheet[0].cells.map(&:value)).to match %w[option users]
 
         option_ids_col = worksheet.map { |col| col.cells[0].value }
         header, *option_ids = option_ids_col
-        expect(option_ids).to match_array ['_blank', 'false', 'true']
+        expect(option_ids).to match_array %w[_blank false true]
 
         users_col = worksheet.map { |col| col.cells[1].value }
         header, *users = users_col

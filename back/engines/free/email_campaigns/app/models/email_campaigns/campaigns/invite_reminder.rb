@@ -30,7 +30,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages except: ['trial', 'churned']
+    allow_lifecycle_stages except: %w[trial churned]
 
     before_send :check_send_invite_email_toggle
     recipient_filter :filter_recipient

@@ -32,12 +32,12 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages only: ['trial', 'active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
     def self.consentable_roles
-      ['admin', 'project_moderator']
+      %w[admin project_moderator]
     end
 
     def mailer_class

@@ -47,7 +47,7 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['admin', 'project_moderator']
+      %w[admin project_moderator]
     end
 
     def self.category

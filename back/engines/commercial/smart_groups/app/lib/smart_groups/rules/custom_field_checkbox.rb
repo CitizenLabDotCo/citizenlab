@@ -10,7 +10,7 @@ module SmartGroups::Rules
       [
         {
           'type' => 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate'],
+          'required' => %w[ruleType customFieldId predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {

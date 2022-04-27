@@ -97,9 +97,9 @@ namespace :tenant_template do
                    'body_multiloc' => make_multiloc(md_to_html(csv_idea['Body']), locales),
                    'author_ref'         => users_hash[csv_idea['Author ID']],
                    'project_ref'        => projects_hash[csv_idea['Project ID']],
-                   'idea_status_ref'    => idea_statuses_hash[[ 'proposed', 'under_consideration',
-                                                                'accepted', 'implemented',
-                                                                'rejected' ].shuffle.first],
+                   'idea_status_ref'    => idea_statuses_hash[%w[proposed under_consideration
+                                                                accepted implemented
+                                                                rejected].shuffle.first],
                    'publication_status' => 'published'
                  }
       generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)

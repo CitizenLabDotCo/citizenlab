@@ -36,9 +36,9 @@ FactoryBot.define do
       action { 'changed_status' }
       payload do
         {
-        'change' => [
-          'somepreviousstatusid',
-          'somenewstatusid'
+        'change' => %w[
+          somepreviousstatusid
+          somenewstatusid
         ]
       } end
     end

@@ -18,7 +18,7 @@ module SmartGroups::Rules
       [
         {
           "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
@@ -37,7 +37,7 @@ module SmartGroups::Rules
         },
         {
           "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
@@ -61,7 +61,7 @@ module SmartGroups::Rules
         },
         {
           'type' => 'object',
-          'required' => ['ruleType', 'predicate'],
+          'required' => %w[ruleType predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {

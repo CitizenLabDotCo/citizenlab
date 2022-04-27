@@ -7,7 +7,7 @@ resource 'Initiatives' do
   before do
     header 'Content-Type', 'application/json'
     @first_admin = create(:admin)
-    @initiatives = ['published', 'published', 'draft', 'published', 'spam', 'published', 'published'].map { |ps| create(:initiative, publication_status: ps) }
+    @initiatives = %w[published published draft published spam published published].map { |ps| create(:initiative, publication_status: ps) }
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
@@ -186,7 +186,7 @@ resource 'Initiatives' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match ['Ghent', 'Brussels', 'Liège', 'Meise', 'Mons'].sort
+      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
     end
   end
 

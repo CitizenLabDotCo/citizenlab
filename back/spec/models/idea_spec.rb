@@ -113,7 +113,7 @@ RSpec.describe Idea, type: :model do
     before do
       5.times do |i|
         idea = create(:idea)
-        rand(20).times { create(:vote, votable: idea, mode: ['up', 'down'][rand(1)]) }
+        rand(20).times { create(:vote, votable: idea, mode: %w[up down][rand(1)]) }
       end
     end
 

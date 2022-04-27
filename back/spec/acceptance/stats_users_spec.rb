@@ -436,7 +436,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
-        expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+        expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
@@ -463,7 +463,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
-        expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+        expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
@@ -492,7 +492,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
-        expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+        expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
@@ -528,7 +528,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         # monotonically increasing
-        expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+        expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
@@ -685,7 +685,7 @@ resource 'Stats - Users' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
-        expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+        expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
         expect(amounts.inject(&:+)).to eq 4

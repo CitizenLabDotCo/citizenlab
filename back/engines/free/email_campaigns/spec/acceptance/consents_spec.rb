@@ -44,7 +44,7 @@ resource 'Campaign consents' do
       end
 
       example_request 'List all campaigns consents with expected categories' do
-        categories = ['own', 'admin', 'official', 'mention', 'voted', 'commented', 'scheduled']
+        categories = %w[own admin official mention voted commented scheduled]
         json_response = json_parse(response_body)
         expect(json_response[:data]).to all ( satisfy { |consent| categories.include?(consent[:attributes][:category]) } )
       end

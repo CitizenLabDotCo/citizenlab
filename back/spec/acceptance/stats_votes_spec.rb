@@ -137,7 +137,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, education: '2')
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up', '2'], ['up', '7'], ['down', '7'], ['up', nil]].each do |mode, education|
+        [%w[up 2], %w[up 7], %w[down 7], ['up', nil]].each do |mode, education|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if education then create(:user, education: education) else create(:user) end))
         end
@@ -168,7 +168,7 @@ resource 'Stats - Votes' do
         @someone = create(:user, gender: 'female')
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-        [['up', 'female'], ['up', 'male'], ['down', 'male'], ['up', nil]].each do |mode, gender|
+        [%w[up female], %w[up male], %w[down male], ['up', nil]].each do |mode, gender|
           create(:vote, mode: mode, votable: @ideas.shuffle.first,
             user: (if gender then create(:user, gender: gender) else create(:user) end))
         end
@@ -300,7 +300,7 @@ resource 'Stats - Votes' do
           aggregate_failures 'check worksheet contents' do
             expect(worksheet.count).to eq ((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 2)
 
-            expect(worksheet[0].cells.map(&:value)).to match ['date', 'up', 'down', 'total']
+            expect(worksheet[0].cells.map(&:value)).to match %w[date up down total]
             up_col = worksheet.map { |col| col.cells[1].value }
             header, *ups = up_col
             expect(ups.inject(&:+)).to eq 3
@@ -443,7 +443,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
+        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
 
         topic_ids_col = worksheet.map { |col| col.cells[1].value }
         header, *topic_ids = topic_ids_col
@@ -470,7 +470,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic filtered by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
+        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
@@ -493,7 +493,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic filtered by group' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
+        expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
@@ -598,7 +598,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
+        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
 
         project_ids_col = worksheet.map { |col| col.cells[1].value }
         header, *project_ids = project_ids_col
@@ -627,7 +627,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by project filtered by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
+        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
@@ -651,7 +651,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by project filtered by group' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
+        expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col

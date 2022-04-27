@@ -86,7 +86,7 @@ describe CustomFieldService do
             { :title => 'Did you attend',
              :description => 'Which councils are you attending in our city?',
              :type => 'string',
-             :enum => ['option_1', 'option_2', 'option_3'],
+             :enum => %w[option_1 option_2 option_3],
              :enumNames => ['youth council', 'youth council', 'youth council'] },
            'field4' =>
             { :title => 'Did you attend',
@@ -95,7 +95,7 @@ describe CustomFieldService do
              :uniqueItems => true,
              :items =>
               { :type => 'string',
-               :enum => ['option_a', 'option_b'],
+               :enum => %w[option_a option_b],
                :enumNames => ['youth council', 'youth council'] },
              :minItems => 0 },
            'field5' =>
@@ -118,7 +118,7 @@ describe CustomFieldService do
              :uniqueItems => true,
              :items =>
               { :type => 'string',
-               :enum => ['option_a', 'option_b'],
+               :enum => %w[option_a option_b],
                :enumNames => ['youth council', 'youth council'] },
              :minItems => 1 },
             'field9' =>
@@ -130,7 +130,7 @@ describe CustomFieldService do
                :format => 'data-url'
               } }
            },
-         :required => ['field2', 'field8', 'field9'] }
+         :required => %w[field2 field8 field9] }
       )
     end
 

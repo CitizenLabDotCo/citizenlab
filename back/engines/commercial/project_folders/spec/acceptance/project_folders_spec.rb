@@ -7,7 +7,7 @@ resource 'ProjectFolder' do
   before do
     header 'Content-Type', 'application/json'
 
-    @projects = ['published', 'published', 'draft', 'published', 'archived', 'archived', 'published']
+    @projects = %w[published published draft published archived archived published]
       .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
     @folders = [
       create(:project_folder, projects: @projects.take(3)),

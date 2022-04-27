@@ -211,7 +211,7 @@ module UserCustomFields
         def users_by_custom_field
           @custom_field = CustomField.find(params[:custom_field_id])
           serie = users_by_custom_field_serie
-          if ['select', 'multiselect'].include?(@custom_field.input_type)
+          if %w[select multiselect].include?(@custom_field.input_type)
             options = @custom_field.custom_field_options.select(:key, :title_multiloc)
             render json: { series: { users: serie }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
           else
@@ -222,7 +222,7 @@ module UserCustomFields
         def users_by_custom_field_as_xlsx
           @custom_field = CustomField.find(params[:custom_field_id])
 
-          if ['select', 'multiselect'].include?(@custom_field.input_type)
+          if %w[select multiselect].include?(@custom_field.input_type)
             serie = users_by_custom_field_serie
             options = @custom_field.custom_field_options.select(:key, :title_multiloc)
 

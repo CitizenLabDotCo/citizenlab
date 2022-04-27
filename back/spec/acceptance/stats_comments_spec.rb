@@ -228,7 +228,7 @@ resource 'Stats - Comments' do
             worksheets = RubyXL::Parser.parse_buffer(response_body)
             worksheet = worksheets.worksheets[0]
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
-            expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+            expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
             amount_col = worksheet.map { |col| col.cells[1].value }
             header, *amounts = amount_col
             expect(amounts.inject(&:+)).to eq 5
@@ -268,7 +268,7 @@ resource 'Stats - Comments' do
             worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
             # monotonically increasing
-            expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+            expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
             amount_col = worksheet.map { |col| col.cells[1].value }
             header, *amounts = amount_col
             expect(amounts.sort).to eq amounts
@@ -302,7 +302,7 @@ resource 'Stats - Comments' do
         example_request 'Count all comments filtered by project', document: false do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['date', 'amount']
+          expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
           amount_col = worksheet.map { |col| col.cells[1].value }
           header, *amounts = amount_col
           expect(amounts.last).to eq 1
@@ -444,7 +444,7 @@ resource 'Stats - Comments' do
         example_request 'Comments by topic' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
+          expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id comments]
 
           topic_ids_col = worksheet.map { |col| col.cells[1].value }
           header, *topic_ids = topic_ids_col
@@ -473,7 +473,7 @@ resource 'Stats - Comments' do
         example_request 'Comments by topic filtered by project' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
+          expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
@@ -499,7 +499,7 @@ resource 'Stats - Comments' do
         example_request 'Comments by topic filtered by group' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'comments']
+          expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
@@ -625,7 +625,7 @@ resource 'Stats - Comments' do
         example_request 'Comments by project' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
+          expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
           project_id_col = worksheet.map { |col| col.cells[1].value }
           header, *project_ids = project_id_col
           expect(project_ids).to match_array [@project1.id, @project2.id]
@@ -660,7 +660,7 @@ resource 'Stats - Comments' do
         example_request 'Comments by project filtered by topic' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
+          expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
@@ -687,7 +687,7 @@ resource 'Stats - Comments' do
         example_request 'Comments by project filtered by group' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-          expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'comments']
+          expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col

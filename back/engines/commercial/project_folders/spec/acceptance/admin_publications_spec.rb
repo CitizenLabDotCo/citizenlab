@@ -16,7 +16,7 @@ resource 'AdminPublication' do
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
 
-      @projects = ['published', 'published', 'draft', 'draft', 'published', 'archived', 'archived', 'published']
+      @projects = %w[published published draft draft published archived archived published]
         .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: folder.admin_publication.id }) }
       @folder = create(:project_folder, projects: @projects.take(3))
       @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })

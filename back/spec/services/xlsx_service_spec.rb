@@ -198,7 +198,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'correctly converts a hash array to a xlsx stream' do
-       expect(worksheet[0].cells.map(&:value)).to match ['a', 'b', 'c', 'f']
+       expect(worksheet[0].cells.map(&:value)).to match %w[a b c f]
        expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
     end
   end

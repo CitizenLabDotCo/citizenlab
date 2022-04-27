@@ -8,7 +8,7 @@ module EmailCampaigns
       private
 
       def allow_lifecycle_stages(except: nil, only: nil)
-        all = ['trial', 'expired_trial', 'demo', 'active', 'churned', 'not_applicable']
+        all = %w[trial expired_trial demo active churned not_applicable]
         only ||= all
         except ||= []
 

@@ -292,7 +292,7 @@ resource 'Ideas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
-      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match ['Ghent', 'Brussels', 'Liège', 'Meise', 'Mons'].sort
+      expect(json_response[:data].map { |d| d.dig(:attributes, :title_multiloc, :en) }.sort).to match %w[Ghent Brussels Liège Meise Mons].sort
     end
 
     example 'List all idea markers in a phase of a project', document: false do

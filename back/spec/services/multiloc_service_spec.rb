@@ -5,7 +5,7 @@ describe MultilocService do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = ['fr-FR', 'en', 'nl-BE']
+    settings['core']['locales'] = %w[fr-FR en nl-BE]
     AppConfiguration.instance.update(settings: settings)
   end
 
@@ -87,7 +87,7 @@ describe MultilocService do
     end
 
     it 'supports setting the returned locales explicitly' do
-      expect(service.i18n_to_multiloc('foo.hello', locales: ['en', 'fr-FR'])).to eq({
+      expect(service.i18n_to_multiloc('foo.hello', locales: %w[en fr-FR])).to eq({
         'en' => 'hello!',
         'fr-FR' => 'bonjour!'
       })

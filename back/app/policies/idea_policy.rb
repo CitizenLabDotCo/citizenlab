@@ -12,12 +12,12 @@ class IdeaPolicy < ApplicationPolicy
         scope.all
       elsif user
         projects = Pundit.policy_scope(user, Project)
-        scope.where(project: projects, publication_status: ['published', 'closed'])
+        scope.where(project: projects, publication_status: %w[published closed])
       else
         scope
           .left_outer_joins(project: [:admin_publication])
-          .where(publication_status: ['published', 'closed'])
-          .where(projects: { visible_to: 'public', admin_publications: { publication_status: ['published', 'archived'] } })
+          .where(publication_status: %w[published closed])
+          .where(projects: { visible_to: 'public', admin_publications: { publication_status: %w[published archived] } })
       end
     end
   end

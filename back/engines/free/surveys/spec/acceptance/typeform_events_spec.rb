@@ -180,9 +180,9 @@ resource 'Typeform Events' do
           {
             "type": 'choices',
             "choices": {
-              "labels": [
-                'London',
-                'Sydney'
+              "labels": %w[
+                London
+                Sydney
               ]
             },
             "field": {
