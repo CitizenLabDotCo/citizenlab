@@ -1,9 +1,9 @@
 import { addLocaleData } from 'react-intl';
-import ma from 'react-intl/locale-data/ar';
+import ar from 'react-intl/locale-data/ar';
 
 import { formatTranslationMessages } from './';
 
-addLocaleData(ma);
+addLocaleData(ar);
 
 const arMATranslationMessages = require('translations/ar-MA.json');
 const arMAAdminTranslationMessages = require('translations/admin/ar-MA.json');
