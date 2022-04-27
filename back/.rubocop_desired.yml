@@ -79,3 +79,5 @@ RSpec/RepeatedDescription:
 
 RSpec/DescribeClass:
   Enabled: true
+  IgnoredMetadata:
+    type: ['verification']

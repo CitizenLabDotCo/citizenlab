@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'bosa_fas verification' do
+describe 'bosa_fas verification', type: :verification do
   before do
     @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
     @token = Knock::AuthToken.new(payload: @user.to_token_payload).token
