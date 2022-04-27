@@ -2,7 +2,7 @@ class ContentImageService
   class DecodingError < StandardError
     def initialize(options = {})
       super
-      @parse_errors = options.fetch :parse_errors, nil
+      @parse_errors = options[:parse_errors]
     end
 
     attr_reader :parse_errors

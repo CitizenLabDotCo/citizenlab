@@ -59,9 +59,7 @@ describe ContentBuilder::LayoutImageService do
           'linkedNodes' => {}
         }
       }
-      imageable = build :layout, craftjs_jsonmultiloc: { 'nl-BE' => input }
-      output = service.swap_data_images imageable, :craftjs_jsonmultiloc
-      expected_html = {
+      expected_json = {
         'ROOT' => {
           'type' => 'div',
           'isCanvas' => true,
@@ -113,7 +111,10 @@ describe ContentBuilder::LayoutImageService do
           'linkedNodes' => {}
         }
       }
-      expect(output).to eq({ 'nl-BE' => expected_html })
+
+      imageable = build :layout, craftjs_jsonmultiloc: { 'nl-BE' => input }
+      output = service.swap_data_images imageable, :craftjs_jsonmultiloc
+      expect(output).to eq({ 'nl-BE' => expected_json })
     end
   end
 
@@ -172,8 +173,7 @@ describe ContentBuilder::LayoutImageService do
           'linkedNodes' => {}
         }
       }
-      imageable = build :layout, craftjs_jsonmultiloc: { 'fr-BE' => input }
-      expected_html = {
+      expected_json = {
         'ROOT' => {
           'type' => 'div',
           'isCanvas' => true,
@@ -226,7 +226,10 @@ describe ContentBuilder::LayoutImageService do
           'linkedNodes' => {}
         }
       }
-      expect(service.render_data_images(imageable, :craftjs_jsonmultiloc)).to eq({ 'fr-BE' => expected_html })
+
+      imageable = build :layout, craftjs_jsonmultiloc: { 'fr-BE' => input }
+      output = service.render_data_images imageable, :craftjs_jsonmultiloc
+      expect(output).to eq({ 'fr-BE' => expected_json })
     end
   end
 end

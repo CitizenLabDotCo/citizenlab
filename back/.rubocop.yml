@@ -4,7 +4,7 @@ require:
   - rubocop-rspec
 
 AllCops:
-  DisabledByDefault: true
+  # DisabledByDefault: true
   Exclude:
   - 'db/schema.rb'
   - '**/*.builder'

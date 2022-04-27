@@ -1,10 +1,7 @@
 require 'rails_helper'
 
 describe ContentImageService do
-  before do
-    @text_image_1, @text_image_2 = create_list :text_image, 2
-    allow(TextImage).to receive(:create!).and_return(@text_image_1, @text_image_2)
-  end
+  before { allow(Sentry).to receive(:capture_exception).and_return(nil) }
 
   let(:subclass) do
     Class.new(described_class) do
@@ -58,21 +55,24 @@ describe ContentImageService do
     end
   end
   let(:service) { subclass.new }
+  let(:text_images) { create_list :text_image, 2 }
 
   describe 'swap_data_images' do
+    before { allow(TextImage).to receive(:create!).and_return(text_images[0], text_images[1]) }
+
     it 'returns exactly the same input locales' do
       imageable = build(:user, bio_multiloc: { 'en' => '[]', 'fr-BE' => '[]', 'nl-BE' => '[]', 'de' => '[]' })
-      expect(TextImage).not_to receive :create!
       output = service.swap_data_images imageable, :bio_multiloc
       expect(output.keys).to match_array %w[en fr-BE nl-BE de]
+      expect(TextImage).not_to have_received :create!
     end
 
     it 'returns the same multiloc when no images are included' do
       json_str = '[{"type":"furniture"},{"type":"text","value":"My awesome text"}]'
       imageable = build(:user, bio_multiloc: { 'fr-BE' => json_str })
-      expect(TextImage).not_to receive :create!
       output = service.swap_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'fr-BE' => json_str })
+      expect(TextImage).not_to have_received :create!
     end
 
     it 'removes src and creates images when image elements occur without code' do
@@ -80,35 +80,37 @@ describe ContentImageService do
         { type: 'image', custom_attribute: 27, src: 'https://images.com/image1.png' },
         { type: 'image', src: 'https://images.com/image2.png' }
       ].to_json
-      imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
-      expect(TextImage).to receive(:create!).twice
-      output = service.swap_data_images imageable, :bio_multiloc
       expected_json = [
-        { type: 'image', custom_attribute: 27, data_cl2_content_image_code: @text_image_1.text_reference },
-        { type: 'image', data_cl2_content_image_code: @text_image_2.text_reference }
+        { type: 'image', custom_attribute: 27, data_cl2_content_image_code: text_images[0].text_reference },
+        { type: 'image', data_cl2_content_image_code: text_images[1].text_reference }
       ].to_json
+
+      imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
+      output = service.swap_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
+      expect(TextImage).to have_received(:create!).twice
     end
 
     it 'removes src and does not create images when image elements occur with code' do
       json_str = [
         { type: 'image', src: 'https://images.com/image.png', data_cl2_content_image_code: '1234' }
       ].to_json
-      imageable = build(:user, bio_multiloc: { 'en' => json_str })
-      expect(TextImage).not_to receive(:create!)
-      output = service.swap_data_images imageable, :bio_multiloc
       expected_json = [
         { type: 'image', data_cl2_content_image_code: '1234' }
       ].to_json
+
+      imageable = build(:user, bio_multiloc: { 'en' => json_str })
+      output = service.swap_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'en' => expected_json })
+      expect(TextImage).not_to have_received :create!
     end
 
     it 'does not create images when there is no src' do
       json_str = '[{"type":"image"}]'
       imageable = build(:user, bio_multiloc: { 'de' => json_str })
-      expect(TextImage).not_to receive(:create!)
       output = service.swap_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'de' => json_str })
+      expect(TextImage).not_to have_received :create!
     end
 
     it 'returns the same value when decoding failed' do
@@ -116,14 +118,15 @@ describe ContentImageService do
       valid_json_str = [
         { type: 'image', src: 'https://images.com/image.png' }
       ].to_json
-      imageable = build(:user, bio_multiloc: { 'en' => invalid_json_str, 'de' => valid_json_str })
-      expect(TextImage).to receive(:create!).once
-      expect(Sentry).to receive :capture_exception
-      output = service.swap_data_images imageable, :bio_multiloc
       expected_json = [
-        { type: 'image', data_cl2_content_image_code: @text_image_1.text_reference }
+        { type: 'image', data_cl2_content_image_code: text_images[0].text_reference }
       ].to_json
+
+      imageable = build(:user, bio_multiloc: { 'en' => invalid_json_str, 'de' => valid_json_str })
+      output = service.swap_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'en' => invalid_json_str, 'de' => expected_json })
+      expect(Sentry).to have_received :capture_exception
+      expect(TextImage).to have_received(:create!).once
     end
   end
 
@@ -136,8 +139,8 @@ describe ContentImageService do
 
     it 'can use precompute_for_rendering to fetch content images without running queries' do
       json_str = [
-        { type: 'image', custom_attribute: 27, data_cl2_content_image_code: @text_image_1.text_reference },
-        { type: 'image', data_cl2_content_image_code: @text_image_2.text_reference }
+        { type: 'image', custom_attribute: 27, data_cl2_content_image_code: text_images[0].text_reference },
+        { type: 'image', data_cl2_content_image_code: text_images[1].text_reference }
       ].to_json
       imageable = build(:user, bio_multiloc: { 'fr-BE' => json_str })
       expect do
@@ -147,28 +150,29 @@ describe ContentImageService do
 
     it 'adds the src attribute when the content includes images' do
       json_str = [
-        { type: 'image', custom_attribute: 27, data_cl2_content_image_code: @text_image_1.text_reference },
+        { type: 'image', custom_attribute: 27, data_cl2_content_image_code: text_images[0].text_reference },
         { type: 'furniture' },
-        { type: 'image', data_cl2_content_image_code: @text_image_2.text_reference }
+        { type: 'image', data_cl2_content_image_code: text_images[1].text_reference }
       ].to_json
-      imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
-      output = service.render_data_images imageable, :bio_multiloc
       expected_json = [
         {
           type: 'image',
           custom_attribute: 27,
-          data_cl2_content_image_code: @text_image_1.text_reference,
-          src: "/images/#{@text_image_1.text_reference}.jpg"
+          data_cl2_content_image_code: text_images[0].text_reference,
+          src: "/images/#{text_images[0].text_reference}.jpg"
         },
         {
           type: 'furniture'
         },
         {
           type: 'image',
-          data_cl2_content_image_code: @text_image_2.text_reference,
-          src: "/images/#{@text_image_2.text_reference}.jpg"
+          data_cl2_content_image_code: text_images[1].text_reference,
+          src: "/images/#{text_images[1].text_reference}.jpg"
         }
       ].to_json
+
+      imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
+      output = service.render_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
     end
 
@@ -182,11 +186,8 @@ describe ContentImageService do
     it 'renders other images when an image could not be fetched' do
       json_str = [
         { type: 'image', data_cl2_content_image_code: 'nonexisting_code' },
-        { type: 'image', data_cl2_content_image_code: @text_image_2.text_reference }
+        { type: 'image', data_cl2_content_image_code: text_images[1].text_reference }
       ].to_json
-      imageable = build(:user, bio_multiloc: { 'de' => json_str })
-      expect(Sentry).to receive :capture_exception
-      output = service.render_data_images imageable, :bio_multiloc
       expected_json = [
         {
           type: 'image',
@@ -194,20 +195,24 @@ describe ContentImageService do
         },
         {
           type: 'image',
-          data_cl2_content_image_code: @text_image_2.text_reference,
-          src: "/images/#{@text_image_2.text_reference}.jpg"
+          data_cl2_content_image_code: text_images[1].text_reference,
+          src: "/images/#{text_images[1].text_reference}.jpg"
         }
       ].to_json
+
+      imageable = build(:user, bio_multiloc: { 'de' => json_str })
+      output = service.render_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'de' => expected_json })
+      expect(Sentry).to have_received :capture_exception
     end
 
     it 'skips image processing and returns the same value when could_include_images? returns false' do
-      json_str = "[{\"type\":\"image\",\"data_cl2_content_image_code\":\"#{@text_image_1.text_reference}\"}]"
+      json_str = "[{\"type\":\"image\",\"data_cl2_content_image_code\":\"#{text_images[0].text_reference}\"}]"
       imageable = build(:user, bio_multiloc: { 'en' => json_str })
       allow(service).to receive(:could_include_images?).and_return(false)
-      expect(service).to receive :could_include_images?
       output = service.render_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'en' => json_str })
+      expect(service).to have_received :could_include_images?
     end
   end
 end

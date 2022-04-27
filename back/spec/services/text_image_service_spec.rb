@@ -42,13 +42,15 @@ describe TextImageService do
         <div>no image here</div>
         <img data-cl2-text-image-text-reference="#{text_image_2.text_reference}">
       HTML
-      imageable = build :project, description_multiloc: { 'de' => input }
-      output = <<~HTML
+      expected_html = <<~HTML
         <img data-cl2-text-image-text-reference="#{text_image_1.text_reference}" src="#{text_image_1.image.url}">
         <div>no image here</div>
         <img data-cl2-text-image-text-reference="#{text_image_2.text_reference}" src="#{text_image_2.image.url}">
       HTML
-      expect(service.render_data_images(imageable, :description_multiloc)).to eq({ 'de' => output })
+
+      imageable = build :project, description_multiloc: { 'de' => input }
+      output = service.render_data_images imageable, :description_multiloc
+      expect(output).to eq({ 'de' => expected_html })
     end
 
     it 'gets all text images in one query' do
