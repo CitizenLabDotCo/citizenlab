@@ -11,6 +11,11 @@ import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import Footer from './Footer';
 import { LabelList } from 'recharts';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
+
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
@@ -23,9 +28,17 @@ interface Props {
 
 const formatPercentage = (percentage) => `${percentage}%`;
 
-const ChartCard = ({ customField }: Props) => {
+const ChartCard = ({
+  customField,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
   const currentChartRef = useRef<SVGElement>();
+
+  const barNames = [
+    formatMessage(messages.platformUsers),
+    formatMessage(messages.totalPopulation),
+  ];
 
   return (
     <Box width="100%" background="white">
@@ -39,7 +52,7 @@ const ChartCard = ({ customField }: Props) => {
         data={TEST_GENDER_DATA}
         mapping={{ length: ['actualValue', 'referenceValue'] }}
         bars={{
-          name: ['Platform users', 'Total population'],
+          name: barNames,
           fill: [newBarFill, secondaryNewBarFill],
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
@@ -53,4 +66,4 @@ const ChartCard = ({ customField }: Props) => {
   );
 };
 
-export default ChartCard;
+export default injectIntl(ChartCard);
