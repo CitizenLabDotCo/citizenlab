@@ -58,3 +58,6 @@ RSpec/ExampleWording:
 
 RSpec/PredicateMatcher:
   Enabled: true
+
+RSpec/ScatteredSetup:
+  Enabled: true
