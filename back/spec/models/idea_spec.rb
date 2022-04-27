@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Idea, type: :model do
   context 'associations' do
-    it { should have_many(:votes) }
+    it { is_expected.to have_many(:votes) }
   end
 
   context 'Default factory' do

@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
   context 'associations' do
-    it { should belong_to(:user).optional }
-    it { should belong_to(:votable) }
+    it { is_expected.to belong_to(:user).optional }
+    it { is_expected.to belong_to(:votable) }
   end
 
   context 'Default factory' do

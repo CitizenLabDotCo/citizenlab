@@ -11,10 +11,10 @@ describe ProjectImagePolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { should     permit(:show)    }
-      it { should_not permit(:create)  }
-      it { should_not permit(:update)  }
-      it { should_not permit(:destroy) }
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.to_not permit(:create)  }
+      it { is_expected.to_not permit(:update)  }
+      it { is_expected.to_not permit(:destroy) }
 
       it 'should index the image' do
         expect(scope.resolve.size).to eq 1
@@ -24,10 +24,10 @@ describe ProjectImagePolicy do
     context 'for a mortal user' do
       let(:user) { create(:user) }
 
-      it { should     permit(:show)    }
-      it { should_not permit(:create)  }
-      it { should_not permit(:update)  }
-      it { should_not permit(:destroy) }
+      it { is_expected.to     permit(:show)    }
+      it { is_expected.to_not permit(:create)  }
+      it { is_expected.to_not permit(:update)  }
+      it { is_expected.to_not permit(:destroy) }
 
       it 'should index the image' do
         expect(scope.resolve.size).to eq 1
@@ -37,10 +37,10 @@ describe ProjectImagePolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { should permit(:show)    }
-      it { should permit(:create)  }
-      it { should permit(:update)  }
-      it { should permit(:destroy) }
+      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
 
       it 'should index the image' do
         expect(scope.resolve.size).to eq 1
@@ -55,10 +55,10 @@ describe ProjectImagePolicy do
     context 'for a user' do
       let(:user) { create(:user) }
 
-      it { should_not permit(:show)    }
-      it { should_not permit(:create)  }
-      it { should_not permit(:update)  }
-      it { should_not permit(:destroy) }
+      it { is_expected.to_not permit(:show)    }
+      it { is_expected.to_not permit(:create)  }
+      it { is_expected.to_not permit(:update)  }
+      it { is_expected.to_not permit(:destroy) }
 
       it 'should not index the image' do
         expect(scope.resolve.size).to eq 0
@@ -68,10 +68,10 @@ describe ProjectImagePolicy do
     context 'for an admin' do
       let(:user) { create(:admin) }
 
-      it { should permit(:show)    }
-      it { should permit(:create)  }
-      it { should permit(:update)  }
-      it { should permit(:destroy) }
+      it { is_expected.to permit(:show)    }
+      it { is_expected.to permit(:create)  }
+      it { is_expected.to permit(:update)  }
+      it { is_expected.to permit(:destroy) }
 
       it 'should index the image' do
         expect(scope.resolve.size).to eq 1

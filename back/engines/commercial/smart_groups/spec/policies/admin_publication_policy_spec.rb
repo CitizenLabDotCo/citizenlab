@@ -12,7 +12,7 @@ describe AdminPublicationPolicy do
     ]) end
     let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 
-    it { should_not permit(:reorder) }
+    it { is_expected.to_not permit(:reorder) }
 
     it 'should not index the project holder' do
       expect(scope.resolve.size).to eq 0

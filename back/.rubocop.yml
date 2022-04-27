@@ -127,6 +127,9 @@ RSpec/MultipleExpectations:
 Style/WordArray:
   Enabled: true
 
+RSpec/ImplicitExpect:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

@@ -13,10 +13,10 @@ describe ProjectPolicy do
     ]) end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
-    it { should_not permit(:show)    }
-    it { should_not permit(:create)  }
-    it { should_not permit(:update)  }
-    it { should_not permit(:destroy) }
+    it { is_expected.to_not permit(:show)    }
+    it { is_expected.to_not permit(:create)  }
+    it { is_expected.to_not permit(:update)  }
+    it { is_expected.to_not permit(:destroy) }
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
     end
@@ -34,10 +34,10 @@ describe ProjectPolicy do
     ]) end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
-    it { should permit(:show) }
-    it { should_not permit(:create)  }
-    it { should_not permit(:update)  }
-    it { should_not permit(:destroy) }
+    it { is_expected.to permit(:show) }
+    it { is_expected.to_not permit(:create)  }
+    it { is_expected.to_not permit(:update)  }
+    it { is_expected.to_not permit(:destroy) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
