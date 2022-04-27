@@ -37,3 +37,6 @@ RSpec/ContextWording:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: true
+
+Style/ClassAndModuleChildren:
+  Enabled: true
