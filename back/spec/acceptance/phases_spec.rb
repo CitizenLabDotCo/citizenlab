@@ -128,6 +128,7 @@ resource 'Phases' do
           @project.phases.each(&:destroy!)
           create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
         end
+
         let(:start_at) { Time.now }
         let(:end_at) { Time.now + 4.days }
 
@@ -175,6 +176,7 @@ resource 'Phases' do
             max_budget: 30000
             )
         end
+
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
 
@@ -268,6 +270,7 @@ resource 'Phases' do
             max_budget: 30000
             )
         end
+
         let(:ideas) { create_list(:idea, 2, project: @project) }
         let(:phase) { create(:phase, project: @project, participation_method: 'ideation', ideas: ideas) }
         let(:participation_method) { 'information' }

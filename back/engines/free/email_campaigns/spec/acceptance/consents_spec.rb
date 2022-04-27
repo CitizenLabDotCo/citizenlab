@@ -30,6 +30,7 @@ resource 'Campaign consents' do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
+
       example_request 'List all campaign consents' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
@@ -84,6 +85,7 @@ resource 'Campaign consents' do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
+
       example_request 'Update a campaign consent' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
@@ -118,6 +120,7 @@ resource 'Campaign consents' do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
+
       example_request 'Update a campaign consent by campaign id' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)

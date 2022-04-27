@@ -207,6 +207,7 @@ resource 'Initiatives' do
       before do
         @selected_initiatives = @initiatives.select(&:published?).shuffle.take 2
       end
+
       let(:initiatives) { @selected_initiatives.map(&:id) }
 
       example_request 'XLSX export by initiative ids' do
@@ -400,6 +401,7 @@ resource 'Initiatives' do
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
       # Weak attempt to make it less explicit
+
       let(:location_description) { 'fu' + 'ck' }
 
       example_request '[error] Create an initiative with blocked words' do
@@ -516,6 +518,7 @@ resource 'Initiatives' do
     before do
       @initiative = create(:initiative, author: @user, publication_status: 'draft')
     end
+
     parameter :publication_status, "Either #{Post::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :initiative
 
     let(:id) { @initiative.id }
@@ -532,6 +535,7 @@ resource 'Initiatives' do
     before do
       @initiative = create(:initiative_with_topics, author: @user, publication_status: 'published')
     end
+
     let(:id) { @initiative.id }
 
     example_request 'Delete an initiative' do
@@ -553,6 +557,7 @@ resource 'Initiatives' do
         initiative: @initiative, initiative_status: threshold_reached
         )
     end
+
     let(:id) { @initiative.id }
 
     example_request 'Allowed transitions' do

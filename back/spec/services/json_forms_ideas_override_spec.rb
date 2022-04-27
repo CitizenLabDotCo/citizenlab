@@ -22,6 +22,7 @@ describe 'JsonFormsService ideas overrides' do
       # @fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
       project.reload
     end
+
     it 'only includes the topics associated with the current project' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true

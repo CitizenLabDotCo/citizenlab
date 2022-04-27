@@ -45,6 +45,7 @@ resource 'Users' do
       before do
         @user.update!(reset_password_token: ResetPasswordService.new.generate_reset_password_token(@user))
       end
+
       with_options scope: :user do
         parameter :token, 'The password reset token received through the params in the reset link', required: true
         parameter :password, 'The new password', required: true

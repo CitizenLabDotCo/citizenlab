@@ -44,6 +44,7 @@ resource 'Users' do
       before do
         @user = create(:user)
       end
+
       let(:id) { @user.id }
       example 'Get a non-authenticated user does not expose the email', document: false do
         do_request
@@ -62,6 +63,7 @@ resource 'Users' do
         before do
           @user = create(:user, password: 'supersecret')
         end
+
         let(:email) { @user.email }
         let(:password) { 'supersecret' }
 
@@ -216,6 +218,7 @@ resource 'Users' do
         before do
           create(:user, email: 'JeZuS@citizenlab.co')
         end
+
         let(:email) { 'jEzUs@citizenlab.co' }
 
         example_request '[error] Registering a user with case insensitive email duplicate', document: false do
@@ -432,6 +435,7 @@ resource 'Users' do
               create(:membership, user: usr, group: @group)
             end
           end
+
           let(:group) { @group.id }
 
           example_request 'XLSX export all users from a group' do
@@ -447,6 +451,7 @@ resource 'Users' do
             @group = create(:group)
             @selected = @users.shuffle.take(4)
           end
+
           let(:users) { @selected.map(&:id) }
 
           example_request 'XLSX export all users given a list of user ids' do
@@ -466,6 +471,7 @@ resource 'Users' do
               create(:membership, user: usr, group: @group)
             end
           end
+
           let(:group) { @group.id }
           let(:users) { @selected.map(&:id) }
 
@@ -632,6 +638,7 @@ resource 'Users' do
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
+
         let(:mortal_user) { create(:user) }
         let(:id) { mortal_user.id }
         let(:roles) { [type: 'admin'] }

@@ -4,6 +4,7 @@ describe 'rake email_campaigns' do
   before(:context) do
     Rails.application.load_tasks
   end
+
   let(:task) { Rake::Task[task_name] }
 
   describe ':schedule_email_campaigns' do

@@ -32,6 +32,7 @@ resource 'Verifications' do
         .to_return(status: 200, body: File.read('engines/commercial/id_cow/spec/fixtures/cow_wsdl.xml'), headers: {})
       savon.mock!
     end
+
     after do
       savon.unmock!
     end
@@ -169,6 +170,7 @@ resource 'Verifications' do
           verification_parameters: { run: @run, id_serial: @id_serial }
         )
       end
+
       let(:run) { @run }
       let(:id_serial) { @id_serial }
       example '[error] Verify with cow using credentials that are already taken' do

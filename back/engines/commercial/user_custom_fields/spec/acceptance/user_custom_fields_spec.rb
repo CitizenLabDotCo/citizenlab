@@ -53,6 +53,7 @@ resource 'User Custom Fields' do
     before do
       create(:custom_field)
     end
+
     example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
       assert_status 200
       json_response = json_parse(response_body)
@@ -65,6 +66,7 @@ resource 'User Custom Fields' do
     before do
       create(:custom_field)
     end
+
     example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
       assert_status 200
       json_response = json_parse(response_body)

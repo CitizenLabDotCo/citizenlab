@@ -130,6 +130,9 @@ Style/WordArray:
 RSpec/ImplicitExpect:
   Enabled: true
 
+RSpec/EmptyLineAfterHook:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

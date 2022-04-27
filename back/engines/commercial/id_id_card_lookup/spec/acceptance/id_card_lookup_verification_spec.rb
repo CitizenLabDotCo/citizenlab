@@ -34,6 +34,7 @@ resource 'Verifications' do
         @card_id = '123.46234-78B'
         id_card = create(:id_id_card_lookup_id_card, card_id: @card_id)
       end
+
       let(:card_id) { @card_id }
       example_request 'Verify with id_card_lookup' do
         assert_status 201

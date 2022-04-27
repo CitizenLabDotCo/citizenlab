@@ -146,6 +146,7 @@ resource 'Comments' do
       before do
         @comments = create_list(:comment, 4, post: create(:initiative))
       end
+
       let(:initiatives) { @comments.map(&:post_id) }
 
       example_request 'XLSX export by initiative ids', document: false do

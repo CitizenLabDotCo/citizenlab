@@ -78,6 +78,7 @@ resource 'Stats - Votes' do
             user: (if birthyear then create(:user, birthyear: birthyear) else create(:user) end))
         end
       end
+
       time_boundary_parameters self
       parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
@@ -111,6 +112,7 @@ resource 'Stats - Votes' do
            user: (if domicile then create(:user, domicile: domicile) else create(:user) end))
        end
       end
+
       time_boundary_parameters self
       parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
@@ -142,6 +144,7 @@ resource 'Stats - Votes' do
             user: (if education then create(:user, education: education) else create(:user) end))
         end
       end
+
       time_boundary_parameters self
       parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
@@ -173,6 +176,7 @@ resource 'Stats - Votes' do
             user: (if gender then create(:user, gender: gender) else create(:user) end))
         end
       end
+
       time_boundary_parameters self
       parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
@@ -208,6 +212,7 @@ resource 'Stats - Votes' do
             user: (if opt then create(:user, custom_field_values: { @custom_field.key => opt.key }) else create(:user) end))
         end
       end
+
       time_boundary_parameters self
       parameter :ideas, 'Array of idea ids to get the stats for.', required: false
       parameter :custom_field, 'The custom field id which should serve as dimensions of the stats.', required: true

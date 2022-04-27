@@ -143,6 +143,7 @@ resource 'Comments' do
           create(:comment, post: create(:idea, project: @project))
         end
       end
+
       let(:project) { @project.id }
 
       example_request 'XLSX export by project', document: false do
@@ -156,6 +157,7 @@ resource 'Comments' do
       before do
         @comments = create_list(:comment, 4)
       end
+
       let(:ideas) { @comments.map(&:post_id) }
 
       example_request 'XLSX export by idea ids', document: false do
@@ -331,6 +333,7 @@ resource 'Comments' do
       describe do
         before { SettingsService.new.activate_feature! 'blocking_profanity' }
         # Weak attempt to make it less explicit
+
         let(:body_multiloc) { { 'en' => 'fu' + 'ckin' + 'g co' + 'cksu' + 'cker' } }
 
         example_request '[error] Create a comment with blocked words' do

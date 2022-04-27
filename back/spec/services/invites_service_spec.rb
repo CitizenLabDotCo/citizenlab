@@ -252,6 +252,7 @@ describe InvitesService do
 
     context 'with an email that is already used by an active user (case insensitive)' do
       before { create(:user, email: 'someUser@somedomain.com') }
+
       let(:hash_array) do
         [
         { email: 'john@john.son' },
