@@ -19,3 +19,21 @@ Layout/LineLength:
 
 Metrics/BlockLength:
   Enabled: true
+
+RSpec/ExampleLength:
+  Enabled: true
+
+RSpec/InstanceVariable:
+  Enabled: true
+
+RSpec/DescribedClass:
+  Enabled: true
+
+RSpec/EmptyExampleGroup:
+  Enabled: true
+
+RSpec/ContextWording:
+  Enabled: true
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: true
