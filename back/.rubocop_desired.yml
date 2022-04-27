@@ -61,3 +61,21 @@ RSpec/PredicateMatcher:
 
 RSpec/ScatteredSetup:
   Enabled: true
+
+RSpec/EmptyLineAfterFinalLet:
+  Enabled: true
+
+RSpec/NamedSubject:
+  Enabled: true
+
+RSpec/AnyInstance:
+  Enabled: true
+
+RSpec/NestedGroups:
+  Enabled: true
+
+RSpec/RepeatedDescription:
+  Enabled: true
+
+RSpec/DescribeClass:
+  Enabled: true
