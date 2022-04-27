@@ -1,5 +1,5 @@
 import { addLocaleData } from 'react-intl';
-import ma from 'react-intl/locale-data/hr';
+import ma from 'react-intl/locale-data/ar';
 
 import { formatTranslationMessages } from './';
 
