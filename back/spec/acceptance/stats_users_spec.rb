@@ -104,6 +104,7 @@ resource 'Stats - Users' do
 
     describe 'with project filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:project) { @project.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -113,8 +114,6 @@ resource 'Stats - Users' do
           @project = create(:private_admins_project)
         end
       end
-
-      let(:project) { @project.id }
 
       example_request 'Users by time filtered by project' do
         assert_status 200
@@ -126,6 +125,7 @@ resource 'Stats - Users' do
 
     describe 'with group filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:group) { @group1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -138,8 +138,6 @@ resource 'Stats - Users' do
         end
       end
 
-      let(:group) { @group1.id }
-
       example_request 'Users by time filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -150,6 +148,7 @@ resource 'Stats - Users' do
 
     describe 'with topic filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:topic) { @topic1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -168,8 +167,6 @@ resource 'Stats - Users' do
           create(:vote, votable: @idea1)
         end
       end
-
-      let(:topic) { @topic1.id }
 
       example_request 'Users by time filtered by topic' do
         assert_status 200
@@ -230,6 +227,7 @@ resource 'Stats - Users' do
 
     describe 'with project filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:project) { @project.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -239,8 +237,6 @@ resource 'Stats - Users' do
           @project = create(:private_admins_project)
         end
       end
-
-      let(:project) { @project.id }
 
       example_request 'Users by time filtered by project' do
         assert_status 200
@@ -255,6 +251,7 @@ resource 'Stats - Users' do
 
     describe 'with group filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:group) { @group1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -266,8 +263,6 @@ resource 'Stats - Users' do
           @user2 = create(:user, manual_groups: [@group2])
         end
       end
-
-      let(:group) { @group1.id }
 
       example_request 'Users by time filtered by group' do
         assert_status 200
@@ -282,6 +277,7 @@ resource 'Stats - Users' do
 
     describe 'with topic filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:topic) { @topic1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -300,8 +296,6 @@ resource 'Stats - Users' do
           create(:vote, votable: @idea1)
         end
       end
-
-      let(:topic) { @topic1.id }
 
       example_request 'Users by time filtered by topic' do
         assert_status 200
@@ -338,6 +332,7 @@ resource 'Stats - Users' do
 
     describe 'with project filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:project) { @project.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -347,8 +342,6 @@ resource 'Stats - Users' do
           @project = create(:private_admins_project)
         end
       end
-
-      let(:project) { @project.id }
 
       example_request 'Users by time (cumulative) filtered by project' do
         assert_status 200
@@ -362,6 +355,7 @@ resource 'Stats - Users' do
 
     describe 'with group filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:group) { @group1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -373,8 +367,6 @@ resource 'Stats - Users' do
           @user2 = create(:user, manual_groups: [@group2])
         end
       end
-
-      let(:group) { @group1.id }
 
       example_request 'Users by time (cumulative) filtered by group' do
         assert_status 200
@@ -388,6 +380,7 @@ resource 'Stats - Users' do
 
     describe 'with topic filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:topic) { @topic1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -406,8 +399,6 @@ resource 'Stats - Users' do
           create(:vote, votable: @idea1)
         end
       end
-
-      let(:topic) { @topic1.id }
 
       example_request 'Users by time (cumulative) filtered by topic' do
         assert_status 200
@@ -446,6 +437,7 @@ resource 'Stats - Users' do
 
     describe 'with project filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:project) { @project.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -455,8 +447,6 @@ resource 'Stats - Users' do
           @project = create(:private_admins_project)
         end
       end
-
-      let(:project) { @project.id }
 
       example_request 'Users by time (cumulative) filtered by project as xlsx' do
         assert_status 200
@@ -473,6 +463,7 @@ resource 'Stats - Users' do
 
     describe 'with group filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:group) { @group1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -484,8 +475,6 @@ resource 'Stats - Users' do
           @user2 = create(:user, manual_groups: [@group2])
         end
       end
-
-      let(:group) { @group1.id }
 
       example_request 'Users by time (cumulative) filtered by group as xlsx' do
         assert_status 200
@@ -502,6 +491,7 @@ resource 'Stats - Users' do
 
     describe 'with topic filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:topic) { @topic1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -520,8 +510,6 @@ resource 'Stats - Users' do
           create(:vote, votable: @idea1)
         end
       end
-
-      let(:topic) { @topic1.id }
 
       example_request 'Users by time (cumulative) filtered by topic as xlsx' do
         assert_status 200
@@ -571,6 +559,7 @@ resource 'Stats - Users' do
 
     describe 'with project filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:project) { @project.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -584,8 +573,6 @@ resource 'Stats - Users' do
         end
       end
 
-      let(:project) { @project.id }
-
       example_request 'Active users by time filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -596,6 +583,7 @@ resource 'Stats - Users' do
 
     describe 'with group filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:group) { @group1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -611,8 +599,6 @@ resource 'Stats - Users' do
         end
       end
 
-      let(:group) { @group1.id }
-
       example_request 'Active users by time filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -624,6 +610,7 @@ resource 'Stats - Users' do
 
     describe 'with topic filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:topic) { @topic1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -644,8 +631,6 @@ resource 'Stats - Users' do
           create(:activity, user: @user2)
         end
       end
-
-      let(:topic) { @topic1.id }
 
       example_request 'Active users by time filtered by topic' do
         assert_status 200
@@ -763,6 +748,7 @@ resource 'Stats - Users' do
 
     describe 'with project filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:project) { @project.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -776,8 +762,6 @@ resource 'Stats - Users' do
         end
       end
 
-      let(:project) { @project.id }
-
       example_request 'Active users by time filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -788,6 +772,7 @@ resource 'Stats - Users' do
 
     describe 'with group filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:group) { @group1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -803,8 +788,6 @@ resource 'Stats - Users' do
         end
       end
 
-      let(:group) { @group1.id }
-
       example_request 'Active users by time filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
@@ -816,6 +799,7 @@ resource 'Stats - Users' do
 
     describe 'with topic filter' do
       let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:topic) { @topic1.id }
       let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
@@ -836,8 +820,6 @@ resource 'Stats - Users' do
           create(:activity, user: @user2)
         end
       end
-
-      let(:topic) { @topic1.id }
 
       example_request 'Active users by time filtered by topic' do
         assert_status 200

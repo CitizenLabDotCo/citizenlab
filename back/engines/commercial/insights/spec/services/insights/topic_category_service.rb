@@ -4,14 +4,14 @@ require 'rails_helper'
 
 describe Insights::TopicCategoryService do
   let(:topic1) { create(:topic) }
+  let(:view) { create(:view, scope: project) }
+  let(:user) { create(:user) }
+  let(:assignment_service) { Insights::CategoryAssignmentsService.new }
   let(:topic2) { create(:topic, title_multiloc: { 'en': 'Nature' }) }
   let(:topic3) { create(:topic, title_multiloc: { 'en': 'Other' }) }
   let(:ideas) { create_list(:idea, 3, topics: [topic1, topic2]) }
   let(:project) { create(:project, topics: [topic1, topic2, topic3], ideas: ideas) }
   subject(:service) { described_class.new }
-  let(:view) { create(:view, scope: project) }
-  let(:user) { create(:user) }
-  let(:assignment_service) { Insights::CategoryAssignmentsService.new }
 
   describe 'copy_assignments' do
     it 'assigns categories corresponding to topics' do

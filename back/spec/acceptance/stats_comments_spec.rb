@@ -381,6 +381,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by group' do
         let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:group) { @group.id }
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
@@ -391,8 +392,6 @@ resource 'Stats - Comments' do
             create(:comment, post: create(:idea_with_topics))
           end
         end
-
-        let(:group) { @group.id }
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
@@ -483,6 +482,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by group' do
         let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:group) { @group.id }
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
@@ -493,8 +493,6 @@ resource 'Stats - Comments' do
             create(:comment, post: create(:idea_with_topics))
           end
         end
-
-        let(:group) { @group.id }
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
@@ -549,6 +547,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by topic' do
         let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:topic) { @topic.id }
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
@@ -562,8 +561,6 @@ resource 'Stats - Comments' do
           end
         end
 
-        let(:topic) { @topic.id }
-
         example_request 'Comments by project filtered by topic' do
           assert_status 200
           expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
@@ -572,6 +569,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by group' do
         let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:group) { @group.id }
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
@@ -583,8 +581,6 @@ resource 'Stats - Comments' do
             create(:comment, post: idea)
           end
         end
-
-        let(:group) { @group.id }
 
         example_request 'Comments by project filtered by group' do
           assert_status 200
@@ -642,6 +638,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by topic' do
         let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:topic) { @topic.id }
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
@@ -654,8 +651,6 @@ resource 'Stats - Comments' do
             create(:comment, post: idea2)
           end
         end
-
-        let(:topic) { @topic.id }
 
         example_request 'Comments by project filtered by topic' do
           assert_status 200
@@ -670,6 +665,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by group' do
         let(:start_at) { (now - 1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:group) { @group.id }
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
@@ -681,8 +677,6 @@ resource 'Stats - Comments' do
             create(:comment, post: idea)
           end
         end
-
-        let(:group) { @group.id }
 
         example_request 'Comments by project filtered by group' do
           assert_status 200
