@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.representativeness.representativenessArticleLink',
     defaultMessage: 'here',
   },
+  betaLabel: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.betaLabel',
+    defaultMessage: 'BETA',
+  },
 });
