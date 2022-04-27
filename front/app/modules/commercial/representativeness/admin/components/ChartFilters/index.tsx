@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ChartFilters = ({ currentProjectFilter, onProjectFilter }: Props) => (
-  <Box display="flex" width="100%" justifyContent="space-between">
+  <Box>
     <ProjectFilter
       currentProjectFilter={currentProjectFilter}
       onProjectFilter={onProjectFilter}
