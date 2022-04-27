@@ -20,7 +20,12 @@ const Header = ({ titleMultiloc, svgNode }: Props) => {
   const title = localize(titleMultiloc);
 
   return (
-    <Box p="20px 40px 0px 40px" display="flex" justifyContent="space-between">
+    <Box
+      p="20px 40px 0px 40px"
+      mb="12px"
+      display="flex"
+      justifyContent="space-between"
+    >
       <Title variant="h3" as="h2">
         {title}
       </Title>

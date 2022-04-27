@@ -23,7 +23,7 @@ const ChartCards = () => {
   return (
     <>
       {customFields.filter(onlyGender).map((customField) => (
-        <ChartCard customField={customField} />
+        <ChartCard customField={customField} key={customField.id} />
       ))}
     </>
   );
