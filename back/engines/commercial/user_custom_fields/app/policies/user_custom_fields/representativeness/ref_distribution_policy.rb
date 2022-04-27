@@ -10,6 +10,10 @@ module UserCustomFields
       def create?
         active? && admin?
       end
+
+      def destroy?
+        active? && admin?
+      end
     end
   end
 end

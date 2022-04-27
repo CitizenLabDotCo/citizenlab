@@ -50,10 +50,10 @@ resource 'Representativeness reference distributions' do
     end
 
     let(:distribution) do
-      custom_field.custom_field_option_ids.index_with {rand(100) }
+      custom_field.custom_field_option_ids.index_with { rand(100) }
     end
 
-    example_request 'Create a reference distribution' do
+    example_request 'creates a reference distribution' do
       expect(status).to eq(201)
 
       ref_distribution = UserCustomFields::Representativeness::RefDistribution.find(response_data[:id])
@@ -61,8 +61,30 @@ resource 'Representativeness reference distributions' do
       aggregate_failures do
         expect(ref_distribution.distribution).to eq(distribution)
         expect(ref_distribution.custom_field_id).to eq(custom_field_id)
-        expect(response_body)
-          .to eq(UserCustomFields::WebApi::V1::RefDistributionSerializer.new(ref_distribution).serialized_json)
+        expect(JSON.parse(response_body)).to match(
+          UserCustomFields::WebApi::V1::RefDistributionSerializer.new(ref_distribution).as_json
+        )
+      end
+    end
+  end
+
+  delete 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
+    context 'when the custom field has a reference distribution' do
+      let!(:reference_distribution) { create(:ref_distribution) }
+      let(:custom_field_id) { reference_distribution.custom_field_id }
+
+      example_request 'deletes the reference distribution' do
+        expect(status).to eq(204)
+        expect(UserCustomFields::Representativeness::RefDistribution.find_by(id: custom_field_id)).to be_nil
+      end
+    end
+
+    context "when the custom field doesn't have a reference distribution" do
+      let!(:custom_field_id) { custom_field.id }
+      let(:custom_field) { create(:custom_field_select, resource_type: 'User') }
+
+      example_request 'returns 404 (Not Found)' do
+        expect(status).to eq(404)
       end
     end
   end

@@ -4,9 +4,7 @@ module UserCustomFields
   module WebApi::V1
     class RefDistributionsController < ::ApplicationController
       def show
-        ref_distribution = Representativeness::RefDistribution.find_by(custom_field_id: params[:custom_field_id])
-        authorize(ref_distribution)
-        render json: serialize(ref_distribution)
+        render json: serialize(reference_distribution)
       end
 
       def create
@@ -17,7 +15,18 @@ module UserCustomFields
         render json: serialize(ref_distribution), status: :created
       end
 
+      def destroy
+        reference_distribution.destroy!
+        head :no_content
+      end
+
       private
+
+      def reference_distribution
+        @reference_distribution ||= authorize(
+          Representativeness::RefDistribution.find_by!(custom_field_id: params[:custom_field_id])
+        )
+      end
 
       def create_params
         params.permit(:custom_field_id, distribution: {})
