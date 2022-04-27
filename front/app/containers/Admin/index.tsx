@@ -102,6 +102,7 @@ export const chartTheme = (theme) => {
     animationDuration: 200,
     cartesianGridColor: '#f5f5f5',
     newBarFill: '#073F80',
+    secondaryNewBarFill: '#40B8C5',
     newLineColor: '#7FBBCA',
     barSize: 20,
   };

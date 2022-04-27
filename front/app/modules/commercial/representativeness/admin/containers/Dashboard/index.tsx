@@ -5,9 +5,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import { GraphsContainer } from 'components/admin/GraphWrappers';
 import Header from './Header';
 import ChartFilters from '../../components/ChartFilters';
+import { GraphsContainer } from 'components/admin/GraphWrappers';
+import ChartCards from './ChartCards';
 
 const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
@@ -26,7 +27,9 @@ const RepresentativenessDashboard = () => {
         />
       </Box>
 
-      <GraphsContainer>{/* TODO */}</GraphsContainer>
+      <GraphsContainer>
+        <ChartCards />
+      </GraphsContainer>
     </>
   );
 };
