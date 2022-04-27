@@ -108,6 +108,10 @@ Style/RedundantSelf:
 Style/TrailingCommaInHashLiteral:
   Enabled: true
 
+Style/Documentation:
+  # Most classes are not documented, so turn off this Cop.
+  Enabled: false
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:
