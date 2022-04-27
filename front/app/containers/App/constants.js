@@ -174,7 +174,7 @@ exports.appLocalesMomentPairs = {
   'ro-RO': 'ro',
   'pt-BR': 'pt',
   'ar-SA': 'ar',
-  'ar-MA': 'ma',
+  'ar-MA': 'ar-ma',
   mi: 'mi',
   'sr-Latn': 'sr',
   'sr-SP': 'sr',
