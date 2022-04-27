@@ -11,13 +11,16 @@ Metrics/MethodLength:
   Exclude:
   - 'db/migrate/**/*'
 
+Metrics/BlockLength:
+  Enabled: true
+
 Style/FrozenStringLiteralComment:
   Enabled: true
 
-Layout/LineLength:
+Style/ClassAndModuleChildren:
   Enabled: true
 
-Metrics/BlockLength:
+Layout/LineLength:
   Enabled: true
 
 RSpec/ExampleLength:
@@ -38,5 +41,17 @@ RSpec/ContextWording:
 RSpec/MultipleMemoizedHelpers:
   Enabled: true
 
-Style/ClassAndModuleChildren:
+RSpec/MissingExampleGroupArgument:
+  Enabled: true
+
+RSpec/LetSetup:
+  Enabled: true
+
+RSpec/MessageSpies:
+  Enabled: true
+
+RSpec/FilePath:
+  Enabled: true
+
+RSpec/ExampleWording:
   Enabled: true
