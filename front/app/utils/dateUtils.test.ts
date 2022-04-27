@@ -10,8 +10,8 @@ import 'moment-timezone';
 // test date is 1AM June 15 2020 UTC time (Z)
 const testDateStr = '2020-06-15T01:00:00Z';
 
-// the local time in Tokyo should be June 14th 2022, 9pm,
-// since Tokyo is -0400 hour offset from UTC time
+// the local time in Santiago should be June 14th 2022, 9pm,
+// since Santiago is -0400 hour offset from UTC time
 describe('in America/Santiago time zone', () => {
   beforeAll(() => {
     jest.useFakeTimers('modern');

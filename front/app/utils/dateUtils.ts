@@ -9,7 +9,9 @@ export function getIsoDateForToday(): string {
 
 // this function is exclusively used to compare phase start/ends,
 // which are created and stored with the YYYY-MM-DD format (no time of day)
-export function pastPresentOrFuture(input: string | [string, string]) {
+type SingleDate = string;
+type BeginAndEndDate = [string, string];
+export function pastPresentOrFuture(input: SingleDate | BeginAndEndDate) {
   const currentIsoDate = getIsoDateForToday();
 
   // if input is a string representing one date
