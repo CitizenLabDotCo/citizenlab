@@ -61,7 +61,6 @@ interface Props {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
-  className?: string;
 }
 
 type State = {
@@ -151,11 +150,11 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { dropdownOpened } = this.state;
-    const { className, startAtMoment, endAtMoment } = this.props;
+    const { startAtMoment, endAtMoment } = this.props;
     const activePreset = this.findActivePreset();
 
     return (
-      <Container className={className}>
+      <Container>
         <DropdownContainer>
           <StyledButton
             buttonStyle="text"

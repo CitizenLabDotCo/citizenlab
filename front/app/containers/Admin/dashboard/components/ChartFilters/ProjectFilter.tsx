@@ -29,7 +29,6 @@ interface DataProps {
 }
 
 interface InputProps {
-  width?: string;
   currentProjectFilter?: string | null;
   onProjectFilter: (filter: IOption) => void;
 }
@@ -54,7 +53,6 @@ const generateProjectOptions = (
 
 const ProjectFilter = ({
   projects: { projectsList },
-  width,
   currentProjectFilter,
   onProjectFilter,
   intl: { formatMessage },
@@ -70,7 +68,7 @@ const ProjectFilter = ({
   );
 
   return (
-    <Box width={width || '32%'}>
+    <Box width="32%">
       <Select
         id="projectFilter"
         label={<FormattedMessage {...messages.labelProjectFilter} />}

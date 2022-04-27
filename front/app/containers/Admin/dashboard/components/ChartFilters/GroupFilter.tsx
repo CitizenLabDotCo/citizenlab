@@ -26,7 +26,6 @@ interface DataProps {
 }
 
 interface InputProps {
-  width?: string;
   currentGroupFilter?: string | null;
   onGroupFilter: (filter: IOption) => void;
 }
@@ -51,7 +50,6 @@ const generateGroupOptions = (
 
 const GroupFilter = ({
   groups: { groupsList },
-  width,
   currentGroupFilter,
   onGroupFilter,
   intl: { formatMessage },
@@ -67,7 +65,7 @@ const GroupFilter = ({
   );
 
   return (
-    <Box width={width || '32%'}>
+    <Box width="32%">
       <Select
         id="groupFilter"
         label={<FormattedMessage {...messages.labelGroupFilter} />}
