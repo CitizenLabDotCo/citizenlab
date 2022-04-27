@@ -116,6 +116,11 @@ Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false
 
+Metrics/ClassLength:
+  Enabled: true
+  Max: 300
+  CountAsOne: ['array', 'hash', 'heredoc']
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:
