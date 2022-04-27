@@ -34,6 +34,7 @@ const TextSettings = () => {
   return (
     <Box background="#ffffff" marginBottom="20px">
       <QuillEditor
+        maxHeight="300px"
         noImages
         noVideos
         id="quill-editor"
