@@ -1,7 +1,7 @@
 # This file collects all Cops that we like to have, but for some reason
 # not all offences can be fixed. The exceptions are in .rubocop_todo.yml.
 # When all offences of a Cop are fixed, then the Cop can be moved to
-# .rubocop.yml.
+# .rubocop.yml and the Cop has to be removed from .rubocop_todo.yml.
 
 Metrics/MethodLength:
   Enabled: true
@@ -10,3 +10,6 @@ Metrics/MethodLength:
   IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
   - 'db/migrate/**/*'
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
