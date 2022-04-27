@@ -12,7 +12,7 @@ import { Multiloc } from 'typings';
 
 interface Props {
   titleMultiloc: Multiloc;
-  svgNode: React.RefObject<SVGElement>;
+  svgNode: React.RefObject<SVGElement | undefined>;
 }
 
 const Header = ({ titleMultiloc, svgNode }: Props) => {
