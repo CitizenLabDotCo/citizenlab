@@ -16,7 +16,7 @@ resource 'Verifications' do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }],
+      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
     }
     configuration.save!
   end
@@ -79,7 +79,7 @@ resource 'Verifications' do
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '12025365',
-               'typens:NumSerie' => 'A001529382',
+               'typens:NumSerie' => 'A001529382'
              })
              .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
@@ -104,7 +104,7 @@ resource 'Verifications' do
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '11111111',
-               'typens:NumSerie' => 'A001529382',
+               'typens:NumSerie' => 'A001529382'
              })
              .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
         do_request
@@ -124,7 +124,7 @@ resource 'Verifications' do
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '11111111',
-               'typens:NumSerie' => 'A001529382',
+               'typens:NumSerie' => 'A001529382'
              })
              .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
         do_request

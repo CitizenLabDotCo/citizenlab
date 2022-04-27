@@ -23,17 +23,17 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
               "type": 'string',
-              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
+              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
             },
             'value' => {
               'description' => 'The id of a project',
               'type' => 'string'
             }
-          },
+          }
         },
         {
           "type": 'object',
@@ -42,11 +42,11 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
               "type": 'string',
-              "enum": MULTIVALUE_PREDICATES,
+              "enum": MULTIVALUE_PREDICATES
             },
             'value' => {
               'description' => 'The ids of some of the projects',
@@ -57,7 +57,7 @@ module SmartGroups::Rules
               'uniqueItems' => true,
               'minItems' => 1
             }
-          },
+          }
         }
       ]
     end

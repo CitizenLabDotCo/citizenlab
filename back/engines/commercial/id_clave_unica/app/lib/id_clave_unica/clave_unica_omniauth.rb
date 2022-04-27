@@ -34,7 +34,7 @@ module IdClaveUnica
           authorization_endpoint: '/openid/authorize',
           token_endpoint: '/openid/token',
           userinfo_endpoint: '/openid/userinfo',
-          redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback",
+          redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback"
         }
       end
     end

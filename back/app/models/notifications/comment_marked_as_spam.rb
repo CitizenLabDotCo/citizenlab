@@ -69,7 +69,7 @@ module Notifications
           post_id: spam_report.spam_reportable.post_id,
           post_type: spam_report.spam_reportable.post_type,
           reason_code: activity.payload['reason_code'],
-          other_reason: activity.payload['other_reason'],
+          other_reason: activity.payload['other_reason']
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = spam_report.spam_reportable.post.project_id

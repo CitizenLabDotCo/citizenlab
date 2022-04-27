@@ -41,7 +41,7 @@ describe 'bosa_fas verification' do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'bosa_fas', environment: 'integration', identifier: 'fake', secret: 'fake' }],
+      verification_methods: [{ name: 'bosa_fas', environment: 'integration', identifier: 'fake', secret: 'fake' }]
     }
     configuration.save!
     host! 'example.org'
@@ -74,7 +74,7 @@ describe 'bosa_fas verification' do
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
     expect(@user.reload).to have_attributes({
-      verified: true,
+      verified: true
     })
   end
 

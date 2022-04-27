@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
       command = {
         event_payload: {},
         recipient: create(:user),
-        tracked_content: {},
+        tracked_content: {}
       }
       @campaign.run_after_send_hooks(command)
       expect(EmailCampaigns::Delivery.first).to have_attributes({

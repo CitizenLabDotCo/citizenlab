@@ -33,7 +33,7 @@ describe CustomFieldService do
       expect(schema).to match({
         type: 'object',
         properties: {},
-        :additionalProperties => false,
+        :additionalProperties => false
       })
     end
 
@@ -44,7 +44,7 @@ describe CustomFieldService do
       expect(schema).to match({
         type: 'object',
         properties: {},
-        :additionalProperties => false,
+        :additionalProperties => false
       })
     end
 
@@ -127,8 +127,8 @@ describe CustomFieldService do
              :type => 'array',
              :items => {
                :type => 'string',
-               :format => 'data-url',
-              } },
+               :format => 'data-url'
+              } }
            },
          :required => ['field2', 'field8', 'field9'] }
       )

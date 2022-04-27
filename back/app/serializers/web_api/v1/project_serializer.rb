@@ -33,7 +33,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       },
       commenting_idea: {
         enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason
       },
       voting_idea: {
         enabled: !voting_disabled_reason,
@@ -50,7 +50,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       comment_voting_idea: {
         # You can vote if you can comment.
         enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason
       },
       taking_survey: {
         enabled: !taking_survey_disabled_reason,

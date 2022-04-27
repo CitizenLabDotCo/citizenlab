@@ -74,7 +74,7 @@ module Notifications
           post_id: comment.post_id,
           post_type: comment.post_type,
           reason_code: activity.payload['reason_code'],
-          other_reason: activity.payload['other_reason'],
+          other_reason: activity.payload['other_reason']
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = comment.post.project_id

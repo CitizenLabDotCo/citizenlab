@@ -14,7 +14,7 @@ describe OmniauthMethods::Google do
         extra: OpenStruct.new({
           raw_info: OpenStruct.new({
             gender: 'female',
-            locale: 'fr-FR',
+            locale: 'fr-FR'
           })
         })
       })
@@ -25,7 +25,7 @@ describe OmniauthMethods::Google do
       expect(user_attrs).to include({
         locale: 'fr-FR',
         gender: 'female',
-        remote_avatar_url: 'http://www.josnet.com/my-picture',
+        remote_avatar_url: 'http://www.josnet.com/my-picture'
       })
     end
   end

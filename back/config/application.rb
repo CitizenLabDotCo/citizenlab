@@ -64,7 +64,7 @@ module Cl2Back
       config.action_mailer.mailgun_settings = {
         api_key: ENV.fetch('MAILGUN_API_KEY'),
         domain: ENV.fetch('MAILGUN_DOMAIN'),
-        api_host: ENV.fetch('MAILGUN_API_HOST', 'api.mailgun.net'),
+        api_host: ENV.fetch('MAILGUN_API_HOST', 'api.mailgun.net')
       }
     when 'smtp'
       config.action_mailer.delivery_method = :smtp

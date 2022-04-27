@@ -780,7 +780,7 @@ resource 'Users' do
         let(:custom_field_values) do
           {
           cf.key => 'new value',
-          gender_cf.key => 'female',
+          gender_cf.key => 'female'
         } end
 
         example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do

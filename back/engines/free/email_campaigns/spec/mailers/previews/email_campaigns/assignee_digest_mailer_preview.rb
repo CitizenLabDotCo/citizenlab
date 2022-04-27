@@ -18,7 +18,7 @@ module EmailCampaigns
             author_name: name_service.display_name!(idea.author),
             upvotes_count: idea.upvotes_count,
             downvotes_count: idea.downvotes_count,
-            comments_count: idea.comments_count,
+            comments_count: idea.comments_count
           } end,
           assigned_initiatives: initiatives.map do |initiative|
                                   {

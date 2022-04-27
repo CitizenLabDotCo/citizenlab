@@ -5,7 +5,7 @@ module JsonFormsUserOverrides
     {
       type: 'VerticalLayout',
       options: {
-        formId: 'user-form',
+        formId: 'user-form'
       },
       elements: fields.map { |f| yield f }.compact
     }

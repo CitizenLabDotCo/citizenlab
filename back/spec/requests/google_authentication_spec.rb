@@ -83,11 +83,11 @@ describe 'google authentication' do
       first_name: user.first_name,
       last_name: user.last_name,
       email: 'boris.brompton@orange.uk',
-      locale: user.locale,
+      locale: user.locale
     })
     expect(user.identities.first).to have_attributes({
       provider: 'google',
-      user_id: user.id,
+      user_id: user.id
     })
     expect(cookies[:cl2_jwt]).to be_present
   end
@@ -124,7 +124,7 @@ describe 'google authentication' do
       })
       expect(user.identities.first).to have_attributes({
         provider: 'google',
-        user_id: user.id,
+        user_id: user.id
       })
       expect(cookies[:cl2_jwt]).to be_present
     end
@@ -181,7 +181,7 @@ describe 'google authentication' do
     })
     expect(user.identities.first).to have_attributes({
       provider: 'google',
-      user_id: user.id,
+      user_id: user.id
     })
     expect(cookies[:cl2_jwt]).to be_present
   end

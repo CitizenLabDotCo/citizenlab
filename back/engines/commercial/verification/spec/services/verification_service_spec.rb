@@ -10,7 +10,7 @@ describe Verification::VerificationService do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }],
+      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
     }
     configuration.save!
   end
@@ -54,7 +54,7 @@ describe Verification::VerificationService do
         .to receive(:verify_sync)
         .and_return({
           uid: '123',
-          attributes: { first_name: 'BOB' },
+          attributes: { first_name: 'BOB' }
         })
 
       service.verify_sync(params)
@@ -69,7 +69,7 @@ describe Verification::VerificationService do
       cf2 = create(:custom_field)
       user.update!(custom_field_values: {
         cf1.key => 'original',
-        cf2.key => 'original',
+        cf2.key => 'original'
       })
 
       params = {
@@ -84,7 +84,7 @@ describe Verification::VerificationService do
           uid: '123',
           custom_field_values: {
             cf2.key => 'changed'
-          },
+          }
         })
 
       service.verify_sync(params)

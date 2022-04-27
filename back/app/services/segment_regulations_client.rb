@@ -15,7 +15,7 @@ class SegmentRegulationsClient
     delete: 'Delete',                             # Delete existing data without suppressing any new data
     unsuppress: 'Unsuppress',                     # Stop an ongoing suppression
     suppress: 'Suppress',                         # Suppress new data without deleting existing data
-    delete_internal: 'Delete_Internal',           # Delete data from Segment internals only
+    delete_internal: 'Delete_Internal'            # Delete data from Segment internals only
   }.freeze
 
   # @param [String,nil] authorization_token A "Workspace Owner" token is

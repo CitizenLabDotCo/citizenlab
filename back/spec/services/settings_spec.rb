@@ -11,7 +11,7 @@ describe SettingsService do
       },
       'dependencies' => {
         'b' => ['a'],
-        'c' => ['a', 'b'],
+        'c' => ['a', 'b']
       }
     }
   end

@@ -41,7 +41,7 @@ describe 'clave_unica verification' do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'clave_unica', environment: 'integration', identifier: 'fake', secret: 'fake' }],
+      verification_methods: [{ name: 'clave_unica', environment: 'integration', identifier: 'fake', secret: 'fake' }]
     }
     configuration.save!
     host! 'example.org'
@@ -74,7 +74,7 @@ describe 'clave_unica verification' do
 
     expect(response).to redirect_to('/en/yipie?verification_success=true')
     expect(@user.reload).to have_attributes({
-      verified: true,
+      verified: true
     })
   end
 

@@ -38,7 +38,7 @@ module IdIdCardLookup
         card_id_tooltip_multiloc: {
           "$ref": '#/definitions/multiloc_string',
           private: true
-        },
+        }
       }
     end
 

@@ -98,7 +98,7 @@ class JsonFormsService
       type: 'Control',
       scope: "#/properties/#{field.key}",
       label: handle_title(field, locale),
-      options: { description: handle_description(field, locale) },
+      options: { description: handle_description(field, locale) }
     }
   end
 
@@ -179,7 +179,7 @@ class JsonFormsService
         [
           locale,
           {
-            type: 'string',
+            type: 'string'
           }
         ]
       end.to_h
@@ -195,7 +195,7 @@ class JsonFormsService
           type: 'Control',
           scope: "#/properties/#{field.key}/properties/#{locale}",
           options: { locale: map_locale, trim_on_blur: true, description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -211,7 +211,7 @@ class JsonFormsService
         [
           locale,
           {
-            type: 'string',
+            type: 'string'
           }
         ]
       end.to_h
@@ -243,7 +243,7 @@ class JsonFormsService
         [
           locale,
           {
-            type: 'string',
+            type: 'string'
           }
         ]
       end.to_h
@@ -273,7 +273,7 @@ class JsonFormsService
 
   def select_to_json_schema_field(field, locale)
     {
-      type: 'string',
+      type: 'string'
     }.tap do |json|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
@@ -299,7 +299,7 @@ class JsonFormsService
       uniqueItems: true,
       minItems: (field.enabled && field.required) ? 1 : 0,
       items: {
-          type: 'string',
+          type: 'string'
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
@@ -310,7 +310,7 @@ class JsonFormsService
             }
           end
         end
-      end,
+      end
     }
   end
 
@@ -352,7 +352,7 @@ class JsonFormsService
         type: 'object',
         properties: {
           image: {
-            type: 'string',
+            type: 'string'
           }
         }
       }
@@ -399,15 +399,15 @@ class JsonFormsService
       properties: {
         type: {
           type: 'string',
-          enum: ['Point'],
+          enum: ['Point']
         },
         coordinates: {
           type: 'array',
           minItems: 2,
           items: {
-            type: 'number',
-          },
-        },
+            type: 'number'
+          }
+        }
       }
     }
   end

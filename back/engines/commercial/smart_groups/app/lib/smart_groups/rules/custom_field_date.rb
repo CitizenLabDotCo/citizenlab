@@ -18,14 +18,14 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'customFieldId' => {
               "$ref": '#/definitions/customFieldId'
             },
             'predicate' => {
               "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
               'description' => 'The date formatted as yyyy-mm-dd',
@@ -33,7 +33,7 @@ module SmartGroups::Rules
               "format": 'date',
               "pattern": '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
             }
-          },
+          }
         },
         {
           'type' => 'object',
@@ -42,7 +42,7 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'customFieldId' => {
               "$ref": '#/definitions/customFieldId'

@@ -622,7 +622,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: 'xcyyy',
-          y: { posting_enabled: false },
+          y: { posting_enabled: false }
         }
       )
       expect(service.future_posting_idea_enabled_phase(project, create(:user))).to be_nil
@@ -657,7 +657,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: 'xcyy',
-          y: { voting_enabled: false },
+          y: { voting_enabled: false }
         }
       )
       expect(service.future_upvoting_idea_enabled_phase(project, create(:user))).to be_nil
@@ -694,7 +694,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         phases_config: {
           sequence: 'xcyyy',
-          y: { commenting_enabled: false },
+          y: { commenting_enabled: false }
         }
       )
       expect(service.future_commenting_idea_enabled_phase(project, create(:user))).to be_nil

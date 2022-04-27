@@ -85,7 +85,7 @@ describe JsonFormsService do
                 :const => 'option_3',
                 :title => 'youth council'
               },
-             ],
+             ]
             },
            'field4' =>
             {
@@ -103,7 +103,7 @@ describe JsonFormsService do
                   :const => 'option_b',
                   :title => 'youth council'
                 },
-               ],
+               ]
              }
               },
            'field5' =>
@@ -128,7 +128,7 @@ describe JsonFormsService do
                   :const => 'option_b',
                   :title => 'youth council'
                 },
-               ],
+               ]
              }
             },
             'field9' =>
@@ -142,10 +142,10 @@ describe JsonFormsService do
                     :name =>
                       { :type => 'string' }
                     },
-                  :type => 'object',
+                  :type => 'object'
                   },
                   :name =>
-                  { :type => 'string' },
+                  { :type => 'string' }
                 },
                 :type => 'object'
               },
@@ -204,7 +204,7 @@ describe JsonFormsService do
           options: {
             description: 'Which councils are you attending in our city?'
           },
-          scope: '#/properties/field3',
+          scope: '#/properties/field3'
         },
         {
           type: 'Control',
@@ -212,7 +212,7 @@ describe JsonFormsService do
           options: {
             description: 'Which councils are you attending in our city?'
           },
-          scope: '#/properties/field4',
+          scope: '#/properties/field4'
         },
         {
           type: 'Control',
@@ -220,7 +220,7 @@ describe JsonFormsService do
           options: {
             description: 'Which councils are you attending in our city?'
           },
-          scope: '#/properties/field5',
+          scope: '#/properties/field5'
         },
         {
           type: 'Control',
@@ -228,7 +228,7 @@ describe JsonFormsService do
           options: {
             description: 'Which councils are you attending in our city?'
           },
-          scope: '#/properties/field6',
+          scope: '#/properties/field6'
         }]
       )
     end

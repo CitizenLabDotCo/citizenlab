@@ -69,7 +69,7 @@ class InvitesService
     invalid_row: 'invalid_row',
     email_already_invited: 'email_already_invited',
     email_already_active: 'email_already_active',
-    emails_duplicate: 'emails_duplicate',
+    emails_duplicate: 'emails_duplicate'
   }
 
   def initialize
@@ -127,7 +127,7 @@ class InvitesService
         last_name: 'Johnson',
         language: AppConfiguration.instance.settings('core', 'locales').first,
         groups: MultilocService.new.t(Group.first&.title_multiloc),
-        admin: false,
+        admin: false
       }
     ]
   end

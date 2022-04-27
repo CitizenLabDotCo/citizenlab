@@ -21,7 +21,7 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
               "type": 'string',
@@ -30,7 +30,7 @@ module SmartGroups::Rules
             'value' => {
               'type' => 'string'
             }
-          },
+          }
         }
       ]
     end

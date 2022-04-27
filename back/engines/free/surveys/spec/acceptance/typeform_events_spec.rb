@@ -24,7 +24,7 @@ resource 'Typeform Events' do
       @pc = create(:continuous_survey_project)
       url_params = {
         pc_id: @pc.id,
-        pc_type: @pc.class.name,
+        pc_type: @pc.class.name
       }
       # Hack from https://github.com/zipmark/rspec_api_documentation/issues/342
       example.metadata[:route] += "?#{url_params.to_query}"

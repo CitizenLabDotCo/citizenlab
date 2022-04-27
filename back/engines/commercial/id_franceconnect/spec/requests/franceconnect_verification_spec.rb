@@ -80,7 +80,7 @@ describe 'franceconnect verification' do
     })
     expect(user.identities.first).to have_attributes({
       provider: 'franceconnect',
-      user_id: user.id,
+      user_id: user.id
     })
     expect(user.verifications.first).to have_attributes({
       method_name: 'franceconnect',

@@ -16,7 +16,7 @@ describe TextImageService do
       project.description_multiloc = {
         'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />',
         'nl-NL' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />',
-        'fr-FR' => '<div>no image here</div>',
+        'fr-FR' => '<div>no image here</div>'
       }
       expect { service.swap_data_images(project, field) }.to change { TextImage.count }.from(0).to(2)
       expect(TextImage.first).to have_attributes(

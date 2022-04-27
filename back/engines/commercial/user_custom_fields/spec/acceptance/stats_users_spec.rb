@@ -62,7 +62,7 @@ resource 'Stats - Users' do
           users: {
             female: 2,
             unspecified: 1,
-            _blank: 0,
+            _blank: 0
           }
         }
       })
@@ -128,7 +128,7 @@ resource 'Stats - Users' do
           users: {
             '1980': 2,
             '1976': 1,
-            _blank: 0,
+            _blank: 0
           }
         }
       })
@@ -288,7 +288,7 @@ end
           users: {
             '3': 2,
             '5': 1,
-            _blank: 0,
+            _blank: 0
           }
         }
       })
@@ -369,7 +369,7 @@ end
           options: {
             @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
             @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
-            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys },
+            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys }
           },
           series: {
             users: {
@@ -413,7 +413,7 @@ end
           options: {
             @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
             @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
-            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys },
+            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys }
           },
           series: {
             users: {

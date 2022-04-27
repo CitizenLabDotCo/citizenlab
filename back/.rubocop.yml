@@ -104,6 +104,9 @@ Layout/EmptyLinesAroundExceptionHandlingKeywords:
 Style/RedundantSelf:
   Enabled: true
 
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

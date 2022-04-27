@@ -14,7 +14,7 @@ module EmailCampaigns
 
     def header_message
       format_message('event_description', values: {
-        authorName: event.comment_author_name,
+        authorName: event.comment_author_name
       })
     end
 

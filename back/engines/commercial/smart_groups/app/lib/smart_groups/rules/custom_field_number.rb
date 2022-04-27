@@ -18,19 +18,19 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'customFieldId' => {
               "$ref": '#/definitions/customFieldId'
             },
             'predicate' => {
               "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
               "type": 'number'
             }
-          },
+          }
         },
         {
           'type' => 'object',
@@ -39,7 +39,7 @@ module SmartGroups::Rules
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'customFieldId' => {
               "$ref": '#/definitions/customFieldId'

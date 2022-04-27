@@ -42,7 +42,7 @@ module EmailCampaigns
       accepted: [:accepted, :delivered, :opened, :clicked],
       delivered: [:delivered, :opened, :clicked],
       opened: [:opened, :clicked],
-      clicked: [:clicked],
+      clicked: [:clicked]
     }
 
     def set_delivery_status(s)

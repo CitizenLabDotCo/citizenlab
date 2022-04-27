@@ -28,7 +28,7 @@ describe 'RequiredSettingsAttribute' do
       'allowed' => true,
       'enabled' => true,
       'setting1' => 'foo',
-      'setting2' => 'bar',
+      'setting2' => 'bar'
     }
   } end
 

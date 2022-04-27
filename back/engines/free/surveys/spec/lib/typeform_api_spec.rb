@@ -47,7 +47,7 @@ describe Surveys::Typeform::Api do
         'id' => '01D1E1HMTEYSY2XVDPZTYVT823',
         'tag' => 'test-hook',
         'updated_at' => '2019-01-17T13:58:33.45316Z',
-        'verify_ssl' => false,
+        'verify_ssl' => false
       })
     end
   end
@@ -57,7 +57,7 @@ describe Surveys::Typeform::Api do
       stub_request(:delete, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
            headers: {
-            'Authorization' => "Bearer #{token}",
+            'Authorization' => "Bearer #{token}"
            }
          )
          .to_return(status: 204, body: '', headers: {})
@@ -128,7 +128,7 @@ describe Surveys::Typeform::Api do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}/responses")
         .with(
           headers: {
-            'Authorization' => "Bearer #{token}",
+            'Authorization' => "Bearer #{token}"
           }
         )
         .to_return(status: 200, headers: { 'Content-Type' => 'application/json' }, body: responses_body.to_json)
@@ -163,7 +163,7 @@ describe Surveys::Typeform::Api do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}/responses")
         .with(
           headers: {
-            'Authorization' => "Bearer #{token}",
+            'Authorization' => "Bearer #{token}"
           },
           query: {
             page_size: 1
@@ -174,7 +174,7 @@ describe Surveys::Typeform::Api do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}/responses")
         .with(
           headers: {
-            'Authorization' => "Bearer #{token}",
+            'Authorization' => "Bearer #{token}"
           },
           query: {
             page_size: 1,

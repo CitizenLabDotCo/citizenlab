@@ -97,7 +97,7 @@ resource 'AppConfigurations' do
       let(:style) do
         {
           'signedOutHeaderOverlayColor' => '#3467eb',
-          'signedInHeaderOverlayColor' => '#db2577',
+          'signedInHeaderOverlayColor' => '#db2577'
         }
       end
     end

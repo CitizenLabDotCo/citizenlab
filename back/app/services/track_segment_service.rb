@@ -74,7 +74,7 @@ class TrackSegmentService
       isSuperAdmin: user.super_admin?,
       isAdmin: user.admin?,
       highestRole: user.highest_role,
-      timezone: AppConfiguration.instance.settings('core', 'timezone'),
+      timezone: AppConfiguration.instance.settings('core', 'timezone')
     }
   end
 

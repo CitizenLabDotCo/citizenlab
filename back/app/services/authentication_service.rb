@@ -2,7 +2,7 @@ class AuthenticationService
   @all_methods = {
     'facebook' => OmniauthMethods::Facebook.new,
     'google' => OmniauthMethods::Google.new,
-    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new,
+    'azureactivedirectory' => OmniauthMethods::AzureActiveDirectory.new
   }
 
   class << self

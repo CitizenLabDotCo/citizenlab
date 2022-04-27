@@ -58,7 +58,7 @@ module IdCow
           'typens:DVEmpresa' => 'k',
           'typens:CodTipoDocumento' => 'C',
           'typens:NumRUN' => clean_run(run),
-          'typens:NumSerie' => clean_id_serial(id_serial),
+          'typens:NumSerie' => clean_id_serial(id_serial)
         }
       )
 

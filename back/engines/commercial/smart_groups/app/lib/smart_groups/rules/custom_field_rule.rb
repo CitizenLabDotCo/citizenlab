@@ -33,7 +33,7 @@ module SmartGroups::Rules
       json = {
         'ruleType' => rule_type,
         'customFieldId' => custom_field_id,
-        'predicate' => predicate,
+        'predicate' => predicate
       }
       json['value'] = value if needs_value?
       json

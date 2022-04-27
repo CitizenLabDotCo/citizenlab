@@ -7,7 +7,7 @@ module JsonFormsIdeasOverrides
       type: 'Categorization',
       options: {
         formId: 'idea-form',
-        inputTerm: input_term,
+        inputTerm: input_term
       },
       elements: drop_empty_categories([
         {
@@ -84,7 +84,7 @@ module JsonFormsIdeasOverrides
           type: 'Control',
           scope: "#/properties/#{field.key}/properties/#{locale}",
           options: { locale: locale, trim_on_blur: true, description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -99,7 +99,7 @@ module JsonFormsIdeasOverrides
           locale,
           {
             type: 'string',
-            minLength: 40,
+            minLength: 40
           }
         ]
       end.to_h
@@ -116,7 +116,7 @@ module JsonFormsIdeasOverrides
           locale: locale,
           scope: "#/properties/#{field.key}/properties/#{locale}",
           options: { locale: locale, render: 'WYSIWYG', description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -129,7 +129,7 @@ module JsonFormsIdeasOverrides
       uniqueItems: true,
       minItems: (field.enabled && field.required) ? 1 : 0,
       items: {
-          type: 'string',
+          type: 'string'
       }.tap do |items|
         unless topics.empty?
           items[:oneOf] = topics.map do |topic|
@@ -139,7 +139,7 @@ module JsonFormsIdeasOverrides
             }
           end
         end
-      end,
+      end
     }
   end
 

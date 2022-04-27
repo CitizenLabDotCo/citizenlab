@@ -71,13 +71,13 @@ module EmailCampaigns
         end.compact,
         initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map do |i|
           i[:id]
-        end.compact,
+        end.compact
       }
       if assigned.values.any?(&:present?)
         [{
           event_payload: {
             **assigned,
-            need_feedback_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee: recipient).feedback_needed.count,
+            need_feedback_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee: recipient).feedback_needed.count
           },
           tracked_content: tracked_content
         }]
@@ -108,7 +108,7 @@ module EmailCampaigns
             author_name: name_service.display_name!(idea.author),
             upvotes_count: idea.upvotes_count,
             downvotes_count: idea.downvotes_count,
-            comments_count: idea.comments_count,
+            comments_count: idea.comments_count
           }
         end
     end

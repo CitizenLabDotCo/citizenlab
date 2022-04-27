@@ -31,7 +31,7 @@ module IdBosaFas
           authorization_endpoint: '/fas/oauth2/authorize',
           token_endpoint: '/fas/oauth2/access_token',
           userinfo_endpoint: '/fas/oauth2/userinfo',
-          redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback",
+          redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback"
         }
       end
     end

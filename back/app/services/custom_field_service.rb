@@ -189,7 +189,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: 'string',
+      type: 'string'
     }.tap do |items|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
@@ -213,14 +213,14 @@ class CustomFieldService
       uniqueItems: true,
       minItems: (field.enabled && field.required) ? 1 : 0,
       items: {
-          type: 'string',
+          type: 'string'
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
         end
-      end,
+      end
     }
   end
 
@@ -338,7 +338,7 @@ class CustomFieldService
       type: 'array',
       items: {
         type: 'string',
-        format: 'data-url',
+        format: 'data-url'
       }
     }
   end
