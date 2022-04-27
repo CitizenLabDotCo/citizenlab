@@ -8,6 +8,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
+import Footer from './Footer';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
@@ -40,6 +41,7 @@ const ChartCard = ({ customField }: Props) => {
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
       />
+      <Footer fieldIsRequired={customField.attributes.required} />
     </Box>
   );
 };
