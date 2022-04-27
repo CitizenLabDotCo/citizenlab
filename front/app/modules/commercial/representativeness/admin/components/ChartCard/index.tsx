@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -21,12 +21,17 @@ interface Props {
 
 const ChartCard = ({ customField }: Props) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
+  const currentChartRef = useRef<SVGElement>();
 
   return (
     <Box width="100%" background="white">
-      <Header title={customField.attributes.title_multiloc} />
+      <Header
+        titleMultiloc={customField.attributes.title_multiloc}
+        svgNode={currentChartRef}
+      />
       <MultiBarChart
         height={300}
+        innerRef={currentChartRef}
         data={TEST_GENDER_DATA}
         mapping={{ length: ['actualValue', 'referenceValue'] }}
         bars={{
