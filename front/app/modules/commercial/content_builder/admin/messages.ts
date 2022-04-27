@@ -33,33 +33,33 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
   },
-  embed: {
-    id: 'app.containers.admin.ContentBuilder.embed',
-    defaultMessage: 'Embed',
+  url: {
+    id: 'app.containers.admin.ContentBuilder.url',
+    defaultMessage: 'Embed Url',
   },
-  embedCodeLabel: {
-    id: 'app.containers.admin.ContentBuilder.embedCodeLabel',
-    defaultMessage: 'Add your code',
+  iframeUrlLabel: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
+    defaultMessage: 'Add your URL',
   },
-  embedCodeLabelTooltip: {
-    id: 'app.containers.admin.ContentBuilder.embedCodeLabelTooltip',
+  iframeUrlLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlLabelTooltip',
     defaultMessage:
-      'You can embed another HTML document into this one using an <iframe>, for example a YouTube video.',
+      'You can embed another HTML document into this one using a URL, for example a YouTube video link.',
   },
-  embedHeightLabel: {
-    id: 'app.containers.admin.ContentBuilder.embedHeightLabel',
+  iframeHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.iframeHeightLabel',
     defaultMessage: 'Height',
   },
-  embedHeightLabelTooltip: {
-    id: 'app.containers.admin.ContentBuilder.embedHeightLabelTooltip',
+  iframeHeightLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.iframeHeightLabelTooltip',
     defaultMessage: 'Height of the iframe window.',
   },
-  embedCodePlaceholder: {
-    id: 'app.containers.admin.ContentBuilder.embedCodePlaceholder',
-    defaultMessage: '<iframe> ... <iframe>',
+  iframeUrlPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlPlaceholder',
+    defaultMessage: 'https://example.com/',
   },
-  embedHeightPlaceholder: {
-    id: 'app.containers.admin.ContentBuilder.embedHeightPlaceholder',
+  iframeHeightPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
     defaultMessage: 'e.g. 120px',
   },
   image: {

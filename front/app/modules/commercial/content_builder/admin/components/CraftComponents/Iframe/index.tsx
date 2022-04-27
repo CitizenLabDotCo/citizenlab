@@ -1,8 +1,5 @@
 import React from 'react';
 
-// utils
-import { isNil } from 'lodash-es';
-
 // components
 import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
 
@@ -13,34 +10,28 @@ import { injectIntl } from 'utils/cl-intl';
 // craft
 import { useNode } from '@craftjs/core';
 
-const CraftIframe = ({ embedCode, height }) => {
-  const iframeElement = document.createElement('div');
-  iframeElement.innerHTML = embedCode.trim();
-  iframeElement.firstElementChild?.setAttribute('height', height);
-  iframeElement.firstElementChild?.setAttribute('width', '100%');
+const CraftIframe = ({ url, height }) => {
+  // URL Validation Goes Here
 
-  if (!isNil(iframeElement)) {
-    return (
-      <Box minHeight="26px">
-        <div dangerouslySetInnerHTML={{ __html: iframeElement.outerHTML }} />
-      </Box>
-    );
-  } else {
-    return (
-      <Box minHeight="26px">
-        <div dangerouslySetInnerHTML={{ __html: embedCode }} />
-      </Box>
-    );
-  }
+  const iframe = document.createElement('iframe');
+  iframe.setAttribute('src', url);
+  iframe.setAttribute('height', height);
+  iframe.setAttribute('width', '100%');
+
+  return (
+    <Box minHeight="26px">
+      <div dangerouslySetInnerHTML={{ __html: iframe.outerHTML }} />
+    </Box>
+  );
 };
 
 const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   const {
     actions: { setProp },
-    embedCode,
+    url,
     height,
   } = useNode((node) => ({
-    embedCode: node.data.props.embedCode,
+    url: node.data.props.url,
     height: node.data.props.height,
   }));
 
@@ -50,18 +41,18 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         <Input
           label={
             <span>
-              {formatMessage(messages.embedCodeLabel)}{' '}
+              {formatMessage(messages.iframeUrlLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.embedCodeLabelTooltip)}
+                content={formatMessage(messages.iframeUrlLabelTooltip)}
               />
             </span>
           }
-          placeholder={formatMessage(messages.embedCodePlaceholder)}
+          placeholder={formatMessage(messages.iframeUrlPlaceholder)}
           type="text"
-          value={embedCode}
+          value={url}
           onChange={(value) => {
-            setProp((props) => (props.embedCode = value));
+            setProp((props) => (props.url = value));
           }}
         />
       </Box>
@@ -69,14 +60,14 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         <Input
           label={
             <span>
-              {formatMessage(messages.embedHeightLabel)}{' '}
+              {formatMessage(messages.iframeHeightLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.embedHeightLabelTooltip)}
+                content={formatMessage(messages.iframeHeightLabelTooltip)}
               />
             </span>
           }
-          placeholder={formatMessage(messages.embedHeightPlaceholder)}
+          placeholder={formatMessage(messages.iframeHeightPlaceholder)}
           type="text"
           value={height}
           onChange={(value) => {
@@ -90,7 +81,7 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
 
 CraftIframe.craft = {
   props: {
-    embedCode: '',
+    url: '',
     height: '',
   },
   related: {

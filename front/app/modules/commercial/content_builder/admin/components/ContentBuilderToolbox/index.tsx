@@ -110,12 +110,7 @@ const ContentBuilderToolbox = ({
           ref &&
           connectors.create(
             ref,
-            <Element
-              is={CraftIframe}
-              id="CraftIframe"
-              embedCode=""
-              height=""
-            />,
+            <Element is={CraftIframe} id="CraftIframe" url="" height="" />,
             {
               onCreate: (node) => {
                 selectNode(node.rootNodeId);
@@ -124,7 +119,7 @@ const ContentBuilderToolbox = ({
           )
         }
       >
-        <ToolboxItem icon="code" label={formatMessage(messages.embed)} />
+        <ToolboxItem icon="code" label={formatMessage(messages.url)} />
       </DraggableElement>
     </Box>
   );
