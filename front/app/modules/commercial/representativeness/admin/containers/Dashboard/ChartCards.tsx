@@ -1,19 +1,30 @@
 import React from 'react';
 
+// hooks
+import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
+
 // components
 import ChartCard from '../../components/ChartCard';
 
-const TEST_GENDER_DATA = [
-  { name: 'Female', actualValue: 42, referenceValue: 47 },
-  { name: 'Male', actualValue: 49, referenceValue: 45 },
-  { name: 'Non-binary', actualValue: 1.2, referenceValue: 1.4 },
-  { name: 'Rather not say', actualValue: 7.8, referenceValue: 6.6 },
-];
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+
+// TODO remove this later, generalize for all select fields
+const onlyGender = ({ attributes: { code } }: IUserCustomFieldData) =>
+  code === 'gender';
 
 const ChartCards = () => {
+  const customFields = useUserCustomFields({ inputTypes: ['select'] });
+  if (isNilOrError(customFields)) return null;
+
   return (
     <>
-      <ChartCard data={TEST_GENDER_DATA} />
+      {customFields.filter(onlyGender).map((customField) => (
+        <ChartCard customField={customField} />
+      ))}
     </>
   );
 };
