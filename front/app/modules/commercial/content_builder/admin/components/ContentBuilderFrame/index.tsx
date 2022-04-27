@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
-import { Box } from '@citizenlab/cl2-component-library';
 
 const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
   const { actions } = useEditor();
@@ -29,21 +28,19 @@ const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
   }, [actions, data, locale]);
 
   return (
-    <Box w="1000px">
-      <Frame>
-        <Element
-          id="e2e-content-builder-frame"
-          is="div"
-          canvas
-          style={{
-            padding: '4px',
-            minHeight: '160px',
-            backgroundColor: '#fff',
-            width: '1000px',
-          }}
-        />
-      </Frame>
-    </Box>
+    <Frame>
+      <Element
+        id="e2e-content-builder-frame"
+        is="div"
+        canvas
+        style={{
+          padding: '4px',
+          minHeight: '160px',
+          backgroundColor: '#fff',
+          width: '1000px',
+        }}
+      />
+    </Frame>
   );
 };
 

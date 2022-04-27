@@ -19,8 +19,8 @@ import ContentBuilderSettings from '../components/ContentBuilderSettings';
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
   z-index: 2;
-  margin: 0 !important;
-  max-width: 100% !important;
+  margin: 0;
+  max-width: 100%;
   align-items: center;
 `;
 
