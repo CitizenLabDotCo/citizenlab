@@ -35,6 +35,7 @@ Layout/SpaceAfterComma:
 
 Layout/TrailingWhitespace:
   Enabled: true
+  AllowInHeredoc: true
 
 Layout/EmptyLinesAroundBlockBody:
   Enabled: true
