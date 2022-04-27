@@ -16,3 +16,6 @@ Style/FrozenStringLiteralComment:
 
 Layout/LineLength:
   Enabled: true
+
+Metrics/BlockLength:
+  Enabled: true
