@@ -20,6 +20,8 @@ interface Props {
   customField: IUserCustomFieldData;
 }
 
+const formatPercentage = (percentage) => `${percentage}%`;
+
 const ChartCard = ({ customField }: Props) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
   const currentChartRef = useRef<SVGElement>();
@@ -40,6 +42,7 @@ const ChartCard = ({ customField }: Props) => {
           fill: [newBarFill, secondaryNewBarFill],
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
+        yaxis={{ tickFormatter: formatPercentage }}
       />
       <Footer fieldIsRequired={customField.attributes.required} />
     </Box>
