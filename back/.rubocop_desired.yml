@@ -14,10 +14,16 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Enabled: true
 
+Metrics/AbcSize:
+  Enabled: true
+
 Style/FrozenStringLiteralComment:
   Enabled: true
 
 Style/ClassAndModuleChildren:
+  Enabled: true
+
+Style/MutableConstant:
   Enabled: true
 
 Layout/LineLength:
@@ -81,3 +87,9 @@ RSpec/DescribeClass:
   Enabled: true
   IgnoredMetadata:
     type: ['verification']
+
+Lint/UselessAssignment:
+  Enabled: true
+
+Style/GuardClause:
+  Enabled: true
