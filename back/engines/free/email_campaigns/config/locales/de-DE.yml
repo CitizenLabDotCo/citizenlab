@@ -4,15 +4,15 @@ de:
       "manual": Offizielle Mitteilungen
       "admin_rights_received": Administrator:innenrechte erhalten
       "comment_deleted_by_admin": Löschung meines Kommentars
-      "comment_marked_as_spam": Kommentar-Spam-Bericht
+      "comment_marked_as_spam": Spambericht kommentieren
       "comment_on_your_comment": Eine Antwort auf meinen Kommentar
       "comment_on_your_idea": Ein Kommentar zu meiner Idee
       "comment_on_your_initiative": Ein Kommentar zu meinem Vorschlag
       "first_idea_published": Veröffentlichung meiner ersten Idee
-      "idea_marked_as_spam": Ideen-Spam-Bericht
+      "idea_marked_as_spam": Spambericht Ideen
       "idea_published": Veröffentlichung meiner Idee
       "initiative_assigned_to_you": Zuweisung eines Vorschlags an mich
-      "initiative_marked_as_spam": Vorschlag für einen Spam-Bericht
+      "initiative_marked_as_spam": Vorschlag eines Spamberichts
       "initiative_published": Veröffentlichung meines Vorschlags
       "invite_received": Einladung
       "invite_reminder": Einladungserinnerung
@@ -45,19 +45,19 @@ de:
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentliche Übersicht für AdministratorInnen
       "moderator_digest": Wöchentliche Übersicht für Projektleiter:innen
-      "assignee_digest": Wöchentliche Übersicht von zugeteilten Ideen
+      "assignee_digest": Wöchentliche Übersicht zugeteilter Ideen
       "user_digest": Wöchentliche Übersicht
       "your_proposed_initiatives_digest": Wöchentliche Übersicht über Ihre Vorschläge
     admin_campaign_type_description:
       "manual": Offizielle Nachricht - alle NutzerInnen
       "admin_rights_received": Admin-Rechte erhalten - Admins
       "comment_deleted_by_admin": Löschung Ihres Kommentars - alle NutzerInnen
-      "comment_marked_as_spam": Kommentar-Spam-Bericht - Admins und ProjektleiterInnen
+      "comment_marked_as_spam": Spambericht kommentieren - Admins und ProjektleiterInnen
       "comment_on_your_comment": Antworten Sie auf Ihren Kommentar - alle NutzerInnen
       "comment_on_your_idea": Kommentieren Sie Ihre Idee - alle NutzerInnen
       "comment_on_your_initiative": Kommentieren Sie Ihren Vorschlag - alle NutzerInnen
       "first_idea_published": Veröffentlichung Ihrer ersten Idee - alle NutzerInnen
-      "idea_marked_as_spam": Ideen-Spam-Bericht - Admins und ProjektleiterInnen
+      "idea_marked_as_spam": Spambericht Ideen - Admins und ProjektleiterInnen
       "idea_published": Veröffentlichung Ihrer Idee - alle NutzerInnen
       "initiative_assigned_to_you": Zuweisung eines Vorschlags - Admins
       "initiative_marked_as_spam": Vorschlag Spam-Bericht - Admins
