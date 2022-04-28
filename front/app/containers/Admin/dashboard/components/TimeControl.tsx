@@ -15,11 +15,10 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div<{ width?: string }>`
+const Container = styled.div`
   display: flex;
   border-radius: ${(props: any) => props.theme.borderRadius};
   align-items: center;
-  ${({ width }) => (width ? `width: ${width};` : '')}
 `;
 
 const DropdownContainer = styled.div`
