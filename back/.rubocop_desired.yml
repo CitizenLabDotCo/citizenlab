@@ -45,6 +45,9 @@ Layout/BlockEndNewline:
   # Autocorrect does not produce correctly indented "end".
   Enabled: true
 
+Layout/ArgumentAlignment:
+  Enabled: true
+
 Lint/UselessAssignment:
   Enabled: true
 
