@@ -9,7 +9,7 @@ import Header from './Header';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import Footer from './Footer';
-import { LabelList } from 'recharts';
+import { LabelList, Tooltip } from 'recharts';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -22,11 +22,41 @@ import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/serv
 // data
 import { TEST_GENDER_DATA } from './data';
 
+interface RepresentativenessRow {
+  name: string;
+  actualPercentage: number;
+  referencePercentage: number;
+  actualNumber: number;
+  referenceNumber: number;
+}
+
 interface Props {
   customField: IUserCustomFieldData;
 }
 
-const formatPercentage = (percentage) => `${percentage}%`;
+interface TooltipProps {
+  dataKey?: 'actualPercentage' | 'referencePercentage';
+  payload?: RepresentativenessRow;
+}
+
+const formatPercentage = (percentage: number) => `${percentage}%`;
+const formatTooltipValues = (_, __, tooltipProps?: TooltipProps) => {
+  if (!tooltipProps) return '?';
+
+  const { dataKey, payload } = tooltipProps;
+  if (!dataKey || !payload) return '?';
+
+  const {
+    actualPercentage,
+    referencePercentage,
+    actualNumber,
+    referenceNumber,
+  } = payload;
+
+  return dataKey === 'actualPercentage'
+    ? `${actualPercentage}% (${actualNumber})`
+    : `${referencePercentage}% (${referenceNumber})`;
+};
 
 const ChartCard = ({
   customField,
@@ -36,7 +66,7 @@ const ChartCard = ({
   const currentChartRef = useRef<SVGElement>();
 
   const barNames = [
-    formatMessage(messages.platformUsers),
+    formatMessage(messages.users),
     formatMessage(messages.totalPopulation),
   ];
 
@@ -50,7 +80,7 @@ const ChartCard = ({
         height={300}
         innerRef={currentChartRef}
         data={TEST_GENDER_DATA}
-        mapping={{ length: ['actualValue', 'referenceValue'] }}
+        mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
         bars={{
           name: barNames,
           fill: [newBarFill, secondaryNewBarFill],
@@ -59,6 +89,9 @@ const ChartCard = ({
         yaxis={{ tickFormatter: formatPercentage }}
         renderLabels={(props) => (
           <LabelList {...props} formatter={formatPercentage} />
+        )}
+        renderTooltip={(props) => (
+          <Tooltip {...props} formatter={formatTooltipValues} />
         )}
       />
       <Footer fieldIsRequired={customField.attributes.required} />

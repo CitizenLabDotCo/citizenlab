@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.forUserRegistation',
     defaultMessage: '{requiredOrOptional} for user registration',
   },
-  platformUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.platformUsers',
-    defaultMessage: 'Platform users',
+  users: {
+    id: 'app.containers.AdminPage.DashboardPage.users',
+    defaultMessage: 'Users',
   },
   totalPopulation: {
     id: 'app.containers.AdminPage.DashboardPage.totalPopulation',
