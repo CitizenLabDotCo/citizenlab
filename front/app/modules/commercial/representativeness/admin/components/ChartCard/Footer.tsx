@@ -29,6 +29,7 @@ interface RequiredOrOptionalProps {
 }
 
 interface Props extends RequiredOrOptionalProps {
+  hideTicks: boolean;
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
   legendLabels: string[];
@@ -46,8 +47,12 @@ const RequiredOrOptional = ({ fieldIsRequired }: RequiredOrOptionalProps) =>
     </b>
   );
 
+const normalPadding = '12px 40px 20px 40px';
+const smallPadding = '0px 40px 4px 40px';
+
 const Footer = ({
   fieldIsRequired,
+  hideTicks,
   dataIsTooLong,
   numberOfHiddenItems,
   legendLabels,
@@ -56,7 +61,8 @@ const Footer = ({
   <>
     <Box
       width="100%"
-      p={`20px 40px ${dataIsTooLong ? '8' : '32'}px 40px`}
+      p={dataIsTooLong ? smallPadding : normalPadding}
+      mt={dataIsTooLong || hideTicks ? '-20px' : undefined}
       display="flex"
       flexDirection="row"
       justifyContent={dataIsTooLong ? 'center' : 'space-between'}
