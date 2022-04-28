@@ -53,6 +53,9 @@ Style/SymbolArray:
 Style/SingleArgumentDig:
   Enabled: true
 
+Style/NegatedIf:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

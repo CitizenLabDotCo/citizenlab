@@ -130,9 +130,9 @@ module SmartGroups::Rules
 
     def value_in_idea_statuses
       if multivalue_predicate?
-        errors.add(:value, :has_invalid_idea_status) if !(value - IdeaStatus.ids).empty?
+        errors.add(:value, :has_invalid_idea_status) unless (value - IdeaStatus.ids).empty?
       else
-        errors.add(:value, :has_invalid_idea_status) if !IdeaStatus.ids.include?(value)
+        errors.add(:value, :has_invalid_idea_status) unless IdeaStatus.ids.include?(value)
       end
     end
   end

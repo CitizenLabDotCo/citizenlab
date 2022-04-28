@@ -45,7 +45,7 @@ class WebApi::V1::BasketsController < ApplicationController
         @basket.assign_attributes basket_params.except(:idea_ids)
         save_params = {}
         save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
-        raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save(save_params)
+        raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) unless @basket.save(save_params)
 
         SideFxBasketService.new.after_update @basket, current_user
       end

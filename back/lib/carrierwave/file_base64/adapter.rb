@@ -14,7 +14,7 @@ module Carrierwave
 
           send("#{attribute}_will_change!") if respond_to? "#{attribute}_will_change!"
 
-          if !(data.is_a?(String) && data.strip.start_with?('data'))
+          unless (data.is_a?(String) && data.strip.start_with?('data'))
             send "#{attribute}=", data
             return
           end

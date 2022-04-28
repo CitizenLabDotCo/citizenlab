@@ -43,7 +43,7 @@ class ImportIdeasService
           .include? topic_title
       end.first
     end.select { |topic| topic }.uniq { |topic| topic.id }
-    if !idea_data[:project_title]
+    unless idea_data[:project_title]
       raise 'A project title is mandatory!'
     end
 
@@ -53,13 +53,13 @@ class ImportIdeasService
         .map { |v| v.downcase.strip }
         .include? project_title
     end&.first
-    if !d[:project]
+    unless d[:project]
       raise "No project with title #{idea_data[:project_title]} exists"
     end
 
     if idea_data[:user_email]
       d[:author] = User.find_by_cimail idea_data[:user_email]
-      if !d[:author]
+      unless d[:author]
         raise "No user with email #{idea_data[:user_email]} exists"
       end
     end
@@ -94,7 +94,7 @@ class ImportIdeasService
       end
 
       phase = project_phases.order(:start_at).all[idea_data[:phase_rank] - 1]
-      if !phase
+      unless phase
         raise "No phase with title #{idea_data[:phase_title]} exists within project #{idea_data[:project_title]}"
       end
 

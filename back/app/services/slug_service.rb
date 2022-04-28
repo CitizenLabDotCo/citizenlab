@@ -1,6 +1,6 @@
 class SlugService
   def generate_slug(record, string)
-    return nil if !string
+    return nil unless string
 
     slug = slugify(string)
     indexed_slug = nil

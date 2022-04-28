@@ -49,7 +49,7 @@ class SpamReport < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update spam_report: nil
+      unless notification.update spam_report: nil
         notification.destroy!
       end
     end

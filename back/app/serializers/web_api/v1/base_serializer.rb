@@ -2,7 +2,7 @@ class WebApi::V1::BaseSerializer
   include FastJsonapi::ObjectSerializer
 
   def self.current_user(params)
-    throw 'current_user missing in serializer parameters' if !params.include?(:current_user)
+    throw 'current_user missing in serializer parameters' unless params.include?(:current_user)
     params[:current_user]
   end
 

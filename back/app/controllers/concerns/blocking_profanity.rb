@@ -20,7 +20,7 @@ module BlockingProfanity
   end
 
   def verify_profanity(object)
-    return if !AppConfiguration.instance.feature_activated? 'blocking_profanity'
+    return unless AppConfiguration.instance.feature_activated? 'blocking_profanity'
 
     blocked_words = []
     service = ProfanityService.new

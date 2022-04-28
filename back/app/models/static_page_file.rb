@@ -31,7 +31,7 @@ class StaticPageFile < ApplicationRecord
   private
 
   def extension_whitelist
-    if !EXTENSION_WHITELIST.include? name.split('.').last.downcase
+    unless EXTENSION_WHITELIST.include? name.split('.').last.downcase
       errors.add(
         :file,
         :extension_whitelist_error,

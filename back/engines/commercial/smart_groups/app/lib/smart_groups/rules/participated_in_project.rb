@@ -144,9 +144,9 @@ module SmartGroups::Rules
 
     def value_in_projects
       if multivalue_predicate?
-        errors.add(:value, :has_invalid_project) if !(value - Project.ids).empty?
+        errors.add(:value, :has_invalid_project) unless (value - Project.ids).empty?
       else
-        errors.add(:value, :has_invalid_project) if !Project.ids.include?(value)
+        errors.add(:value, :has_invalid_project) unless Project.ids.include?(value)
       end
     end
   end

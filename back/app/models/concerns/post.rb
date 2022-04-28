@@ -102,7 +102,7 @@ module Post
     end
 
     def generate_slug
-      if !slug
+      unless slug
         title = MultilocService.new.t title_multiloc, author
         self.slug ||= SlugService.new.generate_slug self, title
       end
@@ -118,7 +118,7 @@ module Post
 
     def remove_notifications
       notifications.each do |notification|
-        if !notification.update post: nil
+        unless notification.update post: nil
           notification.destroy!
         end
       end

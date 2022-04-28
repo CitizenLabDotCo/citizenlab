@@ -9,7 +9,7 @@ module Polls
       end
 
       def resolve
-        return scope.none if !user
+        return scope.none unless user
 
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)

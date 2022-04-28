@@ -33,14 +33,14 @@ class MultilocValidator < ActiveModel::EachValidator
 
   def validate_supported_locales(record, attribute, value)
     locales = CL2_SUPPORTED_LOCALES.map(&:to_s)
-    if !(value.keys - locales).empty?
+    unless (value.keys - locales).empty?
       message = options[:message] || "contains unsupported locales #{value.keys - locales}"
       record.errors.add attribute, :unsupported_locales, message: message
     end
   end
 
   def validate_html(record, attribute, value)
-    return if !options[:html]
+    return unless options[:html]
 
     value.each do |key, html|
       doc = Nokogiri::HTML.fragment html

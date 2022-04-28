@@ -163,7 +163,7 @@ module SmartGroups::Rules
         else
           custom_field_ids.include? value
         end
-        if !is_included
+        unless is_included
           errors.add(
             :value,
             :inclusion,

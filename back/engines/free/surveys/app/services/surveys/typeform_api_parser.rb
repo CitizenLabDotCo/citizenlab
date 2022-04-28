@@ -24,7 +24,7 @@ module Surveys
 
     def get_responses(form_id)
       response = @tf_api.form(form_id: form_id)
-      if !response.success?
+      unless response.success?
         if [401, 403].include? response.code
           raise AuthorizationError.new(error_key: response.parsed_response['code'], description: response.parsed_response['description'])
         else

@@ -32,7 +32,7 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     return true if record.draft?
-    return false if !active?
+    return false unless active?
     return true if UserRoleService.new.can_moderate_project? record.project, user
 
     reason = ParticipationContextService.new.posting_idea_disabled_reason_for_project(record.project, user)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'seedfile', slow_test: true do
-  if !CitizenLab.ee?
+  unless CitizenLab.ee?
     it 'generates a valid app configuration, user and initial data' do
       AppConfiguration.first.destroy!
 

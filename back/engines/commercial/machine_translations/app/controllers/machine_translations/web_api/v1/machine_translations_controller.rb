@@ -36,7 +36,7 @@ module MachineTranslations
                 raise e
               end
             end
-            if !@translation.save
+            unless @translation.save
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity
               return
             end
@@ -48,7 +48,7 @@ module MachineTranslations
           if @translation.updated_at < @translation.translatable.updated_at
             MachineTranslationService.new.assign_new_translation @translation
             authorize @translation
-            if !@translation.save
+            unless @translation.save
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity
               return
             end

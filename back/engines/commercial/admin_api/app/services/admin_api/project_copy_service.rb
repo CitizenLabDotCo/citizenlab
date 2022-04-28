@@ -60,7 +60,7 @@ module AdminApi
     end
 
     def lookup_ref(id, model_name)
-      return nil if !id
+      return nil unless id
 
       if model_name.kind_of?(Array)
         model_name.each do |n|
@@ -77,7 +77,7 @@ module AdminApi
     end
 
     def yml_custom_forms(shift_timestamps: 0)
-      return [] if !@project.custom_form_id
+      return [] unless @project.custom_form_id
 
       yml_custom_form = {
         'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
@@ -88,7 +88,7 @@ module AdminApi
     end
 
     def yml_custom_fields(shift_timestamps: 0)
-      return [] if !@project.custom_form_id
+      return [] unless @project.custom_form_id
 
       CustomField.where(resource: @project.custom_form).map do |c|
         yml_custom_field = {
@@ -110,7 +110,7 @@ module AdminApi
     end
 
     def yml_custom_field_options(shift_timestamps: 0)
-      return [] if !@project.custom_form_id
+      return [] unless @project.custom_form_id
 
       CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
         yml_custom_field_option = {
@@ -367,7 +367,7 @@ module AdminApi
             'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601,
             'verified'                  => u.verified
           }
-           if !yml_user['password_digest']
+           unless yml_user['password_digest']
              yml_user['password'] = SecureRandom.urlsafe_base64 32
            end
            yml_user

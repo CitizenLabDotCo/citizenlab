@@ -1,7 +1,7 @@
 module FlagInappropriateContent
   class ToxicityDetectionService
     def flag_toxicity!(flaggable, attributes: [])
-      return if !AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
+      return unless AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
       flag_service = InappropriateContentFlagService.new
 

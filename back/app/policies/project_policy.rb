@@ -143,7 +143,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def active_moderator?
-    return if !active?
+    return unless active?
 
     UserRoleService.new.can_moderate_project? record, user
   end

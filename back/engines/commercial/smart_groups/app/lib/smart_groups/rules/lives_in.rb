@@ -157,7 +157,7 @@ module SmartGroups::Rules
         else
           allowed_values.include? value
         end
-        if !is_included
+        unless is_included
           errors.add(
             :value,
             :inclusion,

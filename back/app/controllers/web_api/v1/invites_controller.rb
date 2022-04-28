@@ -104,7 +104,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def accept
     @invite = Invite.find_by(token: params[:token])
-    if !@invite
+    unless @invite
       render json: { errors: { base: [{ error: UNAUTHORIZED_ACCEPT_REASONS[:token_not_found] }] } }, status: :unauthorized
       return
     end
@@ -118,10 +118,10 @@ class WebApi::V1::InvitesController < ApplicationController
         invitee.assign_attributes accept_params
         SideFxInviteService.new.before_accept @invite
         invitee.invite_status = 'accepted'
-        if !invitee.save
+        unless invitee.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invitee)
         end
-        if !@invite.save
+        unless @invite.save
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
 

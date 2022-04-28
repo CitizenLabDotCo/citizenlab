@@ -49,7 +49,7 @@ class OfficialFeedback < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update official_feedback: nil
+      unless notification.update official_feedback: nil
         notification.destroy!
       end
     end

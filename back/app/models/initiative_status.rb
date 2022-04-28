@@ -43,7 +43,7 @@ class InitiativeStatus < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update post_status: nil
+      unless notification.update post_status: nil
         notification.destroy!
       end
     end

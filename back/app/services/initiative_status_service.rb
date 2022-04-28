@@ -87,7 +87,7 @@ class InitiativeStatusService
   end
 
   def allowed_transitions(initiative)
-    return [] if !initiative.initiative_status_id
+    return [] unless initiative.initiative_status_id
 
     codes = MANUAL_TRANSITIONS[initiative.initiative_status.code]
     InitiativeStatus.where(code: codes.keys).pluck(:code, :id).map do |code, id|

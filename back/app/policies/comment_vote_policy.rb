@@ -52,7 +52,7 @@ class CommentVotePolicy < ApplicationPolicy
   private
 
   def denied_for_initiative_reason(user)
-    :not_signed_in if !user
+    :not_signed_in unless user
   end
 end
 

@@ -253,7 +253,7 @@ resource 'AdminPublication' do
       parameter :filter_empty_folders, 'Filter out folders with no visible children for the current user', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
-      if !CitizenLab.ee?
+      unless CitizenLab.ee?
         example 'Listed admin publications have correct visible children count', document: false do
           do_request
           expect(status).to eq(200)

@@ -44,7 +44,7 @@ class InitiativeVotePolicy < ApplicationPolicy
   private
 
   def voting_denied_reason(user)
-    :not_signed_in if !user
+    :not_signed_in unless user
   end
 end
 

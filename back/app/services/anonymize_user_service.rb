@@ -173,7 +173,7 @@ class AnonymizeUserService
     name_param = I18n.transliterate "#{first_name}+#{last_name}" # Convert to all ASCII chars
     uri = URI "https://eu.ui-avatars.com/api/?name=#{name_param}"
     res = Net::HTTP.get_response uri
-    if !res.is_a?(Net::HTTPSuccess)
+    unless res.is_a?(Net::HTTPSuccess)
       raise "API request to eu.ui-avatars.com failed. Code: #{res.code}. Body: #{res.body}."
     end
 
