@@ -17,6 +17,7 @@
 ### Fixed
 
 - Improved input manager so that "All projects" can handle many projects.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
 
 ## 2022-04-20
 
