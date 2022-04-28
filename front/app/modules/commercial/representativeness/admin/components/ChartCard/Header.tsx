@@ -9,9 +9,11 @@ import {
   Title,
   Text,
   IconTooltip,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
@@ -87,7 +89,15 @@ const Header = ({ titleMultiloc, svgNode, representativenessScore }: Props) => {
           }
           mr="12px"
         />
-        <ReportExportMenu name={title} svgNode={svgNode} />
+        <Box mr="12px">
+          <ReportExportMenu name={title} svgNode={svgNode} />
+        </Box>
+        <Button p="8px 12px">
+          <Icon name="charts" width="16px" height="16px" fill="white" />
+        </Button>
+        <Button p="8px 12px">
+          <Icon name="list" width="16px" height="16px" fill="white" />
+        </Button>
       </Box>
     </Box>
   );
