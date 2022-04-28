@@ -26,6 +26,9 @@ Style/ClassAndModuleChildren:
 Style/MutableConstant:
   Enabled: true
 
+Style/IfUnlessModifier:
+  Enabled: true
+
 Layout/LineLength:
   Enabled: true
 
