@@ -16,6 +16,6 @@ describe ProjectPolicy do
     let!(:project_folder) { create(:project_folder) }
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
-    it { is_expected.to_not permit(:create) }
+    it { is_expected.not_to permit(:create) }
   end
 end

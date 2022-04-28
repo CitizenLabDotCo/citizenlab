@@ -49,7 +49,7 @@ describe SideFxCommentService do
 
       comment.update(body_multiloc: { 'en': "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
       expectation = expect { service.after_update(comment, user) }
-      expectation.to_not have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
+      expectation.not_to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u1.id })
       expectation.to have_enqueued_job(LogActivityJob).with(comment, 'mentioned', user, comment.created_at.to_i, payload: { mentioned_user: u2.id })
     end
   end

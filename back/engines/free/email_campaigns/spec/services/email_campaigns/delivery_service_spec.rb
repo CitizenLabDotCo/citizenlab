@@ -5,22 +5,22 @@ describe EmailCampaigns::DeliveryService do
 
   describe 'campaign_types' do
     it 'returns all campaign types' do
-      expect(service.campaign_types).to_not be_empty
+      expect(service.campaign_types).not_to be_empty
     end
 
     it 'returns campaign_types that all have at least 1 campaign_type_description and admin_campaign_type_description translation defined' do
       multiloc_service = MultilocService.new
       service.campaign_types.each do |campaign_type|
         expect { multiloc_service.i18n_to_multiloc("email_campaigns.campaign_type_description.#{campaign_type.constantize.campaign_name}") }
-          .to_not raise_error
+          .not_to raise_error
         expect { multiloc_service.i18n_to_multiloc("email_campaigns.admin_campaign_type_description.#{campaign_type.constantize.campaign_name}") }
-          .to_not raise_error
+          .not_to raise_error
       end
     end
 
     it 'returns campaign_types that are all instantiatable without extra arguments, except for Manual campaign' do
       (service.campaign_types - ['EmailCampaigns::Campaigns::Manual']).each do |campaign_type|
-        expect { campaign_type.constantize.create! }.to_not raise_error
+        expect { campaign_type.constantize.create! }.not_to raise_error
       end
     end
   end

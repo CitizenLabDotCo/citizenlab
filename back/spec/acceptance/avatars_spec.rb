@@ -23,7 +23,7 @@ resource 'Avatars' do
       expect(json_response[:data].size).to eq 5
       expect(json_response.dig(:data).map { |d| d.dig(:attributes, :avatar).keys }).to all(eq [:small, :medium, :large])
       expect(json_response.dig(:data).flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-      expect(json_response.dig(:data).map { |d| d.dig(:id) }).to_not include(@user_without_avatar)
+      expect(json_response.dig(:data).map { |d| d.dig(:id) }).not_to include(@user_without_avatar)
       expect(json_response.dig(:meta, :total)).to eq 7
     end
 

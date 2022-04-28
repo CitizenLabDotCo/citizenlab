@@ -12,8 +12,8 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   context 'for a mortal user' do
     let(:user) { create(:user) }
 
-    it { is_expected.to_not permit(:show) }
-    it { is_expected.to_not permit(:upsert_by_code) }
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:upsert_by_code) }
 
     it 'should not index the custom field' do
       expect(scope.resolve.size).to eq 0
@@ -34,8 +34,8 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   context 'for a moderator of another project' do
     let(:user) { create(:project_moderator) }
 
-    it { is_expected.to_not permit(:show) }
-    it { is_expected.to_not permit(:upsert_by_code) }
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:upsert_by_code) }
 
     it 'should not index the custom field' do
       expect(scope.resolve.size).to eq 0

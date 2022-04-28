@@ -142,6 +142,9 @@ RSpec/EmptyLineAfterFinalLet:
 RSpec/EmptyLineAfterExample:
   Enabled: true
 
+RSpec/NotToNot:
+  Enabled: true
+
 # This was the original file contents. We will enable Cops one by one.
 # 
 # Metrics/BlockLength:

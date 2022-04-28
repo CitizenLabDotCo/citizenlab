@@ -23,7 +23,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect { workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every user' do
@@ -77,7 +77,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect { workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every idea' do
@@ -100,7 +100,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect { workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every initiative' do
@@ -123,7 +123,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect { workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every comment' do
@@ -147,7 +147,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file and contains a row for every comment' do
-      expect { workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
       expect(worksheet.sheet_data.size).to eq (comments.size + 1)
       expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent_comment_id')]).to eq comments.last.parent_id
     end
@@ -168,7 +168,7 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect { workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every invite' do

@@ -12,10 +12,10 @@ describe ProjectPolicy do
       let(:user) { nil }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:reorder) }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -26,10 +26,10 @@ describe ProjectPolicy do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:reorder) }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should index the project' do
         expect(scope.resolve.size).to eq 1
@@ -65,11 +65,11 @@ describe ProjectPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:reorder) }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -79,11 +79,11 @@ describe ProjectPolicy do
     context 'for a user' do
       let(:user) { create(:user) }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:reorder) }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -117,11 +117,11 @@ describe ProjectPolicy do
     let!(:user) { nil }
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.to_not permit(:show)    }
-    it { is_expected.to_not permit(:create)  }
-    it { is_expected.to_not permit(:update)  }
-    it { is_expected.to_not permit(:reorder) }
-    it { is_expected.to_not permit(:destroy) }
+    it { is_expected.not_to permit(:show)    }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:reorder) }
+    it { is_expected.not_to permit(:destroy) }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -132,11 +132,11 @@ describe ProjectPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project) }
 
-    it { is_expected.to_not permit(:show)    }
-    it { is_expected.to_not permit(:create)  }
-    it { is_expected.to_not permit(:update)  }
-    it { is_expected.to_not permit(:reorder) }
-    it { is_expected.to_not permit(:destroy) }
+    it { is_expected.not_to permit(:show)    }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:reorder) }
+    it { is_expected.not_to permit(:destroy) }
 
     it 'should not index the project'  do
       expect(scope.resolve.size).to eq 0
@@ -152,10 +152,10 @@ describe ProjectPolicy do
     let!(:project) { create(:private_groups_project, user: user, groups_count: 2) }
 
     it { is_expected.to permit(:show) }
-    it { is_expected.to_not permit(:create)  }
-    it { is_expected.to_not permit(:update)  }
-    it { is_expected.to_not permit(:reorder) }
-    it { is_expected.to_not permit(:destroy) }
+    it { is_expected.not_to permit(:create)  }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:reorder) }
+    it { is_expected.not_to permit(:destroy) }
 
     it 'should index the project' do
       expect(scope.resolve.size).to eq 1
@@ -191,11 +191,11 @@ describe ProjectPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:reorder) }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0
@@ -205,11 +205,11 @@ describe ProjectPolicy do
     context 'for a user' do
       let(:user) { create(:user) }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:reorder) }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:reorder) }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the project'  do
         expect(scope.resolve.size).to eq 0

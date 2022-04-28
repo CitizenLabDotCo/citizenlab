@@ -10,10 +10,10 @@ describe GroupPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the group' do
         expect(scope.resolve.size).to eq 0
@@ -23,10 +23,10 @@ describe GroupPolicy do
     context 'for a mortal user' do
       let(:user) { create(:user) }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the group' do
         expect(scope.resolve.size).to eq 0

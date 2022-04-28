@@ -10,7 +10,7 @@ describe AdminPublicationPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to_not permit(:reorder) }
+      it { is_expected.not_to permit(:reorder) }
 
       it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
@@ -20,7 +20,7 @@ describe AdminPublicationPolicy do
     context 'for a user' do
       let(:user) { create(:user) }
 
-      it { is_expected.to_not permit(:reorder) }
+      it { is_expected.not_to permit(:reorder) }
 
       it 'should index the project holder' do
         expect(scope.resolve.size).to eq 1
@@ -45,7 +45,7 @@ describe AdminPublicationPolicy do
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to_not permit(:reorder) }
+      it { is_expected.not_to permit(:reorder) }
 
       it 'should not index the project holder' do
         expect(scope.resolve.size).to eq 0
@@ -55,7 +55,7 @@ describe AdminPublicationPolicy do
     context 'for a user' do
       let(:user) { create(:user) }
 
-      it { is_expected.to_not permit(:reorder) }
+      it { is_expected.not_to permit(:reorder) }
 
       it 'should not index the project holder' do
         expect(scope.resolve.size).to eq 0
@@ -77,7 +77,7 @@ describe AdminPublicationPolicy do
     let!(:user) { nil }
     let!(:admin_publication) { create(:private_groups_project).admin_publication }
 
-    it { is_expected.to_not permit(:reorder) }
+    it { is_expected.not_to permit(:reorder) }
 
     it 'should not index the project holder' do
       expect(scope.resolve.size).to eq 0

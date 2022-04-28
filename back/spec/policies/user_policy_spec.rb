@@ -11,10 +11,10 @@ describe UserPolicy do
 
     it { is_expected.to     permit(:show)    }
     it { is_expected.to     permit(:create)  }
-    it { is_expected.to_not permit(:update)  }
-    it { is_expected.to_not permit(:destroy) }
-    it { is_expected.to_not permit(:index) }
-    it { is_expected.to_not permit(:index_xlsx) }
+    it { is_expected.not_to permit(:update)  }
+    it { is_expected.not_to permit(:destroy) }
+    it { is_expected.not_to permit(:index) }
+    it { is_expected.not_to permit(:index_xlsx) }
 
     it 'should not index the user through the scope' do
       subject_user.save!
@@ -32,8 +32,8 @@ describe UserPolicy do
       it { is_expected.to     permit(:create)  }
       it { is_expected.to     permit(:update)  }
       it { is_expected.to     permit(:destroy) }
-      it { is_expected.to_not permit(:index) }
-      it { is_expected.to_not permit(:index_xlsx) }
+      it { is_expected.not_to permit(:index) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'should not index the user through the scope' do
         subject_user.save!
@@ -46,10 +46,10 @@ describe UserPolicy do
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.to     permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:destroy) }
-      it { is_expected.to_not permit(:index) }
-      it { is_expected.to_not permit(:index_xlsx) }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
+      it { is_expected.not_to permit(:index) }
+      it { is_expected.not_to permit(:index_xlsx) }
 
       it 'should index the users through the scope' do
         subject_user.save!

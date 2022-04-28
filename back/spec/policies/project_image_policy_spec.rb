@@ -12,9 +12,9 @@ describe ProjectImagePolicy do
       let(:user) { nil }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should index the image' do
         expect(scope.resolve.size).to eq 1
@@ -25,9 +25,9 @@ describe ProjectImagePolicy do
       let(:user) { create(:user) }
 
       it { is_expected.to     permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should index the image' do
         expect(scope.resolve.size).to eq 1
@@ -55,10 +55,10 @@ describe ProjectImagePolicy do
     context 'for a user' do
       let(:user) { create(:user) }
 
-      it { is_expected.to_not permit(:show)    }
-      it { is_expected.to_not permit(:create)  }
-      it { is_expected.to_not permit(:update)  }
-      it { is_expected.to_not permit(:destroy) }
+      it { is_expected.not_to permit(:show)    }
+      it { is_expected.not_to permit(:create)  }
+      it { is_expected.not_to permit(:update)  }
+      it { is_expected.not_to permit(:destroy) }
 
       it 'should not index the image' do
         expect(scope.resolve.size).to eq 0

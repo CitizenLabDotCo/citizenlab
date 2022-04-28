@@ -8,7 +8,7 @@ describe Verification::VerificationPolicy do
   context 'for a visitor' do
     let(:user) { nil }
 
-    it { is_expected.to_not permit(:create) }
+    it { is_expected.not_to permit(:create) }
 
     it 'should not index the verification' do
       expect(scope.resolve.size).to eq 0
@@ -18,7 +18,7 @@ describe Verification::VerificationPolicy do
   context 'for a mortal user on a verification of another user' do
     let(:user) { create(:user) }
 
-    it { is_expected.to_not permit(:create) }
+    it { is_expected.not_to permit(:create) }
 
     it 'should not index the verification' do
       verification.save!
