@@ -40,7 +40,7 @@ const Header = ({ titleMultiloc, svgNode, representativenessScore }: Props) => {
       <Title variant="h3" as="h2">
         {title}
       </Title>
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" mt="4px">
         <Text
           fontSize="s"
           color="adminSecondaryTextColor"
@@ -85,6 +85,7 @@ const Header = ({ titleMultiloc, svgNode, representativenessScore }: Props) => {
               }}
             />
           }
+          mr="12px"
         />
         <ReportExportMenu name={title} svgNode={svgNode} />
       </Box>
