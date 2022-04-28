@@ -70,6 +70,10 @@ Layout/MultilineMethodCallBraceLayout:
 Lint/UselessAssignment:
   Enabled: true
 
+Lint/SafeNavigationConsistency:
+  # Discussion needed on usefulness, because we seem to use &. often in boolean expressions with &&
+  Enabled: true
+
 RSpec/ExampleLength:
   Enabled: true
 
