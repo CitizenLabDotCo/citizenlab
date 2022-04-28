@@ -1305,6 +1305,7 @@
   "app.containers.IdeasShow.postedIn": "Publisert i {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Foreslått budsjett",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} venstre",
+  "app.containers.admin.ContentBuilder.aboutBox": "About Box",
   "app.containers.admin.ContentBuilder.delete": "Slett",
   "app.containers.admin.ContentBuilder.image": "Bilde",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Short description of the image",

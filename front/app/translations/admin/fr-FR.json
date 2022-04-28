@@ -1305,6 +1305,7 @@
   "app.containers.IdeasShow.postedIn": "Posté dans {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Budget proposé",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {jours} one {un jour} other {# jours}}",
+  "app.containers.admin.ContentBuilder.aboutBox": "About Box",
   "app.containers.admin.ContentBuilder.delete": "Supprimer",
   "app.containers.admin.ContentBuilder.image": "Image",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Brève description de l'image",
