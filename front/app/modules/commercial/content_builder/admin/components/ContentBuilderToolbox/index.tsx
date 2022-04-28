@@ -32,10 +32,8 @@ const DraggableElement = styled.div`
 
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
-  params,
+  params: { projectId },
 }: InjectedIntlProps & WithRouterProps) => {
-  const projectId = params.projectId;
-
   const {
     connectors,
     actions: { selectNode },
