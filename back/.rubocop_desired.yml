@@ -45,7 +45,18 @@ Layout/BlockEndNewline:
   # Autocorrect does not produce correctly indented "end".
   Enabled: true
 
+Layout/FirstArgumentIndentation:
+  Enabled: true
+
 Layout/ArgumentAlignment:
+  Enabled: true
+
+Layout/FirstArrayElementIndentation:
+  # Depends on Layout/ArgumentAlignment
+  Enabled: true
+
+Layout/ArrayAlignment:
+  # Depends on Layout/ArgumentAlignment
   Enabled: true
 
 Lint/UselessAssignment:
