@@ -63,12 +63,17 @@ const getLegendLabels = (barNames: string[]) => [
   `${barNames[1]} (${GENDER_DEMO_DATA_DATE.format('MMMM YYYY')})`,
 ];
 
+const emptyString = () => '';
+
 const ChartCard = ({
   customField,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
   const currentChartRef = useRef<SVGElement>();
+
+  const dataWarning = TEST_GENDER_DATA.length > 24;
+  const data = dataWarning ? TEST_GENDER_DATA.slice(0, 24) : TEST_GENDER_DATA;
 
   const barNames = [
     formatMessage(messages.users),
@@ -86,17 +91,20 @@ const ChartCard = ({
       <MultiBarChart
         height={300}
         innerRef={currentChartRef}
-        data={TEST_GENDER_DATA}
+        data={data}
         mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
         bars={{
           name: barNames,
           fill: [newBarFill, secondaryNewBarFill],
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
+        xaxis={{ tickFormatter: data.length > 12 ? emptyString : undefined }}
         yaxis={{ tickFormatter: formatPercentage }}
-        renderLabels={(props) => (
-          <LabelList {...props} formatter={formatPercentage} />
-        )}
+        renderLabels={
+          data.length > 10
+            ? undefined
+            : (props) => <LabelList {...props} formatter={formatPercentage} />
+        }
         renderTooltip={(props) => (
           <Tooltip {...props} formatter={formatTooltipValues} />
         )}
