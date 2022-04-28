@@ -73,7 +73,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.required": "Erforderlich",
   "app.components.ConsentManager.Modal.PreferencesDialog.requiredPurpose": "Speicherung der Anmeldeinformationen und Spracheinstellungen zur verbesserten Bedienbarkeit.",
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Speichern",
-  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Ihre Cookie-Präferenzen",
+  "app.components.ConsentManager.Modal.PreferencesDialog.title": "Ihre Cookie-Einstellungen",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Werkzeug(e)",
   "app.components.CustomFieldsForm.blockedVerified": "Dieses Feld kannst du nicht bearbeiten, da es verifizierte Informationen enthält.",
   "app.components.CustomFieldsForm.mustBeANumber": "Dies sieht nicht wie eine Zahl aus",
