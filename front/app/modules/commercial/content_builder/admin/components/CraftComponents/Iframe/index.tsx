@@ -115,6 +115,15 @@ const validateUrl = (url: string) => {
     /https:\/\/.*\.qualtrics\.com\/jfe\/form\/.*/,
     /https:\/\/www\.smartsurvey\.co\.uk\/.*/,
     /https:\/\/.*\.(microsoft|office)\.com\//,
+    /www\.eventbrite\.com\/static\/widgets\/*/,
+    /https:\/\/.*arcgis\.com/,
+    /https:\/\/public\.tableau\.com.*/,
+    /datastudio\.google\.com\/embed*/,
+    /https:\/\/app\.powerbi\.com\//,
+    /static\.ctctcdn\.com\/js*/,
+    /http:\/\/.*instagram\.com/,
+    /https:\/\/.*platform\.twitter\.com/,
+    /https:\/\/name\.konveio\.com/,
   ];
 
   let found: RegExpMatchArray | null = null;

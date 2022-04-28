@@ -118,6 +118,7 @@ const RenderNode = ({ render }) => {
       id={id}
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      borderWidth="1px"
       borderColor={
         hasError
           ? colors.clRedError
