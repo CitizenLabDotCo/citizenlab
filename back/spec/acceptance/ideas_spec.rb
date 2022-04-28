@@ -27,7 +27,7 @@ resource 'Ideas' do
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
     parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
     parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
@@ -405,7 +405,7 @@ resource 'Ideas' do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :publication_status, 'Return only ideas with the specified publication status; returns all pusblished ideas by default', required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
     parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
     parameter :filter_trending, 'Filter out truly trending ideas', required: false
 
@@ -531,7 +531,7 @@ resource 'Ideas' do
       parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
       parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
       parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
-      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
+      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
       parameter :topic_ids, 'Array of ids of the associated topics'

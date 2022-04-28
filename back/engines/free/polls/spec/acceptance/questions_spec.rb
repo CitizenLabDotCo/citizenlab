@@ -79,7 +79,7 @@ resource 'Poll Questions' do
         parameter :participation_context_id, 'The id of the phase/project the question belongs to', required: true
         parameter :participation_context_type, 'The type of the participation context (Project or Phase)', required: true
         parameter :title_multiloc, 'The question, as a multiloc string', required: true
-        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}. Defaults to 'single_option'", required: false
+        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(', ')}. Defaults to 'single_option'", required: false
         parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Defaults to nil, meaning no limit.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Question)
@@ -105,7 +105,7 @@ resource 'Poll Questions' do
     patch 'web_api/v1/poll_questions/:id' do
       with_options scope: :question do
         parameter :title_multiloc, 'The question, as a multiloc string', required: false
-        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}", required: false
+        parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(', ')}", required: false
         parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Nil means no limit.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Polls::Option)

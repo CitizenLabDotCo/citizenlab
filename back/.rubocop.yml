@@ -56,6 +56,9 @@ Style/SingleArgumentDig:
 Style/NegatedIf:
   Enabled: true
 
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

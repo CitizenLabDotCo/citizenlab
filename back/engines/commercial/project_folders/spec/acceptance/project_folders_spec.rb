@@ -81,7 +81,7 @@ resource 'ProjectFolder' do
         parameter :header_bg, 'Base64 encoded header image', required: false
       end
       with_options scope: %i[project_folder admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
@@ -110,7 +110,7 @@ resource 'ProjectFolder' do
         parameter :header_bg, 'Base64 encoded header image'
       end
       with_options scope: %i[project_folder admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
 
@@ -180,7 +180,7 @@ resource 'ProjectFolder' do
       end
 
       with_options scope: %i[project_folder admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
@@ -204,7 +204,7 @@ resource 'ProjectFolder' do
       end
 
       with_options scope: %i[project_folder admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
