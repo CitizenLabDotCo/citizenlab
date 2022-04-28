@@ -16,11 +16,11 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfYourIdea, type: :model d
       command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity
-        ).first
+      ).first
 
       expect(
         command.dig(:event_payload, :idea_status_id)
-        ).to eq(notification.post_status.id)
+      ).to eq(notification.post_status.id)
     end
   end
 end

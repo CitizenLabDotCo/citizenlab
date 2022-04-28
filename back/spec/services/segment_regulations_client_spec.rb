@@ -29,12 +29,12 @@ RSpec.describe SegmentRegulationsClient do
         expect(body).to match({
           'regulation_type' => 'Delete',
           'attributes' => { 'name' => 'userId', 'values' => match_array(user_ids.shuffle) } }
-        )
+                             )
 
         expect(headers).to eq({
           Authorization: "Bearer #{token}",
           "Content-Type": 'application/json' }
-        )
+                             )
       end
     end
     # rubocop:enable RSpec/MultipleExpectations

@@ -18,14 +18,14 @@ module Polls
             Polls::WebApi::V1::QuestionSerializer,
             params: fastjson_params,
             include: [:options]
-            )
+          )
         end
 
         def show
           render json: WebApi::V1::QuestionSerializer.new(
             @question,
             params: fastjson_params
-            ).serialized_json
+          ).serialized_json
         end
 
         def create
@@ -39,7 +39,7 @@ module Polls
               @question,
               params: fastjson_params,
               include: [:options]
-              ).serialized_json, status: :created
+            ).serialized_json, status: :created
           else
             render json: { errors: @question.errors.details }, status: :unprocessable_entity
           end
@@ -55,7 +55,7 @@ module Polls
               @question,
               params: fastjson_params,
               include: [:options]
-              ).serialized_json, status: :ok
+            ).serialized_json, status: :ok
           else
             render json: { errors: @question.errors.details }, status: :unprocessable_entity
           end
@@ -69,7 +69,7 @@ module Polls
               @question,
               params: fastjson_params,
               include: [:options]
-              ).serialized_json, status: :ok
+            ).serialized_json, status: :ok
           else
             render json: { errors: @question.errors.details }, status: :unprocessable_entity
           end

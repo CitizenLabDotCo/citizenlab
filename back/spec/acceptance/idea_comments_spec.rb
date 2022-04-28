@@ -220,7 +220,7 @@ resource 'Comments' do
         downvotes_count: 0,
         publication_status: 'published',
         is_admin_comment: false
-        )
+      )
       expect(json_response.dig(:data, :relationships)).to include(
         post: {
           data: { id: comment.post_id, type: 'idea' }
@@ -234,7 +234,7 @@ resource 'Comments' do
       expect(json_response.dig(:included, 0, :attributes)).to include(
         first_name: comment.author.first_name,
         locale: comment.author.locale
-        )
+      )
     end
   end
 

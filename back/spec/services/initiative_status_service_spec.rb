@@ -28,7 +28,7 @@ describe InitiativeStatusService do
       create(
         :initiative_status_change,
         initiative: @initiative, initiative_status: @status_proposed
-        )
+      )
       create_list(:vote, 3, votable: @initiative, mode: 'up')
 
       service.automated_transitions!
@@ -40,7 +40,7 @@ describe InitiativeStatusService do
       create(
         :initiative_status_change,
         initiative: @initiative, initiative_status: @status_proposed
-        )
+      )
 
       travel_to(Time.now + 22.days) do
         service.automated_transitions!
@@ -52,7 +52,7 @@ describe InitiativeStatusService do
       create(
         :initiative_status_change,
         initiative: @initiative, initiative_status: @status_proposed
-        )
+      )
       create_list(:vote, 1, votable: @initiative, mode: 'up')
 
       travel_to(Time.now + 15.days) do

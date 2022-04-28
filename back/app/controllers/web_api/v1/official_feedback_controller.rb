@@ -31,7 +31,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       render json: WebApi::V1::OfficialFeedbackSerializer.new(
         @feedback,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity
     end

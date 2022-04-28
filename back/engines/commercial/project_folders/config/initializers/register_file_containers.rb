@@ -6,7 +6,7 @@ ProjectFolders::Engine::config.to_prepare do
       ProjectFolders::FilePolicy::Scope,
       :files,
       :project_folder_id
-  )
+    )
 
   ::WebApi::V1::ImagesController.register_container(
       'ProjectFolder',
@@ -15,5 +15,5 @@ ProjectFolders::Engine::config.to_prepare do
       ProjectFolders::ImagePolicy::Scope,
       :images,
       :project_folder_id
-  )
+    )
 end

@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :mo
       create(
         :activity, item: idea, action: 'changed_status', user: initiator,
         payload: { change: [old_status.id, idea.idea_status.id] }
-        )
+      )
     end
 
     it 'generates a command with the desired payload and tracked content' do

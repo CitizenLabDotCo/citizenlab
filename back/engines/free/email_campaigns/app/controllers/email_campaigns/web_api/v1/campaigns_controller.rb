@@ -40,7 +40,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
           params: fastjson_params
-          ).serialized_json, status: :created
+        ).serialized_json, status: :created
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -64,7 +64,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
           params: fastjson_params
-          ).serialized_json, status: :ok
+        ).serialized_json, status: :ok
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -89,7 +89,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: fastjson_params
-          ).serialized_json
+        ).serialized_json
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -116,7 +116,7 @@ module EmailCampaigns
         WebApi::V1::DeliverySerializer,
         params: fastjson_params,
         include: [:user]
-        )
+      )
     end
 
     def stats

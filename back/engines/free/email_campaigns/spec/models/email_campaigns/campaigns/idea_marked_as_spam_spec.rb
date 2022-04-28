@@ -16,14 +16,14 @@ RSpec.describe EmailCampaigns::Campaigns::IdeaMarkedAsSpam, type: :model do
       command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity
-        ).first
+      ).first
 
       expect(
         command.dig(:event_payload, :initiating_user_last_name)
-        ).to eq(notification.initiating_user.last_name)
+      ).to eq(notification.initiating_user.last_name)
       expect(
         command.dig(:event_payload, :spam_report_reason_code)
-        ).to eq(notification.spam_report.reason_code)
+      ).to eq(notification.spam_report.reason_code)
     end
   end
 end

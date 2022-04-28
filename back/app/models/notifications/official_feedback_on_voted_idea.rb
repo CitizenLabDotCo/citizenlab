@@ -81,7 +81,7 @@ module Notifications
             post: official_feedback.post,
             official_feedback: official_feedback,
             project_id: official_feedback.post.project_id
-            )
+          )
         end
       else
         []

@@ -186,7 +186,7 @@ resource 'Campaigns' do
       create_list(:delivery, 20,
       campaign: campaign,
       delivery_status: 'accepted'
-    ) end
+      ) end
 
     example_request 'Get the delivery statistics of a sent campaing' do
       assert_status 200

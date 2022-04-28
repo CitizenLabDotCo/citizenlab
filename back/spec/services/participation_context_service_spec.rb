@@ -25,7 +25,7 @@ describe ParticipationContextService do
       random_title = SecureRandom.uuid
       project = create(:project_with_current_phase,
         current_phase_attrs: { title_multiloc: { 'en' => random_title } }
-        )
+      )
       expect(service.get_participation_context(project)&.title_multiloc.dig('en')).to eq random_title
     end
 
@@ -186,7 +186,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase,
           phases_config: { sequence: 'xxcxx' },
           current_phase_attrs: { voting_enabled: true }
-          )
+        )
         idea_phases = project.phases.order(:start_at).take(2) + [project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
         vote = build(:vote, user: user, votable: idea)
@@ -294,7 +294,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase,
           phases_config: { sequence: 'xxcxx' },
           current_phase_attrs: { voting_enabled: true }
-          )
+        )
         idea_phases = [project.phases.order(:start_at).first, project.phases.order(:start_at).last]
         idea = create(:idea, project: project, phases: idea_phases)
 
@@ -577,7 +577,7 @@ describe ParticipationContextService do
         if permission
           permission.update!(permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
-            )
+          )
         end
         idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'

@@ -125,6 +125,9 @@ Layout/SpaceBeforeComment:
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
   Enabled: true
 
+Layout/ClosingParenthesisIndentation:
+  Enabled: true
+
 Metrics/ClassLength:
   Enabled: true
   Max: 300

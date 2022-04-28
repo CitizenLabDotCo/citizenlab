@@ -43,7 +43,7 @@ class InitiativeStatusService
           initiative_scope.where(
             'initiatives.upvotes_count >= ?',
             AppConfiguration.instance.settings('initiatives', 'voting_threshold')
-            )
+          )
         }
       },
       'expired' => {
@@ -51,7 +51,7 @@ class InitiativeStatusService
           initiative_scope.where(
             'initiatives.published_at < ?',
             (Time.now - AppConfiguration.instance.settings('initiatives', 'days_limit').days)
-            )
+          )
         }
       }
     }

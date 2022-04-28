@@ -23,7 +23,7 @@ module EmailCampaigns
       format_message('event_description',
         values: { post: localize_for_recipient(event.post_title_multiloc) },
         escape_html: false
-        )
+      )
     end
 
     def preheader

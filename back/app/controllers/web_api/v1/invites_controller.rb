@@ -130,7 +130,7 @@ class WebApi::V1::InvitesController < ApplicationController
           @invite.reload,
           params: fastjson_params,
           include: [:invitee]
-          ).serialized_json, status: :ok
+        ).serialized_json, status: :ok
       end
     rescue ClErrors::TransactionError => e
       if e.error_key == :unprocessable_invitee

@@ -556,7 +556,7 @@ resource 'Initiatives' do
       create(
         :initiative_status_change,
         initiative: @initiative, initiative_status: threshold_reached
-        )
+      )
     end
 
     let(:id) { @initiative.id }

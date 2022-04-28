@@ -200,7 +200,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       serie,
       params: fastjson_params,
       include: [:user]
-      ).serialized_json
+    ).serialized_json
   end
 
   private

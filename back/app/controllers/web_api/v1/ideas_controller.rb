@@ -156,7 +156,7 @@ class WebApi::V1::IdeasController < ApplicationController
           @idea.reload,
           params: fastjson_params,
           include: %i[author topics areas user_vote idea_images]
-          ).serialized_json, status: :ok
+        ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end

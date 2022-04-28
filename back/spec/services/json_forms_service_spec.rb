@@ -221,7 +221,7 @@ describe JsonFormsService do
           },
           scope: '#/properties/field6'
         }]
-      )
+                                           )
     end
   end
 end

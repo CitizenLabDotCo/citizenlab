@@ -38,7 +38,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end

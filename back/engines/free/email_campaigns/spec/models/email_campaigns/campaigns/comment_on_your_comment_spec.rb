@@ -16,14 +16,14 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
       command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity
-        ).first
+      ).first
 
       expect(
         command.dig(:event_payload, :initiating_user_last_name)
-        ).to eq(notification.initiating_user.last_name)
+      ).to eq(notification.initiating_user.last_name)
       expect(
         command.dig(:event_payload, :comment_body_multiloc)
-        ).to eq(notification.comment.body_multiloc)
+      ).to eq(notification.comment.body_multiloc)
     end
 
     it 'generates a command with an abbreviated name' do
@@ -35,7 +35,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourComment, type: :model do
       command = campaign.generate_commands(
           recipient: notification_activity.item.recipient,
           activity: notification_activity
-      ).first
+        ).first
 
       initial = "#{notification.initiating_user.last_name[0]}."
       expect(command.dig(:event_payload, :initiating_user_last_name)).to eq(initial)

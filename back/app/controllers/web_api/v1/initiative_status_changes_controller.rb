@@ -16,7 +16,7 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
     render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
       @change,
       params: fastjson_params
-      ).serialized_json
+    ).serialized_json
   end
 
   def create
@@ -41,13 +41,13 @@ class WebApi::V1::InitiativeStatusChangesController < ApplicationController
       @initiative.initiative_status,
       @change.initiative_status,
       with_feedback: (attributes[:official_feedback_attributes].present? || attributes[:official_feedback_id])
-      )
+    )
       if @change.save
         SideFxInitiativeStatusChangeService.new.after_create @change, current_user
         render json: WebApi::V1::InitiativeStatusChangeSerializer.new(
           @change,
           params: fastjson_params
-          ).serialized_json, status: :created
+        ).serialized_json, status: :created
       else
         render json: { errors: @change.errors.details }, status: :unprocessable_entity
       end

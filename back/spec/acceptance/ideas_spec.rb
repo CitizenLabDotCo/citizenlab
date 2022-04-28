@@ -488,7 +488,7 @@ resource 'Ideas' do
             future_enabled: nil
           }
         }
-        )
+      )
       expect(json_response.dig(:data, :relationships)).to include(
         topics: {
           data: [{ id: topic.id, type: 'topic' }]
@@ -497,7 +497,7 @@ resource 'Ideas' do
         author: { data: { id: idea.author_id, type: 'user' } },
         idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
         user_vote: { data: { id: user_vote.id, type: 'vote' } }
-        )
+      )
     end
   end
 

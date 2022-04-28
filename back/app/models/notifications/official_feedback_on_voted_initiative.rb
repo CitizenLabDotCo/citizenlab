@@ -80,7 +80,7 @@ module Notifications
             initiating_user_id: initiator_id,
             post: official_feedback.post,
             official_feedback: official_feedback
-            )
+          )
         end
       else
         []

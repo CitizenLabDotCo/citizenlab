@@ -100,15 +100,15 @@ RSpec.describe Initiative, type: :model do
       create(
         :initiative_status_change,
         initiative: i1, initiative_status: proposed
-        )
+      )
       create(
         :initiative_status_change,
         initiative: i2, initiative_status: proposed
-        )
+      )
       create(
         :initiative_status_change,
         initiative: i3, initiative_status: threshold_reached
-        )
+      )
       expect(Initiative.order_status.ids).to eq [i1.id, i2.id, i3.id]
     end
   end

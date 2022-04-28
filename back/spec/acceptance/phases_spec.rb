@@ -38,7 +38,7 @@ resource 'Phases' do
       expect(json_response.dig(:data, :attributes)).to include(
         upvoting_method: 'unlimited',
         ideas_count: 2
-        )
+      )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
           data: { id: @phases.first.project_id, type: 'project' }
@@ -174,7 +174,7 @@ resource 'Phases' do
           @project.phases.first.update(
             participation_method: 'budgeting',
             max_budget: 30000
-            )
+          )
         end
 
         let(:participation_method) { 'budgeting' }
@@ -268,7 +268,7 @@ resource 'Phases' do
           @project.phases.first.update(
             participation_method: 'budgeting',
             max_budget: 30000
-            )
+          )
         end
 
         let(:ideas) { create_list(:idea, 2, project: @project) }

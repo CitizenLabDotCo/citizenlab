@@ -112,19 +112,19 @@ module EmailCampaigns
         activities: {
           new_ideas: stat_increase(
             ideas.map(&:published_at).compact
-            ),
+          ),
           new_votes: stat_increase(
             votes.map(&:created_at).compact
-            ),
+          ),
           new_comments: stat_increase(
             comments.map(&:created_at).compact
-            ),
+          ),
           total_ideas: ideas.size
         },
         users: {
           new_visitors: stat_increase(
             []
-            ),
+          ),
           new_participants: {
             increase: participants_increase,
             past_increase: participants_past_increase
@@ -141,7 +141,7 @@ module EmailCampaigns
          (statistics.dig(:users, :new_visitors, :increase) == 0) &&
          (statistics.dig(:users, :new_users, :increase) == 0) &&
          (statistics.dig(:users, :active_users, :increase) == 0)
-         )
+       )
     end
 
     def days_ago

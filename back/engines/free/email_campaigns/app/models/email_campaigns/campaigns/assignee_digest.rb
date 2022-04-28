@@ -151,7 +151,7 @@ module EmailCampaigns
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?',
           threshold_reached_id,
           (time - 1.week)
-          )
+        )
         .feedback_needed
         .order(upvotes_count: :desc)
         .includes(:initiative_images)

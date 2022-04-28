@@ -40,7 +40,7 @@ module Moderation
       render json: WebApi::V1::ModerationSerializer.new(
         @moderation.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     end
 
     def moderations_count

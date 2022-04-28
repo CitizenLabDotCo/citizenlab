@@ -14,7 +14,7 @@ module CustomTopics
             render json: ::WebApi::V1::TopicSerializer.new(
               @topic,
               params: fastjson_params
-              ).serialized_json, status: :created
+            ).serialized_json, status: :created
           else
             render json: { errors: @topic.errors.details }, status: :unprocessable_entity
           end
@@ -29,7 +29,7 @@ module CustomTopics
             render json: ::WebApi::V1::TopicSerializer.new(
               @topic,
               params: fastjson_params
-              ).serialized_json, status: :ok
+            ).serialized_json, status: :ok
           else
             render json: { errors: @topic.errors.details }, status: :unprocessable_entity
           end

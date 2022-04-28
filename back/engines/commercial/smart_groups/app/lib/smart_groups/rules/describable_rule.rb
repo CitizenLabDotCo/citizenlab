@@ -15,14 +15,14 @@ module SmartGroups::Rules
             I18n.t!(
               "smart_group_rules.#{description_rule_type}.#{predicate}_#{value}",
               property: description_property(locale)
-              )
+            )
           rescue I18n::MissingTranslationData
             begin
               I18n.t!(
                 "smart_group_rules.#{description_rule_type}.#{predicate}",
                 property: description_property(locale),
                 value: description_value(locale)
-                )
+              )
             rescue I18n::MissingTranslationData
               raise "Unsupported rule description: smart_group_rules.#{description_rule_type}.#{predicate}{_#{value}}"
             end

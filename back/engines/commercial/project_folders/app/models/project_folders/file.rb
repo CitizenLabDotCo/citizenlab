@@ -37,7 +37,7 @@ module ProjectFolders
             :file,
             :extension_whitelist_error,
             message: 'Unsupported file extension'
-        )
+          )
       end
     end
   end

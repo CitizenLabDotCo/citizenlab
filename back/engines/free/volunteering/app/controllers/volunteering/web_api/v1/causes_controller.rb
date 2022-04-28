@@ -68,7 +68,7 @@ module Volunteering
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
               params: fastjson_params,
-              ).serialized_json, status: :ok
+            ).serialized_json, status: :ok
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end

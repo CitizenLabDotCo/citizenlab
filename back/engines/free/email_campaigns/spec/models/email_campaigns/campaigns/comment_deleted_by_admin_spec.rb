@@ -16,14 +16,14 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
       command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity
-        ).first
+      ).first
 
       expect(
         command.dig(:event_payload, :initiating_user_id)
-        ).to be_blank
+      ).to be_blank
       expect(
         command.dig(:event_payload, :comment_created_at)
-        ).to eq(notification.comment.created_at.iso8601)
+      ).to eq(notification.comment.created_at.iso8601)
     end
   end
 end

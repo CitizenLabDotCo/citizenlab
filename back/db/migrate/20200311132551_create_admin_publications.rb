@@ -28,7 +28,7 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
       publication = AdminPublication.create!(
         publication_id:   pho['project_holder_id'],
         publication_type: pho['project_holder_type']
-        )
+      )
       if pho['project_holder_type'] == 'ProjectFolder'
         folder_to_publication_id[pho['project_holder_id']] = publication.id
       end
@@ -45,7 +45,7 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
         publication_id:   pho['id'],
         publication_type: 'Project',
         parent_id: folder_to_publication_id[pho['folder_id']]
-        )
+      )
     end
 
     # Remove project holder modelling

@@ -21,7 +21,7 @@ module ProjectFolders
           encode_frozen_resource(frozen_folder), 'deleted',
           user, Time.now.to_i,
           payload: { project_folder: serialized_folder }
-      )
+        )
     end
   end
 end

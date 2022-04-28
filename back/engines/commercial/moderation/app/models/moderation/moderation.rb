@@ -32,7 +32,7 @@ module Moderation
       moderations = joins("LEFT JOIN moderation_moderation_statuses \
           ON moderation_moderation_statuses.moderatable_id = moderation_moderations.id AND \
              moderation_moderation_statuses.moderatable_type = moderation_moderations.moderatable_type"
-        )
+                         )
       case status
       when 'read'
         moderations.where("moderation_moderation_statuses.status = 'read'", )

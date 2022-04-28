@@ -27,7 +27,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end
@@ -42,7 +42,7 @@ class WebApi::V1::AreasController < ApplicationController
       render json: WebApi::V1::AreaSerializer.new(
         @area,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @area.errors.details }, status: :unprocessable_entity
     end

@@ -94,7 +94,7 @@ module EmailCampaigns
     def is_content_worth_sending?(_)
       @is_worth_sending ||= TrendingIdeaService.new.filter_trending(
         IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
-        ).count('*') >= N_TOP_IDEAS
+      ).count('*') >= N_TOP_IDEAS
     end
 
     private
@@ -220,7 +220,7 @@ module EmailCampaigns
           'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?',
           InitiativeStatus.where(code: 'threshold_reached').ids.first,
           (time - 1.week)
-          )
+        )
         .feedback_needed
         .map do |initiative|
         {

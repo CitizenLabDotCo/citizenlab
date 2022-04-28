@@ -63,7 +63,7 @@ resource 'InitiativeStatusChange' do
       create(
         :initiative_status_change,
         initiative: @initiative, initiative_status: @status_threshold_reached
-        )
+      )
     end
 
     post 'web_api/v1/initiatives/:initiative_id/initiative_status_changes' do
@@ -148,7 +148,7 @@ resource 'InitiativeStatusChange' do
       create(
         :initiative_status_change,
         initiative: @initiative, initiative_status: @status_threshold_reached
-        )
+      )
     end
 
     post 'web_api/v1/initiatives/:initiative_id/initiative_status_changes' do

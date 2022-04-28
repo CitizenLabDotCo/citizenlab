@@ -32,7 +32,7 @@ FactoryBot.define do
           initiative: initiative,
           initiative_status: evaluator.initiative_status,
           official_feedback: nil
-          )
+        )
       end
     end
 

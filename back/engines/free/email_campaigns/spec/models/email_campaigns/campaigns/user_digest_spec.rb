@@ -25,16 +25,16 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
 
       expect(
         command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
-        ).to include(new_project.created_at.iso8601)
+      ).to include(new_project.created_at.iso8601)
       expect(
         command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
-        ).not_to include(draft_project.created_at.iso8601)
+      ).not_to include(draft_project.created_at.iso8601)
       expect(
         command.dig(:event_payload, :top_ideas).first[:published_at]
-        ).to eq(top_idea.published_at.iso8601)
+      ).to eq(top_idea.published_at.iso8601)
       expect(
         command.dig(:event_payload, :top_ideas).first[:top_comments].first[:created_at]
-        ).to eq(top_comment.created_at.iso8601)
+      ).to eq(top_comment.created_at.iso8601)
     end
 
     it 'generates a command with abbreviated names' do
@@ -46,11 +46,11 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
       expected_author_name = "#{top_idea.author.first_name} #{top_idea.author.last_name[0]}."
       expect(
           command.dig(:event_payload, :top_ideas, 0, :author_name),
-      ).to eq(expected_author_name)
+        ).to eq(expected_author_name)
 
       expect(
           command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
-      ).to eq("#{top_comment.author.last_name[0]}.")
+        ).to eq("#{top_comment.author.last_name[0]}.")
 
       # @todo No new initiatives and successful initiatives in this digest
     end

@@ -30,7 +30,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -46,7 +46,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
