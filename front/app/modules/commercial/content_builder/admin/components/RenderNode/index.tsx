@@ -54,7 +54,7 @@ const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
       ? `cursor: auto;
-     min-width:1000px;`
+         width:1000px;`
       : `cursor:move;`}
 `;
 
