@@ -66,7 +66,7 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             });
           }}
         />
-        {hasError && <Error text={'Error Message'} />}
+        {hasError && <Error marginTop="4px" text={'Error Message'} />}
       </Box>
       <Box flex="0 0 100%">
         <Input

@@ -67,10 +67,12 @@ const RenderNode = ({ render }) => {
     id,
     name,
     isHover,
+    hasError,
     connectors: { connect, drag },
   } = useNode((node) => ({
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
+    hasError: node.data.props.hasError,
   }));
 
   const parentNode = parentId && node(parentId).get();
@@ -122,13 +124,14 @@ const RenderNode = ({ render }) => {
           ? `dashed ${colors.separation}`
           : `solid transparent`
       } `}
+      borderColor={hasError ? colors.clRedError : undefined}
       m="4px"
       isRoot={id === ROOT_NODE}
     >
       {nodeIsSelected && (
         <Box
           p="4px"
-          bgColor={colors.adminTextColor}
+          bgColor={hasError ? colors.clRedError : colors.adminTextColor}
           color="#fff"
           position="absolute"
           top="-28px"
