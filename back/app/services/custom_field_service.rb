@@ -21,9 +21,9 @@ class CustomFieldService
     end
   end
 
-  def fields_to_json_schema(fields, locale = "en")
+  def fields_to_json_schema(fields, locale = 'en')
     {
-      type: "object",
+      type: 'object',
       additionalProperties: false,
       properties: fields.inject({}) do |memo, field|
         override_method_code = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
@@ -53,7 +53,7 @@ class CustomFieldService
     end
   end
 
-  def fields_to_ui_schema(fields, locale = "en")
+  def fields_to_ui_schema(fields, locale = 'en')
     fields.inject({}) do |memo, field|
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
@@ -142,7 +142,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -156,7 +156,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "number"
+      type: 'number'
     }
   end
 
@@ -167,7 +167,7 @@ class CustomFieldService
     if base[:"ui:widget"]
       base
     else
-      {"ui:widget": "textarea"}
+      {"ui:widget": 'textarea'}
     end
   end
 
@@ -175,7 +175,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -189,7 +189,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string",
+      type: 'string',
     }.tap do |items|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
@@ -209,11 +209,11 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "array",
+      type: 'array',
       uniqueItems: true,
       minItems: (field.enabled && field.required) ? 1 : 0,
       items: {
-          type: "string",
+          type: 'string',
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
@@ -234,7 +234,7 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "boolean"
+      type: 'boolean'
     }
   end
 
@@ -248,8 +248,8 @@ class CustomFieldService
     {
       title: handle_title(field, locale),
       description: handle_description(field, locale),
-      type: "string",
-      format: "date"
+      type: 'string',
+      format: 'date'
     }
   end
 
@@ -337,10 +337,10 @@ class CustomFieldService
       {
         title: handle_title(field, locale),
         description: handle_description(field, locale),
-        type: "array",
+        type: 'array',
         items: {
-          type: "string",
-          format: "data-url",
+          type: 'string',
+          format: 'data-url',
         }
       }
     end

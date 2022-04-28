@@ -33,13 +33,13 @@ de:
       "password_reset": Zurücksetzen des Passworts
       "project_moderation_rights_received": ProjektleiterInnenrechte erhalten
       "project_folder_moderation_rights_received": Moderationsrechte für Projektordner erhalten
-      "project_phase_started": Neue Projekt-Phase
+      "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Bevorstehende neue Projektphase
-      "status_change_of_commented_idea": Status-Änderung einer Idee, die ich kommentiert habe
-      "status_change_of_commented_initiative": Status-Änderung eines Vorschlags, den ich kommentiert habe
-      "status_change_of_voted_idea": Status-Änderung einer Idee, für die ich gestimmt habe
-      "status_change_of_voted_initiative": Status-Änderung eines Vorschlags, für den ich gestimmt habe
-      "status_change_of_your_idea": Status-Änderung meiner Idee
+      "status_change_of_commented_idea": Statusänderung einer Idee, die ich kommentiert habe
+      "status_change_of_commented_initiative": Statusänderung eines Vorschlags, den ich kommentiert habe
+      "status_change_of_voted_idea": Statusänderung einer Idee, für die ich gestimmt habe
+      "status_change_of_voted_initiative": Statusänderung eines Vorschlags, für den ich gestimmt habe
+      "status_change_of_your_idea": Statusänderung meiner Idee
       "status_change_of_your_initiative": Statusänderung meines Vorschlags
       "threshold_reached_for_admin": Vorschlag hat die Abstimmungsschwelle erreicht
       "welcome": Nach der Registrierung
@@ -102,7 +102,7 @@ de:
       "link_terms_conditions": "Nutzungsbedingungen"
       "link_unsubscribe": "Abbestellen"
       "powered_by": "Ermöglicht durch"
-      "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein:e registrierte:r Benutzer:in von %{organizationLink} sind. Sie können %{unsubscribeLink} , wenn Sie diese E-Mails in Zukunft nicht mehr erhalten möchten."
+      "statement": "Diese E-Mail wurde Ihnen von CitizenLab im Namen von %{organizationName} zugesandt, da Sie ein:e registrierte:r Benutzer:in von %{organizationLink} sind. Hier können Sie diese und andere E-Mails %{unsubscribeLink}, wenn Sie in Zukunft keine Benachrichtigungen mehr erhalten möchten."
       "unsubscribe_text": "abbestellen"
     comment_deleted_by_admin:
       reason: 'Der Grund, warum Ihr Kommentar gelöscht wurde:'

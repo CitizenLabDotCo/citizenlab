@@ -3,7 +3,7 @@ FactoryBot.define do
     custom_field
     sequence(:key) { |n| "option_#{n}" }
     title_multiloc {{
-      "en" => "youth council"
+      'en' => 'youth council'
     }}
   end
 end

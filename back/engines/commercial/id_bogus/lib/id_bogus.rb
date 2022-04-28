@@ -1,4 +1,4 @@
-require "id_bogus/engine"
+require 'id_bogus/engine'
 
 module IdBogus
   # Your code goes here...

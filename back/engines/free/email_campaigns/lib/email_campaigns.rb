@@ -1,4 +1,4 @@
-require "email_campaigns/engine"
+require 'email_campaigns/engine'
 
 module EmailCampaigns
   # Your code goes here...

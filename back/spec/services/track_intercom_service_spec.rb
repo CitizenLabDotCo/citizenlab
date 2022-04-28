@@ -91,7 +91,7 @@ describe TrackIntercomService do
       expect(intercom).to receive(:events).and_return(events_api)
 
       expect(events_api).to receive(:create).with({
-        event_name: "Idea published",
+        event_name: 'Idea published',
         created_at: activity.acted_at,
         user_id: admin.id,
         metadata: hash_including(

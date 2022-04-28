@@ -11,41 +11,41 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              "$ref": '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
-            "value" => {
-              "type" => "string"
+            'value' => {
+              'type' => 'string'
             }
           },
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => ['ruleType', 'customFieldId', 'predicate'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              "$ref": '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }

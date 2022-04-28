@@ -4,10 +4,10 @@ module OmniauthMethods
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       if configuration.feature_activated?('google_login')
-        env['omniauth.strategy'].options[:client_id] = configuration.settings("google_login", "client_id")
-        env['omniauth.strategy'].options[:client_secret] = configuration.settings("google_login", "client_secret")
+        env['omniauth.strategy'].options[:client_id] = configuration.settings('google_login', 'client_id')
+        env['omniauth.strategy'].options[:client_secret] = configuration.settings('google_login', 'client_secret')
         env['omniauth.strategy'].options[:image_size] = 640
-        env['omniauth.strategy'].options[:image_aspect_ratio] = "square"
+        env['omniauth.strategy'].options[:image_aspect_ratio] = 'square'
       end
     end
 

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Graphql project" do
+RSpec.describe 'Graphql project' do
   let(:context) { {} }
   let(:result) {
     AdminApi::Schema.execute(
@@ -10,7 +10,7 @@ RSpec.describe "Graphql project" do
     )
   }
 
-  describe "project" do
+  describe 'project' do
     let(:query_string) { %|
       query projectQuery($id: ID!) {
         project(id: $id) {
@@ -27,14 +27,14 @@ RSpec.describe "Graphql project" do
     let(:project) { create(:project) }
     let(:variables) { {id: project.id }}
 
-    it "returns all projects" do
+    it 'returns all projects' do
       response = result
-      expect(response.dig("data", "project")).to match ({
-        "id" => project.id,
-        "slug" => project.slug,
-        "publicationStatus" => project.admin_publication.publication_status,
-        "visibleTo" => project.visible_to,
-        "processType" => project.process_type
+      expect(response.dig('data', 'project')).to match ({
+        'id' => project.id,
+        'slug' => project.slug,
+        'publicationStatus' => project.admin_publication.publication_status,
+        'visibleTo' => project.visible_to,
+        'processType' => project.process_type
       })
     end
 

@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Initiative, type: :model do
-  context "associations" do
+  context 'associations' do
     it { should have_many(:votes) }
   end
 
-  context "Default factory" do
-    it "is valid" do
+  context 'Default factory' do
+    it 'is valid' do
       # Using create instead of build because it otherwise 
       # doesn't have status changes yet which are required 
       # by validation.
@@ -14,21 +14,21 @@ RSpec.describe Initiative, type: :model do
     end
   end
 
-  context "hooks" do
-    it "should set the author name on creation" do
+  context 'hooks' do
+    it 'should set the author name on creation' do
       u = create(:user)
       initiative = create(:initiative, author: u)
       expect(initiative.author_name).to eq u.full_name
     end
 
-    it "should generate a slug on creation" do
+    it 'should generate a slug on creation' do
       idea = create(:initiative, slug: nil)
       expect(idea.slug).to be_present
     end
   end
 
-  context "published at" do
-    it "gets set immediately when creating a published idea" do
+  context 'published at' do
+    it 'gets set immediately when creating a published idea' do
       t = Time.now
       travel_to t do
         initiative = create(:initiative, publication_status: 'published')
@@ -36,12 +36,12 @@ RSpec.describe Initiative, type: :model do
       end
     end
 
-    it "stays empty when creating a draft" do
+    it 'stays empty when creating a draft' do
       initiative = create(:initiative, publication_status: 'draft')
       expect(initiative.published_at).to be_nil
     end
 
-    it "gets filled in when publishing a draft" do
+    it 'gets filled in when publishing a draft' do
       initiative = create(:initiative, publication_status: 'draft')
       t = Time.now + 1.week
       travel_to t do
@@ -63,24 +63,24 @@ RSpec.describe Initiative, type: :model do
     end
   end
 
-  describe "body sanitizer" do
-    it "sanitizes script tags in the body" do
+  describe 'body sanitizer' do
+    it 'sanitizes script tags in the body' do
       initiative = create(:initiative, body_multiloc: {
-        "en" => "<p>Test</p><script>This should be removed!</script>"
+        'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(initiative.body_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+      expect(initiative.body_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
     end
   end
 
-  describe "title" do
-    it "is stripped from spaces at beginning and ending" do
+  describe 'title' do
+    it 'is stripped from spaces at beginning and ending' do
       initiative = create(:initiative, title_multiloc: {'en' => ' my fantastic idea  '})
       expect(initiative.title_multiloc['en']).to eq 'my fantastic idea'
     end
   end
 
-  describe "slug" do
-    it "is set properly upon publication" do
+  describe 'slug' do
+    it 'is set properly upon publication' do
       i1 = create(:initiative, title_multiloc: nil, slug: nil, publication_status: 'draft')
       i1.update!(title_multiloc: {'en' => 'My stupendous idea'}, publication_status: 'published')
       expect(i1.slug).to be_present
@@ -91,8 +91,8 @@ RSpec.describe Initiative, type: :model do
     end
   end
 
-  describe "order_status" do
-    it "shows proposed initiatives first, where the ones which will soon expire are shown at the top" do
+  describe 'order_status' do
+    it 'shows proposed initiatives first, where the ones which will soon expire are shown at the top' do
       proposed = create(:initiative_status_proposed)
       threshold_reached = create(:initiative_status_threshold_reached)
       i1, i2, i3 = create_list(:initiative, 3)

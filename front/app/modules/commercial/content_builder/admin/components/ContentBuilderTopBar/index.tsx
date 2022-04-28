@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -36,20 +36,52 @@ import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
+import eventEmitter from 'utils/eventEmitter';
 
-type ContentBuilderTopBarProps = {
-  disableSave: boolean;
-} & WithRouterProps;
-
-const ContentBuilderTopBar = ({
-  disableSave,
-  params: { projectId },
-}: ContentBuilderTopBarProps) => {
+const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
   const locale = useLocale();
   const project = useProject({ projectId });
+
+  const [contentBuilderErrors, setContentBuilderErrors] = useState<
+    Record<string, boolean>
+  >({});
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('contentBuilderError')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => ({
+          ...contentBuilderErrors,
+          ...(eventValue as Record<string, boolean>),
+        }));
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('deleteContentBuilderElement')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => {
+          const deletedElementId = eventValue as string;
+          const { [deletedElementId]: _deletedElementId, ...rest } =
+            contentBuilderErrors;
+          return rest;
+        });
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const disableSave = Object.values(contentBuilderErrors).some(
+    (value: boolean) => value === true
+  );
 
   const goBack = () => {
     clHistory.goBack();
@@ -72,6 +104,8 @@ const ContentBuilderTopBar = ({
 
   return (
     <Box
+      position="fixed"
+      zIndex="3"
       alignItems="center"
       w="100%"
       h={`${stylingConsts.menuHeight}px`}
@@ -106,6 +140,7 @@ const ContentBuilderTopBar = ({
         </Box>
         <Button
           disabled={disableSave}
+          id="e2e-content-builder-topbar-save"
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}

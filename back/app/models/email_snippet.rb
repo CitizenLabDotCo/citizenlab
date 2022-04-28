@@ -14,7 +14,7 @@
 #
 #  index_email_snippets_on_email_and_snippet_and_locale  (email,snippet,locale)
 #
-require "rails-html-sanitizer"
+require 'rails-html-sanitizer'
 
 class EmailSnippet < ApplicationRecord
 

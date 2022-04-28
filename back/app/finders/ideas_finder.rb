@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-## IdeasFinder.find
 class IdeasFinder < ApplicationFinder
   sortable_attributes 'upvotes_count', 'downvotes_count', 'baskets_count'
 
@@ -102,6 +101,20 @@ class IdeasFinder < ApplicationFinder
   def location_required_condition(location_required)
     return unless location_required
     @records.where.not(location_point: nil)
+  end
+
+  def filter_can_moderate_condition(can_moderate)
+    return unless can_moderate
+
+    if current_user
+      where(project: user_role_service.moderatable_projects(current_user))
+    else
+      records.none
+    end
+  end
+
+  def user_role_service
+    @user_role_service ||= UserRoleService.new
   end
 end
 

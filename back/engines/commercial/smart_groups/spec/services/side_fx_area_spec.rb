@@ -1,12 +1,12 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SideFxAreaService do
   let(:service) { SideFxAreaService.new }
   let(:user) { create(:user) }
   let(:area) { create(:area) }
 
-  describe "before_destroy" do
-    it "destroys any smart group that refers to this area" do
+  describe 'before_destroy' do
+    it 'destroys any smart group that refers to this area' do
       group1 = create(:smart_group, rules: [{
         ruleType: 'lives_in',
         predicate: 'has_value',

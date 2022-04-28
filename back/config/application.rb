@@ -17,7 +17,7 @@ require 'action_cable/engine'
 # require time extentions to fix
 #   NoMethodError: undefined method `day' for 1:Integer
 #   /usr/local/bundle/bundler/gems/knock-9214cd027422/lib/knock.rb:7:in `<module:Knock>'
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -62,9 +62,9 @@ module Cl2Back
     when 'mailgun'
       config.action_mailer.delivery_method = :mailgun
       config.action_mailer.mailgun_settings = {
-        api_key: ENV.fetch("MAILGUN_API_KEY"),
-        domain: ENV.fetch("MAILGUN_DOMAIN"),
-        api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
+        api_key: ENV.fetch('MAILGUN_API_KEY'),
+        domain: ENV.fetch('MAILGUN_DOMAIN'),
+        api_host: ENV.fetch('MAILGUN_API_HOST', 'api.mailgun.net'),
       }
     when 'smtp'
       config.action_mailer.delivery_method = :smtp

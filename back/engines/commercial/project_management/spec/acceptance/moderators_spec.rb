@@ -130,7 +130,7 @@ resource 'Moderators' do
   end
 
   get 'web_api/v1/projects/:project_id/moderators/users_search' do
-    context "when moderator" do
+    context 'when moderator' do
       before do
         @project = create(:project)
         @moderator = create(:project_moderator, projects: [@project])

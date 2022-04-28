@@ -2,12 +2,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "AdminPublication" do
+resource 'AdminPublication' do
 
-  explanation "Describes the presentation (ordering and publication) of a folder or project"
+  explanation 'Describes the presentation (ordering and publication) of a folder or project'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
   end
 
   context 'when project folder moderator' do
@@ -24,9 +24,9 @@ resource "AdminPublication" do
       @empty_draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'})
     end
 
-    patch "web_api/v1/admin_publications/:id/reorder" do
+    patch 'web_api/v1/admin_publications/:id/reorder' do
       with_options scope: :admin_publication do
-        parameter :ordering, "The position, starting from 0, where the folder or project should be at. Publications after will move down.", required: true
+        parameter :ordering, 'The position, starting from 0, where the folder or project should be at. Publications after will move down.', required: true
       end
 
       describe do

@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
     defaultMessage: 'e.g. 120px',
   },
+  aboutBox: {
+    id: 'app.containers.admin.ContentBuilder.aboutBox',
+    defaultMessage: 'About Box',
+  },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Notifications::OfficialFeedbackOnCommentedInitiative, type: :model do
 
-  describe "make_notifications_on" do
+  describe 'make_notifications_on' do
 
-    it "generates exactly one notification for each user that commented on the initiative" do
+    it 'generates exactly one notification for each user that commented on the initiative' do
       initiative = create(:initiative)
       comment1 = create(:comment, post: initiative)
       comment2 = create(:comment, post: initiative)

@@ -9,11 +9,11 @@ module IdBosaFas
     end
 
     def id
-      "6a66cafb-08a8-451f-8c0b-f349cdfdaaee"
+      '6a66cafb-08a8-451f-8c0b-f349cdfdaaee'
     end
 
     def name
-      "bosa_fas"
+      'bosa_fas'
     end
 
     def config_parameters
