@@ -64,7 +64,6 @@ describe ContentImageService do
       imageable = build(:user, bio_multiloc: { 'en' => '[]', 'fr-BE' => '[]', 'nl-BE' => '[]', 'de' => '[]' })
       output = service.swap_data_images imageable, :bio_multiloc
       expect(output.keys).to match_array %w[en fr-BE nl-BE de]
-      expect(TextImage).not_to have_received :create!
     end
 
     it 'returns the same multiloc when no images are included' do
@@ -72,7 +71,6 @@ describe ContentImageService do
       imageable = build(:user, bio_multiloc: { 'fr-BE' => json_str })
       output = service.swap_data_images imageable, :bio_multiloc
       expect(output).to eq({ 'fr-BE' => json_str })
-      expect(TextImage).not_to have_received :create!
     end
 
     it 'removes src and creates images when image elements occur without code' do
@@ -100,17 +98,17 @@ describe ContentImageService do
       ].to_json
 
       imageable = build(:user, bio_multiloc: { 'en' => json_str })
-      output = service.swap_data_images imageable, :bio_multiloc
+      output = nil
+      expect { output = service.swap_data_images imageable, :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'en' => expected_json })
-      expect(TextImage).not_to have_received :create!
     end
 
     it 'does not create images when there is no src' do
       json_str = '[{"type":"image"}]'
       imageable = build(:user, bio_multiloc: { 'de' => json_str })
-      output = service.swap_data_images imageable, :bio_multiloc
+      output = nil
+      expect { output = service.swap_data_images imageable, :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'de' => json_str })
-      expect(TextImage).not_to have_received :create!
     end
 
     it 'returns the same value when decoding failed' do
