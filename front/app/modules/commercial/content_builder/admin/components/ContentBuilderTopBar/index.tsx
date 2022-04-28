@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -29,7 +29,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
+
+// events
+import eventEmitter from 'utils/eventEmitter';
 
 // services
 import {
@@ -37,13 +40,28 @@ import {
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
 
-const ContentBuilderPage = ({ params: { projectId } }) => {
+const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
   const [loading, setLoading] = useState(false);
-
+  const [disableSave, setDisableSave] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
   const locale = useLocale();
   const project = useProject({ projectId });
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('contentBuilderErrors')
+      .subscribe(({ eventValue }) => {
+        console.log(eventValue);
+        setDisableSave(
+          Object.values(eventValue as Record<string, boolean>).some(
+            (value: boolean) => value === true
+          )
+        );
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const goBack = () => {
     clHistory.goBack();
@@ -99,6 +117,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           )}
         </Box>
         <Button
+          disabled={disableSave}
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}
