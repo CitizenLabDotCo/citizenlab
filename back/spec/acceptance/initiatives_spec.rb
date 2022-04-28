@@ -213,7 +213,7 @@ resource 'Initiatives' do
       example_request 'XLSX export by initiative ids' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@selected_initiatives.size + 1)
+        expect(worksheet.count).to eq(@selected_initiatives.size + 1)
       end
     end
 
@@ -564,7 +564,7 @@ resource 'Initiatives' do
     example_request 'Allowed transitions' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response).to eq ({
+      expect(json_response).to eq({
         **InitiativeStatus.where(code: 'answered').ids.map do |id|
           [id.to_sym, { feedback_required: true }]
         end.to_h,

@@ -17,7 +17,7 @@ describe Surveys::Typeform::Api do
 
       response = api.webhooks(form_id)
       expect(response.success?).to be true
-      expect(response.parsed_response).to eq ({ 'items' => [] })
+      expect(response.parsed_response).to eq({ 'items' => [] })
     end
   end
 
@@ -39,7 +39,7 @@ describe Surveys::Typeform::Api do
 
       response = api.create_or_update_webhook(form_id: form_id, tag: 'test-hook', url: webhook_url, secret: 'wontsay')
       expect(response.success?).to be true
-      expect(response.parsed_response).to eq ({
+      expect(response.parsed_response).to eq({
         'url' => webhook_url,
         'enabled' => true,
         'created_at' => '2019-01-17T13:55:57.391777Z',
@@ -68,7 +68,7 @@ describe Surveys::Typeform::Api do
   end
 
   describe 'responses' do
-    let (:responses_body) do
+    let(:responses_body) do
       {
         'items' => [{
           'answers' => [{
@@ -139,7 +139,7 @@ describe Surveys::Typeform::Api do
   end
 
   describe 'all_responses' do
-    let (:responses_body1) do
+    let(:responses_body1) do
       {
         'items' => [{
           'token' => '7f8835f008ac92737c675f2ff94af43b'
@@ -149,7 +149,7 @@ describe Surveys::Typeform::Api do
       }
     end
 
-    let (:responses_body2) do
+    let(:responses_body2) do
       {
         'items' => [{
           'token' => '475451e1cf8c3f13aad47330e8abc9b2'

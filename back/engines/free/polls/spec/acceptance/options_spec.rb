@@ -117,7 +117,7 @@ resource 'Poll Options' do
         do_request
         expect(response_status).to eq 200
         expect { Polls::Option.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Polls::Option.count).to eq (old_count - 1)
+        expect(Polls::Option.count).to eq(old_count - 1)
       end
     end
   end

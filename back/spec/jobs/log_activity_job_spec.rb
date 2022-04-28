@@ -38,7 +38,7 @@ RSpec.describe LogActivityJob, type: :job do
         .to have_enqueued_job(MakeNotificationsForClassJob)
         .with do |notification_class, activity|
           expect(notification_class).to eq 'Notifications::AdminRightsReceived'
-          expect(activity.item).to match ({
+          expect(activity.item).to match({
             item: user,
             user: admin,
             action: 'admin_rights_given',

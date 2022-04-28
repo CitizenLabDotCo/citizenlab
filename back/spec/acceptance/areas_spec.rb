@@ -98,7 +98,7 @@ resource 'Areas' do
         do_request
         expect(response_status).to eq 200
         expect { Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Area.count).to eq (old_count - 1)
+        expect(Area.count).to eq(old_count - 1)
       end
 
       example "Deleting an area that's still referenced in a user's setting", document: false do

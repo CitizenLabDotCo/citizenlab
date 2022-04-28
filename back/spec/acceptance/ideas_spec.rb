@@ -342,7 +342,7 @@ resource 'Ideas' do
       example_request 'XLSX export by project' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+        expect(worksheet.count).to eq(@selected_ideas.size + 1)
       end
     end
 
@@ -356,7 +356,7 @@ resource 'Ideas' do
       example_request 'XLSX export by idea ids' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+        expect(worksheet.count).to eq(@selected_ideas.size + 1)
       end
     end
 

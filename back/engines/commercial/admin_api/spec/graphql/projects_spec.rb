@@ -29,7 +29,7 @@ RSpec.describe 'Graphql project' do
 
     it 'returns all projects' do
       response = result
-      expect(response.dig('data', 'project')).to match ({
+      expect(response.dig('data', 'project')).to match({
         'id' => project.id,
         'slug' => project.slug,
         'publicationStatus' => project.admin_publication.publication_status,

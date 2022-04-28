@@ -6,8 +6,8 @@ describe CustomFieldService do
   let(:locale) { 'en' }
 
   describe 'fields_to_json_schema_multiloc' do
-    let (:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
-    let (:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
+    let(:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
+    let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
     let(:fields) do
       [
       create(:custom_field,
@@ -144,7 +144,7 @@ describe CustomFieldService do
       create_list(:area, 5)
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
+      expect(schema.dig(:properties, 'domicile', :enum)).to match(Area.all.order(created_at: :desc).map(&:id).push('outside'))
     end
 
     it 'it creates a valid schema for the built in idea custom fields' do

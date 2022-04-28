@@ -76,7 +76,7 @@ describe ParticipationContextService do
   end
 
   describe 'commenting_idea_disabled_reason_for_project' do
-    let (:user) { create(:user) }
+    let(:user) { create(:user) }
 
     context 'for timeline projects' do
       it 'returns nil when the commenting is allowed in the current phase' do

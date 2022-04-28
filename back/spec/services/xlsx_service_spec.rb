@@ -27,7 +27,7 @@ describe XlsxService do
     end
 
     it 'contains a row for every user' do
-      expect(worksheet.sheet_data.size).to eq (users.size + 1)
+      expect(worksheet.sheet_data.size).to eq(users.size + 1)
     end
 
     it 'contains extra columns for custom user fields' do
@@ -81,7 +81,7 @@ describe XlsxService do
     end
 
     it 'contains a row for every idea' do
-      expect(worksheet.sheet_data.size).to eq (ideas.size + 1)
+      expect(worksheet.sheet_data.size).to eq(ideas.size + 1)
     end
 
     describe do
@@ -104,7 +104,7 @@ describe XlsxService do
     end
 
     it 'contains a row for every initiative' do
-      expect(worksheet.sheet_data.size).to eq (initiatives.size + 1)
+      expect(worksheet.sheet_data.size).to eq(initiatives.size + 1)
     end
 
     describe do
@@ -127,7 +127,7 @@ describe XlsxService do
     end
 
     it 'contains a row for every comment' do
-      expect(worksheet.sheet_data.size).to eq (comments.size + 1)
+      expect(worksheet.sheet_data.size).to eq(comments.size + 1)
       expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('project')]).to eq comments.last.idea.project.title_multiloc.values.first
     end
 
@@ -148,7 +148,7 @@ describe XlsxService do
 
     it 'exports a valid excel file and contains a row for every comment' do
       expect { workbook }.not_to raise_error
-      expect(worksheet.sheet_data.size).to eq (comments.size + 1)
+      expect(worksheet.sheet_data.size).to eq(comments.size + 1)
       expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent_comment_id')]).to eq comments.last.parent_id
     end
 
@@ -172,7 +172,7 @@ describe XlsxService do
     end
 
     it 'contains a row for every invite' do
-      expect(worksheet.sheet_data.size).to eq (invites.size + 1)
+      expect(worksheet.sheet_data.size).to eq(invites.size + 1)
     end
 
     describe do

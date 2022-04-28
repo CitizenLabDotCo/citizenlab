@@ -214,32 +214,32 @@ describe SmartGroups::Rules::CustomFieldSelect do
     # TODO test education: return education description instead of number
 
     it 'successfully translates different combinations of rules' do
-      expect(custom_field_select_has_value_rule.description_multiloc).to eq ({
+      expect(custom_field_select_has_value_rule.description_multiloc).to eq({
         'en'    => 'Where should we put the immigrants? is In the train station',
         'fr-FR' => 'Où devrions-nous placer les immigrants? est Dans la gare',
         'nl-NL' => 'Waar moeten we de immigraten plaatsen? is In het treinstation'
       })
-      expect(custom_field_select_not_has_value_rule.description_multiloc).to eq ({
+      expect(custom_field_select_not_has_value_rule.description_multiloc).to eq({
         'en'    => 'Where should we put the immigrants? isn\'t In the train station',
         'fr-FR' => 'Où devrions-nous placer les immigrants? n\'est pas Dans la gare',
         'nl-NL' => 'Waar moeten we de immigraten plaatsen? is niet In het treinstation'
       })
-      expect(custom_field_select_is_one_of_rule.description_multiloc).to eq ({
+      expect(custom_field_select_is_one_of_rule.description_multiloc).to eq({
         'en'    => 'Where should we put the immigrants? has one of the following values: In the train station',
         'fr-FR' => 'Où devrions-nous placer les immigrants? est un de: Dans la gare',
         'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft een van de volgende waarden: In het treinstation'
       })
-      expect(custom_field_select_not_is_one_of_rule.description_multiloc).to eq ({
+      expect(custom_field_select_not_is_one_of_rule.description_multiloc).to eq({
         'en'    => 'Where should we put the immigrants? does not have any of the follow values: In the train station, In schools',
         'fr-FR' => 'Où devrions-nous placer les immigrants? n\'est pas un de: Dans la gare, Dans les écoles',
         'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft geen van de volgende waarden: In het treinstation, In scholen'
       })
-      expect(custom_field_select_is_empty_rule.description_multiloc).to eq ({
+      expect(custom_field_select_is_empty_rule.description_multiloc).to eq({
         'en'    => 'Where should we put the immigrants? has no value',
         'fr-FR' => 'Où devrions-nous placer les immigrants? n\'as pas de value',
         'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft geen waarde'
       })
-      expect(custom_field_select_not_is_empty_rule.description_multiloc).to eq ({
+      expect(custom_field_select_not_is_empty_rule.description_multiloc).to eq({
         'en'    => 'Where should we put the immigrants? has any value',
         'fr-FR' => 'Où devrions-nous placer les immigrants? peut avoir n\'importe quel value',
         'nl-NL' => 'Waar moeten we de immigraten plaatsen? heeft om het even welke waarde'

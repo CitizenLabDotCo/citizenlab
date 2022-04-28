@@ -122,7 +122,7 @@ resource 'NavBarItems' do
         do_request
         expect(response_status).to eq 200
         expect { NavBarItem.find id }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(NavBarItem.count).to eq (old_count - 1)
+        expect(NavBarItem.count).to eq(old_count - 1)
       end
     end
   end

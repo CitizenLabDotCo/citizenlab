@@ -138,7 +138,7 @@ resource 'Comments' do
       example_request 'XLSX export of comments on initiatives' do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (@comments.size + 1)
+        expect(worksheet.count).to eq(@comments.size + 1)
       end
     end
 
@@ -152,7 +152,7 @@ resource 'Comments' do
       example_request 'XLSX export by initiative ids', document: false do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq (initiatives.size + 1)
+        expect(worksheet.count).to eq(initiatives.size + 1)
       end
     end
 

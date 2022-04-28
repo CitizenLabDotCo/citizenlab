@@ -30,7 +30,7 @@ RSpec.describe 'Graphql user' do
 
     it 'returns all users' do
       response = result
-      expect(response.dig('data', 'user')).to match ({
+      expect(response.dig('data', 'user')).to match({
         'id' => user.id,
         'firstName' => user.first_name,
         'lastName' => user.last_name,
@@ -56,7 +56,7 @@ RSpec.describe 'Graphql user' do
 
     it 'returns an unsubscriptionToken' do
       response = result
-      expect(response.dig('data', 'user')).to match ({
+      expect(response.dig('data', 'user')).to match({
         'unsubscriptionToken' => unsubscription_token.token
       })
     end

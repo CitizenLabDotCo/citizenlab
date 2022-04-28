@@ -168,42 +168,42 @@ describe SmartGroups::Rules::LivesIn do
     }) end
 
     it 'successfully translates different combinations of rules' do
-      expect(lives_in_has_value_rule.description_multiloc).to eq ({
+      expect(lives_in_has_value_rule.description_multiloc).to eq({
         'en'    => 'Place of residence is Brussels',
         'fr-FR' => 'Domicile est Bruxelles',
         'nl-NL' => 'Woonplaats is Brussel'
       })
-      expect(lives_in_outside_rule.description_multiloc).to eq ({
+      expect(lives_in_outside_rule.description_multiloc).to eq({
         'en'    => 'Place of residence is somewhere else',
         'fr-FR' => 'Domicile est ailleurs',
         'nl-NL' => 'Woonplaats is ergens anders'
       })
-      expect(lives_in_not_has_value_rule.description_multiloc).to eq ({
+      expect(lives_in_not_has_value_rule.description_multiloc).to eq({
         'en'    => 'Place of residence isn\'t Brussels',
         'fr-FR' => 'Domicile n\'est pas Bruxelles',
         'nl-NL' => 'Woonplaats is niet Brussel'
       })
-      expect(lives_in_not_outside_rule.description_multiloc).to eq ({
+      expect(lives_in_not_outside_rule.description_multiloc).to eq({
         'en'    => 'Place of residence is not somewhere else',
         'fr-FR' => 'Domicile n\'est pas ailleurs',
         'nl-NL' => 'Woonplaats is niet ergens anders'
       })
-      expect(lives_in_is_one_of_rule.description_multiloc).to eq ({
+      expect(lives_in_is_one_of_rule.description_multiloc).to eq({
         'en'    => 'Place of residence has one of the following values: Brussels, somewhere else',
         'fr-FR' => 'Domicile est un de: Bruxelles, quelque part d\'autre',
         'nl-NL' => 'Woonplaats heeft een van de volgende waarden: Brussel, ergens anders'
       })
-      expect(lives_in_not_is_one_of_rule.description_multiloc).to eq ({
+      expect(lives_in_not_is_one_of_rule.description_multiloc).to eq({
         'en'    => 'Place of residence does not have any of the follow values: Brussels',
         'fr-FR' => 'Domicile n\'est pas un de: Bruxelles',
         'nl-NL' => 'Woonplaats heeft geen van de volgende waarden: Brussel'
       })
-      expect(lives_in_is_empty_rule.description_multiloc).to eq ({
+      expect(lives_in_is_empty_rule.description_multiloc).to eq({
         'en'    => 'Place of residence has no value',
         'fr-FR' => 'Domicile n\'as pas de value',
         'nl-NL' => 'Woonplaats heeft geen waarde'
       })
-      expect(lives_in_not_is_empty_rule.description_multiloc).to eq ({
+      expect(lives_in_not_is_empty_rule.description_multiloc).to eq({
         'en'    => 'Place of residence has any value',
         'fr-FR' => 'Domicile peut avoir n\'importe quel value',
         'nl-NL' => 'Woonplaats heeft om het even welke waarde'

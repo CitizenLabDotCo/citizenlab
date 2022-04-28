@@ -22,13 +22,13 @@ describe TimelineService do
       now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
       project = create(:project)
       phase = create(:phase, start_at: now - 1.week, end_at: now, project: project)
-      expect(service.current_phase(project)&.id).to eq (phase.id)
+      expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
     it "returns the active phase when we're in the first day of the phase" do
       project = create(:project)
       phase = create(:phase, start_at: Time.now.to_date, end_at: Time.now.to_date + 1.week, project: project)
-      expect(service.current_phase(project)&.id).to eq (phase.id)
+      expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
     it 'respects the tenant timezone' do

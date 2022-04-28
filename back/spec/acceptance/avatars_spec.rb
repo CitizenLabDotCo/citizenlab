@@ -132,7 +132,7 @@ resource 'Avatars' do
     let(:user) { create(:user) }
 
     describe do
-      let (:id) { user.id }
+      let(:id) { user.id }
 
       example_request 'Get a single avatar' do
         expect(status).to eq(200)

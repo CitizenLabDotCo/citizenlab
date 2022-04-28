@@ -42,7 +42,7 @@ resource 'Volunteering Volunteers' do
         do_request
         assert_status 200
         expect { volunteer.reload }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Volunteering::Volunteer.count).to eq (old_count - 1)
+        expect(Volunteering::Volunteer.count).to eq(old_count - 1)
       end
     end
   end
@@ -66,7 +66,7 @@ resource 'Volunteering Volunteers' do
         other_volunteer = create(:volunteer)
       end
 
-      let (:cause_id) { @cause.id }
+      let(:cause_id) { @cause.id }
 
       example_request 'List all volunteers for a cause as an admin' do
         assert_status 200
@@ -88,7 +88,7 @@ resource 'Volunteering Volunteers' do
         other_volunteer = create(:volunteer)
       end
 
-      let (:participation_context_id) { @project.id }
+      let(:participation_context_id) { @project.id }
 
       example_request 'XLSX export all volunteers of a project' do
         assert_status 200

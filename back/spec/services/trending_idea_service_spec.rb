@@ -21,7 +21,7 @@ describe TrendingIdeaService do
         trending_idea.idea_status = IdeaStatus.find_by(code: 'rejected') || create(:idea_status, code: 'rejected')
         trending_idea.save
         trending_filter_after = TrendingIdeaService.new.filter_trending(Idea.all).map(&:id)
-        expect(trending_filter.size).to eq (trending_filter_after.size + 1)
+        expect(trending_filter.size).to eq(trending_filter_after.size + 1)
       end
     end
   end

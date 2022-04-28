@@ -113,7 +113,7 @@ resource 'User', admin_api: true do
     let(:first_name) { 'Jacqueline' }
     let(:roles) { [{ type: 'admin' }] }
     let!(:cf) { create(:custom_field, key: 'favourite_drink') }
-    let (:custom_field_values) { { favourite_drink: 'wine' } }
+    let(:custom_field_values) { { favourite_drink: 'wine' } }
 
     describe do
       example_request 'Update a user' do

@@ -198,7 +198,7 @@ resource 'Phases' do
           ti_count = TextImage.count
           do_request
           assert_status 201
-          expect(TextImage.count).to eq (ti_count + 1)
+          expect(TextImage.count).to eq(ti_count + 1)
         end
 
         example '[error] Create a phase with text image without start and end date', document: false do

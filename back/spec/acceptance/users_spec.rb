@@ -482,7 +482,7 @@ resource 'Users' do
           example_request 'XLSX export all users by filtering on both group and user ids', document: false do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map { |r| r['id'] }).to match_array (@members.map(&:id) & @selected.map(&:id))
+            expect(xlsx_hash.map { |r| r['id'] }).to match_array(@members.map(&:id) & @selected.map(&:id))
           end
         end
       end
@@ -669,7 +669,7 @@ resource 'Users' do
 
           do_request(user: { custom_field_values: {} })
           expect(response_status).to eq 200
-          expect(@user.reload.custom_field_values).to eq ({})
+          expect(@user.reload.custom_field_values).to eq({})
         end
 
         example 'Cannot modify values of hidden custom fields' do

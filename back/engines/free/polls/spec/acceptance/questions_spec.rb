@@ -20,7 +20,7 @@ resource 'Poll Questions' do
       other_question = create(:poll_question)
     end
 
-    let (:participation_context_id) { @project.id }
+    let(:participation_context_id) { @project.id }
     example_request 'List all questions in a poll project' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -42,7 +42,7 @@ resource 'Poll Questions' do
       other_question = create(:poll_question)
     end
 
-    let (:participation_context_id) { @phase.id }
+    let(:participation_context_id) { @phase.id }
     example_request 'List all questions in a poll phase' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
@@ -155,7 +155,7 @@ resource 'Poll Questions' do
         do_request
         expect(response_status).to eq 200
         expect { Polls::Question.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Polls::Question.count).to eq (old_count - 1)
+        expect(Polls::Question.count).to eq(old_count - 1)
       end
     end
   end

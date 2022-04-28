@@ -136,7 +136,7 @@ resource 'Campaigns' do
       do_request
       assert_status 200
       expect { EmailCampaigns::Campaign.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      expect(EmailCampaigns::Campaign.count).to eq (old_count - 1)
+      expect(EmailCampaigns::Campaign.count).to eq(old_count - 1)
     end
   end
 

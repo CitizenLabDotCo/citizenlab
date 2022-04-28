@@ -58,7 +58,7 @@ resource 'Topics' do
         example_request 'Rename a default topic does not work', example: false do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match ({ 'en' => 'Drama' })
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match({ 'en' => 'Drama' })
         end
       end
     end
@@ -96,7 +96,7 @@ resource 'Topics' do
         do_request
         expect(response_status).to eq 200
         expect { Topic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Topic.count).to eq (old_count - 1)
+        expect(Topic.count).to eq(old_count - 1)
       end
 
       context do

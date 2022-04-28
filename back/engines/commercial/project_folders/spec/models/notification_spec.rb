@@ -21,6 +21,6 @@ RSpec.describe Notification, type: :model do
     count = Notification.count
     folder.destroy!
 
-    expect(Notification.count).to eq (count - 1)
+    expect(Notification.count).to eq(count - 1)
   end
 end

@@ -61,7 +61,7 @@ resource 'Survey Responses' do
     '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
   } end
 
-  let (:responses_body) do
+  let(:responses_body) do
     {
       'items' => [{
         'answers' => [{

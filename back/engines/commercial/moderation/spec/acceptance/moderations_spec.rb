@@ -200,7 +200,7 @@ resource 'Moderations' do
         let(:moderatable_id) { idea.id }
 
         describe do
-          let (:moderation_status) { 'read' }
+          let(:moderation_status) { 'read' }
 
           example_request 'Mark a moderation as read' do
             expect(status).to eq(200)
@@ -214,7 +214,7 @@ resource 'Moderations' do
             create(:moderation_status, moderatable: idea, status: 'read')
           end
 
-          let (:moderation_status) { 'unread' }
+          let(:moderation_status) { 'unread' }
 
           example_request 'Mark a moderation as unread' do
             expect(status).to eq(200)

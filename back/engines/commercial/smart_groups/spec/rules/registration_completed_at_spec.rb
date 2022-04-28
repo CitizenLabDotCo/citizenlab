@@ -86,27 +86,27 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
     }) end
 
     it 'successfully translates different combinations of rules' do
-      expect(registration_completed_at_is_before_rule.description_multiloc).to eq ({
+      expect(registration_completed_at_is_before_rule.description_multiloc).to eq({
         'en'    => 'registration is before 2019-11-12',
         'fr-FR' => 'date d\'inscription est avant 12/11/2019',
         'nl-NL' => 'registratie is voor 12-11-2019'
       })
-      expect(registration_completed_at_is_after_rule.description_multiloc).to eq ({
+      expect(registration_completed_at_is_after_rule.description_multiloc).to eq({
         'en'    => 'registration is after 2019-11-12',
         'fr-FR' => 'date d\'inscription est après 12/11/2019',
         'nl-NL' => 'registratie is na 12-11-2019'
       })
-      expect(registration_completed_at_is_exactly_rule.description_multiloc).to eq ({
+      expect(registration_completed_at_is_exactly_rule.description_multiloc).to eq({
         'en'    => 'registration is 2019-11-12',
         'fr-FR' => 'date d\'inscription est 12/11/2019',
         'nl-NL' => 'registratie is 12-11-2019'
       })
-      expect(registration_completed_at_is_empty_rule.description_multiloc).to eq ({
+      expect(registration_completed_at_is_empty_rule.description_multiloc).to eq({
         'en'    => 'registration has no value',
         'fr-FR' => 'date d\'inscription n\'as pas de value',
         'nl-NL' => 'registratie heeft geen waarde'
       })
-      expect(registration_completed_at_not_is_empty_rule.description_multiloc).to eq ({
+      expect(registration_completed_at_not_is_empty_rule.description_multiloc).to eq({
         'en'    => 'registration has any value',
         'fr-FR' => 'date d\'inscription peut avoir n\'importe quel value',
         'nl-NL' => 'registratie heeft om het even welke waarde'

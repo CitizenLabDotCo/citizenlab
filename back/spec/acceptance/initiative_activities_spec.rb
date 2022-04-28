@@ -18,7 +18,7 @@ resource 'Activities' do
       parameter :size, 'Number of activities per page'
     end
 
-    let (:initiative_id) { @initiative.id }
+    let(:initiative_id) { @initiative.id }
 
     example_request 'List all activities' do
       expect(status).to eq(200)
