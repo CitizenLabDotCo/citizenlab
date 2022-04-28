@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const TEST_GENDER_DATA = [
+const TEST_GENDER_DATA = [
   {
     name: 'Female',
     actualPercentage: 42,
@@ -47,8 +47,14 @@ export const TEST_GENDER_DATA = [
 //   return data;
 // };
 
-// export const TEST_GENDER_DATA = generateData(6);
+// const TEST_GENDER_DATA = generateData(6);
 
-export const GENDER_INCLUDED_USERS_PERCENTAGE = '100%';
+const DATA_PER_CODE = {
+  gender: {
+    data: TEST_GENDER_DATA,
+    includedUsersPercentage: 100,
+    demographicDataDate: moment('2021-09-02'),
+  },
+};
 
-export const GENDER_DEMO_DATA_DATE = moment('2021-09-02');
+export default DATA_PER_CODE;

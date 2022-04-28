@@ -18,9 +18,7 @@ import messages from './messages';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
-
-// data
-import { TEST_GENDER_DATA, GENDER_DEMO_DATA_DATE } from './data';
+import { Moment } from 'moment';
 
 interface RepresentativenessRow {
   name: string;
@@ -30,8 +28,13 @@ interface RepresentativenessRow {
   referenceNumber: number;
 }
 
+export type RepresentativenessData = RepresentativenessRow[];
+
 interface Props {
   customField: IUserCustomFieldData;
+  data: RepresentativenessData;
+  includedUserPercentage: number;
+  demographicDataDate: Moment;
 }
 
 interface TooltipProps {
@@ -58,32 +61,35 @@ const formatTooltipValues = (_, __, tooltipProps?: TooltipProps) => {
     : `${referencePercentage}% (${referenceNumber})`;
 };
 
-const getLegendLabels = (barNames: string[]) => [
+const getLegendLabels = (barNames: string[], demographicDataDate: Moment) => [
   barNames[0],
-  `${barNames[1]} (${GENDER_DEMO_DATA_DATE.format('MMMM YYYY')})`,
+  `${barNames[1]} (${demographicDataDate.format('MMMM YYYY')})`,
 ];
 
 const emptyString = () => '';
 
 const ChartCard = ({
   customField,
+  data,
+  includedUserPercentage,
+  demographicDataDate,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
   const currentChartRef = useRef<SVGElement>();
 
-  const hideTicks = TEST_GENDER_DATA.length > 12;
-  const hideLabels = TEST_GENDER_DATA.length > 10;
-  const dataIsTooLong = TEST_GENDER_DATA.length > 24;
-  const data = TEST_GENDER_DATA.slice(0, 24);
-  const numberOfHiddenItems = TEST_GENDER_DATA.length - 24;
+  const hideTicks = data.length > 12;
+  const hideLabels = data.length > 10;
+  const dataIsTooLong = data.length > 24;
+  const slicedData = data.slice(0, 24);
+  const numberOfHiddenItems = data.length - 24;
 
   const barNames = [
     formatMessage(messages.users),
     formatMessage(messages.totalPopulation),
   ];
 
-  const legendLabels = getLegendLabels(barNames);
+  const legendLabels = getLegendLabels(barNames, demographicDataDate);
 
   return (
     <Box width="100%" background="white">
@@ -94,7 +100,7 @@ const ChartCard = ({
       <MultiBarChart
         height={300}
         innerRef={currentChartRef}
-        data={data}
+        data={slicedData}
         mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
         bars={{
           name: barNames,
@@ -119,6 +125,7 @@ const ChartCard = ({
       />
       <Footer
         fieldIsRequired={customField.attributes.required}
+        includedUserPercentage={includedUserPercentage}
         hideTicks={hideTicks}
         dataIsTooLong={dataIsTooLong}
         numberOfHiddenItems={numberOfHiddenItems}

@@ -13,9 +13,6 @@ import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// data
-import { GENDER_INCLUDED_USERS_PERCENTAGE } from './data';
-
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);
 `;
@@ -29,6 +26,7 @@ interface RequiredOrOptionalProps {
 }
 
 interface Props extends RequiredOrOptionalProps {
+  includedUserPercentage: number;
   hideTicks: boolean;
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
@@ -52,6 +50,7 @@ const smallPadding = '0px 40px 4px 40px';
 
 const Footer = ({
   fieldIsRequired,
+  includedUserPercentage,
   hideTicks,
   dataIsTooLong,
   numberOfHiddenItems,
@@ -79,7 +78,7 @@ const Footer = ({
           <FormattedMessage
             {...messages.percentageUsersIncluded}
             values={{
-              percentage: <b>{GENDER_INCLUDED_USERS_PERCENTAGE}</b>,
+              percentage: <b>{includedUserPercentage}%</b>,
             }}
           />
           <Separator>•</Separator>
