@@ -3,6 +3,9 @@ import React from 'react';
 // Craft
 import { useEditor, Element } from '@craftjs/core';
 
+// Router
+import { withRouter, WithRouterProps } from 'react-router';
+
 // Intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -15,6 +18,7 @@ import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
+import AboutBox from '../CraftComponents/AboutBox';
 
 // Intl
 import messages from '../../messages';
@@ -28,7 +32,8 @@ const DraggableElement = styled.div`
 
 const ContentBuilderToolbox = ({
   intl: { formatMessage },
-}: InjectedIntlProps) => {
+  params: { projectId },
+}: InjectedIntlProps & WithRouterProps) => {
   const {
     connectors,
     actions: { selectNode },
@@ -105,8 +110,24 @@ const ContentBuilderToolbox = ({
       >
         <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>
+      <DraggableElement
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element is={AboutBox} id="AboutBox" projectId={projectId} />,
+            {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            }
+          )
+        }
+      >
+        <ToolboxItem icon="info" label={formatMessage(messages.aboutBox)} />
+      </DraggableElement>
     </Box>
   );
 };
 
-export default injectIntl(ContentBuilderToolbox);
+export default withRouter(injectIntl(ContentBuilderToolbox));
