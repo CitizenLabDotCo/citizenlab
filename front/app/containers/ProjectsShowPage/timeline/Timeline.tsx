@@ -25,7 +25,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { getIsoDate } from 'utils/dateUtils';
+import { getIsoDateUtc } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
@@ -368,8 +368,10 @@ const Timeline = ({
 export default Timeline;
 
 function getNumberOfDays(phase: IPhaseData) {
-  const startIsoDate = getIsoDate(phase.attributes.start_at);
-  const endIsoDate = getIsoDate(phase.attributes.end_at);
+  // we can ignore user timezone to compare start/end dates,
+  // since all we care about is the amount of time between the two
+  const startIsoDate = getIsoDateUtc(phase.attributes.start_at);
+  const endIsoDate = getIsoDateUtc(phase.attributes.end_at);
   const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
   const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
   const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;

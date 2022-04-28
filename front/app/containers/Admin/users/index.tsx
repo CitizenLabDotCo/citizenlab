@@ -34,7 +34,7 @@ const Wrapper = styled.div`
   top: ${(props) => props.theme.menuHeight}px;
   left: 210px;
   bottom: 0;
-  ${media.smallerThan1280px`
+  ${media.smallerThan1200px`
     left: 80px;
   `}
 `;
@@ -43,7 +43,7 @@ const LeftPanel = styled(GroupsListPanel)`
   width: 300px;
   flex: 0 0 300px;
 
-  ${media.smallerThan1280px`
+  ${media.smallerThan1200px`
     width: 260px;
     flex: 0 0 260px;
   `}
