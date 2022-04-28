@@ -99,7 +99,11 @@ const ChartCard = ({
           fill: [newBarFill, secondaryNewBarFill],
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
-        xaxis={data.length > 12 ? { tickFormatter: emptyString } : undefined}
+        xaxis={
+          data.length > 12
+            ? { tickFormatter: emptyString, tickLine: false }
+            : undefined
+        }
         yaxis={{ tickFormatter: formatPercentage }}
         renderLabels={
           data.length > 10
