@@ -66,6 +66,17 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "automatic_locales": {
+            "title": "Languages that will be translated automatically.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["tw"]
+            },
+            "uniqueItems": true,
+            "minItems": 0,
+            "default": []
+          },
           "color_main": {
             "title": "Main Colour",
             "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",

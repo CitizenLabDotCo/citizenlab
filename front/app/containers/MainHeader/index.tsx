@@ -280,6 +280,9 @@ const MainHeader = ({ setRef }: Props) => {
   const tenantLocales = !isNilOrError(appConfiguration)
     ? appConfiguration.data.attributes.settings.core.locales
     : [];
+  const automaticLocales = !isNilOrError(appConfiguration)
+    ? appConfiguration.data.attributes.settings.core.automatic_locales
+    : [];
   const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
   const firstUrlSegment = urlSegments[0];
   const secondUrlSegment = urlSegments[1];
@@ -385,7 +388,7 @@ const MainHeader = ({ setRef }: Props) => {
               </>
             )}
 
-            {tenantLocales.length > 1 && locale && (
+            {tenantLocales.length + automaticLocales.length > 1 && locale && (
               <RightItem
                 onMouseOver={preloadLanguageSelector}
                 className="noLeftMargin"

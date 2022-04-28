@@ -21,6 +21,7 @@ export const getAppConfigurationData = (
         allowed: true,
         enabled: true,
         locales: ['en'],
+        automatic_locales: [],
         timezone: 'Europe/Brussels',
         organization_name: {
           en: 'Wonderville',

@@ -17,6 +17,7 @@ export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
+  automatic_locales: string[];
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
