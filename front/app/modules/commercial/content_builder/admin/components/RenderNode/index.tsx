@@ -20,6 +20,7 @@ const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
 const IMAGE = 'Image';
 const IFRAME = 'CraftIframe';
+const ABOUT_BOX = 'AboutBox';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -27,7 +28,8 @@ type ComponentNamesType =
   | typeof THREE_COLUMNS
   | typeof TEXT
   | typeof IMAGE
-  | typeof IFRAME;
+  | typeof IFRAME
+  | typeof ABOUT_BOX;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -43,11 +45,17 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.image;
     case IFRAME:
       return messages.url;
+    case ABOUT_BOX:
+      return messages.aboutBox;
   }
 };
 
 const StyledBox = styled(Box)`
-  cursor: ${({ isRoot }: { isRoot: boolean }) => (isRoot ? 'auto' : 'move')};
+  ${({ isRoot }: { isRoot: boolean }) =>
+    isRoot
+      ? `cursor: auto;
+     min-width:1000px;`
+      : `cursor:move;`}
 `;
 
 const RenderNode = ({ render }) => {

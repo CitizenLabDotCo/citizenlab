@@ -17,9 +17,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .group(:mode)
       .count
     render json: {
-      up: count["up"],
-      down: count["down"],
-      total: (count["up"] || 0) + (count["down"] || 0)
+      up: count['up'],
+      down: count['down'],
+      total: (count['up'] || 0) + (count['down'] || 0)
     }
   end
 
@@ -47,7 +47,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_time_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
-      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+      .joins('JOIN ideas ON ideas.id = votes.votable_id')
 
     votes = apply_group_filter(votes)
     votes = apply_project_filter(votes)
@@ -75,7 +75,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_time_cumulative_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
-      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+      .joins('JOIN ideas ON ideas.id = votes.votable_id')
 
     votes = apply_group_filter(votes)
     votes = apply_project_filter(votes)
@@ -98,16 +98,16 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_topic_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
-      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+      .joins('JOIN ideas ON ideas.id = votes.votable_id')
 
     votes = apply_group_filter(votes)
     votes = apply_project_filter(votes)
 
     votes
       .where(created_at: @start_at..@end_at)
-      .joins("JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
-      .group("ideas_topics.topic_id")
-      .order("ideas_topics.topic_id")
+      .joins('JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
+      .group('ideas_topics.topic_id')
+      .order('ideas_topics.topic_id')
       .count
   end
 
@@ -122,29 +122,29 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map {|topic_id, count|
       {
-        "topic" => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
-        "topic_id" => topic_id,
-        "votes" => count
+        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
+        'topic_id' => topic_id,
+        'votes' => count
       }
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "topic"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'votes', 'topic'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_topic.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_topic.xlsx'
   end
 
   def votes_by_project_serie
     votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
-      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+      .joins('JOIN ideas ON ideas.id = votes.votable_id')
 
     votes = apply_group_filter(votes)
     votes = apply_topic_filter(votes)
 
     votes
       .where(created_at: @start_at..@end_at)
-      .group("ideas.project_id")
-      .order("ideas.project_id")
+      .group('ideas.project_id')
+      .order('ideas.project_id')
       .count
   end
 
@@ -159,15 +159,15 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map {|project_id, count|
       {
-        "project" => @@multiloc_service.t(projects.find(project_id).title_multiloc),
-        "project_id" => project_id,
-        "votes" => count
+        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
+        'project_id' => project_id,
+        'votes' => count
       }
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "votes", "project"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'votes', 'project'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "votes_by_project.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'votes_by_project.xlsx'
   end
 
   private
@@ -192,7 +192,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def apply_topic_filter votes
     if params[:topic]
       votes
-        .joins("JOIN ideas_topics ON ideas.id = ideas_topics.idea_id")
+        .joins('JOIN ideas_topics ON ideas.id = ideas_topics.idea_id')
         .where(ideas_topics: {topic_id: params[:topic]})
     else
       votes
@@ -225,7 +225,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .where(created_at: @start_at..@end_at)
       .where(votable_id: apply_idea_filters(policy_scope(Idea), filter_params))
       .left_outer_joins(:user)
-      .group("mode","users.custom_field_values->>'#{key}'")
+      .group('mode',"users.custom_field_values->>'#{key}'")
       .order(Arel.sql("users.custom_field_values->>'#{key}'"))
       .count
     data = %w(up down).map do |mode|
@@ -234,7 +234,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
         serie.keys.select do |key_mode, _|
           key_mode == mode
         end.map do |_, value|
-          [(value || "_blank"), serie[[mode,value]]]
+          [(value || '_blank'), serie[[mode,value]]]
         end.to_h
       ]
     end.to_h
@@ -254,28 +254,28 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def double_grouped_by_to_nested_hashes serie
     response = {
-      "up" => {},
-      "down" => {},
-      "total" => Hash.new{|hash,key| hash[key] = 0}
+      'up' => {},
+      'down' => {},
+      'total' => Hash.new{|hash,key| hash[key] = 0}
     }
     serie.each_with_object(response) do |((mode, date), count), object|
       object[mode][date] = count
-      object["total"][date] += count
+      object['total'][date] += count
     end
   end
 
   def double_grouped_by_to_object_array serie
     res = []
     serie.each do |((mode, date), count)|
-      found_index = res.index {|item| item["date"] == date }
+      found_index = res.index {|item| item['date'] == date }
       if found_index
         res[found_index][mode] = count
-        res[found_index]["total"] += count
+        res[found_index]['total'] += count
       else
         res.push({
-          "date" => date,
+          'date' => date,
           mode => count,
-          "total" => count
+          'total' => count
         })
       end
     end
@@ -304,7 +304,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: "no data for this period"}, status: :unprocessable_entity
+      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
     end
   end
 

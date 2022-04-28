@@ -43,7 +43,7 @@ RSpec.describe Permission, type: :model do
     end
   end
 
-  describe "#for_user" do
+  describe '#for_user' do
     before(:all) do
       # rubocop:disable RSpec/BeforeAfterAll
       @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)

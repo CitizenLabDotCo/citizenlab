@@ -1,10 +1,23 @@
 # Changelog
 
-## Next release
+## 2022-04-28
+
+### Fixed
+
+- Start and end times for project phases now account for the user's local timezone, making sure users can still access and engage with projects when the start/end dates are valid for them locally. The default used UTC, so it was not a big issue in Europe (where we're mostly very close to UTC time), but could be a bigger issue in e.g. North and South America, where UTC offset could be 4 or 5 hours and this could cause projects to display as ended even if they should have been valid on the user's current local date.
+- Fixed breakpoint issues in `admin/insights` and `admin/users`, where content would disappear under the sidebar for certain screen sizes.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
+
+## 2022-04-25
 
 ### Changed
 
 - 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
+- Added property for status label to Tab component, and used this to add "Beta" flag to feature flagged SMS feature
+
+### Fixed
+
+- Improved input manager so that "All projects" can handle many projects.
 
 ## 2022-04-20
 

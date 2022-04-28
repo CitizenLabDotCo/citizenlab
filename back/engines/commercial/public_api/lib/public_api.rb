@@ -1,4 +1,4 @@
-require "public_api/engine"
+require 'public_api/engine'
 
 module PublicApi
 end

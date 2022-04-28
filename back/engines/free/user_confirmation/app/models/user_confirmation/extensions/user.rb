@@ -85,8 +85,7 @@ module UserConfirmation
       end
 
       def reset_confirmation_code
-        result                       = CodeGenerator.call
-        self.email_confirmation_code = result.code
+        self.email_confirmation_code = use_fake_code? ? '1234' : rand.to_s[2..5]
       end
 
       def increment_confirmation_code_reset_count
@@ -116,6 +115,10 @@ module UserConfirmation
 
       def confirmation_required=(val)
         write_attribute :confirmation_required, val
+      end
+
+      def use_fake_code?
+        Rails.env.development?
       end
     end
   end

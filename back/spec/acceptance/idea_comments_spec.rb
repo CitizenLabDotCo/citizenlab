@@ -2,22 +2,22 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Comments" do
+resource 'Comments' do
 
-  explanation "Comments permit users to have discussions about content (i.e. ideas)."
+  explanation 'Comments permit users to have discussions about content (i.e. ideas).'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     @project = create(:continuous_project)
     @idea = create(:idea, project: @project)
   end
 
-  get "web_api/v1/ideas/:idea_id/comments" do
+  get 'web_api/v1/ideas/:idea_id/comments' do
     with_options scope: :page do
-      parameter :number, "Page number"
-      parameter :size, "Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more"
+      parameter :number, 'Page number'
+      parameter :size, 'Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more'
     end
-    parameter :sort, "Either new, -new, upvotes_count or -upvotes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically."
+    parameter :sort, 'Either new, -new, upvotes_count or -upvotes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
 
     describe do
       before do
@@ -42,7 +42,7 @@ resource "Comments" do
       let(:idea_id) { @idea.id }
       let(:size) { 3 }
 
-      example_request "List the top-level comments of an idea" do
+      example_request 'List the top-level comments of an idea' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 10
@@ -64,7 +64,7 @@ resource "Comments" do
 
     describe do
       let(:idea_id) { @idea.id }
-      let(:sort) { "-upvotes_count" }
+      let(:sort) { '-upvotes_count' }
 
       before do
         @c1, @c2, @c3 = create_list(:comment, 3, post: @idea)
@@ -74,7 +74,7 @@ resource "Comments" do
         create(:vote, votable: @c3sub2)
       end
 
-      example_request "List the top-level comments of an idea sorted by descending upvotes_count" do
+      example_request 'List the top-level comments of an idea sorted by descending upvotes_count' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
@@ -90,11 +90,11 @@ resource "Comments" do
 
   end
 
-  get "web_api/v1/comments/:comment_id/children" do
-    explanation "Children are always returned chronologically"
+  get 'web_api/v1/comments/:comment_id/children' do
+    explanation 'Children are always returned chronologically'
     with_options scope: :page do
-      parameter :number, "Page number"
-      parameter :size, "Number of comments per page"
+      parameter :number, 'Page number'
+      parameter :size, 'Number of comments per page'
     end
 
     before do
@@ -110,7 +110,7 @@ resource "Comments" do
 
     let(:comment_id) { @c.id }
 
-    example_request "List the direct child comments of a comment on an idea" do
+    example_request 'List the direct child comments of a comment on an idea' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
@@ -125,7 +125,7 @@ resource "Comments" do
     end
   end
 
-  get "web_api/v1/ideas/comments/as_xlsx" do
+  get 'web_api/v1/ideas/comments/as_xlsx' do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
@@ -135,7 +135,7 @@ resource "Comments" do
       header 'Authorization', "Bearer #{token}"
     end
 
-    example_request "XLSX export of comments on ideas" do
+    example_request 'XLSX export of comments on ideas' do
       expect(status).to eq 200
     end
 
@@ -205,13 +205,13 @@ resource "Comments" do
     end
   end
 
-  get "web_api/v1/comments/:id" do
+  get 'web_api/v1/comments/:id' do
     let(:idea) { create(:idea) }
     let(:parent) { create(:comment, post: idea) }
     let(:comment) { create(:comment, parent: parent, post: idea) }
     let(:id) { comment.id }
 
-    example_request "Get one comment by id" do
+    example_request 'Get one comment by id' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
 
@@ -239,17 +239,17 @@ resource "Comments" do
     end
   end
 
-  context "when authenticated" do
+  context 'when authenticated' do
     before do
       @user = create(:user)
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
     end
 
-    get "web_api/v1/ideas/:idea_id/comments" do
+    get 'web_api/v1/ideas/:idea_id/comments' do
       let(:idea_id) { @idea.id }
 
-      example "List all comments of an idea includes the user_vote when authenticated" do
+      example 'List all comments of an idea includes the user_vote when authenticated' do
         comment = create(:comment, post: @idea)
         vote = create(:vote, user: @user, votable: comment)
         do_request
@@ -259,11 +259,11 @@ resource "Comments" do
       end
     end
 
-    post "web_api/v1/ideas/:idea_id/comments" do
+    post 'web_api/v1/ideas/:idea_id/comments' do
       with_options scope: :comment do
-        parameter :author_id, "The user id of the user owning the comment. Signed in user by default", required: false
-        parameter :body_multiloc, "Multi-locale field with the comment body", required: true
-        parameter :parent_id, "The id of the comment this comment is a response to", required: false
+        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default', required: false
+        parameter :body_multiloc, 'Multi-locale field with the comment body', required: true
+        parameter :parent_id, 'The id of the comment this comment is a response to', required: false
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -272,7 +272,7 @@ resource "Comments" do
       let(:comment) { build(:comment) }
       let(:body_multiloc) { comment.body_multiloc }
 
-      example_request "Create a comment on an idea" do
+      example_request 'Create a comment on an idea' do
         assert_status 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
@@ -285,7 +285,7 @@ resource "Comments" do
       describe do
         let(:parent_id) { create(:comment, post: @idea).id }
 
-        example_request "Create a comment on a comment" do
+        example_request 'Create a comment on a comment' do
           assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:author,:data,:id)).to eq @user.id
@@ -313,7 +313,7 @@ resource "Comments" do
           @idea.save!
         end
         
-        example_request "[error] Create a comment on an idea in an inactive project" do
+        example_request '[error] Create a comment on an idea in an inactive project' do
           expect(response_status).to be >= 400
         end
       end
@@ -325,7 +325,7 @@ resource "Comments" do
           @idea.save!
         end
 
-        example "Commenting should be enabled by default in a budgeting project", document: false do
+        example 'Commenting should be enabled by default in a budgeting project', document: false do
           do_request
           assert_status 201
         end
@@ -336,7 +336,7 @@ resource "Comments" do
         # Weak attempt to make it less explicit
         let(:body_multiloc) {{'en' => 'fu'+'ckin'+'g co'+'cksu'+'cker'}} 
 
-        example_request "[error] Create a comment with blocked words" do
+        example_request '[error] Create a comment with blocked words' do
           assert_status 422
           json_response = json_parse(response_body)
           blocked_error = json_response.dig(:errors, :base)&.select{|err| err[:error] == 'includes_banned_words'}&.first
@@ -346,7 +346,7 @@ resource "Comments" do
       end
     end
 
-    post "web_api/v1/comments/:id/mark_as_deleted" do
+    post 'web_api/v1/comments/:id/mark_as_deleted' do
       with_options scope: :comment do
         parameter :reason_code, "one of #{Notifications::CommentDeletedByAdmin::REASON_CODES}; only required for admins", required: false
         parameter :other_reason, "the reason for deleting the comment, if none of the reason codes is applicable, in which case 'other' must be chosen", required: false
@@ -355,12 +355,12 @@ resource "Comments" do
       let(:comment) { create(:comment, author: @user, post: @idea) }
       let(:id) { comment.id }
 
-      example_request "Mark a comment on an idea as deleted" do
+      example_request 'Mark a comment on an idea as deleted' do
         expect(response_status).to eq 200
         expect(comment.reload.publication_status).to eq('deleted')
       end
 
-      example "Admins cannot mark a comment as deleted without a reason", document: false do
+      example 'Admins cannot mark a comment as deleted without a reason', document: false do
         @admin = create(:admin)
         token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
@@ -369,11 +369,11 @@ resource "Comments" do
       end
     end
 
-    patch "web_api/v1/comments/:id" do
+    patch 'web_api/v1/comments/:id' do
       with_options scope: :comment do
-        parameter :author_id, "The user id of the user owning the comment. Signed in user by default"
-        parameter :body_multiloc, "Multi-locale field with the comment body"
-        parameter :parent_id, "The id of the comment this comment is a response to"
+        parameter :author_id, 'The user id of the user owning the comment. Signed in user by default'
+        parameter :body_multiloc, 'Multi-locale field with the comment body'
+        parameter :parent_id, 'The id of the comment this comment is a response to'
       end
       ValidationErrorHelper.new.error_fields(self, Comment)
       response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
@@ -382,14 +382,14 @@ resource "Comments" do
       let(:id) { comment.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
-      example_request "Update a comment on an idea" do
+      example_request 'Update a comment on an idea' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(@idea.reload.comments_count).to eq 1
       end
 
-      example "Admins cannot modify a comment on an idea", document: false do
+      example 'Admins cannot modify a comment on an idea', document: false do
         @admin = create(:admin)
         token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
         header 'Authorization', "Bearer #{token}"

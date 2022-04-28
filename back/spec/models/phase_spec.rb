@@ -3,75 +3,75 @@ require 'rails_helper'
 RSpec.describe Phase, type: :model do
   subject { create(:phase) }
 
-  describe "Default factory" do
-    it "is valid" do
+  describe 'Default factory' do
+    it 'is valid' do
       expect(build(:phase)).to be_valid
     end
   end
 
-  describe "description sanitizer" do
+  describe 'description sanitizer' do
 
-    it "sanitizes script tags in the description" do
+    it 'sanitizes script tags in the description' do
       phase = create(:phase, description_multiloc: {
-        "en" => "<p>Test</p><script>This should be removed!</script>"
+        'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(phase.description_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+      expect(phase.description_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
     end
 
   end
 
-  describe "timing validation" do
-    it "succeeds when start_at and end_at are equal" do
+  describe 'timing validation' do
+    it 'succeeds when start_at and end_at are equal' do
       phase = build(:phase)
       phase.end_at = phase.start_at
       expect(phase).to be_valid
     end
-    it "fails when end_at is before start_at" do
+    it 'fails when end_at is before start_at' do
       phase = build(:phase)
       phase.end_at = phase.start_at - 1.day
       expect(phase).to be_invalid
     end
   end
 
-  describe "participation_method" do
-    it "cannot be null" do
+  describe 'participation_method' do
+    it 'cannot be null' do
       p = create(:phase, participation_method: 'ideation')
       p.participation_method = nil
       expect(p.save).to eq false
     end
 
-    it "can be budgeting" do
+    it 'can be budgeting' do
       p = create(:phase, participation_method: 'budgeting')
       expect(p.save).to eq true
     end
   end
 
-  describe "presentation_mode" do
-    it "can be null for non-ideation phases" do
+  describe 'presentation_mode' do
+    it 'can be null for non-ideation phases' do
       p = create(:phase, participation_method: 'information')
       p.presentation_mode = nil
       expect(p.save).to eq true
     end
 
-    it "cannot be null for an ideation phase" do
+    it 'cannot be null for an ideation phase' do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
       expect(p.save).to eq false
     end
   end
 
-  describe "project validation" do
-    it "succeeds when the associated project is a timeline project" do
+  describe 'project validation' do
+    it 'succeeds when the associated project is a timeline project' do
       phase = build(:phase, project: build(:project, process_type: 'timeline'))
       expect(phase).to be_valid
     end
 
-    it "fails when the associated project is not a timeline project" do
+    it 'fails when the associated project is not a timeline project' do
       phase = build(:phase, project: build(:continuous_project))
       expect(phase).to be_invalid
     end
 
-    it "fails when the associated project has overlapping phases" do
+    it 'fails when the associated project has overlapping phases' do
       project = create(:project, process_type: 'timeline')
       other_phase = create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
       phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 3.days))
@@ -93,8 +93,8 @@ RSpec.describe Phase, type: :model do
     end
   end
 
-  describe "max_budget" do
-    it "can be updated in a project with just one phase" do
+  describe 'max_budget' do
+    it 'can be updated in a project with just one phase' do
       project = create(:project_with_current_phase,
         phases_config: {sequence: 'xc'},
         current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234}

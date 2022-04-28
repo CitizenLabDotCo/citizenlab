@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Graphql pages" do
+RSpec.describe 'Graphql pages' do
   let(:context) { {} }
   let(:variables) { {} }
   let(:result) {
@@ -9,13 +9,13 @@ RSpec.describe "Graphql pages" do
       context: context,
       variables: variables
     )
-    if res["errors"]
+    if res['errors']
       pp res
     end
     res
   }
 
-  describe "publicPages" do
+  describe 'publicPages' do
     let(:query_string) { %|
     {
       publicPages {
@@ -39,10 +39,10 @@ RSpec.describe "Graphql pages" do
     |}
 
 
-    it "returns all public pages" do
+    it 'returns all public pages' do
       p1, _p2, _p3 = create_list(:static_page, 3)
       response = result
-      edges = response.dig("data", "publicPages", "edges")
+      edges = response.dig('data', 'publicPages', 'edges')
       expect(edges&.size).to eq 3
       expect(edges&.first&.dig('node','id')).to eq p1.id
       expect(edges&.first&.dig('node','href')).to eq "#{AppConfiguration.instance.base_frontend_uri}/pages/#{p1.slug}"

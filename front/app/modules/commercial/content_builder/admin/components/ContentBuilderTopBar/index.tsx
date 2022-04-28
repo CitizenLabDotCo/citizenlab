@@ -104,6 +104,8 @@ const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
 
   return (
     <Box
+      position="fixed"
+      zIndex="3"
       alignItems="center"
       w="100%"
       h={`${stylingConsts.menuHeight}px`}
@@ -138,6 +140,7 @@ const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
         </Box>
         <Button
           disabled={disableSave}
+          id="e2e-content-builder-topbar-save"
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}

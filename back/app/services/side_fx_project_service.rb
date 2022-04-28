@@ -58,7 +58,5 @@ class SideFxProjectService
   end
 end
 
-SideFxProjectService.prepend_if_ee 'SmartGroups::Patches::SideFxProjectService'
 SideFxProjectService.prepend_if_ee 'IdeaAssignment::Patches::SideFxProjectService'
-SideFxProjectService.prepend_if_ee 'ProjectManagement::Patches::SideFxProjectService'
 SideFxProjectService.prepend_if_ee 'ProjectFolders::Patches::SideFxProjectService'

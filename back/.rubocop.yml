@@ -4,89 +4,93 @@ require:
   - rubocop-rspec
 
 AllCops:
-  NewCops: enable
-  AutoCorrect: false
+  DisabledByDefault: true
   Exclude:
   - 'db/schema.rb'
   - '**/*.builder'
   - '**/.*.*'
   - '**/bin/**/*'
 
-Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context', 'shared_examples', 'class_eval']
+Style/StringLiterals:
   Enabled: true
-  Exclude:
-  - '**/spec/**/*'
-  - 'db/migrate/**/*'
-  # Max: 25
-Metrics/MethodLength:
-  Enabled: true
-  Max: 30
-  IgnoredMethods: ['included', 'prepended', 'extended']
-  Exclude:
-  - 'db/migrate/**/*'
-Metrics/AbcSize:
-  Enabled: true
-  IgnoredMethods: ['included', 'prepended', 'extended']
-  Exclude:
-  - 'db/migrate/**/*'
-Metrics/ClassLength:
-  Enabled: true
-  # Max: 100
-Layout/HashAlignment:
-  EnforcedColonStyle: [key, table]
-  EnforcedHashRocketStyle: [key, table]
-Layout/LineLength:
-  Enabled: true
-  # Max: 120
-Rails/LexicallyScopedActionFilter:
-  Enabled: true
-Style/Documentation:
-  Enabled: true
-  Exclude:
-  - 'db/migrate/**/*'
-Style/EmptyElse:
-  Enabled: false
-Style/FrozenStringLiteralComment:
-  Enabled: false
-  AutoCorrect: true
-Style/GuardClause:
-  Enabled: false
-Style/MultilineBlockChain:
-  Enabled: false
-Style/NegatedIf:
-  Enabled: false
-Style/NumericPredicate:
-  # Zero is sometimes considered to be both 
-  # positive as well as negative, which is why I
-  # strongly disagree (this can only lead to more
-  # confusion).
-  Enabled: false
-Style/SymbolArray:
-  AutoCorrect: true
-Documentation:
-  Enabled: false
-Style/ClassAndModuleChildren:
-  Enabled: false
-RSpec/ContextWording:
-  Exclude:
-    - '**/spec/policies/**/*'
-RSpec/DescribeClass:
-  Exclude:
-  - '**/spec/acceptance/**/*'
-  - '**/spec/lint/**/*'
-RSpec/SharedContext:
-  Exclude:
-  - '**/spec/acceptance/**/*'
-RSpec/MultipleMemoizedHelpers:
-  Exclude:
-  - '**/spec/acceptance/**/*'
-RSpec/EmptyExampleGroup:
-  Exclude:
-  - '**/spec/acceptance/**/*'
-RSpec/MultipleExpectations:
-  Enabled: false
-RSpec/ExampleLength:
-  Max: 20
-RSpec/MessageSpies:
-  Enabled: false
+
+# This was the original file contents. We will enable Cops one by one.
+# 
+# Metrics/BlockLength:
+#   IgnoredMethods: ['describe', 'context', 'shared_examples', 'class_eval']
+#   Enabled: true
+#   Exclude:
+#   - '**/spec/**/*'
+#   - 'db/migrate/**/*'
+#   # Max: 25
+# Metrics/MethodLength:
+#   Enabled: true
+#   Max: 30
+#   IgnoredMethods: ['included', 'prepended', 'extended']
+#   Exclude:
+#   - 'db/migrate/**/*'
+# Metrics/AbcSize:
+#   Enabled: true
+#   IgnoredMethods: ['included', 'prepended', 'extended']
+#   Exclude:
+#   - 'db/migrate/**/*'
+# Metrics/ClassLength:
+#   Enabled: true
+#   # Max: 100
+# Layout/HashAlignment:
+#   EnforcedColonStyle: [key, table]
+#   EnforcedHashRocketStyle: [key, table]
+# Layout/LineLength:
+#   Enabled: true
+#   # Max: 120
+# Rails/LexicallyScopedActionFilter:
+#   Enabled: true
+# Style/Documentation:
+#   Enabled: true
+#   Exclude:
+#   - 'db/migrate/**/*'
+# Style/EmptyElse:
+#   Enabled: false
+# Style/FrozenStringLiteralComment:
+#   Enabled: false
+#   AutoCorrect: true
+# Style/GuardClause:
+#   Enabled: false
+# Style/MultilineBlockChain:
+#   Enabled: false
+# Style/NegatedIf:
+#   Enabled: false
+# Style/NumericPredicate:
+#   # Zero is sometimes considered to be both 
+#   # positive as well as negative, which is why I
+#   # strongly disagree (this can only lead to more
+#   # confusion).
+#   Enabled: false
+# Style/SymbolArray:
+#   AutoCorrect: true
+# Documentation:
+#   Enabled: false
+# Style/ClassAndModuleChildren:
+#   Enabled: false
+# RSpec/ContextWording:
+#   Exclude:
+#     - '**/spec/policies/**/*'
+# RSpec/DescribeClass:
+#   Exclude:
+#   - '**/spec/acceptance/**/*'
+#   - '**/spec/lint/**/*'
+# RSpec/SharedContext:
+#   Exclude:
+#   - '**/spec/acceptance/**/*'
+# RSpec/MultipleMemoizedHelpers:
+#   Exclude:
+#   - '**/spec/acceptance/**/*'
+# RSpec/EmptyExampleGroup:
+#   Exclude:
+#   - '**/spec/acceptance/**/*'
+# RSpec/MultipleExpectations:
+#   Enabled: false
+# RSpec/ExampleLength:
+#   Max: 20
+# RSpec/MessageSpies:
+#   Enabled: false

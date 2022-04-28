@@ -1,14 +1,14 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe ProfanityService do
   let(:service) { ProfanityService.new }
 
-  describe "search_blocked_words" do
+  describe 'search_blocked_words' do
     before { Rails.cache.clear } # for some reason, caching is enabled while testing
     before { stub_fetch_blocked_words! service }
     after { Rails.cache.clear }
 
-    it "matches exact occurences" do
+    it 'matches exact occurences' do
       text = 'Ik vind hem een beetje een zeveraar.'
       expect(service.search_blocked_words(text)).to match_array([{
         word: 'zeveraar',
@@ -17,7 +17,7 @@ describe ProfanityService do
       }])
     end
 
-    it "returns no matches when there are no occurences" do
+    it 'returns no matches when there are no occurences' do
       text = 'Ik vind hem een beetje een gluiperd.'
       expect(service.search_blocked_words(text)).to be_blank
     end
@@ -56,7 +56,7 @@ describe ProfanityService do
     #   ])
     # end
 
-    it "returns matches for multilple languages" do
+    it 'returns matches for multilple languages' do
       text = 'His recipe for chili con carne is so stupid.'
       expect(service.search_blocked_words(text)).to match_array([
         {
@@ -70,7 +70,7 @@ describe ProfanityService do
       ])
     end
 
-    it "matches case-insensitively" do
+    it 'matches case-insensitively' do
       text = 'Il est un peu déBiLE.'
       expect(service.search_blocked_words(text)).to match_array([{
         word: 'débile',
@@ -83,7 +83,7 @@ describe ProfanityService do
       expect(service.search_blocked_words(text)).to be_blank
     end
 
-    it "matches with HTML" do
+    it 'matches with HTML' do
       text = '<p>Je suis tombé dans une pute</p>'
       expect(service.search_blocked_words(text)).to match_array([{
         word: 'pute',

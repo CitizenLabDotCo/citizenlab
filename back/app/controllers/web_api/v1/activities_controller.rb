@@ -4,11 +4,15 @@ class WebApi::V1::ActivitiesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index]
 
   def index
-    @activities = ActivitiesFinder.find(finder_params, includes: :user, scope: policy_scope(Activity)).records
-    @activities = paginate @activities
+    activities = ActivitiesFinder.new(
+      finder_params,
+      includes: :user,
+      scope: policy_scope(Activity)
+    ).find_records
+    paginated_activities = paginate activities
 
     render json: linked_json(
-      @activities,
+      paginated_activities,
       WebApi::V1::ActivitySerializer,
       params: fastjson_params,
       include: [:user]

@@ -14,7 +14,7 @@ module NLP
           @tag_suggestions = TagSuggestionService.new.suggest(@ideas, locale)&.map { |e|
             {
               title_multiloc: {
-                locale => e["text"]
+                locale => e['text']
               }
             }
           }

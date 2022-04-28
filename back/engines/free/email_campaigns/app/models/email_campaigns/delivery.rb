@@ -34,7 +34,7 @@ module EmailCampaigns
 
     before_validation :set_sent_at
 
-    counter_culture :campaign, column_name: "deliveries_count"
+    counter_culture :campaign, column_name: 'deliveries_count'
 
     STATUS_SUMMATION = {
       sent: [:sent, :bounced, :failed, :accepted, :delivered, :opened, :clicked],

@@ -7,6 +7,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { UserComponent } from '@craftjs/core';
 import Text from '../Text';
 import Image from '../Image';
+import AboutBox from '../AboutBox';
 import CraftIframe from '../Iframe';
 
 const Container: UserComponent = ({ children }) => {
@@ -24,7 +25,8 @@ Container.craft = {
         (node) =>
           node.data.type === Text ||
           node.data.type === CraftIframe ||
-          node.data.type === Image
+          node.data.type === Image ||
+          node.data.type === AboutBox
       ),
   },
 };

@@ -1,18 +1,18 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SideFxAreaService do
   let(:service) { SideFxAreaService.new }
   let(:user) { create(:user) }
   let(:area) { create(:area) }
 
-  describe "after_create" do
+  describe 'after_create' do
     it "logs a 'created' action when a area is created" do
       expect {service.after_create(area, user)}.
         to have_enqueued_job(LogActivityJob).with(area, 'created', user, area.created_at.to_i)
     end
   end
 
-  describe "after_update" do
+  describe 'after_update' do
     it "logs a 'changed' action job when the area has changed" do
       area.update(title_multiloc: {'en': 'changed'})
       expect {service.after_update(area, user)}.
@@ -20,8 +20,8 @@ describe SideFxAreaService do
     end
   end
 
-  describe "before_destroy" do
-    it "destroys custom field option values for domicile that refer to this area" do
+  describe 'before_destroy' do
+    it 'destroys custom field option values for domicile that refer to this area' do
       domicile_cf = create(:custom_field_select, code: 'domicile', key: 'domicile')
       lives_in_area = create(:user, custom_field_values: {domicile_cf.key => area.id})
       service.before_destroy(area, user)
@@ -29,7 +29,7 @@ describe SideFxAreaService do
     end
   end
 
-  describe "after_destroy" do
+  describe 'after_destroy' do
     it "logs a 'deleted' action job when the area is destroyed" do
       travel_to Time.now do
         frozen_area = area.destroy
