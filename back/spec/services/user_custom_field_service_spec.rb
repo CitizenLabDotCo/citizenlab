@@ -1,11 +1,11 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe UserCustomFieldService do
   let(:service) { UserCustomFieldService.new }
 
-  describe "delete_custom_field_values" do
+  describe 'delete_custom_field_values' do
 
-    it "deletes the custom field values from all users" do
+    it 'deletes the custom field values from all users' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
       users_with_cf = create_list(:user, 5, custom_field_values: {cf1.key => 'some_value', cf2.key => 'other_value'})
@@ -16,9 +16,9 @@ describe UserCustomFieldService do
     end
   end
 
-  describe "delete_custom_field_option_values" do
+  describe 'delete_custom_field_option_values' do
 
-    it "deletes the custom field option values from all users for a multiselect" do
+    it 'deletes the custom field option values from all users for a multiselect' do
       cf1 = create(:custom_field_multiselect)
       cfo1 = create(:custom_field_option, custom_field: cf1)
       cfo2 = create(:custom_field_option, custom_field: cf1)
@@ -38,7 +38,7 @@ describe UserCustomFieldService do
       expect(u3.reload.custom_field_values).to eq v3
     end
 
-    it "deletes the custom field option values from all users for a single select" do
+    it 'deletes the custom field option values from all users for a single select' do
       cf1 = create(:custom_field_select)
       cfo1 = create(:custom_field_option, custom_field: cf1)
       cfo2 = create(:custom_field_option, custom_field: cf1)

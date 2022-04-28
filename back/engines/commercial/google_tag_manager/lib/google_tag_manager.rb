@@ -1,4 +1,4 @@
-require "google_tag_manager/engine"
+require 'google_tag_manager/engine'
 
 module GoogleTagManager
   # Your code goes here...

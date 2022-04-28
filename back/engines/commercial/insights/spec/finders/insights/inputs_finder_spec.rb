@@ -282,7 +282,7 @@ describe Insights::InputsFinder do
 
     let(:params) { {} }
 
-    it "defaults to 1" do
+    it 'defaults to 1' do
       is_expected.to eq(1)
     end
   end

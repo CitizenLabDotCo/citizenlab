@@ -6,7 +6,7 @@ RSpec.describe MakeNotificationsForClassJob, type: :job do
 
   describe '#perform' do
 
-    it "persists notifications when all are valid" do
+    it 'persists notifications when all are valid' do
       activity = create(:admin_rights_given_activity)
       job.perform(Notifications::AdminRightsReceived.name, activity)
       expect(Notification.count).to eq 1
@@ -24,7 +24,7 @@ RSpec.describe MakeNotificationsForClassJob, type: :job do
       expect(Notification.count).to eq 0
     end
 
-    it "enqueues notification created activity" do
+    it 'enqueues notification created activity' do
       activity = create(:admin_rights_given_activity)
       expect{job.perform(Notifications::AdminRightsReceived.name, activity)}
         .to have_enqueued_job(LogActivityJob)

@@ -78,6 +78,7 @@ const Container = styled.div<{
   save: string;
   edit: string;
   remove: string;
+  maxHeight?: string;
 }>`
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -225,8 +226,6 @@ const Container = styled.div<{
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
-    max-height: ${({ theme: { menuHeight } }) =>
-      `calc(80vh - ${menuHeight}px)`};
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius}
       ${({ theme }) => theme.borderRadius};
@@ -237,6 +236,10 @@ const Container = styled.div<{
 
     .ql-editor {
       min-height: 300px;
+      max-height: ${(props) =>
+        props.maxHeight
+          ? props.maxHeight
+          : ({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
     }
 
     ${media.smallerThanMaxTablet`
@@ -260,6 +263,7 @@ export interface Props {
   limitedTextFormatting?: boolean;
   hasError?: boolean;
   className?: string;
+  maxHeight?: string;
   onChange?: (html: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -379,6 +383,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     noImages,
     noVideos,
     limitedTextFormatting,
+    maxHeight,
     hasError,
     className,
     setRef,
@@ -668,6 +673,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
 
     return (
       <Container
+        maxHeight={maxHeight}
         className={classNames}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}

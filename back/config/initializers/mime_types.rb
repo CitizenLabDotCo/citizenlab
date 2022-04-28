@@ -9,4 +9,4 @@ MIME::Types.add(
   end
 )
 
-Mime::Type.register "text/html", :mjml
+Mime::Type.register 'text/html', :mjml

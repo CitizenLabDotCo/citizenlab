@@ -37,9 +37,9 @@ module EmailCampaigns
 
     before_send :is_content_worth_sending?
 
-    N_TOP_IDEAS = ENV.fetch("N_USER_PLATFORM_DIGEST_IDEAS", 3).to_i
-    N_TOP_COMMENTS = ENV.fetch("N_TOP_COMMENTS", 2).to_i
-    N_DISCOVER_PROJECTS = ENV.fetch("N_DISCOVER_PROJECTS", 3).to_i
+    N_TOP_IDEAS = ENV.fetch('N_USER_PLATFORM_DIGEST_IDEAS', 3).to_i
+    N_TOP_COMMENTS = ENV.fetch('N_TOP_COMMENTS', 2).to_i
+    N_DISCOVER_PROJECTS = ENV.fetch('N_DISCOVER_PROJECTS', 3).to_i
 
 
     def self.default_schedule

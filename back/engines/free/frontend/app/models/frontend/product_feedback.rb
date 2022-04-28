@@ -11,12 +11,12 @@ module Frontend
     
     def attributes
       {
-        "question" => question,
-        "answer" => answer,
-        "path" => path,
-        "locale" => locale,
-        "email" => email,
-        "message" => message
+        'question' => question,
+        'answer' => answer,
+        'path' => path,
+        'locale' => locale,
+        'email' => email,
+        'message' => message
       }
     end
   end

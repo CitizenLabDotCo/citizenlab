@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldSelect do
 
 
-  describe "validations" do
+  describe 'validations' do
 
     let(:custom_field) { create(:custom_field_select) }
     let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
@@ -16,24 +16,24 @@ describe SmartGroups::Rules::CustomFieldSelect do
     }}
     let(:valid_rule) { SmartGroups::Rules::CustomFieldSelect.from_json(valid_json_rule) }
 
-    it "successfully validate the valid rule" do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_rule.as_json])).to be_valid
     end
 
-    it "fails on a non-existing custom field" do
+    it 'fails on a non-existing custom field' do
       rule = valid_rule.tap{|r| r.custom_field_id='garbage'}
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
-    it "fails on a non-existing custom field option" do
+    it 'fails on a non-existing custom field option' do
       rule = valid_rule.tap{|r| r.value='garbage'}
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
-    it "fails on a custom field option from another custom field" do
+    it 'fails on a custom field option from another custom field' do
       other_custom_field_option = create(:custom_field_option, custom_field: create(:custom_field_select))
       rule = valid_rule.tap{|r| r.value=other_custom_field_option.id}
       expect(rule).to be_invalid
@@ -41,22 +41,22 @@ describe SmartGroups::Rules::CustomFieldSelect do
       # expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
 
-    it "successfully validate the valid multi-value rule" do
+    it 'successfully validate the valid multi-value rule' do
       rule = valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[options.first.id, options.last.id]}
       expect(rule).to be_valid
       expect(build(:smart_group, rules: [rule.as_json])).to be_valid
     end
 
-    it "fails on a non-existing custom field option" do
+    it 'fails on a non-existing custom field option' do
       rule = valid_rule.tap{|r| r.predicate='is_one_of'; r.value=[options.first.id, 'garbage']}
       expect(rule).to be_invalid
       expect(build(:smart_group, rules: [rule.as_json])).to be_invalid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
-    context "on a select field" do
+    context 'on a select field' do
 
       let(:custom_field) { create(:custom_field_select, required: false) }
       let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field )}
@@ -103,7 +103,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
 
     end
 
-    context "on a multiselect field" do
+    context 'on a multiselect field' do
 
       let(:custom_field) { create(:custom_field_multiselect, required: false) }
       let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field )}
@@ -153,7 +153,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:custom_field) {create(:custom_field_select, title_multiloc: {
       'en'    => 'Where should we put the immigrants?',
       'fr-FR' => 'Où devrions-nous placer les immigrants?',
@@ -207,7 +207,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
 
     # TODO test education: return education description instead of number
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(custom_field_select_has_value_rule.description_multiloc).to eq ({
         'en'    => 'Where should we put the immigrants? is In the train station',
         'fr-FR' => 'Où devrions-nous placer les immigrants? est Dans la gare',
