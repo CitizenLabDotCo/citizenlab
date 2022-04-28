@@ -81,7 +81,7 @@ describe('ContentBuilderTopBar', () => {
   it('renders with correct project name', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar disableSave={false} />
+        <ContentBuilderTopBar />
       </Editor>
     );
     expect(screen.getByText('Test Project')).toBeInTheDocument();
@@ -89,7 +89,7 @@ describe('ContentBuilderTopBar', () => {
   it('calls goBack correctly', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar disableSave={false} />
+        <ContentBuilderTopBar />
       </Editor>
     );
     fireEvent.click(screen.getByTestId('goBackButton'));
@@ -98,7 +98,7 @@ describe('ContentBuilderTopBar', () => {
   it('calls onSave correctly', async () => {
     render(
       <Editor>
-        <ContentBuilderTopBar disableSave={false} />
+        <ContentBuilderTopBar />
       </Editor>
     );
     await act(async () => {
