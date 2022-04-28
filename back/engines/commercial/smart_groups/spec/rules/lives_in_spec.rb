@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::LivesIn do
 
@@ -9,20 +9,20 @@ describe SmartGroups::Rules::LivesIn do
   }}
   let(:valid_rule) { SmartGroups::Rules::LivesIn.from_json(valid_json_rule) }
 
-  describe "from_json" do
+  describe 'from_json' do
 
-    it "successfully parses a valid json" do
+    it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
 
-    it "successfully saves the valid multi-value rule" do
+    it 'successfully saves the valid multi-value rule' do
       json_rule = valid_json_rule.tap{|r| r['predicate']='is_one_of'; r['value'] = [r['value']]}
       expect(SmartGroups::Rules::LivesIn.from_json(json_rule)).to be_valid
       expect(build(:smart_group, rules: [json_rule])).to be_valid
     end
 
-    it "fails on saving a non-existing custom field option" do
+    it 'fails on saving a non-existing custom field option' do
       json_rule = valid_json_rule.tap{|r| r['predicate']='is_one_of'; r['value']=[r['value'], 'garbage']}
       expect(SmartGroups::Rules::LivesIn.from_json(json_rule)).to be_invalid
       # TODO
@@ -30,14 +30,14 @@ describe SmartGroups::Rules::LivesIn do
     end
   end
 
-  describe "validations" do
-    it "successfully validate the valid rule" do
+  describe 'validations' do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
     before do
       CustomField.create!(
@@ -95,7 +95,7 @@ describe SmartGroups::Rules::LivesIn do
     end
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     before do
       CustomField.create!(
         resource_type: 'User',
@@ -154,7 +154,7 @@ describe SmartGroups::Rules::LivesIn do
       'predicate' => 'not_is_empty'
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(lives_in_has_value_rule.description_multiloc).to eq ({
         'en'    => 'Place of residence is Brussels',
         'fr-FR' => 'Domicile est Bruxelles',

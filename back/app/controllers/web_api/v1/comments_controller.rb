@@ -17,31 +17,31 @@ class WebApi::V1::CommentsController < ApplicationController
       .includes(*include_attrs)
 
     root_comments = case params[:sort]
-      when "new"
+      when 'new'
         root_comments.order(created_at: :desc)
-      when "-new"
+      when '-new'
         root_comments.order(created_at: :asc)
-      when "upvotes_count"
+      when 'upvotes_count'
         root_comments.order(upvotes_count: :asc, lft: :asc)
-      when "-upvotes_count"
+      when '-upvotes_count'
         root_comments.order(upvotes_count: :desc, lft: :asc)
       when nil
         root_comments.order(lft: :asc)
       else
-        raise "Unsupported sort method"
+        raise 'Unsupported sort method'
       end
     root_comments = paginate root_comments
 
     fully_expanded_root_comments = Comment.where(id: root_comments)
-      .where("children_count <= ?", FULLY_EXPAND_THRESHOLD)
+      .where('children_count <= ?', FULLY_EXPAND_THRESHOLD)
 
     partially_expanded_root_comments = Comment.where(id: root_comments)
-      .where("children_count > ?", FULLY_EXPAND_THRESHOLD)
+      .where('children_count > ?', FULLY_EXPAND_THRESHOLD)
 
     partially_expanded_child_comments = Comment
       .where(parent_id: partially_expanded_root_comments)
       .joins(:parent)
-      .where("comments.lft >= parents_comments.rgt - ?", MINIMAL_SUBCOMMENTS * 2)
+      .where('comments.lft >= parents_comments.rgt - ?', MINIMAL_SUBCOMMENTS * 2)
 
     child_comments = Comment
       .where(parent: fully_expanded_root_comments)
@@ -222,7 +222,7 @@ class WebApi::V1::CommentsController < ApplicationController
       when 'Initiative' then InitiativeCommentPolicy
       else raise "#{@post_type} has no comment policy defined"
     end
-    raise RuntimeError, "must not be blank" if @post_type.blank?
+    raise RuntimeError, 'must not be blank' if @post_type.blank?
   end
 
   def comment_create_params

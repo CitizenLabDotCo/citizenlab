@@ -6,33 +6,33 @@ describe Verification::VerificationPolicy do
   let(:scope) { Verification::VerificationPolicy::Scope.new(user, Verification::Verification) }
   let!(:verification) { build(:verification) }
 
-  context "for a visitor" do 
+  context 'for a visitor' do 
     let(:user) { nil }
 
     it { should_not permit(:create) }
 
-    it "should not index the verification" do
+    it 'should not index the verification' do
       expect(scope.resolve.size).to eq 0
     end
   end
 
-  context "for a mortal user on a verification of another user" do 
+  context 'for a mortal user on a verification of another user' do 
     let(:user) { create(:user) }
 
     it { should_not permit(:create) }
 
-    it "should not index the verification" do
+    it 'should not index the verification' do
       verification.save!
       expect(scope.resolve.size).to eq 0
     end
   end
 
-  context "for a mortal user who owns the verification" do 
+  context 'for a mortal user who owns the verification' do 
     let(:user) { verification.user }
 
     it { should permit(:create) }
 
-    it "should index the verification" do
+    it 'should index the verification' do
       verification.save!
       expect(scope.resolve.size).to eq 1
     end
@@ -46,7 +46,7 @@ describe Verification::VerificationPolicy do
 
     it { should permit(:create) }
 
-    it "should index the verification" do
+    it 'should index the verification' do
       verification.save!
       expect(scope.resolve.size).to eq 1
     end

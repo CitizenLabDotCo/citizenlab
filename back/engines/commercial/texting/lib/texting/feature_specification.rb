@@ -48,7 +48,7 @@ module Texting
         'pattern': '^\+\d+$'
       },
       'title': 'Recipient country calling codes',
-      'description': "All recepients phone numbers will be validated to have one of these country codes. Each one should start with +. Use +1 for the US. Do not configure to skip validation. See the full list https://en.wikipedia.org/wiki/List_of_country_calling_codes"
+      'description': 'All recepients phone numbers will be validated to have one of these country codes. Each one should start with +. Use +1 for the US. Do not configure to skip validation. See the full list https://en.wikipedia.org/wiki/List_of_country_calling_codes'
     }
   end
 end

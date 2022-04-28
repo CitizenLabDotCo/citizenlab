@@ -36,8 +36,8 @@ resource 'Poll Responses' do
         headers = worksheet[0].cells.map(&:value).map(&:downcase)
 
         expect(worksheet.count).to eq 3
-        expect(worksheet[0].cells.map(&:value)).to include "User ID"
-        expect(worksheet[0].cells.map(&:value)).to include @q1.title_multiloc["en"]
+        expect(worksheet[0].cells.map(&:value)).to include 'User ID'
+        expect(worksheet[0].cells.map(&:value)).to include @q1.title_multiloc['en']
       end
     end
 
@@ -80,8 +80,8 @@ resource 'Poll Responses' do
     end
   end
 
-  get "web_api/v1/projects/:participation_context_id/poll_responses/responses_count" do
-    context "non-anonymous poll" do
+  get 'web_api/v1/projects/:participation_context_id/poll_responses/responses_count' do
+    context 'non-anonymous poll' do
       before do
         @participation_context = create(:continuous_poll_project)
         @q1 = create(:poll_question, :with_options, participation_context: @participation_context)
@@ -94,7 +94,7 @@ resource 'Poll Responses' do
 
       let(:participation_context_id) { @participation_context.id }
 
-      example_request "response counts" do
+      example_request 'response counts' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
 

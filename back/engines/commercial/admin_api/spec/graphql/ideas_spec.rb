@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Graphql ideas" do
+RSpec.describe 'Graphql ideas' do
   let(:context) { {} }
   let(:variables) { {} }
   let(:result) {
@@ -9,13 +9,13 @@ RSpec.describe "Graphql ideas" do
       context: context,
       variables: variables
     )
-    if res["errors"]
+    if res['errors']
       pp res
     end
     res
   }
 
-  describe "publicIdeas" do
+  describe 'publicIdeas' do
     let(:query_string) { %|
       query publicIdeas($projects: [ID!], $topics: [ID!], $sort: IdeaSorting) {
         publicIdeas(first: 5, projects: $projects, topics: $topics, sort: $sort) {
@@ -46,11 +46,11 @@ RSpec.describe "Graphql ideas" do
     |}
 
 
-    it "returns all public ideas with fields" do
+    it 'returns all public ideas with fields' do
       create_list(:idea, 5)
       create(:idea, project: create(:private_admins_project))
       response = result
-      edges = response.dig("data", "publicIdeas", "edges")
+      edges = response.dig('data', 'publicIdeas', 'edges')
       expect(edges&.size).to eq 5
       expect(edges&.first&.dig('node','id')).to be_present
       expect(edges&.first&.dig('node','href')).to be_present
@@ -68,9 +68,9 @@ RSpec.describe "Graphql ideas" do
       let!(:i3) { create(:idea, project: p1) }
       let(:variables) { {projects: [p1.id]} }
 
-      it "returns public ideas in projects" do
+      it 'returns public ideas in projects' do
         response = result
-        edges = response.dig("data", "publicIdeas", "edges")
+        edges = response.dig('data', 'publicIdeas', 'edges')
         expect(edges&.size).to eq 2
       end
     end
@@ -86,9 +86,9 @@ RSpec.describe "Graphql ideas" do
       let!(:i4) { create(:idea, topics: [t3,t2], project: project) }
       let(:variables) { {topics: [t1.id, t3.id]} }
 
-      it "returns public ideas in topics" do
+      it 'returns public ideas in topics' do
         response = result
-        edges = response.dig("data", "publicIdeas", "edges")
+        edges = response.dig('data', 'publicIdeas', 'edges')
         expect(edges&.size).to eq 3
       end
     end

@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldCheckbox do
 
 
-  describe "validations" do
+  describe 'validations' do
 
     let(:custom_field) { create(:custom_field_checkbox) }
 
@@ -14,15 +14,15 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
     }}
     let(:valid_rule) { SmartGroups::Rules::CustomFieldCheckbox.from_json(valid_json_rule) }
 
-    it "successfully validate the valid rule" do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
-    context "on a checkbox field" do
+    context 'on a checkbox field' do
 
       let(:custom_field) { create(:custom_field_checkbox) }
 
@@ -49,7 +49,7 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:checkbox) {create(:custom_field_checkbox, title_multiloc: {
       'en'    => 'I agree to share my cookies',
       'fr-FR' => 'J\'accepte de partager mes biscuits',
@@ -67,7 +67,7 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
       'customFieldId' => checkbox.id
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(custom_field_checkbox_is_checked_rule.description_multiloc).to eq ({
         'en'    => 'Checked I agree to share my cookies',
         'fr-FR' => 'A coché J\'accepte de partager mes biscuits',

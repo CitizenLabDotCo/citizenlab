@@ -73,10 +73,10 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
     comments
       .where(created_at: @start_at..@end_at)
-      .joins("INNER JOIN ideas ON ideas.id = comments.post_id")
-      .joins("INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
-      .group("ideas_topics.topic_id")
-      .order("ideas_topics.topic_id")
+      .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
+      .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
+      .group('ideas_topics.topic_id')
+      .order('ideas_topics.topic_id')
       .count
     end
 
@@ -91,15 +91,15 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map {|topic_id, count|
       {
-        "topic" => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
-        "topic_id" => topic_id,
-        "comments" => count
+        'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
+        'topic_id' => topic_id,
+        'comments' => count
       }
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "comments", "topic"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'comments', 'topic'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "comments_by_topic.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_topic.xlsx'
   end
 
   def comments_by_project_serie
@@ -110,9 +110,9 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
     comments
       .where(created_at: @start_at..@end_at)
-      .joins("INNER JOIN ideas ON ideas.id = comments.post_id")
-      .group("ideas.project_id")
-      .order("ideas.project_id")
+      .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
+      .group('ideas.project_id')
+      .order('ideas.project_id')
       .count
   end
 
@@ -127,22 +127,22 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map {|project_id, count|
       {
-        "project" => @@multiloc_service.t(projects.find(project_id).title_multiloc),
-        "project_id" => project_id,
-        "comments" => count
+        'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
+        'project_id' => project_id,
+        'comments' => count
       }
     }
 
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, "comments", "project"
+    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'comments', 'project'
 
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "comments_by_project.xlsx"
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments_by_project.xlsx'
   end
 
   private
 
   def apply_project_filter comments
     if params[:project]
-      comments.joins("INNER JOIN ideas ON ideas.id = comments.post_id").where(ideas: {project_id: params[:project]})
+      comments.joins('INNER JOIN ideas ON ideas.id = comments.post_id').where(ideas: {project_id: params[:project]})
     else
       comments
     end
@@ -151,8 +151,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def apply_topic_filter comments
     if params[:topic]
       comments
-        .joins("INNER JOIN ideas ON ideas.id = comments.post_id")
-        .joins("INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
+        .joins('INNER JOIN ideas ON ideas.id = comments.post_id')
+        .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
         .where(ideas: {ideas_topics: {topic_id: params[:topic]}})
     else
       comments
@@ -176,7 +176,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: "no data for this period"}, status: :unprocessable_entity
+      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
     end
   end
 

@@ -47,16 +47,16 @@ resource 'Moderations' do
     end
   end
 
-  get "web_api/v1/moderations/moderations_count" do
+  get 'web_api/v1/moderations/moderations_count' do
     parameter :is_flagged, 'Filter moderations that have been flagged or that are not flagged (boolean)', required: false
 
-    context "when moderator" do
+    context 'when moderator' do
       before { moderator_scenario }
 
       describe do
         let(:is_flagged) { true }
 
-        example_request "Count only moderations that are flagged" do
+        example_request 'Count only moderations that are flagged' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:count]).to eq 1

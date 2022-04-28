@@ -8,11 +8,11 @@ module IdIdCardLookup
     end
 
     def id
-      "516e134d-e22b-4386-a783-0db4c2708256"
+      '516e134d-e22b-4386-a783-0db4c2708256'
     end
 
     def name
-      "id_card_lookup"
+      'id_card_lookup'
     end
 
     def config_parameters
@@ -28,15 +28,15 @@ module IdIdCardLookup
     def config_parameters_schema
       {
         method_name_multiloc: {
-          "$ref": "#/definitions/multiloc_string",
+          "$ref": '#/definitions/multiloc_string',
           private: true
         },
         card_id_multiloc: {
-          "$ref": "#/definitions/multiloc_string",
+          "$ref": '#/definitions/multiloc_string',
           private: true
         },
         card_id_tooltip_multiloc: {
-          "$ref": "#/definitions/multiloc_string",
+          "$ref": '#/definitions/multiloc_string',
           private: true
         },
       }

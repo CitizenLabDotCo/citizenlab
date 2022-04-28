@@ -220,9 +220,9 @@ class InvitesService
 
   # @return [Boolean]
   def to_boolean(value)
-    if [true, "TRUE", "true", "1", 1].include?(value)
+    if [true, 'TRUE', 'true', '1', 1].include?(value)
       true
-    elsif [false, "FALSE", "false", "0", 0].include?(value)
+    elsif [false, 'FALSE', 'false', '0', 0].include?(value)
       false
     else
       raise ArgumentError
@@ -241,9 +241,9 @@ class InvitesService
   end
 
   def xlsx_admin_to_roles(admin)
-    if [true, "TRUE", "true", "1", 1].include? admin
-      [{"type" => "admin"}]
-    elsif [false, "FALSE", "false", "0", 0].include? admin
+    if [true, 'TRUE', 'true', '1', 1].include? admin
+      [{'type' => 'admin'}]
+    elsif [false, 'FALSE', 'false', '0', 0].include? admin
       []
     else
       add_error(:malformed_admin_value, row: @current_row, value: admin)
@@ -271,12 +271,12 @@ class InvitesService
 
   def build_invite(params, default_params={}, inviter=nil)
     invitee = User.new({
-      email: params["email"]&.strip,
-      first_name: params["first_name"],
-      last_name: params["last_name"],
-      locale: params["locale"] || default_params["locale"] || AppConfiguration.instance.settings('core', 'locales').first,
-      manual_group_ids: params["group_ids"] || default_params["group_ids"] || [],
-      roles: params["roles"] || default_params["roles"] || [],
+      email: params['email']&.strip,
+      first_name: params['first_name'],
+      last_name: params['last_name'],
+      locale: params['locale'] || default_params['locale'] || AppConfiguration.instance.settings('core', 'locales').first,
+      manual_group_ids: params['group_ids'] || default_params['group_ids'] || [],
+      roles: params['roles'] || default_params['roles'] || [],
       custom_field_values: params.slice(*custom_field_keys),
       invite_status: 'pending'
     })
@@ -284,8 +284,8 @@ class InvitesService
     Invite.new(
       invitee: invitee,
       inviter: inviter,
-      invite_text: params["invite_text"] || default_params["invite_text"],
-      send_invite_email: params["send_invite_email"].nil? ? true  : params["send_invite_email"]
+      invite_text: params['invite_text'] || default_params['invite_text'],
+      send_invite_email: params['send_invite_email'].nil? ? true  : params['send_invite_email']
     )
   end
 

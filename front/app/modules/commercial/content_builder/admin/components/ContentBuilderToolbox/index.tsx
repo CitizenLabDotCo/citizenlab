@@ -73,6 +73,7 @@ const ContentBuilderToolbox = ({
         />
       </DraggableElement>
       <DraggableElement
+        id="e2e-draggable-text"
         ref={(ref) =>
           ref &&
           connectors.create(

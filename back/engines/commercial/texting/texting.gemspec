@@ -1,4 +1,4 @@
-require_relative "lib/texting/version"
+require_relative 'lib/texting/version'
 
 Gem::Specification.new do |s|
   s.name        = 'texting'

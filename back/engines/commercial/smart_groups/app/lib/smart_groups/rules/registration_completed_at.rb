@@ -15,38 +15,38 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          "type": 'object',
+          'required' => ['ruleType', 'predicate', 'value'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type": "string",
+            'predicate' => {
+              "type": 'string',
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
-            "value" => {
-              "description" => "The date formatted as yyyy-mm-dd",
-              "type" => "string",
-              "format": "date",
-              "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            'value' => {
+              'description' => 'The date formatted as yyyy-mm-dd',
+              'type' => 'string',
+              "format": 'date',
+              "pattern": '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
             }
           },
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => ['ruleType', 'predicate'],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type],
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }
@@ -69,15 +69,15 @@ module SmartGroups::Rules
     def filter users_scope
       case predicate
       when 'is_before'
-        users_scope.where("registration_completed_at::date < (?)::date", value)
+        users_scope.where('registration_completed_at::date < (?)::date', value)
       when 'is_after'
-        users_scope.where("registration_completed_at::date > (?)::date", value)
+        users_scope.where('registration_completed_at::date > (?)::date', value)
       when 'is_exactly'
         users_scope.where("registration_completed_at::date >= (?)::date AND registration_completed_at::date < ((?)::date + '1 day'::interval)", value, value)
       when 'is_empty'
-        users_scope.where("registration_completed_at IS NULL")
+        users_scope.where('registration_completed_at IS NULL')
       when 'not_is_empty'
-        users_scope.where("registration_completed_at IS NOT NULL")
+        users_scope.where('registration_completed_at IS NOT NULL')
       else
         raise "Unsupported predicate #{predicate}"
       end

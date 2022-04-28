@@ -17,7 +17,7 @@ RSpec.describe Matomo::Client do
       it 'raises an error if MATOMO_HOST is missing' do
         stubbed_env = ENV.to_h
                          .except('MATOMO_HOST')
-                         .merge("MATOMO_AUTHORIZATION_TOKEN" => auth_token)
+                         .merge('MATOMO_AUTHORIZATION_TOKEN' => auth_token)
         stub_const('ENV', stubbed_env)
 
         expect { described_class.new }
@@ -27,7 +27,7 @@ RSpec.describe Matomo::Client do
       it 'raises an error if MATOMO_AUTHORIZATION_TOKEN is missing' do
         stubbed_env = ENV.to_h
                          .except('MATOMO_AUTHORIZATION_TOKEN')
-                         .merge("MATOMO_HOST" => base_uri)
+                         .merge('MATOMO_HOST' => base_uri)
         stub_const('ENV', stubbed_env)
 
         expect { described_class.new }
