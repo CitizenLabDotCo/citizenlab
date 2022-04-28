@@ -13,7 +13,7 @@ class ParticipantsService
 
   PARTICIPANT_ACTIONS = %i[posting commenting idea_voting comment_voting budgeting polling volunteering]
 
-  def participants(options={})
+  def participants(options = {})
     since = options[:since]
     # After https://stackoverflow.com/a/25356375
     multiwhere = '(activities.item_type, activities.action) IN ('
@@ -48,7 +48,7 @@ class ParticipantsService
     participants
   end
 
-  def ideas_participants(ideas, options={})
+  def ideas_participants(ideas, options = {})
     since = options[:since]
     actions = options[:actions] || PARTICIPANT_ACTIONS
     participants = User.none
@@ -86,13 +86,13 @@ class ParticipantsService
     participants
   end
 
-  def project_participants(project, options={})
+  def project_participants(project, options = {})
     Rails.cache.fetch("#{project.cache_key}/participants", expires_in: 1.day) do
       projects_participants [project], options
     end
   end
 
-  def projects_participants(projects, options={})
+  def projects_participants(projects, options = {})
     since = options[:since]
     actions = options[:actions] || PARTICIPANT_ACTIONS
     ideas = Idea.where(project: projects)
@@ -122,12 +122,12 @@ class ParticipantsService
     participants
   end
 
-  def topics_participants(topics, options={})
+  def topics_participants(topics, options = {})
     ideas = Idea.with_some_topics(topics)
     ideas_participants ideas, options
   end
 
-  def idea_statuses_participants(idea_statuses, options={})
+  def idea_statuses_participants(idea_statuses, options = {})
     ideas = Idea.where(idea_status: idea_statuses)
     ideas_participants ideas, options
   end

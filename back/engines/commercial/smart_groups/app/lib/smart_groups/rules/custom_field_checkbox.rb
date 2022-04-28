@@ -33,7 +33,7 @@ module SmartGroups::Rules
       'custom_field_checkbox'
     end
 
-    def initialize(custom_field_id, predicate, _value=nil)
+    def initialize(custom_field_id, predicate, _value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
     end

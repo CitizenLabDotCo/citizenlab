@@ -1,7 +1,7 @@
 module JsonFormsUserOverrides
   extend ActiveSupport::Concern
 
-  def user_to_ui_schema(fields, _locale='en')
+  def user_to_ui_schema(fields, _locale = 'en')
     {
       type: 'VerticalLayout',
       options: {

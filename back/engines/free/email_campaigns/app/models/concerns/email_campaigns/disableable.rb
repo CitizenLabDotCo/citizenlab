@@ -17,7 +17,7 @@ module EmailCampaigns
       before_send :filter_enabled?
     end
 
-    def filter_enabled?(_options={})
+    def filter_enabled?(_options = {})
       enabled != false
     end
 

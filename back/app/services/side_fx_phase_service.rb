@@ -1,7 +1,7 @@
 class SideFxPhaseService
   include SideFxHelper
 
-  def initialize(sfx_pc=SideFxParticipationContextService.new)
+  def initialize(sfx_pc = SideFxParticipationContextService.new)
     @sfx_pc = sfx_pc
   end
 

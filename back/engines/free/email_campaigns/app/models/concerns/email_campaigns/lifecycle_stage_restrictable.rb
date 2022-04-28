@@ -20,7 +20,7 @@ module EmailCampaigns
       before_send :allowed_lifecycle_stage?
     end
 
-    def allowed_lifecycle_stage?(_options={})
+    def allowed_lifecycle_stage?(_options = {})
       self.class.allowed_lifecycle_stages.include?(AppConfiguration.instance.settings('core', 'lifecycle_stage'))
     end
   end

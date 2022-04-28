@@ -21,7 +21,7 @@ module Filterer
     base.extend ClassMethods
   end
 
-  def filter(object, options={})
+  def filter(object, options = {})
     self.class.filters.inject(object) { |object, filter| filter.apply(object, self, options) }
   end
 
@@ -52,7 +52,7 @@ module Filterer
     # an object as input and just returns the object filtered according the +options+.
     #
     # @param [Object] context the context (self) in which the block of the filter will be executed.
-    def apply(scope, context=nil, options={})
+    def apply(scope, context = nil, options = {})
       (context || self).instance_exec(scope, options, &block)
     end
   end

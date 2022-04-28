@@ -217,7 +217,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     ideas
   end
 
-  def votes_by_custom_field_key(key, filter_params, normalization='absolute')
+  def votes_by_custom_field_key(key, filter_params, normalization = 'absolute')
     serie = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)

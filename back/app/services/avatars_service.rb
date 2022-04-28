@@ -1,5 +1,5 @@
 class AvatarsService
-  def initialize(participants_service=ParticipantsService.new)
+  def initialize(participants_service = ParticipantsService.new)
     @participants_service = participants_service
   end
 

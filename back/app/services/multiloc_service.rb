@@ -1,5 +1,5 @@
 class MultilocService
-  def t(translations, user=nil)
+  def t(translations, user = nil)
     return nil unless translations
 
     locales = AppConfiguration.instance.settings('core', 'locales')

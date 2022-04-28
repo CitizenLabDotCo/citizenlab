@@ -88,11 +88,11 @@ module EmailCampaigns
 
     private
 
-    def user_filter_moderator_only(users_scope, _options={})
+    def user_filter_moderator_only(users_scope, _options = {})
       users_scope.where("roles @> '[{\"type\":\"project_moderator\"}]'")
     end
 
-    def user_filter_no_invitees(users_scope, _options={})
+    def user_filter_no_invitees(users_scope, _options = {})
       users_scope.active
     end
 

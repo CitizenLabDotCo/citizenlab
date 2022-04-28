@@ -61,7 +61,7 @@ module SmartGroups::Rules
       new(json['predicate'], json['value'])
     end
 
-    def initialize(predicate, value=nil)
+    def initialize(predicate, value = nil)
       self.predicate = predicate
       self.value = value
     end

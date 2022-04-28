@@ -1,6 +1,6 @@
 module JsonFormsIdeasOverrides
 
-  def custom_form_to_ui_schema(fields, locale='en')
+  def custom_form_to_ui_schema(fields, locale = 'en')
     project = fields.first.resource.project
     input_term = project.process_type == 'continuous' ? project.input_term : TimelineService.new.current_phase(project)&.input_term || 'idea'
     {

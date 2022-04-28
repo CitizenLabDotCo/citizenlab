@@ -134,6 +134,9 @@ Layout/EmptyLinesAroundExceptionHandlingKeywords:
 Layout/ClosingParenthesisIndentation:
   Enabled: true
 
+Layout/SpaceAroundEqualsInParameterDefault:
+  Enabled: true
+
 Metrics/ClassLength:
   Enabled: true
   Max: 300

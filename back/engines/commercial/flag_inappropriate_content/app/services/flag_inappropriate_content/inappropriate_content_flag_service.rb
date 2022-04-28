@@ -1,6 +1,6 @@
 module FlagInappropriateContent
   class InappropriateContentFlagService
-    def introduce_flag!(flaggable, attributes={})
+    def introduce_flag!(flaggable, attributes = {})
       reuse_flag = flaggable.inappropriate_content_flag
       flag = reuse_flag || InappropriateContentFlag.new(flaggable: flaggable)
       was_deleted = flag.deleted?

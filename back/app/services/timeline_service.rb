@@ -1,19 +1,19 @@
 class TimelineService
-  def future_phases(project, time=Time.now)
+  def future_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     project.phases.select do |phase|
       phase.start_at > date
     end
   end
 
-  def past_phases(project, time=Time.now)
+  def past_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     project.phases.select do |phase|
       phase.end_at < date
     end
   end
 
-  def current_phase(project, time=Time.now)
+  def current_phase(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.timeline?
       project.phases.find do |phase|
@@ -22,7 +22,7 @@ class TimelineService
     end
   end
 
-  def current_and_future_phases(project, time=Time.now)
+  def current_and_future_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     if project.timeline?
       project.phases.select do |phase|

@@ -3,7 +3,7 @@ module Surveys
     include TypeformParser
 
     class AuthorizationError < StandardError
-      def initialize(options={})
+      def initialize(options = {})
         super
         @error_key = options.fetch(:error_key, 'INVALID_AUTHORIZATION')
         @description = options.fetch(:description, 'Invalid authorization header "Bearer"')

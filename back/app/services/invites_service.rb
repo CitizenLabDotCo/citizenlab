@@ -80,7 +80,7 @@ class InvitesService
     ([*('a'..'z'), *('0'..'9')]).sample(9).join
   end
 
-  def bulk_create_xlsx(file, default_params={}, inviter=nil)
+  def bulk_create_xlsx(file, default_params = {}, inviter = nil)
 
     map_rows = []
     old_row = 0
@@ -109,7 +109,7 @@ class InvitesService
     raise e
   end
 
-  def bulk_create(hash_array, default_params={}, inviter=nil)
+  def bulk_create(hash_array, default_params = {}, inviter = nil)
     invites = build_invites(hash_array, default_params, inviter)
     check_invites(invites)
     if @errors.reject(&:ignore).empty?
@@ -249,7 +249,7 @@ class InvitesService
     end
   end
 
-  def build_invites(hash_array, default_params={}, inviter=nil)
+  def build_invites(hash_array, default_params = {}, inviter = nil)
     if hash_array.size > MAX_INVITES
       add_error(:max_invites_limit_exceeded, row: (hash_array.size - 1), value: MAX_INVITES)
       fail_now
@@ -267,7 +267,7 @@ class InvitesService
     end
   end
 
-  def build_invite(params, default_params={}, inviter=nil)
+  def build_invite(params, default_params = {}, inviter = nil)
     invitee = User.new({
       email: params['email']&.strip,
       first_name: params['first_name'],
@@ -340,7 +340,7 @@ class InvitesService
     end
   end
 
-  def add_error(key, options={})
+  def add_error(key, options = {})
     @errors << InviteError.new(INVITE_ERRORS[key], options)
   end
 

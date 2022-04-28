@@ -47,7 +47,7 @@ module AdminApi
       argument :projects, [ID], required: false
     end
 
-    def public_ideas(args={})
+    def public_ideas(args = {})
       ideas = ::IdeaPolicy::Scope.new(nil, Idea)
         .resolve
         .includes(:idea_images)
@@ -78,7 +78,7 @@ module AdminApi
 
     field :public_initiatives, Types::InitiativeType.connection_type, null: false
 
-    def public_initiatives(_args={})
+    def public_initiatives(_args = {})
       initiatives = ::InitiativePolicy::Scope.new(nil, Initiative)
         .resolve
         .includes(:initiative_images)

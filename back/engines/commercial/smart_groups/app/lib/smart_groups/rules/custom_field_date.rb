@@ -60,7 +60,7 @@ module SmartGroups::Rules
       'custom_field_date'
     end
 
-    def initialize(custom_field_id, predicate, value=nil)
+    def initialize(custom_field_id, predicate, value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
       if value.class == Time

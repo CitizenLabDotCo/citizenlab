@@ -88,7 +88,7 @@ module EmailCampaigns
 
     private
 
-    def user_filter_admins_moderators_only(users_scope, _options={})
+    def user_filter_admins_moderators_only(users_scope, _options = {})
       users_scope.admin.or(users_scope.project_moderator)
     end
 

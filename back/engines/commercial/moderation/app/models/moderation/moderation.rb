@@ -53,7 +53,7 @@ module Moderation
       end
     end
 
-    def belongs_to(_preloaded={})
+    def belongs_to(_preloaded = {})
       case moderatable_type
       when 'Idea'
         { project: { id: project_id, slug: project_slug, title_multiloc: project_title_multiloc } }
