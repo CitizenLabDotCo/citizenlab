@@ -24,6 +24,7 @@ const Legend = ({ labels, colors }: Props) => (
           flexDirection="row"
           alignItems="center"
           mr={lastItem ? undefined : '12px'}
+          key={i}
         >
           <StyledIcon
             name="dot"

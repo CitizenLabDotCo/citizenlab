@@ -4,8 +4,18 @@ import React from 'react';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
+import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc } from 'typings';
@@ -13,9 +23,10 @@ import { Multiloc } from 'typings';
 interface Props {
   titleMultiloc: Multiloc;
   svgNode: React.RefObject<SVGElement | undefined>;
+  representativenessScore: number;
 }
 
-const Header = ({ titleMultiloc, svgNode }: Props) => {
+const Header = ({ titleMultiloc, svgNode, representativenessScore }: Props) => {
   const localize = useLocalize();
   const title = localize(titleMultiloc);
 
@@ -30,6 +41,51 @@ const Header = ({ titleMultiloc, svgNode }: Props) => {
         {title}
       </Title>
       <Box display="flex" alignItems="center">
+        <Text
+          fontSize="s"
+          color="adminSecondaryTextColor"
+          fontWeight="bold"
+          display="inline"
+          m="0px"
+          mr="8px"
+          mb="0px"
+        >
+          <FormattedMessage {...messages.representativenessScoreText} />
+        </Text>
+
+        <Text
+          fontSize="xxl"
+          display="inline"
+          color="adminTextColor"
+          fontWeight="bold"
+          m="0px"
+          mb="0px"
+        >
+          {representativenessScore}
+        </Text>
+
+        <Text
+          fontSize="xxl"
+          display="inline"
+          color="mediumGrey"
+          m="0px"
+          mr="8px"
+          mb="0px"
+        >
+          /100
+        </Text>
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.representativenessScoreTooltipText}
+              values={{
+                representativenessArticleLink: (
+                  <RepresentativenessArticleLink />
+                ),
+              }}
+            />
+          }
+        />
         <ReportExportMenu name={title} svgNode={svgNode} />
       </Box>
     </Box>

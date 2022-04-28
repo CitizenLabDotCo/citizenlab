@@ -30,6 +30,7 @@ const ChartCards = () => {
           customField={customField}
           key={customField.id}
           data={fakeData.gender.data}
+          representativenessScore={fakeData.gender.representativenessScore}
           includedUserPercentage={fakeData.gender.includedUsersPercentage}
           demographicDataDate={fakeData.gender.demographicDataDate}
         />

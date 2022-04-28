@@ -33,6 +33,7 @@ export type RepresentativenessData = RepresentativenessRow[];
 interface Props {
   customField: IUserCustomFieldData;
   data: RepresentativenessData;
+  representativenessScore: number;
   includedUserPercentage: number;
   demographicDataDate: Moment;
 }
@@ -71,6 +72,7 @@ const emptyString = () => '';
 const ChartCard = ({
   customField,
   data,
+  representativenessScore,
   includedUserPercentage,
   demographicDataDate,
   intl: { formatMessage },
@@ -96,6 +98,7 @@ const ChartCard = ({
       <Header
         titleMultiloc={customField.attributes.title_multiloc}
         svgNode={currentChartRef}
+        representativenessScore={representativenessScore}
       />
       <MultiBarChart
         height={300}

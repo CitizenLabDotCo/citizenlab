@@ -7,6 +7,7 @@ import {
   Text,
   StatusLabel,
 } from '@citizenlab/cl2-component-library';
+import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 
 // i18n
 import messages from './messages';
@@ -37,15 +38,7 @@ const Header = () => (
         <FormattedMessage
           {...messages.pageDescription}
           values={{
-            representativenessArticleLink: (
-              <a
-                href="https://en.wikipedia.org/wiki/Chi-squared_test"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <FormattedMessage {...messages.representativenessArticleLink} />
-              </a>
-            ),
+            representativenessArticleLink: <RepresentativenessArticleLink />,
           }}
         />
       </Text>

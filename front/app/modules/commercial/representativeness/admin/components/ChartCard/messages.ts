@@ -2,36 +2,45 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   percentageUsersIncluded: {
-    id: 'app.containers.AdminPage.DashboardPage.percentageUsersIncluded',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded',
     defaultMessage: '{percentage} of users included',
   },
   required: {
-    id: 'app.containers.AdminPage.DashboardPage.required',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.required',
     defaultMessage: 'Required',
   },
   optional: {
-    id: 'app.containers.AdminPage.DashboardPage.optional',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.optional',
     defaultMessage: 'Optional',
   },
   forUserRegistation: {
-    id: 'app.containers.AdminPage.DashboardPage.forUserRegistation',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation',
     defaultMessage: '{requiredOrOptional} for user registration',
   },
   users: {
-    id: 'app.containers.AdminPage.DashboardPage.users',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.users',
     defaultMessage: 'Users',
   },
   totalPopulation: {
-    id: 'app.containers.AdminPage.DashboardPage.totalPopulation',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.totalPopulation',
     defaultMessage: 'Total population',
   },
   dataHiddenWarning: {
-    id: 'app.containers.AdminPage.DashboardPage.dataHiddenWarning',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.dataHiddenWarning',
     defaultMessage:
       '{numberOfHiddenItems, plural, one {# item is} other {# items are}} hidden in this graph. Change to {tableViewLink} to view all data.',
   },
   tableViewLinkText: {
-    id: 'app.containers.AdminPage.DashboardPage.tableViewLinkText',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.tableViewLinkText',
     defaultMessage: 'table view',
+  },
+  representativenessScoreText: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText',
+    defaultMessage: 'Representativeness score:',
+  },
+  representativenessScoreTooltipText: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText',
+    defaultMessage:
+      "The score shows how similar the distributions of platform users and total population. Learn more about how it's calculated {representativenessArticleLink}.",
   },
 });

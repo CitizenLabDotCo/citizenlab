@@ -52,6 +52,7 @@ const TEST_GENDER_DATA = [
 const DATA_PER_CODE = {
   gender: {
     data: TEST_GENDER_DATA,
+    representativenessScore: 81,
     includedUsersPercentage: 100,
     demographicDataDate: moment('2021-09-02'),
   },
