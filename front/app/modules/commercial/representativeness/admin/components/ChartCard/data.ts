@@ -47,7 +47,7 @@ export const TEST_GENDER_DATA = [
 //   return data;
 // };
 
-// export const TEST_GENDER_DATA = generateData(11);
+// export const TEST_GENDER_DATA = generateData(6);
 
 export const GENDER_INCLUDED_USERS_PERCENTAGE = '100%';
 

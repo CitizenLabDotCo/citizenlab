@@ -35,6 +35,7 @@ export interface BarProps {
   fill?: string;
   opacity?: string | number;
   isAnimationActive?: boolean;
+  categoryGap?: string | number;
 }
 
 export const convertBarProps = (
@@ -42,7 +43,8 @@ export const convertBarProps = (
 ): ConvertedBarProps | undefined => {
   if (!barProps) return;
 
-  const { name, size, fill, opacity, isAnimationActive } = barProps;
+  const { name, size, fill, opacity, isAnimationActive, categoryGap } =
+    barProps;
 
   return {
     name: wrapIfAvailable(name),
@@ -50,6 +52,7 @@ export const convertBarProps = (
     fill: wrapIfAvailable(fill),
     opacity: wrapIfAvailable(opacity),
     isAnimationActive,
+    categoryGap,
   };
 };
 

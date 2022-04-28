@@ -75,7 +75,7 @@ const ChartCard = ({
   const hideTicks = TEST_GENDER_DATA.length > 12;
   const hideLabels = TEST_GENDER_DATA.length > 10;
   const dataIsTooLong = TEST_GENDER_DATA.length > 24;
-  const data = dataIsTooLong ? TEST_GENDER_DATA.slice(0, 24) : TEST_GENDER_DATA;
+  const data = TEST_GENDER_DATA.slice(0, 24);
   const numberOfHiddenItems = TEST_GENDER_DATA.length - 24;
 
   const barNames = [
@@ -99,6 +99,7 @@ const ChartCard = ({
         bars={{
           name: barNames,
           fill: [newBarFill, secondaryNewBarFill],
+          categoryGap: '20%',
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
         xaxis={
