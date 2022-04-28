@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -31,37 +31,25 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'react-router';
 
-// events
-import eventEmitter from 'utils/eventEmitter';
-
 // services
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
 
-const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
+type ContentBuilderTopBarProps = {
+  disableSave: boolean;
+} & WithRouterProps;
+
+const ContentBuilderTopBar = ({
+  disableSave,
+  params: { projectId },
+}: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
-  const [disableSave, setDisableSave] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
   const locale = useLocale();
   const project = useProject({ projectId });
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('contentBuilderErrors')
-      .subscribe(({ eventValue }) => {
-        console.log(eventValue);
-        setDisableSave(
-          Object.values(eventValue as Record<string, boolean>).some(
-            (value: boolean) => value === true
-          )
-        );
-      });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   const goBack = () => {
     clHistory.goBack();
@@ -130,4 +118,4 @@ const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(ContentBuilderPage);
+export default withRouter(ContentBuilderTopBar);

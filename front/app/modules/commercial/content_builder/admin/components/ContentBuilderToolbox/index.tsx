@@ -110,7 +110,13 @@ const ContentBuilderToolbox = ({
           ref &&
           connectors.create(
             ref,
-            <Element is={CraftIframe} id="CraftIframe" url="" height="" />,
+            <Element
+              is={CraftIframe}
+              id="CraftIframe"
+              url=""
+              height=""
+              hasError={false}
+            />,
             {
               onCreate: (node) => {
                 selectNode(node.rootNodeId);

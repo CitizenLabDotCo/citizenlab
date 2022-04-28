@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 
 // styles
@@ -15,16 +15,55 @@ import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 import ContentBuilderFrame from '../components/ContentBuilderFrame';
+import eventEmitter from 'utils/eventEmitter';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
+  const [contentBuilderErrors, setContentBuilderErrors] = useState<
+    Record<string, boolean>
+  >({});
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('contentBuilderError')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => ({
+          ...contentBuilderErrors,
+          ...(eventValue as Record<string, boolean>),
+        }));
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('deleteContentBuilderElement')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => {
+          const deletedElementId = eventValue as string;
+          const { [deletedElementId]: _deletedElementId, ...rest } =
+            contentBuilderErrors;
+          return rest;
+        });
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const disableSave = Object.values(contentBuilderErrors).some(
+    (value: boolean) => value === true
+  );
+
   return (
     <Box display="flex" flexDirection="column" w="100%">
       <Editor isPreview={false}>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar disableSave={disableSave} />
         <Box display="flex">
           <Box
             flex="0 0 auto"

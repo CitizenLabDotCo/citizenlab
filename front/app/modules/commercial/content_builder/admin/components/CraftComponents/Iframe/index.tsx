@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // components
 import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
@@ -17,42 +17,30 @@ import eventEmitter from 'utils/eventEmitter';
 interface Props {
   url: string;
   height: string;
+  hasError: boolean;
 }
 
-const CraftIframe = ({ url, height }: Props) => {
+const CraftIframe = ({ url, height, hasError }: Props) => {
   return (
     <Box minHeight="26px">
-      <iframe src={url} width="100%" height={height} />
+      {!hasError && url && <iframe src={url} width="100%" height={height} />}
     </Box>
   );
 };
 
 const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
-  const [contentBuilderErrors, setContentBuilderErrors] = useState({});
-
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('contentBuilderErrors')
-      .subscribe(({ eventValue }) =>
-        setContentBuilderErrors(eventValue as Record<string, boolean>)
-      );
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
   const {
     actions: { setProp },
     url,
     height,
     id,
+    hasError,
   } = useNode((node) => ({
     url: node.data.props.url,
     height: node.data.props.height,
     id: node.id,
+    hasError: node.data.props.hasError,
   }));
-
-  console.log(contentBuilderErrors);
 
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
@@ -72,15 +60,13 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           value={url}
           onChange={(value) => {
             setProp((props) => (props.url = value));
-            eventEmitter.emit('contentBuilderErrors', {
-              ...contentBuilderErrors,
+            setProp((props) => (props.hasError = !validateUrl(value)));
+            eventEmitter.emit('contentBuilderError', {
               [id]: !validateUrl(value),
             });
           }}
         />
-        {contentBuilderErrors[id] && (
-          <Error id="url-error" text={'Error Message'} />
-        )}
+        {hasError && <Error text={'Error Message'} />}
       </Box>
       <Box flex="0 0 100%">
         <Input
