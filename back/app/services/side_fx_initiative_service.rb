@@ -55,7 +55,7 @@ class SideFxInitiativeService
 
   private
 
-  def before_publish(initiative, user)
+  def before_publish(initiative, _user)
     set_assignee initiative
   end
 

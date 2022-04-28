@@ -8,7 +8,7 @@ class SideFxEventService
     LogActivityJob.perform_later(event, 'created', current_user, event.created_at.to_i)
   end
 
-  def before_update(event, current_user)
+  def before_update(event, _current_user)
     event.description_multiloc = TextImageService.new.swap_data_images(event, :description_multiloc)
   end
 

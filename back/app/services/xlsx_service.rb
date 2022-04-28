@@ -143,7 +143,7 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
+  def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },

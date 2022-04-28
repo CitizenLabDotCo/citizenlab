@@ -31,7 +31,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_value(locale)
+    def description_value(_locale)
       value
     end
 
@@ -39,7 +39,7 @@ module SmartGroups::Rules
       self.class.rule_type
     end
 
-    def description_property(locale)
+    def description_property(_locale)
       nil
     end
 

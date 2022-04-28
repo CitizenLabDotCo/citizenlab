@@ -68,7 +68,7 @@ class CustomFieldService
     end
   end
 
-  def generate_key(record, title)
+  def generate_key(_record, title)
     key = keyify(title)
     indexedKey = nil
     i = 0
@@ -126,7 +126,7 @@ class CustomFieldService
     end
   end
 
-  def base_ui_schema_field(field, locale)
+  def base_ui_schema_field(field, _locale)
     Hash.new.tap do |ui_schema|
       ui_schema[:'ui:widget'] = 'hidden' if field.hidden || !field.enabled
     end
@@ -313,13 +313,13 @@ class CustomFieldService
 
     # *** point ***
 
-  def point_to_ui_schema_field(field, locale)
+  def point_to_ui_schema_field(_field, _locale)
     Hash.new.tap do |ui_schema|
       ui_schema[:'ui:widget'] = 'hidden'
     end
   end
 
-  def point_to_json_schema_field(field, locale)
+  def point_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }

@@ -20,7 +20,7 @@ module IdBosaFas
       [:environment, :identifier, :secret]
     end
 
-    def entitled?(auth)
+    def entitled?(_auth)
       true
     end
 

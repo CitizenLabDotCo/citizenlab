@@ -99,7 +99,7 @@ module EmailCampaigns
 
     private
 
-    def user_filter_no_invitees(users_scope, options={})
+    def user_filter_no_invitees(users_scope, _options={})
       users_scope.active
     end
 

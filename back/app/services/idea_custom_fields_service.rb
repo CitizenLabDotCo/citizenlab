@@ -1,5 +1,5 @@
 class IdeaCustomFieldsService
-  def all_fields(custom_form, options = {})
+  def all_fields(custom_form, _options = {})
     default_fields(custom_form)
   end
 

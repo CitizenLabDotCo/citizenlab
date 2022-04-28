@@ -114,7 +114,7 @@ class JsonFormsService
     }
   end
 
-  def text_to_json_schema_field(field, locale)
+  def text_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }
@@ -126,7 +126,7 @@ class JsonFormsService
     base_ui_schema_field(field, locale)
   end
 
-  def number_to_json_schema_field(field, locale)
+  def number_to_json_schema_field(_field, _locale)
     {
       type: 'number'
     }
@@ -145,7 +145,7 @@ class JsonFormsService
     }
   end
 
-  def multiline_text_to_json_schema_field(field, locale)
+  def multiline_text_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }
@@ -163,7 +163,7 @@ class JsonFormsService
     }
   end
 
-  def html_to_json_schema_field(field, locale)
+  def html_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }
@@ -171,7 +171,7 @@ class JsonFormsService
 
   # *** text_multiloc ***
 
-  def text_multiloc_to_json_schema_field(field, locale)
+  def text_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
@@ -203,7 +203,7 @@ class JsonFormsService
 
   # *** multiline_text_multiloc ***
 
-  def multiline_text_multiloc_to_json_schema_field(field, locale)
+  def multiline_text_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
@@ -235,7 +235,7 @@ class JsonFormsService
 
   # *** html_multiloc ***
 
-  def html_multiloc_to_json_schema_field(field, locale)
+  def html_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
@@ -320,7 +320,7 @@ class JsonFormsService
     base_ui_schema_field(field, locale)
   end
 
-  def checkbox_to_json_schema_field(field, locale)
+  def checkbox_to_json_schema_field(_field, _locale)
     {
       type: 'boolean'
     }
@@ -332,7 +332,7 @@ class JsonFormsService
     base_ui_schema_field(field, locale)
   end
 
-  def date_to_json_schema_field(field, locale)
+  def date_to_json_schema_field(_field, _locale)
     {
       type: 'string',
       format: 'date'
@@ -345,7 +345,7 @@ class JsonFormsService
     base_ui_schema_field(field, locale)
   end
 
-  def image_files_to_json_schema_field(field, locale)
+  def image_files_to_json_schema_field(_field, _locale)
     {
       type: 'array',
       items: {
@@ -363,7 +363,7 @@ class JsonFormsService
     base_ui_schema_field(field, locale)
   end
 
-  def files_to_json_schema_field(field, locale)
+  def files_to_json_schema_field(_field, _locale)
     {
       type: 'array',
       items: {
@@ -388,11 +388,11 @@ class JsonFormsService
     }
   end
 
-  def point_to_ui_schema_field(field, locale)
+  def point_to_ui_schema_field(_field, _locale)
     nil
   end
 
-  def point_to_json_schema_field(field, locale)
+  def point_to_json_schema_field(_field, _locale)
     {
       required: %w[type coordinates],
       type: 'object',

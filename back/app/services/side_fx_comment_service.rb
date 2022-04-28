@@ -13,7 +13,7 @@ class SideFxCommentService
     notify_mentioned_users(comment, user)
   end
 
-  def before_update(comment, user)
+  def before_update(comment, _user)
     if comment.body_multiloc_changed?
       comment.body_updated_at = Time.now
       process_mentions(comment)

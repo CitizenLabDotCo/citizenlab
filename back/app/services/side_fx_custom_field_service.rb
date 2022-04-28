@@ -13,7 +13,7 @@ class SideFxCustomFieldService
     LogActivityJob.perform_later(custom_field, 'changed', current_user, custom_field.updated_at.to_i)
   end
 
-  def before_destroy(custom_field, current_user)
+  def before_destroy(custom_field, _current_user)
     UserCustomFieldService.new.delete_custom_field_values(custom_field)
   end
 

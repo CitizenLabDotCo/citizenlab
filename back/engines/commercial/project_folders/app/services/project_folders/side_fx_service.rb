@@ -7,7 +7,7 @@ module ProjectFolders
       LogActivityJob.perform_later(folder, 'created', user, folder.created_at.to_i)
     end
 
-    def before_update(folder, user)
+    def before_update(folder, _user)
       folder.description_multiloc = TextImageService.new.swap_data_images(folder, :description_multiloc)
     end
 

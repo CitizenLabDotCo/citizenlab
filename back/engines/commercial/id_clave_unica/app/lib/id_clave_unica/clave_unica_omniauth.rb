@@ -51,7 +51,7 @@ module IdClaveUnica
       [:first_name, :last_name]
     end
 
-    def logout_url(user)
+    def logout_url(_user)
       url_params = {
         redirect: Frontend::UrlService.new.home_url
       }

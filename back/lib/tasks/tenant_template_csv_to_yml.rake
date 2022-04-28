@@ -77,7 +77,7 @@ namespace :tenant_template do
     end
   end
 
-  def convert_projects(csv_projects, locales, projects_hash, topics_hash, yml_project_images)
+  def convert_projects(csv_projects, locales, projects_hash, _topics_hash, yml_project_images)
     csv_projects.map do |csv_project|
       yml_project = {	'title_multiloc' => make_multiloc(csv_project['Title'], locales),
                       'description_multiloc' => make_multiloc(md_to_html(csv_project['Description']), locales),

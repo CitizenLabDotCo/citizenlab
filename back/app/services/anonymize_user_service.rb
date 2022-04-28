@@ -148,7 +148,7 @@ class AnonymizeUserService
     end['first_name']
   end
 
-  def random_last_name(locale)
+  def random_last_name(_locale)
     @last_names.sample['last_name']
   end
 

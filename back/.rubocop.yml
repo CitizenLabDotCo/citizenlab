@@ -22,6 +22,31 @@ Style/StringLiterals:
 Style/HashSyntax:
   Enabled: true
 
+Style/Semicolon:
+  Enabled: true
+
+Style/RedundantSelf:
+  Enabled: true
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: true
+
+Style/Documentation:
+  # Most classes are not documented, so turn off this Cop.
+  Enabled: false
+
+Style/WordArray:
+  Enabled: true
+
+Style/BlockDelimiters:
+  Enabled: true
+
+Style/PercentLiteralDelimiters:
+  Enabled: true
+
+Style/MethodDefParentheses:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 
@@ -29,9 +54,6 @@ Layout/SpaceInsideBlockBraces:
   Enabled: true
 
 Layout/SpaceAroundOperators:
-  Enabled: true
-
-Style/MethodDefParentheses:
   Enabled: true
 
 Layout/SpaceBeforeBlockBraces:
@@ -45,9 +67,6 @@ Layout/TrailingWhitespace:
   AllowInHeredoc: true
 
 Layout/EmptyLinesAroundBlockBody:
-  Enabled: true
-
-Style/BlockDelimiters:
   Enabled: true
 
 Layout/EmptyLinesAroundClassBody:
@@ -81,18 +100,12 @@ Layout/ExtraSpacing:
 Layout/EmptyLineAfterGuardClause:
   Enabled: true
 
-Style/PercentLiteralDelimiters:
-  Enabled: true
-
 Layout/SpaceAfterColon:
   Enabled: true
 
 Layout/CaseIndentation:
   Enabled: true
   EnforcedStyle: end
-
-Style/Semicolon:
-  Enabled: true
 
 Layout/LeadingEmptyLines:
   Enabled: true
@@ -109,26 +122,19 @@ Layout/SpaceBeforeComment:
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
   Enabled: true
 
-Style/RedundantSelf:
-  Enabled: true
-
-Style/TrailingCommaInHashLiteral:
-  Enabled: true
-
-Style/Documentation:
-  # Most classes are not documented, so turn off this Cop.
-  Enabled: false
-
 Metrics/ClassLength:
   Enabled: true
   Max: 300
   CountAsOne: ['array', 'hash', 'heredoc']
 
-RSpec/MultipleExpectations:
-  Enabled: false
-
-Style/WordArray:
+Lint/UnusedMethodArgument:
   Enabled: true
+  AllowUnusedKeywordArguments: true
+
+RSpec/MultipleExpectations:
+  # It makes little sense to disallow multiple expectations in one example,
+  # so turn off this Cop.
+  Enabled: false
 
 RSpec/ImplicitExpect:
   Enabled: true

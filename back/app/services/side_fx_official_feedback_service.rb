@@ -3,7 +3,7 @@ class SideFxOfficialFeedbackService
 
   @@mention_service = MentionService.new
 
-  def before_create(feedback, user)
+  def before_create(feedback, _user)
     process_mentions feedback
   end
 
@@ -12,7 +12,7 @@ class SideFxOfficialFeedbackService
     notify_mentioned_users feedback, user
   end
 
-  def before_update(feedback, user)
+  def before_update(feedback, _user)
     process_mentions(feedback) if feedback.body_multiloc_changed?
   end
 

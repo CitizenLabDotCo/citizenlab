@@ -272,7 +272,7 @@ class ParticipationContextService
   end
 
   # Common reason regardless of the vote type.
-  def general_idea_voting_disabled_reason(context, user)
+  def general_idea_voting_disabled_reason(context, _user)
     if !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !context.voting_enabled

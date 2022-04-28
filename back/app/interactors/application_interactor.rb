@@ -24,7 +24,7 @@ class ApplicationInteractor
     [self]
   end
 
-  def self.human_attribute_name(attribute, options = {})
+  def self.human_attribute_name(attribute, _options = {})
     attribute
   end
 end

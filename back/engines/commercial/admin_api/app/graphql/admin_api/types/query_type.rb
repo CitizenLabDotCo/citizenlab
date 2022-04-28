@@ -78,7 +78,7 @@ module AdminApi
 
     field :public_initiatives, Types::InitiativeType.connection_type, null: false
 
-    def public_initiatives(args={})
+    def public_initiatives(_args={})
       initiatives = ::InitiativePolicy::Scope.new(nil, Initiative)
         .resolve
         .includes(:initiative_images)

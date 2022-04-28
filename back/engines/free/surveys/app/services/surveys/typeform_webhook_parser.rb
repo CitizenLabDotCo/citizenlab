@@ -35,7 +35,7 @@ module Surveys
       end
     end
 
-    def parse_user(body)
+    def parse_user(_body)
       nil
     end
 

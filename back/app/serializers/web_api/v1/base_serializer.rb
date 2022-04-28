@@ -6,7 +6,7 @@ class WebApi::V1::BaseSerializer
     params[:current_user]
   end
 
-  def self.signed_in?(object, params)
+  def self.signed_in?(_object, params)
     !!current_user(params)
   end
 end

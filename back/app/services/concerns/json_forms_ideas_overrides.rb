@@ -58,7 +58,7 @@ module JsonFormsIdeasOverrides
     end
   end
 
-  def custom_form_title_multiloc_to_json_schema_field(field, locale)
+  def custom_form_title_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
@@ -75,7 +75,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_title_multiloc_to_ui_schema_field(field, locale)
+  def custom_form_title_multiloc_to_ui_schema_field(field, _locale)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -90,7 +90,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_json_schema_field(field, locale)
+  def custom_form_body_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
@@ -106,7 +106,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_body_multiloc_to_ui_schema_field(field, locale)
+  def custom_form_body_multiloc_to_ui_schema_field(field, _locale)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
@@ -143,7 +143,7 @@ module JsonFormsIdeasOverrides
     }
   end
 
-  def custom_form_location_point_geojson_to_ui_schema_field(field, locale)
+  def custom_form_location_point_geojson_to_ui_schema_field(_field, _locale)
     {}
   end
 

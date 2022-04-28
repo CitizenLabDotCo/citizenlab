@@ -17,7 +17,7 @@ class SideFxAreaService
     LogActivityJob.perform_later(area, 'changed', user, area.updated_at.to_i)
   end
 
-  def before_destroy(area, user)
+  def before_destroy(area, _user)
     domicile_custom_field = CustomField.with_resource_type('User').find_by(code: 'domicile')
     if domicile_custom_field
       UserCustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
