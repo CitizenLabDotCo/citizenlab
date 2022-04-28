@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -9,11 +10,10 @@ import {
   Title,
   Text,
   IconTooltip,
-  Icon,
 } from '@citizenlab/cl2-component-library';
 import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
-import Button from 'components/UI/Button';
+import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 // i18n
 import messages from './messages';
@@ -22,13 +22,37 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { Multiloc } from 'typings';
 
+const StyledTabs = styled(Tabs)`
+  button {
+    padding: 10px;
+  }
+  svg {
+    margin-left: 0px;
+  }
+`;
+
+export type ViewState = 'chart' | 'table';
+
 interface Props {
   titleMultiloc: Multiloc;
   svgNode: React.RefObject<SVGElement | undefined>;
   representativenessScore: number;
+  viewState: ViewState;
+  onChangeViewState: (newViewState: ViewState) => void;
 }
 
-const Header = ({ titleMultiloc, svgNode, representativenessScore }: Props) => {
+const TAB_ITEMS: ITabItem[] = [
+  { icon: 'charts', name: 'chart', label: '' },
+  { icon: 'list', name: 'table', label: '' },
+];
+
+const Header = ({
+  titleMultiloc,
+  svgNode,
+  representativenessScore,
+  viewState,
+  onChangeViewState,
+}: Props) => {
   const localize = useLocalize();
   const title = localize(titleMultiloc);
 
@@ -92,12 +116,11 @@ const Header = ({ titleMultiloc, svgNode, representativenessScore }: Props) => {
         <Box mr="12px">
           <ReportExportMenu name={title} svgNode={svgNode} />
         </Box>
-        <Button p="8px 12px">
-          <Icon name="charts" width="16px" height="16px" fill="white" />
-        </Button>
-        <Button p="8px 12px">
-          <Icon name="list" width="16px" height="16px" fill="white" />
-        </Button>
+        <StyledTabs
+          items={TAB_ITEMS}
+          selectedValue={viewState}
+          onClick={onChangeViewState}
+        />
       </Box>
     </Box>
   );

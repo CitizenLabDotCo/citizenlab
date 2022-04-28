@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 // hooks
 import { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Header from './Header';
+import Header, { ViewState } from './Header';
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import Footer from './Footer';
@@ -77,14 +77,18 @@ const ChartCard = ({
   demographicDataDate,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { newBarFill, secondaryNewBarFill }: any = useTheme();
-  const currentChartRef = useRef<SVGElement>();
-
   const hideTicks = data.length > 12;
+  const preferTableView = hideTicks;
   const hideLabels = data.length > 10;
   const dataIsTooLong = data.length > 24;
   const slicedData = data.slice(0, 24);
   const numberOfHiddenItems = data.length - 24;
+
+  const { newBarFill, secondaryNewBarFill }: any = useTheme();
+  const currentChartRef = useRef<SVGElement>();
+  const [viewState, setViewState] = useState<ViewState>(
+    preferTableView ? 'table' : 'chart'
+  );
 
   const barNames = [
     formatMessage(messages.users),
@@ -99,6 +103,8 @@ const ChartCard = ({
         titleMultiloc={customField.attributes.title_multiloc}
         svgNode={currentChartRef}
         representativenessScore={representativenessScore}
+        viewState={viewState}
+        onChangeViewState={setViewState}
       />
       <MultiBarChart
         height={300}
