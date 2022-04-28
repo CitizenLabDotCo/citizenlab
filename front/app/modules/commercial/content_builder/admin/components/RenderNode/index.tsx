@@ -117,14 +117,16 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      border={`1px ${
-        solidBorderIsVisible
-          ? `solid ${colors.adminTextColor}`
+      borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      borderColor={
+        hasError
+          ? colors.clRedError
+          : solidBorderIsVisible
+          ? colors.adminTextColor
           : name !== TWO_COLUMNS && name !== THREE_COLUMNS
-          ? `dashed ${colors.separation}`
-          : `solid transparent`
-      } `}
-      borderColor={hasError ? colors.clRedError : undefined}
+          ? colors.separation
+          : 'transparent'
+      }
       m="4px"
       isRoot={id === ROOT_NODE}
     >
