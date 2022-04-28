@@ -32,6 +32,12 @@ Style/IfUnlessModifier:
 Layout/LineLength:
   Enabled: true
 
+Layout/MultilineMethodCallIndentation:
+  Enabled: true
+  # We need a discussion on this because we have 347 offences against the default
+  # and 252 offences against "EnforcedStyle: indented".
+  EnforcedStyle: indented
+
 RSpec/ExampleLength:
   Enabled: true
 
