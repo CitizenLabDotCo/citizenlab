@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
   },
+  aboutBox: {
+    id: 'app.containers.admin.ContentBuilder.aboutBox',
+    defaultMessage: 'About Box',
+  },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',
