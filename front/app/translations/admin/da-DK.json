@@ -1305,6 +1305,7 @@
   "app.containers.IdeasShow.postedIn": "{tenantName, select, DeloitteDK {Opslået i {projectLink}} other {Opslog i {projectLink}}}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Budget estimat",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Mindre end en dag} one {En dag} other {# dage}} tilbage\n\n",
+  "app.containers.admin.ContentBuilder.aboutBox": "About Box",
   "app.containers.admin.ContentBuilder.delete": "Slet",
   "app.containers.admin.ContentBuilder.image": "Billede",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kort beskrivelse af billedet",
