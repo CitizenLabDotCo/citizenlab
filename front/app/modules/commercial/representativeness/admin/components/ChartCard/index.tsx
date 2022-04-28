@@ -14,7 +14,7 @@ import { LabelList, Tooltip } from 'recharts';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';

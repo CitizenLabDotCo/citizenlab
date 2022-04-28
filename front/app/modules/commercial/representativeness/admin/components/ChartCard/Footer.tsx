@@ -11,7 +11,7 @@ import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // data
 import { GENDER_INCLUDED_USERS_PERCENTAGE } from './data';
