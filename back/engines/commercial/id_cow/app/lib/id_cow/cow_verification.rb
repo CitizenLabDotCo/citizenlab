@@ -30,11 +30,11 @@ module IdCow
     end
 
     def config_parameters
-      [:api_username, :api_password, :rut_empresa]
+      %i[api_username api_password rut_empresa]
     end
 
     def verification_parameters
-      [:run, :id_serial]
+      %i[run id_serial]
     end
 
     def verify_sync(run:, id_serial:)

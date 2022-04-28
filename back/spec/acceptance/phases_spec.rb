@@ -207,7 +207,7 @@ resource 'Phases' do
 
           assert_status 422
           json_response = json_parse(response_body)
-          expect(json_response[:errors].keys & [:start_at, :end_at]).to be_present
+          expect(json_response[:errors].keys & %i[start_at end_at]).to be_present
           expect(TextImage.count).to eq ti_count
         end
       end

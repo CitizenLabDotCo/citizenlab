@@ -44,7 +44,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    attrs = [:parent_id, :author_id]
+    attrs = %i[parent_id author_id]
     if record.author_id == user&.id
       attrs += [body_multiloc: CL2_SUPPORTED_LOCALES]
     end

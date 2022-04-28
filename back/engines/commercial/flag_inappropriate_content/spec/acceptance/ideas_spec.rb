@@ -63,7 +63,7 @@ resource 'Ideas' do
       example 'Toxicity detection job is enqueued when updating an idea\'s title and location description', document: false do
         expect do
           do_request
-        end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :location_description])
+        end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: %i[title_multiloc location_description])
       end
     end
 
@@ -78,7 +78,7 @@ resource 'Ideas' do
         example 'Toxicity detection job is enqueued when updating an idea\'s title and re-verifies all fields', document: false do
           expect do
             do_request
-          end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: [:title_multiloc, :body_multiloc, :location_description])
+          end.to have_enqueued_job(ToxicityDetectionJob).with(@idea, attributes: %i[title_multiloc body_multiloc location_description])
         end
       end
 

@@ -253,7 +253,7 @@ resource 'Projects' do
         parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false if CitizenLab.ee?
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
+      with_options scope: %i[project admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
       end
 
@@ -430,7 +430,7 @@ resource 'Projects' do
         parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)' if CitizenLab.ee?
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
+      with_options scope: %i[project admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
       end
 

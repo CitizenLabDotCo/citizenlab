@@ -80,7 +80,7 @@ resource 'ProjectFolder' do
         parameter :description_preview_multiloc, 'Text info about the folder', required: false
         parameter :header_bg, 'Base64 encoded header image', required: false
       end
-      with_options scope: [:project_folder, :admin_publication_attributes] do
+      with_options scope: %i[project_folder admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)
@@ -109,7 +109,7 @@ resource 'ProjectFolder' do
         parameter :description_preview_multiloc, 'Text info about the folder'
         parameter :header_bg, 'Base64 encoded header image'
       end
-      with_options scope: [:project_folder, :admin_publication_attributes] do
+      with_options scope: %i[project_folder admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, ProjectFolders::Folder)

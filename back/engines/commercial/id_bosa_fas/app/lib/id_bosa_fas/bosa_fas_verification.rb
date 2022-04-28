@@ -17,7 +17,7 @@ module IdBosaFas
     end
 
     def config_parameters
-      [:environment, :identifier, :secret]
+      %i[environment identifier secret]
     end
 
     def entitled?(_auth)
@@ -29,7 +29,7 @@ module IdBosaFas
     end
 
     def locked_attributes
-      [:first_name, :last_name]
+      %i[first_name last_name]
     end
 
     def locked_custom_fields

@@ -59,7 +59,7 @@ class WebApi::V1::CommentsController < ApplicationController
       votes_by_comment_id = votes.map { |vote| [vote.votable_id, vote] }.to_h
       {
         params: fastjson_params(vbci: votes_by_comment_id),
-        include: [:author, :user_vote]
+        include: %i[author user_vote]
       }
     else
       { params: fastjson_params, include: [:author] }
@@ -117,7 +117,7 @@ class WebApi::V1::CommentsController < ApplicationController
       votes_by_comment_id = votes.map { |vote| [vote.votable_id, vote] }.to_h
       {
         params: fastjson_params(vbci: votes_by_comment_id),
-        include: [:author, :user_vote]
+        include: %i[author user_vote]
       }
     else
       { params: fastjson_params, include: [:author] }

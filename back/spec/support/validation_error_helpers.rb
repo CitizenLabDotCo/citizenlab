@@ -9,17 +9,17 @@ class ValidationErrorHelper
     ActiveModel::Validations::ConfirmationValidator => [:exclusion],
     ActiveModel::Validations::FormatValidator => [:invalid],
     ActiveModel::Validations::InclusionValidator => [:inclusion],
-    ActiveModel::Validations::LengthValidator => [:wrong_length, :too_short, :too_long],
-    ActiveModel::Validations::NumericalityValidator => [:greater_than, :greater_than_or_equal_to, :equal_to, :less_than, :less_than_or_equal_to, :not_a_number, :not_an_integer, :equal_to, :odd, :even, :other_than],
+    ActiveModel::Validations::LengthValidator => %i[wrong_length too_short too_long],
+    ActiveModel::Validations::NumericalityValidator => %i[greater_than greater_than_or_equal_to equal_to less_than less_than_or_equal_to not_a_number not_an_integer equal_to odd even other_than],
     ActiveModel::Validations::PresenceValidator => [:blank],
     ActiveRecord::Validations::PresenceValidator => [:blank],
     ActiveRecord::Validations::UniquenessValidator => [:taken],
-    ActiveRecord::Validations::LengthValidator => [:wrong_length, :too_short, :too_long],
+    ActiveRecord::Validations::LengthValidator => %i[wrong_length too_short too_long],
     ActiveRecord::Validations::AssociatedValidator => [:invalid],
     ActiveRecord::Validations::AbsenceValidator => [:present],
-    MultilocValidator => [:blank, :unsupported_locales, :too_long, :too_short, :wrong_length, :values_not_all_strings],
+    MultilocValidator => %i[blank unsupported_locales too_long too_short wrong_length values_not_all_strings],
     JsonValidator => [:invalid_json], # not sure
-    CarrierWave::Validations::ActiveModel::IntegrityValidator => [:integrity_error, :extension_whitelist_error, :extension_blacklist_error, :content_type_whitelist_error, :content_type_blacklist_error, :min_size_error, :max_size_error],
+    CarrierWave::Validations::ActiveModel::IntegrityValidator => %i[integrity_error extension_whitelist_error extension_blacklist_error content_type_whitelist_error content_type_blacklist_error min_size_error max_size_error],
     CarrierWave::Validations::ActiveModel::ProcessingValidator => [:processing_error],
     CarrierWave::Validations::ActiveModel::DownloadValidator => [:download_error]
   }

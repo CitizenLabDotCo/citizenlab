@@ -3,7 +3,7 @@ ApiPagination.configure do |config|
   config.paginator = :kaminari # or :will_paginate
 
   # Optional: set this to add other response format. Useful with tools that define :jsonapi format
-  config.response_formats = [:json, :xml, :jsonapi]
+  config.response_formats = %i[json xml jsonapi]
 
   # Optional: what parameter should be used to set the page option
   config.page_param do |params|

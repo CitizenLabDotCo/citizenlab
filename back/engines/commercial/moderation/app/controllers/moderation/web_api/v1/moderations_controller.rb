@@ -1,7 +1,7 @@
 module Moderation
   class WebApi::V1::ModerationsController < ApplicationController
-    after_action :verify_authorized, except: [:index, :moderations_count]
-    after_action :verify_policy_scoped, only: [:index, :moderations_count]
+    after_action :verify_authorized, except: %i[index moderations_count]
+    after_action :verify_policy_scoped, only: %i[index moderations_count]
 
     def index
       @moderations = policy_scope(published_moderations)

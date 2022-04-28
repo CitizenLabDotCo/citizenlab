@@ -1,7 +1,7 @@
 class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
-  before_action :render_no_data, only: [
-    :votes_by_time,
-    :votes_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    votes_by_time
+    votes_by_time_cumulative
   ]
   before_action :render_no_data_as_xlsx, only: [
     :votes_by_time_as_xlsx,

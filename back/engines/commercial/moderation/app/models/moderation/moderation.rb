@@ -25,7 +25,7 @@ module Moderation
     has_one :moderation_status, foreign_key: :moderatable_id
 
     pg_search_scope :search_by_all,
-        against: [:content_title_multiloc, :content_body_multiloc],
+        against: %i[content_title_multiloc content_body_multiloc],
         using: { tsearch: { prefix: true } }
 
     scope :with_moderation_status, (Proc.new do |status|

@@ -155,7 +155,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload,
           params: fastjson_params,
-          include: [:author, :topics, :areas, :user_vote, :idea_images]
+          include: %i[author topics areas user_vote idea_images]
           ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -192,7 +192,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :location_description,
       :proposed_budget,
       [idea_images_attributes: [:image]],
-      [{ idea_files_attributes: [{ file_by_content: [:content, :name] }, :name] }],
+      [{ idea_files_attributes: [{ file_by_content: %i[content name] }, :name] }],
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
@@ -225,12 +225,12 @@ class WebApi::V1::IdeasController < ApplicationController
       votes = Vote.where(user: current_user, votable_id: ideas.map(&:id), votable_type: 'Idea')
       {
         params: fastjson_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
-        include: [:author, :user_vote, :idea_images]
+        include: %i[author user_vote idea_images]
       }
     else
       {
         params: fastjson_params(pcs: ParticipationContextService.new),
-        include: [:author, :idea_images]
+        include: %i[author idea_images]
       }
     end
   end

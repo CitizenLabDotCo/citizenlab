@@ -1,8 +1,8 @@
 class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: [:comments_by_time, :comments_by_time_cumulative]
-  before_action :render_no_data_as_xlsx, only: [:comments_by_time_as_xlsx, :comments_by_time_cumulative_as_xlsx]
+  before_action :render_no_data, only: %i[comments_by_time comments_by_time_cumulative]
+  before_action :render_no_data_as_xlsx, only: %i[comments_by_time_as_xlsx comments_by_time_cumulative_as_xlsx]
 
   def comments_count
     count = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve

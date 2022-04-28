@@ -8,6 +8,6 @@ class CreateEmailSnippets < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
-    add_index :email_snippets, [:email, :snippet, :locale]
+    add_index :email_snippets, %i[email snippet locale]
   end
 end

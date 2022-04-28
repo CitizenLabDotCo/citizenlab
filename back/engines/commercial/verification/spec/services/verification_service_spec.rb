@@ -166,7 +166,7 @@ describe Verification::VerificationService do
     context 'for a user only verified with bosa_fas' do
       it 'returns some locked attributes' do
         verification = create(:verification, method_name: 'bosa_fas')
-        expect(service.locked_attributes(verification.user)).to match_array [:first_name, :last_name]
+        expect(service.locked_attributes(verification.user)).to match_array %i[first_name last_name]
       end
     end
   end

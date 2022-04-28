@@ -54,9 +54,9 @@ module UserCustomFields
 
     def permitted_attributes_for_update
       if record.code
-        [
-          :required,
-          :enabled
+        %i[
+          required
+          enabled
         ]
       else
         [

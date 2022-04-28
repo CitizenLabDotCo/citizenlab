@@ -17,7 +17,7 @@ module IdAuth0
     end
 
     def config_parameters
-      [:client_id, :client_secret, :domain, :method_name_multiloc]
+      %i[client_id client_secret domain method_name_multiloc]
     end
 
     def config_parameters_schema

@@ -1,7 +1,7 @@
 module ProjectFolders
   class WebApi::V1::ModeratorsController < ApplicationController
     before_action :do_authorize
-    before_action :set_moderator, only: [:show, :destroy]
+    before_action :set_moderator, only: %i[show destroy]
 
     skip_after_action :verify_authorized, only: [:users_search]
     skip_after_action :verify_policy_scoped, only: [:index]

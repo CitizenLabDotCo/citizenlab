@@ -163,7 +163,7 @@ class WebApi::V1::InvitesController < ApplicationController
       :avatar,
       :locale,
       :invite_text,
-      roles: [:type, :project_id],
+      roles: %i[type project_id],
       group_ids: []
     )
   end
@@ -183,7 +183,7 @@ class WebApi::V1::InvitesController < ApplicationController
       :locale,
       :invite_text,
       group_ids: [],
-      roles: [:type, :project_id],
+      roles: %i[type project_id],
       emails: []
     )
   end
@@ -194,7 +194,7 @@ class WebApi::V1::InvitesController < ApplicationController
       :locale,
       :invite_text,
       group_ids: [],
-      roles: [:type, :project_id]
+      roles: %i[type project_id]
     )
   end
 end

@@ -95,7 +95,7 @@ resource 'Projects' do
         parameter :ideas_order, 'The default order of ideas.'
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
+      with_options scope: %i[project admin_publication_attributes] do
         parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
       end
 

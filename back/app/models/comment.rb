@@ -52,7 +52,7 @@ class Comment < ApplicationRecord
       ['comments.publication_status = ?', 'published'] => 'comments_count'
     },
     touch: true
-  counter_culture [:idea, :project],
+  counter_culture %i[idea project],
     column_name: proc { |model| model.published? ? 'comments_count' : nil },
     column_names: {
       ['comments.publication_status = ?', 'published'] => 'comments_count'

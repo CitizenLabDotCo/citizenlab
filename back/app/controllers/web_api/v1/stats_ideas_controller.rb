@@ -1,14 +1,14 @@
 class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: [
-    :ideas_by_time,
-    :ideas_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    ideas_by_time
+    ideas_by_time_cumulative
   ]
 
-  before_action :render_no_data_as_xlsx, only: [
-    :ideas_by_time_as_xlsx,
-    :ideas_by_time_cumulative_as_xlsx,
+  before_action :render_no_data_as_xlsx, only: %i[
+    ideas_by_time_as_xlsx
+    ideas_by_time_cumulative_as_xlsx
   ]
 
   def ideas_count

@@ -72,7 +72,7 @@ module IdFranceconnect
     end
 
     def updateable_user_attrs
-      [:first_name, :last_name, :birthyear, :remote_avatar_url]
+      %i[first_name last_name birthyear remote_avatar_url]
     end
 
     private

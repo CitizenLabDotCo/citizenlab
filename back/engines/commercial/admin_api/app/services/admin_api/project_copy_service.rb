@@ -249,7 +249,7 @@ module AdminApi
       participation_context_ids = [@project.id] + @project.phases.ids
       Polls::Question.where(participation_context_id: participation_context_ids).map do |q|
         yml_question = {
-          'participation_context_ref' => lookup_ref(q.participation_context_id, [:project, :phase]),
+          'participation_context_ref' => lookup_ref(q.participation_context_id, %i[project phase]),
           'title_multiloc'            => q.title_multiloc,
           'ordering'                  => q.ordering,
           'created_at'                => shift_timestamp(q.created_at, shift_timestamps)&.iso8601,
@@ -279,7 +279,7 @@ module AdminApi
       participation_context_ids = [@project.id] + @project.phases.ids
       Volunteering::Cause.where(participation_context_id: participation_context_ids).map do |c|
         yml_cause = {
-          'participation_context_ref' => lookup_ref(c.participation_context_id, [:project, :phase]),
+          'participation_context_ref' => lookup_ref(c.participation_context_id, %i[project phase]),
           'title_multiloc'            => c.title_multiloc,
           'description_multiloc'      => c.description_multiloc,
           'remote_image_url'          => c.image_url,
@@ -383,7 +383,7 @@ module AdminApi
         yml_basket = {
           'submitted_at'              => shift_timestamp(b.submitted_at, shift_timestamps)&.iso8601,
           'user_ref'                  => lookup_ref(b.user_id, :user),
-          'participation_context_ref' => lookup_ref(b.participation_context_id, [:project, :phase]),
+          'participation_context_ref' => lookup_ref(b.participation_context_id, %i[project phase]),
           'created_at'                => shift_timestamp(b.created_at, shift_timestamps)&.iso8601,
           'updated_at'                => shift_timestamp(b.updated_at, shift_timestamps)&.iso8601
         }
@@ -437,7 +437,7 @@ module AdminApi
         yml_permission = {
           'action'          => p.action,
           'permitted_by'    => p.permitted_by,
-          'permission_scope_ref' => lookup_ref(p.permission_scope_id, [:project, :phase]),
+          'permission_scope_ref' => lookup_ref(p.permission_scope_id, %i[project phase]),
           'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
           'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }
@@ -560,7 +560,7 @@ module AdminApi
       comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
       Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
         yml_vote = {
-          'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),
+          'votable_ref' => lookup_ref(v.votable_id, %i[idea comment]),
           'user_ref'    => lookup_ref(v.user_id, :user),
           'mode'        => v.mode,
           'created_at'  => shift_timestamp(v.created_at, shift_timestamps)&.iso8601,

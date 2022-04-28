@@ -16,12 +16,12 @@ module IdIdCardLookup
     end
 
     def config_parameters
-      [
-        :method_name_multiloc,
-        :card_id_multiloc,
-        :card_id_tooltip_multiloc,
-        :card_id_placeholder,
-        :explainer_image_url,
+      %i[
+        method_name_multiloc
+        card_id_multiloc
+        card_id_tooltip_multiloc
+        card_id_placeholder
+        explainer_image_url
       ]
     end
 
@@ -43,12 +43,12 @@ module IdIdCardLookup
     end
 
     def exposed_config_parameters
-      [
-        :method_name_multiloc,
-        :card_id_multiloc,
-        :card_id_tooltip_multiloc,
-        :card_id_placeholder,
-        :explainer_image_url,
+      %i[
+        method_name_multiloc
+        card_id_multiloc
+        card_id_tooltip_multiloc
+        card_id_placeholder
+        explainer_image_url
       ]
     end
 

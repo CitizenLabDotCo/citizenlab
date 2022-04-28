@@ -1,16 +1,16 @@
 class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: [
-    :users_by_time,
-    :users_by_time_cumulative,
-    :active_users_by_time,
-    :active_users_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    users_by_time
+    users_by_time_cumulative
+    active_users_by_time
+    active_users_by_time_cumulative
   ]
-  before_action :render_no_data_as_xlsx, only: [
-    :users_by_time_as_xlsx,
-    :users_by_time_cumulative_as_xlsx,
-    :active_users_by_time_as_xlsx
+  before_action :render_no_data_as_xlsx, only: %i[
+    users_by_time_as_xlsx
+    users_by_time_cumulative_as_xlsx
+    active_users_by_time_as_xlsx
   ]
 
   def users_count

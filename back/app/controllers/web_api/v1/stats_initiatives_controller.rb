@@ -1,7 +1,7 @@
 class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
-  before_action :render_no_data, only: [
-    :initiatives_by_time,
-    :initiatives_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    initiatives_by_time
+    initiatives_by_time_cumulative
   ]
 
   def initiatives_count

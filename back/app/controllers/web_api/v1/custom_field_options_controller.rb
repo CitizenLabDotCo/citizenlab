@@ -1,6 +1,6 @@
 class WebApi::V1::CustomFieldOptionsController < ApplicationController
-  before_action :set_option, only: [:show, :update, :reorder, :destroy]
-  before_action :set_custom_field, only: [:index, :create]
+  before_action :set_option, only: %i[show update reorder destroy]
+  before_action :set_custom_field, only: %i[index create]
   skip_before_action :authenticate_user
 
   def index

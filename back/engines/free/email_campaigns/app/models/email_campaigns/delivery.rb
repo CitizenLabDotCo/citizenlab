@@ -36,12 +36,12 @@ module EmailCampaigns
     counter_culture :campaign, column_name: 'deliveries_count'
 
     STATUS_SUMMATION = {
-      sent: [:sent, :bounced, :failed, :accepted, :delivered, :opened, :clicked],
+      sent: %i[sent bounced failed accepted delivered opened clicked],
       bounced: [:bounced],
       failed: [:failed],
-      accepted: [:accepted, :delivered, :opened, :clicked],
-      delivered: [:delivered, :opened, :clicked],
-      opened: [:opened, :clicked],
+      accepted: %i[accepted delivered opened clicked],
+      delivered: %i[delivered opened clicked],
+      opened: %i[opened clicked],
       clicked: [:clicked]
     }
 

@@ -10,7 +10,7 @@ module Surveys
           if @participation_context
             authorize Project.find_by!(id: @participation_context.project.id), :index_xlsx?
           else
-            authorize [:surveys, :response], :index_xlsx?
+            authorize %i[surveys response], :index_xlsx?
           end
 
           # If the real-time API request ever gets problematic, this uses the saved webhook responses instead

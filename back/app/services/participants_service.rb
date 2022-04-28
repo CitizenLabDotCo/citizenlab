@@ -11,7 +11,7 @@ class ParticipantsService
     { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 },
   ]
 
-  PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting, :polling, :volunteering]
+  PARTICIPANT_ACTIONS = %i[posting commenting idea_voting comment_voting budgeting polling volunteering]
 
   def participants(options={})
     since = options[:since]

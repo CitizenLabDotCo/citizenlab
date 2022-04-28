@@ -21,7 +21,7 @@ module Volunteering
         # GET projects/:project_id/volunteers/as_xlsx
         # GET phases/:phase_id/volunteers/as_xlsx
         def index_xlsx
-          authorize [:volunteering, :volunteer], :index_xlsx?
+          authorize %i[volunteering volunteer], :index_xlsx?
 
           @volunteers = policy_scope(Volunteer)
             .joins(:cause)

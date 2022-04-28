@@ -70,7 +70,7 @@ resource 'AppConfigurations' do
 
         AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|
           parameter_description = "#{style_descriptor['description']}. Type: #{style_descriptor['type']}"
-          parameter style, parameter_description, scope: [:app_configuration, :style]
+          parameter style, parameter_description, scope: %i[app_configuration style]
         end
       end
     end

@@ -17,7 +17,7 @@ module AdminApi
         :locale,
         :invite_text,
         :send_invite_email,
-        roles: [:type, :project_id],
+        roles: %i[type project_id],
         group_ids: []
       )
     end

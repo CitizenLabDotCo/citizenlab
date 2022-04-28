@@ -72,7 +72,7 @@ resource 'InitiativeStatusChange' do
         parameter :user_id, 'The user who made the status change', required: false
         parameter :official_feedback_id, 'An existing official feedback can be used', required: false
       end
-      with_options scope: [:initiative_status_change, :official_feedback_attributes] do
+      with_options scope: %i[initiative_status_change official_feedback_attributes] do
         parameter :body_multiloc, 'Multi-locale field with the feedback body', required: false
         parameter :author_multiloc, 'Multi-locale field with describing the author', required: false
       end
@@ -157,7 +157,7 @@ resource 'InitiativeStatusChange' do
         parameter :user_id, 'The user who made the status change', required: false
         parameter :official_feedback_id, 'An existing official feedback can be used', required: false
       end
-      with_options scope: [:initiative_status_change, :official_feedback_attributes] do
+      with_options scope: %i[initiative_status_change official_feedback_attributes] do
         parameter :body_multiloc, 'Multi-locale field with the feedback body', required: false
         parameter :author_multiloc, 'Multi-locale field with describing the author', required: false
       end

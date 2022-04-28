@@ -47,6 +47,9 @@ Style/PercentLiteralDelimiters:
 Style/MethodDefParentheses:
   Enabled: true
 
+Style/SymbolArray:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

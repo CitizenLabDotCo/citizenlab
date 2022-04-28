@@ -11,8 +11,8 @@ module BlockingProfanity
 
   SUPPORTED_CLASS_ATTRS = {
     Comment.name => [:body_multiloc],
-    Idea.name => [:title_multiloc, :body_multiloc, :location_description],
-    Initiative.name => [:title_multiloc, :body_multiloc, :location_description]
+    Idea.name => %i[title_multiloc body_multiloc location_description],
+    Initiative.name => %i[title_multiloc body_multiloc location_description]
   }.freeze
 
   included do

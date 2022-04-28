@@ -8,15 +8,15 @@ module Post
 
   included do
     pg_search_scope :search_by_all,
-                    against: [:title_multiloc, :body_multiloc],
+                    against: %i[title_multiloc body_multiloc],
                     using: { tsearch: { prefix: true } }
 
     pg_search_scope :restricted_search,
-                    against: [:title_multiloc, :body_multiloc],
+                    against: %i[title_multiloc body_multiloc],
                     using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_any_word,
-                    against: [:title_multiloc, :body_multiloc],
+                    against: %i[title_multiloc body_multiloc],
                     using: { tsearch: { any_word: true } }
 
     # Note from: https://github.com/Casecommons/pg_search

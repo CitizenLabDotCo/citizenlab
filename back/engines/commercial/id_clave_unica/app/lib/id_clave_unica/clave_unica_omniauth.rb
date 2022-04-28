@@ -19,7 +19,7 @@ module IdClaveUnica
     def omniauth_setup(configuration, env)
       if Verification::VerificationService.new.is_active?(configuration, name)
         options = env['omniauth.strategy'].options
-        options[:scope] = [:openid, :run, :name]
+        options[:scope] = %i[openid run name]
         options[:response_type] = :code
         options[:state] = true
         options[:nonce] = true
@@ -48,7 +48,7 @@ module IdClaveUnica
     end
 
     def updateable_user_attrs
-      [:first_name, :last_name]
+      %i[first_name last_name]
     end
 
     def logout_url(_user)

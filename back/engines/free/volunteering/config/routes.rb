@@ -5,10 +5,10 @@ Volunteering::Engine.routes.draw do
       get 'projects/:project_id/volunteers/as_xlsx' => 'volunteers#index_xlsx'
       get 'phases/:phase_id/causes' => 'causes#index'
       get 'phases/:phase_id/volunteers/as_xlsx' => 'volunteers#index_xlsx'
-      resources :causes, only: [:create, :show, :update, :destroy], controller: :causes do
+      resources :causes, only: %i[create show update destroy], controller: :causes do
         patch :reorder, on: :member
 
-        resources :volunteers, only: [:index, :create], controller: :volunteers do
+        resources :volunteers, only: %i[index create], controller: :volunteers do
           delete :destroy, on: :collection
         end
       end

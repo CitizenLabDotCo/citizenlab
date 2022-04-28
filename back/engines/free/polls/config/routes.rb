@@ -3,11 +3,11 @@ Polls::Engine.routes.draw do
     namespace :v1 do
       get 'projects/:project_id/poll_questions' => 'questions#index'
       get 'phases/:phase_id/poll_questions' => 'questions#index'
-      resources :poll_questions, only: [:create, :show, :update, :destroy], controller: :questions do
+      resources :poll_questions, only: %i[create show update destroy], controller: :questions do
         patch :reorder, on: :member
-        resources :poll_options, only: [:index, :create], controller: :options
+        resources :poll_options, only: %i[index create], controller: :options
       end
-      resources :poll_options, only: [:show, :update, :destroy], controller: :options do
+      resources :poll_options, only: %i[show update destroy], controller: :options do
         patch :reorder, on: :member
       end
       post 'projects/:project_id/poll_responses' => 'responses#create'
