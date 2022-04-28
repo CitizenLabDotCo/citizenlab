@@ -29,6 +29,9 @@ Style/MutableConstant:
 Style/IfUnlessModifier:
   Enabled: true
 
+Style/GuardClause:
+  Enabled: true
+
 Layout/LineLength:
   Enabled: true
 
@@ -37,6 +40,9 @@ Layout/MultilineMethodCallIndentation:
   # We need a discussion on this because we have 347 offences against the default
   # and 252 offences against "EnforcedStyle: indented".
   EnforcedStyle: indented
+
+Lint/UselessAssignment:
+  Enabled: true
 
 RSpec/ExampleLength:
   Enabled: true
@@ -97,8 +103,5 @@ RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
 
-Lint/UselessAssignment:
-  Enabled: true
-
-Style/GuardClause:
+Rails/TimeZone:
   Enabled: true
