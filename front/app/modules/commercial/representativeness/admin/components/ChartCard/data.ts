@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const TEST_GENDER_DATA = [
   {
     name: 'Female',
@@ -28,3 +30,7 @@ export const TEST_GENDER_DATA = [
     referenceNumber: 660,
   },
 ];
+
+export const GENDER_INCLUDED_USERS_PERCENTAGE = '100%';
+
+export const GENDER_DEMO_DATA_DATE = moment('2021-09-02');

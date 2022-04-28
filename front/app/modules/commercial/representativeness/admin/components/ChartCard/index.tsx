@@ -20,7 +20,7 @@ import messages from '../messages';
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 // data
-import { TEST_GENDER_DATA } from './data';
+import { TEST_GENDER_DATA, GENDER_DEMO_DATA_DATE } from './data';
 
 interface RepresentativenessRow {
   name: string;
@@ -58,6 +58,11 @@ const formatTooltipValues = (_, __, tooltipProps?: TooltipProps) => {
     : `${referencePercentage}% (${referenceNumber})`;
 };
 
+const getLegendLabels = (barNames: string[]) => [
+  barNames[0],
+  `${barNames[1]} (${GENDER_DEMO_DATA_DATE.format('MMMM YYYY')})`,
+];
+
 const ChartCard = ({
   customField,
   intl: { formatMessage },
@@ -69,6 +74,8 @@ const ChartCard = ({
     formatMessage(messages.users),
     formatMessage(messages.totalPopulation),
   ];
+
+  const legendLabels = getLegendLabels(barNames);
 
   return (
     <Box width="100%" background="white">
@@ -94,7 +101,11 @@ const ChartCard = ({
           <Tooltip {...props} formatter={formatTooltipValues} />
         )}
       />
-      <Footer fieldIsRequired={customField.attributes.required} />
+      <Footer
+        fieldIsRequired={customField.attributes.required}
+        legendLabels={legendLabels}
+        legendColors={[newBarFill, secondaryNewBarFill]}
+      />
     </Box>
   );
 };

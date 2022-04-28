@@ -2,6 +2,7 @@ import React from 'react';
 
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import Legend from 'components/admin/Graphs/Legend';
 
 // styling
 import styled from 'styled-components';
@@ -11,6 +12,9 @@ import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// data
+import { GENDER_INCLUDED_USERS_PERCENTAGE } from './data';
+
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);
 `;
@@ -19,11 +23,16 @@ const Separator = styled.span`
   margin: 0px 4px;
 `;
 
-interface Props {
+interface RequiredOrOptionalProps {
   fieldIsRequired: boolean;
 }
 
-const RequiredOrOptional = ({ fieldIsRequired }: Props) =>
+interface Props extends RequiredOrOptionalProps {
+  legendLabels: string[];
+  legendColors: string[];
+}
+
+const RequiredOrOptional = ({ fieldIsRequired }: RequiredOrOptionalProps) =>
   fieldIsRequired ? (
     <b>
       <FormattedMessage {...messages.required} />
@@ -34,9 +43,15 @@ const RequiredOrOptional = ({ fieldIsRequired }: Props) =>
     </b>
   );
 
-const Footer = ({ fieldIsRequired }: Props) => {
+const Footer = ({ fieldIsRequired, legendLabels, legendColors }: Props) => {
   return (
-    <Box width="100%" p="20px 40px 32px 40px">
+    <Box
+      width="100%"
+      p="20px 40px 32px 40px"
+      display="flex"
+      flexDirection="row"
+      justifyContent="space-between"
+    >
       <Text fontSize="s" color="adminSecondaryTextColor">
         <StyledIcon
           name="user"
@@ -48,7 +63,7 @@ const Footer = ({ fieldIsRequired }: Props) => {
         <FormattedMessage
           {...messages.percentageUsersIncluded}
           values={{
-            percentage: <b>100%</b>,
+            percentage: <b>{GENDER_INCLUDED_USERS_PERCENTAGE}</b>,
           }}
         />
         <Separator>•</Separator>
@@ -61,6 +76,7 @@ const Footer = ({ fieldIsRequired }: Props) => {
           }}
         />
       </Text>
+      <Legend labels={legendLabels} colors={legendColors} />
     </Box>
   );
 };
