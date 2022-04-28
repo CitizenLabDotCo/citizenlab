@@ -29,4 +29,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.totalPopulation',
     defaultMessage: 'Total population',
   },
+  dataHiddenWarning: {
+    id: 'app.containers.AdminPage.DashboardPage.dataHiddenWarning',
+    defaultMessage:
+      '{numberOfHiddenItems, plural, one {# item is} other {# items are}} hidden in this graph. Change to {tableViewLink} to view all data.',
+  },
+  tableViewLinkText: {
+    id: 'app.containers.AdminPage.DashboardPage.tableViewLinkText',
+    defaultMessage: 'table view',
+  },
 });

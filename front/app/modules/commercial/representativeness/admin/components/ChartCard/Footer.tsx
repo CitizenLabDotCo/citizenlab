@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import Legend from 'components/admin/Graphs/Legend';
+import Warning from 'components/UI/Warning';
 
 // styling
 import styled from 'styled-components';
@@ -28,6 +29,8 @@ interface RequiredOrOptionalProps {
 }
 
 interface Props extends RequiredOrOptionalProps {
+  dataIsTooLong: boolean;
+  numberOfHiddenItems: number;
   legendLabels: string[];
   legendColors: string[];
 }
@@ -43,42 +46,68 @@ const RequiredOrOptional = ({ fieldIsRequired }: RequiredOrOptionalProps) =>
     </b>
   );
 
-const Footer = ({ fieldIsRequired, legendLabels, legendColors }: Props) => {
-  return (
+const Footer = ({
+  fieldIsRequired,
+  dataIsTooLong,
+  numberOfHiddenItems,
+  legendLabels,
+  legendColors,
+}: Props) => (
+  <>
     <Box
       width="100%"
-      p="20px 40px 32px 40px"
+      p={`20px 40px ${dataIsTooLong ? '8' : '32'}px 40px`}
       display="flex"
       flexDirection="row"
-      justifyContent="space-between"
+      justifyContent={dataIsTooLong ? 'center' : 'space-between'}
     >
-      <Text fontSize="s" color="adminSecondaryTextColor">
-        <StyledIcon
-          name="user"
-          width="16px"
-          height="16px"
-          fill={colors.adminSecondaryTextColor}
-          mr="6px"
-        />
-        <FormattedMessage
-          {...messages.percentageUsersIncluded}
-          values={{
-            percentage: <b>{GENDER_INCLUDED_USERS_PERCENTAGE}</b>,
-          }}
-        />
-        <Separator>•</Separator>
-        <FormattedMessage
-          {...messages.forUserRegistation}
-          values={{
-            requiredOrOptional: (
-              <RequiredOrOptional fieldIsRequired={fieldIsRequired} />
-            ),
-          }}
-        />
-      </Text>
+      {!dataIsTooLong && (
+        <Text fontSize="s" color="adminSecondaryTextColor">
+          <StyledIcon
+            name="user"
+            width="16px"
+            height="16px"
+            fill={colors.adminSecondaryTextColor}
+            mr="6px"
+          />
+          <FormattedMessage
+            {...messages.percentageUsersIncluded}
+            values={{
+              percentage: <b>{GENDER_INCLUDED_USERS_PERCENTAGE}</b>,
+            }}
+          />
+          <Separator>•</Separator>
+          <FormattedMessage
+            {...messages.forUserRegistation}
+            values={{
+              requiredOrOptional: (
+                <RequiredOrOptional fieldIsRequired={fieldIsRequired} />
+              ),
+            }}
+          />
+        </Text>
+      )}
       <Legend labels={legendLabels} colors={legendColors} />
     </Box>
-  );
-};
+
+    {dataIsTooLong && (
+      <Box p="0px 40px 32px 40px">
+        <Warning icon="info">
+          <FormattedMessage
+            {...messages.dataHiddenWarning}
+            values={{
+              numberOfHiddenItems,
+              tableViewLink: (
+                <a>
+                  <FormattedMessage {...messages.tableViewLinkText} />
+                </a>
+              ),
+            }}
+          />
+        </Warning>
+      </Box>
+    )}
+  </>
+);
 
 export default Footer;

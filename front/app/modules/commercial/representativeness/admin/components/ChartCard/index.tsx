@@ -72,8 +72,9 @@ const ChartCard = ({
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
   const currentChartRef = useRef<SVGElement>();
 
-  const dataWarning = TEST_GENDER_DATA.length > 24;
-  const data = dataWarning ? TEST_GENDER_DATA.slice(0, 24) : TEST_GENDER_DATA;
+  const dataIsTooLong = TEST_GENDER_DATA.length > 24;
+  const data = dataIsTooLong ? TEST_GENDER_DATA.slice(0, 24) : TEST_GENDER_DATA;
+  const numberOfHiddenItems = TEST_GENDER_DATA.length - 24;
 
   const barNames = [
     formatMessage(messages.users),
@@ -98,7 +99,7 @@ const ChartCard = ({
           fill: [newBarFill, secondaryNewBarFill],
         }}
         margin={DEFAULT_BAR_CHART_MARGIN}
-        xaxis={{ tickFormatter: data.length > 12 ? emptyString : undefined }}
+        xaxis={data.length > 12 ? { tickFormatter: emptyString } : undefined}
         yaxis={{ tickFormatter: formatPercentage }}
         renderLabels={
           data.length > 10
@@ -111,6 +112,8 @@ const ChartCard = ({
       />
       <Footer
         fieldIsRequired={customField.attributes.required}
+        dataIsTooLong={dataIsTooLong}
+        numberOfHiddenItems={numberOfHiddenItems}
         legendLabels={legendLabels}
         legendColors={[newBarFill, secondaryNewBarFill]}
       />
