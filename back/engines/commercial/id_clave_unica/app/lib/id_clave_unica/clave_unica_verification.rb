@@ -17,7 +17,7 @@ module IdClaveUnica
     end
 
     def config_parameters
-      [:client_id, :client_secret]
+      [:client_id, :client_secret, :rut_custom_field_key]
     end
 
     def profile_to_uid auth
@@ -29,7 +29,11 @@ module IdClaveUnica
     end
 
     def locked_custom_fields
-      []
+      if rut[:rut_custom_field_key].present?
+        [config[:rut_custom_field_key]]
+      else
+        []
+      end
     end
 
   end

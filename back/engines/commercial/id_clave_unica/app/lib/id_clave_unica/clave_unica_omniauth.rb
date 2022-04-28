@@ -13,6 +13,16 @@ module IdClaveUnica
       if ln = auth.dig('extra', 'raw_info', 'name', 'apellidos')
         info[:last_name] = ln.join(' ')
       end
+
+      # This is what would need to happen, except that profile_to_user_attrs return
+      # value currently completely overwrites the user attributes. For
+      # custom_field_values hash, it would have to be merged instead.
+      #
+      # rut = auth.dig('extra','raw_info','RolUnico','numero')
+      # if rut.present?
+      # info[:custom_field_values] = {rut: rut} end
+      # end
+
       info
     end
 
