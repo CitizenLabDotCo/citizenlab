@@ -17,6 +17,9 @@ Metrics/BlockLength:
 Metrics/AbcSize:
   Enabled: true
 
+Metrics/CyclomaticComplexity:
+  Enabled: true
+
 Style/FrozenStringLiteralComment:
   Enabled: true
 
@@ -58,6 +61,11 @@ Layout/FirstArrayElementIndentation:
 Layout/ArrayAlignment:
   # Depends on Layout/ArgumentAlignment
   Enabled: true
+
+Layout/MultilineMethodCallBraceLayout:
+  # Depends on Layout/ArgumentAlignment
+  Enabled: true
+  EnforcedStyle: new_line
 
 Lint/UselessAssignment:
   Enabled: true
