@@ -91,9 +91,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: { :"1984" => 2, :"1992" => 1, :"_blank" => 1 },
-            down: { :"1984" => 1, :"1992" => 1 },
-            total: { :"1984" => 3, :"1992" => 2, :"_blank" => 1 }
+            up: { "1984": 2, "1992": 1, "_blank": 1 },
+            down: { "1984": 1, "1992": 1 },
+            total: { "1984": 3, "1992": 2, "_blank": 1 }
           }
         })
       end
@@ -157,9 +157,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: { :"2" => 2, :"7" => 1, :"_blank" => 1 },
-            down: { :"2" => 1, :"7" => 1 },
-            total: { :"2" => 3, :"7" => 2, :"_blank" => 1 }
+            up: { "2": 2, "7": 1, "_blank": 1 },
+            down: { "2": 1, "7": 1 },
+            total: { "2": 3, "7": 2, "_blank": 1 }
           }
         })
       end
@@ -189,9 +189,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: { :"female" => 2, :"male" => 1, :"_blank" => 1 },
-            down: { :"female" => 1, :"male" => 1 },
-            total: { :"female" => 3, :"male" => 2, :"_blank" => 1 }
+            up: { "female": 2, "male": 1, "_blank": 1 },
+            down: { "female": 1, "male": 1 },
+            total: { "female": 3, "male": 2, "_blank": 1 }
           }
         })
       end

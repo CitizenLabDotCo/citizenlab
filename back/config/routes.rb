@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # https://github.com/rails/rails/issues/11663
   mount GeographicDashboard::Engine => '', as: 'geographic_dashboard' if CitizenLab.ee?
 
-  namespace :web_api, :defaults => { :format => :json } do
+  namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       concern :votable do
         resources :votes, except: [:update], shallow: true do

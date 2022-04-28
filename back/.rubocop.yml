@@ -19,6 +19,9 @@ AllCops:
 Style/StringLiterals:
   Enabled: true
 
+Style/HashSyntax:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

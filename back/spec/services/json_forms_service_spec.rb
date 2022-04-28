@@ -63,97 +63,87 @@ describe JsonFormsService do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
-        { :type => 'object',
-         :additionalProperties => false,
-         :properties =>
-          { 'field1' =>
-            { :type => 'string' },
+        { type: 'object',
+         additionalProperties: false,
+         properties:           { 'field1' =>
+            { type: 'string' },
            'field2' =>
-           { :type => 'string' },
+           { type: 'string' },
            'field3' =>
             {
-             :type => 'string',
-             :oneOf => [
+             type: 'string',
+             oneOf: [
               {
-                :const => 'option_1',
-                :title => 'youth council'
+                const: 'option_1',
+                title: 'youth council'
               },
               {
-                :const => 'option_2',
-                :title => 'youth council'
+                const: 'option_2',
+                title: 'youth council'
               },
               {
-                :const => 'option_3',
-                :title => 'youth council'
+                const: 'option_3',
+                title: 'youth council'
               },
              ]
             },
            'field4' =>
             {
-             :type => 'array',
-             :uniqueItems => true,
-             :minItems => 0,
-             :items =>
-              { :type => 'string',
-              :oneOf => [
+             type: 'array',
+             uniqueItems: true,
+             minItems: 0,
+             items:               { type: 'string',
+              oneOf: [
                 {
-                  :const => 'option_a',
-                  :title => 'youth council'
+                  const: 'option_a',
+                  title: 'youth council'
                 },
                 {
-                  :const => 'option_b',
-                  :title => 'youth council'
+                  const: 'option_b',
+                  title: 'youth council'
                 },
                ]
              }
               },
            'field5' =>
-            { :type => 'boolean' },
+            { type: 'boolean' },
            'field6' =>
-            { :type => 'string',
-             :format => 'date' },
+            { type: 'string',
+             format: 'date' },
             'field7' =>
-            { :type => 'number' },
+            { type: 'number' },
            'field8' =>
-            { :type => 'array',
-             :uniqueItems => true,
-             :minItems => 1,
-             :items =>
-              { :type => 'string',
-              :oneOf => [
+            { type: 'array',
+             uniqueItems: true,
+             minItems: 1,
+             items:               { type: 'string',
+              oneOf: [
                 {
-                  :const => 'option_a',
-                  :title => 'youth council'
+                  const: 'option_a',
+                  title: 'youth council'
                 },
                 {
-                  :const => 'option_b',
-                  :title => 'youth council'
+                  const: 'option_b',
+                  title: 'youth council'
                 },
                ]
              }
             },
             'field9' =>
-            { :type => 'array',
-             :items =>
-              { :properties =>
-                { :file_by_content =>
-                  { :properties =>
-                    { :file =>
-                      { :type => 'string' },
-                    :name =>
-                      { :type => 'string' }
+            { type: 'array',
+             items:               { properties:                 { file_by_content:                   { properties:                     { file:                       { type: 'string' },
+                    name:                       { type: 'string' }
                     },
-                  :type => 'object'
+                  type: 'object'
                   },
-                  :name =>
-                  { :type => 'string' }
+                  name:                   { type: 'string' }
                 },
-                :type => 'object'
+                type: 'object'
               },
-              :type => 'array'
+              type: 'array'
             }
           },
-         :required => %w[field2 field8 field9]
+         required: %w[field2 field8 field9]
         }
       )
     end

@@ -10,7 +10,7 @@
 
 namespace :db do
   desc 'Also create shared_extensions Schema'
-  task :extensions => :environment do
+  task extensions: :environment do
     # Create Schema
     ActiveRecord::Base.connection.execute 'CREATE SCHEMA IF NOT EXISTS shared_extensions;'
     # Enable UUID-OSSP
@@ -20,7 +20,7 @@ namespace :db do
   end
 
   desc 'Erase all tables'
-  task :clear => :environment do
+  task clear: :environment do
     conn = ActiveRecord::Base.connection
     tables = conn.tables
     tables.each do |table|
