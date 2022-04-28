@@ -73,7 +73,7 @@ export const appLocalePairs = {
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
   'ar-SA': 'عربى',
-  'ar-MA': 'اللهجة المغربية (Morocco)',
+  'ar-MA': 'اللهجة المغربية',
   mi: 'Māori',
   'sr-Latn': 'Srpski (Latinica)',
   'sr-SP': 'Српски (Ћирилица)',
