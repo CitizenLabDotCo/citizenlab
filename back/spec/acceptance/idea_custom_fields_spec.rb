@@ -15,8 +15,8 @@ resource 'Idea Custom Fields' do
     example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:json_schema_multiloc)).to be_present
-      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response[:json_schema_multiloc]).to be_present
+      expect(json_response[:ui_schema_multiloc]).to be_present
     end
   end
 
@@ -27,8 +27,8 @@ resource 'Idea Custom Fields' do
     example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:json_schema_multiloc)).to be_present
-      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response[:json_schema_multiloc]).to be_present
+      expect(json_response[:ui_schema_multiloc]).to be_present
     end
   end
 end

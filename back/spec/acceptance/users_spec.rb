@@ -70,7 +70,7 @@ resource 'Users' do
         example_request 'Authenticate a registered user' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:jwt)).to be_present
+          expect(json_response[:jwt]).to be_present
         end
 
         example '[error] Authenticate an invited user' do
@@ -101,7 +101,7 @@ resource 'Users' do
           example_request 'Authenticate a registered user by phone number', document: false do
             assert_status 201
             json_response = json_parse(response_body)
-            expect(json_response.dig(:jwt)).to be_present
+            expect(json_response[:jwt]).to be_present
           end
         end
 
@@ -113,7 +113,7 @@ resource 'Users' do
           example_request 'Authenticate a registered user by email', document: false do
             assert_status 201
             json_response = json_parse(response_body)
-            expect(json_response.dig(:jwt)).to be_present
+            expect(json_response[:jwt]).to be_present
           end
         end
       end
@@ -833,7 +833,7 @@ resource 'Users' do
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 1
+        expect(json_response[:count]).to eq 1
       end
     end
 
@@ -847,7 +847,7 @@ resource 'Users' do
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 1
+        expect(json_response[:count]).to eq 1
       end
     end
 
@@ -864,7 +864,7 @@ resource 'Users' do
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 2
+        expect(json_response[:count]).to eq 2
       end
 
       example 'Get the number of comments on ideas posted by one user' do
@@ -876,7 +876,7 @@ resource 'Users' do
         do_request post_type: 'Idea'
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 2
+        expect(json_response[:count]).to eq 2
       end
 
       example 'Get the number of comments on initiatives posted by one user' do
@@ -888,7 +888,7 @@ resource 'Users' do
         do_request post_type: 'Initiative'
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 2
+        expect(json_response[:count]).to eq 2
       end
     end
   end

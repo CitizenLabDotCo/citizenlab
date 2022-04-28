@@ -33,7 +33,7 @@ resource 'ProjectFolder' do
       do_request(filter_ids: filter_ids)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      expect(json_response[:data].map { |d| d.dig(:id) }).to match_array filter_ids
+      expect(json_response[:data].map { |d| d[:id] }).to match_array filter_ids
     end
   end
 
@@ -226,8 +226,8 @@ resource 'ProjectFolder' do
         response_admin_publication = json_response[:included].find { |inc| inc[:type] == 'admin_publication' }
         attributes = json_response.dig(:data, :attributes)
 
-        expect(attributes.dig(:title_multiloc).stringify_keys).to match title_multiloc
-        expect(attributes.dig(:description_multiloc).stringify_keys).to match description_multiloc
+        expect(attributes[:title_multiloc].stringify_keys).to match title_multiloc
+        expect(attributes[:description_multiloc].stringify_keys).to match description_multiloc
         expect(response_admin_publication.dig(:attributes, :publication_status)).to eq publication_status
       end
     end

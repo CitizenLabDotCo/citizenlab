@@ -57,8 +57,8 @@ resource 'User Custom Fields' do
     example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:json_schema_multiloc)).to be_present
-      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response[:json_schema_multiloc]).to be_present
+      expect(json_response[:ui_schema_multiloc]).to be_present
     end
   end
 
@@ -70,9 +70,9 @@ resource 'User Custom Fields' do
     example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:json_schema_multiloc)).to be_present
+      expect(json_response[:json_schema_multiloc]).to be_present
       expect(json_response.dig(:json_schema_multiloc, :en, :properties).size).to eq 4
-      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response[:ui_schema_multiloc]).to be_present
       expect(json_response.dig(:ui_schema_multiloc, :en, :type)).to eq 'VerticalLayout'
     end
   end

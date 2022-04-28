@@ -409,7 +409,7 @@ resource 'Initiatives' do
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
         expect(blocked_error).to be_present
-        expect(blocked_error.dig(:blocked_words).map { |bw| bw[:attribute] }.uniq).to eq(['location_description'])
+        expect(blocked_error[:blocked_words].map { |bw| bw[:attribute] }.uniq).to eq(['location_description'])
       end
     end
   end

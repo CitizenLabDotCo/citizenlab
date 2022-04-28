@@ -50,6 +50,9 @@ Style/MethodDefParentheses:
 Style/SymbolArray:
   Enabled: true
 
+Style/SingleArgumentDig:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

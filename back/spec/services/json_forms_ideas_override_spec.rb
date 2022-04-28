@@ -131,8 +131,8 @@ describe 'JsonFormsService ideas overrides' do
         end
       end
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'details' }).to eq false
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'details' }).to eq false
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
 
     it 'does not include the images and attachments category when there are no fields inside' do
@@ -142,22 +142,22 @@ describe 'JsonFormsService ideas overrides' do
         end
       end
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'attachments' }).to eq false
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'attachments' }).to eq false
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
 
     it 'does not include an extra category when there are only built-in fields' do
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'extra' }).to eq false
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'extra' }).to eq false
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
 
     it 'includes all non built-in fields in an extra category' do
       fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'extra' }).to eq true
-      expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.count).to eq 1
-      expect(ui_schema.dig(:elements)&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'extra' }).to eq true
+      expect(ui_schema[:elements]&.find { |e| e[:options][:id] == 'extra' }[:elements]&.count).to eq 1
+      expect(ui_schema[:elements]&.any? { |e| e[:options][:id] == 'mainContent' }).to eq true
     end
   end
 end

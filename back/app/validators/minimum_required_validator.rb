@@ -54,6 +54,6 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
   end
 
   def required_values
-    options.dig(:values).map(&:to_sym)
+    options[:values].map(&:to_sym)
   end
 end

@@ -8,8 +8,8 @@ module PublicApi
       @projects = @projects
         .includes(:project_images)
         .order(created_at: :desc)
-        .page(params.dig(:page_number))
-        .per([params.dig(:page_size)&.to_i || 12, 24].min)
+        .page(params[:page_number])
+        .per([params[:page_size]&.to_i || 12, 24].min)
 
       render json: @projects,
         each_serializer: V1::ProjectSerializer,

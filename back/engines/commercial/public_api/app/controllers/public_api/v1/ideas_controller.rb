@@ -7,8 +7,8 @@ module PublicApi
       @ideas = PublicApi::IdeaPolicy::Scope.new(current_publicapi_apiclient, Idea).resolve
       @ideas = @ideas
         .published
-        .page(params.dig(:page_number))
-        .per([params.dig(:page_size)&.to_i || 12, 24].min) # default is 12, maximum is 24
+        .page(params[:page_number])
+        .per([params[:page_size]&.to_i || 12, 24].min) # default is 12, maximum is 24
         .includes(:idea_images, :project, :idea_status)
       # kaminari fails to get the correct total pages when
       # executing complex queries (other values than ideas.*

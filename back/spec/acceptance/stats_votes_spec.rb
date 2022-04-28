@@ -51,9 +51,9 @@ resource 'Stats - Votes' do
       do_request
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:up)).to eq 3
-      expect(json_response.dig(:down)).to eq 2
-      expect(json_response.dig(:total)).to eq 5
+      expect(json_response[:up]).to eq 3
+      expect(json_response[:down]).to eq 2
+      expect(json_response[:total]).to eq 5
     end
   end
 

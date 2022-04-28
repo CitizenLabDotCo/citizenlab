@@ -26,7 +26,7 @@ describe ParticipationContextService do
       project = create(:project_with_current_phase,
         current_phase_attrs: { title_multiloc: { 'en' => random_title } }
       )
-      expect(service.get_participation_context(project)&.title_multiloc.dig('en')).to eq random_title
+      expect(service.get_participation_context(project)&.title_multiloc['en']).to eq random_title
     end
 
     it 'returns nil for a timeline project without an active phase' do

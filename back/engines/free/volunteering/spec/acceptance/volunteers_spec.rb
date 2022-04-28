@@ -72,8 +72,8 @@ resource 'Volunteering Volunteers' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response.dig(:data).map { |d| d[:relationships][:user][:data][:id] }).to match_array @volunteers.map(&:user_id)
-        expect(json_response.dig(:included).map { |i| i[:id] }).to match_array @volunteers.map(&:user_id)
+        expect(json_response[:data].map { |d| d[:relationships][:user][:data][:id] }).to match_array @volunteers.map(&:user_id)
+        expect(json_response[:included].map { |i| i[:id] }).to match_array @volunteers.map(&:user_id)
       end
     end
 

@@ -30,7 +30,7 @@ resource 'Invites' do
         example_request 'List all invites' do
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data).size).to eq invites.size
+          expect(json_response[:data].size).to eq invites.size
         end
       end
 
@@ -42,8 +42,8 @@ resource 'Invites' do
         example_request 'Search for invites' do
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data).size).to eq 1
-          expect(json_response.dig(:data).first[:relationships][:invitee][:data][:id]).to eq invite.invitee.id
+          expect(json_response[:data].size).to eq 1
+          expect(json_response[:data].first[:relationships][:invitee][:data][:id]).to eq invite.invitee.id
         end
       end
 
@@ -67,8 +67,8 @@ resource 'Invites' do
         example_request 'List all invites sorted by email' do
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data).size).to eq 3
-          expect(json_response.dig(:data).map { |d| d[:id] }).to match_array [invite1.id, invite2.id, invite3.id]
+          expect(json_response[:data].size).to eq 3
+          expect(json_response[:data].map { |d| d[:id] }).to match_array [invite1.id, invite2.id, invite3.id]
         end
       end
 
@@ -80,8 +80,8 @@ resource 'Invites' do
         example_request 'List all invites that have been accepted' do
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data).size).to eq accepted_invites.size
-          expect(json_response.dig(:data).map { |d| d[:id] }).to match_array accepted_invites.map(&:id)
+          expect(json_response[:data].size).to eq accepted_invites.size
+          expect(json_response[:data].map { |d| d[:id] }).to match_array accepted_invites.map(&:id)
         end
       end
     end
@@ -280,7 +280,7 @@ resource 'Invites' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :accepted_at)).to be_present
-        boulettos = json_response.dig(:included).select { |inc| inc[:id] == invite.invitee.id }&.first
+        boulettos = json_response[:included].select { |inc| inc[:id] == invite.invitee.id }&.first
         expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
         expect(invite.reload.invitee.registration_completed_at).to eq(nil)  # when no custom fields
