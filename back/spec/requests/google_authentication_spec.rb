@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'google authentication', type: :verification do
+describe 'google authentication', type: :request do
   before do
     @user = create(:user)
     OmniAuth.config.test_mode = true

@@ -89,7 +89,7 @@ RSpec/RepeatedDescription:
 RSpec/DescribeClass:
   Enabled: true
   IgnoredMetadata:
-    type: ['verification']
+    type: ['request']
 
 Lint/UselessAssignment:
   Enabled: true
