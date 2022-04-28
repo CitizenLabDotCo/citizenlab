@@ -337,7 +337,7 @@
   "app.containers.Admin.Insights.emptyStateAccentText": "über welche Themen",
   "app.containers.Admin.Insights.emptyStateCreate": "Meinen ersten Einblick erstellen",
   "app.containers.Admin.Insights.emptyStateTitle": "Finden Sie ganz einfach heraus {accentText} die Teilnehmenden sprechen",
-  "app.containers.Admin.Insights.link": "Lesen Sie unseren Support-Leitfaden",
+  "app.containers.Admin.Insights.link": "Lesen Sie unseren Support-Artikel",
   "app.containers.Admin.Insights.listCreate": "Einblicke erstellen",
   "app.containers.Admin.Insights.listDelete": "Löschen",
   "app.containers.Admin.Insights.listDeleteConfirmation": "Sind Sie sicher?",
