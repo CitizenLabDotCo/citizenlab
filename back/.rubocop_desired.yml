@@ -41,6 +41,10 @@ Layout/MultilineMethodCallIndentation:
   # and 252 offences against "EnforcedStyle: indented".
   EnforcedStyle: indented
 
+Layout/BlockEndNewline:
+  # Autocorrect does not produce correctly indented "end".
+  Enabled: true
+
 Lint/UselessAssignment:
   Enabled: true
 
