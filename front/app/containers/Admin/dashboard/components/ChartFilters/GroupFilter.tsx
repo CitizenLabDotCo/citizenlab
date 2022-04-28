@@ -35,7 +35,7 @@ interface Props extends DataProps, InputProps {}
 const generateGroupOptions = (
   groupsList: IGroupData[],
   localize: Localize,
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  { formatMessage }: InjectedIntlProps['intl']
 ) => {
   const groupOptions = groupsList.map((group) => ({
     value: group.id,
@@ -52,17 +52,13 @@ const GroupFilter = ({
   groups: { groupsList },
   currentGroupFilter,
   onGroupFilter,
-  intl: { formatMessage },
+  intl,
 }: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
   if (isNilOrError(groupsList)) return null;
 
-  const groupFilterOptions = generateGroupOptions(
-    groupsList,
-    localize,
-    formatMessage
-  );
+  const groupFilterOptions = generateGroupOptions(groupsList, localize, intl);
 
   return (
     <Box width="32%">

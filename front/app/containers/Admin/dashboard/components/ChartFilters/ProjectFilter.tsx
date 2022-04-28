@@ -38,7 +38,7 @@ interface Props extends DataProps, InputProps {}
 const generateProjectOptions = (
   projectsList: IProjectData[],
   localize: Localize,
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  { formatMessage }: InjectedIntlProps['intl']
 ): IOption[] => {
   const projectOptions = projectsList.map((project) => ({
     value: project.id,
@@ -55,7 +55,7 @@ const ProjectFilter = ({
   projects: { projectsList },
   currentProjectFilter,
   onProjectFilter,
-  intl: { formatMessage },
+  intl,
 }: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
@@ -64,7 +64,7 @@ const ProjectFilter = ({
   const projectFilterOptions = generateProjectOptions(
     projectsList,
     localize,
-    formatMessage
+    intl
   );
 
   return (

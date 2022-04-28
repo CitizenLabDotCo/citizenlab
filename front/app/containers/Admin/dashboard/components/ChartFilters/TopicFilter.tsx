@@ -35,7 +35,7 @@ interface Props extends DataProps, InputProps {}
 const generateTopicOptions = (
   topics: ITopicData[],
   localize: Localize,
-  formatMessage: InjectedIntlProps['intl']['formatMessage']
+  { formatMessage }: InjectedIntlProps['intl']
 ) => {
   const topicOptions = topics.map((topic) => ({
     value: topic.id,
@@ -52,17 +52,13 @@ const TopicFilter = ({
   topics,
   currentTopicFilter,
   onTopicFilter,
-  intl: { formatMessage },
+  intl,
 }: Props & InjectedIntlProps) => {
   const localize = useLocalize();
 
   if (isNilOrError(topics)) return null;
 
-  const topicFilterOptions = generateTopicOptions(
-    topics,
-    localize,
-    formatMessage
-  );
+  const topicFilterOptions = generateTopicOptions(topics, localize, intl);
 
   return (
     <Box width="32%">
