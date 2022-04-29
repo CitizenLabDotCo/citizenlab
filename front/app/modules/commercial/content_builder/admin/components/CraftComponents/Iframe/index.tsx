@@ -18,12 +18,15 @@ interface Props {
   url: string;
   height: number;
   hasError: boolean;
+  title?: string;
 }
 
-const Iframe = ({ url, height, hasError }: Props) => {
+const Iframe = ({ url, height, hasError, title }: Props) => {
   return (
     <Box minHeight="26px">
-      {!hasError && url && <iframe src={url} width="100%" height={height} />}
+      {!hasError && url && (
+        <iframe src={url} title={title} width="100%" height={height} />
+      )}
     </Box>
   );
 };
@@ -35,10 +38,12 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     height,
     id,
     hasError,
+    title,
   } = useNode((node) => ({
     url: node.data.props.url,
     height: node.data.props.height,
     id: node.id,
+    title: node.data.props.title,
     hasError: node.data.props.hasError,
   }));
 
@@ -85,6 +90,25 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           onChange={(value) => {
             setProp((props) => (props.height = value));
           }}
+        />
+      </Box>
+      <Box flex="0 0 100%">
+        <Input
+          type="text"
+          id="iframeTitleInput"
+          onChange={(value) => {
+            setProp((props) => (props.title = value));
+          }}
+          value={title}
+          label={
+            <span>
+              {formatMessage(messages.iframeTitleLabel)}{' '}
+              <IconTooltip
+                icon="info3"
+                content={formatMessage(messages.iframeTitleTooltip)}
+              />
+            </span>
+          }
         />
       </Box>
     </Box>

@@ -62,6 +62,15 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
     defaultMessage: 'e.g. 300',
   },
+  iframeTitleLabel: {
+    id: 'app.containers.admin.ContentBuilder.iframeTitleLabel',
+    defaultMessage: 'Short description of iframe destination',
+  },
+  iframeTitleTooltip: {
+    id: 'app.containers.admin.ContentBuilder.iframeTitleTooltip',
+    defaultMessage:
+      'Adding a title for iframes is important to make your platform accessible for users using screen readers.',
+  },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',
     defaultMessage: 'About Box',
