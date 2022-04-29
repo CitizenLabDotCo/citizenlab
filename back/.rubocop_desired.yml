@@ -75,6 +75,10 @@ Layout/ArrayAlignment:
   # Depends on Layout/ArgumentAlignment
   Enabled: true
 
+Layout/MultilineHashBraceLayout:
+  # This Cop goes together with a few others related to alignment.
+  Enabled: true
+
 Layout/MultilineMethodCallBraceLayout:
   # Depends on Layout/ArgumentAlignment
   Enabled: true
