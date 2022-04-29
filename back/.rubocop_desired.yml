@@ -144,6 +144,9 @@ RSpec/NestedGroups:
 RSpec/RepeatedDescription:
   Enabled: true
 
+RSpec/StubbedMock:
+  Enabled: true
+
 RSpec/DescribeClass:
   Enabled: true
   IgnoredMetadata:
