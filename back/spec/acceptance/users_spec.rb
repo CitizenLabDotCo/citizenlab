@@ -607,8 +607,8 @@ resource 'Users' do
           expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
 
           if CitizenLab.ee?
-            expect(json_response_body[:included].select { |i| i[:type] == 'project' }.first&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].select { |i| i[:type] == 'permission' }.first&.dig(:attributes, :permitted_by)).to eq 'groups'
+            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
+            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
             expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
           end
         end

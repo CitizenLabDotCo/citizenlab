@@ -118,10 +118,10 @@ resource 'Memberships' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to be >= 4
-        expect(json_response[:data].select { |d| d[:id] == u1.id }.first.dig(:attributes, :is_member)).to be true
-        expect(json_response[:data].select { |d| d[:id] == u2.id }.first.dig(:attributes, :is_member)).to be false
-        expect(json_response[:data].select { |d| d[:id] == u3.id }.first.dig(:attributes, :is_member)).to be false
-        expect(json_response[:data].select { |d| d[:id] == u4.id }.first.dig(:attributes, :is_member)).to be true
+        expect(json_response[:data].find { |d| d[:id] == u1.id }.dig(:attributes, :is_member)).to be true
+        expect(json_response[:data].find { |d| d[:id] == u2.id }.dig(:attributes, :is_member)).to be false
+        expect(json_response[:data].find { |d| d[:id] == u3.id }.dig(:attributes, :is_member)).to be false
+        expect(json_response[:data].find { |d| d[:id] == u4.id }.dig(:attributes, :is_member)).to be true
         expect(json_response[:data].select { |d| d[:id] == u5.id }.empty?).to be true
       end
     end
