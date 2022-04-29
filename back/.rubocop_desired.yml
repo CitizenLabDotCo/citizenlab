@@ -56,9 +56,15 @@ Layout/IndentationWidth:
   Enabled: true
 
 Layout/FirstArgumentIndentation:
+  # This Cop goes together with a few others related to alignment.
+  Enabled: true
+
+Layout/EndAlignment:
+  # This Cop goes together with a few others related to alignment.
   Enabled: true
 
 Layout/ArgumentAlignment:
+  # This Cop goes together with a few others related to alignment.
   Enabled: true
 
 Layout/FirstArrayElementIndentation:
