@@ -142,6 +142,11 @@ module NLP
     # @return [Array]
     def geotag(tenant_id, text, locale, options = {})
       body = options.merge(text: text, locale: locale)
+      
+      if body[:text].nil?
+        return []
+      end
+ 
       resp = post("/v1/tenants/#{tenant_id}/geotagging", body)
       raise ClErrors::TransactionError.new(error_key: resp['code']) unless resp.success?
 
