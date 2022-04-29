@@ -65,6 +65,9 @@ Style/Proc:
 Style/TrailingCommaInArrayLiteral:
   Enabled: true
 
+Style/SpecialGlobalVars:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 
