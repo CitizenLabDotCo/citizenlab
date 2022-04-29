@@ -101,6 +101,9 @@ Lint/AmbiguousBlockAssociation:
 Naming/MethodParameterName:
   Enabled: true
 
+Naming/PredicateName:
+  Enabled: true
+
 RSpec/ExampleLength:
   Enabled: true
 
