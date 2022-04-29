@@ -94,7 +94,7 @@ describe('ContentBuilderTopBar', () => {
       </Editor>
     );
     fireEvent.click(screen.getByTestId('goBackButton'));
-    expect(clHistory.goBack).toHaveBeenCalled();
+    expect(clHistory.push).toHaveBeenCalled();
   });
   it('calls onSave correctly', async () => {
     render(
