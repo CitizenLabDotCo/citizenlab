@@ -16,7 +16,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
 end
 
-OmniAuth.config.full_host = -> (_env) {
+OmniAuth.config.full_host = ->(_env) {
   AppConfiguration.instance&.base_backend_uri
 }
 

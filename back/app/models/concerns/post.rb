@@ -35,7 +35,7 @@ module Post
     has_many :votes, as: :votable, dependent: :destroy
     has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
     has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
-    has_one :user_vote, -> (user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
+    has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
@@ -63,7 +63,7 @@ module Post
 
     scope :published, -> { where publication_status: 'published' }
 
-    scope :order_new, -> (direction = :desc) { order(published_at: direction) }
+    scope :order_new, ->(direction = :desc) { order(published_at: direction) }
     scope :order_random, -> {
       modulus = RandomOrderingService.new.modulus_of_the_day
       order(Arel.sql("(extract(epoch from #{table_name}.created_at) * 100)::bigint % #{modulus}, #{table_name}.id"))

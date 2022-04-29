@@ -178,6 +178,9 @@ Layout/DotPosition:
 Layout/EmptyLinesAroundMethodBody:
   Enabled: true
 
+Layout/SpaceInLambdaLiteral:
+  Enabled: true
+
 Naming/VariableNumber:
   Enabled: true
 
