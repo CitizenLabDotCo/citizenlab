@@ -1305,6 +1305,7 @@
   "app.containers.IdeasShow.postedIn": "Geplaatst in {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Voorgesteld budget",
   "app.containers.IdeasShow.xDaysLeft": "Nog {x, plural, =0 {minder dan een dag} one {één dag} other {# dagen}}",
+  "app.containers.admin.ContentBuilder.aboutBox": "About Box",
   "app.containers.admin.ContentBuilder.delete": "Verwijder",
   "app.containers.admin.ContentBuilder.image": "Afbeelding",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Korte beschrijving van de afbeelding",
