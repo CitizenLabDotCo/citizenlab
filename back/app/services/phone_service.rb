@@ -5,7 +5,7 @@ class PhoneService
     # See front/app/utils/validate.ts
     if str =~ /^.*@.*..*$/
       :email
-    elsif normalize_phone(str).size > 5 && (str =~ /^\+?[0-9\.x\-\s\(\)]+$/)
+    elsif normalize_phone(str).size > 5 && (str =~ /^\+?[0-9.x\-\s()]+$/)
       :phone
     end
   end

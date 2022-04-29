@@ -118,6 +118,9 @@ Style/RegexpLiteral:
 Style/RedundantFileExtensionInRequire:
   Enabled: true
 
+Style/RedundantRegexpEscape:
+  Enabled: true
+
 Style/NumericPredicate:
   # Turned off because `something == 0` and `something.zero?`
   # are not the same if `something` is not a number.
