@@ -13,6 +13,5 @@ module EmailCampaigns
     def sender_is_author?
       sender == 'author'
     end
-
   end
 end

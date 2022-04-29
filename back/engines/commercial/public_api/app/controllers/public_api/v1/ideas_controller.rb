@@ -1,5 +1,4 @@
 module PublicApi
-
   class V1::IdeasController < PublicApiController
     before_action :set_idea, only: [:show]
 
@@ -42,5 +41,4 @@ module PublicApi
       }
     end
   end
-
 end

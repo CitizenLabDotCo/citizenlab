@@ -1,7 +1,6 @@
 module FlagInappropriateContent
   module Patches
     module SideFxSpamReportService
-
       def after_create(spam_report, user)
         super
         FlagInappropriateContent::InappropriateContentFlagService.new.introduce_flag! spam_report.spam_reportable

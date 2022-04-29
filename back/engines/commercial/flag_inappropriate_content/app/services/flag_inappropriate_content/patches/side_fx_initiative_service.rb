@@ -1,7 +1,6 @@
 module FlagInappropriateContent
   module Patches
     module SideFxInitiativeService
-
       SUPPORTED_ATTRS = %i[title_multiloc body_multiloc location_description].freeze
 
       def after_create(initiative, user)

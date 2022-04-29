@@ -25,5 +25,4 @@ module IdAuth0
       []
     end
   end
-
 end

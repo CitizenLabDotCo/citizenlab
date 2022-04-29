@@ -1,7 +1,6 @@
 module CustomTopics
   module Patches
     module Topic
-
       CUSTOM_CODE = 'custom'
 
       def self.prepended(base)

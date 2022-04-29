@@ -35,6 +35,5 @@ module IdBosaFas
     def locked_custom_fields
       []
     end
-
   end
 end

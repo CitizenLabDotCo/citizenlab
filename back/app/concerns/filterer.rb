@@ -16,7 +16,6 @@
 # > StringFilterer.filters.map(&:name)                        # => ["swap case", "call method"]
 
 module Filterer
-
   def self.included(base) #:nodoc:
     base.extend ClassMethods
   end
@@ -56,5 +55,4 @@ module Filterer
       (context || self).instance_exec(scope, options, &block)
     end
   end
-
 end

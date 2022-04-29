@@ -1,6 +1,5 @@
 # Helpers for handling typeform API responses
 module Surveys::TypeformParser
-
   def extract_value_from_answer(answer)
     case answer[:type]
       when 'text'
@@ -29,5 +28,4 @@ module Surveys::TypeformParser
         raise "Unsupported typeform answer type #{answer[:type]}"
       end
   end
-
 end

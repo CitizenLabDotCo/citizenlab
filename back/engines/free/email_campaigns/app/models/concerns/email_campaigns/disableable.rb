@@ -20,6 +20,5 @@ module EmailCampaigns
     def filter_enabled?(_options = {})
       enabled != false
     end
-
   end
 end

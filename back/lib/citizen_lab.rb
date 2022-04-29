@@ -33,5 +33,4 @@ module CitizenLab
       cl_config['modules'][m]
     end
   end
-
 end

@@ -38,6 +38,5 @@ module IdFranceconnect
       type: 'string',
       private: true
     }
-
   end
 end

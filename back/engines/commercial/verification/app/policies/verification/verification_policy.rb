@@ -20,5 +20,4 @@ module Verification
       user&.invite_not_pending? && record.user == user
     end
   end
-
 end

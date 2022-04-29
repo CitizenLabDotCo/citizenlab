@@ -1,7 +1,6 @@
 module Carrierwave
   module FileBase64
     module Adapter
-
       def mount_base64_file_uploader(attribute, uploader_class, options = {})
         mount_uploader attribute, uploader_class, options
 
@@ -30,7 +29,6 @@ module Carrierwave
           assign_attributes attribute => file_attributes[:name], "remote_#{attribute}_url" => file_attributes[:url]
         end
       end
-
     end
   end
 end

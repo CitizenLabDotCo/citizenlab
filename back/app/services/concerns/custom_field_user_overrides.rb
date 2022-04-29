@@ -18,5 +18,4 @@ module CustomFieldUserOverrides
     normal_field[:enum] = (1900..(Time.now.year - 12)).to_a.reverse
     normal_field
   end
-
 end

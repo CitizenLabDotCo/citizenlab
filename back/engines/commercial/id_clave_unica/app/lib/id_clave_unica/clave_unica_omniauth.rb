@@ -59,5 +59,4 @@ module IdClaveUnica
       "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
     end
   end
-
 end

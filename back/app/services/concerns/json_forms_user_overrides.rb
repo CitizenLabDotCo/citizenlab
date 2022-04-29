@@ -32,5 +32,4 @@ module JsonFormsUserOverrides
     output[:oneOf] = (1900..(Time.now.year - 12)).to_a.reverse.map { |y| { const: y } }
     output
   end
-
 end

@@ -1,5 +1,4 @@
 module PublicApi
-
   class V1::ProjectsController < PublicApiController
     before_action :set_project, only: [:show]
 
@@ -35,5 +34,4 @@ module PublicApi
       }
     end
   end
-
 end

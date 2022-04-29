@@ -1,7 +1,6 @@
 require 'uri'
 
 module Surveys
-
   class TypeformWebhookManager
     # @param [Typeform::Api] tf_api
     # @param [String] typeform_secret_token Token used to verify that requests

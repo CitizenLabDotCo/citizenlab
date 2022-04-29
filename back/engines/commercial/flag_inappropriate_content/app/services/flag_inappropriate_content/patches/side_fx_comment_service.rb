@@ -1,7 +1,6 @@
 module FlagInappropriateContent
   module Patches
     module SideFxCommentService
-
       def after_create(comment, user)
         super
         ToxicityDetectionJob.perform_later comment, attributes: [:body_multiloc]

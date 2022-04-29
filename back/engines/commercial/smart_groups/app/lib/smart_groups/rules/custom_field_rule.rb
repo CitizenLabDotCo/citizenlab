@@ -1,5 +1,4 @@
 module SmartGroups::Rules
-
   module CustomFieldRule
     extend ActiveSupport::Concern
 
@@ -42,7 +41,5 @@ module SmartGroups::Rules
     def rule_type
       self.class.rule_type
     end
-
   end
-
 end

@@ -46,6 +46,5 @@ module IdAuth0
     def locked_custom_fields
       []
     end
-
   end
 end

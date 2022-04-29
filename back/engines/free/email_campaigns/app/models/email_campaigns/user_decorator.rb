@@ -14,5 +14,4 @@ module EmailCampaigns::UserDecorator
       authored_campaigns.update_all(author_id: nil)
     end
   end
-
 end

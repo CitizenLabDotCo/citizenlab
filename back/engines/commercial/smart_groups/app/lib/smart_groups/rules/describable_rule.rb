@@ -1,5 +1,4 @@
 module SmartGroups::Rules
-
   module DescribableRule
     extend ActiveSupport::Concern
 
@@ -46,7 +45,5 @@ module SmartGroups::Rules
     def value
       nil
     end
-
   end
-
 end

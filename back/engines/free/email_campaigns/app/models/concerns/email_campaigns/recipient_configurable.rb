@@ -19,6 +19,5 @@ module EmailCampaigns
         users_scope.active
       end
     end
-
   end
 end

@@ -140,6 +140,9 @@ Layout/ClosingParenthesisIndentation:
 Layout/SpaceAroundEqualsInParameterDefault:
   Enabled: true
 
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+
 Metrics/ClassLength:
   Enabled: true
   Max: 300

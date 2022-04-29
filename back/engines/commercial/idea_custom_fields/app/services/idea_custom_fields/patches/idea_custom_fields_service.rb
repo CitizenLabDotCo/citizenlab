@@ -1,7 +1,6 @@
 module IdeaCustomFields
   module Patches
     module IdeaCustomFieldsService
-
       def all_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
         custom_and_default_fields(custom_form, custom_fields_scope: custom_fields_scope, filter_unmodifiable: filter_unmodifiable)
       end
