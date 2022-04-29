@@ -121,18 +121,18 @@ RSpec.configure do |config|
 
   # from https://github.com/influitive/apartment/wiki/Testing-Your-Application
   config.before(:suite) do
-    require './engines/free/email_campaigns/spec/factories/campaigns.rb'
-    require './engines/free/email_campaigns/spec/factories/campaigns_groups.rb'
-    require './engines/free/email_campaigns/spec/factories/deliveries.rb'
-    require './engines/free/email_campaigns/spec/factories/consents.rb'
-    require './engines/free/email_campaigns/spec/factories/unsubscription_tokens.rb'
-    require './engines/free/surveys/spec/factories/responses.rb'
-    require './engines/free/polls/spec/factories/questions.rb'
-    require './engines/free/polls/spec/factories/options.rb'
-    require './engines/free/polls/spec/factories/responses.rb'
-    require './engines/free/polls/spec/factories/response_options.rb'
-    require './engines/free/volunteering/spec/factories/causes.rb'
-    require './engines/free/volunteering/spec/factories/volunteers.rb'
+    require './engines/free/email_campaigns/spec/factories/campaigns'
+    require './engines/free/email_campaigns/spec/factories/campaigns_groups'
+    require './engines/free/email_campaigns/spec/factories/deliveries'
+    require './engines/free/email_campaigns/spec/factories/consents'
+    require './engines/free/email_campaigns/spec/factories/unsubscription_tokens'
+    require './engines/free/surveys/spec/factories/responses'
+    require './engines/free/polls/spec/factories/questions'
+    require './engines/free/polls/spec/factories/options'
+    require './engines/free/polls/spec/factories/responses'
+    require './engines/free/polls/spec/factories/response_options'
+    require './engines/free/volunteering/spec/factories/causes'
+    require './engines/free/volunteering/spec/factories/volunteers'
 
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, { except: not_truncated_tables }
