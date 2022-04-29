@@ -39,10 +39,10 @@ class ImportIdeasService
       topic_title = topic_title.downcase
       Topic.all.find do |topic|
         topic.title_multiloc.values
-          .map { |v| v.downcase }
+          .map(&:downcase)
           .include? topic_title
       end
-    end.select { |topic| topic }.uniq { |topic| topic.id }
+    end.select { |topic| topic }.uniq(&:id)
     unless idea_data[:project_title]
       raise 'A project title is mandatory!'
     end

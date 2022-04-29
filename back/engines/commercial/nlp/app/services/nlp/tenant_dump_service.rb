@@ -37,8 +37,8 @@ module NLP
           project_id:           idea.project_id,
           author_name:          idea.author_name,
           location_description: idea.location_description,
-          topics:               idea.topics.map { |top| top.id },
-          areas:                idea.areas.map { |ar| ar.id },
+          topics:               idea.topics.map(&:id),
+          areas:                idea.areas.map(&:id),
           upvotes_count:        idea.upvotes_count,
           downvotes_count:      idea.downvotes_count,
           updated_at:           idea.updated_at.iso8601,
@@ -87,8 +87,8 @@ module NLP
           id:                   project.id,
           title_multiloc:       project.title_multiloc,
           description_multiloc: project.description_multiloc,
-          topics:               project.allowed_input_topics.map { |top| top.id },
-          areas:                project.areas.map { |ar| ar.id }
+          topics:               project.allowed_input_topics.map(&:id),
+          areas:                project.areas.map(&:id)
         }
         d
       end

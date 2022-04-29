@@ -26,7 +26,7 @@ describe 'JsonFormsService ideas overrides' do
     it 'only includes the topics associated with the current project' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'topic_ids', :items, :oneOf)&.map { |item| item[:const] }).to match @projects_allowed_input_topics.map { |t| t.topic_id }
+      expect(schema.dig(:properties, 'topic_ids', :items, :oneOf)&.map { |item| item[:const] }).to match @projects_allowed_input_topics.map(&:topic_id)
     end
   end
 

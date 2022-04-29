@@ -62,6 +62,14 @@ Style/StringLiteralsInInterpolation:
 Style/Proc:
   Enabled: true
 
+Style/SymbolProc:
+  Enabled: true
+  IgnoredMethods:
+    - attribute
+    - throttle
+  Exclude:
+    - 'db/migrate/**/*'
+
 Style/TrailingCommaInArrayLiteral:
   Enabled: true
 

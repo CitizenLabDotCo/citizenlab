@@ -135,9 +135,7 @@ module EmailCampaigns
     end
 
     def discover_projects(projects)
-      projects.sort_by do |project|
-        project.created_at
-      end.reverse.take(N_DISCOVER_PROJECTS)
+      projects.sort_by(&:created_at).reverse.take(N_DISCOVER_PROJECTS)
     end
 
     def top_idea_payload(idea, recipient)
@@ -158,7 +156,7 @@ module EmailCampaigns
           }
         end,
         top_comments: idea.comments
-          .select { |c| c.published? }
+          .select(&:published?)
           .sort_by { |c| -c.children.size }
           .take(N_TOP_COMMENTS).map do |comment|
             top_comment_payload comment, name_service
