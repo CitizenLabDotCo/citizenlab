@@ -369,7 +369,7 @@ resource 'Users' do
             group = create(:smart_group, rules: [
               { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
             ])
-            (page_size + 1).times.map do |_i|
+            Array.new(page_size + 1) do |_i|
               create(:idea, project: project, author: create(:user))
             end
 

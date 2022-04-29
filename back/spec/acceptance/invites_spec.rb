@@ -124,7 +124,7 @@ resource 'Invites' do
       end
 
       describe do
-        let(:emails) { 5.times.map { Faker::Internet.email }.concat([nil]) }
+        let(:emails) { Array.new(5) { Faker::Internet.email }.concat([nil]) }
         let(:group_ids) { [create(:group).id] }
         let(:project) { create(:project) }
         let(:locale) { 'nl-NL' }

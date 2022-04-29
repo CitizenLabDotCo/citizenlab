@@ -30,7 +30,7 @@ resource 'Mentions' do
     example 'Find user by (partial) mention and idea context' do
       first_name = 'Jozefius'
       idea = create(:idea)
-      comments = 3.times.map do
+      comments = Array.new(3) do
         user = create(:user, first_name: first_name)
         create(:comment, post: idea, author: user)
       end

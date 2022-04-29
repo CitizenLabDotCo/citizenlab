@@ -47,7 +47,7 @@ resource 'Avatars' do
       let(:context_type) { 'project' }
       let(:context_id) { project.id }
       let!(:other_user) { create(:idea).author }
-      let!(:author_ids) { 3.times.map { create(:idea, project: project).author.id } }
+      let!(:author_ids) { Array.new(3) { create(:idea, project: project).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars in a project' do
@@ -66,7 +66,7 @@ resource 'Avatars' do
       let(:context_type) { 'idea' }
       let(:context_id) { idea.id }
       let(:author_id) { idea.author.id }
-      let!(:commenter_ids) { 2.times.map { create(:comment, post: idea).author.id } }
+      let!(:commenter_ids) { Array.new(2) { create(:comment, post: idea).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars on an idea (author and commenters)' do
@@ -85,7 +85,7 @@ resource 'Avatars' do
       let(:context_type) { 'initiative' }
       let(:context_id) { initiative.id }
       let(:author_id) { initiative.author.id }
-      let!(:commenter_ids) { 2.times.map { create(:comment, post: initiative).author.id } }
+      let!(:commenter_ids) { Array.new(2) { create(:comment, post: initiative).author.id } }
       let(:limit) { 2 }
 
       example_request 'List random user avatars on an initiative (author and commenters)' do

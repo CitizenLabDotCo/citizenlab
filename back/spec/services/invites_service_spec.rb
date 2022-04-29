@@ -23,7 +23,7 @@ describe InvitesService do
           last_name: rand(3) == 0 ? user.last_name : nil,
           language: rand(3) == 0 ? user.locale : nil,
           admin: rand(5) == 0 ? true : nil,
-          groups: rand(3) == 0 ? rand(3).times.map { Group.offset(rand(Group.count)).first.title_multiloc.values.first }.uniq.join(',') : nil
+          groups: rand(3) == 0 ? Array.new(rand(3)) { Group.offset(rand(Group.count)).first.title_multiloc.values.first }.uniq.join(',') : nil
         }
       end + [{}, {}, {}]).shuffle end
       let(:inviter) { create(:user) }

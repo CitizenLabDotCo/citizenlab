@@ -130,7 +130,7 @@ resource 'Comments' do
 
     describe do
       before do
-        @comments = 3.times.map do |_i|
+        @comments = Array.new(3) do |_i|
           create(:comment, post: create(:initiative))
         end
       end
