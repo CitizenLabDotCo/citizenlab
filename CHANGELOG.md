@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Added
+
+- Added more autocomplete to the password reset and profile settings form which assist in filling out information faster.
+
 ## 2022-04-28
 
 ### Added
