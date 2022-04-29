@@ -74,6 +74,9 @@ Style/EmptyMethod:
 Style/ExpandPathArguments:
   Enabled: true
 
+Style/NestedParenthesizedCalls:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

@@ -172,7 +172,7 @@ RSpec.describe User, type: :model do
     it 'responds false when the user does not have a project_moderator role' do
       l = create(:project)
       u = build(:user, roles: [])
-      expect(u.project_moderator? l.id).to eq false
+      expect(u.project_moderator?(l.id)).to eq false
     end
 
     it 'responds false when the user is not a project_moderator and no project_id is passed' do

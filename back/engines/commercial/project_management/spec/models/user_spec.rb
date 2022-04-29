@@ -40,12 +40,12 @@ RSpec.describe User, type: :model do
     it 'gives a user moderator rights for a project' do
       usr = create(:user, roles: [])
       prj = create(:project)
-      expect(usr.project_moderator? prj.id).to eq false
+      expect(usr.project_moderator?(prj.id)).to eq false
 
       usr.add_role 'project_moderator', project_id: prj.id
       expect(usr.save).to eq true
-      expect(usr.project_moderator? prj.id).to eq true
-      expect(usr.project_moderator? create(:project).id).to eq false
+      expect(usr.project_moderator?(prj.id)).to eq true
+      expect(usr.project_moderator?(create(:project).id)).to eq false
     end
   end
 
@@ -56,7 +56,7 @@ RSpec.describe User, type: :model do
 
       mod.delete_role 'project_moderator', project_id: prj.id
       expect(mod.save).to eq true
-      expect(mod.project_moderator? prj.id).to eq false
+      expect(mod.project_moderator?(prj.id)).to eq false
     end
   end
 

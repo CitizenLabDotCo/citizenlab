@@ -83,7 +83,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
         }
       ]
 
-      expect(service.extract_toxicity_label res).to eq 'sexually_explicit'
+      expect(service.extract_toxicity_label(res)).to eq 'sexually_explicit'
     end
   end
 
