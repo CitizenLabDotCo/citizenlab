@@ -53,7 +53,7 @@ resource 'Comments' do
           @c1sub5,
           @c3,
           @c3sub5,
-          @c3sub6,
+          @c3sub6
         ].map(&:id))
       end
     end
@@ -115,7 +115,7 @@ resource 'Comments' do
         @csub3,
         @csub4,
         @csub5,
-        @csub6,
+        @csub6
       ].map(&:id))
     end
   end

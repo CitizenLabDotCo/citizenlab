@@ -191,7 +191,7 @@ describe XlsxService do
       { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
       { 'b' => 'four', 'c' => 'party' },
       { 'f' => 'fête' },
-      {},
+      {}
     ] end
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }

@@ -8,7 +8,7 @@ class ParticipantsService
     { item_type: 'Vote', action: 'comment_downvoted', score: 1 },
     { item_type: 'Basket', action: 'created', score: 3 },
     { item_type: 'Polls::Response', action: 'created', score: 1 },
-    { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 },
+    { item_type: 'Volunteering::Volunteer', action: 'created', score: 3 }
   ]
 
   PARTICIPANT_ACTIONS = %i[posting commenting idea_voting comment_voting budgeting polling volunteering]

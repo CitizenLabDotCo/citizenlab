@@ -158,7 +158,7 @@ resource 'Invites' do
           'someemail@somedomain.net',
           'user_at_domain.com',
           create(:user).email,
-          create(:invite).invitee.email,
+          create(:invite).invitee.email
         ] end
 
         example_request '[error] Bulk invite multiple users' do
@@ -228,7 +228,7 @@ resource 'Invites' do
           { locale: 'qq' },
           { groups: 'A positive' },
           { groups: 24 },
-          { admin: 'nope' },
+          { admin: 'nope' }
         ] end
 
         example_request '[error] Bulk invite users with xlsx file' do

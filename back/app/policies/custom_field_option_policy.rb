@@ -35,7 +35,7 @@ class CustomFieldOptionPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     [
       :key,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
+      title_multiloc: CL2_SUPPORTED_LOCALES
     ]
   end
 

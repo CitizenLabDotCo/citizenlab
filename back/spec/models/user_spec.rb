@@ -432,7 +432,7 @@ RSpec.describe User, type: :model do
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
         build_stubbed(:admin, email: 'bigger@citizenlab.us'),
         build_stubbed(:admin, email: 'magdalena@citizenlab.cl'),
-        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK'),
+        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK')
       ]
 
       expect(users).to all be_super_admin

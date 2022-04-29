@@ -32,7 +32,7 @@ RSpec.describe Polls::Response, type: :model do
           participation_context: pc,
           response_options_attributes: [
             { option_id: q1.options.first.id },
-            { option_id: q2.options.first.id },
+            { option_id: q2.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be true
@@ -43,7 +43,7 @@ RSpec.describe Polls::Response, type: :model do
           :poll_response,
           participation_context: pc,
           response_options_attributes: [
-            { option_id: q1.options.first.id },
+            { option_id: q1.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be false
@@ -57,7 +57,7 @@ RSpec.describe Polls::Response, type: :model do
           response_options_attributes: [
             { option_id: q1.options.first.id },
             { option_id: q1.options.last.id },
-            { option_id: q2.options.first.id },
+            { option_id: q2.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be false
@@ -77,7 +77,7 @@ RSpec.describe Polls::Response, type: :model do
           response_options_attributes: [
             { option_id: q1.options.first.id },
             { option_id: q1.options.second.id },
-            { option_id: q2.options.first.id },
+            { option_id: q2.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be true
@@ -88,7 +88,7 @@ RSpec.describe Polls::Response, type: :model do
           :poll_response,
           participation_context: pc,
           response_options_attributes: [
-            { option_id: q1.options.first.id },
+            { option_id: q1.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be false
@@ -104,7 +104,7 @@ RSpec.describe Polls::Response, type: :model do
           response_options_attributes: [
             { option_id: q1.options[0].id },
             { option_id: q1.options[1].id },
-            { option_id: q2.options.first.id },
+            { option_id: q2.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be true
@@ -119,7 +119,7 @@ RSpec.describe Polls::Response, type: :model do
             { option_id: q1.options[0].id },
             { option_id: q1.options[1].id },
             { option_id: q1.options[2].id },
-            { option_id: q2.options.first.id },
+            { option_id: q2.options.first.id }
           ]
         )
         expect(response.valid?(:response_submission)).to be false

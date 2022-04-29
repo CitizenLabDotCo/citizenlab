@@ -11,7 +11,7 @@ resource 'Verification Id Cards', admin_api: true do
       allowed: true,
       enabled: true,
       verification_methods: [
-        { name: 'id_card_lookup', method_name_multiloc: { en: 'By social security number' }, card_id_multiloc: { en: 'Social security number' }, card_id_placeholder: 'xx-xxxxx-xx', card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' }, explainer_image_url: 'https://some.fake/image.png' },
+        { name: 'id_card_lookup', method_name_multiloc: { en: 'By social security number' }, card_id_multiloc: { en: 'Social security number' }, card_id_placeholder: 'xx-xxxxx-xx', card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' }, explainer_image_url: 'https://some.fake/image.png' }
       ]
     }
     configuration.save!

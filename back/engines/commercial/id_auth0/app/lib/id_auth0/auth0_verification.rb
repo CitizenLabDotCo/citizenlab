@@ -31,7 +31,7 @@ module IdAuth0
 
     def exposed_config_parameters
       [
-        :method_name_multiloc,
+        :method_name_multiloc
       ]
     end
 

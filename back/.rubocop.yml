@@ -62,6 +62,9 @@ Style/StringLiteralsInInterpolation:
 Style/Proc:
   Enabled: true
 
+Style/TrailingCommaInArrayLiteral:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

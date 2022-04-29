@@ -133,7 +133,7 @@ describe InvitesService do
       let(:hash_array) do
         [
           { email: 'user1@domain.net', number_field: 'nan' },
-          { email: 'user2@domain.net', checkbox_field: 'non-truthy' },
+          { email: 'user2@domain.net', checkbox_field: 'non-truthy' }
       ] end
 
       it "raises 'InviteError' errors" do
@@ -283,7 +283,7 @@ describe InvitesService do
         { email: 'someuser@somedomain.com' },
         { email: 'someuser@somedomain.com' },
         {},
-        { email: 'someuser@somedomain.com' },
+        { email: 'someuser@somedomain.com' }
       ] end
 
       it 'fails with email_duplicate error' do
@@ -299,7 +299,7 @@ describe InvitesService do
       let(:hash_array) do
         [
         { first_name: 'John', last_name: 'Johnson' },
-        { first_name: 'John', last_name: 'Johnson' },
+        { first_name: 'John', last_name: 'Johnson' }
       ] end
 
       it 'succeeds with unique slugs' do
@@ -312,7 +312,7 @@ describe InvitesService do
         [
         { email: 'test1@example.com', send_invite_email: 'FALSE' },
         { email: 'test2@example.com', send_invite_email: '0' },
-        { email: 'test3@example.com', send_invite_email: 'false' },
+        { email: 'test3@example.com', send_invite_email: 'false' }
       ] end
 
       it 'sets send_invite_email attribute to false in the invite' do
@@ -326,7 +326,7 @@ describe InvitesService do
         [
         { email: 'test1@example.com', send_invite_email: 'TRUE' },
         { email: 'test2@example.com', send_invite_email: '1' },
-        { email: 'test3@example.com', send_invite_email: 'true' },
+        { email: 'test3@example.com', send_invite_email: 'true' }
       ] end
 
       it 'sets send_invite_email attribute to true in the invite' do

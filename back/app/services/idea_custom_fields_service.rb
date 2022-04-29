@@ -228,7 +228,7 @@ class IdeaCustomFieldsService
         required: false,
         enabled: true,
         ordering: 9
-      ),
+      )
     ]
   end
 end

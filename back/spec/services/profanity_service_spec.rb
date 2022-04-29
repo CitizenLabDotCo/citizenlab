@@ -68,7 +68,7 @@ describe ProfanityService do
         {
           word: 'stupid',
           language: 'en'
-        },
+        }
       ])
     end
 
