@@ -71,6 +71,9 @@ Style/SpecialGlobalVars:
 Style/EmptyMethod:
   Enabled: true
 
+Style/ExpandPathArguments:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 
