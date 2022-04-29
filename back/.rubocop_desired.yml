@@ -146,5 +146,8 @@ RSpec/DescribeClass:
 Rails/TimeZone:
   Enabled: true
 
+Rails/SkipsModelValidations:
+  Enabled: true
+
 Gemspec/RequiredRubyVersion:
   Enabled: true
