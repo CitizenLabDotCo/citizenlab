@@ -171,8 +171,8 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
-    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
+    record.errors.add(:last_name, :blank) unless (record.last_name.present? || record.cl1_migrated || record.invite_pending?)
+    record.errors.add(:password, :blank) unless (record.password_digest.present? || record.identities.any? || record.invite_pending?)
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email

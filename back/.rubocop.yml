@@ -100,6 +100,9 @@ Style/ClassCheck:
 Style/Lambda:
   Enabled: true
 
+Style/AndOr:
+  Enabled: true
+
 Style/NumericPredicate:
   # Turned off because `something == 0` and `something.zero?`
   # are not the same if `something` is not a number.
