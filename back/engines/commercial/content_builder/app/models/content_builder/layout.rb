@@ -19,6 +19,8 @@ module ContentBuilder
   class Layout < ApplicationRecord
     belongs_to :content_buildable, polymorphic: true
 
+    before_validation :sanitize_craftjs_jsonmultiloc
+
     validates :content_buildable, :code, presence: true
     validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
     validate :validate_craftjs_jsonmultiloc
@@ -40,6 +42,11 @@ module ContentBuilder
           end
         end
       end
+    end
+
+    def sanitize_craftjs_jsonmultiloc
+      service = LayoutSanitizationService.new
+      self.craftjs_jsonmultiloc = service.sanitize_multiloc craftjs_jsonmultiloc
     end
   end
 end
