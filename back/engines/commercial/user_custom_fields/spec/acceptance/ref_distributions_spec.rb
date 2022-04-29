@@ -6,36 +6,43 @@ resource 'Representativeness reference distributions' do
   before { admin_header_token }
 
   get 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
-    let!(:reference_distribution) { create(:ref_distribution) }
-    let(:custom_field_id) { reference_distribution.custom_field.id }
+    context "when the custom field has a reference distribution" do
+      let!(:reference_distribution) { create(:ref_distribution) }
+      let(:custom_field_id) { reference_distribution.custom_field.id }
 
-    let(:expected_response) do
-      {
-        data: {
-          id: reference_distribution.id,
-          type: 'reference_distribution',
-          attributes: {
-            distribution: reference_distribution.normalized_distribution.symbolize_keys
-          },
-          relationships: {
-            values: {
-              data: reference_distribution.distribution.keys.map do |key|
-                { type: 'custom_field_option', id: key }
-              end
+      let(:expected_response) do
+        {
+          data: {
+            id: reference_distribution.id,
+            type: 'reference_distribution',
+            attributes: {
+              distribution: reference_distribution.normalized_distribution.symbolize_keys
+            },
+            relationships: {
+              values: {
+                data: reference_distribution.distribution.keys.map do |key|
+                  { type: 'custom_field_option', id: key }
+                end
+              }
             }
           }
         }
-      }
+      end
+
+      example_request 'Get the reference distribution associated to a custom field' do
+        expect(status).to eq(200)
+        expect(json_response_body).to match(expected_response)
+      end
+
     end
 
-    example_request 'Get the reference distribution associated to a custom field' do
-      expect(status).to eq(200)
-      expect(json_response_body).to match(expected_response)
-    end
+    context 'when the custom field does not have a reference distribution' do
+      let!(:custom_field_id) { custom_field.id }
+      let(:custom_field) { create(:custom_field_select, resource_type: 'User') }
 
-    example 'not found' do
-      pending 'TODO: Implement'
-      raise NotImplementedError
+      example_request 'returns 404 (Not Found)' do
+        expect(status).to eq(404)
+      end
     end
   end
 
