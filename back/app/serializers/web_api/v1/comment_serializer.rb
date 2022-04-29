@@ -4,8 +4,6 @@ class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
   attribute :body_multiloc do |object|
     if object.publication_status != 'deleted'
       object.body_multiloc
-    else
-      nil
     end
   end
 
@@ -19,8 +17,6 @@ class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer do |object|
     if object.publication_status != 'deleted'
       object.author
-    else
-      nil
     end
   end
 

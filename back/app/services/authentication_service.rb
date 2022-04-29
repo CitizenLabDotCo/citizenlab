@@ -25,8 +25,6 @@ class AuthenticationService
     auth_method = method_by_provider(provider)
     if supports_logout?(provider)
       auth_method.logout_url(user)
-    else
-      nil
     end
   end
 

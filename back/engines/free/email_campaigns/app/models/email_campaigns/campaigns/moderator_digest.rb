@@ -80,8 +80,6 @@ module EmailCampaigns
               idea_ids: idea_ids
             }
           }
-        else
-          nil
         end
       end.compact
     end

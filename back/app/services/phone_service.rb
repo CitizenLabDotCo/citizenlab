@@ -7,8 +7,6 @@ class PhoneService
       :email
     elsif normalize_phone(str).size > 5 && (str =~ /^\+?[0-9\.x\-\s\(\)]+$/)
       :phone
-    else
-      nil
     end
   end
 

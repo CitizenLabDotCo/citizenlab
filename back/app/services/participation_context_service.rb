@@ -277,8 +277,6 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
-    else
-      nil
     end
   end
 
@@ -287,16 +285,12 @@ class ParticipationContextService
     when 'up'
       if user && upvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
-      else
-        nil
       end
     when 'down'
       if !context.downvoting_enabled
         VOTING_DISABLED_REASONS[:downvoting_disabled]
       elsif user && downvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
-      else
-        nil
       end
     else
       ErrorReporter.report_msg("Unsupported vote type #{mode}")
