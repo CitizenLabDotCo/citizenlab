@@ -118,6 +118,7 @@ describe ParticipationContextService do
           expect(service.idea_voting_disabled_reason_for(idea, user, mode: 'down')).to eq 'not_permitted'
         end
       end
+
       context 'for an unauthenticated visitor' do
         let(:user) { nil }
 

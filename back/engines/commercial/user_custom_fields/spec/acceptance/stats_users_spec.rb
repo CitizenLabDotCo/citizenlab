@@ -134,6 +134,7 @@ resource 'Stats - Users' do
       })
     end
   end
+
     describe 'filtered by project' do
       before do
         travel_to start_at + 16.days do

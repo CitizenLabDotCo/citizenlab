@@ -149,6 +149,7 @@ resource 'Stats - Comments' do
           end
         end
       end
+
       include_examples 'unauthorized requests'
     end
 
@@ -187,6 +188,7 @@ resource 'Stats - Comments' do
           end
         end
       end
+
       context 'as a moderator', skip: !CitizenLab.ee? do
         before do
           token = Knock::AuthToken.new(payload: create(:project_moderator).to_token_payload).token
@@ -205,6 +207,7 @@ resource 'Stats - Comments' do
           expect(json_response[:series][:comments].values.last).to eq 1
         end
       end
+
       include_examples 'unauthorized requests'
     end
 
@@ -245,6 +248,7 @@ resource 'Stats - Comments' do
           end
         end
       end
+
       include_examples 'unauthorized requests'
     end
 
@@ -308,6 +312,7 @@ resource 'Stats - Comments' do
           expect(amounts.last).to eq 1
         end
       end
+
       include_examples 'unauthorized requests'
     end
   end
@@ -588,6 +593,7 @@ resource 'Stats - Comments' do
         end
       end
     end
+
     include_examples 'unauthorized requests'
   end
 

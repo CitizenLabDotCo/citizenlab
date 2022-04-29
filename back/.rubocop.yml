@@ -260,6 +260,9 @@ RSpec/NotToNot:
 RSpec/EmptyLineAfterSubject:
   Enabled: true
 
+RSpec/EmptyLineAfterExampleGroup:
+  Enabled: true
+
 Rails/HttpStatus:
   Enabled: true
 
