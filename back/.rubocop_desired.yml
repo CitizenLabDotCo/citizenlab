@@ -145,3 +145,6 @@ RSpec/DescribeClass:
 
 Rails/TimeZone:
   Enabled: true
+
+Gemspec/RequiredRubyVersion:
+  Enabled: true
