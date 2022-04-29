@@ -20,6 +20,9 @@ Metrics/AbcSize:
 Metrics/CyclomaticComplexity:
   Enabled: true
 
+Metrics/PerceivedComplexity:
+  Enabled: true
+
 Style/FrozenStringLiteralComment:
   Enabled: true
 
