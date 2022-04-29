@@ -155,6 +155,9 @@ Lint/UnusedMethodArgument:
 Lint/ParenthesesAsGroupedExpression:
   Enabled: true
 
+Lint/UnusedBlockArgument:
+  Enabled: true
+
 RSpec/MultipleExpectations:
   # It makes little sense to disallow multiple expectations in one example,
   # so turn off this Cop.

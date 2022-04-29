@@ -63,7 +63,7 @@ class SideFxCommentService
   end
 
   def notify_mentioned_users(comment, user)
-    mentioned_users = comment.body_multiloc.flat_map do |locale, body|
+    mentioned_users = comment.body_multiloc.flat_map do |_locale, body|
       @@mention_service.extract_expanded_mention_users(body)
     end
 

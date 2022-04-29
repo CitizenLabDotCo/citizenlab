@@ -111,7 +111,7 @@ RSpec.describe Idea, type: :model do
 
   describe 'order_popular' do
     before do
-      5.times do |i|
+      5.times do |_i|
         idea = create(:idea)
         rand(20).times { create(:vote, votable: idea, mode: %w[up down][rand(1)]) }
       end

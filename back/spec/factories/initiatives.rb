@@ -41,7 +41,7 @@ FactoryBot.define do
         topics_count { 2 }
       end
       after(:create) do |initiative, evaluator|
-        evaluator.topics_count.times do |i|
+        evaluator.topics_count.times do |_i|
           initiative.topics << create(:topic)
         end
       end
@@ -52,7 +52,7 @@ FactoryBot.define do
         areas_count { 2 }
       end
       after(:create) do |initiative, evaluator|
-        evaluator.areas_count.times do |i|
+        evaluator.areas_count.times do |_i|
           initiative.areas << create(:area)
         end
       end

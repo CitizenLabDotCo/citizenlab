@@ -7,7 +7,7 @@ require 'redcarpet'
 
 namespace :tenant_template do
   desc 'Converts tenant templates from csv files to a yml file, working in the specified folder'
-  task :csv_to_yml, %i[path locale] => [:environment] do |t, args|
+  task :csv_to_yml, %i[path locale] => [:environment] do |_t, args|
     locales = args[:locale].split ' '
     yml_base = YAML.load_file('config/tenant_templates/base.yml')
 

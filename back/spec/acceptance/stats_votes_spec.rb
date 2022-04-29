@@ -260,7 +260,7 @@ resource 'Stats - Votes' do
           assert_status 200
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
-            expect(json_response[:series].map { |mode, values| values.size }.uniq.first).to eq((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 1)
+            expect(json_response[:series].map { |_mode, values| values.size }.uniq.first).to eq((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 1)
             expect(json_response[:series][:up].values.inject(&:+)).to eq 3
             expect(json_response[:series][:down].values.inject(&:+)).to eq 2
             expect(json_response[:series][:total].values.inject(&:+)).to eq 5

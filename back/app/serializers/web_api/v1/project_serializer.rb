@@ -67,7 +67,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:total_count]
   end
 
-  attribute :participants_count do |object, params|
+  attribute :participants_count do |object, _params|
     @participants_service ||= ParticipantsService.new
     @participants_service.project_participants(object).size
   end
@@ -80,7 +80,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :timeline_active, if: Proc.new { |object, params|
+  attribute :timeline_active, if: Proc.new { |object, _params|
     object.timeline?
   } do |object, params|
     if params[:timeline_active]
@@ -104,7 +104,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   } do |object, params|
     user_basket object, params
   end
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: Proc.new { |object, params|
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: Proc.new { |object, _params|
     !object.participation_context?
   } do |object|
     TimelineService.new.current_phase(object)

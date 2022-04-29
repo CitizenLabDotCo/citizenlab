@@ -363,7 +363,7 @@ module AdminApi
             'locale'                    => u.locale,
             'bio_multiloc'              => u.bio_multiloc,
             'cl1_migrated'              => u.cl1_migrated,
-            'custom_field_values'       => u.custom_field_values.delete_if { |k, v| v.nil? },
+            'custom_field_values'       => u.custom_field_values.delete_if { |_k, v| v.nil? },
             'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601,
             'verified'                  => u.verified
           }

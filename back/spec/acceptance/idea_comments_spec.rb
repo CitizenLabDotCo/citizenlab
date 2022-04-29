@@ -139,7 +139,7 @@ resource 'Comments' do
     describe do
       before do
         @project = create(:project)
-        @comments = 3.times.collect do |i|
+        @comments = 3.times.collect do |_i|
           create(:comment, post: create(:idea, project: @project))
         end
       end

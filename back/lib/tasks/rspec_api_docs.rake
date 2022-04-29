@@ -3,7 +3,7 @@
 require 'rspec/core/rake_task'
 
 desc 'Generate public API request documentation from API specs'
-RSpec::Core::RakeTask.new('web_api:docs:generate' => :environment) do |t, task_args|
+RSpec::Core::RakeTask.new('web_api:docs:generate' => :environment) do |t, _task_args|
   ENV['DOC_FORMAT'] = 'html'
   ENV['API_NAME'] = 'CitizenLab Front Web API'
   if CitizenLab.ee?

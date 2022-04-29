@@ -35,7 +35,7 @@ FactoryBot.define do
     factory :invited_user do
       invite_status { 'pending' }
 
-      after(:create) do |user, evaluator|
+      after(:create) do |user, _evaluator|
         create(:invite, invitee: user)
       end
     end

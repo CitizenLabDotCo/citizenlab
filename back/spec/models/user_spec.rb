@@ -299,7 +299,7 @@ RSpec.describe User, type: :model do
 
   describe 'order_role' do
     before do
-      10.times do |i|
+      10.times do |_i|
         create(rand(2) == 0 ? :admin : :user)
       end
     end

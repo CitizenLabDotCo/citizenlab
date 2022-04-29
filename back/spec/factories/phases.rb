@@ -20,7 +20,7 @@ FactoryBot.define do
     max_budget { 10_000 }
 
     factory :active_phase do
-      after(:create) do |phase, evaluator|
+      after(:create) do |phase, _evaluator|
         phase.start_at = Time.now - (1 + rand(120)).days
         phase.end_at = Time.now + (1 + rand(120)).days
       end
