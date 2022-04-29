@@ -61,7 +61,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
   describe 'filter' do
     context 'on a select field' do
       let(:custom_field) { create(:custom_field_select, required: false) }
-      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field ) }
+      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
 
       let!(:users) do
         users = build_list(:user, 5)
@@ -106,7 +106,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
 
     context 'on a multiselect field' do
       let(:custom_field) { create(:custom_field_multiselect, required: false) }
-      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field ) }
+      let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
 
       let!(:users) do
         users = build_list(:user, 5)

@@ -759,8 +759,8 @@ resource 'Users' do
         parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
       end
 
-      let(:cf1) { create(:custom_field ) }
-      let(:cf2) { create(:custom_field_multiselect, required: true ) }
+      let(:cf1) { create(:custom_field) }
+      let(:cf2) { create(:custom_field_multiselect, required: true) }
       let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
       let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
 

@@ -557,7 +557,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx'
         }, current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
-        idea = create(:idea, project: project, phases: [project.phases[2]] )
+        idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to be_nil
       end
 

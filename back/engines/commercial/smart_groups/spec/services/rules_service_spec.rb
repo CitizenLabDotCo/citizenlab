@@ -8,7 +8,7 @@ describe SmartGroups::RulesService do
   let(:cf2) { create(:custom_field) }
   let(:options) { create_list(:custom_field_option, 3) }
   let(:cf3) { create(:custom_field_select) }
-  let(:options) { create_list(:custom_field_option, 3, custom_field: cf3 ) }
+  let(:options) { create_list(:custom_field_option, 3, custom_field: cf3) }
   let!(:users) do
     users = build_list(:admin, 4)
     users[0].custom_field_values[cf1.key] = 'one'

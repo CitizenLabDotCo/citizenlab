@@ -192,6 +192,9 @@ Layout/EmptyLinesAroundMethodBody:
 Layout/SpaceInLambdaLiteral:
   Enabled: true
 
+Layout/SpaceInsideParens:
+  Enabled: true
+
 Naming/VariableNumber:
   Enabled: true
 

@@ -8,7 +8,7 @@ resource 'Idea', admin_api: true do
   end
 
   let(:idea) { create(:idea_with_topics) }
-  let(:idea_id ) { idea.id }
+  let(:idea_id) { idea.id }
 
   get 'admin_api/ideas/:idea_id' do
     example_request 'Find an idea by id' do
