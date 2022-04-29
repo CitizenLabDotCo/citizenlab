@@ -54,7 +54,7 @@ resource 'Stats - Comments' do
 
   before do
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
-    AppConfiguration.instance.update!(created_at: now - 3.month)
+    AppConfiguration.instance.update!(created_at: now - 3.months)
     create(:comment, publication_status: 'deleted')
   end
 
@@ -63,7 +63,7 @@ resource 'Stats - Comments' do
       travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
         create_list(:comment, 2)
       end
-      travel_to((now - 5.month).in_time_zone(@timezone).beginning_of_month + 1.day) do
+      travel_to((now - 5.months).in_time_zone(@timezone).beginning_of_month + 1.day) do
         create(:comment)
       end
     end
@@ -361,7 +361,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by project' do
         before do
-          travel_to start_at + 5.day do
+          travel_to start_at + 5.days do
             @project = create(:project)
             idea = create(:idea_with_topics, topics_count: 2, project: @project)
             create(:comment, post: idea)
@@ -385,7 +385,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 3.day do
+          travel_to start_at + 3.days do
             @group = create(:group)
             idea = create(:idea_with_topics, topics_count: 2)
             create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
@@ -457,7 +457,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by project' do
         before do
-          travel_to start_at + 5.day do
+          travel_to start_at + 5.days do
             @project = create(:project)
             idea = create(:idea_with_topics, topics_count: 2, project: @project)
             create(:comment, post: idea)
@@ -486,7 +486,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 3.day do
+          travel_to start_at + 3.days do
             @group = create(:group)
             idea = create(:idea_with_topics, topics_count: 2)
             create(:comment, post: idea, author: create(:user, manual_groups: [@group]))
@@ -522,7 +522,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 14.day do
+          travel_to start_at + 14.days do
             @project1 = create(:project)
             @project2 = create(:project)
             idea1 = create(:idea, project: @project1)
@@ -551,7 +551,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 17.day do
+          travel_to start_at + 17.days do
             @topic = create(:topic)
             project = create(:project, allowed_input_topics: [@topic])
             idea1 = create(:idea, topics: [@topic], project: project)
@@ -573,7 +573,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 12.day do
+          travel_to start_at + 12.days do
             @group = create(:group)
             project = create(:project)
             idea = create(:idea, project: project)
@@ -604,7 +604,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 14.day do
+          travel_to start_at + 14.days do
             @project1 = create(:project)
             @project2 = create(:project)
             idea1 = create(:idea, project: @project1)
@@ -642,7 +642,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 17.day do
+          travel_to start_at + 17.days do
             @topic = create(:topic)
             project = create(:project, allowed_input_topics: [@topic])
             idea1 = create(:idea, topics: [@topic], project: project)
@@ -669,7 +669,7 @@ resource 'Stats - Comments' do
         let(:end_at) { (now - 1.month).in_time_zone(@timezone).end_of_month }
 
         before do
-          travel_to start_at + 12.day do
+          travel_to start_at + 12.days do
             @group = create(:group)
             project = create(:project)
             idea = create(:idea, project: project)

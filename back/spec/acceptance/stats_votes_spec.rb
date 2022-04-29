@@ -33,7 +33,7 @@ resource 'Stats - Votes' do
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
-    AppConfiguration.instance.update!(created_at: now - 3.month)
+    AppConfiguration.instance.update!(created_at: now - 3.months)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
     @idea_status = create(:idea_status)
   end
@@ -339,7 +339,7 @@ resource 'Stats - Votes' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
-      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day) { create(:vote) } }
+      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.days) { create(:vote) } }
 
       example_request 'Votes by time (cumulative)' do
         assert_status 200

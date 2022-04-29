@@ -42,7 +42,7 @@ resource 'Stats - Ideas' do
     @current_user = create(:admin)
     @token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
 
-    AppConfiguration.instance.update!(created_at: now - 3.year)
+    AppConfiguration.instance.update!(created_at: now - 3.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     @project1 = create(:project)
@@ -52,7 +52,7 @@ resource 'Stats - Ideas' do
     @ideas_with_topics = []
     @ideas_with_status = []
     @ideas_with_areas = []
-    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.months do
+    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.month do
       i = create(:idea, project: @project3, idea_status: @proposed)
       create(:official_feedback, post: i)
     end
@@ -529,8 +529,8 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with time filter outside of platform lifetime' do
-      let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day }
+      let(:start_at) { now - 10.years }
+      let(:end_at) { now - 10.years + 1.day }
 
       it 'returns no entries' do
         do_request
@@ -637,8 +637,8 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with time filter outside of platform lifetime' do
-      let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day }
+      let(:start_at) { now - 10.years }
+      let(:end_at) { now - 10.years + 1.day }
       let(:interval) { 'day' }
 
       it 'returns no entries' do

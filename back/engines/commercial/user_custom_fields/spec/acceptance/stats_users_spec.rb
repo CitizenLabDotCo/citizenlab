@@ -27,7 +27,7 @@ resource 'Stats - Users' do
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
-    Tenant.current.update!(created_at: now - 2.year)
+    Tenant.current.update!(created_at: now - 2.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
     travel_to(start_at - 1.day) { create(:user) }

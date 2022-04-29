@@ -31,10 +31,10 @@ resource 'Stats - Users' do
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
-    AppConfiguration.instance.update!(created_at: now - 2.year)
+    AppConfiguration.instance.update!(created_at: now - 2.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
-    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.days) do
+    travel_to((now - 1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
       create(:user)
     end
 
@@ -67,8 +67,8 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that can access the given project.', required: false
 
     describe 'with time filter outside of platform lifetime' do
-      let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day }
+      let(:start_at) { now - 10.years }
+      let(:end_at) { now - 10.years + 1.day }
 
       it 'returns no entries' do
         do_request
@@ -109,7 +109,7 @@ resource 'Stats - Users' do
       let(:interval) { 'day' }
 
       before do
-        travel_to start_at + 5.day do
+        travel_to start_at + 5.days do
           create_list(:admin, 2)
           @project = create(:private_admins_project)
         end
@@ -199,8 +199,8 @@ resource 'Stats - Users' do
     end
 
     describe 'with time filter outside of platform lifetime' do
-      let(:start_at) { now - 10.year }
-      let(:end_at) { now - 10.year + 1.day }
+      let(:start_at) { now - 10.years }
+      let(:end_at) { now - 10.years + 1.day }
       let(:interval) { 'day' }
 
       it 'returns no entries' do
@@ -232,7 +232,7 @@ resource 'Stats - Users' do
       let(:interval) { 'day' }
 
       before do
-        travel_to start_at + 5.day do
+        travel_to start_at + 5.days do
           create_list(:admin, 2)
           @project = create(:private_admins_project)
         end

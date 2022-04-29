@@ -130,7 +130,7 @@ namespace :tenant_template do
         'location_multiloc'    => make_multiloc(csv_event['Location'], locales),
         'project_ref'          => projects_hash[csv_event['Project ID']],
         'start_at'             => start_at,
-        'end_at'               => start_at + 1.days
+        'end_at'               => start_at + 1.day
       } end
   end
 

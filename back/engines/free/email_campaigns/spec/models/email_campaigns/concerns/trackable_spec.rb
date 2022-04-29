@@ -23,7 +23,7 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
   describe 'last_delivery_for_recipient' do
     it 'returns the sent_at date of the last delivery for the given user' do
       user = create(:user)
-      deliveries = create_list(:delivery, 3, campaign: @campaign, user: user, sent_at: Time.now - 2.week)
+      deliveries = create_list(:delivery, 3, campaign: @campaign, user: user, sent_at: Time.now - 2.weeks)
       deliveries[1].update(sent_at: Time.now - 1.week)
 
       expect(@campaign.last_delivery_for_recipient(user)).to eq deliveries[1].reload.sent_at
