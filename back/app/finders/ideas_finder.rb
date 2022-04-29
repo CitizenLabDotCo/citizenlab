@@ -13,12 +13,12 @@ class IdeasFinder < ApplicationFinder
   sort_scope 'status',       order_status: :asc
   sort_scope '-status',      order_status: :desc
 
-  sort_scope 'trending',     ->(ideas) {
+  sort_scope 'trending',     lambda { |ideas|
     ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id)
     Idea.unscoped.where(id: ids).order_as_specified(id: ids)
   }
 
-  sort_scope '-trending', ->(ideas) {
+  sort_scope '-trending', lambda { |ideas|
     ids = TrendingIdeaService.new.sort_trending(ideas).map(&:id).reverse
     Idea.unscoped.where(id: ids).order_as_specified(id: ids)
   }

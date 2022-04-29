@@ -126,12 +126,12 @@ class Idea < ApplicationRecord
   scope :order_popular, ->(direction = :desc) { order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id")) }
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
-  scope :order_status, ->(direction = :desc) {
+  scope :order_status, lambda { |direction = :desc|
     joins(:idea_status)
     .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
-  scope :feedback_needed, -> {
+  scope :feedback_needed, lambda {
     joins(:idea_status).where(idea_statuses: { code: 'proposed' })
       .where('ideas.id NOT IN (SELECT DISTINCT(post_id) FROM official_feedbacks)')
   }
