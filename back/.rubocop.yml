@@ -248,6 +248,9 @@ Rails/HttpStatus:
 Rails/PluralizationGrammar:
   Enabled: true
 
+Rails/IndexWith:
+  Enabled: true
+
 Performance/Detect:
   Enabled: true
 

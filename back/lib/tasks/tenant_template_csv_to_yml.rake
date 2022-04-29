@@ -54,9 +54,9 @@ namespace :tenant_template do
   end
 
   def make_multiloc(value, locales)
-    locales.map do |locale|
-      [locale, value]
-    end.to_h
+    locales.index_with do |_locale|
+      value
+    end
   end
 
   def convert_users(csv_users, locales, users_hash)

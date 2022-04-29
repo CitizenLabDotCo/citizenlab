@@ -34,8 +34,8 @@ class JsonFormsService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_json_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
-      obj[locale] = fields_to_json_schema(fields, locale)
+    configuration.settings('core', 'locales').index_with do |locale|
+      fields_to_json_schema(fields, locale)
     end
   end
 
@@ -175,14 +175,11 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string'
           }
-        ]
-      end.to_h
+      end
     }
   end
 
@@ -207,14 +204,11 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string'
           }
-        ]
-      end.to_h
+      end
     }
   end
 
@@ -239,14 +233,11 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string'
           }
-        ]
-      end.to_h
+      end
     }
   end
 

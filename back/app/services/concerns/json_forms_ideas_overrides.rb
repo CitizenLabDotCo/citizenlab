@@ -61,16 +61,13 @@ module JsonFormsIdeasOverrides
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string',
             minLength: 10,
             maxLength: 80
           }
-        ]
-      end.to_h
+      end
     }
   end
 
@@ -93,15 +90,12 @@ module JsonFormsIdeasOverrides
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string',
             minLength: 40
           }
-        ]
-      end.to_h
+      end
     }
   end
 

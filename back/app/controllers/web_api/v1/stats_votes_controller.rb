@@ -226,22 +226,16 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .group('mode', "users.custom_field_values->>'#{key}'")
       .order(Arel.sql("users.custom_field_values->>'#{key}'"))
       .count
-    data = %w[up down].map do |mode|
-      [
-        mode,
-        serie.keys.select do |key_mode, _|
+    data = %w[up down].index_with do |mode|
+      serie.keys.select do |key_mode, _|
           key_mode == mode
         end.map do |_, value|
           [(value || '_blank'), serie[[mode, value]]]
         end.to_h
-      ]
-    end.to_h
-    data['total'] = (data['up'].keys + data['down'].keys).uniq.map do |key|
-      [
-        key,
-        (data.dig('up', key) || 0) + (data.dig('down', key) || 0)
-      ]
-    end.to_h
+    end
+    data['total'] = (data['up'].keys + data['down'].keys).uniq.index_with do |key|
+      (data.dig('up', key) || 0) + (data.dig('down', key) || 0)
+    end
 
     if normalization == 'relative'
       normalize_votes(data, key)
