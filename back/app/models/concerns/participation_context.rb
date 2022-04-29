@@ -35,11 +35,11 @@ module ParticipationContext
         validates :presentation_mode,
                   inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
-        validates :posting_enabled, inclusion: { in: [ true, false ] }
-        validates :commenting_enabled, inclusion: { in: [ true, false ] }
-        validates :voting_enabled, inclusion: { in: [ true, false ] }
+        validates :posting_enabled, inclusion: { in: [true, false] }
+        validates :commenting_enabled, inclusion: { in: [true, false] }
+        validates :voting_enabled, inclusion: { in: [true, false] }
         validates :upvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
-        validates :downvoting_enabled, inclusion: { in: [ true, false ] }
+        validates :downvoting_enabled, inclusion: { in: [true, false] }
         validates :downvoting_method, presence: true, inclusion: { in: VOTING_METHODS }
 
         validates :ideas_order, inclusion: { in: IDEAS_ORDERS }, allow_nil: true

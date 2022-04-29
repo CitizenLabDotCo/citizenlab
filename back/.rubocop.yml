@@ -195,6 +195,9 @@ Layout/SpaceInLambdaLiteral:
 Layout/SpaceInsideParens:
   Enabled: true
 
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+
 Naming/VariableNumber:
   Enabled: true
 

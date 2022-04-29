@@ -179,8 +179,8 @@ namespace :tenant_template do
   end
 
   def add_ideas_topics(csv_idea, yml_idea, topics_hash, yml_ideas_topics)
-    yml_ideas_topics.concat [ csv_idea['Topic 1 (Optional)'],
-                              csv_idea['Topic 2 (Optional)'] ].select { |t| t && (t != '/') && topics_hash[t] }
+    yml_ideas_topics.concat [csv_idea['Topic 1 (Optional)'],
+                              csv_idea['Topic 2 (Optional)']].select { |t| t && (t != '/') && topics_hash[t] }
                                                               .map { |t|
                               { 'idea_ref' => yml_idea,
                                                                            'topic_ref' => topics_hash[t] }}

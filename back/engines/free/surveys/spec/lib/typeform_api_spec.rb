@@ -118,7 +118,7 @@ describe Surveys::Typeform::Api do
           'response_id' => '475451e1cf8c3f13aad47330e8abc9b2',
           'submitted_at' => '2019-01-25T11:14:28Z',
           'token' => '475451e1cf8c3f13aad47330e8abc9b2'
-        } ],
+        }],
         'page_count' => 1,
         'total_items' => 2
       }
