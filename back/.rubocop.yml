@@ -88,6 +88,9 @@ Style/NestedParenthesizedCalls:
 Style/CommentAnnotation:
   Enabled: true
 
+Style/TrailingCommaInArguments:
+  Enabled: true
+
 Style/NumericLiterals:
   Enabled: true
 

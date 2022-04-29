@@ -88,7 +88,7 @@ describe ParticipationContextService do
 
       it 'returns `commenting_disabled` when commenting is disabled in the current phase' do
         project = create(:project_with_current_phase,
-          current_phase_attrs: { commenting_enabled: false },
+          current_phase_attrs: { commenting_enabled: false }
         )
         expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq 'commenting_disabled'
         idea = create(:idea, project: project, phases: [project.phases[2]])

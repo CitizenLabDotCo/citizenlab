@@ -67,7 +67,7 @@ module Polls
 
         def response_params
           params.require(:response).permit(
-            response_options_attributes: [:option_id],
+            response_options_attributes: [:option_id]
           )
         end
       end

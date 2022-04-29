@@ -71,7 +71,7 @@ module Surveys
     def delete_webhook(form_url, webhook_id)
       @tf_api.delete_webhook(
           form_id: embed_url_to_form_id(form_url),
-          tag: webhook_id,
+          tag: webhook_id
         )
     end
 

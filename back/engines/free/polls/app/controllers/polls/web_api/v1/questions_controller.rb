@@ -115,7 +115,7 @@ module Polls
             :participation_context_id,
             :question_type,
             :max_options,
-            title_multiloc: CL2_SUPPORTED_LOCALES,
+            title_multiloc: CL2_SUPPORTED_LOCALES
           )
         end
       end

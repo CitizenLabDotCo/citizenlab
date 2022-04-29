@@ -98,7 +98,7 @@ describe TrackIntercomService do
           source: 'cl2-back',
           item_id: activity.item_id,
           item_type: activity.item_type,
-          action: 'published',
+          action: 'published'
         )
       })
 

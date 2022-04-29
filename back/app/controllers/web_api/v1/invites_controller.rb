@@ -174,7 +174,7 @@ class WebApi::V1::InvitesController < ApplicationController
       :first_name,
       :last_name,
       :password,
-      :locale,
+      :locale
     )
   end
 

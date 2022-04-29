@@ -56,7 +56,7 @@ describe 'google authentication', type: :request do
     stub_request(:any, /.*\/photo.jpg/)
       .to_return(
         status: 200,
-        body: lambda { |_request| File.new(Rails.root.join('spec/fixtures/female_avatar_2.jpg')) },
+        body: lambda { |_request| File.new(Rails.root.join('spec/fixtures/female_avatar_2.jpg')) }
       )
 
     configuration = AppConfiguration.instance

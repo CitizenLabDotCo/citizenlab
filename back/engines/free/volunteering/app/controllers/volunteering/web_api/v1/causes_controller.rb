@@ -67,7 +67,7 @@ module Volunteering
             SideFxCauseService.new.after_update(@cause, current_user)
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
-              params: fastjson_params,
+              params: fastjson_params
             ).serialized_json, status: :ok
           else
             render json: { errors: @cause.errors.details }, status: :unprocessable_entity

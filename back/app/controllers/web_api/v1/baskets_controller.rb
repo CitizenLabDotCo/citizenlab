@@ -20,7 +20,7 @@ class WebApi::V1::BasketsController < ApplicationController
       SideFxBasketService.new.after_create @basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
-        params: fastjson_params,
+        params: fastjson_params
       ).serialized_json, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
@@ -51,7 +51,7 @@ class WebApi::V1::BasketsController < ApplicationController
       end
       render json: WebApi::V1::BasketSerializer.new(
         @basket,
-        params: fastjson_params,
+        params: fastjson_params
       ).serialized_json, status: :ok
     rescue ClErrors::TransactionError => e
       case e.error_key
