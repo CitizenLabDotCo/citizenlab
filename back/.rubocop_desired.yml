@@ -87,6 +87,9 @@ Lint/SafeNavigationConsistency:
   # Discussion needed on usefulness, because we seem to use &. often in boolean expressions with &&
   Enabled: true
 
+Lint/AmbiguousBlockAssociation:
+  Enabled: true
+
 Naming/MethodParameterName:
   Enabled: true
 
