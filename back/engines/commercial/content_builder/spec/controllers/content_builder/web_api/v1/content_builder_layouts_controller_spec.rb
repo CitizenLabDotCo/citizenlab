@@ -61,20 +61,19 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
       end
 
       it 'sanitizes HTML inside text elements' do
-        input_craftjson = craftjson_with_text '<p>Unsanitized text</p>'
-        expected_craftjson = craftjson_with_text '<p>Sanitized text</p>'
-        allow_any_instance_of(SanitizationService).to receive(:sanitize).and_return('<p>Sanitized text</p>')
+        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
+          expected_multiloc
+        )
 
         params = {
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => input_craftjson } }
+          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } }  }
         }
         post :upsert, params: params, format: :json
         expect(response.status).to eq 201
-        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(
-          { 'en' => expected_craftjson }
-        )
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
       end
     end
 
@@ -153,20 +152,20 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
       end
 
       it 'sanitizes HTML inside text elements' do
-        input_craftjson = craftjson_with_text '<p>Unsanitized text</p>'
-        expected_craftjson = craftjson_with_text '<p>Sanitized text</p>'
-        allow_any_instance_of(SanitizationService).to receive(:sanitize).and_return('<p>Sanitized text</p>')
+        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
+        layout # also calls sanitize_multiloc (to make the expectation below work)
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
+          expected_multiloc
+        )
 
         params = {
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => input_craftjson } }
+          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
         }
         post :upsert, params: params, format: :json
         expect(response.status).to eq 200
-        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(
-          { 'en' => expected_craftjson }
-        )
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
       end
     end
 
@@ -261,43 +260,5 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         expect(response.content_type).to eq 'application/json'
       end
     end
-  end
-
-  def craftjson_with_text(text)
-    {
-      'ROOT' => {
-        'type' => 'div',
-        'isCanvas' => true,
-        'props' => {
-          'id' => 'e2e-content-builder-frame',
-          'style' => {
-            'padding' => '4px',
-            'minHeight' => '160px',
-            'backgroundColor' => '#fff'
-          }
-        },
-        'displayName' => 'div',
-        'custom' => {},
-        'hidden' => false,
-        'nodes' => ['XGtvXcaUr3'],
-        'linkedNodes' => {}
-      },
-      'XGtvXcaUr3' => {
-        'type' => {
-          'resolvedName' => 'Text'
-        },
-        'isCanvas' => false,
-        'props' => {
-          'text' => text,
-          'id' => 'text'
-        },
-        'displayName' => 'Text',
-        'custom' => {},
-        'parent' => 'ROOT',
-        'hidden' => false,
-        'nodes' => [],
-        'linkedNodes' => {}
-      }
-    }
   end
 end

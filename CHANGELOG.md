@@ -1,5 +1,12 @@
 # Changelog
 
+## Next Release
+
+### Added
+
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
 ## 2022-04-28
 
 ### Added

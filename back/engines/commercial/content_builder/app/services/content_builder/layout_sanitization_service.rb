@@ -23,7 +23,7 @@ module ContentBuilder
     end
 
     def html_sanitizer
-      @html_sanitizer = ::SanitizationService.new
+      @html_sanitizer ||= ::SanitizationService.new
     end
   end
 end
