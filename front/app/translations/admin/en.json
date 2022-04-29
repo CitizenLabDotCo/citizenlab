@@ -1312,6 +1312,7 @@
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "e.g. 120px",
   "app.containers.admin.ContentBuilder.iframeTitleLabel": "Short description of iframe destination",
   "app.containers.admin.ContentBuilder.iframeTitleTooltip": "Adding a title for iframes is important to make your platform accessible for users using screen readers.",
+  "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Must provide a valid URL.",
   "app.containers.admin.ContentBuilder.iframeUrlLabel": "Add your URL",
   "app.containers.admin.ContentBuilder.iframeUrlLabelTooltip": "You can embed another HTML document into this one using a URL, for example a YouTube video link.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
