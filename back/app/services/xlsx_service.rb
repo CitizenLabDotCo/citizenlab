@@ -326,7 +326,7 @@ class XlsxService
   end
 
   def namespace(field_id, option_key)
-    field_id + '/' + option_key
+    "#{field_id}/#{option_key}"
   end
 end
 

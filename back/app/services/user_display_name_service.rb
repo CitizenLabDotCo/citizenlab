@@ -84,6 +84,6 @@ class UserDisplayNameService
   # @param [String] name
   # @return [String]
   def self.initial(name)
-    name[0] + '.'
+    "#{name[0]}."
   end
 end

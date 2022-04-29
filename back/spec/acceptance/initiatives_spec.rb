@@ -400,9 +400,8 @@ resource 'Initiatives' do
 
     describe do
       before { SettingsService.new.activate_feature! 'blocking_profanity' }
-      # Weak attempt to make it less explicit
 
-      let(:location_description) { 'fu' + 'ck' }
+      let(:location_description) { 'fuck' }
 
       example_request '[error] Create an initiative with blocked words' do
         assert_status 422

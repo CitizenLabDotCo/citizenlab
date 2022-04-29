@@ -162,7 +162,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_time_as_xlsx
     name = 'ideas_by_time'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
   end
 
   def ideas_by_time_cumulative
@@ -172,7 +172,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_time_cumulative_as_xlsx
     name = 'ideas_by_time_cumulative'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
   end
 
   private

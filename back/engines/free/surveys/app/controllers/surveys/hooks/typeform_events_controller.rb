@@ -30,7 +30,8 @@ module Surveys
       received_signature = request.headers['HTTP_TYPEFORM_SIGNATURE']
       payload_body = request.body.read
       hash = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), ENV.fetch('SECRET_TOKEN_TYPEFORM'), payload_body)
-      actual_signature = 'sha256=' + Base64.strict_encode64(hash)
+      encoding = Base64.strict_encode64(hash)
+      actual_signature = "sha256=#{encoding}"
       head :not_acceptable unless Rack::Utils.secure_compare(actual_signature, received_signature)
     end
 
