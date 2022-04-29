@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Verification::VerificationPolicy do
   subject { Verification::VerificationPolicy.new(user, verification) }
+
   let(:scope) { Verification::VerificationPolicy::Scope.new(user, Verification::Verification) }
   let!(:verification) { build(:verification) }
 

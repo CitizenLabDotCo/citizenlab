@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe ProjectFilePolicy do
   subject { ProjectFilePolicy.new(user, file) }
+
   let(:scope) { ProjectFilePolicy::Scope.new(user, project.project_files) }
 
   context 'on a file in a public project' do

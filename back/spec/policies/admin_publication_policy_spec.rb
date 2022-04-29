@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe AdminPublicationPolicy do
   subject { AdminPublicationPolicy.new(user, admin_publication) }
+
   let(:scope) { AdminPublicationPolicy::Scope.new(user, AdminPublication) }
 
   context 'on a public project' do

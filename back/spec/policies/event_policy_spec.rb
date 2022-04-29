@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe EventPolicy do
   subject { EventPolicy.new(user, event) }
+
   let(:scope) { EventPolicy::Scope.new(user, project.events) }
 
   context 'on event in a public project' do

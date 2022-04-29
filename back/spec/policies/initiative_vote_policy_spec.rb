@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe InitiativeVotePolicy do
   subject(:policy) { InitiativeVotePolicy.new(user, vote) }
+
   let(:scope) { InitiativeVotePolicy::Scope.new(user, Vote) }
   let(:votable) { create(:initiative) }
   let!(:vote) { create(:vote, votable: votable) }

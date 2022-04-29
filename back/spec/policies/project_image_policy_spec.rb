@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe ProjectImagePolicy do
   subject { ProjectImagePolicy.new(user, image) }
+
   let(:scope) { ProjectImagePolicy::Scope.new(user, project.project_images) }
 
   context 'on an image in a public project' do

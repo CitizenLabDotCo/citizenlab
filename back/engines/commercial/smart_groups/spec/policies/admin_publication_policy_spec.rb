@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe AdminPublicationPolicy do
   subject { AdminPublicationPolicy.new(user, admin_publication) }
+
   let(:scope) { AdminPublicationPolicy::Scope.new(user, AdminPublication) }
 
   context "for a user on a private groups project where she's no member of a rules group with access" do

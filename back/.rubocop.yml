@@ -242,6 +242,9 @@ RSpec/EmptyLineAfterExample:
 RSpec/NotToNot:
   Enabled: true
 
+RSpec/EmptyLineAfterSubject:
+  Enabled: true
+
 Rails/HttpStatus:
   Enabled: true
 
