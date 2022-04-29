@@ -155,6 +155,9 @@ Layout/SpaceAroundEqualsInParameterDefault:
 Layout/EmptyLinesAroundModuleBody:
   Enabled: true
 
+Layout/DotPosition:
+  Enabled: true
+
 Metrics/ClassLength:
   Enabled: true
   Max: 300
