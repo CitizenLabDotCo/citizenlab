@@ -51,6 +51,10 @@ Layout/BlockEndNewline:
   # Autocorrect does not produce correctly indented "end".
   Enabled: true
 
+Layout/IndentationWidth:
+  # This Cop goes together with a few others related to alignment.
+  Enabled: true
+
 Layout/FirstArgumentIndentation:
   Enabled: true
 
