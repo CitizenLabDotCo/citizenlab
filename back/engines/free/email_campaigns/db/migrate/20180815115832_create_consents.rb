@@ -8,6 +8,5 @@ class CreateConsents < ActiveRecord::Migration[5.1]
 
       t.index %i[campaign_type user_id], unique: true
     end
-
   end
 end

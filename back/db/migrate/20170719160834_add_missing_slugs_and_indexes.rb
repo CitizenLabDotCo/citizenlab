@@ -1,6 +1,5 @@
 class AddMissingSlugsAndIndexes < ActiveRecord::Migration[5.1]
   def change
-
     add_index :projects, :slug, unique: true
 
     remove_index :pages, :slug

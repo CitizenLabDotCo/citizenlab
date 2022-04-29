@@ -30,7 +30,6 @@ module EmailCampaigns
           consented: true
         )
       end
-
     end
   end
 end

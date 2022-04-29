@@ -7,6 +7,5 @@ class CreateCampaignsGroups < ActiveRecord::Migration[5.1]
       t.timestamps
       t.index %i[campaign_id group_id], unique: true, name: :index_campaigns_groups
     end
-
   end
 end

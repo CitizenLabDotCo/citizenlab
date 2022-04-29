@@ -104,7 +104,6 @@ class WebApi::V1::VotesController < ApplicationController
         end
       end
     end
-
   end
 
   def set_votable_type_and_id

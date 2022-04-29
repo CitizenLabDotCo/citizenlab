@@ -11,6 +11,5 @@ class CreateDeliveries < ActiveRecord::Migration[5.1]
 
       t.index %i[campaign_id user_id]
     end
-
   end
 end

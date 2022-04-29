@@ -81,7 +81,6 @@ class InvitesService
   end
 
   def bulk_create_xlsx(file, default_params = {}, inviter = nil)
-
     map_rows = []
     old_row = 0
     hash_array = XlsxService.new.xlsx_to_hash_array(file).select do |invite_params|
