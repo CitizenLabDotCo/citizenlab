@@ -97,7 +97,7 @@ module EmailCampaigns
     end
 
     def is_content_worth_sending?(_)
-      # TODO figure out which moderator and project we're talking about
+      # TODO: figure out which moderator and project we're talking about
       true
     end
 

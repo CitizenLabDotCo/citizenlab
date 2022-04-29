@@ -155,7 +155,7 @@ namespace :tenant_template do
   end
 
   def generate_domicile()
-    # TODO fetch areas from those provided (when provided)
+    # TODO: fetch areas from those provided (when provided)
     'outside'
   end
 

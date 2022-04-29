@@ -150,7 +150,7 @@ module Frontend
       if tenant # Show a deprecation message is tenant options is used
         ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
-      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO OS remove: tenant&.configuration
+      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
     end
 
     # Memoized database query

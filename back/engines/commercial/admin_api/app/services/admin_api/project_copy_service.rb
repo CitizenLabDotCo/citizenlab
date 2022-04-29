@@ -18,7 +18,7 @@ module AdminApi
       init_refs
       @template = { 'models' => {} }
 
-      # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
+      # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
       @template['models']['custom_form']             = yml_custom_forms shift_timestamps: shift_timestamps
       @template['models']['custom_field']            = yml_custom_fields shift_timestamps: shift_timestamps
       @template['models']['custom_field_option']     = yml_custom_field_options shift_timestamps: shift_timestamps

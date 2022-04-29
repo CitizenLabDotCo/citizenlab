@@ -15,7 +15,7 @@ module ProjectManagement
         end
 
         def index
-          # TODO something about authorize index (e.g. user_id nastiness)
+          # TODO: something about authorize index (e.g. user_id nastiness)
           authorize Moderator.new({ user_id: nil, project_id: params[:project_id] })
           @moderators = User.project_moderator(params[:project_id])
           @moderators = paginate @moderators

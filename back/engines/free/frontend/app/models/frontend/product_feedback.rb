@@ -1,5 +1,5 @@
 module Frontend
-  # Note: Not an ActiveRecord model, merely used for validations
+  # NOTE: Not an ActiveRecord model, merely used for validations
   class ProductFeedback
     include ActiveModel::Model
 
