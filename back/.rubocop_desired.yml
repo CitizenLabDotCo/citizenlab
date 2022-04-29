@@ -84,6 +84,10 @@ Layout/MultilineMethodCallBraceLayout:
   Enabled: true
   EnforcedStyle: new_line
 
+Layout/ElseAlignment:
+  # This Cop goes together with a few others related to alignment.
+  Enabled: true
+
 Lint/UselessAssignment:
   Enabled: true
 
