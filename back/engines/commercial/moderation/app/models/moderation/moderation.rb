@@ -28,7 +28,7 @@ module Moderation
         against: %i[content_title_multiloc content_body_multiloc],
         using: { tsearch: { prefix: true } }
 
-    scope :with_moderation_status, (Proc.new do |status|
+    scope :with_moderation_status, (proc do |status|
       moderations = joins("LEFT JOIN moderation_moderation_statuses \
           ON moderation_moderation_statuses.moderatable_id = moderation_moderations.id AND \
              moderation_moderation_statuses.moderatable_type = moderation_moderations.moderatable_type"

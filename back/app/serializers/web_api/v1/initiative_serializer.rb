@@ -20,11 +20,11 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :initiative_status
-  belongs_to :assignee, if: Proc.new { |object, params|
+  belongs_to :assignee, if: proc { |object, params|
     can_moderate? object, params
   }, record_type: :user, serializer: WebApi::V1::UserSerializer
 
-  has_one :user_vote, if: Proc.new { |object, params|
+  has_one :user_vote, if: proc { |object, params|
     signed_in? object, params
   }, record_type: :vote, serializer: WebApi::V1::VoteSerializer do |object, params|
     cached_user_vote object, params

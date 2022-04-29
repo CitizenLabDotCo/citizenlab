@@ -59,6 +59,9 @@ Style/NegatedIf:
 Style/StringLiteralsInInterpolation:
   Enabled: true
 
+Style/Proc:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

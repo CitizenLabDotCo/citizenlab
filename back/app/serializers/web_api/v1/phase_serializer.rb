@@ -9,7 +9,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :project
 
-  has_one :user_basket, if: Proc.new { |object, params|
+  has_one :user_basket, if: proc { |object, params|
     signed_in? object, params
   } do |object, params|
     user_basket object, params

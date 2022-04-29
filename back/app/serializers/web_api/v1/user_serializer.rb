@@ -6,18 +6,18 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     name_service.last_name(object)
   end
 
-  attribute :email, if: Proc.new { |object, params|
+  attribute :email, if: proc { |object, params|
     view_private_attributes? object, params
   }
 
-  attribute :custom_field_values, if: Proc.new { |object, params|
+  attribute :custom_field_values, if: proc { |object, params|
     view_private_attributes? object, params
   } do |object|
     custom_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
     CustomFieldService.remove_disabled_custom_fields(custom_field_values)
   end
 
-  attribute :avatar, if: Proc.new { |object|
+  attribute :avatar, if: proc { |object|
     object.avatar
   } do |object|
     object.avatar.versions.map { |k, v| [k.to_s, v.url] }.to_h

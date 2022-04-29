@@ -6,7 +6,7 @@ module Verification
       next unless method.respond_to?(:exposed_config_parameters)
 
       method.exposed_config_parameters.each do |config_param|
-        attribute config_param, if: Proc.new { |record| record&.config&.dig(config_param) } do |record|
+        attribute config_param, if: proc { |record| record&.config&.dig(config_param) } do |record|
           record.config[config_param]
         end
       end

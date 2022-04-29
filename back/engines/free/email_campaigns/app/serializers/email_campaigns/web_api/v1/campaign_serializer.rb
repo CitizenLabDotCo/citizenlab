@@ -10,14 +10,14 @@ module EmailCampaigns
       object.class.admin_campaign_description_multiloc
     end
 
-    attribute :enabled, if: Proc.new { |object|
+    attribute :enabled, if: proc { |object|
       disableable? object
     }
-    attribute :schedule, if: Proc.new { |object|
+    attribute :schedule, if: proc { |object|
       schedulable? object
     }
 
-    attribute :schedule_multiloc, if: Proc.new { |object|
+    attribute :schedule_multiloc, if: proc { |object|
       schedulable? object
     } do |object|
       # Temporary fix until CL2-3052 is solved
@@ -32,27 +32,27 @@ module EmailCampaigns
       # end
     end
 
-    attribute :sender, if: Proc.new { |object|
+    attribute :sender, if: proc { |object|
       sender_configurable? object
     }
-    attribute :reply_to, if: Proc.new { |object|
+    attribute :reply_to, if: proc { |object|
       sender_configurable? object
     }
-    attribute :subject_multiloc, if: Proc.new { |object|
+    attribute :subject_multiloc, if: proc { |object|
       content_configurable? object
     }
-    attribute :body_multiloc, if: Proc.new { |object|
+    attribute :body_multiloc, if: proc { |object|
       content_configurable? object
     } do |object|
       TextImageService.new.render_data_images object, :body_multiloc
     end
-    attribute :deliveries_count, if: Proc.new { |object|
+    attribute :deliveries_count, if: proc { |object|
       trackable? object
     }
 
     belongs_to :author, record_type: :user, serializer: ::WebApi::V1::UserSerializer
 
-    has_many :groups, if: Proc.new { |object|
+    has_many :groups, if: proc { |object|
       recipient_configurable? object
     }
 

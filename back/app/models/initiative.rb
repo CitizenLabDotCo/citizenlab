@@ -63,33 +63,33 @@ class Initiative < ApplicationRecord
     initiative.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
-  scope :with_all_topics, (Proc.new do |topic_ids|
+  scope :with_all_topics, (proc do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     joins(:initiatives_topics)
       .where(initiatives_topics: { topic_id: uniq_topic_ids })
       .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
   end)
 
-  scope :with_some_topics, (Proc.new do |topic_ids|
+  scope :with_some_topics, (proc do |topic_ids|
     with_dups = joins(:initiatives_topics)
       .where(initiatives_topics: { topic_id: topic_ids })
     where(id: with_dups)
   end)
 
-  scope :with_all_areas, (Proc.new do |area_ids|
+  scope :with_all_areas, (proc do |area_ids|
     uniq_area_ids = area_ids.uniq
     joins(:areas_initiatives)
       .where(areas_initiatives: { area_id: uniq_area_ids })
       .group(:id).having('COUNT(*) = ?', uniq_area_ids.size)
   end)
 
-  scope :with_some_areas, (Proc.new do |area_ids|
+  scope :with_some_areas, (proc do |area_ids|
     with_dups = joins(:areas_initiatives)
       .where(areas_initiatives: { area_id: area_ids })
     where(id: with_dups)
   end)
 
-  scope :with_status_code, (Proc.new do |code|
+  scope :with_status_code, (proc do |code|
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
       .where('initiative_statuses.code = ?', code)
