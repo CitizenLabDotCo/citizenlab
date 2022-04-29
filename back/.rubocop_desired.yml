@@ -149,5 +149,11 @@ Rails/TimeZone:
 Rails/SkipsModelValidations:
   Enabled: true
 
+Rails/ReversibleMigration:
+  Enabled: true
+
 Gemspec/RequiredRubyVersion:
+  Enabled: true
+
+Gemspec/OrderedDependencies:
   Enabled: true
