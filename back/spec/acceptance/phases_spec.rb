@@ -154,7 +154,7 @@ resource 'Phases' do
 
       describe do
         let(:participation_method) { 'budgeting' }
-        let(:max_budget) { 420000 }
+        let(:max_budget) { 420_000 }
         let(:ideas_order) { 'new' }
 
         example 'Create a participatory budgeting phase', document: false do
@@ -173,12 +173,12 @@ resource 'Phases' do
         before do
           @project.phases.first.update(
             participation_method: 'budgeting',
-            max_budget: 30000
+            max_budget: 30_000
           )
         end
 
         let(:participation_method) { 'budgeting' }
-        let(:max_budget) { 420000 }
+        let(:max_budget) { 420_000 }
 
         example '[error] Create multiple budgeting phases', document: false do
           do_request
@@ -267,7 +267,7 @@ resource 'Phases' do
         before do
           @project.phases.first.update(
             participation_method: 'budgeting',
-            max_budget: 30000
+            max_budget: 30_000
           )
         end
 

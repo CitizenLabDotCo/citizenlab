@@ -41,7 +41,7 @@ FactoryBot.define do
         "credentials": {
           "token": 'EAAbteNXEnk8BAL5nJvsdVvkWfVMC2UfY4gYls2N8XTuTpQ8Qr8kdyExkZBI58DBaTg2cZCAwccrroAZBZC6H49acHxVPTy3T5Jib9Gv0yh4liLIzX8PFU3eX8llSexIKaLvZAudrmPnjR17emuQjVvkNqafwG0D4nZANFYTnswJwZDZR',
           "expires": true,
-          "expires_at": 1526632531
+          "expires_at": 1_526_632_531
         }
       } end
     end

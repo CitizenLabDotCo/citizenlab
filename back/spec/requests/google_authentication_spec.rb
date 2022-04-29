@@ -19,8 +19,8 @@ describe 'google authentication', type: :request do
           "id_info": {
             "aud": '692484441813-damde0aem1ie69qrah6ter8gndcnf8qf.apps.googleusercontent.com',
             "azp": '692484441813-damde0aem1ie69qrah6ter8gndcnf8qf.apps.googleusercontent.com',
-            "exp": 1554974565,
-            "iat": 1554970965,
+            "exp": 1_554_974_565,
+            "iat": 1_554_970_965,
             "iss": 'https://accounts.google.com',
             "sub": '101481246124019184774',
             "name": 'Boris Brompton',
@@ -48,7 +48,7 @@ describe 'google authentication', type: :request do
         "credentials": {
           "token": 'ya29.GlvoBoFQ1Hzd2xDSy5H5fZpykwWguItavY6nElrAhIB40raBLaZmObqDd05OgpX6Fs9sV-b7HwYkB1SsJ2S7GTUYtPN4L5ROB2SDLPqHD_wksdpkLL_yhmZ-meZf',
           "expires": true,
-          "expires_at": 1554974565,
+          "expires_at": 1_554_974_565,
           "refresh_token": '1/-1DuyZsL4w0Y6z-H27i_ZEItpnz0y_58HiUS6VRlvVM'
         }
       }

@@ -90,7 +90,7 @@ describe InvitesService do
         expect(user.custom_field_values).to eq({ 'float_field' => 666.34 })
 
         user = User.find_by(email: 'user7@domain.net')
-        expect(user.custom_field_values).to eq({ 'integer_field' => 1873050293742134 })
+        expect(user.custom_field_values).to eq({ 'integer_field' => 1_873_050_293_742_134 })
       end
     end
 
