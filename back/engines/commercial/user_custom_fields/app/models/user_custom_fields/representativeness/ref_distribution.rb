@@ -19,6 +19,10 @@
 class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   belongs_to :custom_field
 
+  validates :custom_field_id, uniqueness: true
+  validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
+  validate :validate_distribution_options
+
   def total_count
     distribution.values.sum
   end
@@ -27,6 +31,12 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   def normalized_distribution
     distribution.transform_values do |count|
       { count: count, probability: count.to_f / total_count }
+    end
+  end
+
+  def validate_distribution_options
+    unless distribution.keys.to_set <= custom_field.custom_field_option_ids.to_set
+      errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
     end
   end
 end
