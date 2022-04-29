@@ -31,7 +31,7 @@ module Frontend
             # TODO: Do something with the feedback! Currently it is sent into the void.
             # Originally, the feedback was pushed to Segment, but not anymore.
             # More info here: https://citizenlab.atlassian.net/browse/CL2-6168
-            head 200
+            head :ok
           else
             render json: { errors: @product_feedback.errors.details }, status: :unprocessable_entity
           end

@@ -198,7 +198,7 @@ class WebApi::V1::CommentsController < ApplicationController
       SideFxCommentService.new.after_destroy(comment, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

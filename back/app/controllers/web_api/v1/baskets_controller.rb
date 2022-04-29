@@ -69,7 +69,7 @@ class WebApi::V1::BasketsController < ApplicationController
       SideFxBasketService.new.after_destroy basket, current_user
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

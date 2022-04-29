@@ -61,7 +61,7 @@ module Polls
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
         end
 

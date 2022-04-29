@@ -56,7 +56,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     if groups_project.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

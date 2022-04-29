@@ -53,7 +53,7 @@ module CustomTopics
             SideFxTopicService.new.after_destroy(topic, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 

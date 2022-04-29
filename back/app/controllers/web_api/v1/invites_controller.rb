@@ -70,7 +70,7 @@ class WebApi::V1::InvitesController < ApplicationController
       bulk_create_params.except(:emails).stringify_keys,
       current_user
     )
-    head 200
+    head :ok
   rescue InvitesService::InvitesFailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
@@ -91,7 +91,7 @@ class WebApi::V1::InvitesController < ApplicationController
       bulk_create_params.except(:xlsx).stringify_keys,
       current_user
     )
-    head 200
+    head :ok
   rescue InvitesService::InvitesFailedError => e
     render json: { errors: e.to_h }, status: :unprocessable_entity
   end
@@ -151,7 +151,7 @@ class WebApi::V1::InvitesController < ApplicationController
       SideFxInviteService.new.after_destroy(@invite, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

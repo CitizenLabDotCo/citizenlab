@@ -173,7 +173,7 @@ class WebApi::V1::IdeasController < ApplicationController
       service.after_destroy(idea, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

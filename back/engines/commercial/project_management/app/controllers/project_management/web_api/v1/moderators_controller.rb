@@ -49,7 +49,7 @@ module ProjectManagement
             ::SideFxUserService.new.after_update(@moderator, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 

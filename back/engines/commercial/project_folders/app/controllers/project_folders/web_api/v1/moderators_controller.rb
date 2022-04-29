@@ -48,7 +48,7 @@ module ProjectFolders
         SideFxModeratorService.new.after_destroy(@moderator, @folder, current_user)
         head :ok
       else
-        head 500
+        head :internal_server_error
       end
     end
 

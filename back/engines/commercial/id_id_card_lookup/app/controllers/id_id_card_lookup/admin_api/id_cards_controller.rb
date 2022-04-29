@@ -10,9 +10,9 @@ module IdIdCardLookup
             card_ids = rows.map { |r| r[0] }
             LoadIdCardsJob.perform_later(card_ids)
           end
-          head 201
+          head :created
         else
-          head 422
+          head :unprocessable_entity
         end
       end
 

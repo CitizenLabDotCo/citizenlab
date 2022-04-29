@@ -60,7 +60,7 @@ module Volunteering
             SideFxVolunteerService.new.after_destroy(volunteer, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
@@ -76,7 +76,7 @@ module Volunteering
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
         end
       end

@@ -62,7 +62,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       SideFxSpamReportService.new.after_destroy(spam_report, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

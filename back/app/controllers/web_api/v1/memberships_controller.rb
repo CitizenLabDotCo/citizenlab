@@ -51,7 +51,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     if membership.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

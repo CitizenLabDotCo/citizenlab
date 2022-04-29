@@ -60,7 +60,7 @@ class WebApi::V1::GroupsController < ApplicationController
       SideFxGroupService.new.after_destroy(@group, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

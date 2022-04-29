@@ -60,7 +60,7 @@ class WebApi::V1::VotesController < ApplicationController
       SideFxVoteService.new.after_destroy(frozen_vote, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

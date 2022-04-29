@@ -49,6 +49,6 @@ module BlockingProfanity
   private
 
   def render_profanity_blocked(exception)
-    render json: { errors: { base: [{ error: :includes_banned_words, blocked_words: exception.blocked_words }] } }, status: 422
+    render json: { errors: { base: [{ error: :includes_banned_words, blocked_words: exception.blocked_words }] } }, status: :unprocessable_entity
   end
 end

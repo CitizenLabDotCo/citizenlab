@@ -9,7 +9,7 @@ module Onboarding
           campaign_name = params[:campaign_id]
           dismissal = CampaignDismissal.new(campaign_name: campaign_name, user: current_user)
           if dismissal.save
-            head 200
+            head :ok
           else
             render json: { errors: dismissal.errors.details }, status: :unprocessable_entity
           end

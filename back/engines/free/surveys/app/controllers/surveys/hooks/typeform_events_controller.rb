@@ -17,7 +17,7 @@ module Surveys
       @response.participation_context = @participation_context
       if @response.save
         SideFxResponseService.new.after_create @response, @response.user
-        head 200
+        head :ok
       else
         render json: { errors: @response.errors.details }, status: :not_acceptable
       end

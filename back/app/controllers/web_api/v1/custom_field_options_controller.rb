@@ -65,7 +65,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     elsif @option.errors
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     else
-      head 500
+      head :internal_server_error
     end
   end
 

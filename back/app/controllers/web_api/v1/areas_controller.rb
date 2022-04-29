@@ -55,7 +55,7 @@ class WebApi::V1::AreasController < ApplicationController
       @side_fx_service.after_destroy(area, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

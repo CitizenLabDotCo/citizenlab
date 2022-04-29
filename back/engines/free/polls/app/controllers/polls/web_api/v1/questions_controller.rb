@@ -82,7 +82,7 @@ module Polls
             SideFxQuestionService.new.after_destroy(question, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
@@ -94,7 +94,7 @@ module Polls
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
         end
 

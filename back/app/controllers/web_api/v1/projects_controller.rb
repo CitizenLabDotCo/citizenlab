@@ -115,7 +115,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       SideFxProjectService.new.after_destroy(@project, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

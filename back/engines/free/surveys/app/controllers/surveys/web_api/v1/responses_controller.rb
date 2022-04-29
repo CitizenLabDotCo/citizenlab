@@ -31,7 +31,7 @@ module Surveys
         end
 
         def typeform_authorization_error(exception)
-          render json: { errors: { base: [{ error: exception.error_key, message: exception.description }] } }, status: 403
+          render json: { errors: { base: [{ error: exception.error_key, message: exception.description }] } }, status: :forbidden
         end
       end
     end

@@ -60,7 +60,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       SideFxOfficialFeedbackService.new.after_destroy(feedback, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
