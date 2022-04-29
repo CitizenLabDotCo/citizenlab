@@ -7,7 +7,7 @@ class MultilocService
     result = ([user_locale] + locales + translations.keys).each do |locale|
       break translations[locale] if translations[locale]
     end
-    result.kind_of?(String) ? result : ''
+    result.is_a?(String) ? result : ''
   end
 
   def i18n_to_multiloc(key, locales: nil)

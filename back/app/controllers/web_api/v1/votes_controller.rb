@@ -119,11 +119,11 @@ class WebApi::V1::VotesController < ApplicationController
   end
 
   def derive_policy_class(votable)
-    if votable.kind_of? Idea
+    if votable.is_a? Idea
       IdeaVotePolicy
-    elsif votable.kind_of? Comment
+    elsif votable.is_a? Comment
       CommentVotePolicy
-    elsif votable.kind_of? Initiative
+    elsif votable.is_a? Initiative
       InitiativeVotePolicy
     else
       raise "Votable #{votable.class} has no voting policy defined"

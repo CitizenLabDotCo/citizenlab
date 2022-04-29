@@ -62,7 +62,7 @@ module AdminApi
     def lookup_ref(id, model_name)
       return nil unless id
 
-      if model_name.kind_of?(Array)
+      if model_name.is_a?(Array)
         model_name.each do |n|
           return @refs[n][id] if @refs[n][id]
         end

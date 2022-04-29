@@ -11,7 +11,7 @@ class StatsService
     serie = group_by_time(resource, field, start_at, end_at, interval)
     count_at_start_at = resource.where("#{field} < ?", start_at).count
     # When the given resource scope is a GROUP BY query
-    if count_at_start_at.kind_of? Hash
+    if count_at_start_at.is_a? Hash
       serie.inject(count_at_start_at) do |totals, (group, count)|
         totals[group.first] = 0 unless totals[group.first]
         totals[group.first] += count
