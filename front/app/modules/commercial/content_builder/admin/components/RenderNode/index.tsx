@@ -19,7 +19,7 @@ const TWO_COLUMNS = 'TwoColumn';
 const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
 const IMAGE = 'Image';
-const IFRAME = 'CraftIframe';
+const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
 
 type ComponentNamesType =

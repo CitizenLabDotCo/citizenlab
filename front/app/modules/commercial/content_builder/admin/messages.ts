@@ -52,7 +52,7 @@ export default defineMessages({
   },
   iframeHeightLabelTooltip: {
     id: 'app.containers.admin.ContentBuilder.iframeHeightLabelTooltip',
-    defaultMessage: 'Height of the iframe window.',
+    defaultMessage: 'Height of the iframe window in pixels.',
   },
   iframeUrlPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlPlaceholder',
@@ -60,7 +60,7 @@ export default defineMessages({
   },
   iframeHeightPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
-    defaultMessage: 'e.g. 120px',
+    defaultMessage: 'e.g. 300',
   },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',

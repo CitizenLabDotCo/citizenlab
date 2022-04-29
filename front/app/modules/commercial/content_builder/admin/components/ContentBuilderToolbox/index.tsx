@@ -18,7 +18,7 @@ import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
-import CraftIframe from '../CraftComponents/Iframe';
+import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 
 // Intl
@@ -117,10 +117,10 @@ const ContentBuilderToolbox = ({
           connectors.create(
             ref,
             <Element
-              is={CraftIframe}
-              id="CraftIframe"
+              is={Iframe}
+              id="Iframe"
               url=""
-              height=""
+              height={500}
               hasError={false}
             />,
             {

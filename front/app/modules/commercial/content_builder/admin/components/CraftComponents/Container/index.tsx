@@ -8,7 +8,7 @@ import { UserComponent } from '@craftjs/core';
 import Text from '../Text';
 import Image from '../Image';
 import AboutBox from '../AboutBox';
-import CraftIframe from '../Iframe';
+import Iframe from '../Iframe';
 
 const Container: UserComponent = ({ children }) => {
   return (
@@ -20,14 +20,15 @@ const Container: UserComponent = ({ children }) => {
 
 Container.craft = {
   rules: {
-    canMoveIn: (nodes) =>
-      nodes.every(
+    canMoveIn: (nodes) => {
+      return nodes.every(
         (node) =>
           node.data.type === Text ||
-          node.data.type === CraftIframe ||
           node.data.type === Image ||
+          node.data.type === Iframe ||
           node.data.type === AboutBox
-      ),
+      );
+    },
   },
 };
 

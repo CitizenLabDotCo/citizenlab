@@ -16,11 +16,11 @@ import eventEmitter from 'utils/eventEmitter';
 
 interface Props {
   url: string;
-  height: string;
+  height: number;
   hasError: boolean;
 }
 
-const CraftIframe = ({ url, height, hasError }: Props) => {
+const Iframe = ({ url, height, hasError }: Props) => {
   return (
     <Box minHeight="26px">
       {!hasError && url && <iframe src={url} width="100%" height={height} />}
@@ -28,7 +28,7 @@ const CraftIframe = ({ url, height, hasError }: Props) => {
   );
 };
 
-const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
+const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   const {
     actions: { setProp },
     url,
@@ -91,13 +91,13 @@ const CraftIframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   );
 });
 
-CraftIframe.craft = {
+Iframe.craft = {
   props: {
     url: '',
     height: '',
   },
   related: {
-    settings: CraftIframeSettings,
+    settings: IframeSettings,
   },
 };
 
@@ -146,4 +146,4 @@ const validateUrl = (url: string) => {
   }
 };
 
-export default CraftIframe;
+export default Iframe;
