@@ -12,9 +12,9 @@
   },
   "debug.javascript.usePreview": false,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.defaultFormatter": "vscode.typescript-language-features",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "[typescriptreact]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
