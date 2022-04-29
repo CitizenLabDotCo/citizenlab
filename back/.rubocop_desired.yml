@@ -152,6 +152,9 @@ Rails/SkipsModelValidations:
 Rails/ReversibleMigration:
   Enabled: true
 
+Rails/InverseOf:
+  Enabled: true
+
 Gemspec/RequiredRubyVersion:
   Enabled: true
 
