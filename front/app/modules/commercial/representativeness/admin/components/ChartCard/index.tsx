@@ -20,7 +20,15 @@ import messages from './messages';
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 import { Moment } from 'moment';
 
-interface RepresentativenessRow {
+// utils
+import {
+  getLegendLabels,
+  formatPercentage,
+  formatTooltipValues,
+  emptyString,
+} from './utils';
+
+export interface RepresentativenessRow {
   name: string;
   actualPercentage: number;
   referencePercentage: number;
@@ -37,37 +45,6 @@ interface Props {
   includedUserPercentage: number;
   demographicDataDate: Moment;
 }
-
-interface TooltipProps {
-  dataKey?: 'actualPercentage' | 'referencePercentage';
-  payload?: RepresentativenessRow;
-}
-
-const formatPercentage = (percentage: number) => `${percentage}%`;
-const formatTooltipValues = (_, __, tooltipProps?: TooltipProps) => {
-  if (!tooltipProps) return '?';
-
-  const { dataKey, payload } = tooltipProps;
-  if (!dataKey || !payload) return '?';
-
-  const {
-    actualPercentage,
-    referencePercentage,
-    actualNumber,
-    referenceNumber,
-  } = payload;
-
-  return dataKey === 'actualPercentage'
-    ? `${actualPercentage}% (${actualNumber})`
-    : `${referencePercentage}% (${referenceNumber})`;
-};
-
-const getLegendLabels = (barNames: string[], demographicDataDate: Moment) => [
-  barNames[0],
-  `${barNames[1]} (${demographicDataDate.format('MMMM YYYY')})`,
-];
-
-const emptyString = () => '';
 
 const ChartCard = ({
   customField,
