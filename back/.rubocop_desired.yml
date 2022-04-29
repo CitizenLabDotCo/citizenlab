@@ -38,6 +38,9 @@ Style/IfUnlessModifier:
 Style/GuardClause:
   Enabled: true
 
+Style/ClassVars:
+  Enabled: true
+
 Layout/LineLength:
   Enabled: true
 
@@ -169,6 +172,9 @@ RSpec/DescribeClass:
   Enabled: true
   IgnoredMetadata:
     type: ['request']
+
+RSpec/RepeatedExampleGroupDescription:
+  Enabled: true
 
 Rails/TimeZone:
   Enabled: true
