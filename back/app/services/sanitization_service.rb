@@ -149,7 +149,7 @@ class SanitizationService
 
     attr_reader :tags, :attributes
 
-    def initialize(features)
+    def initialize(features = [])
       super()
       features_w_default = features.concat([:default])
       @tags = features_w_default.flat_map { |f| EDITOR_FEATURES[f][:tags] }.uniq
@@ -157,16 +157,16 @@ class SanitizationService
     end
 
     def allowed_node?(node)
-      return iframe_allowed? && video_whitelisted?(node) if node.name == 'iframe'
+      return iframe_allowed? && video_whitelisted?(node['src']) if node.name == 'iframe'
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
     end
 
-    private
-
-    def video_whitelisted?(node)
-      VIDEO_WHITELIST.any? { |regex| (node['src'] =~ regex)&.zero? }
+    def video_whitelisted?(url)
+      VIDEO_WHITELIST.any? { |regex| (url =~ regex)&.zero? }
     end
+
+    private
 
     def iframe_allowed?
       tags.include? 'iframe'
