@@ -84,7 +84,7 @@ const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
   );
 
   const goBack = () => {
-    clHistory.goBack();
+    clHistory.push(`/admin/projects/${projectId}/description`);
   };
 
   const handleSave = async () => {
