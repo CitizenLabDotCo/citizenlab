@@ -33,9 +33,7 @@ class SideFxCommentService
       payload: { reason_code: reason_code, other_reason: other_reason })
   end
 
-  def before_destroy(comment, user)
-
-  end
+  def before_destroy(comment, user); end
 
   def after_destroy(frozen_comment, user)
     serialized_comment = clean_time_attributes(frozen_comment.attributes)

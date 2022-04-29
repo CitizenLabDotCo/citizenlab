@@ -2,15 +2,13 @@ module Volunteering
   class SideFxVolunteerService
     include SideFxHelper
 
-    def before_create(volunteer, user)
-    end
+    def before_create(volunteer, user); end
 
     def after_create(volunteer, user)
       LogActivityJob.perform_later(volunteer, 'created', user, volunteer.created_at.to_i)
     end
 
-    def before_destroy(volunteer, user)
-    end
+    def before_destroy(volunteer, user); end
 
     def after_destroy(frozen_volunteer, user)
       serialized_volunteer = clean_time_attributes(frozen_volunteer.attributes)

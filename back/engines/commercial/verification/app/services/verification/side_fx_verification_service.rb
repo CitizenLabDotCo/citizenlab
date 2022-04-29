@@ -2,8 +2,7 @@ module Verification
   class SideFxVerificationService
     include SideFxHelper
 
-    def before_create(verification, current_user)
-    end
+    def before_create(verification, current_user); end
 
     def after_create(verification, current_user)
       verification.user.update!(verified: true)

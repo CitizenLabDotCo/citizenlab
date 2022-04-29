@@ -1,9 +1,7 @@
 class SideFxVoteService
   include SideFxHelper
 
-  def before_create(vote, current_user)
-
-  end
+  def before_create(vote, current_user); end
 
   def after_create(vote, current_user)
     if vote.votable_type == 'Initiative'
@@ -13,9 +11,7 @@ class SideFxVoteService
     LogActivityJob.perform_later(vote, "#{type}_#{vote.mode}voted", current_user, vote.created_at.to_i)
   end
 
-  def before_destroy(vote, current_user)
-
-  end
+  def before_destroy(vote, current_user); end
 
   def after_destroy(frozen_vote, current_user)
     serialized_vote = clean_time_attributes(frozen_vote.attributes)

@@ -1,17 +1,13 @@
 class SideFxAreaService
   include SideFxHelper
 
-  def before_create(area, user)
-
-  end
+  def before_create(area, user); end
 
   def after_create(area, user)
     LogActivityJob.perform_later(area, 'created', user, area.created_at.to_i)
   end
 
-  def before_update(area, user)
-
-  end
+  def before_update(area, user); end
 
   def after_update(area, user)
     LogActivityJob.perform_later(area, 'changed', user, area.updated_at.to_i)

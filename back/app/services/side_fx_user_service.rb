@@ -3,8 +3,7 @@
 class SideFxUserService
   include SideFxHelper
 
-  def before_create(user, current_user)
-  end
+  def before_create(user, current_user); end
 
   def after_create(user, current_user)
     TrackUserJob.perform_later(user)

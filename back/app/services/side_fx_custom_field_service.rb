@@ -1,9 +1,7 @@
 class SideFxCustomFieldService
   include SideFxHelper
 
-  def before_create(custom_field, current_user)
-
-  end
+  def before_create(custom_field, current_user); end
 
   def after_create(custom_field, current_user)
     LogActivityJob.perform_later(custom_field, 'created', current_user, custom_field.created_at.to_i)

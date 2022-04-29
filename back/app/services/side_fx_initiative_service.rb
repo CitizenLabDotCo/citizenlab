@@ -44,8 +44,7 @@ class SideFxInitiativeService
     end
   end
 
-  def before_destroy(initiative, user)
-  end
+  def before_destroy(initiative, user); end
 
   def after_destroy(frozen_initiative, user)
     serialized_initiative = clean_time_attributes(frozen_initiative.attributes)

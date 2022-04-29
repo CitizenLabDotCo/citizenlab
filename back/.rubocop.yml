@@ -68,6 +68,9 @@ Style/TrailingCommaInArrayLiteral:
 Style/SpecialGlobalVars:
   Enabled: true
 
+Style/EmptyMethod:
+  Enabled: true
+
 Layout/SpaceInsideHashLiteralBraces:
   Enabled: true
 

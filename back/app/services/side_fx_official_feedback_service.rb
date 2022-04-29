@@ -21,9 +21,7 @@ class SideFxOfficialFeedbackService
     notify_updated_mentioned_users(feedback, user) if feedback.body_multiloc_previously_changed?
   end
 
-  def before_destroy(feedback, user)
-
-  end
+  def before_destroy(feedback, user); end
 
   def after_destroy(frozen_feedback, user)
     serialized_feedback = clean_time_attributes(frozen_feedback.attributes)

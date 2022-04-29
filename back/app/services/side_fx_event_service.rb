@@ -16,9 +16,7 @@ class SideFxEventService
     LogActivityJob.perform_later(event, 'changed', current_user, event.updated_at.to_i)
   end
 
-  def before_destroy(event, current_user)
-
-  end
+  def before_destroy(event, current_user); end
 
   def after_destroy(frozen_event, current_user)
     serialized_event = clean_time_attributes(frozen_event.attributes)
