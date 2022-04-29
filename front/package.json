@@ -75,6 +75,7 @@
     "formik": "1.x",
     "graphql": "^16.3.0",
     "https-browserify": "^1.0.0",
+    "history": "4.10.1",
     "identity-obj-proxy": "3.0.0",
     "intersection-observer": "0.12.0",
     "intl": "1.2.5",
@@ -117,8 +118,7 @@
     "react-places-autocomplete": "7.x",
     "react-range": "1.8.12",
     "react-resize-detector": "6.7.6",
-    "react-router": "3.x",
-    "react-router-scroll": "0.4.4",
+    "react-router-dom": "5.1.2",
     "react-scroll-to-component": "1.0.2",
     "react-select": "4.3.1",
     "react-social": "1.10.0",
@@ -179,12 +179,11 @@
     "@types/react": "17.x",
     "@types/react-aria-live": "^2.0.2",
     "@types/react-dates": "21.8.3",
-    "@types/react-dom": "^17.0.11",
     "@types/react-intl": "2.3.18",
     "@types/react-jsonschema-form": "^1.7.8",
     "@types/react-loadable": "^5.5.6",
     "@types/react-places-autocomplete": "7.x",
-    "@types/react-router": "3.x",
+    "@types/react-router-dom": "5.1.0",
     "@types/react-select": "5.0.1",
     "@types/react-transition-group": "4.4.4",
     "@types/segment-analytics": "0.0.34",
@@ -259,5 +258,7 @@
   "resolutions": {
     "react-test-renderer": "16.14.0"
   },
-  "optionalDependencies": { "fsevents": "^2" }
+  "optionalDependencies": {
+    "fsevents": "^2"
+  }
 }
