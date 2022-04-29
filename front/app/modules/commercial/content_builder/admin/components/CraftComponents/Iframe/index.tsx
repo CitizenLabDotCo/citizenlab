@@ -71,7 +71,12 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             });
           }}
         />
-        {hasError && <Error marginTop="4px" text={'Error Message'} />}
+        {hasError && (
+          <Error
+            marginTop="4px"
+            text={formatMessage(messages.iframeUrlErrorMessage)}
+          />
+        )}
       </Box>
       <Box flex="0 0 100%">
         <Input

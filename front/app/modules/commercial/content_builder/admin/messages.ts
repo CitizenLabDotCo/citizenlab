@@ -71,6 +71,10 @@ export default defineMessages({
     defaultMessage:
       'Adding a title for iframes is important to make your platform accessible for users using screen readers.',
   },
+  iframeUrlErrorMessage: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
+    defaultMessage: 'Must provide a valid URL.',
+  },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',
     defaultMessage: 'About Box',
