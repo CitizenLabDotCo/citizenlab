@@ -124,6 +124,11 @@ const validateUrl = (url: string) => {
     /http:\/\/.*instagram\.com/,
     /https:\/\/.*platform\.twitter\.com/,
     /https:\/\/name\.konveio\.com/,
+    /https:\/\/.*youtu(be|.be)*/,
+    /https:\/\/.*vimeo.com/,
+    /https:\/\/.*dailymotion\.com\/embed\/video/,
+    /https:\/\/.*media\.videotool\.dk\/.*vn=/,
+    /https:\/\/.*dreambroker.com\/channel\/.*\/iframe/,
   ];
 
   let found: RegExpMatchArray | null = null;
