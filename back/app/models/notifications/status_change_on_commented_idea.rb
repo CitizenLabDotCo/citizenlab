@@ -64,15 +64,15 @@ module Notifications
 
       if idea.present?
         User.joins(:comments).where(comments: { post: idea }).distinct.ids.map do |recipient_id|
-          if recipient_id != idea.author_id
-            new(
-              recipient_id: recipient_id,
-              initiating_user_id: activity.user_id,
-              post: idea,
-              project_id: idea.project_id,
-              post_status: idea.idea_status
-            )
-          end
+          next unless recipient_id != idea.author_id
+
+          new(
+            recipient_id: recipient_id,
+            initiating_user_id: activity.user_id,
+            post: idea,
+            project_id: idea.project_id,
+            post_status: idea.idea_status
+          )
         end
       else
         []

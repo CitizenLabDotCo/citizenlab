@@ -67,20 +67,20 @@ module EmailCampaigns
         next unless project
 
         statistics = statistics project
-        if has_nonzero_statistics statistics
-          top_ideas = top_ideas project, name_service
-          idea_ids = top_ideas.map { |top_idea| top_idea[:id] }
-          {
-            event_payload: {
-              statistics: statistics,
-              top_ideas: top_ideas,
-              has_new_ideas: (top_ideas.size > 0)
-            },
-            tracked_content: {
-              idea_ids: idea_ids
-            }
+        next unless has_nonzero_statistics statistics
+
+        top_ideas = top_ideas project, name_service
+        idea_ids = top_ideas.map { |top_idea| top_idea[:id] }
+        {
+          event_payload: {
+            statistics: statistics,
+            top_ideas: top_ideas,
+            has_new_ideas: (top_ideas.size > 0)
+          },
+          tracked_content: {
+            idea_ids: idea_ids
           }
-        end
+        }
       end.compact
     end
 

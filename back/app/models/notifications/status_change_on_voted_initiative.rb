@@ -65,14 +65,14 @@ module Notifications
       if initiative.present?
         comment_author_ids = User.joins(:comments).where(comments: { post: initiative }).distinct.ids
         User.joins(:votes).where(votes: { votable: initiative }).distinct.ids.map do |recipient_id|
-          unless (comment_author_ids + [initiative.author_id]).include?(recipient_id)
-            new(
-              recipient_id: recipient_id,
-              initiating_user_id: activity.user_id,
-              post: initiative,
-              post_status: initiative.initiative_status
-            )
-          end
+          next if (comment_author_ids + [initiative.author_id]).include?(recipient_id)
+
+          new(
+            recipient_id: recipient_id,
+            initiating_user_id: activity.user_id,
+            post: initiative,
+            post_status: initiative.initiative_status
+          )
         end
       else
         []
