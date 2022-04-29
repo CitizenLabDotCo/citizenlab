@@ -48,8 +48,8 @@ module EmailCampaigns
       config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
 
       IceCube::Schedule.new(config_timezone.local(2019)) do |schedule|
-        every_monday_at_10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
-        schedule.add_recurrence_rule(every_monday_at_10_am)
+        every_monday_at10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
+        schedule.add_recurrence_rule(every_monday_at10_am)
       end
     end
 
@@ -129,9 +129,9 @@ module EmailCampaigns
     end
 
     def days_ago
-      t_1, t_2 = ic_schedule.first 2
-      t_2 ||= t_1 + 7.days
-      ((t_2 - t_1) / 1.day).days
+      t1, t2 = ic_schedule.first 2
+      t2 ||= t1 + 7.days
+      ((t2 - t1) / 1.day).days
     end
 
     def stat_increase(stats = [])

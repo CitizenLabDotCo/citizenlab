@@ -105,17 +105,17 @@ describe Insights::InputsFinder do
     # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when filtering by categories' do
       let(:origin) { add_data_source(view).origin }
-      let(:category_1) { create(:category, view: view) }
-      let(:category_2) { create(:category, view: view) }
+      let(:category1) { create(:category, view: view) }
+      let(:category2) { create(:category, view: view) }
 
       let!(:input_without_category) { create(:idea, project: origin) }
 
       let!(:input_with_c1) do
-        create(:idea, project: origin).tap { |i| add_categories(i, category_1) }
+        create(:idea, project: origin).tap { |i| add_categories(i, category1) }
       end
 
       let!(:input_with_c2) do
-        create(:idea, project: origin).tap { |i| add_categories(i, category_2) }
+        create(:idea, project: origin).tap { |i| add_categories(i, category2) }
       end
 
       def add_categories(input, *categories)
@@ -128,12 +128,12 @@ describe Insights::InputsFinder do
       end
 
       it 'can select inputs from a single category' do
-        finder = described_class.new(view, { categories: [category_1.id] })
+        finder = described_class.new(view, { categories: [category1.id] })
         expect(finder.execute).to eq [input_with_c1]
       end
 
       it 'can select inputs from a set of categories' do
-        category_ids = [category_1, category_2].pluck(:id)
+        category_ids = [category1, category2].pluck(:id)
         finder = described_class.new(view, { categories: category_ids })
 
         expected_inputs = [input_with_c1, input_with_c2]
@@ -150,10 +150,10 @@ describe Insights::InputsFinder do
       end
 
       context 'when an input has mutliple categories' do
-        before { add_categories(input_with_c1, category_2) }
+        before { add_categories(input_with_c1, category2) }
 
         it 'does not return duplicates' do
-          finder = described_class.new(view, { categories: [category_1, category_2].pluck(:id) })
+          finder = described_class.new(view, { categories: [category1, category2].pluck(:id) })
           expect(finder.execute.ids.count(input_with_c1.id)).to eq(1)
         end
       end

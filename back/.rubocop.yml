@@ -170,6 +170,9 @@ Layout/DotPosition:
 Layout/EmptyLinesAroundMethodBody:
   Enabled: true
 
+Naming/VariableNumber:
+  Enabled: true
+
 Metrics/ClassLength:
   Enabled: true
   Max: 300

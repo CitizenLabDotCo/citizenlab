@@ -246,9 +246,9 @@ module EmailCampaigns
     end
 
     def days_ago
-      t_1, t_2 = ic_schedule.first 2
-      t_2 ||= t_1 + 7.days
-      ((t_2 - t_1) / 1.day).days
+      t1, t2 = ic_schedule.first 2
+      t2 ||= t1 + 7.days
+      ((t2 - t1) / 1.day).days
     end
   end
 end
