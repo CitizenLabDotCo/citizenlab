@@ -19,8 +19,8 @@ module ProjectFolders
   class Folder < ::ApplicationRecord
     has_one :admin_publication, as: :publication, dependent: :destroy
     accepts_nested_attributes_for :admin_publication, update_only: true
-    has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: "project_folder_id" # todo remove after renaming project_folder association in Image model
-    has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: "project_folder_id"  # todo remove after renaming project_folder association in File model
+    has_many :images, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id' # todo remove after renaming project_folder association in Image model
+    has_many :files, -> { order(:ordering) }, dependent: :destroy, inverse_of: 'project_folder', foreign_key: 'project_folder_id'  # todo remove after renaming project_folder association in File model
     has_many :text_images, as: :imageable, dependent: :destroy
     accepts_nested_attributes_for :text_images
 
@@ -40,6 +40,8 @@ module ProjectFolders
     before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
     before_validation :strip_title
     before_validation :set_admin_publication
+
+    after_destroy :remove_moderators
 
     def projects
       Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
@@ -98,6 +100,13 @@ module ProjectFolders
         if !notification.update project_folder: nil
           notification.destroy!
         end
+      end
+    end
+
+    def remove_moderators
+      User.project_folder_moderator(id).each do |user|
+        user.delete_role('project_folder_moderator', project_folder_id: id)
+        user.save!
       end
     end
   end

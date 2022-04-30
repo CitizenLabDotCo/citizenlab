@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfYourIdea, type: :model do
-  describe "StatusChangeOfYourIdea Campaign default factory" do
-    it "is valid" do
+  describe 'StatusChangeOfYourIdea Campaign default factory' do
+    it 'is valid' do
       expect(build(:status_change_of_your_idea_campaign)).to be_valid
     end
   end
@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfYourIdea, type: :model d
     let(:notification) { create(:status_change_of_your_idea) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
-  	it "generates a command with the desired payload and tracked content" do
+  	it 'generates a command with the desired payload and tracked content' do
   		command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity

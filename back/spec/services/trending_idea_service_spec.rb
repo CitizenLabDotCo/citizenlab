@@ -1,12 +1,12 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe TrendingIdeaService do
   before do
     generate_trending_ideas 5
   end
 
-  describe "filter_trending" do
-    it "filters trending ideas in accordance with the trending criterea (those that have a positive trending score)" do
+  describe 'filter_trending' do
+    it 'filters trending ideas in accordance with the trending criterea (those that have a positive trending score)' do
       trending_filter = nil
       expected_selection = nil
       travel_to Time.now do
@@ -26,8 +26,8 @@ describe TrendingIdeaService do
     end
   end
 
-  describe "order_trending" do
-    it "sorts trending to untrending in accordance with the trending score" do
+  describe 'order_trending' do
+    it 'sorts trending to untrending in accordance with the trending score' do
       trending_score_sorted =  nil
       expected_order = nil
       travel_to Time.now do

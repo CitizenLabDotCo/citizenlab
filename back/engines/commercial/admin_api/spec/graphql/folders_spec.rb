@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Graphql folder" do
+RSpec.describe 'Graphql folder' do
   let(:context) { {} }
   let(:result) {
     AdminApi::Schema.execute(
@@ -10,7 +10,7 @@ RSpec.describe "Graphql folder" do
     )
   }
 
-  describe "folder" do
+  describe 'folder' do
     let(:query_string) { %|
       query projectFolderQuery($id: ID!) {
         projectFolder(id: $id) {
@@ -25,12 +25,12 @@ RSpec.describe "Graphql folder" do
     let(:folder) { create(:project_folder) }
     let(:variables) { {id: folder.id }}
 
-    it "returns all folders" do
+    it 'returns all folders' do
       response = result
-      expect(response.dig("data", "projectFolder")).to match ({
-        "id" => folder.id,
-        "slug" => folder.slug,
-        "publicationStatus" => folder.admin_publication.publication_status
+      expect(response.dig('data', 'projectFolder')).to match ({
+        'id' => folder.id,
+        'slug' => folder.slug,
+        'publicationStatus' => folder.admin_publication.publication_status
       })
     end
 

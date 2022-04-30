@@ -8,11 +8,11 @@ module IdBogus
     end
 
     def id
-      "380cc6e1-6978-4a3d-8ad0-d72552b55d20"
+      '380cc6e1-6978-4a3d-8ad0-d72552b55d20'
     end
 
     def name
-      "bogus"
+      'bogus'
     end
 
     def config_parameters
@@ -25,17 +25,17 @@ module IdBogus
 
     def verify_sync desired_error: nil
       case desired_error
-      when "no_match"
+      when 'no_match'
         raise Verification::VerificationService::NoMatchError.new
-      when "not_entitled"
+      when 'not_entitled'
         raise Verification::VerificationService::NotEntitledError.new
-      when "taken"
+      when 'taken'
         {
           uid: 1
         }
       else
         if desired_error.present?
-          raise Verification::VerificationService::ParameterInvalidError.new("desired_error")
+          raise Verification::VerificationService::ParameterInvalidError.new('desired_error')
         else
           {
             uid: SecureRandom.alphanumeric(24),

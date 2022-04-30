@@ -13,7 +13,7 @@ module IdCow
       # log_level: :debug,
       # pretty_print_xml: true,
       namespaces: {
-        "xmlns:typens" => "http://tempuri.org/COW/type/"
+        'xmlns:typens' => 'http://tempuri.org/COW/type/'
       }
     }
 
@@ -22,11 +22,11 @@ module IdCow
     end
 
     def id
-      "7ccd453d-0eaf-412a-94a2-ae703b1b3e3f"
+      '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f'
     end
 
     def name
-      "cow"
+      'cow'
     end
 
     def config_parameters
@@ -38,8 +38,8 @@ module IdCow
     end
 
     def verify_sync run:, id_serial:
-      raise Verification::VerificationService::ParameterInvalidError.new("run") unless run_valid?(run)
-      raise Verification::VerificationService::ParameterInvalidError.new("id_serial") unless id_serial_valid?(id_serial)
+      raise Verification::VerificationService::ParameterInvalidError.new('run') unless run_valid?(run)
+      raise Verification::VerificationService::ParameterInvalidError.new('id_serial') unless id_serial_valid?(id_serial)
 
       cow_valid_citizen!(run, id_serial)
     end
@@ -54,11 +54,11 @@ module IdCow
       response = client.call(
         :get_data_document,
         message: {
-          "typens:RUTEmpresa" => config[:rut_empresa],
-          "typens:DVEmpresa" => 'k',
-          "typens:CodTipoDocumento" => 'C',
-          "typens:NumRUN" => clean_run(run),
-          "typens:NumSerie" => clean_id_serial(id_serial),
+          'typens:RUTEmpresa' => config[:rut_empresa],
+          'typens:DVEmpresa' => 'k',
+          'typens:CodTipoDocumento' => 'C',
+          'typens:NumRUN' => clean_run(run),
+          'typens:NumSerie' => clean_id_serial(id_serial),
         }
       )
 
@@ -94,7 +94,7 @@ module IdCow
     def valid_response! ind_vigencia: nil, ind_bloqueo: nil, estado_respuesta:
       if estado_respuesta != '000'
         raise Verification::VerificationService::NoMatchError.new
-      elsif not(ind_vigencia == "S" || (ind_vigencia == "N" && ["NO BLOQUEADO", "RENOVACION", "TEMPORAL"].include?(ind_bloqueo)))
+      elsif not(ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo)))
         raise Verification::VerificationService::NotEntitledError.new
       end
     end

@@ -53,6 +53,13 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
         command.dig(:event_payload, :top_ideas, 0, :author_name)
       ).to eq(expected_author_name)
     end
+
+    # added to reproduce the bug and test the fix
+    it 'gracefully handles absent projects' do
+      Project.find(moderator.roles[0]['project_id']).destroy!
+      commands = campaign.reload.generate_commands(recipient: moderator.reload).first
+      expect(commands).to be_blank
+    end
   end
 
   describe 'apply_recipient_filters' do

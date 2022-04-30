@@ -45,7 +45,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
       {loadingContentBuilderLayout && <Spinner />}
       {!loadingContentBuilderLayout && contentBuilderContent && (
         <Box data-testid="contentBuilderPreviewContent">
-          <Title color="text" variant="h1">
+          <Title color="colorText" variant="h1">
             {localize(projectTitle)}
           </Title>
           <Editor isPreview={true}>

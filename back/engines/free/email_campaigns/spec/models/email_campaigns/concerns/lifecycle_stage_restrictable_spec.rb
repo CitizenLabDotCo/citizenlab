@@ -17,19 +17,19 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
     @app_configuration = AppConfiguration.instance
   end
 
-  context "on a campaign limited to demo and active platforms" do
+  context 'on a campaign limited to demo and active platforms' do
     before do
       @campaign = LifecycleStageActiveAndDemoCampaign.create!
     end
 
-    describe "run_before_send_hooks" do
-      it "returns true when the platform is active" do
+    describe 'run_before_send_hooks' do
+      it 'returns true when the platform is active' do
         @app_configuration.settings['core']['lifecycle_stage'] = 'active'
         @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_truthy
       end
 
-      it "returns false when the platform is churned" do
+      it 'returns false when the platform is churned' do
         @app_configuration.settings['core']['lifecycle_stage'] = 'churned'
         @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_falsy
@@ -37,19 +37,19 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
     end
   end
 
-  context "on a campaign limited to non-demo platforms" do
+  context 'on a campaign limited to non-demo platforms' do
     before do
       @campaign = LifecycleStageNotChurnedCampaign.create!
     end
 
-    describe "run_before_send_hooks" do
-      it "returns true when the platform is active" do
+    describe 'run_before_send_hooks' do
+      it 'returns true when the platform is active' do
         @app_configuration.settings['core']['lifecycle_stage'] = 'active'
         @app_configuration.save!
         expect(@campaign.run_before_send_hooks).to be_truthy
       end
 
-      it "returns false when the platform is demo" do
+      it 'returns false when the platform is demo' do
         @app_configuration.settings['core']['lifecycle_stage'] = 'demo'
         @app_configuration.update_column :settings, @app_configuration.settings
         expect(@campaign.run_before_send_hooks).to be_falsy

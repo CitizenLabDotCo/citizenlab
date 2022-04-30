@@ -1,4 +1,4 @@
-require "custom_idea_statuses/engine"
+require 'custom_idea_statuses/engine'
 
 module CustomIdeaStatuses
 end

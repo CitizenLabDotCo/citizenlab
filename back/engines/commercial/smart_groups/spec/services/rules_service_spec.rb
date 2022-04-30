@@ -1,8 +1,8 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::RulesService do
   let(:service) { SmartGroups::RulesService.new }
-  let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
+  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
 
   let(:cf1) { create(:custom_field) }
   let(:cf2) { create(:custom_field) }
@@ -37,21 +37,21 @@ describe SmartGroups::RulesService do
     { 'ruleType' => 'role', 'predicate' => 'is_admin' }
   ]}
 
-  describe "generate_rules_json_schema" do
+  describe 'generate_rules_json_schema' do
 
     let!(:cf1) { create(:custom_field) }
 
-    it "generates a valid json schema" do
+    it 'generates a valid json schema' do
       schema = service.generate_rules_json_schema
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
 
-    it "successfully validates various valid rules" do
+    it 'successfully validates various valid rules' do
       schema = service.generate_rules_json_schema
       expect(JSON::Validator.validate!(schema, rules)).to be true
     end
 
-    it "successfully validates valid custom field date rule" do
+    it 'successfully validates valid custom field date rule' do
       schema = service.generate_rules_json_schema
       invalid_rule = {
         'ruleType' => 'custom_field_date',
@@ -62,7 +62,7 @@ describe SmartGroups::RulesService do
       expect(JSON::Validator.validate(schema, [invalid_rule])).to be true
     end
 
-    it "rejects invalid custom field date rule" do
+    it 'rejects invalid custom field date rule' do
       schema = service.generate_rules_json_schema
       invalid_rule = {
         'ruleType' => 'custom_field_date',
@@ -75,8 +75,8 @@ describe SmartGroups::RulesService do
 
   end
 
-  describe "filter" do
-    it "filters users with a combination of diverse rules" do
+  describe 'filter' do
+    it 'filters users with a combination of diverse rules' do
       result = service.filter ::User, rules
       expect(result.count).to eq 1
     end

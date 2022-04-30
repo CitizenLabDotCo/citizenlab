@@ -16,9 +16,18 @@ import messages from '../../messages';
 
 const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
+const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
+const IMAGE = 'Image';
+const ABOUT_BOX = 'AboutBox';
 
-type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS | typeof TEXT;
+type ComponentNamesType =
+  | typeof CONTAINER
+  | typeof TWO_COLUMNS
+  | typeof THREE_COLUMNS
+  | typeof TEXT
+  | typeof IMAGE
+  | typeof ABOUT_BOX;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -26,8 +35,14 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.oneColumn;
     case TWO_COLUMNS:
       return messages.twoColumn;
+    case THREE_COLUMNS:
+      return messages.threeColumn;
     case TEXT:
       return messages.text;
+    case IMAGE:
+      return messages.image;
+    case ABOUT_BOX:
+      return messages.aboutBox;
   }
 };
 
@@ -48,7 +63,12 @@ const RenderNode = ({ render }) => {
     isDeletable: id && query.node(id).isDeletable(),
   }));
 
-  const { id, name, isHover } = useNode((node) => ({
+  const {
+    id,
+    name,
+    isHover,
+    connectors: { connect, drag },
+  } = useNode((node) => ({
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
   }));
@@ -60,7 +80,10 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
-    if (parentNodeName === TWO_COLUMNS && isHover) {
+    if (
+      (parentNodeName === TWO_COLUMNS && isHover) ||
+      (parentNodeName === THREE_COLUMNS && isHover)
+    ) {
       parentNodeElement?.setAttribute(
         'style',
         `border: 1px solid ${colors.adminTextColor} `
@@ -74,23 +97,28 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     if (isActive && name === CONTAINER && parentNode) {
       parentNodeName === TWO_COLUMNS && selectNode(parentId);
+      parentNodeName === THREE_COLUMNS && selectNode(parentId);
     }
   });
 
   const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
   const nodeIsHovered =
-    isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
+    isHover &&
+    id !== ROOT_NODE &&
+    parentNodeName !== TWO_COLUMNS &&
+    parentNodeName !== THREE_COLUMNS;
 
   const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 
   return (
     <StyledBox
+      ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
       border={`1px ${
         solidBorderIsVisible
           ? `solid ${colors.adminTextColor}`
-          : name !== TWO_COLUMNS
+          : name !== TWO_COLUMNS && name !== THREE_COLUMNS
           ? `dashed ${colors.separation}`
           : `solid transparent`
       } `}

@@ -1,38 +1,32 @@
-// DATA
-export type Data = { name: string; [key: string]: any }[];
+import {
+  Mapping as ConvertedMapping,
+  BarProps as ConvertedBarProps,
+  DataRow,
+} from 'components/admin/Graphs/MultiBarChart/utils';
 
 // MAPPING
+type MappingFunction<T> = (row: DataRow) => T;
+type Channel<T> = string | MappingFunction<T>;
+
 export interface Mapping {
   length?: string;
-  fill?: string;
+  fill?: Channel<string>;
+  opacity?: Channel<number>;
 }
 
-interface ParsedMapping {
-  length: string;
-  fill?: string;
-}
+export const convertMapping = (mapping?: Mapping): ConvertedMapping => {
+  if (!mapping) {
+    return {
+      length: ['value'],
+    };
+  }
 
-export const parseMapping = (mapping?: Mapping): ParsedMapping => ({
-  length: 'value',
-  ...mapping,
-});
-
-// LAYOUT
-export type Layout = 'horizontal' | 'vertical';
-
-// For some reason, in recharts a 'horizontal' bar chart
-// actually means a 'vertical' bar chart. For our own API
-// we use the correct terminology
-export const getRechartsLayout = (layout: Layout) =>
-  layout === 'vertical' ? 'horizontal' : 'vertical';
-
-// MARGIN
-export interface Margin {
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-}
+  return {
+    length: wrapIfAvailable(mapping.length) ?? ['value'],
+    fill: convertChannel(mapping.fill),
+    opacity: convertChannel(mapping.opacity),
+  };
+};
 
 // BARS
 export interface BarProps {
@@ -43,27 +37,27 @@ export interface BarProps {
   isAnimationActive?: boolean;
 }
 
-interface ParsedBarProps extends Omit<BarProps, 'fill' | 'size'> {
-  barSize?: number;
-  fill: string;
-}
-
-export const parseBarProps = (
-  defaultFill: string,
+export const convertBarProps = (
   barProps?: BarProps
-): ParsedBarProps => {
-  const defaultBarProps = { fill: defaultFill };
-  if (!barProps) return defaultBarProps;
+): ConvertedBarProps | undefined => {
+  if (!barProps) return;
 
-  const { size, ...otherBarProps } = barProps;
-  return { ...defaultBarProps, barSize: size, ...otherBarProps };
+  const { name, size, fill, opacity, isAnimationActive } = barProps;
+
+  return {
+    name: wrapIfAvailable(name),
+    size: wrapIfAvailable(size),
+    fill: wrapIfAvailable(fill),
+    opacity: wrapIfAvailable(opacity),
+    isAnimationActive,
+  };
 };
 
-// AXES
-export interface AxisProps {
-  tickFormatter?: (value: any) => string;
-  type?: 'number' | 'category';
-  width?: number;
-  tickLine?: boolean;
-  hide?: boolean;
-}
+// UTILS
+const wrapIfAvailable = <T>(value?: T): T[] | undefined =>
+  value ? [value] : undefined;
+
+const convertChannel = <T>(channel?: Channel<T>) =>
+  channel instanceof Function
+    ? (row: DataRow) => [channel(row)]
+    : wrapIfAvailable(channel);

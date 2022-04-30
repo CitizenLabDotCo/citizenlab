@@ -16,10 +16,6 @@ RSpec.describe UserConfirmation::ScheduleCodeExpiration do
       context[:user].save
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'enqueues a code expiration job' do
       expect { result }.to enqueue_job(UserConfirmation::ExpireConfirmationCodeJob)
     end

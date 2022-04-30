@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Title, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // craft
@@ -25,7 +25,6 @@ const ContentBuilderSettings = () => {
   const { actions, selected, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selected;
-
     if (currentNodeId) {
       selected = {
         id: currentNodeId,
@@ -44,12 +43,19 @@ const ContentBuilderSettings = () => {
   });
 
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
-    <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
-      <Box pb="20px">
-        <h2>
-          <FormattedMessage {...getComponentNameMessage(selected.name)} />
-        </h2>
-      </Box>
+    <StyledBox
+      position="fixed"
+      right="0"
+      top={`${stylingConsts.menuHeight * 2}px`}
+      zIndex="2"
+      p="20px"
+      w="400px"
+      h="100%"
+      background={colors.adminDarkBackground}
+    >
+      <Title variant="h2">
+        <FormattedMessage {...getComponentNameMessage(selected.name)} />
+      </Title>
       {selected.settings && React.createElement(selected.settings)}
       {selected.isDeletable ? (
         <Box display="flex">

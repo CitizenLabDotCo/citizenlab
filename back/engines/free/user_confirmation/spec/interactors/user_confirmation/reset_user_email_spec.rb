@@ -15,10 +15,6 @@ RSpec.describe UserConfirmation::ResetUserEmail do
       context[:new_email] = 'new@email.com'
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'changes the user email' do
       expect { result }.to change(context[:user], :email).from(context[:user].email).to(context[:new_email])
     end
@@ -42,10 +38,6 @@ RSpec.describe UserConfirmation::ResetUserEmail do
     before do
       context[:user] = create(:user_with_confirmation)
       context[:new_email] = 'new@email-com'
-    end
-
-    it 'is a failure' do
-      expect(result).to be_a_failure
     end
 
     it 'does not change the user email' do
