@@ -47,7 +47,7 @@ module EmailCampaigns
 
     def set_delivery_status(s)
       self.delivery_status =
-        if s == 'bounced' || s == 'failed'
+        if %w[bounced failed].include?(s)
           s
         else
           current_status_index = DELIVERY_STATUSES.find_index(delivery_status)

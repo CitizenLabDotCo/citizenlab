@@ -40,7 +40,7 @@ module EmailCampaigns
 
     def update_user_digest_schedules
       camp = EmailCampaigns::Campaigns::UserDigest.first
-      camp.update(ic_schedule: camp.class.default_schedule) if camp
+      camp&.update(ic_schedule: camp.class.default_schedule)
     end
   end
 end

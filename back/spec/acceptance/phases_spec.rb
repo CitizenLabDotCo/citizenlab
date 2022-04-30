@@ -44,8 +44,10 @@ resource 'Phases' do
           data: { id: @phases.first.project_id, type: 'project' }
       })
 
-      expect(json_response.dig(:data, :relationships, :permissions, :data).size)
-        .to eq(PermissionsService.actions(@phases.first).length) if CitizenLab.ee?
+      if CitizenLab.ee?
+        expect(json_response.dig(:data, :relationships, :permissions, :data).size)
+          .to eq(PermissionsService.actions(@phases.first).length)
+      end
     end
   end
 

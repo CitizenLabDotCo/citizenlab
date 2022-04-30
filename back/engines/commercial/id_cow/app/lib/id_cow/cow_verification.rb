@@ -38,8 +38,8 @@ module IdCow
     end
 
     def verify_sync(run:, id_serial:)
-      raise Verification::VerificationService::ParameterInvalidError.new('run') unless run_valid?(run)
-      raise Verification::VerificationService::ParameterInvalidError.new('id_serial') unless id_serial_valid?(id_serial)
+      raise Verification::VerificationService::ParameterInvalidError, 'run' unless run_valid?(run)
+      raise Verification::VerificationService::ParameterInvalidError, 'id_serial' unless id_serial_valid?(id_serial)
 
       cow_valid_citizen!(run, id_serial)
     end
@@ -91,16 +91,16 @@ module IdCow
     # **Both IndVigencia and IndBloqueo conditions must be met.
 
     # For all other combinations that do not fit in these 4 alternatives, they must be blocked from voting.
-    def valid_response!(ind_vigencia: nil, ind_bloqueo: nil, estado_respuesta:)
+    def valid_response!(estado_respuesta:, ind_vigencia: nil, ind_bloqueo: nil)
       if estado_respuesta != '000'
-        raise Verification::VerificationService::NoMatchError.new
-      elsif not(ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo)))
-        raise Verification::VerificationService::NotEntitledError.new
+        raise Verification::VerificationService::NoMatchError
+      elsif !(ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo)))
+        raise Verification::VerificationService::NotEntitledError
       end
     end
 
     def run_valid?(run)
-      run.present? && /^\d{1,2}\.\d{3}\.\d{3}[-][0-9kK]{1}$/.match?(run.strip)
+      run.present? && /^\d{1,2}\.\d{3}\.\d{3}-[0-9kK]{1}$/.match?(run.strip)
     end
 
     def clean_run(run)

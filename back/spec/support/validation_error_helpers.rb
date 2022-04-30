@@ -29,8 +29,7 @@ class ValidationErrorHelper
         validator.attributes.map { |a| [a, ERROR_DETAILS[validator.class]] }
       end.select(&:last)
     to_h_appended(attrs_errs)
-      .map { |attribute, error_codes| [attribute, error_codes&.flatten&.compact&.uniq] }
-      .to_h
+      .transform_values { |error_codes| error_codes&.flatten&.compact&.uniq }
   end
 
   def to_h_appended(arr)

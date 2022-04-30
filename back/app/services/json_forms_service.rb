@@ -43,7 +43,7 @@ class JsonFormsService
     {
       type: 'object',
       additionalProperties: false,
-      properties: fields.inject({}) do |memo, field|
+      properties: fields.each_with_object({}) do |field, memo|
         override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         memo[field.key] =
           if field.code && respond_to?(override_method, true)
@@ -51,7 +51,6 @@ class JsonFormsService
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
           end
-        memo
       end
     }.tap do |output|
       required = fields.select(&:enabled).select(&:required).map(&:key)
@@ -62,15 +61,14 @@ class JsonFormsService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_ui_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').inject({}) do |memo, locale|
-      memo[locale] = fields_to_ui_schema(fields, locale)
-      memo
+    configuration.settings('core', 'locales').index_with do |locale|
+      fields_to_ui_schema(fields, locale)
     end
   end
 
   def fields_to_ui_schema(fields, locale = 'en')
     send("#{fields.first.resource_type.underscore}_to_ui_schema", fields, locale) do |field|
-      next nil if (!field || !field.enabled || field.hidden)
+      next nil if !field || !field.enabled || field.hidden
 
       override_method = "#{fields.first.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       if field.code && respond_to?(override_method, true)
@@ -288,7 +286,7 @@ class JsonFormsService
     {
       type: 'array',
       uniqueItems: true,
-      minItems: (field.enabled && field.required) ? 1 : 0,
+      minItems: field.enabled && field.required ? 1 : 0,
       items: {
           type: 'string'
       }.tap do |items|

@@ -34,7 +34,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_topic
     serie = ideas_by_topic_serie
     topics = Topic.pluck :id, :title_multiloc
-    render json: { series: { ideas: serie }, topics: topics.map { |id, title_multiloc| [id, { title_multiloc: title_multiloc }] }.to_h }
+    render json: { series: { ideas: serie }, topics: topics.transform_values { |title_multiloc| { title_multiloc: title_multiloc } } }
   end
 
   def ideas_by_topic_as_xlsx

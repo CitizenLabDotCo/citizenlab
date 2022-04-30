@@ -252,7 +252,7 @@ class InvitesService
     if hash_array.size > MAX_INVITES
       add_error(:max_invites_limit_exceeded, row: (hash_array.size - 1), value: MAX_INVITES)
       fail_now
-    elsif hash_array.size == 0
+    elsif hash_array.empty?
       add_error(:no_invites_specified)
       fail_now
     else

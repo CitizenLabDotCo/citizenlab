@@ -12,11 +12,10 @@ class StatsService
     count_at_start_at = resource.where("#{field} < ?", start_at).count
     # When the given resource scope is a GROUP BY query
     if count_at_start_at.is_a? Hash
-      serie.inject(count_at_start_at) do |totals, (group, count)|
+      serie.each_with_object(count_at_start_at) do |(group, count), totals|
         totals[group.first] = 0 unless totals[group.first]
         totals[group.first] += count
         serie[group] = totals[group.first]
-        totals
       end
     else # When the given reource scope is a normal query
       serie.inject(count_at_start_at) do |total, (date, count)|

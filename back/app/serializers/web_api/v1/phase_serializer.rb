@@ -17,13 +17,9 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   def self.user_basket(object, params)
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first
-    if preloaded_user_basket
-      preloaded_user_basket
-    else
-      current_user(params)&.baskets&.select do |basket|
-        (basket.participation_context_id == object.id) && (basket.participation_context_type == 'Phase')
-      end&.first
-    end
+    preloaded_user_basket || current_user(params)&.baskets&.select do |basket|
+      (basket.participation_context_id == object.id) && (basket.participation_context_type == 'Phase')
+    end&.first
   end
 end
 

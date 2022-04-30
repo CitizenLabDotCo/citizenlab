@@ -19,11 +19,11 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
 
     # Migrate existing data
     folder_to_publication_id = {}
-    sql = %q(
+    sql = '
       SELECT project_holder_id, project_holder_type
       FROM project_holder_orderings
       ORDER BY ordering DESC;
-    )
+    '
     ActiveRecord::Base.connection.execute(sql).each do |pho|
       publication = AdminPublication.create!(
         publication_id:   pho['project_holder_id'],
@@ -34,12 +34,12 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
       end
     end
 
-    sql = %q(
+    sql = '
       SELECT id, folder_id
       FROM projects
       WHERE folder_id IS NOT NULL
       ORDER BY ordering DESC;
-    )
+    '
     ActiveRecord::Base.connection.execute(sql).each do |pho|
       AdminPublication.create!(
         publication_id:   pho['id'],

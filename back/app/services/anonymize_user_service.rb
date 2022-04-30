@@ -107,7 +107,7 @@ class AnonymizeUserService
     end
     custom_field_values['gender'] ||= User::GENDERS.sample
     custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values['education'] ||= (rand(7) + 2).to_s
+    custom_field_values['education'] ||= (rand(2..8)).to_s
     custom_field_values
   end
 

@@ -15,14 +15,14 @@ module NLP
       options[:max_ideas] = max_ideas if max_ideas
       res = NLP::Api.new.similarity tenant_id, idea.id, locale, options
       if res.present?
-        return res.map do |h|
+        res.map do |h|
           {
             idea_id: h['id'],
             score: h['score'].to_f
           }
         end
       else
-        return []
+        []
       end
     end
 

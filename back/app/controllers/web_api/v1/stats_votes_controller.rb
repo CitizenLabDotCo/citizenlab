@@ -206,10 +206,10 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     ideas = ideas.where(author_id: filter_params[:author]) if filter_params[:author].present?
     ideas = ideas.where(idea_status_id: filter_params[:idea_status]) if filter_params[:idea_status].present?
     ideas = ideas.search_by_all(filter_params[:search]) if filter_params[:search].present?
-    if filter_params[:publication_status].present?
-      ideas = ideas.where(publication_status: filter_params[:publication_status])
+    ideas = if filter_params[:publication_status].present?
+      ideas.where(publication_status: filter_params[:publication_status])
     else
-      ideas = ideas.where(publication_status: 'published')
+      ideas.where(publication_status: 'published')
     end
     if (filter_params[:filter_trending] == 'true') && !filter_params[:search].present?
       ideas = trending_idea_service.filter_trending ideas
@@ -276,15 +276,12 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def normalize_votes(data, key)
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
-    data.map do |mode, buckets|
-      [
-        mode,
-        buckets.map do |value, number|
+    data.transform_values do |buckets|
+      buckets.map do |value, number|
           denominator = (normalizing_data.dig('total', value) || 0) + 1
           [value, number.to_f * 100 / denominator.to_f]
         end.to_h
-      ]
-    end.to_h
+    end
   end
 
   def render_no_data

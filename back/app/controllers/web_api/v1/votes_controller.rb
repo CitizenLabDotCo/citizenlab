@@ -115,15 +115,16 @@ class WebApi::V1::VotesController < ApplicationController
     when 'Initiative' then InitiativeVotePolicy
     else raise "#{@votable_type} has no voting policy defined"
     end
-    raise RuntimeError, 'must not be blank' if @votable_type.blank? || @votable_id.blank?
+    raise 'must not be blank' if @votable_type.blank? || @votable_id.blank?
   end
 
   def derive_policy_class(votable)
-    if votable.is_a? Idea
+    case votable
+    when Idea
       IdeaVotePolicy
-    elsif votable.is_a? Comment
+    when Comment
       CommentVotePolicy
-    elsif votable.is_a? Initiative
+    when Initiative
       InitiativeVotePolicy
     else
       raise "Votable #{votable.class} has no voting policy defined"

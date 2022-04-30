@@ -39,11 +39,11 @@ module EmailCampaigns
     ### EmailCampaigns::CampaignEmailCommand.restricted_expand_by_content_id(campaign_email_commands=EmailCampaigns::CampaignEmailCommand.where(campaign: 'admin_weekly_report')) do |idea|
     ###   idea.slug.starts_with? 's'
     ### end
-    def self.restricted_expand_by_content_id(campaign_email_commands = all, content_class = 'Idea')
+    def self.restricted_expand_by_content_id(campaign_email_commands = all, content_class = 'Idea', &block)
       campaign_email_commands = expand_by_content_id(campaign_email_commands, content_class)
       content_ids = campaign_email_commands.map(&"#{content_class.underscore}_id".to_sym)
       content_instances = content_class.constantize.find content_ids
-      filtered_ids = content_instances.select { |inst| yield inst }.map(&:id)
+      filtered_ids = content_instances.select(&block).map(&:id)
       campaign_email_commands.select { |cec| filtered_ids.include? cec["#{content_class.underscore}_id".to_sym] }
     end
 

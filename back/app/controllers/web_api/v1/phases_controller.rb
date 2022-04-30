@@ -77,8 +77,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :poll_anonymous,
       :ideas_order,
       :input_term,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES
+      { title_multiloc: CL2_SUPPORTED_LOCALES,
+      description_multiloc: CL2_SUPPORTED_LOCALES }
     ]
     if AppConfiguration.instance.feature_activated? 'disable_downvoting'
       permitted += %i[downvoting_enabled downvoting_method downvoting_limited_max]

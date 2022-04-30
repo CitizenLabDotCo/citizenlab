@@ -24,11 +24,9 @@ class PostsFilteringService
     end
 
     if params[:publication_status].present?
-      posts = posts.where(publication_status: params[:publication_status])
+      posts.where(publication_status: params[:publication_status])
     else
-      posts = posts.where(publication_status: 'published')
+      posts.where(publication_status: 'published')
     end
-
-    posts
   end
 end

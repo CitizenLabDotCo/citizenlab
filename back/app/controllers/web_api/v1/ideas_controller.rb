@@ -136,9 +136,9 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     service = SideFxIdeaService.new
 
-    params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
-    params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
-    params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
+    params[:idea][:area_ids] ||= [] if params[:idea].key?(:area_ids)
+    params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
 
     @idea.assign_attributes idea_params
     authorize @idea

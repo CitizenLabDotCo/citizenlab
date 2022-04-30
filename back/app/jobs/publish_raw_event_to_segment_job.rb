@@ -9,10 +9,10 @@ class PublishRawEventToSegmentJob < ApplicationJob
       event[:properties] ||= {}
       event[:properties]
         .merge(service.tenant_properties(tenant))
-        .merge(service.environment_properties())
+        .merge(service.environment_properties)
     rescue ActiveRecord::RecordNotFound => e
       # Tenant can't be found, so we don't add anything
     end
-    Analytics.track(event) if Analytics
+    Analytics&.track(event)
   end
 end

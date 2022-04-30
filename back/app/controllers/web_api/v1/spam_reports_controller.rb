@@ -71,7 +71,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
   def set_spam_reportable_type_and_id
     @spam_reportable_type = params[:spam_reportable]
     @spam_reportable_id = params[:"#{@spam_reportable_type.underscore}_id"]
-    raise RuntimeError, 'must not be blank' if @spam_reportable_type.blank? || @spam_reportable_id.blank?
+    raise 'must not be blank' if @spam_reportable_type.blank? || @spam_reportable_id.blank?
   end
 
   def set_spam_report

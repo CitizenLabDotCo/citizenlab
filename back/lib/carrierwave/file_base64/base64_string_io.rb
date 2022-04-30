@@ -1,8 +1,7 @@
 module Carrierwave
   module FileBase64
     class Base64StringIo < StringIO
-      attr_reader :file_name
-      attr_reader :file_extension
+      attr_reader :file_name, :file_extension
 
       def initialize(encoded_file, file_name, file_extension)
         @file_name = file_name

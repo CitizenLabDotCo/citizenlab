@@ -43,7 +43,8 @@ module Filterer
     # @param [String] name name of the filter
     # @param [Proc] block
     def initialize(name, &block)
-      @name, @block = name, block
+      @name = name
+      @block = block
     end
 
     # The context is most useful when the filter needs to access instance variables (e.g. to store partial results).

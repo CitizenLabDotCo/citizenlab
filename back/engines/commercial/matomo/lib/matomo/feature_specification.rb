@@ -1,9 +1,11 @@
-module Matomo # Engine namespace
+# Engine namespace
+module Matomo
   module FeatureSpecification
     # Note that we are extending (not including) here!
     extend CitizenLab::Mixins::FeatureSpecification
 
-    def self.feature_name # will be used as the property key in the main settings json schema
+    # will be used as the property key in the main settings json schema
+    def self.feature_name
       'matomo'
     end
 
@@ -11,7 +13,8 @@ module Matomo # Engine namespace
       'Matomo Integration'
     end
 
-    def self.feature_description # optional
+    # optional
+    def self.feature_description
       <<~DESC
         Enables sending front-end events to matomo for analytics
       DESC

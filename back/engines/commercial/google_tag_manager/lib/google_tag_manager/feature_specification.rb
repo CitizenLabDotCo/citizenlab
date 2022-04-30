@@ -1,9 +1,11 @@
-module GoogleTagManager # Engine namespace
+# Engine namespace
+module GoogleTagManager
   module FeatureSpecification
     # Note that we are extending (not including) here!
     extend CitizenLab::Mixins::FeatureSpecification
 
-    def self.feature_name # will be used as the property key in the main settings json schema
+    # will be used as the property key in the main settings json schema
+    def self.feature_name
       'google_tag_manager'
     end
 
@@ -11,7 +13,8 @@ module GoogleTagManager # Engine namespace
       'Google Tag Manager Integration'
     end
 
-    def self.feature_description # optional
+    # optional
+    def self.feature_description
       <<~DESC
         Enables integrating to google tag manager
       DESC

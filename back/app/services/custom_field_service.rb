@@ -25,7 +25,7 @@ class CustomFieldService
     {
       type: 'object',
       additionalProperties: false,
-      properties: fields.inject({}) do |memo, field|
+      properties: fields.each_with_object({}) do |field, memo|
         override_method_code = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         override_method_type = "#{field.resource_type.underscore}_#{field.input_type}_to_json_schema_field"
         memo[field.key] =
@@ -36,7 +36,6 @@ class CustomFieldService
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
           end
-        memo
       end
     }.tap do |output|
       required = fields.select(&:enabled).select(&:required).map(&:key)
@@ -47,14 +46,13 @@ class CustomFieldService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_ui_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').inject({}) do |memo, locale|
-      memo[locale] = fields_to_ui_schema(fields, locale)
-      memo
+    configuration.settings('core', 'locales').index_with do |locale|
+      fields_to_ui_schema(fields, locale)
     end
   end
 
   def fields_to_ui_schema(fields, locale = 'en')
-    fields.inject({}) do |memo, field|
+    fields.each_with_object({}) do |field, memo|
       override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] =
         if field.code && respond_to?(override_method, true)
@@ -62,7 +60,6 @@ class CustomFieldService
         else
           send("#{field.input_type}_to_ui_schema_field", field, locale)
         end
-      memo
     end.tap do |output|
       output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
     end
@@ -85,7 +82,7 @@ class CustomFieldService
   end
 
   def cleanup_custom_field_values!(custom_field_values)
-    custom_field_values.keys.each do |key|
+    custom_field_values.each_key do |key|
       if custom_field_values[key].nil?
         custom_field_values.delete key
       end
@@ -127,7 +124,7 @@ class CustomFieldService
   end
 
   def base_ui_schema_field(field, _locale)
-    Hash.new.tap do |ui_schema|
+    {}.tap do |ui_schema|
       ui_schema[:'ui:widget'] = 'hidden' if field.hidden || !field.enabled
     end
   end
@@ -211,7 +208,7 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'array',
       uniqueItems: true,
-      minItems: (field.enabled && field.required) ? 1 : 0,
+      minItems: field.enabled && field.required ? 1 : 0,
       items: {
           type: 'string'
       }.tap do |items|
@@ -314,7 +311,7 @@ class CustomFieldService
     # *** point ***
 
   def point_to_ui_schema_field(_field, _locale)
-    Hash.new.tap do |ui_schema|
+    {}.tap do |ui_schema|
       ui_schema[:'ui:widget'] = 'hidden'
     end
   end

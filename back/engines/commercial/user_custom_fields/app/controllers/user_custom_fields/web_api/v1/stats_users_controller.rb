@@ -116,11 +116,13 @@ module UserCustomFields
               'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
             }
           end
-          res.push({
-            'area_id' => '_blank',
-            'area' => 'unknown',
-            'users' => serie.delete(nil) || 0
-            }) unless serie.empty?
+          unless serie.empty?
+            res.push({
+              'area_id' => '_blank',
+              'area' => 'unknown',
+              'users' => serie.delete(nil) || 0
+              })
+          end
 
           xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
           send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile.xlsx'
@@ -239,11 +241,10 @@ module UserCustomFields
               'users' => serie['_blank'] || 0
               })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
-            send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
           else
             xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_serie, 'option', 'users'
-            send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
           end
+          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
         end
 
         private

@@ -21,10 +21,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
                        .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
 
-    if params[:search].present?
-      @projects = @projects.search_by_all(params[:search])
+    @projects = if params[:search].present?
+      @projects.search_by_all(params[:search])
     else
-      @projects = @projects.ordered
+      @projects.ordered
     end
 
     LogActivityJob.perform_later(current_user, 'searched_projects', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?

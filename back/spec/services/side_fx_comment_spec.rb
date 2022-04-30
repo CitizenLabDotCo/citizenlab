@@ -45,7 +45,7 @@ describe SideFxCommentService do
       u2_mention = mention_service.user_to_mention(u2)
       u2_mention_expanded = mention_service.add_span_around u2_mention, u2
 
-      comment = create(:comment, body_multiloc: { en: "#{u1_mention_expanded}" })
+      comment = create(:comment, body_multiloc: { en: u1_mention_expanded.to_s })
 
       comment.update(body_multiloc: { 'en': "Let's mention #{u1_mention_expanded} and #{u2_mention_expanded}" })
       expectation = expect { service.after_update(comment, user) }

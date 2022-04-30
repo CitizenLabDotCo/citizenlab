@@ -100,6 +100,6 @@ class MentionService
   # @param [String] mention
   # @return [String] slug
   def mention_to_slug(mention)
-    mention[1..-1]
+    mention[1..]
   end
 end

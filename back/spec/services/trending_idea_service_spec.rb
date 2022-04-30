@@ -74,7 +74,7 @@ describe TrendingIdeaService do
         create(:vote, votable: idea, mode: 'up',
                created_at: Faker::Time.between(from: published_at, to: DateTime.now))
       end
-      if (rand(2) == 0)
+      if rand(2) == 0
         create(:vote, votable: idea, mode: 'up',
                user: author,
                created_at: Faker::Time.between(from: published_at, to: DateTime.now))

@@ -22,7 +22,7 @@ describe ParticipantsService do
       create(:activity, item: create(:idea), action: 'published', user: pp4)
       create(:activity, item: create(:poll_response), action: 'created', user: pp5)
 
-      expect(service.participants().map(&:id)).to match_array participants.map(&:id)
+      expect(service.participants.map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns participants across the whole platform since a given date' do

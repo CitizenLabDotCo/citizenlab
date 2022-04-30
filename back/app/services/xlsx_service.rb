@@ -280,11 +280,12 @@ class XlsxService
             user = record.send(record_to_user)
 
             if user && user.custom_field_values[field.key]
-              if user.custom_field_values[field.key].is_a?(Array)
+              case user.custom_field_values[field.key]
+              when Array
                 user.custom_field_values[field.key].map do |key|
                   multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
                 end.join(', ')
-              elsif user.custom_field_values[field.key].is_a?(String)
+              when String
                 multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
               end
             end

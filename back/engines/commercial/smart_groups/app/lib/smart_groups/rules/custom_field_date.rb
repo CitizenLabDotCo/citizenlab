@@ -63,10 +63,10 @@ module SmartGroups::Rules
     def initialize(custom_field_id, predicate, value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
-      if value.class == Time
-        self.value = value.to_date.to_s
+      self.value = if value.instance_of?(Time)
+        value.to_date.to_s
       else
-        self.value = value.to_s
+        value.to_s
       end
     end
 

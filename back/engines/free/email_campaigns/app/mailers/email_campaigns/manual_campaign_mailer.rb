@@ -35,9 +35,10 @@ module EmailCampaigns
     private
 
     def from_name(sender_type, author, recipient)
-      if sender_type == 'author'
+      case sender_type
+      when 'author'
         "#{author.first_name} #{author.last_name}"
-      elsif sender_type == 'organization'
+      when 'organization'
         MultilocService.new.t(AppConfiguration.instance.settings('core', 'organization_name'), recipient)
       end
     end

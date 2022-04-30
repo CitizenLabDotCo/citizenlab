@@ -223,7 +223,7 @@ class WebApi::V1::CommentsController < ApplicationController
     when 'Initiative' then InitiativeCommentPolicy
     else raise "#{@post_type} has no comment policy defined"
     end
-    raise RuntimeError, 'must not be blank' if @post_type.blank?
+    raise 'must not be blank' if @post_type.blank?
   end
 
   def comment_create_params

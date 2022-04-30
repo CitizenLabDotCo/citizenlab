@@ -8,7 +8,7 @@ class SpamReportPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user && user.admin?
+      if user&.admin?
         scope
       elsif user
         scope.where(user: user)

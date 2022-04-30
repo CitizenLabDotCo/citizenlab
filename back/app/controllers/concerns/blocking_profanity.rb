@@ -43,7 +43,7 @@ module BlockingProfanity
         end
       end
     end
-    raise ProfanityBlockedError.new(blocked_words) if blocked_words.present?
+    raise ProfanityBlockedError, blocked_words if blocked_words.present?
   end
 
   private

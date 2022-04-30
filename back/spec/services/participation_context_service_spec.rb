@@ -574,11 +574,9 @@ describe ParticipationContextService do
           current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
         phase = project.phases[1]
         permission = phase.permissions.find_by(action: 'budgeting')
-        if permission
-          permission.update!(permitted_by: 'groups',
+        permission&.update!(permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
-          )
-        end
+        )
         idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'idea_not_in_current_phase'
       end

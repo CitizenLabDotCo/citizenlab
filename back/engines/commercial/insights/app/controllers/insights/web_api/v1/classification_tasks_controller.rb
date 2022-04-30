@@ -64,7 +64,7 @@ module Insights
         def inputs_params
           @inputs_params ||=
             params.permit(
-              inputs: [:processed, categories: [], keywords: []]
+              inputs: [:processed, { categories: [], keywords: [] }]
             )[:inputs].to_h
         end
 

@@ -57,7 +57,7 @@ module Seo
     end
 
     def add_token_record(host, name, value)
-      host = host[4..-1] if host.start_with? 'www.'
+      host = host[4..] if host.start_with? 'www.'
 
       zone = find_hosted_zone_for(host)
 

@@ -67,9 +67,9 @@ namespace :tenant_template do
                    'locale'            => locales.first,
                    'bio_multiloc'      => make_multiloc(md_to_html(csv_user['Biography (Optional)']), locales),
                    'gender'            => csv_user['Gender'],
-                   'birthyear'	       => rand(10) === 0 ? nil : (1925 + rand(80)),
-                   'domicile'          => rand(10) === 0 ? nil : generate_domicile(),
-                    'password' => csv_user['Password (Optional)'] || generate_password(),
+                   'birthyear'	       => rand(10) == 0 ? nil : (rand(1925..2004)),
+                   'domicile'          => rand(10) == 0 ? nil : generate_domicile,
+                    'password' => csv_user['Password (Optional)'] || generate_password,
                    'remote_avatar_url' => csv_user['Image URL (Optional)']
                  }
       users_hash[csv_user['ID']] = yml_user
@@ -99,7 +99,7 @@ namespace :tenant_template do
                    'project_ref'        => projects_hash[csv_idea['Project ID']],
                    'idea_status_ref'    => idea_statuses_hash[%w[proposed under_consideration
                                                                 accepted implemented
-                                                                rejected].shuffle.first],
+                                                                rejected].sample],
                    'publication_status' => 'published'
                  }
       generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
@@ -139,7 +139,7 @@ namespace :tenant_template do
     csv_phases.map do |csv_phase|
       t = (project_to_time[csv_phase['Project ID']] || Faker::Date.between(from: 4.months.ago, to: 1.month.from_now)) + 1.day
       start_at = t
-      end_at = t + (rand(30) + 1).days
+      end_at = t + (rand(1..30)).days
       project_to_time[csv_phase['Project ID']] = end_at
       {	'title_multiloc' => make_multiloc(csv_phase['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_phase['Description']), locales),
@@ -150,11 +150,11 @@ namespace :tenant_template do
     end
   end
 
-  def generate_password()
+  def generate_password
     SecureRandom.urlsafe_base64 8
   end
 
-  def generate_domicile()
+  def generate_domicile
     # TODO: fetch areas from those provided (when provided)
     'outside'
   end

@@ -60,9 +60,9 @@ module IdFranceconnect
 
     def host
       case AppConfiguration.instance.settings('franceconnect_login', 'environment')
-      when 'integration' then
+      when 'integration'
         'fcp.integ01.dev-franceconnect.fr'
-      when 'production' then
+      when 'production'
         'app.franceconnect.gouv.fr'
       end
     end

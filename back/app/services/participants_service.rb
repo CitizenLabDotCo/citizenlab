@@ -43,9 +43,7 @@ class ParticipantsService
     participants = participants.or(User.where(id: votes.select(:user_id)))
     # Comment voting
     votes = Vote.where(votable: comments)
-    participants = participants.or(User.where(id: votes.select(:user_id)))
-
-    participants
+    participants.or(User.where(id: votes.select(:user_id)))
   end
 
   def ideas_participants(ideas, options = {})
@@ -139,10 +137,10 @@ class ParticipantsService
   def filter_engaging_activities(activities_scope)
     output = activities_scope
     ENGAGING_ACTIVITIES.each.with_index do |activity, i|
-      if i == 0
-        output = output.where(item_type: activity[:item_type], action: activity[:action])
+      output = if i == 0
+        output.where(item_type: activity[:item_type], action: activity[:action])
       else
-        output = output.or(
+        output.or(
           activities_scope.where(item_type: activity[:item_type], action: activity[:action]))
       end
     end

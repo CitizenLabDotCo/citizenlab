@@ -6,12 +6,6 @@ module ClErrors
       @code = options.fetch(:code, 422)
     end
 
-    def error_key
-      @error_key
-    end
-
-    def code
-      @code
-    end
+    attr_reader :error_key, :code
   end
 end

@@ -43,10 +43,10 @@ module FlagInappropriateContent
       attributes.each do |atr|
         next if flaggable[atr].blank?
 
-        values = if atr.to_s.ends_with? '_multiloc'
-          texts += flaggable[atr].values
+        texts += if atr.to_s.ends_with? '_multiloc'
+          flaggable[atr].values
         else
-          texts += [flaggable[atr]]
+          [flaggable[atr]]
         end
       end
       texts.compact! # until nil values in multilocs is fixed

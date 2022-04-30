@@ -50,7 +50,7 @@ module Surveys
         page_size = params[:page_size] || 1000
         before = nil
         output = []
-        while true
+        loop do
           page_params = before ? params.merge(before: before) : params
           responses_page = responses(form_id: form_id, **page_params.merge(page_size: page_size))
           if [401, 403].include? responses_page.code

@@ -373,3 +373,117 @@ Performance/TimesMap:
 #   Max: 20
 # RSpec/MessageSpies:
 #   Enabled: false
+Style/AccessorGrouping:
+  Enabled: true
+Style/BlockComments:
+  Enabled: true
+Style/CaseEquality:
+  Enabled: true
+Style/CaseLikeIf:
+  Enabled: true
+Style/ClassEqualityComparison:
+  Enabled: true
+Style/ColonMethodCall:
+  Enabled: true
+Style/CommentedKeyword:
+  Enabled: true
+Style/ConditionalAssignment:
+  Enabled: true
+Style/DefWithParentheses:
+  Enabled: true
+Style/DoubleNegation:
+  Enabled: false
+Style/EachWithObject:
+  Enabled: true
+Style/EmptyLiteral:
+  Enabled: true
+Style/EvenOdd:
+  Enabled: true
+Style/ExplicitBlockArgument:
+  Enabled: true
+Style/GlobalStdStream:
+  Enabled: true
+Style/HashAsLastArrayItem:
+  Enabled: true
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+Style/IdenticalConditionalBranches:
+  Enabled: true
+Style/IfInsideElse:
+  Enabled: true
+Style/InfiniteLoop:
+  Enabled: true
+Style/InverseMethods:
+  Enabled: true
+Style/KeywordParametersOrder:
+  Enabled: true
+Style/MethodCallWithoutArgsParentheses:
+  Enabled: true
+Style/MultilineIfModifier:
+  Enabled: true
+Style/MultilineTernaryOperator:
+  Enabled: true
+Style/MultilineWhenThen:
+  Enabled: true
+Style/MultipleComparison:
+  Enabled: true
+Style/NilComparison:
+  Enabled: true
+Style/NonNilCheck:
+  Enabled: true
+Style/Not:
+  Enabled: true
+Style/ParallelAssignment:
+  Enabled: true
+Style/ParenthesesAroundCondition:
+  Enabled: true
+Style/PreferredHashMethods:
+  Enabled: true
+Style/RaiseArgs:
+  Enabled: true
+Style/RandomWithOffset:
+  Enabled: true
+Style/RedundantAssignment:
+  Enabled: true
+Style/RedundantCondition:
+  Enabled: true
+Style/RedundantException:
+  Enabled: true
+Style/RedundantFetchBlock:
+  Enabled: true
+Style/RedundantInterpolation:
+  Enabled: true
+Style/RedundantPercentQ:
+  Enabled: true
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+Style/RedundantReturn:
+  Enabled: true
+Style/RedundantSort:
+  Enabled: true
+Style/RescueModifier:
+  Enabled: true
+Style/RescueStandardError:
+  Enabled: true
+Style/SafeNavigation:
+  Enabled: true
+Style/Sample:
+  Enabled: true
+Style/SignalException:
+  Enabled: true
+Style/SingleLineMethods:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
+Style/SoleNestedConditional:
+  Enabled: true
+Style/SymbolLiteral:
+  Enabled: true
+Style/TernaryParentheses:
+  Enabled: true
+Style/TrivialAccessors:
+  Enabled: true
+Style/ZeroLengthPredicate:
+  Enabled: true

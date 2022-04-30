@@ -350,7 +350,6 @@ module AdminApi
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
           yml_user = service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: u
-          yml_user
         else
            yml_user = {
             'email'                     => u.email,
@@ -370,8 +369,8 @@ module AdminApi
            unless yml_user['password_digest']
              yml_user['password'] = SecureRandom.urlsafe_base64 32
            end
-           yml_user
         end
+        yml_user
         store_ref yml_user, u.id, :user
         yml_user
       end

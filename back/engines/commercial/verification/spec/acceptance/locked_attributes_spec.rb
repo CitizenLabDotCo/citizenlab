@@ -50,7 +50,7 @@ end
     example_request 'Jsonforms UI schema marks the locked fields' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] === '#/properties/gender' }[:options].to_h).to include({
+      expect(json_response.dig(:ui_schema_multiloc, :en, :elements).find { |e| e[:scope] == '#/properties/gender' }[:options].to_h).to include({
         readonly: true,
         verificationLocked: true
       })

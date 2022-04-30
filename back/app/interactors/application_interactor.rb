@@ -9,11 +9,10 @@ class ApplicationInteractor
 
     if resource_or_errors.is_a? ActiveModel::Errors
       @errors.merge!(resource_or_errors)
-      fail! errors: @errors
     else
       @errors.add(resource_or_errors, error_key, options)
-      fail! errors: @errors
     end
+    fail! errors: @errors
   end
 
   def read_attribute_for_validation(attribute)

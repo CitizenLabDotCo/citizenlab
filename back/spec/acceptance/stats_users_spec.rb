@@ -742,7 +742,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.last()).to eq 4
+        expect(json_response[:series][:users].values.last).to eq 4
       end
     end
 
@@ -766,7 +766,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.last()).to eq 1
+        expect(json_response[:series][:users].values.last).to eq 1
       end
     end
 
@@ -793,7 +793,7 @@ resource 'Stats - Users' do
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
-        expect(json_response[:series][:users].values.last()).to eq 1
+        expect(json_response[:series][:users].values.last).to eq 1
       end
     end
 
@@ -826,7 +826,7 @@ resource 'Stats - Users' do
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
-        expect(json_response[:series][:users].values.last()).to eq 2
+        expect(json_response[:series][:users].values.last).to eq 2
       end
     end
   end

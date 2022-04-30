@@ -41,6 +41,12 @@ Style/GuardClause:
 Style/ClassVars:
   Enabled: true
 
+Style/MultilineBlockChain:
+  Enabled: true
+
+Style/OptionalBooleanParameter:
+  Enabled: true
+
 Layout/LineLength:
   Enabled: true
 

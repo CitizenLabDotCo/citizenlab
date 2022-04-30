@@ -113,7 +113,7 @@ module ParticipationContext
   private
 
   def timeline_project?
-    self.class == Project && timeline?
+    instance_of?(Project) && timeline?
   end
 
   def set_participation_method

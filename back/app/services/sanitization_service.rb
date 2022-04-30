@@ -24,14 +24,14 @@ class SanitizationService
   end
 
   def sanitize_multiloc(multiloc, features)
-    multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = sanitize(text, features)
+    multiloc.transform_values do |text|
+      sanitize(text, features)
     end
   end
 
   def remove_multiloc_empty_trailing_tags(multiloc)
-    multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = remove_empty_trailing_tags(text)
+    multiloc.transform_values do |text|
+      remove_empty_trailing_tags(text)
     end
   end
 

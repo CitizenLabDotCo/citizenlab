@@ -47,7 +47,7 @@ module EmailCampaigns
     end
 
     def update
-      params[:campaign][:group_ids] ||= [] if params[:campaign].has_key?(:group_ids)
+      params[:campaign][:group_ids] ||= [] if params[:campaign].key?(:group_ids)
 
       saved = nil
       ActiveRecord::Base.transaction do

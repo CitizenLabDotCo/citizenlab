@@ -26,7 +26,7 @@ OmniAuth.config.allowed_request_methods = %i[post get]
 module OpenIDConnectPatch
   # Patch +OmniAuth::Strategies::OpenIDConnect+ to allow dynamic specification of the issuer.
   def issuer
-    return options.issuer.call(env) if options.issuer && options.issuer.respond_to?(:call)
+    return options.issuer.call(env) if options.issuer&.respond_to?(:call)
 
     super
   end

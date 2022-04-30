@@ -74,7 +74,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [['up', 1984], ['up', 1992], ['down', 1992], ['up', nil]].each do |mode, birthyear|
-          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+          create(:vote, mode: mode, votable: @ideas.sample,
             user: (birthyear ? create(:user, birthyear: birthyear) : create(:user)))
         end
       end
@@ -108,7 +108,7 @@ resource 'Stats - Votes' do
        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
        [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
-         create(:vote, mode: mode, votable: @ideas.shuffle.first,
+         create(:vote, mode: mode, votable: @ideas.sample,
            user: (domicile ? create(:user, domicile: domicile) : create(:user)))
        end
       end
@@ -125,9 +125,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: { @eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1 },
+            up: { @eversem.to_sym => 2, @wolvertem.to_sym => 1, :_blank => 1 },
             down: { @eversem.to_sym => 1, @wolvertem.to_sym => 1 },
-            total: { @eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1 }
+            total: { @eversem.to_sym => 3, @wolvertem.to_sym => 2, :_blank => 1 }
           }
         })
       end
@@ -140,7 +140,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [%w[up 2], %w[up 7], %w[down 7], ['up', nil]].each do |mode, education|
-          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+          create(:vote, mode: mode, votable: @ideas.sample,
             user: (education ? create(:user, education: education) : create(:user)))
         end
       end
@@ -172,7 +172,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [%w[up female], %w[up male], %w[down male], ['up', nil]].each do |mode, gender|
-          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+          create(:vote, mode: mode, votable: @ideas.sample,
             user: (gender ? create(:user, gender: gender) : create(:user)))
         end
       end
@@ -208,7 +208,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [['up', @opt1], ['up', @opt2], ['down', @opt2], ['down', @opt3], ['up', nil]].each do |mode, opt|
-          create(:vote, mode: mode, votable: @ideas.shuffle.first,
+          create(:vote, mode: mode, votable: @ideas.sample,
             user: (opt ? create(:user, custom_field_values: { @custom_field.key => opt.key }) : create(:user)))
         end
       end
@@ -227,9 +227,9 @@ resource 'Stats - Votes' do
         json_response = json_parse(response_body)
         expect(json_response).to match({
           series: {
-            up: { @opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1 },
+            up: { @opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :_blank => 1 },
             down: { @opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1 },
-            total: { @opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1 }
+            total: { @opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :_blank => 1 }
           }
         })
       end

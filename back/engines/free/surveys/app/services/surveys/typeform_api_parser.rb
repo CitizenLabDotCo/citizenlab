@@ -9,13 +9,7 @@ module Surveys
         @description = options.fetch(:description, 'Invalid authorization header "Bearer"')
       end
 
-      def error_key
-        @error_key
-      end
-
-      def description
-        @description
-      end
+      attr_reader :error_key, :description
     end
 
     def initialize(tf_api = nil)

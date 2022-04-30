@@ -94,7 +94,8 @@ module SmartGroups::Rules
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      if custom_field.input_type == 'select'
+      case custom_field.input_type
+      when 'select'
         case predicate
         when 'has_value'
           option_key = CustomFieldOption.find(value).key
@@ -115,7 +116,7 @@ module SmartGroups::Rules
         else
           raise "Unsupported predicate #{predicate}"
         end
-      elsif custom_field.input_type == 'multiselect'
+      when 'multiselect'
         case predicate
         when 'has_value'
           option_key = CustomFieldOption.find(value).key

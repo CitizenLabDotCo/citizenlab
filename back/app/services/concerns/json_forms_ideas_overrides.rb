@@ -1,5 +1,5 @@
 module JsonFormsIdeasOverrides
-  def custom_form_to_ui_schema(fields, locale = 'en')
+  def custom_form_to_ui_schema(fields, locale = 'en', &block)
     project = fields.first.resource.project
     input_term = project.process_type == 'continuous' ? project.input_term : TimelineService.new.current_phase(project)&.input_term || 'idea'
     {
@@ -43,7 +43,7 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
-          elements: fields.reject(&:built_in?).map { |f| yield f }
+          elements: fields.reject(&:built_in?).map(&block)
         }
       ].compact)
     }
@@ -120,7 +120,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'array',
       uniqueItems: true,
-      minItems: (field.enabled && field.required) ? 1 : 0,
+      minItems: field.enabled && field.required ? 1 : 0,
       items: {
           type: 'string'
       }.tap do |items|
@@ -147,12 +147,12 @@ module JsonFormsIdeasOverrides
       f.code != 'author_id' && f.code != 'budget' || (
         f.code == 'author_id' &&
         configuration.feature_activated?('idea_author_change') &&
-        current_user != nil &&
+        !current_user.nil? &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user)
       ) || (
         f.code == 'budget' &&
         configuration.feature_activated?('participatory_budgeting') &&
-        current_user != nil &&
+        !current_user.nil? &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user) && (
           f.resource.project&.process_type == 'continuous' &&
           f.resource.project&.participation_method == 'budgeting'

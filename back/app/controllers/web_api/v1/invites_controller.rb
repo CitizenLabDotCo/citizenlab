@@ -20,9 +20,9 @@ class WebApi::V1::InvitesController < ApplicationController
       # Started happening when moved from rails 5.1 -> 5.2
       # https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Table+Aliasing
       @invites = @invites.where('invitees_invites.invite_status = ?', params[:invite_status]) if params[:invite_status].present?
-    else
-      @invites = @invites.where('users.invite_status = ?', params[:invite_status]) if params[:invite_status].present?
-    end
+    elsif params[:invite_status].present?
+      @invites = @invites.where('users.invite_status = ?', params[:invite_status])
+end
 
     if params[:sort].present? && !params[:search].present?
       @invites = case params[:sort]
@@ -80,7 +80,7 @@ class WebApi::V1::InvitesController < ApplicationController
 
     # Strip out data;...base64 prefix if it's there
     pure_base64 = if start = bulk_create_xlsx_params[:xlsx].index(';base64,')
-      bulk_create_xlsx_params[:xlsx][(start + 8)..-1]
+      bulk_create_xlsx_params[:xlsx][(start + 8)..]
     else
       bulk_create_xlsx_params[:xlsx]
     end
@@ -133,9 +133,10 @@ class WebApi::V1::InvitesController < ApplicationController
         ).serialized_json, status: :ok
       end
     rescue ClErrors::TransactionError => e
-      if e.error_key == :unprocessable_invitee
+      case e.error_key
+      when :unprocessable_invitee
         render json: { errors: invitee.errors.details }, status: :unprocessable_entity
-      elsif e.error_key == :unprocessable_invite
+      when :unprocessable_invite
         render json: { errors: @invite.errors.details }, status: :unprocessable_entity
       else
         raise e

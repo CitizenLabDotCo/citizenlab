@@ -53,8 +53,8 @@ module EmailCampaigns
       initiator = initiative.author
 
       recipient_ids = if initiator && !initiator.admin?
-        User.admin.ids.select do |recipient_id|
-          recipient_id != initiative&.assignee_id
+        User.admin.ids.reject do |recipient_id|
+          recipient_id == initiative&.assignee_id
         end
       else
         []

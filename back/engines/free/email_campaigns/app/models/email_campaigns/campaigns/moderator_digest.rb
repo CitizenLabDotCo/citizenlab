@@ -75,7 +75,7 @@ module EmailCampaigns
           event_payload: {
             statistics: statistics,
             top_ideas: top_ideas,
-            has_new_ideas: (top_ideas.size > 0)
+            has_new_ideas: (top_ideas.any?)
           },
           tracked_content: {
             idea_ids: idea_ids

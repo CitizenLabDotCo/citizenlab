@@ -3,8 +3,8 @@ FactoryBot.define do
     question { create(:poll_question) }
     sequence(:title_multiloc) do |n|
       {
-        'en' => "#{n}",
-        'nl-BE' => "#{n}"
+        'en' => n.to_s,
+        'nl-BE' => n.to_s
       }
     end
   end
