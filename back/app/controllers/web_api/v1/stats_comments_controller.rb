@@ -80,8 +80,10 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_topic
     serie = comments_by_topic_serie
-    topics = Topic.pluck :id, :title_multiloc
-    render json: { series: { comments: serie }, topics: topics.transform_values { |title_multiloc| { title_multiloc: title_multiloc } } }
+    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+      [id, { title_multiloc: title_multiloc }]
+    end
+    render json: { series: { comments: serie }, topics: topics.to_h }
   end
 
   def comments_by_topic_as_xlsx
