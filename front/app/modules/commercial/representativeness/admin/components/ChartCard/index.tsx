@@ -75,7 +75,7 @@ const ChartCard = ({
   const legendLabels = getLegendLabels(barNames, demographicDataDate);
 
   return (
-    <Box width="100%" background="white">
+    <Box width="100%" background="white" mb="36px">
       <Header
         titleMultiloc={customField.attributes.title_multiloc}
         svgNode={currentChartRef}
