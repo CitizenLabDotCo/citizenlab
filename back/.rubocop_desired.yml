@@ -14,6 +14,12 @@ Metrics/MethodLength:
 Metrics/BlockLength:
   Enabled: true
 
+Metrics/ModuleLength:
+  Enabled: true
+
+Metrics/ParameterLists:
+  Enabled: true
+
 Metrics/AbcSize:
   Enabled: true
 
