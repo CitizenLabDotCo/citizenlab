@@ -12,6 +12,7 @@ const ThreeColumn: UserComponent = () => {
 
   return (
     <Box
+      id="e2e-three-column"
       flexDirection={isLargeTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"

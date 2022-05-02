@@ -94,7 +94,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   };
 
   return (
-    <Box marginBottom="20px">
+    <Box id="e2e-image" marginBottom="20px">
       <ImagesDropzone
         images={imageFiles}
         imagePreviewRatio={1 / 2}
