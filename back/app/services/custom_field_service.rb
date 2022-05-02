@@ -129,7 +129,7 @@ class CustomFieldService
     end
   end
 
-# *** text ***
+  # *** text ***
 
   def text_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -250,9 +250,9 @@ class CustomFieldService
     }
   end
 
-    # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
+  # Methods here are not really used to render the fields on the front-end, only description hidden and required are used
 
-    # *** html ***
+  # *** html ***
 
   def html_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -266,7 +266,7 @@ class CustomFieldService
     }
   end
 
-    # *** text_multiloc ***
+  # *** text_multiloc ***
 
   def text_multiloc_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -280,7 +280,7 @@ class CustomFieldService
     }
   end
 
-    # *** multiline_text_multiloc ***
+  # *** multiline_text_multiloc ***
 
   def multiline_text_multiloc_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -294,7 +294,7 @@ class CustomFieldService
     }
   end
 
-    # *** html_multiloc ***
+  # *** html_multiloc ***
 
   def html_multiloc_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -308,7 +308,7 @@ class CustomFieldService
     }
   end
 
-    # *** point ***
+  # *** point ***
 
   def point_to_ui_schema_field(_field, _locale)
     {}.tap do |ui_schema|
@@ -322,7 +322,7 @@ class CustomFieldService
     }
   end
 
-    # *** files ***
+  # *** files ***
 
   def files_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)
@@ -340,7 +340,7 @@ class CustomFieldService
     }
   end
 
-    # *** image files ***
+  # *** image files ***
 
   def image_files_to_ui_schema_field(field, locale)
     base_ui_schema_field(field, locale)

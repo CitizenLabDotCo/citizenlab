@@ -76,7 +76,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       .group('ideas_topics.topic_id')
       .order('ideas_topics.topic_id')
       .count
-    end
+  end
 
   def comments_by_topic
     serie = comments_by_topic_serie

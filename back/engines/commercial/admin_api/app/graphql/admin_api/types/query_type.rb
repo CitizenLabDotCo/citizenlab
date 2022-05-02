@@ -101,7 +101,7 @@ module AdminApi
       Project.find(args[:id])
     end
 
-    field :public_projects , Types::ProjectType.connection_type, null: false
+    field :public_projects, Types::ProjectType.connection_type, null: false
 
     def public_projects
       ::ProjectPolicy::Scope.new(nil, Project).resolve
@@ -115,7 +115,7 @@ module AdminApi
       ProjectFolders::Folder.find(args[:id])
     end
 
-    field :public_project_folders , Types::ProjectFolderType.connection_type, null: false
+    field :public_project_folders, Types::ProjectFolderType.connection_type, null: false
 
     def public_project_folders
       ::ProjectFolders::FolderPolicy::Scope.new(nil, ::ProjectFolders::Folder).resolve.includes(:admin_publication)

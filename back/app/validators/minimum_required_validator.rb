@@ -22,6 +22,7 @@ class MinimumRequiredValidator < ActiveModel::EachValidator
   private
 
   attr_reader :record, :attribute, :value
+
   delegate :persisted?, :changes, :class, to: :record, prefix: true
   delegate :any?, to: :record_changes, prefix: true, allow_nil: true
 

@@ -22,6 +22,7 @@ class StaticPageFile < ApplicationRecord
   EXTENSION_WHITELIST = %w[pdf doc docx pages odt xls xlsx numbers ods ppt pptx key odp txt csv mp3 mp4 avi mkv]
 
   attr_accessor :filename
+
   mount_base64_file_uploader :file, StaticPageFileUploader
   belongs_to :static_page
 

@@ -52,6 +52,7 @@ module PublicApi
     end
 
     private
+
     def generate_secret
       self.secret ||= SecureRandom.urlsafe_base64(50)
     end

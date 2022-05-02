@@ -48,8 +48,8 @@ class PhoneService
 
   def phone_sign_in_activated?
     app_config.feature_activated?('password_login') &&
-    app_config.settings('password_login', 'phone') &&
-    app_config.settings('password_login', 'phone_email_pattern').present?
+      app_config.settings('password_login', 'phone') &&
+      app_config.settings('password_login', 'phone_email_pattern').present?
   end
 
   def app_config

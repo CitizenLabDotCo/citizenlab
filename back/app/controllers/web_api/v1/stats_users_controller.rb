@@ -92,7 +92,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     send_data xlsx,
      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
      filename: 'users_by_time_cumulative.xlsx'
- end
+  end
 
   def active_users_by_time_cumulative_serie
     activities_scope = Activity

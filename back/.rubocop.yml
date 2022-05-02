@@ -512,3 +512,28 @@ Naming/RescuedExceptionsVariableName:
   Enabled: true
 Naming/VariableName:
   Enabled: true
+
+Layout/BeginEndAlignment:
+  Enabled: true
+Layout/CommentIndentation:
+  Enabled: true
+Layout/DefEndAlignment:
+  Enabled: true
+Layout/EmptyLineBetweenDefs:
+  Enabled: true
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: true
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/LeadingCommentSpace:
+  Enabled: true
+Layout/MultilineArrayBraceLayout:
+  Enabled: true
+Layout/MultilineOperationIndentation:
+  Enabled: true
+Layout/RescueEnsureAlignment:
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Layout/SpaceBeforeComma:
+  Enabled: true

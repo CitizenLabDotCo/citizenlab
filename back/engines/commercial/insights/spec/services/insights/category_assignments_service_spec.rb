@@ -116,7 +116,7 @@ describe Insights::CategoryAssignmentsService do
 
       new_assignment_ids = nil
       expect { new_assignment_ids = service.add_assignments_batch(inputs, categories) }.to(
-        change { old_assignment .reload.created_at }.and(change { old_assignment .reload.updated_at })
+        change { old_assignment.reload.created_at }.and(change { old_assignment.reload.updated_at })
       )
       expect(new_assignment_ids.length).to eq(6)
     end

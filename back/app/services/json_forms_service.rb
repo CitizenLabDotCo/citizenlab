@@ -100,7 +100,7 @@ class JsonFormsService
     }
   end
 
-# *** text ***
+  # *** text ***
 
   def text_to_ui_schema_field(field, locale)
     {

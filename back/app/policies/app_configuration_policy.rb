@@ -23,6 +23,7 @@ class AppConfigurationPolicy < ApplicationPolicy
   def create?
     false
   end
+
   def destroy?
     false
   end

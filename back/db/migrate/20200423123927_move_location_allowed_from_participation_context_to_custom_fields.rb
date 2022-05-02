@@ -23,9 +23,9 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
                 'custom_fields.ideas.location.description',
                 locales: CL2_SUPPORTED_LOCALES
               )
-            rescue StandardError
+          rescue StandardError
               {}
-            end,
+          end,
           required: false,
           enabled: false
         )
@@ -55,9 +55,9 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
                 'custom_fields.ideas.location.description',
                 locales: CL2_SUPPORTED_LOCALES
               )
-            rescue StandardError
+          rescue StandardError
               {}
-            end,
+          end,
           required: false,
           enabled: false
         )

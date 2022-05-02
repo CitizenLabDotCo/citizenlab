@@ -16,7 +16,7 @@
 # > StringFilterer.filters.map(&:name)                        # => ["swap case", "call method"]
 
 module Filterer
-  def self.included(base) #:nodoc:
+  def self.included(base) # :nodoc:
     base.extend ClassMethods
   end
 

@@ -123,6 +123,7 @@ describe EmailCampaigns::DeliveryService do
           []
         end
       end
+
       class ConsentableDisableableCampaignA < EmailCampaigns::Campaign
         include EmailCampaigns::Consentable
         include EmailCampaigns::Disableable
@@ -131,6 +132,7 @@ describe EmailCampaigns::DeliveryService do
           []
         end
       end
+
       class ConsentableDisableableCampaignB < EmailCampaigns::Campaign
         include EmailCampaigns::Consentable
         include EmailCampaigns::Disableable

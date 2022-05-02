@@ -302,7 +302,7 @@ class User < ApplicationRecord
     !admin?
   end
 
-# TODO: include folders?
+  # TODO: include folders?
   def moderatable_project_ids
     []
   end

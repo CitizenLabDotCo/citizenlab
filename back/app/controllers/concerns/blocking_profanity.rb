@@ -3,6 +3,7 @@ module BlockingProfanity
 
   class ProfanityBlockedError < StandardError
     attr_reader :blocked_words
+
     def initialize(blocked_words)
       super
       @blocked_words = blocked_words

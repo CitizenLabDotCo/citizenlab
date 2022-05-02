@@ -220,8 +220,8 @@ describe JsonFormsService do
             description: 'Which councils are you attending in our city?'
           },
           scope: '#/properties/field6'
-        }]
-                                           )
+        }
+      ])
     end
   end
 end
