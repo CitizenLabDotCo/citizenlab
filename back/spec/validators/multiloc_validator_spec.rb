@@ -82,7 +82,7 @@ describe MultilocValidator do
   end
 
   context 'with string values' do
-    it 'is invalid some values are not strings' do
+    it 'is invalid when some values are not strings' do
       nonpresence_subject.multiloc_field = { 'en' => 'My value', 'nl-BE' => false }
       expect(nonpresence_subject).to be_invalid
     end
