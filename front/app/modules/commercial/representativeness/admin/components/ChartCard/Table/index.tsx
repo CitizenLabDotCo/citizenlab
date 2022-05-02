@@ -6,6 +6,10 @@ import { Table } from 'semantic-ui-react';
 import { Box } from '@citizenlab/cl2-component-library';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
+import Button from 'components/UI/Button';
+
+// styling
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from '../messages';
@@ -37,16 +41,27 @@ const TableComponent = ({
   const slicedData = data.slice(0, 12);
 
   return (
-    <Box mx="40px" my="20px">
-      <Table>
-        <HeaderRow columns={columns} />
-        <StyledBody>
-          {slicedData.map((row, i) => (
-            <Row row={row} key={i} />
-          ))}
-        </StyledBody>
-      </Table>
-    </Box>
+    <>
+      <Box mx="40px" my="20px">
+        <Table>
+          <HeaderRow columns={columns} />
+          <StyledBody>
+            {slicedData.map((row, i) => (
+              <Row row={row} key={i} />
+            ))}
+          </StyledBody>
+        </Table>
+      </Box>
+
+      <Button
+        buttonStyle="secondary"
+        width="160px"
+        ml="40px"
+        fontSize={`${fontSizes.s}px`}
+      >
+        Show 23 more
+      </Button>
+    </>
   );
 };
 
