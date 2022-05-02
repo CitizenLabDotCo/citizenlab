@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
 ## 2022-05-02
 
 ### Added
