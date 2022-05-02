@@ -15,9 +15,11 @@ import { InjectedIntlProps } from 'react-intl';
 // typings
 import { RepresentativenessData } from '..';
 
+const TABLE_HEADER_BG_COLOR = '#f9fafb';
+
 const StyledBody = styled(Table.Body)`
   td:first-child {
-    background-color: #f9fafb;
+    background-color: ${TABLE_HEADER_BG_COLOR};
   }
 `;
 
