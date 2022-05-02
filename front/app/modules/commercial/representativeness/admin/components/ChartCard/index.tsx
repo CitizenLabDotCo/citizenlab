@@ -79,7 +79,9 @@ const ChartCard = ({
           hideTicks={hideTicks}
         />
       )}
-      {viewState === 'table' && <Table legendLabels={legendLabels} />}
+      {viewState === 'table' && (
+        <Table data={data} legendLabels={legendLabels} />
+      )}
       <Footer
         fieldIsRequired={customField.attributes.required}
         includedUserPercentage={includedUserPercentage}

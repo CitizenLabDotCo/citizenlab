@@ -11,9 +11,9 @@ interface Props {
 const HeaderRow = ({ columns }: Props) => (
   <Table.Header>
     <Table.Row>
-      {columns.map((column) => (
-        <Table.HeaderCell width={1}>
-          <Box my="8px">{column}</Box>
+      {columns.map((column, i) => (
+        <Table.HeaderCell width={1} key={i}>
+          <Box my="6px">{column}</Box>
         </Table.HeaderCell>
       ))}
     </Table.Row>
