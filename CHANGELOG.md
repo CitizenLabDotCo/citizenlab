@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-05-02
+
 ### Added
 
 - Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
