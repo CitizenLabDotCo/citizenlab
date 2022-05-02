@@ -16,10 +16,10 @@ class ApplicationRecord < ActiveRecord::Base
     end
   end
 
-  def self.disable_inheritance(&blk)
+  def self.disable_inheritance
     initial_inheritance_column = inheritance_column
     self.inheritance_column = :_type_disabled
-    blk.call
+    yield
     self.inheritance_column = initial_inheritance_column
   end
 

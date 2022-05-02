@@ -237,10 +237,8 @@ module AdminApi
         'max_budget'                   => pc.max_budget
       }
       if yml_pc['participation_method'] == 'survey'
-        yml_pc.merge!({
-          'survey_embed_url' => pc.survey_embed_url,
-          'survey_service'   => pc.survey_service
-        })
+        yml_pc['survey_embed_url'] = pc.survey_embed_url
+        yml_pc['survey_service'] = pc.survey_service
       end
       yml_pc
     end

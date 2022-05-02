@@ -48,7 +48,7 @@ module Polls
             when 'multiple_options'
               1..(question.max_options || question.options.size)
             end
-          selected_options = response_options.select { |ro| ro.option.question_id == question.id }.size
+          selected_options = response_options.count { |ro| ro.option.question_id == question.id }
 
           if selected_options < range.min
             errors.add(

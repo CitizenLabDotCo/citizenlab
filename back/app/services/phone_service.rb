@@ -3,7 +3,7 @@ class PhoneService
     # If any of these validations change, sync with front-end people.
     # We use the same ones there for form validation.
     # See front/app/utils/validate.ts
-    if str =~ /^.*@.*..*$/
+    if /^.*@.*..*$/.match?(str)
       :email
     elsif normalize_phone(str).size > 5 && (str =~ /^\+?[0-9.x\-\s()]+$/)
       :phone

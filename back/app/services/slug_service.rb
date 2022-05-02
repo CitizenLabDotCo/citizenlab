@@ -18,12 +18,12 @@ class SlugService
   # This is useful to persist theses records all at once, e.g. in a
   # transaction, where the normal one by one slug generation would fail.
   # The given block must extract the string to base the slug on from one record
-  def generate_slugs(unpersisted_records, &block)
+  def generate_slugs(unpersisted_records)
     return [] if unpersisted_records.blank?
 
     # Calculate slugs for every record individually
     slugs = unpersisted_records.map do |record|
-      slugify(block.call(record))
+      slugify(yield(record))
     end
 
     # Find the all the persisted duplicates

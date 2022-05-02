@@ -316,7 +316,7 @@ class XlsxService
   end
 
   def convert_to_text_long_lines(html)
-    convert_to_text(html).gsub(/\n/, ' ')
+    convert_to_text(html).tr("\n", ' ')
   end
 
   # Sheet names, derived from Cause titles for example, can only be 31 characters long,

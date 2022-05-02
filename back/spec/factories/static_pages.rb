@@ -11,6 +11,6 @@ FactoryBot.define do
       'en' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join,
       'nl-BE' => Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join
     } end
-    sequence(:slug) { |n| "#{Faker::Internet.slug.parameterize}-#{n}".gsub('_', '-') }
+    sequence(:slug) { |n| "#{Faker::Internet.slug.parameterize}-#{n}".tr('_', '-') }
   end
 end

@@ -120,7 +120,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     CustomFieldService.new.cleanup_custom_field_values! user_params[:custom_field_values]
     @user.assign_attributes user_params
 
-    if user_params.keys.include?('avatar') && user_params['avatar'].nil?
+    if user_params.key?('avatar') && user_params['avatar'].nil?
       # setting the avatar attribute to nil will not remove the avatar
       @user.remove_avatar!
     end

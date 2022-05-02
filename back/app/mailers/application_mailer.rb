@@ -168,7 +168,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def text_direction
-    locale =~ /^ar.*$/ ? 'rtl' : 'ltr'
+    /^ar.*$/.match?(locale) ? 'rtl' : 'ltr'
   end
 
   def to_deep_struct(obj)
