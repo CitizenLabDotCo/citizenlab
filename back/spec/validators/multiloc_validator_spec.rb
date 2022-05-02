@@ -101,7 +101,7 @@ describe MultilocValidator do
   context 'with hash values' do
     let(:hashed_multiloc_subject) { Validatable4.new }
 
-    it 'is invalid some values are not hashes' do
+    it 'is invalid when some values are not hashes' do
       hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'nl-BE' => 'test' }
       expect(hashed_multiloc_subject).to be_invalid
     end
