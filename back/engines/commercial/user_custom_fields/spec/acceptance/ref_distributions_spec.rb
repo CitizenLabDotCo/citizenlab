@@ -60,7 +60,8 @@ resource 'Representativeness reference distributions' do
       custom_field.custom_field_option_ids.index_with { rand(100) }
     end
 
-    example_request 'creates a reference distribution' do
+    example 'creates a reference distribution' do
+      expect { do_request }.to enqueue_job(LogActivityJob)
       expect(status).to eq(201)
 
       ref_distribution = UserCustomFields::Representativeness::RefDistribution.find(response_data[:id])
@@ -73,6 +74,31 @@ resource 'Representativeness reference distributions' do
         )
       end
     end
+
+    context 'when the distribution is invalid' do
+      let(:distribution) { { 'bad-option' => 22 } }
+
+      example_request 'returns 422 (Unprocessable Entity)' do
+        expect(status).to eq(422)
+        expect(json_response_body).to include(:errors)
+      end
+    end
+
+    context 'when the custom field already have a distribution' do
+      let!(:previous_distribution) { create(:ref_distribution, custom_field: custom_field) }
+
+      example_request 'replaces the existing distribution' do
+        expect(status).to eq(201)
+
+        ref_distribution = UserCustomFields::Representativeness::RefDistribution.find(response_data[:id])
+
+        aggregate_failures do
+          expect(ref_distribution.custom_field_id).to eq(custom_field_id)
+          expect(previous_distribution.id).not_to eq(ref_distribution.id)
+          expect { previous_distribution.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
   end
 
   delete 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
@@ -80,7 +106,8 @@ resource 'Representativeness reference distributions' do
       let!(:reference_distribution) { create(:ref_distribution) }
       let(:custom_field_id) { reference_distribution.custom_field_id }
 
-      example_request 'deletes the reference distribution' do
+      example 'deletes the reference distribution' do
+        expect { do_request }.to enqueue_job(LogActivityJob)
         expect(status).to eq(204)
         expect(UserCustomFields::Representativeness::RefDistribution.find_by(id: custom_field_id)).to be_nil
       end
