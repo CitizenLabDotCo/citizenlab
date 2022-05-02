@@ -6,6 +6,10 @@
 
 - Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
 
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
 ## 2022-04-28
 
 ### Added
