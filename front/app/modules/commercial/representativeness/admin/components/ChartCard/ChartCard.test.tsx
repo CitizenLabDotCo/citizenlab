@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, waitFor } from 'utils/testUtils/rtl';
 import ChartCard from './';
 import moment from 'moment';
 
@@ -67,19 +67,64 @@ describe('<ChartCard />', () => {
     expect(screen.getByText('70')).toBeInTheDocument();
   });
 
-  describe('N < 10', () => {
+  // it('allows switching from graph to table view and vice versa', () => {
+  // TODO
+  // })
+
+  describe('N <= 10', () => {
     const data = generateData(4);
 
     it('renders chart by default', () => {
-      // TODO
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        container.querySelector('.recharts-responsive-container')
+      ).toBeInTheDocument();
     });
 
     it('renders labels', () => {
-      // TODO
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      waitFor(() => {
+        expect(container.querySelectorAll('.recharts-label')).toHaveLength(8);
+      });
     });
 
     it('renders ticks', () => {
-      // TODO
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      waitFor(() => {
+        expect(
+          container.querySelectorAll('.recharts-cartesian-axis-tick-line')
+        ).toHaveLength(4);
+        expect(
+          container.querySelectorAll('.recharts-cartesian-axis-tick-value')
+        ).toHaveLength(4);
+      });
     });
 
     it('renders included users percentage', () => {
@@ -97,7 +142,267 @@ describe('<ChartCard />', () => {
     });
 
     it('does not render warning', () => {
-      // TODO
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).not.toBeInTheDocument();
     });
   });
+
+  describe('10 < N <= 12', () => {
+    const data = generateData(11);
+
+    it('renders chart by default', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        container.querySelector('.recharts-responsive-container')
+      ).toBeInTheDocument();
+    });
+
+    it('does not render labels', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      waitFor(() => {
+        expect(container.querySelectorAll('.recharts-label')).toHaveLength(0);
+      });
+    });
+
+    it('renders ticks', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      waitFor(() => {
+        expect(
+          container.querySelectorAll('.recharts-cartesian-axis-tick-line')
+        ).toHaveLength(4);
+        expect(
+          container.querySelectorAll('.recharts-cartesian-axis-tick-value')
+        ).toHaveLength(4);
+      });
+    });
+
+    it('renders included users percentage', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(screen.getByText('85%')).toBeInTheDocument();
+    });
+
+    it('does not render warning', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('12 < N <= 24', () => {
+    const data = generateData(16);
+
+    it('renders chart by default', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        container.querySelector('.recharts-responsive-container')
+      ).toBeInTheDocument();
+    });
+
+    it('does not render labels', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      waitFor(() => {
+        expect(container.querySelectorAll('.recharts-label')).toHaveLength(0);
+      });
+    });
+
+    it('does not render ticks', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      waitFor(() => {
+        expect(
+          container.querySelectorAll('.recharts-cartesian-axis-tick-line')
+        ).toHaveLength(0);
+        expect(
+          container.querySelectorAll('.recharts-cartesian-axis-tick-value')
+        ).toHaveLength(0);
+      });
+    });
+
+    it('renders included users percentage', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(screen.getByText('85%')).toBeInTheDocument();
+    });
+
+    it('does not render warning', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  // describe('24 < N', () => {
+  //   const data = generateData(26);
+
+  // it('renders table by default', () => {
+  //   const { container } = render(
+  //     <ChartCard
+  //       data={data}
+  //       customField={customField}
+  //       representativenessScore={70}
+  //       demographicDataDate={demographicDataDate}
+  //       includedUserPercentage={85}
+  //     />
+  //   );
+
+  //   expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
+  // });
+
+  // it('renders included users percentage', () => {
+  //   render(
+  //     <ChartCard
+  //       data={data}
+  //       customField={customField}
+  //       representativenessScore={70}
+  //       demographicDataDate={demographicDataDate}
+  //       includedUserPercentage={85}
+  //     />
+  //   );
+
+  //   expect(screen.getByText('85%')).toBeInTheDocument();
+  // });
+
+  // it('on select chart view: does not render included users percentage', () => {
+  //   render(
+  //     <ChartCard
+  //       data={data}
+  //       customField={customField}
+  //       representativenessScore={70}
+  //       demographicDataDate={demographicDataDate}
+  //       includedUserPercentage={85}
+  //     />
+  //   );
+
+  //   expect(screen.getByText('85%')).toBeInTheDocument();
+  // });
+
+  // it('does not render warning', () => {
+  //   render(
+  //     <ChartCard
+  //       data={data}
+  //       customField={customField}
+  //       representativenessScore={70}
+  //       demographicDataDate={demographicDataDate}
+  //       includedUserPercentage={85}
+  //     />
+  //   );
+
+  //   expect(screen.queryByTestId('representativeness-items-hidden-warning')).not.toBeInTheDocument()
+  // });
+
+  // it('on select chart view: renders warning', () => {
+  //   render(
+  //     <ChartCard
+  //       data={data}
+  //       customField={customField}
+  //       representativenessScore={70}
+  //       demographicDataDate={demographicDataDate}
+  //       includedUserPercentage={85}
+  //     />
+  //   );
+
+  //   expect(screen.queryByTestId('representativeness-items-hidden-warning')).toBeInTheDocument()
+  // });
+  // });
 });

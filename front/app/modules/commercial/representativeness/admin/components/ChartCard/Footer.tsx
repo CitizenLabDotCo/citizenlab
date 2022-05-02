@@ -96,7 +96,10 @@ const Footer = ({
     </Box>
 
     {dataIsTooLong && (
-      <Box p="0px 40px 32px 40px">
+      <Box
+        p="0px 40px 32px 40px"
+        data-testid="representativeness-items-hidden-warning"
+      >
         <Warning icon="info">
           <FormattedMessage
             {...messages.dataHiddenWarning}
