@@ -843,7 +843,7 @@
   "app.containers.InitiativesIndexPage.explanationTitle": "Wie funktioniert es?",
   "app.containers.InitiativesIndexPage.footer": "Starte deinen eigenen Vorschlag und gib deiner Meinung eine Stimme",
   "app.containers.InitiativesIndexPage.footerPostingDisabled": "Unterstützen Sie die Vorschläge der Bürger:innen und verschaffen Sie Ihrer Stimme Gehör!",
-  "app.containers.InitiativesIndexPage.header": "Veröffentliche deinen Vorschlag hier und setze ihn auf die Tagesordnung der {styledOrgName}",
+  "app.containers.InitiativesIndexPage.header": "Veröffentliche deinen Vorschlag hier und setze ihn auf die Tagesordnung von {styledOrgName}",
   "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "Untersuchen Sie Bürgervorschläge für {styledOrgName}",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Vorschläge entdecken",
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Alle Vorschläge, die in {orgName} stattfinden",
