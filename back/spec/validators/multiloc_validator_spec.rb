@@ -82,12 +82,12 @@ describe MultilocValidator do
   end
 
   context 'with string values' do
-    it 'is invalid some values are not strings' do
+    it 'is invalid when some values are not strings' do
       nonpresence_subject.multiloc_field = { 'en' => 'My value', 'nl-BE' => false }
       expect(nonpresence_subject).to be_invalid
     end
 
-    it 'is invalid some values are nil' do
+    it 'is invalid when some values are nil' do
       nonpresence_subject.multiloc_field = { 'en' => 'My value', 'nl-BE' => nil }
       expect(nonpresence_subject).to be_invalid
     end
@@ -101,12 +101,12 @@ describe MultilocValidator do
   context 'with hash values' do
     let(:hashed_multiloc_subject) { Validatable4.new }
 
-    it 'is invalid some values are not hashes' do
+    it 'is invalid when some values are not hashes' do
       hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'nl-BE' => 'test' }
       expect(hashed_multiloc_subject).to be_invalid
     end
 
-    it 'is invalid some values are nil' do
+    it 'is invalid when some values are nil' do
       hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'fr-BE' => nil }
       expect(hashed_multiloc_subject).to be_invalid
     end
