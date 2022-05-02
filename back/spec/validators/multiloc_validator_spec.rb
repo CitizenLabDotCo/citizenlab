@@ -106,7 +106,7 @@ describe MultilocValidator do
       expect(hashed_multiloc_subject).to be_invalid
     end
 
-    it 'is invalid some values are nil' do
+    it 'is invalid when some values are nil' do
       hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'fr-BE' => nil }
       expect(hashed_multiloc_subject).to be_invalid
     end
