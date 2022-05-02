@@ -179,7 +179,6 @@ const SignUp = ({
         accountCreated,
       })
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     configuration,
     authUser,
@@ -196,7 +195,6 @@ const SignUp = ({
       onCompleteActiveStep();
       setAccountCreated(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
 
   // called when a step is completed
@@ -232,8 +230,16 @@ const SignUp = ({
     ) {
       handleFlowCompleted();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser, metaData]);
+
+  // emit event whenever activeStep changes
+  useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
+
+  useEffect(() => {
+    if (metaData?.error) {
+      setError(formatMessage(messages.somethingWentWrongText));
+    }
+  }, [metaData?.error]);
 
   const onResize = (_width, height) => {
     setHeaderHeight(`${Math.round(height) + 2}px`);
@@ -280,16 +286,6 @@ const SignUp = ({
   const handleGoBack = () => {
     setEmailSignUpSelected(false);
   };
-
-  // emit event whenever activeStep changes
-  useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
-
-  useEffect(() => {
-    if (metaData?.error) {
-      setError(formatMessage(messages.somethingWentWrongText));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metaData?.error]);
 
   const helpText = activeStepConfiguration?.helperText?.(
     !isNilOrError(tenant) ? tenant.data : undefined
