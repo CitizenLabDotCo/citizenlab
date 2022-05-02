@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import Header, { ViewState } from './Header';
 import Chart from './Chart';
+import Table from './Table';
 import Footer from './Footer';
 
 // i18n
@@ -70,12 +71,15 @@ const ChartCard = ({
         viewState={viewState}
         onChangeViewState={setViewState}
       />
-      <Chart
-        currentChartRef={currentChartRef}
-        data={data}
-        barNames={barNames}
-        hideTicks={hideTicks}
-      />
+      {viewState === 'chart' && (
+        <Chart
+          currentChartRef={currentChartRef}
+          data={data}
+          barNames={barNames}
+          hideTicks={hideTicks}
+        />
+      )}
+      {viewState === 'table' && <Table legendLabels={legendLabels} />}
       <Footer
         fieldIsRequired={customField.attributes.required}
         includedUserPercentage={includedUserPercentage}

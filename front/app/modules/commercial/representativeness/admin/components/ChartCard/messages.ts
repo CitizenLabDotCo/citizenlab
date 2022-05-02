@@ -43,4 +43,8 @@ export default defineMessages({
     defaultMessage:
       "The score shows how similar the distributions of platform users and total population. Learn more about how it's calculated {representativenessArticleLink}.",
   },
+  item: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.item',
+    defaultMessage: 'Item',
+  },
 });
