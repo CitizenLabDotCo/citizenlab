@@ -1089,7 +1089,7 @@
   "app.containers.Projects.takeTheSurvey": "Zur Umfrage",
   "app.containers.Projects.thisProjectIsNotPubliclyVisibleVisitHomePageToDiscover": "Dieses Projekt ist nicht öffentlich sichtbar. Besuchen Sie die Homepage, um weitere Beteiligungsmöglichkeiten zu entdecken.",
   "app.containers.Projects.timeline": "Zeitstrahl",
-  "app.containers.Projects.upcomingEvents": "Bevorstehende Veranstaltungen",
+  "app.containers.Projects.upcomingEvents": "Aktuelle Veranstaltungen",
   "app.containers.Projects.whatsAppMessage": "{projectName} | von der Beteiligungsplattform von {orgName}",
   "app.containers.Projects.xContributions": "{ideasCount, plural, one {# Beitrag} other {# Beiträge}}",
   "app.containers.Projects.xContributionsInCurrentPhase": "{ideasCount, plural, one {# Beitrag} other {# Beiträge}} in der aktuellen Phase",
