@@ -32,12 +32,13 @@ module ContentBuilder
     end
 
     def validate_whitelisted_iframe_urls
+      iframe_sanitizer = ::SanitizationService::IframeScrubber.new
       craftjs_jsonmultiloc.each do |locale, json|
-        json.select do |key, elt|
-          key != 'ROOT' && elt.dig('type', 'resolvedName') == 'Iframe'
-        end.each_value do |elt|
+        json.each do |key, elt|
+          next if key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Iframe'
+
           url = elt.dig 'props', 'url'
-          if url && !::SanitizationService::IframeScrubber.new.video_whitelisted?(url)
+          if url && !iframe_sanitizer.video_whitelisted?(url)
             errors.add :craftjs_jsonmultiloc, :iframe_url_not_whitelisted, locale: locale, url: url
           end
         end
@@ -45,8 +46,7 @@ module ContentBuilder
     end
 
     def sanitize_craftjs_jsonmultiloc
-      service = LayoutSanitizationService.new
-      self.craftjs_jsonmultiloc = service.sanitize_multiloc craftjs_jsonmultiloc
+      self.craftjs_jsonmultiloc = LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
     end
   end
 end

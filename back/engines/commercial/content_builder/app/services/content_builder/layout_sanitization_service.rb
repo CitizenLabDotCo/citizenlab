@@ -13,9 +13,9 @@ module ContentBuilder
     private
 
     def sanitize_html_in_text_elements(craftjson, features)
-      craftjson.select do |key, elt|
-        key != 'ROOT' && elt.dig('type', 'resolvedName') == 'Text'
-      end.each_value do |elt|
+      craftjson.each do |key, elt|
+        next if key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Text'
+
         text = elt.dig 'props', 'text'
         elt['props']['text'] = html_sanitizer.sanitize text, features if text
       end

@@ -163,7 +163,7 @@ class SanitizationService
     end
 
     def video_whitelisted?(url)
-      VIDEO_WHITELIST.any? { |regex| (url =~ regex)&.zero? }
+      VIDEO_WHITELIST.any? { |regex| regex.match? url }
     end
 
     private
