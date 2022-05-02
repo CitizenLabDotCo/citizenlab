@@ -504,3 +504,11 @@ Performance/ReverseEach:
   Enabled: true
 Performance/StringReplacement:
   Enabled: true
+
+
+Naming/MemoizedInstanceVariableName:
+  Enabled: true
+Naming/RescuedExceptionsVariableName:
+  Enabled: true
+Naming/VariableName:
+  Enabled: true

@@ -67,14 +67,14 @@ class CustomFieldService
 
   def generate_key(_record, title)
     key = keyify(title)
-    indexedKey = nil
+    indexed_key = nil
     i = 0
-    # while record.class.find_by(key: indexedKey || key)
-    while yield(indexedKey || key)
+    # while record.class.find_by(key: indexed_key || key)
+    while yield(indexed_key || key)
       i += 1
-      indexedKey = [key, '_', i].join
+      indexed_key = [key, '_', i].join
     end
-    indexedKey || key
+    indexed_key || key
   end
 
   def keyify(str)

@@ -123,6 +123,9 @@ Naming/MethodParameterName:
 Naming/PredicateName:
   Enabled: true
 
+Naming/AccessorMethodName:
+  Enabled: true
+
 RSpec/ExampleLength:
   Enabled: true
 
