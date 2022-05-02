@@ -1,5 +1,8 @@
 import React from 'react';
 
+// hooks
+import { useTheme } from 'styled-components';
+
 // components
 import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import Legend from 'components/admin/Graphs/Legend';
@@ -31,7 +34,6 @@ interface Props extends RequiredOrOptionalProps {
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
   legendLabels: string[];
-  legendColors: string[];
 }
 
 const RequiredOrOptional = ({ fieldIsRequired }: RequiredOrOptionalProps) =>
@@ -55,67 +57,73 @@ const Footer = ({
   dataIsTooLong,
   numberOfHiddenItems,
   legendLabels,
-  legendColors,
-}: Props) => (
-  <>
-    <Box
-      width="100%"
-      p={dataIsTooLong ? smallPadding : normalPadding}
-      mt={dataIsTooLong || hideTicks ? '-20px' : undefined}
-      display="flex"
-      flexDirection="row"
-      justifyContent={dataIsTooLong ? 'center' : 'space-between'}
-    >
-      {!dataIsTooLong && (
-        <Text fontSize="s" color="adminSecondaryTextColor">
-          <StyledIcon
-            name="user"
-            width="16px"
-            height="16px"
-            fill={colors.adminSecondaryTextColor}
-            mr="6px"
-          />
-          <FormattedMessage
-            {...messages.percentageUsersIncluded}
-            values={{
-              percentage: <b>{includedUserPercentage}%</b>,
-            }}
-          />
-          <Separator>•</Separator>
-          <FormattedMessage
-            {...messages.forUserRegistation}
-            values={{
-              requiredOrOptional: (
-                <RequiredOrOptional fieldIsRequired={fieldIsRequired} />
-              ),
-            }}
-          />
-        </Text>
-      )}
-      <Legend labels={legendLabels} colors={legendColors} />
-    </Box>
+}: Props) => {
+  const { newBarFill, secondaryNewBarFill }: any = useTheme();
 
-    {dataIsTooLong && (
+  return (
+    <>
       <Box
-        p="0px 40px 32px 40px"
-        data-testid="representativeness-items-hidden-warning"
+        width="100%"
+        p={dataIsTooLong ? smallPadding : normalPadding}
+        mt={dataIsTooLong || hideTicks ? '-20px' : undefined}
+        display="flex"
+        flexDirection="row"
+        justifyContent={dataIsTooLong ? 'center' : 'space-between'}
       >
-        <Warning icon="info">
-          <FormattedMessage
-            {...messages.dataHiddenWarning}
-            values={{
-              numberOfHiddenItems,
-              tableViewLink: (
-                <a>
-                  <FormattedMessage {...messages.tableViewLinkText} />
-                </a>
-              ),
-            }}
-          />
-        </Warning>
+        {!dataIsTooLong && (
+          <Text fontSize="s" color="adminSecondaryTextColor">
+            <StyledIcon
+              name="user"
+              width="16px"
+              height="16px"
+              fill={colors.adminSecondaryTextColor}
+              mr="6px"
+            />
+            <FormattedMessage
+              {...messages.percentageUsersIncluded}
+              values={{
+                percentage: <b>{includedUserPercentage}%</b>,
+              }}
+            />
+            <Separator>•</Separator>
+            <FormattedMessage
+              {...messages.forUserRegistation}
+              values={{
+                requiredOrOptional: (
+                  <RequiredOrOptional fieldIsRequired={fieldIsRequired} />
+                ),
+              }}
+            />
+          </Text>
+        )}
+        <Legend
+          labels={legendLabels}
+          colors={[newBarFill, secondaryNewBarFill]}
+        />
       </Box>
-    )}
-  </>
-);
+
+      {dataIsTooLong && (
+        <Box
+          p="0px 40px 32px 40px"
+          data-testid="representativeness-items-hidden-warning"
+        >
+          <Warning icon="info">
+            <FormattedMessage
+              {...messages.dataHiddenWarning}
+              values={{
+                numberOfHiddenItems,
+                tableViewLink: (
+                  <a>
+                    <FormattedMessage {...messages.tableViewLinkText} />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
+      )}
+    </>
+  );
+};
 
 export default Footer;
