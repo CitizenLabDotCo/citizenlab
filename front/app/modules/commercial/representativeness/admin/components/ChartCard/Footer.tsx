@@ -33,6 +33,7 @@ interface Props extends RequiredOrOptionalProps {
   hideTicks: boolean;
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
+  hideLegend: boolean;
   legendLabels: string[];
 }
 
@@ -56,6 +57,7 @@ const Footer = ({
   hideTicks,
   dataIsTooLong,
   numberOfHiddenItems,
+  hideLegend,
   legendLabels,
 }: Props) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
@@ -96,10 +98,13 @@ const Footer = ({
             />
           </Text>
         )}
-        <Legend
-          labels={legendLabels}
-          colors={[newBarFill, secondaryNewBarFill]}
-        />
+
+        {!hideLegend && (
+          <Legend
+            labels={legendLabels}
+            colors={[newBarFill, secondaryNewBarFill]}
+          />
+        )}
       </Box>
 
       {dataIsTooLong && (

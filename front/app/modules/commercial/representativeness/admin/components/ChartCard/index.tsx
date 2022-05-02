@@ -47,13 +47,15 @@ const ChartCard = ({
 }: Props & InjectedIntlProps) => {
   const hideTicks = data.length > 12;
   const preferTableView = hideTicks;
-  const dataIsTooLong = data.length > 24;
-  const numberOfHiddenItems = data.length - 24;
 
   const currentChartRef = useRef<SVGElement>();
   const [viewState, setViewState] = useState<ViewState>(
     preferTableView ? 'table' : 'chart'
   );
+
+  const dataIsTooLong = data.length > 24;
+  const numberOfHiddenItems = data.length - 24;
+  const hideLegend = viewState === 'table';
 
   const barNames = [
     formatMessage(messages.users),
@@ -89,6 +91,7 @@ const ChartCard = ({
         dataIsTooLong={dataIsTooLong}
         numberOfHiddenItems={numberOfHiddenItems}
         legendLabels={legendLabels}
+        hideLegend={hideLegend}
       />
     </Box>
   );
