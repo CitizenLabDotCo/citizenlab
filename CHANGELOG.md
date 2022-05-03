@@ -2,6 +2,10 @@
 
 ## Next Release
 
+### Changed
+
+- City logo now in higher resolution.
+
 ## 2022-05-02
 
 ### Added
