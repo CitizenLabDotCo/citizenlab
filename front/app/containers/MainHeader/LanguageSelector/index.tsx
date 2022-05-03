@@ -132,8 +132,6 @@ const LanguageSelector = ({ className }: Props) => {
 
   if (!isNilOrError(appConfig) && !isNilOrError(locale)) {
     const tenantLocales = appConfig.data.attributes.settings.core.locales;
-    const automaticLocales =
-      appConfig.data.attributes.settings.core.automatic_locales;
     const isRtl = !!locale.startsWith('ar');
 
     const selectedLocale = getSelectedLocale(locale);
@@ -178,21 +176,6 @@ const LanguageSelector = ({ className }: Props) => {
                     <ListItemText>
                       {shortenedAppLocalePairs[tenantLocale]}
                     </ListItemText>
-                  </ListItem>
-                );
-              })}
-
-              {automaticLocales.map((automaticLocale) => {
-                console.log(automaticLocale);
-                // const last = index === automaticLocales.length - 1;
-
-                return (
-                  <ListItem
-                    key={automaticLocale}
-                    href={`#Weglot-${automaticLocale}`}
-                    // className={`e2e-langage-${automaticLocale}`}
-                  >
-                    <ListItemText>{automaticLocale}</ListItemText>
                   </ListItem>
                 );
               })}

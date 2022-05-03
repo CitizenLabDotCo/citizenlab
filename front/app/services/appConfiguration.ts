@@ -17,7 +17,7 @@ export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
-  automatic_locales: string[];
+  weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;

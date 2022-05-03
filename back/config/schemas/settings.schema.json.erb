@@ -66,16 +66,10 @@
             "minItems": 1,
             "default": ["en"]
           },
-          "automatic_locales": {
-            "title": "Languages that will be translated automatically.",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["tw"]
-            },
-            "uniqueItems": true,
-            "minItems": 0,
-            "default": []
+          "weglot_api_key": {
+            "title": "Weglot API key",
+            "description": "Set the API key of Weglot to enable automatic page translations.",
+            "type": "string"
           },
           "color_main": {
             "title": "Main Colour",
