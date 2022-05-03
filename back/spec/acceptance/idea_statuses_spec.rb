@@ -3,7 +3,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-# rubocop:disable Metrics/BlockLength
 resource 'IdeaStatuses' do
   explanation 'Idea statuses reflect the cities attitude towards an idea. Each tenant has its own custom set of idea statuses.'
 

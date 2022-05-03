@@ -139,8 +139,7 @@ describe JsonFormsService do
                   name:                   { type: 'string' }
                 },
                 type: 'object'
-              },
-              type: 'array'
+              }
             }
           },
          required: %w[field2 field8 field9]

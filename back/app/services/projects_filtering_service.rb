@@ -1,7 +1,7 @@
 class ProjectsFilteringService
   include Filterer
 
-  HOMEPAGE_FILTER_PARAMS = [] # rubocop:disable Style/MutableConstant, we fill it below in this file
+  HOMEPAGE_FILTER_PARAMS = []
 
   class << self
     def for_homepage_filter(current_user)

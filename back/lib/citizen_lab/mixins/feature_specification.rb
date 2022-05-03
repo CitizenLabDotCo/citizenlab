@@ -7,7 +7,7 @@ module CitizenLab
     module FeatureSpecification
       extend SettingsSpecification
 
-      def json_schema # rubocop:disable Metrics/MethodLength
+      def json_schema
         {
           'type' => 'object',
           'title' => feature_title,

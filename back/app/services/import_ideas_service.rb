@@ -12,7 +12,7 @@ class ImportIdeasService
         added_idea_ids.push convert_idea(idea_data).id
         puts "Created #{added_idea_ids.first}"
       end
-    rescue Exception => e
+    rescue StandardError => e
       added_idea_ids.select { |id| id }.each do |id|
         Idea.find(id)&.destroy!
         puts "Destroyed #{id}"
@@ -66,7 +66,7 @@ class ImportIdeasService
     if idea_data[:published_at]
       begin
         d[:published_at] = Date.parse idea_data[:published_at]
-      rescue Exception => e
+      rescue StandardError => _e
         puts "Falied to parse publication date: #{idea_data[:published_at]}"
       end
     end
@@ -82,7 +82,7 @@ class ImportIdeasService
     if idea_data[:image_url]
       begin
         IdeaImage.create!(remote_image_url: idea_data[:image_url], idea: idea)
-      rescue Exception => e
+      rescue StandardError => _e
         raise "No image could be downloaded from #{idea_data[:image_url]}, make sure the URL is valid and ends with a file extension such as .png or .jpg"
       end
     end

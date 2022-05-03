@@ -345,32 +345,36 @@ module AdminApi
       user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
       user_ids += OfficialFeedback.where(post_id: idea_ids, post_type: 'Idea').pluck(:user_id)
 
-      User.where(id: user_ids.uniq).map do |u|
+      User.where(id: user_ids.uniq).map do |user|
         yml_user = if anonymize_users
-          yml_user = service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: u
+          service.anonymized_attributes AppConfiguration.instance.settings('core', 'locales'), user: user
         else
-           yml_user = {
-            'email'                     => u.email,
-            'password_digest'           => u.password_digest,
-            'created_at'                => shift_timestamp(u.created_at, shift_timestamps)&.iso8601,
-            'updated_at'                => shift_timestamp(u.updated_at, shift_timestamps)&.iso8601,
-            'remote_avatar_url'         => u.avatar_url,
-            'first_name'                => u.first_name,
-            'last_name'                 => u.last_name,
-            'locale'                    => u.locale,
-            'bio_multiloc'              => u.bio_multiloc,
-            'cl1_migrated'              => u.cl1_migrated,
-            'custom_field_values'       => u.custom_field_values.delete_if { |_k, v| v.nil? },
-            'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601,
-            'verified'                  => u.verified
-          }
-           unless yml_user['password_digest']
-             yml_user['password'] = SecureRandom.urlsafe_base64 32
-           end
+          yml_user_from user
         end
+        store_ref yml_user, user.id, :user
         yml_user
-        store_ref yml_user, u.id, :user
-        yml_user
+      end
+    end
+
+    def yml_user_from(user)
+      {
+        'email'                     => user.email,
+        'password_digest'           => user.password_digest,
+        'created_at'                => shift_timestamp(user.created_at, shift_timestamps)&.iso8601,
+        'updated_at'                => shift_timestamp(user.updated_at, shift_timestamps)&.iso8601,
+        'remote_avatar_url'         => user.avatar_url,
+        'first_name'                => user.first_name,
+        'last_name'                 => user.last_name,
+        'locale'                    => user.locale,
+        'bio_multiloc'              => user.bio_multiloc,
+        'cl1_migrated'              => user.cl1_migrated,
+        'custom_field_values'       => user.custom_field_values.delete_if { |_k, v| v.nil? },
+        'registration_completed_at' => shift_timestamp(user.registration_completed_at, shift_timestamps)&.iso8601,
+        'verified'                  => user.verified
+      }.tap do |yml_user|
+        unless yml_user['password_digest']
+          yml_user['password'] = SecureRandom.urlsafe_base64 32
+        end
       end
     end
 
@@ -458,13 +462,13 @@ module AdminApi
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
           'proposed_budget' => i.proposed_budget,
-          'text_images_attributes' => i.text_images.map do |i|
+          'text_images_attributes' => i.text_images.map do |text_image|
             {
-              'imageable_field'          => i.imageable_field,
-              'remote_image_url'         => i.image_url,
-              'text_reference'           => i.text_reference,
-              'created_at'               => i.created_at.to_s,
-              'updated_at'               => i.updated_at.to_s
+              'imageable_field'          => text_image.imageable_field,
+              'remote_image_url'         => text_image.image_url,
+              'text_reference'           => text_image.text_reference,
+              'created_at'               => text_image.created_at.to_s,
+              'updated_at'               => text_image.updated_at.to_s
             }
           end
         }

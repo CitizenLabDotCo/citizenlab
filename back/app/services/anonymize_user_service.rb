@@ -164,7 +164,7 @@ class AnonymizeUserService
     else
       { 'avatar' => random_initials_avatar_base64(first_name, last_name) }
     end
-  rescue Exception => e
+  rescue StandardError => e
     ErrorReporter.report e
     {}
   end

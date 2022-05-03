@@ -21,7 +21,6 @@ RSpec.describe NLP::Api do
       end
     end
 
-    # rubocop:disable RSpec/NestedGroups
     context 'when arguments are not provided' do
       let(:base_uri) { nil }
       let(:authorization_token) { nil }

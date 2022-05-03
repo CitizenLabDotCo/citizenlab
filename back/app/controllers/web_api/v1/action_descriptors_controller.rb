@@ -3,7 +3,6 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
   skip_after_action :verify_authorized, only: [:initiatives]
 
   def initiatives
-    # rubocop:disable Layout/HashAlignment
     descriptors = {
       posting_initiative:          { enabled: true, disabled_reason: nil },
       commenting_initiative:       { enabled: true, disabled_reason: nil },

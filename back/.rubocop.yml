@@ -537,3 +537,50 @@ Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 Layout/SpaceBeforeComma:
   Enabled: true
+
+Lint/AmbiguousOperator:
+  Enabled: true
+Lint/AssignmentInCondition:
+  Enabled: true
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+Lint/BooleanSymbol:
+  Enabled: true
+Lint/ConstantDefinitionInBlock:
+  Enabled: true
+Lint/Debugger:
+  Enabled: true
+Lint/DeprecatedClassMethods:
+  Enabled: true
+Lint/DuplicateHashKey:
+  Enabled: true
+Lint/DuplicateMethods:
+  Enabled: true
+Lint/EmptyFile:
+  Enabled: true
+Lint/ImplicitStringConcatenation:
+  Enabled: true
+Lint/IneffectiveAccessModifier:
+  Enabled: true
+Lint/MissingCopEnableDirective:
+  Enabled: true
+Lint/RandOne:
+  Enabled: true
+Lint/RedundantCopDisableDirective:
+  Enabled: true
+Lint/RedundantSplatExpansion:
+  Enabled: true
+Lint/RescueException:
+  Enabled: true
+Lint/SafeNavigationChain:
+  Enabled: true
+Lint/ShadowingOuterLocalVariable:
+  Enabled: true
+Lint/SuppressedException:
+  Enabled: true
+Lint/UnderscorePrefixedVariableName:
+  Enabled: true
+Lint/UselessAccessModifier:
+  Enabled: true
+Lint/Void:
+  Enabled: true

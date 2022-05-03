@@ -455,8 +455,10 @@ end
         expect(json_response).to match({
           series: {
             users: {
+              # rubocop:disable Lint/BooleanSymbol
               true: 1,
               false: 1,
+              # rubocop:enable Lint/BooleanSymbol
               _blank: 1
             }
           }

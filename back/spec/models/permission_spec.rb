@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Permission, type: :model do
   describe '#for_user' do
     before(:all) do
-      # rubocop:disable RSpec/BeforeAfterAll
       @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
 
       # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs

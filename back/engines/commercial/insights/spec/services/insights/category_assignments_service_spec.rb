@@ -69,7 +69,6 @@ describe Insights::CategoryAssignmentsService do
       end
     end
 
-    # rubocop:disable RSpec/ExampleLength
     it "doesn't override (approved) category assignments" do
       input = create(:idea)
       categories = create_list(:category, 2)

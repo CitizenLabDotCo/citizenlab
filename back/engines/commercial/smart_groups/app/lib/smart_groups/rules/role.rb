@@ -48,7 +48,6 @@ module SmartGroups::Rules
     end
 
     def filter(users_scope)
-      @predicate
       case predicate
       when 'is_admin'
         users_scope.admin

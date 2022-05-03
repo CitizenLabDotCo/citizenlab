@@ -6,10 +6,10 @@ module IdClaveUnica
 
     def profile_to_user_attrs(auth)
       info = {}
-      if fn = auth.dig('extra', 'raw_info', 'name', 'nombres')
+      if (fn = auth.dig('extra', 'raw_info', 'name', 'nombres'))
         info[:first_name] = fn.join(' ')
       end
-      if ln = auth.dig('extra', 'raw_info', 'name', 'apellidos')
+      if (ln = auth.dig('extra', 'raw_info', 'name', 'apellidos'))
         info[:last_name] = ln.join(' ')
       end
       info

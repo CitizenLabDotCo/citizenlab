@@ -33,7 +33,6 @@ describe Insights::CategorySuggestionsService do
     before { Apartment::Tenant.reset if CitizenLab.ee? }
 
     context 'when the task is unknown' do
-      # rubocop:disable RSpec/MultipleExpectations
       it 'ignores the result' do
         assignments = described_class.save_suggestion(zsc_result)
 
@@ -69,7 +68,6 @@ describe Insights::CategorySuggestionsService do
         end
       end
 
-      # rubocop:disable RSpec/ExampleLength
       it "doesn't override (approved) assignments" do
         prediction = zsc_result.predictions.first
 

@@ -32,7 +32,7 @@ RSpec.describe AppConfiguration::Settings do
       Module.new do
         extend CitizenLab::Mixins::FeatureSpecification
 
-        # rubocop:disable Style/SingleLineMethods, Layout/EmptyLineBetweenDefs
+        # rubocop:disable Style/SingleLineMethods
         def self.feature_name; 'dummy_feature' end
         def self.feature_title; 'Dummy feature' end
         def self.feature_description; 'Oh my... such a good feature.' end

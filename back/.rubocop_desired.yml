@@ -117,6 +117,9 @@ Lint/SafeNavigationConsistency:
 Lint/AmbiguousBlockAssociation:
   Enabled: true
 
+Lint/MissingSuper:
+  Enabled: true
+
 Naming/MethodParameterName:
   Enabled: true
 

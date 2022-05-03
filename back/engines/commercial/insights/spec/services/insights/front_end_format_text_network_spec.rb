@@ -67,7 +67,6 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
       end
     end
 
-    # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when max_nb_clusters parameter is specified' do
       let(:nb_clusters) { networks.sum { |n| n.communities.count } }
       let(:options) { { max_nb_clusters: nb_clusters - 1 } }

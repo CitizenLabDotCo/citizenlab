@@ -6,7 +6,6 @@ require 'rubyXL'
 RSpec.describe XlsxService do
   let(:service) { Insights::XlsxService.new }
 
-  # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe 'generate_inputs_xlsx' do
     let(:view) { create(:view, nb_data_sources: 3) }
     let(:ideas) { Insights::InputsFinder.new(view).execute }

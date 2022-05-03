@@ -60,10 +60,6 @@ module EmailCampaigns
       'commented'
     end
 
-    def mailer_class
-      NewCommentOnCommentedIdeaMailer
-    end
-
     def generate_commands(recipient:, activity:, time: nil)
       comment = activity.item
       return [] if comment.post_type != 'Idea'

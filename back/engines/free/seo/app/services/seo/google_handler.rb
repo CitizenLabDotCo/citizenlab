@@ -114,7 +114,6 @@ module Seo
       service.insert_web_resource('DNS_CNAME', verify_request)
     end
 
-    # rubocop:disable Metrics/MethodLength
     def r53_change_resource_record_sets(zone, name, value)
       r53.change_resource_record_sets(
         hosted_zone_id: zone.id,

@@ -20,7 +20,6 @@ class CreateZeroshotClassificationTables < ActiveRecord::Migration[6.0]
   end
 
   def create_tasks_categories_table
-    # rubocop:disable Rails/CreateTableWithTimestamps
     create_table :insights_zeroshot_classification_tasks_categories, id: false do |t|
       t.references(:category, type: :uuid, null: false,
         foreign_key: { to_table: :insights_categories },
@@ -37,7 +36,6 @@ class CreateZeroshotClassificationTables < ActiveRecord::Migration[6.0]
   end
 
   def create_tasks_inputs_table
-    # rubocop:disable Rails/CreateTableWithTimestamps
     create_table :insights_zeroshot_classification_tasks_inputs, id: :uuid do |t|
       t.references :task, type: :uuid, null: false, index: true, foreign_key: { to_table: :insights_zeroshot_classification_tasks }
 

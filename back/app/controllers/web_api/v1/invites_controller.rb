@@ -79,7 +79,8 @@ end
     authorize :invite
 
     # Strip out data;...base64 prefix if it's there
-    pure_base64 = if start = bulk_create_xlsx_params[:xlsx].index(';base64,')
+    start = bulk_create_xlsx_params[:xlsx].index(';base64,')
+    pure_base64 = if start
       bulk_create_xlsx_params[:xlsx][(start + 8)..]
     else
       bulk_create_xlsx_params[:xlsx]

@@ -60,7 +60,7 @@ class UserDisplayNameService
   def last_name!(user)
     return nil if user&.last_name.nil?
 
-    can_see_fullname_of?(user) ? user.last_name : self.class.initial(user.last_name)
+    can_see_fullname_of?(user) ? user.last_name : initial(user.last_name)
   end
 
   def restricted?
@@ -83,7 +83,7 @@ class UserDisplayNameService
 
   # @param [String] name
   # @return [String]
-  def self.initial(name)
+  def initial(name)
     "#{name[0]}."
   end
 end

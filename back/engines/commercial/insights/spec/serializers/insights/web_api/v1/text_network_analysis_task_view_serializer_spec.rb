@@ -8,7 +8,6 @@ RSpec.describe Insights::WebApi::V1::TextNetworkAnalysisTaskViewSerializer do
 
     let(:task_view) { create(:tna_task_view) }
 
-    # rubocop:disable RSpec/ExampleLength
     it do
       is_expected.to match(
         {

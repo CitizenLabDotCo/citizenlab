@@ -81,7 +81,7 @@ resource 'Topics' do
         let(:topic) { create(:topic, code: 'mobility') }
         let(:id) { topic.id }
 
-        example_request 'Reorder a default topic', document: :false do
+        example_request 'Reorder a default topic' do
           expect(response_status).to eq 200
         end
       end

@@ -30,7 +30,6 @@ describe NLP::TextNetwork do
   describe '#prune_communities' do
     let(:network) { build(:nlp_text_network, nb_nodes: 3, nb_communities: 3) }
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'keeps only n communities' do
       removed_communities = network.prune_communities(2)
       expect(network.communities.count).to eq(2)

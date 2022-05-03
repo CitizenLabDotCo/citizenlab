@@ -4,10 +4,10 @@ class ErrorsService
     keep = errors.details.to_h
     errors.clear
     keep[attribute].delete({ error: message, **options })
-    keep.each do |attribute, suberrors|
+    keep.each do |attr, suberrors|
       suberrors.each do |suberror|
         message = suberror.delete :error
-        errors.add attribute, message, suberror
+        errors.add attr, message, suberror
       end
     end
     errors

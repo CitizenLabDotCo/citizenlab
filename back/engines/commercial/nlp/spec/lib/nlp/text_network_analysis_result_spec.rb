@@ -4,7 +4,6 @@ require 'rails_helper'
 require 'nlp/text_network_analysis_result'
 
 describe NLP::TextNetworkAnalysisResult do
-  # rubocop:disable RSpec/MultipleMemoizedHelpers
   describe '.from_json' do
     subject(:tna_result) { described_class.from_json(json_result) }
 

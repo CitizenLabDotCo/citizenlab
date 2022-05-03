@@ -442,7 +442,7 @@ RSpec.describe User, type: :model do
       strangers = [
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
-        *Array.new(3) { build_stubbed(:admin) }
+        build_stubbed(:admin)
       ]
       expect(strangers).not_to include(be_super_admin)
     end

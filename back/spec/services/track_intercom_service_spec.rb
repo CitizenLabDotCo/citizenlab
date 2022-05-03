@@ -26,7 +26,7 @@ describe TrackIntercomService do
       expect(contacts_api).to receive(:search)
         .and_return(OpenStruct.new({ count: 0 }))
 
-      _contact = double.as_null_object
+      contact = double.as_null_object
       expect(contacts_api).to receive(:create).with({
         role: 'user',
         external_id: user.id,
@@ -41,7 +41,7 @@ describe TrackIntercomService do
           lastName: user.last_name,
           locale: user.locale
         )
-      }).and_return(_contact)
+      }).and_return(contact)
 
       service.identify_user(user)
     end

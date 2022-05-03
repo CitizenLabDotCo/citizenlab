@@ -21,7 +21,6 @@ resource 'ActionDescriptors' do
     end
 
     context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
-      # rubocop:disable RSpec/BeforeAfterAll
       before(:all) do
         @cached_scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
         PermissionsService.clear_scope_types

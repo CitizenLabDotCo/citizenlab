@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-# rubocop:disable Metrics/BlockLength
 RSpec.describe IdeaStatus, type: :model do
   context 'Default factory' do
     it 'is valid' do

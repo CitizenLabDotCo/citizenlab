@@ -1,5 +1,3 @@
-'spec/{foldername1,foldername2}/**/*_spec.rb'
-
 require 'rspec/core/rake_task'
 
 desc 'Generate public API request documentation from API specs'

@@ -27,9 +27,9 @@ module Insights
       def save_predictions(predictions)
         assignment_service = CategoryAssignmentsService.new
 
-        new_assignments = predictions.group_by(&:document_id).flat_map do |document_id, predictions|
+        new_assignments = predictions.group_by(&:document_id).flat_map do |document_id, document_predictions|
           input = ::Idea.find(document_id)
-          categories = Category.where(id: predictions.map(&:label_id))
+          categories = Category.where(id: document_predictions.map(&:label_id))
           assignment_service.add_suggestions(input, categories)
         rescue ActiveRecord::RecordNotFound
           # Ignore: don't save anything if the input cannot be found.

@@ -217,14 +217,14 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     ideas
   end
 
-  def votes_by_custom_field_key(key, filter_params, normalization = 'absolute')
+  def votes_by_custom_field_key(field_key, filter_params, normalization = 'absolute')
     serie = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
       .where(votable_id: apply_idea_filters(policy_scope(Idea), filter_params))
       .left_outer_joins(:user)
-      .group('mode', "users.custom_field_values->>'#{key}'")
-      .order(Arel.sql("users.custom_field_values->>'#{key}'"))
+      .group('mode', "users.custom_field_values->>'#{field_key}'")
+      .order(Arel.sql("users.custom_field_values->>'#{field_key}'"))
       .count
     data = %w[up down].index_with do |mode|
       serie.keys.select do |key_mode, _|

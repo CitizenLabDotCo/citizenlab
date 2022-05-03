@@ -134,7 +134,6 @@ module EmailCampaigns
 
     def has_nonzero_statistics(statistics)
       !((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
-         (statistics.dig(:activities, :new_ideas, :increase) == 0) &&
          (statistics.dig(:activities, :new_comments, :increase) == 0) &&
          (statistics.dig(:users, :new_visitors, :increase) == 0) &&
          (statistics.dig(:users, :new_users, :increase) == 0) &&

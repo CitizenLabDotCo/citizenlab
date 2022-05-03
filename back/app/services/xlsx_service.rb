@@ -70,7 +70,7 @@ class XlsxService
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
         column_widths = columns.pluck(:width)
-        sheet.column_widths *column_widths
+        sheet.column_widths(*column_widths)
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
           row = columns.map do |c|

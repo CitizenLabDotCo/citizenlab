@@ -25,7 +25,5 @@ module NLP
         []
       end
     end
-
-    private
   end
 end

@@ -158,6 +158,7 @@ module JsonFormsIdeasOverrides
           f.resource.project&.participation_method == 'budgeting'
         ) || (
           f.resource.project&.process_type == 'timeline' &&
-          f.resource.project&.phases.any? { |p| p.participation_method == 'budgeting' })) end
+          f.resource.project&.phases&.any? { |p| p.participation_method == 'budgeting' }))
+    end
   end
 end

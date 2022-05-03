@@ -28,7 +28,7 @@ begin
 
     begin
       config.save!
-    rescue Exception => e
+    rescue StandardError => e
       logger = Rails.logger
       logger.error 'Failed to reload environment variables into the seeded data.'
       logger.error e.message

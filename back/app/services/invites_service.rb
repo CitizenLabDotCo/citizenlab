@@ -101,9 +101,9 @@ class InvitesService
       fail_now
     end
   rescue InvitesFailedError => e
-    e.errors.each do |e|
-      e.row && (e.row = (map_rows[e.row] + 2))
-      e.rows&.map! { |r| map_rows[r] + 2 }
+    e.errors.each do |error|
+      error.row && (error.row = (map_rows[error.row] + 2))
+      error.rows&.map! { |r| map_rows[r] + 2 }
     end
     raise e
   end
@@ -173,7 +173,7 @@ class InvitesService
 
       coerce_custom_field_types(hash)
     end
-  rescue Exception => e
+  rescue StandardError => e
     add_error(:unparseable_excel, raw_error: e.to_s)
     fail_now
   ensure
@@ -232,7 +232,7 @@ class InvitesService
       group = Group.all.find { |g| g.title_multiloc.values.map(&:strip).include? stripped_group_title }&.id
       group || (add_error(:unknown_group, row: @current_row, value: stripped_group_title) && nil)
     end.compact
-  rescue Exception => e
+  rescue StandardError => e
     add_error(:malformed_groups_value, row: @current_row, value: groups, raw_error: e.to_s)
     []
   end

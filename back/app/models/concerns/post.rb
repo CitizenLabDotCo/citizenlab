@@ -52,8 +52,8 @@ module Post
 
       post.before_validation :strip_title
       post.before_validation :generate_slug
-      post.after_validation :set_published_at, if: ->(post) { post.published? && post.publication_status_changed? }
-      post.after_validation :set_assigned_at, if: ->(post) { post.assignee_id && post.assignee_id_changed? }
+      post.after_validation :set_published_at, if: ->(record) { record.published? && record.publication_status_changed? }
+      post.after_validation :set_assigned_at, if: ->(record) { record.assignee_id && record.assignee_id_changed? }
     end
 
     scope :with_bounding_box, (proc do |coordinates|

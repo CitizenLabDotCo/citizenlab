@@ -17,7 +17,6 @@ RSpec.describe SegmentRegulationsClient do
   describe '#delete' do
     let(:user_ids) { %w[uuid-user-1 uuid-user-2 uuid-user-3] }
 
-    # rubocop:disable RSpec/MultipleExpectations
     it "sends a request to Segment to create a 'Delete' regulation" do
       allow(HTTParty).to receive(:post)
       service.delete(user_ids)

@@ -22,7 +22,7 @@ class SideFxBasketService
 
   def update_basket_counts
     query =
-      ''"
+      '
       UPDATE ideas
       SET baskets_count = counts.count
       FROM (
@@ -33,7 +33,7 @@ class SideFxBasketService
         GROUP BY ideas.id
       ) as counts
       WHERE ideas.id = counts.idea_id
-    "''
+    '
     ActiveRecord::Base.connection.execute(query)
   end
 end

@@ -102,7 +102,6 @@ describe Insights::InputsFinder do
       end
     end
 
-    # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when filtering by categories' do
       let(:origin) { add_data_source(view).origin }
       let(:category1) { create(:category, view: view) }
