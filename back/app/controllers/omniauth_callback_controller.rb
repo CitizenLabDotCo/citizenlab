@@ -25,7 +25,7 @@ class OmniauthCallbackController < ApplicationController
 
     @identity = Identity.find_or_create_with_omniauth(auth, authver_method)
 
-    @user = @identity.user || User.find_by(cimail: user_attrs.fetch(:email))
+    @user = @identity.user || User.find_by_cimail(user_attrs.fetch(:email))
 
     if @user
       @identity.update(user: @user) unless @identity.user

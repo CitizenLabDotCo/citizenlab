@@ -593,6 +593,10 @@ Rails/Blank:
   Enabled: true
 Rails/DynamicFindBy:
   Enabled: true
+  AllowedMethods:
+    - find_by_cimail
+    - find_by_cimail!
+    - find_by_card_id
 Rails/FilePath:
   Enabled: true
 Rails/IndexBy:

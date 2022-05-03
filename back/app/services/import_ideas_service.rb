@@ -58,7 +58,7 @@ class ImportIdeasService
     end
 
     if idea_data[:user_email]
-      d[:author] = User.find_by cimail: idea_data[:user_email]
+      d[:author] = User.find_by_cimail idea_data[:user_email]
       unless d[:author]
         raise "No user with email #{idea_data[:user_email]} exists"
       end
