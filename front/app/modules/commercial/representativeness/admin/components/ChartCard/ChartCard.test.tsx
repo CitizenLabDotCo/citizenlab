@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from 'utils/testUtils/rtl';
+import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
 import ChartCard from './';
 import moment from 'moment';
 
@@ -66,13 +66,9 @@ describe('<ChartCard />', () => {
 
     expect(screen.getByText('70')).toBeInTheDocument();
   });
-
-  // it('allows switching from graph to table view and vice versa', () => {
-  // TODO
-  // })
 });
 
-describe('<ChartCard />: chart view', () => {
+describe('<ChartCard /> (chart view)', () => {
   describe('N <= 10', () => {
     const data = generateData(4);
 
@@ -250,7 +246,7 @@ describe('<ChartCard />: chart view', () => {
   describe('12 < N <= 24', () => {
     const data = generateData(16);
 
-    it('renders chart by default', () => {
+    it('does not render chart by default', () => {
       const { container } = render(
         <ChartCard
           data={data}
@@ -263,10 +259,17 @@ describe('<ChartCard />: chart view', () => {
 
       expect(
         container.querySelector('.recharts-responsive-container')
+      ).not.toBeInTheDocument();
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      expect(
+        container.querySelector('.recharts-responsive-container')
       ).toBeInTheDocument();
     });
 
-    it('does not render labels', () => {
+    it('on select chart view: does not render labels', () => {
       const { container } = render(
         <ChartCard
           data={data}
@@ -276,13 +279,16 @@ describe('<ChartCard />: chart view', () => {
           includedUserPercentage={85}
         />
       );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
 
       waitFor(() => {
         expect(container.querySelectorAll('.recharts-label')).toHaveLength(0);
       });
     });
 
-    it('does not render ticks', () => {
+    it('on select chart view: does not render ticks', () => {
       const { container } = render(
         <ChartCard
           data={data}
@@ -292,6 +298,9 @@ describe('<ChartCard />: chart view', () => {
           includedUserPercentage={85}
         />
       );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
 
       waitFor(() => {
         expect(
@@ -301,6 +310,229 @@ describe('<ChartCard />: chart view', () => {
           container.querySelectorAll('.recharts-cartesian-axis-tick-value')
         ).toHaveLength(0);
       });
+    });
+
+    it('on select chart view: renders included users percentage', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      expect(screen.getByText('85%')).toBeInTheDocument();
+    });
+
+    it('on select chart view: does not render warning', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe('24 < N', () => {
+    const data = generateData(26);
+
+    it('does not render chart by default', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        container.querySelector('.recharts-responsive-container')
+      ).not.toBeInTheDocument();
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      expect(
+        container.querySelector('.recharts-responsive-container')
+      ).toBeInTheDocument();
+    });
+
+    it('on select chart view: does not render included users percentage', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      expect(screen.queryByText('85%')).not.toBeInTheDocument();
+    });
+
+    it('on select chart view: renders warning', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).toBeInTheDocument();
+    });
+  });
+});
+
+describe('<ChartCard /> (table view)', () => {
+  describe('N <= 12', () => {
+    const data = generateData(4);
+
+    it('does not render table by default', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(container.querySelector('table.ui.table')).not.toBeInTheDocument();
+
+      const tableTabButton = container.querySelector('button#table');
+      fireEvent.click(tableTabButton);
+
+      expect(container.querySelector('table.ui.table')).toBeInTheDocument();
+    });
+
+    it('renders correct number of rows', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const tableTabButton = container.querySelector('button#table');
+      fireEvent.click(tableTabButton);
+
+      expect(container.querySelectorAll('tbody > tr')).toHaveLength(4);
+    });
+
+    it('renders included users percentage', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const tableTabButton = container.querySelector('button#table');
+      fireEvent.click(tableTabButton);
+
+      expect(screen.getByText('85%')).toBeInTheDocument();
+    });
+
+    it('does not render warning', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const tableTabButton = container.querySelector('button#table');
+      fireEvent.click(tableTabButton);
+
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).not.toBeInTheDocument();
+    });
+
+    it('does not render open modal button', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(screen.queryByTestId('show-modal-button')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('12 < N <= 24', () => {
+    const data = generateData(16);
+
+    it('renders table by default', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(container.querySelector('table.ui.table')).toBeInTheDocument();
+    });
+
+    it('renders correct number of rows', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(container.querySelectorAll('tbody > tr')).toHaveLength(12);
     });
 
     it('renders included users percentage', () => {
@@ -332,58 +564,26 @@ describe('<ChartCard />: chart view', () => {
         screen.queryByTestId('representativeness-items-hidden-warning')
       ).not.toBeInTheDocument();
     });
+
+    it('renders open modal button', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(screen.getByTestId('show-modal-button')).toBeInTheDocument();
+    });
   });
 
   describe('24 < N', () => {
     const data = generateData(26);
 
-    it('does not render chart by default', () => {
-      const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          representativenessScore={70}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
-
-      // expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
-      // TODO
-    });
-
-    it('on select chart view: renders included users percentage', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          representativenessScore={70}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
-
-      // TODO
-
-      expect(screen.getByText('85%')).toBeInTheDocument();
-    });
-
-    it('on select chart view: does not render included users percentage', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          representativenessScore={70}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
-
-      // expect(screen.getByText('85%')).toBeInTheDocument();
-      // TODO
-    });
-
-    it('on select chart view: renders warning', () => {
+    it('does not render warning', () => {
       render(
         <ChartCard
           data={data}
@@ -399,8 +599,8 @@ describe('<ChartCard />: chart view', () => {
       ).not.toBeInTheDocument();
     });
   });
-});
 
-describe('<ChartCard />: table view', () => {
-  // TODO
+  describe('Opening modal', () => {
+    // TODO
+  });
 });

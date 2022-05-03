@@ -16,6 +16,9 @@ import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// typings
+import { ViewState } from '.';
+
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);
 `;
@@ -33,6 +36,7 @@ interface Props extends RequiredOrOptionalProps {
   hideTicks: boolean;
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
+  viewState: ViewState;
   hideLegend: boolean;
   legendLabels: string[];
 }
@@ -57,6 +61,7 @@ const Footer = ({
   hideTicks,
   dataIsTooLong,
   numberOfHiddenItems,
+  viewState,
   hideLegend,
   legendLabels,
 }: Props) => {
@@ -107,7 +112,7 @@ const Footer = ({
         )}
       </Box>
 
-      {dataIsTooLong && (
+      {dataIsTooLong && viewState !== 'table' && (
         <Box
           p="0px 40px 32px 40px"
           data-testid="representativeness-items-hidden-warning"

@@ -63,6 +63,7 @@ const TableComponent = ({
           mt="36px"
           mb="32px"
           fontSize={`${fontSizes.s}px`}
+          data-testid="show-modal-button"
         >
           <Box display="flex" alignItems="center">
             {formatMessage(messages.openTableModalButtonText, {

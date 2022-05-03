@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
-import Header, { ViewState } from './Header';
+import Header from './Header';
 import Chart from './Chart';
 import Table from './Table';
 import Footer from './Footer';
@@ -18,6 +18,8 @@ import { Moment } from 'moment';
 
 // utils
 import { getLegendLabels } from './utils';
+
+export type ViewState = 'chart' | 'table';
 
 export interface RepresentativenessRow {
   name: string;
@@ -90,6 +92,7 @@ const ChartCard = ({
         hideTicks={hideTicks}
         dataIsTooLong={dataIsTooLong}
         numberOfHiddenItems={numberOfHiddenItems}
+        viewState={viewState}
         legendLabels={legendLabels}
         hideLegend={hideLegend}
       />

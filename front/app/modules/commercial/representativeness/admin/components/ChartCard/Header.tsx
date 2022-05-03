@@ -21,6 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc } from 'typings';
+import { ViewState } from '.';
 
 const StyledTabs = styled(Tabs)`
   button {
@@ -30,8 +31,6 @@ const StyledTabs = styled(Tabs)`
     margin-left: 0px;
   }
 `;
-
-export type ViewState = 'chart' | 'table';
 
 interface Props {
   titleMultiloc: Multiloc;
