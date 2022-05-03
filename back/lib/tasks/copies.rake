@@ -6,10 +6,12 @@ namespace :copies do
 
   # This task doesn't solve the problem fundamentally, but it updates the copies,
   # which can be a fine trade-off between spent time and the result.
+  desc 'Update custom fields to the latest copy versions'
   task :update_custom_fields, [:host] => :environment do |_t, args|
     tenants = args[:host].present? ? Tenant.where(host: args[:host]) : Tenant.all
     tenants.each do |tenant|
       tenant.switch do
+        Rails.logger.info("Processing #{tenant.host}")
         CopiesUpdatingService.new.update_custom_fields
       end
     end

@@ -59,6 +59,22 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
       end
+
+      it 'sanitizes HTML inside text elements' do
+        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
+          expected_multiloc
+        )
+
+        params = {
+          project_id: project_id,
+          code: code,
+          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
+        }
+        post :upsert, params: params, format: :json
+        expect(response.status).to eq 201
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
+      end
     end
 
     context 'when saving is unsuccessful' do
@@ -133,6 +149,23 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         expect(response.status).to eq(200)
         expect(response.content_type).to eq 'application/json; charset=utf-8'
         expect(layout.reload.craftjs_jsonmultiloc).to eq swapped_multiloc
+      end
+
+      it 'sanitizes HTML inside text elements' do
+        expected_multiloc = { 'en' => { 'sanitized_craftjson' => {} } }
+        layout # also calls sanitize_multiloc (to make the expectation below work)
+        expect_any_instance_of(ContentBuilder::LayoutSanitizationService).to receive(:sanitize_multiloc).and_return(
+          expected_multiloc
+        )
+
+        params = {
+          project_id: project_id,
+          code: code,
+          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
+        }
+        post :upsert, params: params, format: :json
+        expect(response.status).to eq 200
+        expect(JSON.parse(response.body).dig('data', 'attributes', 'craftjs_jsonmultiloc')).to eq(expected_multiloc)
       end
     end
 
