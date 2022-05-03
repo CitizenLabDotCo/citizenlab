@@ -432,7 +432,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Gruppe bearbeiten",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrierte NutzerInnen",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppen",
-  "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Verschaffen Sie sich einen Überblick über alle Personen und Organisationen, die sich auf der Plattform registriert haben. Fügen Sie eine Auswahl von Benutzern zu Manuellen Gruppen oder Smart Groups hinzu.",
+  "app.containers.Admin.Users.GroupsPanel.usersSubtitle": "Verschaffen Sie sich einen Überblick über alle Personen und Organisationen, die sich auf der Plattform registriert haben. Fügen Sie eine Auswahl von BenutzerInnen zu manuellen oder intelligenten Gruppen hinzu.",
   "app.containers.Admin.Users.admin": "AdministratorIn",
   "app.containers.Admin.Users.deleteUser": "BenutzerIn löschen",
   "app.containers.Admin.Users.email": "E-Mail",
