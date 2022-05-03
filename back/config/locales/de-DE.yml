@@ -105,7 +105,7 @@ de:
       domicile:
         title: Wohnort
       education:
-        title: Bildungsweg
+        title: Höchster Bildungsabschluss
     ideas:
       title:
         title: Titel
@@ -163,8 +163,8 @@ de:
     domicile:
       outside: Anderer Ort
     education:
-      ISCED2: Sekundarstufe I
-      ISCED3: Sekundarstufe II
+      ISCED2: Kein Schulabschluss
+      ISCED3: Grund- / Haupt- /Realschulabschluss
       ISCED4: Ausbildung oder Lehre
       ISCED5: Abschluss an Berufsschule, Kolleg oder ähnlichem
       ISCED6: Bachelor oder gleichwertiger Abschluss
