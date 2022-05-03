@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // components
 import { Table } from 'semantic-ui-react';
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box /*Icon*/ } from '@citizenlab/cl2-component-library';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
 import Button from 'components/UI/Button';
