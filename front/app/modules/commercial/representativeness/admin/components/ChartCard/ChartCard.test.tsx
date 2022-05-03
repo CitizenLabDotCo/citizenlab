@@ -70,7 +70,9 @@ describe('<ChartCard />', () => {
   // it('allows switching from graph to table view and vice versa', () => {
   // TODO
   // })
+});
 
+describe('<ChartCard />: chart view', () => {
   describe('N <= 10', () => {
     const data = generateData(4);
 
@@ -332,77 +334,73 @@ describe('<ChartCard />', () => {
     });
   });
 
-  // describe('24 < N', () => {
-  //   const data = generateData(26);
+  describe('24 < N', () => {
+    const data = generateData(26);
 
-  // it('renders table by default', () => {
-  //   const { container } = render(
-  //     <ChartCard
-  //       data={data}
-  //       customField={customField}
-  //       representativenessScore={70}
-  //       demographicDataDate={demographicDataDate}
-  //       includedUserPercentage={85}
-  //     />
-  //   );
+    it('does not render chart by default', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
 
-  //   expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
-  // });
+      // expect(container.querySelector('.recharts-responsive-container')).toBeInTheDocument();
+      // TODO
+    });
 
-  // it('renders included users percentage', () => {
-  //   render(
-  //     <ChartCard
-  //       data={data}
-  //       customField={customField}
-  //       representativenessScore={70}
-  //       demographicDataDate={demographicDataDate}
-  //       includedUserPercentage={85}
-  //     />
-  //   );
+    it('on select chart view: renders included users percentage', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
 
-  //   expect(screen.getByText('85%')).toBeInTheDocument();
-  // });
+      // TODO
 
-  // it('on select chart view: does not render included users percentage', () => {
-  //   render(
-  //     <ChartCard
-  //       data={data}
-  //       customField={customField}
-  //       representativenessScore={70}
-  //       demographicDataDate={demographicDataDate}
-  //       includedUserPercentage={85}
-  //     />
-  //   );
+      expect(screen.getByText('85%')).toBeInTheDocument();
+    });
 
-  //   expect(screen.getByText('85%')).toBeInTheDocument();
-  // });
+    it('on select chart view: does not render included users percentage', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
 
-  // it('does not render warning', () => {
-  //   render(
-  //     <ChartCard
-  //       data={data}
-  //       customField={customField}
-  //       representativenessScore={70}
-  //       demographicDataDate={demographicDataDate}
-  //       includedUserPercentage={85}
-  //     />
-  //   );
+      // expect(screen.getByText('85%')).toBeInTheDocument();
+      // TODO
+    });
 
-  //   expect(screen.queryByTestId('representativeness-items-hidden-warning')).not.toBeInTheDocument()
-  // });
+    it('on select chart view: renders warning', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
 
-  // it('on select chart view: renders warning', () => {
-  //   render(
-  //     <ChartCard
-  //       data={data}
-  //       customField={customField}
-  //       representativenessScore={70}
-  //       demographicDataDate={demographicDataDate}
-  //       includedUserPercentage={85}
-  //     />
-  //   );
+      expect(
+        screen.queryByTestId('representativeness-items-hidden-warning')
+      ).not.toBeInTheDocument();
+    });
+  });
+});
 
-  //   expect(screen.queryByTestId('representativeness-items-hidden-warning')).toBeInTheDocument()
-  // });
-  // });
+describe('<ChartCard />: table view', () => {
+  // TODO
 });
