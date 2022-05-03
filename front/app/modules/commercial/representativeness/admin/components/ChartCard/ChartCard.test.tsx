@@ -69,6 +69,22 @@ describe('<ChartCard />', () => {
 });
 
 describe('<ChartCard /> (chart view)', () => {
+  it('renders legend', () => {
+    const data = generateData(6);
+
+    render(
+      <ChartCard
+        data={data}
+        customField={customField}
+        representativenessScore={70}
+        demographicDataDate={demographicDataDate}
+        includedUserPercentage={85}
+      />
+    );
+
+    expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
+  });
+
   describe('N <= 10', () => {
     const data = generateData(4);
 
@@ -414,6 +430,27 @@ describe('<ChartCard /> (chart view)', () => {
 });
 
 describe('<ChartCard /> (table view)', () => {
+  it('does not render legend in table view', () => {
+    const data = generateData(6);
+
+    const { container } = render(
+      <ChartCard
+        data={data}
+        customField={customField}
+        representativenessScore={70}
+        demographicDataDate={demographicDataDate}
+        includedUserPercentage={85}
+      />
+    );
+
+    expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
+
+    const tableTabButton = container.querySelector('button#table');
+    fireEvent.click(tableTabButton);
+
+    expect(screen.queryByTestId('graph-legend')).not.toBeInTheDocument();
+  });
+
   describe('N <= 12', () => {
     const data = generateData(4);
 

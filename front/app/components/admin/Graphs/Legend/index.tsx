@@ -10,10 +10,11 @@ const StyledIcon = styled(Icon)`
 interface Props {
   labels: string[];
   colors: string[];
+  'data-testid'?: string;
 }
 
 const Legend = ({ labels, colors }: Props) => (
-  <Box display="flex" flexDirection="row">
+  <Box display="flex" flexDirection="row" data-testid="graph-legend">
     {labels.map((label, i) => {
       const color = colors[i];
       const lastItem = labels.length - 1 === i;
