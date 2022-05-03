@@ -127,8 +127,7 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
       key: CONFIRMATION_STEP_NAME,
       position: 4,
       stepDescriptionMessage: messages.confirmYourAccount,
-      isEnabled: (authUser, __, { emailSignUpSelected }) => {
-        if (emailSignUpSelected) return true;
+      isEnabled: (authUser) => {
         return isActive(authUser);
       },
       isActive,
