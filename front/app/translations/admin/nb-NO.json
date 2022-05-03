@@ -102,7 +102,7 @@
   "app.components.admin.PostManager.feedbackBodyPlaceholder": "Explain this status change",
   "app.components.admin.PostManager.goToDefaultMapView": "Go to default map center",
   "app.components.admin.PostManager.hiddenFieldsLink": "skjulte felt",
-  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/en/articles/1641202",
+  "app.components.admin.PostManager.hiddenFieldsSupportArticleUrl": "https://support.citizenlab.co/articles/1641202",
   "app.components.admin.PostManager.hiddenFieldsTip": "Tipp: tilføy {hiddenFieldsLink} når du setter opp din Typeform spørreundersøkelse for å holde oversikt over hvem som har svart på din spørreundersøkelse.",
   "app.components.admin.PostManager.importError": "The selected file could not be imported because it's not a valid GeoJSON file",
   "app.components.admin.PostManager.initiatives": "proposals",
