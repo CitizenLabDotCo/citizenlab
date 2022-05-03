@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // components
 import { Table } from 'semantic-ui-react';
-import { Box /*Icon*/ } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import HeaderRow from './HeaderRow';
 import Row from './Row';
 import Button from 'components/UI/Button';
@@ -39,6 +39,8 @@ const TableComponent = ({
 }: Props & InjectedIntlProps) => {
   const columns = [formatMessage(messages.item), ...legendLabels];
   const slicedData = data.slice(0, 12);
+  const showModalButton = data.length > 12;
+  const numberOfHiddenItems = data.length - 12;
 
   return (
     <>
@@ -53,15 +55,23 @@ const TableComponent = ({
         </Table>
       </Box>
 
-      <Button
-        buttonStyle="secondary"
-        width="160px"
-        ml="40px"
-        fontSize={`${fontSizes.s}px`}
-      >
-        Show 23 more
-        {/* <Icon name="" /> */}
-      </Button>
+      {showModalButton && (
+        <Button
+          buttonStyle="secondary"
+          width="160px"
+          ml="40px"
+          mt="36px"
+          mb="32px"
+          fontSize={`${fontSizes.s}px`}
+        >
+          <Box display="flex" alignItems="center">
+            {formatMessage(messages.openTableModalButtonText, {
+              numberOfHiddenItems,
+            })}
+            <Icon name="openModal" width="15px" height="15px" ml="12px" />
+          </Box>
+        </Button>
+      )}
     </>
   );
 };

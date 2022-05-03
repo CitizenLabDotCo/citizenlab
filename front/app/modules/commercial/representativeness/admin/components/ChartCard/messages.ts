@@ -47,4 +47,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.item',
     defaultMessage: 'Item',
   },
+  openTableModalButtonText: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText',
+    defaultMessage: 'Show {numberOfHiddenItems} more',
+  },
 });
