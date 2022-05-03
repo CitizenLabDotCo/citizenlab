@@ -221,6 +221,9 @@ Rails/LexicallyScopedActionFilter:
 Rails/UniqueValidationWithoutIndex:
   Enabled: true
 
+Rails/HasManyOrHasOneDependent:
+  Enabled: true
+
 Gemspec/RequiredRubyVersion:
   Enabled: true
 
