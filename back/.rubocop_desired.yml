@@ -209,6 +209,18 @@ Rails/ReversibleMigration:
 Rails/InverseOf:
   Enabled: true
 
+Rails/CreateTableWithTimestamps:
+  Enabled: true
+
+Rails/OutputSafety:
+  Enabled: true
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: true
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: true
+
 Gemspec/RequiredRubyVersion:
   Enabled: true
 

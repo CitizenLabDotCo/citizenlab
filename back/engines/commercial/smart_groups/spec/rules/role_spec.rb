@@ -102,7 +102,7 @@ describe SmartGroups::Rules::Role do
 
     it 'successfully translates different combinations of rules' do
       # Stubbing the translations so the specs don't depend on those.
-      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+      I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
 
       expect(role_is_admin_rule.description_multiloc).to eq({
         'en'    => 'Role is admin',

@@ -78,7 +78,7 @@ class Idea < ApplicationRecord
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 
-  validates_numericality_of :proposed_budget, greater_than_or_equal_to: 0, if: :proposed_budget
+  validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   with_options unless: :draft? do
     validates :idea_status, presence: true

@@ -29,12 +29,12 @@ class SpamReport < ApplicationRecord
   belongs_to :user, optional: true
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-  has_many :notifications, foreign_key: :spam_report_id, dependent: :nullify
+  has_many :notifications, dependent: :nullify
 
   validates :spam_reportable, presence: true
   validates :reason_code, inclusion: { in: REASON_CODES }, presence: true
   validates_each :other_reason do |record, attr, value|
-    if record.reason_code != 'other' && !value.blank?
+    if record.reason_code != 'other' && value.present?
       record.errors.add(attr, "must be blank if a different reason code than 'other' was selected")
     end
   end

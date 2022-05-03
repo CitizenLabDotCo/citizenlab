@@ -211,7 +211,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     else
       ideas.where(publication_status: 'published')
     end
-    if (filter_params[:filter_trending] == 'true') && !filter_params[:search].present?
+    if (filter_params[:filter_trending] == 'true') && filter_params[:search].blank?
       ideas = trending_idea_service.filter_trending ideas
     end
     ideas

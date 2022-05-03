@@ -24,7 +24,7 @@ class WebApi::V1::InvitesController < ApplicationController
       @invites = @invites.where('users.invite_status = ?', params[:invite_status])
 end
 
-    if params[:sort].present? && !params[:search].present?
+    if params[:sort].present? && params[:search].blank?
       @invites = case params[:sort]
       when 'created_at'
           @invites.order(created_at: :asc)

@@ -53,14 +53,14 @@ class Initiative < ApplicationRecord
 
   belongs_to :assignee, class_name: 'User', optional: true
 
-  with_options unless: :draft? do |initiative|
+  with_options unless: :draft? do
     # Problem is that this validation happens too soon, as the first idea status change is created after create.
     # initiative.validates :initiative_status, presence: true
-    initiative.validates :initiative_status_changes, presence: true
-    initiative.validate :assignee_can_moderate_initiatives
+    validates :initiative_status_changes, presence: true
+    validate :assignee_can_moderate_initiatives
 
-    initiative.before_validation :initialize_initiative_status_changes
-    initiative.before_validation :sanitize_body_multiloc, if: :body_multiloc
+    before_validation :initialize_initiative_status_changes
+    before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
 
   scope :with_all_topics, (proc do |topic_ids|

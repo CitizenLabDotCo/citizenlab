@@ -13,7 +13,7 @@ module Volunteering
           @causes = paginate @causes
 
           volunteers = Volunteer.where(user: current_user, cause: @causes)
-          volunteers_by_cause_id = volunteers.map { |volunteer| [volunteer.cause_id, volunteer] }.to_h
+          volunteers_by_cause_id = volunteers.index_by(&:cause_id)
 
           render json: linked_json(
             @causes,

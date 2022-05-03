@@ -83,7 +83,7 @@ class User < ApplicationRecord
     # @param email [String] The email of the user
     # @return [User] The user record
     def find_by_cimail!(email)
-      find_by_cimail(email) || raise(ActiveRecord::RecordNotFound)
+      find_by(cimail: email) || raise(ActiveRecord::RecordNotFound)
     end
 
     # This method is used by knock to get the user.
@@ -96,7 +96,7 @@ class User < ApplicationRecord
       # Hack to embed phone numbers in email
       email_or_embedded_phone = PhoneService.new.emailize_email_or_phone(email)
 
-      not_invited.find_by_cimail(email_or_embedded_phone)
+      not_invited.find_by(cimail: email_or_embedded_phone)
     end
   end
 
@@ -173,7 +173,7 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
     record.errors.add(:password, :blank) unless record.password_digest.present? || record.identities.any? || record.invite_pending?
-    if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
+    if record.email && (duplicate_user = User.find_by(cimail: record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
         record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
@@ -380,7 +380,7 @@ class User < ApplicationRecord
   end
 
   def validate_email_domain_blacklist
-    return unless email.present?
+    return if email.blank?
 
     domain = email.split('@')&.last
     if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)

@@ -17,7 +17,7 @@
 #  slug                     :string
 #  official_feedbacks_count :integer
 #
-class UnionPost < ActiveRecord::Base
+class UnionPost < ApplicationRecord
   self.primary_key = 'id'
 
   has_many :comments

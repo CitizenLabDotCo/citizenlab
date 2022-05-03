@@ -17,7 +17,7 @@ class WebApi::V1::UsersController < ::ApplicationController
     @users = @users.admin.or(@users.project_moderator) if params[:can_moderate].present?
     @users = @users.admin if params[:can_admin].present?
 
-    unless params[:search].present?
+    if params[:search].blank?
       @users = case params[:sort]
         when 'created_at'
           @users.order(created_at: :asc)

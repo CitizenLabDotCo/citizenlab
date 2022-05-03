@@ -20,7 +20,7 @@
 #
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
-class NavBarItem < ActiveRecord::Base
+class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
   CODES = %w[home projects proposals events all_input custom].freeze
 

@@ -5,9 +5,9 @@ describe AdminApi::ProjectCopyService do
 
   describe 'project copy', slow_test: true do
     it 'works' do
-      load Rails.root.join('db', 'seeds.rb')
+      load Rails.root.join('db/seeds.rb')
       Apartment::Tenant.switch('localhost') do
-        load Rails.root.join('db', 'seeds.rb')
+        load Rails.root.join('db/seeds.rb')
       end
       create(:idea_status, code: 'proposed')
       expected_count = 0

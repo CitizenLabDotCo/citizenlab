@@ -18,7 +18,7 @@
 #  moderation_status      :string
 #
 module Moderation
-  class Moderation < ActiveRecord::Base
+  class Moderation < ApplicationRecord
     include PgSearch::Model
     self.primary_key = 'id'
 

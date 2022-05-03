@@ -25,7 +25,7 @@ module EmailCampaigns
         consentable_campaign_types.each do |campaign_type|
           EmailCampaigns::Consent
             .find_or_initialize_by(user_id: user.id, campaign_type: campaign_type)
-            .update_attributes!(consented: false)
+            .update!(consented: false)
         end
       end
     end

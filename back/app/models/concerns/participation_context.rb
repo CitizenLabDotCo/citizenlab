@@ -65,12 +65,12 @@ module ParticipationContext
         validates :min_budget, presence: true
         validates :max_budget, presence: true
       end
-      validates_numericality_of :min_budget,
-        greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
-        if: %i[budgeting? max_budget]
-      validates_numericality_of :max_budget,
-        greater_than_or_equal_to: :min_budget,
-        if: %i[budgeting? min_budget]
+      validates :min_budget,
+        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
+        if: %i[budgeting? max_budget] }
+      validates :max_budget,
+        numericality: { greater_than_or_equal_to: :min_budget,
+        if: %i[budgeting? min_budget] }
     end
   end
 

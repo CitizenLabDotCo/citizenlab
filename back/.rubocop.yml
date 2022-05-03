@@ -584,3 +584,30 @@ Lint/UselessAccessModifier:
   Enabled: true
 Lint/Void:
   Enabled: true
+
+Rails/ActiveRecordAliases:
+  Enabled: true
+Rails/ApplicationRecord:
+  Enabled: true
+Rails/Blank:
+  Enabled: true
+Rails/DynamicFindBy:
+  Enabled: true
+Rails/FilePath:
+  Enabled: true
+Rails/IndexBy:
+  Enabled: true
+Rails/Output:
+  Enabled: true
+Rails/Present:
+  Enabled: true
+Rails/RakeEnvironment:
+  Enabled: true
+Rails/RedundantForeignKey:
+  Enabled: true
+Rails/RedundantReceiverInWithOptions:
+  Enabled: true
+Rails/UnknownEnv:
+  Enabled: true
+Rails/Validation:
+  Enabled: true

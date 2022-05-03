@@ -19,7 +19,7 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
-  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+  if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
@@ -44,7 +44,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Previewing mails from all engines.
-  config.action_mailer.preview_path = "#{Rails.root}/engines/*/*/spec/mailers/previews"
+  config.action_mailer.preview_path = Rails.root.join('engines/*/*/spec/mailers/previews'
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load

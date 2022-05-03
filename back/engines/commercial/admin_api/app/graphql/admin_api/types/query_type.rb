@@ -53,7 +53,7 @@ module AdminApi
         .includes(:idea_images)
         .published
 
-      if args[:sort].present? && !args[:search].present?
+      if args[:sort].present? && args[:search].blank?
         ideas = case args[:sort]
           when 'trending'
             TrendingIdeaService.new.sort_trending ideas
