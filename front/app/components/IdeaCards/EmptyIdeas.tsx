@@ -67,7 +67,7 @@ const EmptyIdeas = () => {
       <EmptyContainerInner>
         <IdeaIcon name="idea" />
         <EmptyMessage>
-          <EmptyMessageMainLine>
+          <EmptyMessageMainLine aria-live="polite">
             <FormattedMessage {...messages.noFilteredResults} />
           </EmptyMessageMainLine>
         </EmptyMessage>
