@@ -162,7 +162,7 @@
   "app.components.admin.TerminologyConfig.saveButton": "Späicheren",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bäitrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Méi Informatiounen doriwwer, wéi Dir e Link fir Google Forms abanne kënnt, fannt Dir ënner {googleFormsTooltipLink}.",
-  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/en/articles/5050525-wei-dir-aer-google-forms-emfro-an-eng-projetsphas-abannt",
+  "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink": "https://support.citizenlab.co/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "Dëse Begleedartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Iddi",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
