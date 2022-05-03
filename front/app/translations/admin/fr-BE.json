@@ -1093,7 +1093,7 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Personnalisez l'image et le texte de la bannière de la page d'accueil.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "visitez notre centre d'assistance",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.header_bg": "Image de la bannière",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin-dashboard",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Paramètres administrateur",
