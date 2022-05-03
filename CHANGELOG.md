@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
+
 ## 2022-05-02
 
 ### Added
