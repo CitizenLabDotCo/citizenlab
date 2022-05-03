@@ -1,12 +1,14 @@
 # Changelog
 
-## Next release
+## Next Release
 
 ## 2022-05-02
 
 ### Added
 
 - Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
 
 ### Fixed
 
