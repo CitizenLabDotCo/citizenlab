@@ -563,6 +563,7 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.dataHiddenWarning": "{numberOfHiddenItems, plural, one {# item is} other {# items are}} hidden in this graph. Change to {tableViewLink} to view all data.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} for user registration",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.item": "Item",
+  "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "Show {numberOfHiddenItems} more",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Optional",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{percentage} of users included",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Representativeness score:",
