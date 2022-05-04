@@ -214,7 +214,7 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
         <StyledSearchInput onChange={handleSearchOnChange} />
       </Header>
 
-      <IdeaMapCards aria-live="polite">
+      <IdeaMapCards>
         {ideaMarkers === undefined && (
           <Loading>
             <Spinner />
