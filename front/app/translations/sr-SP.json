@@ -680,6 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Укупно уноса: {ideasCount}",
   "app.containers.IdeaCards.all": "Све",
   "app.containers.IdeaCards.filter": "Филтер",
+  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
   "app.containers.IdeaCards.list": "Листа",
   "app.containers.IdeaCards.map": "Мапа",
   "app.containers.IdeaCards.newest": "Најскорије",
