@@ -2,6 +2,8 @@
 
 ## Next Release
 
+## 2022-05-04_2
+
 ### Changed
 
 - Security update: Rails 6.1.5.1
