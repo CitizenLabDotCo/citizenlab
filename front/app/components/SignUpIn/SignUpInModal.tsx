@@ -1,5 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
 import { signOut } from 'services/auth';
+import tracks from './tracks';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -13,6 +14,7 @@ import useParticipationConditions from 'hooks/useParticipationConditions';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { trackEventByName } from 'utils/analytics';
 
 // events
 import {
@@ -82,6 +84,7 @@ const SignUpInModal = memo<Props>(
       const signedUpButNotCompleted =
         !isNilOrError(authUser) &&
         !authUser.attributes.registration_completed_at;
+
       if (signedUpButNotCompleted) {
         // We need to await signOut. If authUser would be there
         // when openSignUpInModalIfNecessary in App/index.tsx gets called,
@@ -94,6 +97,7 @@ const SignUpInModal = memo<Props>(
         onDeclineInvitation();
       }
 
+      trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       closeSignUpInModal();
     };
 
