@@ -257,7 +257,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/auth/:provider/callback', to: 'omniauth_callback#create'
+  # get '/auth/:provider/callback', to: 'omniauth_callback#create'
   post '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
