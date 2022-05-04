@@ -34,6 +34,7 @@ const Image = ({
     <Box minHeight="26px">
       {imageUrl && (
         <ImageComponent
+          id="e2e-image"
           width="100%"
           src={imageUrl}
           alt={alt}
