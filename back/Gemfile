@@ -32,7 +32,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~> 2.0.1'
   gem 'factory_bot_rails'
   gem 'license_finder'
   # Use module prepend to patch NET::HTTP to avoid stack level too deep errors.
