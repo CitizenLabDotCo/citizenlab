@@ -99,7 +99,12 @@ const IdeasList = ({
 
   if (!isNilOrError(locale)) {
     return (
-      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
+      <div
+        aria-live="polite"
+        aria-labelledby={ariaLabelledBy}
+        id={id}
+        tabIndex={tabIndex}
+      >
         {querying ? (
           <Loading>
             <Spinner />
@@ -108,7 +113,6 @@ const IdeasList = ({
           <>
             {hasIdeas && list && (
               <Box
-                aria-live="polite"
                 ml="-13px"
                 mr="-13px"
                 mt="-10px"
