@@ -67,6 +67,7 @@ const ChartCard = ({
   const legendLabels = getLegendLabels(barNames, demographicDataDate);
 
   const titleMultiloc = customField.attributes.title_multiloc;
+  const fieldIsRequired = customField.attributes.required;
 
   return (
     <Box width="100%" background="white" mb="36px">
@@ -90,10 +91,12 @@ const ChartCard = ({
           titleMultiloc={titleMultiloc}
           data={data}
           legendLabels={legendLabels}
+          includedUserPercentage={includedUserPercentage}
+          fieldIsRequired={fieldIsRequired}
         />
       )}
       <Footer
-        fieldIsRequired={customField.attributes.required}
+        fieldIsRequired={fieldIsRequired}
         includedUserPercentage={includedUserPercentage}
         hideTicks={hideTicks}
         dataIsTooLong={dataIsTooLong}

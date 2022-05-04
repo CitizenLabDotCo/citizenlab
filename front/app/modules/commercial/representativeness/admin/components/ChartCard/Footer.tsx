@@ -4,13 +4,10 @@ import React from 'react';
 import { useTheme } from 'styled-components';
 
 // components
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Legend from 'components/admin/Graphs/Legend';
 import Warning from 'components/UI/Warning';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -19,20 +16,7 @@ import messages from './messages';
 // typings
 import { ViewState } from '.';
 
-const StyledIcon = styled(Icon)`
-  transform: translateY(-1px);
-`;
-
-const Separator = styled.span`
-  margin: 0px 4px;
-`;
-
-interface RequiredOrOptionalProps {
-  fieldIsRequired: boolean;
-}
-
-interface Props extends RequiredOrOptionalProps {
-  includedUserPercentage: number;
+interface Props extends FieldInfoProps {
   hideTicks: boolean;
   dataIsTooLong: boolean;
   numberOfHiddenItems: number;
@@ -40,17 +24,6 @@ interface Props extends RequiredOrOptionalProps {
   hideLegend: boolean;
   legendLabels: string[];
 }
-
-const RequiredOrOptional = ({ fieldIsRequired }: RequiredOrOptionalProps) =>
-  fieldIsRequired ? (
-    <b>
-      <FormattedMessage {...messages.required} />
-    </b>
-  ) : (
-    <b>
-      <FormattedMessage {...messages.optional} />
-    </b>
-  );
 
 const normalPadding = '12px 40px 20px 40px';
 const smallPadding = '0px 40px 4px 40px';
@@ -78,30 +51,10 @@ const Footer = ({
         justifyContent={dataIsTooLong ? 'center' : 'space-between'}
       >
         {!dataIsTooLong && (
-          <Text fontSize="s" color="adminSecondaryTextColor">
-            <StyledIcon
-              name="user"
-              width="16px"
-              height="16px"
-              fill={colors.adminSecondaryTextColor}
-              mr="6px"
-            />
-            <FormattedMessage
-              {...messages.percentageUsersIncluded}
-              values={{
-                percentage: <b>{includedUserPercentage}%</b>,
-              }}
-            />
-            <Separator>•</Separator>
-            <FormattedMessage
-              {...messages.forUserRegistation}
-              values={{
-                requiredOrOptional: (
-                  <RequiredOrOptional fieldIsRequired={fieldIsRequired} />
-                ),
-              }}
-            />
-          </Text>
+          <FieldInfo
+            fieldIsRequired={fieldIsRequired}
+            includedUserPercentage={includedUserPercentage}
+          />
         )}
 
         {!hideLegend && (
