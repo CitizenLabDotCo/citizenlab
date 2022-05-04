@@ -423,8 +423,31 @@ describe('<ChartCard /> (chart view)', () => {
       fireEvent.click(chartTabButton);
 
       expect(
-        screen.queryByTestId('representativeness-items-hidden-warning')
+        screen.getByTestId('representativeness-items-hidden-warning')
       ).toBeInTheDocument();
+    });
+
+    it('on select chart view: link in warning switches to tab view', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const chartTabButton = container.querySelector('button#chart');
+      fireEvent.click(chartTabButton);
+
+      const switchToTableViewLink = screen.getByTestId(
+        'switch-to-table-view-link'
+      );
+      expect(switchToTableViewLink).toBeInTheDocument();
+
+      fireEvent.click(switchToTableViewLink);
+      expect(container.querySelector('table.ui.table')).toBeInTheDocument();
     });
   });
 });

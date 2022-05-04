@@ -78,7 +78,10 @@ const Footer = ({
               values={{
                 numberOfHiddenItems,
                 tableViewLink: (
-                  <a onClick={onClickSwitchToTableView}>
+                  <a
+                    onClick={onClickSwitchToTableView}
+                    data-testid="switch-to-table-view-link"
+                  >
                     <FormattedMessage {...messages.tableViewLinkText} />
                   </a>
                 ),
