@@ -146,8 +146,8 @@ RSpec.configure do |config|
       not_truncated_tables << 'tenants'
     else
       FactoryBot.create(:test_app_configuration)
-      not_truncated_tables << 'app_configurations'
     end
+    not_truncated_tables << 'app_configurations'
   end
 
   config.before(:suite) do

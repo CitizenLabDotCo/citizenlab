@@ -2,7 +2,6 @@
 
 ## Next Release
 
-
 ## 2022-05-04
 
 ### Changed
