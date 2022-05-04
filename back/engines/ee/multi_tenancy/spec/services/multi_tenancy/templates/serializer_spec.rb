@@ -44,5 +44,14 @@ describe MultiTenancy::Templates::Serializer do
         expect(pj.dig('admin_publication_attributes', 'parent_ref')).to eq admin_publication_attributes
       end
     end
+
+    it "doesn't include title_multiloc for NavBarItems with no custom copy" do
+      create(:nav_bar_item, code: 'home', title_multiloc: nil)
+      serializer = described_class.new(Tenant.current)
+      template = serializer.run
+
+      home_attributes = template.dig('models', 'nav_bar_item')&.select { |item| item['code'] == 'home' }&.first
+      expect(home_attributes['title_multiloc']).to be_blank
+    end
   end
 end
