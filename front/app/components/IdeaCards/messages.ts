@@ -10,6 +10,10 @@ export default defineMessages({
     defaultMessage:
       'No results found. Please try a different filter or search term.',
   },
+  filteredResultsFound: {
+    id: 'app.containers.IdeaCards.filteredResultsFound',
+    defaultMessage: 'New search results have loaded.',
+  },
   tryDifferentFilters: {
     id: 'app.containers.IdeaCards.tryDifferentFilters',
     defaultMessage:

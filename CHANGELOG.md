@@ -2,6 +2,14 @@
 
 ## Next Release
 
+## 2022-05-05_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
 ### Changed
 
 - Security update: Rails 6.1.5.1
@@ -19,6 +27,10 @@
 ### Fixed
 
 - Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
 
 ## 2022-05-02
 
