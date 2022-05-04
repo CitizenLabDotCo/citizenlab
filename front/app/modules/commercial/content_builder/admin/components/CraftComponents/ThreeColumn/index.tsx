@@ -32,8 +32,14 @@ const ThreeColumn: UserComponent = () => {
   );
 };
 
+const ThreeColumnSettings = () => {
+  return <Box />;
+};
+
 ThreeColumn.craft = {
-  // Component options can be added here
+  related: {
+    settings: ThreeColumnSettings,
+  },
 };
 
 export default ThreeColumn;
