@@ -187,6 +187,7 @@ const SignUp = ({
     accountCreated,
     outletsRendered,
     dataLoadedPerOutlet,
+    activeStep,
   ]);
 
   // this automatically completes the 'account-created' step (see stepUtils)
@@ -195,12 +196,10 @@ const SignUp = ({
       onCompleteActiveStep();
       setAccountCreated(true);
     }
-  }, [activeStep]);
+  }, [activeStep, onCompleteActiveStep]);
 
   // called when a step is completed
-  const onCompleteActiveStep = async (
-    registrationData?: Record<string, any>
-  ) => {
+  async function onCompleteActiveStep(registrationData?: Record<string, any>) {
     if (modalContentRef?.current) {
       modalContentRef.current.scrollTop = 0;
     }
@@ -217,7 +216,7 @@ const SignUp = ({
     ) {
       await completeRegistration(registrationData);
     }
-  };
+  }
 
   // this makes sure that if registration is completed,
   // but we're not in a modal, handleFlowCompleted is
@@ -230,7 +229,7 @@ const SignUp = ({
     ) {
       handleFlowCompleted();
     }
-  }, [authUser, metaData]);
+  }, [authUser, metaData, handleFlowCompleted]);
 
   // emit event whenever activeStep changes
   useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
@@ -239,7 +238,7 @@ const SignUp = ({
     if (metaData?.error) {
       setError(formatMessage(messages.somethingWentWrongText));
     }
-  }, [metaData?.error]);
+  }, [metaData?.error, formatMessage]);
 
   const onResize = (_width, height) => {
     setHeaderHeight(`${Math.round(height) + 2}px`);
@@ -262,10 +261,10 @@ const SignUp = ({
       : setError(formatMessage(messages.somethingWentWrongText));
   };
 
-  const handleFlowCompleted = () => {
+  function handleFlowCompleted() {
     trackEventByName(tracks.signUpFlowCompleted);
     onSignUpCompleted();
-  };
+  }
 
   const handleOnOutletData = (
     configuration: TSignUpStepConfigurationObject
