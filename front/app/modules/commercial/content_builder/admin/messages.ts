@@ -71,9 +71,15 @@ export default defineMessages({
     defaultMessage:
       'It is useful to provide this information for users who rely on a screenreader or other assistive technology.',
   },
-  iframeUrlErrorMessage: {
+  iframeInvalidUrlErrorMessage: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
-    defaultMessage: 'Must provide a valid URL.',
+    defaultMessage:
+      'Enter a valid web address, for example https://example.com',
+  },
+  iframeWhitelistUrlErrorMessage: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
+    defaultMessage:
+      'You cannot embed content from this website for security reasons, try something else.',
   },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',

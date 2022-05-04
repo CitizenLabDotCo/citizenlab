@@ -18,6 +18,7 @@ interface Props {
   url: string;
   height: number;
   hasError: boolean;
+  errorType?: string;
   title?: string;
 }
 
@@ -38,6 +39,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     height,
     id,
     hasError,
+    errorType,
     title,
   } = useNode((node) => ({
     url: node.data.props.url,
@@ -45,6 +47,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     id: node.id,
     title: node.data.props.title,
     hasError: node.data.props.hasError,
+    errorType: node.data.props.errorType,
   }));
 
   return (
@@ -64,17 +67,23 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={url}
           onChange={(value) => {
+            const validation = validateUrl(value);
             setProp((props) => (props.url = value));
-            setProp((props) => (props.hasError = !validateUrl(value)));
+            setProp((props) => (props.errorType = validation[1]));
+            setProp((props) => (props.hasError = !validation[0]));
             eventEmitter.emit('contentBuilderError', {
-              [id]: !validateUrl(value),
+              [id]: !validation[0],
             });
           }}
         />
         {hasError && (
           <Error
             marginTop="4px"
-            text={formatMessage(messages.iframeUrlErrorMessage)}
+            text={
+              errorType === 'invalidUrl'
+                ? formatMessage(messages.iframeInvalidUrlErrorMessage)
+                : formatMessage(messages.iframeWhitelistUrlErrorMessage)
+            }
           />
         )}
       </Box>
@@ -135,6 +144,15 @@ Iframe.craft = {
  * Returns: boolean value whether URL input string is valid or not
  */
 const validateUrl = (url: string) => {
+  // Used this reference for generating a valid URL regex:
+  // https://tutorial.eyehunts.com/js/url-regex-validation-javascript-example-code/
+  const validUrlCheck = url.match(
+    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
+  );
+  if (validUrlCheck === null) {
+    return [false, 'invalidUrl'];
+  }
+
   const urlWhiteList = [
     /https:\/\/.*\.typeform\.com\/to\/.*/,
     /https:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js/,
@@ -169,9 +187,9 @@ const validateUrl = (url: string) => {
   }
 
   if (found !== null) {
-    return true;
+    return [true, 'whitelist'];
   } else {
-    return false;
+    return [false, 'whitelist'];
   }
 };
 
