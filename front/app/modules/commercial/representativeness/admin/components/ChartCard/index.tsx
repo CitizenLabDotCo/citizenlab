@@ -93,6 +93,7 @@ const ChartCard = ({
           legendLabels={legendLabels}
           includedUserPercentage={includedUserPercentage}
           fieldIsRequired={fieldIsRequired}
+          svgNode={currentChartRef}
         />
       )}
       <Footer

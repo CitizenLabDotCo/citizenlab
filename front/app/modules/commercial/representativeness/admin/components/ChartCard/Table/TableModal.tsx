@@ -8,6 +8,7 @@ import Modal from 'components/UI/Modal';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Table from './Table';
 import FieldInfo, { Props as FieldInfoProps } from '../FieldInfo';
+import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // typings
 import { Multiloc } from 'typings';
@@ -18,6 +19,7 @@ interface Props extends FieldInfoProps {
   titleMultiloc: Multiloc;
   columns: string[];
   data: RepresentativenessData;
+  svgNode: React.RefObject<SVGElement | undefined>;
   onClose: () => void;
 }
 
@@ -28,9 +30,11 @@ const TableModal = ({
   data,
   includedUserPercentage,
   fieldIsRequired,
+  svgNode,
   onClose,
 }: Props) => {
   const localize = useLocalize();
+  const title = localize(titleMultiloc);
 
   return (
     <Modal
@@ -44,13 +48,14 @@ const TableModal = ({
           alignItems="flex-start"
         >
           <Title variant="h2" as="h3" mt="3px" mb="0px">
-            {localize(titleMultiloc)}
+            {title}
           </Title>
           <Box mt="7px">
             <FieldInfo
               includedUserPercentage={includedUserPercentage}
               fieldIsRequired={fieldIsRequired}
             />
+            <ReportExportMenu name={title} svgNode={svgNode} />
           </Box>
         </Box>
       }

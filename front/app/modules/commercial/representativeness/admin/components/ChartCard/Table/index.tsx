@@ -22,6 +22,7 @@ import { Props as FieldInfoProps } from '../FieldInfo';
 interface Props extends FieldInfoProps {
   titleMultiloc: Multiloc;
   data: RepresentativenessData;
+  svgNode: React.RefObject<SVGElement | undefined>;
   legendLabels: string[];
 }
 
@@ -31,6 +32,7 @@ const TableWrapper = ({
   legendLabels,
   includedUserPercentage,
   fieldIsRequired,
+  svgNode,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -76,6 +78,7 @@ const TableWrapper = ({
         data={data}
         includedUserPercentage={includedUserPercentage}
         fieldIsRequired={fieldIsRequired}
+        svgNode={svgNode}
         onClose={closeModal}
       />
     </>
