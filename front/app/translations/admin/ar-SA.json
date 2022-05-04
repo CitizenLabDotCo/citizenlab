@@ -1305,7 +1305,7 @@
   "app.containers.IdeasShow.postedIn": "تم النشر في {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "الميزانية المُقترحة",
   "app.containers.IdeasShow.xDaysLeft": "تبقى {x, plural, =0 {أقل من يوم واحد} one {يوم واحد} other {# من الأيام}}",
-  "app.containers.admin.ContentBuilder.aboutBox": "About Box",
+  "app.containers.admin.ContentBuilder.aboutBox": "حول مربع الحوار",
   "app.containers.admin.ContentBuilder.delete": "حذف",
   "app.containers.admin.ContentBuilder.image": "صورة",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "وصف موجز للصورة",
