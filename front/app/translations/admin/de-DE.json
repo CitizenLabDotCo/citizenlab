@@ -389,7 +389,7 @@
   "app.containers.Admin.Invitations.saveSuccess": "Fertig!",
   "app.containers.Admin.Invitations.saveSuccessMessage": "Die Einladung(en) wurde(n) erfolgreich versandt.",
   "app.containers.Admin.Invitations.supportPage": "Support-Seite",
-  "app.containers.Admin.Invitations.supportPageLinkText": "Besuchen Sie die Support-Seite",
+  "app.containers.Admin.Invitations.supportPageLinkText": "Besuchen Sie die Wissensdatenbank",
   "app.containers.Admin.Invitations.tabAllInvitations": "Alle Einladungen",
   "app.containers.Admin.Invitations.tabInviteUsers": "BenutzerInnen einladen",
   "app.containers.Admin.Invitations.textTab": "Manuelle Eingabe von E-Mail-Adressen",
