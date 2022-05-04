@@ -23,6 +23,7 @@ interface Props extends FieldInfoProps {
   viewState: ViewState;
   hideLegend: boolean;
   legendLabels: string[];
+  onClickSwitchToTableView: () => void;
 }
 
 const normalPadding = '12px 40px 20px 40px';
@@ -37,6 +38,7 @@ const Footer = ({
   viewState,
   hideLegend,
   legendLabels,
+  onClickSwitchToTableView,
 }: Props) => {
   const { newBarFill, secondaryNewBarFill }: any = useTheme();
 
@@ -76,7 +78,7 @@ const Footer = ({
               values={{
                 numberOfHiddenItems,
                 tableViewLink: (
-                  <a>
+                  <a onClick={onClickSwitchToTableView}>
                     <FormattedMessage {...messages.tableViewLinkText} />
                   </a>
                 ),

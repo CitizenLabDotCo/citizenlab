@@ -47,7 +47,7 @@ const generateData = (n: number) => {
   return data;
 };
 
-const TEST_GENDER_DATA = generateData(16);
+const TEST_GENDER_DATA = generateData(50);
 
 const DATA_PER_CODE = {
   gender: {

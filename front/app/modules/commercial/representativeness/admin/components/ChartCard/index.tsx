@@ -58,6 +58,7 @@ const ChartCard = ({
     preferTableView ? 'table' : 'chart'
   );
   const localize = useLocalize();
+  const handleClickSwitchToTableView = () => setViewState('table');
 
   const dataIsTooLong = data.length > 24;
   const numberOfHiddenItems = data.length - 24;
@@ -109,6 +110,7 @@ const ChartCard = ({
         viewState={viewState}
         legendLabels={legendLabels}
         hideLegend={hideLegend}
+        onClickSwitchToTableView={handleClickSwitchToTableView}
       />
     </Box>
   );
