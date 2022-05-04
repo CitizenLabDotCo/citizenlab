@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
 import { completeRegistration } from 'services/users';
@@ -126,38 +126,27 @@ const SignUp = ({
 
   const modalContentRef = useRef<HTMLDivElement>(null);
 
+  // state
   const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
     getDefaultSteps()
   );
-
   const [outletsRendered, setOutletsRendered] = useState(false);
   const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
     useState<TDataLoadedPerOutlet>({});
   const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
   const [accountCreated, setAccountCreated] = useState(false);
-
   const confirmOutletsRendered = () => setOutletsRendered(true);
-
   const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
     metaData.isInvitation ? 'password-signup' : 'auth-providers'
   );
-
   const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
     getEnabledSteps(configuration, authUser, metaData, {
       emailSignUpSelected,
       accountCreated,
     })
   );
-
-  const totalStepsCount = getNumberOfSteps(enabledSteps);
-  const activeStepNumber = activeStep
-    ? getActiveStepNumber(activeStep, enabledSteps)
-    : null;
-
   const [error, setError] = useState<string>();
   const [headerHeight, setHeaderHeight] = useState<string>('100px');
-
-  const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
 
   // this transitions the current step to the next step
   useEffect(() => {
@@ -296,10 +285,15 @@ const SignUp = ({
     setEmailSignUpSelected(false);
   };
 
+  // variables
+  const totalStepsCount = getNumberOfSteps(enabledSteps);
+  const activeStepNumber = activeStep
+    ? getActiveStepNumber(activeStep, enabledSteps)
+    : null;
+  const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
   const helpText = activeStepConfiguration?.helperText?.(
     !isNilOrError(tenant) ? tenant.data : undefined
   );
-
   const stepDescription = activeStepConfiguration?.stepDescriptionMessage
     ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
     : '';
