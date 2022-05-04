@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed issue with budget field not showing in input form
+- Title text looking weird on insights start page
 
 ## 2022-05-02
 
