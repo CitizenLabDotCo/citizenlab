@@ -35,41 +35,41 @@ export default defineMessages({
   },
   url: {
     id: 'app.containers.admin.ContentBuilder.url',
-    defaultMessage: 'Embed Url',
+    defaultMessage: 'Embed',
   },
   iframeUrlLabel: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
-    defaultMessage: 'Add your URL',
+    defaultMessage: 'Website address',
   },
   iframeUrlLabelTooltip: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlLabelTooltip',
-    defaultMessage:
-      'You can embed another HTML document into this one using a URL, for example a YouTube video link.',
+    defaultMessage: 'Full URL of the website you want to embed.',
   },
   iframeHeightLabel: {
     id: 'app.containers.admin.ContentBuilder.iframeHeightLabel',
-    defaultMessage: 'Height',
+    defaultMessage: 'Embed height (pixels)',
   },
   iframeHeightLabelTooltip: {
     id: 'app.containers.admin.ContentBuilder.iframeHeightLabelTooltip',
-    defaultMessage: 'Height of the iframe window in pixels.',
+    defaultMessage:
+      'Height you want your embedded content to appear on the page (in pixels)',
   },
   iframeUrlPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlPlaceholder',
-    defaultMessage: 'https://example.com/',
+    defaultMessage: 'https://example.com',
   },
   iframeHeightPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
-    defaultMessage: 'e.g. 300',
+    defaultMessage: '300',
   },
   iframeTitleLabel: {
     id: 'app.containers.admin.ContentBuilder.iframeTitleLabel',
-    defaultMessage: 'Short description of iframe destination',
+    defaultMessage: 'Short description of the content you are embedding',
   },
   iframeTitleTooltip: {
     id: 'app.containers.admin.ContentBuilder.iframeTitleTooltip',
     defaultMessage:
-      'Adding a title for iframes is important to make your platform accessible for users using screen readers.',
+      'It is useful to provide this information for users who rely on a screenreader or other assistive technology.',
   },
   iframeUrlErrorMessage: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
