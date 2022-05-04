@@ -7,7 +7,7 @@ RSpec.describe LogActivityJob, type: :job do
     it 'logs an activity with a GlobalID' do
       idea = create(:idea)
       user = create(:user)
-      expect { job.perform(idea, 'created', user, Time.now) }.to change { Activity.count }.from(0).to(1)
+      expect { job.perform(idea, 'created', user, Time.now) }.to change(Activity, :count).from(0).to(1)
     end
 
     it "logs a notification activity with the notification's subclass item_type" do
@@ -21,7 +21,7 @@ RSpec.describe LogActivityJob, type: :job do
       idea = create(:idea)
       frozen_idea = idea.destroy
       user = create(:user)
-      expect { job.perform("Idea/#{frozen_idea.id}", 'deleted', user, Time.now) }.to change { Activity.count }.from(0).to(1)
+      expect { job.perform("Idea/#{frozen_idea.id}", 'deleted', user, Time.now) }.to change(Activity, :count).from(0).to(1)
     end
 
     it 'logs an activity when the user is nil' do

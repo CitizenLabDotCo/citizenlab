@@ -194,6 +194,18 @@ RSpec/DescribeClass:
 RSpec/RepeatedExampleGroupDescription:
   Enabled: true
 
+RSpec/BeforeAfterAll:
+  Enabled: true
+
+RSpec/ExpectInHook:
+  Enabled: true
+
+RSpec/RepeatedExample:
+  Enabled: true
+
+RSpec/VerifiedDoubles:
+  Enabled: true
+
 Rails/TimeZone:
   Enabled: true
 

@@ -173,11 +173,13 @@ RSpec.configure do |config|
     ENV['SENTRY_DSN'] = initial_sentry_dsn
   end
 
+  # rubocop:disable RSpec/BeforeAfterAll
   config.before(:all) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
+  # rubocop:enable RSpec/BeforeAfterAll
 
-  config.before(:each) do
+  config.before do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 

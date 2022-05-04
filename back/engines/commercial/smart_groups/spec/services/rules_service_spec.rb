@@ -6,7 +6,6 @@ describe SmartGroups::RulesService do
 
   let(:cf1) { create(:custom_field) }
   let(:cf2) { create(:custom_field) }
-  let(:options) { create_list(:custom_field_option, 3) }
   let(:cf3) { create(:custom_field_select) }
   let(:options) { create_list(:custom_field_option, 3, custom_field: cf3) }
   let!(:users) do

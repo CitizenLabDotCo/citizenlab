@@ -29,7 +29,7 @@ describe InvitesService do
       let(:inviter) { create(:user) }
 
       it 'correctly creates invites when all is fine' do
-        expect { service.bulk_create_xlsx(xlsx, {}, inviter) }.to change { Invite.count }.from(0).to(10)
+        expect { service.bulk_create_xlsx(xlsx, {}, inviter) }.to change(Invite, :count).from(0).to(10)
       end
     end
 
@@ -69,7 +69,7 @@ describe InvitesService do
       ] end
 
       it 'initializes custom_field_values with matching column names and appropriate types' do
-        expect { service.bulk_create_xlsx(xlsx, {}) }.to change { Invite.count }.from(0).to(7)
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to change(Invite, :count).from(0).to(7)
 
         user = User.find_by(email: 'user1@domain.net')
         expect(user.custom_field_values).to eq({ 'text_field' => 'some_value' })
@@ -101,7 +101,7 @@ describe InvitesService do
       ] end
 
       it 'trims the spaces' do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { User.count }.from(0).to(1)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
         expect(User.first.email).to eq('user@domain.net')
       end
     end
@@ -113,7 +113,7 @@ describe InvitesService do
       ] end
 
       it 'trims the spaces' do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { User.count }.from(0).to(1)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(User, :count).from(0).to(1)
         expect(User.first.email).to eq('user@domain.net')
       end
     end
@@ -260,7 +260,7 @@ describe InvitesService do
       ] end
 
       it "doesn't send out invitations to the existing users" do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(1)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
       end
     end
 
@@ -303,7 +303,7 @@ describe InvitesService do
       ] end
 
       it 'succeeds with unique slugs' do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(2)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(2)
       end
     end
 
@@ -316,7 +316,7 @@ describe InvitesService do
       ] end
 
       it 'sets send_invite_email attribute to false in the invite' do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(3)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(3)
         expect(Invite.all.pluck(:send_invite_email)).to eq [false, false, false]
       end
     end
@@ -330,7 +330,7 @@ describe InvitesService do
       ] end
 
       it 'sets send_invite_email attribute to true in the invite' do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(3)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(3)
         expect(Invite.all.pluck(:send_invite_email)).to eq [true, true, true]
       end
     end
@@ -342,7 +342,7 @@ describe InvitesService do
       ] end
 
       it 'sets send_invite_email attribute to true in the invite' do
-        expect { service.bulk_create_xlsx(xlsx) }.to change { Invite.count }.from(0).to(1)
+        expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
         expect(Invite.first.send_invite_email).to be true
       end
     end

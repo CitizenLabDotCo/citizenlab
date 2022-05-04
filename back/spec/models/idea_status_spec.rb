@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 RSpec.describe IdeaStatus, type: :model do
+  subject { create(:idea_status) }
+
+  let(:code) { IdeaStatus::MINIMUM_REQUIRED_CODES.sample }
+
   context 'Default factory' do
     it 'is valid' do
       expect(build(:idea_status)).to be_valid
     end
   end
-
-  subject { create(:idea_status) }
-
-  let(:code) { IdeaStatus::MINIMUM_REQUIRED_CODES.sample }
 
   context 'when its code is required' do
     subject { create(:idea_status, code: code) }

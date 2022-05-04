@@ -59,9 +59,9 @@ RSpec.describe Area, type: :model do
     end
 
     context 'when an ordering is given' do
-      let(:ordering) { Area.last.ordering + 1 }
-
       subject { create(:area, ordering: ordering) }
+
+      let(:ordering) { Area.last.ordering + 1 }
 
       it 'should stay as given' do
         expect(subject.ordering).to eq(ordering)

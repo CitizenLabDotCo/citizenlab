@@ -22,7 +22,7 @@ RSpec.describe Permission, type: :model do
       PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
     end
 
-    before(:each) { described_class.destroy_all }
+    before { described_class.destroy_all }
 
     # +let!(permissions)+ must be run after +before(:each)+ which deletes all permission records
     let!(:permissions) do

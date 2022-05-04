@@ -615,3 +615,24 @@ Rails/UnknownEnv:
   Enabled: true
 Rails/Validation:
   Enabled: true
+
+RSpec/ExpectChange:
+  Enabled: true
+RSpec/HookArgument:
+  Enabled: true
+RSpec/ImplicitSubject:
+  Enabled: true
+RSpec/LeadingSubject:
+  Enabled: true
+RSpec/LeakyConstantDeclaration:
+  Enabled: true
+RSpec/LetBeforeExamples:
+  Enabled: true
+RSpec/OverwritingSetup:
+  Enabled: true
+RSpec/SharedContext:
+  Enabled: true
+  Exclude:
+  - '**/spec/acceptance/**/*'
+RSpec/SubjectStub:
+  Enabled: true

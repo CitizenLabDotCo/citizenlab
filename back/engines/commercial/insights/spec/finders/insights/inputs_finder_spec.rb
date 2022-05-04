@@ -256,7 +256,7 @@ describe Insights::InputsFinder do
     let(:params) { {} }
 
     it 'defaults to MAX_PER_PAGE' do
-      is_expected.to eq(described_class::MAX_PER_PAGE)
+      expect(per_page).to eq(described_class::MAX_PER_PAGE)
     end
 
     context 'when page size is too large' do
@@ -271,7 +271,7 @@ describe Insights::InputsFinder do
       let(:params) { { page: { size: '20' } } }
 
       it 'converts it to an integer' do
-        is_expected.to eq(20)
+        expect(per_page).to eq(20)
       end
     end
   end
@@ -282,7 +282,7 @@ describe Insights::InputsFinder do
     let(:params) { {} }
 
     it 'defaults to 1' do
-      is_expected.to eq(1)
+      expect(page).to eq(1)
     end
   end
 end
