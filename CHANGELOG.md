@@ -13,6 +13,10 @@
 
 - Fixed issue with budget field not showing in input form
 
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
 ## 2022-05-02
 
 ### Added
