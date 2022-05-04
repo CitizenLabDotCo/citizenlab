@@ -45,16 +45,19 @@ const TableModal = ({
         <Box
           display="flex"
           justifyContent="space-between"
-          alignItems="flex-start"
+          alignItems="center"
+          mt="-7px"
         >
-          <Title variant="h2" as="h3" mt="3px" mb="0px">
+          <Title variant="h2" as="h3" mt="0px" mb="3px">
             {title}
           </Title>
-          <Box mt="7px">
-            <FieldInfo
-              includedUserPercentage={includedUserPercentage}
-              fieldIsRequired={fieldIsRequired}
-            />
+          <Box display="flex" alignItems="center">
+            <Box mt="0px" display="flex" alignItems="flex-start" mr="16px">
+              <FieldInfo
+                includedUserPercentage={includedUserPercentage}
+                fieldIsRequired={fieldIsRequired}
+              />
+            </Box>
             <ReportExportMenu name={title} svgNode={svgNode} />
           </Box>
         </Box>
