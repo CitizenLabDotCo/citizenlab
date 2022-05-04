@@ -680,6 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Total postări: {ideasCount}",
   "app.containers.IdeaCards.all": "Toate",
   "app.containers.IdeaCards.filter": "Filtru",
+  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
   "app.containers.IdeaCards.list": "Listă",
   "app.containers.IdeaCards.map": "Hartă",
   "app.containers.IdeaCards.newest": "Cele mai recente",
