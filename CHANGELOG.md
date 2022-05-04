@@ -2,6 +2,11 @@
 
 ## Next Release
 
+
+### Changed
+
+- City logo now in higher resolution.
+
 ### Fixed
 
 - Fixed issue with budget field not showing in input form
