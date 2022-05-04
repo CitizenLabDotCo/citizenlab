@@ -52,7 +52,7 @@ const Footer = ({
         flexDirection="row"
         justifyContent={dataIsTooLong ? 'center' : 'space-between'}
       >
-        {!dataIsTooLong && (
+        {(!dataIsTooLong || viewState === 'table') && (
           <FieldInfo
             fieldIsRequired={fieldIsRequired}
             includedUserPercentage={includedUserPercentage}

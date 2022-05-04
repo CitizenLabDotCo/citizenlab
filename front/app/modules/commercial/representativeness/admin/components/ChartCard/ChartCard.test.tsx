@@ -620,6 +620,20 @@ describe('<ChartCard /> (table view)', () => {
   describe('24 < N', () => {
     const data = generateData(26);
 
+    it('renders included users percentage', () => {
+      render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(screen.getByText('85%')).toBeInTheDocument();
+    });
+
     it('does not render warning', () => {
       render(
         <ChartCard
