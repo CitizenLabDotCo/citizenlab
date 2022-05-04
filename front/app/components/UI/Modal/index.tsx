@@ -94,9 +94,10 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   `}
 `;
 
-const StyledFocusOn = styled(FocusOn)<{ width: number }>`
+const StyledFocusOn = styled(FocusOn)<{ width: number | string }>`
   width: 100%;
-  max-width: ${({ width }) => width}px;
+  max-width: ${({ width }) =>
+    width.constructor === String ? width : `${width}px`};
   display: flex;
   justify-content: center;
 `;
@@ -316,7 +317,7 @@ interface DataProps {
 export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
-  width?: number;
+  width?: number | string;
   close: () => void;
   className?: string;
   header?: JSX.Element | string;

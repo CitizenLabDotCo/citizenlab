@@ -16,7 +16,7 @@ interface Props {
 
 const TableModal = ({ open, columns, data, onClose }: Props) => {
   return (
-    <Modal opened={open} close={onClose}>
+    <Modal opened={open} close={onClose} width="70%">
       <Table columns={columns} data={data} />
     </Modal>
   );
