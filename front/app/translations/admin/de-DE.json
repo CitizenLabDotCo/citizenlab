@@ -39,7 +39,7 @@
   "app.components.ProjectTemplatePreview.useTemplate": "Vorlage verwenden",
   "app.components.UserSearch.addModerators": "Hinzufügen",
   "app.components.UserSearch.noOptions": "Keine Optionen",
-  "app.components.UserSearch.searchUsers": "Tippen um Benutzer zu suchen...",
+  "app.components.UserSearch.searchUsers": "Tippen um Person(en) zu suchen...",
   "app.components.admin.DateRangePicker.endDatePlaceholder": "Enddatum",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Startdatum",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Speichern",
