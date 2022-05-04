@@ -190,6 +190,36 @@ const SignUp = ({
     activeStep,
   ]);
 
+  // called when a step is completed
+  const onCompleteActiveStep = useCallback(
+    async (registrationData?: Record<string, any>) => {
+      if (modalContentRef?.current) {
+        modalContentRef.current.scrollTop = 0;
+      }
+
+      if (
+        activeStep &&
+        registrationCanBeCompleted(
+          activeStep,
+          configuration,
+          authUser,
+          metaData,
+          { emailSignUpSelected, accountCreated }
+        )
+      ) {
+        await completeRegistration(registrationData);
+      }
+    },
+    [
+      accountCreated,
+      activeStep,
+      authUser,
+      configuration,
+      emailSignUpSelected,
+      metaData,
+    ]
+  );
+
   // this automatically completes the 'account-created' step (see stepUtils)
   useEffect(() => {
     if (activeStep === 'account-created') {
@@ -198,25 +228,10 @@ const SignUp = ({
     }
   }, [activeStep, onCompleteActiveStep]);
 
-  // called when a step is completed
-  async function onCompleteActiveStep(registrationData?: Record<string, any>) {
-    if (modalContentRef?.current) {
-      modalContentRef.current.scrollTop = 0;
-    }
-
-    if (
-      activeStep &&
-      registrationCanBeCompleted(
-        activeStep,
-        configuration,
-        authUser,
-        metaData,
-        { emailSignUpSelected, accountCreated }
-      )
-    ) {
-      await completeRegistration(registrationData);
-    }
-  }
+  const handleFlowCompleted = useCallback(() => {
+    trackEventByName(tracks.signUpFlowCompleted);
+    onSignUpCompleted();
+  }, [onSignUpCompleted]);
 
   // this makes sure that if registration is completed,
   // but we're not in a modal, handleFlowCompleted is
@@ -260,11 +275,6 @@ const SignUp = ({
       ? setError(errorMessage)
       : setError(formatMessage(messages.somethingWentWrongText));
   };
-
-  function handleFlowCompleted() {
-    trackEventByName(tracks.signUpFlowCompleted);
-    onSignUpCompleted();
-  }
 
   const handleOnOutletData = (
     configuration: TSignUpStepConfigurationObject
