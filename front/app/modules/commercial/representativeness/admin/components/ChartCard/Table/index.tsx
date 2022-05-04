@@ -15,19 +15,18 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // typings
-import { Multiloc } from 'typings';
 import { RepresentativenessData } from '..';
 import { Props as FieldInfoProps } from '../FieldInfo';
 
 interface Props extends FieldInfoProps {
-  titleMultiloc: Multiloc;
+  title: string;
   data: RepresentativenessData;
   svgNode: React.RefObject<SVGElement | undefined>;
   legendLabels: string[];
 }
 
 const TableWrapper = ({
-  titleMultiloc,
+  title,
   data,
   legendLabels,
   includedUserPercentage,
@@ -73,7 +72,7 @@ const TableWrapper = ({
 
       <TableModal
         open={modalOpen}
-        titleMultiloc={titleMultiloc}
+        title={title}
         columns={columns}
         data={data}
         includedUserPercentage={includedUserPercentage}

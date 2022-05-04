@@ -1,5 +1,8 @@
 import React, { useRef, useState } from 'react';
 
+// hooks
+import useLocalize from 'hooks/useLocalize';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
@@ -54,6 +57,7 @@ const ChartCard = ({
   const [viewState, setViewState] = useState<ViewState>(
     preferTableView ? 'table' : 'chart'
   );
+  const localize = useLocalize();
 
   const dataIsTooLong = data.length > 24;
   const numberOfHiddenItems = data.length - 24;
@@ -66,13 +70,13 @@ const ChartCard = ({
 
   const legendLabels = getLegendLabels(barNames, demographicDataDate);
 
-  const titleMultiloc = customField.attributes.title_multiloc;
+  const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
 
   return (
     <Box width="100%" background="white" mb="36px">
       <Header
-        titleMultiloc={titleMultiloc}
+        title={title}
         svgNode={currentChartRef}
         representativenessScore={representativenessScore}
         viewState={viewState}
@@ -88,7 +92,7 @@ const ChartCard = ({
       )}
       {viewState === 'table' && (
         <Table
-          titleMultiloc={titleMultiloc}
+          title={title}
           data={data}
           legendLabels={legendLabels}
           includedUserPercentage={includedUserPercentage}
