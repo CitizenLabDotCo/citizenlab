@@ -5,7 +5,7 @@ describe TextImageService do
 
   describe 'swap_data_images' do
     before do
-      stub_request(:any, 'res.cloudinary.com').with(
+      stub_request(:any, 'res.cloudinary.com').to_return(
         body: png_image_as_base64('image10.png')
       )
     end

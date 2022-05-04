@@ -2,6 +2,9 @@
 
 ## Next Release
 
+### Changed
+
+- Security update: Rails 6.1.5.1
 
 ## 2022-05-04
 
@@ -12,6 +15,14 @@
 ### Fixed
 
 - Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
 
 ## 2022-05-02
 
