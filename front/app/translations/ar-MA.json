@@ -1,7 +1,7 @@
 {
   "EmailSettingsPage.initialUnsubscribeError": "حدث خطأ أثناء إلغاء الاشتراك في هذه الحملة، يُرجى المحاولة مجددًا.",
   "EmailSettingsPage.initialUnsubscribeLoading": "تتم معالجة طلبك، يُرجى الانتظار قليلا",
-  "EmailSettingsPage.initialUnsubscribeSuccess": "تم إلغاء اشتراكك في {campaignTitle} بنجاح",
+  "EmailSettingsPage.initialUnsubscribeSuccess": "تم إلغاء اشتراكك في {campaignTitle} بنجاح ",
   "UI.FormComponents.buttonDisabled": "تم تعطيل زر الإرسال",
   "UI.FormComponents.buttonEnabled": "تم تمكين زر الإرسال",
   "UI.FormComponents.optional": "اختياري",
