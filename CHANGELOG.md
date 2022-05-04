@@ -2,6 +2,12 @@
 
 ## Next Release
 
+## 2022-05-05_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
 ## 2022-05-04_2
 
 ### Changed
