@@ -241,3 +241,15 @@ Gemspec/RequiredRubyVersion:
 
 Gemspec/OrderedDependencies:
   Enabled: true
+
+Bundler/OrderedGems:
+  Enabled: true
+
+Security/JSONLoad:
+  Enabled: true
+
+Security/Open:
+  Enabled: true
+
+Security/YAMLLoad:
+  Enabled: true
