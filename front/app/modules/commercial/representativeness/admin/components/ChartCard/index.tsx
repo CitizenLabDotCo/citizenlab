@@ -66,10 +66,12 @@ const ChartCard = ({
 
   const legendLabels = getLegendLabels(barNames, demographicDataDate);
 
+  const titleMultiloc = customField.attributes.title_multiloc;
+
   return (
     <Box width="100%" background="white" mb="36px">
       <Header
-        titleMultiloc={customField.attributes.title_multiloc}
+        titleMultiloc={titleMultiloc}
         svgNode={currentChartRef}
         representativenessScore={representativenessScore}
         viewState={viewState}
@@ -84,7 +86,11 @@ const ChartCard = ({
         />
       )}
       {viewState === 'table' && (
-        <Table data={data} legendLabels={legendLabels} />
+        <Table
+          titleMultiloc={titleMultiloc}
+          data={data}
+          legendLabels={legendLabels}
+        />
       )}
       <Footer
         fieldIsRequired={customField.attributes.required}

@@ -15,14 +15,17 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // typings
+import { Multiloc } from 'typings';
 import { RepresentativenessData } from '..';
 
 interface Props {
+  titleMultiloc: Multiloc;
   data: RepresentativenessData;
   legendLabels: string[];
 }
 
 const TableWrapper = ({
+  titleMultiloc,
   data,
   legendLabels,
   intl: { formatMessage },
@@ -65,6 +68,7 @@ const TableWrapper = ({
 
       <TableModal
         open={modalOpen}
+        titleMultiloc={titleMultiloc}
         columns={columns}
         data={data}
         onClose={closeModal}
