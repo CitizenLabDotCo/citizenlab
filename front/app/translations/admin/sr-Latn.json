@@ -714,6 +714,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Opis projekta",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Upotrebite kreator sadržaja za opis",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Upotreba kreatora sadržaja omogućuje vam da koristite naprednije opcije rasporeda.",
+  "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Pogledajte projekat",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Prekid",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip": "Podrazumevana širina centralne tačke mape. Prihvata vrednost između -90 i 90.",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip": "Podrazumevana geografska dužina centralne tačke mape. Prihvata vrednost između -90 i 90.",
