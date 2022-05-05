@@ -230,7 +230,7 @@ class App extends PureComponent<Props, State> {
 
       tenant$.pipe(first()).subscribe((tenant) => {
         if (tenant.data.attributes.settings.core.weglot_api_key) {
-          let script = document.createElement('script');
+          const script = document.createElement('script');
           script.async = false;
           script.defer = false;
           document.head.appendChild(script);
