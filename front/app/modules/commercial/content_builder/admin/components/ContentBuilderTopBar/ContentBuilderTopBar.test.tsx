@@ -111,7 +111,7 @@ describe('ContentBuilderTopBar', () => {
       { craftjs_jsonmultiloc: { en: {} } }
     );
   });
-  it('enables and disabled save in accordance with the error status', async () => {
+  it('enables and disables save in accordance with the error status', async () => {
     render(
       <Editor>
         <ContentBuilderTopBar />
