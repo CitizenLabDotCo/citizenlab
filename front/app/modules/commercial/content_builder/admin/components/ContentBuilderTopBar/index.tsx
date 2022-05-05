@@ -30,6 +30,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 
 // services
 import {
@@ -138,6 +139,18 @@ const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
             </>
           )}
         </Box>
+        {!isNilOrError(project) && (
+          <Link to={`/projects/${project.attributes.slug}`} target="_blank">
+            <Button
+              mr="16px"
+              buttonStyle="secondary"
+              icon="eye"
+              id="to-project"
+            >
+              <FormattedMessage {...messages.viewPublicProject} />
+            </Button>
+          </Link>
+        )}
         <Button
           disabled={disableSave}
           id="e2e-content-builder-topbar-save"

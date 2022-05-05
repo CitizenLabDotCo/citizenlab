@@ -1,6 +1,61 @@
 # Changelog
 
+## Next Release
+
+## 2022-05-05
+
+### Fixed
+
+- Fix timline rtl
+- Fix language selector cropping on rtl
+
+## 2022-05-04_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
+
+## 2022-05-02
+
+### Added
+
+- Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
 ## 2022-04-28
+
+### Added
+
+- Added support for the Moroccan Arabic language to the platform
 
 ### Fixed
 

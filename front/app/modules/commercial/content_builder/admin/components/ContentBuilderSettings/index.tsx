@@ -54,7 +54,7 @@ const ContentBuilderSettings = () => {
       p="20px"
       w="400px"
       h="100%"
-      background={colors.adminDarkBackground}
+      background="#ffffff"
     >
       <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />

@@ -4,7 +4,7 @@ class MultilocValidator < ActiveModel::EachValidator
     return if record.errors.present? || value.nil?
 
     validate_supported_locales record, attribute, value
-    validate_values_are_strings record, attribute, value
+    validate_values_types record, attribute, value
     validate_html record, attribute, value
   end
 
@@ -23,12 +23,13 @@ class MultilocValidator < ActiveModel::EachValidator
     end
   end
 
-  def validate_values_are_strings(record, attribute, value)
-    if value&.values && !value.values.all?(String)
-      locales = value.keys.reject { |l| value[l].is_a?(String) }
-      message = "non-string values (for #{locales}) cannot be accepted. Either the key should be removed, or the value should be replaced by an empty string"
-      record.errors.add attribute, :values_not_all_strings, message: message
-    end
+  def validate_values_types(record, attribute, value)
+    value_type = options[:value_type] || String
+    return if !value&.values || value.values.all?(value_type)
+
+    locales = value.keys.reject { |l| value[l].is_a?(value_type) }
+    message = "non-#{value_type} values (for #{locales}) cannot be accepted. Either the key should be removed, or the value should be replaced by an empty #{value_type}"
+    record.errors.add attribute, :values_of_wrong_type, message: message
   end
 
   def validate_supported_locales(record, attribute, value)

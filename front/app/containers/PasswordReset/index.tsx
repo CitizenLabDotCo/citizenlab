@@ -266,6 +266,7 @@ class PasswordReset extends React.PureComponent<
               </LabelContainer>
               <PasswordInput
                 id="password"
+                autocomplete="new-password"
                 password={password}
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
