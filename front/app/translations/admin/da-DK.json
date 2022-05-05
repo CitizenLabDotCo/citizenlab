@@ -714,6 +714,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Projektbeskrivelse",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Brug side builder til beskrivelse",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Ved at bruge sideopbyggeren kan du bruge mere avancerede layoutmuligheder.",
+  "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Vis projekt",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Annuller redigering",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip": "Standardbreddegraden for kortets midtpunkt. Accepterer en værdi mellem -90 og 90.",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip": "Standardlængde for kortets midtpunkt. Accepterer en værdi mellem -90 og 90.",
