@@ -714,6 +714,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Suliassap allaaserineqarnera",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Use page builder for description",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Using the page builder will let you use more advanced layout options.",
+  "app.containers.AdminPage.ProjectDescription.viewPublicProject": "View project",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Cancel editing",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip": "The default latitude of the map center point. Accepts a value between -90 and 90.",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip": "The default longitude of the map center point. Accepts a value between -90 and 90.",
