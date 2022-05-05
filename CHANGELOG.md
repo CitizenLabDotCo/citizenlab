@@ -2,6 +2,10 @@
 
 ## Next Release
 
+#### Added
+
+- Pages can now be translated 'live' via Weglot
+
 ## 2022-05-05_3
 
 ### Changed
