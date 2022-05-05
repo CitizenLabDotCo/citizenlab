@@ -108,7 +108,7 @@ ar-MA:
         title: التعليم
     ideas:
       title:
-        title: العنوان
+        title: 'العنوان: عنوان ماذا؟'
         description:
       body:
         title: 'الوصف: الإشتغال على الترجمة ضمن فريق عمل بهدف الإصلاح و التجويد '
@@ -132,7 +132,7 @@ ar-MA:
         title: الصور
         description:
       attachments:
-        title: المُرفقات
+        title: 'المُرفقات: بمعنى؟'
         description:
   custom_forms:
     categories:
