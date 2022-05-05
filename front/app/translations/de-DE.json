@@ -834,7 +834,7 @@
   "app.containers.IdeasShow.questionWhatsAppMessage": "Beteiligen Sie sich an der Diskussion: {postTitle}\n",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "Warum wollen Sie dies als Spam melden?",
   "app.containers.IdeasShow.share": "Teilen",
-  "app.containers.IdeasShow.sharingModalSubtitle": "Erreichen Sie mehr Leute und teilen Sie Ihre Stimme.",
+  "app.containers.IdeasShow.sharingModalSubtitle": "Erreichen Sie mehr Leute und teilen Sie Ihren Beitrag.",
   "app.containers.IdeasShow.sharingModalTitle": "Vielen Dank, dass Sie Ihre Idee eingereicht haben!\n",
   "app.containers.InitiativesButton.startInitiative": "Einen Vorschlag starten",
   "app.containers.InitiativesEditPage.metaDescription": "Bearbeite deinen Vorschlag. Füge weitere Informationen hinzu und mache ihn noch besser.",
