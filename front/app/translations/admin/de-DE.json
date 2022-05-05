@@ -1342,7 +1342,7 @@
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeDescription": "Erfolgreich als Vorschlag zur Prüfung eingereicht",
   "app.containers.admin.ideaStatuses.form.proposedFieldCodeTitle": "Vorgeschlagen",
   "app.containers.admin.ideaStatuses.form.rejectedFieldCodeDescription": "Nicht wählbar oder nicht zum Weitermachen ausgewählt",
-  "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "Nicht ausgewählt",
+  "app.containers.admin.ideaStatuses.form.rejectedFieldCodeTitle": "Abgelehnt",
   "app.containers.admin.ideaStatuses.form.under_considerationFieldCodeDescription": "Für die Implementierung oder nächste Schritte in Betracht gezogen",
   "app.containers.admin.ideaStatuses.form.under_considerationFieldCodeTitle": "Unter Berücksichtigung",
   "app.containers.admin.ideaStatuses.form.viewedFieldCodeDescription": "Gesehen, aber noch nicht weiterverarbeitet",
