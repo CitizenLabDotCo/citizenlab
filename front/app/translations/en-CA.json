@@ -680,6 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Total posts: {ideasCount}",
   "app.containers.IdeaCards.all": "All",
   "app.containers.IdeaCards.filter": "Filter",
+  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
   "app.containers.IdeaCards.list": "List",
   "app.containers.IdeaCards.map": "Map",
   "app.containers.IdeaCards.newest": "Most recent",

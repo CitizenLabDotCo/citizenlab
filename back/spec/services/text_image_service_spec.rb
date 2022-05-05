@@ -5,7 +5,7 @@ describe TextImageService do
 
   describe 'swap_data_images' do
     before do
-      stub_request(:any, 'images.com').with(
+      stub_request(:any, 'res.cloudinary.com').to_return(
         body: png_image_as_base64('image10.png')
       )
     end
@@ -14,7 +14,7 @@ describe TextImageService do
       input = <<~HTML
         <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
         <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=" />
-        <img src="http://images.com/image1.png" />
+        <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg" />
       HTML
       imageable = build :project, description_multiloc: { 'fr-BE' => input }
       output = service.swap_data_images imageable, :description_multiloc
