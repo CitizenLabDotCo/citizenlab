@@ -176,6 +176,7 @@ const validateUrl = (url: string) => {
     /https:\/\/.*dailymotion\.com\/embed\/video/,
     /https:\/\/.*media\.videotool\.dk\/.*vn=/,
     /https:\/\/.*dreambroker.com\/channel\/.*\/iframe/,
+    /https: \/\/fast.wistia.net\/embed\/iframe\/*/,
   ];
 
   let found: RegExpMatchArray | null = null;
