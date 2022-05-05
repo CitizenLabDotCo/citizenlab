@@ -1316,6 +1316,7 @@
   "app.containers.admin.ContentBuilder.iframeUrlLabel": "Add your URL",
   "app.containers.admin.ContentBuilder.iframeUrlLabelTooltip": "You can embed another HTML document into this one using a URL, for example a YouTube video link.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
+  "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "You cannot embed content from this website for security reasons, try something else.",
   "app.containers.admin.ContentBuilder.image": "Image",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Short description of the image",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Adding \"alt text\" for images is important to make your platform accessible for users using screen readers.",
