@@ -102,7 +102,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           )}
         </Box>
         {!isNilOrError(project) && (
-          <Link to={`/projects/${project?.attributes.slug}`} target="_blank">
+          <Link to={`/projects/${project.attributes.slug}`} target="_blank">
             <Button
               mr="16px"
               buttonStyle="secondary"
