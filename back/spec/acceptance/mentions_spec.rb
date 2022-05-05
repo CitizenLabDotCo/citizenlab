@@ -43,7 +43,7 @@ resource 'Mentions' do
 
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq idea_related.size
-      expect(json_response[:data].map { |d| d[:id] }).to match_array idea_related.map(&:id)
+      expect(json_response[:data].pluck(:id)).to match_array idea_related.map(&:id)
       expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..(first_name.size)] == first_name }).to be true
     end
   end

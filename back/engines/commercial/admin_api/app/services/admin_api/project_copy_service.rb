@@ -525,7 +525,7 @@ module AdminApi
     end
 
     def yml_comments(shift_timestamps: 0)
-      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where('parent_id IS NOT NULL').where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
+      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where.not(parent_id: nil).where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
           'post_ref'           => lookup_ref(c.post_id, :idea),
@@ -559,7 +559,7 @@ module AdminApi
     def yml_votes(shift_timestamps: 0)
       idea_ids = @project.ideas.published.where.not(author_id: nil).ids
       comment_ids = Comment.where(post_id: idea_ids, post_type: 'Idea')
-      Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
+      Vote.where.not(user_id: nil).where(votable_id: idea_ids + comment_ids).map do |v|
         yml_vote = {
           'votable_ref' => lookup_ref(v.votable_id, %i[idea comment]),
           'user_ref'    => lookup_ref(v.user_id, :user),

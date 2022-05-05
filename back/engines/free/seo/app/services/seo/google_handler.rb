@@ -132,6 +132,5 @@ module Seo
         }
       )
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

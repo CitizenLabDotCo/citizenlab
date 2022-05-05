@@ -5,8 +5,6 @@ begin
 rescue LoadError
   # Ignore
 end
-# rubocop:enable Lint/SuppressedException
-
 module NLP
   class Engine < ::Rails::Engine
     isolate_namespace NLP

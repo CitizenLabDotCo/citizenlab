@@ -18,12 +18,11 @@ describe TrackIntercomService do
         expect(contacts_api).to receive(:search).and_return(zero_contacts)
 
         expect(contacts_api).to receive(:create) do |attributes|
-          expect(attributes.dig(:custom_attributes, :isProjectModerator)).to eq(false)
+          expect(attributes.dig(:custom_attributes, :isProjectModerator)).to be(false)
         end.and_return(double('contact').as_null_object)
 
         service.identify_user(user)
       end
-      # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
     end
 
     context 'when it updates an existing contact' do
@@ -41,7 +40,6 @@ describe TrackIntercomService do
 
         service.identify_user(user)
       end
-      # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations
     end
   end
 end

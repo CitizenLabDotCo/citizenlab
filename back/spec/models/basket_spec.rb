@@ -38,7 +38,7 @@ RSpec.describe Basket, type: :model do
 
     it 'is not valid in submission context' do
       @basket.submitted_at = Time.now
-      expect(@basket.save(context: :basket_submission)).to eq(false)
+      expect(@basket.save(context: :basket_submission)).to be(false)
     end
   end
 
@@ -52,7 +52,7 @@ RSpec.describe Basket, type: :model do
     end
 
     it 'is not valid in submission context' do
-      expect(basket.save(context: :basket_submission)).to eq(false)
+      expect(basket.save(context: :basket_submission)).to be(false)
       expect(basket.errors.details).to eq(
         ideas: [error: :less_than_min_budget]
       )

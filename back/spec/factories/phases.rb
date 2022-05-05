@@ -21,8 +21,8 @@ FactoryBot.define do
 
     factory :active_phase do
       after(:create) do |phase, _evaluator|
-        phase.start_at = Time.now - (rand(1..120)).days
-        phase.end_at = Time.now + (rand(1..120)).days
+        phase.start_at = Time.now - rand(1..120).days
+        phase.end_at = Time.now + rand(1..120).days
       end
     end
 
@@ -32,7 +32,7 @@ FactoryBot.define do
       end
 
       after(:build) do |phase, evaluator|
-        phase.start_at = Time.now + (evaluator.duration_in_days * Phase.count + 1).days
+        phase.start_at = Time.now + ((evaluator.duration_in_days * Phase.count) + 1).days
         phase.end_at = Time.now + (evaluator.duration_in_days * (Phase.count + 1)).days
       end
     end

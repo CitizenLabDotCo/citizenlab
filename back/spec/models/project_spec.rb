@@ -82,7 +82,7 @@ RSpec.describe Project, type: :model do
     it 'can be null for timeline projects' do
       p = create(:project_with_current_phase)
       p.presentation_mode = nil
-      expect(p.save).to eq true
+      expect(p.save).to be true
     end
   end
 end

@@ -14,7 +14,7 @@ describe SideFxAreaService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when the area has changed" do
-      area.update(title_multiloc: { 'en': 'changed' })
+      area.update(title_multiloc: { en: 'changed' })
       expect { service.after_update(area, user) }
         .to have_enqueued_job(LogActivityJob).with(area, 'changed', user, area.updated_at.to_i)
     end

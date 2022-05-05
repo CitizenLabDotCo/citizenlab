@@ -147,7 +147,7 @@ resource 'AppConfigurations' do
         configuration.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
         expect(configuration.reload.header_bg_url).to be_present
         do_request app_configuration: { header_bg: nil }
-        expect(configuration.reload.header_bg_url).to be nil
+        expect(configuration.reload.header_bg_url).to be_nil
       end
     end
 
@@ -157,7 +157,7 @@ resource 'AppConfigurations' do
         configuration.update(logo: Rails.root.join('spec/fixtures/logo.png').open)
         expect(configuration.reload.logo_url).to be_present
         do_request app_configuration: { logo: nil }
-        expect(configuration.reload.logo_url).to be nil
+        expect(configuration.reload.logo_url).to be_nil
       end
     end
 
@@ -167,7 +167,7 @@ resource 'AppConfigurations' do
         configuration.update(favicon: Rails.root.join('spec/fixtures/favicon.png').open)
         expect(configuration.reload.favicon_url).to be_present
         do_request app_configuration: { favicon: nil }
-        expect(configuration.reload.favicon_url).to be nil
+        expect(configuration.reload.favicon_url).to be_nil
       end
     end
   end

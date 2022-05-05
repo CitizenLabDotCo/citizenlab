@@ -26,7 +26,6 @@ module Seo
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def app_locales
       AppConfiguration.instance.settings.dig('core', 'locales')

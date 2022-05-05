@@ -46,7 +46,7 @@ namespace :tenant_template do
     yml_models['models']['event']         = (yml_models['models']['event'] || []) + yml_events
     yml_models['models']['phase']         = (yml_models['models']['phase'] || []) + yml_phases
 
-    File.open("#{args[:path]}/tenant_template.yml", 'w') { |f| f.write yml_models.to_yaml }
+    File.write("#{args[:path]}/tenant_template.yml", yml_models.to_yaml)
   end
 
   def read_csv(name, args)
@@ -67,7 +67,7 @@ namespace :tenant_template do
                    'locale'            => locales.first,
                    'bio_multiloc'      => make_multiloc(md_to_html(csv_user['Biography (Optional)']), locales),
                    'gender'            => csv_user['Gender'],
-                   'birthyear'	       => rand(10) == 0 ? nil : (rand(1925..2004)),
+                   'birthyear'	       => rand(10) == 0 ? nil : rand(1925..2004),
                    'domicile'          => rand(10) == 0 ? nil : generate_domicile,
                     'password' => csv_user['Password (Optional)'] || generate_password,
                    'remote_avatar_url' => csv_user['Image URL (Optional)']
@@ -139,7 +139,7 @@ namespace :tenant_template do
     csv_phases.map do |csv_phase|
       t = (project_to_time[csv_phase['Project ID']] || Faker::Date.between(from: 4.months.ago, to: 1.month.from_now)) + 1.day
       start_at = t
-      end_at = t + (rand(1..30)).days
+      end_at = t + rand(1..30).days
       project_to_time[csv_phase['Project ID']] = end_at
       {	'title_multiloc' => make_multiloc(csv_phase['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_phase['Description']), locales),

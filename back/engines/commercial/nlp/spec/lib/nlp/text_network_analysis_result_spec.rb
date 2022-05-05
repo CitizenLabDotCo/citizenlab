@@ -43,5 +43,4 @@ describe NLP::TextNetworkAnalysisResult do
       it { expect(tna_result.tenant_id).to eq(tenant_id) }
     end
   end
-  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

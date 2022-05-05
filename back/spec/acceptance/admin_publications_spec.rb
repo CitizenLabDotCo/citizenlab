@@ -309,7 +309,7 @@ resource 'AdminPublication' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
-        expect(json_response[:status_counts][:draft]).to eq nil
+        expect(json_response[:status_counts][:draft]).to be_nil
         expect(json_response[:status_counts][:published]).to eq 2
 
         if CitizenLab.ee?

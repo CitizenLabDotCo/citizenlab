@@ -7,7 +7,7 @@ module Polls
 
         def index_xlsx
           if @participation_context
-            authorize Project.find_by!(id: @participation_context.project.id), :index_xlsx?
+            authorize Project.find(@participation_context.project.id), :index_xlsx?
           else
             authorize Response, :index_xlsx?
           end
@@ -38,7 +38,7 @@ module Polls
 
         def responses_count
           if @participation_context
-            authorize Project.find_by!(id: @participation_context.project.id), :responses_count?
+            authorize Project.find(@participation_context.project.id), :responses_count?
           else
             authorize Response, :responses_count?
           end

@@ -42,7 +42,6 @@ describe NLP::TextNetwork do
       expect(pruned_community.children & network.nodes).to be_empty
       expect(network.nodes).to match_array(network.communities.flat_map(&:children))
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'keeps only the most important communities' do
       max_importance = network.communities.map(&:importance_score).max

@@ -23,7 +23,7 @@ resource 'User', admin_api: true do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.size).to eq 6
-      expect(json_response.map { |u| u[:email] }).to match_array User.all.pluck(:email)
+      expect(json_response.pluck(:email)).to match_array User.all.pluck(:email)
     end
 
     example 'Get users on first page' do

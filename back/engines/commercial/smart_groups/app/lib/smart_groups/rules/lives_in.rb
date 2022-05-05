@@ -17,7 +17,7 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -26,8 +26,8 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
+              type: 'string',
+              enum: PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
             },
             'value' => {
               'description' => 'The id of an area',
@@ -36,7 +36,7 @@ module SmartGroups::Rules
           }
         },
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -45,8 +45,8 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": MULTIVALUE_PREDICATES
+              type: 'string',
+              enum: MULTIVALUE_PREDICATES
             },
             'value' => {
               'description' => 'The id of an area',

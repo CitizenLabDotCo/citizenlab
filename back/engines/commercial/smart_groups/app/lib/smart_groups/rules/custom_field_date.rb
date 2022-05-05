@@ -12,7 +12,7 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -21,17 +21,17 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
               'description' => 'The date formatted as yyyy-mm-dd',
-              "type": 'string',
-              "format": 'date',
-              "pattern": '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+              type: 'string',
+              format: 'date',
+              pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
             }
           }
         },
@@ -45,7 +45,7 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
               'type' => 'string',

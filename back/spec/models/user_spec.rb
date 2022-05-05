@@ -46,8 +46,8 @@ RSpec.describe User, type: :model do
       u.email = 'sebastien@citizenlab.co'
       u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
       u.save
-      expect(!!u.authenticate('supersecret')).to eq(true)
-      expect(!!u.authenticate('totallywrong')).to eq(false)
+      expect(!!u.authenticate('supersecret')).to be(true)
+      expect(!!u.authenticate('totallywrong')).to be(false)
     end
 
     it 'should replace the CL1 hash by the CL2 hash' do
@@ -57,11 +57,11 @@ RSpec.describe User, type: :model do
       u.email = 'sebastien@citizenlab.co'
       u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
       u.save
-      expect(!!u.authenticate('supersecret')).to eq(true)
+      expect(!!u.authenticate('supersecret')).to be(true)
       expect(u.password_digest).not_to eq('$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK')
-      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to eq(true)
-      expect(!!u.authenticate('supersecret')).to eq(true)
-      expect(!!u.authenticate('totallywrong')).to eq(false)
+      expect(!!BCrypt::Password.new(u.password_digest).is_password?('supersecret')).to be(true)
+      expect(!!u.authenticate('supersecret')).to be(true)
+      expect(!!u.authenticate('totallywrong')).to be(false)
     end
   end
 
@@ -159,12 +159,12 @@ RSpec.describe User, type: :model do
   describe 'admin?' do
     it 'responds true when the user has the admin role' do
       u = build(:user, roles: [{ type: 'admin' }])
-      expect(u.admin?).to eq true
+      expect(u.admin?).to be true
     end
 
     it 'responds false when the user does not have the admin role' do
       u = build(:user, roles: [])
-      expect(u.admin?).to eq false
+      expect(u.admin?).to be false
     end
   end
 
@@ -172,12 +172,12 @@ RSpec.describe User, type: :model do
     it 'responds false when the user does not have a project_moderator role' do
       l = create(:project)
       u = build(:user, roles: [])
-      expect(u.project_moderator?(l.id)).to eq false
+      expect(u.project_moderator?(l.id)).to be false
     end
 
     it 'responds false when the user is not a project_moderator and no project_id is passed' do
       u = build(:admin)
-      expect(u.project_moderator?).to eq false
+      expect(u.project_moderator?).to be false
     end
   end
 
@@ -401,7 +401,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns nil if no user record with that email was found' do
-      expect(User.find_by_cimail('doesnotexist@example.com')).to eq(nil)
+      expect(User.find_by_cimail('doesnotexist@example.com')).to be_nil
     end
   end
 

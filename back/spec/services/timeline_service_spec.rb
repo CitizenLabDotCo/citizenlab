@@ -40,7 +40,7 @@ describe TimelineService do
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Brussels'
       AppConfiguration.instance.update!(settings: settings)
-      expect(service.current_phase(project, t)&.id).to be nil
+      expect(service.current_phase(project, t)&.id).to be_nil
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Santiago'
@@ -90,7 +90,7 @@ describe TimelineService do
   describe 'timeline_active' do
     it 'returns :present for a continuous project' do
       project = create(:continuous_project)
-      expect(service.timeline_active(project)).to eq nil
+      expect(service.timeline_active(project)).to be_nil
     end
 
     it 'returns :present for a project with current phase' do

@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
     spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
   else
     raise 'RubyGems 2.0 or newer is required to protect against ' \
-      'public gem pushes.'
+          'public gem pushes.'
   end
 
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']

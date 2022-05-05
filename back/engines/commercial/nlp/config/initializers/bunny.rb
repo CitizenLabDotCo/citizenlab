@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-return if Rails.const_defined? 'Console'
+return if Rails.const_defined? :Console
 
 require 'citizen_lab/bunny'
 require 'nlp/text_network_analysis_service'

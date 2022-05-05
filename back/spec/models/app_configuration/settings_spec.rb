@@ -36,7 +36,7 @@ RSpec.describe AppConfiguration::Settings do
         def self.feature_name; 'dummy_feature' end
         def self.feature_title; 'Dummy feature' end
         def self.feature_description; 'Oh my... such a good feature.' end
-        # rubocop:enable Style/SingleLineMethods, Layout/EmptyLineBetweenDefs
+        # rubocop:enable Style/SingleLineMethods
 
         add_setting 'dummy setting', required: true, schema: { 'type' => 'boolean' }
       end

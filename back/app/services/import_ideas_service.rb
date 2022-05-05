@@ -10,12 +10,12 @@ class ImportIdeasService
 
       idea_models_data.each do |idea_data|
         added_idea_ids.push convert_idea(idea_data).id
-        Rails.logger.debug "Created #{added_idea_ids.first}"
+        Rails.logger.debug { "Created #{added_idea_ids.first}" }
       end
     rescue StandardError => e
       added_idea_ids.select { |id| id }.each do |id|
         Idea.find(id)&.destroy!
-        Rails.logger.debug "Destroyed #{id}"
+        Rails.logger.debug { "Destroyed #{id}" }
       end
       raise e
     end
@@ -67,7 +67,7 @@ class ImportIdeasService
       begin
         d[:published_at] = Date.parse idea_data[:published_at]
       rescue StandardError => _e
-        Rails.logger.debug "Failed to parse publication date: #{idea_data[:published_at]}"
+        Rails.logger.debug { "Failed to parse publication date: #{idea_data[:published_at]}" }
       end
     end
     if (lat = idea_data[:latitude]&.to_f) && (lon = idea_data[:longitude]&.to_f)

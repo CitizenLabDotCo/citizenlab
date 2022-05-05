@@ -42,7 +42,6 @@ describe Insights::CategorySuggestionsService do
           expect(Insights::CategoryAssignment.where(input_id: input_ids)).not_to exist
         end
       end
-      # rubocop:enable RSpec/MultipleExpectations
     end
 
     context 'when the task is known' do
@@ -92,7 +91,6 @@ describe Insights::CategorySuggestionsService do
           ).to be_approved
         end
       end
-      # rubocop:enable RSpec/ExampleLength
     end
   end
 

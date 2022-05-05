@@ -83,7 +83,7 @@ module EmailCampaigns
     def can_access_and_modify?
       user&.active? && (
         user.admin? ||
-        user.project_moderator? && moderator_can_access_and_modify?
+        (user.project_moderator? && moderator_can_access_and_modify?)
       )
     end
 

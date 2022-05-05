@@ -83,11 +83,11 @@ module EmailCampaigns
     private
 
     def initiative_ids(time:)
-      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).map { |d| d[:id] }.compact
+      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).pluck(:id).compact
     end
 
     def idea_ids(time:)
-      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].map { |idea_h| idea_h[:id] } }
+      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
     end
 
     def user_filter_admin_only(users_scope, _options = {})
@@ -171,7 +171,7 @@ module EmailCampaigns
     end
 
     def active_ideas
-      @active_ideas ||= published_ideas.yield_self do |ideas|
+      @active_ideas ||= published_ideas.then do |ideas|
         ideas.select { |idea| total_idea_activity(idea).positive? }
              .sort_by(&method(:total_idea_activity))
              .last(N_TOP_IDEAS)

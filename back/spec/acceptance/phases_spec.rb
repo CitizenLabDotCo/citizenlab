@@ -103,9 +103,9 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq true
-        expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq true
-        expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq true
+        expect(json_response.dig(:data, :attributes, :posting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :commenting_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :voting_enabled)).to be true
         expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq 'unlimited'
         expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq 10
         expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
@@ -295,11 +295,11 @@ resource 'Phases' do
         let(:participation_method) { 'poll' }
 
         example 'Existing related ideas_phase remains valid' do
-          expect(ideas_phase.valid?).to eq true
+          expect(ideas_phase.valid?).to be true
           do_request
           ideas_phase.reload
           expect(response_status).to eq 200
-          expect(ideas_phase.valid?).to eq true
+          expect(ideas_phase.valid?).to be true
         end
       end
     end

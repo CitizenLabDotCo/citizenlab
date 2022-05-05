@@ -31,17 +31,17 @@ describe ParticipationContextService do
 
     it 'returns nil for a timeline project without an active phase' do
       project = create(:project_with_past_phases)
-      expect(service.get_participation_context(project)).to eq nil
+      expect(service.get_participation_context(project)).to be_nil
     end
 
     it "returns nil for a timeline project that's archived" do
       project = create(:project_with_current_phase, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.get_participation_context(project)).to eq nil
+      expect(service.get_participation_context(project)).to be_nil
     end
 
     it "returns nil for a continuous project that's archived" do
       project = create(:continuous_project, admin_publication_attributes: { publication_status: 'archived' })
-      expect(service.get_participation_context(project)).to eq nil
+      expect(service.get_participation_context(project)).to be_nil
     end
   end
 
@@ -121,9 +121,9 @@ describe ParticipationContextService do
           :project_with_current_phase,
           current_phase_attrs: { participation_method: 'budgeting', max_budget: 1200 }
         )
-        expect(service.commenting_idea_disabled_reason_for_project(project, user)).to eq nil
+        expect(service.commenting_idea_disabled_reason_for_project(project, user)).to be_nil
         idea = create(:idea, project: project, phases: [project.phases[2]])
-        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq nil
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to be_nil
       end
 
       it "returns 'idea_not_in_current_phase' for an idea when it's not in the current phase" do
@@ -133,7 +133,7 @@ describe ParticipationContextService do
       end
     end
 
-    context ' for continuous project' do
+    context 'for continuous project' do
       it "returns 'commenting_disabled' when commenting is disabled in a continuous project" do
         project = create(:continuous_project, commenting_enabled: false)
         expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'commenting_disabled'

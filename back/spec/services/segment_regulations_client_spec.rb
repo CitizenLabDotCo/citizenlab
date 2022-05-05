@@ -32,10 +32,9 @@ RSpec.describe SegmentRegulationsClient do
 
         expect(headers).to eq({
           Authorization: "Bearer #{token}",
-          "Content-Type": 'application/json' }
+          'Content-Type': 'application/json' }
                              )
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations
   end
 end

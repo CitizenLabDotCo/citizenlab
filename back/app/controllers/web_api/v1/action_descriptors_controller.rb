@@ -10,7 +10,6 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
       comment_voting_initiative:   { enabled: true, disabled_reason: nil },
       cancelling_initiative_votes: { enabled: true, disabled_reason: nil }
     }
-    # rubocop:enable Layout/HashAlignment
     render(json: descriptors)
   end
 end

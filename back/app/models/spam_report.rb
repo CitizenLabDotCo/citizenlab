@@ -28,6 +28,7 @@ class SpamReport < ApplicationRecord
   belongs_to :spam_reportable, polymorphic: true
   belongs_to :user, optional: true
 
+  after_validation :set_reported_at
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -38,8 +39,6 @@ class SpamReport < ApplicationRecord
       record.errors.add(attr, "must be blank if a different reason code than 'other' was selected")
     end
   end
-
-  after_validation :set_reported_at
 
   private
 

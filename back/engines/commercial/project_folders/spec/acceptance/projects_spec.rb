@@ -56,7 +56,7 @@ resource 'Projects' do
         expect(status).to eq(200)
 
         json_response = json_parse(response_body)
-        ids = json_response[:data].map { |project| project[:id] }
+        ids = json_response[:data].pluck(:id)
         projects = Project.includes(:admin_publication)
                           .where(admin_publications: { publication_status: %w[published archived] })
                           .where(projects: { visible_to: 'public' })

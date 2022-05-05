@@ -150,11 +150,11 @@ class ParticipantsService
   # Adds a `score` field to the results, indicating the engagement score for the activity
   def with_engagement_scores(activities_scope)
     activities_scope
-      .select(''"(CASE
+      .select("(CASE
         #{ENGAGING_ACTIVITIES.map do |activity|
           "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
           end.join(' ')
         }
-      ELSE 0 END) as score"'')
+      ELSE 0 END) as score")
   end
 end

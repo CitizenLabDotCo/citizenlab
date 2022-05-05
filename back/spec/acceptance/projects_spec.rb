@@ -125,9 +125,9 @@ resource 'Projects' do
 
       example 'Search for projects' do
         p1 = create(:project, title_multiloc: {
-                "en": 'super-specific-title-string',
-                "fr-BE": 'a title',
-                "nl-BE": 'a title'
+                en: 'super-specific-title-string',
+                'fr-BE': 'a title',
+                'nl-BE': 'a title'
               })
 
         do_request search: 'super-specific-title-string'
@@ -284,8 +284,8 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
-          expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
           if CitizenLab.ee?
@@ -331,14 +331,14 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
           expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
           expect(json_response.dig(:data, :attributes, :visible_to)).to eq visible_to
           expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
           expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
           expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
           expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
           expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to eq true
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
           expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
           expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
           expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
@@ -464,8 +464,8 @@ resource 'Projects' do
         expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
         expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
-        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
-        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
         expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
         expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
         expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
@@ -492,7 +492,7 @@ resource 'Projects' do
       example 'Remove a project from a folder', skip: !CitizenLab.ee? do
         folder = create(:project_folder, projects: [@project])
         do_request(project: { folder_id: nil })
-        expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to eq nil
+        expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to be_nil
         # Projects moved out of folders are added to the top
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
@@ -527,13 +527,13 @@ resource 'Projects' do
       example 'Disable downvoting', document: false do
         SettingsService.new.activate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
-        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to eq false
+        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be false
       end
 
       example 'Disable downvoting when feature is not enabled', document: false do
         SettingsService.new.deactivate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
-        expect(@project.reload.downvoting_enabled).to eq true
+        expect(@project.reload.downvoting_enabled).to be true
       end
 
       describe do
@@ -541,7 +541,7 @@ resource 'Projects' do
           @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
           expect(@project.reload.header_bg_url).to be_present
           do_request project: { header_bg: nil }
-          expect(@project.reload.header_bg_url).to be nil
+          expect(@project.reload.header_bg_url).to be_nil
         end
       end
     end
@@ -623,17 +623,17 @@ resource 'Projects' do
         p1 = create(:project,
               admin_publication_attributes: { publication_status: 'published' },
               title_multiloc: {
-                "en": 'super-specific-title-string-1',
-                "fr-BE": 'a title',
-                "nl-BE": 'a title'
+                en: 'super-specific-title-string-1',
+                'fr-BE': 'a title',
+                'nl-BE': 'a title'
               })
 
         create(:project,
           admin_publication_attributes: { publication_status: 'draft' },
           title_multiloc: {
-            "en": 'super-specific-title-string-2',
-            "fr-BE": 'a title',
-            "nl-BE": 'a title'
+            en: 'super-specific-title-string-2',
+            'fr-BE': 'a title',
+            'nl-BE': 'a title'
           })
 
         do_request search: 'super-specific-title-string'

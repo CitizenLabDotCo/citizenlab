@@ -22,6 +22,7 @@ class IdeaStatus < ApplicationRecord
 
   has_many :ideas
 
+  before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
@@ -30,7 +31,6 @@ class IdeaStatus < ApplicationRecord
   validates :code, presence: true, inclusion: { in: CODES }, minimum_required: { values: MINIMUM_REQUIRED_CODES }
   validates :color, presence: true
 
-  before_validation :strip_title
   # abort_if_code_required to be the first before_destroy to be executed, but cannot be prepended.
   before_destroy :abort_if_code_required
 

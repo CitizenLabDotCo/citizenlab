@@ -12,7 +12,7 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -21,20 +21,20 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
+              type: 'string',
+              enum: PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
             },
             'value' => {
               'description' => 'The id of one of the options of the custom field',
-              "$ref": '#/definitions/customFieldOptionId'
+              '$ref': '#/definitions/customFieldOptionId'
             }
           }
         },
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -43,17 +43,17 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
-              "type": 'string',
-              "enum": MULTIVALUE_PREDICATES
+              type: 'string',
+              enum: MULTIVALUE_PREDICATES
             },
             'value' => {
               'description' => 'The ids of some of the options of the custom field',
               'type' => 'array',
               'items' => {
-                "$ref": '#/definitions/customFieldOptionId'
+                '$ref': '#/definitions/customFieldOptionId'
               },
               'uniqueItems' => true,
               'minItems' => 1
@@ -70,7 +70,7 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
               'type' => 'string',

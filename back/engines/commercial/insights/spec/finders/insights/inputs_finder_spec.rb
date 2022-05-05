@@ -157,7 +157,6 @@ describe Insights::InputsFinder do
         end
       end
     end
-    # rubocop:enable RSpec/MultipleMemoizedHelpers
 
     context 'when using the processed filter' do
       let!(:inputs) { add_data_source(view, 3).origin.ideas }

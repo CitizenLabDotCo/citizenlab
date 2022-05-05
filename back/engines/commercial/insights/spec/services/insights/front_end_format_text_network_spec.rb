@@ -76,7 +76,6 @@ RSpec.describe Insights::FrontEndFormatTextNetwork do
         expect(nodes.pluck(:cluster_id).to_set.count).to eq(options[:max_nb_clusters])
       end
     end
-    # rubocop:enable RSpec/MultipleMemoizedHelpers
   end
 
   describe '#links' do

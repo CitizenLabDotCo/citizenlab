@@ -26,7 +26,7 @@ resource 'Poll Questions' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response[:data].map { |d| d[:relationships][:options][:data].size }).to eq [3, 3, 3]
-      expect(json_response[:included].map { |i| i[:id] }).to match_array @questions.flat_map { |q| q.options.map(&:id) }
+      expect(json_response[:included].pluck(:id)).to match_array @questions.flat_map { |q| q.options.map(&:id) }
     end
   end
 
@@ -48,7 +48,7 @@ resource 'Poll Questions' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response[:data].map { |d| d[:relationships][:options][:data].size }).to eq [3, 3, 3]
-      expect(json_response[:included].map { |i| i[:id] }).to match_array @questions.flat_map { |q| q.options.map(&:id) }
+      expect(json_response[:included].pluck(:id)).to match_array @questions.flat_map { |q| q.options.map(&:id) }
     end
   end
 

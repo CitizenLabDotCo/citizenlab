@@ -68,7 +68,7 @@ module EmailCampaigns
       @top_ideas ||= top_ideas.all
       @new_initiatives ||= new_initiatives(name_service, time: time)
       @successful_initiatives ||= successful_initiatives(name_service, time: time)
-      @initiative_ids ||= (@new_initiatives + @successful_initiatives).map { |d| d[:id] }.compact
+      @initiative_ids ||= (@new_initiatives + @successful_initiatives).pluck(:id).compact
 
       [{
         event_payload: {

@@ -70,7 +70,7 @@ describe Surveys::TypeformApiParser do
             'labels' => { 'left' => 'Too easy', 'center' => 'Just right', 'right' => 'Way too hard' } },
           'validations' => { 'required' => false },
           'type' => 'opinion_scale' }] },
-        "type": 'group' },
+        type: 'group' },
      { 'id' => 'xlqRjVwtd5En',
       'title' => 'How tall are you?',
       'ref' => '7eb52f7c-153d-46d4-8dcc-d555599e43ff',

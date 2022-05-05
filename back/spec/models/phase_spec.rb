@@ -36,12 +36,12 @@ RSpec.describe Phase, type: :model do
     it 'cannot be null' do
       p = create(:phase, participation_method: 'ideation')
       p.participation_method = nil
-      expect(p.save).to eq false
+      expect(p.save).to be false
     end
 
     it 'can be budgeting' do
       p = create(:phase, participation_method: 'budgeting')
-      expect(p.save).to eq true
+      expect(p.save).to be true
     end
   end
 
@@ -49,13 +49,13 @@ RSpec.describe Phase, type: :model do
     it 'can be null for non-ideation phases' do
       p = create(:phase, participation_method: 'information')
       p.presentation_mode = nil
-      expect(p.save).to eq true
+      expect(p.save).to be true
     end
 
     it 'cannot be null for an ideation phase' do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
-      expect(p.save).to eq false
+      expect(p.save).to be false
     end
   end
 
@@ -110,11 +110,11 @@ RSpec.describe Phase, type: :model do
     let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
 
     it 'returns false if passing today\'s date' do
-      expect(phase.ends_before?(start_date)).to eq false
+      expect(phase.ends_before?(start_date)).to be false
     end
 
     it 'returns true if passing tomorrow\'s date' do
-      expect(phase.ends_before?(start_date + 2.days)).to eq true
+      expect(phase.ends_before?(start_date + 2.days)).to be true
     end
   end
 

@@ -23,7 +23,7 @@ resource 'Avatars' do
       expect(json_response[:data].size).to eq 5
       expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
       expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-      expect(json_response[:data].map { |d| d[:id] }).not_to include(@user_without_avatar)
+      expect(json_response[:data].pluck(:id)).not_to include(@user_without_avatar)
       expect(json_response.dig(:meta, :total)).to eq 7
     end
 
@@ -56,7 +56,7 @@ resource 'Avatars' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
         expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-        expect(json_response[:data].map { |d| d[:id] }).to all(satisfy { |id| author_ids.include?(id) })
+        expect(json_response[:data].pluck(:id)).to all(satisfy { |id| author_ids.include?(id) })
         expect(json_response.dig(:meta, :total)).to eq 3
       end
     end
@@ -75,7 +75,7 @@ resource 'Avatars' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
         expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-        expect(json_response[:data].map { |d| d[:id] }).to all(satisfy { |id| (commenter_ids + [author_id]).include?(id) })
+        expect(json_response[:data].pluck(:id)).to all(satisfy { |id| (commenter_ids + [author_id]).include?(id) })
         expect(json_response.dig(:meta, :total)).to eq 3
       end
     end
@@ -94,7 +94,7 @@ resource 'Avatars' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
         expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-        expect(json_response[:data].map { |d| d[:id] }).to all(satisfy { |id| (commenter_ids + [author_id]).include?(id) })
+        expect(json_response[:data].pluck(:id)).to all(satisfy { |id| (commenter_ids + [author_id]).include?(id) })
         expect(json_response.dig(:meta, :total)).to eq 3
       end
     end
@@ -119,7 +119,7 @@ resource 'Avatars' do
           expect(json_response[:data].size).to eq 4
           expect(json_response[:data].map { |d| d.dig(:attributes, :avatar).keys }).to all(eq %i[small medium large])
           expect(json_response[:data].flat_map { |d| d.dig(:attributes, :avatar).values }).to all(be_present)
-          expect(json_response[:data].map { |d| d[:id] }).to all(satisfy { |id| member_ids.include?(id) })
+          expect(json_response[:data].pluck(:id)).to all(satisfy { |id| member_ids.include?(id) })
           expect(json_response.dig(:meta, :total)).to eq 4
         end
       end

@@ -12,7 +12,7 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -21,14 +21,14 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
-              "type": 'number'
+              type: 'number'
             }
           }
         },
@@ -42,7 +42,7 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
               'type' => 'string',

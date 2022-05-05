@@ -43,6 +43,8 @@ class Comment < ApplicationRecord
   has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
+  before_validation :set_publication_status, on: :create
+  before_validation :sanitize_body_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -78,9 +80,6 @@ class Comment < ApplicationRecord
 
   validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
-
-  before_validation :set_publication_status, on: :create
-  before_validation :sanitize_body_multiloc
 
   scope :published, -> { where publication_status: 'published' }
 

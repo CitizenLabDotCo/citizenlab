@@ -28,15 +28,15 @@ module IdIdCardLookup
     def config_parameters_schema
       {
         method_name_multiloc: {
-          "$ref": '#/definitions/multiloc_string',
+          '$ref': '#/definitions/multiloc_string',
           private: true
         },
         card_id_multiloc: {
-          "$ref": '#/definitions/multiloc_string',
+          '$ref': '#/definitions/multiloc_string',
           private: true
         },
         card_id_tooltip_multiloc: {
-          "$ref": '#/definitions/multiloc_string',
+          '$ref': '#/definitions/multiloc_string',
           private: true
         }
       }

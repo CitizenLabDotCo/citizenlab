@@ -52,10 +52,10 @@ module EmailCampaigns
       idea = activity.item
       initiator = idea.author
 
-      recipient_ids = if !(initiator&.admin? || initiator&.project_moderator?(idea.project_id))
-        User.admin.or(User.project_moderator(idea.project_id)).ids
-      else
+      recipient_ids = if initiator&.admin? || initiator&.project_moderator?(idea.project_id)
         []
+      else
+        User.admin.or(User.project_moderator(idea.project_id)).ids
       end
 
       users_scope.where(id: recipient_ids)

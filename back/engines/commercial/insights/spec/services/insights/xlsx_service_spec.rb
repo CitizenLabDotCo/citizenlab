@@ -51,5 +51,4 @@ RSpec.describe XlsxService do
       end
     end
   end
-  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

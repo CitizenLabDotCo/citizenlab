@@ -32,7 +32,6 @@ class CreateZeroshotClassificationTables < ActiveRecord::Migration[6.0]
 
       t.index %i[category_id task_id], unique: true, name: 'index_insights_zsc_tasks_categories_on_category_id_and_task_id'
     end
-    # rubocop:enable Rails/CreateTableWithTimestamps
   end
 
   def create_tasks_inputs_table
@@ -45,6 +44,5 @@ class CreateZeroshotClassificationTables < ActiveRecord::Migration[6.0]
 
       t.index %i[input_id input_type task_id], unique: true, name: 'index_insights_zsc_tasks_inputs_on_input_and_task_id'
     end
-    # rubocop:enable Rails/CreateTableWithTimestamps
   end
 end

@@ -24,10 +24,10 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
       command = campaign.generate_commands(recipient: user).first
 
       expect(
-        command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
+        command.dig(:event_payload, :discover_projects).pluck(:created_at)
       ).to include(new_project.created_at.iso8601)
       expect(
-        command.dig(:event_payload, :discover_projects).map { |pj| pj[:created_at] }
+        command.dig(:event_payload, :discover_projects).pluck(:created_at)
       ).not_to include(draft_project.created_at.iso8601)
       expect(
         command.dig(:event_payload, :top_ideas).first[:published_at]

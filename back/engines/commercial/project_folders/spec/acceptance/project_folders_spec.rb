@@ -33,7 +33,7 @@ resource 'ProjectFolder' do
       do_request(filter_ids: filter_ids)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      expect(json_response[:data].map { |d| d[:id] }).to match_array filter_ids
+      expect(json_response[:data].pluck(:id)).to match_array filter_ids
     end
   end
 

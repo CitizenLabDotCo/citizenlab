@@ -43,7 +43,7 @@ resource 'Comments' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 10
-        expect(json_response[:data].map { |d| d[:id] }).to eq([
+        expect(json_response[:data].pluck(:id)).to eq([
           @c1,
           @c2,
           @c1sub1,
@@ -74,7 +74,7 @@ resource 'Comments' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].map { |d| d[:id] }).to eq([
+        expect(json_response[:data].pluck(:id)).to eq([
           @c2,
           @c3,
           @c3sub1,
@@ -109,7 +109,7 @@ resource 'Comments' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
-      expect(json_response[:data].map { |d| d[:id] }).to eq([
+      expect(json_response[:data].pluck(:id)).to eq([
         @csub1,
         @csub2,
         @csub3,
@@ -195,7 +195,7 @@ resource 'Comments' do
         do_request
         json_response = json_parse(response_body)
         expect(json_response[:data].map { |d| d[:relationships][:user_vote][:data] }.compact.first[:id]).to eq vote.id
-        expect(json_response[:included].map { |i| i[:id] }).to include vote.id
+        expect(json_response[:included].pluck(:id)).to include vote.id
       end
     end
 

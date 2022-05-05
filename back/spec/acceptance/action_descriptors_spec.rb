@@ -16,8 +16,8 @@ resource 'ActionDescriptors' do
   get 'web_api/v1/action_descriptors/initiatives' do
     example_request 'Get the global action descriptors for initiatives' do
       expect(response_status).to eq 200
-      expect(json_response.values.pluck(:enabled).all?).to eq true
-      expect(json_response.values.pluck(:disabled_reason).none?).to eq true
+      expect(json_response.values.pluck(:enabled).all?).to be true
+      expect(json_response.values.pluck(:disabled_reason).none?).to be true
     end
 
     context 'with granular permissions enabled', document: false, skip: !CitizenLab.ee? do
@@ -31,7 +31,6 @@ resource 'ActionDescriptors' do
         # Restore registered scope-types as they were before the tests.
         PermissionsService.instance_variable_set(:@scope_spec_hash, @cached_scope_types)
       end
-      # rubocop:enable RSpec/BeforeAfterAll
 
       before do
         PermissionsService.new.update_all_permissions

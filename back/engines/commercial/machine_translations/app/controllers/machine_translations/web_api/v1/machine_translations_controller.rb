@@ -24,7 +24,9 @@ module MachineTranslations
           @translation = MachineTranslation.find_by @translation_attributes
 
           # create translation if it doesn't exist
-          if !@translation
+          if @translation
+            authorize @translation
+          else
             begin
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
               authorize @translation
@@ -40,8 +42,6 @@ module MachineTranslations
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity
               return
             end
-          else
-            authorize @translation
           end
 
           # update translation if the original text may have changed

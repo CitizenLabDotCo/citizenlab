@@ -177,13 +177,13 @@ describe CustomFieldService do
       schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
       expect(schema).to match(
         { 'field1' => {},
-         'field2' => { "ui:widget": 'textarea' },
+         'field2' => { 'ui:widget': 'textarea' },
          'field3' => {},
          'field4' => {},
          'field5' => {},
          'field6' => {},
-         'field7' => { "ui:widget": 'hidden' },
-         'field8' => { "ui:widget": 'hidden' },
+         'field7' => { 'ui:widget': 'hidden' },
+         'field8' => { 'ui:widget': 'hidden' },
          'ui:order' =>
              %w[field1 field2 field3 field6 field5 field4 field7 field8] }
       )

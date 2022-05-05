@@ -4,7 +4,7 @@ describe 'RequiredSettingsAttribute' do
   let(:schema1) do
     {
     '$schema' => TenantSchema::ExtendedSchema::SCHEMA_URL,
-    "type": 'object',
+    type: 'object',
     'properties' => {
       'feature1' => {
         'type' => 'object',

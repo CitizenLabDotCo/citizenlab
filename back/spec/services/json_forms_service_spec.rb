@@ -31,13 +31,13 @@ describe JsonFormsService do
   describe 'fields_to_json_schema_multiloc' do
     it 'returns nil empty fields' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
-      expect(schema).to eq nil
+      expect(schema).to be_nil
     end
 
     it 'creates the valid empty schema on a disabled field' do
       create(:custom_field, enabled: false)
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, [], user)
-      expect(schema).to eq nil
+      expect(schema).to be_nil
     end
 
     it 'creates a valid schema with all input types' do

@@ -18,7 +18,7 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
               'type' => 'string',

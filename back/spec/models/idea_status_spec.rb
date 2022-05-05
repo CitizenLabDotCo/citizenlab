@@ -19,7 +19,7 @@ RSpec.describe IdeaStatus, type: :model do
     describe 'if it is the only existing with this code' do
       it 'cannot be destroyed' do
         subject.destroy
-        expect(subject.destroyed?).to eq false
+        expect(subject.destroyed?).to be false
       end
 
       it 'it\'s code cannot be updated' do
@@ -35,7 +35,7 @@ RSpec.describe IdeaStatus, type: :model do
 
       it 'can be destroyed' do
         subject.destroy
-        expect(subject.destroyed?).to eq true
+        expect(subject.destroyed?).to be true
       end
 
       it 'it\'s code can be updated' do
@@ -52,8 +52,7 @@ RSpec.describe IdeaStatus, type: :model do
 
     it 'can be destroyed' do
       subject.destroy
-      expect(subject.destroyed?).to eq true
+      expect(subject.destroyed?).to be true
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

@@ -55,7 +55,7 @@ resource 'Initiatives' do
       do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map { |h| h[:id] }).to match_array [i1.id, i2.id]
+      expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
     end
 
     example 'List all initiatives which match one of the given areas' do
@@ -72,7 +72,7 @@ resource 'Initiatives' do
       do_request areas: [a1.id, a2.id]
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map { |h| h[:id] }).to match_array [i1.id, i2.id]
+      expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
     end
 
     example 'List all initiatives for a user' do
@@ -152,7 +152,7 @@ resource 'Initiatives' do
       do_request
       json_response = json_parse(response_body)
       expect(json_response[:data].map { |d| d[:relationships][:user_vote][:data] }.compact.first[:id]).to eq vote.id
-      expect(json_response[:included].map { |i| i[:id] }).to include vote.id
+      expect(json_response[:included].pluck(:id)).to include vote.id
     end
   end
 
@@ -355,8 +355,8 @@ resource 'Initiatives' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         expect(json_response.dig(:data, :relationships, :assignee, :data, :id)).to eq assignee_id
       end
 
@@ -408,7 +408,7 @@ resource 'Initiatives' do
         json_response = json_parse(response_body)
         blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
         expect(blocked_error).to be_present
-        expect(blocked_error[:blocked_words].map { |bw| bw[:attribute] }.uniq).to eq(['location_description'])
+        expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to eq(['location_description'])
       end
     end
   end
@@ -449,8 +449,8 @@ resource 'Initiatives' do
         expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
-        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
       end
 
       example 'Check for the automatic creation of an upvote by the author when the publication status of an initiative is updated from draft to published', document: false do
@@ -483,7 +483,7 @@ resource 'Initiatives' do
         @initiative.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
         expect(@initiative.reload.header_bg_url).to be_present
         do_request initiative: { header_bg: nil }
-        expect(@initiative.reload.header_bg_url).to be nil
+        expect(@initiative.reload.header_bg_url).to be_nil
       end
     end
 
@@ -497,8 +497,8 @@ resource 'Initiatives' do
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :topics, :data).map { |d| d[:id] }).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).map { |d| d[:id] }).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
       end
     end
 

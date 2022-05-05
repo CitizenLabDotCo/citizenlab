@@ -26,7 +26,7 @@ describe 'JsonFormsService ideas overrides' do
     it 'only includes the topics associated with the current project' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'topic_ids', :items, :oneOf).map { |item| item[:const] }).to match @projects_allowed_input_topics.map(&:topic_id)
+      expect(schema.dig(:properties, 'topic_ids', :items, :oneOf).pluck(:const)).to match @projects_allowed_input_topics.map(&:topic_id)
     end
   end
 
@@ -47,7 +47,7 @@ describe 'JsonFormsService ideas overrides' do
     it 'is not included for normal users' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'budget')).to be nil
+      expect(schema.dig(:properties, 'budget')).to be_nil
     end
 
     context 'when admin' do
@@ -62,7 +62,7 @@ describe 'JsonFormsService ideas overrides' do
       it 'is not included in a project that has no PB phase' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline_ideas_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to be nil
+        expect(schema.dig(:properties, 'budget')).to be_nil
       end
 
       it 'is included in a continuous PB project' do
@@ -74,7 +74,7 @@ describe 'JsonFormsService ideas overrides' do
       it 'is not included in a continuous ideation project' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to be nil
+        expect(schema.dig(:properties, 'budget')).to be_nil
       end
     end
   end
@@ -85,7 +85,7 @@ describe 'JsonFormsService ideas overrides' do
     it 'is not inluded for normal users, irrespective of the feature flag' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'author_id')).to be nil
+      expect(schema.dig(:properties, 'author_id')).to be_nil
     end
 
     context 'when admin' do
@@ -101,7 +101,7 @@ describe 'JsonFormsService ideas overrides' do
         SettingsService.new.deactivate_feature! 'idea_author_change'
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'author_id')).to be nil
+        expect(schema.dig(:properties, 'author_id')).to be_nil
       end
     end
   end
@@ -131,8 +131,8 @@ describe 'JsonFormsService ideas overrides' do
         end
       end
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'details' }).to eq false
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'details' }).to be false
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
 
     it 'does not include the images and attachments category when there are no fields inside' do
@@ -142,22 +142,22 @@ describe 'JsonFormsService ideas overrides' do
         end
       end
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'attachments' }).to eq false
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'attachments' }).to be false
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
 
     it 'does not include an extra category when there are only built-in fields' do
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to eq false
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be false
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
 
     it 'includes all non built-in fields in an extra category' do
       fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to eq true
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be true
       expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
-      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to eq true
+      expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
   end
 end

@@ -1,5 +1,4 @@
 inherit_from:
-  - .rubocop_desired.yml
   - .rubocop_todo.yml
 
 require:
@@ -8,7 +7,7 @@ require:
   - rubocop-rspec
 
 AllCops:
-  DisabledByDefault: true
+  NewCops: enable
   Exclude:
   - 'db/schema.rb'
   - '**/*.builder'
@@ -16,51 +15,9 @@ AllCops:
   - '**/bin/**/*'
   - 'engines/ee/**/*'
 
-Style/StringLiterals:
-  Enabled: true
-
-Style/HashSyntax:
-  Enabled: true
-
-Style/Semicolon:
-  Enabled: true
-
-Style/RedundantSelf:
-  Enabled: true
-
-Style/TrailingCommaInHashLiteral:
-  Enabled: true
-
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
   Enabled: false
-
-Style/WordArray:
-  Enabled: true
-
-Style/BlockDelimiters:
-  Enabled: true
-
-Style/PercentLiteralDelimiters:
-  Enabled: true
-
-Style/MethodDefParentheses:
-  Enabled: true
-
-Style/SymbolArray:
-  Enabled: true
-
-Style/SingleArgumentDig:
-  Enabled: true
-
-Style/NegatedIf:
-  Enabled: true
-
-Style/StringLiteralsInInterpolation:
-  Enabled: true
-
-Style/Proc:
-  Enabled: true
 
 Style/SymbolProc:
   Enabled: true
@@ -70,89 +27,10 @@ Style/SymbolProc:
   Exclude:
     - 'db/migrate/**/*'
 
-Style/TrailingCommaInArrayLiteral:
-  Enabled: true
-
-Style/SpecialGlobalVars:
-  Enabled: true
-
-Style/EmptyMethod:
-  Enabled: true
-
-Style/ExpandPathArguments:
-  Enabled: true
-
-Style/NestedParenthesizedCalls:
-  Enabled: true
-
-Style/CommentAnnotation:
-  Enabled: true
-
-Style/TrailingCommaInArguments:
-  Enabled: true
-
-Style/NumericLiterals:
-  Enabled: true
-
-Style/ClassCheck:
-  Enabled: true
-
-Style/Lambda:
-  Enabled: true
-
-Style/AndOr:
-  Enabled: true
-
-Style/EmptyElse:
-  Enabled: true
-
-Style/OneLineConditional:
-  Enabled: true
-
-Style/StringConcatenation:
-  Enabled: true
-
-Style/RegexpLiteral:
-  Enabled: true
-
-Style/RedundantFileExtensionInRequire:
-  Enabled: true
-
-Style/RedundantRegexpEscape:
-  Enabled: true
-
-Style/Next:
-  Enabled: true
-
 Style/NumericPredicate:
   # Turned off because `something == 0` and `something.zero?`
   # are not the same if `something` is not a number.
   Enabled: false
-
-Layout/SpaceInsideHashLiteralBraces:
-  Enabled: true
-
-Layout/SpaceInsideBlockBraces:
-  Enabled: true
-
-Layout/SpaceAroundOperators:
-  Enabled: true
-
-Layout/SpaceBeforeBlockBraces:
-  Enabled: true
-
-Layout/SpaceAfterComma:
-  Enabled: true
-
-Layout/TrailingWhitespace:
-  Enabled: true
-  AllowInHeredoc: true
-
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: true
-
-Layout/EmptyLinesAroundClassBody:
-  Enabled: true
 
 Layout/HashAlignment:
   # There are a lot of places where EnforcedColonStyle: table is expected.
@@ -164,475 +42,62 @@ Layout/FirstHashElementIndentation:
   Enabled: false
   EnforcedStyle: consistent
 
-Layout/EmptyLines:
-  Enabled: true
-
-Layout/TrailingEmptyLines:
-  Enabled: true
-
-Layout/IndentationConsistency:
-  Enabled: true
-
-Layout/MultilineBlockLayout:
-  Enabled: true
-
-Layout/ExtraSpacing:
-  Enabled: true
-
-Layout/EmptyLineAfterGuardClause:
-  Enabled: true
-
-Layout/SpaceAfterColon:
-  Enabled: true
-
 Layout/CaseIndentation:
-  Enabled: true
   EnforcedStyle: end
 
-Layout/LeadingEmptyLines:
-  Enabled: true
-
-Layout/AssignmentIndentation:
-  Enabled: true
-
-Layout/SpaceAroundBlockParameters:
-  Enabled: true
-
-Layout/SpaceBeforeComment:
-  Enabled: true
-
-Layout/EmptyLinesAroundExceptionHandlingKeywords:
-  Enabled: true
-
-Layout/ClosingParenthesisIndentation:
-  Enabled: true
-
-Layout/SpaceAroundEqualsInParameterDefault:
-  Enabled: true
-
-Layout/EmptyLinesAroundModuleBody:
-  Enabled: true
-
-Layout/DotPosition:
-  Enabled: true
-
-Layout/EmptyLinesAroundMethodBody:
-  Enabled: true
-
-Layout/SpaceInLambdaLiteral:
-  Enabled: true
-
-Layout/SpaceInsideParens:
-  Enabled: true
-
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: true
-
-Layout/EmptyLineAfterMagicComment:
-  Enabled: true
-
-Naming/VariableNumber:
-  Enabled: true
-
 Metrics/ClassLength:
-  Enabled: true
   Max: 300
   CountAsOne: ['array', 'hash', 'heredoc']
 
 Lint/UnusedMethodArgument:
-  Enabled: true
   AllowUnusedKeywordArguments: true
-
-Lint/ParenthesesAsGroupedExpression:
-  Enabled: true
-
-Lint/UnusedBlockArgument:
-  Enabled: true
 
 RSpec/MultipleExpectations:
   # It makes little sense to disallow multiple expectations in one example,
   # so turn off this Cop.
   Enabled: false
 
-RSpec/ImplicitExpect:
-  Enabled: true
-
-RSpec/EmptyLineAfterHook:
-  Enabled: true
-
-RSpec/ScatteredLet:
-  Enabled: true
-
-RSpec/EmptyLineAfterFinalLet:
-  Enabled: true
-
-RSpec/EmptyLineAfterExample:
-  Enabled: true
-
-RSpec/NotToNot:
-  Enabled: true
-
-RSpec/EmptyLineAfterSubject:
-  Enabled: true
-
-RSpec/EmptyLineAfterExampleGroup:
-  Enabled: true
-
-Rails/HttpStatus:
-  Enabled: true
-
-Rails/PluralizationGrammar:
-  Enabled: true
-
-Rails/IndexWith:
-  Enabled: true
-
-Performance/Detect:
-  Enabled: true
-
-Performance/TimesMap:
-  Enabled: true
-
-# This was the original file contents. We will enable Cops one by one.
-# 
-# Metrics/BlockLength:
-#   IgnoredMethods: ['describe', 'context', 'shared_examples', 'class_eval']
-#   Enabled: true
-#   Exclude:
-#   - '**/spec/**/*'
-#   - 'db/migrate/**/*'
-#   # Max: 25
-# Metrics/MethodLength:
-#   Enabled: true
-#   Max: 30
-#   IgnoredMethods: ['included', 'prepended', 'extended']
-#   Exclude:
-#   - 'db/migrate/**/*'
-# Metrics/AbcSize:
-#   Enabled: true
-#   IgnoredMethods: ['included', 'prepended', 'extended']
-#   Exclude:
-#   - 'db/migrate/**/*'
-# Metrics/ClassLength:
-#   Enabled: true
-#   # Max: 100
-# Layout/HashAlignment:
-#   EnforcedColonStyle: [key, table]
-#   EnforcedHashRocketStyle: [key, table]
-# Layout/LineLength:
-#   Enabled: true
-#   # Max: 120
-# Rails/LexicallyScopedActionFilter:
-#   Enabled: true
-# Style/Documentation:
-#   Enabled: true
-#   Exclude:
-#   - 'db/migrate/**/*'
-# Style/EmptyElse:
-#   Enabled: false
-# Style/FrozenStringLiteralComment:
-#   Enabled: false
-#   AutoCorrect: true
-# Style/GuardClause:
-#   Enabled: false
-# Style/MultilineBlockChain:
-#   Enabled: false
-# Style/NegatedIf:
-#   Enabled: false
-# Style/NumericPredicate:
-#   # Zero is sometimes considered to be both 
-#   # positive as well as negative, which is why I
-#   # strongly disagree (this can only lead to more
-#   # confusion).
-#   Enabled: false
-# Style/SymbolArray:
-#   AutoCorrect: true
-# Documentation:
-#   Enabled: false
-# Style/ClassAndModuleChildren:
-#   Enabled: false
-# RSpec/ContextWording:
-#   Exclude:
-#     - '**/spec/policies/**/*'
-# RSpec/DescribeClass:
-#   Exclude:
-#   - '**/spec/acceptance/**/*'
-#   - '**/spec/lint/**/*'
-# RSpec/SharedContext:
-#   Exclude:
-#   - '**/spec/acceptance/**/*'
-# RSpec/MultipleMemoizedHelpers:
-#   Exclude:
-#   - '**/spec/acceptance/**/*'
-# RSpec/EmptyExampleGroup:
-#   Exclude:
-#   - '**/spec/acceptance/**/*'
-# RSpec/MultipleExpectations:
-#   Enabled: false
-# RSpec/ExampleLength:
-#   Max: 20
-# RSpec/MessageSpies:
-#   Enabled: false
-Style/AccessorGrouping:
-  Enabled: true
-Style/BlockComments:
-  Enabled: true
-Style/CaseEquality:
-  Enabled: true
-Style/CaseLikeIf:
-  Enabled: true
-Style/ClassEqualityComparison:
-  Enabled: true
-Style/ColonMethodCall:
-  Enabled: true
-Style/CommentedKeyword:
-  Enabled: true
-Style/ConditionalAssignment:
-  Enabled: true
-Style/DefWithParentheses:
-  Enabled: true
 Style/DoubleNegation:
   Enabled: false
-Style/EachWithObject:
-  Enabled: true
-Style/EmptyLiteral:
-  Enabled: true
-Style/EvenOdd:
-  Enabled: true
-Style/ExplicitBlockArgument:
-  Enabled: true
-Style/GlobalStdStream:
-  Enabled: true
-Style/HashAsLastArrayItem:
-  Enabled: true
-Style/HashEachMethods:
-  Enabled: true
-Style/HashTransformValues:
-  Enabled: true
-Style/IdenticalConditionalBranches:
-  Enabled: true
-Style/IfInsideElse:
-  Enabled: true
-Style/InfiniteLoop:
-  Enabled: true
-Style/InverseMethods:
-  Enabled: true
-Style/KeywordParametersOrder:
-  Enabled: true
-Style/MethodCallWithoutArgsParentheses:
-  Enabled: true
-Style/MultilineIfModifier:
-  Enabled: true
-Style/MultilineTernaryOperator:
-  Enabled: true
-Style/MultilineWhenThen:
-  Enabled: true
-Style/MultipleComparison:
-  Enabled: true
-Style/NilComparison:
-  Enabled: true
-Style/NonNilCheck:
-  Enabled: true
-Style/Not:
-  Enabled: true
-Style/ParallelAssignment:
-  Enabled: true
-Style/ParenthesesAroundCondition:
-  Enabled: true
-Style/PreferredHashMethods:
-  Enabled: true
-Style/RaiseArgs:
-  Enabled: true
-Style/RandomWithOffset:
-  Enabled: true
-Style/RedundantAssignment:
-  Enabled: true
-Style/RedundantCondition:
-  Enabled: true
-Style/RedundantException:
-  Enabled: true
-Style/RedundantFetchBlock:
-  Enabled: true
-Style/RedundantInterpolation:
-  Enabled: true
-Style/RedundantPercentQ:
-  Enabled: true
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-Style/RedundantReturn:
-  Enabled: true
-Style/RedundantSort:
-  Enabled: true
-Style/RescueModifier:
-  Enabled: true
-Style/RescueStandardError:
-  Enabled: true
-Style/SafeNavigation:
-  Enabled: true
-Style/Sample:
-  Enabled: true
-Style/SignalException:
-  Enabled: true
-Style/SingleLineMethods:
-  Enabled: true
-Style/SlicingWithRange:
-  Enabled: true
-Style/SoleNestedConditional:
-  Enabled: true
-Style/SymbolLiteral:
-  Enabled: true
-Style/TernaryParentheses:
-  Enabled: true
-Style/TrivialAccessors:
-  Enabled: true
-Style/ZeroLengthPredicate:
-  Enabled: true
 
-Performance/FlatMap:
-  Enabled: true
-Performance/Count:
-  Enabled: true
-Performance/InefficientHashSearch:
-  Enabled: true
-Performance/RedundantBlockCall:
-  Enabled: true
-Performance/RedundantMerge:
-  Enabled: true
-Performance/RegexpMatch:
-  Enabled: true
-Performance/ReverseEach:
-  Enabled: true
-Performance/StringReplacement:
-  Enabled: true
-
-
-Naming/MemoizedInstanceVariableName:
-  Enabled: true
-Naming/RescuedExceptionsVariableName:
-  Enabled: true
-Naming/VariableName:
-  Enabled: true
-
-Layout/BeginEndAlignment:
-  Enabled: true
-Layout/CommentIndentation:
-  Enabled: true
-Layout/DefEndAlignment:
-  Enabled: true
-Layout/EmptyLineBetweenDefs:
-  Enabled: true
-Layout/EmptyLinesAroundAccessModifier:
-  Enabled: true
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
-Layout/LeadingCommentSpace:
-  Enabled: true
-Layout/MultilineArrayBraceLayout:
-  Enabled: true
-Layout/MultilineOperationIndentation:
-  Enabled: true
-Layout/RescueEnsureAlignment:
-  Enabled: true
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-Layout/SpaceBeforeComma:
-  Enabled: true
-
-Lint/AmbiguousOperator:
-  Enabled: true
-Lint/AssignmentInCondition:
-  Enabled: true
-Lint/BinaryOperatorWithIdenticalOperands:
-  Enabled: true
-Lint/BooleanSymbol:
-  Enabled: true
-Lint/ConstantDefinitionInBlock:
-  Enabled: true
-Lint/Debugger:
-  Enabled: true
-Lint/DeprecatedClassMethods:
-  Enabled: true
-Lint/DuplicateHashKey:
-  Enabled: true
-Lint/DuplicateMethods:
-  Enabled: true
-Lint/EmptyFile:
-  Enabled: true
-Lint/ImplicitStringConcatenation:
-  Enabled: true
-Lint/IneffectiveAccessModifier:
-  Enabled: true
-Lint/MissingCopEnableDirective:
-  Enabled: true
-Lint/RandOne:
-  Enabled: true
-Lint/RedundantCopDisableDirective:
-  Enabled: true
-Lint/RedundantSplatExpansion:
-  Enabled: true
-Lint/RescueException:
-  Enabled: true
-Lint/SafeNavigationChain:
-  Enabled: true
-Lint/ShadowingOuterLocalVariable:
-  Enabled: true
-Lint/SuppressedException:
-  Enabled: true
-Lint/UnderscorePrefixedVariableName:
-  Enabled: true
-Lint/UselessAccessModifier:
-  Enabled: true
-Lint/Void:
-  Enabled: true
-
-Rails/ActiveRecordAliases:
-  Enabled: true
-Rails/ApplicationRecord:
-  Enabled: true
-Rails/Blank:
-  Enabled: true
 Rails/DynamicFindBy:
-  Enabled: true
   AllowedMethods:
     - find_by_cimail
     - find_by_cimail!
     - find_by_card_id
-Rails/FilePath:
-  Enabled: true
-Rails/IndexBy:
-  Enabled: true
-Rails/Output:
-  Enabled: true
-Rails/Present:
-  Enabled: true
-Rails/RakeEnvironment:
-  Enabled: true
-Rails/RedundantForeignKey:
-  Enabled: true
-Rails/RedundantReceiverInWithOptions:
-  Enabled: true
-Rails/UnknownEnv:
-  Enabled: true
-Rails/Validation:
-  Enabled: true
 
-RSpec/ExpectChange:
-  Enabled: true
-RSpec/HookArgument:
-  Enabled: true
-RSpec/ImplicitSubject:
-  Enabled: true
-RSpec/LeadingSubject:
-  Enabled: true
-RSpec/LeakyConstantDeclaration:
-  Enabled: true
-RSpec/LetBeforeExamples:
-  Enabled: true
-RSpec/OverwritingSetup:
-  Enabled: true
 RSpec/SharedContext:
-  Enabled: true
   Exclude:
   - '**/spec/acceptance/**/*'
-RSpec/SubjectStub:
-  Enabled: true
+
+Gemspec/RequireMFA:
+# Discussion needed
+  Enabled: false
+
+Style/FetchEnvVar:
+# Discussion needed
+  Enabled: false
+
+Rails/I18nLocaleTexts:
+# Discussion needed
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  # We need a discussion on this because we have 347 offences against the default
+  # and 252 offences against "EnforcedStyle: indented".
+  EnforcedStyle: indented
+
+RSpec/DescribeClass:
+  IgnoredMetadata:
+    type: ['request']
+
+Metrics/MethodLength:
+  # Max: 30
+  CountAsOne: ['array', 'hash', 'heredoc']
+  IgnoredMethods: ['included', 'prepended', 'extended']
+  Exclude:
+  - 'db/migrate/**/*'
+
+Layout/MultilineMethodCallBraceLayout:
+  # Depends on Layout/ArgumentAlignment
+  EnforcedStyle: new_line

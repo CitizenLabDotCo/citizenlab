@@ -19,6 +19,7 @@ class InitiativeStatus < ApplicationRecord
 
   has_many :initiatives, through: :initiative_initiative_statuses
 
+  before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
@@ -26,8 +27,6 @@ class InitiativeStatus < ApplicationRecord
   validates :code, inclusion: { in: CODES }
   validates :code, uniqueness: true, unless: :custom?
   validates :description_multiloc, presence: true, multiloc: { presence: true }
-
-  before_validation :strip_title
 
   def custom?
     code == 'custom'

@@ -15,7 +15,7 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
+          type: 'object',
           'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
@@ -24,14 +24,14 @@ module SmartGroups::Rules
               'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
               'description' => 'The date formatted as yyyy-mm-dd',
               'type' => 'string',
-              "format": 'date',
-              "pattern": '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+              format: 'date',
+              pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
             }
           }
         },
@@ -77,7 +77,7 @@ module SmartGroups::Rules
       when 'is_empty'
         users_scope.where('registration_completed_at IS NULL')
       when 'not_is_empty'
-        users_scope.where('registration_completed_at IS NOT NULL')
+        users_scope.where.not(registration_completed_at: nil)
       else
         raise "Unsupported predicate #{predicate}"
       end

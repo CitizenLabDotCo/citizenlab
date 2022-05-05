@@ -70,12 +70,12 @@ module EmailCampaigns
         next unless has_nonzero_statistics statistics
 
         top_ideas = top_ideas project, name_service
-        idea_ids = top_ideas.map { |top_idea| top_idea[:id] }
+        idea_ids = top_ideas.pluck(:id)
         {
           event_payload: {
             statistics: statistics,
             top_ideas: top_ideas,
-            has_new_ideas: (top_ideas.any?)
+            has_new_ideas: top_ideas.any?
           },
           tracked_content: {
             idea_ids: idea_ids

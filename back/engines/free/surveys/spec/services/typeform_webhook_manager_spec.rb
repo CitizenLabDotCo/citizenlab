@@ -13,7 +13,7 @@ def call_pcc(pc, service, from, to)
 end
 
 describe Surveys::TypeformWebhookManager do
-  let(:api_response) { instance_double(HTTParty::Response, 'success?': true) }
+  let(:api_response) { instance_double(HTTParty::Response, success?: true) }
   let(:tf_api) { instance_double(Surveys::Typeform::Api, create_or_update_webhook: api_response) }
   let(:service) { Surveys::TypeformWebhookManager.new(tf_api, 'dummy_secret_token') }
 

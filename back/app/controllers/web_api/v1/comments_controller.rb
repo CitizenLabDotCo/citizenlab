@@ -73,7 +73,7 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index_xlsx
     if (@post_type == 'Idea') && params[:project].present?
-      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+      authorize Project.find(params[:project]), :index_xlsx?
     elsif @post_type == 'Idea'
       authorize :idea_comment, :index_xlsx?
     elsif @post_type == 'Initiative'

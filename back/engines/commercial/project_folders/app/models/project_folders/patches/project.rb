@@ -38,8 +38,6 @@ module ProjectFolders
         admin_publication.assign_attributes(parent_id: parent_id)
       end
 
-      # rubocop:enable Metrics/CyclomaticComplexity
-
       def folder_changed?
         folder_changed
       end

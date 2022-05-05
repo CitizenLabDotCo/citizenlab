@@ -16,7 +16,7 @@ module Verification
         def self.to_json_schema
           [
             {
-              "type": 'object',
+              type: 'object',
               'required' => %w[ruleType predicate],
               'additionalProperties' => false,
               'properties' => {
@@ -25,8 +25,8 @@ module Verification
                   'enum' => [rule_type]
                 },
                 'predicate' => {
-                  "type": 'string',
-                  "enum": PREDICATE_VALUES
+                  type: 'string',
+                  enum: PREDICATE_VALUES
                 }
               }
             }

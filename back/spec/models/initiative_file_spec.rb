@@ -20,7 +20,7 @@ RSpec.describe InitiativeFile, type: :model do
       ].each do |filename, mime_type|
         base64 = "data:#{mime_type};base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
         file = initiative.initiative_files.new(file_by_content: { name: filename, content: base64 })
-        expect(file.save).to eq true
+        expect(file.save).to be true
       end
     end
   end

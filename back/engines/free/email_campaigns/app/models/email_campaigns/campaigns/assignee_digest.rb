@@ -66,12 +66,8 @@ module EmailCampaigns
         succesful_assigned_initiatives: succesful_assigned_initiatives(recipient: recipient, time: time)
       }
       tracked_content = {
-        idea_ids: assigned[:assigned_ideas].map do |i|
-          i[:id]
-        end.compact,
-        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map do |i|
-          i[:id]
-        end.compact
+        idea_ids: assigned[:assigned_ideas].pluck(:id).compact,
+        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).pluck(:id).compact
       }
       if assigned.values.any?(&:present?)
         [{

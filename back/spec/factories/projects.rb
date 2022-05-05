@@ -103,7 +103,7 @@ FactoryBot.define do
 
         active_phase = create(:phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-          end_at: Faker::Date.between(from: Time.zone.now + 1.day, to: 6.months.from_now),
+          end_at: Faker::Date.between(from: 1.day.from_now, to: 6.months.from_now),
           project: project,
           **phase_config
         )

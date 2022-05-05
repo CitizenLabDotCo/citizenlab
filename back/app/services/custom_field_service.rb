@@ -161,10 +161,10 @@ class CustomFieldService
 
   def multiline_text_to_ui_schema_field(field, locale)
     base = base_ui_schema_field(field, locale)
-    if base[:"ui:widget"]
+    if base[:'ui:widget']
       base
     else
-      { "ui:widget": 'textarea' }
+      { 'ui:widget': 'textarea' }
     end
   end
 

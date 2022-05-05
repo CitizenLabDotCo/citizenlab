@@ -25,15 +25,15 @@ module Moderation
 
       if moderation_params[:moderation_status]
         @moderation_status = @moderation.moderation_status
-        if !@moderation_status
+        if @moderation_status
+          @moderation_status.update!(status: moderation_params[:moderation_status])
+          SideFxModerationStatusService.new.after_update(@moderation_status, current_user)
+        else
           @moderation_status = ModerationStatus.create!(
             moderatable: @moderation.source_record,
             status: moderation_params[:moderation_status]
           )
           SideFxModerationStatusService.new.after_create(@moderation_status, current_user)
-        else
-          @moderation_status.update!(status: moderation_params[:moderation_status])
-          SideFxModerationStatusService.new.after_update(@moderation_status, current_user)
         end
       end
 

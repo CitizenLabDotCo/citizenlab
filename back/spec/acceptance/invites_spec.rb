@@ -68,7 +68,7 @@ resource 'Invites' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map { |d| d[:id] }).to match_array [invite1.id, invite2.id, invite3.id]
+          expect(json_response[:data].pluck(:id)).to match_array [invite1.id, invite2.id, invite3.id]
         end
       end
 
@@ -81,7 +81,7 @@ resource 'Invites' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq accepted_invites.size
-          expect(json_response[:data].map { |d| d[:id] }).to match_array accepted_invites.map(&:id)
+          expect(json_response[:data].pluck(:id)).to match_array accepted_invites.map(&:id)
         end
       end
     end
@@ -146,7 +146,7 @@ resource 'Invites' do
             expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
             expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
 
-            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to eq true if CitizenLab.ee?
+            expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true if CitizenLab.ee?
           end
         end
       end
@@ -164,7 +164,7 @@ resource 'Invites' do
         example_request '[error] Bulk invite multiple users' do
           assert_status 422
           json_response = json_parse(response_body)
-          expect(json_response[:errors].map { |e| e[:error] }.uniq).to match_array %w[emails_duplicate invalid_email]
+          expect(json_response[:errors].pluck(:error).uniq).to match_array %w[emails_duplicate invalid_email]
         end
       end
     end
@@ -210,7 +210,7 @@ resource 'Invites' do
         example_request 'Bulk invite multiple users with xlsx file' do
           assert_status 200
           expect(Invite.count).to eq 6
-          expect(Invite.all.map { |i| i.invitee.email }).to match_array hash_array.map { |h| h[:email] }
+          expect(Invite.all.map { |i| i.invitee.email }).to match_array hash_array.pluck(:email)
           expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.flatten.uniq).to match_array Group.all.map(&:id)
           expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
           expect(Invite.all.map { |i| i.invitee.locale }.uniq).to match_array ['nl-NL', locale]
@@ -234,7 +234,7 @@ resource 'Invites' do
         example_request '[error] Bulk invite users with xlsx file' do
           assert_status 422
           json_response = json_parse(response_body)
-          expect(json_response[:errors].map { |e| e[:error] }.uniq).to match_array %w[unknown_group malformed_groups_value malformed_admin_value emails_duplicate invalid_email unknown_locale]
+          expect(json_response[:errors].pluck(:error).uniq).to match_array %w[unknown_group malformed_groups_value malformed_admin_value emails_duplicate invalid_email unknown_locale]
         end
       end
     end
@@ -283,7 +283,7 @@ resource 'Invites' do
         boulettos = json_response[:included].select { |inc| inc[:id] == invite.invitee.id }&.first
         expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
-        expect(invite.reload.invitee.registration_completed_at).to eq(nil)  # when no custom fields
+        expect(invite.reload.invitee.registration_completed_at).to be_nil  # when no custom fields
       end
 
       describe do

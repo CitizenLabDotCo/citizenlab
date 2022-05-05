@@ -339,7 +339,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map { |u| u[:id] }).to match_array group_users.map(&:id)
+          expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
         end
 
         example 'List all users in group, ordered by role', skip: !CitizenLab.ee? do
@@ -357,8 +357,8 @@ resource 'Users' do
 
           aggregate_failures 'testing json response' do
             expect(json_response[:data].size).to eq 6
-            expect(json_response[:data].map { |u| u[:id] }).to match_array group_users.map(&:id)
-            expect(json_response[:data].map { |u| u[:id] }.reverse.take(2)).to match_array [admin.id, both.id]
+            expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
+            expect(json_response[:data].pluck(:id).reverse.take(2)).to match_array [admin.id, both.id]
           end
         end
 
@@ -391,7 +391,7 @@ resource 'Users' do
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id, m1.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, @user.id]
         end
 
         example 'List all users who can moderate', skip: !CitizenLab.ee? do
@@ -403,7 +403,7 @@ resource 'Users' do
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id, m1.id, m2.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
         end
 
         example 'List all admins' do
@@ -418,7 +418,7 @@ resource 'Users' do
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
         end
       end
 
@@ -561,7 +561,7 @@ resource 'Users' do
       example_request 'Get the authenticated user' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
-        expect(json_response.dig(:data, :attributes, :verified)).to eq false if CitizenLab.ee?
+        expect(json_response.dig(:data, :attributes, :verified)).to be false if CitizenLab.ee?
       end
     end
 
@@ -702,7 +702,7 @@ resource 'Users' do
           @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
           expect(@user.reload.avatar_url).to be_present
           do_request user: { avatar: nil }
-          expect(@user.reload.avatar_url).to be nil
+          expect(@user.reload.avatar_url).to be_nil
         end
       end
 

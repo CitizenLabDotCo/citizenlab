@@ -65,7 +65,6 @@ RSpec.describe Matomo::Client do
         })
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations, RSpec/ExampleLength
   end
 
   describe '#find_data_subjects' do
@@ -89,7 +88,6 @@ RSpec.describe Matomo::Client do
         })
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations, RSpec/ExampleLength
   end
 
   describe '#error?' do

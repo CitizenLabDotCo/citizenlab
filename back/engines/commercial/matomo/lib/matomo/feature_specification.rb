@@ -22,14 +22,14 @@ module Matomo
 
     # Adding settings to the feature
     add_setting 'tenant_site_id', schema: {
-      "type": 'string',
-      "description": 'The unique ID of the matomo site tracking this tenant.',
-      "default": ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
+      type: 'string',
+      description: 'The unique ID of the matomo site tracking this tenant.',
+      default: ENV.fetch('DEFAULT_MATOMO_TENANT_SITE_ID', '')
     }
     add_setting 'product_site_id', schema: {
-      "type": 'string',
-      "description": 'The unique ID of the matomo site tracking this tenant for product analytics',
-      "default": ENV.fetch('MATOMO_PRODUCT_SITE_ID', '')
+      type: 'string',
+      description: 'The unique ID of the matomo site tracking this tenant for product analytics',
+      default: ENV.fetch('MATOMO_PRODUCT_SITE_ID', '')
     }
   end
 end

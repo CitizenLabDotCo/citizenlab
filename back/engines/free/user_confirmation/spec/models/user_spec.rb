@@ -117,7 +117,7 @@ RSpec.describe User, type: :model do
     it 'sets the email_confirmed_at field' do
       user.save!
       user.confirm
-      expect(user.confirmed?).to eq true
+      expect(user.confirmed?).to be true
     end
 
     it 'does not perform a commit to the db' do

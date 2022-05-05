@@ -84,7 +84,6 @@ describe Insights::CategoryAssignmentsService do
         expect(approved_assignment.reload.approved).to be(true) # didn't override the approval status
       end
     end
-    # rubocop:enable RSpec/ExampleLength
   end
 
   describe '#add_assignments_batch' do
@@ -138,7 +137,7 @@ describe Insights::CategoryAssignmentsService do
 
       aggregate_failures 'checking inputs processed flags' do
         inputs.each do |input|
-          expect(input.processed(view)).to eq(true)
+          expect(input.processed(view)).to be(true)
         end
       end
     end
@@ -185,7 +184,7 @@ describe Insights::CategoryAssignmentsService do
 
       assignment_ids = service.add_suggestions_batch(inputs, categories)
       expect(assignment_ids.length).to eq(5)
-      expect(assignment.reload.approved).to eq(true)
+      expect(assignment.reload.approved).to be(true)
     end
 
     it 'doesn\'t set a processed_flag for the inputs' do
@@ -193,7 +192,7 @@ describe Insights::CategoryAssignmentsService do
 
       aggregate_failures 'checking inputs processed flags' do
         inputs.each do |input|
-          expect(input.processed(view)).to eq(false)
+          expect(input.processed(view)).to be(false)
         end
       end
     end
