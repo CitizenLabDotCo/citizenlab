@@ -2,11 +2,18 @@
 
 ## Next Release
 
-#### Added
+### Added
 
 - Pages can now be translated 'live' via Weglot
 
-## 2022-05-05_3
+## 2022-05-05
+
+### Fixed
+
+- Fix timline rtl
+- Fix language selector cropping on rtl
+
+## 2022-05-04_3
 
 ### Changed
 
