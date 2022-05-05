@@ -46,7 +46,7 @@ const CityLogoSection = ({
 
   if (!isNilOrError(appConfiguration)) {
     const currentTenantLogo =
-      appConfiguration.data.attributes.logo?.medium || null;
+      appConfiguration.data.attributes.logo?.large || null;
     const tenantSite =
       appConfiguration.data.attributes.settings.core.organization_site;
     const footerLocale = `footer-city-logo-${locale}`;

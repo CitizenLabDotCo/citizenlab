@@ -680,6 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Total antall innlegg: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filter",
+  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
   "app.containers.IdeaCards.list": "Liste",
   "app.containers.IdeaCards.map": "Kart",
   "app.containers.IdeaCards.newest": "Nyeste",

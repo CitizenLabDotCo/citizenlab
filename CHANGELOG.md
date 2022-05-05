@@ -1,12 +1,44 @@
 # Changelog
 
-## Next release
+## Next Release
+
+## 2022-05-05_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
 
 ## 2022-05-02
 
 ### Added
 
 - Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
 
 ### Fixed
 
