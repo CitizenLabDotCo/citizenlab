@@ -45,7 +45,7 @@ describe MultiTenancy::Templates::Serializer do
       end
     end
 
-    it "doesn't include title_multiloc for NavBarItems with no custom copy" do
+    it "doesn't include title_multiloc for NavBarItems without custom copy" do
       create(:nav_bar_item, code: 'home', title_multiloc: nil)
       serializer = described_class.new(Tenant.current)
       template = serializer.run

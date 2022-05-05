@@ -572,7 +572,7 @@ class MultiTenancy::Templates::Serializer
     NavBarItem.all.map do |n|
       {
         'code'            => n.code,
-        'title_multiloc'  => n['title_multiloc'],
+        'title_multiloc'  => n.title_multiloc,
         'ordering'        => n.ordering,
         'static_page_ref' => lookup_ref(n.static_page_id, :static_page),
         'created_at'      => n.created_at.to_s,
