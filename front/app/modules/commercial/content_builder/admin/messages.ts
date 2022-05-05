@@ -77,7 +77,7 @@ export default defineMessages({
       'Enter a valid web address, for example https://example.com',
   },
   iframeWhitelistUrlErrorMessage: {
-    id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
+    id: 'app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage',
     defaultMessage:
       'You cannot embed content from this website for security reasons, try something else.',
   },
