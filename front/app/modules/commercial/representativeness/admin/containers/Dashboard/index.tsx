@@ -7,7 +7,11 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
 import ChartFilters from '../../components/ChartFilters';
+import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
+
+// TODO change this
+const SHOW_EMPTY_STATE = true;
 
 const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
@@ -26,9 +30,7 @@ const RepresentativenessDashboard = () => {
         />
       </Box>
 
-      <Box>
-        <ChartCards />
-      </Box>
+      <Box>{SHOW_EMPTY_STATE ? <EmptyState /> : <ChartCards />}</Box>
     </>
   );
 };

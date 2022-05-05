@@ -46,7 +46,7 @@ const EmptyProjectsImage = styled(Image)`
   `}
 `;
 
-const EmptyMessage = styled.div`
+export const EmptyMessage = styled.div`
   color: ${({ theme }) => theme.colorText};
   position: absolute;
   top: 50%;
