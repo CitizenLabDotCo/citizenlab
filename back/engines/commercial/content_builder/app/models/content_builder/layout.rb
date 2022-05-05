@@ -19,6 +19,34 @@ module ContentBuilder
   class Layout < ApplicationRecord
     belongs_to :content_buildable, polymorphic: true
 
+    before_validation :sanitize_craftjs_jsonmultiloc
+
     validates :content_buildable, :code, presence: true
+    validates :craftjs_jsonmultiloc, multiloc: { presence: false, value_type: Hash }
+    validate :validate_craftjs_jsonmultiloc
+
+    private
+
+    def validate_craftjs_jsonmultiloc
+      validate_whitelisted_iframe_urls
+    end
+
+    def validate_whitelisted_iframe_urls
+      iframe_sanitizer = ::SanitizationService::IframeScrubber.new
+      craftjs_jsonmultiloc.each do |locale, json|
+        json.each do |key, elt|
+          next if key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Iframe'
+
+          url = elt.dig 'props', 'url'
+          if url && !iframe_sanitizer.video_whitelisted?(url)
+            errors.add :craftjs_jsonmultiloc, :iframe_url_not_whitelisted, locale: locale, url: url
+          end
+        end
+      end
+    end
+
+    def sanitize_craftjs_jsonmultiloc
+      self.craftjs_jsonmultiloc = LayoutSanitizationService.new.sanitize_multiloc craftjs_jsonmultiloc
+    end
   end
 end

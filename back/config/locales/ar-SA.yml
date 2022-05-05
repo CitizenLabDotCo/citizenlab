@@ -114,7 +114,7 @@ ar:
         title: الوصف
         description:
       author_id:
-        title: Author
+        title: المؤلف
         description:
       topic_ids:
         title: الموضوعات
@@ -138,23 +138,23 @@ ar:
     categories:
       main_content:
         idea:
-          title: What is your idea ?
+          title: ما فكرتك؟
         question:
-          title: What is your question ?
+          title: ما سؤالك؟
         contribution:
-          title: What is your contribution ?
+          title: ما مساهمتك؟
         project:
-          title: What is your project ?
+          title: ما مشروعك؟
         issue:
-          title: What is your issue ?
+          title: ما مشكلتك؟
         option:
-          title: What is your option ?
+          title: ما خيارك؟
       details:
         title: التفاصيل
       attachements:
-        title: Images and Attachements
+        title: الصور والمرفقات
       extra:
-        title: Additional information
+        title: معلومات إضافية
   custom_field_options:
     gender:
       male: ذكر

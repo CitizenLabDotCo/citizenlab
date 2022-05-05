@@ -3,30 +3,30 @@ require 'rspec_api_documentation/dsl'
 
 
 def time_boundary_parameters s
-  s.parameter :start_at, "Date defining from where results should start", required: false
-  s.parameter :end_at, "Date defining till when results should go", required: false
+  s.parameter :start_at, 'Date defining from where results should start', required: false
+  s.parameter :end_at, 'Date defining till when results should go', required: false
 end
 
 def time_series_parameters s
   time_boundary_parameters s
-  s.parameter :interval, "Either day, week, month, year", required: true
+  s.parameter :interval, 'Either day, week, month, year', required: true
 end
 
 def project_filter_parameter s
-  s.parameter :project, "Project ID. Only count votes on ideas in the given project", required: false
+  s.parameter :project, 'Project ID. Only count votes on ideas in the given project', required: false
 end
 
 def group_filter_parameter s
-  s.parameter :group, "Group ID. Only count votes by users in the given group", required: false
+  s.parameter :group, 'Group ID. Only count votes by users in the given group', required: false
 end
 
 def topic_filter_parameter s
-  s.parameter :topic, "Topic ID. Only count votes on ideas that have the given topic assigned", required: false
+  s.parameter :topic, 'Topic ID. Only count votes on ideas that have the given topic assigned', required: false
 end
 
-resource "Stats - Votes" do
+resource 'Stats - Votes' do
 
-  explanation "The various stats endpoints can be used to show how certain properties of votes."
+  explanation 'The various stats endpoints can be used to show how certain properties of votes.'
 
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
@@ -34,13 +34,13 @@ resource "Stats - Votes" do
     @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     AppConfiguration.instance.update!(created_at: now - 3.month)
     @timezone = AppConfiguration.instance.settings('core','timezone')
     @idea_status = create(:idea_status)
   end
 
-  get "web_api/v1/stats/votes_count" do
+  get 'web_api/v1/stats/votes_count' do
     time_boundary_parameters self
 
     before do
@@ -49,7 +49,7 @@ resource "Stats - Votes" do
       create_list(:vote, 2, mode: 'down', votable: i2)
     end
 
-    example "Count all votes" do
+    example 'Count all votes' do
       do_request
       assert_status 200
       json_response = json_parse(response_body)
@@ -59,7 +59,7 @@ resource "Stats - Votes" do
     end
   end
 
-  context "with dependency on custom_fields" do
+  context 'with dependency on custom_fields' do
     before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
@@ -69,7 +69,7 @@ resource "Stats - Votes" do
       CustomField.find_by(code: 'education').update(enabled: true)
     end
 
-    get "web_api/v1/stats/votes_by_birthyear" do
+    get 'web_api/v1/stats/votes_by_birthyear' do
       before do
         @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, birthyear: 1984)
@@ -81,13 +81,13 @@ resource "Stats - Votes" do
         end
       end
       time_boundary_parameters self
-      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+      parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
-      example_request "Votes by birthyear" do
+      example_request 'Votes by birthyear' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
@@ -100,7 +100,7 @@ resource "Stats - Votes" do
       end
     end
 
-    get "web_api/v1/stats/votes_by_domicile" do
+    get 'web_api/v1/stats/votes_by_domicile' do
       before do
        @eversem = create(:area, title_multiloc: {'en' => 'Eversem'}).id
        @wolvertem = create(:area, title_multiloc: {'en' => 'Wolvertem'}).id
@@ -114,13 +114,13 @@ resource "Stats - Votes" do
         end
       end
       time_boundary_parameters self
-      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+      parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
-      example_request "Votes by domicile" do
+      example_request 'Votes by domicile' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
@@ -133,7 +133,7 @@ resource "Stats - Votes" do
       end
     end
 
-    get "web_api/v1/stats/votes_by_education" do
+    get 'web_api/v1/stats/votes_by_education' do
       before do
         @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, education: '2')
@@ -145,13 +145,13 @@ resource "Stats - Votes" do
         end
       end
       time_boundary_parameters self
-      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+      parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
-      example_request "Votes by education" do
+      example_request 'Votes by education' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
@@ -164,7 +164,7 @@ resource "Stats - Votes" do
       end
     end
 
-    get "web_api/v1/stats/votes_by_gender" do
+    get 'web_api/v1/stats/votes_by_gender' do
       before do
         @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, gender: 'female')
@@ -176,13 +176,13 @@ resource "Stats - Votes" do
         end
       end
       time_boundary_parameters self
-      parameter :ideas, "Array of idea ids to get the stats for.", required: false
+      parameter :ideas, 'Array of idea ids to get the stats for.', required: false
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
-      example_request "Votes by gender" do
+      example_request 'Votes by gender' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
@@ -195,7 +195,7 @@ resource "Stats - Votes" do
       end
     end
 
-    get "web_api/v1/stats/votes_by_custom_field" do
+    get 'web_api/v1/stats/votes_by_custom_field' do
       before do
         @custom_field = create(:custom_field_select, key: 'politician')
         @opt1 = create(:custom_field_option, custom_field: @custom_field, key: 'passive_politician')
@@ -211,15 +211,15 @@ resource "Stats - Votes" do
         end
       end
       time_boundary_parameters self
-      parameter :ideas, "Array of idea ids to get the stats for.", required: false
-      parameter :custom_field, "The custom field id which should serve as dimensions of the stats.", required: true
+      parameter :ideas, 'Array of idea ids to get the stats for.', required: false
+      parameter :custom_field, 'The custom field id which should serve as dimensions of the stats.', required: true
 
       let(:custom_field) { @custom_field.id }
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
       let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
-      example_request "Votes by custom field" do
+      example_request 'Votes by custom field' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
@@ -233,7 +233,7 @@ resource "Stats - Votes" do
     end
   end
 
-  context "by time" do
+  context 'by time' do
 
     before do
       project = create(:project)
@@ -242,7 +242,7 @@ resource "Stats - Votes" do
       create_list(:vote, 2, mode: 'down', votable: i2)
     end
 
-    get "web_api/v1/stats/votes_by_time" do
+    get 'web_api/v1/stats/votes_by_time' do
       time_series_parameters self
       project_filter_parameter self
       group_filter_parameter self
@@ -250,11 +250,11 @@ resource "Stats - Votes" do
 
       let(:interval) { 'day' }
 
-      describe "filtered by time" do
+      describe 'filtered by time' do
         let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
         let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
-        example_request "Votes by time" do
+        example_request 'Votes by time' do
           assert_status 200
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
@@ -266,11 +266,11 @@ resource "Stats - Votes" do
         end
       end
 
-      describe "filtered by time outside of the tenant lifecycle" do
+      describe 'filtered by time outside of the tenant lifecycle' do
         let(:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_week }
         let(:end_at) { (now-1.year).in_time_zone(@timezone).end_of_week }
 
-        it "returns no results" do
+        it 'returns no results' do
           do_request
           assert_status 200
           json_response = json_parse(response_body)
@@ -285,7 +285,7 @@ resource "Stats - Votes" do
       end
     end
 
-    get "web_api/v1/stats/votes_by_time_as_xlsx" do
+    get 'web_api/v1/stats/votes_by_time_as_xlsx' do
       time_series_parameters self
       project_filter_parameter self
       group_filter_parameter self
@@ -293,11 +293,11 @@ resource "Stats - Votes" do
 
       let(:interval) { 'day' }
 
-      describe "filtered by time" do
+      describe 'filtered by time' do
         let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
         let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
-        example_request "Votes by time" do
+        example_request 'Votes by time' do
           assert_status 200
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           aggregate_failures 'check worksheet contents' do
@@ -318,18 +318,18 @@ resource "Stats - Votes" do
         end
       end
 
-      describe "filtered by time outside of the tenant lifecycle" do
+      describe 'filtered by time outside of the tenant lifecycle' do
         let(:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_week }
         let(:end_at) { (now-1.year).in_time_zone(@timezone).end_of_week }
 
-        it "returns no results" do
+        it 'returns no results' do
           do_request
           assert_status 422
         end
       end
     end
 
-    get "web_api/v1/stats/votes_by_time_cumulative" do
+    get 'web_api/v1/stats/votes_by_time_cumulative' do
       time_series_parameters self
       project_filter_parameter self
       group_filter_parameter self
@@ -340,7 +340,7 @@ resource "Stats - Votes" do
       let(:interval) { 'day' }
       let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
 
-      example_request "Votes by time (cumulative)" do
+      example_request 'Votes by time (cumulative)' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:up].values.last).to eq 4
@@ -351,12 +351,12 @@ resource "Stats - Votes" do
   end
 
 
-  get "web_api/v1/stats/votes_by_topic" do
+  get 'web_api/v1/stats/votes_by_topic' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
 
-    describe "with time filtering only" do
+    describe 'with time filtering only' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
@@ -373,7 +373,7 @@ resource "Stats - Votes" do
       let!(:vote3) { create(:vote, votable: idea2) }
       let!(:vote4) { create(:vote, votable: idea3) }
 
-      example_request "Votes by topic" do
+      example_request 'Votes by topic' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].stringify_keys).to match({
@@ -384,7 +384,7 @@ resource "Stats - Votes" do
       end
     end
 
-    describe "filtered by project" do
+    describe 'filtered by project' do
       before do
         @project = create(:project)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2, project: @project)
@@ -396,14 +396,14 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:project) { @project.id }
 
-      example_request "Votes by topic filtered by project" do
+      example_request 'Votes by topic filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 2
       end
     end
 
-    describe "filtered by group" do
+    describe 'filtered by group' do
       before do
         @group = create(:group)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2)
@@ -415,7 +415,7 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request "Votes by topic filtered by group" do
+      example_request 'Votes by topic filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 2
@@ -423,12 +423,12 @@ resource "Stats - Votes" do
     end
   end
 
-  get "web_api/v1/stats/votes_by_topic_as_xlsx" do
+  get 'web_api/v1/stats/votes_by_topic_as_xlsx' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
 
-    describe "with time filtering only" do
+    describe 'with time filtering only' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
@@ -445,7 +445,7 @@ resource "Stats - Votes" do
       let!(:vote3) { create(:vote, votable: idea2) }
       let!(:vote4) { create(:vote, votable: idea3) }
 
-      example_request "Votes by topic" do
+      example_request 'Votes by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
@@ -460,7 +460,7 @@ resource "Stats - Votes" do
       end
     end
 
-    describe "filtered by project" do
+    describe 'filtered by project' do
       before do
         @project = create(:project)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2, project: @project)
@@ -472,7 +472,7 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:project) { @project.id }
 
-      example_request "Votes by topic filtered by project" do
+      example_request 'Votes by topic filtered by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
@@ -483,7 +483,7 @@ resource "Stats - Votes" do
       end
     end
 
-    describe "filtered by group" do
+    describe 'filtered by group' do
       before do
         @group = create(:group)
         idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2)
@@ -495,7 +495,7 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request "Votes by topic filtered by group" do
+      example_request 'Votes by topic filtered by group' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['topic', 'topic_id', 'votes']
@@ -507,12 +507,12 @@ resource "Stats - Votes" do
     end
   end
 
-  get "web_api/v1/stats/votes_by_project" do
+  get 'web_api/v1/stats/votes_by_project' do
     time_boundary_parameters self
     topic_filter_parameter self
     group_filter_parameter self
 
-    describe "with time filtering only" do
+    describe 'with time filtering only' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
 
@@ -527,7 +527,7 @@ resource "Stats - Votes" do
       let!(:vote3) { create(:vote, votable: idea2) }
       let!(:vote4) { create(:vote, votable: idea3) }
 
-      example_request "Votes by project" do
+      example_request 'Votes by project' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].stringify_keys).to match({
@@ -539,7 +539,7 @@ resource "Stats - Votes" do
     end
 
 
-    describe "filtered by topic" do
+    describe 'filtered by topic' do
       before do
         @topic = create(:topic)
         project = create(:project, allowed_input_topics: [@topic])
@@ -553,14 +553,14 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:topic) { @topic.id }
 
-      example_request "Votes by project filtered by topic" do
+      example_request 'Votes by project filtered by topic' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 1
       end
     end
 
-    describe "filtered by group" do
+    describe 'filtered by group' do
       before do
         @group = create(:group)
         project = create(:project)
@@ -573,7 +573,7 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request "Votes by project filtered by group" do
+      example_request 'Votes by project filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:total].values.inject(&:+)).to eq 1
@@ -581,12 +581,12 @@ resource "Stats - Votes" do
     end
   end
 
-  get "web_api/v1/stats/votes_by_project_as_xlsx" do
+  get 'web_api/v1/stats/votes_by_project_as_xlsx' do
     time_boundary_parameters self
     topic_filter_parameter self
     group_filter_parameter self
 
-    describe "with time filtering only" do
+    describe 'with time filtering only' do
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
 
@@ -601,7 +601,7 @@ resource "Stats - Votes" do
       let!(:vote3) { create(:vote, votable: idea2) }
       let!(:vote4) { create(:vote, votable: idea3) }
 
-      example_request "Votes by project" do
+      example_request 'Votes by project' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
@@ -617,7 +617,7 @@ resource "Stats - Votes" do
     end
 
 
-    describe "filtered by topic" do
+    describe 'filtered by topic' do
       before do
         @topic = create(:topic)
         project = create(:project, allowed_input_topics: [@topic])
@@ -631,7 +631,7 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:topic) { @topic.id }
 
-      example_request "Votes by project filtered by topic" do
+      example_request 'Votes by project filtered by topic' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']
@@ -642,7 +642,7 @@ resource "Stats - Votes" do
       end
     end
 
-    describe "filtered by group" do
+    describe 'filtered by group' do
       before do
         @group = create(:group)
         project = create(:project)
@@ -655,7 +655,7 @@ resource "Stats - Votes" do
       let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
-      example_request "Votes by project filtered by group" do
+      example_request 'Votes by project filtered by group' do
         assert_status 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match ['project', 'project_id', 'votes']

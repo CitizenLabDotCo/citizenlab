@@ -2,12 +2,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "EventFile" do
+resource 'EventFile' do
 
-  explanation "File attachments."
+  explanation 'File attachments.'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
@@ -16,32 +16,32 @@ resource "EventFile" do
     create_list(:event_file, 2, event: @event)
   end
 
-  get "web_api/v1/events/:event_id/files" do
+  get 'web_api/v1/events/:event_id/files' do
     let(:event_id) { @event.id }
 
-    example_request "List all file attachments of an event" do
+    example_request 'List all file attachments of an event' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
-  get "web_api/v1/events/:event_id/files/:file_id" do
+  get 'web_api/v1/events/:event_id/files/:file_id' do
     let(:event_id) { @event.id }
     let(:file_id) { EventFile.first.id }
 
-    example_request "Get one file of an event" do
+    example_request 'Get one file of an event' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
     end
   end
 
-  post "web_api/v1/events/:event_id/files" do
+  post 'web_api/v1/events/:event_id/files' do
     with_options scope: :file do
-      parameter :file, "The base64 encoded file", required: true
-      parameter :name, "The name of the file, including the file extension", required: true
-      parameter :ordering, "An integer that is used to order the file attachments within an event", required: false
+      parameter :file, 'The base64 encoded file', required: true
+      parameter :name, 'The name of the file, including the file extension', required: true
+      parameter :ordering, 'An integer that is used to order the file attachments within an event', required: false
     end
     ValidationErrorHelper.new.error_fields(self, EventFile)
     let(:event_id) { @event.id }
@@ -49,7 +49,7 @@ resource "EventFile" do
     let(:name) { 'afvalkalender.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
 
-    example_request "Add a file attachment to an event" do
+    example_request 'Add a file attachment to an event' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -70,9 +70,9 @@ resource "EventFile" do
     end
 
     describe do
-      let(:file) { "data:application/pdf;base64,===" }
+      let(:file) { 'data:application/pdf;base64,===' }
 
-      example_request "[error] Add a file of which the size is too small" do
+      example_request '[error] Add a file of which the size is too small' do
         assert_status 422
       end
     end
@@ -90,11 +90,11 @@ resource "EventFile" do
     end
   end
 
-  delete "web_api/v1/events/:event_id/files/:file_id" do
+  delete 'web_api/v1/events/:event_id/files/:file_id' do
     let(:event_id) { @event.id }
     let(:file_id) { EventFile.first.id }
 
-    example_request "Delete a file attachment from an event" do
+    example_request 'Delete a file attachment from an event' do
       assert_status 200
       expect{EventFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end

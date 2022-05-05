@@ -9,11 +9,11 @@ module IdClaveUnica
     end
 
     def id
-      "f06ddcf6-38c5-495d-a319-0863a7f3e073"
+      'f06ddcf6-38c5-495d-a319-0863a7f3e073'
     end
 
     def name
-      "clave_unica"
+      'clave_unica'
     end
 
     def config_parameters

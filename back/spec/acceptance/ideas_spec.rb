@@ -527,20 +527,20 @@ resource 'Ideas' do
     end
 
     with_options scope: :idea do
-      parameter :project_id, "The identifier of the project that hosts the idea", extra: ""
-      parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
-      parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
-      parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
-      parameter :publication_status, "Publication status", required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
-      parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
-      parameter :body_multiloc, "Multi-locale field with the idea body", extra: "Required if not draft"
-      parameter :topic_ids, "Array of ids of the associated topics"
-      parameter :area_ids, "Array of ids of the associated areas"
-      parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
-      parameter :location_description, "A human readable description of the location the idea applies to"
-      parameter :budget, "The budget needed to realize the idea, as determined by the city"
-      parameter :idea_images_attributes, "an array of base64 images to create"
-      parameter :idea_files_attributes, "an array of base64 files to create"
+      parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
+      parameter :phase_ids, 'The phases the idea is part of, defaults to the current only, only allowed by admins'
+      parameter :author_id, 'The user id of the user owning the idea', extra: 'Required if not draft'
+      parameter :idea_status_id, 'The status of the idea, only allowed for admins', extra: "Defaults to status with code 'proposed'"
+      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
+      parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
+      parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
+      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :area_ids, 'Array of ids of the associated areas'
+      parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
+      parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :budget, 'The budget needed to realize the idea, as determined by the city'
+      parameter :idea_images_attributes, 'an array of base64 images to create'
+      parameter :idea_files_attributes, 'an array of base64 files to create'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -691,10 +691,10 @@ resource 'Ideas' do
       end
 
       describe do
-        let(:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let(:project) { create(:project_with_current_phase, phases_config: {sequence: 'xxcx'}) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
-        example_request "Creating an idea in specific phases" do
+        example_request 'Creating an idea in specific phases' do
           assert_status 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids

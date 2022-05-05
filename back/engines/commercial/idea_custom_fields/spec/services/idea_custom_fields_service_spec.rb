@@ -1,11 +1,11 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe IdeaCustomFieldsService do
   let(:service) { described_class.new }
 
-  describe "all_fields" do
+  describe 'all_fields' do
 
-    it "overrides built in custom fields with database custom fields by code" do
+    it 'overrides built in custom fields with database custom fields by code' do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title_multiloc')
       cf2 = create(:custom_field, resource: custom_form, code: nil)
@@ -24,7 +24,7 @@ describe IdeaCustomFieldsService do
       ]
     end
 
-    it "outputs valid custom fields" do
+    it 'outputs valid custom fields' do
       custom_form = create(:custom_form)
       expect(service.all_fields(custom_form)).to all(be_valid)
     end
@@ -39,7 +39,7 @@ describe IdeaCustomFieldsService do
       expect(output).not_to include(cf2)
     end
 
-    it "takes the order of the built-in fields" do
+    it 'takes the order of the built-in fields' do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'location_description')
       output = service.all_fields(custom_form, filter_unmodifiable: true)

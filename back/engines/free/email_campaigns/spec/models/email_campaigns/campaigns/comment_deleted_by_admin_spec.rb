@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
-  describe "CommentDeletedByAdmin Campaign default factory" do
-    it "is valid" do
+  describe 'CommentDeletedByAdmin Campaign default factory' do
+    it 'is valid' do
       expect(build(:comment_deleted_by_admin_campaign)).to be_valid
     end
   end
@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentDeletedByAdmin, type: :model do
     let(:notification) { create(:comment_deleted_by_admin) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
-  	it "generates a command with the desired payload and tracked content" do
+  	it 'generates a command with the desired payload and tracked content' do
   		command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity

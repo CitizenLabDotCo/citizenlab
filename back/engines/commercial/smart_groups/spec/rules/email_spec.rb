@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::Email do
 
@@ -9,23 +9,23 @@ describe SmartGroups::Rules::Email do
   }}
   let(:valid_rule) { SmartGroups::Rules::Email.from_json(valid_json_rule) }
 
-  describe "from_json" do
+  describe 'from_json' do
 
-    it "successfully parses a valid json" do
+    it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
 
   end
 
-  describe "validations" do
-    it "successfully validate the valid rule" do
+  describe 'validations' do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
     let!(:users) {
       users = build_list(:user, 5)
@@ -78,7 +78,7 @@ describe SmartGroups::Rules::Email do
     end
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:email_is_rule) {SmartGroups::Rules::Email.from_json({
       'ruleType'      => 'email',
       'predicate'     => 'is',
@@ -120,7 +120,7 @@ describe SmartGroups::Rules::Email do
       'value'         => 'citizenlab.co'
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(email_is_rule.description_multiloc).to eq ({
         'en'    => 'e-mail is sebi@citizenlab.co',
         'fr-FR' => 'adresse e-mail est sebi@citizenlab.co',

@@ -2,7 +2,71 @@
 
 ## Next release
 
-- It's now possible to escape the sign-up flow at any point. If your account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), it will be deleted
+### Added
+
+- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
+- Pages can now be translated 'live' via Weglot
+
+## 2022-05-05
+
+### Fixed
+
+- Fix timeline for Arabic languages ('right-to-left')
+- Fix language selector cropping for Arabic languages ('right-to-left')
+
+## 2022-05-04_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
+
+## 2022-05-02
+
+### Added
+
+- Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
+## 2022-04-28
+
+### Added
+
+- Added support for the Moroccan Arabic language to the platform
+
+### Fixed
+
+- Start and end times for project phases now account for the user's local timezone, making sure users can still access and engage with projects when the start/end dates are valid for them locally. The default used UTC, so it was not a big issue in Europe (where we're mostly very close to UTC time), but could be a bigger issue in e.g. North and South America, where UTC offset could be 4 or 5 hours and this could cause projects to display as ended even if they should have been valid on the user's current local date.
+- Fixed breakpoint issues in `admin/insights` and `admin/users`, where content would disappear under the sidebar for certain screen sizes.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
 
 ## 2022-04-25
 

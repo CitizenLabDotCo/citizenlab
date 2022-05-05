@@ -1,6 +1,6 @@
 module AdminApi
   class Types::QueryType < GraphQL::Schema::Object
-    description "The query root of this schema"
+    description 'The query root of this schema'
 
     field :tenants, [Types::TenantType], null: false
 
@@ -56,11 +56,11 @@ module AdminApi
 
       if args[:sort].present? && !args[:search].present?
         ideas = case args[:sort]
-          when "trending"
+          when 'trending'
             TrendingIdeaService.new.sort_trending ideas
-          when "popular"
+          when 'popular'
             ideas.order_popular
-          when "new"
+          when 'new'
             ideas.order_new
           end
       end
@@ -126,7 +126,7 @@ module AdminApi
 
     field :idea, Types::IdeaType, null: false do
       argument :id, ID, required: true
-      description "Find an idea by ID"
+      description 'Find an idea by ID'
     end
 
     def idea args
@@ -135,7 +135,7 @@ module AdminApi
 
     field :initiative, Types::InitiativeType, null: false do
       argument :id, ID, required: true
-      description "Find an initiative by ID"
+      description 'Find an initiative by ID'
     end
 
     def initiative args

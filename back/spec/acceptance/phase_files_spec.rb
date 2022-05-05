@@ -2,12 +2,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "PhaseFile" do
+resource 'PhaseFile' do
 
-  explanation "File attachments."
+  explanation 'File attachments.'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
@@ -16,32 +16,32 @@ resource "PhaseFile" do
     create_list(:phase_file, 2, phase: @phase)
   end
 
-  get "web_api/v1/phases/:phase_id/files" do
+  get 'web_api/v1/phases/:phase_id/files' do
     let(:phase_id) { @phase.id }
 
-    example_request "List all file attachments of a phase" do
+    example_request 'List all file attachments of a phase' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
-  get "web_api/v1/phases/:phase_id/files/:file_id" do
+  get 'web_api/v1/phases/:phase_id/files/:file_id' do
     let(:phase_id) { @phase.id }
     let(:file_id) { PhaseFile.first.id }
 
-    example_request "Get one file of a phase" do
+    example_request 'Get one file of a phase' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
     end
   end
 
-  post "web_api/v1/phases/:phase_id/files" do
+  post 'web_api/v1/phases/:phase_id/files' do
     with_options scope: :file do
-      parameter :file, "The base64 encoded file", required: true
-      parameter :name, "The name of the file, including the file extension", required: true
-      parameter :ordering, "An integer that is used to order the file attachments within a phase", required: false
+      parameter :file, 'The base64 encoded file', required: true
+      parameter :name, 'The name of the file, including the file extension', required: true
+      parameter :ordering, 'An integer that is used to order the file attachments within a phase', required: false
     end
     ValidationErrorHelper.new.error_fields(self, PhaseFile)
     let(:phase_id) { @phase.id }
@@ -49,7 +49,7 @@ resource "PhaseFile" do
     let(:name) { 'afvalkalender.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
 
-    example_request "Add a file attachment to a phase" do
+    example_request 'Add a file attachment to a phase' do
       assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -82,11 +82,11 @@ resource "PhaseFile" do
     end
   end
 
-  delete "web_api/v1/phases/:phase_id/files/:file_id" do
+  delete 'web_api/v1/phases/:phase_id/files/:file_id' do
     let(:phase_id) { @phase.id }
     let(:file_id) { PhaseFile.first.id }
 
-    example_request "Delete a file attachment from a phase" do
+    example_request 'Delete a file attachment from a phase' do
       expect(response_status).to eq 200
       expect{PhaseFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
