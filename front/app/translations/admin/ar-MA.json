@@ -960,7 +960,7 @@
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "تعديل الحدث",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip": "تظهر المرفقات أسفل وصف الحدث.",
-  "app.containers.AdminPage.ProjectEvents.locationLabel": "الموقع",
+  "app.containers.AdminPage.ProjectEvents.locationLabel": "الموقع: التربية على المواطنة والسلوك المدني وحقوق الإنسان.",
   "app.containers.AdminPage.ProjectEvents.newEventTitle": "أنشئ حدثًا جديدًا",
   "app.containers.AdminPage.ProjectEvents.saveButtonLabel": "حفظ",
   "app.containers.AdminPage.ProjectEvents.saveErrorMessage": "تعذّر حفظ التغييرات، يُرجى المحاولة مجددًا.",
