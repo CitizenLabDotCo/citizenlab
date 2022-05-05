@@ -111,7 +111,7 @@ ar-MA:
         title: العنوان
         description:
       body:
-        title: الوصف
+        title: 'الوصف: الإشتغال على الترجمة ضمن فريق عمل بهدف الإصلاح و التجويد '
         description:
       author_id:
         title: المؤلف 
@@ -150,7 +150,7 @@ ar-MA:
         option:
           title: ما خيارك؟
       details:
-        title: التفاصيل
+        title: التفاصيل 
       attachements:
         title: الصور والمرفقات
       extra:
