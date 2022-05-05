@@ -714,6 +714,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "وصف المشروع",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "استخدام مُنشئ الصفحات من أجل الوصف",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "باستخدام مُنشئ الصفحات يمكنك استخدام مزيد من خيارات التخطيط المتقدمة.",
+  "app.containers.AdminPage.ProjectDescription.viewPublicProject": "اعرض المشروع",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "إلغاء",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip": "دائرة العرض الافتراضية لنقطة مركز الخريطة. يمكن قبول قيمة بين -90 و90.",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip": "خط الطول الافتراضي لنقطة مركز الخريطة. يمكن قبول قيمة بين -90 و90.",
