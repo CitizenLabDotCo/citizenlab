@@ -57,7 +57,7 @@
   "app.components.ConsentManager.Banner.manage": "إدارة سلسة.",
   "app.components.ConsentManager.Banner.policyLink": "سياسة ملفات تعريف الارتباط ",
   "app.components.ConsentManager.Banner.subText": "Cliquez sur “Accepter” pour autoriser l’utilisation des cookies ou sur “Gérer” pour définir vos propres paramètres.",
-  "app.components.ConsentManager.Modal.CancelDialog.confirm": "تأكيد.",
+  "app.components.ConsentManager.Modal.CancelDialog.confirm": "تأكيد",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "إذا قمت بالإلغاء، فستفقد تفضيلاتك.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "الإعلانات",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "نستخدم هذا لتخصيص وقياس فعالية الحملات الإعلانية على موقعنا الإلكتروني. لن نقوم بإظهار أي إعلانات على هذه المنصة، ولكن الخدمات التالية قد تقوم بإظهار إعلانات مخصصة لك بناءً على الصفحات التي قمت بزيارتها على موقعنا الإلكتروني.",
