@@ -87,9 +87,10 @@ const SignUpInModal = memo<Props>(
 
       if (signedUpButNotCompleted) {
         // We need to await signOut. If authUser would be there
-        // when openSignUpInModalIfNecessary in App/index.tsx gets called,
-        // it would cause openSignUpInModalIfNecessary to open the modal again.
-        // This happens because the user is indeed not completely registered/verified (see openSignUpInModalIfNecessary).
+        // when we call closeSignUpModal,
+        // it would cause openSignUpInModalIfNecessary in App/index.tsx to open the modal again.
+        // This happens because the user is indeed not completely registered/verified
+        // (see openSignUpInModalIfNecessary).
         await signOut();
       }
 
