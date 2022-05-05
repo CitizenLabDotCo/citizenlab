@@ -675,6 +675,48 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('Opening modal', () => {
-    // TODO
+    const data = generateData(16);
+
+    it('opens modal on click button', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      expect(
+        container.querySelector('#e2e-modal-container')
+      ).not.toBeInTheDocument();
+
+      const button = screen.getByTestId('show-modal-button');
+      fireEvent.click(button);
+
+      expect(
+        container.querySelector('#e2e-modal-container')
+      ).toBeInTheDocument();
+    });
+
+    it('renders correct number of rows', () => {
+      const { container } = render(
+        <ChartCard
+          data={data}
+          customField={customField}
+          representativenessScore={70}
+          demographicDataDate={demographicDataDate}
+          includedUserPercentage={85}
+        />
+      );
+
+      const button = screen.getByTestId('show-modal-button');
+      fireEvent.click(button);
+
+      const modal = container.querySelector('div#e2e-modal-container');
+      const rows = modal.querySelectorAll('tbody > tr');
+      expect(rows).toHaveLength(16);
+    });
   });
 });
