@@ -21,6 +21,7 @@ export const getAppConfigurationData = (
         allowed: true,
         enabled: true,
         locales: ['en'],
+        weglot_api_key: null,
         timezone: 'Europe/Brussels',
         organization_name: {
           en: 'Wonderville',
