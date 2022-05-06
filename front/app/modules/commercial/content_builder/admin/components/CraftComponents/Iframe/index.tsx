@@ -50,6 +50,16 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     errorType: node.data.props.errorType,
   }));
 
+  const handleChange = (value: string) => {
+    const validation = isValidUrl(value);
+    setProp((props) => (props.url = value));
+    setProp((props) => (props.errorType = validation[1]));
+    setProp((props) => (props.hasError = !validation[0]));
+    eventEmitter.emit('contentBuilderError', {
+      [id]: !validation[0],
+    });
+  };
+
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
       <Box flex="0 0 100%">
@@ -67,13 +77,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={url}
           onChange={(value) => {
-            const validation = validateUrl(value);
-            setProp((props) => (props.url = value));
-            setProp((props) => (props.errorType = validation[1]));
-            setProp((props) => (props.hasError = !validation[0]));
-            eventEmitter.emit('contentBuilderError', {
-              [id]: !validation[0],
-            });
+            handleChange(value);
           }}
         />
         {hasError && (
@@ -143,13 +147,13 @@ Iframe.craft = {
  * Function to validate embed URL against white list
  * Returns: boolean value whether URL input string is valid or not
  */
-const validateUrl = (url: string) => {
+const isValidUrl = (url: string) => {
   // Used this reference for generating a valid URL regex:
   // https://tutorial.eyehunts.com/js/url-regex-validation-javascript-example-code/
-  const validUrlCheck = url.match(
+  let invalidUrl = !url.match(
     /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
   );
-  if (validUrlCheck === null) {
+  if (invalidUrl) {
     return [false, 'invalidUrl'];
   }
 
@@ -179,18 +183,12 @@ const validateUrl = (url: string) => {
     /https: \/\/fast.wistia.net\/embed\/iframe\/*/,
   ];
 
-  let found: RegExpMatchArray | null = null;
-  let i = 0;
+  invalidUrl = !urlWhiteList.some((rx) => rx.test(url));
 
-  while (found === null && i < urlWhiteList.length) {
-    found = url.match(urlWhiteList[i]);
-    i++;
-  }
-
-  if (found !== null) {
-    return [true, 'whitelist'];
-  } else {
+  if (invalidUrl) {
     return [false, 'whitelist'];
+  } else {
+    return [true, 'whitelist'];
   }
 };
 
