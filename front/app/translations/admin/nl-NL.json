@@ -714,6 +714,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Projectbeschrijving",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Gebruik de paginabouwer voor beschrijving",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Als je de paginabuilder gebruikt, kun je geavanceerdere lay-outopties gebruiken.",
+  "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Bekijk het project",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Annuleren",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip": "De breedtegraad van het middelpunt van de kaart. Accepteert een waarde tussen -90 en 90.",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip": "De lengtegraad van het middelpunt van de kaart. Accepteert een waarde tussen -180 en 180.",
