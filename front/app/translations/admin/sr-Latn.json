@@ -1306,7 +1306,7 @@
   "app.containers.IdeasShow.postedIn": "Objavljeno u {projectLink}",
   "app.containers.IdeasShow.proposedBudgetTitle": "Predloženi budžet",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Manje od jednog dana} one {Jedan dan} other {# dana}} do kraja",
-  "app.containers.admin.ContentBuilder.aboutBox": "About Box",
+  "app.containers.admin.ContentBuilder.aboutBox": "O kompaniji Box",
   "app.containers.admin.ContentBuilder.delete": "Izbriši",
   "app.containers.admin.ContentBuilder.image": "Slika",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kratak opis slike",
