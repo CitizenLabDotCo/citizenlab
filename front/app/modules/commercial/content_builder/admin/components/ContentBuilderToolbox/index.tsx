@@ -105,11 +105,15 @@ const ContentBuilderToolbox = ({
         id="e2e-draggable-image"
         ref={(ref) => {
           ref &&
-            connectors.create(ref, <Element is={Image} id="image" alt="" />, {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            });
+            connectors.create(
+              ref,
+              <Element is={Image} imageUrl="" id="image" alt="" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            );
         }}
       >
         <ToolboxItem icon="image" label={formatMessage(messages.image)} />

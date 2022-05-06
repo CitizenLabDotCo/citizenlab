@@ -2,6 +2,7 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: add project and edit description', () => {
   let projectId = '';
+  let projectSlug = '';
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
@@ -28,6 +29,7 @@ describe('Admin: add project and edit description', () => {
         assigneeId: userId,
       }).then((project) => {
         projectId = project.body.data.id;
+        projectSlug = projectTitle;
         cy.visit(`/admin/projects/${projectId}/description`);
       });
     });
@@ -41,47 +43,135 @@ describe('Admin: add project and edit description', () => {
   });
 
   it('adds to description in content builder', () => {
-    // Add a container component
-    cy.wait(1000);
+    // Check container rules for single column
     cy.get('#e2e-draggable-single-column').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
       }
     );
-
-    // Check that container components cannot be dragged into other containers
-    cy.wait(1000);
-    cy.get('#e2e-draggable-about-box').dragAndDrop('#e2e-single-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-single-column', {
-      position: 'inside',
-    });
     cy.get('#e2e-draggable-two-column').dragAndDrop('#e2e-single-column', {
       position: 'inside',
     });
     cy.get('#e2e-draggable-three-column').dragAndDrop('#e2e-single-column', {
       position: 'inside',
     });
-
-    // The image component can't be tested as it opens up a local file picker. Or is there another way to do this? I
-    // don't see any examples in other e2e tests.
-
-    cy.wait(2000);
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-single-column', {
+      position: 'inside',
+    });
+    cy.get('#e2e-text-box').should('exist');
     cy.get('#e2e-two-column').should('not.exist');
     cy.get('#e2e-three-column').should('not.exist');
-    cy.wait(1000);
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-single-column').click();
+    cy.get('#e2e-delete-button').click();
 
-    // Edit components if possible
+    // Check container rules for two column
+    cy.get('#e2e-draggable-two-column').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
+    cy.get('#e2e-draggable-single-column').dragAndDrop('#e2e-two-column', {
+      position: 'inside',
+    });
+    cy.get('#e2e-draggable-three-column').dragAndDrop('#e2e-two-column', {
+      position: 'inside',
+    });
+
+    // Add text boxes to both columns
+    let draggableText = cy.get('#e2e-draggable-text');
+    draggableText.dragAndDrop('div#e2e-single-column');
+
+    cy.get('div#e2e-text-box').should('have.length', 2);
+    cy.get('#e2e-single-column').should('have.length', 1);
+    cy.get('#e2e-three-column').should('not.exist');
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-two-column').click();
+    cy.get('#e2e-delete-button').click();
+
+    // Check container rules for three column
+    cy.get('#e2e-draggable-three-column').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
+    cy.get('#e2e-draggable-single-column').dragAndDrop('#e2e-three-column', {
+      position: 'inside',
+    });
+    cy.get('#e2e-draggable-two-column').dragAndDrop('#e2e-three-column', {
+      position: 'inside',
+    });
+
+    // Add text boxes to all three columns
+    draggableText = cy.get('#e2e-draggable-text');
+    draggableText.dragAndDrop('div#e2e-single-column');
+
+    cy.get('div#e2e-text-box').should('have.length', 3);
+    cy.get('div#e2e-single-column').should('have.length', 3);
+    cy.get('#e2e-two-column').should('not.exist');
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-three-column').click();
+    cy.get('#e2e-delete-button').click();
+
+    // Confirm image component can be added to and deleted from frame
+    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+    cy.get('#e2e-image').should('exist');
+    cy.get('#e2e-image').click();
+    cy.get('#e2e-delete-button').click();
+
+    // Add text box and container, then nest the text box within the container
+    cy.get('#e2e-draggable-single-column').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+    cy.get('#e2e-text-box').dragAndDrop('#e2e-single-column', {
+      position: 'inside',
+    });
+    cy.get('#e2e-single-column').within(() => {
+      cy.get('#e2e-text-box').should('exist');
+    });
+    cy.get('#e2e-text-box').click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-single-column').click();
+    cy.get('#e2e-delete-button').click();
+
+    // Drop remaining components into frame
+    cy.get('#e2e-draggable-about-box').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+
+    // Edit components where possible
     cy.get('#e2e-text-box').click();
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Edited text.');
 
     // Save content
-    cy.wait(2000);
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait(2000);
   });
 
   it('checks that live content is displayed properly', () => {
@@ -90,7 +180,10 @@ describe('Admin: add project and edit description', () => {
       withinSubject: null,
     }).click();
     cy.get('#to-project').click();
+
+    // Check that content is correct
     cy.contains('Edited text.').should('be.visible');
+    cy.get('#e2e-about-box').should('exist');
   });
 
   it('deletes from description in content builder', () => {
@@ -103,14 +196,16 @@ describe('Admin: add project and edit description', () => {
     cy.get('#e2e-about-box').click();
     cy.get('#e2e-delete-button').click();
 
-    cy.get('#e2e-single-column').click();
-    cy.get('#e2e-delete-button').click();
-
     // Save content
-    cy.wait(2000);
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait(2000);
+  });
 
-    // Should I visit the live page to confirm that it is now blank?
+  it('checks that deleted content is displayed properly', () => {
+    // Navigate to live project page
+    cy.visit(`/projects/${projectSlug}`);
+
+    // Check that content is correct
+    cy.get('#e2e-text-box').should('not.exist');
+    cy.get('#e2e-about-box').should('not.exist');
   });
 });

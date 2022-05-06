@@ -31,10 +31,9 @@ const Image = ({
   dataCode?: string;
 }) => {
   return (
-    <Box minHeight="26px">
+    <Box id="e2e-image" minHeight="26px">
       {imageUrl && (
         <ImageComponent
-          id="e2e-image"
           width="100%"
           src={imageUrl}
           alt={alt}
