@@ -60,6 +60,7 @@ const ContentBuilderSettings = () => {
       {selected.isDeletable ? (
         <Box display="flex">
           <Button
+            id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
             borderColor={colors.clRed}
