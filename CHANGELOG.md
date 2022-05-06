@@ -1,6 +1,8 @@
 # Changelog
 
-## Next Release
+## Next release
+
+## 2022-05-06
 
 ### Added
 
