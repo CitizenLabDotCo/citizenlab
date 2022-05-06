@@ -92,13 +92,13 @@ const SignUpInModal = memo<Props>(
         // This happens because the user is indeed not completely registered/verified
         // (see openSignUpInModalIfNecessary).
         await signOut();
+        trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       }
 
       if (onDeclineInvitation && metaData?.isInvitation) {
         onDeclineInvitation();
       }
 
-      trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
       closeSignUpInModal();
     };
 
