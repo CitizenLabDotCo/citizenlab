@@ -4,14 +4,60 @@ describe ParticipationContextService do
   let(:service) { ParticipationContextService.new }
 
   describe 'participation_possible_for_context?' do
-    it 'returns true when participation is possible' do
-      project = create(:continuous_project, posting_enabled: true)
-      expect(service.participation_possible_for_context?(project, create(:user))).to be_truthy
+    let(:no_participation_attributes) do
+      {
+        participation_method: 'ideation',
+        posting_enabled: false,
+        voting_enabled: false,
+        commenting_enabled: false
+      }
+    end
+
+    it 'returns true when posting is possible' do
+      expect(service).to receive(:posting_idea_disabled_reason_for_context).and_return nil
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
+    end
+
+    it 'returns true when commenting is possible' do
+      expect(service).to receive(:commenting_idea_disabled_reason_for_context).and_return nil
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
+    end
+
+    it 'returns true when voting is possible' do
+      expect(service).to receive(:idea_voting_disabled_reason_for).and_return nil
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
+    end
+
+    it "returns true when it's possible to take a survey" do
+      expect(service).to receive(:taking_survey_disabled_reason_for_context).and_return nil
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
+    end
+
+    it "returns true when it's possible to take a poll" do
+      expect(service).to receive(:taking_poll_disabled_reason_for_context).and_return nil
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
+    end
+
+    it 'returns true when participatory budgeting is possible' do
+      expect(service).to receive(:budgeting_disabled_reason_for_context).and_return nil
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
+    end
+
+    it 'returns true for information contexts' do
+      no_participation_attributes[:participation_method] = 'information'
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq true
     end
 
     it 'returns false when no participation is possible' do
-      project = create(:continuous_project, posting_enabled: false, voting_enabled: false, commenting_enabled: false)
-      expect(service.participation_possible_for_context?(project, create(:user))).to be_falsey
+      project = create :continuous_project, no_participation_attributes
+      expect(service.participation_possible_for_context?(project, create(:user))).to eq false
     end
   end
 
