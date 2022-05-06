@@ -18,6 +18,7 @@ import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
+import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 
 // Intl
@@ -124,7 +125,13 @@ const ContentBuilderToolbox = ({
           ref &&
           connectors.create(
             ref,
-            <Element is={AboutBox} id="AboutBox" projectId={projectId} />,
+            <Element
+              is={Iframe}
+              id="Iframe"
+              url=""
+              height={500}
+              hasError={false}
+            />,
             {
               onCreate: (node) => {
                 selectNode(node.rootNodeId);
@@ -133,7 +140,18 @@ const ContentBuilderToolbox = ({
           )
         }
       >
-        <ToolboxItem icon="info" label={formatMessage(messages.aboutBox)} />
+        <ToolboxItem icon="code" label={formatMessage(messages.url)} />
+      </DraggableElement>
+      <DraggableElement
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element is={AboutBox} id="AboutBox" projectId={projectId} />
+          )
+        }
+      >
+        <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
       </DraggableElement>
     </Box>
   );
