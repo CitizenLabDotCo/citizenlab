@@ -39,8 +39,8 @@ class NavBarItem < ActiveRecord::Base
     code == 'custom'
   end
 
-  def title_multiloc
-    super.presence || fallback_title_multiloc
+  def title_multiloc_with_fallback
+    fallback_title_multiloc.merge(title_multiloc || {})
   end
 
   private
