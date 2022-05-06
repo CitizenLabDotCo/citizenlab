@@ -4,15 +4,3 @@ en:
   nav_bar_items:
     home:
       title: Home
-    projects:
-      title: All projects
-    all_input:
-      title: All input
-    proposals:
-      title: Proposals
-    events:
-      title: Events
-    about:
-      title: About
-    faq:
-      title: FAQ

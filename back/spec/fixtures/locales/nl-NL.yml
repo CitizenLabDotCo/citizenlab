@@ -4,15 +4,3 @@ nl:
   nav_bar_items:
     home:
       title: Home
-    projects:
-      title: Alle projecten
-    all_input:
-      title: Bijdragen
-    proposals:
-      title: Initiatieven
-    events:
-      title: Activiteiten
-    about:
-      title: Over
-    faq:
-      title: Veelgestelde vragen

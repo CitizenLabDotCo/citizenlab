@@ -2,7 +2,13 @@
 
 ## Next release
 
-/
+### Changed
+
+- When a navbar item's title is customized for one locale, the other locales remain up to date with the latest translations.
+
+### Fixed
+
+- Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
 
 ## 2022-05-06
 
