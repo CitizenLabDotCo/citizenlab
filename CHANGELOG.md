@@ -6,6 +6,10 @@
 
 - [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
 
+### Fixed
+
+- [CL-181] Prevent forms from trying to save on clicking label
+
 ## 2022-05-06
 
 ### Added
