@@ -11,7 +11,7 @@ import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
 
 // TODO change this
-const SHOW_EMPTY_STATE = true;
+const SHOW_EMPTY_STATE = false;
 
 const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
