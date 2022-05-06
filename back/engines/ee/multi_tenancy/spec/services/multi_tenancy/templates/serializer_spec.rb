@@ -50,7 +50,7 @@ describe MultiTenancy::Templates::Serializer do
       serializer = described_class.new(Tenant.current)
       template = serializer.run
 
-      home_attributes = template.dig('models', 'nav_bar_item')&.select { |item| item['code'] == 'home' }&.first
+      home_attributes = template.dig('models', 'nav_bar_item').find { |item| item['code'] == 'home' }
       expect(home_attributes['title_multiloc']).to be_blank
     end
   end
