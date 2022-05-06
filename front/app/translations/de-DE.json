@@ -680,7 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Gesamtanzahl der Einträge: {ideasCount}\n",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filter",
-  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
+  "app.containers.IdeaCards.filteredResultsFound": "Neue Suchergebnisse wurden geladen.",
   "app.containers.IdeaCards.list": "Liste",
   "app.containers.IdeaCards.map": "Karte",
   "app.containers.IdeaCards.newest": "Neueste",
