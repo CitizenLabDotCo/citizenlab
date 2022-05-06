@@ -62,7 +62,7 @@ module EmailCampaigns
 
     def generate_commands(recipient:, time: nil)
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
-      recipient.moderatable_project_ids.map do |project_id|
+      recipient.moderatable_project_ids.filter_map do |project_id|
         project = Project.find_by(id: project_id)
         next unless project
 
@@ -81,7 +81,7 @@ module EmailCampaigns
             idea_ids: idea_ids
           }
         }
-      end.compact
+      end
     end
 
     private
@@ -109,13 +109,13 @@ module EmailCampaigns
       {
         activities: {
           new_ideas: stat_increase(
-            ideas.map(&:published_at).compact
+            ideas.filter_map(&:published_at)
           ),
           new_votes: stat_increase(
-            votes.map(&:created_at).compact
+            votes.filter_map(&:created_at)
           ),
           new_comments: stat_increase(
-            comments.map(&:created_at).compact
+            comments.filter_map(&:created_at)
           ),
           total_ideas: ideas.size
         },

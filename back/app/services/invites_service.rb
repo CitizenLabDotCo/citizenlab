@@ -227,11 +227,11 @@ class InvitesService
   end
 
   def xlsx_groups_to_group_ids(groups)
-    groups.split(',').map do |group_title|
+    groups.split(',').filter_map do |group_title|
       stripped_group_title = group_title.strip
       group = Group.all.find { |g| g.title_multiloc.values.map(&:strip).include? stripped_group_title }&.id
       group || (add_error(:unknown_group, row: @current_row, value: stripped_group_title) && nil)
-    end.compact
+    end
   rescue StandardError => e
     add_error(:malformed_groups_value, row: @current_row, value: groups, raw_error: e.to_s)
     []

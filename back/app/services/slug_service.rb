@@ -40,8 +40,7 @@ class SlugService
       # Fill in max_i for this slug
       unless max_i.key? slug
         max_i[slug] = db_occurences
-                      .map { |dbo| dbo.match(/^#{slug}-(\d+)$/)&.then { |matches| matches[1] } }
-                      .compact
+                      .filter_map { |dbo| dbo.match(/^#{slug}-(\d+)$/)&.then { |matches| matches[1] } }
                       .map(&:to_i)
                       .max || (db_occurences.include?(slug) ? 0 : nil)
       end

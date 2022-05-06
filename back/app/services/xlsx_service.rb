@@ -50,10 +50,10 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
-      (row&.cells || []).compact.map do |cell|
+      (row&.cells || []).compact.filter_map do |cell|
         [worksheet[0][cell.column]&.value, cell.value] if cell.value
-      end.compact.to_h
-    end.compact
+      end.to_h
+    end
   end
 
   def generate_xlsx(sheetname, columns, instances)

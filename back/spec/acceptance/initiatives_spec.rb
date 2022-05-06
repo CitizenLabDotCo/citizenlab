@@ -151,7 +151,7 @@ resource 'Initiatives' do
 
       do_request
       json_response = json_parse(response_body)
-      expect(json_response[:data].map { |d| d[:relationships][:user_vote][:data] }.compact.first[:id]).to eq vote.id
+      expect(json_response[:data].filter_map { |d| d[:relationships][:user_vote][:data] }.first[:id]).to eq vote.id
       expect(json_response[:included].pluck(:id)).to include vote.id
     end
   end

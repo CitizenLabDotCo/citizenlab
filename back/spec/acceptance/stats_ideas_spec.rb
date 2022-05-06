@@ -117,7 +117,7 @@ resource 'Stats - Ideas' do
         assert_status 200
         json_response = json_parse(response_body)
         expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_topics.map(&:topic_id) }.uniq
-        expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
+        expect(json_response[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
         expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
     end
@@ -479,7 +479,7 @@ resource 'Stats - Ideas' do
       assert_status 200
       json_response = json_parse(response_body)
       expected_areas = @ideas_with_areas.flat_map { |i| i.areas_ideas.map(&:area_id) }.uniq
-      expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
+      expect(json_response[:series][:ideas].keys.map(&:to_s).uniq - expected_areas).to eq []
       expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
     end
   end
@@ -502,7 +502,7 @@ resource 'Stats - Ideas' do
 
       area_id_col = worksheet.map { |col| col.cells[1].value }
       header, *area_ids = area_id_col
-      expect(area_ids.map(&:to_s).compact.uniq - expected_areas).to eq []
+      expect(area_ids.map(&:to_s).uniq - expected_areas).to eq []
 
       idea_col = worksheet.map { |col| col.cells[2].value }
       header, *ideas = idea_col
