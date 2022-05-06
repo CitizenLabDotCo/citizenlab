@@ -8,8 +8,13 @@ import EmptyStateImage from '../../assets/EmptyStateImage.svg';
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // styling
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
@@ -31,24 +36,25 @@ const EmptyState = () => {
       />
       <Box pt="46px" pb="64px">
         <Box
-          ml="5%"
-          width="90%"
+          ml="10%"
+          width="80%"
           mt="0px"
           background="rgba(255, 12, 12, 0.12)"
           border="1px solid #CF4040"
           px="24px"
           pt="0px"
         >
-          <Title variant="h3" textAlign="center">
-            Please provide a base dataset.
+          <Title variant="h3" textAlign="center" color="text">
+            <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
           <Text textAlign="center" fontSize="base">
-            This base dataset is required to calculate the representativeness of
-            platform users compared to the total population.
+            <FormattedMessage {...messages.emptyStateDescription} />
           </Text>
 
           <Box display="flex" justifyContent="center">
-            <Button width="164px" text="Submit base data" mb="16px" />
+            <Button width="164px" mb="16px" bgColor={colors.adminTextColor}>
+              <FormattedMessage {...messages.submitBaseDataButton} />
+            </Button>
           </Box>
         </Box>
 
