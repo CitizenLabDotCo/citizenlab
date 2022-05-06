@@ -164,9 +164,8 @@ class Show extends React.Component<Props, State> {
     if (noGroupsSelected) {
       this.openSendConfirmationModal();
     } else {
-      this.setState({ isCampaignSending: true }, async () => {
-        const result = await sendCampaign(this.props.campaign.id);
-        console.log({ result });
+      this.setState({ isCampaignSending: true }, () => {
+        sendCampaign(this.props.campaign.id);
       });
     }
   };
