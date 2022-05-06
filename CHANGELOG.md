@@ -9,6 +9,7 @@
 ### Fixed
 
 - Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
 
 ## 2022-05-06
 
