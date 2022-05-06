@@ -324,7 +324,6 @@ export interface InputProps {
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   padding?: string;
-  noClose?: boolean;
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
 }
@@ -385,9 +384,7 @@ class Modal extends PureComponent<Props, State> {
   };
 
   closeModal = () => {
-    if (!this.props.noClose) {
-      this.props.close();
-    }
+    this.props.close();
   };
 
   handlePopstateEvent = () => {
@@ -434,7 +431,6 @@ class Modal extends PureComponent<Props, State> {
       footer,
       hasSkipButton,
       skipText,
-      noClose,
     } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const smallerThanSmallTablet = windowSize
@@ -476,15 +472,13 @@ class Modal extends PureComponent<Props, State> {
                 aria-modal="true"
                 role="dialog"
               >
-                {!noClose && (
-                  <StyledCloseIconButton
-                    className="e2e-modal-close-button"
-                    onClick={this.clickCloseButton}
-                    iconColor={colors.label}
-                    iconColorOnHover={'#000'}
-                    a11y_buttonActionMessage={messages.closeModal}
-                  />
-                )}
+                <StyledCloseIconButton
+                  className="e2e-modal-close-button"
+                  onClick={this.clickCloseButton}
+                  iconColor={colors.label}
+                  iconColorOnHover={'#000'}
+                  a11y_buttonActionMessage={messages.closeModal}
+                />
 
                 {header && (
                   <HeaderContainer>
