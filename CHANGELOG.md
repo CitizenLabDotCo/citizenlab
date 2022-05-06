@@ -2,7 +2,19 @@
 
 ## Next release
 
-/
+### Changed
+
+- When a navbar item's title is customized for one locale, the other locales remain up to date with the latest translations.
+
+### Fixed
+
+- Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
+
+### Fixed
+
+- [CL-181] Prevent forms from trying to save on clicking label
+- The "send" button on the email campaign send page is now disabled after a single click, to prevent users from clicking it multiple times and potentially sending a campaign more than once
 
 ## 2022-05-06
 
