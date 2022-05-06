@@ -2,10 +2,14 @@
 
 ## Next release
 
+/
+
+## 2022-05-06
+
 ### Added
 
-- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
 - Pages can now be translated 'live' via Weglot
+- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
 
 ## 2022-05-05
 
