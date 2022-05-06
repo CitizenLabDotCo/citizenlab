@@ -107,7 +107,7 @@ const FooterNoteSuccessMessageIcon = styled(Icon)`
 
 type Props = Pick<SignUpStepOutletProps, 'onCompleted' | 'onData' | 'step'>;
 
-const isActive = (authUser: TAuthUser) => {
+const userEmailToBeConfirmed = (authUser: TAuthUser) => {
   return !isNilOrError(authUser) && authUser.attributes.confirmation_required;
 };
 
@@ -127,11 +127,10 @@ const ConfirmationSignupStep = ({ onCompleted, onData, step }: Props) => {
       key: CONFIRMATION_STEP_NAME,
       position: 4,
       stepDescriptionMessage: messages.confirmYourAccount,
-      isEnabled: (authUser, __, { emailSignUpSelected }) => {
-        if (emailSignUpSelected) return true;
-        return isActive(authUser);
+      isEnabled: (authUser) => {
+        return userEmailToBeConfirmed(authUser);
       },
-      isActive,
+      isActive: userEmailToBeConfirmed,
       canTriggerRegistration: true,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

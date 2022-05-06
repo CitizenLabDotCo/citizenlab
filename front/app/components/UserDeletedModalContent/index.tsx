@@ -64,15 +64,15 @@ const Subtitle = styled.h3`
 `;
 
 interface InputProps {
-  userActuallyDeleted: boolean;
+  userSuccessfullyDeleted: boolean;
 }
 
 interface DataProps {}
 
 export interface Props extends InputProps, DataProps {}
 
-export default memo(({ userActuallyDeleted }: Props) =>
-  userActuallyDeleted ? (
+export default memo(({ userSuccessfullyDeleted }: Props) =>
+  userSuccessfullyDeleted ? (
     <Container>
       <img src={illustration} alt="illu" />
       <Title className="e2e-user-deleted-success-modal-content">

@@ -41,6 +41,12 @@ const greenTransparent = rgba(colors.clGreen, 0.15);
 const green = colors.clGreen;
 const darkGreen = colors.clGreenDark;
 
+const RtlBox = styled(Box)`
+  ${isRtl`
+    flex-direction: row-reverse;
+  `};
+`;
+
 const Container = styled.div<{ isHidden: boolean }>`
   width: 100%;
   display: ${(props) => (props.isHidden ? 'none' : 'flex')};
@@ -62,10 +68,6 @@ const Phases = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
 `;
 
 const phaseBarHeight = '24px';
@@ -286,7 +288,7 @@ const Timeline = ({
             <FormattedMessage {...messages.a11y_phasesOverview} />
           </ScreenReaderOnly>
           <Phases className="e2e-phases" role="tablist">
-            <Box display="flex" mb="20px">
+            <RtlBox display="flex" mb="20px">
               {phases.map((phase, phaseIndex) => {
                 const phaseNumber = phaseIndex + 1;
                 const phaseTitle = localize(phase.attributes.title_multiloc);
@@ -351,7 +353,7 @@ const Timeline = ({
                   </PhaseContainer>
                 );
               })}
-            </Box>
+            </RtlBox>
             <PhaseDescriptions
               projectId={projectId}
               selectedPhaseId={selectedPhaseId}

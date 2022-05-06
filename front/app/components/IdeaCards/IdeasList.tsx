@@ -11,6 +11,7 @@ import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'services/ideas';
 import { IParticipationContextType } from 'typings';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -98,7 +99,12 @@ const IdeasList = ({
 
   if (!isNilOrError(locale)) {
     return (
-      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
+      <div
+        aria-live="polite"
+        aria-labelledby={ariaLabelledBy}
+        id={id}
+        tabIndex={tabIndex}
+      >
         {querying ? (
           <Loading>
             <Spinner />
@@ -114,6 +120,9 @@ const IdeasList = ({
                 flexWrap="wrap"
                 id="e2e-ideas-list"
               >
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.filteredResultsFound} />
+                </ScreenReaderOnly>
                 {list.map((idea) => {
                   return (
                     <StyledIdeaCard
