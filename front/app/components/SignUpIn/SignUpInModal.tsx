@@ -1,4 +1,6 @@
 import React, { memo, useState, useEffect } from 'react';
+import { signOut } from 'services/auth';
+import tracks from './tracks';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -12,6 +14,7 @@ import useParticipationConditions from 'hooks/useParticipationConditions';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { trackEventByName } from 'utils/analytics';
 
 // events
 import {
@@ -57,21 +60,11 @@ const SignUpInModal = memo<Props>(
         ? 820
         : 580;
 
-    const verificationWithoutError =
-      signUpActiveStep === 'verification' && metaData?.error !== true;
-
-    const registrationNotCompleted =
-      !isNilOrError(authUser) && !authUser.attributes.registration_completed_at;
-
-    const modalCannotBeClosed =
-      verificationWithoutError || registrationNotCompleted;
-
     useEffect(() => {
       if (isMounted()) {
         onMounted?.();
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMounted]);
+    }, [onMounted, isMounted]);
 
     useEffect(() => {
       const subscriptions = [
@@ -85,15 +78,28 @@ const SignUpInModal = memo<Props>(
 
       return () =>
         subscriptions.forEach((subscription) => subscription.unsubscribe());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authUser]);
 
-    const onClose = () => {
-      closeSignUpInModal();
+    const onClose = async () => {
+      const signedUpButNotCompleted =
+        !isNilOrError(authUser) &&
+        !authUser.attributes.registration_completed_at;
+
+      if (signedUpButNotCompleted) {
+        // We need to await signOut. If authUser would be there
+        // when we call closeSignUpModal,
+        // it would cause openSignUpInModalIfNecessary in App/index.tsx to open the modal again.
+        // This happens because the user is indeed not completely registered/verified
+        // (see openSignUpInModalIfNecessary).
+        await signOut();
+        trackEventByName(tracks.signUpFlowExitedAtEmailVerificationStep);
+      }
 
       if (onDeclineInvitation && metaData?.isInvitation) {
         onDeclineInvitation();
       }
+
+      closeSignUpInModal();
     };
 
     const onSignUpInCompleted = () => {
@@ -121,7 +127,6 @@ const SignUpInModal = memo<Props>(
         opened={opened}
         close={onClose}
         closeOnClickOutside={false}
-        noClose={modalCannotBeClosed}
       >
         <Container id="e2e-sign-up-in-modal" className={className}>
           {opened && metaData && (
