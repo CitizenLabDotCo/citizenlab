@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
-  mount UserConfirmation::Engine => "", as: 'user_confirmation'
-  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
-  mount Frontend::Engine => "", as: 'frontend'
-  mount Onboarding::Engine => "", as: 'onboarding'
-  mount Polls::Engine => "", as: 'polls'
+  mount UserConfirmation::Engine => '', as: 'user_confirmation'
+  mount EmailCampaigns::Engine => '', as: 'email_campaigns'
+  mount Frontend::Engine => '', as: 'frontend'
+  mount Onboarding::Engine => '', as: 'onboarding'
+  mount Polls::Engine => '', as: 'polls'
   mount Seo::Engine => '', as: 'seo'
-  mount Surveys::Engine => "", as: 'surveys'
-  mount Volunteering::Engine => "", as: 'volunteering'
+  mount Surveys::Engine => '', as: 'surveys'
+  mount Volunteering::Engine => '', as: 'volunteering'
 
   # It must come before +resource :ideas+, otherwise /web_api/v1/ideas/geotagged
   # (unfortunate route naming) is captured by /web_api/v1/ideas/<idea-id>.
@@ -79,8 +79,8 @@ Rails.application.routes.draw do
         get :me, on: :collection
         post :complete_registration, on: :collection
         get :as_xlsx, on: :collection, action: 'index_xlsx'
-        post "reset_password_email" => "reset_password#reset_password_email", on: :collection
-        post "reset_password" => "reset_password#reset_password", on: :collection
+        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
+        post 'reset_password' => 'reset_password#reset_password', on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member

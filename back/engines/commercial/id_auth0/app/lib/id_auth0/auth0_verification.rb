@@ -9,11 +9,11 @@ module IdAuth0
     end
 
     def id
-      "c6b24830-e17a-48a6-9f05-bd8fd3a4a0a6"
+      'c6b24830-e17a-48a6-9f05-bd8fd3a4a0a6'
     end
 
     def name
-      "auth0"
+      'auth0'
     end
 
     def config_parameters
@@ -23,7 +23,7 @@ module IdAuth0
     def config_parameters_schema
       {
         method_name_multiloc: {
-          "$ref": "#/definitions/multiloc_string",
+          "$ref": '#/definitions/multiloc_string',
           private: true
         }
       }

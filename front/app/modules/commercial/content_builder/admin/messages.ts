@@ -13,9 +13,42 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.twoColumnLayout',
     defaultMessage: '2 column',
   },
+  twoEvenColumn: {
+    id: 'app.containers.admin.ContentBuilder.twoEvenColumnLayout',
+    defaultMessage: '2 even columns',
+  },
+  twoColumnVariant1and2: {
+    id: 'app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2',
+    defaultMessage: '2 columns with 30% and 60% width respectively',
+  },
+  twoColumnVariant2and1: {
+    id: 'app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1',
+    defaultMessage: '2 columns with 60% and 30% width respectively',
+  },
+  threeColumn: {
+    id: 'app.containers.admin.ContentBuilder.threeColumnLayout',
+    defaultMessage: '3 column',
+  },
   text: {
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
+  },
+  aboutBox: {
+    id: 'app.containers.admin.ContentBuilder.aboutBox',
+    defaultMessage: 'About Box',
+  },
+  image: {
+    id: 'app.containers.admin.ContentBuilder.image',
+    defaultMessage: 'Image',
+  },
+  imageAltTextLabel: {
+    id: 'app.containers.admin.ContentBuilder.imageAltTextLabel',
+    defaultMessage: 'Short description of the image',
+  },
+  imageAltTextTooltip: {
+    id: 'app.containers.admin.ContentBuilder.imageAltTextTooltip',
+    defaultMessage:
+      'Adding "alt text" for images is important to make your platform accessible for users using screen readers.',
   },
   textValue: {
     id: 'app.containers.admin.ContentBuilder.textValue',
@@ -43,5 +76,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.layoutBuilderWarning',
     defaultMessage:
       'Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.',
+  },
+  columnLayoutRadioLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
+    defaultMessage: 'Column layout',
   },
 });

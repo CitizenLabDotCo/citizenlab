@@ -1,15 +1,15 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Invite", admin_api: true do
+resource 'Invite', admin_api: true do
 
   before do
-    header "Content-Type", "application/json"
-    header 'Authorization', ENV.fetch("ADMIN_API_TOKEN")
+    header 'Content-Type', 'application/json'
+    header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
   end
 
-  post "admin_api/invites" do
-    parameter :tenant_id, "The tenant id in which to create the invite", required: true
+  post 'admin_api/invites' do
+    parameter :tenant_id, 'The tenant id in which to create the invite', required: true
     with_options scope: :invite do
       parameter :invitee_id, 'The ID of the user that sends the invite', required: false
       parameter :email, 'The email of the user', required: false
@@ -35,7 +35,7 @@ resource "Invite", admin_api: true do
     let(:send_invite_email) { false }
 
     describe do
-      example_request "Create an invite" do
+      example_request 'Create an invite' do
         expect(response_status).to eq 201
         expect(Invite.count).to be 1
         invite = Invite.first

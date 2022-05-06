@@ -8,7 +8,7 @@ namespace :matomo_sites do
     end
   end
 
-  desc "Migration task : creates a matomo site for each tenant that still has default settings"
+  desc 'Migration task : creates a matomo site for each tenant that still has default settings'
   task :setup_matomo_site_for_failed_tenants => :environment do |t, args|
     Tenant.not_deleted.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do

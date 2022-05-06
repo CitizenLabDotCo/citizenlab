@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldText do
 
@@ -10,9 +10,9 @@ describe SmartGroups::Rules::CustomFieldText do
   }}
   let(:valid_rule) { SmartGroups::Rules::CustomFieldText.from_json(valid_json_rule) }
 
-  describe "from_json" do
+  describe 'from_json' do
 
-    it "successfully parses a valid json" do
+    it 'successfully parses a valid json' do
       expect(valid_rule.custom_field_id).to eq valid_json_rule['customFieldId']
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
@@ -20,17 +20,17 @@ describe SmartGroups::Rules::CustomFieldText do
 
   end
 
-  describe "validations" do
-    it "successfully validate the valid rule" do
+  describe 'validations' do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
     end
 
-    it "fails on a non-existing custom field" do
+    it 'fails on a non-existing custom field' do
       expect(valid_rule.tap{|r| r.custom_field_id='garbage'}).to be_invalid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
     let(:custom_field) { create(:custom_field) }
     let!(:users) {
@@ -94,7 +94,7 @@ describe SmartGroups::Rules::CustomFieldText do
     end
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:text_field) {create(:custom_field, title_multiloc: {
       'en'    => 'What\'s your favourite Star Wars quote?',
       'fr-FR' => 'Quelle est votre citation Star Wars préférée?',
@@ -160,7 +160,7 @@ describe SmartGroups::Rules::CustomFieldText do
       'customFieldId' => text_field.id
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(custom_field_text_is_rule.description_multiloc).to eq ({
         'en'    => 'What\'s your favourite Star Wars quote? is Never tell me the odds!',
         'fr-FR' => 'Quelle est votre citation Star Wars préférée? est Never tell me the odds!',

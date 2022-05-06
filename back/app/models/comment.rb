@@ -38,8 +38,8 @@ class Comment < ApplicationRecord
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :post, polymorphic: true
   has_many :votes, as: :votable, dependent: :destroy
-  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
-  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
+  has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
 
@@ -49,13 +49,13 @@ class Comment < ApplicationRecord
   counter_culture :post,
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
-      ["comments.publication_status = ?", "published"] => "comments_count"
+      ['comments.publication_status = ?', 'published'] => 'comments_count'
     },
     touch: true
   counter_culture [:idea, :project],
     column_name: proc {|model| model.published? ? 'comments_count' : nil },
     column_names: {
-      ["comments.publication_status = ?", "published"] => "comments_count"
+      ['comments.publication_status = ?', 'published'] => 'comments_count'
     },
     touch: true
 

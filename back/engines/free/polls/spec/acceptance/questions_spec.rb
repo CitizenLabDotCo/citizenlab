@@ -2,18 +2,18 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Poll Questions" do
+resource 'Poll Questions' do
  
-  explanation "A poll question has multiple poll options that can be answered by users. It is tied to a participation context with participation_method `poll`"
+  explanation 'A poll question has multiple poll options that can be answered by users. It is tied to a participation context with participation_method `poll`'
 
   before do
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
   end
 
-  get "web_api/v1/projects/:participation_context_id/poll_questions" do
+  get 'web_api/v1/projects/:participation_context_id/poll_questions' do
     with_options scope: :page do
-      parameter :number, "Page number"
-      parameter :size, "Number of questions per page"
+      parameter :number, 'Page number'
+      parameter :size, 'Number of questions per page'
     end
 
     before do
@@ -23,7 +23,7 @@ resource "Poll Questions" do
     end
 
     let (:participation_context_id) { @project.id }
-    example_request "List all questions in a poll project" do
+    example_request 'List all questions in a poll project' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -32,10 +32,10 @@ resource "Poll Questions" do
     end
   end
 
-  get "web_api/v1/phases/:participation_context_id/poll_questions" do
+  get 'web_api/v1/phases/:participation_context_id/poll_questions' do
     with_options scope: :page do
-      parameter :number, "Page number"
-      parameter :size, "Number of questions per page"
+      parameter :number, 'Page number'
+      parameter :size, 'Number of questions per page'
     end
 
     before do
@@ -45,7 +45,7 @@ resource "Poll Questions" do
     end
 
     let (:participation_context_id) { @phase.id }
-    example_request "List all questions in a poll phase" do
+    example_request 'List all questions in a poll phase' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -54,33 +54,33 @@ resource "Poll Questions" do
     end
   end
 
-  get "web_api/v1/poll_questions/:id" do
+  get 'web_api/v1/poll_questions/:id' do
     before do
       @question = create(:poll_question)
     end
 
     let(:id) {@question.id}
 
-    example_request "Get one question by id" do
+    example_request 'Get one question by id' do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :question_type)).to eq "single_option"
+      expect(json_response.dig(:data, :attributes, :question_type)).to eq 'single_option'
       expect(json_response.dig(:data, :id)).to eq @question.id
     end
   end
 
-  context "when admin" do
+  context 'when admin' do
     before do
       @admin = create(:admin)
       token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
       header 'Authorization', "Bearer #{token}"
     end
 
-    post "web_api/v1/poll_questions" do
+    post 'web_api/v1/poll_questions' do
       with_options scope: :question do
-        parameter :participation_context_id, "The id of the phase/project the question belongs to", required: true
-        parameter :participation_context_type, "The type of the participation context (Project or Phase)", required: true
-        parameter :title_multiloc, "The question, as a multiloc string", required: true
+        parameter :participation_context_id, 'The id of the phase/project the question belongs to', required: true
+        parameter :participation_context_type, 'The type of the participation context (Project or Phase)', required: true
+        parameter :title_multiloc, 'The question, as a multiloc string', required: true
         parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}. Defaults to 'single_option'", required: false
         parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Defaults to nil, meaning no limit.", required: false
       end
@@ -92,21 +92,21 @@ resource "Poll Questions" do
       let(:participation_context_id) { question.participation_context_id}
       let(:question_type) { question.question_type }
 
-      example_request "Create a question" do
+      example_request 'Create a question' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:ordering)).to eq 0
         expect(json_response.dig(:data,:attributes,:question_type)).to eq question_type
         expect(json_response.dig(:data,:attributes,:max_options)).to be_nil
-        expect(json_response.dig(:data,:relationships,:participation_context, :data, :type)).to eq "project"
+        expect(json_response.dig(:data,:relationships,:participation_context, :data, :type)).to eq 'project'
         expect(json_response.dig(:data,:relationships,:participation_context, :data, :id)).to eq participation_context_id
       end
     end
 
-    patch "web_api/v1/poll_questions/:id" do
+    patch 'web_api/v1/poll_questions/:id' do
       with_options scope: :question do
-        parameter :title_multiloc, "The question, as a multiloc string", required: false
+        parameter :title_multiloc, 'The question, as a multiloc string', required: false
         parameter :question_type, "Either #{Polls::Question::QUESTION_TYPES.join(", ")}", required: false
         parameter :max_options, "The maximum count of options a valid response can contain. Only applicable for question_type 'multiple_options'. Nil means no limit.", required: false
       end
@@ -114,11 +114,11 @@ resource "Poll Questions" do
 
       let(:question) { create(:poll_question) }
       let(:id) { question.id }
-      let(:title_multiloc) { {'en' => "How green is our city?"} }
-      let(:question_type) { "multiple_options" }
+      let(:title_multiloc) { {'en' => 'How green is our city?'} }
+      let(:question_type) { 'multiple_options' }
       let(:max_options) { 2 }
 
-      example_request "Update a question" do
+      example_request 'Update a question' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -127,9 +127,9 @@ resource "Poll Questions" do
       end
     end
 
-    patch "web_api/v1/poll_questions/:id/reorder" do
+    patch 'web_api/v1/poll_questions/:id/reorder' do
       with_options scope: :question do
-        parameter :ordering, "The position, starting from 0, where the question should be at. Questions after will move down.", required: true
+        parameter :ordering, 'The position, starting from 0, where the question should be at. Questions after will move down.', required: true
       end
 
       before do
@@ -140,7 +140,7 @@ resource "Poll Questions" do
       let(:id) { @questions.last.id }
       let(:ordering) { 1 }
 
-      example_request "Reorder a question" do
+      example_request 'Reorder a question' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
@@ -149,10 +149,10 @@ resource "Poll Questions" do
       end
     end
 
-    delete "web_api/v1/poll_questions/:id" do
+    delete 'web_api/v1/poll_questions/:id' do
       let!(:id) { create(:poll_question).id }
 
-      example "Delete a question" do
+      example 'Delete a question' do
         old_count = Polls::Question.count
         do_request
         expect(response_status).to eq 200

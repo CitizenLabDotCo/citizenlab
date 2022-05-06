@@ -1,9 +1,9 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::CustomFieldNumber do
 
 
-  describe "validations" do
+  describe 'validations' do
 
     let(:custom_field) { create(:custom_field_number) }
 
@@ -15,15 +15,15 @@ describe SmartGroups::Rules::CustomFieldNumber do
     }}
     let(:valid_rule) { SmartGroups::Rules::CustomFieldNumber.from_json(valid_json_rule) }
 
-    it "successfully validates a valid rule" do
+    it 'successfully validates a valid rule' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
-    context "on a number field" do
+    context 'on a number field' do
 
       let(:custom_field) { create(:custom_field_number, required: false) }
 
@@ -81,7 +81,7 @@ describe SmartGroups::Rules::CustomFieldNumber do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:number_picker) {create(:custom_field_number, title_multiloc: {
       'en'    => 'How many politicians do you need to solve climate change?',
       'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat?',
@@ -135,7 +135,7 @@ describe SmartGroups::Rules::CustomFieldNumber do
       'customFieldId' => number_picker.id
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(custom_field_number_is_equal_rule.description_multiloc).to eq ({
         'en'    => 'How many politicians do you need to solve climate change? equals 0',
         'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat? est égal à 0',

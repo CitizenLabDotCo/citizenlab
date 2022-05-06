@@ -6,7 +6,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   define_callbacks :save_project
 
   def index
-    params["moderator"] = current_user if params[:filter_can_moderate]
+    params['moderator'] = current_user if params[:filter_can_moderate]
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)

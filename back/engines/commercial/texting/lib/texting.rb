@@ -1,5 +1,5 @@
-require "texting/version"
-require "texting/engine"
+require 'texting/version'
+require 'texting/engine'
 
 module Texting
   # Your code goes here...

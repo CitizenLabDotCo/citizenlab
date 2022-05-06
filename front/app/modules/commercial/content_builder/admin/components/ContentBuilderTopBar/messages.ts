@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.Save',
     defaultMessage: 'Save',
   },
+  viewPublicProject: {
+    id: 'app.containers.AdminPage.ProjectDescription.viewPublicProject',
+    defaultMessage: 'View project',
+  },
 });

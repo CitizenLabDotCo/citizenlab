@@ -54,8 +54,8 @@ module ContentBuilder
 
         def update
           set_layout
-          side_fx_service.before_update @layout, current_user
           @layout.assign_attributes params_for_update
+          side_fx_service.before_update @layout, current_user
           if @layout.save
             side_fx_service.after_update @layout, current_user
             render json: WebApi::V1::LayoutSerializer.new(

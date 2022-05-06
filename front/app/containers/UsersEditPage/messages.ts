@@ -85,10 +85,6 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.deleteYourAccount',
     defaultMessage: 'Delete your account',
   },
-  logoAltText: {
-    id: 'app.containers.UsersEditPage.logoImgAltText',
-    defaultMessage: 'Logo of {orgName}',
-  },
   deleteAccountSubtext: {
     id: 'app.containers.UsersEditPage.deleteAccountSubtext',
     defaultMessage: 'We are sorry to see you go.',
@@ -136,10 +132,6 @@ export default defineMessages({
   /*
    * Details
    */
-  gender: {
-    id: 'app.containers.UsersEditPage.gender',
-    defaultMessage: 'Gender',
-  },
   bio: {
     id: 'app.containers.UsersEditPage.bio',
     defaultMessage: 'Bio',
@@ -147,10 +139,6 @@ export default defineMessages({
   bio_placeholder: {
     id: 'app.containers.UsersEditPage.bio_placeholder',
     defaultMessage: 'Write a short description of yourself',
-  },
-  domicile: {
-    id: 'app.containers.UsersEditPage.domicile',
-    defaultMessage: 'Domicile',
   },
   imageDropzonePlaceholder: {
     id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',

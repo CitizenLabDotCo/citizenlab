@@ -105,7 +105,7 @@ de:
       domicile:
         title: Wohnort
       education:
-        title: Bildungsweg
+        title: Höchster Bildungsabschluss
     ideas:
       title:
         title: Titel
@@ -159,17 +159,17 @@ de:
     gender:
       male: Männlich
       female: Weiblich
-      unspecified: Unspezifiziert
+      unspecified: Divers
     domicile:
       outside: Anderer Ort
     education:
-      ISCED2: Sekundarstufe I
-      ISCED3: Sekundarstufe II
-      ISCED4: Ausbildung oder Lehre
-      ISCED5: Abschluss an Berufsschule, Kolleg oder ähnlichem
+      ISCED2: Kein Schulabschluss
+      ISCED3: Grund- / Haupt- /Realschulabschluss
+      ISCED4: Gymnasium (Abitur)
+      ISCED5: Abgeschlossene Ausbildung
       ISCED6: Bachelor oder gleichwertiger Abschluss
       ISCED7: Master oder gleichwertiger Abschluss
-      ISCED8: Doktortitel oder anderer gleichwertiger Abschluss
+      ISCED8: Doktortitel oder gleichwertiger Abschluss
   initiatives:
     default_threshold_reached_message: >
       <p>Die Initiatoren sind eingeladen, ihre Vorschlag bei der nächsten Stadtratssitzung zu präsentieren. Wir werden ein offizielles Update veröffentlichen.</p>
@@ -178,6 +178,6 @@ de:
   reset_password_mailer:
     send_reset_password:
       cta_reset_password: 'Ihr Passwort zurücksetzen'
-      message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform von %{organizationName} beantragt. Klicken Sie auf die Schaltfläche unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.'
+      message_you_reset_your_password: 'Sie haben ein neues Passwort für die Beteiligungsplattform von %{organizationName} beantragt. Klicken Sie auf den Button unten, um ein neues, sicheres Passwort zu wählen. Der Link läuft in einer Stunde ab.'
       subject: '%{organizationName}: Ihr Passwort zurücksetzen'
       title_reset_your_password: 'Wählen Sie ein neues Passwort'
