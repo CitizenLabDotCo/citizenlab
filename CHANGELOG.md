@@ -1,5 +1,23 @@
 # Changelog
 
+## Next Release
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+## 2022-05-02
+
+### Added
+
+- Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
 ## 2022-04-28
 
 ### Added

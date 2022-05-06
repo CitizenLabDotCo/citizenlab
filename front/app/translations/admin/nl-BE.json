@@ -1093,7 +1093,7 @@
   "app.containers.AdminPage.SettingsPage.headerBgTooltip": "Voor meer informatie over aanbevolen afbeeldingsresoluties, {supportPageLink}.",
   "app.containers.AdminPage.SettingsPage.headerDescription": "Personaliseer de startpagina bannerafbeelding en -tekst.",
   "app.containers.AdminPage.SettingsPage.headerImageSupportPageText": "Bezoek ons supportcentrum",
-  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "https://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
+  "app.containers.AdminPage.SettingsPage.headerImageSupportPageURL": "http://support.citizenlab.co/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.AdminPage.SettingsPage.header_bg": "Bannerafbeelding",
   "app.containers.AdminPage.SettingsPage.helmetDescription": "Admin - instellingen",
   "app.containers.AdminPage.SettingsPage.helmetTitle": "Admin - instellingen",
