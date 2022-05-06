@@ -34,7 +34,7 @@ class MultiTenancy::Templates::Serializer
       template['models']['groups_permission']                    = yml_groups_permissions
       template['models']['membership']                           = yml_memberships
       template['models']['static_page']                          = yml_static_pages
-      template['models']['nav_bar_items']                        = yml_nav_bar_items
+      template['models']['nav_bar_item']                         = yml_nav_bar_items
       template['models']['static_page_file']                     = yml_static_page_files
       template['models']['idea_status']                          = yml_idea_statuses
       template['models']['idea']                                 = yml_ideas
