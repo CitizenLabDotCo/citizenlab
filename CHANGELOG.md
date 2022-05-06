@@ -2,7 +2,9 @@
 
 ## Next release
 
-/
+### Changed
+
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
 
 ## 2022-05-06
 
