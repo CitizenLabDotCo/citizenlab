@@ -7,7 +7,7 @@ module GeographicDashboard
     def geotag(tenant_id, idea, **opts)
       @tenant_id = tenant_id
       @idea      = idea
-      @locale  ||= idea.title_multiloc.keys.first
+      @locale    = idea.title_multiloc.keys.first
       @options   = extract_options(opts)
       return unless ENV.fetch('NLP_HOST')
 
