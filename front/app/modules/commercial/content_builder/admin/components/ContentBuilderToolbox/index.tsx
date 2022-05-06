@@ -43,6 +43,7 @@ const ContentBuilderToolbox = ({
   return (
     <Box w="100%" display="inline">
       <DraggableElement
+        id="e2e-draggable-single-column"
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -54,6 +55,7 @@ const ContentBuilderToolbox = ({
         <ToolboxItem icon="column1" label={formatMessage(messages.oneColumn)} />
       </DraggableElement>
       <DraggableElement
+        id="e2e-draggable-two-column"
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -65,6 +67,7 @@ const ContentBuilderToolbox = ({
         <ToolboxItem icon="column2" label={formatMessage(messages.twoColumn)} />
       </DraggableElement>
       <DraggableElement
+        id="e2e-draggable-three-column"
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -100,18 +103,24 @@ const ContentBuilderToolbox = ({
         <ToolboxItem icon="text" label={formatMessage(messages.text)} />
       </DraggableElement>
       <DraggableElement
+        id="e2e-draggable-image"
         ref={(ref) => {
           ref &&
-            connectors.create(ref, <Element is={Image} id="image" alt="" />, {
-              onCreate: (node) => {
-                selectNode(node.rootNodeId);
-              },
-            });
+            connectors.create(
+              ref,
+              <Element is={Image} imageUrl="" id="image" alt="" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            );
         }}
       >
         <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>
       <DraggableElement
+        id="e2e-draggable-about-box"
         ref={(ref) =>
           ref &&
           connectors.create(

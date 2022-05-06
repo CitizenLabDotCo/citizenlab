@@ -8,13 +8,14 @@ declare global {
     displayName?: string;
   }
   interface Window {
-    _paq: any;
-    googleMaps?: boolean;
     Intercom?: any;
-    intercomSettings: any;
+    Weglot?: any;
+    _paq: any;
     attachEvent?: any;
-    satismeter?: any;
     dataLayer?: any[];
+    googleMaps?: boolean;
+    intercomSettings: any;
+    satismeter?: any;
   }
 }
 
