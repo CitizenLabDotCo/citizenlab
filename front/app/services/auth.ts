@@ -7,7 +7,6 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import eventEmitter from 'utils/eventEmitter';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -89,7 +88,7 @@ export async function signUp(
   }
 }
 
-export function signOut() {
+export async function signOut() {
   const jwt = getJwt();
 
   if (jwt) {
@@ -102,7 +101,7 @@ export function signOut() {
       const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
       window.location.href = url;
     } else {
-      streams.reset();
+      await streams.reset();
       const { pathname } = removeLocale(location.pathname);
 
       if (
@@ -115,12 +114,7 @@ export function signOut() {
   }
 }
 
-export function signOutAndDeleteAccountPart1() {
-  setTimeout(() => eventEmitter.emit('tryAndDeleteProfile'), 500);
-  clHistory.push('/');
-}
-
-export function signOutAndDeleteAccountPart2() {
+export function signOutAndDeleteAccount() {
   return new Promise((resolve, _reject) => {
     const jwt = getJwt();
 
