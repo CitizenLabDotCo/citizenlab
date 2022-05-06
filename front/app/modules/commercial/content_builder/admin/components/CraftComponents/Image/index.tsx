@@ -31,7 +31,7 @@ const Image = ({
   dataCode?: string;
 }) => {
   return (
-    <Box minHeight="26px">
+    <Box style={{ pointerEvents: 'none' }} minHeight="26px">
       {imageUrl && (
         <ImageComponent
           width="100%"
