@@ -268,6 +268,9 @@ const PlatformFooter = ({
     windowSize.windowWidth <= viewportWidths.smallTablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
+  const removeCitizenlabBranding = useFeatureFlag({
+    name: 'remove_citizenlab_branding',
+  });
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
@@ -314,18 +317,19 @@ const PlatformFooter = ({
         </PagesNav>
 
         <Right>
-          <PoweredBy>
-            <PoweredByText>
-              <FormattedMessage {...messages.poweredBy} />
-            </PoweredByText>
-            <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-              <CitizenLabLogo
-                name="citizenlab-footer-logo"
-                title="CitizenLab"
-              />
-            </CitizenlabLink>
-          </PoweredBy>
-
+          {!removeCitizenlabBranding && (
+            <PoweredBy>
+              <PoweredByText>
+                <FormattedMessage {...messages.poweredBy} />
+              </PoweredByText>
+              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
+                <CitizenLabLogo
+                  name="citizenlab-footer-logo"
+                  title="CitizenLab"
+                />
+              </CitizenlabLink>
+            </PoweredBy>
+          )}
           <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
         </Right>
       </FooterContainer>

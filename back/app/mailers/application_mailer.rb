@@ -19,7 +19,7 @@ class ApplicationMailer < ActionMailer::Base
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
                 :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
-                :header_logo_only?
+                :header_logo_only?, :remove_citizenlab_branding?
 
   NotImplementedError = Class.new(StandardError)
 
@@ -137,6 +137,10 @@ class ApplicationMailer < ActionMailer::Base
 
   def show_privacy_policy_link?
     true
+  end
+
+  def remove_citizenlab_branding?
+    app_configuration.feature_activated?('remove_citizenlab_branding')
   end
 
   def organization_name
