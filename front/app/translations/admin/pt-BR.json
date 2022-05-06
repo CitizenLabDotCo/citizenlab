@@ -714,6 +714,7 @@
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Descrição projeto",
   "app.containers.AdminPage.ProjectDescription.toggleLabel": "Use page builder for description",
   "app.containers.AdminPage.ProjectDescription.toggleTooltip": "Using the page builder will let you use more advanced layout options.",
+  "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Visão do projeto",
   "app.containers.AdminPage.ProjectEdit.MapTab.cancel": "Cancelar",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLatLabelTooltip": "Latitude do ponto central do mapa predefinida. Aceita um valor entre -90 e 90.",
   "app.containers.AdminPage.ProjectEdit.MapTab.centerLngLabelTooltip": "A longitude padrão do ponto central do mapa. Aceita um valor entre -180 e 180.",

@@ -121,12 +121,12 @@ const ContentBuilderToggle = ({
       )}
       {contentBuilderLinkVisible && (
         <>
-          <Box marginBottom="20px">
-            <Warning>{formatMessage(messages.layoutBuilderWarning)}</Warning>
-          </Box>
           <StyledLink id="e2e-content-builder-link" to={route}>
             {formatMessage(messages.linkText)}
           </StyledLink>
+          <Box mt="10px">
+            <Warning>{formatMessage(messages.layoutBuilderWarning)}</Warning>
+          </Box>
         </>
       )}
       {!contentBuilderLinkVisible && (

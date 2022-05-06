@@ -39,7 +39,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             display="flex"
             flexDirection="column"
             alignItems="center"
-            bgColor={colors.adminDarkBackground}
+            bgColor="#ffffff"
             borderRight={`1px solid ${colors.mediumGrey}`}
           >
             <ContentBuilderToolbox />
