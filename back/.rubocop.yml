@@ -33,8 +33,7 @@ Style/NumericPredicate:
   Enabled: false
 
 Layout/HashAlignment:
-  # There are a lot of places where EnforcedColonStyle: table is expected.
-  # Discussion needed, because the default will affect a lot of table like hash literals.
+  # There are a lot of places where EnforcedColonStyle: table is expected, so disabled for now.
   Enabled: false
 
 Layout/FirstHashElementIndentation:
@@ -92,7 +91,6 @@ RSpec/DescribeClass:
     type: ['request']
 
 Metrics/MethodLength:
-  # Max: 30
   CountAsOne: ['array', 'hash', 'heredoc']
   IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
