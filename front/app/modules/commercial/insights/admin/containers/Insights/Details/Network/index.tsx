@@ -1,4 +1,4 @@
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import React, {
   useEffect,
   useRef,

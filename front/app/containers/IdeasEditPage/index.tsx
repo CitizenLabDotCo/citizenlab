@@ -61,7 +61,7 @@ import GetAppConfiguration, {
 // tracks
 import tracks from './tracks';
 import { trackEventByName } from 'utils/analytics';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const Container = styled.div`

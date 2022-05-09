@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // intl
 import messages from '../../messages';

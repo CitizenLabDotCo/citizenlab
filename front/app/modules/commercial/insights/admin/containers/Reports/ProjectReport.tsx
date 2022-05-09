@@ -46,7 +46,7 @@ import PollReport from './PollReport';
 
 import Outlet from 'components/Outlet';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 const Section = styled.div`
   margin-bottom: 20px;

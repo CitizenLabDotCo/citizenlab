@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
 // libraries
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components

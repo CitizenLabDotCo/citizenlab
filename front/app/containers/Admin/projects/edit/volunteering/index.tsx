@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 
@@ -137,12 +137,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataProps) => (
-        <AdminProjectVolunteering {...inputProps} {...dataProps} />
-      )}
-    </Data>
-  )
-);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <AdminProjectVolunteering {...inputProps} {...dataProps} />}
+  </Data>
+));

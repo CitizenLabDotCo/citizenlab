@@ -1,6 +1,6 @@
 import React, { useEffect, ReactElement, useState } from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components

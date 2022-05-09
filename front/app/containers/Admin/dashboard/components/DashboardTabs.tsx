@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import Link from 'utils/cl-router/Link';
 
 // typings

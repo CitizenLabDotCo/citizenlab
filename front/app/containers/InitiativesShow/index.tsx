@@ -8,7 +8,7 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -750,7 +750,7 @@ export class InitiativesShow extends PureComponent<
 }
 
 const InitiativesShowWithHOCs = injectLocalize<Props>(
-  injectIntl(withRouter(InitiativesShow))
+  withRouter(injectIntl(InitiativesShow))
 );
 
 const Data = adopt<DataProps, InputProps>({

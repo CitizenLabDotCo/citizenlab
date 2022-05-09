@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { adopt } from 'react-adopt';
 
 // services & resources

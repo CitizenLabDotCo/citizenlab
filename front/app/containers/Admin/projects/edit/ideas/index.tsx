@@ -16,7 +16,7 @@ import PostManager, { TFilterMenu } from 'components/admin/PostManager';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 const StyledDiv = styled.div`

@@ -22,7 +22,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // services
 import { getInputTerm } from 'services/participationContexts';
@@ -122,10 +122,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   },
 });
 
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataprops) => <IdeasNewMetaWithHoc {...inputProps} {...dataprops} />}
-    </Data>
-  )
-);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataprops) => <IdeasNewMetaWithHoc {...inputProps} {...dataprops} />}
+  </Data>
+));

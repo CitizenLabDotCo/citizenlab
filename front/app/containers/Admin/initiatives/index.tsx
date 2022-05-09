@@ -1,5 +1,5 @@
 import React, { memo, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';

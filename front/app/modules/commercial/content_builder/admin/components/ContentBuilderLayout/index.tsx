@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 // intl
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 type ContentBuilderLayoutProps = {
   onMount: (isVisible: boolean) => void;

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import Timeline from './Timeline';

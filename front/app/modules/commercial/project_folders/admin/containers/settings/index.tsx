@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import styled from 'styled-components';
 import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';

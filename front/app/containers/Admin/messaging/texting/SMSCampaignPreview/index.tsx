@@ -8,7 +8,7 @@ import Modal from 'components/UI/Modal';
 import { Box, Text, Error } from '@citizenlab/cl2-component-library';
 
 // utils
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // hooks

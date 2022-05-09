@@ -9,7 +9,7 @@ import {
 } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import ScreenReaderContent from './ScreenReaderContent';
@@ -572,4 +572,4 @@ class VoteControl extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-export default withRouter<Props>(VoteControl);
+export default withRouter(VoteControl);

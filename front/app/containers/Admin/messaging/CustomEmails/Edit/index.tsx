@@ -12,7 +12,7 @@ import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';

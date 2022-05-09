@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { isEqual } from 'lodash-es';
 import { combineLatest } from 'rxjs';
 

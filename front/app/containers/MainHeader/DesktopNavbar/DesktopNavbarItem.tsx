@@ -82,9 +82,10 @@ const DesktopNavbarItem = ({
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
     <StyledLink
-      className={className}
       to={linkTo}
-      activeClassName="active"
+      className={({ isActive }) =>
+        isActive ? `active ${className}` : className
+      }
       onlyActiveOnIndex={onlyActiveOnIndex}
     >
       <NavigationItemBorder />

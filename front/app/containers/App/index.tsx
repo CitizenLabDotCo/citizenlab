@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { uniq, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import clHistory from 'utils/cl-router/history';
 import moment from 'moment';
 import 'moment-timezone';

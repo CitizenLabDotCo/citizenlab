@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n

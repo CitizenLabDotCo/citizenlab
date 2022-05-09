@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 import deepMerge from 'deepmerge';
 import eventEmitter from 'utils/eventEmitter';
 import { validateSlug } from 'utils/textUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';

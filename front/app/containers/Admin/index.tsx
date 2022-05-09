@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { globalState } from 'services/globalState';
 
 // permissions
@@ -201,4 +201,4 @@ const AdminPage = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter<Props>(AdminPage);
+export default withRouter(AdminPage);

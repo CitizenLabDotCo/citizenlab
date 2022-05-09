@@ -6,7 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // services
 import { deleteEvent } from 'services/events';

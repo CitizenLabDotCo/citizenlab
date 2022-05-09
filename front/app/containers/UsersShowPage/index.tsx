@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
 import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import IdeaCards from 'components/IdeaCards';

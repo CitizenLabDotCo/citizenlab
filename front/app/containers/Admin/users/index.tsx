@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { Formik, FormikActions } from 'formik';
 
 // Resources
@@ -202,7 +202,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const UsersPageWithHocs = withRouter<Props>(UsersPage);
+const UsersPageWithHocs = withRouter(UsersPage);
 
 export default (props) => (
   <GetFeatureFlag name="verification">

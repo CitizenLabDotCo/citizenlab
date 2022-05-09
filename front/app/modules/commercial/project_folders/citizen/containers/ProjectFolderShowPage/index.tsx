@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { moderatesFolder } from '../../../permissions/roles';
 

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import moment from 'moment';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // Utils
 import { pastPresentOrFuture } from 'utils/dateUtils';

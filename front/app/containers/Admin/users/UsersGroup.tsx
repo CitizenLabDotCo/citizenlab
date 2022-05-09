@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { Formik } from 'formik';
 import { isEmpty, isString } from 'lodash-es';
 

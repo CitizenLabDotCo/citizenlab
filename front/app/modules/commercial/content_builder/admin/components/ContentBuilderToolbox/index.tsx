@@ -4,7 +4,7 @@ import React from 'react';
 import { useEditor, Element } from '@craftjs/core';
 
 // Router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // Intl
 import { injectIntl } from 'utils/cl-intl';

@@ -3,7 +3,7 @@ import React from 'react';
 // libraries
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // services
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';

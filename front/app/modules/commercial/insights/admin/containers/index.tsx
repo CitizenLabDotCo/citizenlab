@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';

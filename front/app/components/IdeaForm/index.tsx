@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
 
@@ -1070,7 +1070,7 @@ const Data = adopt<DataProps, InputProps>({
   },
 });
 
-const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
+const IdeaFormWitHOCs = injectIntl(withRouter(IdeaForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

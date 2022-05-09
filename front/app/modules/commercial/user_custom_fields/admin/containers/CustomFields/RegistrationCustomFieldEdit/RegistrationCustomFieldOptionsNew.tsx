@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { Formik } from 'formik';
 import { CLErrorsJSON } from 'typings';

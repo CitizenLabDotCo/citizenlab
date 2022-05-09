@@ -12,7 +12,7 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import IdeaSharingButton from './Buttons/IdeaSharingButton';
@@ -548,7 +548,7 @@ export class IdeasShow extends PureComponent<
 }
 
 const IdeasShowWithHOCs = injectLocalize<Props>(
-  injectIntl(withRouter(IdeasShow))
+  withRouter(injectIntl(IdeasShow))
 );
 
 const Data = adopt<DataProps, InputProps>({

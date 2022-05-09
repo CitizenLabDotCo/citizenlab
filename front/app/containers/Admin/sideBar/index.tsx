@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { getUrlLocale } from 'services/locale';
 
 // components
@@ -389,7 +389,7 @@ const Data = adopt<DataProps, InputProps>({
   ),
 });
 
-const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
+const SideBarWithHocs = withRouter(injectIntl(Sidebar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

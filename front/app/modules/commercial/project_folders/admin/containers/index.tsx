@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // Services
 import { isAdmin } from 'services/permissions/roles';

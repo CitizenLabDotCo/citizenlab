@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useCallback, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // Hooks
 import useProject from 'hooks/useProject';

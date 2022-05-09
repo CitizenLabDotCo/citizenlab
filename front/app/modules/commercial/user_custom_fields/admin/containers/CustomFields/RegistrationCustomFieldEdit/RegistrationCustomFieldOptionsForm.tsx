@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';

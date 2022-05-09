@@ -3,7 +3,7 @@ import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';

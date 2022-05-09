@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';

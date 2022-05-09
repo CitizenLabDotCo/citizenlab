@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { InsertConfigurationOptions, ITab } from 'typings';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';

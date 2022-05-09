@@ -1,7 +1,7 @@
 // Libraries
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // Hooks
 import useTopics from 'hooks/useTopics';

@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // i18n
 import messages from './messages';

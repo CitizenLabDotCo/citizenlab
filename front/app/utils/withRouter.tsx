@@ -13,7 +13,7 @@ export interface WithRouterProps {
     location: ReturnType<typeof useLocation>;
     push: (url: string, state?: any) => void;
   };
-  location: ReturnType<typeof useLocation> & { query: Record<string, string> };
+  location: ReturnType<typeof useLocation> & { query: Record<string, any> };
   params: Record<string, string>;
   navigate: ReturnType<typeof useNavigate>;
 }

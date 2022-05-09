@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
@@ -379,4 +379,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
   }
 );
 
-export default withRouter<Props>(injectIntl(UseTemplateModal));
+export default injectIntl(withRouter(UseTemplateModal));

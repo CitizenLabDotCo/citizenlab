@@ -1,38 +1,29 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 // tslint:disable-next-line:no-vanilla-routing
-import { Link as RouterLink, LinkProps } from 'react-router-dom';
+import { NavLink as RouterLink, NavLinkProps } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import updateLocationDescriptor from './updateLocationDescriptor';
 import { isNilOrError } from 'utils/helperUtils';
+import useLocale from 'hooks/useLocale';
 
-export interface InputProps extends LinkProps {
+export type Props = {
   to: LocationDescriptor;
-}
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
+  onlyActiveOnIndex?: boolean;
+} & NavLinkProps;
 
 /*
  * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
  */
-export class Link extends PureComponent<Props, State> {
-  render() {
-    const { to, locale, ...otherProps } = this.props;
-    return (
-      <RouterLink
-        to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
-        {...otherProps}
-      />
-    );
-  }
-}
+const Link = ({ to, onlyActiveOnIndex, ...otherProps }: Props) => {
+  const locale = useLocale();
 
-export default (inputProps: InputProps) => (
-  <GetLocale>{(locale) => <Link {...inputProps} locale={locale} />}</GetLocale>
-);
+  return (
+    <RouterLink
+      end={onlyActiveOnIndex}
+      to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
+      {...otherProps}
+    />
+  );
+};
+
+export default Link;

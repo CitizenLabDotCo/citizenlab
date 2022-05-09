@@ -11,7 +11,7 @@ import { FormattedTime, FormattedDate } from 'react-intl';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // hooks
 import useTextingCampaign from 'hooks/useTextingCampaign';

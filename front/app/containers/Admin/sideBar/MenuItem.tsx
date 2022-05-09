@@ -119,14 +119,12 @@ type Props = {
 };
 
 export default ({ route }: Props) => {
-  const pathname = location.pathname;
   return (
     <HasPermission action="access" item={{ type: 'route', path: route.link }}>
       <MenuItemLink
-        activeClassName="active"
-        className={`${route.iconName} ${
-          route.isActive(pathname) ? 'selected' : ''
-        }`}
+        className={({ isActive }) =>
+          `${route.iconName} ${isActive ? 'selected' : ''}`
+        }
         to={route.link}
       >
         <IconWrapper className={route.iconName}>
