@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- The new phase started emails/notifications are also sent out for information phases or when it's possible to take a poll.
+
 ## 2022-05-06_3
 
 ### Changed
