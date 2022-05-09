@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // components
 import { Input, Box } from '@citizenlab/cl2-component-library';
@@ -163,5 +163,6 @@ const CreateCategory = ({
     </Box>
   );
 };
+const withhocs = injectIntl(withRouter(CreateCategory));
 
-export default injectIntl(withRouter(CreateCategory));
+export default withhocs;

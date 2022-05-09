@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 // tslint:disable-next-line:no-vanilla-routing
-import { Link as RouterLink, LinkProps } from 'react-router';
+import { Link as RouterLink, LinkProps } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import updateLocationDescriptor from './updateLocationDescriptor';

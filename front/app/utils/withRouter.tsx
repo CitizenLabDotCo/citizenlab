@@ -18,8 +18,8 @@ export interface WithRouterProps {
   navigate: ReturnType<typeof useNavigate>;
 }
 
-export const withRouter = <P extends object>(Component: any) => {
-  return (props: Omit<P, keyof WithRouterProps>) => {
+export const withRouter = (Component: React.ComponentType<any>) => {
+  return (props: any) => {
     const location = useLocation();
     const params = useParams();
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ export const withRouter = <P extends object>(Component: any) => {
         location={{ ...location, query: searchParams }}
         params={params}
         navigate={navigate}
-        {...(props as P)}
+        {...props}
       />
     );
   };
