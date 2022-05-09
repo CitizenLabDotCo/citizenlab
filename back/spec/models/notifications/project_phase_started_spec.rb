@@ -19,13 +19,13 @@ RSpec.describe Notifications::ProjectPhaseStarted, type: :model do
     it 'only creates a notification for users who can participate' do
       phase = create :phase
       activity = create :activity, item: phase, action: 'started'
-      create_list :user, 5
+      create_list :user, 2
       allow_any_instance_of(ParticipationContextService).to(
-        receive(:participation_possible_for_context?).and_return(true, false, true, false)
+        receive(:participation_possible_for_context?).and_return(true, false)
       )
 
       notifications = described_class.make_notifications_on activity
-      expect(notifications.size).to eq 2
+      expect(notifications.size).to eq 1
     end
   end
 end
