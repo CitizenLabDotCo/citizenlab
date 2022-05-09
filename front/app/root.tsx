@@ -1,40 +1,53 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import { useScroll } from 'react-router-scroll';
+import { BrowserRouter, useRoutes } from 'react-router-dom';
+
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import App from 'containers/App';
-import LanguageProvider from 'containers/LanguageProvider';
-import createRoutes from './routes';
+// import App from 'containers/App';
+// import LanguageProvider from 'containers/LanguageProvider';
+// import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
-const rootRoute = {
-  component: App,
-  childRoutes: createRoutes(),
+// const rootRoute = {
+//   component: App,
+//   childRoutes: createRoutes(),
+// };
+
+const Routes = () => {
+  const routes = useRoutes([
+    {
+      path: '/',
+      element: <div>dashboard</div>,
+      // children: [
+      //   {
+      //     path: "messages",
+      //     element: <DashboardMessages />,
+      //   },
+      //   { path: "tasks", element: <DashboardTasks /> },
+      // ],
+    },
+  ]);
+  // { path: "team", element: <AboutPage /> },});
+  // useEffect(() => {
+  //   modules.afterMountApplication();
+  // }, []);
+
+  return routes;
 };
-
 const Root = () => {
-  useEffect(() => {
-    modules.afterMountApplication();
-  }, []);
-
   return (
     <OutletsProvider>
-      <LanguageProvider>
-        <Router
-          history={browserHistory}
-          routes={rootRoute}
-          render={applyRouterMiddleware(useScroll())}
-        />
-      </LanguageProvider>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
     </OutletsProvider>
   );
 };
