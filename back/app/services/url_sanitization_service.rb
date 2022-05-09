@@ -4,7 +4,6 @@ class UrlSanitizationService
   private
   class UrlScrubber < Rails::Html::PermitScrubber
     URL_WHITELIST = [
-      %r{https:\/\/(.+)?(wistia.com|wi.st).*},
       %r{https:\/\/.*\.typeform\.com\/to\/.*},
       %r{https:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js},
       %r{https:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true},

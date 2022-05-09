@@ -139,7 +139,7 @@ class SanitizationService
     VIDEO_WHITELIST = [
       %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-\_]*)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
-      %r{\A(?:http(?:s?):)?//fast.wistia.net/embed/iframe/([\w\-\_]*)(?:|/\?)},
+      %r{\A(?:http(?:s?):)?//(.+)?(wistia.com|wi.st).*},
       %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
       %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},
       %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#\/]+)}
