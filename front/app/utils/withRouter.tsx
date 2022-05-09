@@ -4,26 +4,22 @@ import {
   useNavigate,
   useParams,
   useSearchParams,
-  URLSearchParams,
 } from 'react-router-dom';
 
-export interface CLWithRouterProps<T = ReturnType<typeof useParams>> {
+export interface WithRouterProps {
   history: {
     back: () => void;
     goBack: () => void;
     location: ReturnType<typeof useLocation>;
     push: (url: string, state?: any) => void;
   };
-  location: ReturnType<typeof useLocation>;
-  params: {
-    params: T;
-  };
+  location: ReturnType<typeof useLocation> & { query: Record<string, string> };
+  params: Record<string, string>;
   navigate: ReturnType<typeof useNavigate>;
-  searchParams: any;
 }
 
-export const CLWithRouter = <P extends object>(Component: any) => {
-  return (props: Omit<P, keyof CLWithRouterProps>) => {
+export const withRouter = <P extends object>(Component: any) => {
+  return (props: Omit<P, keyof WithRouterProps>) => {
     const location = useLocation();
     const params = useParams();
     const navigate = useNavigate();
@@ -44,10 +40,9 @@ export const CLWithRouter = <P extends object>(Component: any) => {
     return (
       <Component
         history={history}
-        location={location}
+        location={{ ...location, query: searchParams }}
         params={params}
         navigate={navigate}
-        searchParams={searchParams}
         {...(props as P)}
       />
     );

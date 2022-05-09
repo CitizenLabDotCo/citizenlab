@@ -1,5 +1,5 @@
 import React from 'react';
-import CLWithRouter, { ICLComponentWithRouterProp } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 // import { withRouter, WithRouterProps } from 'react-router';
 import { API_PATH } from 'containers/App/constants';
 
@@ -22,7 +22,7 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 // services
 import { getInsightsInputsEndpoint } from 'modules/commercial/insights/services/insightsInputs';
 
-type ExportProps = ICLComponentWithRouterProp & InjectedIntlProps;
+type ExportProps = WithRouterProps & InjectedIntlProps;
 
 const Export = ({
   params: { viewId },
@@ -74,4 +74,4 @@ const Export = ({
   );
 };
 
-export default CLWithRouter(injectIntl(Export));
+export default withRouter(injectIntl(Export));
