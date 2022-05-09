@@ -8,6 +8,7 @@ import { UserComponent } from '@craftjs/core';
 import Text from '../Text';
 import Image from '../Image';
 import AboutBox from '../AboutBox';
+import Iframe from '../Iframe';
 
 const Container: UserComponent = ({ children }) => {
   return (
@@ -24,6 +25,7 @@ Container.craft = {
         (node) =>
           node.data.type === Text ||
           node.data.type === Image ||
+          node.data.type === Iframe ||
           node.data.type === AboutBox
       );
     },
