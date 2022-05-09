@@ -1,7 +1,7 @@
 import React from 'react';
 
 // images
-import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
+import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import EmptyStateImage from '../../assets/EmptyStateImage.svg';
 
 // components
@@ -16,8 +16,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const StyledBackgroundImage = styled(Image)`
+export const StyledBackgroundImage = styled(Image)`
   opacity: 0.5;
+  width: 100%;
+  height: 100%;
+  position: absolute;
 `;
 
 const StyledImage = styled(Image)`
@@ -27,13 +30,7 @@ const StyledImage = styled(Image)`
 const EmptyState = () => {
   return (
     <Box background="white" mb="36px" position="relative">
-      <StyledBackgroundImage
-        alt=""
-        src={EmptyProjectsImageSrc}
-        width="100%"
-        height="100%"
-        position="absolute"
-      />
+      <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
       <Box pt="46px" pb="64px">
         <Box
           ml="10%"

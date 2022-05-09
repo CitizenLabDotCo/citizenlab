@@ -51,4 +51,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText',
     defaultMessage: 'Show {numberOfHiddenItems} more',
   },
+  provideBaseDataset: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset',
+    defaultMessage: 'Please provide a base dataset.',
+  },
+  baseDatasetExplanation: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation',
+    defaultMessage:
+      'This base dataset is required to calculate the representativeness of platform users compared to the total population.',
+  },
+  submitBaseDataButton: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.submitBaseDataButton',
+    defaultMessage: 'Submit base data',
+  },
 });

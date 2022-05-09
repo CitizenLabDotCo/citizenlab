@@ -5,6 +5,7 @@ import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/use
 
 // components
 import ChartCard from '../../components/ChartCard';
+import EmptyCard from '../../components/ChartCard/EmptyCard';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,6 +36,8 @@ const ChartCards = () => {
           demographicDataDate={fakeData.gender.demographicDataDate}
         />
       ))}
+
+      <EmptyCard titleMultiloc={{ en: 'Test ' }} />
     </>
   );
 };
