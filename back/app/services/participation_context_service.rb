@@ -67,6 +67,7 @@ class ParticipationContextService
 
   def participation_possible_for_context?(context, user)
     return true if context.information?
+
     !(posting_idea_disabled_reason_for_context(context, user)\
     && commenting_idea_disabled_reason_for_context(context, user)\
     && idea_voting_disabled_reason_for(context, user)\
