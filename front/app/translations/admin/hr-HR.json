@@ -880,7 +880,7 @@
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Aktivnosti",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Ko su projektni menadžeri?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "Više detalja",
-  "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
+  "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "Novi projekat",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Najskorije",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Nije validan iznos",
