@@ -102,7 +102,7 @@ describe XlsxService do
       end
       let(:xlsx) { service.generate_ideas_xlsx(ideas + [@custom_idea], view_private_attributes: false) }
 
-      it "adds columns for custom fields" do
+      it 'adds columns for custom fields' do
         expect(worksheet[0].cells.map(&:value)).to include 'An extra question'
       end
     end

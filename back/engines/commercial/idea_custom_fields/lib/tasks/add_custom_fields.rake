@@ -1,5 +1,5 @@
 namespace :setup_and_support do
-  desc "Add text field to project"
+  desc 'Add text field to project'
   task :add_custom_fields, [:host,:project_slug,:yml_url] => [:environment] do |t, args|
     file = File.open(args[:yml_url]) { |file| YAML.load(file) }
 
@@ -9,7 +9,7 @@ namespace :setup_and_support do
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
       project = Project.find_by!(slug: args[:project_slug])
       custom_form = project.custom_form || CustomForm.create(project: @project)
-      file["custom_fields"].each do |cf|
+      file['custom_fields'].each do |cf|
         CustomField.create(**cf, resource: custom_form)
       end
     end

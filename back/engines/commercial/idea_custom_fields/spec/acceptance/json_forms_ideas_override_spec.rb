@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 # The following specs are WIP and not implemented, and currently just serve as
 # documentation for the expected behavior of the API output. It's not sure that
@@ -7,7 +7,7 @@ require "rails_helper"
 
 describe 'JsonFormsService ideas overrides' do
   let(:service) { JsonFormsService.new }
-  let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
+  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:project) { create(:project) }
   let(:custom_form) { create(:custom_form, project: project) }
   let(:fields) { IdeaCustomFieldsService.new.all_fields(custom_form) }
@@ -20,7 +20,7 @@ describe 'JsonFormsService ideas overrides' do
     it 'only includes the topics associated with the current project' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, :custom_field_values, :properties)).to match ({"field_1"=>{:type=>"string"}})
+      expect(schema.dig(:properties, :custom_field_values, :properties)).to match ({'field_1'=>{:type=>'string'}})
     end
   end
 end
