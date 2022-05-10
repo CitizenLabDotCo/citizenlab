@@ -87,7 +87,7 @@ resource 'AdminPublication' do
         if CitizenLab.ee?
           expect(json_response[:data].size).to eq 5
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
-          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 0
+          expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
         else
           expect(json_response[:data].size).to eq 4
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 4
@@ -253,7 +253,7 @@ resource 'AdminPublication' do
       parameter :filter_empty_folders, 'Filter out folders with no visible children for the current user', required: false
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
 
-      if !CitizenLab.ee?
+      unless CitizenLab.ee?
         example 'Listed admin publications have correct visible children count', document: false do
           do_request
           expect(status).to eq(200)
@@ -271,7 +271,7 @@ resource 'AdminPublication' do
           expect(json_response[:data].size).to eq 3
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 2
-          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 2
+          expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 2
         end
 
         example 'Visible children count should take account with applied filters', document: false do
@@ -282,7 +282,7 @@ resource 'AdminPublication' do
           expect(json_response[:data].size).to eq 2
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('folder')).to eq 1
           expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :type) }.count('project')).to eq 1
-          expect(json_response[:data].select { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.first.dig(:attributes, :visible_children_count)).to eq 1
+          expect(json_response[:data].find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 1
         end
       end
 
@@ -309,7 +309,7 @@ resource 'AdminPublication' do
         expect(status).to eq 200
 
         json_response = json_parse(response_body)
-        expect(json_response[:status_counts][:draft]).to eq nil
+        expect(json_response[:status_counts][:draft]).to be_nil
         expect(json_response[:status_counts][:published]).to eq 2
 
         if CitizenLab.ee?

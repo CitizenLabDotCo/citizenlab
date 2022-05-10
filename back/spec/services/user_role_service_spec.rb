@@ -7,31 +7,31 @@ describe UserRoleService do
     it 'for a project' do
       project = create :project
 
-      expect(service.can_moderate? project, create(:admin)).to be_truthy
-      expect(service.can_moderate? project, create(:user)).to be_falsey
+      expect(service.can_moderate?(project, create(:admin))).to be_truthy
+      expect(service.can_moderate?(project, create(:user))).to be_falsey
     end
 
     it 'for an idea' do
       project = create :project
       idea = create :idea, project: project
 
-      expect(service.can_moderate? idea, create(:admin)).to be_truthy
-      expect(service.can_moderate? idea, create(:user)).to be_falsey
+      expect(service.can_moderate?(idea, create(:admin))).to be_truthy
+      expect(service.can_moderate?(idea, create(:user))).to be_falsey
     end
 
     it 'for an initiative' do
       initiative = create :initiative
 
-      expect(service.can_moderate? initiative, create(:admin)).to be_truthy
-      expect(service.can_moderate? initiative, create(:user)).to be_falsey
+      expect(service.can_moderate?(initiative, create(:admin))).to be_truthy
+      expect(service.can_moderate?(initiative, create(:user))).to be_falsey
     end
 
     it 'for a comment' do
       initiative = create :initiative
       comment = create :comment, post: initiative
 
-      expect(service.can_moderate? comment, create(:admin)).to be_truthy
-      expect(service.can_moderate? comment, create(:user)).to be_falsey
+      expect(service.can_moderate?(comment, create(:admin))).to be_truthy
+      expect(service.can_moderate?(comment, create(:user))).to be_falsey
     end
   end
 
@@ -39,11 +39,11 @@ describe UserRoleService do
     let(:project) { create :project }
 
     it 'permits admins' do
-      expect(service.can_moderate_project? project, create(:admin)).to be_truthy
+      expect(service.can_moderate_project?(project, create(:admin))).to be_truthy
     end
 
     it 'denies normal users' do
-      expect(service.can_moderate_project? project, create(:user)).to be_falsey
+      expect(service.can_moderate_project?(project, create(:user))).to be_falsey
     end
   end
 

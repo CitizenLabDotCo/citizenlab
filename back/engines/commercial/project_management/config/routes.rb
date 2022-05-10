@@ -13,4 +13,3 @@ end
 Rails.application.routes.draw do
   mount ProjectManagement::Engine => ''
 end
-

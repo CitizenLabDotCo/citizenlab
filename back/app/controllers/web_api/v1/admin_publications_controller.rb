@@ -34,7 +34,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
 
   def status_counts
     authorize :admin_publication, :status_counts
-    
+
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
     publications = publication_filterer.filter(publications, params)

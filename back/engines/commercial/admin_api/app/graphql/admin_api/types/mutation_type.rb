@@ -5,7 +5,7 @@ module AdminApi
     # TODO: Remove me
     field :testField, types.String do
       description 'An example field added by the generator'
-      resolve ->(obj, args, ctx) {
+      resolve lambda { |_obj, _args, _ctx|
         'Hello World!'
       }
     end

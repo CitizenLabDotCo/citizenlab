@@ -8,11 +8,10 @@ class WebApi::V1::External::ProjectSerializer < ActiveModel::Serializer
   end
 
   def header_bg
-    object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    object.header_bg && object.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
   end
- 
+
   def url
     Frontend::UrlService.new.model_to_url object
   end
-  
 end

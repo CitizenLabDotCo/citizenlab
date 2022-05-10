@@ -1,5 +1,5 @@
 class AddOrderingToProjectsTopics < ActiveRecord::Migration[6.0]
-  class StubProjectsTopic < ActiveRecord::Base
+  class StubProjectsTopic < ApplicationRecord
     self.table_name = 'projects_topics'
   end
 

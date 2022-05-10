@@ -4,5 +4,4 @@ module Volunteering::UserDecorator
   included do
     has_many :volunteers, class_name: 'Volunteering::Volunteer', dependent: :destroy
   end
-
 end

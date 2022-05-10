@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'User Custom Fields' do
-
   explanation 'Fields in forms (e.g. registration) which are customized by the city.'
 
   before do
@@ -16,7 +14,7 @@ resource 'User Custom Fields' do
       parameter :number, 'Page number'
       parameter :size, 'Number of custom fields per page'
     end
-    parameter :input_types, "Array of input types. Only return custom fields for the given types. Allowed values: #{CustomField::INPUT_TYPES.join(", ")}", required: false
+    parameter :input_types, "Array of input types. Only return custom fields for the given types. Allowed values: #{CustomField::INPUT_TYPES.join(', ')}", required: false
 
     example_request 'List all custom fields' do
       expect(status).to eq(200)
@@ -31,7 +29,7 @@ resource 'User Custom Fields' do
         create(:custom_field_date)
       end
 
-      let(:input_types) { ['multiselect', 'checkbox'] }
+      let(:input_types) { %w[multiselect checkbox] }
 
       example_request 'List custom fields filtered by input types' do
         expect(status).to eq(200)
@@ -55,11 +53,12 @@ resource 'User Custom Fields' do
     before do
       create(:custom_field)
     end
+
     example_request 'Get the react-jsonschema-form json schema and ui schema for the custom fields' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:json_schema_multiloc)).to be_present
-      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response[:json_schema_multiloc]).to be_present
+      expect(json_response[:ui_schema_multiloc]).to be_present
     end
   end
 
@@ -67,12 +66,13 @@ resource 'User Custom Fields' do
     before do
       create(:custom_field)
     end
+
     example_request 'Get the jsonforms.io json schema and ui schema for the custom fields' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:json_schema_multiloc)).to be_present
+      expect(json_response[:json_schema_multiloc]).to be_present
       expect(json_response.dig(:json_schema_multiloc, :en, :properties).size).to eq 4
-      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+      expect(json_response[:ui_schema_multiloc]).to be_present
       expect(json_response.dig(:ui_schema_multiloc, :en, :type)).to eq 'VerticalLayout'
     end
   end
@@ -87,7 +87,7 @@ resource 'User Custom Fields' do
     post 'web_api/v1/users/custom_fields' do
       with_options scope: :custom_field do
         parameter :key, "A unique internal name for the field. Only letters, numbers and underscores allowed. Auto-generated from the title if not provided. Can't be changed afterwards", required: false
-        parameter :input_type, "The type of input presented to the user. One of #{CustomField::INPUT_TYPES.join(", ")}. Can't be changed afterwards", required: true
+        parameter :input_type, "The type of input presented to the user. One of #{CustomField::INPUT_TYPES.join(', ')}. Can't be changed afterwards", required: true
         parameter :title_multiloc, 'The title of the field as shown to users, in multiple locales', required: true
         parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
         parameter :required, 'Whether filling out the field is mandatory. Defaults to false', required: false
@@ -108,13 +108,13 @@ resource 'User Custom Fields' do
         example_request 'Create a custom field' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:key)).to match key
-          expect(json_response.dig(:data,:attributes,:input_type)).to match input_type
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:hidden)).to be false
-          expect(json_response.dig(:data,:attributes,:required)).to match required
-          expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
+          expect(json_response.dig(:data, :attributes, :key)).to match key
+          expect(json_response.dig(:data, :attributes, :input_type)).to match input_type
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :hidden)).to be false
+          expect(json_response.dig(:data, :attributes, :required)).to match required
+          expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
         end
       end
 
@@ -141,18 +141,18 @@ resource 'User Custom Fields' do
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
       let(:id) { create(:custom_field).id }
-      let(:title_multiloc) { {'en' => 'New title'} }
-      let(:description_multiloc) { {'en' => 'New description'} }
+      let(:title_multiloc) { { 'en' => 'New title' } }
+      let(:description_multiloc) { { 'en' => 'New description' } }
       let(:required) { true }
       let(:enabled) { false }
 
       example_request 'Update a custom field' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data,:attributes,:required)).to match required
-        expect(json_response.dig(:data,:attributes,:enabled)).to match enabled
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :required)).to match required
+        expect(json_response.dig(:data, :attributes, :enabled)).to match enabled
       end
     end
 
@@ -167,7 +167,7 @@ resource 'User Custom Fields' do
       example_request 'Reorder a custom field' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(CustomField.with_resource_type('User').order(:ordering)[1].id).to eq id
         expect(CustomField.with_resource_type('User').order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
@@ -179,13 +179,13 @@ resource 'User Custom Fields' do
 
       example_request 'Delete a custom field' do
         expect(response_status).to eq 200
-        expect{CustomField.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CustomField.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       if CitizenLab.ee?
         example "[error] Delete a custom field that's still referenced in a rules group" do
           group = create(:smart_group, rules: [
-            {ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty'}
+            { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
           ])
           do_request
           assert_status 422

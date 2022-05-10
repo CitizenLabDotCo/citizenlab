@@ -1,1 +1,1 @@
-Pry.config.history_file = Rails.root.join('tmp', '.pry_history')
+Pry.config.history_file = Rails.root.join('tmp/.pry_history')

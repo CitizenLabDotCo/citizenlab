@@ -2,7 +2,6 @@
 
 module IdBosaFas
   class BosaFasOmniauth
-
     include BosaFasVerification
 
     def profile_to_user_attrs(auth)
@@ -16,7 +15,7 @@ module IdBosaFas
     def omniauth_setup(configuration, env)
       if Verification::VerificationService.new.is_active?(configuration, name)
         options = env['omniauth.strategy'].options
-        options[:scope] = [:openid, :profile, :egovnrn]
+        options[:scope] = %i[openid profile egovnrn]
         options[:response_type] = :code
         options[:state] = true
         options[:nonce] = true
@@ -32,7 +31,7 @@ module IdBosaFas
           authorization_endpoint: '/fas/oauth2/authorize',
           token_endpoint: '/fas/oauth2/access_token',
           userinfo_endpoint: '/fas/oauth2/userinfo',
-          redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback",
+          redirect_uri: "#{configuration.base_backend_uri}/auth/bosa_fas/callback"
         }
       end
     end
@@ -47,7 +46,7 @@ module IdBosaFas
     end
 
     def updateable_user_attrs
-      [:first_name, :last_name]
+      %i[first_name last_name]
     end
   end
 end

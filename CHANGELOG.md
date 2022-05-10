@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-05-10_2
+
+### Changed
+
+- Added RuboCop on CI and corrected many offences
+
 ## 2022-05-10
 
 ### Changed

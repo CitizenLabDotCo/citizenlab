@@ -101,16 +101,16 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
 
-        active_phase = create(:phase, 
+        active_phase = create(:phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
-          end_at: Faker::Date.between(from: Time.zone.now + 1.day, to: 6.months.from_now),
+          end_at: Faker::Date.between(from: 1.day.from_now, to: 6.months.from_now),
           project: project,
           **phase_config
         )
 
         phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
         end_at = active_phase.start_at
-        phases_before.to_s.chars.map(&:to_sym).reverse.each do |sequence_char|
+        phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(:phase,
             end_at: end_at - 1,

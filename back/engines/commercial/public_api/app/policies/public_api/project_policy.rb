@@ -1,6 +1,5 @@
 module PublicApi
   class ProjectPolicy < PublicApiPolicy
-
     class Scope
       attr_reader :api_client, :scope
 

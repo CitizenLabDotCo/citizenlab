@@ -47,23 +47,23 @@ module UserCustomFields
         :input_type,
         :required,
         :enabled,
-        title_multiloc: CL2_SUPPORTED_LOCALES,
-        description_multiloc: CL2_SUPPORTED_LOCALES
+        { title_multiloc: CL2_SUPPORTED_LOCALES,
+        description_multiloc: CL2_SUPPORTED_LOCALES }
       ]
     end
 
     def permitted_attributes_for_update
       if record.code
-        [
-          :required,
-          :enabled
+        %i[
+          required
+          enabled
         ]
       else
         [
           :required,
           :enabled,
-          title_multiloc: CL2_SUPPORTED_LOCALES,
-          description_multiloc: CL2_SUPPORTED_LOCALES
+          { title_multiloc: CL2_SUPPORTED_LOCALES,
+          description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
     end
@@ -71,6 +71,5 @@ module UserCustomFields
     def permitted_attributes_for_reorder
       [:ordering]
     end
-
   end
 end

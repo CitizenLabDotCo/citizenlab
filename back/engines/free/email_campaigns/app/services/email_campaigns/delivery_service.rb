@@ -1,6 +1,5 @@
 module EmailCampaigns
   class DeliveryService
-
     CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
@@ -48,7 +47,6 @@ module EmailCampaigns
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
     ].freeze
-
 
     def campaign_types
       campaign_classes.map(&:name)

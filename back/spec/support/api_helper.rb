@@ -20,6 +20,6 @@ module ApiHelper
   end
 
   def response_ids
-    response_data.map { |record| record[:id] }
+    response_data.pluck(:id)
   end
 end

@@ -57,7 +57,7 @@ module Seo
     end
 
     def add_token_record(host, name, value)
-      host = host[4..-1] if host.start_with? 'www.'
+      host = host[4..] if host.start_with? 'www.'
 
       zone = find_hosted_zone_for(host)
 
@@ -114,7 +114,6 @@ module Seo
       service.insert_web_resource('DNS_CNAME', verify_request)
     end
 
-    # rubocop:disable Metrics/MethodLength
     def r53_change_resource_record_sets(zone, name, value)
       r53.change_resource_record_sets(
         hosted_zone_id: zone.id,
@@ -133,6 +132,5 @@ module Seo
         }
       )
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

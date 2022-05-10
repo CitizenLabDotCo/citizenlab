@@ -1,4 +1,4 @@
 module Polls
-	class PollsController < ::ApplicationController
-	end
+  class PollsController < ::ApplicationController
+  end
 end
