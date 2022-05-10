@@ -1,6 +1,16 @@
 # Changelog
 
-## Next release
+## 2022-05-10
+
+### Changed
+
+- [CL-716] The new phase started emails/notifications are also sent out for information phases or when it's possible to take a poll.
+
+### Fixed
+
+- [CL-387] The folder show page is better readable on narrow screens now
+
+## 2022-05-06_3
 
 ### Changed
 
