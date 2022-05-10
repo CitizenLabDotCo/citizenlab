@@ -182,7 +182,7 @@ const isValidUrl = (url: string) => {
     /^https:\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/,
     /^https:\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
     /^https:\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
-    /^https:\/\/(.+)?(wistia\.com|wi\.st)\/.*/,
+    /^https:\/\/(.+)?(wistia\.com|wi\.st)\/.*\//,
   ];
 
   invalidUrl = !urlWhiteList.some((rx) => rx.test(url));

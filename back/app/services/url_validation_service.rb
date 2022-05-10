@@ -25,14 +25,18 @@ class UrlValidationService
     VIDEO_WHITELIST = [
       %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-\_]*)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
-      %r{\A(?:http(?:s?):)?//(.+)?(wistia.com|wi.st).*},
+      %r{\A(?:http(?:s?):)?//(.+)?(wistia.com|wi.st).*\/},
       %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
       %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},
       %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#\/]+)}
     ].freeze
 
+    def whitelisted?(url)
+      return url_whitelisted?(url) || video_whitelisted?(url)
+    end
+
     def url_whitelisted?(url)
-      return (URL_WHITELIST.any? { |regex| regex.match? url }) || video_whitelisted?(url)
+      return URL_WHITELIST.any? { |regex| regex.match? url }
     end
 
     def video_whitelisted?(url)
