@@ -8,5 +8,4 @@ class GenerateUserAvatarJob < ApplicationJob
       user.save if user.avatar.present?
     end
   end
-
 end

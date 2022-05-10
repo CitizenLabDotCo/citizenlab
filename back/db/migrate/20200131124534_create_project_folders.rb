@@ -7,7 +7,7 @@ class CreateProjectFolders < ActiveRecord::Migration[6.0]
       t.string :header_bg
       t.string :slug, index: true, unique: true
       t.integer :projects_count, null: false, default: 0
-      
+
       t.timestamps
     end
   end

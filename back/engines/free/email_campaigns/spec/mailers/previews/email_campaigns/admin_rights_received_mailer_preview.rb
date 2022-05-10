@@ -5,7 +5,7 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          
+
         }
       }
       campaign = EmailCampaigns::Campaigns::AdminRightsReceived.first

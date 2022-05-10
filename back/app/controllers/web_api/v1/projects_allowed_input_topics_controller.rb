@@ -46,7 +46,7 @@ class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
       SideFxProjectsAllowedInputTopicService.new.after_destroy projects_allowed_input_topic, current_user
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

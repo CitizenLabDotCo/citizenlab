@@ -27,7 +27,6 @@ module AdminApi
     field :locale, String, null: true
     field :avatar, UserAvatar, null: true
 
-
     field :unsubscription_token, String, null: true
 
     def unsubscription_token

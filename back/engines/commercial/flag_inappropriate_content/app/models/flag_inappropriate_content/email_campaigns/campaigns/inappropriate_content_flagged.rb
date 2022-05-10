@@ -38,9 +38,9 @@ module FlagInappropriateContent
       recipient_filter :filter_notification_recipient
 
       def self.consentable_roles
-        ['admin', 'project_moderator', 'project_folder_moderator']
+        %w[admin project_moderator project_folder_moderator]
       end
-      
+
       def self.category
         'admin'
       end
@@ -53,11 +53,11 @@ module FlagInappropriateContent
         { 'FlagInappropriateContent::Notifications::InappropriateContentFlagged' => { 'created' => true } }
       end
 
-      def filter_notification_recipient users_scope, activity:, time: nil
+      def filter_notification_recipient(users_scope, activity:, time: nil)
         users_scope.where(id: activity.item.recipient_id)
       end
 
-      def generate_commands recipient:, activity:, time: nil
+      def generate_commands(recipient:, activity:, time: nil)
         data = Rails.cache.fetch("campaigns/inappropriate_content_flagged/#{activity.item.inappropriate_content_flag_id}", expires_in: 5.minutes) do
           flag = activity.item.inappropriate_content_flag
           flaggable = flag.flaggable
@@ -76,13 +76,13 @@ module FlagInappropriateContent
           flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: recipient.locale)
         }
         case data[:flaggable_type]
-        when Idea.name 
+        when Idea.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
-        when Initiative.name 
+        when Initiative.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
-        when Comment.name 
+        when Comment.name
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
         end
         [{

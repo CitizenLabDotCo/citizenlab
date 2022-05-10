@@ -50,10 +50,10 @@ class XlsxService
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
-      (row&.cells || []).compact.map do |cell|
+      (row&.cells || []).compact.filter_map do |cell|
         [worksheet[0][cell.column]&.value, cell.value] if cell.value
-      end.compact.to_h
-    end.compact
+      end.to_h
+    end
   end
 
   def generate_xlsx(sheetname, columns, instances)
@@ -70,7 +70,7 @@ class XlsxService
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
         column_widths = columns.pluck(:width)
-        sheet.column_widths *column_widths
+        sheet.column_widths(*column_widths)
         sheet.add_row header, style: header_style(s)
         instances.each do |instance|
           row = columns.map do |c|
@@ -143,11 +143,11 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
+  def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
-      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) },                               width: 10 },
+      { header: 'description',          f: ->(i) { convert_to_text_long_lines(multiloc_service.t(i.body_multiloc)) }, width: 10 },
       { header: 'author_name',          f: ->(i) { i.author_name } },
       { header: 'author_email',         f: ->(i) { i.author&.email } },
       { header: 'author_id',            f: ->(i) { i.author_id } },
@@ -166,7 +166,7 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
     columns.concat custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
@@ -210,7 +210,7 @@ class XlsxService
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'input_id',           f: ->(c) { c.post.id } },
-      { header: 'comment',            f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
+      { header: 'comment',            f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count',      f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',        f: ->(c) { c.author_name } },
       { header: 'author_email',       f: ->(c) { c.author&.email } },
@@ -226,16 +226,16 @@ class XlsxService
 
   def generate_initiative_comments_xlsx(comments, view_private_attributes: false)
     columns = [
-      { header: 'id',            f: ->(c) { c.id }, skip_sanitization: true },
-      { header: 'proposal',    f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
+      { header: 'id', f: ->(c) { c.id }, skip_sanitization: true },
+      { header: 'proposal', f: ->(c) { multiloc_service.t(c.post.title_multiloc) } },
       { header: 'proposal_id',         f: ->(c) { c.post.id } },
-      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10  },
+      { header: 'comment',          f: ->(c) { convert_to_text_long_lines(multiloc_service.t(c.body_multiloc)) }, width: 10 },
       { header: 'upvotes_count', f: ->(c) { c.upvotes_count }, skip_sanitization: true },
       { header: 'author_name',   f: ->(c) { c.author_name } },
       { header: 'author_email',  f: ->(c) { c.author&.email } },
-      { header: 'author_id',            f: ->(i) { i.author_id } },
-      { header: 'created_at',    f: ->(c) { c.created_at },    skip_sanitization: true },
-      { header: 'parent_comment_id',        f: ->(c) { c.parent_id },     skip_sanitization: true }
+      { header: 'author_id', f: ->(i) { i.author_id } },
+      { header: 'created_at', f: ->(c) { c.created_at }, skip_sanitization: true },
+      { header: 'parent_comment_id',        f: ->(c) { c.parent_id }, skip_sanitization: true }
     ]
     columns.concat custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
@@ -268,24 +268,24 @@ class XlsxService
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
-
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = #lambda that gets a record and returns the field value
-        if field.key == 'domicile'  # 'domicile' is a special case
+      value_getter = # lambda that gets a record and returns the field value
+        if field.key == 'domicile' # 'domicile' is a special case
           lambda do |record|
             user = record.send(record_to_user)
             multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
           end
-        elsif field.support_options? #field with option
+        elsif field.support_options? # field with option
           lambda do |record|
             user = record.send(record_to_user)
 
             if user && user.custom_field_values[field.key]
-              if user.custom_field_values[field.key].kind_of?(Array)
-                user.custom_field_values[field.key].map { |key|
+              case user.custom_field_values[field.key]
+              when Array
+                user.custom_field_values[field.key].map do |key|
                   multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-                }.join(', ')
-              elsif user.custom_field_values[field.key].kind_of?(String)
+                end.join(', ')
+              when String
                 multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
               end
             end
@@ -315,8 +315,8 @@ class XlsxService
     s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
   end
 
-  def convert_to_text_long_lines html
-    convert_to_text(html).gsub(/\n/, ' ')
+  def convert_to_text_long_lines(html)
+    convert_to_text(html).tr("\n", ' ')
   end
 
   # Sheet names, derived from Cause titles for example, can only be 31 characters long,
@@ -327,7 +327,7 @@ class XlsxService
   end
 
   def namespace(field_id, option_key)
-    field_id + '/' + option_key
+    "#{field_id}/#{option_key}"
   end
 end
 

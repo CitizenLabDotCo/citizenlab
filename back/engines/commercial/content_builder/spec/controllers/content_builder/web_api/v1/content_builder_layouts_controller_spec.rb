@@ -69,7 +69,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         params = {
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } }  }
+          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
         }
         post :upsert, params: params, format: :json
         expect(response.status).to eq 201

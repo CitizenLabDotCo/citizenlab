@@ -1,6 +1,5 @@
 module Verification
   module VerificationMethod
-
     # @return [Hash, nil]
     def config
       AppConfiguration.instance
@@ -11,6 +10,5 @@ module Verification
                       .symbolize_keys
                       .presence
     end
-
   end
 end

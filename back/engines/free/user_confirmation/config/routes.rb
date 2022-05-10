@@ -8,5 +8,3 @@ UserConfirmation::Engine.routes.draw do
     end
   end
 end
-
-

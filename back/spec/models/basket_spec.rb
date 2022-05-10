@@ -8,20 +8,20 @@ RSpec.describe Basket, type: :model do
   end
 
   context 'baskets_ideas' do
-  	it 'preserve created_at upon update' do
-  		basket = create(:basket)
-  		t1 = Time.now - 20.minutes
-  		i1 = create(:idea)
-  		travel_to t1 do
-  			basket.update(ideas: [i1])
-  		end
-  		t2 = Time.now
-  		i2 = create(:idea)
-  		travel_to t2 do
-  			basket.update(ideas: [i1, i2])
-  		end
-  		expect(basket.baskets_ideas.pluck(:created_at).map(&:to_i)).to match_array [t1,t2].map(&:to_i)
-  	end
+    it 'preserve created_at upon update' do
+      basket = create(:basket)
+      t1 = Time.now - 20.minutes
+      i1 = create(:idea)
+      travel_to t1 do
+        basket.update(ideas: [i1])
+      end
+      t2 = Time.now
+      i2 = create(:idea)
+      travel_to t2 do
+        basket.update(ideas: [i1, i2])
+      end
+      expect(basket.baskets_ideas.pluck(:created_at).map(&:to_i)).to match_array [t1, t2].map(&:to_i)
+    end
   end
 
   context 'when a basket exceeding the maximum budget' do
@@ -30,6 +30,7 @@ RSpec.describe Basket, type: :model do
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
     end
+
     it 'is valid in normal context' do
       @basket.submitted_at = Time.now
       expect(@basket).to be_valid
@@ -37,7 +38,7 @@ RSpec.describe Basket, type: :model do
 
     it 'is not valid in submission context' do
       @basket.submitted_at = Time.now
-      expect(@basket.save(context: :basket_submission)).to eq(false)
+      expect(@basket.save(context: :basket_submission)).to be(false)
     end
   end
 
@@ -51,7 +52,7 @@ RSpec.describe Basket, type: :model do
     end
 
     it 'is not valid in submission context' do
-      expect(basket.save(context: :basket_submission)).to eq(false)
+      expect(basket.save(context: :basket_submission)).to be(false)
       expect(basket.errors.details).to eq(
         ideas: [error: :less_than_min_budget]
       )
@@ -62,6 +63,7 @@ RSpec.describe Basket, type: :model do
     before do
       @idea = create(:idea, budget: nil)
     end
+
     it 'cannot be added to a basket' do
       basket = create(:basket)
       basket_idea = build(:baskets_idea, basket: basket, idea: @idea)

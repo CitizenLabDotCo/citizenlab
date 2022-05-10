@@ -23,7 +23,6 @@ RSpec.describe RemoveUsersFromSegmentJob, type: :job do
     end
 
     context 'when SEGMENT_CLIENT is not configured' do
-
       before { hide_const('SEGMENT_CLIENT') }
 
       it 'does not raise an error if the authorization token is missing' do

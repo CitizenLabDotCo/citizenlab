@@ -39,7 +39,7 @@ module Insights
       private
 
       def create_params
-        @create_parmas ||= params.require(:view)
+        @create_params ||= params.require(:view)
                                  .permit(:name, data_sources: %i[origin_id origin_type])
       end
 

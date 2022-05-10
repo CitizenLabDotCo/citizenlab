@@ -1,5 +1,4 @@
 class StatCommentPolicy < ApplicationPolicy
-
   class Scope
     attr_reader :user, :scope
 

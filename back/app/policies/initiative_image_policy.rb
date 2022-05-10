@@ -27,5 +27,4 @@ class InitiativeImagePolicy < ApplicationPolicy
   def destroy?
     InitiativePolicy.new(user, record.initiative).update?
   end
-
 end

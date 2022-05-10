@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-def call_pcc pc, service, from, to
+def call_pcc(pc, service, from, to)
   service.participation_context_changed(
     pc,
     from.participation_method,
@@ -13,14 +13,13 @@ def call_pcc pc, service, from, to
 end
 
 describe Surveys::TypeformWebhookManager do
-  let(:api_response) { instance_double(HTTParty::Response, 'success?': true) }
+  let(:api_response) { instance_double(HTTParty::Response, success?: true) }
   let(:tf_api) { instance_double(Surveys::Typeform::Api, create_or_update_webhook: api_response) }
   let(:service) { Surveys::TypeformWebhookManager.new(tf_api, 'dummy_secret_token') }
 
   describe 'participation_context_changed' do
     let(:from) { build(:continuous_survey_project) }
     let(:to) { build(:continuous_survey_project) }
-
 
     it "doesn't call tf api when no pc is survey related" do
       from = build(:continuous_project)
@@ -68,7 +67,6 @@ describe Surveys::TypeformWebhookManager do
       expect(tf_api).to receive(:create_or_update_webhook)
       call_pcc(to, service, from, to)
     end
-
   end
 
   describe 'participation_context_created' do
@@ -76,6 +74,7 @@ describe Surveys::TypeformWebhookManager do
       pc = create(:continuous_google_survey_project)
       service.participation_context_created(pc, pc.participation_method, pc.survey_service, pc.survey_embed_url)
     end
+
     it "creates a webhook when it's typeform" do
       pc = create(:continuous_survey_project)
       expect(tf_api).to receive(:create_or_update_webhook)
@@ -88,6 +87,7 @@ describe Surveys::TypeformWebhookManager do
       pc = create(:continuous_google_survey_project)
       service.participation_context_to_be_deleted(pc.id, pc.participation_method, pc.survey_service, pc.survey_embed_url)
     end
+
     it "deletes a webhook when it's typeform" do
       pc = create(:continuous_survey_project)
       expect(tf_api).to receive(:delete_webhook)
@@ -106,7 +106,6 @@ describe Surveys::TypeformWebhookManager do
   end
 
   describe 'embed_url_to_form_id' do
-
     it 'parses simple url correctly' do
       form_id = service.send(:embed_url_to_form_id, 'https://citizenlabco.typeform.com/to/abcdef')
       expect(form_id).to eq('abcdef')
@@ -126,7 +125,5 @@ describe Surveys::TypeformWebhookManager do
       form_id = service.send(:embed_url_to_form_id, 'https://citizenlabco.typeform.com/to/abcdef#name=xxxxx&sexe=xxxxx')
       expect(form_id).to eq('abcdef')
     end
-
   end
-
 end

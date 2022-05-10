@@ -31,7 +31,7 @@ module EmailCampaigns
           if campaigns_recipient.save
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         else
           # we're not supporting this event

@@ -63,7 +63,7 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          "lifecycle_stage": 'active',
+          lifecycle_stage: 'active',
           'locales' => %w[en fr-FR nl-NL],
           'timezone' => 'Brussels',
           'currency' => 'EUR',

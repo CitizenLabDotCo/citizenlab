@@ -125,7 +125,7 @@ class ParticipationContextService
     commenting_disabled_reason_for_idea comment.post, user
   end
 
-  def idea_voting_disabled_reason_for object, user, mode: nil
+  def idea_voting_disabled_reason_for(object, user, mode: nil)
     context = nil
     idea = nil
     case object.class.name
@@ -164,7 +164,7 @@ class ParticipationContextService
     end
   end
 
-  def cancelling_votes_disabled_reason_for_idea idea, user
+  def cancelling_votes_disabled_reason_for_idea(idea, user)
     context = get_participation_context idea.project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
@@ -275,31 +275,25 @@ class ParticipationContextService
   end
 
   # Common reason regardless of the vote type.
-  def general_idea_voting_disabled_reason context, user
+  def general_idea_voting_disabled_reason(context, _user)
     if !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
-    else
-      nil
     end
   end
 
-  def mode_specific_idea_voting_disabled_reason mode, context, user
+  def mode_specific_idea_voting_disabled_reason(mode, context, user)
     case mode
     when 'up'
       if user && upvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:upvoting_limited_max_reached]
-      else
-        nil
       end
     when 'down'
       if !context.downvoting_enabled
         VOTING_DISABLED_REASONS[:downvoting_disabled]
       elsif user && downvoting_limit_reached?(context, user)
         VOTING_DISABLED_REASONS[:downvoting_limited_max_reached]
-      else
-        nil
       end
     else
       ErrorReporter.report_msg("Unsupported vote type #{mode}")
@@ -307,16 +301,16 @@ class ParticipationContextService
     end
   end
 
-  def upvoting_limit_reached? context, user
+  def upvoting_limit_reached?(context, user)
     context.upvoting_limited? && user.votes.up.where(votable: context.ideas).size >= context.upvoting_limited_max
   end
 
-  def downvoting_limit_reached? context, user
+  def downvoting_limit_reached?(context, user)
     context.downvoting_limited? && user.votes.down.where(votable: context.ideas).size >= context.downvoting_limited_max
   end
 
-  def permission_denied_reason user, _action, _context
-    'not_signed_in' if !user
+  def permission_denied_reason(user, _action, _context)
+    'not_signed_in' unless user
   end
 end
 

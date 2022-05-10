@@ -23,19 +23,19 @@ module IdBogus
       [:desired_error]
     end
 
-    def verify_sync desired_error: nil
+    def verify_sync(desired_error: nil)
       case desired_error
       when 'no_match'
-        raise Verification::VerificationService::NoMatchError.new
+        raise Verification::VerificationService::NoMatchError
       when 'not_entitled'
-        raise Verification::VerificationService::NotEntitledError.new
+        raise Verification::VerificationService::NotEntitledError
       when 'taken'
         {
           uid: 1
         }
       else
         if desired_error.present?
-          raise Verification::VerificationService::ParameterInvalidError.new('desired_error')
+          raise Verification::VerificationService::ParameterInvalidError, 'desired_error'
         else
           {
             uid: SecureRandom.alphanumeric(24),

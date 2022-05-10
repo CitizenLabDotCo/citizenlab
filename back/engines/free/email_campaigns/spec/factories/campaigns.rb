@@ -4,14 +4,15 @@ FactoryBot.define do
     author
     sender { 'author' }
     reply_to { 'someguy@somecity.com' }
-    subject_multiloc {{
+    subject_multiloc do
+      {
       'en' => "We're almost done with your feedback"
-    }}
-    body_multiloc {{
+    } end
+    body_multiloc do
+      {
       'en' => 'Time to check it all out!'
-    }}
+    } end
   end
-
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
     enabled { true }
@@ -169,7 +170,6 @@ FactoryBot.define do
     enabled { true }
   end
 
-
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled { true }
     schedule { weekly_schedule }
@@ -197,7 +197,7 @@ FactoryBot.define do
 end
 
 def weekly_schedule
-  IceCube::Schedule.new(Time.find_zone('Europe/Brussels').local(2018,8,13,10,0)) do |s|
+  IceCube::Schedule.new(Time.find_zone('Europe/Brussels').local(2018, 8, 13, 10, 0)) do |s|
     s.add_recurrence_rule(
       IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
     )
