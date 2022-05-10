@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Representativeness report',
   },
   pageDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageDescription',
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageDescription2',
     defaultMessage:
-      'See how representative your platform users are. Compare your users with total population data using the user data collected during user registration. Learn how we calculate representativeness scores {representativenessArticleLink}.',
+      'See how representative your platform users are. Compare your users with total population data using the user data collected during user registration. Learn more about {representativenessArticleLink}.',
   },
   betaLabel: {
     id: 'app.containers.AdminPage.DashboardPage.representativeness.betaLabel',

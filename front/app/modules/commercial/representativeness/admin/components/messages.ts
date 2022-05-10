@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Representativeness',
   },
   representativenessArticleLinkText: {
-    id: 'app.containers.AdminPage.DashboardPage.components.representativenessArticleLinkText',
-    defaultMessage: 'here',
+    id: 'app.containers.AdminPage.DashboardPage.components.representativenessArticleLinkText2',
+    defaultMessage: 'how we calculate representativeness scores',
   },
 });

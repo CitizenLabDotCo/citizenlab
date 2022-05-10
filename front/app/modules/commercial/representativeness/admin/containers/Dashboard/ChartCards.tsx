@@ -37,7 +37,12 @@ const ChartCards = () => {
         />
       ))}
 
-      <EmptyCard titleMultiloc={{ en: 'Test ' }} isComingSoon />
+      <EmptyCard
+        titleMultiloc={{ en: 'Place of residence' }}
+        isComingSoon={false}
+      />
+
+      <EmptyCard titleMultiloc={{ en: 'Age group' }} isComingSoon />
     </>
   );
 };
