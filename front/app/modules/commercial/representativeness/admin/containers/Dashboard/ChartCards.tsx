@@ -20,6 +20,9 @@ import fakeData from './fakeData';
 const onlyGender = ({ attributes: { code } }: IUserCustomFieldData) =>
   code === 'gender';
 
+const onlyDomicile = ({ attributes: { code } }: IUserCustomFieldData) =>
+  code === 'domicile';
+
 const ChartCards = () => {
   const customFields = useUserCustomFields({ inputTypes: ['select'] });
   if (isNilOrError(customFields)) return null;
@@ -37,8 +40,19 @@ const ChartCards = () => {
         />
       ))}
 
+      {customFields.filter(onlyDomicile).map((customField) => (
+        <ChartCard
+          customField={customField}
+          key={customField.id}
+          data={fakeData.domicile.data}
+          representativenessScore={fakeData.domicile.representativenessScore}
+          includedUserPercentage={fakeData.domicile.includedUsersPercentage}
+          demographicDataDate={fakeData.domicile.demographicDataDate}
+        />
+      ))}
+
       <EmptyCard
-        titleMultiloc={{ en: 'Place of residence' }}
+        titleMultiloc={{ en: 'Favorite ice cream flavor' }}
         isComingSoon={false}
       />
 

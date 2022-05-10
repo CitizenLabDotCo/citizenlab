@@ -31,29 +31,111 @@ const TEST_GENDER_DATA = [
   },
 ];
 
-// const generateData = (n: number) => {
-//   const data: any = [];
-
-//   for (let i = 0; i < n; i++) {
-//     data.push({
-//       name: `label ${i}`,
-//       actualPercentage: i,
-//       referencePercentage: i,
-//       actualNumber: i,
-//       referenceNumber: i,
-//     });
-//   }
-
-//   return data;
-// };
-
-// const TEST_GENDER_DATA = generateData(50);
+const TEST_DOMICILE_DATA = [
+  {
+    name: 'Mitte',
+    actualPercentage: 4.2,
+    referencePercentage: 2.2,
+    actualNumber: 126,
+    referenceNumber: 79000,
+  },
+  {
+    name: 'Moabit',
+    actualPercentage: 4.5,
+    referencePercentage: 1.9,
+    actualNumber: 135,
+    referenceNumber: 69000,
+  },
+  {
+    name: 'Hansaviertel',
+    actualPercentage: 0.1,
+    referencePercentage: 0.1,
+    actualNumber: 3,
+    referenceNumber: 5000,
+  },
+  {
+    name: 'Tiergarten',
+    actualPercentage: 0.1,
+    referencePercentage: 0.3,
+    actualNumber: 3,
+    referenceNumber: 12000,
+  },
+  {
+    name: 'Wedding',
+    actualPercentage: 0.5,
+    referencePercentage: 2.1,
+    actualNumber: 15,
+    referenceNumber: 76000,
+  },
+  {
+    name: 'Gesundbrunnen',
+    actualPercentage: 2.1,
+    referencePercentage: 2.3,
+    actualNumber: 63,
+    referenceNumber: 82000,
+  },
+  {
+    name: 'Friedrichshain',
+    actualPercentage: 2.5,
+    referencePercentage: 3.2,
+    actualNumber: 75,
+    referenceNumber: 114000,
+  },
+  {
+    name: 'Kreuzberg',
+    actualPercentage: 6.0,
+    referencePercentage: 4.1,
+    actualNumber: 180,
+    referenceNumber: 147000,
+  },
+  {
+    name: 'Prenzlauer Berg',
+    actualPercentage: 2.4,
+    referencePercentage: 1.3,
+    actualNumber: 72,
+    referenceNumber: 45000,
+  },
+  {
+    name: 'Weißensee',
+    actualPercentage: 2.4,
+    referencePercentage: 1.3,
+    actualNumber: 72,
+    referenceNumber: 45000,
+  },
+  {
+    name: 'Blankenburg',
+    actualPercentage: 0.1,
+    referencePercentage: 0.2,
+    actualNumber: 3,
+    referenceNumber: 6000,
+  },
+  {
+    name: 'Heinersdorf',
+    actualPercentage: 0.1,
+    referencePercentage: 0.2,
+    actualNumber: 3,
+    referenceNumber: 6000,
+  },
+  {
+    name: 'Schöneberg',
+    actualPercentage: 3.2,
+    referencePercentage: 3.5,
+    actualNumber: 50,
+    referenceNumber: 55000,
+  },
+];
 
 const DATA_PER_CODE = {
   gender: {
     data: TEST_GENDER_DATA,
     representativenessScore: 81,
     includedUsersPercentage: 100,
+    demographicDataDate: moment('2021-09-02'),
+  },
+  domicile: {
+    data: TEST_DOMICILE_DATA,
+    representativenessScore: 70,
+    includedUsersPercentage: 80,
     demographicDataDate: moment('2021-09-02'),
   },
 };
