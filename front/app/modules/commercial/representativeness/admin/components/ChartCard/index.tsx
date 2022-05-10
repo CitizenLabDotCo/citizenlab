@@ -75,7 +75,7 @@ const ChartCard = ({
   const fieldIsRequired = customField.attributes.required;
 
   return (
-    <Box width="100%" background="white" mb="36px">
+    <Box background="white" mb="36px">
       <Header
         title={title}
         svgNode={currentChartRef}

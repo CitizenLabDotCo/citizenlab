@@ -44,13 +44,7 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
   const title = localize(titleMultiloc);
 
   return (
-    <Box
-      position="relative"
-      width="100%"
-      height="444px"
-      background="white"
-      mb="36px"
-    >
+    <Box position="relative" height="444px" background="white" mb="36px">
       <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
       <Box
         p="20px 40px 32px 40px"
