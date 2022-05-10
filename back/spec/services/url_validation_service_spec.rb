@@ -3,7 +3,7 @@ require 'rails_helper'
 describe UrlValidationService do
   subject(:service) { described_class.new }
 
-  describe 'whitelist verification' do
+  describe '#url_whitelisted?' do
     it 'checks Microsoft Forms url passes through whitelist' do
       expect(service.url_whitelisted?('https://customervoice.microsoft.com/something')).to be true
       expect(service.url_whitelisted?('https://customervoice.microsoft.com')).to be false
