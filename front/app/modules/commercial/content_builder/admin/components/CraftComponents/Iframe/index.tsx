@@ -177,7 +177,7 @@ const isValidUrl = (url: string) => {
     /^https:\/\/platform\.twitter\.com\//,
     /^https:\/\/.+\.konveio\.com\//,
     /^https:\/\/(www\.)?facebook\.com\//,
-    /^https:\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-\_]*)/,
+    /^https:\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-_]*)/,
     /^https:\/\/(?:www\.)?(?:player\.vimeo\.com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
     /^https:\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/,
     /^https:\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
