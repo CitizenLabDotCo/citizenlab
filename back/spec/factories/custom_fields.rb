@@ -21,7 +21,7 @@ FactoryBot.define do
       }}
       required { false }
       key { 'extra_field'}
-      input_type { "text" }
+      input_type { 'text' }
       enabled { true }
       resource { create(:custom_form) }
     end
