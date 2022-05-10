@@ -680,7 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Totaal aantal items: {ideasCount}",
   "app.containers.IdeaCards.all": "Alle",
   "app.containers.IdeaCards.filter": "Filter",
-  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
+  "app.containers.IdeaCards.filteredResultsFound": "Nieuwe zoekresultaten zijn geladen.",
   "app.containers.IdeaCards.list": "Lijst",
   "app.containers.IdeaCards.map": "Kaart",
   "app.containers.IdeaCards.newest": "Meest recent",

@@ -64,7 +64,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "سماح",
   "app.components.ConsentManager.Modal.PreferencesDialog.analytics": "التحليلات",
   "app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose": "نحن نستخدم هذا التتبع لفهم كيفية استخدامك للمنصة بشكل أفضل؛ من أجل التعلم وتحسين التصفح. تُستخدم هذه المعلومات فقط في التحليلات الجماعية، ولا تُستخدم بأي شكل من الأشكال لتتبع الأفراد.",
-  "app.components.ConsentManager.Modal.PreferencesDialog.back": "رجوع",
+  "app.components.ConsentManager.Modal.PreferencesDialog.back": "العودة",
   "app.components.ConsentManager.Modal.PreferencesDialog.cancel": "إلغاء المحاولة",
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "إلغاء السماح",
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "الوظائف",
