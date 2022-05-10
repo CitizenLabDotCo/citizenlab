@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :model do
-  describe "StatusChangeOfCommentedIdea Campaign default factory" do
-    it "is valid" do
+  describe 'StatusChangeOfCommentedIdea Campaign default factory' do
+    it 'is valid' do
       expect(build(:status_change_of_commented_idea_campaign)).to be_valid
     end
   end
@@ -20,7 +20,7 @@ RSpec.describe EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea, type: :mo
         )
     }
 
-  	it "generates a command with the desired payload and tracked content" do
+  	it 'generates a command with the desired payload and tracked content' do
   		command = campaign.generate_commands(recipient: comment.author, activity: activity).first
 
       expect(command.dig(:event_payload, :post_id)).to eq(idea.id)

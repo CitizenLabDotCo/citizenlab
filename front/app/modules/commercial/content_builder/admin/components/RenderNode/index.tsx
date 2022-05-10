@@ -16,9 +16,20 @@ import messages from '../../messages';
 
 const CONTAINER = 'Container';
 const TWO_COLUMNS = 'TwoColumn';
+const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
+const IMAGE = 'Image';
+const IFRAME = 'Iframe';
+const ABOUT_BOX = 'AboutBox';
 
-type ComponentNamesType = typeof CONTAINER | typeof TWO_COLUMNS | typeof TEXT;
+type ComponentNamesType =
+  | typeof CONTAINER
+  | typeof TWO_COLUMNS
+  | typeof THREE_COLUMNS
+  | typeof TEXT
+  | typeof IMAGE
+  | typeof IFRAME
+  | typeof ABOUT_BOX;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -26,13 +37,25 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.oneColumn;
     case TWO_COLUMNS:
       return messages.twoColumn;
+    case THREE_COLUMNS:
+      return messages.threeColumn;
     case TEXT:
       return messages.text;
+    case IMAGE:
+      return messages.image;
+    case IFRAME:
+      return messages.url;
+    case ABOUT_BOX:
+      return messages.aboutBox;
   }
 };
 
 const StyledBox = styled(Box)`
-  cursor: ${({ isRoot }: { isRoot: boolean }) => (isRoot ? 'auto' : 'move')};
+  ${({ isRoot }: { isRoot: boolean }) =>
+    isRoot
+      ? `cursor: auto;
+         width:1000px;`
+      : `cursor:move;`}
 `;
 
 const RenderNode = ({ render }) => {
@@ -48,19 +71,29 @@ const RenderNode = ({ render }) => {
     isDeletable: id && query.node(id).isDeletable(),
   }));
 
-  const { id, name, isHover } = useNode((node) => ({
+  const {
+    id,
+    name,
+    isHover,
+    hasError,
+    connectors: { connect, drag },
+  } = useNode((node) => ({
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
+    hasError: node.data.props.hasError,
   }));
 
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
 
-  // Handle two column hover state
+  // Handle multi-column hover state
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
-    if (parentNodeName === TWO_COLUMNS && isHover) {
+    if (
+      (parentNodeName === TWO_COLUMNS && isHover) ||
+      (parentNodeName === THREE_COLUMNS && isHover)
+    ) {
       parentNodeElement?.setAttribute(
         'style',
         `border: 1px solid ${colors.adminTextColor} `
@@ -74,33 +107,42 @@ const RenderNode = ({ render }) => {
   useEffect(() => {
     if (isActive && name === CONTAINER && parentNode) {
       parentNodeName === TWO_COLUMNS && selectNode(parentId);
+      parentNodeName === THREE_COLUMNS && selectNode(parentId);
     }
   });
 
   const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
   const nodeIsHovered =
-    isHover && id !== ROOT_NODE && parentNodeName !== TWO_COLUMNS;
+    isHover &&
+    id !== ROOT_NODE &&
+    parentNodeName !== TWO_COLUMNS &&
+    parentNodeName !== THREE_COLUMNS;
 
   const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 
   return (
     <StyledBox
+      ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      border={`1px ${
-        solidBorderIsVisible
-          ? `solid ${colors.adminTextColor}`
-          : name !== TWO_COLUMNS
-          ? `dashed ${colors.separation}`
-          : `solid transparent`
-      } `}
+      borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      borderWidth="1px"
+      borderColor={
+        hasError
+          ? colors.clRedError
+          : solidBorderIsVisible
+          ? colors.adminTextColor
+          : name !== TWO_COLUMNS && name !== THREE_COLUMNS
+          ? colors.separation
+          : 'transparent'
+      }
       m="4px"
       isRoot={id === ROOT_NODE}
     >
       {nodeIsSelected && (
         <Box
           p="4px"
-          bgColor={colors.adminTextColor}
+          bgColor={hasError ? colors.clRedError : colors.adminTextColor}
           color="#fff"
           position="absolute"
           top="-28px"
@@ -109,7 +151,9 @@ const RenderNode = ({ render }) => {
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      {render}
+      <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>
+        {render}
+      </div>
     </StyledBox>
   );
 };

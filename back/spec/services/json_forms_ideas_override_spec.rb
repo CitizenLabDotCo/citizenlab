@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 # The following specs are WIP and not implemented, and currently just serve as
 # documentation for the expected behavior of the API output. It's not sure that
@@ -7,8 +7,8 @@ require "rails_helper"
 
 describe 'JsonFormsService ideas overrides' do
   let(:service) { JsonFormsService.new }
-  let(:metaschema) { JSON::Validator.validator_for_name("draft4").metaschema }
-  let(:locale) { "en" }
+  let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
+  let(:locale) { 'en' }
   let(:project) { create(:project) }
   let(:custom_form) { create(:custom_form, project: project) }
   let(:fields) { IdeaCustomFieldsService.new.all_fields(custom_form) }
@@ -55,7 +55,7 @@ describe 'JsonFormsService ideas overrides' do
       it 'is included in a project that has a PB phase' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline_pb_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to match ({type: "number"})
+        expect(schema.dig(:properties, 'budget')).to match ({type: 'number'})
       end
 
       it 'is not included in a project that has no PB phase' do
@@ -67,7 +67,7 @@ describe 'JsonFormsService ideas overrides' do
       it 'is included in a continuous PB project' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to match ({type: "number"})
+        expect(schema.dig(:properties, 'budget')).to match ({type: 'number'})
       end
 
       it 'is not included in a continuous ideation project' do
@@ -93,7 +93,7 @@ describe 'JsonFormsService ideas overrides' do
       it 'is included when the feature is active' do
         schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'author_id')).to match ({type: "string"})
+        expect(schema.dig(:properties, 'author_id')).to match ({type: 'string'})
       end
 
       it 'is not included when the feature is not active' do

@@ -1,4 +1,4 @@
-require "custom_topics/engine"
+require 'custom_topics/engine'
 
 module CustomTopics
 end

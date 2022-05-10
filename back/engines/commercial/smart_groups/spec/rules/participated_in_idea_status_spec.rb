@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
@@ -9,39 +9,39 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   }}
   let(:valid_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
 
-  describe "from_json" do
+  describe 'from_json' do
 
-    it "successfully parses a valid json" do
+    it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
       expect(valid_rule.value).to eq valid_json_rule['value']
     end
 
   end
 
-  describe "validations" do
-    it "accept a rule with a mutli-value predicate and an array of values" do
+  describe 'validations' do
+    it 'accept a rule with a mutli-value predicate and an array of values' do
       expect(valid_rule).to be_valid
       expect(build(:smart_group, rules: [valid_json_rule])).to be_valid
     end
 
-    it "reject a rule with a mutli-value predicate and a single value" do
+    it 'reject a rule with a mutli-value predicate and a single value' do
       rule = valid_json_rule.tap{|r| r['predicate']='in'; r['value']=IdeaStatus.first.id}
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
 
-    it "accepts a rule with a single-value predicate and a single value" do
+    it 'accepts a rule with a single-value predicate and a single value' do
       rule = valid_json_rule.tap{|r| r['predicate']='not_in'; r['value']=IdeaStatus.first.id}
       expect(SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
-    it "reject a rule with a single-value predicate and an array of values" do
+    it 'reject a rule with a single-value predicate and an array of values' do
       rule = valid_json_rule.tap{|r| r['predicate']='not_in'}
       expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
     before do
       @idea_status1 = create(:idea_status)
@@ -119,7 +119,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
   end
 
-  describe "description_multiloc" do
+  describe 'description_multiloc' do
     let(:garbage_status) { create(:idea_status, title_multiloc: {
       'en'    => 'in the garbage can',
       'fr-FR' => 'dans la poubelle',
@@ -182,7 +182,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
       'value'         => garbage_status.id
     })}
 
-    it "successfully translates different combinations of rules" do
+    it 'successfully translates different combinations of rules' do
       expect(participated_in_idea_status_in_rule.description_multiloc).to eq ({
         'en'    => 'Participation in an idea with one of the following statuses in the garbage can, delayed',
         'fr-FR' => 'Participation dans une idée avec statut est un de dans la poubelle, retardé',

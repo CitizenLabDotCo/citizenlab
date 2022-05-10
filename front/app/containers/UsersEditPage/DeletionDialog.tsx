@@ -16,11 +16,9 @@ import Button from 'components/UI/Button';
 import FormattedAnchor from 'components/FormattedAnchor';
 import Link from 'utils/cl-router/Link';
 
-// services
-import { signOutAndDeleteAccountPart1 } from 'services/auth';
-
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import eventEmitter from 'utils/eventEmitter';
 import useLocalize from 'hooks/useLocalize';
 
 const Container = styled.div`
@@ -66,7 +64,7 @@ const DeletionDialog = ({ closeDialog }: Props) => {
   const localize = useLocalize();
 
   const deleteProfile = () => {
-    signOutAndDeleteAccountPart1();
+    eventEmitter.emit('deleteProfileAndShowSuccessModal');
     closeDialog();
   };
 

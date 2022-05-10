@@ -1,4 +1,4 @@
-require "id_franceconnect/engine"
+require 'id_franceconnect/engine'
 
 module IdFranceconnect
   # Your code goes here...

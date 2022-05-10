@@ -27,7 +27,7 @@ module Surveys
 
     # adapted from https://developer.typeform.com/webhooks/secure-your-webhooks/
     def verify_signature
-      received_signature = request.headers["HTTP_TYPEFORM_SIGNATURE"]
+      received_signature = request.headers['HTTP_TYPEFORM_SIGNATURE']
       payload_body = request.body.read
       hash = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), ENV.fetch('SECRET_TOKEN_TYPEFORM'), payload_body)
       actual_signature = 'sha256=' + Base64.strict_encode64(hash)

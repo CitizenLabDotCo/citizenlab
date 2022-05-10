@@ -1,4 +1,4 @@
-require "moderation/engine"
+require 'moderation/engine'
 
 module Moderation
 end

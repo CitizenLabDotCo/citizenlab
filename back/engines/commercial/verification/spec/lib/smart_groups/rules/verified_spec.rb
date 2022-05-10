@@ -8,21 +8,21 @@ describe Verification::SmartGroups::Rules::Verified do
   }}
   let(:valid_rule) { Verification::SmartGroups::Rules::Verified.from_json(valid_json_rule) }
 
-  describe "from_json" do
+  describe 'from_json' do
 
-    it "successfully parses a valid json" do
+    it 'successfully parses a valid json' do
       expect(valid_rule.predicate).to eq valid_json_rule['predicate']
     end
 
   end
 
-  describe "validations" do
-    it "successfully validate the valid rule" do
+  describe 'validations' do
+    it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
     end
   end
 
-  describe "filter" do
+  describe 'filter' do
 
     let!(:users) {
       users = build_list(:user, 3)

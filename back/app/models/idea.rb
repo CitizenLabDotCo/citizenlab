@@ -51,9 +51,9 @@ class Idea < ApplicationRecord
 
   counter_culture :idea_status, touch: true
   counter_culture :project,
-    column_name: proc { |idea| idea.publication_status == 'published' ? "ideas_count" : nil },
+    column_name: proc { |idea| idea.publication_status == 'published' ? 'ideas_count' : nil },
     column_names: {
-      ["ideas.publication_status = ?", 'published'] => 'ideas_count'
+      ['ideas.publication_status = ?', 'published'] => 'ideas_count'
     },
     touch: true
 
@@ -102,7 +102,7 @@ class Idea < ApplicationRecord
     uniq_topic_ids = topic_ids.uniq
     joins(:ideas_topics)
     .where(ideas_topics: {topic_id: uniq_topic_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
+    .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
   end)
 
   scope :with_some_topics, (Proc.new do |topics|
@@ -114,7 +114,7 @@ class Idea < ApplicationRecord
     uniq_area_ids = area_ids.uniq
     joins(:areas_ideas)
     .where(areas_ideas: {area_id: uniq_area_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+    .group(:id).having('COUNT(*) = ?', uniq_area_ids.size)
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|

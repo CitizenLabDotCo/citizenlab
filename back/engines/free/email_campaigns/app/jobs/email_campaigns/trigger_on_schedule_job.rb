@@ -1,6 +1,7 @@
 module EmailCampaigns
   class TriggerOnScheduleJob < ApplicationJob
     queue_as :default
+    perform_retries false # prevent spamming users in case of exception
 
     def run timestamp
       time = Time.at(timestamp)

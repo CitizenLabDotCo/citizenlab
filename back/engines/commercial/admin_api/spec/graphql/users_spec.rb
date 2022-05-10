@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Graphql user" do
+RSpec.describe 'Graphql user' do
   let(:context) { {} }
   let(:result) {
     AdminApi::Schema.execute(
@@ -10,7 +10,7 @@ RSpec.describe "Graphql user" do
     )
   }
 
-  describe "user" do
+  describe 'user' do
     let(:query_string) { %|
       query userQuery($id: ID!) {
         user(id: $id) {
@@ -28,15 +28,15 @@ RSpec.describe "Graphql user" do
     let(:user) { create(:user) }
     let(:variables) { {id: user.id }}
 
-    it "returns all users" do
+    it 'returns all users' do
       response = result
-      expect(response.dig("data", "user")).to match ({
-        "id" => user.id,
-        "firstName" => user.first_name,
-        "lastName" => user.last_name,
-        "email" => user.email,
-        "slug" => user.slug,
-        "locale" => user.locale
+      expect(response.dig('data', 'user')).to match ({
+        'id' => user.id,
+        'firstName' => user.first_name,
+        'lastName' => user.last_name,
+        'email' => user.email,
+        'slug' => user.slug,
+        'locale' => user.locale
       })
     end
 
@@ -54,10 +54,10 @@ RSpec.describe "Graphql user" do
     let!(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: user) }
     let(:variables) { {id: user.id }}
 
-    it "returns an unsubscriptionToken" do
+    it 'returns an unsubscriptionToken' do
       response = result
-      expect(response.dig("data", "user")).to match ({
-        "unsubscriptionToken" => unsubscription_token.token
+      expect(response.dig('data', 'user')).to match ({
+        'unsubscriptionToken' => unsubscription_token.token
       })
     end
   end

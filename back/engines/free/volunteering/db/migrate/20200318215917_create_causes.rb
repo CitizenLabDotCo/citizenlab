@@ -10,7 +10,7 @@ class CreateCauses < ActiveRecord::Migration[6.0]
       t.integer :ordering, null: false, index: true
 
       t.timestamps
-      t.index ["participation_context_type", "participation_context_id"], name: "index_volunteering_causes_on_participation_context"
+      t.index ['participation_context_type', 'participation_context_id'], name: 'index_volunteering_causes_on_participation_context'
     end
   end
 end

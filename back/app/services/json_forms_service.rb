@@ -46,7 +46,7 @@ class JsonFormsService
 
   def fields_to_json_schema(fields, locale='en')
     {
-      type: "object",
+      type: 'object',
       additionalProperties: false,
       properties: fields.each_with_object({}) do |field, accu|
         override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
@@ -118,7 +118,7 @@ class JsonFormsService
 
   def text_to_json_schema_field(field, locale)
     {
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -130,7 +130,7 @@ class JsonFormsService
 
   def number_to_json_schema_field(field, locale)
     {
-      type: "number"
+      type: 'number'
     }
   end
 
@@ -149,7 +149,7 @@ class JsonFormsService
 
   def multiline_text_to_json_schema_field(field, locale)
     {
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -167,7 +167,7 @@ class JsonFormsService
 
   def html_to_json_schema_field(field, locale)
     {
-      type: "string"
+      type: 'string'
     }
   end
 
@@ -275,7 +275,7 @@ class JsonFormsService
 
   def select_to_json_schema_field(field, locale)
     {
-      type: "string",
+      type: 'string',
     }.tap do |json|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
@@ -297,11 +297,11 @@ class JsonFormsService
 
   def multiselect_to_json_schema_field(field, locale)
     {
-      type: "array",
+      type: 'array',
       uniqueItems: true,
       minItems: (field.enabled && field.required) ? 1 : 0,
       items: {
-          type: "string",
+          type: 'string',
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
@@ -324,7 +324,7 @@ class JsonFormsService
 
   def checkbox_to_json_schema_field(field, locale)
     {
-      type: "boolean"
+      type: 'boolean'
     }
   end
 
@@ -336,8 +336,8 @@ class JsonFormsService
 
   def date_to_json_schema_field(field, locale)
     {
-      type: "string",
-      format: "date"
+      type: 'string',
+      format: 'date'
     }
   end
 
@@ -349,9 +349,9 @@ class JsonFormsService
 
   def image_files_to_json_schema_field(field, locale)
     {
-      type: "array",
+      type: 'array',
       items: {
-        type: "object",
+        type: 'object',
         properties: {
           image: {
             type: 'string',
@@ -367,9 +367,9 @@ class JsonFormsService
 
   def files_to_json_schema_field(field, locale)
     {
-      type: "array",
+      type: 'array',
       items: {
-        type: "object",
+        type: 'object',
         properties: {
           file_by_content: {
             type: 'object',

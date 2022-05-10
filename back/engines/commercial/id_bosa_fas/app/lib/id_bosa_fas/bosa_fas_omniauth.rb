@@ -21,7 +21,7 @@ module IdBosaFas
         options[:state] = true
         options[:nonce] = true
         options[:issuer] = "https://#{host}"
-        options[:acr_values] = "urn:be:fedict:iam:fas:Level450"
+        options[:acr_values] = 'urn:be:fedict:iam:fas:Level450'
         options[:send_scope_to_token_endpoint] = false
         options[:client_options] = {
           identifier: config[:identifier],
@@ -39,9 +39,9 @@ module IdBosaFas
 
     def host
       case config[:environment]
-      when "integration"
+      when 'integration'
         'idp.iamfas.int.belgium.be'
-      when "production"
+      when 'production'
         'idp.iamfas.belgium.be'
       end
     end

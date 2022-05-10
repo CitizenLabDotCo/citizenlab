@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  describe "Default factory" do
-    it "is valid" do
+  describe 'Default factory' do
+    it 'is valid' do
       expect(build(:user)).to be_valid
     end
   end
@@ -17,18 +17,18 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "creating a user" do
-    it "generates a slug" do
+  describe 'creating a user' do
+    it 'generates a slug' do
       u = build(:user)
-      u.first_name = "Not Really_%40)"
-      u.last_name = "286^$@sluggable"
+      u.first_name = 'Not Really_%40)'
+      u.last_name = '286^$@sluggable'
       u.save
-      expect(u.slug).to eq("not-really--40-286-sluggable")
+      expect(u.slug).to eq('not-really--40-286-sluggable')
     end
   end
 
-  describe "creating an invited user" do
-    it "has correct linking between invite and invitee" do
+  describe 'creating an invited user' do
+    it 'has correct linking between invite and invitee' do
       invitee = create(:invited_user)
       expect(invitee.invitee_invite.invitee.id).to eq invitee.id
     end
@@ -39,11 +39,11 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "user password authentication" do
-    it "should be compatible with meteor encryption" do
+  describe 'user password authentication' do
+    it 'should be compatible with meteor encryption' do
       u = build(:user)
-      u.first_name = "Sebi"
-      u.last_name = "Hoorens"
+      u.first_name = 'Sebi'
+      u.last_name = 'Hoorens'
       u.email = 'sebastien@citizenlab.co'
       u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
       u.save
@@ -51,10 +51,10 @@ RSpec.describe User, type: :model do
       expect(!!u.authenticate('totallywrong')).to eq(false)
     end
 
-    it "should replace the CL1 hash by the CL2 hash" do
+    it 'should replace the CL1 hash by the CL2 hash' do
       u = build(:user)
-      u.first_name = "Sebi"
-      u.last_name = "Hoorens"
+      u.first_name = 'Sebi'
+      u.last_name = 'Hoorens'
       u.email = 'sebastien@citizenlab.co'
       u.password_digest = '$2a$10$npkXzpkkyO.g6LjmSYHbOeq76gxpOYeei8SVsjr0LqsBiAdTeDhHK'
       u.save
@@ -76,7 +76,7 @@ RSpec.describe User, type: :model do
     it 'is invalid if the domain is on our blacklist' do
       u1 = build(:user, email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
       expect(u1).to be_invalid
-      expect(u1.errors.details[:email]).to eq [{error: :domain_blacklisted, value: "039b1ee.netsolhost.com"}]
+      expect(u1.errors.details[:email]).to eq [{error: :domain_blacklisted, value: '039b1ee.netsolhost.com'}]
     end
   end
 
@@ -132,59 +132,59 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "bio sanitizer" do
-    it "sanitizes script tags in the body" do
+  describe 'bio sanitizer' do
+    it 'sanitizes script tags in the body' do
       user = create(:user, bio_multiloc: {
-        "en" => "<p>Test</p><script>This should be removed!</script>"
+        'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(user.bio_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+      expect(user.bio_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
     end
   end
 
-  describe "roles" do
-    it "is valid without roles" do
+  describe 'roles' do
+    it 'is valid without roles' do
       u = build(:user, roles: [])
       expect(u).to be_valid
     end
 
-    it "is valid when the user is an admin" do
-      u = build(:user, roles: [{type: "admin"}])
+    it 'is valid when the user is an admin' do
+      u = build(:user, roles: [{type: 'admin'}])
       expect(u).to be_valid
     end
 
-    it "is invalid when the user has an unknown role type" do
-      u = build(:user, roles: [{type: "stonecarver"}])
+    it 'is invalid when the user has an unknown role type' do
+      u = build(:user, roles: [{type: 'stonecarver'}])
       expect{ u.valid? }.to change{ u.errors[:roles] }
     end
   end
 
-  describe "admin?" do
-    it "responds true when the user has the admin role" do
-      u = build(:user, roles: [{type: "admin"}])
+  describe 'admin?' do
+    it 'responds true when the user has the admin role' do
+      u = build(:user, roles: [{type: 'admin'}])
       expect(u.admin?).to eq true
     end
 
-    it "responds false when the user does not have the admin role" do
+    it 'responds false when the user does not have the admin role' do
       u = build(:user, roles: [])
       expect(u.admin?).to eq false
     end
   end
 
-  describe "project_moderator?" do
-    it "responds false when the user does not have a project_moderator role" do
+  describe 'project_moderator?' do
+    it 'responds false when the user does not have a project_moderator role' do
       l = create(:project)
       u = build(:user, roles: [])
       expect(u.project_moderator? l.id).to eq false
     end
 
-    it "responds false when the user is not a project_moderator and no project_id is passed" do
+    it 'responds false when the user is not a project_moderator and no project_id is passed' do
       u = build(:admin)
       expect(u.project_moderator?).to eq false
     end
   end
 
-  describe "delete_role" do
-    it "denies a user from his admin rights" do
+  describe 'delete_role' do
+    it 'denies a user from his admin rights' do
       admin = create(:admin)
       admin.delete_role('admin')
 
@@ -195,34 +195,34 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "locale" do
+  describe 'locale' do
     before do
       settings = AppConfiguration.instance.settings
-      settings['core']['locales'] = ["en","nl-BE","fr-FR"]
+      settings['core']['locales'] = ['en','nl-BE','fr-FR']
       AppConfiguration.instance.update!(settings: settings)
     end
 
     it "is valid when it's one of the configured locales" do
-      user = build(:user, locale: "nl-BE")
+      user = build(:user, locale: 'nl-BE')
       expect(user).to be_valid
     end
 
     it "is invalid when it's not one of the configured locales" do
-      user = build(:user, locale: "pt")
+      user = build(:user, locale: 'pt')
       expect{ user.valid? }.to change{ user.errors[:locale] }
     end
   end
 
-  describe "slug" do
+  describe 'slug' do
 
-    it "is generated on create when not given" do
+    it 'is generated on create when not given' do
       user = create(:user, slug: nil)
       expect(user.slug).to be_present
     end
 
   end
 
-  describe "avatar" do
+  describe 'avatar' do
 
     it "is blank generated when it's not specified" do
       user = build(:user, avatar: nil)
@@ -231,7 +231,7 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "demographic fields", slow_test: true do
+  describe 'demographic fields', slow_test: true do
     before do
       create(:custom_field_birthyear)
       create(:custom_field_gender, :with_options)
@@ -239,33 +239,33 @@ RSpec.describe User, type: :model do
       create(:custom_field_education, :with_options)
     end
 
-    it "(gender) is valid when male, female or unspecified" do
+    it '(gender) is valid when male, female or unspecified' do
       expect(build(:user, gender: 'male')).to be_valid
       expect(build(:user, gender: 'female')).to be_valid
       expect(build(:user, gender: 'unspecified')).to be_valid
     end
 
-    it "(gender) is invalid when not male, female or unspecified" do
+    it '(gender) is invalid when not male, female or unspecified' do
       user = build(:user, gender: 'somethingelse')
       expect{ user.valid? }.to change{ user.errors[:gender] }
     end
 
-    it "(birthyear) is valid when in realistic range" do
+    it '(birthyear) is valid when in realistic range' do
       expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
       expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
     end
 
-    it "(birthyear) is invalid when unrealistic" do
+    it '(birthyear) is invalid when unrealistic' do
       user = build(:user, birthyear: Time.now.year + 1)
       expect{ user.valid? }.to change{ user.errors[:birthyear] }
       user = build(:user, birthyear: 1850)
       expect{ user.valid? }.to change{ user.errors[:birthyear] }
-      user = build(:user, birthyear: "eighteen hundred")
+      user = build(:user, birthyear: 'eighteen hundred')
       expect{ user.valid? }.to change{ user.errors[:birthyear] }
     end
 
-    it "(birthyear) is invalid when not an integer" do
-      user = build(:user, birthyear: "eighteen hundred")
+    it '(birthyear) is invalid when not an integer' do
+      user = build(:user, birthyear: 'eighteen hundred')
       expect{ user.valid? }.to change{ user.errors[:birthyear] }
       user = build(:user, birthyear: 1930.4)
       expect{ user.valid? }.to change{ user.errors[:birthyear] }
@@ -284,14 +284,14 @@ RSpec.describe User, type: :model do
       expect{ user.valid? }.to change{ user.errors[:domicile] }
     end
 
-    it "(education) is valid when an ISCED2011 level" do
+    it '(education) is valid when an ISCED2011 level' do
       CustomField.find_by(code: 'education').update(enabled: true)
       expect(build(:user, education: '2')).to be_valid
       expect(build(:user, education: '4')).to be_valid
       expect(build(:user, education: '8')).to be_valid
     end
 
-    it "(education) is invalid when not an isced 2011 level" do
+    it '(education) is invalid when not an isced 2011 level' do
       CustomField.find_by(code: 'education').update(enabled: true)
       user = build(:user, education: 'somethingelse')
       expect{ user.valid? }.to change{ user.errors[:education] }
@@ -303,7 +303,7 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe "order_role" do
+  describe 'order_role' do
 
     before do
       10.times do |i|
@@ -311,23 +311,23 @@ RSpec.describe User, type: :model do
       end
     end
 
-    it "sorts from higher level roles to lower level roles by default" do
+    it 'sorts from higher level roles to lower level roles by default' do
       serie = User.order_role.map{|u| u.roles.size}
       expect(serie).to eq serie.sort.reverse
     end
 
-    it "sorts from lower level roles to higher level roles with option asc" do
+    it 'sorts from lower level roles to higher level roles with option asc' do
       serie = User.order_role(:desc).map{|u| u.roles.size}
       expect(serie).to eq serie.sort
     end
 
   end
 
-  describe "custom_field_values" do
-    it "validates when custom_field_values have changed" do
+  describe 'custom_field_values' do
+    it 'validates when custom_field_values have changed' do
       u = create(:user)
       u.custom_field_values = {
-        somekey: "somevalue"
+        somekey: 'somevalue'
       }
       expect{ u.save }.to change{ u.errors[:custom_field_values]}
     end
@@ -340,37 +340,37 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe "active?" do
-    it "returns false when the user has not completed signup" do
+  describe 'active?' do
+    it 'returns false when the user has not completed signup' do
       u = build(:user, registration_completed_at: nil)
       expect(u.active?).to be false
     end
 
-    it "return false when the user has a pending invitation" do
+    it 'return false when the user has a pending invitation' do
       u = build(:user, invite_status: 'pending')
       expect(u.active?).to be false
     end
 
-    it "returns true when the user has completed signup" do
+    it 'returns true when the user has completed signup' do
       u = build(:user)
       expect(u.active?).to be true
     end
   end
 
-  describe "groups and group_ids" do
+  describe 'groups and group_ids' do
     let!(:manual_group) { create(:group) }
     let!(:group) { create(:group) }
 
     let(:user) { create(:user, manual_groups: [manual_group, group]) }
 
-    it "returns manual groups" do
+    it 'returns manual groups' do
       expect(user.groups).to match_array [manual_group, group]
       expect(user.group_ids).to match_array [manual_group.id, group.id]
     end
   end
 
-  describe "in_group" do
-    it "gets all users in a manual group" do
+  describe 'in_group' do
+    it 'gets all users in a manual group' do
       group = create(:group)
       users = create_list(:user, 3, manual_groups: [group])
       create_list(:user, 2)
@@ -378,9 +378,9 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "in_any_group" do
+  describe 'in_any_group' do
 
-    it "gets the union of all users in the given groups" do
+    it 'gets the union of all users in the given groups' do
       group1 = create(:group)
       group2 = create(:group)
       user1 = create(:user, email: 'jos@test.com', manual_groups: [group2])
@@ -404,35 +404,35 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe ".find_by_cimail" do
-    it "finds a user with the same email but different caps" do
+  describe '.find_by_cimail' do
+    it 'finds a user with the same email but different caps' do
       some_user = create(:user, email: 'SeBi@citizenlab.co')
       same_user = User.find_by_cimail 'sEbI@citizenlab.co'
 
       expect(some_user.id).to eq same_user&.id
     end
 
-    it "returns nil if no user record with that email was found" do
-      expect(User.find_by_cimail("doesnotexist@example.com")).to eq(nil)
+    it 'returns nil if no user record with that email was found' do
+      expect(User.find_by_cimail('doesnotexist@example.com')).to eq(nil)
     end
   end
 
-  describe ".find_by_cimail!" do
-    it "finds a user with the same email but different caps" do
+  describe '.find_by_cimail!' do
+    it 'finds a user with the same email but different caps' do
       some_user = create(:user, email: 'SeBi@citizenlab.co')
       same_user = User.find_by_cimail!('sEbI@citizenlab.co')
 
       expect(some_user.id).to eq(same_user.id)
     end
 
-    it "raises if no user record with that email was found" do
-      expect { User.find_by_cimail!("doesnotexist@example.com") }
+    it 'raises if no user record with that email was found' do
+      expect { User.find_by_cimail!('doesnotexist@example.com') }
         .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
-  describe "super_admin?" do
-    it "returns true for admins with various citizenlab email variations" do
+  describe 'super_admin?' do
+    it 'returns true for admins with various citizenlab email variations' do
       users = [
         build_stubbed(:admin, email: 'hello@citizenlab.co'),
         build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
@@ -450,7 +450,7 @@ RSpec.describe User, type: :model do
       expect(users).to all be_super_admin
     end
 
-    it "returns false for non-citizenlab emails" do
+    it 'returns false for non-citizenlab emails' do
       strangers = [
         build_stubbed(:admin, email: 'hello@citizenlab.com'),
         build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
@@ -459,14 +459,14 @@ RSpec.describe User, type: :model do
       expect(strangers).not_to include(be_super_admin)
     end
 
-    it "returns false for non-admins" do
+    it 'returns false for non-admins' do
       user = build_stubbed(:user, email: 'hello@citizenlab.co')
       expect(user).not_to be_super_admin
     end
   end
 
-  describe "highest_role" do
-    it "correctly returns the highest role the user posesses" do
+  describe 'highest_role' do
+    it 'correctly returns the highest role the user posesses' do
       expect(build_stubbed(:admin, email: 'hello@citizenlab.co').highest_role).to eq :super_admin
       expect(build_stubbed(:admin).highest_role).to eq :admin
       expect(build_stubbed(:user).highest_role).to eq :user
