@@ -32,7 +32,6 @@ module ContentBuilder
     end
 
     def validate_whitelisted_iframe_urls
-      iframe_sanitizer = ::SanitizationService::IframeScrubber.new
       url_validation_service = ::UrlValidationService.new
 
       craftjs_jsonmultiloc.each do |locale, json|
