@@ -75,6 +75,7 @@ export default () => ({
     loader: () => import('containers/Admin'),
     loading: () => null,
   }),
+  // https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
   onEnter: isUserAuthorized,
   indexRoute: {
     onEnter: (nextState, replace) => {

@@ -3,51 +3,53 @@ import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
-import { BrowserRouter, useRoutes } from 'react-router-dom';
 
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-// import App from 'containers/App';
-// import LanguageProvider from 'containers/LanguageProvider';
-// import createRoutes from './routes';
+import App from 'containers/App';
+import LanguageProvider from 'containers/LanguageProvider';
+import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
+import {
+  unstable_HistoryRouter as HistoryRouter,
+  useRoutes,
+} from 'react-router-dom';
+import historydep from 'history';
+console.log({ historydep });
+export const history = historydep.createBrowserHistory({ window });
+// const Bla = ({children})=>{
+//   return children
+// }
+
 // const rootRoute = {
-//   component: App,
-//   childRoutes: createRoutes(),
+//   element: <Bla />,
+//   path: "/",
+//   children: createRoutes(),
 // };
 
 const Routes = () => {
-  const routes = useRoutes([
-    {
-      path: '/',
-      element: <div>dashboard</div>,
-      // children: [
-      //   {
-      //     path: "messages",
-      //     element: <DashboardMessages />,
-      //   },
-      //   { path: "tasks", element: <DashboardTasks /> },
-      // ],
-    },
-  ]);
+  console.log({ historydep });
+  const routes = useRoutes(createRoutes());
   // { path: "team", element: <AboutPage /> },});
   // useEffect(() => {
   //   modules.afterMountApplication();
   // }, []);
 
-  return routes;
+  return <App>{routes}</App>;
 };
 const Root = () => {
   return (
     <OutletsProvider>
-      <BrowserRouter>
-        <Routes />
-      </BrowserRouter>
+      <LanguageProvider>
+        <HistoryRouter history={history}>
+          <Routes />
+        </HistoryRouter>
+      </LanguageProvider>
     </OutletsProvider>
   );
 };
