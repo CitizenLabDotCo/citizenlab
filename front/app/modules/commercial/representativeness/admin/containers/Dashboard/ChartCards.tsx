@@ -37,7 +37,7 @@ const ChartCards = () => {
         />
       ))}
 
-      <EmptyCard titleMultiloc={{ en: 'Test ' }} />
+      <EmptyCard titleMultiloc={{ en: 'Test ' }} isComingSoon />
     </>
   );
 };

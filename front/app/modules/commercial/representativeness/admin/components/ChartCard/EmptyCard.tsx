@@ -7,7 +7,12 @@ import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  StatusLabel,
+} from '@citizenlab/cl2-component-library';
 import { StyledBackgroundImage } from '../../containers/Dashboard/EmptyState';
 import Button from 'components/UI/Button';
 
@@ -16,17 +21,27 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
 
+const StyledStatusLabel = styled(StatusLabel)`
+  margin-left: 8px;
+  transform: translateY(-4px);
+  height: 22px;
+  font-weight: 700;
+`;
+
 interface Props {
   titleMultiloc: Multiloc;
+  isComingSoon: boolean;
 }
 
-const EmptyCard = ({ titleMultiloc }: Props) => {
+const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
   const localize = useLocalize();
+  const title = localize(titleMultiloc);
 
   return (
     <Box
@@ -45,7 +60,14 @@ const EmptyCard = ({ titleMultiloc }: Props) => {
       >
         <Box flex="0 1 auto">
           <Title variant="h3" as="h2" mb="28px">
-            {localize(titleMultiloc)}
+            {title}
+
+            {isComingSoon && (
+              <StyledStatusLabel
+                text={<FormattedMessage {...messages.comingSoon} />}
+                backgroundColor={colors.adminSecondaryTextColor}
+              />
+            )}
           </Title>
         </Box>
 
@@ -57,14 +79,27 @@ const EmptyCard = ({ titleMultiloc }: Props) => {
           alignItems="center"
         >
           <Title variant="h3" mb="8px" color="text">
-            <FormattedMessage {...messages.provideBaseDataset} />
+            {isComingSoon ? (
+              <FormattedMessage {...messages.comingSoon} />
+            ) : (
+              <FormattedMessage {...messages.provideBaseDataset} />
+            )}
           </Title>
           <Text mt="0px">
-            <FormattedMessage {...messages.baseDatasetExplanation} />
+            {isComingSoon ? (
+              <FormattedMessage
+                {...messages.comingSoonDescription}
+                values={{ fieldName: title.toLowerCase() }}
+              />
+            ) : (
+              <FormattedMessage {...messages.baseDatasetExplanation} />
+            )}
           </Text>
-          <Button width="164px" bgColor={colors.adminTextColor}>
-            <FormattedMessage {...messages.submitBaseDataButton} />
-          </Button>
+          {!isComingSoon && (
+            <Button width="164px" bgColor={colors.adminTextColor}>
+              <FormattedMessage {...messages.submitBaseDataButton} />
+            </Button>
+          )}
         </Box>
       </Box>
     </Box>

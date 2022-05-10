@@ -64,4 +64,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.submitBaseDataButton',
     defaultMessage: 'Submit base data',
   },
+  comingSoon: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.comingSoon',
+    defaultMessage: 'Coming soon',
+  },
+  comingSoonDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.comingSoonDescription',
+    defaultMessage:
+      "We're currently working on the {fieldName} dashboard, it will be available soon",
+  },
 });
