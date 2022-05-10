@@ -136,16 +136,7 @@ class SanitizationService
       }
     }.freeze
 
-    VIDEO_WHITELIST = [
-      %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-\_]*)},
-      %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
-      %r{\A(?:http(?:s?):)?//(.+)?(wistia.com|wi.st).*},
-      %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
-      %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},
-      %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#\/]+)}
-    ].freeze
-
-    private_constant :EDITOR_FEATURES, :VIDEO_WHITELIST
+    private_constant :EDITOR_FEATURES
 
     attr_reader :tags, :attributes
 
@@ -157,13 +148,9 @@ class SanitizationService
     end
 
     def allowed_node?(node)
-      return iframe_allowed? && video_whitelisted?(node['src']) if node.name == 'iframe'
+      return iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src']) if node.name == 'iframe'
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
-    end
-
-    def video_whitelisted?(url)
-      VIDEO_WHITELIST.any? { |regex| regex.match? url }
     end
 
     private

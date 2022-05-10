@@ -19,10 +19,23 @@ class UrlValidationService
       %r{\Ahttps:\/\/(www\.)?instagram\.com\/},
       %r{\Ahttps:\/\/platform\.twitter\.com\/},
       %r{\Ahttps:\/\/.+\.konveio\.com\/},
-      %r{\Ahttps:\/\/(www\.)?facebook\.com\/},
+      %r{\Ahttps:\/\/(www\.)?facebook\.com\/}
+    ].freeze
+
+    VIDEO_WHITELIST = [
+      %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-\_]*)},
+      %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
+      %r{\A(?:http(?:s?):)?//(.+)?(wistia.com|wi.st).*},
+      %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
+      %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},
+      %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#\/]+)}
     ].freeze
 
     def url_whitelisted?(url)
-      URL_WHITELIST.any? { |regex| regex.match? url }
+      return (URL_WHITELIST.any? { |regex| regex.match? url }) || video_whitelisted?(url)
+    end
+
+    def video_whitelisted?(url)
+      VIDEO_WHITELIST.any? { |regex| regex.match? url }
     end
 end
