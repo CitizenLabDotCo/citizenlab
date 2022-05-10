@@ -14,12 +14,13 @@ import { RepresentativenessData } from '..';
 
 const TABLE_HEADER_BG_COLOR = '#f9fafb';
 
-const StyledTable = styled(Table)<{ hideBorderTop?: boolean }>`
+const StyledTable = styled(Table)<{ $hideBorderTop?: boolean }>`
   td,
   th > div {
     color: ${colors.adminTextColor};
   }
-  ${({ hideBorderTop }) => (hideBorderTop ? 'border-top: 0px !important;' : '')}
+  ${({ $hideBorderTop }) =>
+    $hideBorderTop ? 'border-top: 0px !important;' : ''}
 `;
 
 const StyledBody = styled(Table.Body)`
@@ -35,7 +36,7 @@ interface Props {
 }
 
 const TableComponent = ({ columns, data, hideBorderTop }: Props) => (
-  <StyledTable hideBorderTop={hideBorderTop}>
+  <StyledTable $hideBorderTop={hideBorderTop}>
     <HeaderRow columns={columns} />
     <StyledBody>
       {data.map((row, i) => (
