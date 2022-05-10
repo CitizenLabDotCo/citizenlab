@@ -130,7 +130,6 @@ describe('Admin: add project and edit description', () => {
       position: 'inside',
     });
     cy.get('#e2e-image').should('exist');
-    cy.get('#e2e-image').click();
     cy.get('#e2e-delete-button').click();
 
     // Add text box and container, then nest the text box within the container
