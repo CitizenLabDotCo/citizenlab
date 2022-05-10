@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class UrlSanitizationService
-  private
-  class UrlScrubber < Rails::Html::PermitScrubber
     URL_WHITELIST = [
       %r{https:\/\/.*\.typeform\.com\/to\/.*},
       %r{https:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js},
@@ -23,10 +21,7 @@ class UrlSanitizationService
       %r{https:\/\/name\.konveio\.com},
     ].freeze
 
-    private_constant :URL_WHITELIST
-
     def url_whitelisted?(url)
       URL_WHITELIST.any? { |regex| regex.match? url }
     end
-  end
 end
