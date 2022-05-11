@@ -190,7 +190,7 @@
     "@types/segment-analytics": "0.0.34",
     "@types/shelljs": "0.8.9",
     "@types/styled-components": "^5.1.24",
-    "@types/webfontloader": "1.6.33",
+    "@types/webfontloader": "1.6.34",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
