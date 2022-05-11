@@ -29,18 +29,7 @@ const ContentBuilderFrame = ({ projectId }: { projectId: string }) => {
 
   return (
     <Frame>
-      <Element
-        id="e2e-content-builder-frame"
-        is="div"
-        canvas
-        style={{
-          padding: '4px',
-          width: '100%',
-          maxWidth: '1166px',
-          minHeight: '160px',
-          backgroundColor: '#fff',
-        }}
-      />
+      <Element id="e2e-content-builder-frame" is="div" canvas />
     </Frame>
   );
 };
