@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-711] Title text looking weird on insights start page
+
 ## 2022-05-10_3
 
 ### Fixed
@@ -73,7 +79,6 @@
 ### Fixed
 
 - Fixed issue with budget field not showing in input form
-- Title text looking weird on insights start page
 
 ### Fixed
 
