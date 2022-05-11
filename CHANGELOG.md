@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
 ## 2022-05-10_3
 
 ### Fixed
