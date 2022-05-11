@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Idea Custom Fields' do
-
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
 
   before do
@@ -26,7 +24,6 @@ resource 'Idea Custom Fields' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
       end
-
     end
 
     get 'web_api/v1/projects/:project_id/custom_fields/:id' do
@@ -51,7 +48,7 @@ resource 'Idea Custom Fields' do
       let(:code) { 'location_description' }
       let(:required) { true }
       let(:enabled) { false }
-      let(:description_multiloc) { {'en' => 'New description'} }
+      let(:description_multiloc) { { 'en' => 'New description' } }
 
       context "when the custom_form doesn't exist yet" do
         let(:project) { create(:project) }
@@ -60,10 +57,10 @@ resource 'Idea Custom Fields' do
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:code)).to eq code
-          expect(json_response.dig(:data,:attributes,:required)).to eq required
-          expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :code)).to eq code
+          expect(json_response.dig(:data, :attributes, :required)).to eq required
+          expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
           expect(CustomForm.count).to eq 1
           expect(project.reload.custom_form).to eq CustomForm.first
@@ -78,10 +75,10 @@ resource 'Idea Custom Fields' do
           example_request 'Update a built-in custom field' do
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:attributes,:code)).to eq code
-            expect(json_response.dig(:data,:attributes,:required)).to eq required
-            expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
-            expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+            expect(json_response.dig(:data, :attributes, :code)).to eq code
+            expect(json_response.dig(:data, :attributes, :required)).to eq required
+            expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
+            expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end
         end
@@ -92,17 +89,15 @@ resource 'Idea Custom Fields' do
             do_request
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:id)).to eq cf.id
-            expect(json_response.dig(:data,:attributes,:code)).to eq code
-            expect(json_response.dig(:data,:attributes,:required)).to eq required
-            expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
-            expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+            expect(json_response.dig(:data, :id)).to eq cf.id
+            expect(json_response.dig(:data, :attributes, :code)).to eq code
+            expect(json_response.dig(:data, :attributes, :required)).to eq required
+            expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
+            expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end
         end
       end
-
     end
-
   end
 end

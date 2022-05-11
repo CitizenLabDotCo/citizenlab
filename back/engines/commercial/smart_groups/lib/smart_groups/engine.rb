@@ -5,7 +5,6 @@ rescue LoadError
 end
 # rubocop:enable Lint/SuppressedException
 
-
 module SmartGroups
   class Engine < ::Rails::Engine
     isolate_namespace SmartGroups

@@ -3,7 +3,7 @@ FactoryBot.define do
     item_type { 'Idea' }
     item_id { SecureRandom.uuid }
     action { 'published' }
-    acted_at {Time.now}
+    acted_at { Time.now }
     user
 
     factory :published_activity do
@@ -12,32 +12,35 @@ FactoryBot.define do
 
     factory :changed_title_activity do
       action { 'changed_title' }
-      payload {{
+      payload do
+        {
         'change' => [
-          {'en' => 'old title'},
-          {'en' => 'new title'}
+          { 'en' => 'old title' },
+          { 'en' => 'new title' }
         ]
-      }}
+      } end
     end
 
     factory :changed_body_activity do
       action { 'changed_body' }
-      payload {{
+      payload do
+        {
         'change' => [
-          {'en' => 'old body'},
-          {'en' => 'new body'}
+          { 'en' => 'old body' },
+          { 'en' => 'new body' }
         ]
-      }}
+      } end
     end
 
     factory :changed_status_activity do
       action { 'changed_status' }
-      payload {{
-        'change' => [
-          'somepreviousstatusid',
-          'somenewstatusid'
+      payload do
+        {
+        'change' => %w[
+          somepreviousstatusid
+          somenewstatusid
         ]
-      }}
+      } end
     end
 
     factory :comment_created_activity do
@@ -65,7 +68,4 @@ FactoryBot.define do
       action { 'admin_rights_given' }
     end
   end
-
-
-
 end

@@ -25,6 +25,7 @@ const TwoColumn: UserComponent = ({ columnLayout }) => {
 
   return (
     <Box
+      id="e2e-two-column"
       flexDirection={isLargeTablet ? 'column' : 'row'}
       minHeight="40px"
       display="flex"

@@ -19,7 +19,5 @@ module Verification
       # the sign up flow
       user&.invite_not_pending? && record.user == user
     end
-
   end
-
 end

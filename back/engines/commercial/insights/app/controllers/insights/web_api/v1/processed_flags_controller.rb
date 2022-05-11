@@ -3,7 +3,6 @@
 module Insights
   module WebApi::V1
     class ProcessedFlagsController < ::ApplicationController
-
       # [POST] Flag an input as processed.
       def create
         flag = ::Insights::ProcessedFlag.new(input: input, view: view)

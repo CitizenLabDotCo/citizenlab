@@ -28,5 +28,4 @@ class EventFilePolicy < ApplicationPolicy
   def destroy?
     EventPolicy.new(user, record.event).update?
   end
-
 end

@@ -4,6 +4,6 @@ class AddIndexesToIdeasPhases < ActiveRecord::Migration[6.0]
       IdeasPhase.where(idea_id: ideas_phase.idea_id, phase_id: ideas_phase.phase_id).all.drop(1).each(&:destroy!)
     end
 
-    add_index :ideas_phases, [:idea_id, :phase_id], unique: true
+    add_index :ideas_phases, %i[idea_id phase_id], unique: true
   end
 end

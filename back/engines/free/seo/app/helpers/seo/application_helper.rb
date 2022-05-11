@@ -9,7 +9,6 @@ module Seo
       Frontend::UrlService.new.model_to_url(record, options)
     end
 
-    # rubocop:disable Metrics/MethodLength
     def multilingual_sitemap_entry(xml, url, priority = nil, lastmod = nil)
       app_locales.each do |locale|
         xml.url do
@@ -27,7 +26,6 @@ module Seo
         end
       end
     end
-    # rubocop:enable Metrics/MethodLength
 
     def app_locales
       AppConfiguration.instance.settings.dig('core', 'locales')

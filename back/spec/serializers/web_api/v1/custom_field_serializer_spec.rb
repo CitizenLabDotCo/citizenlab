@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe WebApi::V1::CustomFieldSerializer do
-
   context 'User custom fields' do
     it "should contain the attribute 'hidden'" do
       user_custom_field = create(:custom_field, resource_type: 'User')
@@ -19,5 +18,4 @@ describe WebApi::V1::CustomFieldSerializer do
       expect(attributes).not_to include(:hidden)
     end
   end
-
 end

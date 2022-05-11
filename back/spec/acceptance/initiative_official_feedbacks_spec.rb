@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'OfficialFeedback' do
-
   explanation 'Official feedback is input from moderators on content (i.e. ideas), separated from comments.'
 
   before do
@@ -24,8 +22,8 @@ resource 'OfficialFeedback' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response.dig(:data,0,:attributes,:body_multiloc)).to be_present
-      expect(json_response.dig(:data,0,:attributes,:author_multiloc)).to be_present
+      expect(json_response.dig(:data, 0, :attributes, :body_multiloc)).to be_present
+      expect(json_response.dig(:data, 0, :attributes, :author_multiloc)).to be_present
     end
   end
 
@@ -61,15 +59,15 @@ resource 'OfficialFeedback' do
       example_request 'Create an official feedback on an initiative' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-        expect(json_response.dig(:data,:attributes,:author_multiloc).stringify_keys).to match author_multiloc
-        expect(json_response.dig(:data,:relationships,:post,:data,:id)).to eq initiative_id
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :attributes, :author_multiloc).stringify_keys).to match author_multiloc
+        expect(json_response.dig(:data, :relationships, :post, :data, :id)).to eq initiative_id
         expect(@initiative.reload.official_feedbacks_count).to eq 3
       end
 
       describe do
-        let(:body_multiloc) { {'en' => ''} }
+        let(:body_multiloc) { { 'en' => '' } }
 
         example_request '[error] Create an invalid official feedback on an initiative' do
           assert_status 422
@@ -88,12 +86,12 @@ resource 'OfficialFeedback' do
 
       let(:official_feedback) { create(:official_feedback, user: @user, post: @initiative) }
       let(:id) { official_feedback.id }
-      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
+      let(:body_multiloc) { { 'en' => "His hair is not blond, it's orange. Get your facts straight!" } }
 
       example_request 'Update an official feedback for an initiative' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to match body_multiloc
         expect(@initiative.reload.official_feedbacks_count).to eq 3
       end
     end
@@ -103,11 +101,10 @@ resource 'OfficialFeedback' do
       let(:id) { official_feedback.id }
       example_request 'Delete an official feedback from an initiative' do
         expect(response_status).to eq 200
-        expect{OfficialFeedback.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { OfficialFeedback.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(@initiative.reload.official_feedbacks_count).to eq 2
       end
     end
-
   end
 
   context 'when authenticated as normal user' do

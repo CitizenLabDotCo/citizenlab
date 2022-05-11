@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Activities' do
-
   explanation 'Activities capture interactions throughout the platform, like posting ideas, voting or editing/deleting content.'
 
   get 'web_api/v1/ideas/:idea_id/activities' do
@@ -14,13 +12,13 @@ resource 'Activities' do
       create(:changed_body_activity, item: @idea)
       create(:changed_status_activity, item: @idea)
     end
-    
+
     with_options scope: :page do
       parameter :number, 'Page number'
       parameter :size, 'Number of activities per page'
     end
 
-    let (:idea_id) { @idea.id }
+    let(:idea_id) { @idea.id }
 
     example_request 'List all activities' do
       expect(status).to eq(200)

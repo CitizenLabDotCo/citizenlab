@@ -680,6 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Gesamtzuel Bäiträg: {ideasCount}",
   "app.containers.IdeaCards.all": "All",
   "app.containers.IdeaCards.filter": "Filteren",
+  "app.containers.IdeaCards.filteredResultsFound": "Nei Sichresultater goufe gelueden.",
   "app.containers.IdeaCards.list": "Lëscht",
   "app.containers.IdeaCards.map": "Kaart",
   "app.containers.IdeaCards.newest": "Rezentst",

@@ -7,6 +7,6 @@ FactoryBot.define do
         'nl-BE' => "Goed doel #{n}"
       }
     end
-    description_multiloc {{}}
+    description_multiloc { {} }
   end
 end

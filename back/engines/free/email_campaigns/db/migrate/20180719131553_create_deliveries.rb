@@ -8,8 +8,7 @@ class CreateDeliveries < ActiveRecord::Migration[5.1]
       t.datetime :sent_at, index: true
       t.timestamps
 
-      t.index [:campaign_id, :user_id]
+      t.index %i[campaign_id user_id]
     end
-
   end
 end

@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phase', admin_api: true do
-
   before do
     header 'Content-Type', 'application/json'
     header 'Authorization', ENV.fetch('ADMIN_API_TOKEN')
@@ -18,5 +17,4 @@ resource 'Phase', admin_api: true do
       expect(json_response.size).to eq project.phases.size
     end
   end
-
 end

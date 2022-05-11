@@ -5,7 +5,7 @@ describe TextImageService do
 
   describe 'swap_data_images' do
     before do
-      stub_request(:any, 'res.cloudinary.com').with(
+      stub_request(:any, 'res.cloudinary.com').to_return(
         body: png_image_as_base64('image10.png')
       )
     end
@@ -36,16 +36,16 @@ describe TextImageService do
 
   describe 'render_data_images' do
     it 'adds src attributes to the img tags' do
-      text_image_1, text_image_2 = create_list :text_image, 2
+      text_image1, text_image2 = create_list :text_image, 2
       input = <<~HTML
-        <img data-cl2-text-image-text-reference="#{text_image_1.text_reference}">
+        <img data-cl2-text-image-text-reference="#{text_image1.text_reference}">
         <div>no image here</div>
-        <img data-cl2-text-image-text-reference="#{text_image_2.text_reference}">
+        <img data-cl2-text-image-text-reference="#{text_image2.text_reference}">
       HTML
       expected_html = <<~HTML
-        <img data-cl2-text-image-text-reference="#{text_image_1.text_reference}" src="#{text_image_1.image.url}">
+        <img data-cl2-text-image-text-reference="#{text_image1.text_reference}" src="#{text_image1.image.url}">
         <div>no image here</div>
-        <img data-cl2-text-image-text-reference="#{text_image_2.text_reference}" src="#{text_image_2.image.url}">
+        <img data-cl2-text-image-text-reference="#{text_image2.text_reference}" src="#{text_image2.image.url}">
       HTML
 
       imageable = build :project, description_multiloc: { 'de' => input }

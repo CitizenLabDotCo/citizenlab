@@ -16,7 +16,7 @@ module ProjectManagement
       end
 
       def moderatable_projects(user, scope = ::Project)
-        return super if !user.project_moderator?
+        return super unless user.project_moderator?
 
         super.or scope.where(id: user.moderatable_project_ids)
       end

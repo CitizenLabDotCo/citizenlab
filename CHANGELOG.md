@@ -1,11 +1,87 @@
 # Changelog
 
-## Next Release
+## 2022-05-10_3
+
+### Fixed
+
+- [CL-764] Empty navbar item titles in backoffice.
+
+## 2022-05-10_2
+
+### Changed
+
+- Added RuboCop on CI and corrected many offences
+
+## 2022-05-10
+
+### Changed
+
+- [CL-716] The new phase started emails/notifications are also sent out for information phases or when it's possible to take a poll.
+
+### Fixed
+
+- [CL-387] The folder show page is better readable on narrow screens now
+
+## 2022-05-06_3
+
+### Changed
+
+- When a navbar item's title is customized for one locale, the other locales remain up to date with the latest translations.
+
+### Fixed
+
+- Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
+
+### Fixed
+
+- [CL-181] Prevent forms from trying to save on clicking label
+- The "send" button on the email campaign send page is now disabled after a single click, to prevent users from clicking it multiple times and potentially sending a campaign more than once
+
+## 2022-05-06
+
+### Added
+
+- Pages can now be translated 'live' via Weglot
+- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
+
+## 2022-05-05
+
+### Fixed
+
+- Fix timeline for Arabic languages ('right-to-left')
+- Fix language selector cropping for Arabic languages ('right-to-left')
+
+## 2022-05-04_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
 
 ### Fixed
 
 - Fixed issue with budget field not showing in input form
 - Title text looking weird on insights start page
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
 
 ## 2022-05-02
 
@@ -36,11 +112,6 @@
 ### Changed
 
 - 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
-- Added property for status label to Tab component, and used this to add "Beta" flag to feature flagged SMS feature
-
-### Fixed
-
-- Improved input manager so that "All projects" can handle many projects.
 
 ## 2022-04-20
 
@@ -85,6 +156,12 @@
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
 
 ## 2022-03-29
 

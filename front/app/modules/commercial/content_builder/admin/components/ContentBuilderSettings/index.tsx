@@ -17,6 +17,9 @@ import { getComponentNameMessage } from '../RenderNode';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
 `;
@@ -51,7 +54,7 @@ const ContentBuilderSettings = () => {
       p="20px"
       w="400px"
       h="100%"
-      background={colors.adminDarkBackground}
+      background="#ffffff"
     >
       <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />
@@ -60,6 +63,7 @@ const ContentBuilderSettings = () => {
       {selected.isDeletable ? (
         <Box display="flex">
           <Button
+            id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
             borderColor={colors.clRed}
@@ -67,6 +71,7 @@ const ContentBuilderSettings = () => {
             iconColor={colors.clRed}
             onClick={() => {
               actions.delete(selected.id);
+              eventEmitter.emit('deleteContentBuilderElement', selected.id);
             }}
           >
             <FormattedMessage {...messages.delete} />

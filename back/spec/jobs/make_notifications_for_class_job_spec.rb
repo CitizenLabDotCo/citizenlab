@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe MakeNotificationsForClassJob, type: :job do
-  
   subject(:job) { MakeNotificationsForClassJob.new }
 
   describe '#perform' do
-
     it 'persists notifications when all are valid' do
       activity = create(:admin_rights_given_activity)
       job.perform(Notifications::AdminRightsReceived.name, activity)
@@ -19,16 +17,15 @@ RSpec.describe MakeNotificationsForClassJob, type: :job do
     it "doesn't persist any notification when one is invalid" do
       activity = create(:admin_rights_given_activity)
       activity.item.destroy!
-      expect{job.perform(Notifications::AdminRightsReceived.name, activity)}
+      expect { job.perform(Notifications::AdminRightsReceived.name, activity) }
         .to raise_error(ActiveRecord::RecordInvalid)
       expect(Notification.count).to eq 0
     end
 
     it 'enqueues notification created activity' do
       activity = create(:admin_rights_given_activity)
-      expect{job.perform(Notifications::AdminRightsReceived.name, activity)}
+      expect { job.perform(Notifications::AdminRightsReceived.name, activity) }
         .to have_enqueued_job(LogActivityJob)
     end
-
   end
 end

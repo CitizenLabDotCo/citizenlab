@@ -46,4 +46,3 @@ class CreateDataSources < ActiveRecord::Migration[6.1]
     remove_reference :insights_views, :scope, type: :uuid, null: true, index: false, foreign_key: { to_table: :projects }
   end
 end
-

@@ -1,6 +1,5 @@
 module OmniauthMethods
   class Facebook
-
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       if configuration.feature_activated?('facebook_login')

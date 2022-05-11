@@ -109,7 +109,7 @@ resource 'Campaigns' do
 
     let(:campaign) { create(:manual_campaign) }
     let(:id) { campaign.id }
-    let(:subject_multiloc) { { 'en' => 'New subject' }}
+    let(:subject_multiloc) { { 'en' => 'New subject' } }
     let(:body_multiloc) { { 'en' => 'New body' } }
     let(:sender) { 'organization' }
     let(:reply_to) { 'otherguy@organization.net' }
@@ -135,8 +135,8 @@ resource 'Campaigns' do
       old_count = EmailCampaigns::Campaign.count
       do_request
       assert_status 200
-      expect {EmailCampaigns::Campaign.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
-      expect(EmailCampaigns::Campaign.count).to eq (old_count - 1)
+      expect { EmailCampaigns::Campaign.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect(EmailCampaigns::Campaign.count).to eq(old_count - 1)
     end
   end
 
@@ -182,10 +182,11 @@ resource 'Campaigns' do
   get 'web_api/v1/campaigns/:id/stats' do
     let(:campaign) { create(:manual_campaign) }
     let!(:id) { campaign.id }
-    let!(:deliveries) { create_list(:delivery, 20,
+    let!(:deliveries) do
+      create_list(:delivery, 20,
       campaign: campaign,
       delivery_status: 'accepted'
-    )}
+      ) end
 
     example_request 'Get the delivery statistics of a sent campaing' do
       assert_status 200

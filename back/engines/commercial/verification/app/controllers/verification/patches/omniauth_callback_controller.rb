@@ -28,7 +28,7 @@ module Verification
               update_user!(auth, @user, verification_method)
               redirect_to(add_uri_params(
                 Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
-                omniauth_params.merge('verification_success': true).except('pathname')
+                omniauth_params.merge(verification_success: true).except('pathname')
               ))
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
@@ -45,7 +45,7 @@ module Verification
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
         redirect_to(add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
-          omniauth_params.merge('verification_error': true, error: error)
+          omniauth_params.merge(verification_error: true, error: error)
         ))
       end
 

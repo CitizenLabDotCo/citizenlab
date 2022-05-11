@@ -6,10 +6,9 @@ describe SmartGroups::RulesService do
 
   let(:cf1) { create(:custom_field) }
   let(:cf2) { create(:custom_field) }
-  let(:options) { create_list(:custom_field_option, 3) }
   let(:cf3) { create(:custom_field_select) }
-  let(:options) { create_list(:custom_field_option, 3, custom_field: cf3 )}
-  let!(:users) {
+  let(:options) { create_list(:custom_field_option, 3, custom_field: cf3) }
+  let!(:users) do
     users = build_list(:admin, 4)
     users[0].custom_field_values[cf1.key] = 'one'
     users[0].custom_field_values[cf2.key] = 'a'
@@ -28,17 +27,17 @@ describe SmartGroups::RulesService do
     users[3].custom_field_values[cf3.key] = options[2].key
 
     users.each(&:save)
-  }
+  end
 
-  let(:rules) {[
+  let(:rules) do
+    [
     { 'ruleType' => 'custom_field_text', 'customFieldId' => cf1.id, 'predicate' => 'is', 'value' => 'three' },
     { 'ruleType' => 'custom_field_text', 'customFieldId' => cf2.id, 'predicate' => 'is', 'value' => 'a' },
     { 'ruleType' => 'custom_field_select', 'customFieldId' => cf3.id, 'predicate' => 'has_value', 'value' => options[1].id },
     { 'ruleType' => 'role', 'predicate' => 'is_admin' }
-  ]}
+  ] end
 
   describe 'generate_rules_json_schema' do
-
     let!(:cf1) { create(:custom_field) }
 
     it 'generates a valid json schema' do
@@ -72,7 +71,6 @@ describe SmartGroups::RulesService do
       }
       expect(JSON::Validator.validate(schema, [invalid_rule])).to be false
     end
-
   end
 
   describe 'filter' do
@@ -83,9 +81,9 @@ describe SmartGroups::RulesService do
   end
 
   describe 'groups_for_user' do
-    let!(:group1) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'me@test.com'}]) }
-    let!(:group2) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'contains', value: 'me'}]) }
-    let!(:group3) { create(:smart_group, rules: [{ruleType: 'email', predicate: 'is', value: 'you@test.org'}]) }
+    let!(:group1) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'is', value: 'me@test.com' }]) }
+    let!(:group2) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'contains', value: 'me' }]) }
+    let!(:group3) { create(:smart_group, rules: [{ ruleType: 'email', predicate: 'is', value: 'you@test.org' }]) }
     let!(:user) { create(:user, email: 'me@test.com') }
 
     it 'returns only the rules groups the user is part of' do
@@ -94,7 +92,7 @@ describe SmartGroups::RulesService do
     end
 
     it 'uses a maximun of 2 queries' do
-      expect{service.groups_for_user(user)}.not_to exceed_query_limit(2)
+      expect { service.groups_for_user(user) }.not_to exceed_query_limit(2)
     end
 
     it 'accepts an optional scope to limit the groups to search in' do
@@ -102,5 +100,4 @@ describe SmartGroups::RulesService do
       expect(service.groups_for_user(user, groups)).to eq([group2])
     end
   end
-
 end

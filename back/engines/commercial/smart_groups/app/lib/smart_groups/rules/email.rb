@@ -3,7 +3,7 @@ module SmartGroups::Rules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on)
+    PREDICATE_VALUES = %w[is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on]
 
     attr_accessor :predicate, :value
 
@@ -15,22 +15,22 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          type: 'object',
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES
+              type: 'string',
+              enum: PREDICATE_VALUES
             },
             'value' => {
               'type' => 'string'
             }
-          },
+          }
         }
       ]
     end
@@ -39,16 +39,16 @@ module SmartGroups::Rules
       'email'
     end
 
-    def self.from_json json
-      self.new json['predicate'], json['value']
+    def self.from_json(json)
+      new json['predicate'], json['value']
     end
 
-    def initialize predicate, value
+    def initialize(predicate, value)
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       case predicate
       when 'is'
         users_scope.where('email = ?', value)
@@ -75,18 +75,16 @@ module SmartGroups::Rules
       CustomFieldText.rule_type
     end
 
-    def description_property locale
+    def description_property(locale)
       I18n.with_locale(locale) do
         I18n.t!('smart_group_rules.email.property')
       end
     end
-
 
     private
 
     def needs_value?
       true
     end
-
   end
 end

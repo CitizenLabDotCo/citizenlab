@@ -71,6 +71,11 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
 
+  before_validation :set_process_type, on: :create
+  before_validation :generate_slug, on: :create
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
+  before_validation :strip_title
+  before_validation :set_admin_publication
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -89,12 +94,6 @@ class Project < ApplicationRecord
   validates :process_type, presence: true, inclusion: { in: PROCESS_TYPES }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validate :admin_publication_must_exist
-
-  before_validation :set_process_type, on: :create
-  before_validation :generate_slug, on: :create
-  before_validation :sanitize_description_multiloc, if: :description_multiloc
-  before_validation :strip_title
-  before_validation :set_admin_publication
 
   pg_search_scope :search_by_all,
                   against: %i[title_multiloc description_multiloc description_preview_multiloc],

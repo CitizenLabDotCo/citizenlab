@@ -47,6 +47,7 @@ describe Surveys::SurveyParticipationContext do
       pc = build(:continuous_survey_project, survey_service: 'enalyzer', survey_embed_url: 'https://surveys.enalyzer.com?pid=HKGaPV')
       expect(pc).to be_valid
     end
+
     it 'invalidates a survey_embed_url' do
       pc = build(:continuous_survey_project, survey_service: 'enalyzer', survey_embed_url: 'https://surveys.enalyzer.com//?pid=HKGaPV')
       expect(pc).to be_invalid
