@@ -171,7 +171,7 @@ class App extends PureComponent<Props, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
 
-    this.unlisten = clHistory.listenBefore((newLocation) => {
+    this.unlisten = clHistory.listen(({ location }) => {
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
         'sign-up',
@@ -188,7 +188,7 @@ class App extends PureComponent<Props, State> {
       if (redirectsEnabled) {
         this.handleCustomRedirect();
       }
-      trackPage(newLocation.pathname);
+      trackPage(location.pathname);
     });
 
     trackPage(location.pathname);

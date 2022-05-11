@@ -16,6 +16,7 @@ import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
 import history, { BrowserHistory } from 'history';
+console.log({ history });
 
 export const rootHistory: BrowserHistory = history.createBrowserHistory();
 
@@ -43,6 +44,8 @@ const Routes = () => {
   return <App>{routes}</App>;
 };
 const Root = () => {
+  const rootHistory: BrowserHistory = history.createBrowserHistory();
+  console.log({ rootHistory });
   return (
     <OutletsProvider>
       <LanguageProvider>

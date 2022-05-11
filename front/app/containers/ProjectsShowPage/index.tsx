@@ -160,11 +160,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
 });
 
 const ProjectsShowPageWrapper = memo<WithRouterProps>(
-  ({
-    location: { pathname, query },
-    history,
-    params: { slug, phaseNumber },
-  }) => {
+  ({ location: { pathname, query }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
     const phases = usePhases(project?.id);
 
@@ -189,22 +185,18 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       isValidPhase(phaseNumber, phases)
     ) {
       // If this is a timeline project and a valid phase param was passed: continue
-      return <ProjectsShowPage project={project} history={history} />;
+      return <ProjectsShowPage project={project} />;
     } else if (scrollToEventId) {
       // If an event id was passed as a query param, pass it on
       return (
         // to do: remove
-        <ProjectsShowPage
-          project={project}
-          history={history}
-          scrollToEventId={scrollToEventId}
-        />
+        <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
       );
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {
       // Redirect old childRoutes (e.g. /info, /process, ...) to the project index location
       clHistory.replace(`/${urlSegments.slice(1, 3).join('/')}`);
     } else if (slug) {
-      return <ProjectsShowPage history={history} project={project} />;
+      return <ProjectsShowPage project={project} />;
     }
 
     return null;

@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 
 export type Props = {
-  to: Path;
+  to: Path | string | { pathname: string };
   onlyActiveOnIndex?: boolean;
 } & NavLinkProps;
 

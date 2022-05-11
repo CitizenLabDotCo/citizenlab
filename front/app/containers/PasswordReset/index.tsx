@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // router
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { parse } from 'qs';
 
 // components
 import { Success } from '@citizenlab/cl2-component-library';
@@ -120,7 +121,7 @@ class PasswordReset extends React.PureComponent<
 
   constructor(props) {
     super(props);
-    const query = clHistory.getCurrentLocation().query;
+    const query = parse(clHistory.location.search, { ignoreQueryPrefix: true });
     const token = isString(query.token) ? query.token : null;
     this.state = {
       token,
