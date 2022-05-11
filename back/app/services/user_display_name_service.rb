@@ -3,7 +3,6 @@
 # application configuration and the permissions of the current user.
 
 class UserDisplayNameService
-
   # @param [AppConfiguration] app_configuration
   # @param [User,nil] current_user
   def initialize(app_configuration, current_user = nil)
@@ -34,6 +33,7 @@ class UserDisplayNameService
   # @return [String,nil]
   def display_name!(user)
     return nil if user.nil?
+
     [user.first_name, last_name(user)].join(' ')
   end
 
@@ -59,7 +59,8 @@ class UserDisplayNameService
   # @return [String]
   def last_name!(user)
     return nil if user&.last_name.nil?
-    can_see_fullname_of?(user) ? user.last_name : self.class.initial(user.last_name)
+
+    can_see_fullname_of?(user) ? user.last_name : initial(user.last_name)
   end
 
   def restricted?
@@ -72,6 +73,7 @@ class UserDisplayNameService
   # @return [Boolean]
   def can_see_fullname_of?(user)
     return true unless restricted?
+
     user.admin? || (user == @current_user)
   end
 
@@ -81,7 +83,7 @@ class UserDisplayNameService
 
   # @param [String] name
   # @return [String]
-  def self.initial(name)
-    name[0] + '.'
+  def initial(name)
+    "#{name[0]}."
   end
 end

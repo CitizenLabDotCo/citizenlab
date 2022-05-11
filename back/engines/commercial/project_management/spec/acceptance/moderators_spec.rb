@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Moderators' do
-
   explanation 'Moderators can manage (e.g. changing phases, ideas) only certain projects.'
 
   before { header 'Content-Type', 'application/json' }
@@ -147,41 +146,41 @@ resource 'Moderators' do
       let(:project_id) { @project.id }
       let(:search) { 'jo' }
       let(:other_project) { create(:project) }
-      let!(:u1) { 
-        create(:user, 
-          first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com', 
-          roles: [{'type' => 'project_moderator', 'project_id' => @project.id}]) 
-      }
-      let!(:u2) { 
-        create(:user, 
-          first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com', 
-          roles: [{'type' => 'project_moderator', 'project_id' => other_project.id}]) 
-      }
-      let!(:u3) { 
-        create(:user, 
-          first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com', 
-          roles: []) 
-      }
-      let!(:u4) { 
-        create(:user, 
-          first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com', 
-          roles: [{'type' => 'project_moderator', 'project_id' => @project.id}, {'type' => 'project_moderator', 'project_id' => other_project.id}]) 
-      }
-      let!(:u5) { 
-        create(:user, 
-          first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com', 
-          roles: [{'type' => 'project_moderator', 'project_id' => @project.id}]) 
-      }
+      let!(:u1) do
+        create(:user,
+          first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
+      end
+      let!(:u2) do
+        create(:user,
+          first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => other_project.id }])
+      end
+      let!(:u3) do
+        create(:user,
+          first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com',
+          roles: [])
+      end
+      let!(:u4) do
+        create(:user,
+          first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }, { 'type' => 'project_moderator', 'project_id' => other_project.id }])
+      end
+      let!(:u5) do
+        create(:user,
+          first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
+      end
 
       example_request 'Search for users and whether or not they are moderator of the project' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to be >= 4
-        expect(json_response[:data].select{ |d| d[:id] == u1.id }.first.dig(:attributes, :is_moderator)).to be true
-        expect(json_response[:data].select{ |d| d[:id] == u2.id }.first.dig(:attributes, :is_moderator)).to be false
-        expect(json_response[:data].select{ |d| d[:id] == u3.id }.first.dig(:attributes, :is_moderator)).to be false
-        expect(json_response[:data].select{ |d| d[:id] == u4.id }.first.dig(:attributes, :is_moderator)).to be true
-        expect(json_response[:data].select{ |d| d[:id] == u5.id }.empty?).to be true
+        expect(json_response[:data].find { |d| d[:id] == u1.id }.dig(:attributes, :is_moderator)).to be true
+        expect(json_response[:data].find { |d| d[:id] == u2.id }.dig(:attributes, :is_moderator)).to be false
+        expect(json_response[:data].find { |d| d[:id] == u3.id }.dig(:attributes, :is_moderator)).to be false
+        expect(json_response[:data].find { |d| d[:id] == u4.id }.dig(:attributes, :is_moderator)).to be true
+        expect(json_response[:data].select { |d| d[:id] == u5.id }.empty?).to be true
       end
     end
   end

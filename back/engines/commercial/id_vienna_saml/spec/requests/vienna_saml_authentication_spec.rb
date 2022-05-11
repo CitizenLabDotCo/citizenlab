@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-describe 'Vienna SAML authentication' do
+describe 'Vienna SAML authentication', type: :request do
   def enable_vienna_login
     configuration = AppConfiguration.instance
     settings = configuration.settings

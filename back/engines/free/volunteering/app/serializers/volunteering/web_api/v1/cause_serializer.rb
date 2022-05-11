@@ -4,13 +4,13 @@ module Volunteering
 
     belongs_to :participation_context, polymorphic: true
 
-    has_one :user_volunteer, if: Proc.new { |object, params|
+    has_one :user_volunteer, if: proc { |object, params|
       signed_in? object, params
     }, record_type: :volunteer, serializer: WebApi::V1::VolunteerSerializer do |object, params|
       cached_user_volunteer object, params
     end
 
-    def self.cached_user_volunteer object, params
+    def self.cached_user_volunteer(object, params)
       if params[:vbci]
         params.dig(:vbci, object.id)
       else
@@ -18,8 +18,8 @@ module Volunteering
        end
     end
 
-    attribute :image, if: Proc.new {|object| object.image} do |object|
-      object.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    attribute :image, if: proc { |object| object.image } do |object|
+      object.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
     end
   end
 end

@@ -37,7 +37,7 @@ module AdminApi
         # This uses default model serialization
         render json: @user, status: :created
       else
-        render json: {errors: @user.errors.details}, status: :unprocessable_entity
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -49,7 +49,7 @@ module AdminApi
         # This uses default model serialization
         render json: @user, status: :ok
       else
-        render json: {errors: @user.errors.details}, status: :unprocessable_entity
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
       end
     end
 
@@ -66,13 +66,13 @@ module AdminApi
       simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
       array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
 
-      [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+      [*simple_keys, array_keys.index_with { |_k| [] }]
     end
 
     def user_params
       params
         .require(:user)
-        .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: [:type, :project_id], custom_field_values: allowed_custom_field_keys)
+        .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: %i[type project_id], custom_field_values: allowed_custom_field_keys)
     end
   end
 end

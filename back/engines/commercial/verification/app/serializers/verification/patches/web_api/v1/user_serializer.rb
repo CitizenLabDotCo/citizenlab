@@ -5,7 +5,7 @@ module Verification
         module UserSerializer
           def self.included(base)
             base.class_eval do
-              attribute :verified, if: Proc.new {|object, params|
+              attribute :verified, if: proc { |object, params|
                 view_private_attributes? object, params
               }
             end

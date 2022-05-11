@@ -38,7 +38,10 @@ describe IdeaPolicy do
     end
 
     context 'for a user who did not complete registration who is the idea author' do
-      let(:user) { idea.author.update(registration_completed_at: nil); idea.author }
+      let :user do
+        idea.author.update(registration_completed_at: nil)
+        idea.author
+      end
 
       it { is_expected.to     permit(:show)    }
       it { is_expected.not_to permit(:create)  }

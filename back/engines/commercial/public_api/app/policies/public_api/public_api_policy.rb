@@ -19,6 +19,5 @@ module PublicApi
         scope
       end
     end
-
   end
 end

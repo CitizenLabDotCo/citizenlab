@@ -11,7 +11,7 @@ module EmailCampaigns
     end
 
     attribute :campaign_type_description_multiloc do |object|
-    	object.campaign_type.safe_constantize&.campaign_description_multiloc
+      object.campaign_type.safe_constantize&.campaign_description_multiloc
     end
   end
 end

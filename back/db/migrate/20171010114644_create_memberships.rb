@@ -4,7 +4,7 @@ class CreateMemberships < ActiveRecord::Migration[5.1]
       t.references :group, foreign_key: true, type: :uuid, index: true
       t.references :user, foreign_key: true, type: :uuid, index: true
 
-      t.index [:group_id, :user_id], unique: true
+      t.index %i[group_id user_id], unique: true
     end
   end
 end

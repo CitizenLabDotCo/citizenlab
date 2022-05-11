@@ -10,6 +10,6 @@ module TenantSchema
       @names = [SCHEMA_URL]
     end
 
-    JSON::Validator.register_validator(self.new)
+    JSON::Validator.register_validator(new)
   end
 end

@@ -8,6 +8,6 @@ class CreateModerationStatuses < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :moderation_statuses, [:moderatable_type, :moderatable_id], unique: true, name: :moderation_statuses_moderatable
+    add_index :moderation_statuses, %i[moderatable_type moderatable_id], unique: true, name: :moderation_statuses_moderatable
   end
 end

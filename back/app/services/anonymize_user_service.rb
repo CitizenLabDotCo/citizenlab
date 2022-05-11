@@ -1,5 +1,4 @@
 class AnonymizeUserService
-
   # Commented out so we can restore later. Feel free to delete if
   # this is still here after May 2022.
 
@@ -108,7 +107,7 @@ class AnonymizeUserService
     end
     custom_field_values['gender'] ||= User::GENDERS.sample
     custom_field_values['birthyear'] ||= random_birthyear
-    custom_field_values['education'] ||= (rand(7)+2).to_s
+    custom_field_values['education'] ||= rand(2..8).to_s
     custom_field_values
   end
 
@@ -134,7 +133,7 @@ class AnonymizeUserService
 
   # Weighted random sampling [Efraimidis, Spirakis - 2006]
   def weighted_choice(weighted)
-    weighted.max_by { |_, weight| rand ** (1.0 / weight) }.first
+    weighted.max_by { |_, weight| rand**(1.0 / weight) }.first
   end
 
   def random_first_name(gender)
@@ -149,7 +148,7 @@ class AnonymizeUserService
     end['first_name']
   end
 
-  def random_last_name(locale)
+  def random_last_name(_locale)
     @last_names.sample['last_name']
   end
 
@@ -165,7 +164,7 @@ class AnonymizeUserService
     else
       { 'avatar' => random_initials_avatar_base64(first_name, last_name) }
     end
-  rescue Exception => e
+  rescue StandardError => e
     ErrorReporter.report e
     {}
   end
@@ -174,9 +173,10 @@ class AnonymizeUserService
     name_param = I18n.transliterate "#{first_name}+#{last_name}" # Convert to all ASCII chars
     uri = URI "https://eu.ui-avatars.com/api/?name=#{name_param}"
     res = Net::HTTP.get_response uri
-    if !res.is_a?(Net::HTTPSuccess)
+    unless res.is_a?(Net::HTTPSuccess)
       raise "API request to eu.ui-avatars.com failed. Code: #{res.code}. Body: #{res.body}."
     end
+
     "data:image/png;base64,#{Base64.encode64 res.body}"
   end
 
@@ -211,7 +211,7 @@ class AnonymizeUserService
     end.to_h
   end
 
-  def random_registration user: nil, start_at: (Time.now - 1.month)
+  def random_registration(user: nil, start_at: (Time.now - 1.month))
     if user
       user[:registration_completed_at]
     else

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Graphql ideas' do
   let(:context) { {} }
   let(:variables) { {} }
-  let(:result) {
+  let(:result) do
     res = AdminApi::Schema.execute(
       query_string,
       context: context,
@@ -13,10 +13,11 @@ RSpec.describe 'Graphql ideas' do
       pp res
     end
     res
-  }
+  end
 
   describe 'publicIdeas' do
-    let(:query_string) { %|
+    let(:query_string) do
+      %|
       query publicIdeas($projects: [ID!], $topics: [ID!], $sort: IdeaSorting) {
         publicIdeas(first: 5, projects: $projects, topics: $topics, sort: $sort) {
           edges {
@@ -43,8 +44,7 @@ RSpec.describe 'Graphql ideas' do
           }
         }
       }
-    |}
-
+    | end
 
     it 'returns all public ideas with fields' do
       create_list(:idea, 5)
@@ -52,12 +52,12 @@ RSpec.describe 'Graphql ideas' do
       response = result
       edges = response.dig('data', 'publicIdeas', 'edges')
       expect(edges&.size).to eq 5
-      expect(edges&.first&.dig('node','id')).to be_present
-      expect(edges&.first&.dig('node','href')).to be_present
-      expect(edges&.first&.dig('node','titleMultiloc')&.values&.compact&.size).to be >= 1
-      expect(edges&.first&.dig('node','upvotesCount')).to be_present
-      expect(edges&.first&.dig('node','downvotesCount')).to be_present
-      expect(edges&.first&.dig('node','commentsCount')).to be_present
+      expect(edges&.first&.dig('node', 'id')).to be_present
+      expect(edges&.first&.dig('node', 'href')).to be_present
+      expect(edges&.first&.dig('node', 'titleMultiloc')&.values&.compact&.size).to be >= 1
+      expect(edges&.first&.dig('node', 'upvotesCount')).to be_present
+      expect(edges&.first&.dig('node', 'downvotesCount')).to be_present
+      expect(edges&.first&.dig('node', 'commentsCount')).to be_present
     end
 
     context do
@@ -66,7 +66,7 @@ RSpec.describe 'Graphql ideas' do
       let!(:i1) { create(:idea, project: p1) }
       let!(:i2) { create(:idea, project: p2) }
       let!(:i3) { create(:idea, project: p1) }
-      let(:variables) { {projects: [p1.id]} }
+      let(:variables) { { projects: [p1.id] } }
 
       it 'returns public ideas in projects' do
         response = result
@@ -83,8 +83,8 @@ RSpec.describe 'Graphql ideas' do
       let!(:i1) { create(:idea, topics: [t1], project: project) }
       let!(:i2) { create(:idea, topics: [t2], project: project) }
       let!(:i3) { create(:idea, topics: [t1], project: project) }
-      let!(:i4) { create(:idea, topics: [t3,t2], project: project) }
-      let(:variables) { {topics: [t1.id, t3.id]} }
+      let!(:i4) { create(:idea, topics: [t3, t2], project: project) }
+      let(:variables) { { topics: [t1.id, t3.id] } }
 
       it 'returns public ideas in topics' do
         response = result
@@ -92,6 +92,5 @@ RSpec.describe 'Graphql ideas' do
         expect(edges&.size).to eq 3
       end
     end
-
   end
 end

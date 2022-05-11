@@ -12,44 +12,44 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   context 'for a mortal user' do
     let(:user) { create(:user) }
 
-      it { should_not permit(:show)    }
-      it { should_not permit(:upsert_by_code)  }
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:upsert_by_code) }
 
-      it 'should not index the custom field' do
-        expect(scope.resolve.size).to eq 0
-      end
+    it 'should not index the custom field' do
+      expect(scope.resolve.size).to eq 0
+    end
   end
 
   context "for a moderator of the field's project" do
     let(:user) { create(:project_moderator, projects: [project]) }
 
-      it { should     permit(:show)    }
-      it { should     permit(:upsert_by_code)  }
+    it { is_expected.to     permit(:show) }
+    it { is_expected.to     permit(:upsert_by_code) }
 
-      it 'should index the custom field' do
-        expect(scope.resolve.size).to eq 1
-      end
+    it 'should index the custom field' do
+      expect(scope.resolve.size).to eq 1
+    end
   end
 
   context 'for a moderator of another project' do
     let(:user) { create(:project_moderator) }
 
-      it { should_not permit(:show)    }
-      it { should_not permit(:upsert_by_code)  }
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:upsert_by_code) }
 
-      it 'should not index the custom field' do
-        expect(scope.resolve.size).to eq 0
-      end
+    it 'should not index the custom field' do
+      expect(scope.resolve.size).to eq 0
+    end
   end
 
   context 'for an admin' do
     let(:user) { create(:admin) }
 
-      it { should     permit(:show)    }
-      it { should     permit(:upsert_by_code)  }
+    it { is_expected.to     permit(:show) }
+    it { is_expected.to     permit(:upsert_by_code) }
 
-      it 'should index the custom field' do
-        expect(scope.resolve.size).to eq 1
-      end
+    it 'should index the custom field' do
+      expect(scope.resolve.size).to eq 1
+    end
   end
 end

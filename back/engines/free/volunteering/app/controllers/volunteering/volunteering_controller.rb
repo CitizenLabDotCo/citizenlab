@@ -1,4 +1,4 @@
 module Volunteering
-	class VolunteeringController < ::ApplicationController
-	end
+  class VolunteeringController < ::ApplicationController
+  end
 end

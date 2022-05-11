@@ -152,7 +152,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def logo_url
-    @logo_url ||= app_configuration.logo.versions.yield_self do |versions|
+    @logo_url ||= app_configuration.logo.versions.then do |versions|
       versions[:medium].url || versions[:small].url || versions[:large].url || ''
     end
   end
@@ -168,7 +168,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def text_direction
-    locale =~ /^ar.*$/ ? 'rtl' : 'ltr'
+    /^ar.*$/.match?(locale) ? 'rtl' : 'ltr'
   end
 
   def to_deep_struct(obj)

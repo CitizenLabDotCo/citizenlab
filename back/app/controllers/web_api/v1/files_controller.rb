@@ -82,7 +82,7 @@ class WebApi::V1::FilesController < ApplicationController
     end
   end
 
-  # todo: move this to a service?
+  # TODO: move this to a service?
   #
   # @param [String] container_type
   # @param [Class] container_class

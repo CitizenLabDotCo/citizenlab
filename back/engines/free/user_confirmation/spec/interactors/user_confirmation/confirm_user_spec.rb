@@ -49,19 +49,18 @@ RSpec.describe UserConfirmation::ConfirmUser do
     end
   end
 
-   context 'when the code has expired' do
-    before do
-      user.update(email_confirmation_code_sent_at: 1.week.ago)
+  context 'when the code has expired' do
+   before do
+     user.update(email_confirmation_code_sent_at: 1.week.ago)
 
-      context[:user] = user
-      context[:code] = user.email_confirmation_code
-    end
+     context[:user] = user
+     context[:code] = user.email_confirmation_code
+   end
 
-    it 'returns a code invalid error' do
-      expect(result.errors.details).to eq(code: [{ error: :expired }])
-    end
-  end
-
+   it 'returns a code invalid error' do
+     expect(result.errors.details).to eq(code: [{ error: :expired }])
+   end
+ end
 
   context 'when the code has expired and is invalid' do
     before do

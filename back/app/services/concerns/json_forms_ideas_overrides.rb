@@ -1,13 +1,12 @@
 module JsonFormsIdeasOverrides
-
-  def custom_form_to_ui_schema(fields, locale='en')
+  def custom_form_to_ui_schema(fields, locale = 'en', &block)
     project = fields.first.resource.project
     input_term = project.process_type == 'continuous' ? project.input_term : TimelineService.new.current_phase(project)&.input_term || 'idea'
     {
       type: 'Categorization',
       options: {
         formId: 'idea-form',
-        inputTerm: input_term,
+        inputTerm: input_term
       },
       elements: drop_empty_categories([
         {
@@ -17,7 +16,7 @@ module JsonFormsIdeasOverrides
           elements: [
             yield(fields.find { |f| f.code == 'title_multiloc' }),
             yield(fields.find { |f| f.code == 'author_id' }),
-            yield(fields.find { |f| f.code == 'body_multiloc' }),
+            yield(fields.find { |f| f.code == 'body_multiloc' })
           ].compact
         },
         {
@@ -44,15 +43,13 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
-          elements: fields.reject(&:built_in?).map do |f|
-            yield f, '#/properties/custom_field_values/properties/'
-          end
+          elements: fields.reject(&:built_in?).map(&block)
         }
       ].compact)
     }
   end
 
-  def custom_form_to_json_schema(fields, locale='en')
+  def custom_form_to_json_schema(fields, locale = 'en')
     {
       type: 'object',
       additionalProperties: false,
@@ -94,65 +91,59 @@ module JsonFormsIdeasOverrides
     end
   end
 
-  def custom_form_title_multiloc_to_json_schema_field(field, locale)
+  def custom_form_title_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string',
             minLength: 10,
             maxLength: 80
           }
-        ]
-      end.to_h
+      end
     }
   end
 
-  def custom_form_title_multiloc_to_ui_schema_field(field, locale, previousScope)
+  def custom_form_title_multiloc_to_ui_schema_field(field, _locale, previous_scope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         {
           type: 'Control',
-          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
+          scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: locale, trim_on_blur: true, description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
   end
 
-  def custom_form_body_multiloc_to_json_schema_field(field, locale)
+  def custom_form_body_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
-        [
-          locale,
-          {
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
             type: 'string',
-            minLength: 40,
+            minLength: 40
           }
-        ]
-      end.to_h
+      end
     }
   end
 
-  def custom_form_body_multiloc_to_ui_schema_field(field, locale, previousScope)
+  def custom_form_body_multiloc_to_ui_schema_field(field, _locale, previous_scope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |locale|
         {
           type: 'Control',
           locale: locale,
-          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
+          scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: locale, render: 'WYSIWYG', description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -163,9 +154,9 @@ module JsonFormsIdeasOverrides
     {
       type: 'array',
       uniqueItems: true,
-      minItems: (field.enabled && field.required) ? 1 : 0,
+      minItems: field.enabled && field.required ? 1 : 0,
       items: {
-          type: 'string',
+          type: 'string'
       }.tap do |items|
         unless topics.empty?
           items[:oneOf] = topics.map do |topic|
@@ -175,32 +166,33 @@ module JsonFormsIdeasOverrides
             }
           end
         end
-      end,
+      end
     }
   end
 
-  def custom_form_location_point_geojson_to_ui_schema_field(field, locale)
+  def custom_form_location_point_geojson_to_ui_schema_field(_field, _locale)
     {}
   end
 
   # Some custom fields have to exist but are only shown to admins, like the author picker when the feature is enabled and the budget fields in pb contexts. (not to confuse with the proposed_budget visible to everyone, when enabled, whatever the feature flag, which is weird, but seems to be the expected behaviour).
   # A good solution would be to add this info to the CustomField model. Like adminOnly and a feature name to enable or disable automatically, but this would have to be done right to build the foundations of a permission system informing who can modify the field, access the data filled in through the field, or fill the field in themselves, and that was out of scope.
   def custom_form_allowed_fields(configuration, fields, current_user)
-    fields.filter { |f|
-      f.code != 'author_id' && f.code != 'budget' || (
-        f.code == 'author_id'&&
+    fields.filter do |f|
+      (f.code != 'author_id' && f.code != 'budget') || (
+        f.code == 'author_id' &&
         configuration.feature_activated?('idea_author_change') &&
-        current_user != nil &&
+        !current_user.nil? &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user)
       ) || (
-        f.code == 'budget' &&
+        (f.code == 'budget' &&
         configuration.feature_activated?('participatory_budgeting') &&
-        current_user != nil &&
+        !current_user.nil? &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user) && (
           f.resource.project&.process_type == 'continuous' &&
           f.resource.project&.participation_method == 'budgeting'
-        ) || (
+        )) || (
           f.resource.project&.process_type == 'timeline' &&
-          f.resource.project&.phases.any? { |p| p.participation_method == 'budgeting'}) )}
+          f.resource.project&.phases&.any? { |p| p.participation_method == 'budgeting' }))
+    end
   end
 end

@@ -1,5 +1,4 @@
 class CommentVotePolicy < ApplicationPolicy
-
   class Scope
     attr_reader :user, :scope
 
@@ -52,8 +51,8 @@ class CommentVotePolicy < ApplicationPolicy
 
   private
 
-  def denied_for_initiative_reason user
-    :not_signed_in if !user
+  def denied_for_initiative_reason(user)
+    :not_signed_in unless user
   end
 end
 

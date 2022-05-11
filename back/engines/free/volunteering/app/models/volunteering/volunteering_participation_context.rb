@@ -11,7 +11,7 @@ module Volunteering::VolunteeringParticipationContext
   end
 
   def volunteering?
-    self.participation_method == 'volunteering'
+    participation_method == 'volunteering'
   end
 
   private

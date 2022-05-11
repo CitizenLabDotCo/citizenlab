@@ -6,7 +6,6 @@ describe PermissionsService do
   let(:service) { described_class.new }
 
   before(:all) do
-    # rubocop:disable RSpec/BeforeAfterAll
     @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
 
     # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs

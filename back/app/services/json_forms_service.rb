@@ -9,7 +9,7 @@ class JsonFormsService
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields, current_user)
-    resource_types = fields.map{|f| f.resource_type}.uniq
+    resource_types = fields.map(&:resource_type).uniq
     raise "Can't render a UI schema for fields belonging to different resource types" unless resource_types.size <= 1
     return nil if resource_types.empty?
 
@@ -22,9 +22,9 @@ class JsonFormsService
 
   private
 
-  def allowed_fields configuration, fields, current_user
+  def allowed_fields(configuration, fields, current_user)
     override_method = "#{fields.first.resource_type.underscore}_allowed_fields"
-    if self.respond_to?(override_method, true)
+    if respond_to?(override_method, true)
       send(override_method, configuration, fields, current_user)
     else
       fields
@@ -34,9 +34,9 @@ class JsonFormsService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_json_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').each_with_object({}) do |locale, obj|
+    configuration.settings('core', 'locales').index_with do |locale|
       override_method = "#{fields.first.resource_type.underscore}_to_json_schema"
-      obj[locale] = if respond_to?(override_method, true)
+      if respond_to?(override_method, true)
         send(override_method, fields, locale)
       else
         fields_to_json_schema(fields, locale)
@@ -44,7 +44,7 @@ class JsonFormsService
     end
   end
 
-  def fields_to_json_schema(fields, locale='en')
+  def fields_to_json_schema(fields, locale = 'en')
     {
       type: 'object',
       additionalProperties: false,
@@ -65,20 +65,20 @@ class JsonFormsService
   # @param [AppConfiguration] configuration
   # @return [Hash{String => Object}]
   def fields_to_ui_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').inject({}) do |memo, locale|
-      memo[locale] = fields_to_ui_schema(fields, locale)
-      memo
+    configuration.settings('core', 'locales').index_with do |locale|
+      fields_to_ui_schema(fields, locale)
     end
   end
 
-  def fields_to_ui_schema(fields, locale='en')
-    send("#{fields.first.resource_type.underscore}_to_ui_schema", fields, locale) do |field, previousScope|
-      next nil if (!field || !field.enabled || field.hidden)
+  def fields_to_ui_schema(fields, locale = 'en')
+    send("#{fields.first.resource_type.underscore}_to_ui_schema", fields, locale) do |field, previous_scope|
+      next nil if !field || !field.enabled || field.hidden
+
       override_method = "#{fields.first.resource_type.underscore}_#{field.code}_to_ui_schema_field"
-      if field.code && self.respond_to?(override_method, true)
-        send(override_method, field, locale, previousScope)
+      if field.code && respond_to?(override_method, true)
+        send(override_method, field, locale, previous_scope)
       else
-        send("#{field.input_type}_to_ui_schema_field", field, locale, previousScope)
+        send("#{field.input_type}_to_ui_schema_field", field, locale, previous_scope)
       end
     end
   end
@@ -95,20 +95,20 @@ class JsonFormsService
     end
   end
 
-  def base_ui_schema_field(field, locale, previousScope = nil)
+  def base_ui_schema_field(field, locale, previous_scope = nil)
     {
       type: 'Control',
-      scope: "#{previousScope || '#/properties/'}#{field.key}",
+      scope: "#{previous_scope || '#/properties/'}#{field.key}",
       label: handle_title(field, locale),
-      options: { description: handle_description(field, locale)},
+      options: { description: handle_description(field, locale) }
     }
   end
 
-# *** text ***
+  # *** text ***
 
-  def text_to_ui_schema_field(field, locale, previousScope)
+  def text_to_ui_schema_field(field, locale, previous_scope)
     {
-      **base_ui_schema_field(field, locale, previousScope),
+      **base_ui_schema_field(field, locale, previous_scope),
       options: {
         **base_ui_schema_field(field, locale)[:options],
         transform: 'trim_on_blur'
@@ -116,7 +116,7 @@ class JsonFormsService
     }
   end
 
-  def text_to_json_schema_field(field, locale)
+  def text_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }
@@ -124,11 +124,11 @@ class JsonFormsService
 
   # *** number ***
 
-  def number_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def number_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
-  def number_to_json_schema_field(field, locale)
+  def number_to_json_schema_field(_field, _locale)
     {
       type: 'number'
     }
@@ -136,9 +136,9 @@ class JsonFormsService
 
   # *** multiline_text ***
 
-  def multiline_text_to_ui_schema_field(field, locale, previousScope)
+  def multiline_text_to_ui_schema_field(field, locale, previous_scope)
     {
-      **base_ui_schema_field(field, locale, previousScope),
+      **base_ui_schema_field(field, locale, previous_scope),
       options: {
         **base_ui_schema_field(field, locale)[:options],
         textarea: true,
@@ -147,7 +147,7 @@ class JsonFormsService
     }
   end
 
-  def multiline_text_to_json_schema_field(field, locale)
+  def multiline_text_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }
@@ -155,9 +155,9 @@ class JsonFormsService
 
   # *** html ***
 
-  def html_to_ui_schema_field(field, locale, previousScope)
+  def html_to_ui_schema_field(field, locale, previous_scope)
     {
-      **base_ui_schema_field(field, locale, previousScope),
+      **base_ui_schema_field(field, locale, previous_scope),
       options: {
         **base_ui_schema_field(field, locale)[:options],
         render: 'WYSIWYG'
@@ -165,7 +165,7 @@ class JsonFormsService
     }
   end
 
-  def html_to_json_schema_field(field, locale)
+  def html_to_json_schema_field(_field, _locale)
     {
       type: 'string'
     }
@@ -173,31 +173,28 @@ class JsonFormsService
 
   # *** text_multiloc ***
 
-  def text_multiloc_to_json_schema_field field, locale
+  def text_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
-        [
-          locale,
-          {
-            type: 'string',
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
+            type: 'string'
           }
-        ]
-      end.to_h
+      end
     }
   end
 
-  def text_multiloc_to_ui_schema_field field, locale, previousScope
+  def text_multiloc_to_ui_schema_field(field, locale, previous_scope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
-          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
+          scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: map_locale, trim_on_blur: true, description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -205,31 +202,28 @@ class JsonFormsService
 
   # *** multiline_text_multiloc ***
 
-  def multiline_text_multiloc_to_json_schema_field field, locale
+  def multiline_text_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
-        [
-          locale,
-          {
-            type: 'string',
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
+            type: 'string'
           }
-        ]
-      end.to_h
+      end
     }
   end
 
-  def multiline_text_multiloc_to_ui_schema_field field, locale, previousScope
+  def multiline_text_multiloc_to_ui_schema_field(field, locale, previous_scope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
-          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
+          scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: map_locale, trim_on_blur: true, textarea: true, description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -237,31 +231,28 @@ class JsonFormsService
 
   # *** html_multiloc ***
 
-  def html_multiloc_to_json_schema_field field, locale
+  def html_multiloc_to_json_schema_field(_field, _locale)
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core','locales').map do |locale|
-        [
-          locale,
-          {
-            type: 'string',
+      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+        {
+            type: 'string'
           }
-        ]
-      end.to_h
+      end
     }
   end
 
-  def html_multiloc_to_ui_schema_field field, locale, previousScope
+  def html_multiloc_to_ui_schema_field(field, locale, previous_scope)
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core','locales').map do |map_locale|
+      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
-          scope: "#{previousScope || '#/properties/'}#{field.key}/properties/#{locale}",
+          scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
           options: { locale: map_locale, trim_on_blur: true, render: 'WYSIWYG', description: handle_description(field, locale) },
-          label: handle_title(field, locale),
+          label: handle_title(field, locale)
         }
       end
     }
@@ -269,13 +260,13 @@ class JsonFormsService
 
   # *** select ***
 
-  def select_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def select_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
   def select_to_json_schema_field(field, locale)
     {
-      type: 'string',
+      type: 'string'
     }.tap do |json|
       options = field.custom_field_options.order(:ordering)
       unless options.empty?
@@ -291,17 +282,17 @@ class JsonFormsService
 
   # *** multiselect ***
 
-  def multiselect_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def multiselect_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
   def multiselect_to_json_schema_field(field, locale)
     {
       type: 'array',
       uniqueItems: true,
-      minItems: (field.enabled && field.required) ? 1 : 0,
+      minItems: field.enabled && field.required ? 1 : 0,
       items: {
-          type: 'string',
+          type: 'string'
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?
@@ -312,17 +303,17 @@ class JsonFormsService
             }
           end
         end
-      end,
+      end
     }
   end
 
   # *** checkbox ***
 
-  def checkbox_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def checkbox_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
-  def checkbox_to_json_schema_field(field, locale)
+  def checkbox_to_json_schema_field(_field, _locale)
     {
       type: 'boolean'
     }
@@ -330,11 +321,11 @@ class JsonFormsService
 
   # *** date ***
 
-  def date_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def date_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
-  def date_to_json_schema_field(field, locale)
+  def date_to_json_schema_field(_field, _locale)
     {
       type: 'string',
       format: 'date'
@@ -343,29 +334,29 @@ class JsonFormsService
 
   # *** files ***
 
-  def image_files_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def image_files_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
-  def image_files_to_json_schema_field(field, locale)
+  def image_files_to_json_schema_field(_field, _locale)
     {
       type: 'array',
       items: {
         type: 'object',
         properties: {
           image: {
-            type: 'string',
+            type: 'string'
           }
         }
       }
     }
   end
 
-  def files_to_ui_schema_field(field, locale, previousScope)
-    base_ui_schema_field(field, locale, previousScope)
+  def files_to_ui_schema_field(field, locale, previous_scope)
+    base_ui_schema_field(field, locale, previous_scope)
   end
 
-  def files_to_json_schema_field(field, locale)
+  def files_to_json_schema_field(_field, _locale)
     {
       type: 'array',
       items: {
@@ -390,28 +381,27 @@ class JsonFormsService
     }
   end
 
-  def point_to_ui_schema_field(field, locale)
+  def point_to_ui_schema_field(_field, _locale)
     nil
   end
 
-  def point_to_json_schema_field(field, locale)
+  def point_to_json_schema_field(_field, _locale)
     {
-      required: ['type', 'coordinates'],
+      required: %w[type coordinates],
       type: 'object',
       properties: {
         type: {
           type: 'string',
-          enum: ['Point'],
+          enum: ['Point']
         },
         coordinates: {
           type: 'array',
           minItems: 2,
           items: {
-            type: 'number',
-          },
-        },
+            type: 'number'
+          }
+        }
       }
     }
   end
-
 end

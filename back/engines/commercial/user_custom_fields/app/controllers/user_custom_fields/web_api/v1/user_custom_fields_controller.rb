@@ -89,7 +89,7 @@ module UserCustomFields
       elsif @custom_field.errors
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       else
-        head 500
+        head :internal_server_error
       end
     end
 

@@ -53,11 +53,11 @@ class Permission < ApplicationRecord
     DENIED_REASONS
   end
 
-  def granted_to? user
+  def granted_to?(user)
     !denied_reason user
   end
 
-  def denied_reason user
+  def denied_reason(user)
     return if permitted_by == 'everyone'
     return if user&.admin?
     return if moderator? user

@@ -13,7 +13,7 @@ module EmailCampaigns
       deliveries.exists?
     end
 
-    def last_delivery_for_recipient user
+    def last_delivery_for_recipient(user)
       deliveries
         .where(user: user)
         .order(sent_at: :desc)
@@ -21,7 +21,7 @@ module EmailCampaigns
         &.sent_at
     end
 
-    def save_delivery command
+    def save_delivery(command)
       deliveries.create(
         delivery_status: 'sent',
         user: command[:recipient],

@@ -1,6 +1,5 @@
 module Insights
   class ZeroshotClassificationTasksFinder
-
     attr_reader :categories, :inputs
 
     def initialize(categories, inputs: nil)

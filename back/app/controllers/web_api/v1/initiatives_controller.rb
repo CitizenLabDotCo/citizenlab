@@ -118,7 +118,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     initiative_params = permitted_attributes(@initiative)
     @initiative.assign_attributes(initiative_params)
-    if initiative_params.keys.include?('header_bg') && initiative_params['header_bg'].nil?
+    if initiative_params.key?('header_bg') && initiative_params['header_bg'].nil?
       # setting the header image attribute to nil will not remove the header image
       @initiative.remove_header_bg!
     end
@@ -162,7 +162,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       service.after_destroy(initiative, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

@@ -1,5 +1,5 @@
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
-  before_action :set_custom_form, only: [:schema, :json_forms_schema]
+  before_action :set_custom_form, only: %i[schema json_forms_schema]
   skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user

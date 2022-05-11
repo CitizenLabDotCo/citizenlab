@@ -1,15 +1,14 @@
 class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
-
   @@multiloc_service = MultilocService.new
 
-  before_action :render_no_data, only: [
-    :ideas_by_time,
-    :ideas_by_time_cumulative,
+  before_action :render_no_data, only: %i[
+    ideas_by_time
+    ideas_by_time_cumulative
   ]
 
-  before_action :render_no_data_as_xlsx, only: [
-    :ideas_by_time_as_xlsx,
-    :ideas_by_time_cumulative_as_xlsx,
+  before_action :render_no_data_as_xlsx, only: %i[
+    ideas_by_time_as_xlsx
+    ideas_by_time_cumulative_as_xlsx
   ]
 
   def ideas_count
@@ -34,8 +33,10 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_topic
     serie = ideas_by_topic_serie
-    topics = Topic.pluck :id, :title_multiloc
-    render json: {series: {ideas: serie}, topics: topics.map{|id, title_multiloc| [id, {title_multiloc: title_multiloc}]}.to_h}
+    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+      [id, { title_multiloc: title_multiloc }]
+    end
+    render json: { series: { ideas: serie }, topics: topics.to_h }
   end
 
   def ideas_by_topic_as_xlsx
@@ -44,13 +45,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
 
     res = []
-    serie.each {|topic_id, count|
+    serie.each do |topic_id, count|
       res.push({
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc),
         'topic_id' => topic_id,
         'ideas' => count
       })
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'topic'
 
@@ -71,20 +72,20 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, projects: projects.map { |t| [t.id, t.attributes.except('id')] }.to_h }
   end
 
   def ideas_by_project_as_xlsx
     serie = ideas_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
 
-    res = serie.map {|project_id, count|
+    res = serie.map do |project_id, count|
       {
         'project' => @@multiloc_service.t(projects.find(project_id).title_multiloc),
         'project_id' => project_id,
         'ideas' => count
       }
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'project'
 
@@ -106,18 +107,18 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_area
     serie = ideas_by_area_serie
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {ideas: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
   end
 
   def ideas_by_area_as_xlsx
     res = []
-    ideas_by_area_serie.each {|area_id, count|
+    ideas_by_area_serie.each do |area_id, count|
       res.push({
         'area' => @@multiloc_service.t(Area.find(area_id).title_multiloc),
         'area_id' => area_id,
         'ideas' => count
       })
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'area'
 
@@ -138,18 +139,18 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_status
     serie = ideas_by_status_serie
     idea_statuses = IdeaStatus.all.select(:id, :title_multiloc, :color, :ordering).order(:ordering)
-    render json: {series: {ideas: serie}, idea_status: idea_statuses.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    render json: { series: { ideas: serie }, idea_status: idea_statuses.map { |a| [a.id, a.attributes.except('id')] }.to_h }
   end
 
   def ideas_by_status_as_xlsx
     res = []
-    ideas_by_status_serie.each {|status_id, count|
+    ideas_by_status_serie.each do |status_id, count|
       res.push({
         'status' => @@multiloc_service.t(IdeaStatus.find(status_id).title_multiloc),
         'status_id' => status_id,
         'ideas' => count
       })
-    }
+    end
 
     xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'status'
 
@@ -157,23 +158,23 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_time
-    render json: {series: {ideas: ideas_by_time_serie}}
+    render json: { series: { ideas: ideas_by_time_serie } }
   end
 
   def ideas_by_time_as_xlsx
     name = 'ideas_by_time'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
   end
 
   def ideas_by_time_cumulative
-    render json: {series: {ideas: ideas_by_time_cumulative_serie}}
+    render json: { series: { ideas: ideas_by_time_cumulative_serie } }
   end
 
   def ideas_by_time_cumulative_as_xlsx
     name = 'ideas_by_time_cumulative'
     xlsx = XlsxService.new.generate_time_stats_xlsx ideas_by_time_cumulative_serie, name
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: name + '.xlsx'
+    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: "#{name}.xlsx"
   end
 
   private
@@ -206,13 +207,13 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def render_no_data
     if @no_data
-      render json: {series: {ideas: {}}}
+      render json: { series: { ideas: {} } }
     end
   end
 
   def render_no_data_as_xlsx
     if @no_data
-      render json: {errors: 'no data for this period'}, status: :unprocessable_entity
+      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
     end
   end
 

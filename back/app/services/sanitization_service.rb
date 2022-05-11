@@ -48,7 +48,7 @@ class SanitizationService
   def remove_empty_trailing_tags(html)
     html = remove_hidden_spaces(html)
 
-    Nokogiri::HTML.fragment(html).yield_self do |doc|
+    Nokogiri::HTML.fragment(html).then do |doc|
       return html if doc.errors.any?
 
       while (node = last_structure_node(doc))
@@ -137,12 +137,12 @@ class SanitizationService
     }.freeze
 
     VIDEO_WHITELIST = [
-      %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-\_]*)},
+      %r{\A(?:http(?:s?):)?//(?:www\.)?youtu(?:be\.com/(?:watch\?v=|embed/)|\.be/)([\w\-_]*)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?(?:player\.vimeo\.com/video|vimeo\.com)/(\d+)(?:|/\?)},
-      %r{\A(?:http(?:s?):)?//fast.wistia.net/embed/iframe/([\w\-\_]*)(?:|/\?)},
+      %r{\A(?:http(?:s?):)?//fast.wistia.net/embed/iframe/([\w\-_]*)(?:|/\?)},
       %r{\A(?:http(?:s?):)?//(?:www\.)?dailymotion\.com/embed/video/?(.+)},
       %r{\A(https?://)?media\.videotool\.dk/?\?vn=[\w-]+},
-      %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#\/]+)}
+      %r{\A(https?://)(?:www\.)?dreambroker\.com/channel/([\w-]+)/iframe/([\w\-\#/]+)}
     ].freeze
 
     private_constant :EDITOR_FEATURES, :VIDEO_WHITELIST
@@ -158,6 +158,7 @@ class SanitizationService
 
     def allowed_node?(node)
       return iframe_allowed? && video_whitelisted?(node['src']) if node.name == 'iframe'
+
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
     end

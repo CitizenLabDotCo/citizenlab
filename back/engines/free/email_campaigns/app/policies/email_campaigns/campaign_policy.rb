@@ -13,7 +13,7 @@ module EmailCampaigns
           scope.all
         elsif user&.active? && user.project_moderator?
           projects = Project.where(id: user.moderatable_project_ids)
-          if projects.any?{|p| p.visible_to == 'public'}
+          if projects.any? { |p| p.visible_to == 'public' }
             scope.where(type: EmailCampaigns::Campaigns::Manual.name)
           else
             accessible_group_ids = GroupPolicy::Scope.new(user, Group).resolve.ids
@@ -22,7 +22,7 @@ module EmailCampaigns
               .pluck(:campaign_id)
             campaigns_without_groups = Campaigns::Manual
               .left_outer_joins(:campaigns_groups)
-              .where(email_campaigns_campaigns_groups: {id: nil})
+              .where(email_campaigns_campaigns_groups: { id: nil })
               .ids
             scope
               .where(type: EmailCampaigns::Campaigns::Manual.name)
@@ -35,11 +35,11 @@ module EmailCampaigns
     end
 
     def create?
-      record.class == EmailCampaigns::Campaigns::Manual && can_access_and_modify?
+      record.instance_of?(EmailCampaigns::Campaigns::Manual) && can_access_and_modify?
     end
 
     def show?
-      if record.class == EmailCampaigns::Campaigns::Manual
+      if record.instance_of?(EmailCampaigns::Campaigns::Manual)
         can_access_and_modify?
       else
         user&.active? && user.admin?
@@ -47,7 +47,7 @@ module EmailCampaigns
     end
 
     def update?
-      if record.class == EmailCampaigns::Campaigns::Manual
+      if record.instance_of?(EmailCampaigns::Campaigns::Manual)
         !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
       else
         user&.active? && user.admin?
@@ -83,13 +83,13 @@ module EmailCampaigns
     def can_access_and_modify?
       user&.active? && (
         user.admin? ||
-        user.project_moderator? && moderator_can_access_and_modify?
+        (user.project_moderator? && moderator_can_access_and_modify?)
       )
     end
 
     def moderator_can_access_and_modify?
       projects = Project.where(id: user.moderatable_project_ids)
-      if projects.any?{|p| p.visible_to == 'public'}
+      if projects.any? { |p| p.visible_to == 'public' }
         true
       elsif record.groups.empty?
         false

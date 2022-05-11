@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rubyXL'
 
-
 describe XlsxService do
   let(:service) { XlsxService.new }
 
@@ -24,11 +23,11 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect{ workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every user' do
-      expect(worksheet.sheet_data.size).to eq (users.size + 1)
+      expect(worksheet.sheet_data.size).to eq(users.size + 1)
     end
 
     it 'contains extra columns for custom user fields' do
@@ -46,10 +45,10 @@ describe XlsxService do
       title_row = worksheet[0].cells.map(&:value)
       # works because the custom_field_select facory gives it a disting name from other fields
       select_col_index = title_row.find_index(custom_select.title_multiloc['en'])
-      options_col = worksheet.map {|col| col.cells[select_col_index].value}
+      options_col = worksheet.map { |col| col.cells[select_col_index].value }
 
-    	expect(title_row).to include(*custom_fields_headers)
-    	expect(options_col).to include(custom_options[0].title_multiloc['en'])
+      expect(title_row).to include(*custom_fields_headers)
+      expect(options_col).to include(custom_options[0].title_multiloc['en'])
     end
 
     describe do
@@ -65,7 +64,6 @@ describe XlsxService do
   end
 
   describe 'generate_ideas_xlsx' do
-
     before { create_list(:custom_field, 2) }
 
     let(:ideas) do
@@ -79,11 +77,11 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect{ workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every idea' do
-      expect(worksheet.sheet_data.size).to eq (ideas.size + 1)
+      expect(worksheet.sheet_data.size).to eq(ideas.size + 1)
     end
 
     describe do
@@ -115,11 +113,11 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect{ workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every initiative' do
-      expect(worksheet.sheet_data.size).to eq (initiatives.size + 1)
+      expect(worksheet.sheet_data.size).to eq(initiatives.size + 1)
     end
 
     describe do
@@ -132,18 +130,17 @@ describe XlsxService do
   end
 
   describe 'generate_idea_comments_xlsx' do
-
     let(:comments) { create_list(:comment, 5, post: create(:idea)) }
     let(:xlsx) { service.generate_idea_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect{ workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every comment' do
-      expect(worksheet.sheet_data.size).to eq (comments.size + 1)
+      expect(worksheet.sheet_data.size).to eq(comments.size + 1)
       expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('project')]).to eq comments.last.idea.project.title_multiloc.values.first
     end
 
@@ -157,15 +154,14 @@ describe XlsxService do
   end
 
   describe 'generate_initiative_comments_xlsx' do
-
     let(:comments) { create_list(:comment, 5, post: create(:initiative)) }
     let(:xlsx) { service.generate_initiative_comments_xlsx(comments) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file and contains a row for every comment' do
-      expect{ workbook }.to_not raise_error
-      expect(worksheet.sheet_data.size).to eq (comments.size + 1)
+      expect { workbook }.not_to raise_error
+      expect(worksheet.sheet_data.size).to eq(comments.size + 1)
       expect(worksheet[comments.size].cells.map(&:value)[worksheet[0].cells.map(&:value).index('parent_comment_id')]).to eq comments.last.parent_id
     end
 
@@ -185,11 +181,11 @@ describe XlsxService do
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'exports a valid excel file' do
-      expect{ workbook }.to_not raise_error
+      expect { workbook }.not_to raise_error
     end
 
     it 'contains a row for every invite' do
-      expect(worksheet.sheet_data.size).to eq (invites.size + 1)
+      expect(worksheet.sheet_data.size).to eq(invites.size + 1)
     end
 
     describe do
@@ -202,34 +198,33 @@ describe XlsxService do
   end
 
   describe 'hash_to_xlsx' do
-
-    let(:hash_array) {[
-      {'a' => 1, 'b' => 'two'},
-      {'a' => 2, 'b' => 'three', 'c' => 'fiesta'},
-      {'b' => 'four', 'c' => 'party'},
-      {'f' => 'fête'},
-      {},
-    ]}
+    let(:hash_array) do
+      [
+      { 'a' => 1, 'b' => 'two' },
+      { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
+      { 'b' => 'four', 'c' => 'party' },
+      { 'f' => 'fête' },
+      {}
+    ] end
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'correctly converts a hash array to a xlsx stream' do
-       expect(worksheet[0].cells.map(&:value)).to match ['a', 'b', 'c', 'f']
+       expect(worksheet[0].cells.map(&:value)).to match %w[a b c f]
        expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
     end
   end
 
-
   describe 'xlsx_to_hash_array' do
-
-    let(:hash_array) {[
-      {'a' => 1, 'b' => 'two'},
-      {'a' => 2, 'b' => 'three', 'c' => 'fiesta'},
-      {'b' => 'four', 'c' => 'party'},
-      {'f' => 'fête'},
+    let(:hash_array) do
+      [
+      { 'a' => 1, 'b' => 'two' },
+      { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
+      { 'b' => 'four', 'c' => 'party' },
+      { 'f' => 'fête' },
       {}
-    ]}
+    ] end
 
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:round_trip_hash_array) { service.xlsx_to_hash_array(xlsx) }

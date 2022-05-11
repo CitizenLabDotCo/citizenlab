@@ -2,7 +2,7 @@ module EmailCampaigns
   class NewCommentOnVotedIdeaMailerPreview < ActionMailer::Preview
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::NewCommentOnVotedIdea.first
-      comment = Comment.find_by_post_type('Idea')
+      comment = Comment.find_by(post_type: 'Idea')
       recipient = User.first
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 

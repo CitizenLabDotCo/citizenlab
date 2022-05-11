@@ -1,5 +1,4 @@
 FactoryBot.define do
-
   factory :notification, class: 'Notification' do
     read_at { nil }
     recipient
@@ -190,5 +189,4 @@ FactoryBot.define do
       notification.post.initiative_status_changes.create!(initiative_status: notification.post_status)
     end
   end
-
 end
