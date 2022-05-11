@@ -148,6 +148,7 @@ class SanitizationService
 
     def allowed_node?(node)
       return iframe_allowed? && UrlValidationService.new.video_whitelisted?(node['src']) if node.name == 'iframe'
+
       ensure_nofollow(node) if node.name == 'a'
       tags.include? node.name
     end
