@@ -1,4 +1,4 @@
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/withRouter';
 
 export const mockWithRouterProps: WithRouterProps = {
   location: {

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/withRouter';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';

@@ -1,13 +1,13 @@
 import React from 'react';
 // tslint:disable-next-line:no-vanilla-routing
 import { NavLink as RouterLink, NavLinkProps } from 'react-router-dom';
-import { LocationDescriptor } from 'history';
+import { Path } from 'history';
 import updateLocationDescriptor from './updateLocationDescriptor';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 
 export type Props = {
-  to: LocationDescriptor;
+  to: Path;
   onlyActiveOnIndex?: boolean;
 } & NavLinkProps;
 

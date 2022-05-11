@@ -18,7 +18,7 @@ import {
 import { getProject } from 'services/__mocks__/projects.ts';
 import { shallowWithIntl } from 'utils/testUtils/withIntl';
 import { localizeProps } from 'utils/testUtils/localizeProps';
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/withRouter';
 
 jest.mock('react-scroll-to-component', () => {
   return 'react-scroll-to-component';

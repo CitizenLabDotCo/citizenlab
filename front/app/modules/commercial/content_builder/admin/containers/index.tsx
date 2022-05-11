@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'utils/withRouter';
 
 // styles
 import styled from 'styled-components';

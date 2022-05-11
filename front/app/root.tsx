@@ -15,13 +15,14 @@ import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
+import history, { BrowserHistory } from 'history';
+
+export const rootHistory: BrowserHistory = history.createBrowserHistory();
+
 import {
   unstable_HistoryRouter as HistoryRouter,
   useRoutes,
 } from 'react-router-dom';
-import historydep from 'history';
-console.log({ historydep });
-export const history = historydep.createBrowserHistory({ window });
 // const Bla = ({children})=>{
 //   return children
 // }
@@ -33,7 +34,6 @@ export const history = historydep.createBrowserHistory({ window });
 // };
 
 const Routes = () => {
-  console.log({ historydep });
   const routes = useRoutes(createRoutes());
   // { path: "team", element: <AboutPage /> },});
   // useEffect(() => {
@@ -46,7 +46,7 @@ const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
-        <HistoryRouter history={history}>
+        <HistoryRouter history={rootHistory}>
           <Routes />
         </HistoryRouter>
       </LanguageProvider>

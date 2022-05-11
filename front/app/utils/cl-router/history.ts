@@ -1,15 +1,24 @@
 import { first } from 'rxjs/operators';
-import { LocationDescriptor } from 'history';
+import { Path } from 'history';
 import { localeStream } from 'services/locale';
 import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 // tslint:disable-next-line:no-vanilla-routing
-import { browserHistory } from 'react-router';
+import { rootHistory as browserHistory } from 'root';
+
+type LocationDescriptorObject = {
+  pathname: string;
+  search?: string;
+  hash?: string;
+};
+
+type LocationDescriptor = LocationDescriptorObject | Path | string;
 
 // overrides push and replace methods so they update the location with the current locale from the locale stream
 function historyMethod(
   method: 'push' | 'replace',
   location: LocationDescriptor
 ): void {
+  console.log({ history });
   // 'gets' current locale
   localeStream()
     .observable.pipe(first())
@@ -24,4 +33,5 @@ export default {
   push: (location: LocationDescriptor): void => historyMethod('push', location),
   replace: (location: LocationDescriptor): void =>
     historyMethod('replace', location),
+  goBack: () => browserHistory.back(),
 };
