@@ -1,16 +1,17 @@
 import { first } from 'rxjs/operators';
-import { Location } from 'history';
 import { localeStream } from 'services/locale';
 import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 // tslint:disable-next-line:no-vanilla-routing
-import { rootHistory as browserHistory } from 'root';
+
+import { createBrowserHistory, BrowserHistory, Location } from 'history';
+
+const browserHistory: BrowserHistory = createBrowserHistory();
 
 // overrides push and replace methods so they update the location with the current locale from the locale stream
 function historyMethod(
   method: 'push' | 'replace',
   location: Partial<Location> | string
 ): void {
-  console.log({ history });
   // 'gets' current locale
   localeStream()
     .observable.pipe(first())

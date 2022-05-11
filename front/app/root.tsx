@@ -1,6 +1,6 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 
@@ -15,37 +15,27 @@ import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
-import history, { BrowserHistory } from 'history';
-console.log({ history });
+import { createBrowserHistory, BrowserHistory } from 'history';
 
-export const rootHistory: BrowserHistory = history.createBrowserHistory();
+export const rootHistory: BrowserHistory = createBrowserHistory();
+
+console.log(rootHistory);
 
 import {
   unstable_HistoryRouter as HistoryRouter,
   useRoutes,
 } from 'react-router-dom';
-// const Bla = ({children})=>{
-//   return children
-// }
-
-// const rootRoute = {
-//   element: <Bla />,
-//   path: "/",
-//   children: createRoutes(),
-// };
 
 const Routes = () => {
   const routes = useRoutes(createRoutes());
-  // { path: "team", element: <AboutPage /> },});
-  // useEffect(() => {
-  //   modules.afterMountApplication();
-  // }, []);
+
+  useEffect(() => {
+    modules.afterMountApplication();
+  }, []);
 
   return <App>{routes}</App>;
 };
 const Root = () => {
-  const rootHistory: BrowserHistory = history.createBrowserHistory();
-  console.log({ rootHistory });
   return (
     <OutletsProvider>
       <LanguageProvider>
