@@ -19,7 +19,7 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class GroupsPermission < ApplicationRecord
-	belongs_to :group
+  belongs_to :group
   belongs_to :permission
 
   validates :group, :permission, presence: true

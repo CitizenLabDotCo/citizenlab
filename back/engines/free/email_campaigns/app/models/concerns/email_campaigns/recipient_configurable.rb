@@ -2,7 +2,6 @@ module EmailCampaigns
   module RecipientConfigurable
     extend ActiveSupport::Concern
 
-
     included do
       recipient_filter :filter_users_in_groups
 
@@ -10,8 +9,7 @@ module EmailCampaigns
       has_many :groups, through: :campaigns_groups
     end
 
-
-    def filter_users_in_groups users_scope, activity: nil, time: nil
+    def filter_users_in_groups(users_scope, activity: nil, time: nil)
       user_ids = groups.map(&:member_ids).inject(:+)&.uniq
       if user_ids
         users_scope
@@ -21,6 +19,5 @@ module EmailCampaigns
         users_scope.active
       end
     end
-
   end
 end

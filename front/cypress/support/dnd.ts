@@ -13,7 +13,7 @@ declare global {
       ): Chainable<Element>;
 
       dragOver(
-        target: string,
+        target: JQuery<HTMLElement>,
         options?: Partial<DropOptions>
       ): Chainable<Element>;
 
@@ -155,8 +155,10 @@ Cypress.Commands.add(
     prevSubject: true,
   },
   (subject, target, opts: Partial<DropOptions> = { position: 'right' }) => {
-    cy.get(subject).dragOver(target, opts);
-    cy.get(subject).drop();
+    cy.get(target).each((item) => {
+      cy.get(subject).dragOver(Cypress.$(item), opts);
+      cy.get(subject).drop();
+    });
   }
 );
 

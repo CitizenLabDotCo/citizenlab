@@ -17,7 +17,7 @@ module UserConfirmation
 
     def validate_confirmation_reset_count
       user.increment_confirmation_code_reset_count! unless first_code
-    rescue ActiveRecord::RecordInvalid => _
+    rescue ActiveRecord::RecordInvalid => _e
       fail_with_error! :code, :too_many_resets, message: 'You\'ve reset too many times.'
     end
   end

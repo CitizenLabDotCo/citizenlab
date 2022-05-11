@@ -47,7 +47,7 @@ class WebApi::V1::PhasesController < ApplicationController
       SideFxPhaseService.new.after_destroy(@phase, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -77,11 +77,11 @@ class WebApi::V1::PhasesController < ApplicationController
       :poll_anonymous,
       :ideas_order,
       :input_term,
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES
+      { title_multiloc: CL2_SUPPORTED_LOCALES,
+      description_multiloc: CL2_SUPPORTED_LOCALES }
     ]
     if AppConfiguration.instance.feature_activated? 'disable_downvoting'
-      permitted += %i(downvoting_enabled downvoting_method downvoting_limited_max)
+      permitted += %i[downvoting_enabled downvoting_method downvoting_limited_max]
     end
     params.require(:phase).permit(permitted)
   end

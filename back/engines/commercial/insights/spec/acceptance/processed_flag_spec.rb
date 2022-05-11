@@ -50,7 +50,7 @@ resource 'Processed flag for view inputs' do
       example_request 'flags the input as processed' do
         assert_status 201
 
-        expect(input.processed(view)).to eq(true)
+        expect(input.processed(view)).to be(true)
       end
 
       example 'errors if the input was already processed' do

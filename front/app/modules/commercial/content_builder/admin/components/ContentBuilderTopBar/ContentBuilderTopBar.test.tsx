@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import ContentBuilderTopBar from './';
 import { Editor } from '@craftjs/core';
 import {
@@ -7,6 +7,7 @@ import {
   addContentBuilderLayout,
 } from '../../../services/contentBuilder';
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IContentBuilderLayoutData = {
   id: '2',
@@ -93,7 +94,7 @@ describe('ContentBuilderTopBar', () => {
       </Editor>
     );
     fireEvent.click(screen.getByTestId('goBackButton'));
-    expect(clHistory.goBack).toHaveBeenCalled();
+    expect(clHistory.push).toHaveBeenCalled();
   });
   it('calls onSave correctly', async () => {
     render(
@@ -109,5 +110,54 @@ describe('ContentBuilderTopBar', () => {
       { code: 'project_description', projectId: 'id' },
       { craftjs_jsonmultiloc: { en: {} } }
     );
+  });
+  it('enables and disables save in accordance with the error status', async () => {
+    render(
+      <Editor>
+        <ContentBuilderTopBar />
+      </Editor>
+    );
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someId: true });
+      eventEmitter.emit('contentBuilderError', { someOtherId: true });
+    });
+
+    const saveButton = within(
+      screen.getByTestId('contentBuilderTopBarSaveButton')
+    ).getByRole('button');
+
+    expect(saveButton).toBeDisabled();
+
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someId: false });
+    });
+    expect(saveButton).toBeDisabled();
+
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someOtherId: false });
+    });
+    expect(saveButton).not.toBeDisabled();
+  });
+  it('re-enables save when the element with the error is deleted', async () => {
+    render(
+      <Editor>
+        <ContentBuilderTopBar />
+      </Editor>
+    );
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someId: true });
+    });
+
+    const saveButton = within(
+      screen.getByTestId('contentBuilderTopBarSaveButton')
+    ).getByRole('button');
+
+    expect(saveButton).toBeDisabled();
+
+    await act(async () => {
+      eventEmitter.emit('deleteContentBuilderElement', 'someId');
+    });
+
+    expect(saveButton).not.toBeDisabled();
   });
 });

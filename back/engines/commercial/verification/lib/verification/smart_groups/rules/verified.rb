@@ -4,7 +4,7 @@ module Verification
       class Verified
         include ActiveModel::Validations
 
-        PREDICATE_VALUES = %w(is_verified not_is_verified)
+        PREDICATE_VALUES = %w[is_verified not_is_verified]
 
         attr_accessor :predicate, :value
 
@@ -16,19 +16,19 @@ module Verification
         def self.to_json_schema
           [
             {
-              "type": 'object',
-              'required' => ['ruleType', 'predicate'],
+              type: 'object',
+              'required' => %w[ruleType predicate],
               'additionalProperties' => false,
               'properties' => {
                 'ruleType' => {
                   'type' => 'string',
-                  'enum' => [rule_type],
+                  'enum' => [rule_type]
                 },
                 'predicate' => {
-                  "type": 'string',
-                  "enum": PREDICATE_VALUES
+                  type: 'string',
+                  enum: PREDICATE_VALUES
                 }
-              },
+              }
             }
           ]
         end
@@ -37,15 +37,15 @@ module Verification
           'verified'
         end
 
-        def self.from_json json
-          self.new json['predicate']
+        def self.from_json(json)
+          new json['predicate']
         end
 
-        def initialize predicate
+        def initialize(predicate)
           self.predicate = predicate
         end
 
-        def filter users_scope
+        def filter(users_scope)
           case predicate
           when 'is_verified'
             users_scope.where('verified = ?', true)

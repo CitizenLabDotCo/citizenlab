@@ -71,7 +71,6 @@ module Insights
     end
 
     class << self
-
       # @param [NLP::TextNetwork] network
       # @param [Array(Numeric, Numeric)] val_range range of the +val+ attribute after rescaling
       # @return [Array<Hash>]

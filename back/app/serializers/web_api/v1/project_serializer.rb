@@ -12,7 +12,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :header_bg do |object|
-    object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    object.header_bg && object.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
   end
 
   attribute :action_descriptor do |object, params|
@@ -33,7 +33,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       },
       commenting_idea: {
         enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason
       },
       voting_idea: {
         enabled: !voting_disabled_reason,
@@ -50,14 +50,14 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
       comment_voting_idea: {
         # You can vote if you can comment.
         enabled: !commenting_disabled_reason,
-        disabled_reason: commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason
       },
       taking_survey: {
-        enabled:!taking_survey_disabled_reason,
+        enabled: !taking_survey_disabled_reason,
         disabled_reason: taking_survey_disabled_reason
       },
       taking_poll: {
-        enabled:!taking_poll_disabled_reason,
+        enabled: !taking_poll_disabled_reason,
         disabled_reason: taking_poll_disabled_reason
       }
     }
@@ -67,7 +67,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:total_count]
   end
 
-  attribute :participants_count do |object, params|
+  attribute :participants_count do |object, _params|
     @participants_service ||= ParticipantsService.new
     @participants_service.project_participants(object).size
   end
@@ -80,7 +80,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :timeline_active, if: Proc.new { |object, params|
+  attribute :timeline_active, if: proc { |object, _params|
     object.timeline?
   } do |object, params|
     if params[:timeline_active]
@@ -99,24 +99,24 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     avatars_for_project(object, params)[:users]
   end
 
-  has_one :user_basket, record_type: :basket, if: Proc.new { |object, params|
+  has_one :user_basket, record_type: :basket, if: proc { |object, params|
     signed_in? object, params
   } do |object, params|
     user_basket object, params
   end
-  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: Proc.new { |object, params|
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase, if: proc { |object, _params|
     !object.participation_context?
   } do |object|
     TimelineService.new.current_phase(object)
   end
 
-  def self.avatars_for_project object, params
-    # TODO call only once (not a second time for counts)
+  def self.avatars_for_project(object, _params)
+    # TODO: call only once (not a second time for counts)
     @participants_service ||= ParticipantsService.new
     AvatarsService.new(@participants_service).avatars_for_project(object, limit: 3)
   end
 
-  def self.user_basket object, params
+  def self.user_basket(object, params)
     if params[:user_baskets]
       params.dig(:user_baskets, [object.id, 'Project'])&.first
     else

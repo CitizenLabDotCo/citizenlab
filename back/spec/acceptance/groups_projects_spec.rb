@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'GroupsProjects' do
-
   explanation 'Which groups can access which projects.'
 
   before do
@@ -69,19 +67,19 @@ resource 'GroupsProjects' do
       example_request 'Add a groups-project' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:group,:data,:id)).to eq group_id
-        expect(json_response.dig(:included).first.dig(:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :relationships, :group, :data, :id)).to eq group_id
+        expect(json_response[:included].first.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
     delete 'web_api/v1/groups_projects/:id' do
       let(:groups_project) { create(:groups_project) }
       let(:id) { groups_project.id }
-      
+
       example_request 'Delete a groups-project' do
         expect(response_status).to eq 200
-        expect{GroupsProject.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { GroupsProject.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
-end 
+end

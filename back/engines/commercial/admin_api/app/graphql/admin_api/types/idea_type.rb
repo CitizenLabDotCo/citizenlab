@@ -29,7 +29,6 @@ module AdminApi
       field :created_at, String, null: false
     end
 
-
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
     field :body_multiloc, Types::MultilocType, null: false
@@ -51,10 +50,8 @@ module AdminApi
       object.published_at&.iso8601
     end
 
-
     def href
       Frontend::UrlService.new.model_to_url(object)
     end
-
   end
 end

@@ -11,7 +11,7 @@ class MultilocValidator < ActiveModel::EachValidator
   private
 
   def validate_presence(record, attribute, value)
-    if (options[:presence] && !value.kind_of?(Hash)) || (!options[:presence] && !(value.kind_of?(Hash) || value.nil?))
+    if (options[:presence] && !value.is_a?(Hash)) || (!options[:presence] && !(value.is_a?(Hash) || value.nil?))
       record.errors[attribute] << (options[:message] || 'is not a translation hash')
       return
     end
@@ -34,14 +34,14 @@ class MultilocValidator < ActiveModel::EachValidator
 
   def validate_supported_locales(record, attribute, value)
     locales = CL2_SUPPORTED_LOCALES.map(&:to_s)
-    if !(value.keys - locales).empty?
+    unless (value.keys - locales).empty?
       message = options[:message] || "contains unsupported locales #{value.keys - locales}"
       record.errors.add attribute, :unsupported_locales, message: message
     end
   end
 
   def validate_html(record, attribute, value)
-    return if !options[:html]
+    return unless options[:html]
 
     value.each do |key, html|
       doc = Nokogiri::HTML.fragment html

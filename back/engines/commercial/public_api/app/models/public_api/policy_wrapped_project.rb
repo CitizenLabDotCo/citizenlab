@@ -3,7 +3,6 @@
 
 module PublicApi
   class PolicyWrappedProject < SimpleDelegator
-
     def self.policy_class
       PublicApi::ProjectPolicy
     end

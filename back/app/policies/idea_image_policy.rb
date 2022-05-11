@@ -27,5 +27,4 @@ class IdeaImagePolicy < ApplicationPolicy
   def destroy?
     IdeaPolicy.new(user, record.idea).update?
   end
-
 end

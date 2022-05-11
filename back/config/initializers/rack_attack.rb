@@ -43,6 +43,7 @@ class Rack::Attack
       begin
         JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
       rescue JSON::ParserError
+        # do nothing
       end
     end
   end
@@ -52,6 +53,7 @@ class Rack::Attack
       begin
         JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
       rescue JSON::ParserError
+        # do nothing
       end
     end
   end
@@ -83,6 +85,7 @@ class Rack::Attack
       begin
         JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
       rescue JSON::ParserError
+        # do nothing
       end
     end
   end

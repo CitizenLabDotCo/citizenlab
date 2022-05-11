@@ -20,6 +20,11 @@ class AppConfigurationPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
-  def create?; false end
-  def destroy?; false end
+  def create?
+    false
+  end
+
+  def destroy?
+    false
+  end
 end

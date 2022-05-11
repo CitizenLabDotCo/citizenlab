@@ -79,10 +79,10 @@ class WebApi::V1::IdeasController < ApplicationController
       .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
       .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
       .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
       .each do |record|
-        %w(idea_status_id area_id topic_id).each do |attribute|
+        %w[idea_status_id area_id topic_id].each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end
@@ -136,9 +136,9 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     service = SideFxIdeaService.new
 
-    params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
-    params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
-    params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
+    params[:idea][:area_ids] ||= [] if params[:idea].key?(:area_ids)
+    params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
 
     @idea.assign_attributes idea_params
     authorize @idea
@@ -155,8 +155,8 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload,
           params: fastjson_params,
-          include: [:author, :topics, :areas, :user_vote, :idea_images]
-          ).serialized_json, status: :ok
+          include: %i[author topics areas user_vote idea_images]
+        ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
@@ -173,7 +173,7 @@ class WebApi::V1::IdeasController < ApplicationController
       service.after_destroy(idea, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -192,7 +192,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :location_description,
       :proposed_budget,
       [idea_images_attributes: [:image]],
-      [{ idea_files_attributes: [{ file_by_content: [:content, :name]}, :name] }],
+      [{ idea_files_attributes: [{ file_by_content: %i[content name] }, :name] }],
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
@@ -225,12 +225,12 @@ class WebApi::V1::IdeasController < ApplicationController
       votes = Vote.where(user: current_user, votable_id: ideas.map(&:id), votable_type: 'Idea')
       {
         params: fastjson_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
-        include: [:author, :user_vote, :idea_images]
+        include: %i[author user_vote idea_images]
       }
     else
       {
         params: fastjson_params(pcs: ParticipationContextService.new),
-        include: [:author, :idea_images]
+        include: %i[author idea_images]
       }
     end
   end

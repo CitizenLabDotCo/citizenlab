@@ -40,7 +40,6 @@ module EmailCampaigns
         }
       }
 
-
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end
   end

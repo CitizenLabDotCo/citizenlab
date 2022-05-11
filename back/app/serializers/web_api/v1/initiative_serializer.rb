@@ -11,7 +11,7 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :header_bg do |object|
-    object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+    object.header_bg && object.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
   end
 
   has_many :initiative_images, serializer: WebApi::V1::ImageSerializer
@@ -20,17 +20,17 @@ class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :initiative_status
-  belongs_to :assignee, if: Proc.new { |object, params|
+  belongs_to :assignee, if: proc { |object, params|
     can_moderate? object, params
   }, record_type: :user, serializer: WebApi::V1::UserSerializer
 
-  has_one :user_vote, if: Proc.new { |object, params|
+  has_one :user_vote, if: proc { |object, params|
     signed_in? object, params
   }, record_type: :vote, serializer: WebApi::V1::VoteSerializer do |object, params|
     cached_user_vote object, params
   end
 
-  def self.can_moderate?(object, params)
+  def self.can_moderate?(_object, params)
     current_user(params) && UserRoleService.new.can_moderate_initiatives?(current_user(params))
   end
 

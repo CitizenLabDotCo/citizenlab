@@ -1,6 +1,6 @@
 class WebApi::V1::MembershipsController < ApplicationController
-  before_action :set_membership, only: [:show, :destroy]
-  before_action :set_membership_from_group_and_user, only: [:destroy_by_user_id, :show_by_user_id]
+  before_action :set_membership, only: %i[show destroy]
+  before_action :set_membership_from_group_and_user, only: %i[destroy_by_user_id show_by_user_id]
   skip_after_action :verify_authorized, only: [:users_search]
 
   def index
@@ -51,7 +51,7 @@ class WebApi::V1::MembershipsController < ApplicationController
     if membership.destroyed?
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

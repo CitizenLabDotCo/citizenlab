@@ -13,4 +13,3 @@ RSpec.describe 'EmailCampaigns::Campaigns::AssigneeDigest', type: :model, skip: 
     end
   end
 end
-

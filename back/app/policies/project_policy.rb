@@ -68,7 +68,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     active_moderator? || (
-      %w(published archived).include?(record.admin_publication.publication_status) && (
+      %w[published archived].include?(record.admin_publication.publication_status) && (
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
@@ -124,7 +124,7 @@ class ProjectPolicy < ApplicationPolicy
     ]
 
     if AppConfiguration.instance.feature_activated? 'disable_downvoting'
-      shared += %i(downvoting_enabled downvoting_method downvoting_limited_max)
+      shared += %i[downvoting_enabled downvoting_method downvoting_limited_max]
     end
     shared
   end
@@ -143,7 +143,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def active_moderator?
-    return if !active?
+    return unless active?
 
     UserRoleService.new.can_moderate_project? record, user
   end

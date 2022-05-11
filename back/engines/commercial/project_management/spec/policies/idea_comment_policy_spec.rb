@@ -26,4 +26,3 @@ describe IdeaCommentPolicy do
     end
   end
 end
-

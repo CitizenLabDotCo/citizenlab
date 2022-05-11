@@ -6,6 +6,5 @@ module Surveys
       service = TypeformWebhookManager.new
       service.send(action, *args)
     end
-
   end
 end

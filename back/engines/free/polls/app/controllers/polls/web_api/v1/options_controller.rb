@@ -79,7 +79,7 @@ module Polls
             SideFxOptionService.new.after_destroy(option, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 

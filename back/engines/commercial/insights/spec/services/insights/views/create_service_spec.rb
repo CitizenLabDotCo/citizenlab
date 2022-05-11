@@ -33,7 +33,7 @@ RSpec.describe Insights::Views::CreateService do
 
     it 'authorizes the current user' do
       service.execute
-      expect(service.send(:pundit_policy_authorized?)).to eq(true)
+      expect(service.send(:pundit_policy_authorized?)).to be(true)
     end
 
     context 'when the view is not valid' do
