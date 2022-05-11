@@ -1,8 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-
-// hooks
-import { useTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
