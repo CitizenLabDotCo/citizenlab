@@ -10,6 +10,7 @@ resource 'NavBarItems' do
     before do
       @items = [
         create(:nav_bar_item, code: 'custom'),
+        create(:nav_bar_item, code: 'proposals'),
         create(:nav_bar_item, code: 'events'),
         create(:nav_bar_item, code: 'home')
       ]
@@ -18,10 +19,19 @@ resource 'NavBarItems' do
 
     example_request 'List all NavBarItems' do
       expect(status).to eq 200
-      json_response = json_parse response_body
-      expect(json_response[:data].size).to eq 3
-      expect(json_response[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2]
-      expect(json_response[:data].map { |d| d.dig(:attributes, :code) }).to eq %w[home custom events]
+      expect(json_response_body[:data].size).to eq 4
+      expect(json_response_body[:data].map { |d| d.dig(:attributes, :ordering) }).to eq [0, 1, 2, 3]
+      expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) }).to eq %w[home custom proposals events]
+    end
+
+    context 'when NavBarItem is disabled by corresponding disabled feature' do
+      before do
+        SettingsService.new.deactivate_feature!('initiatives')
+      end
+
+      example_request 'Does not list feature-disabled NavBarItems' do
+        expect(json_response_body[:data].map { |d| d.dig(:attributes, :code) }).to eq %w[home custom events]
+      end
     end
   end
 
@@ -37,12 +47,26 @@ resource 'NavBarItems' do
         create :nav_bar_item, code: 'events'
       end
 
+      let(:codes) { json_response_body[:data].map { |d| d.dig(:attributes, :code) } }
+
       example_request 'List removed default NavBarItems' do
         expect(status).to eq 200
-        json_response = json_parse response_body
-        expect(json_response[:data].size).to be > 0
-        expect(json_response[:data].map { |d| d.dig(:attributes, :code) }).to include 'home'
-        expect(json_response[:data].map { |d| d.dig(:attributes, :code) }).not_to include 'events'
+        expect(json_response_body[:data].size).to be > 0
+        expect(codes).to include 'home'
+        expect(codes).to include 'proposals'
+        expect(codes).not_to include 'events'
+      end
+
+      context 'when NavBarItem is disabled by corresponding disabled feature' do
+        before do
+          SettingsService.new.deactivate_feature!('initiatives')
+        end
+
+        example_request 'Does not list removed default but feature-disabled NavBarItems' do
+          expect(codes).to include 'home'
+          expect(codes).not_to include 'proposals'
+          expect(codes).not_to include 'events'
+        end
       end
     end
 

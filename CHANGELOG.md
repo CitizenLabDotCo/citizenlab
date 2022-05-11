@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-729] Do not show proposals navbar item if corresponding feature is disabled
+
 ## 2022-05-13
 
 ### Added

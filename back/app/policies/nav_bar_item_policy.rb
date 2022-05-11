@@ -1,4 +1,6 @@
 class NavBarItemPolicy < ApplicationPolicy
+  FEATURES_CODES = { 'initiatives' => 'proposals' }.freeze
+
   class Scope
     attr_reader :user, :scope
 
@@ -8,7 +10,14 @@ class NavBarItemPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      scope.all.where.not(code: NavBarItemPolicy.feature_disabled_codes)
+    end
+  end
+
+  class << self
+    def feature_disabled_codes
+      config = AppConfiguration.instance
+      FEATURES_CODES.reject { |feature, _code| config.feature_activated?(feature) }.values
     end
   end
 
