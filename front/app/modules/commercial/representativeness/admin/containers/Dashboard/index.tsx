@@ -10,30 +10,34 @@ import ChartFilters from '../../components/ChartFilters';
 import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
 
-// TODO change this
-const SHOW_EMPTY_STATE = false;
+// TODO remove router stuff
+import { withRouter, WithRouterProps } from 'react-router';
 
-const RepresentativenessDashboard = () => {
-  const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
+const RepresentativenessDashboard = withRouter(
+  ({ location: { search } }: WithRouterProps) => {
+    const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 
-  const onProjectFilter = ({ value }) => {
-    setCurrentProjectFilter(value);
-  };
+    const onProjectFilter = ({ value }) => {
+      setCurrentProjectFilter(value);
+    };
 
-  return (
-    <>
-      <Box width="100%" mb="36px">
-        <Header />
-        <ChartFilters
-          currentProjectFilter={currentProjectFilter}
-          onProjectFilter={onProjectFilter}
-        />
-      </Box>
+    const showEmpty = search === '?showEmpty=true';
 
-      <Box>{SHOW_EMPTY_STATE ? <EmptyState /> : <ChartCards />}</Box>
-    </>
-  );
-};
+    return (
+      <>
+        <Box width="100%" mb="36px">
+          <Header />
+          <ChartFilters
+            currentProjectFilter={currentProjectFilter}
+            onProjectFilter={onProjectFilter}
+          />
+        </Box>
+
+        <Box>{showEmpty ? <EmptyState /> : <ChartCards />}</Box>
+      </>
+    );
+  }
+);
 
 const RepresentativenessDashboardFeatureFlagWrapper = () => {
   const customFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
