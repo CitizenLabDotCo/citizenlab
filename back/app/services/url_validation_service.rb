@@ -32,11 +32,11 @@ class UrlValidationService
     ].freeze
 
     def whitelisted?(url)
-      return url_whitelisted?(url) || video_whitelisted?(url)
+      url_whitelisted?(url) || video_whitelisted?(url)
     end
 
     def url_whitelisted?(url)
-      return URL_WHITELIST.any? { |regex| regex.match? url }
+      URL_WHITELIST.any? { |regex| regex.match? url }
     end
 
     def video_whitelisted?(url)
