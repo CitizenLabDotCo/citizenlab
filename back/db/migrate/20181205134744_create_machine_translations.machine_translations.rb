@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from machine_translations (originally 20181126142621)
 class CreateMachineTranslations < ActiveRecord::Migration[5.1]
   def change

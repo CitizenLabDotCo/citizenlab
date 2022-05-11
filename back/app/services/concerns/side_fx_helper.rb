@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SideFxHelper
   def clean_time_attributes(hash)
     hash.map do |k, v|

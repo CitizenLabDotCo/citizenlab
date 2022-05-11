@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InvitesController < ApplicationController
   # when accepting an invite, the user is still to be logged in;
   # hence, no user is logged in, therefore we do not want to

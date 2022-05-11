@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls::WebApi::V1::PollParticipationContextSerializer
   extend ActiveSupport::Concern
 

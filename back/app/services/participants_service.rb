@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ParticipantsService
   ENGAGING_ACTIVITIES = [
     { item_type: 'Comment', action: 'created', score: 3 },

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomizableNavbar
   module Patches
     module StaticPagePolicy

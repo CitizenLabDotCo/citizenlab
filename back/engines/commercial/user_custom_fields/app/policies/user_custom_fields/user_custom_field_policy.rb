@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserCustomFields
   class UserCustomFieldPolicy < ApplicationPolicy
     class Scope

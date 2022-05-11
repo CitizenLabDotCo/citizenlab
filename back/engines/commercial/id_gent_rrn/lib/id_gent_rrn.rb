@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'id_gent_rrn/engine'
 require 'id_gent_rrn/wijk_budget_api'
 

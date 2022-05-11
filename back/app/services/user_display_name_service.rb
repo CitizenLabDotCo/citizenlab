@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Service that adapts the user name that is shown depending on the context.
 # For now, it can be used to "shallow anonymization" of users, depending on the
 # application configuration and the permissions of the current user.

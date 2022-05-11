@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MultilocService
   def t(translations, user = nil)
     return nil unless translations

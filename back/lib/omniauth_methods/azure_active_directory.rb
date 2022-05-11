@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OmniauthMethods
   class AzureActiveDirectory
     # @param [AppConfiguration] configuration

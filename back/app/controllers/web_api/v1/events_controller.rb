@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::EventsController < ApplicationController
   before_action :set_event, only: %i[show update destroy]
   skip_before_action :authenticate_user

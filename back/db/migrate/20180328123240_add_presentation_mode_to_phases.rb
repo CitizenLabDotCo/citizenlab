@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddPresentationModeToPhases < ActiveRecord::Migration[5.1]
   def change
     add_column :phases, :presentation_mode, :string, default: 'card', null: false

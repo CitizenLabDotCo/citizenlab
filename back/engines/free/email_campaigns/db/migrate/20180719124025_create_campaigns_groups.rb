@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCampaignsGroups < ActiveRecord::Migration[5.1]
   def change
     create_table :email_campaigns_campaigns_groups, id: :uuid do |t|

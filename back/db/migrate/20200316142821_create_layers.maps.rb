@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from maps (originally 20200316131832)
 class CreateLayers < ActiveRecord::Migration[6.0]
   def change

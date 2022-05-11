@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimezoneService
   def has_dst?(tz)
     !!tz.tzinfo.current_period.local_ends_at
