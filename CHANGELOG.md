@@ -1,8 +1,8 @@
 # Changelog
 
-## Next release
+## 2022-05-11
 
-### 2022-05-11
+### Fixed
 
 - [CL-711] Title text looking weird on insights start page
 
