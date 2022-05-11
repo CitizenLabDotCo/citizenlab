@@ -56,7 +56,7 @@ const StyledBox = styled(Box)`
       ? `cursor: auto;
           padding: '4px',
           width: '100%',
-          maxWidth: '1050px',
+          maxWidth: '1000px',
           backgroundColor: '#fff',
           minHeight: '160px',`
       : `cursor:move;`}
