@@ -56,7 +56,7 @@ class ApplicationController < ActionController::API
     payload[:tenant_host] = Current.tenant&.host
     payload[:user_id] = current_user&.id
     payload[:request_id] = request.request_id
-    payload[:"X-Amzn-Trace-Id"] = request.headers['X-Amzn-Trace-Id']
+    payload[:'X-Amzn-Trace-Id'] = request.headers['X-Amzn-Trace-Id']
   end
 
   def fastjson_params(extra_params = {})

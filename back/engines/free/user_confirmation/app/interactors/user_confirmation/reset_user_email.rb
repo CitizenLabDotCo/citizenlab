@@ -8,7 +8,7 @@ module UserConfirmation
 
       context.old_email = user.email
       user.reset_email!(new_email)
-    rescue ActiveRecord::RecordInvalid => _
+    rescue ActiveRecord::RecordInvalid => _e
       fail_with_error!(user.errors)
     end
 

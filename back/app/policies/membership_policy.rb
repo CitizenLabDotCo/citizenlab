@@ -39,5 +39,4 @@ class MembershipPolicy < ApplicationPolicy
   def users_search?
     user&.active? && user.admin?
   end
-
 end

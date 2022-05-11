@@ -1,6 +1,5 @@
 module OmniauthMethods
   class Google
-
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       if configuration.feature_activated?('google_login')
@@ -44,7 +43,7 @@ module OmniauthMethods
       req = Net::HTTP.new(img_url.host, img_url.port)
       req.use_ssl = true
       res = req.request_head(img_url.path)
-      res.kind_of? Net::HTTPSuccess
+      res.is_a? Net::HTTPSuccess
     end
   end
 end

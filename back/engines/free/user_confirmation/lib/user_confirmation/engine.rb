@@ -1,4 +1,3 @@
-
 # rubocop:disable Lint/SuppressedException
 begin
   require 'factory_bot_rails'

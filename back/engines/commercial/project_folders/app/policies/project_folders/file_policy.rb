@@ -28,6 +28,5 @@ module ProjectFolders
     def destroy?
       FolderPolicy.new(user, record.project_folder).update?
     end
-
   end
 end

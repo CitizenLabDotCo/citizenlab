@@ -45,7 +45,7 @@ class WebApi::V1::EventsController < ApplicationController
       SideFxEventService.new.after_destroy(@event, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'ProjectsAllowedInputTopics' do
-
   explanation 'E.g. mobility, health, culture...'
 
   before do
@@ -27,7 +25,7 @@ resource 'ProjectsAllowedInputTopics' do
   end
 
   get 'web_api/v1/projects_allowed_input_topics/:id' do
-    let(:id) {@projects_allowed_input_topics.first.id}
+    let(:id) { @projects_allowed_input_topics.first.id }
 
     example_request 'Get one projects topic by id' do
       expect(status).to eq 200
@@ -57,7 +55,7 @@ resource 'ProjectsAllowedInputTopics' do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 201
-        expect(ProjectsAllowedInputTopic.count).to eq (old_count + 1)
+        expect(ProjectsAllowedInputTopic.count).to eq(old_count + 1)
       end
     end
 
@@ -68,8 +66,8 @@ resource 'ProjectsAllowedInputTopics' do
         old_count = ProjectsAllowedInputTopic.count
         do_request
         expect(response_status).to eq 200
-        expect{ProjectsAllowedInputTopic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(ProjectsAllowedInputTopic.count).to eq (old_count - 1)
+        expect { ProjectsAllowedInputTopic.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(ProjectsAllowedInputTopic.count).to eq(old_count - 1)
       end
     end
 
@@ -85,7 +83,7 @@ resource 'ProjectsAllowedInputTopics' do
       example_request 'Reorder a project allowed input topic' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq ordering
       end
     end
   end

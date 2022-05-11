@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'ProjectImage' do
-
   explanation 'Projects can have mutliple images.'
 
   before do
@@ -32,7 +30,7 @@ resource 'ProjectImage' do
     example_request 'Get one image of a project' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large]
     end
   end
 
@@ -49,8 +47,8 @@ resource 'ProjectImage' do
     example_request 'Add an image to a project' do
       assert_status 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large]
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
     end
 
     describe do
@@ -90,8 +88,8 @@ resource 'ProjectImage' do
     example_request 'Edit an image for a project' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large]
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
     end
   end
 
@@ -101,7 +99,7 @@ resource 'ProjectImage' do
 
     example_request 'Delete an image from a project' do
       expect(response_status).to eq 200
-      expect{ProjectImage.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { ProjectImage.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

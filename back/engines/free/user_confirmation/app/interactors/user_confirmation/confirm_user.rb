@@ -11,7 +11,7 @@ module UserConfirmation
     end
 
     def validate_user
-      return unless user.blank?
+      return if user.present?
 
       fail_with_error! :user, :blank
     end

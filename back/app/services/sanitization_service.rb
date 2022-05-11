@@ -48,7 +48,7 @@ class SanitizationService
   def remove_empty_trailing_tags(html)
     html = remove_hidden_spaces(html)
 
-    Nokogiri::HTML.fragment(html).yield_self do |doc|
+    Nokogiri::HTML.fragment(html).then do |doc|
       return html if doc.errors.any?
 
       while (node = last_structure_node(doc))
@@ -137,7 +137,6 @@ class SanitizationService
     }.freeze
 
     private_constant :EDITOR_FEATURES
-
     attr_reader :tags, :attributes
 
     def initialize(features = [])

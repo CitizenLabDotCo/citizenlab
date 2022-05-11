@@ -4,7 +4,6 @@ describe SanitizationService do
   let(:service) { SanitizationService.new }
 
   describe 'sanitize' do
-
     it 'always allows paragraphs and breaks to pass through' do
       input = <<~HTML
         <p>paragraph<br>with<br>breaks</p>
@@ -220,7 +219,7 @@ describe SanitizationService do
         <iframe src="javascript:javascript:alert('ThisPlatformWasHacked!');"></iframe>
         </p>
       HTML
-      features = %i{title alignment list decoration link video}
+      features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
   end
@@ -381,5 +380,4 @@ describe SanitizationService do
       expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank" rel="noreferrer noopener nofollow">hello@citizenlab.co</a></p>'
     end
   end
-
 end

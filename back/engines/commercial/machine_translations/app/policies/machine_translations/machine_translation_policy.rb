@@ -1,11 +1,10 @@
 module MachineTranslations
   class MachineTranslationPolicy < ApplicationPolicy
-
     def show?
       translatable_policy = case record.translatable_type
       when 'Idea' then IdeaPolicy
       when 'Initiative' then InitiativePolicy
-      when 'Comment' then 
+      when 'Comment'
         case record.translatable.post_type
         when 'Idea'
           IdeaCommentPolicy
@@ -17,6 +16,5 @@ module MachineTranslations
       end
       record.translatable && translatable_policy.new(user, record.translatable).show?
     end
-
   end
 end

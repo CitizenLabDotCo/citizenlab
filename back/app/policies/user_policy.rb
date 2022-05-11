@@ -85,7 +85,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES]
+    shared = [:first_name, :last_name, :email, :password, :avatar, :locale, { custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     admin? ? shared + role_permitted_params : shared
   end
 
@@ -103,7 +103,7 @@ class UserPolicy < ApplicationPolicy
     enabled_fields = enabled_custom_fields
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
     array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
-    [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
+    [*simple_keys, array_keys.index_with { |_k| [] }]
   end
 
   def enabled_custom_fields

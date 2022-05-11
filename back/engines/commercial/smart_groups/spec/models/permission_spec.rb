@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Permission, type: :model do
-
   describe '#participation_conditions' do
     it 'returns expected output' do
       birthyear = create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear')
@@ -45,7 +44,6 @@ RSpec.describe Permission, type: :model do
 
   describe '#for_user' do
     before(:all) do
-      # rubocop:disable RSpec/BeforeAfterAll
       @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
 
       # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
@@ -65,7 +63,7 @@ RSpec.describe Permission, type: :model do
       PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
     end
 
-    before(:each) { described_class.destroy_all }
+    before { described_class.destroy_all }
 
     # +let!(permissions)+ must be run after +before(:each)+ which deletes all permission records
     let!(:permissions) do

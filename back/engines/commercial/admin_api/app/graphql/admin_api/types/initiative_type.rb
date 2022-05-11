@@ -29,7 +29,6 @@ module AdminApi
       field :created_at, String, null: false
     end
 
-
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false
     field :slug, String, null: false

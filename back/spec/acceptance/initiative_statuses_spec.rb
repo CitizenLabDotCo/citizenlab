@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'InitiativeStatuses' do
-
   explanation 'Initivative statuses reflect the cities attitude towards an initiative.'
 
   before do
@@ -16,7 +14,7 @@ resource 'InitiativeStatuses' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response[:data].map{|d| d[:id]}).to match_array @statuses.map(&:id)
+      expect(json_response[:data].pluck(:id)).to match_array @statuses.map(&:id)
     end
   end
 

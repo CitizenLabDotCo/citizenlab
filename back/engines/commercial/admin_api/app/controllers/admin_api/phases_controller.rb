@@ -1,6 +1,5 @@
 module AdminApi
   class PhasesController < AdminApiController
-
     before_action :set_project
 
     def index
@@ -15,6 +14,5 @@ module AdminApi
     def set_project
       @project = Project.find(params[:project_id])
     end
-
   end
 end

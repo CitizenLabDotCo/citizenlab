@@ -4,7 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Text-network-analysis tasks' do
-
   shared_examples 'unauthorized requests' do
     context 'when visitor' do
       example 'unauthorized', document: false do
@@ -48,7 +47,6 @@ resource 'Text-network-analysis tasks' do
           expect(response_data).to be_empty
         end
       end
-
     end
 
     include_examples 'unauthorized requests'

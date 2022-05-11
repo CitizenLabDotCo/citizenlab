@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'AdminPublication' do
-
   explanation 'Describes the presentation (ordering and publication) of a folder or project'
 
   before do
@@ -18,10 +16,10 @@ resource 'AdminPublication' do
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
 
-      @projects = ['published','published','draft','draft','published','archived','archived','published']
-        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps, parent_id: folder.admin_publication.id })}
+      @projects = %w[published published draft draft published archived archived published]
+        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps, parent_id: folder.admin_publication.id }) }
       @folder = create(:project_folder, projects: @projects.take(3))
-      @empty_draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'})
+      @empty_draft_folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
     end
 
     patch 'web_api/v1/admin_publications/:id/reorder' do

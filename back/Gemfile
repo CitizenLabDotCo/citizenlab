@@ -41,14 +41,15 @@ group :development, :test do
   # Here, rack-mini-profiler conflicts with sentry-ruby which patches NET::HTTP
   # with prepend.
   # See https://github.com/MiniProfiler/rack-mini-profiler#nethttp-stack-level-too-deep-errors
-  gem 'rack-mini-profiler', require: ['prepend_net_http_patch', 'rack-mini-profiler']
+  gem 'rack-mini-profiler', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails', '~> 5.1.0'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
-  gem 'rubocop-ast', '~> 0.7.1', require: false
+  gem 'rubocop', require: false
+  gem 'rubocop-ast', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
