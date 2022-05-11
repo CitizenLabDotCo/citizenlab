@@ -204,7 +204,7 @@ export interface IAppConfigurationSettings {
   customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
-  remove_citizenlab_branding?: AppConfigurationFeature;
+  remove_vendor_branding?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

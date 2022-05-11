@@ -268,8 +268,8 @@ const PlatformFooter = ({
     windowSize.windowWidth <= viewportWidths.smallTablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
-  const removeCitizenlabBranding = useFeatureFlag({
-    name: 'remove_citizenlab_branding',
+  const removeVendorBranding = useFeatureFlag({
+    name: 'remove_vendor_branding',
   });
 
   return (
@@ -317,7 +317,7 @@ const PlatformFooter = ({
         </PagesNav>
 
         <Right>
-          {!removeCitizenlabBranding && (
+          {!removeVendorBranding && (
             <PoweredBy>
               <PoweredByText>
                 <FormattedMessage {...messages.poweredBy} />

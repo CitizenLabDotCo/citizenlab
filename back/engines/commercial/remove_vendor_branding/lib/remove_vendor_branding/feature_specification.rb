@@ -1,9 +1,9 @@
-module RemoveCitizenlabBranding
+module RemoveVendorBranding
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification
 
     def self.feature_name
-      'remove_citizenlab_branding'
+      'remove_vendor_branding'
     end
 
     def self.feature_title
