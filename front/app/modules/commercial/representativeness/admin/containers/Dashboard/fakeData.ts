@@ -125,6 +125,16 @@ const TEST_DOMICILE_DATA = [
   },
 ];
 
+const TEST_DOMICILE_DATA_LONG = Array(26)
+  .fill(0)
+  .map((_, i) => ({
+    name: `Place ${i + 1}`,
+    actualPercentage: (i + 1) / 100,
+    referencePercentage: (i + 1) / 100,
+    actualNumber: i + 1,
+    referenceNumber: i + 1,
+  }));
+
 const DATA_PER_CODE = {
   gender: {
     data: TEST_GENDER_DATA,
@@ -134,6 +144,12 @@ const DATA_PER_CODE = {
   },
   domicile: {
     data: TEST_DOMICILE_DATA,
+    representativenessScore: 70,
+    includedUsersPercentage: 80,
+    demographicDataDate: moment('2021-09-02'),
+  },
+  domicileLong: {
+    data: TEST_DOMICILE_DATA_LONG,
     representativenessScore: 70,
     includedUsersPercentage: 80,
     demographicDataDate: moment('2021-09-02'),

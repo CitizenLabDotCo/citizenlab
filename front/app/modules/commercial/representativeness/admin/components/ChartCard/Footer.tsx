@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -25,6 +26,10 @@ interface Props extends FieldInfoProps {
   legendLabels: string[];
   onClickSwitchToTableView: () => void;
 }
+
+const TableViewButton = styled.button`
+  all: unset;
+`;
 
 const normalPadding = '12px 40px 20px 40px';
 const smallPadding = '0px 40px 4px 40px';
@@ -78,12 +83,12 @@ const Footer = ({
               values={{
                 numberOfHiddenItems,
                 tableViewLink: (
-                  <a
+                  <TableViewButton
                     onClick={onClickSwitchToTableView}
                     data-testid="switch-to-table-view-link"
                   >
                     <FormattedMessage {...messages.tableViewLinkText} />
-                  </a>
+                  </TableViewButton>
                 ),
               }}
             />

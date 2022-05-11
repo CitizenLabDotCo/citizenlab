@@ -51,6 +51,17 @@ const ChartCards = () => {
         />
       ))}
 
+      {customFields.filter(onlyDomicile).map((customField) => (
+        <ChartCard
+          customField={customField}
+          key={customField.id}
+          data={fakeData.domicileLong.data}
+          representativenessScore={fakeData.domicile.representativenessScore}
+          includedUserPercentage={fakeData.domicile.includedUsersPercentage}
+          demographicDataDate={fakeData.domicile.demographicDataDate}
+        />
+      ))}
+
       <EmptyCard
         titleMultiloc={{ en: 'Favorite ice cream flavor' }}
         isComingSoon={false}
