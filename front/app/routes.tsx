@@ -1,56 +1,44 @@
-import * as React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 // import adminRoutes from 'containers/Admin/routes';
 // import moduleConfiguration from 'modules';
 
-const LandingPage = React.lazy(() => import('containers/LandingPage'));
-const SignUpInPage = React.lazy(() => import('containers/SignUpInPage'));
-const SiteMap = React.lazy(() => import('containers/SiteMap'));
-const UsersEditPage = React.lazy(() => import('containers/UsersEditPage'));
-const UsersShowPage = React.lazy(() => import('containers/UsersShowPage'));
-const IdeasEditPage = React.lazy(() => import('containers/IdeasEditPage'));
-const IdeasIndexPage = React.lazy(() => import('containers/IdeasIndexPage'));
-const IdeasShowPage = React.lazy(() => import('containers/IdeasShowPage'));
-const InitiativesIndexPage = React.lazy(
+const LandingPage = lazy(() => import('containers/LandingPage'));
+const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
+const SiteMap = lazy(() => import('containers/SiteMap'));
+const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
+const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
+const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
+const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
+const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
+const InitiativesIndexPage = lazy(
   () => import('containers/InitiativesIndexPage')
 );
-const InitiativesEditPage = React.lazy(
+const InitiativesEditPage = lazy(
   () => import('containers/InitiativesEditPage')
 );
-const InitiativesNewPage = React.lazy(
-  () => import('containers/InitiativesNewPage')
-);
-const InitiativesShowPage = React.lazy(
+const InitiativesNewPage = lazy(() => import('containers/InitiativesNewPage'));
+const InitiativesShowPage = lazy(
   () => import('containers/InitiativesShowPage')
 );
-const IdeasNewPage = React.lazy(() => import('containers/IdeasNewPage'));
-const ProjectsIndexPage = React.lazy(
-  () => import('containers/ProjectsIndexPage')
-);
-const ProjectsShowPage = React.lazy(
-  () => import('containers/ProjectsShowPage')
-);
-const EventsPage = React.lazy(() => import('containers/EventsPage'));
-const CookiePolicy = React.lazy(() => import('containers/CookiePolicy'));
-const AccessibilityStatement = React.lazy(
+const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
+const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
+const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
+const EventsPage = lazy(() => import('containers/EventsPage'));
+const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
+const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
 );
-const PagesShowPage = React.lazy(() => import('containers/PagesShowPage'));
-const PasswordRecovery = React.lazy(
-  () => import('containers/PasswordRecovery')
-);
-const PasswordReset = React.lazy(() => import('containers/PasswordReset'));
-const SubscriptionEndedPage = React.lazy(
+const PagesShowPage = lazy(() => import('containers/PagesShowPage'));
+const PasswordRecovery = lazy(() => import('containers/PasswordRecovery'));
+const PasswordReset = lazy(() => import('containers/PasswordReset'));
+const SubscriptionEndedPage = lazy(
   () => import('containers/SubscriptionEndedPage')
 );
-const EmailSettingsPage = React.lazy(
-  () => import('containers/EmailSettingsPage')
-);
+const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 
 const LoadingComponent = ({ children }) => {
-  return (
-    <React.Suspense fallback={<div>LOADING!</div>}>{children}</React.Suspense>
-  );
+  return <Suspense fallback={<div>LOADING!</div>}>{children}</Suspense>;
 };
 
 export default function createRoutes() {
