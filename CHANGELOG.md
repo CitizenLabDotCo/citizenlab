@@ -6,6 +6,12 @@
 
 - [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
 
+## 2022-05-11
+
+### Fixed
+
+- [CL-711] Title text looking weird on insights start page
+
 ## 2022-05-10_3
 
 ### Fixed
