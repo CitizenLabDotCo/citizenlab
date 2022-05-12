@@ -1,5 +1,11 @@
 # Changelog
 
+## Next Release
+
+### Added
+
+- Dynamic idea form has limited support for extra fields
+
 ## 2022-05-11
 
 ### Fixed
@@ -13,10 +19,6 @@
 - [CL-764] Empty navbar item titles in backoffice.
 
 ## 2022-05-10_2
-
-### Added
-
-- Dynamic idea form has limited support for extra fields
 
 ### Changed
 
