@@ -37,7 +37,7 @@ const SubscriptionEndedPage = lazy(
 );
 const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 
-const LoadingComponent = ({ children }) => {
+export const LoadingComponent = ({ children }) => {
   return <Suspense fallback={<div>LOADING!</div>}>{children}</Suspense>;
 };
 
