@@ -24,12 +24,14 @@ module Insights
         rescue ActiveRecord::RecordInvalid => e
           render json: { errors: e.record.errors.details }, status: :unprocessable_entity
         else
+          SideFxCategoryService.new.after_create(category, current_user)
           render json: serialize(category), status: :created
         end
       end
 
       def update
         if category.update(update_params)
+          SideFxCategoryService.new.after_update(category, current_user)
           render json: serialize(category)
         else
           render json: { errors: category.errors.details }, status: :unprocessable_entity
