@@ -19,8 +19,6 @@ import { createBrowserHistory, BrowserHistory } from 'history';
 
 export const rootHistory: BrowserHistory = createBrowserHistory();
 
-console.log(rootHistory);
-
 import {
   unstable_HistoryRouter as HistoryRouter,
   useRoutes,
