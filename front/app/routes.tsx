@@ -1,387 +1,343 @@
-import React from 'react';
+import * as React from 'react';
+
 // import adminRoutes from 'containers/Admin/routes';
-import Loadable from 'react-loadable';
-import { LoadableLoadingCitizen } from 'components/UI/LoadableLoading';
 // import moduleConfiguration from 'modules';
 
-const LoadingPageComponent = Loadable({
-  loader: () => import('containers/LandingPage'),
-  loading: LoadableLoadingCitizen,
-  delay: 500,
-});
+const LandingPage = React.lazy(() => import('containers/LandingPage'));
+const SignUpInPage = React.lazy(() => import('containers/SignUpInPage'));
+const SiteMap = React.lazy(() => import('containers/SiteMap'));
+const UsersEditPage = React.lazy(() => import('containers/UsersEditPage'));
+const UsersShowPage = React.lazy(() => import('containers/UsersShowPage'));
+const IdeasEditPage = React.lazy(() => import('containers/IdeasEditPage'));
+const IdeasIndexPage = React.lazy(() => import('containers/IdeasIndexPage'));
+const IdeasShowPage = React.lazy(() => import('containers/IdeasShowPage'));
+const InitiativesIndexPage = React.lazy(
+  () => import('containers/InitiativesIndexPage')
+);
+const InitiativesEditPage = React.lazy(
+  () => import('containers/InitiativesEditPage')
+);
+const InitiativesNewPage = React.lazy(
+  () => import('containers/InitiativesNewPage')
+);
+const InitiativesShowPage = React.lazy(
+  () => import('containers/InitiativesShowPage')
+);
+const IdeasNewPage = React.lazy(() => import('containers/IdeasNewPage'));
+const ProjectsIndexPage = React.lazy(
+  () => import('containers/ProjectsIndexPage')
+);
+const ProjectsShowPage = React.lazy(
+  () => import('containers/ProjectsShowPage')
+);
+const EventsPage = React.lazy(() => import('containers/EventsPage'));
+const CookiePolicy = React.lazy(() => import('containers/CookiePolicy'));
+const AccessibilityStatement = React.lazy(
+  () => import('containers/AccessibilityStatement')
+);
+const PagesShowPage = React.lazy(() => import('containers/PagesShowPage'));
+const PasswordRecovery = React.lazy(
+  () => import('containers/PasswordRecovery')
+);
+const PasswordReset = React.lazy(() => import('containers/PasswordReset'));
+const SubscriptionEndedPage = React.lazy(
+  () => import('containers/SubscriptionEndedPage')
+);
+const EmailSettingsPage = React.lazy(
+  () => import('containers/EmailSettingsPage')
+);
 
-// import SignUpInComponent from 'containers/SignUpInPage';
-
-const SignUpInComponent = Loadable({
-  loader: () => import('containers/SignUpInPage'),
-  loading: LoadableLoadingCitizen,
-  delay: 500,
-});
-
-const SiteMapComponent = Loadable({
-  loader: () => import('containers/SiteMap'),
-  loading: LoadableLoadingCitizen,
-  delay: 500,
-});
-
-const ProjectIndexComponent = Loadable({
-  loader: () => import('containers/ProjectsIndexPage'),
-  loading: LoadableLoadingCitizen,
-  delay: 500,
-});
-
-const ProjectSingleComponent = Loadable({
-  loader: () => import('containers/ProjectsShowPage'),
-  loading: LoadableLoadingCitizen,
-  delay: 500,
-});
-
-// {
-//     path: 'projects',
-//     name: 'Project page',
-//     component: Loadable({
-//       loader: () => import('containers/ProjectsIndexPage'),
-//       loading: LoadableLoadingCitizen,
-//       delay: 500,
-//     }),
-//   },
-//   {
-//     path: 'projects/:slug',
-//     name: 'Project page',
-//     component: Loadable({
-//       loader: () => import('containers/ProjectsShowPage'),
-//       loading: LoadableLoadingCitizen,
-//       delay: 500,
-//     }),
+const LoadingComponent = ({ children }) => {
+  return (
+    <React.Suspense fallback={<div>LOADING!</div>}>{children}</React.Suspense>
+  );
+};
 
 export default function createRoutes() {
   return [
     {
       path: '/:locale',
-      // name: 'LocaleWrapper',
-      // index: true,
-
       children: [
         {
           index: true,
-          element: <LoadingPageComponent />,
-        },
-        {
-          path: 'site-map',
-          element: <SiteMapComponent />,
-          // children: [{
-          // index: true,
+          element: (
+            <LoadingComponent>
+              <LandingPage />
+            </LoadingComponent>
+          ),
         },
         {
           path: 'sign-in',
-          element: <SignUpInComponent />,
+          name: 'signInPage',
+          element: (
+            <LoadingComponent>
+              <SignUpInPage />
+            </LoadingComponent>
+          ),
         },
         {
           path: 'sign-up',
-          element: <SignUpInComponent />,
+          name: 'signUpPage',
+          element: (
+            <LoadingComponent>
+              <SignUpInPage />
+            </LoadingComponent>
+          ),
         },
         {
+          path: 'invite',
+          element: (
+            <LoadingComponent>
+              <LandingPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'complete-signup',
+          element: (
+            <LoadingComponent>
+              <LandingPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'authentication-error',
+          element: (
+            <LoadingComponent>
+              <LandingPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'site-map',
+          element: (
+            <LoadingComponent>
+              <SiteMap />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'profileedit',
+          name: 'usersEditPage',
+          element: (
+            <LoadingComponent>
+              <UsersEditPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'profile/:userSlug',
+          name: 'usersShowPage',
+          element: (
+            <LoadingComponent>
+              <UsersShowPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'ideas/edit/:ideaId',
+          name: 'IdeasEditPage',
+          element: (
+            <LoadingComponent>
+              <IdeasEditPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'ideas',
+          name: 'ideasPage',
+          element: (
+            <LoadingComponent>
+              <IdeasIndexPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'ideas/:slug',
+          name: 'ideasShow',
+          element: (
+            <LoadingComponent>
+              <IdeasShowPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'initiatives',
+          name: 'initiativesPage',
+          element: (
+            <LoadingComponent>
+              <InitiativesIndexPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'initiatives/edit/:initiativeId',
+          name: 'InitiativesEditPage',
+          element: (
+            <LoadingComponent>
+              <InitiativesEditPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'initiatives/new',
+          name: 'initiativesNewPage',
+          element: (
+            <LoadingComponent>
+              <InitiativesNewPage />
+            </LoadingComponent>
+          ),
+        },
+        // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
+        {
+          path: 'initiatives/:slug',
+          name: 'initiativesShow',
+          element: (
+            <LoadingComponent>
+              <InitiativesShowPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'projects/:slug/ideas/new',
+          name: 'IdeasNewPage',
+          element: (
+            <LoadingComponent>
+              <IdeasNewPage />
+            </LoadingComponent>
+          ),
+        },
+        // adminRoutes(),
+        {
           path: 'projects',
+          name: 'Project page',
+          element: (
+            <LoadingComponent>
+              <ProjectsIndexPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'projects/:slug',
+          name: 'Project page',
+          element: (
+            <LoadingComponent>
+              <ProjectsShowPage />
+            </LoadingComponent>
+          ),
+          indexRoute: {
+            name: 'Project page',
+            element: (
+              <LoadingComponent>
+                <ProjectsShowPage />
+              </LoadingComponent>
+            ),
+          },
           children: [
             {
-              element: <ProjectIndexComponent />,
-              index: true,
+              path: ':phaseNumber',
+              name: 'Project page: specific phase',
+              element: (
+                <LoadingComponent>
+                  <ProjectsShowPage />
+                </LoadingComponent>
+              ),
             },
             {
-              path: ':slug',
-              element: <ProjectSingleComponent />,
+              path: '*',
+              name: 'Project page',
+              element: (
+                <LoadingComponent>
+                  <ProjectsShowPage />
+                </LoadingComponent>
+              ),
             },
           ],
         },
-        // {
-        //   path: 'sign-up',
-        //   name: 'signUpPage',
-        //   component: Loadable({
-        //     loader: () => import('containers/SignUpInPage'),
-        //     loading: LoadableLoadingCitizen,
-        //     delay: 500,
-        //   }),
-        // },
-        // {
-        //   path: 'site-map',
-        //   //  index:true,
-        //   element: <SiteMapComponent />,
-        // },
+        {
+          path: 'events',
+          name: 'Events page',
+          element: (
+            <LoadingComponent>
+              <EventsPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'pages/cookie-policy',
+          name: 'cookiePolicy',
+          element: (
+            <LoadingComponent>
+              <CookiePolicy />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'pages/accessibility-statement',
+          name: 'accessibilityStatement',
+          element: (
+            <LoadingComponent>
+              <AccessibilityStatement />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'pages/:slug',
+          name: 'pagesShowPage',
+          element: (
+            <LoadingComponent>
+              <PagesShowPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'password-recovery',
+          name: 'passwordRecovery',
+          element: (
+            <LoadingComponent>
+              <PasswordRecovery />
+            </LoadingComponent>
+          ),
+        },
+        {
+          // Used as link in email received for password recovery
+          path: 'reset-password',
+          name: 'passwordReset',
+          element: (
+            <LoadingComponent>
+              <PasswordReset />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'subscription-ended',
+          name: 'subscriptionEnded',
+          element: (
+            <LoadingComponent>
+              <SubscriptionEndedPage />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'email-settings',
+          name: 'EmailSettingPage',
+          element: (
+            <LoadingComponent>
+              <EmailSettingsPage />
+            </LoadingComponent>
+          ),
+        },
+        // ...moduleConfiguration.routes.citizen,
+        {
+          path: '*',
+          name: 'notfound',
+          element: (
+            <LoadingComponent>
+              <PagesShowPage />
+            </LoadingComponent>
+          ),
+        },
       ],
-      // childRoutes: [
-      //   {
-      //     path: 'sign-in',
-      //     name: 'signInPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/SignUpInPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'sign-up',
-      //     name: 'signUpPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/SignUpInPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'invite',
-      //     component: Loadable({
-      //       loader: () => import('containers/LandingPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'complete-signup',
-      //     component: Loadable({
-      //       loader: () => import('containers/LandingPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'authentication-error',
-      //     component: Loadable({
-      //       loader: () => import('containers/LandingPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'site-map',
-      //     name: 'siteMap',
-      //     component: Loadable({
-      //       loader: () => import('containers/SiteMap'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'profile/edit',
-      //     name: 'usersEditPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/UsersEditPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'profile/:userSlug',
-      //     name: 'usersShowPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/UsersShowPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'ideas/edit/:ideaId',
-      //     name: 'IdeasEditPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/IdeasEditPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'ideas',
-      //     name: 'ideasPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/IdeasIndexPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'ideas/:slug',
-      //     name: 'ideasShow',
-      //     component: Loadable({
-      //       loader: () => import('containers/IdeasShowPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'initiatives',
-      //     name: 'initiativesPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/InitiativesIndexPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'initiatives/edit/:initiativeId',
-      //     name: 'InitiativesEditPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/InitiativesEditPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'initiatives/new',
-      //     name: 'initiativesNewPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/InitiativesNewPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
-      //   {
-      //     path: 'initiatives/:slug',
-      //     name: 'initiativesShow',
-      //     component: Loadable({
-      //       loader: () => import('containers/InitiativesShowPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 10,
-      //     }),
-      //   },
-      //   {
-      //     path: 'projects/:slug/ideas/new',
-      //     name: 'IdeasNewPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/IdeasNewPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   adminRoutes(),
-      //   {
-      //     path: 'projects',
-      //     name: 'Project page',
-      //     component: Loadable({
-      //       loader: () => import('containers/ProjectsIndexPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'projects/:slug',
-      //     name: 'Project page',
-      //     component: Loadable({
-      //       loader: () => import('containers/ProjectsShowPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //     indexRoute: {
-      //       name: 'Project page',
-      //       component: Loadable({
-      //         loader: () => import('containers/ProjectsShowPage'),
-      //         loading: LoadableLoadingCitizen,
-      //         delay: 500,
-      //       }),
-      //     },
-      //     childRoutes: [
-      //       {
-      //         path: ':phaseNumber',
-      //         name: 'Project page: specific phase',
-      //         component: Loadable({
-      //           loader: () => import('containers/ProjectsShowPage'),
-      //           loading: LoadableLoadingCitizen,
-      //           delay: 500,
-      //         }),
-      //       },
-      //       {
-      //         path: '*',
-      //         name: 'Project page',
-      //         component: Loadable({
-      //           loader: () => import('containers/ProjectsShowPage'),
-      //           loading: LoadableLoadingCitizen,
-      //           delay: 500,
-      //         }),
-      //       },
-      //     ],
-      //   },
-      //   {
-      //     path: 'events',
-      //     name: 'Events page',
-      //     component: Loadable({
-      //       loader: () => import('containers/EventsPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'pages/cookie-policy',
-      //     name: 'cookiePolicy',
-      //     component: Loadable({
-      //       loader: () => import('containers/CookiePolicy'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'pages/accessibility-statement',
-      //     name: 'accessibilityStatement',
-      //     component: Loadable({
-      //       loader: () => import('containers/AccessibilityStatement'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'pages/:slug',
-      //     name: 'pagesShowPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/PagesShowPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'password-recovery',
-      //     name: 'passwordRecovery',
-      //     component: Loadable({
-      //       loader: () => import('containers/PasswordRecovery'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     // Used as link in email received for password recovery
-      //     path: 'reset-password',
-      //     name: 'passwordReset',
-      //     component: Loadable({
-      //       loader: () => import('containers/PasswordReset'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'subscription-ended',
-      //     name: 'subscriptionEnded',
-      //     component: Loadable({
-      //       loader: () => import('containers/SubscriptionEndedPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: 'email-settings',
-      //     name: 'EmailSettingPage',
-      //     component: Loadable({
-      //       loader: () => import('containers/EmailSettingsPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   ...moduleConfiguration.routes.citizen,
-      //   {
-      //     path: '*',
-      //     name: 'notfound',
-      //     component: Loadable({
-      //       loader: () => import('containers/PagesShowPage'),
-      //       loading: LoadableLoadingCitizen,
-      //       delay: 500,
-      //     }),
-      //   },
-      // ],
     },
   ];
 }
