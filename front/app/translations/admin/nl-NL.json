@@ -1318,7 +1318,7 @@
   "app.containers.admin.ContentBuilder.text": "Tekst",
   "app.containers.admin.ContentBuilder.textValue": "Dit is tekst. Je kunt het aanpassen en formatteren met behulp van de editor in het paneel aan de rechterzijde.",
   "app.containers.admin.ContentBuilder.threeColumnLayout": "3 kolommen",
-  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 kolom",
+  "app.containers.admin.ContentBuilder.twoColumnLayout": "2 kolommen",
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2": "2 kolommen met respectievelijk 30% en 60% breedte",
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1": "2 kolommen met respectievelijk 60% en 30% breedte",
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 even kolommen",
