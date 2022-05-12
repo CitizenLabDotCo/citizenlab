@@ -1,12 +1,9 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 // import moduleConfiguration from 'modules';
 const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
-
-const LoadingComponent = ({ children }) => {
-  return <Suspense fallback={<div>LOADING!</div>}>{children}</Suspense>;
-};
+import { LoadingComponent } from 'routes';
 
 const createAdminDashboardRoutes = () => {
   return [
