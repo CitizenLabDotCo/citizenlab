@@ -13,6 +13,33 @@ RSpec.describe Idea, type: :model do
     it 'can create an idea without author' do
       expect(build(:idea, author: nil)).to be_valid
     end
+
+    context 'with custom fields' do
+      let(:project) { create :project }
+      let(:form) { create :custom_form, project: project }
+      let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
+      let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
+
+      it 'can create an idea' do
+        custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
+        expect(build(:idea, project: project, custom_field_values: custom_field_values)).to be_valid
+      end
+
+      it 'can create an idea without optional fields' do
+        custom_field_values = { required_field.key => 63 }
+        expect(build(:idea, project: project, custom_field_values: custom_field_values)).to be_valid
+      end
+
+      it 'cannot create an idea with invalid field values' do
+        custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+        expect(build(:idea, project: project, custom_field_values: custom_field_values)).to be_invalid
+      end
+
+      it 'cannot create an idea without required field values' do
+        custom_field_values = { optional_field.key => 'option1' }
+        expect(build(:idea, project: project, custom_field_values: custom_field_values)).to be_invalid
+      end
+    end
   end
 
   context 'hooks' do
