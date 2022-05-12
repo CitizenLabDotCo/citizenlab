@@ -284,7 +284,6 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-
             {!showMapView && (
               <StyledSearchInput
                 className="e2e-search-ideas-input"
@@ -328,6 +327,7 @@ const IdeasWithoutFiltersSidebar = ({
           </RightFilterArea>
         </FiltersArea>
         <IdeasView
+          aria-live="polite"
           list={list}
           querying={querying}
           onLoadMore={ideas.onLoadMore}
