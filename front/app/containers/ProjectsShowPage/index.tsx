@@ -107,10 +107,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
   const userNotSignedInAndUnauthorized = isNilOrError(user) && isUnauthorized;
 
-  const handleGoBack = () => {
-    history.back();
-  };
-
   let content: JSX.Element | null = null;
 
   if (userNotSignedInAndUnauthorized) return <ForbiddenRoute />;
@@ -129,7 +125,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
-        <button onClick={handleGoBack}>Go Back</button>
         {processType === 'continuous' ? (
           <>
             <ContinuousIdeas projectId={projectId} />
