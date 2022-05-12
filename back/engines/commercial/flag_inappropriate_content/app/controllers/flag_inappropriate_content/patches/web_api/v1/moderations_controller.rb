@@ -20,7 +20,7 @@ module FlagInappropriateContent
               else
                 @moderations.where.not(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
               end
-            end 
+            end
           end
         end
       end

@@ -11,7 +11,8 @@ class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   # will be when the page would be added to the navbar (and
   # show this in the list of items to add).
   attribute :nav_bar_item_title_multiloc do |object|
-    object.nav_bar_item&.title_multiloc || NavBarItem.new(code: 'custom', static_page: object).title_multiloc
+    current_navbaritem_title = object.nav_bar_item&.title_multiloc_with_fallback
+    current_navbaritem_title || NavBarItem.new(code: 'custom', static_page: object).title_multiloc_with_fallback
   end
 
   has_one :nav_bar_item

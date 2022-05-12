@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'EventFile' do
-
   explanation 'File attachments.'
 
   before do
@@ -33,7 +31,7 @@ resource 'EventFile' do
     example_request 'Get one file of an event' do
       assert_status 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
+      expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
   end
 
@@ -52,10 +50,10 @@ resource 'EventFile' do
     example_request 'Add a file attachment to an event' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:file)).to be_present
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
-      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
-      expect(json_response.dig(:data,:attributes,:size)).to be_present
+      expect(json_response.dig(:data, :attributes, :file)).to be_present
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
+      expect(json_response.dig(:data, :attributes, :name)).to eq(name)
+      expect(json_response.dig(:data, :attributes, :size)).to be_present
     end
 
     describe do
@@ -96,7 +94,7 @@ resource 'EventFile' do
 
     example_request 'Delete a file attachment from an event' do
       assert_status 200
-      expect{EventFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { EventFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

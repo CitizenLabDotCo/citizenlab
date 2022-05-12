@@ -1,12 +1,11 @@
 class UserCustomFieldService
-
-  def delete_custom_field_values field
+  def delete_custom_field_values(field)
     User
       .where("custom_field_values \? '#{field.key}'")
       .update_all("custom_field_values = custom_field_values - '#{field.key}'")
   end
 
-  def delete_custom_field_option_values option_key, field
+  def delete_custom_field_option_values(option_key, field)
     if field.input_type == 'multiselect'
       # When option is the only selection
       User
@@ -23,5 +22,4 @@ class UserCustomFieldService
         .update_all("custom_field_values = custom_field_values - '#{field.key}'")
     end
   end
-
 end

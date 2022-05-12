@@ -45,7 +45,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             <ContentBuilderToolbox />
           </Box>
           <StyledRightColumn>
-            <Box w="1050px">
+            <Box width="1000px">
               <ContentBuilderFrame projectId={projectId} />
             </Box>
           </StyledRightColumn>

@@ -1,5 +1,4 @@
 Knock.setup do |config|
-
   ## Expiration claim
   ## ----------------
   ##
@@ -8,7 +7,6 @@ Knock.setup do |config|
   ##
   ## Default:
   config.token_lifetime = 1.month
-
 
   ## Audience claim
   ## --------------

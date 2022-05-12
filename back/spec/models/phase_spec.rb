@@ -10,14 +10,12 @@ RSpec.describe Phase, type: :model do
   end
 
   describe 'description sanitizer' do
-
     it 'sanitizes script tags in the description' do
       phase = create(:phase, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(phase.description_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(phase.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
-
   end
 
   describe 'timing validation' do
@@ -26,6 +24,7 @@ RSpec.describe Phase, type: :model do
       phase.end_at = phase.start_at
       expect(phase).to be_valid
     end
+
     it 'fails when end_at is before start_at' do
       phase = build(:phase)
       phase.end_at = phase.start_at - 1.day
@@ -37,12 +36,12 @@ RSpec.describe Phase, type: :model do
     it 'cannot be null' do
       p = create(:phase, participation_method: 'ideation')
       p.participation_method = nil
-      expect(p.save).to eq false
+      expect(p.save).to be false
     end
 
     it 'can be budgeting' do
       p = create(:phase, participation_method: 'budgeting')
-      expect(p.save).to eq true
+      expect(p.save).to be true
     end
   end
 
@@ -50,13 +49,13 @@ RSpec.describe Phase, type: :model do
     it 'can be null for non-ideation phases' do
       p = create(:phase, participation_method: 'information')
       p.presentation_mode = nil
-      expect(p.save).to eq true
+      expect(p.save).to be true
     end
 
     it 'cannot be null for an ideation phase' do
       p = create(:phase, participation_method: 'ideation')
       p.presentation_mode = nil
-      expect(p.save).to eq false
+      expect(p.save).to be false
     end
   end
 
@@ -96,9 +95,9 @@ RSpec.describe Phase, type: :model do
   describe 'max_budget' do
     it 'can be updated in a project with just one phase' do
       project = create(:project_with_current_phase,
-        phases_config: {sequence: 'xc'},
-        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234}
-        )
+        phases_config: { sequence: 'xc' },
+        current_phase_attrs: { participation_method: 'budgeting', max_budget: 1234 }
+      )
       phase = project.phases.find_by participation_method: 'budgeting'
 
       phase.max_budget = 9876
@@ -111,11 +110,11 @@ RSpec.describe Phase, type: :model do
     let(:phase) { create(:phase, start_at: start_date, end_at: start_date + 1.day) }
 
     it 'returns false if passing today\'s date' do
-      expect(phase.ends_before?(start_date)).to eq false
+      expect(phase.ends_before?(start_date)).to be false
     end
 
     it 'returns true if passing tomorrow\'s date' do
-      expect(phase.ends_before?(start_date + 2.days)).to eq true
+      expect(phase.ends_before?(start_date + 2.days)).to be true
     end
   end
 

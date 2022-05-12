@@ -1,6 +1,5 @@
 class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
-
-  class AdminPublication < ActiveRecord::Base
+  class AdminPublication < ApplicationRecord
     self.table_name = 'admin_publications'
   end
 

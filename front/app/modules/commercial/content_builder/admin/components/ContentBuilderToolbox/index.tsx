@@ -120,7 +120,7 @@ const ContentBuilderToolbox = ({
         <ToolboxItem icon="image" label={formatMessage(messages.image)} />
       </DraggableElement>
       <DraggableElement
-        id="e2e-draggable-about-box"
+        id="e2e-draggable-iframe"
         ref={(ref) =>
           ref &&
           connectors.create(
@@ -143,6 +143,7 @@ const ContentBuilderToolbox = ({
         <ToolboxItem icon="code" label={formatMessage(messages.url)} />
       </DraggableElement>
       <DraggableElement
+        id="e2e-draggable-about-box"
         ref={(ref) =>
           ref &&
           connectors.create(

@@ -1,6 +1,6 @@
 class WebApi::V1::CustomFieldOptionsController < ApplicationController
-  before_action :set_option, only: [:show, :update, :reorder, :destroy]
-  before_action :set_custom_field, only: [:index, :create]
+  before_action :set_option, only: %i[show update reorder destroy]
+  before_action :set_custom_field, only: %i[index create]
   skip_before_action :authenticate_user
 
   def index
@@ -38,7 +38,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
       render json: WebApi::V1::CustomFieldOptionSerializer.new(
         @option.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     end
@@ -65,7 +65,7 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
     elsif @option.errors
       render json: { errors: @option.errors.details }, status: :unprocessable_entity
     else
-      head 500
+      head :internal_server_error
     end
   end
 

@@ -119,7 +119,7 @@ resource 'Map Layers' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq true
+          expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
           expect(attributes['ordering']).to        eq ordering
         end
@@ -138,7 +138,7 @@ resource 'Map Layers' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq true
+          expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
           expect(attributes['ordering']).to        eq ordering
         end
@@ -158,7 +158,7 @@ resource 'Map Layers' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq true
+          expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
           expect(attributes['ordering']).to        eq ordering
         end
@@ -299,7 +299,6 @@ resource 'Map Layers' do
     end
   end
 
-
   context 'when logged in as a project manager' do
     before do
       header_token_for(create(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => project.id }]))
@@ -330,7 +329,7 @@ resource 'Map Layers' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq true
+          expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
           expect(attributes['ordering']).to        eq ordering
         end
@@ -349,7 +348,7 @@ resource 'Map Layers' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq true
+          expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
           expect(attributes['ordering']).to        eq ordering
         end
@@ -369,7 +368,7 @@ resource 'Map Layers' do
           assert_status 200
           expect(attributes['title_multiloc']).to  eq title_multiloc
           expect(attributes['geojson']).to         eq geojson
-          expect(attributes['default_enabled']).to eq true
+          expect(attributes['default_enabled']).to be true
           expect(attributes['marker_svg_url']).to  eq marker_svg_url
           expect(attributes['ordering']).to        eq ordering
         end

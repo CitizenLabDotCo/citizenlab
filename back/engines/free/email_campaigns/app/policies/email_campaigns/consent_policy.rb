@@ -11,7 +11,7 @@ module EmailCampaigns
       def resolve
         consentable_campaign_types = DeliveryService.new.consentable_campaign_types_for(@user)
         scope.where(
-          user_id: @user.id, 
+          user_id: @user.id,
           campaign_type: consentable_campaign_types
         )
       end
@@ -30,6 +30,5 @@ module EmailCampaigns
     def update_by_campaign_id?
       update?
     end
-
   end
 end

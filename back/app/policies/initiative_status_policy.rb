@@ -15,5 +15,4 @@ class InitiativeStatusPolicy < ApplicationPolicy
   def show?
     true
   end
-
 end

@@ -4,12 +4,11 @@ describe ParticipantsService do
   let(:service) { ParticipantsService.new }
 
   describe 'participants' do
-
     it 'returns participants across the whole platform at any time' do
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
-      
+
       travel_to Time.now - 100.days do
         create(:published_activity, user: pp1)
       end
@@ -23,14 +22,14 @@ describe ParticipantsService do
       create(:activity, item: create(:idea), action: 'published', user: pp4)
       create(:activity, item: create(:poll_response), action: 'created', user: pp5)
 
-      expect(service.participants().map(&:id)).to match_array participants.map(&:id)
+      expect(service.participants.map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns participants across the whole platform since a given date' do
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
-      
+
       travel_to Time.now - 100.days do
         create(:published_activity, user: pp1)
       end
@@ -42,19 +41,18 @@ describe ParticipantsService do
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
-      expect(service.participants(since: (Time.now-6.days)).map(&:id)).to match_array [pp2.id,pp3.id,pp4.id]
+      expect(service.participants(since: (Time.now - 6.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
   end
 
   describe 'projects_participants' do
-
     it 'returns participants of a given project at any time' do
       project = create(:continuous_budgeting_project)
       other_project = create(:project)
       participants = create_list(:user, 5)
       pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
-      
+
       idea = nil
       other_idea = nil
       travel_to Time.now - 100.days do
@@ -99,7 +97,7 @@ describe ParticipantsService do
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
-      
+
       idea = nil
       travel_to Time.now - 100.days do
         idea = create(:idea, project: project, author: pp1)
@@ -115,7 +113,7 @@ describe ParticipantsService do
       end
       create(:comment, post: idea, author: pp4)
 
-      expect(service.projects_participants([project], since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.projects_participants([project], since: (Time.now - 5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
 
     it 'returns only participants for specific actions' do
@@ -131,12 +129,11 @@ describe ParticipantsService do
       b = create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
 
-      expect(service.projects_participants([project], actions: [:posting, :budgeting]).map(&:id)).to match_array [pp1.id, pp4.id]
+      expect(service.projects_participants([project], actions: %i[posting budgeting]).map(&:id)).to match_array [pp1.id, pp4.id]
     end
   end
 
   describe 'topics_participants' do
-
     it 'returns participants of given topics' do
       t1, t2, t3 = create_list(:topic, 3)
       project = create(:project, allowed_input_topics: [t1, t2, t3])
@@ -144,12 +141,12 @@ describe ParticipantsService do
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
       i1 = create(:idea, topics: [t1], author: pp1, project: project)
-      i2 = create(:idea, topics: [t2,t3], author: pp2, project: project)
+      i2 = create(:idea, topics: [t2, t3], author: pp2, project: project)
       i3 = create(:idea, topics: [t3], author: pp1, project: project)
       i4 = create(:idea, topics: [], author: others.first, project: project)
       create(:comment, post: i1, author: pp3)
 
-      expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns only participants for specific actions' do
@@ -170,7 +167,6 @@ describe ParticipantsService do
   end
 
   describe 'idea_statuses_participants' do
-
     it 'returns participants of given idea statuses' do
       s1, s2, s3 = create_list(:idea_status, 3)
       participants = create_list(:user, 3)
@@ -181,7 +177,7 @@ describe ParticipantsService do
       i3 = create(:idea, idea_status: s3, author: others.first)
       create(:comment, post: i1, author: pp3)
 
-      expect(service.idea_statuses_participants([s1,s2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns only participants for specific actions' do
@@ -202,7 +198,6 @@ describe ParticipantsService do
   end
 
   describe 'filter_engaging_activities' do
-
     it 'does not filter out an upvote' do
       activity = create(:published_activity)
       expect(service.filter_engaging_activities(Activity.all)).to eq [activity]
@@ -215,7 +210,6 @@ describe ParticipantsService do
   end
 
   describe 'with_engagement_scores' do
-
     it 'gives idea publishing a score of 5' do
       activity = create(:published_activity)
       expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 5
@@ -250,5 +244,4 @@ describe ParticipantsService do
       expect(scope.first.score).to be_present
     end
   end
-
 end

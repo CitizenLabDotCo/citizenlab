@@ -13,5 +13,4 @@ class MakeNotificationsForClassJob < ApplicationJob
       end
     end
   end
-
 end

@@ -26,5 +26,4 @@ class ProjectsAllowedInputTopic < ApplicationRecord
   belongs_to :topic
 
   validates :project, :topic, presence: true
-
 end

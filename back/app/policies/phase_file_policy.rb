@@ -28,5 +28,4 @@ class PhaseFilePolicy < ApplicationPolicy
   def destroy?
     PhasePolicy.new(user, record.phase).update?
   end
-
 end

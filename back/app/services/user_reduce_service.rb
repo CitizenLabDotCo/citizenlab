@@ -107,11 +107,11 @@ class UserReduceService
 
     project_sets.select do |project_set, participants|
       participants.present? && (project_set & exclude).empty? && (!project_set.empty? || can_pick_empty_set)
-    end.to_a.sort do |l1, l2|
+    end.to_a.min do |l1, l2|
       set1, prtcps1 = l1
       set2, prtcps2 = l2
       [set1.size, -prtcps1.size] <=> [set2.size, -prtcps2.size]
-    end.first&.first
+    end&.first
   end
 
   def pick_and_pop_user_for_merge!(users, project_sets: nil)

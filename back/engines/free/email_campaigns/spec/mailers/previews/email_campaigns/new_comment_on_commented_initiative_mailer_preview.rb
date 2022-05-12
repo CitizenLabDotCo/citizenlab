@@ -2,7 +2,7 @@ module EmailCampaigns
   class NewCommentOnCommentedInitiativeMailerPreview < ActionMailer::Preview
     def campaign_mail
       campaign = EmailCampaigns::Campaigns::NewCommentOnCommentedInitiative.first
-      comment = Comment.find_by_post_type('Initiative')
+      comment = Comment.find_by(post_type: 'Initiative')
       recipient = User.first
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
 

@@ -3,7 +3,6 @@ require 'rspec_api_documentation/dsl'
 require_relative './shared/publication_filtering_model'
 
 resource 'Areas' do
-
   explanation 'Areas are geographical regions. Each tenant has its own custom set of areas.'
 
   before do
@@ -24,7 +23,7 @@ resource 'Areas' do
   end
 
   get 'web_api/v1/areas/:id' do
-    let(:id) {@areas.first.id}
+    let(:id) { @areas.first.id }
 
     example_request 'Get one area by id' do
       expect(status).to eq 200
@@ -53,7 +52,7 @@ resource 'Areas' do
       example_request 'Create an area' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -66,14 +65,14 @@ resource 'Areas' do
 
       let(:area) { create(:area) }
       let(:id) { area.id }
-      let(:title_multiloc) { {'en' => 'Krypton'} }
-      let(:description_multiloc) { {'en' => 'Home planet of Superman'} }
+      let(:title_multiloc) { { 'en' => 'Krypton' } }
+      let(:description_multiloc) { { 'en' => 'Home planet of Superman' } }
 
       example_request 'Update an area' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
       end
     end
 
@@ -82,7 +81,7 @@ resource 'Areas' do
         CustomField.create!(
           resource_type: 'User',
           key: 'domicile',
-          title_multiloc: {'en' => 'Domicile'},
+          title_multiloc: { 'en' => 'Domicile' },
           input_type: 'select',
           required: false,
           ordering: 2,
@@ -98,17 +97,17 @@ resource 'Areas' do
         old_count = Area.count
         do_request
         expect(response_status).to eq 200
-        expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Area.count).to eq (old_count - 1)
+        expect { Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(Area.count).to eq(old_count - 1)
       end
 
       example "Deleting an area that's still referenced in a user's setting", document: false do
-        custom_field_values = {'domicile' => area.id}
+        custom_field_values = { 'domicile' => area.id }
         user = create(:user, custom_field_values: custom_field_values)
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request
         expect(response_status).to eq 200
-        expect{Area.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Area.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
       end
     end

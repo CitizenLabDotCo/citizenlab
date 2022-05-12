@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Spam Reports' do
-
   explanation 'Reporting undesired content (i.e. a comment).'
 
   before do
@@ -20,7 +18,7 @@ resource 'Spam Reports' do
       parameter :number, 'Page number'
       parameter :size, 'Number of spam reports per page'
     end
-    
+
     let(:comment_id) { @comment.id }
 
     example_request 'List all spam reports of a comment' do
@@ -51,13 +49,13 @@ resource 'Spam Reports' do
     let(:comment_id) { @comment.id }
     let(:reason_code) { 'other' }
     let(:other_reason) { 'plagiarism' }
-  
+
     example_request 'Create a spam report for a comment' do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
-      expect(json_response.dig(:data,:attributes,:reason_code)).to eq 'other'
-      expect(json_response.dig(:data,:attributes,:other_reason)).to eq 'plagiarism'
+      expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
+      expect(json_response.dig(:data, :attributes, :reason_code)).to eq 'other'
+      expect(json_response.dig(:data, :attributes, :other_reason)).to eq 'plagiarism'
     end
   end
 
@@ -75,7 +73,7 @@ resource 'Spam Reports' do
     example_request 'Update a spam report for a comment' do
       expect(status).to be 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:reason_code)).to eq 'inappropriate'
+      expect(json_response.dig(:data, :attributes, :reason_code)).to eq 'inappropriate'
     end
   end
 
@@ -85,7 +83,7 @@ resource 'Spam Reports' do
 
     example_request 'Delete a spam report from a comment' do
       expect(response_status).to eq 200
-      expect{SpamReport.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { SpamReport.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

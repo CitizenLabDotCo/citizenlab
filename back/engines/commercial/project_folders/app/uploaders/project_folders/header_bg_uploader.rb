@@ -1,6 +1,5 @@
 module ProjectFolders
   class HeaderBgUploader < BaseImageUploader
-
     version :large do
       process resize_to_fill: [1440, 360]
     end
@@ -12,6 +11,5 @@ module ProjectFolders
     version :small do
       process resize_to_fill: [520, 250]
     end
-
   end
 end

@@ -3,7 +3,7 @@ class WebApi::V1::External::InviteSerializer < ActiveModel::Serializer
 
   belongs_to :invitee, serializer: WebApi::V1::External::UserSerializer
   belongs_to :inviter, serializer: WebApi::V1::External::UserSerializer
-  
+
   def activate_invite_url
     Frontend::UrlService.new.invite_url object.token, locale: object.invitee.locale
   end

@@ -1,9 +1,7 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'ProjectFolderImage' do
-
   explanation 'ProjectFolders can have mutliple images.'
 
   before do
@@ -32,7 +30,7 @@ resource 'ProjectFolderImage' do
     example_request 'Get one image of a project_folder' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large]
     end
   end
 
@@ -49,8 +47,8 @@ resource 'ProjectFolderImage' do
     example_request 'Add an image to a project_folder' do
       assert_status 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large]
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
     end
 
     describe do
@@ -89,8 +87,8 @@ resource 'ProjectFolderImage' do
     example_request 'Edit an image for a project_folder' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:attributes,:versions).keys).to match %i(small medium large)
-      expect(json_response.dig(:data,:attributes,:ordering)).to eq(2)
+      expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large]
+      expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
     end
   end
 
@@ -100,7 +98,7 @@ resource 'ProjectFolderImage' do
 
     example_request 'Delete an image from a project_folder' do
       expect(response_status).to eq 200
-      expect{ProjectFolders::Image.find(image_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { ProjectFolders::Image.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

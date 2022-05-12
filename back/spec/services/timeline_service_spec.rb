@@ -5,14 +5,14 @@ describe TimelineService do
 
   before do
     settings = AppConfiguration.instance.settings
-    settings['core']['locales'] = ['fr','en','nl-BE']
+    settings['core']['locales'] = %w[fr en nl-BE]
     AppConfiguration.instance.update(settings: settings)
   end
 
   describe 'current_phase' do
-    let(:project) {create(:project)}
+    let(:project) { create(:project) }
     let!(:active_phase) { create_active_phase(project) }
-    let!(:inactive_phases) { 10.times{create_inactive_phase(project)} }
+    let!(:inactive_phases) { 10.times { create_inactive_phase(project) } }
 
     it 'returns an active phase of the project' do
       expect(service.current_phase(project)&.id).to eq(active_phase.id)
@@ -22,25 +22,25 @@ describe TimelineService do
       now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
       project = create(:project)
       phase = create(:phase, start_at: now - 1.week, end_at: now, project: project)
-      expect(service.current_phase(project)&.id).to eq (phase.id)
+      expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
     it "returns the active phase when we're in the first day of the phase" do
       project = create(:project)
       phase = create(:phase, start_at: Time.now.to_date, end_at: Time.now.to_date + 1.week, project: project)
-      expect(service.current_phase(project)&.id).to eq (phase.id)
+      expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Brussels'
       AppConfiguration.instance.update!(settings: settings)
-      expect(service.current_phase(project, t)&.id).to be nil
+      expect(service.current_phase(project, t)&.id).to be_nil
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Santiago'
@@ -56,10 +56,10 @@ describe TimelineService do
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.new(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Brussels'
@@ -82,7 +82,7 @@ describe TimelineService do
 
     it 'returns falsy when the given idea is not in the active phase' do
       project = create(:project_with_current_phase)
-      idea = create(:idea, project: project, phases: [project.phases.find{|p| p != service.current_phase(project)}])
+      idea = create(:idea, project: project, phases: [project.phases.find { |p| p != service.current_phase(project) }])
       expect(service.is_in_active_phase?(idea)).to be_falsy
     end
   end
@@ -90,29 +90,29 @@ describe TimelineService do
   describe 'timeline_active' do
     it 'returns :present for a continuous project' do
       project = create(:continuous_project)
-      expect(service.timeline_active project).to eq nil
+      expect(service.timeline_active(project)).to be_nil
     end
 
     it 'returns :present for a project with current phase' do
       project = create(:project_with_current_phase)
-      expect(service.timeline_active project).to eq :present
+      expect(service.timeline_active(project)).to eq :present
     end
 
     it 'returns :past for a project with only past phases' do
       project = create(:project_with_past_phases)
-      expect(service.timeline_active project).to eq :past
+      expect(service.timeline_active(project)).to eq :past
     end
 
     it 'returns :future for a project with only future phases' do
       project = create(:project_with_future_phases)
-      expect(service.timeline_active project).to eq :future
+      expect(service.timeline_active(project)).to eq :future
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019,9,2), end_at: Date.new(2019,9,9))
+      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
       project = phase.project
 
-      travel_to Time.new(2019,9,9,23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
+      travel_to Time.new(2019, 9, 9, 23) do # 11 pm utc = 1 am Brussels == 8pm Santiage
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Brussels'
         AppConfiguration.instance.update!(settings: settings)
@@ -126,18 +126,15 @@ describe TimelineService do
     end
   end
 
-
-  def create_active_phase project
+  def create_active_phase(project)
     now = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     create(:phase, project: project,
-      start_at: now - 2.week,
+      start_at: now - 2.weeks,
       end_at: now
     )
   end
 
-
-  def create_inactive_phase project
+  def create_inactive_phase(project)
     create(:phase_sequence, project: project)
   end
-
 end

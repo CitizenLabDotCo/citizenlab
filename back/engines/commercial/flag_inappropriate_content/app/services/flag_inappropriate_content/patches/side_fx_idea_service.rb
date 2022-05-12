@@ -1,15 +1,14 @@
 module FlagInappropriateContent
   module Patches
     module SideFxIdeaService
+      SUPPORTED_ATTRS = %i[title_multiloc body_multiloc location_description].freeze
 
-      SUPPORTED_ATTRS = [:title_multiloc, :body_multiloc, :location_description].freeze
-
-      def after_create idea, user
+      def after_create(idea, user)
         super
         ToxicityDetectionJob.perform_later idea, attributes: SUPPORTED_ATTRS
       end
 
-      def after_update idea, user
+      def after_update(idea, user)
         # before super to reliably detect attribute changes
         atrs = updated_supported_attrs idea
         if atrs.present?
@@ -23,7 +22,7 @@ module FlagInappropriateContent
 
       private
 
-      def updated_supported_attrs idea
+      def updated_supported_attrs(idea)
         SUPPORTED_ATTRS.select do |atr|
           idea.saved_change_to_attribute? atr
         end

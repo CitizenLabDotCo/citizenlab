@@ -14,4 +14,4 @@ I18n.default_locale = :en
 I18n::Backend::Simple.include I18n::Backend::Fallbacks
 
 # Load application custom translations in order to use them in other initializers (after https://stackoverflow.com/a/53918536/3585671)
-I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+I18n.load_path += Dir[Rails.root.join('config/locales/*.{rb,yml}').to_s]

@@ -2,7 +2,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'AppConfigurations' do
-
   explanation 'AppConfigurations store the global settings of the application.'
 
   before do
@@ -13,7 +12,6 @@ resource 'AppConfigurations' do
   end
 
   get 'web_api/v1/app_configuration' do
-
     AppConfiguration::Settings.json_schema['properties'].each do |feature, feature_descriptor|
       parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:app_configuration, :settings, feature]
       parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
@@ -72,7 +70,7 @@ resource 'AppConfigurations' do
 
         AppConfiguration.style_json_schema['properties'].each do |style, style_descriptor|
           parameter_description = "#{style_descriptor['description']}. Type: #{style_descriptor['type']}"
-          parameter style, parameter_description, scope: [:app_configuration, :style]
+          parameter style, parameter_description, scope: %i[app_configuration style]
         end
       end
     end
@@ -99,7 +97,7 @@ resource 'AppConfigurations' do
       let(:style) do
         {
           'signedOutHeaderOverlayColor' => '#3467eb',
-          'signedInHeaderOverlayColor' => '#db2577',
+          'signedInHeaderOverlayColor' => '#db2577'
         }
       end
     end
@@ -131,9 +129,9 @@ resource 'AppConfigurations' do
     end
 
     describe do
-      let(:settings) {
+      let(:settings) do
         { core: { fake_setting: 'should_fail' } }.deep_stringify_keys!
-      }
+      end
 
       example '[error] Updating the configuration with unsupported settings fails', document: false do
         do_request
@@ -149,7 +147,7 @@ resource 'AppConfigurations' do
         configuration.update(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
         expect(configuration.reload.header_bg_url).to be_present
         do_request app_configuration: { header_bg: nil }
-        expect(configuration.reload.header_bg_url).to be nil
+        expect(configuration.reload.header_bg_url).to be_nil
       end
     end
 
@@ -159,7 +157,7 @@ resource 'AppConfigurations' do
         configuration.update(logo: Rails.root.join('spec/fixtures/logo.png').open)
         expect(configuration.reload.logo_url).to be_present
         do_request app_configuration: { logo: nil }
-        expect(configuration.reload.logo_url).to be nil
+        expect(configuration.reload.logo_url).to be_nil
       end
     end
 
@@ -169,7 +167,7 @@ resource 'AppConfigurations' do
         configuration.update(favicon: Rails.root.join('spec/fixtures/favicon.png').open)
         expect(configuration.reload.favicon_url).to be_present
         do_request app_configuration: { favicon: nil }
-        expect(configuration.reload.favicon_url).to be nil
+        expect(configuration.reload.favicon_url).to be_nil
       end
     end
   end

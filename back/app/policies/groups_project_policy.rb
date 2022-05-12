@@ -27,5 +27,4 @@ class GroupsProjectPolicy < ApplicationPolicy
   def destroy?
     user&.active? && user.admin?
   end
-
 end

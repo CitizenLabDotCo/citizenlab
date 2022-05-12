@@ -19,8 +19,6 @@ module UserConfirmation
         end
       end
 
-      public
-
       #
       # <Used to check upon update or create, if a user should have to confirm their account>
       #

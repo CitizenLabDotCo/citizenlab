@@ -880,7 +880,7 @@
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Activity",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Who are the project managers?",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "More details",
-  "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
+  "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "https://support.citizenlab.co/articles/2672884",
   "app.containers.AdminPage.ProjectEdit.newProject": "New Project",
   "app.containers.AdminPage.ProjectEdit.newestFirstSortingMethod": "Most recent",
   "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "Not a valid amount",
