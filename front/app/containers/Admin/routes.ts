@@ -64,7 +64,7 @@ const isUserAuthorized = (nextState, replace) => {
   });
 };
 
-export default () => ({
+const createAdminRoutes = () => ({
   path: 'admin',
   name: 'Admin page',
   component: Loadable({
@@ -110,3 +110,5 @@ export default () => ({
     ...moduleConfiguration.routes.admin,
   ],
 });
+
+export default createAdminRoutes;
