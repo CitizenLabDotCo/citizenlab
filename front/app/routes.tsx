@@ -225,15 +225,16 @@ export default function createRoutes() {
               <ProjectsShowPage />
             </LoadingComponent>
           ),
-          indexRoute: {
-            name: 'Project page',
-            element: (
-              <LoadingComponent>
-                <ProjectsShowPage />
-              </LoadingComponent>
-            ),
-          },
           children: [
+            {
+              name: 'Project page',
+              index: true,
+              element: (
+                <LoadingComponent>
+                  <ProjectsShowPage />
+                </LoadingComponent>
+              ),
+            },
             {
               path: ':phaseNumber',
               name: 'Project page: specific phase',
