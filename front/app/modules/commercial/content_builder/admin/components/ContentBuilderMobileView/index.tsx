@@ -10,16 +10,22 @@ import { stylingConsts } from 'utils/styleUtils';
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 
+// intl
+import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+
 type ContentBuilderMobileViewProps = {
   projectId: string;
-};
+} & InjectedIntlProps;
 
 const ContentBuilderMobileView = React.forwardRef<
   HTMLIFrameElement,
   ContentBuilderMobileViewProps
->(({ projectId }, ref) => {
+>(({ projectId, intl: { formatMessage } }, ref) => {
   const locale = useLocale();
   const project = useProject({ projectId });
+
   return (
     <Box
       mt={`${stylingConsts.menuHeight + 20}px`}
@@ -37,12 +43,16 @@ const ContentBuilderMobileView = React.forwardRef<
           zIndex="1"
           mb="12px"
         >
-          <iframe
+          {/* Iframe */}
+          <Box
+            as="iframe"
+            title={formatMessage(messages.mobilePreviewTitle)}
             ref={ref}
             src={`/${locale}/projects/${project?.attributes.slug}`}
             height="560px"
             width="360px"
-            style={{ border: 'none', borderRadius: '3px' }}
+            border="none"
+            borderRadius="3px"
           />
         </Box>
       </Box>
@@ -50,4 +60,4 @@ const ContentBuilderMobileView = React.forwardRef<
   );
 });
 
-export default ContentBuilderMobileView;
+export default injectIntl(ContentBuilderMobileView, { withRef: true });
