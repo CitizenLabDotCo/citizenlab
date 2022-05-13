@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
 ## 2022-05-11
 
 ### Fixed
