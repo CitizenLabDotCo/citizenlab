@@ -1301,6 +1301,7 @@
   "app.containers.AdminPage.widgets.titleInputSelection": "Input selection",
   "app.containers.AdminPage.widgets.titleStyle": "Style",
   "app.containers.AdminPage.widgets.titleWidgets": "Widget",
+  "app.containers.ContentBuilder.MobilePreviewTitle": "Project description mobile preview",
   "app.containers.ContentBuilder.PageTitle": "Project Description",
   "app.containers.ContentBuilder.Save": "Save",
   "app.containers.IdeasShow.bodyTitle": "Description",
