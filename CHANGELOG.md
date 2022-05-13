@@ -1,5 +1,9 @@
 # Changelog
 
+## Fixed
+
+- Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
 ## 2022-05-11
 
 ### Fixed
