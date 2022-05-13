@@ -66,13 +66,15 @@ export const isUserAuthorized = (nextState, replace) => {
   });
 };
 
-const createAdminRoutes = (_isUserAuthorized: boolean) => {
+const createAdminRoutes = (isUserAuthorized: boolean) => {
   return {
     path: 'admin',
-    element: (
+    element: isUserAuthorized ? (
       <LoadingComponent>
         <AdminContainer />
       </LoadingComponent>
+    ) : (
+      <Navigate replace to="/" />
     ),
     // https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
     // onEnter: isUserAuthorized,

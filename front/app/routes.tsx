@@ -195,7 +195,7 @@ export default function createRoutes() {
             </LoadingComponent>
           ),
         },
-        createAdminRoutes(true),
+        createAdminRoutes(false),
         {
           path: 'projects',
           name: 'Project page',
