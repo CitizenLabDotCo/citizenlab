@@ -91,7 +91,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
       {!isNilOrError(events) && events.length === 0 && (
         <VerticalCenterer>
           <NoEventsText>
-            {intl.formatMessage(messages.noUpcomingEvents)}
+            {intl.formatMessage(messages.noUpcomingOrOngoingEvents)}
           </NoEventsText>
         </VerticalCenterer>
       )}

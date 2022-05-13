@@ -18,9 +18,9 @@ export default defineMessages({
     id: 'app.containers.eventspage.pastEvents',
     defaultMessage: 'Past events',
   },
-  noUpcomingEvents: {
-    id: 'app.containers.eventspage.noUpcomingEvents',
-    defaultMessage: 'No upcoming events are currently scheduled',
+  noUpcomingOrOngoingEvents: {
+    id: 'app.containers.eventspage.noUpcomingOrOngoingEvents',
+    defaultMessage: 'No upcoming or ongoing events are currently scheduled',
   },
   noPastEvents: {
     id: 'app.containers.eventspage.noPastEvents',
