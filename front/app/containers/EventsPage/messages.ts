@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage:
       'Show all events posted on the participation platform of {orgName}.',
   },
-  upcomingEvents: {
-    id: 'app.containers.eventspage.upcomingEvents',
-    defaultMessage: 'Upcoming events',
+  upcomingAndCurrentEvents: {
+    id: 'app.containers.eventspage.upcomingAndCurrentEvents',
+    defaultMessage: 'Upcoming and Current events',
   },
   pastEvents: {
     id: 'app.containers.eventspage.pastEvents',
