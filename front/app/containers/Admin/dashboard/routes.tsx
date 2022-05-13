@@ -3,11 +3,12 @@ import React, { lazy } from 'react';
 const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
+
 import { LoadingComponent } from 'routes';
 
 const createAdminDashboardRoutes = () => {
   return {
-    path: '/:locale/admin',
+    path: 'dashboard',
     element: (
       <LoadingComponent>
         <DashboardWrapper />
@@ -15,7 +16,6 @@ const createAdminDashboardRoutes = () => {
     ),
     children: [
       {
-        path: 'dashboard',
         index: true,
         element: (
           <LoadingComponent>

@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -27,11 +28,7 @@ interface Props {
 }
 
 export const DashboardsPage = memo(
-  ({
-    authUser,
-    children,
-    intl: { formatMessage },
-  }: Props & InjectedIntlProps) => {
+  ({ authUser, intl: { formatMessage } }: Props & InjectedIntlProps) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.tabSummary),
@@ -96,7 +93,7 @@ export const DashboardsPage = memo(
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {children}
+          <RouterOutlet />
         </DashboardTabs>
       </>
     );
