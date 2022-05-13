@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Begivenheder",
   "app.containers.eventspage.filterDropdownTitle": "Projekter",
   "app.containers.eventspage.noPastEvents": "Ingen tidligere begivenheder at vise",
-  "app.containers.eventspage.noUpcomingEvents": "Ingen kommende begivenheder er planlagt i øjeblikket",
   "app.containers.eventspage.pastEvents": "Tidligere begivenheder",
   "app.containers.footer.accessibility-statement": "{tenantName, select, HillerodKommune {WAS} other {Erklæring om webtilgængelighed}}",
   "app.containers.footer.ariaLabel": "Sekundære",

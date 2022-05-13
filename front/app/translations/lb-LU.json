@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Evenementer",
   "app.containers.eventspage.filterDropdownTitle": "Projeten",
   "app.containers.eventspage.noPastEvents": "Keng vergaangen Evenementer fir unzeweisen",
-  "app.containers.eventspage.noUpcomingEvents": "Momentan si keng Evenementer geplangt",
   "app.containers.eventspage.pastEvents": "Vergaangen Evenementer",
   "app.containers.footer.accessibility-statement": "Zougänglechkeetserklärung",
   "app.containers.footer.ariaLabel": "Secondaire",

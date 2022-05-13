@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Pisimasut",
   "app.containers.eventspage.filterDropdownTitle": "Suliniutit ",
   "app.containers.eventspage.noPastEvents": "Pereersimasunik saqqummersitassaqanngilaq",
-  "app.containers.eventspage.noUpcomingEvents": "Pisussanik maannakkut pilersaaruteqartoqanngilaq",
   "app.containers.eventspage.pastEvents": "Siusinnerusukkut pisimasut",
   "app.containers.footer.accessibility-statement": "Accessibility statement",
   "app.containers.footer.ariaLabel": "Secondary",

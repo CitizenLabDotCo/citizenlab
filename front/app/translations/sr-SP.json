@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Догађаји",
   "app.containers.eventspage.filterDropdownTitle": "Пројекти",
   "app.containers.eventspage.noPastEvents": "Нема претходних догађаја за приказ",
-  "app.containers.eventspage.noUpcomingEvents": "Тренутно нема предстојећих догађаја",
   "app.containers.eventspage.pastEvents": "Претходни догађаји",
   "app.containers.footer.accessibility-statement": "Изјава о приступачности",
   "app.containers.footer.ariaLabel": "Секундарно",

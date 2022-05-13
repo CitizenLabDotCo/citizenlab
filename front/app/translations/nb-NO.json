@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Hendelser",
   "app.containers.eventspage.filterDropdownTitle": "Prosjekter",
   "app.containers.eventspage.noPastEvents": "Ingen tidligere hendelser å vise",
-  "app.containers.eventspage.noUpcomingEvents": "Ingen kommende hendelser er planlagt for øyeblikket",
   "app.containers.eventspage.pastEvents": "Tidligere hendelser",
   "app.containers.footer.accessibility-statement": "Beskrivelse av tilgjengelighet",
   "app.containers.footer.ariaLabel": "Secondary",
