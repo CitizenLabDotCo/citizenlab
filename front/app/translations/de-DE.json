@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "Registrieren",
   "app.containers.landing.defaultSignedInMessage": "{orgName} hört Ihnen zu. Jetzt sind Sie an der Reihe, Ihre Stimme abzugeben!",
   "app.containers.landing.doItLater": "Ich werde das später machen",
-  "app.containers.landing.eventsWidgetTitle": "Bevorstehende Veranstaltungen",
   "app.containers.landing.initiativesBoxText": "Veröffentliche deinen Vorschlag auf dieser Plattform, sammle dafür Unterstützung und setze ihn auf unsere Tagesordnung. Oder lasse dich von anderen Vorschlägen inspirieren.",
   "app.containers.landing.initiativesBoxTitle": "Was ist dein Vorschlag?",
   "app.containers.landing.new": "neu",

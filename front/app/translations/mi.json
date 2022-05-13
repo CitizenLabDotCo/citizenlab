@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "Waitohu",
   "app.containers.landing.defaultSignedInMessage": "{orgName} e whakarongo ana ki a koe. Nōu te wā, kōrero kia rongohia tō reo.",
   "app.containers.landing.doItLater": "Taihoa e mahi ai",
-  "app.containers.landing.eventsWidgetTitle": "Upcoming events",
   "app.containers.landing.initiativesBoxText": "Whakairia tō tono ki tēnei pūhara, me whai tautoko, ka whakauru ai ki te rārangi take. Tirohia ngā whakaaro a ētahi atu.",
   "app.containers.landing.initiativesBoxTitle": "E tono ana koe mō te aha?",
   "app.containers.landing.new": "hou",
