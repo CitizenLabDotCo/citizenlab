@@ -48,17 +48,20 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
 
   const loadingContentBuilderLayout = contentBuilderLayout === undefined;
 
-  const contentBuilderContent =
+  const contentBuilderSavedContent =
     !isNilOrError(contentBuilderLayout) &&
     !isNilOrError(locale) &&
     contentBuilderLayout.data.attributes.enabled &&
     contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
 
-  const editorData =
-    draftData ||
-    (!isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
+  const contentBuilderContent = draftData || contentBuilderSavedContent;
+
+  const savedEditorData =
+    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
       ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
-      : undefined);
+      : undefined;
+
+  const editorData = draftData || savedEditorData;
 
   return (
     <Box data-testid="contentBuilderPreview">
