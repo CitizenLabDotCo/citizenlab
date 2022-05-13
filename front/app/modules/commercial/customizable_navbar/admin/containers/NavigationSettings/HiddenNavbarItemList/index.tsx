@@ -106,7 +106,7 @@ const HiddenNavbarItemList = ({
               viewButtonLink={getViewButtonLink(item)}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}
-              addButtonDisabled={navbarItems.length === 7}
+              addButtonDisabled={navbarItems.length >= 7}
               onClickDeleteButton={handleClickDelete(
                 item.type === 'page' ? item.pageId : undefined
               )}
