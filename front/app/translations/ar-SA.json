@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "التسجيل",
   "app.containers.landing.defaultSignedInMessage": "{orgName} تستمع إليك. حان دورك لجعل صوتك مسموعًا!",
   "app.containers.landing.doItLater": "سأقوم بالأمر لاحقًا",
-  "app.containers.landing.eventsWidgetTitle": "الأحداث القادمة",
   "app.containers.landing.initiativesBoxText": "انشر مُقترحك على هذه المنصة، احشد الدعم وضعه على جدول الأعمال. أو اطلع على مُقترحات الآخرين.",
   "app.containers.landing.initiativesBoxTitle": "ما هو مُقترحك؟",
   "app.containers.landing.new": "جديد",

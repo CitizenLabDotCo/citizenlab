@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "Региструјте се",
   "app.containers.landing.defaultSignedInMessage": "{orgName} вас слуша. На вама је да се ваш глас чује!",
   "app.containers.landing.doItLater": "Учинићу то касније",
-  "app.containers.landing.eventsWidgetTitle": "Предстојећи догађаји",
   "app.containers.landing.initiativesBoxText": "Објавите свој предлог на овој платформи, прикупите подршку, ставите га на дневни ред или прегледајте предлоге других.",
   "app.containers.landing.initiativesBoxTitle": "Који је ваш предлог?",
   "app.containers.landing.new": "ново",

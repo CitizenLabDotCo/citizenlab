@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "Sign up",
   "app.containers.landing.defaultSignedInMessage": "{orgName} is listening to you. It’s your turn to make your voice heard!",
   "app.containers.landing.doItLater": "I'll do it later",
-  "app.containers.landing.eventsWidgetTitle": "Upcoming events",
   "app.containers.landing.initiativesBoxText": "Post your proposal on this platform, gather support and place it on the agenda. Or review the suggestions of others.",
   "app.containers.landing.initiativesBoxTitle": "What is your proposal?",
   "app.containers.landing.new": "new",

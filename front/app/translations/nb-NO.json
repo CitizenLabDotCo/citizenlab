@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "Opprett en konto",
   "app.containers.landing.defaultSignedInMessage": "{firstName}, lytter til deg. Inspirer til forandring i dag!",
   "app.containers.landing.doItLater": "Jeg gjør det senere",
-  "app.containers.landing.eventsWidgetTitle": "Kommende hendelser",
   "app.containers.landing.initiativesBoxText": "Publiser forslaget ditt på platformen. Hent støtte fra andre innbyggere og sett forslaget på agendaen. Du kan også se andres forslag.",
   "app.containers.landing.initiativesBoxTitle": "Hva er forslaget ditt?",
   "app.containers.landing.new": "ny",

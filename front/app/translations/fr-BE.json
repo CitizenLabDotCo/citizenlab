@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "S'inscrire",
   "app.containers.landing.defaultSignedInMessage": "{orgName} vous écoute. Faites entendre votre voix !",
   "app.containers.landing.doItLater": "Je le ferai plus tard",
-  "app.containers.landing.eventsWidgetTitle": "Événements à venir",
   "app.containers.landing.initiativesBoxText": "Postez votre proposition sur cette plateforme, recueillez des soutiens et mettez-la à l'ordre du jour. Ou explorez simplement les propositions de vos concitoyens.",
   "app.containers.landing.initiativesBoxTitle": "Quelle est votre proposition ?",
   "app.containers.landing.new": "nouveau",

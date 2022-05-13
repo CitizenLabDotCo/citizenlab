@@ -1337,7 +1337,6 @@
   "app.containers.landing.createAccount": "Registreren",
   "app.containers.landing.defaultSignedInMessage": "{orgName} luistert naar je. Laat je stem horen!",
   "app.containers.landing.doItLater": "Ik doe het later",
-  "app.containers.landing.eventsWidgetTitle": "Aankomende activiteiten",
   "app.containers.landing.initiativesBoxText": "Passen je plannen niet in bovenstaande projecten? Start je eigen initiatief, verzamel steun en laat je stem horen!",
   "app.containers.landing.initiativesBoxTitle": "Geen plaats voor jouw plannen? Start je eigen initiatief!",
   "app.containers.landing.new": "nieuw",
