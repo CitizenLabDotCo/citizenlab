@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router';
 
 // styles
@@ -25,10 +25,15 @@ const StyledRightColumn = styled(RightColumn)`
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
+  const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
+
   return (
     <Box display="flex" flexDirection="column" w="100%">
       <Editor isPreview={false}>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={mobilePreviewEnabled}
+          setMobilePreviewEnabled={setMobilePreviewEnabled}
+        />
         <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
           <Box
             position="fixed"
