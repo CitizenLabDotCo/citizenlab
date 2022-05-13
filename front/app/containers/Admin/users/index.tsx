@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { Formik, FormikActions } from 'formik';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
 import GetFeatureFlag, {
@@ -164,7 +165,9 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             className="e2e-left-panel"
             onCreateGroup={this.openGroupCreationModal}
           />
-          <ChildWrapper>{this.props.children}</ChildWrapper>
+          <ChildWrapper>
+            <RouterOutlet />
+          </ChildWrapper>
         </Wrapper>
 
         <Modal
