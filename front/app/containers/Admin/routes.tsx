@@ -14,7 +14,7 @@ import React from 'react';
 // import pagesRoutes from './pages/routes';
 // import ideasRoutes from './ideas/routes';
 
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 
 import dashboardRoutes from './dashboard/routes';
 import messagingsRoutes from './messaging/routes';
@@ -123,6 +123,6 @@ export default () => ({
     //     delay: 500,
     //   }),
     // },
-    // ...moduleConfiguration.routes.admin,
+    ...moduleConfiguration.routes.admin,
   ],
 });

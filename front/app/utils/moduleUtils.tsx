@@ -582,7 +582,7 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
 
   const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
   const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
-  debugger;
+
   return {
     outlets: mergedOutlets,
     routes: {
