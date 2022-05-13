@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // hooks
 import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
@@ -17,6 +17,7 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../../services/contentBuilder';
 
 // types
 import { Multiloc } from 'typings';
+import { SerializedNodes } from '@craftjs/core';
 
 type PreviewProps = {
   projectId: string;
@@ -24,6 +25,7 @@ type PreviewProps = {
 };
 
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
+  const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const locale = useLocale();
   const localize = useLocalize();
 
@@ -31,6 +33,18 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     projectId,
     code: PROJECT_DESCRIPTION_CODE,
   });
+
+  useEffect(() => {
+    window.addEventListener(
+      'message',
+      (e) => {
+        if (e.origin === window.location.origin) {
+          setDraftData(e.data);
+        }
+      },
+      false
+    );
+  }, []);
 
   const loadingContentBuilderLayout = contentBuilderLayout === undefined;
 
@@ -41,9 +55,10 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
 
   const editorData =
-    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
+    draftData ||
+    (!isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
       ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
-      : undefined;
+      : undefined);
 
   return (
     <Box data-testid="contentBuilderPreview">
