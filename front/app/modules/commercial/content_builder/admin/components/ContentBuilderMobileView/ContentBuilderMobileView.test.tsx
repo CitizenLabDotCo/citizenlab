@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from 'utils/testUtils/rtl';
+import { render } from 'utils/testUtils/rtl';
 
 import ContentBuilderMobileView from './';
 
@@ -19,9 +19,10 @@ jest.mock('hooks/useProject', () => {
 
 describe('ContentBulderMobileView', () => {
   it('renders iframe with the correct src', () => {
-    render(<ContentBuilderMobileView projectId="id" />);
-    expect(
-      screen.getByTitle('Project description mobile preview')
-    ).toHaveAttribute('src', '/en/projects/test');
+    const { container } = render(<ContentBuilderMobileView projectId="id" />);
+    expect(container.querySelector('iframe')).toHaveAttribute(
+      'src',
+      '/en/projects/test'
+    );
   });
 });
