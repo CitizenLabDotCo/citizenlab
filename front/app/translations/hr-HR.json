@@ -1321,7 +1321,6 @@
   "app.containers.eventspage.noPastEvents": "Nema prošlih događaja za prikaz",
   "app.containers.eventspage.noUpcomingEvents": "Trenutno nema predstojećih događaja",
   "app.containers.eventspage.pastEvents": "Prethodni događaji",
-  "app.containers.eventspage.upcomingEvents": "Predstojeći događaji",
   "app.containers.footer.accessibility-statement": "Izjava o pristupačnosti",
   "app.containers.footer.ariaLabel": "Secondary",
   "app.containers.footer.cookie-policy": "Deklaracija o kolačićima",

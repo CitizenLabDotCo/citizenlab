@@ -1321,7 +1321,6 @@
   "app.containers.eventspage.noPastEvents": "Ingen tidligere hendelser å vise",
   "app.containers.eventspage.noUpcomingEvents": "Ingen kommende hendelser er planlagt for øyeblikket",
   "app.containers.eventspage.pastEvents": "Tidligere hendelser",
-  "app.containers.eventspage.upcomingEvents": "Kommende hendelser",
   "app.containers.footer.accessibility-statement": "Beskrivelse av tilgjengelighet",
   "app.containers.footer.ariaLabel": "Secondary",
   "app.containers.footer.cookie-policy": "Retningslinjer for informasjonskapsler",
