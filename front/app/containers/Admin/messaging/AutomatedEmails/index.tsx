@@ -76,7 +76,7 @@ class AutomatedCampaigns extends React.PureComponent<
 
 const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
 
-export default (inputProps: Props) => (
+export default (inputProps) => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
     {(campaigns) => (
       <AutomatedCampaignsWithIntl {...inputProps} {...campaigns} />

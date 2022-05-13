@@ -187,7 +187,6 @@ const AdminPage = memo<Props & WithRouterProps>(
                   }`}
                 >
                   <RouterOutlet />
-                  {children}
                 </RightColumn>
               </>
             )}

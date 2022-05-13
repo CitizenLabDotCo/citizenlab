@@ -2,13 +2,17 @@ import * as React from 'react';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 const MessagingIndexComponent = React.lazy(() => import('.'));
-// const CustomEmailsIndexComponent = React.lazy(() => import('./CustomEmails/All'));
+const CustomEmailsIndexComponent = React.lazy(
+  () => import('./CustomEmails/All')
+);
 const CustomEmailsNewComponent = React.lazy(() => import('./CustomEmails/New'));
-// const CustomEmailsEditComponent = React.lazy(() => import('./CustomEmails/Edit'));
+const CustomEmailsEditComponent = React.lazy(
+  () => import('./CustomEmails/Edit')
+);
 const CustomEmailsShowComponent = React.lazy(
   () => import('./CustomEmails/Show')
 );
-// const AutomatedEmailsComponent = React.lazy(() => import('./AutomatedEmails'));
+const AutomatedEmailsComponent = React.lazy(() => import('./AutomatedEmails'));
 const CampaignListComponent = React.lazy(
   () => import('./texting/CampaignList')
 );
@@ -38,7 +42,7 @@ export default () => ({
       path: 'emails/custom',
       element: (
         <LoadingComponent>
-          <CampaignListComponent />
+          <CustomEmailsIndexComponent />
         </LoadingComponent>
       ),
     },
@@ -50,14 +54,14 @@ export default () => ({
         </LoadingComponent>
       ),
     },
-    //     {
-    //       path: 'emails/custom/:campaignId/edit',
-    //       element: (
-    //         <LoadingComponent>
-    // <CustomEmailsEditComponent />
-    //         </LoadingComponent>
-    //       )
-    //     },
+    {
+      path: 'emails/custom/:campaignId/edit',
+      element: (
+        <LoadingComponent>
+          <CustomEmailsEditComponent />
+        </LoadingComponent>
+      ),
+    },
     {
       path: 'emails/custom/:campaignId',
       element: (
@@ -66,14 +70,14 @@ export default () => ({
         </LoadingComponent>
       ),
     },
-    //     {
-    //       path: 'emails/automated',
-    //       element: (
-    //         <LoadingComponent>
-    // <AutomatedEmailsComponent />
-    //         </LoadingComponent>
-    //       )
-    //     },
+    {
+      path: 'emails/automated',
+      element: (
+        <LoadingComponent>
+          <AutomatedEmailsComponent />
+        </LoadingComponent>
+      ),
+    },
     {
       path: 'texting',
       element: (

@@ -89,7 +89,7 @@ class Edit extends React.Component<Props> {
 
 const EditWithHOCs = withRouter(Edit);
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default (inputProps) => (
   <GetCampaign id={inputProps.params.campaignId}>
     {(campaign) =>
       isNilOrError(campaign) ? null : (

@@ -68,7 +68,6 @@ class MessagingDashboard extends React.PureComponent<
 
   render() {
     const {
-      children,
       intl: { formatMessage },
     } = this.props;
     const tabs = this.tabs();
@@ -90,7 +89,6 @@ class MessagingDashboard extends React.PureComponent<
             <FormattedMessage {...messages.noAccess} />
           ) : (
             <>
-              {children}
               <RouterOutlet />
             </>
           )}
