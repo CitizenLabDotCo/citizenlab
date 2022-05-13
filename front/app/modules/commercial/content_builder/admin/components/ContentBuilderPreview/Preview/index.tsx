@@ -40,6 +40,11 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     contentBuilderLayout.data.attributes.enabled &&
     contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
 
+  const editorData =
+    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
+      ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
+      : undefined;
+
   return (
     <Box data-testid="contentBuilderPreview">
       {loadingContentBuilderLayout && <Spinner />}
@@ -49,7 +54,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
             {localize(projectTitle)}
           </Title>
           <Editor isPreview={true}>
-            <ContentBuilderFrame projectId={projectId} />
+            <ContentBuilderFrame editorData={editorData} />
           </Editor>
         </Box>
       )}
