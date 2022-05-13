@@ -22,7 +22,7 @@ import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
-// import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -84,6 +84,10 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
     //   },
     // },
     children: [
+      {
+        path: '',
+        element: <Navigate to="dashboard" />,
+      },
       createDashboardRoutes(),
       // initiativesRoutes(),
       // usersRoutes(),
