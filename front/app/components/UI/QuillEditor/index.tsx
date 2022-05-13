@@ -27,6 +27,7 @@ import {
   media,
   fontSizes,
   defaultStyles,
+  isRtl,
 } from 'utils/styleUtils';
 
 import {
@@ -397,25 +398,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : null;
 
     const [editor, setEditor] = useState<Quill | null>(null);
-
-    useEffect(() => {
-      //a hacky way to add rtl to the underlying container of the quill editor.
-      // the "root" property is supposed to be INTERNAL according to the source code,
-      // but it works for now
-      if (editor) {
-        let root = editor.root;
-        if (!root) return;
-
-        if (locale?.startsWith('ar')) {
-          root.style.direction = 'rtl';
-          root.style.textAlign = 'right';
-        } else {
-          root.style.direction = 'ltr';
-          root.style.textAlign = 'left';
-        }
-      }
-    }, [editor, locale]);
-
     const contentRef = useRef<string>(value || '');
     const prevEditor = usePrevious(editor);
     const [focussed, setFocussed] = useState(false);
@@ -871,4 +853,13 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(QuillEditor);
+const RtlQuil = styled(QuillEditor)`
+  ${isRtl`
+  .ql-editor {
+    direction: rtl;
+    text-align: right;
+  }
+`}
+`;
+
+export default injectIntl(RtlQuil);
