@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { withRouter } from 'react-router';
 
 // styles
@@ -24,6 +24,7 @@ import useProject from 'hooks/useProject';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { SerializedNodes } from '@craftjs/core';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${2 * stylingConsts.menuHeight}px);
@@ -35,6 +36,7 @@ const StyledRightColumn = styled(RightColumn)`
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locale = useLocale();
   const project = useProject({ projectId });
@@ -49,9 +51,15 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
       ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
       : undefined;
 
+  const handleEditorChange = (nodes: SerializedNodes) => {
+    iframeRef.current &&
+      iframeRef.current.contentWindow &&
+      iframeRef.current.contentWindow.postMessage(nodes, '*');
+  };
+
   return (
     <Box display="flex" flexDirection="column" w="100%">
-      <Editor isPreview={false}>
+      <Editor isPreview={false} onNodesChange={handleEditorChange}>
         <ContentBuilderTopBar
           mobilePreviewEnabled={mobilePreviewEnabled}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
@@ -73,9 +81,10 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             mt={`${stylingConsts.menuHeight + 20}px`}
             minHeight={`calc(100vh - ${2 * stylingConsts.menuHeight + 20}px)`}
             display={mobilePreviewEnabled ? 'flex' : 'none'}
+            justifyContent="center"
           >
             <iframe
-              //  ref={iframeRef}
+              ref={iframeRef}
               src={`/${locale}/projects/${project?.attributes.slug}`}
               height="550px"
               width="400px"
