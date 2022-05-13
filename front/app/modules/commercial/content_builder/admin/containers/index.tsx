@@ -15,9 +15,14 @@ import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 import ContentBuilderFrame from '../components/ContentBuilderFrame';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
+
+// hooks
 import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
 import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../hooks/useContentBuilder';
+import useProject from 'hooks/useProject';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledRightColumn = styled(RightColumn)`
@@ -32,6 +37,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
 
   const locale = useLocale();
+  const project = useProject({ projectId });
 
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
@@ -50,7 +56,10 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           mobilePreviewEnabled={mobilePreviewEnabled}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
         />
-        <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
+        <Box
+          mt={`${stylingConsts.menuHeight}px`}
+          display={mobilePreviewEnabled ? 'none' : 'flex'}
+        >
           <ContentBuilderToolbox />
           <StyledRightColumn>
             <Box width="1000px">
@@ -58,6 +67,20 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             </Box>
           </StyledRightColumn>
           <ContentBuilderSettings />
+        </Box>
+        <Box justifyContent="center">
+          <Box
+            mt={`${stylingConsts.menuHeight + 20}px`}
+            minHeight={`calc(100vh - ${2 * stylingConsts.menuHeight + 20}px)`}
+            display={mobilePreviewEnabled ? 'flex' : 'none'}
+          >
+            <iframe
+              //  ref={iframeRef}
+              src={`/${locale}/projects/${project?.attributes.slug}`}
+              height="550px"
+              width="400px"
+            />
+          </Box>
         </Box>
       </Editor>
     </Box>
