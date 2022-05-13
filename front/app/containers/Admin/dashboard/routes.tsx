@@ -6,36 +6,34 @@ const Users = lazy(() => import('./users'));
 import { LoadingComponent } from 'routes';
 
 const createAdminDashboardRoutes = () => {
-  return [
-    {
-      path: 'dashboard',
-      element: (
-        <LoadingComponent>
-          <DashboardWrapper />
-        </LoadingComponent>
-      ),
-      children: [
-        {
-          path: '/',
-          index: true,
-          element: (
-            <LoadingComponent>
-              <Summary />
-            </LoadingComponent>
-          ),
-        },
-        {
-          path: '/users',
-          element: (
-            <LoadingComponent>
-              <Users />
-            </LoadingComponent>
-          ),
-        },
-        // ...moduleConfiguration.routes['admin.dashboards'],
-      ],
-    },
-  ];
+  return {
+    path: '/:locale/admin',
+    element: (
+      <LoadingComponent>
+        <DashboardWrapper />
+      </LoadingComponent>
+    ),
+    children: [
+      {
+        path: 'dashboard',
+        index: true,
+        element: (
+          <LoadingComponent>
+            <Summary />
+          </LoadingComponent>
+        ),
+      },
+      {
+        path: 'users',
+        element: (
+          <LoadingComponent>
+            <Users />
+          </LoadingComponent>
+        ),
+      },
+      // ...moduleConfiguration.routes['admin.dashboards'],
+    ],
+  };
 };
 
 export default createAdminDashboardRoutes;
