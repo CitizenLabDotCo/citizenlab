@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { adopt } from 'react-adopt';
 import { insertConfiguration } from 'utils/moduleUtils';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -97,6 +98,7 @@ export const DashboardsPage = memo(
             description={messages.helmetDescription}
           />
           {children}
+          <RouterOutlet />
         </DashboardTabs>
       </>
     );
