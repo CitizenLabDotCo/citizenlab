@@ -1,26 +1,28 @@
+import React from 'react';
+
 // These are the pages you can go to. (within the admin)
 // They are all wrapped in the App component, which should contain the navbar etc
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
 import dashboardRoutes from './dashboard/routes';
-import initiativesRoutes from './initiatives/routes';
-import usersRoutes from './users/routes';
-import invitationsRoutes from './invitations/routes';
-import projectsRoutes from './projects/routes';
-import settingsRoutes from './settings/routes';
-import settingsAreasRoutes from './settings/areas/routes';
-import pagesRoutes from './pages/routes';
 import messagingsRoutes from './messaging/routes';
-import ideasRoutes from './ideas/routes';
+// import usersRoutes from './users/routes';
+// import initiativesRoutes from './initiatives/routes';
+// import invitationsRoutes from './invitations/routes';
+// import projectsRoutes from './projects/routes';
+// import settingsRoutes from './settings/routes';
+// import settingsAreasRoutes from './settings/areas/routes';
+// import pagesRoutes from './pages/routes';
+// import ideasRoutes from './ideas/routes';
 
-import moduleConfiguration from 'modules';
+// import moduleConfiguration from 'modules';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 
-import Loadable from 'react-loadable';
-import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+// import Loadable from 'react-loadable';
+// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
@@ -68,49 +70,62 @@ const isUserAuthorized = (nextState, replace) => {
   });
 };
 
+const AdminContainer = React.lazy(() => import('containers/Admin'));
+
+const LoadingComponent = ({ children }) => {
+  return (
+    <React.Suspense fallback={<div>LOADING!</div>}>{children}</React.Suspense>
+  );
+};
+console.log(isUserAuthorized);
+
 export default () => ({
   path: 'admin',
-  name: 'Admin page',
-  component: Loadable({
-    loader: () => import('containers/Admin'),
-    loading: () => null,
-  }),
+
   // https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
-  onEnter: isUserAuthorized,
-  indexRoute: {
-    onEnter: (nextState, replace) => {
-      const pathNameWithLocale = nextState.location.pathname;
-      const { urlLocale } = removeLocale(pathNameWithLocale);
-      replace(`${urlLocale && `/${urlLocale}`}/admin/dashboard`);
+  // onEnter: isUserAuthorized,
+  // indexRoute: {
+  //   onEnter: (nextState, replace) => {
+  //     const pathNameWithLocale = nextState.location.pathname;
+  //     const { urlLocale } = removeLocale(pathNameWithLocale);
+  //     replace(`${urlLocale && `/${urlLocale}`}/admin/dashboard`);
+  //   },
+  // },
+  children: [
+    {
+      index: true,
+      element: (
+        <LoadingComponent>
+          <AdminContainer />
+        </LoadingComponent>
+      ),
     },
-  },
-  childRoutes: [
     dashboardRoutes(),
-    initiativesRoutes(),
-    usersRoutes(),
-    projectsRoutes(),
-    settingsRoutes(),
-    settingsAreasRoutes(),
-    pagesRoutes(),
-    invitationsRoutes(),
     messagingsRoutes(),
-    ideasRoutes(),
-    {
-      path: 'workshops',
-      component: Loadable({
-        loader: () => import('containers/Admin/workshops'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    {
-      path: 'favicon',
-      component: Loadable({
-        loader: () => import('containers/Admin/favicon'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    ...moduleConfiguration.routes.admin,
+    // initiativesRoutes(),
+    // usersRoutes(),
+    // projectsRoutes(),
+    // settingsRoutes(),
+    // settingsAreasRoutes(),
+    // pagesRoutes(),
+    // invitationsRoutes(),
+    // ideasRoutes(),
+    // {
+    //   path: 'workshops',
+    //   component: Loadable({
+    //     loader: () => import('containers/Admin/workshops'),
+    //     loading: LoadableLoadingAdmin,
+    //     delay: 500,
+    //   }),
+    // },
+    // {
+    //   path: 'favicon',
+    //   component: Loadable({
+    //     loader: () => import('containers/Admin/favicon'),
+    //     loading: LoadableLoadingAdmin,
+    //     delay: 500,
+    //   }),
+    // },
+    // ...moduleConfiguration.routes.admin,
   ],
 });

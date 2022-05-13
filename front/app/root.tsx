@@ -16,10 +16,7 @@ import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
 
 import { createBrowserHistory, BrowserHistory } from 'history';
-
 export const rootHistory: BrowserHistory = createBrowserHistory();
-
-console.log(rootHistory);
 
 import {
   unstable_HistoryRouter as HistoryRouter,
@@ -33,14 +30,16 @@ const Routes = () => {
     modules.afterMountApplication();
   }, []);
 
-  return <App>{routes}</App>;
+  return routes;
 };
 const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
         <HistoryRouter history={rootHistory}>
-          <Routes />
+          <App>
+            <Routes />
+          </App>
         </HistoryRouter>
       </LanguageProvider>
     </OutletsProvider>

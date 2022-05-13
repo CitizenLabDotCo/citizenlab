@@ -14,10 +14,8 @@ export const LoadableLoadingCitizen = (props: LoadingComponentProps) => {
   return null;
 };
 
+// since we're using React.Lazy now, the
 export const LoadableLoadingAdmin = (props: LoadingComponentProps) => {
-  if (props.pastDelay) {
-    return <FullPageSpinner admin={true} />;
-  }
-
-  return null;
+  console.log({ props });
+  return <FullPageSpinner admin={true} />;
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-// import adminRoutes from 'containers/Admin/routes';
+import adminRoutes from 'containers/Admin/routes';
 // import moduleConfiguration from 'modules';
 
 const LandingPage = React.lazy(() => import('containers/LandingPage'));
@@ -207,6 +207,7 @@ export default function createRoutes() {
             </LoadingComponent>
           ),
         },
+        adminRoutes(),
         // adminRoutes(),
         {
           path: 'projects',
