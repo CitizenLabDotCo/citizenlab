@@ -99,7 +99,7 @@ const Data = adopt<DataProps, WithRouterProps>({
   ),
 });
 
-export default (inputProps: WithRouterProps) => (
+export default (inputProps) => (
   <Data {...inputProps}>
     {(dataProps) => <FolderSettingsWithHoCs {...inputProps} {...dataProps} />}
   </Data>

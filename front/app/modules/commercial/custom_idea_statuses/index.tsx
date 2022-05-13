@@ -3,20 +3,24 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import Tab from './admin/components/Tab';
 import FeatureFlag from 'components/FeatureFlag';
 
+const StatusesComponent = React.lazy(() => import('./admin/containers/'));
+const NewStatusComponent = React.lazy(() => import('./admin/containers/new'));
+const StatusShowComponent = React.lazy(() => import('./admin/containers/edit'));
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.ideas': [
       {
         path: 'statuses',
-        container: () => import('./admin/containers/'),
+        element: <StatusesComponent />,
       },
       {
         path: 'statuses/new',
-        container: () => import('./admin/containers/new'),
+        element: <NewStatusComponent />,
       },
       {
         path: 'statuses/:id',
-        container: () => import('./admin/containers/edit'),
+        element: <StatusShowComponent />,
       },
     ],
   },

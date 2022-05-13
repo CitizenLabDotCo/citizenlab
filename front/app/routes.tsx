@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import adminRoutes from 'containers/Admin/routes';
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 
 const LandingPage = React.lazy(() => import('containers/LandingPage'));
 const SignUpInPage = React.lazy(() => import('containers/SignUpInPage'));
@@ -328,7 +328,7 @@ export default function createRoutes() {
             </LoadingComponent>
           ),
         },
-        // ...moduleConfiguration.routes.citizen,
+        ...moduleConfiguration.routes.citizen,
         {
           path: '*',
           name: 'notfound',

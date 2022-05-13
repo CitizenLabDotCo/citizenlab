@@ -97,7 +97,6 @@ export default () => ({
   //   },
   // },
   children: [
-    // { path: 'admin-test', element: (<div><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1></div>)}
     dashboardRoutes(),
     messagingsRoutes(),
     // initiativesRoutes(),
