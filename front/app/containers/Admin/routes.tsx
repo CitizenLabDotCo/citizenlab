@@ -23,8 +23,7 @@ import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 
-// import Loadable from 'react-loadable';
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
@@ -76,7 +75,7 @@ const AdminContainer = React.lazy(() => import('containers/Admin'));
 
 const LoadingComponent = ({ children }) => {
   return (
-    <React.Suspense fallback={<div>LOADING!</div>}>{children}</React.Suspense>
+    <React.Suspense fallback={LoadableLoadingAdmin}>{children}</React.Suspense>
   );
 };
 console.log(isUserAuthorized);

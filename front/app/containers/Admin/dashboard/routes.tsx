@@ -1,12 +1,10 @@
 import * as React from 'react';
 
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 
 const DashboardIndexComponent = React.lazy(() => import('.'));
-
 const SummaryComponent = React.lazy(() => import('./summary'));
-
 const UsersComponent = React.lazy(() => import('./users'));
 
 const LoadingComponent = ({ children }) => {
@@ -39,6 +37,6 @@ export default () => ({
         </LoadingComponent>
       ),
     },
-    // ...moduleConfiguration.routes['admin.dashboards'],
+    ...moduleConfiguration.routes['admin.dashboards'],
   ],
 });
