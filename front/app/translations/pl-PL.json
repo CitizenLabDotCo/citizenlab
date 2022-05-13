@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Wydarzenia",
   "app.containers.eventspage.filterDropdownTitle": "Projekty",
   "app.containers.eventspage.noPastEvents": "Brak minionych wydarzeń do wyświetlenia",
-  "app.containers.eventspage.noUpcomingEvents": "Nie ma żadnych nadchodzących wydarzeń",
   "app.containers.eventspage.pastEvents": "Minione wydarzenia",
   "app.containers.footer.accessibility-statement": "Oświadczenie o dostępności",
   "app.containers.footer.ariaLabel": "Secondary",

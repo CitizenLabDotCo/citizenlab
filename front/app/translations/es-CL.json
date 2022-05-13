@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Eventos",
   "app.containers.eventspage.filterDropdownTitle": "Proyectos",
   "app.containers.eventspage.noPastEvents": "No eventos anteriores que mostrar",
-  "app.containers.eventspage.noUpcomingEvents": "No hay eventos programados",
   "app.containers.eventspage.pastEvents": "Eventos anteriores",
   "app.containers.footer.accessibility-statement": "Declaración de accesibilidad",
   "app.containers.footer.ariaLabel": "Secundario",

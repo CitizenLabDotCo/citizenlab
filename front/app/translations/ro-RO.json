@@ -1319,7 +1319,6 @@
   "app.containers.eventspage.eventsPageTitle": "Evenimente",
   "app.containers.eventspage.filterDropdownTitle": "Proiecte",
   "app.containers.eventspage.noPastEvents": "No past events to display",
-  "app.containers.eventspage.noUpcomingEvents": "No upcoming events are currently scheduled",
   "app.containers.eventspage.pastEvents": "Past events",
   "app.containers.footer.accessibility-statement": "Declarație de accesibilitate",
   "app.containers.footer.ariaLabel": "Secondary",
