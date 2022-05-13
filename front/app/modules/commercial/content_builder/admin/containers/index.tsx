@@ -83,12 +83,26 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             display={mobilePreviewEnabled ? 'flex' : 'none'}
             justifyContent="center"
           >
-            <iframe
-              ref={iframeRef}
-              src={`/${locale}/projects/${project?.attributes.slug}`}
-              height="550px"
-              width="400px"
-            />
+            <Box display="flex" flexDirection="column" alignItems="center">
+              {/* Phone Container */}
+              <Box
+                height="620px"
+                width="400px"
+                border="solid black"
+                borderWidth="40px 20px 20px 20px"
+                borderRadius="30px"
+                zIndex="1"
+                mb="12px"
+              >
+                <iframe
+                  ref={iframeRef}
+                  src={`/${locale}/projects/${project?.attributes.slug}`}
+                  height="560px"
+                  width="360px"
+                  style={{ border: 'none', borderRadius: '3px' }}
+                />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Editor>
