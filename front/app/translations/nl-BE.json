@@ -1321,7 +1321,6 @@
   "app.containers.eventspage.noPastEvents": "Geen afgelopen activiteiten om te tonen",
   "app.containers.eventspage.noUpcomingEvents": "Er zijn momenteel geen aankomende activiteiten gepland",
   "app.containers.eventspage.pastEvents": "Afgelopen activiteiten",
-  "app.containers.eventspage.upcomingEvents": "Aankomende activiteiten",
   "app.containers.footer.accessibility-statement": "Toegankelijkheidsverklaring",
   "app.containers.footer.ariaLabel": "Secundair",
   "app.containers.footer.cookie-policy": "Cookiebeleid",
