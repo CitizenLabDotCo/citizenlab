@@ -8,6 +8,7 @@ import { stylingConsts } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
+import ContentBuilderMobileView from '../components/ContentBuilderMobileView';
 
 // craft
 import Editor from '../components/Editor';
@@ -20,7 +21,6 @@ import ContentBuilderSettings from '../components/ContentBuilderSettings';
 import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
 import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../hooks/useContentBuilder';
-import useProject from 'hooks/useProject';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -39,7 +39,6 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locale = useLocale();
-  const project = useProject({ projectId });
 
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
@@ -76,34 +75,11 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
           </StyledRightColumn>
           <ContentBuilderSettings />
         </Box>
-        <Box justifyContent="center">
-          <Box
-            mt={`${stylingConsts.menuHeight + 20}px`}
-            minHeight={`calc(100vh - ${2 * stylingConsts.menuHeight + 20}px)`}
-            display={mobilePreviewEnabled ? 'flex' : 'none'}
-            justifyContent="center"
-          >
-            <Box display="flex" flexDirection="column" alignItems="center">
-              {/* Phone Container */}
-              <Box
-                height="620px"
-                width="400px"
-                border="solid black"
-                borderWidth="40px 20px 20px 20px"
-                borderRadius="30px"
-                zIndex="1"
-                mb="12px"
-              >
-                <iframe
-                  ref={iframeRef}
-                  src={`/${locale}/projects/${project?.attributes.slug}`}
-                  height="560px"
-                  width="360px"
-                  style={{ border: 'none', borderRadius: '3px' }}
-                />
-              </Box>
-            </Box>
-          </Box>
+        <Box
+          justifyContent="center"
+          display={mobilePreviewEnabled ? 'flex' : 'none'}
+        >
+          <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
         </Box>
       </Editor>
     </Box>
