@@ -6,6 +6,8 @@
 
 - [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
 
+## 2022-05-13
+
 ### Added
 
 - [CL-750] Add feature to remove CL branding
