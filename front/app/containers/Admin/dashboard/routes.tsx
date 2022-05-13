@@ -5,7 +5,7 @@ import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 const DashboardIndexComponent = React.lazy(() => import('.'));
 
-const SummaryComponent = React.lazy(() => import('.'));
+const SummaryComponent = React.lazy(() => import('./summary'));
 
 const UsersComponent = React.lazy(() => import('./users'));
 

@@ -208,7 +208,6 @@ export default function createRoutes() {
           ),
         },
         adminRoutes(),
-        // adminRoutes(),
         {
           path: 'projects',
           name: 'Project page',

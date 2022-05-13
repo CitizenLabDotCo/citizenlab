@@ -4,8 +4,7 @@ import React from 'react';
 // They are all wrapped in the App component, which should contain the navbar etc
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
-import dashboardRoutes from './dashboard/routes';
-import messagingsRoutes from './messaging/routes';
+
 // import usersRoutes from './users/routes';
 // import initiativesRoutes from './initiatives/routes';
 // import invitationsRoutes from './invitations/routes';
@@ -16,6 +15,9 @@ import messagingsRoutes from './messaging/routes';
 // import ideasRoutes from './ideas/routes';
 
 // import moduleConfiguration from 'modules';
+
+import dashboardRoutes from './dashboard/routes';
+import messagingsRoutes from './messaging/routes';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -81,7 +83,11 @@ console.log(isUserAuthorized);
 
 export default () => ({
   path: 'admin',
-
+  element: (
+    <LoadingComponent>
+      <AdminContainer />
+    </LoadingComponent>
+  ),
   // https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
   // onEnter: isUserAuthorized,
   // indexRoute: {
@@ -92,14 +98,7 @@ export default () => ({
   //   },
   // },
   children: [
-    {
-      index: true,
-      element: (
-        <LoadingComponent>
-          <AdminContainer />
-        </LoadingComponent>
-      ),
-    },
+    // { path: 'admin-test', element: (<div><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1><h1>whatever</h1></div>)}
     dashboardRoutes(),
     messagingsRoutes(),
     // initiativesRoutes(),
