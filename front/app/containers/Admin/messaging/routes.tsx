@@ -28,15 +28,12 @@ const LoadingComponent = ({ children }) => {
 
 export default () => ({
   path: 'messaging',
+  element: (
+    <LoadingComponent>
+      <MessagingIndexComponent />
+    </LoadingComponent>
+  ),
   children: [
-    {
-      index: true,
-      element: (
-        <LoadingComponent>
-          <MessagingIndexComponent />
-        </LoadingComponent>
-      ),
-    },
     {
       path: 'emails/custom',
       element: (

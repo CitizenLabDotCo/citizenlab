@@ -2,6 +2,7 @@ import * as React from 'react';
 import { isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 import clHistory from 'utils/cl-router/history';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import HelmetIntl from 'components/HelmetIntl';
@@ -88,7 +89,10 @@ class MessagingDashboard extends React.PureComponent<
           {isEmpty(tabs) ? (
             <FormattedMessage {...messages.noAccess} />
           ) : (
-            children
+            <>
+              {children}
+              <RouterOutlet />
+            </>
           )}
         </TabbedResource>
       </>
