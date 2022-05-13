@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import createDashboardRoutes from './dashboard/routes';
-// import initiativesRoutes from './initiatives/routes';
+import createAdminInitiativesRoutes from './initiatives/routes';
 // import usersRoutes from './users/routes';
 // import invitationsRoutes from './invitations/routes';
 // import projectsRoutes from './projects/routes';
@@ -89,7 +89,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
         element: <Navigate to="dashboard" />,
       },
       createDashboardRoutes(),
-      // initiativesRoutes(),
+      createAdminInitiativesRoutes(),
       // usersRoutes(),
       // projectsRoutes(),
       // settingsRoutes(),

@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -39,7 +40,7 @@ const ActionsContainer = styled.div`
   }
 `;
 const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
-  ({ children, intl: { formatMessage }, location }) => {
+  ({ intl: { formatMessage }, location }) => {
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
@@ -91,7 +92,7 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
             title={messages.metaTitle}
             description={messages.metaDescription}
           />
-          {children}
+          <RouterOutlet />
         </TabbedResource>
       </>
     );
