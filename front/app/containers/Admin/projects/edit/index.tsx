@@ -58,10 +58,6 @@ const ActionsContainer = styled.div`
   }
 `;
 
-interface ITracks {
-  clickNewIdea: ({ extra: object }) => void;
-}
-
 export interface InputProps {}
 
 interface DataProps {
@@ -85,8 +81,8 @@ interface State {
 
 interface Props extends InputProps, DataProps {}
 
-export class AdminProjectEdition extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps & ITracks,
+export class AdminProjectEditIndex extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
 > {
   constructor(props) {
@@ -375,8 +371,8 @@ export class AdminProjectEdition extends PureComponent<
   }
 }
 
-const AdminProjectEditionWithHoCs = withRouter(
-  injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectEdition))
+const AdminProjectEditIndexWithHoCs = injectIntl(
+  injectLocalize(AdminProjectEditIndex)
 );
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
@@ -395,10 +391,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <AdminProjectEditionWithHoCs {...inputProps} {...dataProps} />
+      <AdminProjectEditIndexWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>
-);
+));
