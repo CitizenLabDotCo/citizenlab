@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-
+import React, { lazy, Suspense, FC } from 'react';
+import FullPageSpinner from 'components/UI/FullPageSpinner';
 // import adminRoutes from 'containers/Admin/routes';
 // import moduleConfiguration from 'modules';
 
@@ -37,8 +37,19 @@ const SubscriptionEndedPage = lazy(
 );
 const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 
-const LoadingComponent = ({ children }) => {
-  return <Suspense fallback={<div>LOADING!</div>}>{children}</Suspense>;
+interface LoadingComponentProps {
+  admin?: boolean;
+  // possibly add children prop and remove FC
+  // https://medium.com/raccoons-group/why-you-probably-shouldnt-use-react-fc-to-type-your-react-components-37ca1243dd13
+}
+
+export const LoadingComponent: FC<LoadingComponentProps> = ({
+  admin = false,
+  children,
+}) => {
+  return (
+    <Suspense fallback={<FullPageSpinner admin={admin} />}>{children}</Suspense>
+  );
 };
 
 export default function createRoutes() {
