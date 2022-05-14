@@ -1,22 +1,34 @@
-import { lazy } from 'react';
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import React, { lazy } from 'react';
 // import moduleConfiguration from 'modules';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
-const AdminInitiativesManage = lazy(() => import('./manage'));
 
+const AdminInitiativesManage = lazy(() => import('./manage'));
+import { LoadingComponent } from 'routes';
 const createAdminInitiativesRoutes = () => ({
   path: 'initiatives',
-  element: AdminInitiativesIndex,
+  element: (
+    <LoadingComponent>
+      <AdminInitiativesIndex />
+    </LoadingComponent>
+  ),
   children: [
     {
       index: true,
       path: 'settings',
-      element: AdminInitiativesSettings,
+      element: (
+        <LoadingComponent>
+          <AdminInitiativesSettings />
+        </LoadingComponent>
+      ),
     },
     {
       path: 'manage',
-      element: AdminInitiativesManage,
+      element: (
+        <LoadingComponent>
+          <AdminInitiativesManage />
+        </LoadingComponent>
+      ),
     },
     // ...moduleConfiguration.routes['admin.initiatives'],
   ],
