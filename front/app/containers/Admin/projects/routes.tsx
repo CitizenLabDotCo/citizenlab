@@ -2,7 +2,7 @@ import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import moduleConfiguration from 'modules';
 
-export default () => {
+const createAdminProjectRoutes = () => {
   return {
     path: 'projects',
     name: 'admin projects',
@@ -191,3 +191,5 @@ export default () => {
     ],
   };
 };
+
+export default createAdminProjectRoutes;

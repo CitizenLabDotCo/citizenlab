@@ -3,7 +3,7 @@ import createDashboardRoutes from './dashboard/routes';
 import createAdminInitiativesRoutes from './initiatives/routes';
 import createAdminUsersRoutes from './users/routes';
 // import invitationsRoutes from './invitations/routes';
-// import projectsRoutes from './projects/routes';
+import createAdminProjectRoutes from './projects/routes';
 // import settingsRoutes from './settings/routes';
 // import settingsAreasRoutes from './settings/areas/routes';
 // import pagesRoutes from './pages/routes';
@@ -91,7 +91,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       createDashboardRoutes(),
       createAdminInitiativesRoutes(),
       createAdminUsersRoutes,
-      // projectsRoutes(),
+      createAdminProjectRoutes(),
       // settingsRoutes(),
       // settingsAreasRoutes(),
       // pagesRoutes(),
