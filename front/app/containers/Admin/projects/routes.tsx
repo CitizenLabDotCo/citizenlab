@@ -1,26 +1,29 @@
+import React, { lazy } from 'react';
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import moduleConfiguration from 'modules';
+const AdminProjectsAndFolders = lazy(() => import('.'));
+const AdminProjectsList = lazy(() => import('./all'));
+import { LoadingComponent } from 'routes';
 
-const createAdminProjectRoutes = () => {
+const createAdminProjectsRoutes = () => {
   return {
     path: 'projects',
-    name: 'admin projects',
-    component: Loadable({
-      loader: () => import('containers/Admin/projects'),
-      loading: LoadableLoadingAdmin,
-      delay: 500,
-    }),
-    indexRoute: {
-      name: 'admin projects index',
-      component: Loadable({
-        loader: () => import('containers/Admin/projects/all'),
-        loading: LoadableLoadingAdmin,
-        delay: 500,
-      }),
-    },
-    childRoutes: [
-      ...moduleConfiguration.routes['admin.project_templates'],
+    element: (
+      <LoadingComponent>
+        <AdminProjectsAndFolders />
+      </LoadingComponent>
+    ),
+    children: [
+      {
+        element: (
+          <LoadingComponent>
+            <AdminProjectsList />
+          </LoadingComponent>
+        ),
+        index: true,
+      },
+      // ...moduleConfiguration.routes['admin.project_templates'],
       {
         path: ':projectId/edit',
         name: 'admin projects single project',
@@ -192,4 +195,4 @@ const createAdminProjectRoutes = () => {
   };
 };
 
-export default createAdminProjectRoutes;
+export default createAdminProjectsRoutes;
