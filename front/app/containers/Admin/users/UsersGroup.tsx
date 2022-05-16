@@ -237,7 +237,7 @@ export class UsersGroup extends React.PureComponent<
 
 const UsersGroupWithHoCs = injectTracks<Props>({
   trackEditGroup: tracks.editGroup,
-})(injectIntl<Props>(UsersGroup));
+})(injectIntl(UsersGroup));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
