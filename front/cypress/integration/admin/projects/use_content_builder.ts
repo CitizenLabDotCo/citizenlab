@@ -63,7 +63,9 @@ describe('Admin: add project and edit description', () => {
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('[alt="Image alt text."]').should('exist');
+  });
 
+  it('deletes Image component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();
@@ -87,7 +89,9 @@ describe('Admin: add project and edit description', () => {
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('be.visible');
+  });
 
+  it('deletes Text component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-text-box').click();
     cy.get('#e2e-delete-button').click();
@@ -107,10 +111,11 @@ describe('Admin: add project and edit description', () => {
     );
 
     cy.get('#e2e-content-builder-topbar-save').click();
-
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-about-box').should('exist');
+  });
 
+  it('deletes About component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-about-box').click();
     cy.get('#e2e-delete-button').click();
