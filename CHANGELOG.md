@@ -3,6 +3,7 @@
 ### Fixed
 
 - [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
 
 ## 2022-05-16
 
