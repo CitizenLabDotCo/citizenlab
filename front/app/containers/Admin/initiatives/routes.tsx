@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+import { Navigate } from 'react-router-dom';
 // import moduleConfiguration from 'modules';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
@@ -14,7 +15,12 @@ const createAdminInitiativesRoutes = () => ({
   ),
   children: [
     {
+      path: '',
+      element: <Navigate to="settings" />,
+    },
+    {
       index: true,
+      path: 'settings',
       element: (
         <LoadingComponent>
           <AdminInitiativesSettings />

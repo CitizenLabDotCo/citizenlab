@@ -44,8 +44,8 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
     const [tabs, setTabs] = useState<ITab[]>([
       {
         label: formatMessage(messages.settingsTab),
-        name: 'initiatives',
-        url: '/admin/initiatives',
+        name: 'settings',
+        url: '/admin/initiatives/settings',
       },
       {
         label: formatMessage(messages.manageTab),
