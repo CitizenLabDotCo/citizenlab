@@ -4,6 +4,24 @@
 
 - Using the rich text editor in a right-to-left language no longer mislaligns puctuation.
 
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
+## 2022-05-11
+
+### Fixed
+
+- [CL-711] Title text looking weird on insights start page
+
+## 2022-05-10_3
+
+### Fixed
+
+- [CL-764] Empty navbar item titles in backoffice.
+
 ## 2022-05-10_2
 
 ### Changed
