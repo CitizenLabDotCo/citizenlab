@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ClErrors
   class TransactionError < StandardError
     def initialize(options = {})

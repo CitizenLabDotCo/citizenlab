@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ProjectFolders::Engine.config.to_prepare do
   ::WebApi::V1::FilesController.register_container(
       'ProjectFolder',

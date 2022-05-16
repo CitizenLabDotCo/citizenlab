@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FACEBOOK_SETUP_PROC = lambda do |env|
   OmniauthMethods::Facebook.new.omniauth_setup(AppConfiguration.instance, env)
 end

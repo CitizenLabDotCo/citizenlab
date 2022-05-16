@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateProjectFolderFiles < ActiveRecord::Migration[6.0]
   def change
     create_table :project_folder_files, id: :uuid do |t|

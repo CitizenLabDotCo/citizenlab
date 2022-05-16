@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
 ### Fixed
 
 - [CL-775] Use correct link to conditions page

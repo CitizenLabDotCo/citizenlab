@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::OfficialFeedbackController < ApplicationController
   before_action :set_post_type_id_and_policy, only: %i[index create]
   before_action :set_feedback, only: %i[show update destroy]

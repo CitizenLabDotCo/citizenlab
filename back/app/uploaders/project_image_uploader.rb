@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectImageUploader < BaseImageUploader
   version :small do
     process safe_resize_to_fill_for_gif: [96, 96]

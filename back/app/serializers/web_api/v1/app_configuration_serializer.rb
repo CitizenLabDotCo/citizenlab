@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AppConfigurationSerializer < WebApi::V1::BaseSerializer
   attributes :name, :host, :style
 

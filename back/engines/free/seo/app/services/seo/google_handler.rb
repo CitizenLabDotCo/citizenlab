@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'googleauth'
 require 'google/apis/webmasters_v3'
 require 'google/apis/site_verification_v1'

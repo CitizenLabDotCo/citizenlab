@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MultilocService
   def initialize(app_configuration: nil)
     @app_configuration = app_configuration
