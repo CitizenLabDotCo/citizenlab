@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateModerationStatuses < ActiveRecord::Migration[5.2]
   def change
     create_table :moderation_statuses, id: :uuid do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::PermissionsController < ApplicationController
   before_action :set_permission, only: %i[show update participation_conditions]
   skip_before_action :authenticate_user

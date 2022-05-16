@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
   @@multiloc_service = MultilocService.new
 

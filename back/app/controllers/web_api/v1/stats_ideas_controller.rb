@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   @@multiloc_service = MultilocService.new
 

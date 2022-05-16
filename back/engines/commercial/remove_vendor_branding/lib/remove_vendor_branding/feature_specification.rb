@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RemoveVendorBranding
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification

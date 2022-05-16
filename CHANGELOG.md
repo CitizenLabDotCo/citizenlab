@@ -1,5 +1,16 @@
 # Changelog
 
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+- [CL-814] Faster user XLSX export.
+
 ## 2022-05-16
 
 ### Fixed

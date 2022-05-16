@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class AreasController < AdminApiController
     def index

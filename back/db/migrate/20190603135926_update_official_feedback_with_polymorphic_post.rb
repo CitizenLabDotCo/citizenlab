@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateOfficialFeedbackWithPolymorphicPost < ActiveRecord::Migration[5.2]
   def change
     rename_column :official_feedbacks, :idea_id, :post_id

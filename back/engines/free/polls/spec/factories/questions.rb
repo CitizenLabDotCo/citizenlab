@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :poll_question, class: 'Polls::Question' do
     participation_context { create(:continuous_poll_project) }

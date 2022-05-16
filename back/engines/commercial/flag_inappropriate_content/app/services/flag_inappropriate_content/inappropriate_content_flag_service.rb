@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   class InappropriateContentFlagService
     def introduce_flag!(flaggable, attributes = {})

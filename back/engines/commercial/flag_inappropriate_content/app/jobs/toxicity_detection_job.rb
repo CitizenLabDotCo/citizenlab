@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ToxicityDetectionJob < ApplicationJob
   queue_as :default
 
