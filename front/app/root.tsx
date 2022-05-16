@@ -1,7 +1,6 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React, { useEffect } from 'react';
-import { createBrowserHistory, BrowserHistory } from 'history';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 
@@ -15,8 +14,7 @@ import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
-
-export const rootHistory: BrowserHistory = createBrowserHistory();
+import history from 'utils/browserHistory';
 
 import {
   unstable_HistoryRouter as HistoryRouter,
@@ -36,7 +34,7 @@ const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
-        <HistoryRouter history={rootHistory}>
+        <HistoryRouter history={history}>
           <Routes />
         </HistoryRouter>
       </LanguageProvider>
