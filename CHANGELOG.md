@@ -2,7 +2,8 @@
 
 ### Fixed
 
-- Using the rich text editor in a right-to-left language no longer mislaligns puctuation.
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
 
 ## 2022-05-13
 
