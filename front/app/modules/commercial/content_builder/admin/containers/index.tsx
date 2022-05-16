@@ -53,7 +53,7 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
   const handleEditorChange = (nodes: SerializedNodes) => {
     iframeRef.current &&
       iframeRef.current.contentWindow &&
-      iframeRef.current.contentWindow.postMessage(nodes, '*');
+      iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
   };
 
   return (
