@@ -5,6 +5,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 export const Section = styled.div`
   margin-bottom: 0;
+  ${isRtl`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  `}
 `;
 
 export const SectionField = styled(Box)`
