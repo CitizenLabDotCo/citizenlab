@@ -918,7 +918,7 @@
   "app.containers.AdminPage.ProjectEdit.saveErrorMessage": "Beim Speichern Ihrer Daten ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
   "app.containers.AdminPage.ProjectEdit.saveProject": "Speichern",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Gespeichert!",
-  "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Ihr Formular wurde gespeichert!",
+  "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Ihre Änderungen wurden gespeichert!",
   "app.containers.AdminPage.ProjectEdit.searchPlaceholder": "Suche in den Vorlagen",
   "app.containers.AdminPage.ProjectEdit.selectGroups": "Gruppe(n) auswählen",
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Informationen teilen",
