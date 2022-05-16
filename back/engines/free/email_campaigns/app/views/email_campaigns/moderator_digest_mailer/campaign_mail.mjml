@@ -94,6 +94,6 @@
     </mj-column>
   </mj-section>
 
-  <%= render partial: 'application/cta_button', locals: { href:  "https://#{event.tenant_host}/admin/projects", message: format_message('cta_moderate') } %>
+  <%= render partial: 'application/cta_button', locals: { href:  "https://#{AppConfiguration.instance.host}/admin/projects", message: format_message('cta_moderate') } %>
 
 </mj-wrapper>
