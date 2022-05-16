@@ -30,7 +30,7 @@ module Polls
       ]
 
       columns << { header: 'Email', f: ->(r) { r.user.email } } if is_admin
-      columns.concat ::XlsxService.new.custom_field_columns :user, is_admin
+      columns.concat ::XlsxService.new.user_custom_field_columns :user, is_admin
 
       columns
     end
