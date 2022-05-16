@@ -1,5 +1,22 @@
 # Changelog
 
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+
+## 2022-05-16
+
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
+
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
 ## 2022-05-11
 
 ### Fixed

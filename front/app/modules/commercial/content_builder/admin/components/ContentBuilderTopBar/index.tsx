@@ -18,6 +18,7 @@ import {
   Spinner,
   Text,
   Title,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -30,7 +31,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // routing
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
-import Link from 'utils/cl-router/Link';
 
 // services
 import {
@@ -39,7 +39,16 @@ import {
 } from '../../../services/contentBuilder';
 import eventEmitter from 'utils/eventEmitter';
 
-const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
+type ContentBuilderTopBarProps = {
+  mobilePreviewEnabled: boolean;
+  setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+} & WithRouterProps;
+
+const ContentBuilderTopBar = ({
+  params: { projectId },
+  mobilePreviewEnabled,
+  setMobilePreviewEnabled,
+}: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
@@ -139,18 +148,11 @@ const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
             </>
           )}
         </Box>
-        {!isNilOrError(project) && (
-          <Link to={`/projects/${project.attributes.slug}`} target="_blank">
-            <Button
-              mr="16px"
-              buttonStyle="secondary"
-              icon="eye"
-              id="to-project"
-            >
-              <FormattedMessage {...messages.viewPublicProject} />
-            </Button>
-          </Link>
-        )}
+        <Toggle
+          label={<FormattedMessage {...messages.mobilePreview} />}
+          checked={mobilePreviewEnabled}
+          onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
+        />
         <Button
           disabled={disableSave}
           id="e2e-content-builder-topbar-save"
@@ -158,6 +160,7 @@ const ContentBuilderTopBar = ({ params: { projectId } }: WithRouterProps) => {
           processing={loading}
           onClick={handleSave}
           data-testid="contentBuilderTopBarSaveButton"
+          ml="12px"
         >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>

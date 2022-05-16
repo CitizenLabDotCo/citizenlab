@@ -52,7 +52,6 @@ export default function createRoutes() {
         },
         {
           path: 'sign-in',
-          name: 'signInPage',
           element: (
             <LoadingComponent>
               <SignUpInPage />
@@ -61,7 +60,6 @@ export default function createRoutes() {
         },
         {
           path: 'sign-up',
-          name: 'signUpPage',
           element: (
             <LoadingComponent>
               <SignUpInPage />
@@ -102,7 +100,6 @@ export default function createRoutes() {
         },
         {
           path: 'profileedit',
-          name: 'usersEditPage',
           element: (
             <LoadingComponent>
               <UsersEditPage />
@@ -111,7 +108,6 @@ export default function createRoutes() {
         },
         {
           path: 'profile/:userSlug',
-          name: 'usersShowPage',
           element: (
             <LoadingComponent>
               <UsersShowPage />
@@ -120,7 +116,6 @@ export default function createRoutes() {
         },
         {
           path: 'ideas/edit/:ideaId',
-          name: 'IdeasEditPage',
           element: (
             <LoadingComponent>
               <IdeasEditPage />
@@ -129,7 +124,6 @@ export default function createRoutes() {
         },
         {
           path: 'ideas',
-          name: 'ideasPage',
           element: (
             <LoadingComponent>
               <IdeasIndexPage />
@@ -138,7 +132,6 @@ export default function createRoutes() {
         },
         {
           path: 'ideas/:slug',
-          name: 'ideasShow',
           element: (
             <LoadingComponent>
               <IdeasShowPage />
@@ -147,7 +140,6 @@ export default function createRoutes() {
         },
         {
           path: 'initiatives',
-          name: 'initiativesPage',
           element: (
             <LoadingComponent>
               <InitiativesIndexPage />
@@ -156,7 +148,6 @@ export default function createRoutes() {
         },
         {
           path: 'initiatives/edit/:initiativeId',
-          name: 'InitiativesEditPage',
           element: (
             <LoadingComponent>
               <InitiativesEditPage />
@@ -165,7 +156,6 @@ export default function createRoutes() {
         },
         {
           path: 'initiatives/new',
-          name: 'initiativesNewPage',
           element: (
             <LoadingComponent>
               <InitiativesNewPage />
@@ -175,7 +165,6 @@ export default function createRoutes() {
         // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
         {
           path: 'initiatives/:slug',
-          name: 'initiativesShow',
           element: (
             <LoadingComponent>
               <InitiativesShowPage />
@@ -184,7 +173,6 @@ export default function createRoutes() {
         },
         {
           path: 'projects/:slug/ideas/new',
-          name: 'IdeasNewPage',
           element: (
             <LoadingComponent>
               <IdeasNewPage />
@@ -194,7 +182,6 @@ export default function createRoutes() {
         // adminRoutes(),
         {
           path: 'projects',
-          name: 'Project page',
           element: (
             <LoadingComponent>
               <ProjectsIndexPage />
@@ -203,7 +190,6 @@ export default function createRoutes() {
         },
         {
           path: 'projects/:slug',
-          name: 'Project page',
           element: (
             <LoadingComponent>
               <ProjectsShowPage />
@@ -211,7 +197,6 @@ export default function createRoutes() {
           ),
           children: [
             {
-              name: 'Project page',
               index: true,
               element: (
                 <LoadingComponent>
@@ -221,7 +206,6 @@ export default function createRoutes() {
             },
             {
               path: ':phaseNumber',
-              name: 'Project page: specific phase',
               element: (
                 <LoadingComponent>
                   <ProjectsShowPage />
@@ -230,7 +214,6 @@ export default function createRoutes() {
             },
             {
               path: '*',
-              name: 'Project page',
               element: (
                 <LoadingComponent>
                   <ProjectsShowPage />
@@ -241,7 +224,6 @@ export default function createRoutes() {
         },
         {
           path: 'events',
-          name: 'Events page',
           element: (
             <LoadingComponent>
               <EventsPage />
@@ -250,7 +232,6 @@ export default function createRoutes() {
         },
         {
           path: 'pages/cookie-policy',
-          name: 'cookiePolicy',
           element: (
             <LoadingComponent>
               <CookiePolicy />
@@ -259,7 +240,6 @@ export default function createRoutes() {
         },
         {
           path: 'pages/accessibility-statement',
-          name: 'accessibilityStatement',
           element: (
             <LoadingComponent>
               <AccessibilityStatement />
@@ -268,7 +248,6 @@ export default function createRoutes() {
         },
         {
           path: 'pages/:slug',
-          name: 'pagesShowPage',
           element: (
             <LoadingComponent>
               <PagesShowPage />
@@ -277,7 +256,6 @@ export default function createRoutes() {
         },
         {
           path: 'password-recovery',
-          name: 'passwordRecovery',
           element: (
             <LoadingComponent>
               <PasswordRecovery />
@@ -287,7 +265,6 @@ export default function createRoutes() {
         {
           // Used as link in email received for password recovery
           path: 'reset-password',
-          name: 'passwordReset',
           element: (
             <LoadingComponent>
               <PasswordReset />
@@ -296,7 +273,6 @@ export default function createRoutes() {
         },
         {
           path: 'subscription-ended',
-          name: 'subscriptionEnded',
           element: (
             <LoadingComponent>
               <SubscriptionEndedPage />
@@ -305,7 +281,6 @@ export default function createRoutes() {
         },
         {
           path: 'email-settings',
-          name: 'EmailSettingPage',
           element: (
             <LoadingComponent>
               <EmailSettingsPage />
@@ -315,7 +290,6 @@ export default function createRoutes() {
         // ...moduleConfiguration.routes.citizen,
         {
           path: '*',
-          name: 'notfound',
           element: (
             <LoadingComponent>
               <PagesShowPage />
