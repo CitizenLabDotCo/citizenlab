@@ -96,8 +96,9 @@ describe XlsxService do
       before do
         project = create(:project)
         create(:custom_field_extra_custom_form, resource: create(:custom_form, project: project))
-        @custom_idea = create(:idea, project: project, custom_field_values: { 'extra_field' => 'test value'})
+        @custom_idea = create(:idea, project: project, custom_field_values: { 'extra_field' => 'test value' })
       end
+
       let(:xlsx) { service.generate_ideas_xlsx(ideas + [@custom_idea], view_private_attributes: false) }
 
       it 'adds columns for custom fields' do

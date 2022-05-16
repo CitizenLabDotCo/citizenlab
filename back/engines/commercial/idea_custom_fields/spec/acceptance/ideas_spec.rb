@@ -19,7 +19,7 @@ resource 'Ideas' do
 
     with_options scope: :idea do
       parameter :project_id, 'The identifier of the project that hosts the idea', extra: ''
-      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(",")}"
+      parameter :publication_status, 'Publication status', required: true, extra: "One of #{Post::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
       parameter :topic_ids, 'Array of ids of the associated topics'
@@ -41,12 +41,12 @@ resource 'Ideas' do
         create(:custom_field_extra_custom_form, resource: create(:custom_form, project: project))
       end
 
-      let(:custom_field_values) { { 'extra_field' => 'test value'} }
+      let(:custom_field_values) { { 'extra_field' => 'test value' } }
 
       example_request 'Create an idea with extra fields' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h). to match custom_field_values
+        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h).to match custom_field_values
       end
     end
   end
@@ -69,12 +69,12 @@ resource 'Ideas' do
         @idea.update! custom_field_values: { 'extra_field' => 'test value' }
       end
 
-      let(:custom_field_values) { { 'extra_field' => 'Changed Value'} }
+      let(:custom_field_values) { { 'extra_field' => 'Changed Value' } }
 
       example_request 'Update extra fields in an idea' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h). to match custom_field_values
+        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h).to match custom_field_values
       end
     end
   end

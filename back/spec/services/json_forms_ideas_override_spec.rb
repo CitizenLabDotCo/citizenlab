@@ -163,8 +163,8 @@ describe 'JsonFormsService ideas overrides' do
     it 'gives all non built-in fields a nested path' do
       fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
       ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
-      expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.count).to eq 1
-      expect(ui_schema.dig(:elements)&.find { |e| e[:options][:id] == 'extra' }.dig(:elements)&.first[:scope]).to eq '#/properties/custom_field_values/properties/extra_field'
+      expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
+      expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/custom_field_values/properties/extra_field'
     end
   end
 end

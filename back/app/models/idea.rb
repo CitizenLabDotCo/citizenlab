@@ -82,10 +82,10 @@ class Idea < ApplicationRecord
   validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
   validates :custom_field_values, on: :publication, json: {
-    schema: -> {
+    schema: lambda {
       extra_fields = CustomForm.where(project: project).first.custom_fields.select { |f| f.code.nil? }
       CustomFieldService.new.fields_to_json_schema(extra_fields)
-     },
+    },
     message: ->(errors) { errors }
   }, if: %i[custom_field_values_changed?]
 

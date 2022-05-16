@@ -17,10 +17,11 @@ describe 'JsonFormsService ideas overrides' do
     before do
       cf2 = create(:custom_field, resource: custom_form, code: nil, key: 'field_1')
     end
+
     it 'only includes the topics associated with the current project' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc]['en']
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, :custom_field_values, :properties)).to match ({'field_1'=>{:type=>'string'}})
+      expect(schema.dig(:properties, :custom_field_values, :properties)).to match({ 'field_1' => { type: 'string' } })
     end
   end
 end
