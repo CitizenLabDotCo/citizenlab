@@ -1,5 +1,5 @@
 module JsonFormsIdeasOverrides
-  def custom_form_to_ui_schema(fields, locale = 'en', &block)
+  def custom_form_to_ui_schema(fields, locale = 'en')
     project = fields.first.resource.project
     input_term = project.process_type == 'continuous' ? project.input_term : TimelineService.new.current_phase(project)&.input_term || 'idea'
     {
@@ -43,7 +43,7 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
-          elements: fields.reject(&:built_in?).map(&block)
+          elements: fields.reject(&:built_in?).map { |field| yield field, '#/properties/custom_field_values/properties/' }
         }
       ].compact)
     }
