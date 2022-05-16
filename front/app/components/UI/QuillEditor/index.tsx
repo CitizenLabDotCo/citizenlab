@@ -27,6 +27,7 @@ import {
   media,
   fontSizes,
   defaultStyles,
+  isRtl,
 } from 'utils/styleUtils';
 
 import {
@@ -852,4 +853,13 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
   }
 );
 
-export default injectIntl(QuillEditor);
+const RtlQuil = styled(QuillEditor)`
+  ${isRtl`
+  .ql-editor {
+    direction: rtl;
+    text-align: right;
+  }
+`}
+`;
+
+export default injectIntl(RtlQuil);
