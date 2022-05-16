@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+
 ## 2022-05-16
 
 ### Fixed
