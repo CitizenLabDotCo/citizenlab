@@ -5,6 +5,7 @@ module IdClaveUnica
     include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)
+      Rails.logger.info("ClaveUnica auth has: #{auth.inspect}")
       info = {}
       if (fn = auth.dig('extra', 'raw_info', 'name', 'nombres'))
         info[:first_name] = fn.join(' ')
