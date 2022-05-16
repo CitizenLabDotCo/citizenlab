@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation.
+
 ## 2022-05-10_2
 
 ### Changed
