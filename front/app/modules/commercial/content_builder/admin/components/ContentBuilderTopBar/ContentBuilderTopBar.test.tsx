@@ -82,7 +82,10 @@ describe('ContentBuilderTopBar', () => {
   it('renders with correct project name', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     expect(screen.getByText('Test Project')).toBeInTheDocument();
@@ -90,7 +93,10 @@ describe('ContentBuilderTopBar', () => {
   it('calls goBack correctly', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     fireEvent.click(screen.getByTestId('goBackButton'));
@@ -99,7 +105,10 @@ describe('ContentBuilderTopBar', () => {
   it('calls onSave correctly', async () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     await act(async () => {
@@ -114,7 +123,10 @@ describe('ContentBuilderTopBar', () => {
   it('enables and disables save in accordance with the error status', async () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     await act(async () => {
@@ -141,7 +153,10 @@ describe('ContentBuilderTopBar', () => {
   it('re-enables save when the element with the error is deleted', async () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     await act(async () => {
@@ -159,5 +174,35 @@ describe('ContentBuilderTopBar', () => {
     });
 
     expect(saveButton).not.toBeDisabled();
+  });
+
+  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is false', async () => {
+    const setMobilePreviewEnabled = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={setMobilePreviewEnabled}
+        />
+      </Editor>
+    );
+    const toggle = screen.getByRole('checkbox');
+    fireEvent.click(toggle);
+    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(true);
+  });
+
+  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is true', async () => {
+    const setMobilePreviewEnabled = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={true}
+          setMobilePreviewEnabled={setMobilePreviewEnabled}
+        />
+      </Editor>
+    );
+    const toggle = screen.getByRole('checkbox');
+    fireEvent.click(toggle);
+    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(false);
   });
 });
