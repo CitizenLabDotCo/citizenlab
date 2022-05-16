@@ -66,6 +66,8 @@ describe('Admin: add project and edit description', () => {
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    // Done saving
+    cy.get('#e2e-content-builder-topbar-save').click().contains('Save');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('be.visible');
@@ -78,6 +80,8 @@ describe('Admin: add project and edit description', () => {
     cy.get('#e2e-text-box').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    // Done saving
+    cy.get('#e2e-content-builder-topbar-save').click().contains('Save');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-single-column').should('be.visible');
@@ -96,6 +100,8 @@ describe('Admin: add project and edit description', () => {
     );
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    // Done saving
+    cy.get('#e2e-content-builder-topbar-save').click().contains('Save');
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-about-box').should('exist');
   });
@@ -126,7 +132,8 @@ describe('Admin: add project and edit description', () => {
     cy.get('#imageAltTextInput').click().type('Image alt text.');
 
     cy.get('#e2e-content-builder-topbar-save').click();
-
+    // Done saving
+    cy.get('#e2e-content-builder-topbar-save').click().contains('Save');
     cy.visit(`/projects/${projectSlug}`);
     cy.get('[alt="Image alt text."]').should('exist');
   });
@@ -138,6 +145,8 @@ describe('Admin: add project and edit description', () => {
     cy.get('#e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    // Done saving
+    cy.get('#e2e-content-builder-topbar-save').click().contains('Save');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-single-column').should('be.visible');
