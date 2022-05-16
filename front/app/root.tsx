@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React, { useEffect } from 'react';
+import { createBrowserHistory, BrowserHistory } from 'history';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 
@@ -14,8 +15,6 @@ import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
-
-import { createBrowserHistory, BrowserHistory } from 'history';
 
 export const rootHistory: BrowserHistory = createBrowserHistory();
 
