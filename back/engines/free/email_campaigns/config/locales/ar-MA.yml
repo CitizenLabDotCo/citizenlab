@@ -9,10 +9,10 @@ ar-MA:
       "comment_on_your_idea": تعليق على فكرتي
       "comment_on_your_initiative": تعليق على مُقترحي
       "first_idea_published": نشر فكرتي الأولى
-      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة
+      "idea_marked_as_spam": الإبلاغ عن الفكرة كـإزعاج
       "idea_published": نشر فكرتي
       "initiative_assigned_to_you": تعيين مُقترح إلي
-      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج
+      "initiative_marked_as_spam": الإبلاغ عن المُقترح كـإزعاج
       "initiative_published": نشر مُقترحي
       "invite_received": دعوة
       "invite_reminder": تذكير بالدعوة
@@ -52,12 +52,12 @@ ar-MA:
       "manual": رسالة رسمية - جميع المستخدمين
       "admin_rights_received": تم استلام حقوق المسؤول - المسؤولين
       "comment_deleted_by_admin": حذف تعليقك - جميع المستخدمين
-      "comment_marked_as_spam": الإبلاغ عن التعليق كـ مزعج - المسؤولين ومديري المشاريع
+      "comment_marked_as_spam": الإبلاغ عن التعليق كـإزعاج- المسؤولين ومديري المشاريع
       "comment_on_your_comment": الرد على تعليقك - جميع المستخدمين
       "comment_on_your_idea": التعليق على فكرتك - جميع المستخدمين
       "comment_on_your_initiative": التعليق على مُقترحك - جميع المستخدمين
       "first_idea_published": نشر فكرتك الأولى - جميع المستخدمين
-      "idea_marked_as_spam": الإبلاغ عن الفكرة كـ مزعجة - المسؤولين ومديري المشاريع
+      "idea_marked_as_spam": الإبلاغ عن الفكرة كـإزعاج - المسؤولين ومديري المشاريع
       "idea_published": نشر فكرتك - جميع المستخدمين
       "initiative_assigned_to_you": تعيين المُقترح - المسؤولين
       "initiative_marked_as_spam": الإبلاغ عن المُقترح كـ مزعج - المسؤولين
@@ -119,7 +119,7 @@ ar-MA:
       subject: 'تقرير المسؤول الأسبوعي الخاص بك لـ%{time}'
       preheader: 'ملخص المسؤول لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
-      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.\nاكتشف ما يحدث على منصتك!"
+      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث على منصتك!\n     "
       cta_visit_the_platform: 'زُر منصتك'
       new_users: 'المستخدمون الجُدد'
       new_ideas: 'الأفكار الجديدة'
@@ -151,10 +151,10 @@ ar-MA:
       days_ago: 'قبل %{numberOfDays} يوم'
       event_description: 'تم الإبلاغ عن التعليق التالي والذي تم نشره على <strong>%{post}</strong>:'
       inappropriate_content: 'التعليق غير لائق أو مسيء.'
-      preheader: 'التصرف بناءً على هذا التعليق والذي أُبلغ عنه كـ "مزعج"'
+      preheader: 'التصرف بناءً على هذا التعليق والذي أُبلغ عنه كـ "إزعاج"'
       reported_this_because: 'قام %{reporterFirstName} بالإبلاغ لأن:'
       subject: 'أبلغ %{organizationName}: %{firstName}%{lastName} عن هذا التعليق كـ "مزعج"'
-      title_comment_spam_report: 'أبلغ %{firstName} %{lastName} عن هذا التعليق كـ "مزعج"'
+      title_comment_spam_report: 'أبلغ %{firstName} %{lastName} عن هذا التعليق كـ "إزعاج"'
       today: اليوم
       wrong_content: 'التعليق غير ذي صلة.'
       yesterday: الأمس
@@ -259,7 +259,7 @@ ar-MA:
       subject: 'تقرير مدير المشروع الأسبوعي الخاص بك لـ%{time}'
       preheader: 'ملخص مدير المشروع لـ %{organizationName}'
       title_your_weekly_report: '%{firstName}، تقريرك الأسبوعي'
-      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.\nاكتشف ما يحدث في مشروعك!"
+      text_introduction: "قمنا بتحضير قائمة تضم جميع الأفكار التي ولّدت أكبر تفاعل ونشاط على مدار الأسبوع الماضي.اكتشف ما يحدث في مشروعك!\n     "
       cta_moderate: 'أشرِف على مشروعك'
       new_users: 'المستخدمون الجُدد'
       new_ideas: 'الأفكار الجديدة'
@@ -357,7 +357,7 @@ ar-MA:
     official_feedback_on_commented_idea:
       by_author: 'بواسطة %{authorName}'
       updated: 'كتب %{officialName}:'
-      cta_view: 'اذهب إلى الفكرة'
+      cta_view: 'اذهب إلى هذه الفكرة'
       event_description: 'أعطى %{officialName} تحديثًا على الفكرة ''%{ideaTitle}''. انقر الزر أدناه لمتابعة الحوار مع %{officialName}.'
       main_header: 'هناك تحديث على فكرة قد علقت عليها'
       subject: 'تلقت فكرة كنت قد علقت عليها تحديثًا رسميًا على المنصة الخاصة بـ %{organizationName}'
@@ -490,7 +490,7 @@ ar-MA:
       trending_ideas_text: "هل أنت مهتم بما يحدث على المنصة؟ إليك ثلاث أكثر الأفكار شيوعاً وما يقوله الناس عنها."
       no_notifications: "لا توجد إشعارات"
       one_notification: "إشعار واحد"
-      multiple_notifications: "%{notifCount} إشعارات "
+      multiple_notifications: "%{notifCount} إشعارات"
       no_unread_notifications: "لا يوجد لديك أي إشعارات غير مقروءة. ومع ذلك، ندعوك لزيارة المنصة لاكتشاف ما يحدث."
       unread_notifications: "لديك إشعارات غير مقروءة. ندعوك لزيارة المنصة لاكتشاف ما يحدث."
     threshold_reached_for_admin:
@@ -513,7 +513,7 @@ ar-MA:
       event_description: '%{firstName}، تهانينا على أول فكرة لك على منصة المشاركة الخاصة بـ %{organizationName}. سيتم إخطارك عند تفاعل الناس مع فكرتك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
       link: رابط
       main_header: '%{firstName}، لقد نشرت فكرتك الأولى!'
-      message_get_votes: 'فلتصل بفكرتك إلى المزيد من الأشخاص:'
+      message_get_votes: 'بلغ فكرتك إلى المزيد من الأشخاص:'
       preheader: '%{firstName}، تهانينا على نشر أولى أفكارك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم لفكرتك'
       see_you: 'نراك قريبًا على المنصة!'
       send_email: البريد الإلكتروني
@@ -536,7 +536,7 @@ ar-MA:
       event_description: '%{firstName}، تم نشر فكرتك على منصة مشاركة %{organizationName} بنجاح. سيتم إخطارك عند تفاعل الناس مع فكرتك. تعرف على الخطوات التالية التي يمكنك اتخاذها أدناه.'
       link: رابط
       main_header: 'لقد نشرت فكرة! دعنا نحرص على قراءة الآخرين لها.'
-      message_get_votes: 'فلتصل بفكرتك إلى المزيد من الأشخاص:'
+      message_get_votes: 'بلغ فكرتك إلى المزيد من الأشخاص:'
       preheader: '%{firstName}، تهانينا على نشر فكرتك على المنصة الخاصة بـ %{organizationName}. الآن قم بحشد الدعم.'
       see_you: 'نراك قريبًا على المنصة!'
       send_email: البريد الإلكتروني
