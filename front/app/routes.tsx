@@ -1,56 +1,44 @@
-import * as React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import adminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 
-const LandingPage = React.lazy(() => import('containers/LandingPage'));
-const SignUpInPage = React.lazy(() => import('containers/SignUpInPage'));
-const SiteMap = React.lazy(() => import('containers/SiteMap'));
-const UsersEditPage = React.lazy(() => import('containers/UsersEditPage'));
-const UsersShowPage = React.lazy(() => import('containers/UsersShowPage'));
-const IdeasEditPage = React.lazy(() => import('containers/IdeasEditPage'));
-const IdeasIndexPage = React.lazy(() => import('containers/IdeasIndexPage'));
-const IdeasShowPage = React.lazy(() => import('containers/IdeasShowPage'));
-const InitiativesIndexPage = React.lazy(
+const LandingPage = lazy(() => import('containers/LandingPage'));
+const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
+const SiteMap = lazy(() => import('containers/SiteMap'));
+const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
+const UsersShowPage = lazy(() => import('containers/UsersShowPage'));
+const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
+const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
+const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
+const InitiativesIndexPage = lazy(
   () => import('containers/InitiativesIndexPage')
 );
-const InitiativesEditPage = React.lazy(
+const InitiativesEditPage = lazy(
   () => import('containers/InitiativesEditPage')
 );
-const InitiativesNewPage = React.lazy(
-  () => import('containers/InitiativesNewPage')
-);
-const InitiativesShowPage = React.lazy(
+const InitiativesNewPage = lazy(() => import('containers/InitiativesNewPage'));
+const InitiativesShowPage = lazy(
   () => import('containers/InitiativesShowPage')
 );
-const IdeasNewPage = React.lazy(() => import('containers/IdeasNewPage'));
-const ProjectsIndexPage = React.lazy(
-  () => import('containers/ProjectsIndexPage')
-);
-const ProjectsShowPage = React.lazy(
-  () => import('containers/ProjectsShowPage')
-);
-const EventsPage = React.lazy(() => import('containers/EventsPage'));
-const CookiePolicy = React.lazy(() => import('containers/CookiePolicy'));
-const AccessibilityStatement = React.lazy(
+const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
+const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
+const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
+const EventsPage = lazy(() => import('containers/EventsPage'));
+const CookiePolicy = lazy(() => import('containers/CookiePolicy'));
+const AccessibilityStatement = lazy(
   () => import('containers/AccessibilityStatement')
 );
-const PagesShowPage = React.lazy(() => import('containers/PagesShowPage'));
-const PasswordRecovery = React.lazy(
-  () => import('containers/PasswordRecovery')
-);
-const PasswordReset = React.lazy(() => import('containers/PasswordReset'));
-const SubscriptionEndedPage = React.lazy(
+const PagesShowPage = lazy(() => import('containers/PagesShowPage'));
+const PasswordRecovery = lazy(() => import('containers/PasswordRecovery'));
+const PasswordReset = lazy(() => import('containers/PasswordReset'));
+const SubscriptionEndedPage = lazy(
   () => import('containers/SubscriptionEndedPage')
 );
-const EmailSettingsPage = React.lazy(
-  () => import('containers/EmailSettingsPage')
-);
+const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 
 const LoadingComponent = ({ children }) => {
-  return (
-    <React.Suspense fallback={<div>LOADING!</div>}>{children}</React.Suspense>
-  );
+  return <Suspense fallback={<div>LOADING!</div>}>{children}</Suspense>;
 };
 
 export default function createRoutes() {
@@ -68,7 +56,6 @@ export default function createRoutes() {
         },
         {
           path: 'sign-in',
-          name: 'signInPage',
           element: (
             <LoadingComponent>
               <SignUpInPage />
@@ -77,7 +64,6 @@ export default function createRoutes() {
         },
         {
           path: 'sign-up',
-          name: 'signUpPage',
           element: (
             <LoadingComponent>
               <SignUpInPage />
@@ -118,7 +104,6 @@ export default function createRoutes() {
         },
         {
           path: 'profileedit',
-          name: 'usersEditPage',
           element: (
             <LoadingComponent>
               <UsersEditPage />
@@ -127,7 +112,6 @@ export default function createRoutes() {
         },
         {
           path: 'profile/:userSlug',
-          name: 'usersShowPage',
           element: (
             <LoadingComponent>
               <UsersShowPage />
@@ -136,7 +120,6 @@ export default function createRoutes() {
         },
         {
           path: 'ideas/edit/:ideaId',
-          name: 'IdeasEditPage',
           element: (
             <LoadingComponent>
               <IdeasEditPage />
@@ -145,7 +128,6 @@ export default function createRoutes() {
         },
         {
           path: 'ideas',
-          name: 'ideasPage',
           element: (
             <LoadingComponent>
               <IdeasIndexPage />
@@ -154,7 +136,6 @@ export default function createRoutes() {
         },
         {
           path: 'ideas/:slug',
-          name: 'ideasShow',
           element: (
             <LoadingComponent>
               <IdeasShowPage />
@@ -163,7 +144,6 @@ export default function createRoutes() {
         },
         {
           path: 'initiatives',
-          name: 'initiativesPage',
           element: (
             <LoadingComponent>
               <InitiativesIndexPage />
@@ -172,7 +152,6 @@ export default function createRoutes() {
         },
         {
           path: 'initiatives/edit/:initiativeId',
-          name: 'InitiativesEditPage',
           element: (
             <LoadingComponent>
               <InitiativesEditPage />
@@ -181,7 +160,6 @@ export default function createRoutes() {
         },
         {
           path: 'initiatives/new',
-          name: 'initiativesNewPage',
           element: (
             <LoadingComponent>
               <InitiativesNewPage />
@@ -191,7 +169,6 @@ export default function createRoutes() {
         // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
         {
           path: 'initiatives/:slug',
-          name: 'initiativesShow',
           element: (
             <LoadingComponent>
               <InitiativesShowPage />
@@ -200,7 +177,6 @@ export default function createRoutes() {
         },
         {
           path: 'projects/:slug/ideas/new',
-          name: 'IdeasNewPage',
           element: (
             <LoadingComponent>
               <IdeasNewPage />
@@ -210,7 +186,6 @@ export default function createRoutes() {
         adminRoutes(),
         {
           path: 'projects',
-          name: 'Project page',
           element: (
             <LoadingComponent>
               <ProjectsIndexPage />
@@ -219,7 +194,6 @@ export default function createRoutes() {
         },
         {
           path: 'projects/:slug',
-          name: 'Project page',
           element: (
             <LoadingComponent>
               <ProjectsShowPage />
@@ -227,7 +201,6 @@ export default function createRoutes() {
           ),
           children: [
             {
-              name: 'Project page',
               index: true,
               element: (
                 <LoadingComponent>
@@ -237,7 +210,6 @@ export default function createRoutes() {
             },
             {
               path: ':phaseNumber',
-              name: 'Project page: specific phase',
               element: (
                 <LoadingComponent>
                   <ProjectsShowPage />
@@ -246,7 +218,6 @@ export default function createRoutes() {
             },
             {
               path: '*',
-              name: 'Project page',
               element: (
                 <LoadingComponent>
                   <ProjectsShowPage />
@@ -257,7 +228,6 @@ export default function createRoutes() {
         },
         {
           path: 'events',
-          name: 'Events page',
           element: (
             <LoadingComponent>
               <EventsPage />
@@ -266,7 +236,6 @@ export default function createRoutes() {
         },
         {
           path: 'pages/cookie-policy',
-          name: 'cookiePolicy',
           element: (
             <LoadingComponent>
               <CookiePolicy />
@@ -275,7 +244,6 @@ export default function createRoutes() {
         },
         {
           path: 'pages/accessibility-statement',
-          name: 'accessibilityStatement',
           element: (
             <LoadingComponent>
               <AccessibilityStatement />
@@ -284,7 +252,6 @@ export default function createRoutes() {
         },
         {
           path: 'pages/:slug',
-          name: 'pagesShowPage',
           element: (
             <LoadingComponent>
               <PagesShowPage />
@@ -293,7 +260,6 @@ export default function createRoutes() {
         },
         {
           path: 'password-recovery',
-          name: 'passwordRecovery',
           element: (
             <LoadingComponent>
               <PasswordRecovery />
@@ -303,7 +269,6 @@ export default function createRoutes() {
         {
           // Used as link in email received for password recovery
           path: 'reset-password',
-          name: 'passwordReset',
           element: (
             <LoadingComponent>
               <PasswordReset />
@@ -312,7 +277,6 @@ export default function createRoutes() {
         },
         {
           path: 'subscription-ended',
-          name: 'subscriptionEnded',
           element: (
             <LoadingComponent>
               <SubscriptionEndedPage />
@@ -321,7 +285,6 @@ export default function createRoutes() {
         },
         {
           path: 'email-settings',
-          name: 'EmailSettingPage',
           element: (
             <LoadingComponent>
               <EmailSettingsPage />
@@ -331,7 +294,6 @@ export default function createRoutes() {
         ...moduleConfiguration.routes.citizen,
         {
           path: '*',
-          name: 'notfound',
           element: (
             <LoadingComponent>
               <PagesShowPage />

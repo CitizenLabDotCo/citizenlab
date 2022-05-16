@@ -75,7 +75,6 @@ const ContentWrapper = styled.div`
 interface Props {
   project: IProjectData | Error | null | undefined;
   scrollToEventId?: string;
-  history?: any;
 }
 
 const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
@@ -107,10 +106,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
   const userNotSignedInAndUnauthorized = isNilOrError(user) && isUnauthorized;
 
-  const handleGoBack = () => {
-    history.back();
-  };
-
   let content: JSX.Element | null = null;
 
   if (userNotSignedInAndUnauthorized) return <ForbiddenRoute />;
@@ -129,7 +124,6 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
     content = (
       <ContentWrapper id="e2e-project-page">
         <ProjectHeader projectId={projectId} />
-        <button onClick={handleGoBack}>Go Back</button>
         {processType === 'continuous' ? (
           <>
             <ContinuousIdeas projectId={projectId} />
@@ -189,7 +183,6 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
     } else if (scrollToEventId) {
       // If an event id was passed as a query param, pass it on
       return (
-        // to do: remove
         <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
       );
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {

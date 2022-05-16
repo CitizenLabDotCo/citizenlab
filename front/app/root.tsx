@@ -14,9 +14,7 @@ import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
-
-import { createBrowserHistory, BrowserHistory } from 'history';
-export const rootHistory: BrowserHistory = createBrowserHistory();
+import history from 'utils/browserHistory';
 
 import {
   unstable_HistoryRouter as HistoryRouter,
@@ -36,7 +34,7 @@ const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
-        <HistoryRouter history={rootHistory}>
+        <HistoryRouter history={history}>
           <App>
             <Routes />
           </App>
