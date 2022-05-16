@@ -49,41 +49,21 @@ describe('Admin: add project and edit description', () => {
     cy.contains('Original project description.').should('be.visible');
   });
 
-  it('handles Image component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
-      position: 'inside',
-    });
-
-    cy.get('#e2e-image').parent().click();
-    cy.get('input[type="file"]').attachFile('icon.png');
-    cy.get('#imageAltTextInput').type('Image alt text.');
-
-    cy.get('#e2e-content-builder-topbar-save').click();
-
-    cy.visit(`/projects/${projectSlug}`);
-    cy.get('[alt="Image alt text."]').should('exist');
-  });
-
-  it('deletes Image component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-image').parent().click();
-    cy.get('#e2e-delete-button').click();
-    cy.get('#e2e-content-builder-topbar-save').click();
-
-    cy.visit(`/projects/${projectSlug}`);
-    cy.get('[alt="Image alt text."]').should('not.exist');
-  });
-
   it('handles Text component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-draggable-single-column').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
 
     cy.get('#e2e-text-box').click();
     cy.get('#quill-editor').click();
-    cy.get('#quill-editor').type('Edited text.');
+    cy.get('#quill-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
 
@@ -93,16 +73,21 @@ describe('Admin: add project and edit description', () => {
 
   it('deletes Text component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-single-column').should('be.visible');
+
     cy.get('#e2e-text-box').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
 
     cy.visit(`/projects/${projectSlug}`);
+    cy.get('#e2e-single-column').should('be.visible');
     cy.contains('Edited text.').should('not.exist');
   });
 
   it('handles About component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-single-column').should('be.visible');
+
     cy.get('#e2e-draggable-about-box').dragAndDrop(
       '#e2e-content-builder-frame',
       {
@@ -117,11 +102,45 @@ describe('Admin: add project and edit description', () => {
 
   it('deletes About component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-single-column').should('be.visible');
+
     cy.get('#e2e-about-box').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
 
     cy.visit(`/projects/${projectSlug}`);
+    cy.get('#e2e-single-column').should('be.visible');
     cy.get('#e2e-about-box').should('not.exist');
+  });
+
+  it('handles Image component correctly', () => {
+    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-single-column').should('be.visible');
+
+    cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+
+    cy.get('#e2e-image').parent().click();
+    cy.get('input[type="file"]').attachFile('icon.png');
+    cy.get('#imageAltTextInput').click().type('Image alt text.');
+
+    cy.get('#e2e-content-builder-topbar-save').click();
+
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('[alt="Image alt text."]').should('exist');
+  });
+
+  it('deletes Image component correctly', () => {
+    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-single-column').should('be.visible');
+
+    cy.get('#e2e-image').parent().click();
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
+
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('#e2e-single-column').should('be.visible');
+    cy.get('[alt="Image alt text."]').should('not.exist');
   });
 });
