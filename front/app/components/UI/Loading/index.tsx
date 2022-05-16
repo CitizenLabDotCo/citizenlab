@@ -28,7 +28,7 @@ interface Props {
   // https://medium.com/raccoons-group/why-you-probably-shouldnt-use-react-fc-to-type-your-react-components-37ca1243dd13
 }
 
-const Loading: FC<Props> = ({ admin = true, children }) => {
+const Loading: FC<Props> = ({ admin = false, children }) => {
   return (
     <Suspense fallback={<FullPageSpinner admin={admin} />}>{children}</Suspense>
   );
