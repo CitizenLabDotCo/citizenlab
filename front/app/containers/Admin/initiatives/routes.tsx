@@ -15,7 +15,6 @@ const createAdminInitiativesRoutes = () => ({
   children: [
     {
       index: true,
-      path: 'settings',
       element: (
         <LoadingComponent>
           <AdminInitiativesSettings />
