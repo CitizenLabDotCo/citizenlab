@@ -1321,7 +1321,7 @@
   "app.containers.eventspage.noPastEvents": "No past events to display",
   "app.containers.eventspage.noUpcomingOrOngoingEvents": "No upcoming or ongoing events are currently scheduled",
   "app.containers.eventspage.pastEvents": "Past events",
-  "app.containers.eventspage.upcomingAndOngoingEvents": "Upcoming and Ongoing events",
+  "app.containers.eventspage.upcomingAndOngoingEvents": "Upcoming and ongoing events",
   "app.containers.footer.accessibility-statement": "Accessibility statement",
   "app.containers.footer.ariaLabel": "Secondary",
   "app.containers.footer.cookie-policy": "Cookie policy",
