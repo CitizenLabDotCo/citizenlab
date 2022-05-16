@@ -1,5 +1,5 @@
 import Loadable from 'react-loadable';
-import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import { LoadableLoadingAdmin } from 'components/UI/Loading';
 
 export default () => ({
   path: 'pages',

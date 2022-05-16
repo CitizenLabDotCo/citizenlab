@@ -20,7 +20,7 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 
 import Loadable from 'react-loadable';
-import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import { LoadableLoadingAdmin } from 'components/UI/Loading';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';

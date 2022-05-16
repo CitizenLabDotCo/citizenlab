@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { Props } from './';
-import { LoadableLoadingCitizen } from 'components/UI/LoadableLoading';
+import { LoadableLoadingCitizen } from 'components/UI/Loading';
 
 const LoadableUserDeleted = Loadable({
   loading: LoadableLoadingCitizen,

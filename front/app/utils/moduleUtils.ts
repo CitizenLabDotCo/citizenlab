@@ -8,7 +8,7 @@ import {
 import {
   LoadableLoadingAdmin,
   LoadableLoadingCitizen,
-} from 'components/UI/LoadableLoading';
+} from 'components/UI/Loading';
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 
 import { GroupCreationModal } from 'containers/Admin/users';
