@@ -39,8 +39,12 @@ module Insights
       end
 
       def destroy
-        status = category.destroy.destroyed? ? :ok : 500
-        head status
+        if category.destroy.destroyed?
+          SideFxCategoryService.new.after_destroy(category, current_user)
+          head :ok
+        else
+          head 500
+        end
       end
 
       def destroy_all
