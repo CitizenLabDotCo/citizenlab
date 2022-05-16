@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 // typings
 import { ITab } from 'typings';
@@ -45,6 +45,11 @@ const TabbedNav = styled.nav`
     padding: 0;
     margin-bottom: 10px;
   }
+  ${isRtl`
+    padding-right: 44px;
+    padding-left: auto;
+    justify-content: flex-end;
+ `}
 `;
 
 const Tab = styled.div`
