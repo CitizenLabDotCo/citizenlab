@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Editor as CraftEditor } from '@craftjs/core';
+import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -17,9 +17,14 @@ import AboutBox from '../CraftComponents/AboutBox';
 
 type EditorProps = {
   isPreview: boolean;
+  onNodesChange?: (nodes: SerializedNodes) => void;
 };
 
-const Editor: React.FC<EditorProps> = ({ isPreview, children }) => {
+const Editor: React.FC<EditorProps> = ({
+  onNodesChange,
+  isPreview,
+  children,
+}) => {
   return (
     <CraftEditor
       resolver={{
@@ -34,6 +39,9 @@ const Editor: React.FC<EditorProps> = ({ isPreview, children }) => {
       }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}
+      onNodesChange={(data) =>
+        onNodesChange && onNodesChange(data.getSerializedNodes())
+      }
     >
       {children}
     </CraftEditor>
