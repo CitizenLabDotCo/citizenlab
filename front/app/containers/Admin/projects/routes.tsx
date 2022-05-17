@@ -6,7 +6,7 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 import { LoadingComponent } from 'routes';
 const AdminProjectEditIndex = lazy(() => import('./edit'));
-// const AdminProjectEditGeneral = lazy(() => import('./edit/general'));
+const AdminProjectEditGeneral = lazy(() => import('./edit/general'));
 
 const createAdminProjectsRoutes = () => {
   return {
@@ -29,22 +29,20 @@ const createAdminProjectsRoutes = () => {
         path: ':projectId',
         children: [
           {
-            path: 'edit',
+            index: true,
             element: (
               <LoadingComponent>
                 <AdminProjectEditIndex />
               </LoadingComponent>
             ),
-            // children: [
-            //   {
-            //     index: true,
-            //     element: (
-            //       <LoadingComponent>
-            //         <AdminProjectEditGeneral />
-            //       </LoadingComponent>
-            //     ),
-            //   },
-            // ],
+          },
+          {
+            path: 'edit',
+            element: (
+              <LoadingComponent>
+                <AdminProjectEditGeneral />
+              </LoadingComponent>
+            ),
           },
         ],
       },

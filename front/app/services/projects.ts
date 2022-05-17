@@ -189,7 +189,7 @@ export interface IProjectData {
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string; medium: string; large: string } | null;
+  header_bg?: ImageSizes | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;

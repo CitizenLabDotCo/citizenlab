@@ -45,11 +45,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import {
-  IUpdatedProjectProperties,
-  projectByIdStream,
-  IProjectFormState,
-} from 'services/projects';
+import { projectByIdStream, IProjectFormState } from 'services/projects';
 import { areasStream } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
@@ -59,6 +55,7 @@ import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import {
@@ -80,6 +77,7 @@ export interface InputProps {}
 interface DataProps {
   isProjectFoldersEnabled: GetFeatureFlagChildProps;
   authUser: GetAuthUserChildProps;
+  project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -179,14 +177,18 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        header_bg: newHeader[0].base64,
-      },
-      projectHeaderImage: [newHeader[0]],
-    }));
+    this.setState(({ projectAttributesDiff }) => {
+      // const newHeaderBg = newHeader[0].base64;
+
+      return {
+        submitState: 'enabled',
+        projectAttributesDiff: {
+          ...projectAttributesDiff,
+          // header_bg: newHeader[0].base64,
+        },
+        projectHeaderImage: [newHeader[0]],
+      };
+    });
   };
 
   handleHeaderOnRemove = async () => {
@@ -370,7 +372,6 @@ class AdminProjectEditGeneral extends PureComponent<
       publicationStatus,
       projectType,
       titleError,
-      project,
       projectHeaderImage,
       projectImages,
       projectFiles,
@@ -385,21 +386,23 @@ class AdminProjectEditGeneral extends PureComponent<
       currentTenant,
     } = this.state;
 
-    const { authUser } = this.props;
+    const {
+      authUser,
+      project,
+      params: { projectId },
+    } = this.props;
+    const isNewProject = !projectId;
+    const editExistingProject = projectId && !isNilOrError(project);
 
-    if (
-      !isNilOrError(authUser) &&
-      (!get(this.props, 'params.projectId') ||
-        (get(this.props, 'params.projectId') && project !== undefined))
-    ) {
+    if (!isNilOrError(authUser) && (isNewProject || editExistingProject)) {
       const projectAttrs = {
-        ...(project ? project.data.attributes : {}),
+        ...(!isNilOrError(project) ? project.attributes : {}),
         ...projectAttributesDiff,
-      } as IUpdatedProjectProperties;
+      };
       const areaIds =
         projectAttrs.area_ids ||
-        (project &&
-          project.data.relationships.areas.data.map((area) => area.id)) ||
+        (!isNilOrError(project) &&
+          project.relationships.areas.data.map((area) => area.id)) ||
         [];
       const areasValues = areaIds
         .filter((id) => {
@@ -413,7 +416,7 @@ class AdminProjectEditGeneral extends PureComponent<
 
       const selectedTopicIds = getSelectedTopicIds(
         projectAttributesDiff,
-        project
+        !isNilOrError(project) ? project : null
       );
 
       return (
@@ -439,22 +442,24 @@ class AdminProjectEditGeneral extends PureComponent<
             />
 
             <ProjectNameInput
-              projectAttrs={projectAttrs}
+              titleMultiloc={projectAttrs.title_multiloc}
               titleError={titleError}
               apiErrors={this.state.apiErrors}
               handleTitleMultilocOnChange={this.handleTitleMultilocOnChange}
             />
 
             {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-            {currentTenant && project?.data.attributes.slug && (
-              <SlugInput
-                slug={slug}
-                resource="project"
-                apiErrors={apiErrors}
-                showSlugErrorMessage={showSlugErrorMessage}
-                handleSlugOnChange={this.handleSlugOnChange}
-              />
-            )}
+            {currentTenant &&
+              !isNilOrError(project) &&
+              project.attributes.slug && (
+                <SlugInput
+                  slug={slug}
+                  resource="project"
+                  apiErrors={apiErrors}
+                  showSlugErrorMessage={showSlugErrorMessage}
+                  handleSlugOnChange={this.handleSlugOnChange}
+                />
+              )}
 
             <StyledSectionField>
               {!project ? (
@@ -494,9 +499,9 @@ class AdminProjectEditGeneral extends PureComponent<
               )}
             </StyledSectionField>
 
-            {project && projectType === 'continuous' && (
+            {!isNilOrError(project) && projectType === 'continuous' && (
               <ParticipationContext
-                projectId={project.data.id}
+                projectId={project.id}
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
                 apiErrors={apiErrors}
@@ -565,6 +570,9 @@ const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
 const Data = adopt({
   isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
   authUser: <GetAuthUser />,
+  project: ({ params, render }) => (
+    <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

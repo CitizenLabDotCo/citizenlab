@@ -17,6 +17,7 @@ import { UploadFile, Locale } from 'typings';
 import {
   IProjectFormState,
   IProject,
+  IProjectData,
   IUpdatedProjectProperties,
 } from 'services/projects';
 import { IAppConfiguration } from 'services/appConfiguration';
@@ -234,12 +235,12 @@ export function initSubscriptions(
 
 export const getSelectedTopicIds = (
   projectAttributesDiff: IUpdatedProjectProperties,
-  project: IProject | null | undefined
+  project: IProjectData | null
 ) => {
   if (projectAttributesDiff.topic_ids) return projectAttributesDiff.topic_ids;
 
   if (project) {
-    return project.data.relationships.topics.data.map((topic) => topic.id);
+    return project.relationships.topics.data.map((topic) => topic.id);
   }
 
   return [];

@@ -4,6 +4,7 @@ import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -297,13 +298,9 @@ export class AdminProjectEditIndex extends PureComponent<
       phases,
       intl: { formatMessage },
       localize,
-      children,
       location: { pathname },
     } = this.props;
-    const childrenWithExtraProps = React.cloneElement(
-      children as React.ReactElement<any>,
-      { project }
-    );
+
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
@@ -361,7 +358,7 @@ export class AdminProjectEditIndex extends PureComponent<
             </ActionsContainer>
           </TopContainer>
           <TabbedResource {...tabbedProps}>
-            {childrenWithExtraProps}
+            <RouterOutlet />
           </TabbedResource>
         </>
       );
