@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ContentBuilder::Engine.routes.draw do
   namespace :web_api do
     namespace :v1 do

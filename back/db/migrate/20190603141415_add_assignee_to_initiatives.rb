@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAssigneeToInitiatives < ActiveRecord::Migration[5.2]
   def change
     add_column :initiatives, :assignee_id, :uuid, null: true

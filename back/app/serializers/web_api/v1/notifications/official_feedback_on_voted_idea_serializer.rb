@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::Notifications::OfficialFeedbackOnVotedIdeaSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :official_feedback_author do |object|
     object.official_feedback&.author_multiloc

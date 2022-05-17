@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MachineTranslations
   class MachineTranslationService
     def build_translation_for(translatable:, attribute_name:, locale_to:)

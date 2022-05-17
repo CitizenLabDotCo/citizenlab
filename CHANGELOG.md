@@ -1,9 +1,22 @@
 # Changelog
 
+## 17-05-22
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
 ### Fixed
 
 - [CL-775] Use correct link to conditions page
 - [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
 
 ## 2022-05-16
 

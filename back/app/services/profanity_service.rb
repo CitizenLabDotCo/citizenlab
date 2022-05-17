@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProfanityService
   IGNORE_SPECIAL_CHARS = '.?¿!,:;\'"(){}[]#@_'
 

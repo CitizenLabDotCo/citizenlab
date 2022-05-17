@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
   attributes :id, :slug, :url, :title_multiloc, :body_multiloc, :author_id, :author_name, :upvotes_count, :downvotes_count, :published_at, :latitude, :longitude, :project_id, :budget, :proposed_budget
 

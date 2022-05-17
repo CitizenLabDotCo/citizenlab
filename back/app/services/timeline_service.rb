@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimelineService
   def future_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date

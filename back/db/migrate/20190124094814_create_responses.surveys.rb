@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from surveys (originally 20190124093845)
 class CreateResponses < ActiveRecord::Migration[5.2]
   def change
