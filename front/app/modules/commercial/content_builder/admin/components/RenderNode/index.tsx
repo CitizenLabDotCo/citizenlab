@@ -52,14 +52,7 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
-    isRoot
-      ? `cursor: auto;
-          padding: '4px',
-          width: '100%',
-          maxWidth: '1000px',
-          backgroundColor: '#fff',
-          minHeight: '160px',`
-      : `cursor:move;`}
+    isRoot ? `cursor: auto;` : `cursor:move;`}
 `;
 
 const RenderNode = ({ render }) => {
@@ -129,6 +122,9 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
+      background="#fff"
+      padding={id === ROOT_NODE ? '4px' : '0px'}
+      minHeight={id === ROOT_NODE ? '160px' : '0px'}
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
       borderWidth="1px"
       borderColor={
