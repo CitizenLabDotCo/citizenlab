@@ -49,7 +49,7 @@ export type IEventsStreamParams = IStreamParams & {
     project_ids?: string[];
     before_end_at?: string;
     on_or_after_end_at?: string;
-    sort?: string;
+    sort?: 'start_at' | '-start_at';
     'page[number]'?: number;
     'page[size]'?: number;
     project_publication_statuses?: string[];
