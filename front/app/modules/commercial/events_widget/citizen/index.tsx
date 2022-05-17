@@ -71,7 +71,7 @@ const StyledEventCard = styled(EventCard)`
 export default injectIntl<InjectedIntlProps>(({ intl }) => {
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
-    notPastOnly: true,
+    currentAndFutureOnly: true,
     pageSize: 3,
     sort: 'oldest',
   });
