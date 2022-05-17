@@ -928,9 +928,18 @@ if Apartment::Tenant.current == 'localhost'
 
       if project
         custom_form = project.custom_form || CustomForm.create!(project: project)
-        custom_field = IdeaCustomFieldsService.new.find_or_build_field(custom_form, ['title_multiloc','body_multiloc','location_description'].shuffle.first)
-        custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
-        custom_field.save!
+        built_in_custom_field = IdeaCustomFieldsService.new.find_or_build_field(custom_form, ['title_multiloc','body_multiloc','location_description'].shuffle.first)
+        built_in_custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
+        built_in_custom_field.save!
+        if rand(3) == 0
+          custom_custom_field = CustomField.create!(
+            resource: custom_form,
+            title_multiloc: { 'en' => 'Your favourite name for a swimming pool' },
+            description_multiloc: create_for_some_locales { Faker::Lorem.sentence },
+            input_type: 'text',
+            required: false
+          )
+        end
       end
     end
 
