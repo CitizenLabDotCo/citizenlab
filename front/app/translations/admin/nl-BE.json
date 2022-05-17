@@ -707,6 +707,7 @@
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Er ging iets mis. Probeer het opnieuw",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Met de paginabuilder kun je geavanceerdere lay-outopties gebruiken. Voor talen waarin geen inhoud beschikbaar is in de paginabuilder, wordt in plaats daarvan de normale inhoud van de projectbeschrijving weergegeven.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Wijzig beschrijving in de paginabouwer",
+  "app.containers.AdminPage.ProjectDescription.mobilePreview": "Mobile preview",
   "app.containers.AdminPage.ProjectDescription.save": "Opslaan",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Je wijzigingen zijn opgeslagen.",
   "app.containers.AdminPage.ProjectDescription.saved": "Opgeslagen!",
