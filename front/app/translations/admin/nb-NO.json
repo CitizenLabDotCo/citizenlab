@@ -707,6 +707,7 @@
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Something went wrong, please try again later",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Using the page builder will let you use more advanced layout options. For languages where no content is available in the page builder, the regular project description content will be displayed instead.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Edit description in page builder",
+  "app.containers.AdminPage.ProjectDescription.mobilePreview": "Mobile preview",
   "app.containers.AdminPage.ProjectDescription.save": "Lagre",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.ProjectDescription.saved": "Saved!",
