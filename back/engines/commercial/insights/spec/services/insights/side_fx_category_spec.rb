@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Insights::SideFxCategoryService do
@@ -14,7 +16,7 @@ describe Insights::SideFxCategoryService do
 
   describe 'after_update' do
     it "logs a 'changed' action job when a category (tag) has changed" do
-      category.update(name: "changed_name")
+      category.update(name: 'changed_name')
       expect { service.after_update(category, user) }
         .to have_enqueued_job(LogActivityJob).with(category, 'changed', user, category.updated_at.to_i)
     end
@@ -27,5 +29,4 @@ describe Insights::SideFxCategoryService do
         .to have_enqueued_job(LogActivityJob)
     end
   end
-
 end
