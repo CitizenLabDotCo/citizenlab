@@ -41,8 +41,12 @@ describe('Content builder Image component', () => {
 
   it('handles Image component correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-single-column').should('be.visible');
-
+    cy.get('#e2e-draggable-single-column').dragAndDrop(
+      '#e2e-content-builder-frame',
+      {
+        position: 'inside',
+      }
+    );
     cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
