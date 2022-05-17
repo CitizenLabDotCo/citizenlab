@@ -15,14 +15,14 @@ import { IUpdatedProjectProperties } from 'services/projects';
 import { Multiloc, CLErrors } from 'typings';
 
 interface Props {
-  projectAttrs: IUpdatedProjectProperties;
+  titleMultiloc: IUpdatedProjectProperties['title_multiloc'];
   titleError: Multiloc | null;
   apiErrors: CLErrors;
   handleTitleMultilocOnChange: (titleMultiloc: Multiloc) => void;
 }
 
-export default ({
-  projectAttrs,
+const ProjectNameInput = ({
+  titleMultiloc,
   titleError,
   apiErrors,
   handleTitleMultilocOnChange,
@@ -38,7 +38,7 @@ export default ({
       <StyledInputMultiloc
         id="project-title"
         type="text"
-        valueMultiloc={projectAttrs.title_multiloc}
+        valueMultiloc={titleMultiloc}
         label={<FormattedMessage {...messages.titleLabel} />}
         onChange={handleTitleMultilocOnChange}
         errorMultiloc={titleError}
@@ -47,3 +47,5 @@ export default ({
     </StyledSectionField>
   );
 };
+
+export default ProjectNameInput;
