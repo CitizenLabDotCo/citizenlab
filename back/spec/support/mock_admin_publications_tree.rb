@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MockAdminPublicationsTree
   attr_reader :empty_parents, :admin_only_parents,
               :public_parents, :admin_only_children, :public_children, :other,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectFolders::WebApi::V1::Notifications::ProjectFolderModerationRightsReceivedSerializer < ::WebApi::V1::Notifications::NotificationSerializer
   attribute :project_folder_id
 

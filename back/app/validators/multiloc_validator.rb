@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MultilocValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     validate_presence record, attribute, value

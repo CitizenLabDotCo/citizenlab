@@ -3,10 +3,6 @@
 class XlsxService
   include HtmlToPlainText
 
-  def multiloc_service
-    MultilocService.new
-  end
-
   def escape_formula(text)
     # After https://docs.servicenow.com/bundle/orlando-platform-administration/page/administer/security/reference/escape-excel-formula.html and http://rorsecurity.info/portfolio/excel-injection-via-rails-downloads
     if '=+-@'.include?(text.first) && !text.empty?
@@ -290,6 +286,10 @@ class XlsxService
   end
 
   private
+
+  def multiloc_service
+    @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
+  end
 
   def title_multiloc_for(record, field, options)
     return unless record

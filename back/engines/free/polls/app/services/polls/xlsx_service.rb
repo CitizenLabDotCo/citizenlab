@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   class XlsxService
     def generate_poll_results_xlsx(participation_context, responses, current_user)

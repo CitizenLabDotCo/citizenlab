@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InitiativeStatusChangesController < ApplicationController
   before_action :set_initiative, only: %i[index create]
   before_action :set_change, only: %i[show]

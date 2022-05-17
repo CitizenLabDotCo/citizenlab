@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Moderation
   class WebApi::V1::ModerationSerializer < ::WebApi::V1::BaseSerializer
     set_type :moderation

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 IdIdCardLookup::Engine.routes.draw do
   namespace :admin_api, defaults: { format: :json } do
     scope 'verification_id_cards' do

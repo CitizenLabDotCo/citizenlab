@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Texting
   class SideFxCampaignService < BaseSideFxService
     def after_send(campaign, user)

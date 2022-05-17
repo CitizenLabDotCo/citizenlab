@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :manual_campaign, class: EmailCampaigns::Campaigns::Manual do
     enabled { true }

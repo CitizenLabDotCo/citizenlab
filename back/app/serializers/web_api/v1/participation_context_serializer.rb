@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module WebApi::V1::ParticipationContextSerializer
   extend ActiveSupport::Concern
   include Surveys::WebApi::V1::SurveyParticipationContextSerializer

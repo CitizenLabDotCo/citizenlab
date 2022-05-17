@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::MemberSerializer < WebApi::V1::BaseSerializer
   attributes :first_name, :last_name, :slug
 
