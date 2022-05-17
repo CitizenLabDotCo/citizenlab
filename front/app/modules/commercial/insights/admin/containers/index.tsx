@@ -2,6 +2,7 @@ import React from 'react';
 
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -24,7 +25,6 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
   location: { pathname },
   intl: { formatMessage },
-  children,
 }) => {
   const projectReportsFeatureFlag = useFeatureFlag({ name: 'project_reports' });
   const manualInsightsFeatureFlag = useFeatureFlag({
@@ -60,10 +60,12 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
               </Tab>
             ))}
           </NavigationTabs>
-          <TabsPageLayout>{children}</TabsPageLayout>
+          <TabsPageLayout>
+            <RouterOutlet />
+          </TabsPageLayout>
         </>
       ) : (
-        children
+        <RouterOutlet />
       )}
     </div>
   );

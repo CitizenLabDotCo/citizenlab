@@ -4,27 +4,43 @@ import Tab from './admin/components/Tab';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 
+const CustomNavbarContainer = React.lazy(() => import('./admin/containers'));
+const CustomNavbarSettingsComponent = React.lazy(
+  () => import('./admin/containers/NavigationSettings')
+);
+const NewPageFormComponent = React.lazy(
+  () => import('./admin/containers/NewPageForm')
+);
+const EditPageComponent = React.lazy(
+  () => import('./admin/containers/EditPageForm')
+);
+const EditNavbarItemComponent = React.lazy(
+  () => import('./admin/containers/EditNavbarItemForm')
+);
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.settings': [
       {
         path: 'navigation',
-        container: () => import('./admin/containers'),
-        indexRoute: {
-          container: () => import('./admin/containers/NavigationSettings'),
-        },
+        element: <CustomNavbarContainer />,
         childRoutes: [
+          // to do: check on this or if it should be path: ""
+          {
+            index: true,
+            element: <CustomNavbarSettingsComponent />,
+          },
           {
             path: 'pages/new',
-            container: () => import('./admin/containers/NewPageForm'),
+            element: <NewPageFormComponent />,
           },
           {
             path: 'pages/edit/:pageId',
-            container: () => import('./admin/containers/EditPageForm'),
+            element: <EditPageComponent />,
           },
           {
             path: 'navbar-items/edit/:navbarItemId',
-            container: () => import('./admin/containers/EditNavbarItemForm'),
+            element: <EditNavbarItemComponent />,
           },
         ],
       },

@@ -434,7 +434,7 @@ export type RouteConfiguration = {
   type?: string;
   index?: boolean;
   children?: RouteConfiguration[];
-  // remove
+  // deprecated properties, remove once all routes have been converted
   indexRoute?: RouteConfiguration;
   container?: any;
   childRoutes?: RouteConfiguration[];

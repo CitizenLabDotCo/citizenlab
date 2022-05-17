@@ -2,35 +2,58 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import NavItem from './admin/components/NavItem';
 
+const AdminInsightsContainerComponent = React.lazy(
+  () => import('./admin/containers')
+);
+const AdminInsightsListComponent = React.lazy(
+  () => import('./admin/containers/Insights/List')
+);
+const AdminInsightsReportsComponent = React.lazy(
+  () => import('./admin/containers/Reports')
+);
+const AdminInsightsProjectReportComponent = React.lazy(
+  () => import('./admin/containers/Reports/ProjectReport')
+);
+const AdminInsightsViewComponent = React.lazy(
+  () => import('./admin/containers/Insights/Details')
+);
+const AdminInsightsViewEditComponent = React.lazy(
+  () => import('./admin/containers/Insights/Edit')
+);
+const AdminInsightsViewDetectComponent = React.lazy(
+  () => import('./admin/containers/Insights/Detect')
+);
+
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
         path: 'insights',
-        container: () => import('./admin/containers'),
-        indexRoute: {
-          container: () => import('./admin/containers/Insights/List'),
-        },
+        element: <AdminInsightsContainerComponent />,
         childRoutes: [
           {
+            index: true,
+            element: <AdminInsightsListComponent />,
+          },
+          {
             path: 'reports',
-            container: () => import('./admin/containers/Reports'),
+            element: <AdminInsightsReportsComponent />,
           },
           {
             path: 'reports/:projectId',
-            container: () => import('./admin/containers/Reports/ProjectReport'),
+            element: <AdminInsightsProjectReportComponent />,
           },
           {
             path: ':viewId',
-            container: () => import('./admin/containers/Insights/Details'),
+            element: <AdminInsightsViewComponent />,
           },
           {
             path: ':viewId/edit',
-            container: () => import('./admin/containers/Insights/Edit'),
+            element: <AdminInsightsViewEditComponent />,
           },
           {
             path: ':viewId/detect',
-            container: () => import('./admin/containers/Insights/Detect'),
+            element: <AdminInsightsViewDetectComponent />,
           },
         ],
       },

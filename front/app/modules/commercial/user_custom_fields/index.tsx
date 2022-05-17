@@ -17,6 +17,41 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import UserCustomFieldsFormMigrated from './citizen/components/UserCustomFieldsFormMigrated';
 
+// lazy components for routes
+const AdminCustomFieldsContainer = React.lazy(
+  () => import('./admin/containers/CustomFields/')
+);
+const AdminNewCustomFieldComponent = React.lazy(
+  () => import('./admin/containers/CustomFields/RegistrationCustomFieldNew')
+);
+const AdminCustomFieldEditComponent = React.lazy(
+  () => import('./admin/containers/CustomFields/RegistrationCustomFieldEdit')
+);
+const AdminCustomFieldRegistrationSettingsComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
+    )
+);
+const AdminCustomFieldRegistrationOptionsComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
+    )
+);
+const AdminCustomFieldRegistrationOptionsNewComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
+    )
+);
+const AdminCustomFieldRegistrationOptionsEditComponent = React.lazy(
+  () =>
+    import(
+      './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
+    )
+);
+
 declare module 'resources/GetSerieFromStream' {
   export interface ISupportedDataTypeMap {
     usersByBirthyear: IUsersByBirthyear;
@@ -63,49 +98,35 @@ const configuration: ModuleConfiguration = {
     admin: [
       {
         path: 'settings/registration/custom-fields',
-        container: () => import('./admin/containers/CustomFields/'),
-        childRoutes: [
+        element: <AdminCustomFieldsContainer />,
+        children: [
           {
             path: 'new',
-            container: () =>
-              import(
-                './admin/containers/CustomFields/RegistrationCustomFieldNew'
-              ),
+            element: <AdminNewCustomFieldComponent />,
           },
           {
             path: ':userCustomFieldId',
-            container: () =>
-              import(
-                './admin/containers/CustomFields/RegistrationCustomFieldEdit'
-              ),
-            childRoutes: [
+            element: <AdminCustomFieldEditComponent />,
+            children: [
               {
                 path: 'field-settings',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldSettings'
-                  ),
+                // todo double check on this, not sure where the props are meant to be passed in from
+                // @ts-ignore
+                element: <AdminCustomFieldRegistrationSettingsComponent />,
               },
               {
                 path: 'options',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptions'
-                  ),
+                // todo double check on this, not sure where the props are meant to be passed in from
+                // @ts-ignore
+                element: <AdminCustomFieldRegistrationOptionsComponent />,
               },
               {
                 path: 'options/new',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsNew'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsNewComponent />,
               },
               {
                 path: 'options/:userCustomFieldOptionId',
-                container: () =>
-                  import(
-                    './admin/containers/CustomFields/RegistrationCustomFieldEdit/RegistrationCustomFieldOptionsEdit'
-                  ),
+                element: <AdminCustomFieldRegistrationOptionsEditComponent />,
               },
             ],
           },

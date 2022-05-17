@@ -8,6 +8,10 @@ import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 import FeatureFlag from 'components/FeatureFlag';
 
+const CustomMapConfigComponent = React.lazy(
+  () => import('./admin/containers/ProjectCustomMapConfigPage')
+);
+
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
   phases: IPhaseData[] | null;
@@ -43,9 +47,7 @@ const configuration: ModuleConfiguration = {
     'admin.projects': [
       {
         path: '/:locale/admin/projects/:projectId/map',
-        name: 'map',
-        container: () =>
-          import('./admin/containers/ProjectCustomMapConfigPage'),
+        element: <CustomMapConfigComponent />,
       },
     ],
   },

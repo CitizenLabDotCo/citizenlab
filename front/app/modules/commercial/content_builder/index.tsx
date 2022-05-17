@@ -4,13 +4,14 @@ import ContentBuilderToggle from 'modules/commercial/content_builder/admin/compo
 import ContentBuilderLayout from 'modules/commercial/content_builder/admin/components/ContentBuilderLayout';
 import ContentBuilderPreview from 'modules/commercial/content_builder/admin/components/ContentBuilderPreview';
 
+const ContentBuilderComponent = React.lazy(() => import('./admin/containers'));
+
 const configuration: ModuleConfiguration = {
   routes: {
     admin: [
       {
         path: 'content-builder/projects/:projectId/description',
-        name: 'content_builder',
-        container: () => import('./admin/containers'),
+        element: <ContentBuilderComponent />,
       },
     ],
   },
