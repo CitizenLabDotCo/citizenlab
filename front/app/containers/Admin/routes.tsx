@@ -90,7 +90,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       },
       createDashboardRoutes(),
       createAdminInitiativesRoutes(),
-      createAdminUsersRoutes,
+      createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
       // settingsRoutes(),
       // settingsAreasRoutes(),
