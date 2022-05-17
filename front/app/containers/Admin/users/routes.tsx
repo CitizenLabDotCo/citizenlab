@@ -14,7 +14,6 @@ const createAdminUsersRoutes = () => ({
   children: [
     {
       index: true,
-      path: '',
       element: (
         <LoadingComponent>
           <AdminAllUsers />
