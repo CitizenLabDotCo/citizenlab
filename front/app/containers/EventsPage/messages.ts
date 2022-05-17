@@ -12,7 +12,7 @@ export default defineMessages({
   },
   upcomingAndOngoingEvents: {
     id: 'app.containers.eventspage.upcomingAndOngoingEvents',
-    defaultMessage: 'Upcoming and Ongoing events',
+    defaultMessage: 'Upcoming and ongoing events',
   },
   pastEvents: {
     id: 'app.containers.eventspage.pastEvents',
