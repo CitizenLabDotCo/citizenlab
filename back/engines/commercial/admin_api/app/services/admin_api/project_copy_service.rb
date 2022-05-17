@@ -463,16 +463,17 @@ module AdminApi
           'location_point_geojson' => i.location_point_geojson,
           'location_description'   => i.location_description,
           'budget'                 => i.budget,
-          'proposed_budget' => i.proposed_budget,
+          'proposed_budget'        => i.proposed_budget,
           'text_images_attributes' => i.text_images.map do |text_image|
             {
-              'imageable_field'          => text_image.imageable_field,
-              'remote_image_url'         => text_image.image_url,
-              'text_reference'           => text_image.text_reference,
-              'created_at'               => text_image.created_at.to_s,
-              'updated_at'               => text_image.updated_at.to_s
+              'imageable_field'    => text_image.imageable_field,
+              'remote_image_url'   => text_image.image_url,
+              'text_reference'     => text_image.text_reference,
+              'created_at'         => text_image.created_at.to_s,
+              'updated_at'         => text_image.updated_at.to_s
             }
-          end
+          end,
+          'custom_field_values'    => i.custom_field_values
         }
         store_ref yml_idea, i.id, :idea
         yml_idea
