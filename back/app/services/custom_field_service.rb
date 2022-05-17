@@ -4,8 +4,7 @@ class CustomFieldService
   include CustomFieldUserOverrides
 
   def initialize
-    ActiveSupport::Deprecation.warn('CustomFieldService is deprecated. Use JsonFormsService instead.')
-    @multiloc_service = MultilocService.new
+    @multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
