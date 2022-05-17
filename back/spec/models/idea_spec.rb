@@ -18,7 +18,7 @@ RSpec.describe Idea, type: :model do
 
     context 'with custom fields' do
       let(:project) { create :project }
-      let(:idea) { create :idea, project: project }
+      let(:idea) { build :idea, project: project }
       let(:form) { create :custom_form, project: project }
       let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
       let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
