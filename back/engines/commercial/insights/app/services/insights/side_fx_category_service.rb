@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Insights
-  class SideFxCategoryService
+    class SideFxCategoryService
     include SideFxHelper
 
     def after_create(category, user)
@@ -20,6 +22,5 @@ module Insights
         payload: { category: serialized_category }
       )
     end
-
   end
 end
