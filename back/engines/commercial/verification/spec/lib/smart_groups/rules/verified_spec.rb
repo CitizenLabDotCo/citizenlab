@@ -5,9 +5,10 @@ require 'rails_helper'
 describe Verification::SmartGroups::Rules::Verified do
   let(:valid_json_rule) do
     {
-    'ruleType' => 'verified',
-    'predicate' => 'is_verified'
-  } end
+      'ruleType' => 'verified',
+      'predicate' => 'is_verified'
+    }
+  end
   let(:valid_rule) { Verification::SmartGroups::Rules::Verified.from_json(valid_json_rule) }
 
   describe 'from_json' do

@@ -11,58 +11,61 @@ module EmailCampaigns
         recipient: recipient,
         event_payload: {
           assigned_ideas: ideas.map do |idea|
-                            {
-            id: idea.id,
-            title_multiloc: idea.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(idea),
-            published_at: (idea.published_at&.iso8601 || Time.now.iso8601),
-            assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601),
-            author_name: name_service.display_name!(idea.author),
-            upvotes_count: idea.upvotes_count,
-            downvotes_count: idea.downvotes_count,
-            comments_count: idea.comments_count
-          } end,
+            {
+              id: idea.id,
+              title_multiloc: idea.title_multiloc,
+              url: Frontend::UrlService.new.model_to_url(idea),
+              published_at: (idea.published_at&.iso8601 || Time.now.iso8601),
+              assigned_at: (idea.assigned_at&.iso8601 || Time.now.iso8601),
+              author_name: name_service.display_name!(idea.author),
+              upvotes_count: idea.upvotes_count,
+              downvotes_count: idea.downvotes_count,
+              comments_count: idea.comments_count
+            }
+          end,
           assigned_initiatives: initiatives.map do |initiative|
-                                  {
-            id: initiative.id,
-            title_multiloc: initiative.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
-            assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
-            author_name: name_service.display_name!(initiative.author),
-            upvotes_count: initiative.upvotes_count,
-            comments_count: initiative.comments_count,
-            images: initiative.initiative_images.map do |image|
-              {
-                ordering: image.ordering,
-                versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            {
+              id: initiative.id,
+              title_multiloc: initiative.title_multiloc,
+              url: Frontend::UrlService.new.model_to_url(initiative),
+              published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
+              assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
+              author_name: name_service.display_name!(initiative.author),
+              upvotes_count: initiative.upvotes_count,
+              comments_count: initiative.comments_count,
+              images: initiative.initiative_images.map do |image|
+                {
+                  ordering: image.ordering,
+                  versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                }
+              end,
+              header_bg: {
+                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
-            end,
-            header_bg: {
-              versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          } end,
+          end,
           succesful_assigned_initiatives: initiatives.map do |initiative|
-                                            {
-            id: initiative.id,
-            title_multiloc: initiative.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
-            assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
-            author_name: name_service.display_name!(initiative.author),
-            upvotes_count: initiative.upvotes_count,
-            comments_count: initiative.comments_count,
-            threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
-            images: initiative.initiative_images.map do |image|
-              {
-                ordering: image.ordering,
-                versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            {
+              id: initiative.id,
+              title_multiloc: initiative.title_multiloc,
+              url: Frontend::UrlService.new.model_to_url(initiative),
+              published_at: (initiative.published_at&.iso8601 || Time.now.iso8601),
+              assigned_at: (initiative.assigned_at&.iso8601 || Time.now.iso8601),
+              author_name: name_service.display_name!(initiative.author),
+              upvotes_count: initiative.upvotes_count,
+              comments_count: initiative.comments_count,
+              threshold_reached_at: (initiative.threshold_reached_at&.iso8601 || Time.now.iso8601),
+              images: initiative.initiative_images.map do |image|
+                {
+                  ordering: image.ordering,
+                  versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                }
+              end,
+              header_bg: {
+                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
               }
-            end,
-            header_bg: {
-              versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
             }
-          } end,
+          end,
           need_feedback_assigned_ideas_count: 5
         }
       }

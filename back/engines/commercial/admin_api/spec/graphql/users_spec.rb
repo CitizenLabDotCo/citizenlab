@@ -14,18 +14,19 @@ RSpec.describe 'Graphql user' do
 
   describe 'user' do
     let(:query_string) do
-      %|
-      query userQuery($id: ID!) {
-        user(id: $id) {
-          id
-          firstName
-          lastName
-          email
-          slug
-          locale
+        %|
+        query userQuery($id: ID!) {
+          user(id: $id) {
+            id
+            firstName
+            lastName
+            email
+            slug
+            locale
+          }
         }
-      }
-    | end
+      |
+    end
 
     let(:user) { create(:user) }
     let(:variables) { { id: user.id } }
@@ -46,12 +47,13 @@ RSpec.describe 'Graphql user' do
   describe 'unsubscriptionToken' do
     let(:query_string) do
       %|
-      query userQuery($id: ID!) {
-        user(id: $id) {
-          unsubscriptionToken
+        query userQuery($id: ID!) {
+          user(id: $id) {
+            unsubscriptionToken
+          }
         }
-      }
-    | end
+      |
+    end
     let(:user) { create(:user) }
     let!(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: user) }
     let(:variables) { { id: user.id } }

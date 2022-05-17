@@ -65,11 +65,6 @@ Layout/BlockAlignment:
     - 'spec/services/json_forms_ideas_override_spec.rb'
     - 'spec/support/validation_error_helpers.rb'
 
-# Offense count: 221
-# This cop supports safe auto-correction (--auto-correct).
-Layout/BlockEndNewline:
-  Enabled: false
-
 # Offense count: 35
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: EnforcedStyle, IndentationWidth.
