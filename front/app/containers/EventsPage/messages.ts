@@ -20,7 +20,7 @@ export default defineMessages({
   },
   noUpcomingOrOngoingEvents: {
     id: 'app.containers.eventspage.noUpcomingOrOngoingEvents',
-    defaultMessage: 'No upcoming or ongoing events are currently scheduled',
+    defaultMessage: 'No upcoming or ongoing events are currently scheduled.',
   },
   noPastEvents: {
     id: 'app.containers.eventspage.noPastEvents',
