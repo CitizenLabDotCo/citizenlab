@@ -56,7 +56,7 @@ describe('Content builder Image component', () => {
     cy.get('#imageAltTextInput').click().type('Image alt text.');
 
     cy.get('[alt="Image alt text."]').should('exist');
-    cy.get('#e2e-content-builder-topbar-save').click().wait(1000);
+    cy.get('#e2e-content-builder-topbar-save').click();
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('[alt="Image alt text."]').should('exist');
