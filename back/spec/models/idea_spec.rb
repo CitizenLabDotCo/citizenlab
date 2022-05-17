@@ -23,45 +23,62 @@ RSpec.describe Idea, type: :model do
       let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
       let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
 
-      it 'can create an idea' do
-        idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
-        expect(idea).to be_valid
+      context 'creation' do
+        it 'can persist an idea' do
+          idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
+          expect(idea).to be_valid
+        end
+
+        it 'can persist an idea without optional fields' do
+          idea.custom_field_values = { required_field.key => 7 }
+          expect(idea).to be_valid
+        end
+
+        it 'cannot persist an idea with a non-existing field' do
+          idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+          expect(idea).to be_invalid
+        end
+
+        it 'cannot persist an idea with an invalid field option' do
+          long_title = 'My long idea title. ' * 100
+          idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+          expect(idea).to be_invalid
+        end
+
+        it 'cannot persist an idea without required field values' do
+          idea.custom_field_values = { optional_field.key => 'option1' }
+          expect(idea).to be_invalid
+        end
+
+        it 'cannot persist an idea with disabled field values' do
+          disabled_field_options = { resource: form, required: false, enabled: false, input_type: 'text' }
+          disabled_field = create :custom_field, :for_custom_form, disabled_field_options
+          idea.custom_field_values = { required_field.key => 194, disabled_field.key => 'my text' }
+          expect(idea).to be_invalid
+        end
       end
 
-      it 'can create an idea without optional fields' do
-        idea.custom_field_values = { required_field.key => 7 }
-        expect(idea).to be_valid
-      end
+      context 'update' do
+        before { idea.save! }
 
-      it 'cannot create an idea with a non-existing field' do
-        idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
-        expect(idea).to be_invalid
-      end
+        it 'can persist an idea with valid field values' do
+          idea.custom_field_values = { required_field.key => 7 }
+          expect(idea).to be_valid
+        end
 
-      it 'cannot create an idea with an invalid field option' do
-        long_title = 'My long idea title. ' * 100
-        idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
-        expect(idea).to be_invalid
-      end
+        it 'cannot persist an idea with invalid field values' do
+          idea.custom_field_values = { 'nonexisting_field' => 22 }
+          expect(idea).to be_invalid
+        end
 
-      it 'cannot create an idea without required field values' do
-        idea.custom_field_values = { optional_field.key => 'option1' }
-        expect(idea).to be_invalid
-      end
-
-      it 'cannot create an idea with disabled field values' do
-        disabled_field_options = { resource: form, required: false, enabled: false, input_type: 'text' }
-        disabled_field = create :custom_field, :for_custom_form, disabled_field_options
-        idea.custom_field_values = { required_field.key => 194, disabled_field.key => 'my text' }
-        expect(idea).to be_invalid
-      end
-
-      it 'can update other attributes of an idea with invalid custom field values' do
-        idea = create :idea, project: project, custom_field_values: { required_field.key => 9 }
-        optional_field.update! required: true
-        expect(idea.update(author: create(:user))).to be true
-        idea.custom_field_values[required_field.key] = 10
-        expect(idea).to be_invalid
+        it 'can persist other attributes of an idea with invalid custom field values' do
+          idea.update!(custom_field_values: { required_field.key => 9 })
+          optional_field.update! required: true
+          expect(idea.update(author: create(:user))).to be true
+          # Make a valid change to the field values to trigger the custom field values validation.
+          idea.custom_field_values[required_field.key] = 10
+          expect(idea).to be_invalid
+        end
       end
     end
   end
