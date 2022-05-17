@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeOrderingOfProjects < ActiveRecord::Migration[5.1]
   def change
     Project.order(ordering: :desc).each.with_index do |project, index|

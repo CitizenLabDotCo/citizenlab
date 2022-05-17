@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::BasketsController < ApplicationController
   before_action :set_basket, only: %i[show update destroy]
   skip_before_action :authenticate_user

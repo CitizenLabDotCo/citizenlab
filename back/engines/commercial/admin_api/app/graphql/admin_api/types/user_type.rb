@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::UserType < GraphQL::Schema::Object
     description 'A registered or invited person on the platform'

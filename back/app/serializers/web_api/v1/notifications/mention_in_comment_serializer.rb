@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::Notifications::MentionInCommentSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :post_type
 

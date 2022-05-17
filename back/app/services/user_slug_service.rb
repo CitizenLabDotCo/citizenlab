@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserSlugService
   def generate_slug(user, string)
     return SecureRandom.uuid if abbreviated_user_names?

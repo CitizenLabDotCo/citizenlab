@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fix from:
 # https://github.com/thoughtbot/scenic/issues/134
 #

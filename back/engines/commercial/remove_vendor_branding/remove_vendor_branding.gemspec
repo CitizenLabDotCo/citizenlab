@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/remove_vendor_branding/version'
 
 Gem::Specification.new do |s|

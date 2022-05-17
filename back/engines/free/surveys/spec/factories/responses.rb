@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :survey_response, class: 'Surveys::Response' do
     association :participation_context, factory: :continuous_survey_project

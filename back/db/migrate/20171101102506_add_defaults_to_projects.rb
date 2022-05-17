@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultsToProjects < ActiveRecord::Migration[5.1]
   def change
     change_column_default :projects, :title_multiloc, {}

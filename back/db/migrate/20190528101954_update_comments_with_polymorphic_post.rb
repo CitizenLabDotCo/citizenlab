@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateCommentsWithPolymorphicPost < ActiveRecord::Migration[5.2]
   def change
     rename_column :comments, :idea_id, :post_id

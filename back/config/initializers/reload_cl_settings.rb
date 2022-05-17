@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Reloads the CL_SETTING_* environment variables
 # into the current app configuration.
 
