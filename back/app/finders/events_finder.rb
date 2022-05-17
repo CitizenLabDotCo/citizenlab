@@ -14,11 +14,11 @@ class EventsFinder < ApplicationFinder
     scope(:with_project_publication_statuses, project_publication_statuses) if project_publication_statuses.present?
   end
 
-  def before_end_at_condition(end_at)
-    where('end_at < ?', end_at)
+  def ends_before_date_condition(date)
+    where('end_at < ?', date)
   end
 
-  def on_or_after_end_at_condition(end_at)
-    where('end_at >= ?', end_at)
+  def ends_on_or_after_date_condition(date)
+    where('end_at >= ?', date)
   end
 end
