@@ -12,11 +12,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     TextImageService.new.render_data_images object, :body_multiloc
   end
 
-  attribute :custom_field_values do |object|
-    visible_field_values = CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
-    CustomFieldService.remove_disabled_custom_fields(visible_field_values)
-  end
-
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
@@ -89,3 +84,4 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
 end
 
 ::WebApi::V1::IdeaSerializer.include_if_ee('IdeaAssignment::Extensions::WebApi::V1::IdeaSerializer')
+::WebApi::V1::IdeaSerializer.include_if_ee('IdeaCustomFields::Extensions::WebApi::V1::IdeaSerializer')
