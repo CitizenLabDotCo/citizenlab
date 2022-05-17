@@ -218,18 +218,18 @@ describe Surveys::Typeform::Api do
           'ref' => '60f27960-ee4f-4720-b93b-a9ff3c2488cd',
           'validations' => { 'required' => false },
           'type' => 'short_text' },
-        { 'id' => 'xlqRjVwtd5En',
-          'title' => 'How tall are you?',
-          'ref' => '7eb52f7c-153d-46d4-8dcc-d555599e43ff',
-          'properties' =>
-          { 'randomize' => false,
-            'allow_multiple_selection' => false,
-            'allow_other_choice' => false,
-            'vertical_alignment' => true,
-            'choices' =>
-            [{ 'id' => 'HncIN75Kbyjx',
-              'ref' => 'a0d6675b-db4d-4ae2-9613-181a32739537',
-              'label' => 'mini' },
+         { 'id' => 'xlqRjVwtd5En',
+           'title' => 'How tall are you?',
+           'ref' => '7eb52f7c-153d-46d4-8dcc-d555599e43ff',
+           'properties' =>
+           { 'randomize' => false,
+             'allow_multiple_selection' => false,
+             'allow_other_choice' => false,
+             'vertical_alignment' => true,
+             'choices' =>
+             [{ 'id' => 'HncIN75Kbyjx',
+               'ref' => 'a0d6675b-db4d-4ae2-9613-181a32739537',
+               'label' => 'mini' },
               { 'id' => 'Ju2T7idNmas0',
               'ref' => 'e32f3ec8-f3cd-4f3c-9b0a-9a5493ad928d',
               'label' => 'short' },
@@ -242,8 +242,8 @@ describe Surveys::Typeform::Api do
               { 'id' => 'W8dCYa08HFAK',
               'ref' => 'fcd68aaf-a7f6-46c5-a408-3b1626795353',
               'label' => 'giant' }] },
-          'validations' => { 'required' => false },
-          'type' => 'multiple_choice' }],
+           'validations' => { 'required' => false },
+           'type' => 'multiple_choice' }],
         '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
       }
     end
