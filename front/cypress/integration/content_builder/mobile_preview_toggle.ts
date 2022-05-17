@@ -71,7 +71,7 @@ describe('Content builder mobile preview', () => {
     getIframeBody().contains('Edited text.').should('be.visible');
   });
 
-  it('shows saved description if there is no draft content', () => {
+  it('shows draft content when it exists', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.wait(10000);
     cy.get('#e2e-text-box').click();
