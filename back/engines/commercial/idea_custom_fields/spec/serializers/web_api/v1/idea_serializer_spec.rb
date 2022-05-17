@@ -5,6 +5,8 @@ require 'rails_helper'
 describe WebApi::V1::IdeaSerializer do
   context 'custom_field_values' do
     it 'leaves out hidden and disabled fields' do
+      SettingsService.new.activate_feature! 'idea_custom_fields'
+
       project = create :project
       form = create :custom_form, project: project
       visible_field = create :custom_field, :for_custom_form, resource: form, enabled: true, hidden: false, input_type: 'number'
