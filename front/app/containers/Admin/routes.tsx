@@ -7,7 +7,7 @@ import createAdminProjectsRoutes from './projects/routes';
 // import settingsRoutes from './settings/routes';
 // import settingsAreasRoutes from './settings/areas/routes';
 // import pagesRoutes from './pages/routes';
-import messagingsRoutes from './messaging/routes';
+import createAdminMessagingRoutes from './messaging/routes';
 // import ideasRoutes from './ideas/routes';
 
 // import moduleConfiguration from 'modules';
@@ -96,7 +96,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       // settingsAreasRoutes(),
       // pagesRoutes(),
       // invitationsRoutes(),
-      messagingsRoutes(),
+      createAdminMessagingRoutes(),
       // ideasRoutes(),
       // {
       //   path: 'workshops',

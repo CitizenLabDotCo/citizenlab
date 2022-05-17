@@ -75,7 +75,6 @@ const ContentWrapper = styled.div`
 interface Props {
   project: IProjectData | Error | null | undefined;
   scrollToEventId?: string;
-  history?: any;
 }
 
 const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
@@ -184,7 +183,6 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
     } else if (scrollToEventId) {
       // If an event id was passed as a query param, pass it on
       return (
-        // to do: remove
         <ProjectsShowPage project={project} scrollToEventId={scrollToEventId} />
       );
     } else if (urlSegments.length > 3 && urlSegments[1] === 'projects') {

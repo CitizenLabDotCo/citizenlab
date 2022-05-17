@@ -45,30 +45,34 @@ const createAdminMessagingRoutes = () => ({
           <CustomEmailsIndexComponent />
         </LoadingComponent>
       ),
-    },
-    {
-      path: 'emails/custom/new',
-      element: (
-        <LoadingComponent>
-          <CustomEmailsNewComponent />
-        </LoadingComponent>
-      ),
-    },
-    {
-      path: 'emails/custom/:campaignId/edit',
-      element: (
-        <LoadingComponent>
-          <CustomEmailsEditComponent />
-        </LoadingComponent>
-      ),
-    },
-    {
-      path: 'emails/custom/:campaignId',
-      element: (
-        <LoadingComponent>
-          <CustomEmailsShowComponent />
-        </LoadingComponent>
-      ),
+      children: [
+        {
+          path: 'new',
+          element: (
+            <LoadingComponent>
+              <CustomEmailsNewComponent />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: ':campaignId',
+          element: (
+            <LoadingComponent>
+              <CustomEmailsShowComponent />
+            </LoadingComponent>
+          ),
+          children: [
+            {
+              path: 'edit',
+              element: (
+                <LoadingComponent>
+                  <CustomEmailsEditComponent />
+                </LoadingComponent>
+              ),
+            },
+          ],
+        },
+      ],
     },
     {
       path: 'emails/automated',
@@ -85,30 +89,34 @@ const createAdminMessagingRoutes = () => ({
           <CampaignListComponent />
         </LoadingComponent>
       ),
-    },
-    {
-      path: 'texting/new',
-      element: (
-        <LoadingComponent>
-          <NewSMSComponent />
-        </LoadingComponent>
-      ),
-    },
-    {
-      path: 'texting/:campaignId/preview',
-      element: (
-        <LoadingComponent>
-          <PreviewSMSComponent />
-        </LoadingComponent>
-      ),
-    },
-    {
-      path: 'texting/:campaignId',
-      element: (
-        <LoadingComponent>
-          <ExistingSMSComponent />
-        </LoadingComponent>
-      ),
+      children: [
+        {
+          path: 'new',
+          element: (
+            <LoadingComponent>
+              <NewSMSComponent />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: ':campaignId',
+          element: (
+            <LoadingComponent>
+              <ExistingSMSComponent />
+            </LoadingComponent>
+          ),
+          children: [
+            {
+              path: 'preview',
+              element: (
+                <LoadingComponent>
+                  <PreviewSMSComponent />
+                </LoadingComponent>
+              ),
+            },
+          ],
+        },
+      ],
     },
   ],
 });
