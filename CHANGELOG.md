@@ -4,6 +4,10 @@
 
 - [CL-775] Use correct link to conditions page
 
+### Added
+
+- Save RUT value when verifying with Clave Unica
+
 ## 2022-05-16
 
 ### Fixed
