@@ -196,19 +196,19 @@ class AnonymizeUserService
   def random_bio(locales)
     locales.map do |locale|
       bio = case %w[greek hipster movie rick_and_morty game_of_thrones nil].sample
-            when 'greek'
-              Faker::GreekPhilosophers.quote
-            when 'hipster'
-              Faker::Hipster.paragraph
-            when 'movie'
-              Faker::Movie.quote
-            when 'rick_and_morty'
-              Faker::TvShows::RickAndMorty.quote
-            when 'game_of_thrones'
-              Faker::TvShows::GameOfThrones.quote
-            when 'nil'
-              ''
-            end
+      when 'greek'
+        Faker::GreekPhilosophers.quote
+      when 'hipster'
+        Faker::Hipster.paragraph
+      when 'movie'
+        Faker::Movie.quote
+      when 'rick_and_morty'
+        Faker::TvShows::RickAndMorty.quote
+      when 'game_of_thrones'
+        Faker::TvShows::GameOfThrones.quote
+      when 'nil'
+        ''
+      end
       [locale, bio]
     end.to_h
   end

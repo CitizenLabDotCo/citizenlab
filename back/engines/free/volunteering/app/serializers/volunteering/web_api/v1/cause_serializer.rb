@@ -17,7 +17,7 @@ module Volunteering
         params.dig(:vbci, object.id)
       else
          object.volunteers.where(user_id: current_user(params)&.id).first
-       end
+      end
     end
 
     attribute :image, if: proc { |object| object.image } do |object|
