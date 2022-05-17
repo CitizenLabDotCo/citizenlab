@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -56,4 +56,4 @@ const ContentBuilderMobileView = React.forwardRef<
   );
 });
 
-export default ContentBuilderMobileView;
+export default memo(ContentBuilderMobileView);
