@@ -311,11 +311,6 @@ PATH
       ros-apartment (>= 2.9.0)
 
 PATH
-  remote: engines/commercial/remove_vendor_branding
-  specs:
-    remove_vendor_branding (0.1.0)
-
-PATH
   remote: engines/commercial/smart_groups
   specs:
     smart_groups (0.1.0)
@@ -1227,7 +1222,6 @@ DEPENDENCIES
   rails-i18n (~> 6.0.0)
   rails_semantic_logger
   redcarpet
-  remove_vendor_branding!
   rest-client
   rgeo-geojson
   rinku (~> 2)
