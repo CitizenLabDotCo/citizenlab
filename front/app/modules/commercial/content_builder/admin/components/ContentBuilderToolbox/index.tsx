@@ -20,6 +20,7 @@ import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
+import Accordion from '../CraftComponents/Accordion';
 
 // Intl
 import messages from '../../messages';
@@ -153,6 +154,18 @@ const ContentBuilderToolbox = ({
         }
       >
         <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
+      </DraggableElement>
+      <DraggableElement
+        id="e2e-draggable-accordion"
+        ref={(ref) =>
+          ref &&
+          connectors.create(
+            ref,
+            <Element is={Accordion} id="Accordion" text="Text" />
+          )
+        }
+      >
+        <ToolboxItem icon="info3" label={formatMessage(messages.accordion)} />
       </DraggableElement>
     </Box>
   );

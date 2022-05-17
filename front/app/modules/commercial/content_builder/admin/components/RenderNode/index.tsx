@@ -21,6 +21,7 @@ const TEXT = 'Text';
 const IMAGE = 'Image';
 const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
+const ACCORDION = 'Accordion';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -29,7 +30,8 @@ type ComponentNamesType =
   | typeof TEXT
   | typeof IMAGE
   | typeof IFRAME
-  | typeof ABOUT_BOX;
+  | typeof ABOUT_BOX
+  | typeof ACCORDION;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -47,19 +49,14 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.url;
     case ABOUT_BOX:
       return messages.aboutBox;
+    case ACCORDION:
+      return messages.accordion;
   }
 };
 
 const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
-    isRoot
-      ? `cursor: auto;
-          padding: '4px',
-          width: '100%',
-          maxWidth: '1000px',
-          backgroundColor: '#fff',
-          minHeight: '160px',`
-      : `cursor:move;`}
+    isRoot ? `cursor: auto;` : `cursor:move;`}
 `;
 
 const RenderNode = ({ render }) => {
@@ -130,6 +127,8 @@ const RenderNode = ({ render }) => {
       id={id}
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      minHeight={id === ROOT_NODE ? '160px' : '0px'}
+      background="#fff"
       borderWidth="1px"
       borderColor={
         hasError

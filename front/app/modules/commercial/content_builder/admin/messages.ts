@@ -85,6 +85,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.aboutBox',
     defaultMessage: 'About Box',
   },
+  accordion: {
+    id: 'app.containers.admin.ContentBuilder.accordion',
+    defaultMessage: 'Accordion',
+  },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',
