@@ -22,8 +22,11 @@ import {
 } from 'react-router-dom';
 
 const Routes = () => {
-  const routes = useRoutes(createRoutes());
-
+  // just here for troubleshooting, remove before merging to master
+  const importedRoutes = createRoutes();
+  console.log({ importedRoutes });
+  const routes = useRoutes(importedRoutes);
+  console.log({ routes });
   useEffect(() => {
     modules.afterMountApplication();
   }, []);

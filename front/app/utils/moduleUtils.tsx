@@ -522,32 +522,6 @@ const convertConfigurationToRoute = ({
     ),
 });
 
-// const convertConfigurationToRoute = ({
-//   path,
-//   name,
-//   container: loader,
-//   type = RouteTypes.CITIZEN,
-//   indexRoute,
-//   childRoutes,
-// }: RouteConfiguration) => ({
-//   path,
-//   name,
-//   component: Loadable({
-//     loader,
-//     loading:
-//       type === RouteTypes.ADMIN ? LoadableLoadingAdmin : LoadableLoadingCitizen,
-//     delay: 500,
-//   }),
-//   indexRoute:
-//     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
-//   childRoutes:
-//     childRoutes &&
-//     childRoutes.length > 0 &&
-//     childRoutes.map((childRoute) =>
-//       convertConfigurationToRoute({ ...childRoute, type })
-//     ),
-// });
-
 const parseModuleRoutes = (
   routes: RouteConfiguration[] = [],
   type = RouteTypes.CITIZEN
