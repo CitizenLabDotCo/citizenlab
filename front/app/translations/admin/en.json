@@ -1307,6 +1307,7 @@
   "app.containers.IdeasShow.proposedBudgetTitle": "Proposed budget",
   "app.containers.IdeasShow.xDaysLeft": "{x, plural, =0 {Less than a day} one {One day} other {# days}} left",
   "app.containers.admin.ContentBuilder.aboutBox": "About Box",
+  "app.containers.admin.ContentBuilder.accordion": "Accordion",
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Height",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Height of the iframe window.",
