@@ -6,7 +6,7 @@ nl-BE:
       "inappropriate_content_flagged": Ongepaste inhoud gemarkeerd - beheerders
     inappropriate_content_flagged:
       subject: 'Een post op je platform werd gemarkeerd om na te kijken'
-      header_title: 'Een bericht op je platform is gemarkeerd om na te kijken'
+      header_title: 'Een post op je platform werd gemarkeerd om na te kijken'
       comment_author: '%{authorName} schreef:'
       idea_author: '%{authorName} heeft een bijdrage geplaatst:'
       initiative_author: '%{authorName} heeft een voorstel ingediend:'
