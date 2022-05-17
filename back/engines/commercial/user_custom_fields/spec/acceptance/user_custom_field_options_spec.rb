@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'User Custom Field Options' do
-
   explanation 'Options to choose from in a custom field.'
 
   before do
@@ -61,8 +61,8 @@ resource 'User Custom Field Options' do
         example_request 'Create a custom field option' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:key)).to match key
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :key)).to match key
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         end
       end
 
@@ -86,12 +86,12 @@ resource 'User Custom Field Options' do
       ValidationErrorHelper.new.error_fields(self, CustomField)
 
       let(:id) { create(:custom_field_option, custom_field: @custom_field).id }
-      let(:title_multiloc) { {'en' => 'New title'} }
+      let(:title_multiloc) { { 'en' => 'New title' } }
 
       example_request 'Update a custom field option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -106,7 +106,7 @@ resource 'User Custom Field Options' do
       example_request 'Reorder a custom field option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(@custom_field.custom_field_options.order(:ordering)[1].id).to eq id
         expect(@custom_field.custom_field_options.order(:ordering).map(&:ordering)).to eq (0..3).to_a
       end
@@ -118,13 +118,13 @@ resource 'User Custom Field Options' do
 
       example_request 'Delete a custom field option' do
         expect(response_status).to eq 200
-        expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
 
       if CitizenLab.ee?
         example "[error] Delete a custom field option that's still referenced in a rules group" do
           group = create(:smart_group, rules: [
-            {ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id}
+            { ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id }
           ])
           do_request
           assert_status 422
@@ -133,12 +133,12 @@ resource 'User Custom Field Options' do
       end
 
       example "Deleting a custom field option that's still referenced in a user's setting", document: false do
-        custom_field_values = {@custom_field.key => custom_field_option.key}
+        custom_field_values = { @custom_field.key => custom_field_option.key }
         user = create(:user, custom_field_values: custom_field_values)
         expect(user.reload.custom_field_values).to eq custom_field_values
         do_request
         expect(response_status).to eq 200
-        expect{CustomFieldOption.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { CustomFieldOption.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
         expect(user.reload.custom_field_values).to eq({})
       end
     end

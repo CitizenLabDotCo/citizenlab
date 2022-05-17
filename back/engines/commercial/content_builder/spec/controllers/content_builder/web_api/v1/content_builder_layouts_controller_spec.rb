@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # These tests do not verify the response bodies. See the acceptance tests for that.
@@ -69,7 +71,7 @@ RSpec.describe ::ContentBuilder::WebApi::V1::ContentBuilderLayoutsController, ty
         params = {
           project_id: project_id,
           code: code,
-          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } }  }
+          content_builder_layout: { craftjs_jsonmultiloc: { 'en' => { 'unsanitized_craftjson' => {} } } }
         }
         post :upsert, params: params, format: :json
         expect(response.status).to eq 201

@@ -17,6 +17,7 @@ export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
+  weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -203,6 +204,7 @@ export interface IAppConfigurationSettings {
   customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;
+  remove_vendor_branding?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from insights (originally 20220120074543)
 class CreateDataSources < ActiveRecord::Migration[6.1]
   # The scope of Insights analyses is broadened to be able to support inputs from multiple data
@@ -46,4 +48,3 @@ class CreateDataSources < ActiveRecord::Migration[6.1]
     remove_reference :insights_views, :scope, type: :uuid, null: true, index: false, foreign_key: { to_table: :projects }
   end
 end
-

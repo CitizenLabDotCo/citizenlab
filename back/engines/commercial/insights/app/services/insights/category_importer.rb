@@ -2,7 +2,6 @@
 
 module Insights
   class CategoryImporter
-
     # @param view [Insights::View]
     # @param locale [String, NilClass]
     def import(view, locale = nil)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeCommentPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -44,7 +46,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    attrs = [:parent_id, :author_id]
+    attrs = %i[parent_id author_id]
     if record.author_id == user&.id
       attrs += [body_multiloc: CL2_SUPPORTED_LOCALES]
     end
@@ -56,7 +58,7 @@ class InitiativeCommentPolicy < ApplicationPolicy
   def commenting_allowed?(user)
     user # signed-in users can comment
   end
-  
+
   def owner?
     user && (record.author_id == user.id)
   end

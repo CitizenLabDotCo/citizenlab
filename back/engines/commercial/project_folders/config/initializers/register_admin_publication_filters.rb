@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 
-ProjectFolders::Engine::config.to_prepare do
+ProjectFolders::Engine.config.to_prepare do
   AdminPublicationsFilteringService.add_filter('by_folder') do |scope, options|
     next scope unless options.key? :folder
 

@@ -148,6 +148,7 @@ interface Props
 
 interface State {
   showSendConfirmationModal: boolean;
+  isCampaignSending: boolean;
 }
 
 class Show extends React.Component<Props, State> {
@@ -155,6 +156,7 @@ class Show extends React.Component<Props, State> {
     super(props);
     this.state = {
       showSendConfirmationModal: false,
+      isCampaignSending: false,
     };
   }
 
@@ -162,7 +164,9 @@ class Show extends React.Component<Props, State> {
     if (noGroupsSelected) {
       this.openSendConfirmationModal();
     } else {
-      sendCampaign(this.props.campaign.id);
+      this.setState({ isCampaignSending: true }, () => {
+        sendCampaign(this.props.campaign.id);
+      });
     }
   };
 
@@ -207,14 +211,16 @@ class Show extends React.Component<Props, State> {
   };
 
   confirmSendCampaign = (campaignId: string) => () => {
-    sendCampaign(campaignId).then(() => {
-      this.closeSendConfirmationModal();
+    this.setState({ isCampaignSending: true }, () => {
+      sendCampaign(campaignId).then(() => {
+        this.closeSendConfirmationModal();
+      });
     });
   };
 
   render() {
     const { campaign } = this.props;
-    const { showSendConfirmationModal } = this.state;
+    const { showSendConfirmationModal, isCampaignSending } = this.state;
 
     if (campaign) {
       const groupIds: string[] = campaign.relationships.groups.data.map(
@@ -256,6 +262,8 @@ class Show extends React.Component<Props, State> {
                   icon="send"
                   iconPos="right"
                   onClick={this.handleSend(noGroupsSelected)}
+                  disabled={isCampaignSending}
+                  processing={isCampaignSending}
                 >
                   <FormattedMessage {...messages.send} />
                 </Button>
@@ -353,6 +361,8 @@ class Show extends React.Component<Props, State> {
                   onClick={this.confirmSendCampaign(this.props.campaign.id)}
                   icon="send"
                   iconPos="right"
+                  disabled={isCampaignSending}
+                  processing={isCampaignSending}
                 >
                   <FormattedMessage {...messages.sendNowButton} />
                 </Button>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomTopics
   module WebApi
     module V1
@@ -12,9 +14,9 @@ module CustomTopics
           if @topic.save
             SideFxTopicService.new.after_create(@topic, current_user)
             render json: ::WebApi::V1::TopicSerializer.new(
-              @topic, 
+              @topic,
               params: fastjson_params
-              ).serialized_json, status: :created
+            ).serialized_json, status: :created
           else
             render json: { errors: @topic.errors.details }, status: :unprocessable_entity
           end
@@ -27,9 +29,9 @@ module CustomTopics
           if @topic.save
             SideFxTopicService.new.after_update(@topic, current_user)
             render json: ::WebApi::V1::TopicSerializer.new(
-              @topic, 
+              @topic,
               params: fastjson_params
-              ).serialized_json, status: :ok
+            ).serialized_json, status: :ok
           else
             render json: { errors: @topic.errors.details }, status: :unprocessable_entity
           end
@@ -53,7 +55,7 @@ module CustomTopics
             SideFxTopicService.new.after_destroy(topic, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 

@@ -22,7 +22,7 @@ module IdFranceconnect
       type: 'string',
       title: 'Environment',
       description: 'Live on the production FranceConnect environment or still testing on their integration environment?',
-      enum: ['production', 'integration'],
+      enum: %w[production integration],
       default: 'production',
       private: true
     }
@@ -38,6 +38,5 @@ module IdFranceconnect
       type: 'string',
       private: true
     }
-
   end
 end

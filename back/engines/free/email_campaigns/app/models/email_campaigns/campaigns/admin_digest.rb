@@ -48,8 +48,8 @@ module EmailCampaigns
       config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
 
       IceCube::Schedule.new(config_timezone.local(2019)) do |schedule|
-        every_monday_at_10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
-        schedule.add_recurrence_rule(every_monday_at_10_am)
+        every_monday_at10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
+        schedule.add_recurrence_rule(every_monday_at10_am)
       end
     end
 
@@ -83,11 +83,11 @@ module EmailCampaigns
     private
 
     def initiative_ids(time:)
-      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).map { |d| d[:id] }.compact
+      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).pluck(:id).compact
     end
 
     def idea_ids(time:)
-      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].map { |idea_h| idea_h[:id] } }
+      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
     end
 
     def user_filter_admin_only(users_scope, _options = {})
@@ -129,9 +129,9 @@ module EmailCampaigns
     end
 
     def days_ago
-      t_1, t_2 = ic_schedule.first 2
-      t_2 ||= t_1 + 7.days
-      ((t_2 - t_1) / 1.day).days
+      t1, t2 = ic_schedule.first 2
+      t2 ||= t1 + 7.days
+      ((t2 - t1) / 1.day).days
     end
 
     def stat_increase(stats = [])
@@ -171,7 +171,7 @@ module EmailCampaigns
     end
 
     def active_ideas
-      @active_ideas ||= published_ideas.yield_self do |ideas|
+      @active_ideas ||= published_ideas.then do |ideas|
         ideas.select { |idea| total_idea_activity(idea).positive? }
              .sort_by(&method(:total_idea_activity))
              .last(N_TOP_IDEAS)

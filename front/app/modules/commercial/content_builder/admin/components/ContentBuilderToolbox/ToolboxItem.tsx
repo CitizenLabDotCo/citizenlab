@@ -13,6 +13,7 @@ interface Props {
 const StyledBox = styled(Box)`
   &:hover {
     background-color: ${colors.emailBg};
+    transition: background-color 80ms ease-out 0s;
   }
 `;
 

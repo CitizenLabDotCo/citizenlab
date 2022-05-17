@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   module WebApi
     module V1
@@ -13,7 +15,7 @@ module Volunteering
           @causes = paginate @causes
 
           volunteers = Volunteer.where(user: current_user, cause: @causes)
-          volunteers_by_cause_id = volunteers.map{|volunteer| [volunteer.cause_id, volunteer]}.to_h
+          volunteers_by_cause_id = volunteers.index_by(&:cause_id)
 
           render json: linked_json(
             @causes,
@@ -67,10 +69,10 @@ module Volunteering
             SideFxCauseService.new.after_update(@cause, current_user)
             render json: WebApi::V1::CauseSerializer.new(
               @cause,
-              params: fastjson_params,
-              ).serialized_json, status: :ok
+              params: fastjson_params
+            ).serialized_json, status: :ok
           else
-            render json: {errors: @cause.errors.details}, status: :unprocessable_entity
+            render json: { errors: @cause.errors.details }, status: :unprocessable_entity
           end
         end
 
@@ -81,7 +83,7 @@ module Volunteering
             SideFxCauseService.new.after_destroy(cause, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 
@@ -93,7 +95,7 @@ module Volunteering
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
         end
 

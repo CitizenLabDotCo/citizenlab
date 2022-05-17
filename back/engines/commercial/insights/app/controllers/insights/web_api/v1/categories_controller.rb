@@ -86,8 +86,8 @@ module Insights
       end
 
       def input_filter_params
-        @inputs_params ||= params.require(:category)
-                                 .permit(inputs: [:search, keywords: [], categories: []])
+        @input_filter_params ||= params.require(:category)
+                                 .permit(inputs: [:search, { keywords: [], categories: [] }])
                                  .fetch(:inputs, nil)
       end
 

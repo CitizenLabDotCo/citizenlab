@@ -18,7 +18,7 @@ RSpec.describe FlagInappropriateContent::InappropriateContentFlag, type: :model 
 
     it 'is wrong_content when no toxicity was detected and wrong_content is the most frequently non-other reported label' do
       flag = create(:inappropriate_content_flag, toxicity_label: nil)
-      ['inappropriate','wrong_content','other','wrong_content','other','other'].each do |reason| 
+      %w[inappropriate wrong_content other wrong_content other other].each do |reason|
         report = build(:spam_report, spam_reportable: flag.flaggable, reason_code: reason)
         report.other_reason = 'this statement gives me the creeps' if reason == 'other'
         report.save!

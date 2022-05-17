@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::CampaignsGroup, type: :model do
@@ -11,7 +13,7 @@ RSpec.describe EmailCampaigns::CampaignsGroup, type: :model do
     it 'deletes the associated CampaignsGroup' do
       campaigns_group = create(:campaigns_group)
       campaigns_group.group.destroy
-      expect{campaigns_group.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { campaigns_group.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -19,7 +21,7 @@ RSpec.describe EmailCampaigns::CampaignsGroup, type: :model do
     it 'deletes the associated CampaignsGroup' do
       campaigns_group = create(:campaigns_group)
       campaigns_group.campaign.destroy
-      expect{campaigns_group.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { campaigns_group.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

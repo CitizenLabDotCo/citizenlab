@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Notification, type: :model do
   describe 'Deleting stuff related to notifications works when' do
-
     let!(:project) { create(:project) }
     let!(:idea) { create(:idea, project: project) }
-    let!(:parent) {create(:comment, post: idea) }
+    let!(:parent) { create(:comment, post: idea) }
     let!(:child) { create(:comment, parent: parent) }
     let!(:initiator) { create(:user) }
     let!(:recipient) { create(:user) }
     let!(:spam_report) { create(:spam_report) }
     let!(:notification) { create(:comment_marked_as_spam, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report) }
-    
 
     it 'deleting recipient of notification' do
       recipient.destroy
@@ -71,7 +71,6 @@ RSpec.describe Notification, type: :model do
       recipient.destroy!
     end
 
-
     it 'deleting parent of comment of comment on your idea notification' do
       coyi = create(:comment_on_your_idea, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient)
       parent.destroy!
@@ -102,7 +101,6 @@ RSpec.describe Notification, type: :model do
       recipient.destroy!
     end
 
-
     it 'deleting parent of comment of comment marked as spam notification' do
       notif = create(:comment_marked_as_spam, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
       parent.destroy!
@@ -132,6 +130,5 @@ RSpec.describe Notification, type: :model do
       notif = create(:comment_marked_as_spam, project: project, post: idea, comment: child, initiating_user: initiator, recipient: recipient, spam_report: spam_report)
       recipient.destroy!
     end
-
   end
 end

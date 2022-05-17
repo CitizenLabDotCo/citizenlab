@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Poll Options' do
- 
   explanation 'Options are the predefined answers users can choose when responding to a poll question. Questions have multiple poll options.'
 
   before do
@@ -27,7 +27,7 @@ resource 'Poll Options' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data).map{|d| d[:relationships][:question][:data][:id]}).to eq [@question.id]*3
+      expect(json_response[:data].map { |d| d[:relationships][:question][:data][:id] }).to eq [@question.id] * 3
     end
   end
 
@@ -36,7 +36,7 @@ resource 'Poll Options' do
       @option = create(:poll_option)
     end
 
-    let(:id) {@option.id}
+    let(:id) { @option.id }
 
     example_request 'Get one option by id' do
       expect(status).to eq 200
@@ -66,9 +66,9 @@ resource 'Poll Options' do
       example_request 'Create an option' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-        expect(json_response.dig(:data,:attributes,:ordering)).to eq 0
-        expect(json_response.dig(:data,:relationships,:question, :data, :id)).to eq question.id
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
+        expect(json_response.dig(:data, :relationships, :question, :data, :id)).to eq question.id
       end
     end
 
@@ -80,12 +80,12 @@ resource 'Poll Options' do
 
       let(:option) { create(:poll_option) }
       let(:id) { option.id }
-      let(:title_multiloc) { {'en' => 'Like totally interesting'} }
+      let(:title_multiloc) { { 'en' => 'Like totally interesting' } }
 
       example_request 'Update an option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
       end
     end
 
@@ -105,7 +105,7 @@ resource 'Poll Options' do
       example_request 'Reorder an option' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data, :attributes, :ordering)).to match ordering
         expect(@question.options.order(:ordering)[1].id).to eq id
         expect(@question.options.order(:ordering).map(&:ordering)).to eq (0..2).to_a
       end
@@ -118,8 +118,8 @@ resource 'Poll Options' do
         old_count = Polls::Option.count
         do_request
         expect(response_status).to eq 200
-        expect{Polls::Option.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(Polls::Option.count).to eq (old_count - 1)
+        expect { Polls::Option.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(Polls::Option.count).to eq(old_count - 1)
       end
     end
   end

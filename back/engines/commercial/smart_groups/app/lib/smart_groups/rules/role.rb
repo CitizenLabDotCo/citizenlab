@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class Role
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(
+    PREDICATE_VALUES = %w[
       is_admin
       not_is_admin
       is_project_moderator
       not_is_project_moderator
       is_normal_user
       not_is_normal_user
-    )
+    ]
 
     attr_accessor :predicate
 
@@ -21,7 +23,7 @@ module SmartGroups::Rules
       {
         'type' => 'object',
         'additionalProperties' => false,
-        'required' => ['ruleType', 'predicate'],
+        'required' => %w[ruleType predicate],
         'properties' => {
           'ruleType' => {
             'type' => 'string',
@@ -39,16 +41,15 @@ module SmartGroups::Rules
       'role'
     end
 
-    def self.from_json json
-      self.new(json['predicate'])
+    def self.from_json(json)
+      new(json['predicate'])
     end
 
-    def initialize predicate
+    def initialize(predicate)
       self.predicate = predicate
     end
 
-    def filter users_scope
-      @predicate
+    def filter(users_scope)
       case predicate
       when 'is_admin'
         users_scope.admin
@@ -66,6 +67,5 @@ module SmartGroups::Rules
         raise "Unsupported predicate #{predicate}"
       end
     end
-
   end
 end

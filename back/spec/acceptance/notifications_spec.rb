@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Notifications' do
-
   explanation 'Messages from the platform to the user to inform on activities that may be of interest to him/her.'
 
   before do
@@ -33,7 +33,7 @@ resource 'Notifications' do
       do_request(only_unread: true)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d| d.dig(:attributes, :read_at)}.uniq).to eq [nil]
+      expect(json_response[:data].map { |d| d.dig(:attributes, :read_at) }.uniq).to eq [nil]
       expect(json_response[:data].first.dig(:attributes, :initiating_user_slug)).to be_present
     end
 
@@ -65,13 +65,13 @@ resource 'Notifications' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|d|d[:attributes][:read_at]}).not_to include nil
+      expect(json_response[:data].map { |d| d[:attributes][:read_at] }).not_to include nil
     end
   end
 
   post 'web_api/v1/notifications/:id/mark_read' do
-    let(:notification) { Notification.where(read_at: nil).first}
-    let(:id) { notification.id}
+    let(:notification) { Notification.where(read_at: nil).first }
+    let(:id) { notification.id }
 
     example_request 'Mark one notifications as read' do
       explanation 'Returns the notification'

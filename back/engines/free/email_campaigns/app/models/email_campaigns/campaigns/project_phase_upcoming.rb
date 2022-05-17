@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -41,22 +43,22 @@ module EmailCampaigns
     end
 
     def self.consentable_roles
-      ['admin', 'project_moderator']
+      %w[admin project_moderator]
     end
 
     def activity_triggers
-      {'Notifications::ProjectPhaseUpcoming' => {'created' => true}}
+      { 'Notifications::ProjectPhaseUpcoming' => { 'created' => true } }
     end
 
     def self.category
       'admin'
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       [{
         event_payload: {

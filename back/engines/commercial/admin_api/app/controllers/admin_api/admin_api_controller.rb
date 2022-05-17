@@ -10,7 +10,7 @@ module AdminApi
 
     def authenticate_request
       unless request.headers['Authorization'] == ENV.fetch('ADMIN_API_TOKEN')
-        render json: { error: 'Not Authorized' }, status: 401
+        render json: { error: 'Not Authorized' }, status: :unauthorized
         false
       end
     end
@@ -22,9 +22,9 @@ module AdminApi
 
     def send_not_found(error = nil)
       if error.nil?
-        head 404, 'content_type' => 'text/plain'
+        head :not_found, 'content_type' => 'text/plain'
       else
-        render json: error, status: 404
+        render json: error, status: :not_found
       end
     end
 

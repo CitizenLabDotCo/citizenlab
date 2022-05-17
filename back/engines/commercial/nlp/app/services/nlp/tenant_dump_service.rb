@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module NLP
   class TenantDumpService
-
-    def dump tenant
+    def dump(tenant)
       Apartment::Tenant.switch(tenant.schema_name) do
         {
           id: tenant.id,
@@ -38,8 +39,8 @@ module NLP
           project_id:           idea.project_id,
           author_name:          idea.author_name,
           location_description: idea.location_description,
-          topics:               idea.topics.map{|top| top.id},
-          areas:                idea.areas.map{|ar| ar.id},
+          topics:               idea.topics.map(&:id),
+          areas:                idea.areas.map(&:id),
           upvotes_count:        idea.upvotes_count,
           downvotes_count:      idea.downvotes_count,
           updated_at:           idea.updated_at.iso8601,
@@ -49,8 +50,8 @@ module NLP
       end
     end
 
-    def encode_comments idea
-      children_map = idea.comments.map{|c| [c.id,[]]}.to_h
+    def encode_comments(idea)
+      children_map = idea.comments.map { |c| [c.id, []] }.to_h
       idea.comments.each do |c|
         if c.parent_id
           children_map[c.parent_id] += [c]
@@ -59,8 +60,8 @@ module NLP
       loop_encode_comments idea.comments.where(parent_id: nil), children_map
     end
 
-    def loop_encode_comments comments, children_map
-      comments.sort_by{|c| c.created_at.to_i}.map do |c|
+    def loop_encode_comments(comments, children_map)
+      comments.sort_by { |c| c.created_at.to_i }.map do |c|
         {
           id:            c.id,
           created_at:    c.created_at.iso8601,
@@ -70,7 +71,6 @@ module NLP
         }
       end
     end
-
 
     def encode_areas
       Area.all.map do |area|
@@ -89,12 +89,11 @@ module NLP
           id:                   project.id,
           title_multiloc:       project.title_multiloc,
           description_multiloc: project.description_multiloc,
-          topics:               project.allowed_input_topics.map{|top| top.id},
-          areas:                project.areas.map{|ar| ar.id}
+          topics:               project.allowed_input_topics.map(&:id),
+          areas:                project.areas.map(&:id)
         }
         d
       end
     end
-
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AvatarSerializer < WebApi::V1::BaseSerializer
   set_type :avatar
 

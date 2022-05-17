@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Mentions' do
-
   explanation 'Part of a text that explicitly references a user.'
 
   before do
@@ -26,13 +26,13 @@ resource 'Mentions' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to be >= 1
-      expect(json_response[:data].all?{|u| u[:attributes][:first_name][0..3] == mention}).to be true
+      expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..3] == mention }).to be true
     end
 
     example 'Find user by (partial) mention and idea context' do
       first_name = 'Jozefius'
       idea = create(:idea)
-      comments = 3.times.map do
+      comments = Array.new(3) do
         user = create(:user, first_name: first_name)
         create(:comment, post: idea, author: user)
       end
@@ -40,13 +40,13 @@ resource 'Mentions' do
       author_not_mentioned = comment.author
 
       idea_related = comments.map(&:author)
-      
+
       do_request post_id: idea.id, post_type: 'Idea', mention: first_name
 
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq idea_related.size
-      expect(json_response[:data].map{|d| d[:id]}).to match_array idea_related.map(&:id)
-      expect(json_response[:data].all?{|u| u[:attributes][:first_name][0..(first_name.size)] == first_name}).to be true
+      expect(json_response[:data].pluck(:id)).to match_array idea_related.map(&:id)
+      expect(json_response[:data].all? { |u| u[:attributes][:first_name][0..(first_name.size)] == first_name }).to be true
     end
   end
 end
