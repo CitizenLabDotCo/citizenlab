@@ -61,12 +61,12 @@ export default function useEvents(parameters: InputParameters) {
     }
 
     if (parameters.currentAndFutureOnly) {
-      streamParams.queryParameters.end_at_gteq = new Date().toJSON();
+      streamParams.queryParameters.on_or_after_end_at = new Date().toJSON();
       streamParams.queryParameters.sort = 'start_at';
     }
 
     if (parameters.pastOnly) {
-      streamParams.queryParameters.end_at_lt = new Date().toJSON();
+      streamParams.queryParameters.before_end_at = new Date().toJSON();
     }
 
     if (currentPage) {

@@ -47,8 +47,8 @@ export interface IUpdatedEventProperties {
 export type IEventsStreamParams = IStreamParams & {
   queryParameters: {
     project_ids?: string[];
-    end_at_lt?: string;
-    end_at_gteq?: string;
+    before_end_at?: string;
+    on_or_after_end_at?: string;
     sort?: string;
     'page[number]'?: number;
     'page[size]'?: number;
