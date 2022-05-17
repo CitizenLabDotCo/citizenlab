@@ -22,7 +22,6 @@ module IdClaveUnica
       # if rut.present?
       # info[:custom_field_values] = {rut: rut} end
       # end
-
       info
     end
 
