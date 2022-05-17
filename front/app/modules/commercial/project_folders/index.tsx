@@ -23,6 +23,20 @@ import { AdminPublicationType } from 'services/adminPublications';
 import { RenderOnNotificationTypeProps } from 'modules/utilComponents/RenderOnNotificationType';
 import FeatureFlag from 'components/FeatureFlag';
 
+const FolderShowPageComponent = React.lazy(
+  () => import('./citizen/containers/ProjectFolderShowPage')
+);
+const FolderSettingsComponent = React.lazy(
+  () => import('./admin/containers/settings')
+);
+const FolderContainerComponent = React.lazy(() => import('./admin/containers'));
+const FolderProjectsComponent = React.lazy(
+  () => import('./admin/containers/projects')
+);
+const FolderPermissionsComponent = React.lazy(
+  () => import('./admin/containers/permissions')
+);
+
 type RenderOnPublicationTypeProps = {
   publication: IAdminPublicationContent;
   publicationType: AdminPublicationType;
@@ -173,34 +187,29 @@ const configuration: ModuleConfiguration = {
     citizen: [
       {
         path: 'folders/:slug',
-        name: 'Project folder page',
-        container: () => import('./citizen/containers/ProjectFolderShowPage'),
+        element: <FolderShowPageComponent />,
       },
     ],
     admin: [
       {
         path: 'projects/folders/new',
-        name: 'admin projects single project',
-        container: () => import('./admin/containers/settings'),
+        element: <FolderSettingsComponent />,
       },
       {
         path: 'projects/folders/:projectFolderId',
-        name: 'admin projects edit folder',
-        container: () => import('./admin/containers'),
-        indexRoute: {
-          name: 'admin projects edit folder projects',
-          container: () => import('./admin/containers/projects'),
-        },
-        childRoutes: [
+        element: <FolderContainerComponent />,
+        children: [
+          {
+            index: true,
+            element: <FolderProjectsComponent />,
+          },
           {
             path: 'settings',
-            name: 'admin projects edit folder settings',
-            container: () => import('./admin/containers/settings'),
+            element: <FolderSettingsComponent />,
           },
           {
             path: 'permissions',
-            name: 'admin projects edit folder permissions',
-            container: () => import('./admin/containers/permissions'),
+            element: <FolderPermissionsComponent />,
           },
         ],
       },

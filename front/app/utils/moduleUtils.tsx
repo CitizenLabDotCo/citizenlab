@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
@@ -20,7 +22,6 @@ import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray, clamp } from 'lodash-es';
 
-import Loadable from 'react-loadable';
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
@@ -429,9 +430,13 @@ export type OutletId = keyof Outlets;
 export type RouteConfiguration = {
   path?: string;
   name?: string;
-  container: () => Promise<any>;
+  element?: React.ReactElement;
   type?: string;
+  index?: boolean;
+  children?: RouteConfiguration[];
+  // remove
   indexRoute?: RouteConfiguration;
+  container?: any;
   childRoutes?: RouteConfiguration[];
 };
 
@@ -485,31 +490,63 @@ export const RouteTypes = {
   ADMIN: 'admin',
 };
 
+const LoadingComponent = ({ type, children }) => {
+  if (type === RouteTypes.CITIZEN) {
+    return (
+      <React.Suspense fallback={LoadableLoadingCitizen}>
+        {children}
+      </React.Suspense>
+    );
+  }
+  return (
+    <React.Suspense fallback={LoadableLoadingAdmin}>{children}</React.Suspense>
+  );
+};
+
 const convertConfigurationToRoute = ({
   path,
-  name,
-  container: loader,
+  element,
   type = RouteTypes.CITIZEN,
   indexRoute,
-  childRoutes,
+  children,
 }: RouteConfiguration) => ({
   path,
-  name,
-  component: Loadable({
-    loader,
-    loading:
-      type === RouteTypes.ADMIN ? LoadableLoadingAdmin : LoadableLoadingCitizen,
-    delay: 500,
-  }),
+  element: <LoadingComponent type={type}>{element}</LoadingComponent>,
   indexRoute:
     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
-  childRoutes:
-    childRoutes &&
-    childRoutes.length > 0 &&
-    childRoutes.map((childRoute) =>
+  children:
+    children &&
+    children.length > 0 &&
+    children.map((childRoute) =>
       convertConfigurationToRoute({ ...childRoute, type })
     ),
 });
+
+// const convertConfigurationToRoute = ({
+//   path,
+//   name,
+//   container: loader,
+//   type = RouteTypes.CITIZEN,
+//   indexRoute,
+//   childRoutes,
+// }: RouteConfiguration) => ({
+//   path,
+//   name,
+//   component: Loadable({
+//     loader,
+//     loading:
+//       type === RouteTypes.ADMIN ? LoadableLoadingAdmin : LoadableLoadingCitizen,
+//     delay: 500,
+//   }),
+//   indexRoute:
+//     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
+//   childRoutes:
+//     childRoutes &&
+//     childRoutes.length > 0 &&
+//     childRoutes.map((childRoute) =>
+//       convertConfigurationToRoute({ ...childRoute, type })
+//     ),
+// });
 
 const parseModuleRoutes = (
   routes: RouteConfiguration[] = [],
@@ -543,11 +580,14 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     );
   };
 
+  const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
+  const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
+
   return {
     outlets: mergedOutlets,
     routes: {
-      citizen: parseModuleRoutes(mergedRoutes?.citizen),
-      admin: parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN),
+      citizen: citizenRoutes,
+      admin: adminRoutes,
       'admin.initiatives': parseModuleRoutes(
         mergedRoutes?.['admin.initiatives'],
         RouteTypes.ADMIN
