@@ -18,6 +18,10 @@
 - [CL-776] Button in weekly moderator digest email now links to correct page
 - [CL-814] Faster user XLSX export.
 
+### Added
+
+- Save RUT value when verifying with Clave Unica
+
 ## 2022-05-16
 
 ### Fixed
