@@ -226,7 +226,7 @@ hr:
       action_share_twitter: 'Obavestite svoje pratioce na %{twitterLink}'
       cta_view_initiative: 'Idite na svoj predlog'
       link: link
-      main_header: 'Postavili ste predlog! Hajde da prikupimo podršku za njega.'
+      main_header: 'Objavili ste prijedlog! Skupimo podršku za vaš prijedlog.'
       message_next_steps: '%{userFirstName}, vaš predlog je uspešno objavljen na %{organizationName} participativnoj platformi. Bićete obavešteni kada ljudi stupe u interakciju sa predlogom. U nastavku saznajte više o koracima koje možete preduzeti.'
       message_get_votes: 'Sakupite neophodan broj glasova:'
       preheader: 'Hvala vam što delite svoj predlog %{initiativeTitle} za %{organizationName}. Prikupite podršku tako što ćete ga podeliti sa drugima.'
