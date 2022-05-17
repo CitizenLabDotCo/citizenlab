@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :project_folder, class: ProjectFolders::Folder do
     title_multiloc do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
     before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]

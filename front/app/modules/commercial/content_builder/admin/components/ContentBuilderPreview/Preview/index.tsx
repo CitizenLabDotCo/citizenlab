@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // hooks
 import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
@@ -17,6 +17,7 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../../services/contentBuilder';
 
 // types
 import { Multiloc } from 'typings';
+import { SerializedNodes } from '@craftjs/core';
 
 type PreviewProps = {
   projectId: string;
@@ -24,6 +25,7 @@ type PreviewProps = {
 };
 
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
+  const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const locale = useLocale();
   const localize = useLocalize();
 
@@ -32,13 +34,34 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     code: PROJECT_DESCRIPTION_CODE,
   });
 
+  useEffect(() => {
+    window.addEventListener(
+      'message',
+      (e) => {
+        if (e.origin === window.location.origin) {
+          setDraftData(e.data);
+        }
+      },
+      false
+    );
+  }, []);
+
   const loadingContentBuilderLayout = contentBuilderLayout === undefined;
 
-  const contentBuilderContent =
+  const contentBuilderSavedContent =
     !isNilOrError(contentBuilderLayout) &&
     !isNilOrError(locale) &&
     contentBuilderLayout.data.attributes.enabled &&
     contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
+
+  const contentBuilderContent = draftData || contentBuilderSavedContent;
+
+  const savedEditorData =
+    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
+      ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
+      : undefined;
+
+  const editorData = draftData || savedEditorData;
 
   return (
     <Box data-testid="contentBuilderPreview">
@@ -49,7 +72,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
             {localize(projectTitle)}
           </Title>
           <Editor isPreview={true}>
-            <ContentBuilderFrame projectId={projectId} />
+            <ContentBuilderFrame editorData={editorData} />
           </Editor>
         </Box>
       )}

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from insights (originally 20220210171123)
 class AddSourceToCategories < ActiveRecord::Migration[6.1]
   def change

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   class WebApi::V1::CauseSerializer < ::WebApi::V1::BaseSerializer
     attributes :title_multiloc, :description_multiloc, :volunteers_count, :ordering, :created_at, :updated_at

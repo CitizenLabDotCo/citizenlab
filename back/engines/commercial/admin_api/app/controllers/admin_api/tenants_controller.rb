@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class TenantsController < AdminApiController
     before_action :set_tenant, only: %i[show update remove_locale destroy]

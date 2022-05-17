@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   Types::MutationType = GraphQL::ObjectType.define do
     name 'Mutation'

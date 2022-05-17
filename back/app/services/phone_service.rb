@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PhoneService
   def phone_or_email(str)
     # If any of these validations change, sync with front-end people.

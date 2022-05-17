@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::UsersController < ::ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]

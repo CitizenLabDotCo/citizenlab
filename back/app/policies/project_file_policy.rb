@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectFilePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope

@@ -99,45 +99,48 @@ const IdeasList = ({
 
   if (!isNilOrError(locale)) {
     return (
-      <div
-        aria-live="polite"
-        aria-labelledby={ariaLabelledBy}
-        id={id}
-        tabIndex={tabIndex}
-      >
+      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
         {querying ? (
           <Loading>
             <Spinner />
           </Loading>
         ) : (
           <>
+            <ScreenReaderOnly aria-live="polite">
+              <FormattedMessage
+                {...messages.showXResults}
+                values={{
+                  ideasCount: list ? list.length : 0,
+                }}
+              />
+            </ScreenReaderOnly>
             {hasIdeas && list && (
-              <Box
-                ml="-13px"
-                mr="-13px"
-                mt="-10px"
-                display="flex"
-                flexWrap="wrap"
-                id="e2e-ideas-list"
-              >
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.filteredResultsFound} />
-                </ScreenReaderOnly>
-                {list.map((idea) => {
-                  return (
-                    <StyledIdeaCard
-                      key={idea.id}
-                      ideaId={idea.id}
-                      participationMethod={participationMethod}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      hideImage={hideImage}
-                      hideImagePlaceholder={hideImagePlaceholder}
-                      hideIdeaStatus={hideIdeaStatus}
-                    />
-                  );
-                })}
-              </Box>
+              <>
+                <Box
+                  ml="-13px"
+                  mr="-13px"
+                  mt="-10px"
+                  display="flex"
+                  flexWrap="wrap"
+                  id="e2e-ideas-list"
+                  aria-live="polite"
+                >
+                  {list.map((idea) => {
+                    return (
+                      <StyledIdeaCard
+                        key={idea.id}
+                        ideaId={idea.id}
+                        participationMethod={participationMethod}
+                        participationContextId={participationContextId}
+                        participationContextType={participationContextType}
+                        hideImage={hideImage}
+                        hideImagePlaceholder={hideImagePlaceholder}
+                        hideIdeaStatus={hideIdeaStatus}
+                      />
+                    );
+                  })}
+                </Box>
+              </>
             )}
 
             {hasMore && (

@@ -27,7 +27,6 @@ module Finder
 
       def default_sort(scope)
         @_default_sort = scope.first if scope.is_a? Hash
-
         @_default_sort = scope.to_s
       end
 

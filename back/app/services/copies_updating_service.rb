@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CopiesUpdatingService
   def update_custom_fields
     scope = CustomField.where(resource_type: User.name)

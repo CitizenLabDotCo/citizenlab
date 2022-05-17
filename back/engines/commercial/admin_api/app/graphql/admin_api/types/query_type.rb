@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::QueryType < GraphQL::Schema::Object
     description 'The query root of this schema'

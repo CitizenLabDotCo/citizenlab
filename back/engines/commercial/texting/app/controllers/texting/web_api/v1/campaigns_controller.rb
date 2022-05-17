@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Texting
   class WebApi::V1::CampaignsController < ApplicationController
     before_action :set_campaign, only: %i[show destroy update do_send]

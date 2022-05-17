@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Services to generate a json schema and UI schema for a CustomForm, compatible
 # with jsonforms.io.
 class JsonFormsService

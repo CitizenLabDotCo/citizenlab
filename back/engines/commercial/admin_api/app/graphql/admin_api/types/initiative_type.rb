@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::InitiativeType < GraphQL::Schema::Object
     description 'Single unit of citizen input'

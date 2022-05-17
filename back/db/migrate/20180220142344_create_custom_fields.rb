@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCustomFields < ActiveRecord::Migration[5.1]
   def change
     create_table :custom_fields, id: :uuid do |t|
