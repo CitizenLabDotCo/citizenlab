@@ -125,10 +125,8 @@ describe('Admin: add project and edit description', () => {
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput').click().type('Image alt text.');
 
-    cy.get('#e2e-content-builder-topbar-save').click();
     cy.get('[alt="Image alt text."]').should('exist');
-    // Done saving
-    cy.get('#e2e-content-builder-topbar-save').click().contains('Save');
+    cy.get('#e2e-content-builder-topbar-save').click().wait(1000);
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('[alt="Image alt text."]').should('exist');
