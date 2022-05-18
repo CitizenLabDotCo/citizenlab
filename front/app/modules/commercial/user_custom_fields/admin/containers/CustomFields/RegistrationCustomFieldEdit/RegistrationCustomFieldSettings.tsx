@@ -4,7 +4,6 @@ import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import {
-  IUserCustomFieldData,
   updateCustomFieldForUsers,
   isBuiltInField,
 } from '../../../../services/userCustomFields';
@@ -12,18 +11,15 @@ import {
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
+
+import { useUserCustomFieldOutletContext } from '.';
+
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-type Props = {
-  customField: IUserCustomFieldData;
-};
-
-interface State {}
-
-class RegistrationCustomFieldSettings extends React.Component<Props, State> {
+class RegistrationCustomFieldSettings extends React.Component {
   initialValues = () => {
-    const { customField } = this.props;
+    const { customField } = useUserCustomFieldOutletContext();
     return (
       customField && {
         input_type: customField.attributes.input_type,
@@ -46,7 +42,7 @@ class RegistrationCustomFieldSettings extends React.Component<Props, State> {
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
-    const { customField } = this.props;
+    const { customField } = useUserCustomFieldOutletContext();
     if (!customField) return;
 
     updateCustomFieldForUsers(customField.id, {
@@ -66,18 +62,23 @@ class RegistrationCustomFieldSettings extends React.Component<Props, State> {
       });
   };
 
-  renderFn = (props) =>
-    this.props.customField && (
-      <RegistrationCustomFieldForm
-        {...props}
-        mode="edit"
-        customFieldId={this.props.customField.id}
-        builtInField={isBuiltInField(this.props.customField)}
-      />
+  renderFn = (props) => {
+    const { customField } = useUserCustomFieldOutletContext();
+
+    return (
+      customField && (
+        <RegistrationCustomFieldForm
+          {...props}
+          mode="edit"
+          customFieldId={customField.id}
+          builtInField={isBuiltInField(customField)}
+        />
+      )
     );
+  };
 
   render() {
-    const { customField } = this.props;
+    const { customField } = useUserCustomFieldOutletContext();
 
     return (
       customField && (

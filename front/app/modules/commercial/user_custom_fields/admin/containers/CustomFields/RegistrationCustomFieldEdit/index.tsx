@@ -7,6 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
+import { Outlet as RouterOutlet, useOutletContext } from 'react-router-dom';
 
 // services
 import {
@@ -29,6 +30,8 @@ const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 20px;
 `;
 
+type ContextType = { customField: IUserCustomFieldData | null };
+
 export interface Props {
   children: JSX.Element | null;
 }
@@ -37,7 +40,6 @@ const RegistrationCustomFieldEdit = memo(
   ({
     intl: { formatMessage },
     params: { userCustomFieldId },
-    children,
   }: Props & WithRouterProps & InjectedIntlProps) => {
     const localize = useLocalize();
     const userCustomField = useUserCustomField(userCustomFieldId);
@@ -76,11 +78,6 @@ const RegistrationCustomFieldEdit = memo(
       return tabs;
     };
 
-    const childrenWithExtraProps = React.cloneElement(
-      children as React.ReactElement<any>,
-      { customField: userCustomField }
-    );
-
     if (!isNilOrError(userCustomField)) {
       return (
         <>
@@ -91,7 +88,8 @@ const RegistrationCustomFieldEdit = memo(
               title: localize(userCustomField.attributes.title_multiloc),
             }}
           >
-            {childrenWithExtraProps}
+            {/* todo check to see if this works */}
+            <RouterOutlet context={{ customField: userCustomField }} />
           </TabbedResource>
         </>
       );
@@ -100,5 +98,10 @@ const RegistrationCustomFieldEdit = memo(
     return null;
   }
 );
+
+// based on the example here https://reactrouter.com/docs/en/v6/hooks/use-outlet-context
+export const useUserCustomFieldOutletContext = () => {
+  return useOutletContext<ContextType>();
+};
 
 export default withRouter(injectIntl(RegistrationCustomFieldEdit));

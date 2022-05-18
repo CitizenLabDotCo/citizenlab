@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IUserCustomFieldData } from '../../../../services/userCustomFields';
 import {
   IUserCustomFieldOptionData,
   reorderUserCustomFieldOption,
@@ -12,6 +11,7 @@ import {
 // hooks
 import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
 import useLocalize from 'hooks/useLocalize';
+import { useUserCustomFieldOutletContext } from '.';
 
 // components
 import {
@@ -27,12 +27,12 @@ import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-export interface Props {
-  customField: IUserCustomFieldData;
-}
-
 const RegistrationCustomFieldOptions = memo(
-  ({ customField, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  ({ intl: { formatMessage } }: InjectedIntlProps) => {
+    const { customField } = useUserCustomFieldOutletContext();
+
+    if (isNilOrError(customField)) return null;
+
     const userCustomFieldOptions = useUserCustomFieldOptions(customField.id);
     const localize = useLocalize();
     const userCustomFieldId = customField.id;

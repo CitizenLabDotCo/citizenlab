@@ -109,15 +109,13 @@ const configuration: ModuleConfiguration = {
             element: <AdminCustomFieldEditComponent />,
             children: [
               {
+                // {/* todo check to see if this works with outlet context */}
                 path: 'field-settings',
-                // todo double check on this, not sure where the props are meant to be passed in from
-                // @ts-ignore
                 element: <AdminCustomFieldRegistrationSettingsComponent />,
               },
               {
+                // {/* todo check to see if this works with outlet context */}
                 path: 'options',
-                // todo double check on this, not sure where the props are meant to be passed in from
-                // @ts-ignore
                 element: <AdminCustomFieldRegistrationOptionsComponent />,
               },
               {
