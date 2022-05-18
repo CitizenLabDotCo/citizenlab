@@ -33,13 +33,11 @@ import {
 } from './components/styling';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
 import useProject from 'hooks/useProject';
-import useAuthUser from 'hooks/useAuthUser';
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // animation
@@ -52,7 +50,6 @@ import { validateSlug } from 'utils/textUtils';
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import useProjectFiles from 'hooks/useProjectFiles';
 
 export const TIMEOUT = 350;
@@ -62,19 +59,18 @@ interface Props {}
 const AdminProjectEditGeneral = ({
   // projectId can also be undefined
   params: { projectId },
-  intl: { formatMessage },
-}: Props & InjectedIntlProps & WithRouterProps) => {
+}: Props & WithRouterProps) => {
   const localize = useLocalize();
   const project = useProject({ projectId });
   const remoteProjectFiles = useProjectFiles(projectId);
   const areas = useAreas();
-  const appConfiguration = useAppConfiguration();
-  const authUser = useAuthUser();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
-  const [processing, setProcessing] =
-    useState<IProjectFormState['processing']>(false);
+  const [
+    processing,
+    // setProcessing
+  ] = useState<IProjectFormState['processing']>(false);
   // still used?
-  const [apiErrors, setApiErrors] = useState({});
+  const [apiErrors, _setApiErrors] = useState({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
   >({
@@ -91,15 +87,15 @@ const AdminProjectEditGeneral = ({
   const [projectFiles, setProjectFiles] = useState<
     IProjectFormState['projectFiles']
   >([]);
-  const [projectFilesToRemove, setProjectFilesToRemove] = useState<
+  const [_projectFilesToRemove, setProjectFilesToRemove] = useState<
     IProjectFormState['projectFilesToRemove']
   >([]);
   const [projectImages, setProjectImages] = useState<
     IProjectFormState['projectImages']
   >([]);
-  const [projectImagesToRemove, setProjectImagesToRemove] = useState<
-    IProjectFormState['projectImagesToRemove']
-  >([]);
+  // const [projectImagesToRemove, setProjectImagesToRemove] = useState<
+  //   IProjectFormState['projectImagesToRemove']
+  // >([]);
   const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
     useState<IProjectFormState['showSlugErrorMessage']>(false);
@@ -244,10 +240,10 @@ const AdminProjectEditGeneral = ({
     setProjectFiles((projectFiles) =>
       projectFiles.filter((file) => file.base64 !== projectFileToRemove.base64)
     );
-    setProjectFilesToRemove((projectFilesToRemove) => [
-      ...projectFilesToRemove,
-      projectFileToRemove,
-    ]);
+    // setProjectFilesToRemove((projectFilesToRemove) => [
+    //   ...projectFilesToRemove,
+    //   projectFileToRemove,
+    // ]);
   };
 
   const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
@@ -534,4 +530,4 @@ const AdminProjectEditGeneral = ({
   );
 };
 
-export default withRouter(injectIntl(AdminProjectEditGeneral));
+export default withRouter(AdminProjectEditGeneral);
