@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::StaticPageSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :code, :slug, :created_at, :updated_at
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Carrierwave
   module FileBase64
     class Base64StringIo < StringIO

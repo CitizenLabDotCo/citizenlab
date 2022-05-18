@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Engine namespace
 module GoogleTagManager
   module FeatureSpecification

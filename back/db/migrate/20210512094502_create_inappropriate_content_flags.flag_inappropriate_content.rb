@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from flag_inappropriate_content (originally 20210512093543)
 class CreateInappropriateContentFlags < ActiveRecord::Migration[6.0]
   def change

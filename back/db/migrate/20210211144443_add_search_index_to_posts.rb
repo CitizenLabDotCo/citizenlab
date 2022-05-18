@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSearchIndexToPosts < ActiveRecord::Migration[6.0]
   # Based on https://github.com/Casecommons/pg_search/wiki/Building-indexes
   def change

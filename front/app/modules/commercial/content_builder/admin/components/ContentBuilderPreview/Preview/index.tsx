@@ -38,7 +38,8 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     window.addEventListener(
       'message',
       (e) => {
-        if (e.origin === window.location.origin) {
+        // Make sure there is a root node in the draft data
+        if (e.origin === window.location.origin && e.data.ROOT) {
           setDraftData(e.data);
         }
       },

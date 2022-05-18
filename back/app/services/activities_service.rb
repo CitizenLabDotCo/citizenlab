@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivitiesService
   def create_periodic_activities(now: Time.zone.now, since: 1.hour)
     now = Time.zone.at(now)

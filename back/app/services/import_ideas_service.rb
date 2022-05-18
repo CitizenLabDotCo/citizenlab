@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportIdeasService
   MAX_IDEAS = 500
 

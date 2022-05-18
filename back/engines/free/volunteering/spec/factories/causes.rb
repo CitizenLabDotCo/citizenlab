@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :cause, class: 'Volunteering::Cause' do
     participation_context { create(:continuous_volunteering_project) }
