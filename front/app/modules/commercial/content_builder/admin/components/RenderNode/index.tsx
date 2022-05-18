@@ -129,9 +129,6 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      background="#fff"
-      padding={id === ROOT_NODE ? '4px' : '0px'}
-      minHeight={id === ROOT_NODE ? '160px' : '0px'}
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
       borderWidth="1px"
       borderColor={
