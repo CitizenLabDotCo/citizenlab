@@ -104,6 +104,8 @@ export function initSubscriptions(
             },
           };
 
+          // To be double checked, but I believe this isn't being used.
+          // And in the wrong place. Should be in module if needed.
           if (project && this.props.isProjectFoldersEnabled) {
             newState.folder_id = project.data.attributes.folder_id;
           }
