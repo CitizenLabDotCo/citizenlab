@@ -69,6 +69,8 @@ import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { IProjectFormState } from 'services/projects';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -97,6 +99,11 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
   userConfirmationSetting?: AppConfigurationFeature;
 };
 
+export type TOnProjectAttributesDiffChangeFunction = (
+  projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+  submitState: ISubmitState
+) => void;
+
 export type OutletsPropertyMap = {
   'app.containers.Navbar.projectlist.item': {
     publication: IAdminPublicationContent;
@@ -112,8 +119,7 @@ export type OutletsPropertyMap = {
   >;
   'app.components.AdminPage.projects.form.additionalInputs.inputs': {
     projectAttrs: IUpdatedProjectProperties;
-    onChange: onProjectFormStateChange;
-    authUser: IUserData;
+    onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
   };
   'app.containers.AdminPage.projects.all.createProjectNotAdmin': Record<
     string,

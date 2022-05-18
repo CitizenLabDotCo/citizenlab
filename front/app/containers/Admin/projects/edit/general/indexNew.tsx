@@ -288,15 +288,15 @@ const AdminProjectEditGeneral = ({
     setShowSlugErrorMessage(!isSlugValid);
   };
 
-  const handleFieldUpdate = (fieldUpdates: { [fieldPath: string]: any }) => {
-    setState((prevState) => {
-      const newState = { ...prevState };
-      set(newState, 'submitState', 'enabled');
-      for (const fieldPath in fieldUpdates) {
-        set(newState, fieldPath, fieldUpdates[fieldPath]);
-      }
-      return deepMerge(prevState, newState);
-    });
+  const handleProjectAttributeDiffOnChange = (
+    projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+    submitState: ISubmitState
+  ) => {
+    setProjectAttributesDiff((currentProjectAttributesDiff) => ({
+      ...currentProjectAttributesDiff,
+      projectAttributesDiff,
+    }));
+    setSubmitState(submitState);
   };
 
   const projectAttrs = {
@@ -418,8 +418,7 @@ const AdminProjectEditGeneral = ({
         <Outlet
           id="app.components.AdminPage.projects.form.additionalInputs.inputs"
           projectAttrs={projectAttrs}
-          onChange={handleFieldUpdate}
-          authUser={authUser}
+          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
         />
 
         <HeaderImageDropzone
