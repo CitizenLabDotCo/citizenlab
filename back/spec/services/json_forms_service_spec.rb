@@ -9,7 +9,6 @@ describe JsonFormsService do
   let(:user) { create(:user) }
 
   context 'registration fields' do
-
     describe 'fields_to_ui_schema_multiloc' do
       let(:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
       let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
@@ -226,16 +225,73 @@ describe JsonFormsService do
   context 'idea form fields' do
     describe 'ui_and_json_multiloc_schemas' do
       it 'generates expected output for different kinds of fields' do
+        config = AppConfiguration.instance
+        config.settings['core']['locales'] = ['en']
+        config.save!
+
         project = create :project
         form = create :custom_form, project: project
         required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
-        optional_field = create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false
-        fields = [required_field, optional_field]
+        optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
+        option1 = create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
+        option2 = create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
+        build_in_required_field = create(
+          :custom_field_multiselect,
+          :for_custom_form,
+          resource: form,
+          required: true,
+          key: 'topic_ids',
+          code: 'topic_ids'
+        )
+        build_in_optional_field = create(
+          :custom_field_multiselect,
+          :for_custom_form,
+          resource: form,
+          required: false,
+          key: 'idea_files_attributes',
+          code: 'idea_files_attributes'
+        )
+        fields = [required_field, optional_field, build_in_required_field, build_in_optional_field]
 
-        output = service.ui_and_json_multiloc_schemas [required_field, optional_field], user
+        output = service.ui_and_json_multiloc_schemas fields, user
         expect(output).to include(
           {
-            json_schema_multiloc: be_a(Hash)
+            json_schema_multiloc: {
+              'en' => {
+                type: 'object',
+                additionalProperties: false,
+                properties:  {
+                  'topic_ids' => {
+                    type: 'array',
+                    uniqueItems: true,
+                    minItems: 1,
+                    items: { type: 'string' }
+                  },
+                  'custom_field_values' => {
+                    type: 'object',
+                    additionalProperties: false,
+                    properties: {
+                      required_field.key => { type: 'number' },
+                      optional_field.key => {
+                        type: 'string',
+                          oneOf: [
+                            { const: 'option1', title: 'Rabbit' },
+                            { const: 'option2', title: 'Bear' }
+                          ]
+                      }
+                    }
+                  },
+                  'idea_files_attributes' => {
+                    type: 'array',
+                    uniqueItems: true,
+                    minItems: 0,
+                    items: { type: 'string' }
+                  }
+                },
+                required: [required_field.key, 'topic_ids']
+              }
+            },
+            ui_schema_multiloc: be_a(Hash)
           }
         )
       end

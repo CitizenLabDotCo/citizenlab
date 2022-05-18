@@ -64,7 +64,7 @@ module JsonFormsIdeasOverrides
             send("#{built_in_field.input_type}_to_json_schema_field", built_in_field, locale)
           end
         memo.tap do |properties|
-          properties[:custom_field_values] = {
+          properties['custom_field_values'] = {
             type: 'object',
             additionalProperties: false,
             properties: fields.reject(&:built_in?).each_with_object({}) do |field, accu|
