@@ -12,7 +12,7 @@ resource 'Ideas' do
     header 'Authorization', "Bearer #{token}"
   end
 
-  post 'web_api/v1/ideas' do
+  describe 'Create' do
     before do
       IdeaStatus.create_defaults
     end
@@ -36,45 +36,111 @@ resource 'Ideas' do
     let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
 
-    describe do
+    context 'when the extra field is required' do
       before do
-        create(:custom_field_extra_custom_form, resource: create(:custom_form, project: project))
+        create(:custom_field_extra_custom_form, required: true, resource: create(:custom_form, project: project))
       end
 
-      let(:custom_field_values) { { 'extra_field' => 'test value' } }
+      context 'when the field value is given' do
+        let(:custom_field_values) { { 'extra_field' => 'test value' } }
 
-      example_request 'Create an idea with extra fields' do
-        assert_status 201
-        json_response = json_parse(response_body)
-        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h).to match custom_field_values
+        post 'web_api/v1/ideas' do
+          example_request 'Create an idea with an extra field' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+          end
+        end
+      end
+
+      context 'when the field value is not given' do
+        let(:custom_field_values) { { 'extra_field' => nil } }
+
+        post 'web_api/v1/ideas' do
+          example_request 'Create an idea with an extra field' do
+            assert_status 422
+            json_response = json_parse(response_body)
+            errors = json_response.dig(:errors, :custom_field_values)
+            expect(errors.size).to eq 1
+            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+          end
+        end
+      end
+    end
+
+    context 'when the extra field is optional' do
+      before do
+        create(:custom_field_extra_custom_form, required: false, resource: create(:custom_form, project: project))
+      end
+
+      context 'when the field value is given' do
+        let(:custom_field_values) { { 'extra_field' => 'test value' } }
+
+        post 'web_api/v1/ideas' do
+          example_request 'Create an idea with an extra field' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+          end
+        end
+      end
+
+      context 'when the field value is not given' do
+        let(:custom_field_values) { { 'extra_field' => nil } }
+
+        post 'web_api/v1/ideas' do
+          example_request 'Create an idea with an extra field' do
+            assert_status 201
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to eq({})
+          end
+        end
       end
     end
   end
 
-  patch 'web_api/v1/ideas/:id' do
-    before do
-      @project = create(:continuous_project)
-      @idea =  create(:idea, author: user, project: @project)
-    end
+  describe 'Update' do
+    let(:project) { create(:continuous_project) }
+    let(:idea) { create(:idea, author: user, project: project, custom_field_values: { 'extra_field' => 'test value' }) }
+    let(:id) { idea.id }
 
     with_options scope: :idea do
       parameter :custom_field_values, 'a json representing custom fields'
     end
 
-    let(:id) { @idea.id }
-
-    describe do
+    context 'when the extra field is required' do
       before do
-        create(:custom_field_extra_custom_form, resource: create(:custom_form, project: @project))
-        @idea.update! custom_field_values: { 'extra_field' => 'test value' }
+        create(:custom_field_extra_custom_form, required: true, resource: create(:custom_form, project: project))
       end
 
-      let(:custom_field_values) { { 'extra_field' => 'Changed Value' } }
+      context 'when the field value is given' do
+        let(:custom_field_values) { { 'extra_field' => 'Changed Value' } }
 
-      example_request 'Update extra fields in an idea' do
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(Idea.find(json_response[:data][:id]).custom_field_values.to_h).to match custom_field_values
+        patch 'web_api/v1/ideas/:id' do
+          example_request 'Update an idea with an extra field' do
+            assert_status 200
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+          end
+        end
+      end
+
+      context 'when the field value is not given' do
+        let(:custom_field_values) { { 'extra_field' => nil } }
+
+        patch 'web_api/v1/ideas/:id' do
+          example_request 'Update an idea with an extra field' do
+            assert_status 422
+            json_response = json_parse(response_body)
+            errors = json_response.dig(:errors, :custom_field_values)
+            expect(errors.size).to eq 1
+            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+          end
+        end
       end
     end
   end
