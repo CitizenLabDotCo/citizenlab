@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -33,7 +33,7 @@ const ContentBuilderMobileView = React.forwardRef<
         {/* Phone Container */}
         <Box
           height="620px"
-          width="400px"
+          width="360px"
           border="solid black"
           borderWidth="40px 20px 20px 20px"
           borderRadius="30px"
@@ -46,7 +46,7 @@ const ContentBuilderMobileView = React.forwardRef<
             ref={ref}
             src={`/${locale}/projects/${project?.attributes.slug}`}
             height="560px"
-            width="360px"
+            width="320px"
             border="none"
             borderRadius="3px"
           />
@@ -56,4 +56,4 @@ const ContentBuilderMobileView = React.forwardRef<
   );
 });
 
-export default ContentBuilderMobileView;
+export default memo(ContentBuilderMobileView);
