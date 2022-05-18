@@ -473,7 +473,7 @@ module AdminApi
               'updated_at'         => text_image.updated_at.to_s
             }
           end,
-          'custom_field_values'    => i.custom_field_values
+          'custom_field_values' => i.custom_field_values
         }
         store_ref yml_idea, i.id, :idea
         yml_idea
