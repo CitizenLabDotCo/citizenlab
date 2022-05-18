@@ -148,13 +148,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
     mark_custom_field_values_to_clear!
 
-    idea_params.to_h
-    idea_params[:custom_field_values] = @idea.custom_field_values.merge(idea_params[:custom_field_values] || {})
-    if idea_params[:custom_field_values]
-      CustomFieldService.new.cleanup_custom_field_values! idea_params[:custom_field_values]
-    end
-
-    @idea.assign_attributes idea_params
+    update_params = idea_params.to_h
+    update_params[:custom_field_values] = @idea.custom_field_values.merge(update_params[:custom_field_values] || {})
+    CustomFieldService.new.cleanup_custom_field_values! update_params[:custom_field_values]
+    @idea.assign_attributes update_params
     authorize @idea
     verify_profanity @idea
 

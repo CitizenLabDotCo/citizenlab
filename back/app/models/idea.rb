@@ -89,7 +89,7 @@ class Idea < ApplicationRecord
       CustomFieldService.new.fields_to_json_schema(extra_fields)
     },
     message: ->(errors) { errors }
-  }, if: %i[custom_field_values_changed?]
+  }
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
