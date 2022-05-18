@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
 ## 17-05-22
 
 ### Fixed
