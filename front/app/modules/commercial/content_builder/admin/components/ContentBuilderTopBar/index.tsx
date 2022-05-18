@@ -149,6 +149,7 @@ const ContentBuilderTopBar = ({
           )}
         </Box>
         <Toggle
+          id="e2e-mobile-preview-toggle"
           label={<FormattedMessage {...messages.mobilePreview} />}
           checked={mobilePreviewEnabled}
           onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
@@ -160,7 +161,7 @@ const ContentBuilderTopBar = ({
           processing={loading}
           onClick={handleSave}
           data-testid="contentBuilderTopBarSaveButton"
-          ml="12px"
+          ml="24px"
         >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
