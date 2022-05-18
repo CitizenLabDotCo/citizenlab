@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class ThresholdReachedForAdminMailerPreview < ActionMailer::Preview
     def campaign_mail

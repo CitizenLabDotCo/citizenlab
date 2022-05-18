@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Moderation
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InitiativeSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :slug, :publication_status, :upvotes_count, :comments_count, :official_feedbacks_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :expires_at, :votes_needed
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddSurveyIdAndSurveyServiceToParticipationContext < ActiveRecord::Migration[5.1]
   def change
     add_column :phases, :survey_embed_url, :string, default: nil, null: true

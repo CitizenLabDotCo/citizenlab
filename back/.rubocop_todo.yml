@@ -775,13 +775,6 @@ Style/ClassVars:
     - 'engines/commercial/user_custom_fields/app/controllers/user_custom_fields/web_api/v1/stats_users_controller.rb'
     - 'engines/free/volunteering/app/services/volunteering/xlsx_service.rb'
 
-# Offense count: 1835
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 # Offense count: 97
 # Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
 Style/GuardClause:

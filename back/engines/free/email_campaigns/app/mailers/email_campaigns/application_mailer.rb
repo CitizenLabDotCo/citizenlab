@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class ApplicationMailer < ApplicationMailer
     layout 'campaign_mailer'

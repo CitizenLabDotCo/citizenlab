@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeStatusService
   MANUAL_TRANSITIONS = {
     'proposed' => {

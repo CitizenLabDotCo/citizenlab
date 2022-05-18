@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateProjectHolderOrderings < ActiveRecord::Migration[6.0]
   def change
     create_table :project_holder_orderings, id: :uuid do |t|

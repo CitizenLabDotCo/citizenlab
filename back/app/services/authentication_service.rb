@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthenticationService
   @all_methods = {
     'facebook' => OmniauthMethods::Facebook.new,

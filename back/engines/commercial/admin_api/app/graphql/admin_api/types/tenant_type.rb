@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::TenantType < GraphQL::Schema::Object
     description 'A CitizenLab platform'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TrendingIdeaService
   def filter_trending(ideas = Idea.all)
     with_trending_score(ideas)

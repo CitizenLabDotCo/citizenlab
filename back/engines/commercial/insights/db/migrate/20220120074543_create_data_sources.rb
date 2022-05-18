@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDataSources < ActiveRecord::Migration[6.1]
   # The scope of Insights analyses is broadened to be able to support inputs from multiple data
   # sources. The +scope_id+ attribute/column of views (that references a Project) is now

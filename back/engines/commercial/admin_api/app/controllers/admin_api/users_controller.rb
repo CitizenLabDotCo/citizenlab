@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class UsersController < AdminApiController
     before_action :set_user, only: %i[update show]

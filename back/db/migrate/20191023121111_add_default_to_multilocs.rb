@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDefaultToMultilocs < ActiveRecord::Migration[5.2]
   def change
     change_column_default :groups, :title_multiloc, {}

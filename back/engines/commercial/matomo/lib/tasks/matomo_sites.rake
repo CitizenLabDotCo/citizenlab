@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :matomo_sites do
   desc "Migration task : creates a matomo site for each tenant and register it in the tenant's settings"
   task setup_matomo_site_for_each_tenant: :environment do |_t, _args|

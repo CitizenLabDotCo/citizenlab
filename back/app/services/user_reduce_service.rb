@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserReduceService
   # Service to automatically reduce the number of
   # users.

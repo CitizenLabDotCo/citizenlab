@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Moderation
   class ModerationPolicy < ApplicationPolicy
     class Scope

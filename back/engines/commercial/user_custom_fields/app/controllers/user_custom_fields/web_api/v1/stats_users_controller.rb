@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserCustomFields
   module WebApi
     module V1
