@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // other
-import { timeout } from '..';
+import { TIMEOUT } from '..';
 
 export const StyledForm = styled.form`
   width: 500px;
@@ -45,7 +45,7 @@ export const ParticipationContextWrapper = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
-  transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: opacity ${TIMEOUT}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   ::before,
   ::after {
