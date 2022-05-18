@@ -10,7 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // typings
-import { PublicationStatus } from '..';
+import { PublicationStatus } from 'services/projects';
 
 interface Props {
   publicationStatus: PublicationStatus;
