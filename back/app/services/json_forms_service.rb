@@ -7,36 +7,35 @@ class JsonFormsService
   include JsonFormsUserOverrides
 
   def initialize
-    @multiloc_service = MultilocService.new
+    @configuration = AppConfiguration.instance
+    @multiloc_service = MultilocService.new app_configuration: @configuration
   end
 
-  def ui_and_json_multiloc_schemas(configuration, fields, current_user)
+  def ui_and_json_multiloc_schemas(fields, current_user)
     resource_types = fields.map(&:resource_type).uniq
     raise "Can't render a UI schema for fields belonging to different resource types" if resource_types.many?
     return nil if resource_types.empty?
 
-    allowed_fields = allowed_fields(configuration, fields, current_user)
-    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, allowed_fields)
-    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, allowed_fields)
+    allowed_fields = allowed_fields(fields, current_user)
+    json_schema_multiloc = fields_to_json_schema_multiloc(allowed_fields)
+    ui_schema_multiloc = fields_to_ui_schema_multiloc(allowed_fields)
 
     { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
   end
 
   private
 
-  def allowed_fields(configuration, fields, current_user)
+  def allowed_fields(fields, current_user)
     override_method = "#{fields.first.resource_type.underscore}_allowed_fields"
     if respond_to?(override_method, true)
-      send(override_method, configuration, fields, current_user)
+      send(override_method, fields, current_user)
     else
       fields
     end
   end
 
-  # @param [AppConfiguration] configuration
-  # @return [Hash{String => Object}]
-  def fields_to_json_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').index_with do |locale|
+  def fields_to_json_schema_multiloc(fields)
+    @configuration.settings('core', 'locales').index_with do |locale|
       override_method = "#{fields.first.resource_type.underscore}_to_json_schema"
       if respond_to?(override_method, true)
         send(override_method, fields, locale)
@@ -64,10 +63,8 @@ class JsonFormsService
     end
   end
 
-  # @param [AppConfiguration] configuration
-  # @return [Hash{String => Object}]
-  def fields_to_ui_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').index_with do |locale|
+  def fields_to_ui_schema_multiloc(fields)
+    @configuration.settings('core', 'locales').index_with do |locale|
       fields_to_ui_schema(fields, locale)
     end
   end
@@ -179,7 +176,7 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+      properties: @configuration.settings('core', 'locales').index_with do |_locale|
         {
             type: 'string'
           }
@@ -191,7 +188,7 @@ class JsonFormsService
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
+      elements: @configuration.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
           scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
@@ -208,7 +205,7 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+      properties: @configuration.settings('core', 'locales').index_with do |_locale|
         {
             type: 'string'
           }
@@ -220,7 +217,7 @@ class JsonFormsService
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
+      elements: @configuration.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
           scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",
@@ -237,7 +234,7 @@ class JsonFormsService
     {
       type: 'object',
       minProperties: 1,
-      properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
+      properties: @configuration.settings('core', 'locales').index_with do |_locale|
         {
             type: 'string'
           }
@@ -249,7 +246,7 @@ class JsonFormsService
     {
       type: 'VerticalLayout',
       options: { render: 'multiloc' },
-      elements: AppConfiguration.instance.settings('core', 'locales').map do |map_locale|
+      elements: @configuration.settings('core', 'locales').map do |map_locale|
         {
           type: 'Control',
           scope: "#{previous_scope || '#/properties/'}#{field.key}/properties/#{locale}",

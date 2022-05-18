@@ -178,16 +178,16 @@ module JsonFormsIdeasOverrides
 
   # Some custom fields have to exist but are only shown to admins, like the author picker when the feature is enabled and the budget fields in pb contexts. (not to confuse with the proposed_budget visible to everyone, when enabled, whatever the feature flag, which is weird, but seems to be the expected behaviour).
   # A good solution would be to add this info to the CustomField model. Like adminOnly and a feature name to enable or disable automatically, but this would have to be done right to build the foundations of a permission system informing who can modify the field, access the data filled in through the field, or fill the field in themselves, and that was out of scope.
-  def custom_form_allowed_fields(configuration, fields, current_user)
+  def custom_form_allowed_fields(fields, current_user)
     fields.filter do |f|
       (f.code != 'author_id' && f.code != 'budget') || (
         f.code == 'author_id' &&
-        configuration.feature_activated?('idea_author_change') &&
+        AppConfiguration.instance.feature_activated?('idea_author_change') &&
         !current_user.nil? &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user)
       ) || (
         (f.code == 'budget' &&
-        configuration.feature_activated?('participatory_budgeting') &&
+        AppConfiguration.instance.feature_activated?('participatory_budgeting') &&
         !current_user.nil? &&
         UserRoleService.new.can_moderate_project?(f.resource.project, current_user) && (
           f.resource.project&.process_type == 'continuous' &&

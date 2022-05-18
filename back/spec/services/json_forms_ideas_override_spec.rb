@@ -21,7 +21,7 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     it 'only includes the topics associated with the current project' do
-      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+      schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'topic_ids', :items, :oneOf).pluck(:const)).to match @projects_allowed_input_topics.map(&:topic_id)
     end
@@ -42,7 +42,7 @@ describe 'JsonFormsService ideas overrides' do
      end
 
     it 'is not included for normal users' do
-      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
+      schema = service.ui_and_json_multiloc_schemas(continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'budget')).to be_nil
     end
@@ -51,25 +51,25 @@ describe 'JsonFormsService ideas overrides' do
       before { user.update!(roles: [{ type: 'admin' }]) }
 
       it 'is included in a project that has a PB phase' do
-        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline_pb_project_fields, user)[:json_schema_multiloc][locale]
+        schema = service.ui_and_json_multiloc_schemas(timeline_pb_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'budget')).to match({ type: 'number' })
       end
 
       it 'is not included in a project that has no PB phase' do
-        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline_ideas_project_fields, user)[:json_schema_multiloc][locale]
+        schema = service.ui_and_json_multiloc_schemas(timeline_ideas_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'budget')).to be_nil
       end
 
       it 'is included in a continuous PB project' do
-        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
+        schema = service.ui_and_json_multiloc_schemas(continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'budget')).to match({ type: 'number' })
       end
 
       it 'is not included in a continuous ideation project' do
-        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'budget')).to be_nil
       end
@@ -80,7 +80,7 @@ describe 'JsonFormsService ideas overrides' do
     before { SettingsService.new.activate_feature! 'idea_author_change' }
 
     it 'is not inluded for normal users, irrespective of the feature flag' do
-      schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+      schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'author_id')).to be_nil
     end
@@ -89,14 +89,14 @@ describe 'JsonFormsService ideas overrides' do
       before { user.update!(roles: [{ type: 'admin' }]) }
 
       it 'is included when the feature is active' do
-        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'author_id')).to match({ type: 'string' })
       end
 
       it 'is not included when the feature is not active' do
         SettingsService.new.deactivate_feature! 'idea_author_change'
-        schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:json_schema_multiloc][locale]
+        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
         expect(JSON::Validator.validate!(metaschema, schema)).to be true
         expect(schema.dig(:properties, 'author_id')).to be_nil
       end
@@ -112,12 +112,12 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     it 'uses the right input_term in a continuous project' do
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(continuous, user)[:ui_schema_multiloc][locale]
       expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
     end
 
     it 'uses the right input_term in a timeline project' do
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, timeline, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(timeline, user)[:ui_schema_multiloc][locale]
       expect(ui_schema.dig(:options, :inputTerm)).to eq 'option'
     end
 
@@ -127,7 +127,7 @@ describe 'JsonFormsService ideas overrides' do
           f.update(enabled: false)
         end
       end
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(continuous, user)[:ui_schema_multiloc][locale]
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'details' }).to be false
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
@@ -138,20 +138,20 @@ describe 'JsonFormsService ideas overrides' do
           f.update(enabled: false)
         end
       end
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(continuous, user)[:ui_schema_multiloc][locale]
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'attachments' }).to be false
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
 
     it 'does not include an extra category when there are only built-in fields' do
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(fields, user)[:ui_schema_multiloc][locale]
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be false
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
     end
 
     it 'includes all non built-in fields in an extra category' do
       fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(fields, user)[:ui_schema_multiloc][locale]
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'extra' }).to be true
       expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
       expect(ui_schema[:elements].any? { |e| e[:options][:id] == 'mainContent' }).to be true
@@ -159,7 +159,7 @@ describe 'JsonFormsService ideas overrides' do
 
     it 'gives all non built-in fields a nested path' do
       fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
-      ui_schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, user)[:ui_schema_multiloc][locale]
+      ui_schema = service.ui_and_json_multiloc_schemas(fields, user)[:ui_schema_multiloc][locale]
       expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
       expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/custom_field_values/properties/extra_field'
     end

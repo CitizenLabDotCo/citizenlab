@@ -100,7 +100,7 @@ module UserCustomFields
     end
 
     def ui_and_json_multiloc_schemas(fields, current_user)
-      json_forms_service.ui_and_json_multiloc_schemas(AppConfiguration.instance, fields, current_user)
+      json_forms_service.ui_and_json_multiloc_schemas(fields, current_user)
     end
 
     def custom_field_service
