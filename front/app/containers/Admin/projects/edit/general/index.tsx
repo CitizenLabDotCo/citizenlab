@@ -1,12 +1,7 @@
-import React, { PureComponent, FormEvent } from 'react';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
-import { switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isEmpty, get, set } from 'lodash-es';
-import { adopt } from 'react-adopt';
-import deepMerge from 'deepmerge';
-import eventEmitter from 'utils/eventEmitter';
-import { validateSlug } from 'utils/textUtils';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import React, { useState } from 'react';
+import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { IProjectFormState } from 'services/projects';
+import { getSelectedTopicIds } from './utils/state';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -35,550 +30,437 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
+import useProject from 'hooks/useProject';
+import useAuthUser from 'hooks/useAuthUser';
+
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// i18n
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import eventEmitter from 'utils/eventEmitter';
 
-// services
-import { projectByIdStream, IProjectFormState } from 'services/projects';
-import { areasStream } from 'services/areas';
-import { localeStream } from 'services/locale';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-
-// resources
-import GetFeatureFlag, {
-  GetFeatureFlagChildProps,
-} from 'resources/GetFeatureFlag';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
-// utils
-import {
-  getDefaultState,
-  initSubscriptions,
-  getSelectedTopicIds,
-} from './utils/state';
-import save from './utils/save';
-import validate from './utils/validate';
+import { validateSlug } from 'utils/textUtils';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
-export const timeout = 350;
+export const TIMEOUT = 350;
 
-export interface InputProps {}
+interface Props {}
 
-interface DataProps {
-  isProjectFoldersEnabled: GetFeatureFlagChildProps;
-  authUser: GetAuthUserChildProps;
-  project: GetProjectChildProps;
-}
+const AdminProjectEditGeneral = ({
+  // projectId can also be undefined
+  params: { projectId },
+  intl: { formatMessage },
+}: Props & InjectedIntlProps & WithRouterProps) => {
+  const project = useProject({ projectId });
+  const appConfiguration = useAppConfiguration();
+  const authUser = useAuthUser();
+  const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
+  const [processing, setProcessing] =
+    useState<IProjectFormState['processing']>(false);
+  // still used?
+  const [apiErrors, setApiErrors] = useState({});
+  const [projectAttributesDiff, setProjectAttributesDiff] = useState<
+    IProjectFormState['projectAttributesDiff']
+  >({
+    admin_publication_attributes: {
+      publication_status: 'draft',
+    },
+  });
+  const [titleError, setTitleError] =
+    useState<IProjectFormState['titleError']>(null);
+  const [projectType, setProjectType] =
+    useState<IProjectFormState['projectType']>('timeline');
+  const [projectHeaderImage, setProjectHeaderImage] =
+    useState<IProjectFormState['projectHeaderImage']>(null);
+  const [projectFiles, setProjectFiles] = useState<
+    IProjectFormState['projectFiles']
+  >([]);
+  const [projectFilesToRemove, setProjectFilesToRemove] = useState<
+    IProjectFormState['projectFilesToRemove']
+  >([]);
+  const [projectImages, setProjectImages] = useState<
+    IProjectFormState['projectImages']
+  >([]);
+  const [projectImagesToRemove, setProjectImagesToRemove] = useState<
+    IProjectFormState['projectImagesToRemove']
+  >([]);
+  const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
+  const [showSlugErrorMessage, setShowSlugErrorMessage] =
+    useState<IProjectFormState['showSlugErrorMessage']>(false);
+  const [publicationStatus, setPublicationStatus] =
+    useState<IProjectFormState['publicationStatus']>('draft');
+  const [areaType, setAreaType] =
+    useState<IProjectFormState['areaType']>('all');
+  const [areasOptions, setAreasOptions] = useState<
+    IProjectFormState['areasOptions']
+  >([]);
 
-interface Props extends InputProps, DataProps {}
-
-export type onProjectFormStateChange = (fieldUpdates: {
-  [fieldPath: string]: any;
-}) => void;
-
-export type PublicationStatus = 'draft' | 'published' | 'archived';
-
-class AdminProjectEditGeneral extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps,
-  IProjectFormState
-> {
-  projectId$: BehaviorSubject<string | null>;
-  processing$: BehaviorSubject<boolean>;
-  subscriptions: Subscription[] = [];
-
-  constructor(props) {
-    super(props);
-
-    this.state = getDefaultState();
-
-    this.projectId$ = new BehaviorSubject(null);
-    this.processing$ = new BehaviorSubject(false);
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentAppConfigurationStream().observable;
-    const areas$ = areasStream().observable;
-    const project$ = this.projectId$.pipe(
-      distinctUntilChanged(),
-      switchMap((projectId) =>
-        projectId ? projectByIdStream(projectId).observable : of(null)
-      )
-    );
-
-    this.projectId$.next(
-      get(this.props, 'params.projectId', null) as string | null
-    );
-
-    this.subscriptions = initSubscriptions.apply(this, [
-      locale$,
-      currentTenant$,
-      areas$,
-      project$,
-      this.processing$,
-    ]);
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (
-      get(this.props, 'params.projectId') !== get(prevProps, 'params.projectId')
-    ) {
-      this.projectId$.next(get(this.props, 'params.projectId', null));
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-  }
-
-  handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        title_multiloc: titleMultiloc,
-      },
-      titleError: null,
+  const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      title_multiloc: titleMultiloc,
     }));
+    setTitleError(null);
   };
 
-  handleParticipationContextOnChange = (
+  const handleParticipationContextOnChange = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        ...participationContextConfig,
-      },
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      ...participationContextConfig,
     }));
   };
 
-  handleProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
-    this.setState(({ projectAttributesDiff }) => ({
-      projectType,
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        process_type: projectType,
-      },
+  const handleProjectTypeOnChange = (
+    projectType: 'continuous' | 'timeline'
+  ) => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      process_type: projectType,
     }));
+    setSubmitState('enabled');
+    setProjectType(projectType);
   };
 
-  handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    this.setState(({ projectAttributesDiff }) => {
-      // const newHeaderBg = newHeader[0].base64;
+  const handleHeaderOnAdd = (newHeader: UploadFile[]) => {
+    // const newHeaderBg = newHeader[0].base64;
 
-      return {
-        submitState: 'enabled',
-        projectAttributesDiff: {
-          ...projectAttributesDiff,
-          // header_bg: newHeader[0].base64,
-        },
-        projectHeaderImage: [newHeader[0]],
-      };
-    });
+    setSubmitState('enabled');
+    // setProjectAttributesDiff((projectAttributesDiff) => ({
+    //   ...projectAttributesDiff,
+    //   // don't think this is right
+    //   header_bg: newHeaderBg,
+    // }));
+    setProjectHeaderImage([newHeader[0]]);
   };
 
-  handleHeaderOnRemove = async () => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        header_bg: null,
-      },
-      projectHeaderImage: null,
+  const handleHeaderOnRemove = async () => {
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      header_bg: null,
     }));
+    setSubmitState('enabled');
+    setProjectHeaderImage(null);
   };
 
-  handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
-    this.setState((prevState) => {
-      const isDuplicate = prevState.projectFiles.some(
+  const handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
+    let isDuplicate = false;
+
+    setProjectFiles((projectFiles) => {
+      isDuplicate = projectFiles.some(
         (file) => file.base64 === newProjectFile.base64
       );
-      const projectFiles = isDuplicate
-        ? prevState.projectFiles
-        : [...prevState.projectFiles, newProjectFile];
-      const submitState = isDuplicate ? prevState.submitState : 'enabled';
 
-      return {
-        projectFiles,
-        submitState,
-      };
+      return isDuplicate ? projectFiles : [...projectFiles, newProjectFile];
     });
+    setSubmitState((submitState) => (isDuplicate ? submitState : 'enabled'));
   };
 
-  handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
-    this.setState(({ projectFiles, projectFilesToRemove }) => ({
-      submitState: 'enabled',
-      projectFiles: projectFiles.filter(
-        (file) => file.base64 !== projectFileToRemove.base64
-      ),
-      projectFilesToRemove: [...projectFilesToRemove, projectFileToRemove],
-    }));
+  const handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
+    setSubmitState('enabled');
+    setProjectFiles((projectFiles) =>
+      projectFiles.filter((file) => file.base64 !== projectFileToRemove.base64)
+    );
+    setProjectFilesToRemove((projectFilesToRemove) => [
+      ...projectFilesToRemove,
+      projectFileToRemove,
+    ]);
   };
 
-  handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
-    this.setState({
-      projectImages,
-      submitState: 'enabled',
-    });
+  const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
+    setSubmitState('enabled');
+    setProjectImages(projectImages);
   };
 
-  handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
-    this.setState(({ projectImages, projectImagesToRemove }) => ({
-      submitState: 'enabled',
-      projectImages: projectImages.filter(
+  const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
+    setProjectImages((projectImages) => {
+      return projectImages.filter(
         (image) => image.base64 !== projectImageToRemove.base64
-      ),
-      projectImagesToRemove: [...projectImagesToRemove, projectImageToRemove],
+      );
+    });
+    setProjectFilesToRemove((projectImagesToRemove) => {
+      return [...projectImagesToRemove, projectImageToRemove];
+    });
+    setSubmitState('enabled');
+  };
+
+  const handleTopicsChange = (topicIds: string[]) => {
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      topic_ids: topicIds,
     }));
   };
 
-  handleTopicsChange = (topicIds: string[]) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        topic_ids: topicIds,
-      },
+  const handleAreaTypeChange = (areaType: 'all' | 'selection') => {
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      area_ids: areaType === 'all' ? [] : projectAttributesDiff.area_ids,
+    }));
+    setAreaType(areaType);
+  };
+
+  const handleAreaSelectionChange = (values: IOption[]) => {
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      area_ids: values.map((value) => value.value),
     }));
   };
 
-  handleAreaTypeChange = (value: 'all' | 'selection') => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      areaType: value,
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        area_ids: value === 'all' ? [] : projectAttributesDiff.area_ids,
-      },
-    }));
-  };
-
-  handleAreaSelectionChange = (values: IOption[]) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        area_ids: values.map((value) => value.value),
-      },
-    }));
-  };
-
-  onSubmit = (event: FormEvent<any>) => {
+  const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    const { projectType } = this.state;
 
     // if it's a new project of type continuous
     if (projectType === 'continuous') {
       eventEmitter.emit('getParticipationContext');
     } else {
-      this.save();
+      save();
     }
   };
 
-  handleParcticipationContextOnSubmit = (
+  const handleParcticipationContextOnSubmit = (
     participationContextConfig: IParticipationContextConfig
   ) => {
-    this.save(participationContextConfig);
+    save(participationContextConfig);
   };
 
-  handleStatusChange = (value: PublicationStatus) => {
-    this.setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      publicationStatus: value,
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        admin_publication_attributes: {
-          publication_status: value,
-        },
+  const handleStatusChange = (
+    publicationStatus: IProjectFormState['publicationStatus']
+  ) => {
+    setSubmitState('enabled');
+    setPublicationStatus(publicationStatus);
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      admin_publication_attributes: {
+        publication_status: publicationStatus,
       },
     }));
   };
 
-  handleSlugOnChange = (slug: string) => {
-    this.setState(({ projectAttributesDiff }) => {
+  const handleSlugOnChange = (slug: string) => {
+    setProjectAttributesDiff((projectAttributesDiff) => {
       return {
+        ...projectAttributesDiff,
         slug,
-        projectAttributesDiff: {
-          ...projectAttributesDiff,
-          slug,
-        },
       };
     });
+    setSlug(slug);
+    // add submitState enabled?
 
-    this.validateProjectSlug(slug);
+    validateProjectSlug(slug);
   };
 
-  validate = () => {
-    const { formatMessage } = this.props.intl;
-    const { currentTenant, projectAttributesDiff, project } = this.state;
+  // Does validate get used?
 
-    const { hasErrors, titleError } = validate(
-      currentTenant,
-      projectAttributesDiff,
-      project,
-      formatMessage
-    );
+  // const validate = () => {
+  //   const { hasErrors, titleError } = validate(
+  //     appConfiguration,
+  //     projectAttributesDiff,
+  //     project,
+  //     formatMessage
+  //   );
 
-    this.setState({
-      titleError: !isEmpty(titleError) ? titleError : null,
-    });
+  //   setTitleError(!isEmpty(titleError) ? titleError : null)
 
-    return !hasErrors;
-  };
+  //   return !hasErrors;
+  // };
 
-  save = async (
+  const save = async (
     participationContextConfig: IParticipationContextConfig | null = null
   ) => {
     await save.apply(this, [participationContextConfig]);
   };
 
-  validateProjectSlug = (slug: string) => {
+  const validateProjectSlug = (slug: string) => {
     const isSlugValid = validateSlug(slug);
-
-    this.setState({
-      showSlugErrorMessage: !isSlugValid,
-      submitState: isSlugValid ? 'enabled' : 'disabled',
-    });
+    setSubmitState(isSlugValid ? 'enabled' : 'disabled');
+    setShowSlugErrorMessage(!isSlugValid);
   };
 
-  handleFieldUpdate = (fieldUpdates: { [fieldPath: string]: any }) => {
-    this.setState((prevState) => {
-      const newState = { ...prevState };
-      set(newState, 'submitState', 'enabled');
-      for (const fieldPath in fieldUpdates) {
-        set(newState, fieldPath, fieldUpdates[fieldPath]);
-      }
-      return deepMerge(prevState, newState);
-    });
-  };
-
-  render() {
-    const {
-      publicationStatus,
-      projectType,
-      titleError,
-      projectHeaderImage,
-      projectImages,
-      projectFiles,
-      processing,
+  const handleProjectAttributeDiffOnChange = (
+    projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+    submitState: ISubmitState
+  ) => {
+    setProjectAttributesDiff((currentProjectAttributesDiff) => ({
+      ...currentProjectAttributesDiff,
       projectAttributesDiff,
-      areasOptions,
-      areaType,
-      submitState,
-      apiErrors,
-      slug,
-      showSlugErrorMessage,
-      currentTenant,
-    } = this.state;
+    }));
+    setSubmitState(submitState);
+  };
 
-    const {
-      authUser,
-      project,
-      params: { projectId },
-    } = this.props;
-    const isNewProject = !projectId;
-    const editExistingProject = projectId && !isNilOrError(project);
+  const projectAttrs = {
+    ...(!isNilOrError(project) ? project.attributes : {}),
+    ...projectAttributesDiff,
+  };
+  const areaIds =
+    projectAttrs.area_ids ||
+    (!isNilOrError(project) &&
+      project.relationships.areas.data.map((area) => area.id)) ||
+    [];
+  const areasValues = areaIds
+    .filter((id) => {
+      return areasOptions.some((areaOption) => areaOption.value === id);
+    })
+    .map((id) => {
+      return areasOptions.find(
+        (areaOption) => areaOption.value === id
+      ) as IOption;
+    });
 
-    if (!isNilOrError(authUser) && (isNewProject || editExistingProject)) {
-      const projectAttrs = {
-        ...(!isNilOrError(project) ? project.attributes : {}),
-        ...projectAttributesDiff,
-      };
-      const areaIds =
-        projectAttrs.area_ids ||
-        (!isNilOrError(project) &&
-          project.relationships.areas.data.map((area) => area.id)) ||
-        [];
-      const areasValues = areaIds
-        .filter((id) => {
-          return areasOptions.some((areaOption) => areaOption.value === id);
-        })
-        .map((id) => {
-          return areasOptions.find(
-            (areaOption) => areaOption.value === id
-          ) as IOption;
-        });
+  const selectedTopicIds = getSelectedTopicIds(
+    projectAttributesDiff,
+    !isNilOrError(project) ? project : null
+  );
 
-      const selectedTopicIds = getSelectedTopicIds(
-        projectAttributesDiff,
-        !isNilOrError(project) ? project : null
-      );
+  return (
+    <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
+      <Section>
+        {projectId && (
+          <>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleGeneral} />
+            </SectionTitle>
+            <SectionDescription>
+              <FormattedMessage {...messages.subtitleGeneral} />
+            </SectionDescription>
+          </>
+        )}
 
-      return (
-        <StyledForm
-          className="e2e-project-general-form"
-          onSubmit={this.onSubmit}
-        >
-          <Section>
-            {get(this.props, 'params.projectId') && (
-              <>
-                <SectionTitle>
-                  <FormattedMessage {...messages.titleGeneral} />
-                </SectionTitle>
-                <SectionDescription>
-                  <FormattedMessage {...messages.subtitleGeneral} />
-                </SectionDescription>
-              </>
-            )}
+        <ProjectStatusPicker
+          publicationStatus={publicationStatus}
+          handleStatusChange={handleStatusChange}
+        />
 
-            <ProjectStatusPicker
-              publicationStatus={publicationStatus}
-              handleStatusChange={this.handleStatusChange}
+        <ProjectNameInput
+          titleMultiloc={projectAttrs.title_multiloc}
+          titleError={titleError}
+          apiErrors={apiErrors}
+          handleTitleMultilocOnChange={handleTitleMultilocOnChange}
+        />
+
+        {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
+        {!isNilOrError(project) && project.attributes.slug && (
+          <SlugInput
+            slug={slug}
+            resource="project"
+            apiErrors={apiErrors}
+            showSlugErrorMessage={showSlugErrorMessage}
+            handleSlugOnChange={handleSlugOnChange}
+          />
+        )}
+
+        <StyledSectionField>
+          {!project ? (
+            <ProjectTypePicker
+              projectType={projectType}
+              handleProjectTypeOnChange={handleProjectTypeOnChange}
             />
+          ) : (
+            <>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectTypeTitle} />
+              </SubSectionTitle>
+              <ProjectType>
+                {<FormattedMessage {...messages[projectType]} />}
+              </ProjectType>
+            </>
+          )}
 
-            <ProjectNameInput
-              titleMultiloc={projectAttrs.title_multiloc}
-              titleError={titleError}
-              apiErrors={this.state.apiErrors}
-              handleTitleMultilocOnChange={this.handleTitleMultilocOnChange}
-            />
-
-            {/* Only show this field when slug is already saved to project (i.e. not when creating a new project, which uses this form as well) */}
-            {currentTenant &&
-              !isNilOrError(project) &&
-              project.attributes.slug && (
-                <SlugInput
-                  slug={slug}
-                  resource="project"
+          {!project && (
+            <CSSTransition
+              classNames="participationcontext"
+              in={projectType === 'continuous'}
+              timeout={TIMEOUT}
+              mountOnEnter={true}
+              unmountOnExit={true}
+              enter={true}
+              exit={false}
+            >
+              <ParticipationContextWrapper>
+                <ParticipationContext
+                  onSubmit={handleParcticipationContextOnSubmit}
+                  onChange={handleParticipationContextOnChange}
                   apiErrors={apiErrors}
-                  showSlugErrorMessage={showSlugErrorMessage}
-                  handleSlugOnChange={this.handleSlugOnChange}
                 />
-              )}
+              </ParticipationContextWrapper>
+            </CSSTransition>
+          )}
+        </StyledSectionField>
 
-            <StyledSectionField>
-              {!project ? (
-                <ProjectTypePicker
-                  projectType={projectType}
-                  handleProjectTypeOnChange={this.handleProjectTypeOnChange}
-                />
-              ) : (
-                <>
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.projectTypeTitle} />
-                  </SubSectionTitle>
-                  <ProjectType>
-                    {<FormattedMessage {...messages[projectType]} />}
-                  </ProjectType>
-                </>
-              )}
+        {!isNilOrError(project) && projectType === 'continuous' && (
+          <ParticipationContext
+            projectId={project.id}
+            onSubmit={handleParcticipationContextOnSubmit}
+            onChange={handleParticipationContextOnChange}
+            apiErrors={apiErrors}
+          />
+        )}
 
-              {!project && (
-                <CSSTransition
-                  classNames="participationcontext"
-                  in={projectType === 'continuous'}
-                  timeout={timeout}
-                  mountOnEnter={true}
-                  unmountOnExit={true}
-                  enter={true}
-                  exit={false}
-                >
-                  <ParticipationContextWrapper>
-                    <ParticipationContext
-                      onSubmit={this.handleParcticipationContextOnSubmit}
-                      onChange={this.handleParticipationContextOnChange}
-                      apiErrors={apiErrors}
-                    />
-                  </ParticipationContextWrapper>
-                </CSSTransition>
-              )}
-            </StyledSectionField>
+        <TopicInputs
+          selectedTopicIds={selectedTopicIds}
+          onChange={handleTopicsChange}
+        />
 
-            {!isNilOrError(project) && projectType === 'continuous' && (
-              <ParticipationContext
-                projectId={project.id}
-                onSubmit={this.handleParcticipationContextOnSubmit}
-                onChange={this.handleParticipationContextOnChange}
-                apiErrors={apiErrors}
-              />
-            )}
+        <GeographicAreaInputs
+          areaType={areaType}
+          areasOptions={areasOptions}
+          areasValues={areasValues}
+          handleAreaTypeChange={handleAreaTypeChange}
+          handleAreaSelectionChange={handleAreaSelectionChange}
+        />
 
-            <TopicInputs
-              selectedTopicIds={selectedTopicIds}
-              onChange={this.handleTopicsChange}
-            />
+        <Outlet
+          id="app.components.AdminPage.projects.form.additionalInputs.inputs"
+          projectAttrs={projectAttrs}
+          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+        />
 
-            <GeographicAreaInputs
-              areaType={areaType}
-              areasOptions={areasOptions}
-              areasValues={areasValues}
-              handleAreaTypeChange={this.handleAreaTypeChange}
-              handleAreaSelectionChange={this.handleAreaSelectionChange}
-            />
+        <HeaderImageDropzone
+          projectHeaderImage={projectHeaderImage}
+          handleHeaderOnAdd={handleHeaderOnAdd}
+          handleHeaderOnRemove={handleHeaderOnRemove}
+        />
 
-            <Outlet
-              id="app.components.AdminPage.projects.form.additionalInputs.inputs"
-              projectAttrs={projectAttrs}
-              onChange={this.handleFieldUpdate}
-              authUser={authUser}
-            />
+        <ProjectImageDropzone
+          projectImages={projectImages}
+          handleProjectImagesOnAdd={handleProjectImagesOnAdd}
+          handleProjectImageOnRemove={handleProjectImageOnRemove}
+        />
 
-            <HeaderImageDropzone
-              projectHeaderImage={projectHeaderImage}
-              handleHeaderOnAdd={this.handleHeaderOnAdd}
-              handleHeaderOnRemove={this.handleHeaderOnRemove}
-            />
+        <AttachmentsDropzone
+          projectFiles={projectFiles}
+          apiErrors={apiErrors}
+          handleProjectFileOnAdd={handleProjectFileOnAdd}
+          handleProjectFileOnRemove={handleProjectFileOnRemove}
+        />
 
-            <ProjectImageDropzone
-              projectImages={projectImages}
-              handleProjectImagesOnAdd={this.handleProjectImagesOnAdd}
-              handleProjectImageOnRemove={this.handleProjectImageOnRemove}
-            />
+        <SubmitWrapper
+          loading={processing}
+          status={submitState}
+          messages={{
+            buttonSave: messages.saveProject,
+            buttonSuccess: messages.saveSuccess,
+            messageError: messages.saveErrorMessage,
+            messageSuccess: messages.saveSuccessMessage,
+          }}
+        />
+      </Section>
+    </StyledForm>
+  );
+};
 
-            <AttachmentsDropzone
-              projectFiles={projectFiles}
-              apiErrors={apiErrors}
-              handleProjectFileOnAdd={this.handleProjectFileOnAdd}
-              handleProjectFileOnRemove={this.handleProjectFileOnRemove}
-            />
-
-            <SubmitWrapper
-              loading={processing}
-              status={submitState}
-              messages={{
-                buttonSave: messages.saveProject,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Section>
-        </StyledForm>
-      );
-    }
-
-    return null;
-  }
-}
-
-const AdminProjectEditGeneralWithHocs = injectIntl(AdminProjectEditGeneral);
-const Data = adopt({
-  isProjectFoldersEnabled: <GetFeatureFlag name="project_folders" />,
-  authUser: <GetAuthUser />,
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {(dataProps: DataProps) => (
-      <AdminProjectEditGeneralWithHocs {...inputProps} {...dataProps} />
-    )}
-  </Data>
-));
+export default withRouter(injectIntl(AdminProjectEditGeneral));
