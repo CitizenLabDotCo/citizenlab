@@ -291,7 +291,67 @@ describe JsonFormsService do
                 required: [required_field.key, 'topic_ids']
               }
             },
-            ui_schema_multiloc: be_a(Hash)
+            ui_schema_multiloc: {
+              'en' => {
+                type: 'Categorization',
+                options: { formId: 'idea-form', inputTerm: 'idea' },
+                elements: [
+                  {
+                    type: 'Category',
+                    options: { id: 'details' },
+                    label: 'Details',
+                    elements: [
+                      {
+                        type: 'Control',
+                        scope: '#/properties/topic_ids',
+                        label: build_in_required_field.title_multiloc['en'],
+                        options: {
+                          description: build_in_required_field.description_multiloc['en']
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    type: 'Category',
+                    label: 'Images and Attachements',
+                    options: { id: 'attachments' },
+                    elements: [
+                      {
+                        type: 'Control',
+                        scope: '#/properties/idea_files_attributes',
+                        label: build_in_optional_field.title_multiloc['en'],
+                        options: {
+                          description: build_in_optional_field.description_multiloc['en']
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    type: 'Category',
+                    options: { id: 'extra' },
+                    label: 'Additional information',
+                    elements: [
+                      {
+                        type: 'Control',
+                        scope: "#/properties/custom_field_values/properties/#{required_field.key}",
+                        label: required_field.title_multiloc['en'],
+                        options: {
+                          description: required_field.description_multiloc['en']
+                          }
+                      },
+                      {
+                        type: 'Control',
+                        scope: "#/properties/custom_field_values/properties/#{optional_field.key}",
+                        label: optional_field.title_multiloc['en'],
+                        options: {
+                          description: optional_field.description_multiloc['en']
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
           }
         )
       end
