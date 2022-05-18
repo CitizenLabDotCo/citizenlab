@@ -14,7 +14,8 @@ import insights from '../../../assets/insightsView.png';
 import messages from '../messages';
 
 // components
-import { Button, Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
@@ -65,7 +66,6 @@ const EmptyState = ({
         {!isNilOrError(locale) && (
           <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
             <Button
-              locale={locale}
               bgColor={colors.adminTextColor}
               onClick={openCreateModal}
               mr="12px"
@@ -74,7 +74,6 @@ const EmptyState = ({
               {formatMessage(messages.emptyStateCreate)}
             </Button>
             <Button
-              locale={locale}
               buttonStyle="secondary"
               linkTo={formatMessage(messages.supportLinkUrl)}
               openLinkInNewTab
