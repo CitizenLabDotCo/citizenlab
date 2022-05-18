@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { IProjectFormState } from 'services/projects';
 import { getSelectedTopicIds } from './utils/state';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
@@ -33,6 +34,8 @@ import {
 import { withRouter, WithRouterProps } from 'utils/withRouter';
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
+import useLocalize from 'hooks/useLocalize';
+import useAreas from 'hooks/useAreas';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -50,6 +53,7 @@ import { validateSlug } from 'utils/textUtils';
 import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
+import useProjectFiles from 'hooks/useProjectFiles';
 
 export const TIMEOUT = 350;
 
@@ -60,7 +64,10 @@ const AdminProjectEditGeneral = ({
   params: { projectId },
   intl: { formatMessage },
 }: Props & InjectedIntlProps & WithRouterProps) => {
+  const localize = useLocalize();
   const project = useProject({ projectId });
+  const remoteProjectFiles = useProjectFiles(projectId);
+  const areas = useAreas();
   const appConfiguration = useAppConfiguration();
   const authUser = useAuthUser();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
@@ -103,6 +110,70 @@ const AdminProjectEditGeneral = ({
   const [areasOptions, setAreasOptions] = useState<
     IProjectFormState['areasOptions']
   >([]);
+
+  useEffect(() => {
+    (async () => {
+      if (!isNilOrError(project)) {
+        setPublicationStatus(project.attributes.publication_status);
+        setProjectType(project.attributes.process_type);
+        setAreaType(
+          project.relationships.areas.data.length > 0 ? 'selection' : 'all'
+        );
+        setSlug(project.attributes.slug);
+        setProjectAttributesDiff({
+          admin_publication_attributes: {
+            publication_status: publicationStatus,
+          },
+        });
+        const headerUrl = project.attributes.header_bg.large;
+        const projectHeaderImage = headerUrl
+          ? await convertUrlToUploadFile(headerUrl, null, null)
+          : null;
+        setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
+      }
+    })();
+  }, [project]);
+
+  useEffect(() => {
+    (async () => {
+      if (!isNilOrError(remoteProjectFiles)) {
+        const nextProjectFilesPromises = remoteProjectFiles.data.map(
+          (projectFile) => {
+            const url = projectFile.attributes.file.url;
+            const filename = projectFile.attributes.name;
+            const id = projectFile.id;
+            const projectUploadFilePromise = convertUrlToUploadFile(
+              url,
+              id,
+              filename
+            );
+            return projectUploadFilePromise;
+          }
+        );
+
+        const nextProjectFiles = (
+          await Promise.all(nextProjectFilesPromises)
+        ).filter(isUploadFile);
+
+        setProjectFiles(nextProjectFiles);
+      }
+    })();
+
+    function isUploadFile(file: UploadFile | null): file is UploadFile {
+      return file !== null;
+    }
+  }, [remoteProjectFiles]);
+
+  useEffect(() => {
+    if (!isNilOrError(areas)) {
+      setAreasOptions(
+        areas.map((area) => ({
+          value: area.id,
+          label: localize(area.attributes.title_multiloc),
+        }))
+      );
+    }
+  }, [areas]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
