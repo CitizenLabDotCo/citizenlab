@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { IProjectFormState } from 'services/projects';
+import { getSelectedTopicIds } from './utils/state';
+
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
@@ -42,7 +44,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 import eventEmitter from 'utils/eventEmitter';
 
-import { isEmpty, get, set } from 'lodash-es';
 import { validateSlug } from 'utils/textUtils';
 
 // typings
@@ -65,7 +66,9 @@ const AdminProjectEditGeneral = ({
     useState<IProjectFormState['processing']>(false);
   // still used?
   const [apiErrors, setApiErrors] = useState({});
-  const [projectAttributesDiff, setProjectAttributesDiff] = useState({
+  const [projectAttributesDiff, setProjectAttributesDiff] = useState<
+    IProjectFormState['projectAttributesDiff']
+  >({
     admin_publication_attributes: {
       publication_status: 'draft',
     },
@@ -93,6 +96,11 @@ const AdminProjectEditGeneral = ({
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
+  const [areaType, setAreaType] =
+    useState<IProjectFormState['areaType']>('all');
+  const [areasOptions, setAreasOptions] = useState<
+    IProjectFormState['areasOptions']
+  >([]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -125,18 +133,15 @@ const AdminProjectEditGeneral = ({
   };
 
   const handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    setState(({ projectAttributesDiff }) => {
-      // const newHeaderBg = newHeader[0].base64;
+    // const newHeaderBg = newHeader[0].base64;
 
-      return {
-        submitState: 'enabled',
-        projectAttributesDiff: {
-          ...projectAttributesDiff,
-          // header_bg: newHeader[0].base64,
-        },
-        projectHeaderImage: [newHeader[0]],
-      };
-    });
+    setSubmitState('enabled');
+    // setProjectAttributesDiff((projectAttributesDiff) => ({
+    //   ...projectAttributesDiff,
+    //   // don't think this is right
+    //   header_bg: newHeaderBg,
+    // }));
+    setProjectHeaderImage([newHeader[0]]);
   };
 
   const handleHeaderOnRemove = async () => {
@@ -178,43 +183,39 @@ const AdminProjectEditGeneral = ({
   };
 
   const handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
-    setState(({ projectImages, projectImagesToRemove }) => ({
-      submitState: 'enabled',
-      projectImages: projectImages.filter(
+    setProjectImages((projectImages) => {
+      return projectImages.filter(
         (image) => image.base64 !== projectImageToRemove.base64
-      ),
-      projectImagesToRemove: [...projectImagesToRemove, projectImageToRemove],
-    }));
+      );
+    });
+    setProjectFilesToRemove((projectImagesToRemove) => {
+      return [...projectImagesToRemove, projectImageToRemove];
+    });
+    setSubmitState('enabled');
   };
 
   const handleTopicsChange = (topicIds: string[]) => {
-    setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        topic_ids: topicIds,
-      },
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      topic_ids: topicIds,
     }));
   };
 
-  handleAreaTypeChange = (value: 'all' | 'selection') => {
-    setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      areaType: value,
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        area_ids: value === 'all' ? [] : projectAttributesDiff.area_ids,
-      },
+  const handleAreaTypeChange = (areaType: 'all' | 'selection') => {
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      area_ids: areaType === 'all' ? [] : projectAttributesDiff.area_ids,
     }));
+    setAreaType(areaType);
   };
 
   const handleAreaSelectionChange = (values: IOption[]) => {
-    setState(({ projectAttributesDiff }) => ({
-      submitState: 'enabled',
-      projectAttributesDiff: {
-        ...projectAttributesDiff,
-        area_ids: values.map((value) => value.value),
-      },
+    setSubmitState('enabled');
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      area_ids: values.map((value) => value.value),
     }));
   };
 
@@ -317,6 +318,11 @@ const AdminProjectEditGeneral = ({
         (areaOption) => areaOption.value === id
       ) as IOption;
     });
+
+  const selectedTopicIds = getSelectedTopicIds(
+    projectAttributesDiff,
+    !isNilOrError(project) ? project : null
+  );
 
   return (
     <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
