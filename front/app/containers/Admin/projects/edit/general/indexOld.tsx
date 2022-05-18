@@ -28,7 +28,7 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Outlet from 'components/Outlet';
+// import Outlet from 'components/Outlet';
 import {
   StyledForm,
   ProjectType,
