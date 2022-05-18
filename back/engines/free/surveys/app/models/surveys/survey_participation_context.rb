@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys::SurveyParticipationContext
   extend ActiveSupport::Concern
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Helpers for handling typeform API responses
 module Surveys::TypeformParser
   def extract_value_from_answer(answer)

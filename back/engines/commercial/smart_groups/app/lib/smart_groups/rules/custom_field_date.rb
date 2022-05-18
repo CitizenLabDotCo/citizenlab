@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class CustomFieldDate
     PREDICATE_VALUES = %w[is_before is_exactly is_after is_empty not_is_empty]

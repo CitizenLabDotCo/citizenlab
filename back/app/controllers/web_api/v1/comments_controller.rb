@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::CommentsController < ApplicationController
   include BlockingProfanity
 

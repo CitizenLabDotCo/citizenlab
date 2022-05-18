@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class CustomFieldCheckbox
     PREDICATE_VALUES = %w[is_checked not_is_checked]

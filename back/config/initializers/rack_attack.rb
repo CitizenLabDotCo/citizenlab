@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rack::Attack.enabled = ENV.fetch('RACK_ATTACK_DISABLED', false) != 'true'
 
 # Rack::Attack uses rack's request object by default. This doesn't have a

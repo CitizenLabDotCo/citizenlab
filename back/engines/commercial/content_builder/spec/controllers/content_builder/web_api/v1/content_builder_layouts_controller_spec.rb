@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # These tests do not verify the response bodies. See the acceptance tests for that.

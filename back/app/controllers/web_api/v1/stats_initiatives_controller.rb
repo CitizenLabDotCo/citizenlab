@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
   before_action :render_no_data, only: %i[
     initiatives_by_time

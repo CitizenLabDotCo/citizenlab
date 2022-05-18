@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicApi
   class PublicApiPolicy
     attr_reader :api_client, :record

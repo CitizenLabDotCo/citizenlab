@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SideFxCustomFieldOptionService
   include SideFxHelper
 
