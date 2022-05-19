@@ -36,6 +36,7 @@
     "commercial/project_folders": true,
     "commercial/project_management": true,
     "commercial/public_api": true,
+    "commercial/remove_vendor_branding": true,
     "commercial/satismeter": true,
     "commercial/segment": true,
     "commercial/smart_groups": true,

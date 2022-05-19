@@ -25,6 +25,7 @@ git stash
 git checkout "$EE_BRANCH"
 git pull || true # do not exit on error (maybe there's no remote branch)
 
+sh scripts/disable_ee.sh # remove multi_tenancy code
 sh scripts/enable_ee.sh
 
 
@@ -45,3 +46,5 @@ docker-compose build
 
 # https://citizenlabco.slack.com/archives/C016C2EHURY/p1644234622002569
 docker-compose run --rm web bash -c "bin/rails db:create && bin/rails db:reset"
+
+docker-compose run --rm -e RAILS_ENV=test web bin/rails db:drop db:create db:schema:load
