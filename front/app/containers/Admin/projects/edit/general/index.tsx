@@ -265,16 +265,15 @@ const AdminProjectEditGeneral = ({
     });
     setSubmitState((submitState) => (isDuplicate ? submitState : 'enabled'));
   };
-
   const handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
     setSubmitState('enabled');
     setProjectFiles((projectFiles) =>
       projectFiles.filter((file) => file.base64 !== projectFileToRemove.base64)
     );
-    // setProjectFilesToRemove((projectFilesToRemove) => [
-    //   ...projectFilesToRemove,
-    //   projectFileToRemove,
-    // ]);
+    setProjectFilesToRemove((projectFilesToRemove) => [
+      ...projectFilesToRemove,
+      projectFileToRemove,
+    ]);
   };
 
   const handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
