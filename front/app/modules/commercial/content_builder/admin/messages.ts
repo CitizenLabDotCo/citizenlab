@@ -83,7 +83,7 @@ export default defineMessages({
   },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',
-    defaultMessage: 'About box',
+    defaultMessage: 'About Box',
   },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
