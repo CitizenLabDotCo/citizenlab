@@ -51,6 +51,7 @@ import { validateSlug } from 'utils/textUtils';
 import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
+import useProjectImages from 'hooks/useProjectImages';
 
 export const TIMEOUT = 350;
 
@@ -63,6 +64,7 @@ const AdminProjectEditGeneral = ({
   const localize = useLocalize();
   const project = useProject({ projectId });
   const remoteProjectFiles = useProjectFiles(projectId);
+  const remoteProjectImages = useProjectImages({ projectId });
   const areas = useAreas();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [
@@ -154,11 +156,35 @@ const AdminProjectEditGeneral = ({
         setProjectFiles(nextProjectFiles);
       }
     })();
-
-    function isUploadFile(file: UploadFile | null): file is UploadFile {
-      return file !== null;
-    }
   }, [remoteProjectFiles]);
+
+  useEffect(() => {
+    (async () => {
+      if (!isNilOrError(remoteProjectImages)) {
+        const nextProjectImagesPromises = remoteProjectImages.map(
+          (projectImage) => {
+            const url = projectImage.attributes.versions.large;
+            // to be tested
+            if (url) {
+              return convertUrlToUploadFile(url, projectImage.id, null);
+            }
+
+            return;
+          }
+        );
+
+        const nextProjectImages = (
+          await Promise.all(nextProjectImagesPromises)
+        ).filter(isUploadFile);
+
+        setProjectFiles(nextProjectImages);
+      }
+    })();
+  }, [remoteProjectImages]);
+
+  function isUploadFile(file: UploadFile | null): file is UploadFile {
+    return file !== null;
+  }
 
   useEffect(() => {
     if (!isNilOrError(areas)) {
