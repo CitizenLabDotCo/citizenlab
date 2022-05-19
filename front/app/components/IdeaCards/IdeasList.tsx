@@ -146,7 +146,6 @@ const IdeasList = ({
             {hasMore && (
               <Footer>
                 <ShowMoreButton
-                  locale={locale}
                   id="e2e-idea-cards-show-more-button"
                   onClick={loadMoreIdeas}
                   buttonStyle="secondary"

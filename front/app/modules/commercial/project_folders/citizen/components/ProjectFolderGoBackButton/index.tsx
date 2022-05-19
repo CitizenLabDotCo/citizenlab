@@ -28,7 +28,6 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
     return (
       <Button
         className={className}
-        locale={locale}
         icon="circle-arrow-left"
         onClick={onGoBack}
         buttonStyle="text"

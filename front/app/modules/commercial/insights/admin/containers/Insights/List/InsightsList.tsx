@@ -9,7 +9,7 @@ import useLocale from 'hooks/useLocale';
 
 // components
 import PageTitle from 'components/admin/PageTitle';
-import { Button } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import Divider from 'components/admin/Divider';
 
 // styles
@@ -130,11 +130,7 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
               </InsightsContainerTitle>
               <p>{formatMessage(messages.listDescription)}</p>
             </div>
-            <Button
-              locale={locale}
-              bgColor={colors.adminTextColor}
-              onClick={openCreateModal}
-            >
+            <Button bgColor={colors.adminTextColor} onClick={openCreateModal}>
               {formatMessage(messages.listCreate)}
             </Button>
           </InsightsContainerHeader>
@@ -147,7 +143,6 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                 </div>
                 <div className="buttons">
                   {/* <Button
-                    locale={locale}
                     buttonStyle="white"
                     icon="copy"
                     textColor={colors.adminTextColor}
@@ -156,7 +151,6 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     {formatMessage(messages.listDuplicate)}
                   </Button> */}
                   <Button
-                    locale={locale}
                     buttonStyle="white"
                     icon="delete"
                     textColor={colors.adminTextColor}
@@ -166,7 +160,6 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                     {formatMessage(messages.listDelete)}
                   </Button>
                   <Button
-                    locale={locale}
                     buttonStyle="secondary"
                     icon="edit"
                     linkTo={`/admin/insights/${view.id}`}
