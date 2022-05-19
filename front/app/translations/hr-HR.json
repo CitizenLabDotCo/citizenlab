@@ -680,7 +680,7 @@
   "app.containers.IdeaCards.a11y_totalItems": "Ukupno unosa: {ideasCount}",
   "app.containers.IdeaCards.all": "Sve",
   "app.containers.IdeaCards.filter": "Filter",
-  "app.containers.IdeaCards.filteredResultsFound": "New search results have loaded.",
+  "app.containers.IdeaCards.filteredResultsFound": "Učitani su novi rezultati pretraživanja.",
   "app.containers.IdeaCards.list": "Lista",
   "app.containers.IdeaCards.map": "Mapa",
   "app.containers.IdeaCards.newest": "Najskorije",

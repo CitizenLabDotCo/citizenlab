@@ -1,12 +1,14 @@
 # Changelog
 
-## 2022-05-17_2
-
 ## Fixed
 
 - [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
 
 ## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
 
 ### Fixed
 

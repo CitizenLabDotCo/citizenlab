@@ -100,7 +100,7 @@ const ProjectsShowPage = memo<Props>(({ project, scrollToEventId }) => {
   const isUnauthorized = useMemo(() => {
     if (!isApiError(project)) return false;
 
-    return project.json.errors.base[0].error === 'Unauthorized!';
+    return project.json.errors?.base[0].error === 'Unauthorized!';
   }, [project]);
 
   const userSignedInButUnauthorized = !isNilOrError(user) && isUnauthorized;
@@ -164,10 +164,7 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
       .filter((segment) => segment !== '');
 
     const scrollToEventId = getScrollToEventId(query, urlSegments);
-    const processType = project?.attributes.process_type;
-
-    // If processType is not available yet: don't render yet
-    if (!processType) return null;
+    const processType = project?.attributes?.process_type;
 
     // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
     if (processType === 'timeline' && isNilOrError(phases)) return null;
