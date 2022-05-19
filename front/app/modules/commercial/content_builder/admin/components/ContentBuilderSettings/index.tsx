@@ -50,7 +50,7 @@ const ContentBuilderSettings = () => {
       position="fixed"
       right="0"
       top={`${stylingConsts.menuHeight * 2}px`}
-      zIndex="2"
+      zIndex="99999"
       p="20px"
       w="400px"
       h="100%"
