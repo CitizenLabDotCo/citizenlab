@@ -85,11 +85,11 @@ class Idea < ApplicationRecord
 
   validates :custom_field_values, json: {
     schema: lambda {
-      extra_fields = CustomForm.where(project: project).first.custom_fields.select { |f| f.code.nil? }
+      extra_fields = CustomForm.where(project: project).first.custom_fields.reject(&:built_in?)
       CustomFieldService.new.fields_to_json_schema(extra_fields)
     },
     message: ->(errors) { errors }
-  }
+  }, if: proc { |idea| idea.project && CustomForm.exists?(project: idea.project) }
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
