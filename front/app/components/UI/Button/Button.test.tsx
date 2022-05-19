@@ -27,6 +27,6 @@ describe('Button', () => {
     render(<Button linkTo="/test">Test</Button>);
     expect(screen.getByText('Test')).toBeInTheDocument();
     expect(screen.getByRole('link')).toHaveTextContent('Test');
-    expect(screen.getByRole('link')).toHaveAttribute('href', '/test');
+    expect(screen.getByRole('link')).toHaveAttribute('href', '/en/test');
   });
 });
