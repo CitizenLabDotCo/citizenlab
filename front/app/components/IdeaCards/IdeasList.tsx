@@ -5,7 +5,6 @@ import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { rgba } from 'polished';
-import { isNilOrError } from 'utils/helperUtils';
 import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'services/ideas';

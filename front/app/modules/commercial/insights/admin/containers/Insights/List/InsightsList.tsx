@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';

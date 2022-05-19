@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
 import {
@@ -18,7 +18,7 @@ interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
   'data-testid'?: string;
 }
 
-const ButtonWrapper = memo<Props>(({ linkTo, openLinkInNewTab, ...rest }) => {
+const ButtonWrapper = ({ linkTo, openLinkInNewTab, ...rest }: Props) => {
   const locale = useLocale();
   const isExternalLink =
     linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
@@ -59,7 +59,7 @@ const ButtonWrapper = memo<Props>(({ linkTo, openLinkInNewTab, ...rest }) => {
   }
 
   return null;
-});
+};
 
 export default ButtonWrapper;
 
