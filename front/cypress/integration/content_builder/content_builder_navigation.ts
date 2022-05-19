@@ -23,7 +23,6 @@ describe('Content builder navigation', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/projects/${projectSlug}`);
       });
     });
   });
