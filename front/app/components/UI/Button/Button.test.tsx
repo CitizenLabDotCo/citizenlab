@@ -6,6 +6,8 @@ import Button from 'components/UI/Button';
 
 jest.mock('hooks/useLocale');
 
+jest.mock('utils/cl-router/Link');
+
 describe('Button', () => {
   it('should render correctly as button', () => {
     render(<Button>Test</Button>);
