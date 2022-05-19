@@ -44,7 +44,7 @@ const ContentBuilderToolbox = ({
   return (
     <Box
       position="fixed"
-      zIndex="3"
+      zIndex="99999"
       flex="0 0 auto"
       h="100%"
       w="210px"

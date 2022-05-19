@@ -4,7 +4,7 @@ import React from 'react';
 import EventsPageMeta from './EventsPageMeta';
 import SectionContainer from 'components/SectionContainer';
 import ContentContainer from 'components/ContentContainer';
-import UpcomingEvents from './UpcomingEvents';
+import CurrentAndUpcomingEvents from './CurrentAndUpcomingEvents';
 import PastEvents from './PastEvents';
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -24,7 +24,7 @@ export default () => (
     <Box as="main">
       <SectionContainer>
         <StyledContentContainer>
-          <UpcomingEvents />
+          <CurrentAndUpcomingEvents />
           <PastEvents />
         </StyledContentContainer>
       </SectionContainer>
