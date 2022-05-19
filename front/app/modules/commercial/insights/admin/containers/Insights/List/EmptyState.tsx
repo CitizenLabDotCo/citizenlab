@@ -1,9 +1,7 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import useLocale from 'hooks/useLocale';
 
 // styles
 import styled from 'styled-components';
@@ -14,7 +12,8 @@ import insights from '../../../assets/insightsView.png';
 import messages from '../messages';
 
 // components
-import { Button, Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
@@ -42,8 +41,6 @@ const EmptyState = ({
   openCreateModal,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const locale = useLocale();
-
   return (
     <Container data-testid="insightsListEmptyState">
       <div>
@@ -62,27 +59,23 @@ const EmptyState = ({
         <Text pt="10px" fontSize="base" color="label">
           {formatMessage(messages.description)}
         </Text>
-        {!isNilOrError(locale) && (
-          <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
-            <Button
-              locale={locale}
-              bgColor={colors.adminTextColor}
-              onClick={openCreateModal}
-              mr="12px"
-              mb="12px"
-            >
-              {formatMessage(messages.emptyStateCreate)}
-            </Button>
-            <Button
-              locale={locale}
-              buttonStyle="secondary"
-              linkTo={formatMessage(messages.supportLinkUrl)}
-              openLinkInNewTab
-            >
-              {formatMessage(messages.emptyStateDiscover)}
-            </Button>
-          </Box>
-        )}
+        <Box display="flex" flexWrap="wrap" alignItems="flex-start" mt="40px">
+          <Button
+            bgColor={colors.adminTextColor}
+            onClick={openCreateModal}
+            mr="12px"
+            mb="12px"
+          >
+            {formatMessage(messages.emptyStateCreate)}
+          </Button>
+          <Button
+            buttonStyle="secondary"
+            linkTo={formatMessage(messages.supportLinkUrl)}
+            openLinkInNewTab
+          >
+            {formatMessage(messages.emptyStateDiscover)}
+          </Button>
+        </Box>
       </div>
       <Image src={insights} />
     </Container>
