@@ -64,7 +64,7 @@ import {
   getSelectedTopicIds,
 } from './utils/state';
 import saveForm from './utils/saveForm';
-import validate from './utils/validate';
+// import validateTitle from './utils/validateTitle';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
@@ -330,21 +330,18 @@ class AdminProjectEditGeneral extends PureComponent<
   };
 
   validate = () => {
-    const { formatMessage } = this.props.intl;
-    const { currentTenant, projectAttributesDiff, project } = this.state;
-
-    const { hasErrors, titleError } = validate(
-      currentTenant,
-      projectAttributesDiff,
-      project,
-      formatMessage
-    );
-
-    this.setState({
-      titleError: !isEmpty(titleError) ? titleError : null,
-    });
-
-    return !hasErrors;
+    // const { formatMessage } = this.props.intl;
+    // const { currentTenant, projectAttributesDiff, project } = this.state;
+    // const { hasErrors, titleError } = validateTitle(
+    //   currentTenant,
+    //   projectAttributesDiff,
+    //   project,
+    //   formatMessage
+    // );
+    // this.setState({
+    //   titleError: !isEmpty(titleError) ? titleError : null,
+    // });
+    // return !hasErrors;
   };
 
   validateProjectSlug = (slug: string) => {

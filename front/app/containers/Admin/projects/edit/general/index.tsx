@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isEmpty } from 'lodash-es';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { IProjectFormState } from 'services/projects';
 import { getSelectedTopicIds } from './utils/state';
@@ -34,10 +35,12 @@ import {
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -46,6 +49,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 import { validateSlug } from 'utils/textUtils';
 import saveForm from './utils/saveForm';
+import validateTitle from './utils/validateTitle';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
@@ -55,10 +59,13 @@ import useProjectImages from 'hooks/useProjectImages';
 
 export const TIMEOUT = 350;
 
-const AdminProjectEditGeneral = () => {
+const AdminProjectEditGeneral = ({
+  intl: { formatMessage },
+}: InjectedIntlProps) => {
   const { projectId } = useParams();
   const localize = useLocalize();
   const project = useProject({ projectId });
+  const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(projectId);
   const remoteProjectImages = useProjectImages({
     projectId: projectId || null,
@@ -361,20 +368,17 @@ const AdminProjectEditGeneral = () => {
     validateProjectSlug(slug);
   };
 
-  // Does validate get used?
+  const validateForm = () => {
+    const titleError = !isNilOrError(appConfigLocales)
+      ? validateTitle(
+          appConfigLocales,
+          projectAttrs.title_multiloc,
+          formatMessage(messages.noTitleErrorMessage)
+        )
+      : null;
 
-  // const validate = () => {
-  //   const { hasErrors, titleError } = validate(
-  //     appConfiguration,
-  //     projectAttributesDiff,
-  //     project,
-  //     formatMessage
-  //   );
-
-  //   setTitleError(!isEmpty(titleError) ? titleError : null)
-
-  //   return !hasErrors;
-  // };
+    setTitleError(!isEmpty(titleError) ? titleError : null);
+  };
 
   const validateProjectSlug = (slug: string) => {
     const isSlugValid = validateSlug(slug);
@@ -554,4 +558,4 @@ const AdminProjectEditGeneral = () => {
   );
 };
 
-export default AdminProjectEditGeneral;
+export default injectIntl(AdminProjectEditGeneral);
