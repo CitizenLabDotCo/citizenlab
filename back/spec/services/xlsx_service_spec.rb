@@ -96,15 +96,105 @@ describe XlsxService do
 
     describe do
       before do
-        project = create(:project)
-        create(:custom_field_extra_custom_form, resource: create(:custom_form, project: project))
-        @custom_idea = create(:idea, project: project, custom_field_values: { 'extra_field' => 'test value' })
+        project = create :project
+        form = create :custom_form, project: project
+        number_field = create(
+          :custom_field,
+          :for_custom_form,
+          resource: form,
+          required: false,
+          input_type: 'number',
+          key: 'number_field',
+          title_multiloc: { 'en' => 'How many times did it rain this year?' }
+        )
+        date_field = create(
+          :custom_field,
+          :for_custom_form,
+          resource: form,
+          required: false,
+          input_type: 'date',
+          key: 'date_field',
+          title_multiloc: { 'en' => 'When was the last time it rained?' }
+        )
+        select_field = create(
+          :custom_field_select,
+          :for_custom_form,
+          resource: form,
+          required: false,
+          key: 'select_field',
+          title_multiloc: { 'en' => 'Which of these animals is more common in your neighbourhood?' }
+        )
+        create(
+          :custom_field_option,
+          custom_field: select_field,
+          key: 'hippopotamus',
+          title_multiloc: { 'en' => 'Hippopotamus' }
+        )
+        create(
+          :custom_field_option,
+          custom_field: select_field,
+          key: 'fruitfly',
+          title_multiloc: { 'en' => 'Fruit fly' }
+        )
+        multiselect_field = create(
+          :custom_field_multiselect,
+          :for_custom_form,
+          resource: form,
+          required: false,
+          key: 'multiselect_field',
+          title_multiloc: { 'en' => 'Which option names sound good to you?' }
+        )
+        create(
+          :custom_field_option,
+          custom_field: multiselect_field,
+          key: 'option1',
+          title_multiloc: { 'en' => 'Option 1' }
+        )
+        create(
+          :custom_field_option,
+          custom_field: multiselect_field,
+          key: 'option2',
+          title_multiloc: { 'en' => 'Option 2' }
+        )
+
+        fields1 = { 'number_field' => 9, 'multiselect_field' => %w[option1 option2] }
+        fields2 = { 'number_field' => 22, 'date_field' => '19-05-2022', 'select_field' => 'hippopotamus' }
+        fields3 = { 'select_field' => 'fruitfly', 'multiselect_field' => %w[option1] }
+        @idea1 = create :idea, project: project, custom_field_values: fields1
+        @idea2 = create :idea, project: project, custom_field_values: fields2
+        @idea3 = create :idea, project: project, custom_field_values: fields3
       end
 
-      let(:xlsx) { service.generate_ideas_xlsx(ideas + [@custom_idea], view_private_attributes: false) }
+      let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2, @idea3], view_private_attributes: false) }
 
-      it 'adds columns for custom fields' do
-        expect(worksheet[0].cells.map(&:value)).to include 'An extra question'
+      it 'adds custom field values' do
+        headers = worksheet[0].cells.map(&:value)
+        number_field_idx      = headers.find_index 'How many times did it rain this year?'
+        date_field_idx        = headers.find_index 'When was the last time it rained?'
+        select_field_idx      = headers.find_index 'Which of these animals is more common in your neighbourhood?'
+        multiselect_field_idx = headers.find_index 'Which option names sound good to you?'
+        expect([number_field_idx, date_field_idx, select_field_idx, multiselect_field_idx]).to all(be_present)
+        idea1_row = worksheet[1].cells.map(&:value)
+        expect([
+          idea1_row[number_field_idx],
+          idea1_row[date_field_idx],
+          idea1_row[select_field_idx],
+          idea1_row[multiselect_field_idx]
+        ]).to eq [9, '', '', 'Option 1, Option 2']
+        idea2_row = worksheet[2].cells.map(&:value)
+        expect([
+          idea2_row[number_field_idx],
+          idea2_row[date_field_idx],
+          idea2_row[select_field_idx],
+          idea2_row[multiselect_field_idx]
+        ]).to eq [22, '19-05-2022', 'Hippopotamus', '']
+        idea3_row = worksheet[3].cells.map(&:value)
+        expect([
+          idea3_row[number_field_idx],
+          idea3_row[date_field_idx],
+          idea3_row[select_field_idx],
+          idea3_row[multiselect_field_idx]
+        ]).to eq ['', '', 'Fruit fly', 'Option 1']
       end
     end
   end
