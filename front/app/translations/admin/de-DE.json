@@ -1331,7 +1331,7 @@
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant1-2": "2 Spalten mit 30% respektive 60% Breite",
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1": "2 Spalten mit 60% respektive 30% Breite",
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 geradzahlige Spalten",
-  "app.containers.admin.ContentBuilder.url": "Embed Url",
+  "app.containers.admin.ContentBuilder.url": "Embed",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Status hinzufügen",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "Der Standardstatus kann nicht gelöscht werden.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Löschen",
