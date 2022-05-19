@@ -63,7 +63,7 @@ import {
   initSubscriptions,
   getSelectedTopicIds,
 } from './utils/state';
-import save from './utils/save';
+import saveForm from './utils/saveForm';
 import validate from './utils/validate';
 
 // typings
@@ -277,6 +277,12 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
+  save = async (
+    participationContextConfig: IParticipationContextConfig | null = null
+  ) => {
+    await saveForm.apply(this, [participationContextConfig]);
+  };
+
   onSubmit = (event: FormEvent<any>) => {
     event.preventDefault();
 
@@ -339,12 +345,6 @@ class AdminProjectEditGeneral extends PureComponent<
     });
 
     return !hasErrors;
-  };
-
-  save = async (
-    participationContextConfig: IParticipationContextConfig | null = null
-  ) => {
-    await save.apply(this, [participationContextConfig]);
   };
 
   validateProjectSlug = (slug: string) => {

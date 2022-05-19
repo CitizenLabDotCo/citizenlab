@@ -17,7 +17,7 @@ import { addProjectImage, deleteProjectImage } from 'services/projectImages';
 // typings
 import { INewProjectCreatedEvent } from '../../../all/CreateProject';
 
-export default async function save(
+export default async function saveForm(
   participationContextConfig: IParticipationContextConfig | null
 ) {
   if (this.validate() && !this.state.processing) {

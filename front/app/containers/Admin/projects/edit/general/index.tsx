@@ -45,6 +45,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import eventEmitter from 'utils/eventEmitter';
 
 import { validateSlug } from 'utils/textUtils';
+import saveForm from './utils/saveForm';
 
 // typings
 import { IOption, Multiloc, UploadFile } from 'typings';
@@ -311,6 +312,12 @@ const AdminProjectEditGeneral = () => {
     }));
   };
 
+  const save = async (
+    participationContextConfig: IParticipationContextConfig | null = null
+  ) => {
+    await saveForm(participationContextConfig);
+  };
+
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -368,12 +375,6 @@ const AdminProjectEditGeneral = () => {
 
   //   return !hasErrors;
   // };
-
-  const save = async (
-    participationContextConfig: IParticipationContextConfig | null = null
-  ) => {
-    await save.apply(this, [participationContextConfig]);
-  };
 
   const validateProjectSlug = (slug: string) => {
     const isSlugValid = validateSlug(slug);
