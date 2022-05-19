@@ -3,7 +3,7 @@ import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { IProjectFormState } from 'services/projects';
 import { getSelectedTopicIds } from './utils/state';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
-
+import { useParams } from 'react-router-dom';
 // components
 import ProjectStatusPicker from './components/ProjectStatusPicker';
 import ProjectNameInput from './components/ProjectNameInput';
@@ -31,7 +31,6 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
@@ -55,16 +54,14 @@ import useProjectImages from 'hooks/useProjectImages';
 
 export const TIMEOUT = 350;
 
-interface Props {}
-
-const AdminProjectEditGeneral = ({
-  // projectId can also be undefined
-  params: { projectId },
-}: Props & WithRouterProps) => {
+const AdminProjectEditGeneral = () => {
+  const { projectId } = useParams();
   const localize = useLocalize();
   const project = useProject({ projectId });
   const remoteProjectFiles = useProjectFiles(projectId);
-  const remoteProjectImages = useProjectImages({ projectId });
+  const remoteProjectImages = useProjectImages({
+    projectId: projectId || null,
+  });
   const areas = useAreas();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [
@@ -556,4 +553,4 @@ const AdminProjectEditGeneral = ({
   );
 };
 
-export default withRouter(AdminProjectEditGeneral);
+export default AdminProjectEditGeneral;
