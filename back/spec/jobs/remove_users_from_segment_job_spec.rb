@@ -8,7 +8,7 @@ RSpec.describe RemoveUsersFromSegmentJob, type: :job do
   describe '#perform' do
     let(:user) { create(:user) }
 
-    context "when SEGMENT_CLIENT is configured" do
+    context 'when SEGMENT_CLIENT is configured' do
       # and thus, data is sent to Segment
 
       before do
@@ -22,8 +22,7 @@ RSpec.describe RemoveUsersFromSegmentJob, type: :job do
       end
     end
 
-    context "when SEGMENT_CLIENT is not configured" do
-
+    context 'when SEGMENT_CLIENT is not configured' do
       before { hide_const('SEGMENT_CLIENT') }
 
       it 'does not raise an error if the authorization token is missing' do

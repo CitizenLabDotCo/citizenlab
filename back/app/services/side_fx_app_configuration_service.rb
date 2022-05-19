@@ -43,7 +43,7 @@ class SideFxAppConfigurationService
     new_settings = app_config.settings
 
     diff = [old_settings, new_settings].map { |s| s&.dig('core', 'lifecycle_stage') }
-    diff[0] != diff[1] ? diff : nil
+    diff[0] == diff[1] ? nil : diff
   end
 
   # @param [AppConfiguration] app_config

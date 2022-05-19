@@ -11,6 +11,7 @@ import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'services/ideas';
 import { IParticipationContextType } from 'typings';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -105,30 +106,41 @@ const IdeasList = ({
           </Loading>
         ) : (
           <>
+            <ScreenReaderOnly aria-live="polite">
+              <FormattedMessage
+                {...messages.showXResults}
+                values={{
+                  ideasCount: list ? list.length : 0,
+                }}
+              />
+            </ScreenReaderOnly>
             {hasIdeas && list && (
-              <Box
-                ml="-13px"
-                mr="-13px"
-                mt="-10px"
-                display="flex"
-                flexWrap="wrap"
-                id="e2e-ideas-list"
-              >
-                {list.map((idea) => {
-                  return (
-                    <StyledIdeaCard
-                      key={idea.id}
-                      ideaId={idea.id}
-                      participationMethod={participationMethod}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      hideImage={hideImage}
-                      hideImagePlaceholder={hideImagePlaceholder}
-                      hideIdeaStatus={hideIdeaStatus}
-                    />
-                  );
-                })}
-              </Box>
+              <>
+                <Box
+                  ml="-13px"
+                  mr="-13px"
+                  mt="-10px"
+                  display="flex"
+                  flexWrap="wrap"
+                  id="e2e-ideas-list"
+                  aria-live="polite"
+                >
+                  {list.map((idea) => {
+                    return (
+                      <StyledIdeaCard
+                        key={idea.id}
+                        ideaId={idea.id}
+                        participationMethod={participationMethod}
+                        participationContextId={participationContextId}
+                        participationContextType={participationContextType}
+                        hideImage={hideImage}
+                        hideImagePlaceholder={hideImagePlaceholder}
+                        hideIdeaStatus={hideIdeaStatus}
+                      />
+                    );
+                  })}
+                </Box>
+              </>
             )}
 
             {hasMore && (

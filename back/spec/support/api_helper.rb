@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiHelper
   def set_api_content_type
     header 'Content-Type', 'application/json'
@@ -20,6 +22,6 @@ module ApiHelper
   end
 
   def response_ids
-    response_data.map { |record| record[:id] }
+    response_data.pluck(:id)
   end
 end

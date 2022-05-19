@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MembershipPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -39,5 +41,4 @@ class MembershipPolicy < ApplicationPolicy
   def users_search?
     user&.active? && user.admin?
   end
-
 end

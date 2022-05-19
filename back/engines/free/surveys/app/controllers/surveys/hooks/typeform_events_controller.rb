@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys
   class Hooks::TypeformEventsController < SurveysController
     CONSTANTIZER = {
@@ -17,7 +19,7 @@ module Surveys
       @response.participation_context = @participation_context
       if @response.save
         SideFxResponseService.new.after_create @response, @response.user
-        head 200
+        head :ok
       else
         render json: { errors: @response.errors.details }, status: :not_acceptable
       end
@@ -27,14 +29,15 @@ module Surveys
 
     # adapted from https://developer.typeform.com/webhooks/secure-your-webhooks/
     def verify_signature
-      received_signature = request.headers["HTTP_TYPEFORM_SIGNATURE"]
+      received_signature = request.headers['HTTP_TYPEFORM_SIGNATURE']
       payload_body = request.body.read
       hash = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha256'), ENV.fetch('SECRET_TOKEN_TYPEFORM'), payload_body)
-      actual_signature = 'sha256=' + Base64.strict_encode64(hash)
+      encoding = Base64.strict_encode64(hash)
+      actual_signature = "sha256=#{encoding}"
       head :not_acceptable unless Rack::Utils.secure_compare(actual_signature, received_signature)
     end
 
-    def secure_constantize key
+    def secure_constantize(key)
       CONSTANTIZER.fetch(params[:pc_type])[key]
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UserConfirmation::ConfirmUser do
@@ -16,19 +18,11 @@ RSpec.describe UserConfirmation::ConfirmUser do
       context[:user] = user
       context[:code] = context[:user].email_confirmation_code
     end
-
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
   end
 
   context 'when the user is nil' do
     before do
       context[:code] = '1234'
-    end
-
-    it 'is a failure' do
-      expect(result).to be_a_failure
     end
 
     it 'returns a code blank error' do
@@ -39,10 +33,6 @@ RSpec.describe UserConfirmation::ConfirmUser do
   context 'when the code is nil' do
     before do
       context[:user] = user
-    end
-
-    it 'is a failure' do
-      expect(result).to be_a_failure
     end
 
     it 'returns a code blank error' do
@@ -56,43 +46,29 @@ RSpec.describe UserConfirmation::ConfirmUser do
       context[:code] = 'failcode'
     end
 
-    it 'is a failure' do
-      expect(result).to be_a_failure
-    end
-
     it 'returns a code invalid error' do
       expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
 
-   context 'when the code has expired' do
-    before do
-      user.update(email_confirmation_code_sent_at: 1.week.ago)
+  context 'when the code has expired' do
+   before do
+     user.update(email_confirmation_code_sent_at: 1.week.ago)
 
-      context[:user] = user
-      context[:code] = user.email_confirmation_code
-    end
+     context[:user] = user
+     context[:code] = user.email_confirmation_code
+   end
 
-    it 'is a failure' do
-      expect(result).to be_a_failure
-    end
-
-    it 'returns a code invalid error' do
-      expect(result.errors.details).to eq(code: [{ error: :expired }])
-    end
-  end
-
+   it 'returns a code invalid error' do
+     expect(result.errors.details).to eq(code: [{ error: :expired }])
+   end
+ end
 
   context 'when the code has expired and is invalid' do
     before do
       user.update(email_confirmation_code_sent_at: 1.week.ago)
-
       context[:user] = user
       context[:code] = 'failcode'
-    end
-
-    it 'is a failure' do
-      expect(result).to be_a_failure
     end
 
     it 'returns a code invalid error' do

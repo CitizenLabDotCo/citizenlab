@@ -4,7 +4,6 @@ module Frontend
   # The main purpose of this service is to decouple all assumptions the backend
   # makes about the frontend URLs into a single location.
   class UrlService
-
     def model_to_path(model_instance)
       case model_instance
       when Project
@@ -149,11 +148,10 @@ module Frontend
     def config_from_options(options)
       tenant = options[:tenant]
       if tenant # Show a deprecation message is tenant options is used
-        ActiveSupport::Deprecation.warn(":tenant options is deprecated, use :app_configuration instead.") # MT_TODO to be removed
+        ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
-      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO OS remove: tenant&.configuration
+      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
     end
-
 
     # Memoized database query
     def app_config_instance

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Reloads the CL_SETTING_* environment variables
 # into the current app configuration.
 
@@ -7,7 +9,7 @@ begin
     settings = config.settings
 
     config.host = ENV.fetch('CL_SETTINGS_HOST') if ENV.fetch('CL_SETTINGS_HOST', false)
-    
+
     settings['core']['timezone'] = ENV.fetch('CL_SETTINGS_CORE_TIMEZONE') if ENV.fetch('CL_SETTINGS_CORE_TIMEZONE', false)
     settings['core']['currency'] = ENV.fetch('CL_SETTINGS_CORE_CURRENCY') if ENV.fetch('CL_SETTINGS_CORE_CURRENCY', false)
     settings['core']['reply_to_email'] = ENV.fetch('DEFAULT_FROM_EMAIL') if ENV.fetch('DEFAULT_FROM_EMAIL', false)
@@ -28,7 +30,7 @@ begin
 
     begin
       config.save!
-    rescue Exception => e
+    rescue StandardError => e
       logger = Rails.logger
       logger.error 'Failed to reload environment variables into the seeded data.'
       logger.error e.message

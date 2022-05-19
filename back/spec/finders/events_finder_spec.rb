@@ -3,25 +3,19 @@
 require 'rails_helper'
 
 describe EventsFinder do
-  subject(:result) { described_class.find(params, **options) }
+  subject(:finder) { described_class.new(params, **options) }
 
   let(:params) { {} }
   let(:options) { {} }
-  let(:result_record_ids) { result.records.pluck(:id) }
-  let(:past_events) {  }
-  let(:future_events) {  }
+  let(:result_record_ids) { finder.find_records.pluck(:id) }
 
   before do
     create_list(:event, 5)
   end
 
   context 'when no params or options are received' do
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'returns all' do
-      expect(result.count).to eq Event.count
+      expect(finder.find_records.count).to eq Event.count
     end
   end
 
@@ -35,10 +29,6 @@ describe EventsFinder do
       params[:project_ids] = [project.id]
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'returns the correct records' do
       expect(result_record_ids).to match_array expected_record_ids
     end
@@ -46,17 +36,13 @@ describe EventsFinder do
 
   describe '#project_publication_statuses_condition' do
     let(:project) { create(:project) }
-    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' }}) }
+    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' } }) }
     let(:expected_record_ids) { Event.where(project: project2).pluck(:id) }
 
     before do
       create_list(:event, 3, project: project)
       create_list(:event, 3, project: project2).pluck(:id)
       params[:project_publication_statuses] = ['draft']
-    end
-
-    it 'is successful' do
-      expect(result).to be_a_success
     end
 
     it 'returns the correct records' do
@@ -73,10 +59,6 @@ describe EventsFinder do
       params[:start_at_lt] = Time.zone.now
     end
 
-    it 'is successful' do
-      expect(result).to be_a_success
-    end
-
     it 'returns the past events' do
       expect(result_record_ids).to match_array expected_record_ids
     end
@@ -89,10 +71,6 @@ describe EventsFinder do
       create_list(:event, 5, start_at: Time.zone.today - 1.week, end_at: Time.zone.today - 1.week + 1.day)
       create_list(:event, 5, start_at: Time.zone.today + 1.week, end_at: Time.zone.today + 1.week + 1.day)
       params[:start_at_gteq] = Time.zone.now
-    end
-
-    it 'is successful' do
-      expect(result).to be_a_success
     end
 
     it 'returns the correct records' do

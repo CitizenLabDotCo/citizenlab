@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Notifications::OfficialFeedbackOnVotedInitiative, type: :model do
-
-  describe "make_notifications_on" do
-
-    it "generates exactly one notification for each user that voted on the initiative" do
+  describe 'make_notifications_on' do
+    it 'generates exactly one notification for each user that voted on the initiative' do
       initiative = create(:initiative)
       vote1 = create(:vote, votable: initiative)
       vote2 = create(:vote, votable: initiative)
@@ -16,6 +16,5 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedInitiative, type: :model do
       notifications = subject.class.make_notifications_on(activity)
       expect(notifications.map(&:recipient)).to match_array [vote1.user, vote2.user]
     end
-
   end
 end

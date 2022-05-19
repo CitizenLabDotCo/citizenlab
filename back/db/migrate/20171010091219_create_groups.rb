@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGroups < ActiveRecord::Migration[5.1]
   def change
     create_table :groups, id: :uuid do |t|

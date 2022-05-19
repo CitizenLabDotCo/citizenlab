@@ -33,6 +33,58 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.text',
     defaultMessage: 'Text',
   },
+  url: {
+    id: 'app.containers.admin.ContentBuilder.url',
+    defaultMessage: 'Embed',
+  },
+  iframeUrlLabel: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
+    defaultMessage: 'Website address',
+  },
+  iframeUrlLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlLabelTooltip',
+    defaultMessage: 'Full URL of the website you want to embed.',
+  },
+  iframeHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.iframeHeightLabel',
+    defaultMessage: 'Embed height (pixels)',
+  },
+  iframeHeightLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.iframeHeightLabelTooltip',
+    defaultMessage:
+      'Height you want your embedded content to appear on the page (in pixels)',
+  },
+  iframeUrlPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlPlaceholder',
+    defaultMessage: 'https://example.com',
+  },
+  iframeHeightPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
+    defaultMessage: '300',
+  },
+  iframeTitleLabel: {
+    id: 'app.containers.admin.ContentBuilder.iframeTitleLabel',
+    defaultMessage: 'Short description of the content you are embedding',
+  },
+  iframeTitleTooltip: {
+    id: 'app.containers.admin.ContentBuilder.iframeTitleTooltip',
+    defaultMessage:
+      'It is useful to provide this information for users who rely on a screenreader or other assistive technology.',
+  },
+  iframeInvalidUrlErrorMessage: {
+    id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
+    defaultMessage:
+      'Enter a valid web address, for example https://example.com',
+  },
+  iframeWhitelistUrlErrorMessage: {
+    id: 'app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage',
+    defaultMessage:
+      'You cannot embed content from this website for security reasons, try something else.',
+  },
+  aboutBox: {
+    id: 'app.containers.admin.ContentBuilder.aboutBox',
+    defaultMessage: 'About Box',
+  },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',

@@ -29,9 +29,9 @@ resource 'Projects' do
       end
 
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
-      parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
-      parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
+      parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
       parameter :search, 'Filter by searching in title_multiloc, description_multiloc and description_preview_multiloc', required: false
 
       parameter :folder, 'Filter by folder (project folder id)', required: false if CitizenLab.ee?
@@ -39,7 +39,7 @@ resource 'Projects' do
       example_request 'List all projects (default behaviour)' do
         assert_status 200
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| json_response[:included].find { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.dig(:attributes, :publication_status) }.uniq).to match_array %w[published archived draft]
       end
 
       example 'List only projects with specified IDs' do
@@ -52,7 +52,7 @@ resource 'Projects' do
       example 'List all draft or archived projects', document: false do
         do_request(publication_statuses: %w[draft archived])
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }).not_to include('published')
+        expect(json_response[:data].map { |d| json_response[:included].find { |x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id) }.dig(:attributes, :publication_status) }).not_to include('published')
       end
 
       example 'Get all projects on the second page with fixed page size' do
@@ -123,14 +123,14 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 4
       end
 
-      example "Search for projects" do
+      example 'Search for projects' do
         p1 = create(:project, title_multiloc: {
-                "en": "super-specific-title-string",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
+                en: 'super-specific-title-string',
+                'fr-BE': 'a title',
+                'nl-BE': 'a title'
               })
 
-        do_request search: "super-specific-title-string"
+        do_request search: 'super-specific-title-string'
         json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
         expect(response_ids).to eq [p1.id]
@@ -222,39 +222,39 @@ resource 'Projects' do
 
     post 'web_api/v1/projects' do
       with_options scope: :project do
-        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
-        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project? Defaults to true", required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false if CitizenLab.ee?
+        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(',')}. Defaults to timeline"
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :ideas_order, 'The default order of ideas.'
         parameter :input_term, 'The input term for posts.'
 
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false if CitizenLab.ee?
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      with_options scope: %i[project admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -280,20 +280,20 @@ resource 'Projects' do
 
         example_request 'Create a timeline project' do
           assert_status 201
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq 'timeline'
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
+          expect(json_response.dig(:data, :attributes, :process_type)).to eq 'timeline'
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'admins'
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'draft'
           if CitizenLab.ee?
             expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
           end
-          expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
+          expect(json_response.dig(:data, :attributes, :header_bg)).to be_present
           # New projects are added to the top
-          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
         example 'Create a project in a folder', skip: !CitizenLab.ee? do
@@ -327,24 +327,24 @@ resource 'Projects' do
 
         example_request 'Create a continuous project' do
           assert_status 201
-          expect(json_response.dig(:data,:attributes,:process_type)).to eq process_type
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-          expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
-          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
-          expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
-          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
-          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
-          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
-          expect(json_response.dig(:data,:attributes,:upvoting_method)).to eq upvoting_method
-          expect(json_response.dig(:data,:attributes,:upvoting_limited_max)).to eq upvoting_limited_max
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-          expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-          expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-          expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
+          expect(json_response.dig(:data, :attributes, :process_type)).to eq process_type
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq visible_to
+          expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
+          expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
+          expect(json_response.dig(:data, :attributes, :posting_enabled)).to eq posting_enabled
+          expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
+          expect(json_response.dig(:data, :attributes, :voting_enabled)).to eq voting_enabled
+          expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be true
+          expect(json_response.dig(:data, :attributes, :upvoting_method)).to eq upvoting_method
+          expect(json_response.dig(:data, :attributes, :upvoting_limited_max)).to eq upvoting_limited_max
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+          expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+          expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+          expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
         end
 
         context 'when not admin' do
@@ -371,9 +371,10 @@ resource 'Projects' do
         end
 
         describe do
-          let(:description_multiloc) {{
+          let(:description_multiloc) do
+            {
             'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-          }}
+          } end
 
           example 'Create a project with text image', document: false do
             ti_count = TextImage.count
@@ -400,37 +401,37 @@ resource 'Projects' do
       end
 
       with_options scope: :project do
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
-        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project?", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project?", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project?", required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project?", required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :min_budget, "The minimum budget amount. Participatory budget should be greater or equal to input.", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
-        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false if CitizenLab.ee?
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}.", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project?', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project?', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project?', required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited upvoting. Number of upvotes a citizen can perform in this project.', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project?', required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}.", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited downvoting. Number of downvotes a citizen can perform in this project.', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :min_budget, 'The minimum budget amount. Participatory budget should be greater or equal to input.', required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false if CitizenLab.ee?
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
 
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)" if CitizenLab.ee?
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)' if CitizenLab.ee?
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
+      with_options scope: %i[project admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -459,21 +460,21 @@ resource 'Projects' do
         expect(response_status).to eq 200
         # admin publications should not be replaced, but rather should be updated
         expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
-        expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
-        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
-        expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array topic_ids
-        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to be_present
-        expect(json_response.dig(:data,:attributes,:ideas_order)).to eq 'new'
-        expect(json_response.dig(:data,:attributes,:input_term)).to be_present
-        expect(json_response.dig(:data,:attributes,:input_term)).to eq 'idea'
-        expect(json_response.dig(:data,:attributes,:min_budget)).to eq 100
-        expect(json_response.dig(:data,:attributes,:max_budget)).to eq 1000
-        expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
-        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
+        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to be_present
+        expect(json_response.dig(:data, :attributes, :ideas_order)).to eq 'new'
+        expect(json_response.dig(:data, :attributes, :input_term)).to be_present
+        expect(json_response.dig(:data, :attributes, :input_term)).to eq 'idea'
+        expect(json_response.dig(:data, :attributes, :min_budget)).to eq 100
+        expect(json_response.dig(:data, :attributes, :max_budget)).to eq 1000
+        expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq 'card'
+        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
         if CitizenLab.ee?
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
         end
@@ -485,15 +486,15 @@ resource 'Projects' do
         # expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
         expect(Project.find(json_response.dig(:data, :id)).folder.id).to eq folder.id
         # Projects moved into folders are added to the top
-        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
 
       example 'Remove a project from a folder', skip: !CitizenLab.ee? do
         folder = create(:project_folder, projects: [@project])
         do_request(project: { folder_id: nil })
-        expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to eq nil
+        expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to be_nil
         # Projects moved out of folders are added to the top
-        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
 
       example '[error] Put a project in a non-existing folder', skip: !CitizenLab.ee? do
@@ -526,13 +527,13 @@ resource 'Projects' do
       example 'Disable downvoting', document: false do
         SettingsService.new.activate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
-        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to eq false
+        expect(json_response.dig(:data, :attributes, :downvoting_enabled)).to be false
       end
 
       example 'Disable downvoting when feature is not enabled', document: false do
         SettingsService.new.deactivate_feature! 'disable_downvoting'
         do_request(project: { downvoting_enabled: false })
-        expect(@project.reload.downvoting_enabled).to eq true
+        expect(@project.reload.downvoting_enabled).to be true
       end
 
       describe do
@@ -540,7 +541,7 @@ resource 'Projects' do
           @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
           expect(@project.reload.header_bg_url).to be_present
           do_request project: { header_bg: nil }
-          expect(@project.reload.header_bg_url).to be nil
+          expect(@project.reload.header_bg_url).to be_nil
         end
       end
     end
@@ -618,24 +619,24 @@ resource 'Projects' do
         expect(json_response[:data].size).to eq 1
       end
 
-      example "Search for projects does not return projects with draft status" do
+      example 'Search for projects does not return projects with draft status' do
         p1 = create(:project,
-              admin_publication_attributes: { publication_status: "published" },
+              admin_publication_attributes: { publication_status: 'published' },
               title_multiloc: {
-                "en": "super-specific-title-string-1",
-                "fr-BE": "a title",
-                "nl-BE": "a title"
+                en: 'super-specific-title-string-1',
+                'fr-BE': 'a title',
+                'nl-BE': 'a title'
               })
 
         create(:project,
-          admin_publication_attributes: { publication_status: "draft" },
+          admin_publication_attributes: { publication_status: 'draft' },
           title_multiloc: {
-            "en": "super-specific-title-string-2",
-            "fr-BE": "a title",
-            "nl-BE": "a title"
+            en: 'super-specific-title-string-2',
+            'fr-BE': 'a title',
+            'nl-BE': 'a title'
           })
 
-        do_request search: "super-specific-title-string"
+        do_request search: 'super-specific-title-string'
         json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
         expect(response_ids).to eq [p1.id]

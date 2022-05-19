@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::OfficialFeedbackOnYourInitiativeMailer, type: :mailer do
@@ -21,7 +23,7 @@ RSpec.describe EmailCampaigns::OfficialFeedbackOnYourInitiativeMailer, type: :ma
     let_it_be(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
-    
+
     it 'renders the subject' do
       expect(mail.subject).to start_with('You\'ve received an official')
     end

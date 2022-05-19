@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::IdeasController < ApplicationController
   include BlockingProfanity
 
@@ -9,7 +11,7 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @result = IdeasFinder.find(
+    ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
@@ -21,72 +23,73 @@ class WebApi::V1::IdeasController < ApplicationController
           author: [:unread_notifications]
         }
       ]
-    )
-    @ideas = @result.records
+    ).find_records
 
-    render json: linked_json(@ideas, WebApi::V1::IdeaSerializer, serialization_options)
+    render json: linked_json(ideas, WebApi::V1::IdeaSerializer, serialization_options_for(ideas))
   end
 
   def index_mini
-    @result = IdeasFinder.find(
+    ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: %i[idea_trending_info]
-    )
-    @ideas = @result.records
+    ).find_records
 
-    render json: linked_json(@ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
+    render json: linked_json(ideas, WebApi::V1::IdeaMiniSerializer, params: fastjson_params(pcs: ParticipationContextService.new))
   end
 
   def index_idea_markers
-    @ideas = IdeasFinder.find(
+    ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: %i[author topics areas project idea_status idea_files]
-    ).records
+    ).find_records
 
-    render json: linked_json(@ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
+    render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
   end
 
   def index_xlsx
-    @result = IdeasFinder.find(
+    ideas = IdeasFinder.new(
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
       includes: %i[author topics areas project idea_status idea_files],
       paginate: false
-    )
-    @ideas = @result.records
+    ).find_records
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = XlsxService.new.generate_ideas_xlsx @ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
+      xlsx = XlsxService.new.generate_ideas_xlsx ideas, view_private_attributes: Pundit.policy!(current_user, User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
   end
 
   def filter_counts
-    @result = IdeasFinder.find(params, scope: policy_scope(Idea), current_user: current_user, includes: %i[idea_trending_info])
-    @ideas = @result.records.where(publication_status: 'published')
+    all_ideas = IdeasFinder.new(
+      params,
+      scope: policy_scope(Idea),
+      current_user: current_user,
+      includes: %i[idea_trending_info]
+    ).find_records
     counts = {
       'idea_status_id' => {},
       'area_id' => {},
       'topic_id' => {}
     }
-    @ideas
+    all_ideas.published
       .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
       .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
       .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
-      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
       .each do |record|
-        %w(idea_status_id area_id topic_id).each do |attribute|
+        %w[idea_status_id area_id topic_id].each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end
       end
-    counts['total'] = @result.count
+    counts['total'] = all_ideas.count
     render json: counts
   end
 
@@ -135,9 +138,9 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     service = SideFxIdeaService.new
 
-    params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
-    params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
-    params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
+    params[:idea][:area_ids] ||= [] if params[:idea].key?(:area_ids)
+    params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
 
     @idea.assign_attributes idea_params
     authorize @idea
@@ -154,8 +157,8 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload,
           params: fastjson_params,
-          include: [:author, :topics, :areas, :user_vote, :idea_images]
-          ).serialized_json, status: :ok
+          include: %i[author topics areas user_vote idea_images]
+        ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
       end
@@ -172,7 +175,7 @@ class WebApi::V1::IdeasController < ApplicationController
       service.after_destroy(idea, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -191,7 +194,7 @@ class WebApi::V1::IdeasController < ApplicationController
       :location_description,
       :proposed_budget,
       [idea_images_attributes: [:image]],
-      [{ idea_files_attributes: [{ file_by_content: [:content, :name]}, :name] }],
+      [{ idea_files_attributes: [{ file_by_content: %i[content name] }, :name] }],
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
@@ -217,19 +220,19 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def serialization_options
+  def serialization_options_for(ideas)
     if current_user
       # I have no idea why but the trending query part
       # breaks if you don't fetch the ids in this way.
-      votes = Vote.where(user: current_user, votable_id: @ideas.map(&:id), votable_type: 'Idea')
+      votes = Vote.where(user: current_user, votable_id: ideas.map(&:id), votable_type: 'Idea')
       {
         params: fastjson_params(vbii: votes.index_by(&:votable_id), pcs: ParticipationContextService.new),
-        include: [:author, :user_vote, :idea_images]
+        include: %i[author user_vote idea_images]
       }
     else
       {
         params: fastjson_params(pcs: ParticipationContextService.new),
-        include: [:author, :idea_images]
+        include: %i[author idea_images]
       }
     end
   end

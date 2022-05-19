@@ -1,6 +1,155 @@
 # Changelog
 
-## Next release
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
+## 17-05-22
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
+
+## 2022-05-16
+
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
+
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
+## 2022-05-11
+
+### Fixed
+
+- [CL-711] Title text looking weird on insights start page
+
+## 2022-05-10_3
+
+### Fixed
+
+- [CL-764] Empty navbar item titles in backoffice.
+
+## 2022-05-10_2
+
+### Changed
+
+- Added RuboCop on CI and corrected many offences
+
+## 2022-05-10
+
+### Changed
+
+- [CL-716] The new phase started emails/notifications are also sent out for information phases or when it's possible to take a poll.
+
+### Fixed
+
+- [CL-387] The folder show page is better readable on narrow screens now
+
+## 2022-05-06_3
+
+### Changed
+
+- When a navbar item's title is customized for one locale, the other locales remain up to date with the latest translations.
+
+### Fixed
+
+- Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
+
+### Fixed
+
+- [CL-181] Prevent forms from trying to save on clicking label
+- The "send" button on the email campaign send page is now disabled after a single click, to prevent users from clicking it multiple times and potentially sending a campaign more than once
+
+## 2022-05-06
+
+### Added
+
+- Pages can now be translated 'live' via Weglot
+- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
+
+## 2022-05-05
+
+### Fixed
+
+- Fix timeline for Arabic languages ('right-to-left')
+- Fix language selector cropping for Arabic languages ('right-to-left')
+
+## 2022-05-04_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
+
+## 2022-05-02
+
+### Added
+
+- Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
+## 2022-04-28
+
+### Added
+
+- Added support for the Moroccan Arabic language to the platform
+
+### Fixed
+
+- Start and end times for project phases now account for the user's local timezone, making sure users can still access and engage with projects when the start/end dates are valid for them locally. The default used UTC, so it was not a big issue in Europe (where we're mostly very close to UTC time), but could be a bigger issue in e.g. North and South America, where UTC offset could be 4 or 5 hours and this could cause projects to display as ended even if they should have been valid on the user's current local date.
+- Fixed breakpoint issues in `admin/insights` and `admin/users`, where content would disappear under the sidebar for certain screen sizes.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
+
+## 2022-04-25
 
 ### Changed
 
@@ -49,6 +198,12 @@
 ### Fixed
 
 - Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
 
 ## 2022-03-29
 

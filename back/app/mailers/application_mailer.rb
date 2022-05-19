@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationMailer < ActionMailer::Base
   default from: 'hello@citizenlab.co'
   layout 'mailer'
@@ -19,7 +21,7 @@ class ApplicationMailer < ActionMailer::Base
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
                 :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
-                :header_logo_only?
+                :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
 
@@ -139,6 +141,10 @@ class ApplicationMailer < ActionMailer::Base
     true
   end
 
+  def remove_vendor_branding?
+    app_configuration.feature_activated?('remove_vendor_branding')
+  end
+
   def organization_name
     @organization_name ||= localize_for_recipient(app_settings.core.organization_name)
   end
@@ -152,7 +158,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def logo_url
-    @logo_url ||= app_configuration.logo.versions.yield_self do |versions|
+    @logo_url ||= app_configuration.logo.versions.then do |versions|
       versions[:medium].url || versions[:small].url || versions[:large].url || ''
     end
   end
@@ -168,7 +174,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def text_direction
-    locale =~ /^ar.*$/ ? 'rtl' : 'ltr'
+    /^ar.*$/.match?(locale) ? 'rtl' : 'ltr'
   end
 
   def to_deep_struct(obj)

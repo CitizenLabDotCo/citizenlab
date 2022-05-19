@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Notifications::CommentOnYourComment, type: :model do
-
-  describe "make_notifications_on" do
-    it "makes a notification on created comment activity" do
+  describe 'make_notifications_on' do
+    it 'makes a notification on created comment activity' do
       idea = create(:idea)
       parent_comment = create(:comment, post: idea)
       child_comment = create(:comment, parent: parent_comment, post: idea)

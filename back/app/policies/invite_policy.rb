@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InvitePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -43,6 +45,4 @@ class InvitePolicy < ApplicationPolicy
   def accept?
     true
   end
-
-
 end

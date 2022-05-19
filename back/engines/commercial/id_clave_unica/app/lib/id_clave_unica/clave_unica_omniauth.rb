@@ -2,16 +2,15 @@
 
 module IdClaveUnica
   class ClaveUnicaOmniauth
-
     include ClaveUnicaVerification
 
     def profile_to_user_attrs(auth)
       info = {}
-      if fn = auth.dig('extra', 'raw_info', 'name', 'nombres')
-        info[:first_name] = fn.join(" ")
+      if (fn = auth.dig('extra', 'raw_info', 'name', 'nombres'))
+        info[:first_name] = fn.join(' ')
       end
-      if ln = auth.dig('extra', 'raw_info', 'name', 'apellidos')
-        info[:last_name] = ln.join(" ")
+      if (ln = auth.dig('extra', 'raw_info', 'name', 'apellidos'))
+        info[:last_name] = ln.join(' ')
       end
       info
     end
@@ -20,7 +19,7 @@ module IdClaveUnica
     def omniauth_setup(configuration, env)
       if Verification::VerificationService.new.is_active?(configuration, name)
         options = env['omniauth.strategy'].options
-        options[:scope] = [:openid, :run, :name]
+        options[:scope] = %i[openid run name]
         options[:response_type] = :code
         options[:state] = true
         options[:nonce] = true
@@ -35,7 +34,7 @@ module IdClaveUnica
           authorization_endpoint: '/openid/authorize',
           token_endpoint: '/openid/token',
           userinfo_endpoint: '/openid/userinfo',
-          redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback",
+          redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback"
         }
       end
     end
@@ -49,17 +48,15 @@ module IdClaveUnica
     end
 
     def updateable_user_attrs
-      [:first_name, :last_name]
+      %i[first_name last_name]
     end
 
-    def logout_url(user)
+    def logout_url(_user)
       url_params = {
         redirect: Frontend::UrlService.new.home_url
       }
 
       "https://#{host}/api/v1/accounts/app/logout?#{url_params.to_query}"
     end
-
   end
-
 end

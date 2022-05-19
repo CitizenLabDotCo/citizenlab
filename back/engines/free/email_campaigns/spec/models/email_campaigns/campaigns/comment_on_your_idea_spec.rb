@@ -1,32 +1,34 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::CommentOnYourIdea, type: :model do
-  describe "CommentOnYourIdea Campaign default factory" do
-    it "is valid" do
+  describe 'CommentOnYourIdea Campaign default factory' do
+    it 'is valid' do
       expect(build(:comment_on_your_idea_campaign)).to be_valid
     end
   end
 
   describe '#generate_commands' do
-  	let(:campaign) { create(:comment_on_your_idea_campaign) }
+    let(:campaign) { create(:comment_on_your_idea_campaign) }
     let(:notification) { create(:comment_on_your_idea) }
     let(:notification_activity) { create(:activity, item: notification, action: 'created') }
 
-  	it "generates a command with the desired payload and tracked content" do
-  		command = campaign.generate_commands(
+    it 'generates a command with the desired payload and tracked content' do
+      command = campaign.generate_commands(
         recipient: notification_activity.item.recipient,
         activity: notification_activity
-        ).first
+      ).first
 
       expect(
-      	command.dig(:event_payload, :initiating_user_first_name)
-      	).to eq(notification.initiating_user.first_name)
+        command.dig(:event_payload, :initiating_user_first_name)
+      ).to eq(notification.initiating_user.first_name)
       expect(
-      	command.dig(:event_payload, :comment_body_multiloc)
-      	).to eq(notification.comment.body_multiloc)
+        command.dig(:event_payload, :comment_body_multiloc)
+      ).to eq(notification.comment.body_multiloc)
     end
 
-    it "generates a command with an abbreviated name" do
+    it 'generates a command with an abbreviated name' do
       SettingsService.new.activate_feature! 'abbreviated_user_names'
 
       expect(notification.recipient.admin?).to be false
@@ -35,7 +37,7 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourIdea, type: :model do
       command = campaign.generate_commands(
           recipient: notification_activity.item.recipient,
           activity: notification_activity
-      ).first
+        ).first
 
       initial = "#{notification.initiating_user.last_name[0]}."
       expect(command.dig(:event_payload, :initiating_user_last_name)).to eq(initial)

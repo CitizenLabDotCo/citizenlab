@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   module Patches
     module SideFxSpamReportService
-
-      def after_create spam_report, user
+      def after_create(spam_report, user)
         super
         FlagInappropriateContent::InappropriateContentFlagService.new.introduce_flag! spam_report.spam_reportable
       end
 
-      def after_destroy frozen_spam_report, current_user
+      def after_destroy(frozen_spam_report, current_user)
         super
         flaggable = frozen_spam_report.spam_reportable
         flag = flaggable&.inappropriate_content_flag

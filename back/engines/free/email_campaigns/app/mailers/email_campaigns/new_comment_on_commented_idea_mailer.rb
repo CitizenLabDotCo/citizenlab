@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class NewCommentOnCommentedIdeaMailer < ApplicationMailer
     protected
@@ -7,7 +9,7 @@ module EmailCampaigns
     end
 
     def header_title
-      format_message('main_header', values: {commentAuthor: event.initiating_user_first_name})
+      format_message('main_header', values: { commentAuthor: event.initiating_user_first_name })
     end
 
     def header_message

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Verification
   class VerificationPolicy < ApplicationPolicy
     class Scope
@@ -19,7 +21,5 @@ module Verification
       # the sign up flow
       user&.invite_not_pending? && record.user == user
     end
-
   end
-
 end

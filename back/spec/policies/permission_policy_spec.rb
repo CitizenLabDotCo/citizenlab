@@ -7,7 +7,7 @@ describe PermissionPolicy do
 
   let(:scope) { PermissionPolicy::Scope.new(user, Permission) }
 
-  before(:all) do # rubocop:disable RSpec/BeforeAfterAll
+  before(:all) do
     @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
 
     # rubocop:disable Style/SingleLineMethods
