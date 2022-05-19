@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaCustomFieldsService do
-  let(:service) { IdeaCustomFieldsService.new }
+  let(:service) { described_class.new }
 
   describe 'all_fields' do
     it 'outputs valid custom fields' do
@@ -26,6 +26,47 @@ describe IdeaCustomFieldsService do
         idea_images_attributes
         idea_files_attributes
       ]
+    end
+  end
+
+  describe 'allowed_custom_field_keys' do
+    it 'lists keys' do
+      project = create :project
+      form = create :custom_form, project: project
+      required_field = create(
+        :custom_field,
+        :for_custom_form,
+        resource: form,
+        required: true,
+        input_type: 'date',
+        key: 'required_field'
+      )
+      optional_field = create(
+        :custom_field_select,
+        :for_custom_form,
+        resource: form,
+        required: false,
+        key: 'optional_field'
+      )
+      multiselect_field = create(
+        :custom_field_multiselect,
+        :for_custom_form,
+        resource: form,
+        required: false,
+        key: 'multiselect_field'
+      )
+      create :custom_field_option, custom_field: optional_field
+      build_in_required_field = create(
+        :custom_field_multiselect,
+        :for_custom_form,
+        resource: form,
+        required: true,
+        key: 'topic_ids',
+        code: 'topic_ids'
+      )
+
+      output = service.allowed_custom_field_keys form
+      expect(output).to match_array [:required_field, :optional_field, { multiselect_field: [] }]
     end
   end
 end
