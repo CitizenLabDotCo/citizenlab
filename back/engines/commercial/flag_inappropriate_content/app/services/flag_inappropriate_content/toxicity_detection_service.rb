@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   class ToxicityDetectionService
     def flag_toxicity!(flaggable, attributes: [])

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddOrderingToProjectsTopics < ActiveRecord::Migration[6.0]
   class StubProjectsTopic < ApplicationRecord
     self.table_name = 'projects_topics'

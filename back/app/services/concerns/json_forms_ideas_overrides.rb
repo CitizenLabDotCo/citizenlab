@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module JsonFormsIdeasOverrides
   def custom_form_to_ui_schema(fields, locale = 'en', &block)
     project = fields.first.resource.project

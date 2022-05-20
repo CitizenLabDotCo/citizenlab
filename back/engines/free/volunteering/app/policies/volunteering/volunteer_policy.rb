@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   class VolunteerPolicy < ApplicationPolicy
     class Scope

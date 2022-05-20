@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTextingCampaigns < ActiveRecord::Migration[6.1]
   def change
     create_table :texting_campaigns, id: :uuid do |t|

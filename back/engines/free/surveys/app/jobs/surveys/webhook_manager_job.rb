@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys
   class WebhookManagerJob < ApplicationJob
     queue_as :default

@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { Button } from '@citizenlab/cl2-component-library';
 import useProjectFolder from '../../../hooks/useProjectFolder';
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -13,7 +12,6 @@ interface Props {
 
 const GoBackButton = memo(({ projectFolderId, className }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
-  const locale = useLocale();
   const localize = useLocalize();
 
   const onGoBack = (event: React.MouseEvent) => {
@@ -24,11 +22,10 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
     }
   };
 
-  if (!isNilOrError(projectFolder) && !isNilOrError(locale)) {
+  if (!isNilOrError(projectFolder)) {
     return (
       <Button
         className={className}
-        locale={locale}
         icon="circle-arrow-left"
         onClick={onGoBack}
         buttonStyle="text"

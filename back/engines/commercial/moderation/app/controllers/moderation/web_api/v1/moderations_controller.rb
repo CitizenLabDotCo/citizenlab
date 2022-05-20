@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Moderation
   class WebApi::V1::ModerationsController < ApplicationController
     after_action :verify_authorized, except: %i[index moderations_count]

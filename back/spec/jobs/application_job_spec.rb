@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # As Que::Locker runs in a separate thread, it uses not the same connection as AR in tests

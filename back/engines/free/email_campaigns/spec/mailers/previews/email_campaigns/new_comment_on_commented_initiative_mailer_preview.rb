@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class NewCommentOnCommentedInitiativeMailerPreview < ActionMailer::Preview
     def campaign_mail

@@ -1,5 +1,44 @@
 # Changelog
 
+## Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
+
+## 2022-05-16
+
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
+
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
 ## 2022-05-11
 
 ### Fixed

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   mount UserConfirmation::Engine => '', as: 'user_confirmation'
   mount EmailCampaigns::Engine => '', as: 'email_campaigns'

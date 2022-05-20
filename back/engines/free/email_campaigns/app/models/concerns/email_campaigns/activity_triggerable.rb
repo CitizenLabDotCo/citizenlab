@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   module ActivityTriggerable
     extend ActiveSupport::Concern
