@@ -99,7 +99,7 @@ const IndexElement = () => {
   );
 };
 
-const createAdminRoutes = (_isUserAuthorized: boolean) => {
+const createAdminRoutes = () => {
   return {
     path: 'admin',
     element: <IndexElement />,
