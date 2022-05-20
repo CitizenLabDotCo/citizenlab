@@ -11,11 +11,7 @@ module UserCustomFields
         ref_distribution = authorize(Representativeness::RefDistribution.new(create_params))
 
         Representativeness::RefDistribution.transaction do
-          # Removes the existing reference distribution if any.
-          Representativeness::RefDistribution.where(
-            custom_field_id: params[:custom_field_id]
-          ).destroy_all
-
+          remove_reference_distribution_if_any(params[:custom_field_id])
           ref_distribution.save!
         end
 
@@ -32,6 +28,12 @@ module UserCustomFields
       end
 
       private
+
+      def remove_reference_distribution_if_any(custom_field_id)
+        Representativeness::RefDistribution.where(
+          custom_field_id: custom_field_id
+        ).destroy_all
+      end
 
       def side_fx
         Representativeness::SideFxRefDistributionService.new
