@@ -271,13 +271,7 @@ export class AdminProjectEditIndex extends PureComponent<
   };
 
   goBack = () => {
-    const backUrl =
-      this.state.goBackUrl &&
-      this.state.goBackUrl !== this.props.location.pathname
-        ? this.state.goBackUrl
-        : '/admin/projects';
-
-    clHistory.push(backUrl);
+    clHistory.push(`/admin/projects/`);
   };
 
   onNewIdea = (pathname: string) => (_event) => {
