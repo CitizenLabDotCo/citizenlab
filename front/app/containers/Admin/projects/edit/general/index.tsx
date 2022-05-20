@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { IProjectFormState } from 'services/projects';
-import { getSelectedTopicIds } from './utils/state';
+import { IProjectFormState, IProjectData } from 'services/projects';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { useParams } from 'react-router-dom';
 // components
@@ -645,3 +644,16 @@ const AdminProjectEditGeneral = ({
 };
 
 export default injectIntl(AdminProjectEditGeneral);
+
+function getSelectedTopicIds(
+  projectAttributesDiff: IUpdatedProjectProperties,
+  project: IProjectData | null
+) {
+  if (projectAttributesDiff.topic_ids) return projectAttributesDiff.topic_ids;
+
+  if (project) {
+    return project.relationships.topics.data.map((topic) => topic.id);
+  }
+
+  return [];
+}
