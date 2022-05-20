@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 import createDashboardRoutes from './dashboard/routes';
 import createAdminInitiativesRoutes from './initiatives/routes';
 import createAdminUsersRoutes from './users/routes';
-// import invitationsRoutes from './invitations/routes';
+import invitationsRoutes from './invitations/routes';
 import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
 import pagesRoutes from './pages/routes';
@@ -93,7 +93,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       createAdminProjectsRoutes(),
       settingsRoutes(),
       pagesRoutes(),
-      // invitationsRoutes(),
+      invitationsRoutes(),
       createAdminMessagingRoutes(),
       // ideasRoutes(),
       // {

@@ -1,5 +1,8 @@
 import React from 'react';
 
+// router
+import { Outlet as RouterOutlet } from 'react-router-dom';
+
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
@@ -9,11 +12,7 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-export interface Props {
-  children: JSX.Element;
-}
-
-const InvitationsPage = React.memo((props: Props & InjectedIntlProps) => {
+const InvitationsPage = React.memo((props: InjectedIntlProps) => {
   const tabs = [
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),
@@ -31,14 +30,13 @@ const InvitationsPage = React.memo((props: Props & InjectedIntlProps) => {
     subtitle: props.intl.formatMessage(messages.invitationSubtitle),
   };
 
-  const { children } = props;
   return (
     <TabbedResource resource={resource} tabs={tabs}>
       <HelmetIntl
         title={messages.helmetTitle}
         description={messages.helmetDescription}
       />
-      {children}
+      <RouterOutlet />
     </TabbedResource>
   );
 });
