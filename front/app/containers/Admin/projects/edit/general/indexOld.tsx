@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { isEmpty, get, set } from 'lodash-es';
+import { get, set } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import deepMerge from 'deepmerge';
 import eventEmitter from 'utils/eventEmitter';
