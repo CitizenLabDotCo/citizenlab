@@ -336,11 +336,11 @@ const AdminProjectEditGeneral = ({
           formatMessage(messages.noTitleErrorMessage)
         )
       : null;
-
+    const hasTitleError = !isEmpty(titleError);
     setTitleError(!isEmpty(titleError) ? titleError : null);
+    const formIsValid = !hasTitleError;
 
-    // check if this is ok
-    return !!titleError;
+    return formIsValid;
   };
 
   async function saveForm(
@@ -348,6 +348,10 @@ const AdminProjectEditGeneral = ({
   ) {
     let projectId = params.projectId;
     const isNewProject = typeof projectId === 'string';
+
+    if (!validateForm()) {
+      setSubmitState('error');
+    }
 
     if (validateForm() && !processing) {
       const nextProjectAttributesDiff: IUpdatedProjectProperties = {
