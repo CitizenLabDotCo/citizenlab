@@ -17,20 +17,18 @@ import createAdminMessagingRoutes from './messaging/routes';
 // components
 const AdminContainer = lazy(() => import('containers/Admin'));
 import { LoadingComponent } from 'routes';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { isUUID } from 'utils/helperUtils';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 // import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 // hooks
 import { usePermission } from 'services/permissions';
-import { useLocation } from 'react-router-dom';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 
 // utils
 import { isModerator } from 'services/permissions/roles';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isUUID } from 'utils/helperUtils';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 // typings
 import { IAppConfiguration } from 'services/appConfiguration';
