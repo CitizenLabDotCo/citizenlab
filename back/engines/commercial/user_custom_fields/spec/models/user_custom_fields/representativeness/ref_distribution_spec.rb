@@ -10,6 +10,7 @@ describe UserCustomFields::Representativeness::RefDistribution do
   end
 
   it { is_expected.to belong_to(:custom_field) }
+  it { is_expected.to have_many(:values).through(:custom_field).source(:custom_field_options) }
   it { is_expected.to validate_uniqueness_of(:custom_field_id).case_insensitive }
   it { is_expected.to validate_presence_of(:distribution) }
 

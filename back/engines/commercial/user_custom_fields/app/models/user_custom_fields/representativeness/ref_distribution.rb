@@ -20,6 +20,7 @@
 #
 class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   belongs_to :custom_field
+  has_many :values, through: :custom_field, source: :custom_field_options
 
   validates :custom_field_id, uniqueness: true
   validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
@@ -40,7 +41,7 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
     return if custom_field.blank?
     return if distribution.blank?
 
-    unless distribution.keys.to_set <= custom_field.custom_field_option_ids.to_set
+    unless distribution.keys.to_set <= value_ids.to_set
       errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
     end
   end
