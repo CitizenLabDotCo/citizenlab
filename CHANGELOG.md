@@ -2,7 +2,7 @@
 
 ## Next Release
 
-### Fixed
+### 2022-05-20
 
 - [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
 
