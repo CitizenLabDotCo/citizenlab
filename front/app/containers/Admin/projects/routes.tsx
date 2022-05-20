@@ -31,7 +31,6 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'edit',
             element: (
-              // <div>Hello, world!</div>
               <LoadingComponent>
                 <AdminProjectEditIndex />
               </LoadingComponent>
