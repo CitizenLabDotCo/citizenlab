@@ -21,6 +21,10 @@ const AdminSettingsPoliciesComponent = React.lazy(
 const AdminSettingsRegistrationComponent = React.lazy(
   () => import('containers/Admin/settings/registration')
 );
+// areas
+const AdminAreasAllComponent = React.lazy(() => import('./areas/all'));
+const AdminAreasNewComponent = React.lazy(() => import('./areas/New'));
+const AdminAreasEditComponent = React.lazy(() => import('./areas/Edit'));
 
 export default () => ({
   path: 'settings',
@@ -74,6 +78,35 @@ export default () => ({
           <AdminSettingsRegistrationComponent />
         </LoadingComponent>
       ),
+    },
+    {
+      path: 'areas',
+      children: [
+        {
+          index: true,
+          element: (
+            <LoadingComponent>
+              <AdminAreasAllComponent />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: 'new',
+          element: (
+            <LoadingComponent>
+              <AdminAreasNewComponent />
+            </LoadingComponent>
+          ),
+        },
+        {
+          path: ':areaId',
+          element: (
+            <LoadingComponent>
+              <AdminAreasEditComponent />
+            </LoadingComponent>
+          ),
+        },
+      ],
     },
     ...moduleConfiguration.routes['admin.settings'],
   ],
