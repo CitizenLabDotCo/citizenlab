@@ -90,7 +90,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 1 100%" background="#ffffff">
         <Label>{formatMessage(messages.accordionTextLabel)}</Label>
         <QuillEditor
-          maxHeight="175px"
+          maxHeight="225px"
           noImages
           noVideos
           id="quill-editor"
@@ -100,16 +100,18 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           }}
         />
       </Box>
-      <Box flex="0 1 100%">
-        <Label>
-          <FormattedMessage {...messages.accordionTooltipToggleLabel} />
-        </Label>
+      <Box display="flex" gap="16px" flex="0 1 100%">
         <Toggle
           checked={showTooltip}
           onChange={() => {
             setProp((props) => (props.showTooltip = !showTooltip));
           }}
         />
+        <Box mt="4px">
+          <Label>
+            <FormattedMessage {...messages.accordionTooltipToggleLabel} />
+          </Label>
+        </Box>
       </Box>
       {showTooltip && (
         <Box flex="0 1 100%">
@@ -123,16 +125,18 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           />
         </Box>
       )}
-      <Box marginBottom="20px" flex="0 1 100%">
-        <Label>
-          <FormattedMessage {...messages.accordionDefaultOpenLabel} />
-        </Label>
+      <Box display="flex" gap="16px" marginBottom="20px" flex="0 1 100%">
         <Toggle
           checked={openByDefault}
           onChange={() => {
             setProp((props) => (props.openByDefault = !openByDefault));
           }}
         />
+        <Box mt="4px">
+          <Label>
+            <FormattedMessage {...messages.accordionDefaultOpenLabel} />
+          </Label>
+        </Box>
       </Box>
     </Box>
   );
