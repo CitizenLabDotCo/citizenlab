@@ -27,6 +27,8 @@ import { Navigate } from 'react-router-dom';
 export const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
   const { pathname, urlLocale } = removeLocale(pathNameWithLocale);
+  const urlSegment = urlLocale ? `/${urlLocale}` : '';
+
   combineLatest([
     hasPermission({
       item: { type: 'route', path: pathname },
@@ -37,9 +39,9 @@ export const isUserAuthorized = (nextState, replace) => {
   ]).subscribe(([accessAthorized, tenant, authUser]) => {
     if (!accessAthorized) {
       if (tenant.data.attributes.settings.core.lifecycle_stage === 'churned') {
-        replace(`${urlLocale && `/${urlLocale}`}/subscription-ended`);
+        replace(`${urlSegment}/subscription-ended`);
       } else if (isModerator(authUser)) {
-        replace(`${urlLocale && `/${urlLocale}`}/`);
+        replace(`${urlSegment}/`);
       } else {
         // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
         const urlSegments = pathname
@@ -57,9 +59,9 @@ export const isUserAuthorized = (nextState, replace) => {
           urlSegments[2] === 'templates' &&
           isUUID(urlSegments[3])
         ) {
-          replace(`/${urlLocale}/templates/${urlSegments[3]}`);
+          replace(`${urlSegment}/templates/${urlSegments[3]}`);
         } else {
-          replace(`${urlLocale && `/${urlLocale}`}/sign-in`);
+          replace(`${urlSegment}/sign-in`);
         }
       }
     }
