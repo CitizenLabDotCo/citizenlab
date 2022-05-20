@@ -1,4 +1,6 @@
 import React, { lazy } from 'react';
+
+// routes
 import createDashboardRoutes from './dashboard/routes';
 import createAdminInitiativesRoutes from './initiatives/routes';
 import createAdminUsersRoutes from './users/routes';
@@ -11,80 +13,98 @@ import createAdminMessagingRoutes from './messaging/routes';
 // import ideasRoutes from './ideas/routes';
 
 // import moduleConfiguration from 'modules';
+
+// components
 const AdminContainer = lazy(() => import('containers/Admin'));
 import { LoadingComponent } from 'routes';
-import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
-
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
-import { currentAppConfigurationStream } from 'services/appConfiguration';
-import { combineLatest } from 'rxjs';
-import { authUserStream } from 'services/auth';
-import { isModerator } from 'services/permissions/roles';
 import { Navigate } from 'react-router-dom';
+// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
-export const isUserAuthorized = (nextState, replace) => {
-  const pathNameWithLocale = nextState.location.pathname;
-  const { pathname, urlLocale } = removeLocale(pathNameWithLocale);
-  const urlSegment = urlLocale ? `/${urlLocale}` : '';
+// hooks
+import { usePermission } from 'services/permissions';
+import { useLocation } from 'react-router-dom';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import useAuthUser, { TAuthUser } from 'hooks/useAuthUser';
 
-  combineLatest([
-    hasPermission({
-      item: { type: 'route', path: pathname },
-      action: 'access',
-    }),
-    currentAppConfigurationStream().observable,
-    authUserStream().observable,
-  ]).subscribe(([accessAthorized, tenant, authUser]) => {
-    if (!accessAthorized) {
-      if (tenant.data.attributes.settings.core.lifecycle_stage === 'churned') {
-        replace(`${urlSegment}/subscription-ended`);
-      } else if (isModerator(authUser)) {
-        replace(`${urlSegment}/`);
-      } else {
-        // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
-        const urlSegments = pathname
-          ? pathname.replace(/^\/+/g, '').split('/')
-          : null;
+// utils
+import { isModerator } from 'services/permissions/roles';
+import { isNilOrError } from 'utils/helperUtils';
 
-        // check if a unauthorized user is trying to access a template preview page (url pattern: /admin/projects/templates/[id])
-        // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
-        // if not, redirect them to the sign-in page
-        if (
-          urlSegments &&
-          urlSegments.length === 4 &&
-          urlSegments[0] === 'admin' &&
-          urlSegments[1] === 'projects' &&
-          urlSegments[2] === 'templates' &&
-          isUUID(urlSegments[3])
-        ) {
-          replace(`${urlSegment}/templates/${urlSegments[3]}`);
-        } else {
-          replace(`${urlSegment}/sign-in`);
-        }
-      }
-    }
+// typings
+import { IAppConfiguration } from 'services/appConfiguration';
+
+const isTemplatePreviewPage = (urlSegments: string[]) =>
+  urlSegments.length === 4 &&
+  urlSegments[0] === 'admin' &&
+  urlSegments[1] === 'projects' &&
+  urlSegments[2] === 'templates' &&
+  isUUID(urlSegments[3]);
+
+const getRedirectURL = (
+  appConfiguration: IAppConfiguration,
+  authUser: TAuthUser,
+  pathname: string | undefined,
+  urlLocale: string | null
+) => {
+  const localeSegment = urlLocale ? `/${urlLocale}` : '';
+
+  if (
+    appConfiguration.data.attributes.settings.core.lifecycle_stage === 'churned'
+  ) {
+    return `${localeSegment}/subscription-ended`;
+  }
+
+  if (!isNilOrError(authUser) && isModerator({ data: authUser })) {
+    return `${localeSegment}/`;
+  }
+
+  // get array with url segments (e.g. 'admin/projects/all' becomes ['admin', 'projects', 'all'])
+  const urlSegments = pathname
+    ? pathname.replace(/^\/+/g, '').split('/')
+    : null;
+
+  // check if the unauthorized user is trying to access a template preview page (url pattern: /admin/projects/templates/[id])
+  // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
+  // if not, redirect them to the sign-in page
+  if (urlSegments && isTemplatePreviewPage(urlSegments)) {
+    return `${localeSegment}/templates/${urlSegments[3]}`;
+  }
+
+  return `${localeSegment}/sign-in`;
+};
+
+const IndexElement = () => {
+  const location = useLocation();
+  const { pathname, urlLocale } = removeLocale(location.pathname);
+
+  const accessAuthorized = usePermission({
+    item: { type: 'route', path: pathname },
+    action: 'access',
   });
+  const appConfiguration = useAppConfiguration();
+  const authUser = useAuthUser();
+
+  if (isNilOrError(appConfiguration)) return null;
+
+  const redirectURL = accessAuthorized
+    ? null
+    : getRedirectURL(appConfiguration, authUser, pathname, urlLocale);
+
+  if (redirectURL) return <Navigate to={redirectURL} />;
+
+  return (
+    <LoadingComponent>
+      <AdminContainer />
+    </LoadingComponent>
+  );
 };
 
 const createAdminRoutes = (_isUserAuthorized: boolean) => {
   return {
     path: 'admin',
-    element: (
-      <LoadingComponent>
-        <AdminContainer />
-      </LoadingComponent>
-    ),
-    // https://stackoverflow.com/questions/62384395/protected-route-with-react-router-v6
-    // onEnter: isUserAuthorized,
-    // indexRoute: {
-    //   onEnter: (nextState, replace) => {
-    //     const pathNameWithLocale = nextState.location.pathname;
-    //     const { urlLocale } = removeLocale(pathNameWithLocale);
-    //     replace(`${urlLocale && `/${urlLocale}`}/admin/dashboard`);
-    //   },
-    // },
+    element: <IndexElement />,
     children: [
       {
         path: '',
