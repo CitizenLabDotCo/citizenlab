@@ -85,7 +85,7 @@ resource 'Representativeness reference distributions' do
       end
     end
 
-    context 'when the custom field already have a distribution' do
+    context 'when the custom field already has a distribution' do
       let!(:previous_distribution) { create(:ref_distribution, custom_field: custom_field) }
 
       example_request 'replaces the existing distribution' do
