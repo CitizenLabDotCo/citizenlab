@@ -7,7 +7,7 @@ import createAdminProjectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
 import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
-// import ideasRoutes from './ideas/routes';
+import ideasRoutes from './ideas/routes';
 
 // import moduleConfiguration from 'modules';
 const AdminContainer = lazy(() => import('containers/Admin'));
@@ -95,7 +95,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       pagesRoutes(),
       invitationsRoutes(),
       createAdminMessagingRoutes(),
-      // ideasRoutes(),
+      ideasRoutes(),
       // {
       //   path: 'workshops',
       //   component: Loadable({
