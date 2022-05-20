@@ -32,10 +32,6 @@ module IdeaCustomFields
       show?
     end
 
-    def destroy?
-      show?
-    end
-
     def can_view_custom_fields_for_project?(project)
       user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
     end

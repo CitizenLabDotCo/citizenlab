@@ -5,6 +5,8 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
+  # TODO: check if you can update custom custom field through frontend
+  # TODO: test that only description can be updated for title and description fields
 
   before do
     header 'Content-Type', 'application/json'
@@ -22,6 +24,7 @@ resource 'Idea Custom Fields' do
       let(:project_id) { project.id }
 
       example_request 'List all allowed custom fields for a project' do
+        # TODO: create custom custom field and maybe check attributes
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
