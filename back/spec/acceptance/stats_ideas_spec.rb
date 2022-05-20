@@ -141,7 +141,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by topic filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
 
@@ -160,7 +160,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by topic filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:ideas].values.sum).to eq 2
       end
     end
   end
@@ -191,7 +191,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        expect(amounts.sum).to eq 1
       end
     end
 
@@ -213,7 +213,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 2
+        expect(amounts.sum).to eq 2
       end
     end
   end
@@ -251,7 +251,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by status filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
 
@@ -270,7 +270,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by status filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
   end
@@ -301,7 +301,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match_array %w[ideas status status_id]
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        expect(amounts.sum).to eq 1
       end
     end
 
@@ -323,7 +323,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match_array %w[status status_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        expect(amounts.sum).to eq 1
       end
     end
   end
@@ -366,7 +366,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by project filtered by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
 
@@ -387,7 +387,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by project filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
   end
@@ -438,7 +438,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         idea_col = worksheet.map { |col| col.cells[2].value }
         header, *ideas = idea_col
-        expect(ideas.inject(&:+)).to eq 1
+        expect(ideas.sum).to eq 1
       end
     end
 
@@ -462,7 +462,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         idea_col = worksheet.map { |col| col.cells[2].value }
         header, *ideas = idea_col
-        expect(ideas.inject(&:+)).to eq 1
+        expect(ideas.sum).to eq 1
       end
     end
   end
@@ -527,7 +527,7 @@ resource 'Stats - Ideas' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:series][:ideas].size).to eq end_at.yday
-      expect(json_response[:series][:ideas].values.inject(&:+)).to eq 11
+      expect(json_response[:series][:ideas].values.sum).to eq 11
     end
 
     describe 'with time filter outside of platform lifetime' do
@@ -635,7 +635,7 @@ resource 'Stats - Ideas' do
       expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
       amount_col = worksheet.map { |col| col.cells[1].value }
       header, *amounts = amount_col
-      expect(amounts.inject(&:+)).to eq 11
+      expect(amounts.sum).to eq 11
     end
 
     describe 'with time filter outside of platform lifetime' do

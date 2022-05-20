@@ -306,21 +306,6 @@ Performance/MethodObjectAsBlock:
     - 'app/mailers/application_mailer.rb'
     - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/admin_digest.rb'
 
-# Offense count: 66
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: OnlySumOrWithInitialValue.
-Performance/Sum:
-  Exclude:
-    - 'app/models/basket.rb'
-    - 'engines/commercial/user_custom_fields/spec/acceptance/stats_users_spec.rb'
-    - 'engines/free/email_campaigns/app/models/concerns/email_campaigns/recipient_configurable.rb'
-    - 'engines/free/email_campaigns/app/models/email_campaigns/delivery.rb'
-    - 'spec/acceptance/stats_comments_spec.rb'
-    - 'spec/acceptance/stats_ideas_spec.rb'
-    - 'spec/acceptance/stats_initiatives_spec.rb'
-    - 'spec/acceptance/stats_users_spec.rb'
-    - 'spec/acceptance/stats_votes_spec.rb'
-
 # Offense count: 39
 RSpec/AnyInstance:
   Enabled: false

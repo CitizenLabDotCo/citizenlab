@@ -128,7 +128,7 @@ resource 'Stats - Initiatives' do
       example_request 'Initiatives by topic filtered by group' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:initiatives].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:initiatives].values.sum).to eq 2
       end
     end
   end
@@ -165,7 +165,7 @@ resource 'Stats - Initiatives' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:series][:initiatives].size).to eq end_at.yday
-      expect(json_response[:series][:initiatives].values.inject(&:+)).to eq 11
+      expect(json_response[:series][:initiatives].values.sum).to eq 11
     end
   end
 
