@@ -8,7 +8,6 @@ module UserCustomFields
 
         attribute :distribution, &:normalized_distribution
 
-        # TODO: Improve performance
         has_many(
           :values,
           serializer: ::WebApi::V1::CustomFieldOptionSerializer,
