@@ -194,7 +194,7 @@ class AnonymizeUserService
   end
 
   def random_bio(locales)
-    locales.map do |locale|
+    locales.to_h do |locale|
       bio = case %w[greek hipster movie rick_and_morty game_of_thrones nil].sample
       when 'greek'
         Faker::GreekPhilosophers.quote
@@ -210,7 +210,7 @@ class AnonymizeUserService
         ''
       end
       [locale, bio]
-    end.to_h
+    end
   end
 
   def random_registration(user: nil, start_at: (Time.now - 1.month))

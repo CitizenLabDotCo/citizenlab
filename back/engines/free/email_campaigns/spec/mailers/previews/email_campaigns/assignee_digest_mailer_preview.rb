@@ -36,11 +36,11 @@ module EmailCampaigns
               images: initiative.initiative_images.map do |image|
                 {
                   ordering: image.ordering,
-                  versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
                 }
               end,
               header_bg: {
-                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
               }
             }
           end,
@@ -58,11 +58,11 @@ module EmailCampaigns
               images: initiative.initiative_images.map do |image|
                 {
                   ordering: image.ordering,
-                  versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
                 }
               end,
               header_bg: {
-                versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
               }
             }
           end,
