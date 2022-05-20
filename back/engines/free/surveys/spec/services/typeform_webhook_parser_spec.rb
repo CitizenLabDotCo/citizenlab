@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Surveys::TypeformWebhookParser do
   let(:service) { Surveys::TypeformWebhookParser.new }
-  let(:body) {{
+  let(:body) do
+    {
     event_id: 'LtWXD3crgy',
     event_type: 'form_response',
     form_response: {
@@ -151,9 +154,9 @@ describe Surveys::TypeformWebhookParser do
         {
           type: 'choices',
           choices: {
-            labels: [
-              'London',
-              'Sydney'
+            labels: %w[
+              London
+              Sydney
             ]
           },
           field: {
@@ -221,7 +224,7 @@ describe Surveys::TypeformWebhookParser do
         }
       ]
     }
-  }}
+  } end
 
   it 'generates the correct survey response' do
     response = service.body_to_response(body)
@@ -257,9 +260,9 @@ describe Surveys::TypeformWebhookParser do
       {
         'question_id' => 'PNe8ZKBK8C2Q',
         'question_text' => 'Which pictures do you like? You can choose as many as you like.',
-        'value' => [
-          'London',
-          'Sydney'
+        'value' => %w[
+          London
+          Sydney
         ]
       },
       {

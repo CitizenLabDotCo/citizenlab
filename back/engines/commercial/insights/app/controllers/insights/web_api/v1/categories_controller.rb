@@ -24,12 +24,14 @@ module Insights
         rescue ActiveRecord::RecordInvalid => e
           render json: { errors: e.record.errors.details }, status: :unprocessable_entity
         else
+          SideFxCategoryService.new.after_create(category, current_user)
           render json: serialize(category), status: :created
         end
       end
 
       def update
         if category.update(update_params)
+          SideFxCategoryService.new.after_update(category, current_user)
           render json: serialize(category)
         else
           render json: { errors: category.errors.details }, status: :unprocessable_entity
@@ -37,8 +39,12 @@ module Insights
       end
 
       def destroy
-        status = category.destroy.destroyed? ? :ok : 500
-        head status
+        if category.destroy.destroyed?
+          SideFxCategoryService.new.after_destroy(category, current_user)
+          head :ok
+        else
+          head :internal_server_error
+        end
       end
 
       def destroy_all
@@ -80,8 +86,8 @@ module Insights
       end
 
       def input_filter_params
-        @inputs_params ||= params.require(:category)
-                                 .permit(inputs: [:search, keywords: [], categories: []])
+        @input_filter_params ||= params.require(:category)
+                                 .permit(inputs: [:search, { keywords: [], categories: [] }])
                                  .fetch(:inputs, nil)
       end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContentImageService
   class DecodingError < StandardError
     def initialize(options = {})

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module OmniauthMethods
   class AzureActiveDirectory
-
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       if configuration.feature_activated?('azure_ad_login')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class ScheduleCodeExpiration < ApplicationInteractor
     delegate :user, to: :context

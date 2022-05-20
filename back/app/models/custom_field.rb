@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: custom_fields
@@ -51,7 +53,7 @@ class CustomField < ApplicationRecord
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
 
-  scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
+  scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
   scope :not_hidden, -> { where(hidden: false) }
@@ -74,7 +76,7 @@ class CustomField < ApplicationRecord
   end
 
   def generate_key
-    if !key
+    unless key
       self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
         self.class.find_by(key: key_proposal, resource_type: resource_type)
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'i18n/backend/fallbacks'
 
 CL2_SUPPORTED_LOCALES = %i[en ar-MA ar-SA en-GB en-CA nl-BE nl-NL fr-BE fr-FR de-DE it-IT
@@ -14,4 +16,4 @@ I18n.default_locale = :en
 I18n::Backend::Simple.include I18n::Backend::Fallbacks
 
 # Load application custom translations in order to use them in other initializers (after https://stackoverflow.com/a/53918536/3585671)
-I18n.load_path += Dir[Rails.root.join('config', 'locales', '*.{rb,yml}').to_s]
+I18n.load_path += Dir[Rails.root.join('config/locales/*.{rb,yml}').to_s]

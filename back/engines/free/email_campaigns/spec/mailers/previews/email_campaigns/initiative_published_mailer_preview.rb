@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class InitiativePublishedMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -17,7 +19,7 @@ module EmailCampaigns
             }
           end,
           initiative_header_bg: {
-            versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
           },
           initiative_votes_needed: initiative.votes_needed,
           initiative_expires_at: initiative.expires_at.iso8601

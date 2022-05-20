@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: maps_layers
@@ -26,7 +28,7 @@ module CustomMaps
 
     attribute :geojson_file
 
-    GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config','schemas','geojson.json_schema').to_s
+    GEOJSON_SCHEMA = CustomMaps::Engine.root.join('config', 'schemas', 'geojson.json_schema').to_s
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:map_config_id]
 

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Campaign consents' do
-
   explanation 'A consent defines whether a specific user (dis)allows a specific campaign type'
 
   before do
@@ -20,7 +21,7 @@ resource 'Campaign consents' do
       end
 
       @consents = @campaigns.map.with_index do |campaign, i|
-        create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)
+        create(:consent, user: @user, campaign_type: campaign.type, consented: i.even?)
       end
     end
 
@@ -31,6 +32,7 @@ resource 'Campaign consents' do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
+
       example_request 'List all campaign consents' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
@@ -45,14 +47,15 @@ resource 'Campaign consents' do
       end
 
       example_request 'List all campaigns consents with expected categories' do
-        categories = ['own', 'admin', 'official', 'mention', 'voted', 'commented', 'scheduled']
+        categories = %w[own admin official mention voted commented scheduled]
         json_response = json_parse(response_body)
-        expect(json_response[:data]).to all ( satisfy { |consent| categories.include?(consent[:attributes][:category]) } )
+        expect(json_response[:data]).to all(satisfy { |consent| categories.include?(consent[:attributes][:category]) })
       end
     end
 
     context 'when using an unsubscription token' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
       example_request 'List all campaign consents using unsubscription token' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
@@ -62,11 +65,11 @@ resource 'Campaign consents' do
 
     context 'with an invalid unsubscription_token' do
       let(:unsubscription_token) { 'garbage' }
+
       example_request 'List all campaigns with an invalid unsubscription token', document: false do
         expect(status).to eq 401
       end
     end
-
   end
 
   patch 'web_api/v1/consents/:id' do
@@ -86,19 +89,21 @@ resource 'Campaign consents' do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
+
       example_request 'Update a campaign consent' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
 
     context 'when using an unsubscription token' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
       example_request 'Update a campaign consent using an unsubscription token' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
   end
@@ -120,21 +125,23 @@ resource 'Campaign consents' do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
+
       example_request 'Update a campaign consent by campaign id' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:id)).to eq consent.id
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :id)).to eq consent.id
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
 
     context 'when using an unsubscription token' do
       let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
       example_request 'Update a campaign consent by campaign id using an unsubscription token' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:id)).to eq consent.id
-        expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+        expect(json_response.dig(:data, :id)).to eq consent.id
+        expect(json_response.dig(:data, :attributes, :consented)).to eq consented
       end
     end
   end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 PublicApi::Engine.routes.draw do
   namespace :v1 do
     post 'authenticate' => 'api_token#create'
-    resources :ideas, only: [:index, :show]
-    resources :projects, only: [:index, :show]
+    resources :ideas, only: %i[index show]
+    resources :projects, only: %i[index show]
   end
 end
 

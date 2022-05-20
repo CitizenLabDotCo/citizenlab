@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: texting_campaigns
@@ -53,7 +55,7 @@ module Texting
       return unless invalid_numbers.any?
 
       options = Texting::PhoneNumber.requirements(country_codes: codes).merge(invalid_numbers: invalid_numbers)
-      # This error is dealt with in handleSubmit 
+      # This error is dealt with in handleSubmit
       # of front/app/containers/Admin/messaging/texting/components/SMSCampaignForm.tsx
       errors.add(:phone_numbers, :invalid, options)
     end

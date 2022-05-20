@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -27,5 +29,4 @@ class NotificationPolicy < ApplicationPolicy
   def show?
     record.recipient_id == user.id
   end
-
 end

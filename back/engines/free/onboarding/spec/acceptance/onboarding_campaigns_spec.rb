@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Onboarding campaigns' do
-
   explanation 'Indicates which call to action to show to the current user'
 
   before do
@@ -14,7 +14,6 @@ resource 'Onboarding campaigns' do
   end
 
   get 'web_api/v1/onboarding_campaigns/current' do
-
     response_field :name, "One of #{Onboarding::OnboardingService.campaigns.join(' or ')}", scope: :attributes
 
     context 'for a user with an incomplete profile' do
@@ -30,7 +29,7 @@ resource 'Onboarding campaigns' do
 
     context 'for a user with a complete profile' do
       before do
-        @user.update!(bio_multiloc: {en: 'I love scrabble'})
+        @user.update!(bio_multiloc: { en: 'I love scrabble' })
         AppConfiguration.instance.tap do |cfg|
           cfg.settings['core']['custom_onboarding_message'] = { en: 'Dance like noone is watching' }
           cfg.settings['core']['custom_onboarding_button'] = { en: 'Click here' }
@@ -83,5 +82,4 @@ resource 'Onboarding campaigns' do
       end
     end
   end
-
 end

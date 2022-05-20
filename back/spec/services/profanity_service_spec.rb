@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ProfanityService do
@@ -5,7 +7,9 @@ describe ProfanityService do
 
   describe 'search_blocked_words' do
     before { Rails.cache.clear } # for some reason, caching is enabled while testing
+
     before { stub_fetch_blocked_words! service }
+
     after { Rails.cache.clear }
 
     it 'matches exact occurences' do
@@ -66,7 +70,7 @@ describe ProfanityService do
         {
           word: 'stupid',
           language: 'en'
-        },
+        }
       ])
     end
 
@@ -104,29 +108,28 @@ describe ProfanityService do
 
   private
 
-  def stub_fetch_blocked_words! service
+  def stub_fetch_blocked_words!(service)
     service.stub(:fetch_blocked_words) do |lang|
       case lang
       when 'fr'
-        [
-          'con',
-          'débile',
-          'idiot',
-          'pute'
+        %w[
+          con
+          débile
+          idiot
+          pute
         ]
       when 'nl'
-        [
-          'ambetanterik',
-          'debiel',
-          'zeveraar'
+        %w[
+          ambetanterik
+          debiel
+          zeveraar
         ]
       else
-        [
-          'idiot',
-          'stupid'
+        %w[
+          idiot
+          stupid
         ]
       end
     end
   end
-
 end

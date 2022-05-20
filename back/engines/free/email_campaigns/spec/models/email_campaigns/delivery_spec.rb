@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Delivery, type: :model do
@@ -11,7 +13,7 @@ RSpec.describe EmailCampaigns::Delivery, type: :model do
     it 'deletes the associated Delivery' do
       delivery = create(:delivery)
       delivery.user.destroy
-      expect{delivery.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { delivery.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -19,7 +21,7 @@ RSpec.describe EmailCampaigns::Delivery, type: :model do
     it 'deletes the associated Delivery' do
       delivery = create(:delivery)
       delivery.campaign.destroy
-      expect{delivery.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { delivery.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

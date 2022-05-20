@@ -17,24 +17,23 @@ module IdBosaFas
     end
 
     def config_parameters
-      [:environment, :identifier, :secret]
+      %i[environment identifier secret]
     end
 
-    def entitled? auth
+    def entitled?(_auth)
       true
     end
 
-    def profile_to_uid auth
-      auth['uid'] || auth.dig('extra','raw_info','egovNRN')
+    def profile_to_uid(auth)
+      auth['uid'] || auth.dig('extra', 'raw_info', 'egovNRN')
     end
 
     def locked_attributes
-      [:first_name, :last_name]
+      %i[first_name last_name]
     end
 
     def locked_custom_fields
       []
     end
-
   end
 end

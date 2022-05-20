@@ -8,10 +8,11 @@ import { UserComponent } from '@craftjs/core';
 import Text from '../Text';
 import Image from '../Image';
 import AboutBox from '../AboutBox';
+import Iframe from '../Iframe';
 
 const Container: UserComponent = ({ children }) => {
   return (
-    <Box minHeight="40px" w="100%">
+    <Box id="e2e-single-column" minHeight="40px" w="100%">
       {children}
     </Box>
   );
@@ -24,6 +25,7 @@ Container.craft = {
         (node) =>
           node.data.type === Text ||
           node.data.type === Image ||
+          node.data.type === Iframe ||
           node.data.type === AboutBox
       );
     },

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
@@ -32,7 +34,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~> 2.0.1'
   gem 'factory_bot_rails'
   gem 'license_finder'
   # Use module prepend to patch NET::HTTP to avoid stack level too deep errors.
@@ -41,14 +43,15 @@ group :development, :test do
   # Here, rack-mini-profiler conflicts with sentry-ruby which patches NET::HTTP
   # with prepend.
   # See https://github.com/MiniProfiler/rack-mini-profiler#nethttp-stack-level-too-deep-errors
-  gem 'rack-mini-profiler', require: ['prepend_net_http_patch', 'rack-mini-profiler']
+  gem 'rack-mini-profiler', require: %w[prepend_net_http_patch rack-mini-profiler]
   gem 'rspec_api_documentation'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails', '~> 5.1.0'
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
-  gem 'rubocop-ast', '~> 0.7.1', require: false
+  gem 'rubocop', require: false
+  gem 'rubocop-ast', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
@@ -107,7 +110,7 @@ gem 'rails-i18n', '~> 6.0.0'
 gem 'awesome_nested_set', '~> 3.4.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'counter_culture', '~> 2.8'
-gem 'groupdate' # , "~> 3.2.0"
+gem 'groupdate', '~> 4.1'
 gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 4.0'
@@ -150,7 +153,7 @@ gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'bootsnap', '~> 1', require: false
-gem 'dalli'
+gem 'dalli', '~> 2.7'
 gem 'mailgun-ruby', '~>1.2.0'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'

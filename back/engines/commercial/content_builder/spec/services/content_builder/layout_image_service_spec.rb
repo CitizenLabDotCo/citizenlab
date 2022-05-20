@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ContentBuilder::LayoutImageService do
@@ -21,7 +23,7 @@ describe ContentBuilder::LayoutImageService do
           'displayName' => 'div',
           'custom' => {},
           'hidden' => false,
-          'nodes' => ['XGtvXcaUr3', 'nt24xY6COf'],
+          'nodes' => %w[XGtvXcaUr3 nt24xY6COf],
           'linkedNodes' => {}
         },
         'nt24xY6COf' => {
@@ -74,7 +76,7 @@ describe ContentBuilder::LayoutImageService do
           'displayName' => 'div',
           'custom' => {},
           'hidden' => false,
-          'nodes' => ['XGtvXcaUr3', 'nt24xY6COf'],
+          'nodes' => %w[XGtvXcaUr3 nt24xY6COf],
           'linkedNodes' => {}
         },
         'nt24xY6COf' => {
@@ -136,7 +138,7 @@ describe ContentBuilder::LayoutImageService do
           'displayName' => 'div',
           'custom' => {},
           'hidden' => false,
-          'nodes' => ['XGtvXcaUr3', 'nt24xY6COf'],
+          'nodes' => %w[XGtvXcaUr3 nt24xY6COf],
           'linkedNodes' => {}
         },
         'nt24xY6COf' => {
@@ -188,7 +190,7 @@ describe ContentBuilder::LayoutImageService do
           'displayName' => 'div',
           'custom' => {},
           'hidden' => false,
-          'nodes' => ['XGtvXcaUr3', 'nt24xY6COf'],
+          'nodes' => %w[XGtvXcaUr3 nt24xY6COf],
           'linkedNodes' => {}
         },
         'nt24xY6COf' => {

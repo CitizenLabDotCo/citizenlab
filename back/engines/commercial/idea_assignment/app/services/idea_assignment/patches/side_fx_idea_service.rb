@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   module Patches
     module SideFxIdeaService
@@ -19,7 +21,7 @@ module IdeaAssignment
 
       def before_publish(idea, user)
         super
-        if !idea.assignee
+        unless idea.assignee
           idea.assignee = IdeaAssignmentService.new.automatically_assigned_idea_assignee idea
           @automatic_assignment = true if idea.assignee
         end

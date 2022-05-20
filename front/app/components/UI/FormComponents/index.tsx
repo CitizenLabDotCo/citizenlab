@@ -127,6 +127,9 @@ const OptionalText = styled.span`
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIcon = styled(Icon)`

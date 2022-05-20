@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::InitiativeType < GraphQL::Schema::Object
     description 'Single unit of citizen input'
@@ -28,7 +30,6 @@ module AdminApi
       field :updated_at, String, null: false
       field :created_at, String, null: false
     end
-
 
     field :id, ID, null: false
     field :title_multiloc, Types::MultilocType, null: false

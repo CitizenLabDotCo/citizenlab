@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GenerateUserAvatarJob < ApplicationJob
   queue_as :default
 
@@ -8,5 +10,4 @@ class GenerateUserAvatarJob < ApplicationJob
       user.save if user.avatar.present?
     end
   end
-
 end

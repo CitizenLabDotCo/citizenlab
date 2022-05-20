@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
@@ -8,26 +10,26 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
   end
 
   describe '#generate_commands' do
-  	let(:campaign) { create(:invite_received_campaign) }
+    let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }
     let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
 
-  	it 'generates a command with the desired payload and tracked content' do
-  		command = campaign.generate_commands(
+    it 'generates a command with the desired payload and tracked content' do
+      command = campaign.generate_commands(
         recipient: invite.invitee,
         activity: activity
-        ).first
+      ).first
 
       expect(
-      	command.dig(:event_payload, :inviter_first_name)
-      	).to eq(invite.inviter.first_name)
+        command.dig(:event_payload, :inviter_first_name)
+      ).to eq(invite.inviter.first_name)
       expect(
-      	command.dig(:event_payload, :invitee_last_name)
-      	).to eq(invite.invitee.last_name)
+        command.dig(:event_payload, :invitee_last_name)
+      ).to eq(invite.invitee.last_name)
       expect(
-      	command.dig(:event_payload, :invite_text)
-      	).to eq(invite.invite_text)
-  	end
+        command.dig(:event_payload, :invite_text)
+      ).to eq(invite.invite_text)
+    end
   end
 
   describe '#apply_recipient_filters' do

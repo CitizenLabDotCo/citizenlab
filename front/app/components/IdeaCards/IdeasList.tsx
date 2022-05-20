@@ -5,12 +5,11 @@ import IdeaCard from 'components/IdeaCard';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { rgba } from 'polished';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
 import { ParticipationMethod } from 'services/participationContexts';
 import EmptyIdeas from './EmptyIdeas';
 import { IIdeaData } from 'services/ideas';
 import { IParticipationContextType } from 'typings';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
@@ -34,8 +33,6 @@ const Footer = styled.div`
     margin-top: 0px;
   `}
 `;
-
-const ShowMoreButton = styled(Button)``;
 
 const Loading = styled.div`
   width: 100%;
@@ -90,22 +87,29 @@ const IdeasList = ({
   hideIdeaStatus = false,
 }: Props) => {
   const theme: any = useTheme();
-  const locale = useLocale();
 
   const loadMoreIdeas = () => {
     onLoadMore();
   };
 
-  if (!isNilOrError(locale)) {
-    return (
-      <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
-        {querying ? (
-          <Loading>
-            <Spinner />
-          </Loading>
-        ) : (
-          <>
-            {hasIdeas && list && (
+  return (
+    <div aria-labelledby={ariaLabelledBy} id={id} tabIndex={tabIndex}>
+      {querying ? (
+        <Loading>
+          <Spinner />
+        </Loading>
+      ) : (
+        <>
+          <ScreenReaderOnly aria-live="polite">
+            <FormattedMessage
+              {...messages.showXResults}
+              values={{
+                ideasCount: list ? list.length : 0,
+              }}
+            />
+          </ScreenReaderOnly>
+          {hasIdeas && list && (
+            <>
               <Box
                 ml="-13px"
                 mr="-13px"
@@ -113,6 +117,7 @@ const IdeasList = ({
                 display="flex"
                 flexWrap="wrap"
                 id="e2e-ideas-list"
+                aria-live="polite"
               >
                 {list.map((idea) => {
                   return (
@@ -129,36 +134,33 @@ const IdeasList = ({
                   );
                 })}
               </Box>
-            )}
+            </>
+          )}
 
-            {hasMore && (
-              <Footer>
-                <ShowMoreButton
-                  locale={locale}
-                  id="e2e-idea-cards-show-more-button"
-                  onClick={loadMoreIdeas}
-                  buttonStyle="secondary"
-                  text={<FormattedMessage {...messages.showMore} />}
-                  processing={loadingMore}
-                  height="50px"
-                  icon="showMore"
-                  iconPos="left"
-                  textColor={theme.colorText}
-                  bgColor={rgba(theme.colorText, 0.08)}
-                  bgHoverColor={rgba(theme.colorText, 0.12)}
-                  fontWeight="500"
-                />
-              </Footer>
-            )}
+          {hasMore && (
+            <Footer>
+              <Button
+                id="e2e-idea-cards-show-more-button"
+                onClick={loadMoreIdeas}
+                buttonStyle="secondary"
+                text={<FormattedMessage {...messages.showMore} />}
+                processing={loadingMore}
+                height="50px"
+                icon="showMore"
+                iconPos="left"
+                textColor={theme.colorText}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
+                fontWeight="500"
+              />
+            </Footer>
+          )}
 
-            {!hasIdeas && <EmptyIdeas />}
-          </>
-        )}
-      </div>
-    );
-  }
-
-  return null;
+          {!hasIdeas && <EmptyIdeas />}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default IdeasList;

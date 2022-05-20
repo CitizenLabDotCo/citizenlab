@@ -1,5 +1,6 @@
-class StatInitiativePolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class StatInitiativePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -36,5 +37,4 @@ class StatInitiativePolicy < ApplicationPolicy
   def initiatives_by_time_cumulative?
     user&.active? && user.admin?
   end
-
 end

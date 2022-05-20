@@ -2,10 +2,9 @@
 
 module IdAuth0
   class Auth0Omniauth
-
     include Auth0Verification
 
-    def profile_to_user_attrs(auth)
+    def profile_to_user_attrs(_auth)
       {}
     end
 
@@ -25,7 +24,5 @@ module IdAuth0
     def updateable_user_attrs
       []
     end
-
   end
-
 end
