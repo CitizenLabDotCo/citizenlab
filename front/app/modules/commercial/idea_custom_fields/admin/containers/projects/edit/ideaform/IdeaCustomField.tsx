@@ -176,7 +176,7 @@ const disablableFields = [
   'idea_files_attributes',
   'proposed_budget',
 ];
-const alwaysRequiredFields = ['title', 'body'];
+const alwaysRequiredFields = ['title_multiloc', 'body_multiloc'];
 
 export default memo<Props>(
   ({
