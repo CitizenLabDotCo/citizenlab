@@ -38,7 +38,6 @@ class MultiTenancy::Templates::Serializer
       template['models']['static_page_file']                     = yml_static_page_files
       template['models']['idea_status']                          = yml_idea_statuses
       template['models']['idea']                                 = yml_ideas
-      template['models']['areas_idea']                           = yml_areas_ideas
       template['models']['baskets_idea']                         = yml_baskets_ideas
       template['models']['idea_file']                            = yml_idea_files
       template['models']['idea_image']                           = yml_idea_images
@@ -639,17 +638,6 @@ class MultiTenancy::Templates::Serializer
       store_ref yml_idea, i.id, :idea
       yml_idea
     end
-  end
-
-  def yml_areas_ideas
-    AreasIdea.where(idea: Idea.published.where.not(author_id: nil)).map do |a|
-      if lookup_ref(a.idea_id, :idea)
-        {
-          'area_ref' => lookup_ref(a.area_id, :area),
-          'idea_ref' => lookup_ref(a.idea_id, :idea)
-        }
-      end
-    end.compact
   end
 
   def yml_baskets_ideas
