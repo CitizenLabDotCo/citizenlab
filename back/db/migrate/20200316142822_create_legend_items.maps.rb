@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from maps (originally 20200316134420)
 class CreateLegendItems < ActiveRecord::Migration[6.0]
   def change

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -283,7 +285,7 @@ resource 'Invites' do
         boulettos = json_response[:included].select { |inc| inc[:id] == invite.invitee.id }&.first
         expect(boulettos&.dig(:attributes, :last_name)).to eq('Boulettos')
         expect(boulettos&.dig(:attributes, :invite_status)).to eq('accepted')
-        expect(invite.reload.invitee.registration_completed_at).to be_nil  # when no custom fields
+        expect(invite.reload.invitee.registration_completed_at).to be_nil # when no custom fields
       end
 
       describe do

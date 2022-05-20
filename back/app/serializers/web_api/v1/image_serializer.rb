@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ImageSerializer < WebApi::V1::BaseSerializer
   attributes :ordering, :created_at, :updated_at
 

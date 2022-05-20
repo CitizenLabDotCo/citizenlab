@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 # The following specs are WIP and not implemented, and currently just serve as

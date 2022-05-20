@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 

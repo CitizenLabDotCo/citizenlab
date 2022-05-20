@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AvatarUploader < BaseImageUploader
   version :small do
     process resize_to_fill: [32, 32]

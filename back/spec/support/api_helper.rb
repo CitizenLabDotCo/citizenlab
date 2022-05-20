@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApiHelper
   def set_api_content_type
     header 'Content-Type', 'application/json'

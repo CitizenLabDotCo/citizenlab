@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :copies do
   # If a custom field (a platform) is created without a copy for the specific language,
   # and then we add this language to CitizenLab (or to the platform),

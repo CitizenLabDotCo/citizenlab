@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :legend_item, class: 'CustomMaps::LegendItem' do
     map_config

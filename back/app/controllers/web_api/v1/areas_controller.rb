@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AreasController < ApplicationController
   before_action :set_area, except: %i[index create]
   before_action :set_side_effects_service, only: %i[create update reorder destroy]

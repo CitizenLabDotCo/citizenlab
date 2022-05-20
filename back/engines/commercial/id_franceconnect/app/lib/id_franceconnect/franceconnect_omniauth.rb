@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # FranceConnect works locally with any of these identifiers
 # https://github.com/france-connect/identity-provider-example/blob/master/database.csv
 module IdFranceconnect

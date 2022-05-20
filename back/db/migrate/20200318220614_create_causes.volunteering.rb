@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from volunteering (originally 20200318215917)
 class CreateCauses < ActiveRecord::Migration[6.0]
   def change

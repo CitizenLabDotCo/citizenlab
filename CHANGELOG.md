@@ -1,8 +1,30 @@
 # Changelog
 
+## Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
 ### Fixed
 
 - [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
 
 ## 2022-05-16
 

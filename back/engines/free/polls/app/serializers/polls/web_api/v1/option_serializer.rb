@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   class WebApi::V1::OptionSerializer < ::WebApi::V1::BaseSerializer
     attributes :title_multiloc, :ordering

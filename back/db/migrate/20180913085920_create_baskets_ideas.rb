@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateBasketsIdeas < ActiveRecord::Migration[5.1]
   def change
     create_table :baskets_ideas, id: :uuid do |t|
