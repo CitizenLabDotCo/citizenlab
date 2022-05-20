@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { isEmpty } from 'lodash-es';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import { IProjectFormState } from 'services/projects';
 import { getSelectedTopicIds } from './utils/state';
@@ -45,10 +44,7 @@ import { InjectedIntlProps } from 'react-intl';
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-import eventEmitter from 'utils/eventEmitter';
-
 import { validateSlug } from 'utils/textUtils';
-import saveForm from './utils/saveForm';
 import validateTitle from './utils/validateTitle';
 
 // typings
@@ -56,28 +52,39 @@ import { IOption, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
+import { isEmpty, get, isString } from 'lodash-es';
+import eventEmitter from 'utils/eventEmitter';
+
+// services
+import {
+  IUpdatedProjectProperties,
+  addProject,
+  updateProject,
+} from 'services/projects';
+import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
+import { addProjectImage, deleteProjectImage } from 'services/projectImages';
+
+// typings
+import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 export const TIMEOUT = 350;
 
 const AdminProjectEditGeneral = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  const { projectId } = useParams();
+  const params = useParams();
   const localize = useLocalize();
-  const project = useProject({ projectId });
+  const project = useProject({ projectId: params.projectId });
   const appConfigLocales = useAppConfigurationLocales();
-  const remoteProjectFiles = useProjectFiles(projectId);
+  const remoteProjectFiles = useProjectFiles(params.projectId);
   const remoteProjectImages = useProjectImages({
-    projectId: projectId || null,
+    projectId: params.projectId || null,
   });
   const areas = useAreas();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
-  const [
-    processing,
-    // setProcessing
-  ] = useState<IProjectFormState['processing']>(false);
-  // still used?
-  const [apiErrors, _setApiErrors] = useState({});
+  const [processing, setProcessing] =
+    useState<IProjectFormState['processing']>(false);
+  const [apiErrors, setApiErrors] = useState({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
   >({
@@ -94,15 +101,15 @@ const AdminProjectEditGeneral = ({
   const [projectFiles, setProjectFiles] = useState<
     IProjectFormState['projectFiles']
   >([]);
-  const [_projectFilesToRemove, setProjectFilesToRemove] = useState<
+  const [projectFilesToRemove, setProjectFilesToRemove] = useState<
     IProjectFormState['projectFilesToRemove']
   >([]);
   const [projectImages, setProjectImages] = useState<
     IProjectFormState['projectImages']
   >([]);
-  // const [projectImagesToRemove, setProjectImagesToRemove] = useState<
-  //   IProjectFormState['projectImagesToRemove']
-  // >([]);
+  const [projectImagesToRemove, setProjectImagesToRemove] = useState<
+    IProjectFormState['projectImagesToRemove']
+  >([]);
   const [slug, setSlug] = useState<IProjectFormState['slug']>(null);
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
     useState<IProjectFormState['showSlugErrorMessage']>(false);
@@ -113,6 +120,10 @@ const AdminProjectEditGeneral = ({
   const [areasOptions, setAreasOptions] = useState<
     IProjectFormState['areasOptions']
   >([]);
+  const projectAttrs = {
+    ...(!isNilOrError(project) ? project.attributes : {}),
+    ...projectAttributesDiff,
+  };
 
   useEffect(() => {
     (async () => {
@@ -318,6 +329,95 @@ const AdminProjectEditGeneral = ({
     }));
   };
 
+  const validateForm = () => {
+    const titleError = !isNilOrError(appConfigLocales)
+      ? validateTitle(
+          appConfigLocales,
+          projectAttrs.title_multiloc,
+          formatMessage(messages.noTitleErrorMessage)
+        )
+      : null;
+
+    setTitleError(!isEmpty(titleError) ? titleError : null);
+
+    // check if this is ok
+    return !!titleError;
+  };
+
+  async function saveForm(
+    participationContextConfig: IParticipationContextConfig | null
+  ) {
+    let projectId = params.projectId;
+    const isNewProject = typeof projectId === 'string';
+
+    if (validateForm() && !processing) {
+      const nextProjectAttributesDiff: IUpdatedProjectProperties = {
+        ...projectAttributesDiff,
+        ...participationContextConfig,
+      };
+
+      try {
+        setProcessing(true);
+        if (!isEmpty(nextProjectAttributesDiff)) {
+          if (projectId) {
+            await updateProject(projectId, nextProjectAttributesDiff);
+          } else {
+            const project = await addProject(nextProjectAttributesDiff);
+            projectId = project.data.id;
+          }
+        }
+
+        if (isString(projectId)) {
+          const imagesToAddPromises = projectImages
+            .filter((file) => !file.remote)
+            .map((file) => addProjectImage(projectId as string, file.base64));
+          const imagesToRemovePromises = projectImagesToRemove
+            .filter((file) => file.remote === true && isString(file.id))
+            .map((file) =>
+              deleteProjectImage(projectId as string, file.id as string)
+            );
+          const filesToAddPromises = projectFiles
+            .filter((file) => !file.remote)
+            .map((file) =>
+              addProjectFile(projectId as string, file.base64, file.name)
+            );
+          const filesToRemovePromises = projectFilesToRemove
+            .filter((file) => file.remote === true && isString(file.id))
+            .map((file) =>
+              deleteProjectFile(projectId as string, file.id as string)
+            );
+
+          await Promise.all([
+            ...imagesToAddPromises,
+            ...imagesToRemovePromises,
+            ...filesToAddPromises,
+            ...filesToRemovePromises,
+          ] as Promise<any>[]);
+
+          setSubmitState('success');
+          setProjectImagesToRemove([]);
+          setProjectFilesToRemove([]);
+          setProcessing(false);
+
+          if (isNewProject && projectId) {
+            eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
+              projectId,
+            });
+          }
+        }
+      } catch (errors) {
+        const apiErrors = get(
+          errors,
+          'json.errors',
+          formatMessage(messages.saveErrorMessage)
+        );
+        setSubmitState('error');
+        setApiErrors(apiErrors);
+        setProcessing(false);
+      }
+    }
+  }
+
   const save = async (
     participationContextConfig: IParticipationContextConfig | null = null
   ) => {
@@ -367,18 +467,6 @@ const AdminProjectEditGeneral = ({
     validateProjectSlug(slug);
   };
 
-  const validateForm = () => {
-    const titleError = !isNilOrError(appConfigLocales)
-      ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
-      : null;
-
-    setTitleError(!isEmpty(titleError) ? titleError : null);
-  };
-
   const validateProjectSlug = (slug: string) => {
     const isSlugValid = validateSlug(slug);
     setSubmitState(isSlugValid ? 'enabled' : 'disabled');
@@ -396,10 +484,6 @@ const AdminProjectEditGeneral = ({
     setSubmitState(submitState);
   };
 
-  const projectAttrs = {
-    ...(!isNilOrError(project) ? project.attributes : {}),
-    ...projectAttributesDiff,
-  };
   const areaIds =
     projectAttrs.area_ids ||
     (!isNilOrError(project) &&
@@ -423,7 +507,7 @@ const AdminProjectEditGeneral = ({
   return (
     <StyledForm className="e2e-project-general-form" onSubmit={onSubmit}>
       <Section>
-        {projectId && (
+        {params.projectId && (
           <>
             <SectionTitle>
               <FormattedMessage {...messages.titleGeneral} />
