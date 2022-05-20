@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
@@ -368,17 +369,17 @@ const AdminProjectEditGeneral = ({
     validateProjectSlug(slug);
   };
 
-  const validateForm = () => {
-    const titleError = !isNilOrError(appConfigLocales)
-      ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
-      : null;
+  // const validateForm = () => {
+  //   const titleError = !isNilOrError(appConfigLocales)
+  //     ? validateTitle(
+  //         appConfigLocales,
+  //         projectAttrs.title_multiloc,
+  //         formatMessage(messages.noTitleErrorMessage)
+  //       )
+  //     : null;
 
-    setTitleError(!isEmpty(titleError) ? titleError : null);
-  };
+  //   setTitleError(!isEmpty(titleError) ? titleError : null);
+  // };
 
   const validateProjectSlug = (slug: string) => {
     const isSlugValid = validateSlug(slug);

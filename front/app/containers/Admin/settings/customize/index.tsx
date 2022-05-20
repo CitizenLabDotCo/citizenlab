@@ -44,7 +44,8 @@ import { toggleEvents, toggleAllInput } from 'services/navbar';
 import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 
 interface Props {
-  lang: string;
+  // not sure this is still required, it's not present in the component at all
+  lang?: string;
   theme: any;
 }
 
