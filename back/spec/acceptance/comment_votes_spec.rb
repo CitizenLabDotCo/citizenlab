@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Comment Votes' do
-
   explanation 'Votes are used to express agreement on content (i.e. comments).'
 
   before do
@@ -48,7 +48,7 @@ resource 'Comment Votes' do
 
       @votes.first.votable.idea.update!(project: create(:project_with_current_phase))
       do_request
-      
+
       assert_status 401
     end
   end
@@ -59,15 +59,15 @@ resource 'Comment Votes' do
       parameter :mode, 'one of [up, down]', required: true
     end
     ValidationErrorHelper.new.error_fields(self, Vote)
-  
+
     let(:comment_id) { @comment.id }
     let(:mode) { 'up' }
-  
+
     example_request 'Create a vote on a comment' do
       assert_status 201
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data,:relationships,:user,:data,:id)).to be_nil
-      expect(json_response.dig(:data,:attributes,:mode)).to eq 'up'
+      expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
+      expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
       expect(@comment.reload.upvotes_count).to eq 3
     end
 
@@ -147,10 +147,10 @@ resource 'Comment Votes' do
   delete 'web_api/v1/votes/:id' do
     let(:vote) { create(:vote, user: @user, votable: @comment) }
     let(:id) { vote.id }
-    
+
     example_request 'Delete a vote from a comment' do
       expect(response_status).to eq 200
-      expect{Vote.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

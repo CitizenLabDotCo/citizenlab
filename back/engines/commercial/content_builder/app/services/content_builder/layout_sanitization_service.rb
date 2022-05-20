@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   class LayoutSanitizationService < ::ContentImageService
     def sanitize(craftjson, text_features: %i[title alignment list decoration link image video])

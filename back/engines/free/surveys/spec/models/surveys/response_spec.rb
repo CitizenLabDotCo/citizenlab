@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Surveys::Response, type: :model do
-
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:survey_response)).to be_valid
@@ -14,5 +15,4 @@ RSpec.describe Surveys::Response, type: :model do
       expect(JSON::Validator.validate!(metaschema, Surveys::Response::ANSWERS_JSON_SCHEMA)).to be true
     end
   end
-
 end

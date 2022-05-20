@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
+import { render, screen, fireEvent, act, within } from 'utils/testUtils/rtl';
 import ContentBuilderTopBar from './';
 import { Editor } from '@craftjs/core';
 import {
@@ -7,6 +7,7 @@ import {
   addContentBuilderLayout,
 } from '../../../services/contentBuilder';
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IContentBuilderLayoutData = {
   id: '2',
@@ -81,7 +82,10 @@ describe('ContentBuilderTopBar', () => {
   it('renders with correct project name', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     expect(screen.getByText('Test Project')).toBeInTheDocument();
@@ -89,16 +93,22 @@ describe('ContentBuilderTopBar', () => {
   it('calls goBack correctly', () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     fireEvent.click(screen.getByTestId('goBackButton'));
-    expect(clHistory.goBack).toHaveBeenCalled();
+    expect(clHistory.push).toHaveBeenCalled();
   });
   it('calls onSave correctly', async () => {
     render(
       <Editor>
-        <ContentBuilderTopBar />
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
       </Editor>
     );
     await act(async () => {
@@ -109,5 +119,90 @@ describe('ContentBuilderTopBar', () => {
       { code: 'project_description', projectId: 'id' },
       { craftjs_jsonmultiloc: { en: {} } }
     );
+  });
+  it('enables and disables save in accordance with the error status', async () => {
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someId: true });
+      eventEmitter.emit('contentBuilderError', { someOtherId: true });
+    });
+
+    const saveButton = within(
+      screen.getByTestId('contentBuilderTopBarSaveButton')
+    ).getByRole('button');
+
+    expect(saveButton).toBeDisabled();
+
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someId: false });
+    });
+    expect(saveButton).toBeDisabled();
+
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someOtherId: false });
+    });
+    expect(saveButton).not.toBeDisabled();
+  });
+  it('re-enables save when the element with the error is deleted', async () => {
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    await act(async () => {
+      eventEmitter.emit('contentBuilderError', { someId: true });
+    });
+
+    const saveButton = within(
+      screen.getByTestId('contentBuilderTopBarSaveButton')
+    ).getByRole('button');
+
+    expect(saveButton).toBeDisabled();
+
+    await act(async () => {
+      eventEmitter.emit('deleteContentBuilderElement', 'someId');
+    });
+
+    expect(saveButton).not.toBeDisabled();
+  });
+
+  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is false', async () => {
+    const setMobilePreviewEnabled = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={setMobilePreviewEnabled}
+        />
+      </Editor>
+    );
+    const toggle = screen.getByRole('checkbox');
+    fireEvent.click(toggle);
+    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(true);
+  });
+
+  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is true', async () => {
+    const setMobilePreviewEnabled = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          mobilePreviewEnabled={true}
+          setMobilePreviewEnabled={setMobilePreviewEnabled}
+        />
+      </Editor>
+    );
+    const toggle = screen.getByRole('checkbox');
+    fireEvent.click(toggle);
+    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(false);
   });
 });

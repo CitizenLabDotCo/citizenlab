@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   module WebApi
     module V1
@@ -29,7 +31,7 @@ module ContentBuilder
             side_fx_service.after_destroy(layout, current_user)
             head :ok
           else
-            head 500
+            head :internal_server_error
           end
         end
 

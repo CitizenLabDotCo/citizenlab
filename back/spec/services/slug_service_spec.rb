@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SlugService do
@@ -11,7 +13,7 @@ describe SlugService do
         build(:user, first_name: 'Jose', last_name: 'Moura')
       ]
 
-      expect(service.generate_slugs(unpersisted_records) { |u| u.full_name }).to eq %w[
+      expect(service.generate_slugs(unpersisted_records, &:full_name)).to eq %w[
         jose-moura
         jose-moura-1
       ]
@@ -24,7 +26,7 @@ describe SlugService do
         build(:user, first_name: 'Jose', last_name: 'Moura')
       ]
 
-      expect(service.generate_slugs(unpersisted_records) { |u| u.full_name }).to eq %w[
+      expect(service.generate_slugs(unpersisted_records, &:full_name)).to eq %w[
         jose-moura-1
         jose-moura-2
       ]
@@ -41,7 +43,7 @@ describe SlugService do
         build(:user, first_name: 'Paulo', last_name: 'Silva')
       ]
 
-      expect(service.generate_slugs(unpersisted_records) { |u| u.full_name }).to eq %w[
+      expect(service.generate_slugs(unpersisted_records, &:full_name)).to eq %w[
         jose-moura-2
         paulo-silva-19
       ]

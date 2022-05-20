@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::EventsController < ApplicationController
   before_action :set_event, only: %i[show update destroy]
   skip_before_action :authenticate_user
@@ -45,7 +47,7 @@ class WebApi::V1::EventsController < ApplicationController
       SideFxEventService.new.after_destroy(@event, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

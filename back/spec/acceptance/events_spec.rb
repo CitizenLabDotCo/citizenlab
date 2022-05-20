@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Events' do
-
   explanation 'Events organized in the city, related to a project.'
 
   before do
@@ -48,7 +48,7 @@ resource 'Events' do
         @user = create(:admin)
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
-        @project3 = create(:project, { admin_publication_attributes: { publication_status: 'draft' }})
+        @project3 = create(:project, { admin_publication_attributes: { publication_status: 'draft' } })
         @more_events = create_list(:event, 2, project: @project3)
       end
 
@@ -112,11 +112,11 @@ resource 'Events' do
         example_request 'Create an event for a project' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
-          expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
-          expect(json_response.dig(:data,:attributes,:start_at)).to eq start_at.iso8601(3)
-          expect(json_response.dig(:data,:attributes,:end_at)).to eq end_at.iso8601(3)
-          expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
+          expect(json_response.dig(:data, :attributes, :start_at)).to eq start_at.iso8601(3)
+          expect(json_response.dig(:data, :attributes, :end_at)).to eq end_at.iso8601(3)
+          expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         end
       end
 
@@ -124,7 +124,7 @@ resource 'Events' do
         let(:project_id) { @project.id }
         let(:title_multiloc) { { 'en' => '' } }
         let(:start_at) { event.start_at }
-        let(:end_at) { event.start_at - 1.day}
+        let(:end_at) { event.start_at - 1.day }
 
         example_request '[error] Create an invalid event' do
           assert_status 422
@@ -153,7 +153,7 @@ resource 'Events' do
       example_request 'Update an event' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:location_multiloc).stringify_keys).to match location_multiloc
+        expect(json_response.dig(:data, :attributes, :location_multiloc).stringify_keys).to match location_multiloc
       end
     end
 
@@ -162,7 +162,7 @@ resource 'Events' do
       let(:id) { event.id }
       example_request 'Delete a event' do
         assert_status 200
-        expect{Event.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect { Event.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

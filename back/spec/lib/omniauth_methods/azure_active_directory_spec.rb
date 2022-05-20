@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe OmniauthMethods::AzureActiveDirectory do
-
   describe 'profile_to_user_attrs' do
-
     it 'correctly interprets gender, locale and image for google' do
       auth = OpenStruct.new({
         provider: 'azureactivedirectory',
@@ -29,5 +29,4 @@ describe OmniauthMethods::AzureActiveDirectory do
       })
     end
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
@@ -8,9 +10,9 @@ RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
   end
 
   describe '#generate_commands' do
-
     let(:campaign) { create(:manual_campaign) }
     let(:recipient) { create(:user) }
+
     it 'generates a command with the desired payload' do
       expect(campaign.generate_commands(recipient: recipient)&.first).to match({
         author: campaign.author,
@@ -43,5 +45,4 @@ RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
       expect(campaign.reload).to be_valid
     end
   end
-
 end

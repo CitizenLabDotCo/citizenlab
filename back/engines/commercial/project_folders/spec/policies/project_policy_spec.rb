@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ProjectPolicy do
@@ -8,7 +10,7 @@ describe ProjectPolicy do
     let!(:project_folder) { create(:project_folder) }
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
-    it { should permit(:create) }
+    it { is_expected.to permit(:create) }
   end
 
   context 'for a project not contained within a folder the user moderates' do
@@ -16,6 +18,6 @@ describe ProjectPolicy do
     let!(:project_folder) { create(:project_folder) }
     let(:user) { build(:project_folder_moderator, project_folders: [project_folder]) }
 
-    it { should_not permit(:create) }
+    it { is_expected.not_to permit(:create) }
   end
 end

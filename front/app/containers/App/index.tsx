@@ -49,7 +49,7 @@ import { IUser } from 'services/users';
 import {
   authUserStream,
   signOut,
-  signOutAndDeleteAccountPart2,
+  signOutAndDeleteAccount,
 } from 'services/auth';
 import {
   currentAppConfigurationStream,
@@ -129,8 +129,8 @@ interface State {
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
   visible: boolean;
-  userDeletedModalOpened: boolean;
-  userActuallyDeleted: boolean;
+  userDeletedSuccessfullyModalOpened: boolean;
+  userSuccessfullyDeleted: boolean;
   signUpInModalMounted: boolean;
   verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
@@ -153,8 +153,8 @@ class App extends PureComponent<Props, State> {
       modalSlug: null,
       modalType: null,
       visible: true,
-      userDeletedModalOpened: false,
-      userActuallyDeleted: false,
+      userDeletedSuccessfullyModalOpened: false,
+      userSuccessfullyDeleted: false,
       signUpInModalMounted: false,
       verificationModalMounted: false,
       navbarRef: null,
@@ -289,21 +289,23 @@ class App extends PureComponent<Props, State> {
         this.closePostPageModal();
       }),
 
-      eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
-        signOutAndDeleteAccountPart2().then((success) => {
-          if (success) {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: true,
-            });
-          } else {
-            this.setState({
-              userDeletedModalOpened: true,
-              userActuallyDeleted: false,
-            });
-          }
-        });
-      }),
+      eventEmitter
+        .observeEvent('deleteProfileAndShowSuccessModal')
+        .subscribe(() => {
+          signOutAndDeleteAccount().then((success) => {
+            if (success) {
+              this.setState({
+                userDeletedSuccessfullyModalOpened: true,
+                userSuccessfullyDeleted: true,
+              });
+            } else {
+              this.setState({
+                userDeletedSuccessfullyModalOpened: true,
+                userSuccessfullyDeleted: false,
+              });
+            }
+          });
+        }),
 
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
         // Sometimes we need to still open the sign up/in modal
@@ -311,11 +313,16 @@ class App extends PureComponent<Props, State> {
         // But in that case, componentDidUpdate is somehow called before
         // the modal is closed which overwrites the metaData.
         // This slightly dirty hack covers that case.
-        if (metaData) return;
-
-        setTimeout(() => {
-          this.forceUpdate();
-        }, 1);
+        if (metaData) {
+          return;
+        } else {
+          // if metaData is undefined, it means we're closing
+          // the sign up/in modal.
+          this.setState({ signUpInModalMounted: false });
+          setTimeout(() => {
+            this.forceUpdate();
+          }, 1);
+        }
       }),
     ];
   }
@@ -407,7 +414,7 @@ class App extends PureComponent<Props, State> {
   };
 
   closeUserDeletedModal = () => {
-    this.setState({ userDeletedModalOpened: false });
+    this.setState({ userDeletedSuccessfullyModalOpened: false });
   };
 
   setNavbarRef = (navbarRef: HTMLElement) => {
@@ -441,8 +448,8 @@ class App extends PureComponent<Props, State> {
       modalSlug,
       modalType,
       visible,
-      userDeletedModalOpened,
-      userActuallyDeleted,
+      userDeletedSuccessfullyModalOpened,
+      userSuccessfullyDeleted,
       navbarRef,
       mobileNavbarRef,
     } = this.state;
@@ -494,11 +501,11 @@ class App extends PureComponent<Props, State> {
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <LoadableModal
-                      opened={userDeletedModalOpened}
+                      opened={userDeletedSuccessfullyModalOpened}
                       close={this.closeUserDeletedModal}
                     >
                       <LoadableUserDeleted
-                        userActuallyDeleted={userActuallyDeleted}
+                        userSuccessfullyDeleted={userSuccessfullyDeleted}
                       />
                     </LoadableModal>
                   </ErrorBoundary>

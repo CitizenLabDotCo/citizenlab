@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -6,7 +8,7 @@ resource 'Representativeness reference distributions' do
   before { admin_header_token }
 
   get 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
-    context "when the custom field has a reference distribution" do
+    context 'when the custom field has a reference distribution' do
       let!(:reference_distribution) { create(:ref_distribution) }
       let(:custom_field_id) { reference_distribution.custom_field.id }
 
@@ -33,7 +35,6 @@ resource 'Representativeness reference distributions' do
         expect(status).to eq(200)
         expect(json_response_body).to match(expected_response)
       end
-
     end
 
     context 'when the custom field does not have a reference distribution' do

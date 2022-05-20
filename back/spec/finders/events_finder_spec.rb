@@ -36,7 +36,7 @@ describe EventsFinder do
 
   describe '#project_publication_statuses_condition' do
     let(:project) { create(:project) }
-    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' }}) }
+    let(:project2) { create(:project, { admin_publication_attributes: { publication_status: 'draft' } }) }
     let(:expected_record_ids) { Event.where(project: project2).pluck(:id) }
 
     before do
@@ -50,13 +50,13 @@ describe EventsFinder do
     end
   end
 
-  describe '#start_at_lt_condition' do
-    let(:expected_record_ids) { Event.where('start_at < ?', Time.zone.today).pluck(:id) }
+  describe '#ends_before_date_condition' do
+    let(:expected_record_ids) { Event.where('end_at < ?', Time.zone.today).pluck(:id) }
 
     before do
       create_list(:event, 5, start_at: Time.zone.today - 1.week, end_at: Time.zone.today - 1.week + 1.day)
       create_list(:event, 5, start_at: Time.zone.today + 1.week, end_at: Time.zone.today + 1.week + 1.day)
-      params[:start_at_lt] = Time.zone.now
+      params[:ends_before_date] = Time.zone.now
     end
 
     it 'returns the past events' do
@@ -64,13 +64,13 @@ describe EventsFinder do
     end
   end
 
-  describe '#start_at_gteq_condition' do
-    let(:expected_record_ids) { Event.where('start_at >= ?', Time.zone.today).pluck(:id) }
+  describe '#ends_on_or_after_date_condition' do
+    let(:expected_record_ids) { Event.where('end_at >= ?', Time.zone.today).pluck(:id) }
 
     before do
       create_list(:event, 5, start_at: Time.zone.today - 1.week, end_at: Time.zone.today - 1.week + 1.day)
       create_list(:event, 5, start_at: Time.zone.today + 1.week, end_at: Time.zone.today + 1.week + 1.day)
-      params[:start_at_gteq] = Time.zone.now
+      params[:ends_on_or_after_date] = Time.zone.now
     end
 
     it 'returns the correct records' do

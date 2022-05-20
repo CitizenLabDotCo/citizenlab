@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Idea, type: :model do
   context 'associations' do
-    it { should have_many(:votes) }
+    it { is_expected.to have_many(:votes) }
   end
 
   context 'Default factory' do
@@ -30,7 +32,6 @@ RSpec.describe Idea, type: :model do
 
   context 'feedback_needed' do
     it 'should select ideas with no official feedback or no idea status change' do
-
       i1 = create(:idea, idea_status: create(:idea_status_proposed))
       create(:official_feedback, post: i1)
       i2 = create(:idea, idea_status: create(:idea_status_accepted))
@@ -68,9 +69,9 @@ RSpec.describe Idea, type: :model do
       t = Time.now
       travel_to t
       idea = create(:idea, publication_status: 'published')
-      travel_to t+1.week
+      travel_to t + 1.week
       idea.update(publication_status: 'closed')
-      travel_to t+1.week
+      travel_to t + 1.week
       idea.update(publication_status: 'published')
       expect(idea.published_at.to_i).to eq t.to_i
       travel_back
@@ -78,7 +79,6 @@ RSpec.describe Idea, type: :model do
   end
 
   context 'idea_status' do
-
     it 'gets set to proposed on creation when not set' do
       create(:idea_status, code: 'proposed')
       idea = create(:idea, idea_status: nil)
@@ -89,7 +89,7 @@ RSpec.describe Idea, type: :model do
   describe 'order_new' do
     before do
       5.times do |i|
-        travel_to Time.now+i.week do
+        travel_to Time.now + i.week do
           create(:idea)
         end
       end
@@ -113,9 +113,9 @@ RSpec.describe Idea, type: :model do
 
   describe 'order_popular' do
     before do
-      5.times do |i|
+      5.times do |_i|
         idea = create(:idea)
-        rand(20).times{create(:vote, votable: idea, mode: ['up','down'][rand(1)])}
+        rand(20).times { create(:vote, votable: idea, mode: %w[up down][rand(2)]) }
       end
     end
 
@@ -138,13 +138,13 @@ RSpec.describe Idea, type: :model do
   describe 'order_status' do
     it 'sorts from high status to low status when asked desc' do
       status_sorted = Idea.order_status(:desc).map(&:id)
-      expect(status_sorted).to eq Idea.all.sort_by{|idea| idea.idea_status.ordering}.map(&:id).reverse
+      expect(status_sorted).to eq Idea.all.sort_by { |idea| idea.idea_status.ordering }.map(&:id).reverse
     end
   end
 
   describe 'idea search' do
     it 'should return results with exact prefixes' do
-      create(:idea, title_multiloc: {'nl-BE' => 'Bomen in het park'})
+      create(:idea, title_multiloc: { 'nl-BE' => 'Bomen in het park' })
       srx_results = Idea.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
@@ -155,14 +155,14 @@ RSpec.describe Idea, type: :model do
       idea = create(:idea, body_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(idea.body_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(idea.body_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
 
     it "allows embedded youtube video's in the body" do
       idea = create(:idea, body_multiloc: {
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
-      expect(idea.body_multiloc).to eq({'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'})
+      expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
     end
   end
 
@@ -170,13 +170,13 @@ RSpec.describe Idea, type: :model do
     it 'with an area should succeed' do
       area = create(:area)
       idea = create(:idea, areas: [area])
-      expect{ idea.destroy }.not_to raise_error
+      expect { idea.destroy }.not_to raise_error
     end
   end
 
   describe 'title' do
     it 'is stripped from spaces at beginning and ending' do
-      idea = create(:idea, title_multiloc: {'en' => ' my fantastic idea  '})
+      idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
     end
   end
@@ -185,7 +185,7 @@ RSpec.describe Idea, type: :model do
     let(:idea) { build(:idea) }
 
     it 'is invalid if it has no true content' do
-      idea.body_multiloc = {'en' => '<p> </p>'}
+      idea.body_multiloc = { 'en' => '<p> </p>' }
       expect(idea).to be_invalid
     end
   end

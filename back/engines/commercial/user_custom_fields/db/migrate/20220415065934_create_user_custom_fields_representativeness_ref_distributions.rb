@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUserCustomFieldsRepresentativenessRefDistributions < ActiveRecord::Migration[6.1]
   def change
     create_table :user_custom_fields_representativeness_ref_distributions, id: :uuid do |t|

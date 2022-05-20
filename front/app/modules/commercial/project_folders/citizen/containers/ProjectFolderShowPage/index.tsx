@@ -43,7 +43,7 @@ const Container = styled.main`
   flex-direction: column;
   background: #fff;
 
-  ${media.smallerThan1100px`
+  ${media.smallerThan1280px`
     background: ${colors.background};
   `}
 
@@ -65,7 +65,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 30px;
   background: #fff;
 
-  @media (min-width: 1100px) {
+  @media (min-width: 1280px) {
     padding-left: 60px;
     padding-right: 60px;
   }
@@ -98,7 +98,7 @@ const Content = styled.div`
   justify-content: flex-start;
   margin-bottom: 110px;
 
-  ${media.smallerThan1100px`
+  ${media.smallerThan1280px`
     flex-direction: column;
     align-items: stretch;
   `};
@@ -107,7 +107,7 @@ const Content = styled.div`
 const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
   flex: 1;
 
-  ${media.smallerThan1100px`
+  ${media.smallerThan1280px`
     margin-bottom: 40px;
   `};
 `;
@@ -127,7 +127,7 @@ const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
     width: 500px;
   }
 
-  ${media.smallerThan1100px`
+  ${media.smallerThan1280px`
     flex: 1;
     width: 100%;
     margin: 0;
@@ -166,7 +166,7 @@ const ProjectFolderShowPage = memo<{
     publicationStatusFilter: publicationStatuses,
   });
   const { windowWidth } = useWindowSize();
-  const smallerThan1100px = windowWidth ? windowWidth <= 1100 : false;
+  const smallerThan1280px = windowWidth ? windowWidth <= 1280 : false;
   const folderNotFound = isError(projectFolder);
 
   const loading =
@@ -199,7 +199,7 @@ const ProjectFolderShowPage = memo<{
           </Loading>
         ) : !isNilOrError(projectFolder) && !isNilOrError(locale) ? (
           <>
-            {!smallerThan1100px ? (
+            {!smallerThan1280px ? (
               <StyledContentContainer maxWidth={maxPageWidth}>
                 {userCanEditFolder && (
                   <ButtonBar>

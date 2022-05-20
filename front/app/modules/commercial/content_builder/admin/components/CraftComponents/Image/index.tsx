@@ -31,7 +31,7 @@ const Image = ({
   dataCode?: string;
 }) => {
   return (
-    <Box style={{ pointerEvents: 'none' }} minHeight="26px">
+    <Box id="e2e-image" style={{ pointerEvents: 'none' }} minHeight="26px">
       {imageUrl && (
         <ImageComponent
           width="100%"
@@ -104,24 +104,22 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
         onAdd={handleOnAdd}
         onRemove={handleOnRemove}
       />
-      <Box mb="12px" />
-      {imageFiles.length > 0 && (
-        <Input
-          type="text"
-          id="imageAltTextInput"
-          onChange={handleChange}
-          value={alt}
-          label={
-            <span>
-              {formatMessage(messages.imageAltTextLabel)}{' '}
-              <IconTooltip
-                icon="info3"
-                content={formatMessage(messages.imageAltTextTooltip)}
-              />
-            </span>
-          }
-        />
-      )}
+      <Box mb="12px" display={imageFiles.length > 0 ? 'block' : 'none'} />
+      <Input
+        type="text"
+        id="imageAltTextInput"
+        onChange={handleChange}
+        value={alt}
+        label={
+          <span>
+            {formatMessage(messages.imageAltTextLabel)}{' '}
+            <IconTooltip
+              icon="info3"
+              content={formatMessage(messages.imageAltTextTooltip)}
+            />
+          </span>
+        }
+      />
     </Box>
   );
 });

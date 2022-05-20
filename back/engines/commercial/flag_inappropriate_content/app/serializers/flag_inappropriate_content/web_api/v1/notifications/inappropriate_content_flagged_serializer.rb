@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   class WebApi::V1::Notifications::InappropriateContentFlaggedSerializer < ::WebApi::V1::Notifications::NotificationSerializer
     attribute :flaggable_path do |object|

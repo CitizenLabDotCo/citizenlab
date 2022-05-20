@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 AdminApi::Engine.routes.draw do
   resources :tenants do
     get :settings_schema, on: :collection
@@ -12,7 +14,7 @@ AdminApi::Engine.routes.draw do
     resources :phases, only: [:index]
   end
 
-  resources :users, only: [:index, :create, :update, :show] do
+  resources :users, only: %i[index create update show] do
     get :by_email, on: :collection
     delete :bulk_delete_by_emails, on: :collection
   end
@@ -27,5 +29,5 @@ AdminApi::Engine.routes.draw do
 end
 
 Rails.application.routes.draw do
-  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: {format: :json}
+  mount AdminApi::Engine => '/admin_api', as: 'admin_api', defaults: { format: :json }
 end

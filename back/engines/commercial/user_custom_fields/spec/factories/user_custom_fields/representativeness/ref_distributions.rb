@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :ref_distribution, class: 'UserCustomFields::Representativeness::RefDistribution' do
-
     transient do
       nb_options { 2 } # number of options for the associated custom field
     end

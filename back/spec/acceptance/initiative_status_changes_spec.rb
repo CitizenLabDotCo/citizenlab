@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'InitiativeStatusChange' do
-
   explanation 'Initiative status changes allow admins to apply manual status changes on initiatives.'
 
   before do
@@ -30,7 +30,7 @@ resource 'InitiativeStatusChange' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
-      expect(json_response.dig(:data,0,:attributes,:created_at)).to be_present
+      expect(json_response.dig(:data, 0, :attributes, :created_at)).to be_present
     end
   end
 
@@ -40,7 +40,7 @@ resource 'InitiativeStatusChange' do
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
-    
+
     let(:id) { @changes.first.id }
 
     example_request 'Get one status changes on an initiative by id' do
@@ -63,9 +63,9 @@ resource 'InitiativeStatusChange' do
       @status_ineligible = create(:initiative_status_ineligible)
 
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_threshold_reached
-        )
+      )
     end
 
     post 'web_api/v1/initiatives/:initiative_id/initiative_status_changes' do
@@ -74,7 +74,7 @@ resource 'InitiativeStatusChange' do
         parameter :user_id, 'The user who made the status change', required: false
         parameter :official_feedback_id, 'An existing official feedback can be used', required: false
       end
-      with_options scope: [:initiative_status_change, :official_feedback_attributes] do
+      with_options scope: %i[initiative_status_change official_feedback_attributes] do
         parameter :body_multiloc, 'Multi-locale field with the feedback body', required: false
         parameter :author_multiloc, 'Multi-locale field with describing the author', required: false
       end
@@ -89,7 +89,7 @@ resource 'InitiativeStatusChange' do
       example_request 'Create a status change on an initiative with new feedback' do
         assert_status 201
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:user,:data,:id)).to eq @user.id
+        expect(json_response.dig(:data, :relationships, :user, :data, :id)).to eq @user.id
         expect(@initiative.reload.official_feedbacks_count).to eq 1
       end
 
@@ -148,9 +148,9 @@ resource 'InitiativeStatusChange' do
       @status_ineligible = create(:initiative_status_ineligible)
 
       create(
-        :initiative_status_change, 
+        :initiative_status_change,
         initiative: @initiative, initiative_status: @status_threshold_reached
-        )
+      )
     end
 
     post 'web_api/v1/initiatives/:initiative_id/initiative_status_changes' do
@@ -159,7 +159,7 @@ resource 'InitiativeStatusChange' do
         parameter :user_id, 'The user who made the status change', required: false
         parameter :official_feedback_id, 'An existing official feedback can be used', required: false
       end
-      with_options scope: [:initiative_status_change, :official_feedback_attributes] do
+      with_options scope: %i[initiative_status_change official_feedback_attributes] do
         parameter :body_multiloc, 'Multi-locale field with the feedback body', required: false
         parameter :author_multiloc, 'Multi-locale field with describing the author', required: false
       end

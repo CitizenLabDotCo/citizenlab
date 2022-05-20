@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InitiativesController < ApplicationController
   include BlockingProfanity
 
@@ -60,7 +62,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN initiative_initiative_statuses ON initiative_initiative_statuses.initiative_id = initiatives.id')
       .select('initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id, COUNT(DISTINCT(initiatives.id)) as count')
-      .reorder(nil)  # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
         %w[initiative_status_id area_id topic_id].each do |attribute|
@@ -118,7 +120,7 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     initiative_params = permitted_attributes(@initiative)
     @initiative.assign_attributes(initiative_params)
-    if initiative_params.keys.include?('header_bg') && initiative_params['header_bg'].nil?
+    if initiative_params.key?('header_bg') && initiative_params['header_bg'].nil?
       # setting the header image attribute to nil will not remove the header image
       @initiative.remove_header_bg!
     end
@@ -162,7 +164,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       service.after_destroy(initiative, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

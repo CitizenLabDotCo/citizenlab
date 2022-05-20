@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   module WebApi
     module V1
@@ -7,7 +9,7 @@ module Polls
 
         def index_xlsx
           if @participation_context
-            authorize Project.find_by!(id: @participation_context.project.id), :index_xlsx?
+            authorize Project.find(@participation_context.project.id), :index_xlsx?
           else
             authorize Response, :index_xlsx?
           end
@@ -38,7 +40,7 @@ module Polls
 
         def responses_count
           if @participation_context
-            authorize Project.find_by!(id: @participation_context.project.id), :responses_count?
+            authorize Project.find(@participation_context.project.id), :responses_count?
           else
             authorize Response, :responses_count?
           end
@@ -61,13 +63,13 @@ module Polls
           elsif params[:phase_id]
             @participation_context = Phase.find(params[:phase_id])
           else
-            head 404
+            head :not_found
           end
         end
 
         def response_params
           params.require(:response).permit(
-            response_options_attributes: [:option_id],
+            response_options_attributes: [:option_id]
           )
         end
       end

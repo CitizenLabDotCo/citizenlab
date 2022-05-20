@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -18,6 +18,7 @@ import {
   Spinner,
   Text,
   Title,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -29,25 +30,71 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { withRouter } from 'react-router';
-import Link from 'utils/cl-router/Link';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
+import eventEmitter from 'utils/eventEmitter';
 
-const ContentBuilderPage = ({ params: { projectId } }) => {
+type ContentBuilderTopBarProps = {
+  mobilePreviewEnabled: boolean;
+  setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+} & WithRouterProps;
+
+const ContentBuilderTopBar = ({
+  params: { projectId },
+  mobilePreviewEnabled,
+  setMobilePreviewEnabled,
+}: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
-
   const { query } = useEditor();
   const localize = useLocalize();
   const locale = useLocale();
   const project = useProject({ projectId });
 
+  const [contentBuilderErrors, setContentBuilderErrors] = useState<
+    Record<string, boolean>
+  >({});
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('contentBuilderError')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => ({
+          ...contentBuilderErrors,
+          ...(eventValue as Record<string, boolean>),
+        }));
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('deleteContentBuilderElement')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => {
+          const deletedElementId = eventValue as string;
+          const { [deletedElementId]: _deletedElementId, ...rest } =
+            contentBuilderErrors;
+          return rest;
+        });
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const disableSave = Object.values(contentBuilderErrors).some(
+    (value: boolean) => value === true
+  );
+
   const goBack = () => {
-    clHistory.goBack();
+    clHistory.push(`/admin/projects/${projectId}/description`);
   };
 
   const handleSave = async () => {
@@ -101,24 +148,20 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             </>
           )}
         </Box>
-        {!isNilOrError(project) && (
-          <Link to={`/projects/${project.attributes.slug}`} target="_blank">
-            <Button
-              mr="16px"
-              buttonStyle="secondary"
-              icon="eye"
-              id="to-project"
-            >
-              <FormattedMessage {...messages.viewPublicProject} />
-            </Button>
-          </Link>
-        )}
+        <Toggle
+          id="e2e-mobile-preview-toggle"
+          label={<FormattedMessage {...messages.mobilePreview} />}
+          checked={mobilePreviewEnabled}
+          onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
+        />
         <Button
+          disabled={disableSave}
           id="e2e-content-builder-topbar-save"
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}
           data-testid="contentBuilderTopBarSaveButton"
+          ml="24px"
         >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
@@ -127,4 +170,4 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
   );
 };
 
-export default withRouter(ContentBuilderPage);
+export default withRouter(ContentBuilderTopBar);
