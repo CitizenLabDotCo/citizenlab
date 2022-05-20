@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from user_custom_fields (originally 20220415065934)
 class CreateUserCustomFieldsRepresentativenessRefDistributions < ActiveRecord::Migration[6.1]
   def change

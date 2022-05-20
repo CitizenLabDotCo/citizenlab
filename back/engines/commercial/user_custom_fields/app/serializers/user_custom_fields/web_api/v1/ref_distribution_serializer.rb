@@ -12,7 +12,7 @@ module UserCustomFields
           :values,
           serializer: ::WebApi::V1::CustomFieldOptionSerializer,
           record_type: :custom_field_option
-        ) { |ref_distribution| CustomFieldOption.where(id: ref_distribution.distribution.keys) }
+        )
       end
     end
   end
