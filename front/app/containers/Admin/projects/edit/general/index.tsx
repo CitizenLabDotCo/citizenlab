@@ -193,7 +193,7 @@ const AdminProjectEditGeneral = ({
           await Promise.all(nextProjectImagesPromises)
         ).filter(isUploadFile);
 
-        setProjectFiles(nextProjectImages);
+        setProjectImages(nextProjectImages);
       }
     })();
   }, [remoteProjectImages]);
@@ -244,15 +244,14 @@ const AdminProjectEditGeneral = ({
   };
 
   const handleHeaderOnAdd = (newHeader: UploadFile[]) => {
-    // const newHeaderBg = newHeader[0].base64;
+    const newHeaderFile = newHeader[0];
 
     setSubmitState('enabled');
-    // setProjectAttributesDiff((projectAttributesDiff) => ({
-    //   ...projectAttributesDiff,
-    //   // don't think this is right
-    //   header_bg: newHeaderBg,
-    // }));
-    setProjectHeaderImage([newHeader[0]]);
+    setProjectAttributesDiff((projectAttributesDiff) => ({
+      ...projectAttributesDiff,
+      header_bg: newHeaderFile.base64,
+    }));
+    setProjectHeaderImage([newHeaderFile]);
   };
 
   const handleHeaderOnRemove = async () => {
@@ -298,7 +297,7 @@ const AdminProjectEditGeneral = ({
         (image) => image.base64 !== projectImageToRemove.base64
       );
     });
-    setProjectFilesToRemove((projectImagesToRemove) => {
+    setProjectImagesToRemove((projectImagesToRemove) => {
       return [...projectImagesToRemove, projectImageToRemove];
     });
     setSubmitState('enabled');
