@@ -36,7 +36,7 @@ const StyledPagination = styled(Pagination)`
 interface Props {
   title: string;
   fallbackMessage: MessageDescriptor;
-  eventsTime: 'past' | 'currentAndFuture';
+  eventsTime: 'past' | 'future';
   className?: string;
 }
 
@@ -50,7 +50,7 @@ const EventsViewer = memo<Props>(
       onCurrentPageChange,
     } = useEvents({
       projectPublicationStatuses: ['published'],
-      currentAndFutureOnly: eventsTime === 'currentAndFuture',
+      futureOnly: eventsTime === 'future',
       pastOnly: eventsTime === 'past',
       sort: eventsTime === 'past' ? 'newest' : 'oldest',
     });

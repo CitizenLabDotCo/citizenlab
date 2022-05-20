@@ -71,7 +71,7 @@ const StyledEventCard = styled(EventCard)`
 export default injectIntl<InjectedIntlProps>(({ intl }) => {
   const { events } = useEvents({
     projectPublicationStatuses: ['published'],
-    currentAndFutureOnly: true,
+    futureOnly: true,
     pageSize: 3,
     sort: 'oldest',
   });
@@ -91,7 +91,7 @@ export default injectIntl<InjectedIntlProps>(({ intl }) => {
       {!isNilOrError(events) && events.length === 0 && (
         <VerticalCenterer>
           <NoEventsText>
-            {intl.formatMessage(messages.noUpcomingOrOngoingEvents)}
+            {intl.formatMessage(messages.noUpcomingEvents)}
           </NoEventsText>
         </VerticalCenterer>
       )}
