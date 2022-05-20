@@ -17,8 +17,6 @@ class Area < ApplicationRecord
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
-  has_many :areas_ideas, dependent: :destroy
-  has_many :ideas, through: :areas_ideas
   has_many :areas_initiatives, dependent: :destroy
   has_many :initiatives, through: :areas_initiatives
 
