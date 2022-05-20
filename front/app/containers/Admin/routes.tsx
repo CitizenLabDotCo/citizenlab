@@ -16,12 +16,16 @@ import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
 import { Navigate } from 'react-router-dom';
+
+const AdminWorkshopsComponent = lazy(
+  () => import('containers/Admin/workshops')
+);
+const AdminFaviconComponent = lazy(() => import('containers/Admin/favicon'));
 
 export const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -96,22 +100,22 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),
-      // {
-      //   path: 'workshops',
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/workshops'),
-      //     loading: LoadableLoadingAdmin,
-      //     delay: 500,
-      //   }),
-      // },
-      // {
-      //   path: 'favicon',
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/favicon'),
-      //     loading: LoadableLoadingAdmin,
-      //     delay: 500,
-      //   }),
-      // },
+      {
+        path: 'workshops',
+        element: (
+          <LoadingComponent>
+            <AdminWorkshopsComponent />
+          </LoadingComponent>
+        ),
+      },
+      {
+        path: 'favicon',
+        element: (
+          <LoadingComponent>
+            <AdminFaviconComponent />
+          </LoadingComponent>
+        ),
+      },
       // ...moduleConfiguration.routes.admin,
     ],
   };
