@@ -5,7 +5,7 @@ import React from 'react';
 
 // component to test
 // ! it is the component without the HoCs (data, localization...)
-import { AdminProjectEditIndex } from './';
+import { AdminProjectEditIndex } from '.';
 
 // mock data and functions to replace the HoCs
 import { GetPhasesChildProps } from 'resources/GetPhases';

@@ -5,8 +5,8 @@ import React, { lazy } from 'react';
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 import { LoadingComponent } from 'routes';
-const AdminProjectEditIndex = lazy(() => import('./edit'));
-const AdminProjectEditGeneral = lazy(() => import('./edit/general'));
+const AdminProjectEditIndex = lazy(() => import('./project'));
+const AdminProjectEditGeneral = lazy(() => import('./project/general'));
 
 const createAdminProjectsRoutes = () => {
   return {
