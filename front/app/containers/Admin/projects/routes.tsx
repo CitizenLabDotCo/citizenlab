@@ -29,7 +29,7 @@ const createAdminProjectsRoutes = () => {
         path: ':projectId',
         children: [
           {
-            path: 'edit',
+            index: true,
             element: (
               <LoadingComponent>
                 <AdminProjectEditIndex />
@@ -37,7 +37,7 @@ const createAdminProjectsRoutes = () => {
             ),
             children: [
               {
-                index: true,
+                path: 'general',
                 element: (
                   <LoadingComponent>
                     <AdminProjectEditGeneral />
