@@ -1,4 +1,5 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 import { insertConfiguration } from 'utils/moduleUtils';
@@ -189,7 +190,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(
           if (projectId) {
             setTimeout(() => {
               clHistory.push({
-                pathname: `/admin/projects/${projectId}/edit`,
+                pathname: adminProjectsProjectPath(projectId),
               });
             }, 1000);
           }

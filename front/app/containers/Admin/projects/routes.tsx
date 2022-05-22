@@ -8,6 +8,10 @@ import { LoadingComponent } from 'routes';
 const AdminProjectEditIndex = lazy(() => import('./project'));
 const AdminProjectEditGeneral = lazy(() => import('./project/general'));
 
+export function adminProjectsProjectPath(projectId: string) {
+  return `/admin/projects/${projectId}`;
+}
+
 const createAdminProjectsRoutes = () => {
   return {
     path: 'projects',
