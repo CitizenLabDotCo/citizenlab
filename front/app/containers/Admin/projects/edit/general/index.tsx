@@ -123,6 +123,7 @@ const AdminProjectEditGeneral = ({
     ...(!isNilOrError(project) ? project.attributes : {}),
     ...projectAttributesDiff,
   };
+  console.log(projectAttrs);
 
   useEffect(() => {
     (async () => {
@@ -479,10 +480,13 @@ const AdminProjectEditGeneral = ({
     projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
     submitState: ISubmitState
   ) => {
-    setProjectAttributesDiff((currentProjectAttributesDiff) => ({
-      ...currentProjectAttributesDiff,
-      projectAttributesDiff,
-    }));
+    setProjectAttributesDiff((currentProjectAttributesDiff) => {
+      return {
+        ...currentProjectAttributesDiff,
+        ...projectAttributesDiff,
+      };
+    });
+
     setSubmitState(submitState);
   };
 
