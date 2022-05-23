@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 
-// import adminRoutes from 'containers/Admin/routes';
+import createAdminRoutes from 'containers/Admin/routes';
 // import moduleConfiguration from 'modules';
 
 const LandingPage = lazy(() => import('containers/LandingPage'));
@@ -37,7 +37,7 @@ const SubscriptionEndedPage = lazy(
 );
 const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 
-const LoadingComponent = ({ children }) => {
+export const LoadingComponent = ({ children }) => {
   return <Suspense fallback={<div>LOADING!</div>}>{children}</Suspense>;
 };
 
@@ -183,7 +183,7 @@ export default function createRoutes() {
             </LoadingComponent>
           ),
         },
-        // adminRoutes(),
+        createAdminRoutes(true),
         {
           path: 'projects',
           element: (
