@@ -1,10 +1,7 @@
 import React from 'react';
 
 // resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // hooks
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -14,7 +11,7 @@ import { Box, Select } from '@citizenlab/cl2-component-library';
 
 // typings
 import { IOption } from 'typings';
-import { IProjectData } from 'services/projects';
+import { IProjectData, PublicationStatus } from 'services/projects';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
