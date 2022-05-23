@@ -14,7 +14,11 @@ import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
+import {
+  IProjectData,
+  IUpdatedProjectProperties,
+  IProjectFormState,
+} from 'services/projects';
 import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray, clamp } from 'lodash-es';
@@ -69,7 +73,6 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { IProjectFormState } from 'services/projects';
 
 export type ITabsOutlet = {
   formatMessage: (

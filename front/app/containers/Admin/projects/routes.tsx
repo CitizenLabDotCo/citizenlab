@@ -47,7 +47,7 @@ const createAdminProjectsRoutes = () => {
           },
         ],
       },
-      //{
+      // {
       // path: ':projectId/edit',
       // component: Loadable({
       //   loader: () => import('containers/Admin/projects/edit'),

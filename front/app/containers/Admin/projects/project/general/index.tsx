@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { IProjectFormState, IProjectData } from 'services/projects';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { useParams } from 'react-router-dom';
 // components
@@ -13,7 +11,7 @@ import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
   Section,
   SectionTitle,
@@ -30,16 +28,15 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+// hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -59,6 +56,8 @@ import {
   IUpdatedProjectProperties,
   addProject,
   updateProject,
+  IProjectFormState,
+  IProjectData,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -143,7 +142,7 @@ const AdminProjectsProjectGeneral = ({
         setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
       }
     })();
-  }, [project]);
+  }, [project, publicationStatus]);
 
   useEffect(() => {
     (async () => {
@@ -208,7 +207,7 @@ const AdminProjectsProjectGeneral = ({
         }))
       );
     }
-  }, [areas]);
+  }, [areas, localize]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
