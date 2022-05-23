@@ -14,10 +14,10 @@ import messages from '../messages';
 import { IOption } from 'typings';
 
 interface Props {
-  areaType: 'all' | 'selection';
+  areaType: 'none' | 'all' | 'selection';
   areasOptions: IOption[];
   areasValues: IOption[];
-  handleAreaTypeChange: (value: 'all' | 'selection') => void;
+  handleAreaTypeChange: (value: 'none' | 'all' | 'selection') => void;
   handleAreaSelectionChange: (values: IOption[]) => void;
 }
 
@@ -46,6 +46,14 @@ export default ({
         }
       />
     </SubSectionTitle>
+    <Radio
+      onChange={handleAreaTypeChange}
+      currentValue={areaType}
+      value="none"
+      name="areas"
+      id="areas-none"
+      label={<FormattedMessage {...messages.areasNoneLabel} />}
+    />
     <Radio
       onChange={handleAreaTypeChange}
       currentValue={areaType}

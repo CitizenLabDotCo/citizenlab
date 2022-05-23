@@ -89,13 +89,6 @@ class Idea < ApplicationRecord
 
   after_update :fix_comments_count_on_projects
 
-  scope :with_all_topics, (proc do |topic_ids|
-    uniq_topic_ids = topic_ids.uniq
-    joins(:ideas_topics)
-    .where(ideas_topics: { topic_id: uniq_topic_ids })
-    .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
-  end)
-
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
