@@ -328,6 +328,8 @@ const AdminProjectsProjectGeneral = ({
   async function saveForm(
     participationContextConfig: IParticipationContextConfig | null
   ) {
+    // Should be split. Same func for existing/new project
+    // Makes things unnecessarily complicated (e.g. projectId below).
     let projectId = params.projectId;
     let isNewProject = false;
     const isFormValid = validateForm();
