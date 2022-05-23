@@ -91,11 +91,6 @@ class Idea < ApplicationRecord
     message: ->(errors) { errors }
   }, on: %i[create update publication], if: :needs_custom_field_validation?
 
-  def needs_custom_field_validation?
-    has_custom_fields = project && CustomForm.exists?(project: project)
-    has_custom_fields && custom_field_values_changed?
-  end
-
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
@@ -174,6 +169,11 @@ class Idea < ApplicationRecord
   end
 
   private
+
+  def needs_custom_field_validation?
+    has_custom_fields = project && CustomForm.exists?(project: project)
+    has_custom_fields && custom_field_values_changed?
+  end
 
   def sanitize_body_multiloc
     service = SanitizationService.new
