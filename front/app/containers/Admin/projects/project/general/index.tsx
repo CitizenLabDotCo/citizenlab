@@ -325,21 +325,6 @@ const AdminProjectsProjectGeneral = ({
     }));
   };
 
-  const validateForm = () => {
-    const titleError = !isNilOrError(appConfigLocales)
-      ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
-      : null;
-    const hasTitleError = !isEmpty(titleError);
-    setTitleError(!isEmpty(titleError) ? titleError : null);
-    const formIsValid = !hasTitleError;
-
-    return formIsValid;
-  };
-
   async function saveForm(
     participationContextConfig: IParticipationContextConfig | null
   ) {
@@ -418,16 +403,9 @@ const AdminProjectsProjectGeneral = ({
     }
   }
 
-  const save = async (
-    participationContextConfig: IParticipationContextConfig | null = null
-  ) => {
-    await saveForm(participationContextConfig);
-  };
-
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // if it's a new project of type continuous
     if (projectType === 'continuous') {
       eventEmitter.emit('getParticipationContext');
     } else {
@@ -465,6 +443,29 @@ const AdminProjectsProjectGeneral = ({
     const isSlugValid = validateSlug(slug);
     setShowSlugErrorMessage(!isSlugValid);
     setSubmitState(isSlugValid ? 'enabled' : 'disabled');
+  };
+
+  const validateForm = () => {
+    const titleError = !isNilOrError(appConfigLocales)
+      ? validateTitle(
+          appConfigLocales,
+          projectAttrs.title_multiloc,
+          formatMessage(messages.noTitleErrorMessage)
+        )
+      : null;
+    const hasTitleError = !isEmpty(titleError);
+    setTitleError(hasTitleError ? titleError : null);
+    const formIsValid = !hasTitleError;
+
+    return formIsValid;
+  };
+
+  // We should look into only having 1 save function (saveForm)
+  // And refactor this out
+  const save = async (
+    participationContextConfig: IParticipationContextConfig | null = null
+  ) => {
+    await saveForm(participationContextConfig);
   };
 
   const handleProjectAttributeDiffOnChange = (
