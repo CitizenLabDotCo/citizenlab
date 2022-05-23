@@ -36,6 +36,7 @@
 #  min_budget                   :integer          default(0)
 #  downvoting_method            :string           default("unlimited"), not null
 #  downvoting_limited_max       :integer          default(10)
+#  include_all_areas            :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -99,16 +100,7 @@ class Project < ApplicationRecord
                   against: %i[title_multiloc description_multiloc description_preview_multiloc],
                   using: { tsearch: { prefix: true } }
 
-  scope :with_all_areas, (proc do |area_ids|
-    uniq_area_ids = area_ids.uniq
-    subquery = Project.unscoped.all
-      .joins(:areas)
-      .where(areas: { id: uniq_area_ids })
-      .group(:id)
-      .having('COUNT(*) = ?', uniq_area_ids.size)
-
-    where(id: subquery)
-  end)
+  scope :with_all_areas, -> { where(include_all_areas: true) }
 
   scope :with_some_areas, (proc do |area_ids|
     with_dups = joins(:areas_projects).where(areas_projects: { area_id: area_ids })

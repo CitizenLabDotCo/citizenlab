@@ -42,7 +42,7 @@ export const getDefaultState = (): IProjectFormState => ({
   apiErrors: {},
   saved: false,
   areas: [],
-  areaType: 'all',
+  areaType: 'none',
   locale: 'en',
   currentTenant: null,
   areasOptions: [],
@@ -71,7 +71,9 @@ export function initSubscriptions(
           const areaType =
             project && project.data.relationships.areas.data.length > 0
               ? 'selection'
-              : 'all';
+              : project?.data.attributes.include_all_areas
+              ? 'all'
+              : 'none';
           const areasOptions = areas.data.map((area) => ({
             value: area.id,
             label: getLocalized(

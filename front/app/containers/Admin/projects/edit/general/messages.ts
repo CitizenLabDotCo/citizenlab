@@ -66,12 +66,12 @@ export default defineMessages({
   },
   areasLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabel',
-    defaultMessage: 'Areas',
+    defaultMessage: 'Area filter',
   },
   areasLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltip',
     defaultMessage:
-      'Indicate on what geographical areas this project applies. The areas can be set {areasLabelTooltipLink}.',
+      'Projects can be filtered on the homepage using areas. Areas can be set {areasLabelTooltipLink}.',
   },
   areasLabelTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
@@ -85,6 +85,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.topicLabelTooltip',
     defaultMessage:
       'Select {topicsCopy} for this project. Users can use these to filter projects by.',
+  },
+  areasNoneLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.areasNoneLabel',
+    defaultMessage: 'No specific area',
   },
   areasAllLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabel',
