@@ -440,6 +440,9 @@ const AdminProjectsProjectGeneral = ({
       };
     });
     setSlug(slug);
+    // This validation part should move to validateForm
+    // Look out for complication with new project (where there's)
+    // no slug and form should validate without.
     const isSlugValid = validateSlug(slug);
     setShowSlugErrorMessage(!isSlugValid);
     setSubmitState(isSlugValid ? 'enabled' : 'disabled');
