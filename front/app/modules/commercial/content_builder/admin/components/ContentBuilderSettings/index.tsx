@@ -63,6 +63,7 @@ const ContentBuilderSettings = () => {
       background="#ffffff"
     >
       <StyledCloseIconButton
+        className="builderSettingsClose"
         a11y_buttonActionMessage={messages.a11y_closeSettingsPanel}
         onClick={() => {
           actions.selectNode();
