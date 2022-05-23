@@ -10,7 +10,6 @@ import {
   Box,
   Accordion,
   Title,
-  IconTooltip,
   Input,
   Label,
   Toggle,
@@ -23,13 +22,7 @@ import { useTheme } from 'styled-components';
 import messages from '../../../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-const SimpleAccordion = ({
-  text,
-  title,
-  openByDefault,
-  showTooltip,
-  tooltipContent,
-}) => {
+const SimpleAccordion = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();
 
   return (
@@ -39,14 +32,6 @@ const SimpleAccordion = ({
         title={
           <Box display="flex">
             <Title variant="h3">{title}</Title>
-            {showTooltip && (
-              <IconTooltip
-                m="8px"
-                mt="16px"
-                icon="info"
-                content={tooltipContent}
-              />
-            )}
           </Box>
         }
       >
@@ -63,15 +48,11 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
     actions: { setProp },
     text,
     title,
-    showTooltip,
     openByDefault,
-    tooltipContent,
   } = useNode((node) => ({
     text: node.data.props.text,
     title: node.data.props.title,
-    showTooltip: node.data.props.showTooltip,
     openByDefault: node.data.props.openByDefault,
-    tooltipContent: node.data.props.tooltipContent,
   }));
 
   return (
@@ -100,31 +81,6 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           }}
         />
       </Box>
-      <Box display="flex" gap="16px" flex="0 1 100%">
-        <Toggle
-          checked={showTooltip}
-          onChange={() => {
-            setProp((props) => (props.showTooltip = !showTooltip));
-          }}
-        />
-        <Box mt="4px">
-          <Label>
-            <FormattedMessage {...messages.accordionTooltipToggleLabel} />
-          </Label>
-        </Box>
-      </Box>
-      {showTooltip && (
-        <Box flex="0 1 100%">
-          <Input
-            type="text"
-            onChange={(value) => {
-              setProp((props) => (props.tooltipContent = value));
-            }}
-            value={tooltipContent}
-            label={formatMessage(messages.accordionTooltipContentLabel)}
-          />
-        </Box>
-      )}
       <Box display="flex" gap="16px" marginBottom="20px" flex="0 1 100%">
         <Toggle
           checked={openByDefault}

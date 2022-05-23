@@ -189,9 +189,7 @@ const ContentBuilderToolbox = ({
                 is={SimpleAccordion}
                 title={formatMessage(messages.accordionTitleValue)}
                 text={formatMessage(messages.accordionTextValue)}
-                tooltipContent={formatMessage(messages.accordionTooltipValue)}
                 openByDefault={false}
-                showTooltip={false}
                 id="Accordion"
               />
             )
