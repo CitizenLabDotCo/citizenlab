@@ -124,18 +124,9 @@ export default defineMessages({
     defaultMessage:
       'This is expandable accordion content. You can edit and format it by using the editor in the panel on the right.',
   },
-  accordionTooltipValue: {
-    id: 'app.containers.admin.ContentBuilder.accordionTooltipValue',
-    defaultMessage:
-      'This is a tooltip. You can edit its content by using the editor in the panel on the right.',
-  },
   accordionDefaultOpenLabel: {
     id: 'app.containers.admin.ContentBuilder.accordionDefaultOpenLabel',
     defaultMessage: 'Open by default',
-  },
-  accordionTooltipToggleLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionTooltipToggleLabel',
-    defaultMessage: 'Use tooltip',
   },
   accordionTooltipContentLabel: {
     id: 'app.containers.admin.ContentBuilder.accordionTooltipContentLabel',
