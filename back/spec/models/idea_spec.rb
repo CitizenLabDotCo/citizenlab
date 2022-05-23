@@ -88,7 +88,7 @@ RSpec.describe Idea, type: :model do
             expect(idea.valid?(validation_context)).to be false
           end
 
-          it 'cannot persist an idea with an invalid field option' do
+          it 'cannot persist an idea with an invalid field value' do
             long_title = 'My long idea title. ' * 100
             idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
             expect(idea.valid?(validation_context)).to be false
