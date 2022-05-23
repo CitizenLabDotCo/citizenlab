@@ -38,7 +38,7 @@ const Component = ({
   const localize = useLocalize();
 
   if (!isNilOrError(idea) && !isNilOrError(project)) {
-    const postUrl = location.href;
+    const postUrl = `${location.origin}/ideas/${idea.attributes.slug}`;
     const titleMultiloc = idea.attributes.title_multiloc;
     const postTitle = localize(titleMultiloc);
     const inputTerm = getInputTerm(
