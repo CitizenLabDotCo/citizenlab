@@ -1,14 +1,18 @@
 # Changelog
 
-## Fixed
+## Next Release
 
-- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+### 2022-05-20
+
+- [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
 
 ## 2022-05-17
 
 ### Added
 
 - [CL-292] Log an activity when an insights category is created, updated or deleted
+
+## 17-05-22
 
 ### Fixed
 
@@ -38,7 +42,6 @@
 ### Added
 
 - [CL-750] Add feature to remove CL branding
-
 
 ## 2022-05-11
 
