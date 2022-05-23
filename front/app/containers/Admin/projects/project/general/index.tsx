@@ -329,6 +329,7 @@ const AdminProjectsProjectGeneral = ({
     participationContextConfig: IParticipationContextConfig | null
   ) {
     let projectId = params.projectId;
+    let isNewProject = false;
     const isFormValid = validateForm();
 
     if (!isFormValid) {
@@ -349,6 +350,7 @@ const AdminProjectsProjectGeneral = ({
           } else {
             const project = await addProject(nextProjectAttributesDiff);
             projectId = project.data.id;
+            isNewProject = true;
           }
         }
 
