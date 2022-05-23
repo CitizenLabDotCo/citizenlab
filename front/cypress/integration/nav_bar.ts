@@ -1,3 +1,11 @@
+const PAGES = [
+  { url: 'ideas', container: '#e2e-ideas-container' },
+  { url: 'initiatives', container: '#e2e-initiatives-container' },
+  { url: 'events', container: '#e2e-events-container' },
+  { url: 'pages/information', container: '.e2e-page-information' },
+  { url: 'pages/faq', container: '.e2e-page-faq' },
+];
+
 describe('nav bar', () => {
   beforeEach(() => {
     cy.goToLandingPage();
@@ -43,67 +51,19 @@ describe('nav bar', () => {
     assertCorrectReturnToLandingPage();
   });
 
-  it('navigates to All input and back', () => {
-    // Navigate to all input page
-    cy.get(
-      'li[data-testid="desktop-navbar-item"] > a[href="/en/ideas"]'
-    ).click();
+  PAGES.forEach(({ url, container }) => {
+    it(`navigates to ${url} and back`, () => {
+      // Navigate to proposals page
+      cy.get(
+        `li[data-testid="desktop-navbar-item"] > a[href="/en/${url}"]`
+      ).click();
 
-    // Assert we're on the all input page
-    cy.location('pathname').should('eq', '/en/ideas');
-    cy.get('#e2e-ideas-container');
-  });
+      // Assert we're on the proposals page
+      cy.location('pathname').should('eq', `/en/${url}`);
+      cy.get(container);
 
-  it('navigates to Proposals and back', () => {
-    // Navigate to proposals page
-    cy.get(
-      'li[data-testid="desktop-navbar-item"] > a[href="/en/initiatives"]'
-    ).click();
-
-    // Assert we're on the proposals page
-    cy.location('pathname').should('eq', '/en/initiatives');
-    cy.get('#e2e-initiatives-container');
-
-    assertCorrectReturnToLandingPage();
-  });
-
-  it('navigates to Events and back', () => {
-    // Navigate to events page
-    cy.get(
-      'li[data-testid="desktop-navbar-item"] > a[href="/en/events"]'
-    ).click();
-
-    // Assert we're on the events page
-    cy.location('pathname').should('eq', '/en/events');
-    cy.get('#e2e-events-container');
-
-    assertCorrectReturnToLandingPage();
-  });
-
-  it('navigates to About page and back', () => {
-    // Navigate to about page
-    cy.get(
-      'li[data-testid="desktop-navbar-item"] > a[href="/en/pages/information"]'
-    ).click();
-
-    // Assert we're on the about page
-    cy.location('pathname').should('eq', '/en/pages/information');
-    cy.get('.e2e-page-information');
-
-    assertCorrectReturnToLandingPage();
-  });
-
-  it('navigates to FAQ page and back', () => {
-    // Navigate to faq page
-    cy.get(
-      'li[data-testid="desktop-navbar-item"] > a[href="/en/pages/faq"]'
-    ).click();
-
-    // Assert we're on the faq page
-    cy.location('pathname').should('eq', '/en/pages/faq');
-    cy.get('.e2e-page-faq');
-
-    assertCorrectReturnToLandingPage();
+      assertCorrectReturnToLandingPage();
+    });
   });
 });
 
@@ -143,44 +103,14 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       cy.get('#e2e-projects-container');
     });
 
-    it('navigates to All input', () => {
-      gotoURL('/ideas', withLocale);
+    PAGES.forEach(({ url, container }) => {
+      it(`navigates to ${url}`, () => {
+        gotoURL(`/${url}`, withLocale);
 
-      // Assert we're on the all input page
-      cy.location('pathname').should('eq', '/en/ideas');
-      cy.get('#e2e-ideas-container');
-    });
-
-    it('navigates to Proposals', () => {
-      gotoURL('/initiatives', withLocale);
-
-      // Assert we're on the proposals page
-      cy.location('pathname').should('eq', '/en/initiatives');
-      cy.get('#e2e-initiatives-container');
-    });
-
-    it('navigates to Events', () => {
-      gotoURL('/events', withLocale);
-
-      // Assert we're on the events page
-      cy.location('pathname').should('eq', '/en/events');
-      cy.get('#e2e-events-container');
-    });
-
-    it('navigates to About page', () => {
-      gotoURL('/pages/information', withLocale);
-
-      // Assert we're on the about page
-      cy.location('pathname').should('eq', '/en/pages/information');
-      cy.get('.e2e-page-information');
-    });
-
-    it('navigates to FAQ page', () => {
-      gotoURL('/pages/faq', withLocale);
-
-      // Assert we're on the faq page
-      cy.location('pathname').should('eq', '/en/pages/faq');
-      cy.get('.e2e-page-faq');
+        // Assert we're on the all input page
+        cy.location('pathname').should('eq', `/en/${url}`);
+        cy.get(container);
+      });
     });
   });
 });

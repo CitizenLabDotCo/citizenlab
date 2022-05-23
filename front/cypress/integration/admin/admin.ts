@@ -12,3 +12,5 @@ describe('/admin route', () => {
     cy.location('pathname').should('eq', '/en/admin/dashboard');
   });
 });
+
+describe('navigation to admin sections', () => {});
