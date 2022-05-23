@@ -71,7 +71,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 1 100%" background="#ffffff">
         <Label>{formatMessage(messages.accordionTextLabel)}</Label>
         <QuillEditor
-          maxHeight="225px"
+          maxHeight="300px"
           noImages
           noVideos
           id="quill-editor"
