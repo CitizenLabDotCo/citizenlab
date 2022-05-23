@@ -93,6 +93,8 @@ const AdminProjectsProjectGeneral = ({
   });
   const [titleError, setTitleError] =
     useState<IProjectFormState['titleError']>(null);
+  // We should probably not have projectType, slug, publicationStatus, etc.
+  // both in projectAttributesDiff and as separate state.
   const [projectType, setProjectType] =
     useState<IProjectFormState['projectType']>('timeline');
   const [projectHeaderImage, setProjectHeaderImage] =
@@ -119,10 +121,6 @@ const AdminProjectsProjectGeneral = ({
   const [areasOptions, setAreasOptions] = useState<
     IProjectFormState['areasOptions']
   >([]);
-  const projectAttrs = {
-    ...(!isNilOrError(project) ? project.attributes : {}),
-    ...projectAttributesDiff,
-  };
 
   useEffect(() => {
     (async () => {
@@ -489,6 +487,10 @@ const AdminProjectsProjectGeneral = ({
     setSubmitState(submitState);
   };
 
+  const projectAttrs = {
+    ...(!isNilOrError(project) ? project.attributes : {}),
+    ...projectAttributesDiff,
+  };
   const areaIds =
     projectAttrs.area_ids ||
     (!isNilOrError(project) &&
