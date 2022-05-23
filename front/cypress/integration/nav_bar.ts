@@ -16,13 +16,20 @@ describe('nav bar', () => {
   it('navigates to project from All projects dropdown and back', () => {
     // Navigate to project page
     cy.get('.e2e-projects-dropdown-link').click();
-    cy.get('#e2e-projects-dropdown-content > a').first().click();
+    cy.get('#e2e-projects-dropdown-content > a')
+      .first()
+      .invoke('attr', 'href')
+      .then(($href) => {
+        if (!$href) throw new Error();
 
-    // Assert we're on project page
-    cy.url().should('include', '/en/projects');
-    cy.get('#e2e-project-page');
+        cy.get('#e2e-projects-dropdown-content > a').first().click();
 
-    assertCorrectReturnToLandingPage();
+        // Assert we're on project page
+        cy.url().should('include', $href);
+        cy.get('#e2e-project-page');
+
+        assertCorrectReturnToLandingPage();
+      });
   });
 
   it('navigates to projects overview page from All projects dropdown and back', () => {
@@ -74,7 +81,7 @@ describe('nav bar', () => {
     assertCorrectReturnToLandingPage();
   });
 
-  it('navigates to About page', () => {
+  it('navigates to About page and back', () => {
     // Navigate to about page
     cy.get(
       'li[data-testid="desktop-navbar-item"] > a[href="/en/pages/information"]'
@@ -87,7 +94,7 @@ describe('nav bar', () => {
     assertCorrectReturnToLandingPage();
   });
 
-  it('navigates to FAQ page', () => {
+  it('navigates to FAQ page and back', () => {
     // Navigate to faq page
     cy.get(
       'li[data-testid="desktop-navbar-item"] > a[href="/en/pages/faq"]'
@@ -98,5 +105,83 @@ describe('nav bar', () => {
     cy.get('.e2e-page-faq');
 
     assertCorrectReturnToLandingPage();
+  });
+});
+
+const gotoURL = (baseURL: string, withLocale: boolean) => {
+  const URL = `${withLocale ? '/en' : ''}${baseURL}`;
+  cy.visit(URL);
+};
+
+[true, false].forEach((withLocale) => {
+  describe(`direct visits ${
+    withLocale ? '(with locale)' : '(without locale)'
+  }`, () => {
+    it('navigates to project from All projects dropdown', () => {
+      cy.goToLandingPage();
+      cy.get('.e2e-projects-dropdown-link').click();
+      cy.get('#e2e-projects-dropdown-content > a')
+        .first()
+        .invoke('attr', 'href')
+        .then(($href) => {
+          if (!$href) throw new Error();
+
+          const href = $href.slice(3, $href.length);
+
+          gotoURL(href, withLocale);
+
+          // Assert we're on project page
+          cy.url().should('include', href);
+          cy.get('#e2e-project-page');
+        });
+    });
+
+    it('navigates to projects overview page from All projects dropdown', () => {
+      gotoURL('/projects', withLocale);
+
+      // Assert we're on projects overview page
+      cy.url().should('include', '/en/projects');
+      cy.get('#e2e-projects-container');
+    });
+
+    it('navigates to All input', () => {
+      gotoURL('/ideas', withLocale);
+
+      // Assert we're on the all input page
+      cy.url().should('include', '/en/ideas');
+      cy.get('#e2e-ideas-container');
+    });
+
+    it('navigates to Proposals', () => {
+      gotoURL('/initiatives', withLocale);
+
+      // Assert we're on the proposals page
+      cy.url().should('include', '/en/initiatives');
+      cy.get('#e2e-initiatives-container');
+    });
+
+    it('navigates to Events', () => {
+      gotoURL('/events', withLocale);
+
+      // Assert we're on the events page
+      cy.url().should('include', '/en/events');
+      cy.get('#e2e-events-container');
+    });
+
+    it('navigates to About page', () => {
+      gotoURL('/pages/information', withLocale);
+
+      // Assert we're on the about page
+      cy.url().should('include', '/en/pages/information');
+      cy.get('.e2e-page-information');
+    });
+
+    it('navigates to FAQ page', () => {
+      gotoURL('/pages/faq', withLocale);
+
+      // Assert we're on the faq page
+      cy.url().should('include', '/en/pages/faq');
+      cy.get('.e2e-page-faq');
+    });
   });
 });
