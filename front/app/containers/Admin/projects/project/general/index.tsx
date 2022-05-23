@@ -329,13 +329,13 @@ const AdminProjectsProjectGeneral = ({
     participationContextConfig: IParticipationContextConfig | null
   ) {
     let projectId = params.projectId;
-    const isNewProject = typeof projectId === 'string';
+    const isFormValid = validateForm();
 
-    if (!validateForm()) {
+    if (!isFormValid) {
       setSubmitState('error');
     }
 
-    if (validateForm() && !processing) {
+    if (isFormValid && !processing) {
       const nextProjectAttributesDiff: IUpdatedProjectProperties = {
         ...projectAttributesDiff,
         ...participationContextConfig,
