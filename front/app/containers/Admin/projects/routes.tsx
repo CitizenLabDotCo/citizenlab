@@ -31,24 +31,19 @@ const createAdminProjectsRoutes = () => {
       },
       {
         path: ':projectId',
+        element: (
+          <LoadingComponent>
+            <AdminProjectEditIndex />
+          </LoadingComponent>
+        ),
         children: [
           {
             index: true,
             element: (
               <LoadingComponent>
-                <AdminProjectEditIndex />
+                <AdminProjectEditGeneral />
               </LoadingComponent>
             ),
-            children: [
-              {
-                path: 'general',
-                element: (
-                  <LoadingComponent>
-                    <AdminProjectEditGeneral />
-                  </LoadingComponent>
-                ),
-              },
-            ],
           },
         ],
       },
