@@ -97,6 +97,4 @@ describe('router history', () => {
       '/en/projects/an-idea-bring-it-to-your-council/ideas/new'
     );
   });
-
-  // TODO something that uses clHistory (TODO find something)
 });

@@ -46,7 +46,7 @@ describe('direct visits admin sections', () => {
     cy.setAdminLoginCookie();
   });
 
-  ADMIN_PAGES.forEach(({ url, container }, i) => {
+  ADMIN_PAGES.forEach(({ url, container }) => {
     it(`navigates to ${url}`, () => {
       cy.visit(`/en/admin/${url}`);
       cy.location('pathname').should('include', `/en/admin/${url}`);
