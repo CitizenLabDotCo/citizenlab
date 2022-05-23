@@ -22,12 +22,16 @@ resource 'Idea Custom Fields' do
     get 'web_api/v1/projects/:project_id/custom_fields' do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
+      let!(:custom_field) { create :custom_field, :for_custom_form, resource: create(:custom_form, project: project) }
 
       example_request 'List all allowed custom fields for a project' do
-        # TODO: create custom custom field and maybe check attributes
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 7
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].size).to eq 8
+        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to match_array [
+          'title_multiloc', 'body_multiloc', 'proposed_budget', 'topic_ids',
+          'location_description', 'idea_images_attributes', 'idea_files_attributes', custom_field.key
+        ]
       end
     end
 
@@ -36,7 +40,7 @@ resource 'Idea Custom Fields' do
       let(:id) { custom_field.id }
 
       example_request 'Get one custom field by id' do
-        expect(status).to eq 200
+        assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
       end
@@ -60,7 +64,7 @@ resource 'Idea Custom Fields' do
 
         example 'Update a built-in custom field', document: false do
           do_request
-          expect(response_status).to eq 200
+          assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :required)).to eq required
@@ -78,7 +82,7 @@ resource 'Idea Custom Fields' do
 
         context 'when the field was not persisted yet' do
           example_request 'Update a built-in custom field' do
-            expect(response_status).to eq 200
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :attributes, :code)).to eq code
             expect(json_response.dig(:data, :attributes, :required)).to eq required
@@ -92,7 +96,7 @@ resource 'Idea Custom Fields' do
           example 'Update a built-in custom field', document: false do
             cf = create(:custom_field, resource: custom_form, code: code)
             do_request
-            expect(response_status).to eq 200
+            assert_status 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data, :id)).to eq cf.id
             expect(json_response.dig(:data, :attributes, :code)).to eq code
