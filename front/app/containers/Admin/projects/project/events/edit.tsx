@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
@@ -19,6 +20,7 @@ import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,7 +32,6 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { IProjectData } from 'services/projects';
 import {
   eventStream,
   updateEvent,
@@ -44,6 +45,7 @@ import { addEventFile, deleteEventFile } from 'services/eventFiles';
 import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
@@ -53,15 +55,13 @@ interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
 }
 
-interface InputProps {
+interface Props extends DataProps {
   params: {
     id: string | null;
     projectId: string | null;
   };
-  project: IProjectData | null;
+  project: GetProjectChildProps;
 }
-
-interface Props extends DataProps, InputProps {}
 
 interface State {
   locale: Locale | null;
@@ -82,7 +82,11 @@ interface State {
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectEventEdit extends PureComponent<Props, State> {
+class AdminProjectEventEdit extends PureComponent<
+  Props,
+  State,
+  WithRouterProps
+> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -205,7 +209,6 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
 
   handleOnSubmit = async (e) => {
     e.preventDefault();
-
     if (!isNilOrError(this.props.project)) {
       const projectId = this.props.project.id;
       const { event, eventFiles, eventFilesToRemove } = this.state;
@@ -390,10 +393,24 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
   }
 }
 
-export default (props: InputProps) => (
-  <GetRemoteFiles resourceId={props.params.id} resourceType="event">
-    {(remoteEventFiles) => (
-      <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
+const Data = adopt<Props>({
+  project: ({ params, render }) => (
+    <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
+});
+
+export default withRouter((props) => (
+  <Data {...props}>
+    {(dataProps) => (
+      <GetRemoteFiles resourceId={props.params.id} resourceType="event">
+        {(remoteEventFiles) => (
+          <AdminProjectEventEdit
+            remoteEventFiles={remoteEventFiles}
+            {...props}
+            {...dataProps}
+          />
+        )}
+      </GetRemoteFiles>
     )}
-  </GetRemoteFiles>
-);
+  </Data>
+));

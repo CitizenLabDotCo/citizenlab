@@ -1,10 +1,8 @@
 import React from 'react';
 
 // resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 // hooks
 import useLocalize, { Localize } from 'hooks/useLocalize';
