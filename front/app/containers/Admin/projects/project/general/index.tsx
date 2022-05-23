@@ -406,6 +406,8 @@ const AdminProjectsProjectGeneral = ({
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
+    // Simplify or document.
+    // Not clear what this means.
     if (projectType === 'continuous') {
       eventEmitter.emit('getParticipationContext');
     } else {
