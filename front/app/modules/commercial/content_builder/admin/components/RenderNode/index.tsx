@@ -21,7 +21,7 @@ const TEXT = 'Text';
 const IMAGE = 'Image';
 const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
-const ACCORDION = 'SimpleAccordion';
+const ACCORDION = 'AccordionSection';
 
 type ComponentNamesType =
   | typeof CONTAINER

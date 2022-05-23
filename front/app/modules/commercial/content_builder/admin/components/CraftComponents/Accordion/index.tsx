@@ -22,7 +22,7 @@ import { useTheme } from 'styled-components';
 import messages from '../../../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-const SimpleAccordion = ({ text, title, openByDefault }) => {
+const AccordionSection = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();
 
   return (
@@ -71,7 +71,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 1 100%" background="#ffffff">
         <Label>{formatMessage(messages.accordionTextLabel)}</Label>
         <QuillEditor
-          maxHeight="300px"
+          maxHeight="225px"
           noImages
           noVideos
           id="quill-editor"
@@ -99,7 +99,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
   );
 });
 
-SimpleAccordion.craft = {
+AccordionSection.craft = {
   props: {
     text: '',
   },
@@ -108,4 +108,4 @@ SimpleAccordion.craft = {
   },
 };
 
-export default SimpleAccordion;
+export default AccordionSection;

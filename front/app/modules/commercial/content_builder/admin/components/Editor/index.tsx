@@ -14,7 +14,7 @@ import Image from '../CraftComponents/Image';
 import RenderNode from '../RenderNode';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
-import SimpleAccordion from '../CraftComponents/Accordion';
+import AccordionSection from '../CraftComponents/Accordion';
 
 type EditorProps = {
   isPreview: boolean;
@@ -37,7 +37,7 @@ const Editor: React.FC<EditorProps> = ({
         Image,
         Iframe,
         AboutBox,
-        SimpleAccordion,
+        AccordionSection,
       }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}
