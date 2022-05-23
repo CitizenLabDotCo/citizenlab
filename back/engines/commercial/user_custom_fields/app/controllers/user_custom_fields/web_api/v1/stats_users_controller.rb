@@ -4,8 +4,6 @@ module UserCustomFields
   module WebApi
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
-        @@multiloc_service = MultilocService.new
-
         def users_by_gender_serie
           users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
@@ -114,7 +112,7 @@ module UserCustomFields
           res = Area.all.map do |area|
             {
               'area_id' => area.id,
-              'area' => @@multiloc_service.t(area.title_multiloc),
+              'area' => multiloc_service.t(area.title_multiloc),
               'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
             }
           end
@@ -233,7 +231,7 @@ module UserCustomFields
             res = options.map do |option|
               {
                 'option_id' => option.key,
-                'option' => @@multiloc_service.t(option.title_multiloc),
+                'option' => multiloc_service.t(option.title_multiloc),
                 'users' => serie[option.key] || 0
               }
             end
@@ -253,6 +251,10 @@ module UserCustomFields
 
         def do_authorize
           authorize :'user_custom_fields/stat_user'
+        end
+
+        def multiloc_service
+          @multiloc_service ||= MultilocService.new
         end
       end
     end
