@@ -7,7 +7,7 @@ import { InsertConfigurationOptions } from 'typings';
 // components
 import Outlet from 'components/Outlet';
 import { Icon } from '@citizenlab/cl2-component-library';
-import AdminProjectEditGeneral from 'containers/Admin/projects/project/general';
+import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
 import { HeaderTitle } from './StyledComponents';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
@@ -272,7 +272,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(
                 id="app.containers.Admin.projects.all.createProject"
                 selectedTabValue={selectedTabValue}
               />
-              {selectedTabValue === 'scratch' && <AdminProjectEditGeneral />}
+              {selectedTabValue === 'scratch' && (
+                <AdminProjectsProjectGeneral />
+              )}
             </CreateProjectContentInner>
           </CreateProjectContent>
         </CSSTransition>

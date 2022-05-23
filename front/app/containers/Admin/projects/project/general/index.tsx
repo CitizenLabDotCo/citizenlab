@@ -68,7 +68,7 @@ import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 export const TIMEOUT = 350;
 
-const AdminProjectEditGeneral = ({
+const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const params = useParams();
@@ -643,7 +643,7 @@ const AdminProjectEditGeneral = ({
   );
 };
 
-export default injectIntl(AdminProjectEditGeneral);
+export default injectIntl(AdminProjectsProjectGeneral);
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
