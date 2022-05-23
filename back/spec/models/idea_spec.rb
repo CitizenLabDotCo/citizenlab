@@ -54,6 +54,11 @@ RSpec.describe Idea, type: :model do
             expect(idea.valid?(validation_context)).to be false
           end
 
+          it 'cannot persist an idea with non-existing field options' do
+            idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
+            expect(idea.valid?(validation_context)).to be false
+          end
+
           it 'does not persist an idea with disabled field values' do
             disabled_field_options = { resource: form, required: false, enabled: false, input_type: 'text' }
             disabled_field = create :custom_field, :for_custom_form, disabled_field_options
@@ -96,6 +101,11 @@ RSpec.describe Idea, type: :model do
 
           it 'cannot persist an idea without required field values' do
             idea.custom_field_values = { optional_field.key => 'option1' }
+            expect(idea.valid?(validation_context)).to be false
+          end
+
+          it 'cannot persist an idea with non-existing field options' do
+            idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
             expect(idea.valid?(validation_context)).to be false
           end
 

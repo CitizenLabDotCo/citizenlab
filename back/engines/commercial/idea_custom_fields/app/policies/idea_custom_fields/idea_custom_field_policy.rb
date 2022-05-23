@@ -32,6 +32,10 @@ module IdeaCustomFields
       show?
     end
 
+    def can_view_custom_fields_for_project?(project)
+      user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
+    end
+
     def permitted_attributes
       if %w[title_multiloc body_multiloc].include? record.code
         [
@@ -45,12 +49,6 @@ module IdeaCustomFields
           description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
-    end
-
-    private
-
-    def can_view_custom_fields_for_project?(project)
-      user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
     end
   end
 end
