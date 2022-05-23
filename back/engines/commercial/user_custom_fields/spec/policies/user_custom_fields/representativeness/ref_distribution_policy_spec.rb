@@ -15,8 +15,6 @@ RSpec.describe UserCustomFields::Representativeness::RefDistributionPolicy, type
     it { is_expected.to permit(:destroy) }
   end
 
-
-
   context 'when user is a normal user' do
     let_it_be(:user) { build(:user) }
 
