@@ -30,7 +30,6 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
 import useInsightsView from '../../../hooks/useInsightsView';
-import useLocale from 'hooks/useLocale';
 
 export const topBarHeight = 60;
 
@@ -75,7 +74,6 @@ const TopBar = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
@@ -85,7 +83,7 @@ const TopBar = ({
     }
   }, [view]);
 
-  if (isNilOrError(view) || isNilOrError(locale)) {
+  if (isNilOrError(view)) {
     return null;
   }
 
@@ -131,7 +129,6 @@ const TopBar = ({
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
-          locale={locale}
           icon="more-options"
           iconColor={colors.label}
           iconHoverColor={colors.label}
