@@ -38,7 +38,7 @@ const InvitationsPage = React.memo((props: Props & InjectedIntlProps) => {
         title={messages.helmetTitle}
         description={messages.helmetDescription}
       />
-      {children}
+      <div id="e2e-invitations-container">{children}</div>
     </TabbedResource>
   );
 });

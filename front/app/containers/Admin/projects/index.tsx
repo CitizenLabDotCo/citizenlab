@@ -14,7 +14,7 @@ const ProjectDashboard = ({ children }: Props) => (
       title={messages.helmetTitle}
       description={messages.helmetDescription}
     />
-    {children}
+    <div id="e2e-projects-admin-container">{children}</div>
   </>
 );
 

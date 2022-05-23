@@ -164,7 +164,9 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             className="e2e-left-panel"
             onCreateGroup={this.openGroupCreationModal}
           />
-          <ChildWrapper>{this.props.children}</ChildWrapper>
+          <ChildWrapper id="e2e-users-container">
+            {this.props.children}
+          </ChildWrapper>
         </Wrapper>
 
         <Modal
