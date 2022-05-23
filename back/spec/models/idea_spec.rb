@@ -71,7 +71,7 @@ RSpec.describe Idea, type: :model do
     context 'when updating ideas' do
       %i[update publication].each do |validation_context|
         context "on #{validation_context}" do
-          let(:idea) { create :idea, project: project }
+          let(:idea) { create :idea, project: project, custom_field_values: { required_field.key => 1 } }
 
           it 'can persist an idea' do
             idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }

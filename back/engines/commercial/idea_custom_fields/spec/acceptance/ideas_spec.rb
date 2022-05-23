@@ -37,12 +37,11 @@ resource 'Ideas' do
     let(:area_ids) { create_list(:area, 2).map(&:id) }
 
     context 'when the extra field is required' do
-      before do
-        create(:custom_field_extra_custom_form, required: true, resource: create(:custom_form, project: project))
-      end
+      let(:form) { create(:custom_form, project: project) }
+      let!(:text_field) { create(:custom_field_extra_custom_form, required: true, resource: form) }
 
       context 'when the field value is given' do
-        let(:custom_field_values) { { 'extra_field' => 'test value' } }
+        let(:custom_field_values) { { text_field.key => 'test value' } }
 
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an extra field' do
@@ -55,7 +54,7 @@ resource 'Ideas' do
       end
 
       context 'when the field value is not given' do
-        let(:custom_field_values) { { 'extra_field' => nil } }
+        let(:custom_field_values) { { text_field.key => nil } }
 
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an extra field' do
@@ -64,6 +63,21 @@ resource 'Ideas' do
             errors = json_response.dig(:errors, :custom_field_values)
             expect(errors.size).to eq 1
             expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+          end
+        end
+      end
+
+      context 'when the field value is not valid' do
+        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
+        let(:custom_field_values) { { text_field.key => 'test value', select_field.key => 'unknown_option' } }
+
+        post 'web_api/v1/ideas' do
+          example_request 'Create an idea with an invalid value for an extra field' do
+            assert_status 422
+            json_response = json_parse(response_body)
+            errors = json_response.dig(:errors, :custom_field_values)
+            expect(errors.size).to eq 1
+            expect(errors.first[:error]).to match %r{The property '#/#{select_field.key}' value "unknown_option" did not match one of the following values: option1, option2 in schema .+}
           end
         end
       end
