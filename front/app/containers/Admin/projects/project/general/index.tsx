@@ -462,15 +462,9 @@ const AdminProjectsProjectGeneral = ({
       };
     });
     setSlug(slug);
-    // add submitState enabled?
-
-    validateProjectSlug(slug);
-  };
-
-  const validateProjectSlug = (slug: string) => {
     const isSlugValid = validateSlug(slug);
-    setSubmitState(isSlugValid ? 'enabled' : 'disabled');
     setShowSlugErrorMessage(!isSlugValid);
+    setSubmitState(isSlugValid ? 'enabled' : 'disabled');
   };
 
   const handleProjectAttributeDiffOnChange = (
