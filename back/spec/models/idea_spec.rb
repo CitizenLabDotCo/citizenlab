@@ -15,69 +15,99 @@ RSpec.describe Idea, type: :model do
     it 'can create an idea without author' do
       expect(build(:idea, author: nil)).to be_valid
     end
+  end
 
-    context 'with custom fields' do
-      let(:project) { create :project }
-      let(:idea) { build :idea, project: project }
-      let(:form) { create :custom_form, project: project }
-      let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
-      let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
+  context 'with custom fields' do
+    let(:project) { create :project }
+    let(:form) { create :custom_form, project: project }
+    let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
+    let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
 
-      context 'creation' do
-        it 'can persist an idea' do
-          idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
-          expect(idea).to be_valid
-        end
+    context 'when creating ideas' do
+      %i[create publication].each do |validation_context|
+        context "on #{validation_context}" do
+          let(:idea) { build :idea, project: project }
 
-        it 'can persist an idea without optional fields' do
-          idea.custom_field_values = { required_field.key => 7 }
-          expect(idea).to be_valid
-        end
+          it 'can persist an idea' do
+            idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
+            expect(idea.valid?(validation_context)).to be true
+          end
 
-        it 'cannot persist an idea with a non-existing field' do
-          idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
-          expect(idea).to be_invalid
-        end
+          it 'can persist an idea without optional fields' do
+            idea.custom_field_values = { required_field.key => 7 }
+            expect(idea.valid?(validation_context)).to be true
+          end
 
-        it 'cannot persist an idea with an invalid field option' do
-          long_title = 'My long idea title. ' * 100
-          idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
-          expect(idea).to be_invalid
-        end
+          it 'cannot persist an idea with a non-existing field' do
+            idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+            expect(idea.valid?(validation_context)).to be false
+          end
 
-        it 'cannot persist an idea without required field values' do
-          idea.custom_field_values = { optional_field.key => 'option1' }
-          expect(idea).to be_invalid
-        end
+          it 'cannot persist an idea with an invalid field option' do
+            long_title = 'My long idea title. ' * 100
+            idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+            expect(idea.valid?(validation_context)).to be false
+          end
 
-        it 'cannot persist an idea with disabled field values' do
-          disabled_field_options = { resource: form, required: false, enabled: false, input_type: 'text' }
-          disabled_field = create :custom_field, :for_custom_form, disabled_field_options
-          idea.custom_field_values = { required_field.key => 194, disabled_field.key => 'my text' }
-          expect(idea).to be_invalid
+          it 'cannot persist an idea without required field values' do
+            idea.custom_field_values = { optional_field.key => 'option1' }
+            expect(idea.valid?(validation_context)).to be false
+          end
+
+          it 'does not persist an idea with disabled field values' do
+            disabled_field_options = { resource: form, required: false, enabled: false, input_type: 'text' }
+            disabled_field = create :custom_field, :for_custom_form, disabled_field_options
+            idea.custom_field_values = { required_field.key => 194, disabled_field.key => 'my text' }
+            idea.location_description = 'Brussels'
+            expect(idea.save).to be true
+            idea.reload
+            expect(idea.location_description).to eq 'Brussels'
+            expect(idea.custom_field_values).to eq({ required_field.key => 194 })
+          end
         end
       end
+    end
 
-      context 'update' do
-        before { idea.save! }
+    context 'when updating ideas' do
+      %i[update publication].each do |validation_context|
+        context "on #{validation_context}" do
+          let(:idea) { create :idea, project: project }
 
-        it 'can persist an idea with valid field values' do
-          idea.custom_field_values = { required_field.key => 7 }
-          expect(idea).to be_valid
-        end
+          it 'can persist an idea' do
+            idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
+            expect(idea.valid?(validation_context)).to be true
+          end
 
-        it 'cannot persist an idea with invalid field values' do
-          idea.custom_field_values = { 'nonexisting_field' => 22 }
-          expect(idea).to be_invalid
-        end
+          it 'can persist an idea without optional fields' do
+            idea.custom_field_values = { required_field.key => 7 }
+            expect(idea.valid?(validation_context)).to be true
+          end
 
-        it 'can persist other attributes of an idea with invalid custom field values' do
-          idea.update!(custom_field_values: { required_field.key => 9 })
-          optional_field.update! required: true
-          expect(idea.update(author: create(:user))).to be true
-          # Make a valid change to the field values to trigger the custom field values validation.
-          idea.custom_field_values[required_field.key] = 10
-          expect(idea).to be_invalid
+          it 'cannot persist an idea with a non-existing field' do
+            idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+            expect(idea.valid?(validation_context)).to be false
+          end
+
+          it 'cannot persist an idea with an invalid field option' do
+            long_title = 'My long idea title. ' * 100
+            idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+            expect(idea.valid?(validation_context)).to be false
+          end
+
+          it 'cannot persist an idea without required field values' do
+            idea.custom_field_values = { optional_field.key => 'option1' }
+            expect(idea.valid?(validation_context)).to be false
+          end
+
+          it 'can persist other attributes of an idea with unchanged invalid custom field values' do
+            idea.update!(custom_field_values: { required_field.key => 7 })
+            optional_field.update! required: true
+            expect(idea.update(author: create(:user))).to be true
+            # Make a valid change to the field values to trigger the custom field values validation,
+            # because the validation is only performed if `custom_field_values` changes.
+            idea.custom_field_values['optional_field.key'] = 'option1'
+            expect(idea.valid?(validation_context)).to be false
+          end
         end
       end
     end

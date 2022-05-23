@@ -135,7 +135,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
 
       it 'only allows description changes' do
         expect(policy.permitted_attributes).to match_array [
-          :required, :enabled, 
+          :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end

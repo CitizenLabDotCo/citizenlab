@@ -89,7 +89,12 @@ class Idea < ApplicationRecord
       CustomFieldService.new.fields_to_json_schema(extra_fields)
     },
     message: ->(errors) { errors }
-  }, if: proc { |idea| idea.project && CustomForm.exists?(project: idea.project) }
+  }, on: %i[create update publication], if: :needs_custom_field_validation?
+
+  def needs_custom_field_validation?
+    has_custom_fields = project && CustomForm.exists?(project: project)
+    has_custom_fields && custom_field_values_changed?
+  end
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
