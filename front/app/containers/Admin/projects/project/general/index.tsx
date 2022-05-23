@@ -479,10 +479,13 @@ const AdminProjectsProjectGeneral = ({
     projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
     submitState: ISubmitState
   ) => {
-    setProjectAttributesDiff((currentProjectAttributesDiff) => ({
-      ...currentProjectAttributesDiff,
-      projectAttributesDiff,
-    }));
+    setProjectAttributesDiff((currentProjectAttributesDiff) => {
+      return {
+        ...currentProjectAttributesDiff,
+        ...projectAttributesDiff,
+      };
+    });
+
     setSubmitState(submitState);
   };
 
