@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { globalState } from 'services/globalState';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
@@ -185,7 +186,7 @@ const AdminPage = memo<Props & WithRouterProps>(
                     noPadding && 'noPadding'
                   }`}
                 >
-                  {children}
+                  <RouterOutlet />
                 </RightColumn>
               </>
             )}

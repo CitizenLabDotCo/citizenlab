@@ -7,7 +7,7 @@ type sort = 'newest' | 'oldest';
 
 interface InputParameters {
   projectIds?: string[];
-  currentAndFutureOnly?: boolean;
+  futureOnly?: boolean;
   pastOnly?: boolean;
   currentPage?: number;
   pageSize?: number;
@@ -60,13 +60,12 @@ export default function useEvents(parameters: InputParameters) {
         parameters.projectPublicationStatuses;
     }
 
-    if (parameters.currentAndFutureOnly) {
-      streamParams.queryParameters.ends_on_or_after_date = new Date().toJSON();
-      streamParams.queryParameters.sort = 'start_at';
+    if (parameters.futureOnly) {
+      streamParams.queryParameters.start_at_gteq = new Date().toJSON();
     }
 
     if (parameters.pastOnly) {
-      streamParams.queryParameters.ends_before_date = new Date().toJSON();
+      streamParams.queryParameters.start_at_lt = new Date().toJSON();
     }
 
     if (currentPage) {
@@ -95,7 +94,7 @@ export default function useEvents(parameters: InputParameters) {
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    parameters.currentAndFutureOnly,
+    parameters.futureOnly,
     parameters.pastOnly,
     projectIds,
     currentPage,

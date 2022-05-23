@@ -31,7 +31,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 const Container = styled.main`
   flex: 1 0 auto;
