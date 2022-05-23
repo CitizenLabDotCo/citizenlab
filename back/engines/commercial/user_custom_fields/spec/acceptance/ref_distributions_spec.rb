@@ -38,7 +38,7 @@ resource 'Representativeness reference distributions' do
               id: reference_distribution.id,
               type: 'reference_distribution',
               attributes: {
-                distribution: reference_distribution.normalized_distribution.symbolize_keys
+                distribution: reference_distribution.probabilities_and_counts.symbolize_keys
               },
               relationships: {
                 values: {

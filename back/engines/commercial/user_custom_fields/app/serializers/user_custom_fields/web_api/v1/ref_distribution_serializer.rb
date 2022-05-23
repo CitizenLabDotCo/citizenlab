@@ -6,7 +6,7 @@ module UserCustomFields
       class RefDistributionSerializer < ::WebApi::V1::BaseSerializer
         set_type :reference_distribution
 
-        attribute :distribution, &:normalized_distribution
+        attribute :distribution, &:probabilities_and_counts
 
         has_many(
           :values,

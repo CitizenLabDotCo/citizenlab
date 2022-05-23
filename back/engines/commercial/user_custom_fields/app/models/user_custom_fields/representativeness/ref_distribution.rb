@@ -30,8 +30,7 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
     distribution.values.sum
   end
 
-  # TODO: better name (bc there are both counts and probabilities)
-  def normalized_distribution
+  def probabilities_and_counts
     distribution.transform_values do |count|
       { count: count, probability: count.to_f / total_count }
     end
