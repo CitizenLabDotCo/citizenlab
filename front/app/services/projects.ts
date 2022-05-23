@@ -195,7 +195,7 @@ export interface IUpdatedProjectProperties {
   // in IProjectAttributes (also in this file) when we save an image
   // selected for upload. ImageSizes needs to be here, because
   // Otherwise TS will complain about this mismatch in
-  // front/app/containers/Admin/projects/edit/general/index.tsx
+  // front/app/containers/Admin/projects/general/index.tsx
   // This oddity needs to be dealt with
   header_bg?: string | ImageSizes | null;
   title_multiloc?: Multiloc;

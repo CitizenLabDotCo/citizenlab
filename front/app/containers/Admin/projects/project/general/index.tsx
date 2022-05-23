@@ -68,7 +68,7 @@ import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 export const TIMEOUT = 350;
 
-const AdminProjectEditGeneral = ({
+const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const params = useParams();
@@ -123,7 +123,6 @@ const AdminProjectEditGeneral = ({
     ...(!isNilOrError(project) ? project.attributes : {}),
     ...projectAttributesDiff,
   };
-  console.log(projectAttrs);
 
   useEffect(() => {
     (async () => {
@@ -647,7 +646,7 @@ const AdminProjectEditGeneral = ({
   );
 };
 
-export default injectIntl(AdminProjectEditGeneral);
+export default injectIntl(AdminProjectsProjectGeneral);
 
 function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,

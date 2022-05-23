@@ -82,7 +82,7 @@ interface State {
 
 interface Props extends InputProps, DataProps {}
 
-export class AdminProjectEditIndex extends PureComponent<
+export class AdminProjectsProjectIndex extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
 > {
@@ -96,7 +96,7 @@ export class AdminProjectEditIndex extends PureComponent<
       tabs: [
         {
           label: formatMessage(messages.generalTab),
-          url: 'edit',
+          url: '',
           name: 'general',
         },
         {
@@ -369,7 +369,7 @@ export class AdminProjectEditIndex extends PureComponent<
 }
 
 const AdminProjectEditIndexWithHoCs = injectIntl(
-  injectLocalize(AdminProjectEditIndex)
+  injectLocalize(AdminProjectsProjectIndex)
 );
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({

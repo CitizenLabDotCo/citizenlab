@@ -5,7 +5,7 @@ import React from 'react';
 
 // component to test
 // ! it is the component without the HoCs (data, localization...)
-import { AdminProjectEditIndex } from './';
+import { AdminProjectsProjectIndex } from '.';
 
 // mock data and functions to replace the HoCs
 import { GetPhasesChildProps } from 'resources/GetPhases';
@@ -57,7 +57,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         granularPermissionsEnabled={granularPermissionsEnabled}
@@ -90,7 +90,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         granularPermissionsEnabled={granularPermissionsEnabled}
@@ -123,7 +123,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -156,7 +156,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -189,7 +189,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -218,7 +218,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -249,7 +249,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -277,7 +277,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -305,7 +305,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -337,7 +337,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -365,7 +365,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
@@ -397,7 +397,7 @@ describe('<AdminProjectEdition />', () => {
     // passing in mock data to replace the HoCs
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
-      <AdminProjectEditIndex
+      <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}

@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { AdminProjectPoll } from './';
+import { AdminProjectPoll } from '.';
 
 import { getProject } from 'services/__mocks__/projects';
 import {
