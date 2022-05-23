@@ -5,8 +5,8 @@ import React, { lazy } from 'react';
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 import { LoadingComponent } from 'routes';
-const AdminProjectEditIndex = lazy(() => import('./project'));
-const AdminProjectEditGeneral = lazy(() => import('./project/general'));
+const AdminProjectsProjectIndex = lazy(() => import('./project'));
+const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -33,7 +33,7 @@ const createAdminProjectsRoutes = () => {
         path: ':projectId',
         element: (
           <LoadingComponent>
-            <AdminProjectEditIndex />
+            <AdminProjectsProjectIndex />
           </LoadingComponent>
         ),
         children: [
@@ -41,7 +41,7 @@ const createAdminProjectsRoutes = () => {
             index: true,
             element: (
               <LoadingComponent>
-                <AdminProjectEditGeneral />
+                <AdminProjectsProjectGeneral />
               </LoadingComponent>
             ),
           },
