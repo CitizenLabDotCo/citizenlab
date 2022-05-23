@@ -8,8 +8,7 @@ describe('nav bar', () => {
     cy.get('li[data-testid="desktop-navbar-item"]').first().click();
 
     // Assert we're back on the landing page
-    cy.url().should('not.include', '/en/projects');
-    cy.url().should('include', '/en/');
+    cy.location('pathname').should('eq', '/en/');
     cy.get('#e2e-landing-page');
   }
 
@@ -24,8 +23,8 @@ describe('nav bar', () => {
 
         cy.get('#e2e-projects-dropdown-content > a').first().click();
 
-        // Assert we're on project page
-        cy.url().should('include', $href);
+        // Assert we're on project page (using include for when there's a phase parameter)
+        cy.location('pathname').should('include', $href);
         cy.get('#e2e-project-page');
 
         assertCorrectReturnToLandingPage();
@@ -38,7 +37,7 @@ describe('nav bar', () => {
     cy.get('#e2e-all-projects-link').click();
 
     // Assert we're on projects overview page
-    cy.url().should('include', '/en/projects');
+    cy.location('pathname').should('eq', '/en/projects');
     cy.get('#e2e-projects-container');
 
     assertCorrectReturnToLandingPage();
@@ -51,7 +50,7 @@ describe('nav bar', () => {
     ).click();
 
     // Assert we're on the all input page
-    cy.url().should('include', '/en/ideas');
+    cy.location('pathname').should('eq', '/en/ideas');
     cy.get('#e2e-ideas-container');
   });
 
@@ -62,7 +61,7 @@ describe('nav bar', () => {
     ).click();
 
     // Assert we're on the proposals page
-    cy.url().should('include', '/en/initiatives');
+    cy.location('pathname').should('eq', '/en/initiatives');
     cy.get('#e2e-initiatives-container');
 
     assertCorrectReturnToLandingPage();
@@ -75,7 +74,7 @@ describe('nav bar', () => {
     ).click();
 
     // Assert we're on the events page
-    cy.url().should('include', '/en/events');
+    cy.location('pathname').should('eq', '/en/events');
     cy.get('#e2e-events-container');
 
     assertCorrectReturnToLandingPage();
@@ -88,7 +87,7 @@ describe('nav bar', () => {
     ).click();
 
     // Assert we're on the about page
-    cy.url().should('include', '/en/pages/information');
+    cy.location('pathname').should('eq', '/en/pages/information');
     cy.get('.e2e-page-information');
 
     assertCorrectReturnToLandingPage();
@@ -101,7 +100,7 @@ describe('nav bar', () => {
     ).click();
 
     // Assert we're on the faq page
-    cy.url().should('include', '/en/pages/faq');
+    cy.location('pathname').should('eq', '/en/pages/faq');
     cy.get('.e2e-page-faq');
 
     assertCorrectReturnToLandingPage();
@@ -130,8 +129,8 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
 
           gotoURL(href, withLocale);
 
-          // Assert we're on project page
-          cy.url().should('include', href);
+          // Assert we're on project page (using include for when there's a phase parameter)
+          cy.location('pathname').should('include', href);
           cy.get('#e2e-project-page');
         });
     });
@@ -140,7 +139,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       gotoURL('/projects', withLocale);
 
       // Assert we're on projects overview page
-      cy.url().should('include', '/en/projects');
+      cy.location('pathname').should('eq', '/en/projects');
       cy.get('#e2e-projects-container');
     });
 
@@ -148,7 +147,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       gotoURL('/ideas', withLocale);
 
       // Assert we're on the all input page
-      cy.url().should('include', '/en/ideas');
+      cy.location('pathname').should('eq', '/en/ideas');
       cy.get('#e2e-ideas-container');
     });
 
@@ -156,7 +155,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       gotoURL('/initiatives', withLocale);
 
       // Assert we're on the proposals page
-      cy.url().should('include', '/en/initiatives');
+      cy.location('pathname').should('eq', '/en/initiatives');
       cy.get('#e2e-initiatives-container');
     });
 
@@ -164,7 +163,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       gotoURL('/events', withLocale);
 
       // Assert we're on the events page
-      cy.url().should('include', '/en/events');
+      cy.location('pathname').should('eq', '/en/events');
       cy.get('#e2e-events-container');
     });
 
@@ -172,7 +171,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       gotoURL('/pages/information', withLocale);
 
       // Assert we're on the about page
-      cy.url().should('include', '/en/pages/information');
+      cy.location('pathname').should('eq', '/en/pages/information');
       cy.get('.e2e-page-information');
     });
 
@@ -180,7 +179,7 @@ const gotoURL = (baseURL: string, withLocale: boolean) => {
       gotoURL('/pages/faq', withLocale);
 
       // Assert we're on the faq page
-      cy.url().should('include', '/en/pages/faq');
+      cy.location('pathname').should('eq', '/en/pages/faq');
       cy.get('.e2e-page-faq');
     });
   });
