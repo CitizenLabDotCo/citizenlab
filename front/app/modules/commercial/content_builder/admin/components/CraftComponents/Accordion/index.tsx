@@ -26,7 +26,7 @@ const SimpleAccordion = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();
 
   return (
-    <Box>
+    <Box id="e2e-accordion">
       <Accordion
         isOpenByDefault={openByDefault}
         title={
@@ -83,6 +83,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Box display="flex" gap="16px" marginBottom="20px" flex="0 1 100%">
         <Toggle
+          id="e2e-default-open-toggle"
           checked={openByDefault}
           onChange={() => {
             setProp((props) => (props.openByDefault = !openByDefault));
