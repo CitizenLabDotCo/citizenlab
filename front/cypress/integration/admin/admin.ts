@@ -26,15 +26,29 @@ const ADMIN_PAGES = [
   { url: 'settings/general', container: '#e2e-settings-container' },
 ];
 
-describe('navigation to admin sections', () => {
+describe('navigation to admin section when clicking corresponding button in side panel', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/en/admin/dashboard');
   });
 
   ADMIN_PAGES.forEach(({ url, container }, i) => {
-    it(`navigates to ${url} when clicking corresponding button in side panel`, () => {
+    it(`navigates to ${url}`, () => {
       cy.get(`nav#sidebar > a[href="/en/admin/${url}"]`).click();
+      cy.location('pathname').should('include', `/en/admin/${url}`);
+      cy.get(container);
+    });
+  });
+});
+
+describe('direct visits admin sections', () => {
+  beforeEach(() => {
+    cy.setAdminLoginCookie();
+  });
+
+  ADMIN_PAGES.forEach(({ url, container }, i) => {
+    it(`navigates to ${url}`, () => {
+      cy.visit(`/en/admin/${url}`);
       cy.location('pathname').should('include', `/en/admin/${url}`);
       cy.get(container);
     });
