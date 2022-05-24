@@ -770,7 +770,6 @@
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arhivat",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "All Areas",
   "app.containers.AdminPage.ProjectEdit.areasLabel": "Geographic areas",
-  "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "You can select the geographic areas this project is relevant for. The areas can be set {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "here",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selection",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cards",
