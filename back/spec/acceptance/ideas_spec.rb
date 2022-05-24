@@ -21,7 +21,6 @@ resource 'Ideas' do
       parameter :size, 'Number of ideas per page'
     end
     parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
@@ -100,35 +99,6 @@ resource 'Ideas' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id, i3.id]
-    end
-
-    example 'List all ideas with an area' do
-      a1 = create(:area)
-
-      i1 = @ideas.first
-      i1.areas << a1
-      i1.save!
-
-      do_request areas: [a1.id]
-      json_response = json_parse(response_body)
-      expect(json_response[:data][0][:id]).to eq i1.id
-    end
-
-    example 'List all ideas which match one of the given areas', document: false do
-      a1 = create(:area)
-      a2 = create(:area)
-
-      i1 = @ideas.first
-      i1.areas = [a1]
-      i1.save
-      i2 = @ideas.second
-      i2.areas = [a2]
-      i2.save
-
-      do_request areas: [a1.id, a2.id]
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
     end
 
     example 'List all ideas in a project' do
@@ -264,7 +234,6 @@ resource 'Ideas' do
       parameter :size, 'Number of ideas per page'
     end
     parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
@@ -381,15 +350,13 @@ resource 'Ideas' do
       @t2 = create(:topic)
       @project = create(:project, allowed_input_topics: [@t1, @t2])
 
-      @a1 = create(:area)
-      @a2 = create(:area)
       @s1 = create(:idea_status)
       @s2 = create(:idea_status)
-      @i1 = create(:idea, project: @project, topics: [@t1, @t2], areas: [@a1], idea_status: @s1)
-      @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
-      @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
-      @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
-      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
+      @i1 = create(:idea, project: @project, topics: [@t1, @t2], idea_status: @s1)
+      @i2 = create(:idea, project: @project, topics: [@t1], idea_status: @s2)
+      @i3 = create(:idea, project: @project, topics: [@t2], idea_status: @s2)
+      @i4 = create(:idea, project: @project, topics: [], idea_status: @s2)
+      create(:idea, topics: [@t1, @t2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
 
       # a1 -> 3
       # a2 -> 1
@@ -400,7 +367,6 @@ resource 'Ideas' do
     end
 
     parameter :topics, 'Filter by topics (OR)', required: false
-    parameter :areas, 'Filter by areas (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
@@ -419,8 +385,6 @@ resource 'Ideas' do
 
       expect(json_response[:idea_status_id][@s1.id.to_sym]).to eq 1
       expect(json_response[:idea_status_id][@s2.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a1.id.to_sym]).to eq 3
-      expect(json_response[:area_id][@a2.id.to_sym]).to eq 1
       expect(json_response[:topic_id][@t1.id.to_sym]).to eq 2
       expect(json_response[:topic_id][@t2.id.to_sym]).to eq 2
       expect(json_response[:total]).to eq 4
@@ -428,11 +392,6 @@ resource 'Ideas' do
 
     example 'List idea counts per filter option on topic' do
       do_request topics: [@t1.id], projects: nil
-      expect(status).to eq 200
-    end
-
-    example 'List idea counts per filter option on area' do
-      do_request areas: [@a1.id], projects: nil
       expect(status).to eq 200
     end
 
@@ -495,7 +454,6 @@ resource 'Ideas' do
         topics: {
           data: [{ id: topic.id, type: 'topic' }]
         },
-        areas: { data: [] },
         author: { data: { id: idea.author_id, type: 'user' } },
         idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
         user_vote: { data: { id: user_vote.id, type: 'vote' } }
@@ -537,7 +495,6 @@ resource 'Ideas' do
       parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
       parameter :topic_ids, 'Array of ids of the associated topics'
-      parameter :area_ids, 'Array of ids of the associated areas'
       parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
       parameter :location_description, 'A human readable description of the location the idea applies to'
       parameter :budget, 'The budget needed to realize the idea, as determined by the city'
@@ -555,7 +512,6 @@ resource 'Ideas' do
     let(:title_multiloc) { idea.title_multiloc }
     let(:body_multiloc) { idea.body_multiloc }
     let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
-    let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
     let(:location_description) { 'Stanley Road 4' }
 
@@ -565,7 +521,6 @@ resource 'Ideas' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
@@ -594,7 +549,6 @@ resource 'Ideas' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         expect(project.reload.ideas_count).to eq 1
@@ -734,7 +688,6 @@ resource 'Ideas' do
       parameter :title_multiloc, 'Multi-locale field with the idea title', extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
       parameter :topic_ids, 'Array of ids of the associated topics'
-      parameter :area_ids, 'Array of ids of the associated areas'
       parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
       parameter :location_description, 'A human readable description of the location the idea applies to'
       parameter :budget, 'The budget needed to realize the idea, as determined by the city'
@@ -744,7 +697,6 @@ resource 'Ideas' do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:id) { @idea.id }
-    let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
     let(:location_description) { 'Watkins Road 8' }
 
@@ -757,7 +709,6 @@ resource 'Ideas' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
         expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
         expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
       end
@@ -782,16 +733,13 @@ resource 'Ideas' do
 
     describe do
       let(:topic_ids) { [] }
-      let(:area_ids) { [] }
 
-      example 'Remove the topics/areas', document: false do
+      example 'Remove the topics', document: false do
         @idea.topics = create_list :topic, 2
-        @idea.areas = create_list :area, 2
         do_request
         expect(status).to be 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
       end
     end
 

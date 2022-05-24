@@ -94,39 +94,6 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_project.xlsx'
   end
 
-  def ideas_by_area_serie
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
-
-    ideas
-      .where(published_at: @start_at..@end_at)
-      .joins(:areas_ideas)
-      .group('areas_ideas.area_id')
-      .order('areas_ideas.area_id')
-      .count
-  end
-
-  def ideas_by_area
-    serie = ideas_by_area_serie
-    areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { ideas: serie }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
-  end
-
-  def ideas_by_area_as_xlsx
-    res = []
-    ideas_by_area_serie.each do |area_id, count|
-      res.push({
-        'area' => @@multiloc_service.t(Area.find(area_id).title_multiloc),
-        'area_id' => area_id,
-        'ideas' => count
-      })
-    end
-
-    xlsx = XlsxService.new.generate_res_stats_xlsx res, 'ideas', 'area'
-
-    send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas_by_area.xlsx'
-  end
-
   def ideas_by_status_serie
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records

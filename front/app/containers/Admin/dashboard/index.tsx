@@ -96,7 +96,7 @@ export const DashboardsPage = memo(
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {children}
+          <div id="e2e-dashboard-container">{children}</div>
         </DashboardTabs>
       </>
     );
