@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
 
@@ -35,7 +35,7 @@ const createAdminInitiativesRoutes = () => ({
         </LoadingComponent>
       ),
     },
-    // ...moduleConfiguration.routes['admin.initiatives'],
+    ...moduleConfiguration.routes['admin.initiatives'],
   ],
 });
 

@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 import { LoadingComponent } from 'routes';
@@ -47,7 +47,7 @@ const createAdminProjectsRoutes = () => {
           </LoadingComponent>
         ),
       },
-      // ...moduleConfiguration.routes['admin.project_templates'],
+      ...moduleConfiguration.routes['admin.project_templates'],
       {
         path: 'new',
         element: (
@@ -154,7 +154,7 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           // double check on this to make sure it goes in the right spot with regard to children/parent routes
-          // ...moduleConfiguration.routes['admin.projects'],
+          ...moduleConfiguration.routes['admin.projects'],
           {
             path: 'description',
             element: (

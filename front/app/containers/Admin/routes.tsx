@@ -9,7 +9,7 @@ import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 const AdminContainer = lazy(() => import('containers/Admin'));
 import { LoadingComponent } from 'routes';
 import { hasPermission } from 'services/permissions';
@@ -116,7 +116,7 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
           </LoadingComponent>
         ),
       },
-      // ...moduleConfiguration.routes.admin,
+      ...moduleConfiguration.routes.admin,
     ],
   };
 };

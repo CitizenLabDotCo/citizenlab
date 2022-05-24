@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
@@ -31,7 +31,7 @@ const createAdminDashboardRoutes = () => {
           </LoadingComponent>
         ),
       },
-      // ...moduleConfiguration.routes['admin.dashboards'],
+      ...moduleConfiguration.routes['admin.dashboards'],
     ],
   };
 };
