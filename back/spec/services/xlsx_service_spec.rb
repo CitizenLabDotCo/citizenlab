@@ -167,7 +167,7 @@ describe XlsxService do
 
       let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2, @idea3], view_private_attributes: false) }
 
-      it 'adds custom field values' do
+      it 'adds custom field values' do # TODO: verify that hidden fields are left out
         headers = worksheet[0].cells.map(&:value)
         number_field_idx      = headers.find_index 'How many times did it rain this year?'
         date_field_idx        = headers.find_index 'When was the last time it rained?'

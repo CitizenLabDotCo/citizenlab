@@ -128,6 +128,7 @@ RSpec.describe Idea, type: :model do
       it 'can persist other attributes of an idea with unchanged invalid custom field values' do
         idea.update!(custom_field_values: { required_field.key => 7 })
         optional_field.update! required: true
+        idea.reload
         expect(idea.update(author: create(:user))).to be true
         # Make a valid change to the field values to trigger the custom field values validation,
         # because the validation is only performed if `custom_field_values` changes.
@@ -139,6 +140,7 @@ RSpec.describe Idea, type: :model do
         idea.update!(custom_field_values: { required_field.key => 7 })
         optional_field.update! required: true
         idea.title_multiloc = { 'en' => 'Updated idea title' }
+        idea.reload
         expect(idea.save(context: :publication)).to be false
       end
     end
