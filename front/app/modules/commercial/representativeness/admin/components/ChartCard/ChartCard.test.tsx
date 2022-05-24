@@ -391,7 +391,7 @@ describe('<ChartCard /> (chart view)', () => {
       ).toBeInTheDocument();
     });
 
-    it('on select chart view: does not render included users percentage', () => {
+    it('on select chart view: renders included users percentage', () => {
       const { container } = render(
         <ChartCard
           data={data}
@@ -405,7 +405,7 @@ describe('<ChartCard /> (chart view)', () => {
       const chartTabButton = container.querySelector('button#chart');
       fireEvent.click(chartTabButton);
 
-      expect(screen.queryByText('85%')).not.toBeInTheDocument();
+      expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('on select chart view: renders warning', () => {

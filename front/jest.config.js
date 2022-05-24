@@ -29,7 +29,9 @@ module.exports = {
     '!**/vendor/**',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-  transformIgnorePatterns: ['<rootDir>/node_modules/(?!lodash-es).+\\.js$'],
+  transformIgnorePatterns: [
+    '<rootDir>/node_modules/(?!(lodash-es|d3-format)).+\\.js$',
+  ],
   snapshotSerializers: ['enzyme-to-json/serializer'],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],

@@ -55,14 +55,12 @@ const Footer = ({
         mt={dataIsTooLong || hideTicks ? '-20px' : undefined}
         display="flex"
         flexDirection="row"
-        justifyContent={dataIsTooLong ? 'center' : 'space-between'}
+        justifyContent={'space-between'}
       >
-        {(!dataIsTooLong || viewState === 'table') && (
-          <FieldInfo
-            fieldIsRequired={fieldIsRequired}
-            includedUserPercentage={includedUserPercentage}
-          />
-        )}
+        <FieldInfo
+          fieldIsRequired={fieldIsRequired}
+          includedUserPercentage={includedUserPercentage}
+        />
 
         {!hideLegend && (
           <Legend labels={legendLabels} colors={[newBarFill, colors.clBlue]} />
