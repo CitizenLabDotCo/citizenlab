@@ -30,9 +30,9 @@ const configuration: ModuleConfiguration = {
       {
         path: 'insights',
         element: <AdminInsightsContainerComponent />,
-        childRoutes: [
+        children: [
           {
-            index: true,
+            path: '',
             element: <AdminInsightsListComponent />,
           },
           {

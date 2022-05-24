@@ -24,10 +24,10 @@ const configuration: ModuleConfiguration = {
       {
         path: 'navigation',
         element: <CustomNavbarContainer />,
-        childRoutes: [
+        children: [
           // to do: check on this or if it should be path: ""
           {
-            index: true,
+            path: '',
             element: <CustomNavbarSettingsComponent />,
           },
           {
