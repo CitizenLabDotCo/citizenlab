@@ -619,6 +619,7 @@
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateDescription": "Dieser Basisdatensatz wird benötigt, um die Repräsentativität der PlattformnutzerInnen im Vergleich zur Gesamtbevölkerung zu berechnen.",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle": "Bitte stellen Sie einen Basisdatensatz zur Verfügung.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescription3": "Sehen Sie, wie repräsentativ Ihre PlattformnutzerInnen im Vergleich zur Gesamtbevölkerung sind - auf der Grundlage der bei der NutzerInnenregistrierung erfassten Daten. Erfahren Sie mehr über {representativenessArticleLink}.",
+  "app.containers.AdminPage.DashboardPage.representativeness.pageDescriptionTemporary": "See how representative your platform users are compared to the total population - based on data collected during user registration.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageTitle2": "Dashboard zur Repräsentativität",
   "app.containers.AdminPage.DashboardPage.representativeness.submitBaseDataButton": "Basisdaten einreichen",
   "app.containers.AdminPage.DashboardPage.resolutionday": "in Tagen",
