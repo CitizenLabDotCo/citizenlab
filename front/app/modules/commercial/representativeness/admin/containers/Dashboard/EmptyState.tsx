@@ -32,15 +32,7 @@ const EmptyState = () => {
     <Box background="white" mb="36px" position="relative">
       <StyledBackgroundImage alt="" src={EmptyProjectsImage} />
       <Box pt="46px" pb="64px">
-        <Box
-          ml="10%"
-          width="80%"
-          mt="0px"
-          background="rgba(255, 12, 12, 0.12)"
-          border="1px solid #CF4040"
-          px="24px"
-          pt="0px"
-        >
+        <Box ml="10%" width="80%" mt="0px" px="24px" pt="0px">
           <Title variant="h3" textAlign="center" color="text">
             <FormattedMessage {...messages.emptyStateTitle} />
           </Title>
@@ -49,7 +41,12 @@ const EmptyState = () => {
           </Text>
 
           <Box display="flex" justifyContent="center">
-            <Button width="164px" mb="16px" bgColor={colors.adminTextColor}>
+            <Button
+              width="164px"
+              mb="16px"
+              bgColor={colors.adminTextColor}
+              linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
+            >
               <FormattedMessage {...messages.submitBaseDataButton} />
             </Button>
           </Box>

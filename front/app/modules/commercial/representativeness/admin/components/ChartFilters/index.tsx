@@ -27,7 +27,7 @@ const ChartFilters = ({ currentProjectFilter, onProjectFilter }: Props) => (
       onProjectFilter={onProjectFilter}
     />
     <Button
-      linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6?typeform-source=trello.com"
+      linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
       text={<FormattedMessage {...messages.editBaseData} />}
       bgColor={colors.clBlueDark}
     />
