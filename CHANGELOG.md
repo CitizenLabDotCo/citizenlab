@@ -1,5 +1,11 @@
 # Changelog
 
+## 2022-05-24
+
+### Fixed
+
+- [CL-264] Added a sleep to stop timeouts happening when deleting Matomo data as part of deleting a user
+
 ## Next Release
 
 ### 2022-05-20
