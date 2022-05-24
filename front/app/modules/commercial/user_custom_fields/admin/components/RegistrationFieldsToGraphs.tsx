@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { map } from 'lodash-es';
+import { orderBy } from 'lodash-es';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -51,13 +51,16 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       series: { users },
       options,
     } = data;
-    const res = map(options, (value, key) => {
-      return {
-        value: users[key] || 0,
-        name: this.props.localize(value.title_multiloc),
-        code: key,
-      };
-    });
+    const res = orderBy(Object.entries(options), (e) => e[1]['ordering']).map(
+      (entry) => {
+        const [key, value] = entry;
+        return {
+          value: users[key] || 0,
+          name: this.props.localize(value.title_multiloc),
+          code: key,
+        };
+      }
+    );
 
     if (users['_blank']) {
       res.push({

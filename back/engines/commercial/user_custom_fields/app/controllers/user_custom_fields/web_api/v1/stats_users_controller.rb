@@ -216,7 +216,7 @@ module UserCustomFields
           @custom_field = CustomField.find(params[:custom_field_id])
           serie = users_by_custom_field_serie
           if %w[select multiselect].include?(@custom_field.input_type)
-            options = @custom_field.custom_field_options.select(:key, :title_multiloc)
+            options = @custom_field.custom_field_options.select(:key, :title_multiloc, :ordering)
             render json: { series: { users: serie }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
           else
             render json: { series: { users: serie } }

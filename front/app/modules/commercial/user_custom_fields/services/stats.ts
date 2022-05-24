@@ -21,6 +21,7 @@ export interface IUsersByRegistrationField {
   options: {
     [key: string]: {
       title_multiloc: Multiloc;
+      ordering: number;
     };
   };
 }
