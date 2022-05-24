@@ -17,7 +17,6 @@ describe MultiTenancy::Templates::Serializer do
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
         expect(Area.count).to be > 0
-        expect(AreasIdea.count).to be > 0
         expect(Comment.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
         expect(Event.count).to be > 0
