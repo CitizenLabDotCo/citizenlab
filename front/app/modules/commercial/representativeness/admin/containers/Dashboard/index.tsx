@@ -10,12 +10,19 @@ import ChartFilters from '../../components/ChartFilters';
 import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 const SHOW_EMPTY = false;
 
 const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 
   const onProjectFilter = ({ value }) => {
+    trackEventByName(tracks.filteredOnProject.name, {
+      extra: { projectId: value },
+    });
     setCurrentProjectFilter(value);
   };
 
