@@ -1,5 +1,6 @@
 import { RepresentativenessRow } from '.';
 import { Moment } from 'moment';
+import { format } from 'd3-format';
 
 interface TooltipProps {
   dataKey?: 'actualPercentage' | 'referencePercentage';
@@ -7,6 +8,8 @@ interface TooltipProps {
 }
 
 export const formatPercentage = (percentage: number) => `${percentage}%`;
+
+export const formatThousands = format(',');
 
 export const formatTooltipValues = (_, __, tooltipProps?: TooltipProps) => {
   if (!tooltipProps) return '?';
@@ -22,8 +25,8 @@ export const formatTooltipValues = (_, __, tooltipProps?: TooltipProps) => {
   } = payload;
 
   return dataKey === 'actualPercentage'
-    ? `${actualPercentage}% (${actualNumber})`
-    : `${referencePercentage}% (${referenceNumber})`;
+    ? `${actualPercentage}% (${formatThousands(actualNumber)})`
+    : `${referencePercentage}% (${formatThousands(referenceNumber)})`;
 };
 
 export const getLegendLabels = (

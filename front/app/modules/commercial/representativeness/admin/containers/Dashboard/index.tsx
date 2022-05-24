@@ -10,7 +10,7 @@ import ChartFilters from '../../components/ChartFilters';
 import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
 
-const SHOW_EMPTY = true;
+const SHOW_EMPTY = false;
 
 const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
