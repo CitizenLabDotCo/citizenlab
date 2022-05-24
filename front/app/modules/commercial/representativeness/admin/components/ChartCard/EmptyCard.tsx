@@ -90,7 +90,11 @@ const EmptyCard = ({ titleMultiloc, isComingSoon }: Props) => {
             )}
           </Text>
           {!isComingSoon && (
-            <Button width="164px" bgColor={colors.adminTextColor}>
+            <Button
+              width="164px"
+              bgColor={colors.adminTextColor}
+              linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
+            >
               <FormattedMessage {...messages.submitBaseDataButton} />
             </Button>
           )}
