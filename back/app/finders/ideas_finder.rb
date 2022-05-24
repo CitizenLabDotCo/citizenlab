@@ -45,13 +45,6 @@ class IdeasFinder < ApplicationFinder
   end
   alias topic_condition topics_condition
 
-  def areas_condition(areas)
-    return if areas.blank?
-
-    @records.includes(:areas)
-    scope(:with_some_areas, areas)
-  end
-
   def phase_condition(phase)
     scope(:in_phase, phase) if phase.present?
   end
