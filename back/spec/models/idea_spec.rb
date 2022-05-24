@@ -50,23 +50,23 @@ RSpec.describe Idea, type: :model do
           expect(idea.valid?(:create)).to be true
         end
 
-        it 'cannot persist an idea with a non-existing field' do
+        it 'can persist an idea with a non-existing field' do
           idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
           expect(idea.valid?(:create)).to be true
         end
 
-        it 'cannot persist an idea with an invalid field value' do
+        it 'can persist an idea with an invalid field value' do
           long_title = 'My long idea title. ' * 100
           idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
           expect(idea.valid?(:create)).to be true
         end
 
-        it 'cannot persist an idea without required field values' do
+        it 'can persist an idea without required field values' do
           idea.custom_field_values = { optional_field.key => 'option1' }
           expect(idea.valid?(:create)).to be true
         end
 
-        it 'cannot persist an idea with non-existing field options' do
+        it 'can persist an idea with non-existing field options' do
           idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
           expect(idea.valid?(:create)).to be true
         end

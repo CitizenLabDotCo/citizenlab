@@ -91,7 +91,7 @@ class Idea < ApplicationRecord
   validates :custom_field_values, json: {
     schema: -> { idea_fields_schema },
     message: ->(errors) { errors }
-  }, if: :custom_field_values_changed?
+  }, if: %i[custom_field_values_changed? persisted?]
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
