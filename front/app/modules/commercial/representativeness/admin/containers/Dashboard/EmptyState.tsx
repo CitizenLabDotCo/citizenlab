@@ -2,7 +2,7 @@ import React from 'react';
 
 // images
 import EmptyProjectsImage from 'assets/img/landingpage/no_projects_image.svg';
-import EmptyStateImage from '../../assets/EmptyStateImage.svg';
+import EmptyStateImage from '../../assets/empty_status.svg';
 
 // components
 import { Box, Image, Title, Text } from '@citizenlab/cl2-component-library';

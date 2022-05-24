@@ -14,7 +14,7 @@ import ChartCards from './ChartCards';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const SHOW_EMPTY = false;
+const SHOW_EMPTY = true;
 
 const RepresentativenessDashboard = () => {
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
