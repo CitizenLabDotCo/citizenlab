@@ -103,7 +103,10 @@ const Header = ({
         mr="12px"
       />
       <Box mr="12px">
-        <ReportExportMenu name={title} svgNode={svgNode} />
+        <ReportExportMenu
+          name={title}
+          svgNode={viewState === 'chart' ? svgNode : undefined}
+        />
       </Box>
       <StyledTabs
         items={TAB_ITEMS}
