@@ -1,6 +1,4 @@
 import React, { lazy } from 'react';
-// import Loadable from 'react-loadable';
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 // import moduleConfiguration from 'modules';
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
