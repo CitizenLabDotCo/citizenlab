@@ -91,7 +91,7 @@ resource 'Idea Custom Fields' do
 
         context 'when the field is already persisted' do
           example 'Update a built-in custom field', document: false do
-            cf = create(:custom_field, resource: custom_form, code: code)
+            cf = create(:custom_field, resource: custom_form, code: code, required: !required)
             do_request
             assert_status 200
             json_response = json_parse(response_body)
