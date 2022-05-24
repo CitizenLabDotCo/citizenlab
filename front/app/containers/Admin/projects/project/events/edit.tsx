@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
 import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
 import { isEmpty, get, isError } from 'lodash-es';
@@ -45,7 +44,6 @@ import { addEventFile, deleteEventFile } from 'services/eventFiles';
 import GetRemoteFiles, {
   GetRemoteFilesChildProps,
 } from 'resources/GetRemoteFiles';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
@@ -60,7 +58,6 @@ interface Props extends DataProps {
     id: string | null;
     projectId: string | null;
   };
-  project: GetProjectChildProps;
 }
 
 interface State {
@@ -209,8 +206,8 @@ class AdminProjectEventEdit extends PureComponent<
 
   handleOnSubmit = async (e) => {
     e.preventDefault();
-    if (!isNilOrError(this.props.project)) {
-      const projectId = this.props.project.id;
+    if (!isNilOrError(this.props.params.projectId)) {
+      const { projectId } = this.props.params;
       const { event, eventFiles, eventFilesToRemove } = this.state;
       let eventResponse = event;
       let redirect = false;
@@ -393,24 +390,10 @@ class AdminProjectEventEdit extends PureComponent<
   }
 }
 
-const Data = adopt<Props>({
-  project: ({ params, render }) => (
-    <GetProject projectId={params.projectId}>{render}</GetProject>
-  ),
-});
-
 export default withRouter((props) => (
-  <Data {...props}>
-    {(dataProps) => (
-      <GetRemoteFiles resourceId={props.params.id} resourceType="event">
-        {(remoteEventFiles) => (
-          <AdminProjectEventEdit
-            remoteEventFiles={remoteEventFiles}
-            {...props}
-            {...dataProps}
-          />
-        )}
-      </GetRemoteFiles>
+  <GetRemoteFiles resourceId={props.params.id} resourceType="event">
+    {(remoteEventFiles) => (
+      <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
     )}
-  </Data>
+  </GetRemoteFiles>
 ));
