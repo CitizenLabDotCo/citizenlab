@@ -68,8 +68,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasLabel',
     defaultMessage: 'Area filter',
   },
-  areasLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltip',
+  areasLabelTooltipHint: {
+    id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint',
     defaultMessage:
       'Projects can be filtered on the homepage using areas. Areas can be set {areasLabelTooltipLink}.',
   },

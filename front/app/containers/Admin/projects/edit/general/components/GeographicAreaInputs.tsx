@@ -34,7 +34,7 @@ export default ({
       <IconTooltip
         content={
           <FormattedMessage
-            {...messages.areasLabelTooltip}
+            {...messages.areasLabelTooltipHint}
             values={{
               areasLabelTooltipLink: (
                 <Link to="/admin/settings/areas">
