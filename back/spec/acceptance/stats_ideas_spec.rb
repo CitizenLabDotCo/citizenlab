@@ -477,7 +477,7 @@ resource 'Stats - Ideas' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:series][:ideas].size).to eq end_at.yday
-      expect(json_response[:series][:ideas].values.inject(&:+)).to eq 6
+      expect(json_response[:series][:ideas].values.sum).to eq 6
     end
 
     describe 'with time filter outside of platform lifetime' do
