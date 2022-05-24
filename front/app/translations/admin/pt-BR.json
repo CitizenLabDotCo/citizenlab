@@ -814,7 +814,6 @@
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arquivar",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Todas as áreas",
   "app.containers.AdminPage.ProjectEdit.areasLabel": "Áreas geográficas",
-  "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "Você pode selecionar as áreas geográficas para as quais este projeto é relevante. As áreas podem ser definidas como {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "Aqui",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Seleção",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Na lista",

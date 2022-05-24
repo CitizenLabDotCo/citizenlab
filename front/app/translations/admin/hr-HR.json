@@ -814,7 +814,6 @@
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Sva područja",
   "app.containers.AdminPage.ProjectEdit.areasLabel": "Geografske oblasti",
-  "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "Možete odabrati geografska područja koja ovaj projekat obuhvata. Područja se mogu podesiti {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "ovde",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Izbor",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "U listi",

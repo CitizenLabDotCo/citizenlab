@@ -805,7 +805,6 @@
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "مؤرشف",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "جميع المناطق",
   "app.containers.AdminPage.ProjectEdit.areasLabel": "المناطق الجغرافية",
-  "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "يمكنك اختيار المناطق الجغرافية ذات الصلة بهذا المشروع. لإعداد المناطق: {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "هنا",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "المجموعة المُختارة",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "في قائمة",
