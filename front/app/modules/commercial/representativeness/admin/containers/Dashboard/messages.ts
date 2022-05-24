@@ -10,6 +10,11 @@ export default defineMessages({
     defaultMessage:
       'See how representative your platform users are compared to the total population - based on data collected during user registration. Learn more about {representativenessArticleLink}.',
   },
+  pageDescriptionTemporary: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageDescriptionTemporary',
+    defaultMessage:
+      'See how representative your platform users are compared to the total population - based on data collected during user registration.',
+  },
   betaLabel: {
     id: 'app.containers.AdminPage.DashboardPage.representativeness.betaLabel',
     defaultMessage: 'BETA',

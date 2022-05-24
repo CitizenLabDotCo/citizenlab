@@ -7,7 +7,7 @@ import {
   Text,
   StatusLabel,
 } from '@citizenlab/cl2-component-library';
-import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
+// import RepresentativenessArticleLink from '../../components/RepresentativenessArticleLink';
 
 // i18n
 import messages from './messages';
@@ -35,12 +35,13 @@ const Header = () => (
     </Title>
     <Box>
       <Text color="label">
-        <FormattedMessage
+        {/* <FormattedMessage
           {...messages.pageDescription}
           values={{
             representativenessArticleLink: <RepresentativenessArticleLink />,
           }}
-        />
+        /> */}
+        <FormattedMessage {...messages.pageDescriptionTemporary} />
       </Text>
     </Box>
   </Box>
