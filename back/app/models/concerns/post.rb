@@ -49,7 +49,7 @@ module Post
     with_options unless: :draft? do |post|
       post.validates :title_multiloc, presence: true, multiloc: { presence: true }
       post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-      post.validates :author, presence: true, on: :publication
+      post.validates :author, presence: true, on: :publication # TODO: cannot be cleared either?
       post.validates :slug, uniqueness: true, presence: true
 
       post.before_validation :strip_title

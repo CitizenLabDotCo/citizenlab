@@ -89,7 +89,15 @@ class Idea < ApplicationRecord
       CustomFieldService.new.fields_to_json_schema(extra_fields)
     },
     message: ->(errors) { errors }
-  }, on: %i[create update publication], if: :needs_custom_field_validation?
+  }, on: :publication
+
+  validates :custom_field_values, json: {
+    schema: lambda {
+      extra_fields = CustomForm.where(project: project).first.custom_fields.reject(&:built_in?)
+      CustomFieldService.new.fields_to_json_schema(extra_fields)
+    },
+    message: ->(errors) { errors }
+  }, if: :custom_field_values_changed?
 
   with_options unless: :draft? do
     validates :idea_status, presence: true
