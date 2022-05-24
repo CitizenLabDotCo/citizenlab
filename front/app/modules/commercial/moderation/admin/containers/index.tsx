@@ -442,7 +442,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   if (!isNilOrError(moderations)) {
     return (
-      <Container className={className}>
+      <Container className={className} id="e2e-moderation-container">
         <PageTitleWrapper>
           <StyledPageTitle>
             <FormattedMessage {...messages.pageTitle} />
