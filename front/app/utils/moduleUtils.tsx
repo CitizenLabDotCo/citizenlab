@@ -562,8 +562,11 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     );
   };
 
+  console.log({ mergedRoutes });
   const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
   const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
+  console.log({ citizenRoutes });
+  console.log({ adminRoutes });
 
   return {
     outlets: mergedOutlets,

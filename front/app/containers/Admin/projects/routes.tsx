@@ -48,6 +48,7 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       ...moduleConfiguration.routes['admin.project_templates'],
+      ...moduleConfiguration.routes['admin.projects'],
       {
         path: 'new',
         element: (
@@ -153,8 +154,6 @@ const createAdminProjectsRoutes = () => {
               </LoadingComponent>
             ),
           },
-          // double check on this to make sure it goes in the right spot with regard to children/parent routes
-          ...moduleConfiguration.routes['admin.projects'],
           {
             path: 'description',
             element: (
