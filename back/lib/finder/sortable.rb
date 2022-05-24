@@ -28,7 +28,7 @@ module Finder
       def default_sort(scope)
         @_default_sort, @_default_sort_order = scope.first if scope.is_a? Hash
 
-        @_default_sort_order = scope.to_s.delete_prefix!('-') ? :asc : :desc
+        @_default_sort_order = scope.to_s.start_with?('-') ? :asc : :desc
         @_default_sort       = scope.to_s
       end
 

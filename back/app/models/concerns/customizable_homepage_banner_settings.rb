@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Also, see FE validations in front/app/modules/commercial/customizable_homepage_banner/
 # TODO: Move this module to some commercial engine (e.g. when we create sth like `configurability`)
 module CustomizableHomepageBannerSettings
@@ -33,7 +35,7 @@ module CustomizableHomepageBannerSettings
       errors.add("#{error_prefix}.url", I18n.t('errors.messages.blank'))
     # json-schema `pattern` is not used because it tries to validate (and finds an error)
     # even if cta type is not `customized_button`.
-    elsif !button_config['url'].match?(/^$|^((http:\/\/.+)|(https:\/\/.+))/)
+    elsif !button_config['url'].match?(%r{^$|^((http://.+)|(https://.+))})
       errors.add("#{error_prefix}.url", I18n.t('errors.messages.invalid'))
     end
   end

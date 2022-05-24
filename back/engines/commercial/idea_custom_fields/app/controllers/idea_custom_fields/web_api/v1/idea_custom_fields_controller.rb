@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaCustomFields
   class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update]

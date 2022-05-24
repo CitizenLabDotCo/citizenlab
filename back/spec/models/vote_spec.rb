@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Vote, type: :model do
   context 'associations' do
-    it { should belong_to(:user).optional }
-    it { should belong_to(:votable) }
+    it { is_expected.to belong_to(:user).optional }
+    it { is_expected.to belong_to(:votable) }
   end
 
   context 'Default factory' do
@@ -20,7 +22,7 @@ RSpec.describe Vote, type: :model do
       expect(build(:vote, mode: 'up', votable: idea, user: user)).not_to be_valid
       # Must be valid to be able to turn upvote into downvote in transaction
       expect(build(:vote, mode: 'down', votable: idea, user: user)).to be_valid
-      expect{ create(:vote, mode: 'down', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
+      expect { create(:vote, mode: 'down', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
     it 'two votes of deleted users are allowed' do

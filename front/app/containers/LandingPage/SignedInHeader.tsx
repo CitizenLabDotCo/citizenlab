@@ -233,7 +233,11 @@ const CompleteProfileIcon = styled(Icon)`
   margin-left: -3px;
 `;
 
-export const Text = styled.div``;
+export const Text = styled.div`
+  ${isRtl`
+    direction: rtl;
+  `}
+`;
 
 export const Right = styled.div`
   flex-shrink: 0;

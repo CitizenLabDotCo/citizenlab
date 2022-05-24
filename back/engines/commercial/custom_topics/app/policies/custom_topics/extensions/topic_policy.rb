@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module CustomTopics
   module Extensions
     module TopicPolicy
-
       def create?
         user&.active? && user.admin?
       end

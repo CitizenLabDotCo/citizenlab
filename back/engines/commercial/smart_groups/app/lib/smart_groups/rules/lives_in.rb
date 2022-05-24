@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class LivesIn
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    MULTIVALUE_PREDICATES = %w(is_one_of not_is_one_of)
+    PREDICATE_VALUES = %w[has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
+    MULTIVALUE_PREDICATES = %w[is_one_of not_is_one_of]
 
     attr_accessor :predicate, :value
 
@@ -17,36 +19,36 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          type: 'object',
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
+              type: 'string',
+              enum: PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
             },
             'value' => {
               'description' => 'The id of an area',
               'type' => 'string'
             }
-          },
+          }
         },
         {
-          "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          type: 'object',
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": MULTIVALUE_PREDICATES,
+              type: 'string',
+              enum: MULTIVALUE_PREDICATES
             },
             'value' => {
               'description' => 'The id of an area',
@@ -57,16 +59,16 @@ module SmartGroups::Rules
               'uniqueItems' => true,
               'minItems' => 1
             }
-          },
+          }
         },
         {
           'type' => 'object',
-          'required' => ['ruleType', 'predicate'],
+          'required' => %w[ruleType predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
               'type' => 'string',
@@ -81,16 +83,16 @@ module SmartGroups::Rules
       'lives_in'
     end
 
-    def self.from_json json
-      self.new(json['predicate'], json['value'])
+    def self.from_json(json)
+      new(json['predicate'], json['value'])
     end
 
-    def initialize predicate, value=nil
+    def initialize(predicate, value = nil)
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       case predicate
       when 'has_value'
         users_scope.where("custom_field_values->>'domicile' = ?", value)
@@ -109,7 +111,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_property locale
+    def description_property(locale)
       CustomField.with_resource_type('User').find_by(key: 'domicile').title_multiloc[locale]
     end
 
@@ -122,7 +124,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_value locale
+    def description_value(locale)
       if value.is_a? Array
         value.map do |v|
           description_single_value v, locale
@@ -132,14 +134,13 @@ module SmartGroups::Rules
       end
     end
 
-
     private
 
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
 
-    def description_single_value value, locale
+    def description_single_value(value, locale)
       case value
       when 'outside'
         I18n.with_locale(locale) do
@@ -153,13 +154,13 @@ module SmartGroups::Rules
     def validate_value_inclusion
       if needs_value?
         allowed_values = ['outside'] + Area.ids
-        is_included = if self.value.is_a? Array
-          (self.value - allowed_values).blank?
+        is_included = if value.is_a? Array
+          (value - allowed_values).blank?
         else
-          allowed_values.include? self.value
+          allowed_values.include? value
         end
-        if !is_included
-          self.errors.add(
+        unless is_included
+          errors.add(
             :value,
             :inclusion,
             message: 'All values must be existing area IDs or the value "outside"'
@@ -167,6 +168,5 @@ module SmartGroups::Rules
         end
       end
     end
-
   end
 end

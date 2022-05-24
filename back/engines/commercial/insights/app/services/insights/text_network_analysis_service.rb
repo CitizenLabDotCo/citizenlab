@@ -10,9 +10,8 @@ module Insights
   # must implement a +handle+ method which will be invoked to process the result
   # of the analysis when it is available.
   class TextNetworkAnalysisService
-
     # @param [NLP::TextNetworkAnalysisService] nlp_tna_service
-    def initialize(nlp_tna_service=nil)
+    def initialize(nlp_tna_service = nil)
       @nlp_tna_service = nlp_tna_service
     end
 

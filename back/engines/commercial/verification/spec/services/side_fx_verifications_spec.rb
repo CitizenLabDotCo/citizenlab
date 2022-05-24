@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Verification::SideFxVerificationService do
@@ -7,8 +9,8 @@ describe Verification::SideFxVerificationService do
 
   describe 'after_create' do
     it "logs a 'created' action when a verification is created" do
-      expect {service.after_create(verification, user)}.
-        to have_enqueued_job(LogActivityJob).with(verification, 'created', user, verification.created_at.to_i, payload: {method: 'cow'})
+      expect { service.after_create(verification, user) }
+        .to have_enqueued_job(LogActivityJob).with(verification, 'created', user, verification.created_at.to_i, payload: { method: 'cow' })
     end
 
     it 'toggles verified on the user' do
@@ -18,9 +20,8 @@ describe Verification::SideFxVerificationService do
     end
 
     it 'schedules an UpdateMemberCountJob' do
-      expect{service.after_create(verification, user)}
+      expect { service.after_create(verification, user) }
         .to have_enqueued_job(UpdateMemberCountJob)
     end
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe PhoneService do
@@ -19,10 +21,10 @@ describe PhoneService do
     end
 
     it 'returns nil when email nor phone number' do
-      expect(service.phone_or_email('112')).to eq nil
-      expect(service.phone_or_email('1234 text 34563')).to eq nil
-      expect(service.phone_or_email('+123v44563')).to eq nil
-      expect(service.phone_or_email('somethinghere@')).to eq nil
+      expect(service.phone_or_email('112')).to be_nil
+      expect(service.phone_or_email('1234 text 34563')).to be_nil
+      expect(service.phone_or_email('+123v44563')).to be_nil
+      expect(service.phone_or_email('somethinghere@')).to be_nil
     end
   end
 
@@ -33,4 +35,3 @@ describe PhoneService do
     end
   end
 end
-

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TenantSchema
   class ExtendedSchema < JSON::Schema::Draft4
     # Using this in your schema will force loading the schema extension.
@@ -10,6 +12,6 @@ module TenantSchema
       @names = [SCHEMA_URL]
     end
 
-    JSON::Validator.register_validator(self.new)
+    JSON::Validator.register_validator(new)
   end
 end

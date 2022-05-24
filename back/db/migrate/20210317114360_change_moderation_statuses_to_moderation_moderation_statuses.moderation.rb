@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from moderation (originally 20210316165251)
 class ChangeModerationStatusesToModerationModerationStatuses < ActiveRecord::Migration[6.0]
   def change

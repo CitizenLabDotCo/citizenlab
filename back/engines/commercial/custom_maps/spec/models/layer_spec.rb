@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe CustomMaps::Layer, type: :model do
-
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:layer)).to be_valid

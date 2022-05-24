@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   module Extensions
     module WebApi
       module V1
         module ModerationSerializer
-          def self.included base
+          def self.included(base)
             base.class_eval do
-              has_one :inappropriate_content_flag, if: Proc.new { |record| 
+              has_one :inappropriate_content_flag, if: proc { |record|
                 record.inappropriate_content_flag.present?
               }, serializer: FlagInappropriateContent::WebApi::V1::InappropriateContentFlagSerializer
             end

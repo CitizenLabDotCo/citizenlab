@@ -59,6 +59,7 @@ const mockProjectData3 = {
 
 const viewId = '1';
 
+jest.mock('utils/cl-router/Link');
 jest.mock('modules');
 
 jest.mock('modules/commercial/insights/services/insightsViews', () => ({

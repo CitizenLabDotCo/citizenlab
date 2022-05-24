@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # FranceConnect works locally with any of these identifiers
 # https://github.com/france-connect/identity-provider-example/blob/master/database.csv
 module IdFranceconnect
@@ -5,7 +7,7 @@ module IdFranceconnect
     include FranceconnectVerification
 
     def profile_to_user_attrs(auth)
-      # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
+      # TODO: Do something smart with the address auth.extra.raw_info.address.formatted
       {
         first_name: auth.info['first_name'],
         email: auth.info['email'],
@@ -60,9 +62,9 @@ module IdFranceconnect
 
     def host
       case AppConfiguration.instance.settings('franceconnect_login', 'environment')
-      when 'integration' then
+      when 'integration'
         'fcp.integ01.dev-franceconnect.fr'
-      when 'production' then
+      when 'production'
         'app.franceconnect.gouv.fr'
       end
     end
@@ -72,7 +74,7 @@ module IdFranceconnect
     end
 
     def updateable_user_attrs
-      [:first_name, :last_name, :birthyear, :remote_avatar_url]
+      %i[first_name last_name birthyear remote_avatar_url]
     end
 
     private

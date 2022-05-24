@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class RegistrationCompletedAt
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w[is_before is_exactly is_after is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
     attr_accessor :predicate, :value
 
     validates :predicate, presence: true
@@ -15,34 +17,34 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
-          'required' => ['ruleType', 'predicate', 'value'],
+          type: 'object',
+          'required' => %w[ruleType predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
               'description' => 'The date formatted as yyyy-mm-dd',
               'type' => 'string',
-              "format": 'date',
-              "pattern": '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
+              format: 'date',
+              pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
             }
-          },
+          }
         },
         {
           'type' => 'object',
-          'required' => ['ruleType', 'predicate'],
+          'required' => %w[ruleType predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'predicate' => {
               'type' => 'string',
@@ -57,16 +59,16 @@ module SmartGroups::Rules
       'registration_completed_at'
     end
 
-    def self.from_json json
-      self.new(json['predicate'], json['value'])
+    def self.from_json(json)
+      new(json['predicate'], json['value'])
     end
 
-    def initialize predicate, value=nil
+    def initialize(predicate, value = nil)
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       case predicate
       when 'is_before'
         users_scope.where('registration_completed_at::date < (?)::date', value)
@@ -77,13 +79,13 @@ module SmartGroups::Rules
       when 'is_empty'
         users_scope.where('registration_completed_at IS NULL')
       when 'not_is_empty'
-        users_scope.where('registration_completed_at IS NOT NULL')
+        users_scope.where.not(registration_completed_at: nil)
       else
         raise "Unsupported predicate #{predicate}"
       end
     end
 
-    def description_property locale
+    def description_property(locale)
       I18n.with_locale(locale) do
         I18n.t!('smart_group_rules.registration_completed_at.property')
       end
@@ -93,7 +95,7 @@ module SmartGroups::Rules
       CustomFieldDate.rule_type
     end
 
-    def description_value locale
+    def description_value(locale)
       if value.present?
         locale ||= I18n.locale
         I18n.with_locale(locale) do
@@ -102,12 +104,10 @@ module SmartGroups::Rules
       end
     end
 
-
     private
 
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
-
   end
 end

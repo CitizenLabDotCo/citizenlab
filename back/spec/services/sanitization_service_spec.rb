@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SanitizationService do
   let(:service) { SanitizationService.new }
 
   describe 'sanitize' do
-
     it 'always allows paragraphs and breaks to pass through' do
       input = <<~HTML
         <p>paragraph<br>with<br>breaks</p>
@@ -172,7 +173,7 @@ describe SanitizationService do
 
     it 'allows wistia iframe to pass through when video feature is enabled' do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//fast.wistia.net/embed/iframe/avk9twrrbn" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://support.wistia.com/medias/26sk4lmiix" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
@@ -220,7 +221,7 @@ describe SanitizationService do
         <iframe src="javascript:javascript:alert('ThisPlatformWasHacked!');"></iframe>
         </p>
       HTML
-      features = %i{title alignment list decoration link video}
+      features = %i[title alignment list decoration link video]
       expect(service.sanitize(input, features)).not_to include "<iframe src=\"javascript:javascript:alert('ThisPlatformWasHacked!');\"></iframe>"
     end
   end
@@ -381,5 +382,4 @@ describe SanitizationService do
       expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank" rel="noreferrer noopener nofollow">hello@citizenlab.co</a></p>'
     end
   end
-
 end

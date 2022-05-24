@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AvatarsService do
   let(:service) { AvatarsService.new }
 
   describe 'avatars_for_project' do
-
     it 'returns the idea authors in a project' do
       project = create(:project)
       u1, u2, u3, u4, u5 = create_list(:user, 5)
@@ -18,7 +19,7 @@ describe AvatarsService do
 
       expect(result[:total_count]).to eq 4
       expect(result[:users].size).to eq 2
-      expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2 
+      expect(([u1, u2, u3, u4] - result[:users]).size).to eq 2
     end
 
     it "doesn't return the same user twice" do
@@ -35,7 +36,6 @@ describe AvatarsService do
   end
 
   describe 'avatars_for_idea' do
-
     it 'returns the idea and comments authors' do
       idea1, idea2 = create_list(:idea, 2)
       comment1, comment2 = create_list(:comment, 2, post: idea1)
@@ -80,5 +80,4 @@ describe AvatarsService do
       expect(result[:users].map(&:id)).to match_array [u1.id]
     end
   end
-
 end

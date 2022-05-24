@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -44,7 +46,8 @@ resource 'Users' do
       before do
         @user = create(:user)
       end
-      let(:id) {@user.id}
+
+      let(:id) { @user.id }
       example 'Get a non-authenticated user does not expose the email', document: false do
         do_request
         json_response = json_parse(response_body)
@@ -62,13 +65,14 @@ resource 'Users' do
         before do
           @user = create(:user, password: 'supersecret')
         end
+
         let(:email) { @user.email }
         let(:password) { 'supersecret' }
 
         example_request 'Authenticate a registered user' do
           assert_status 201
           json_response = json_parse(response_body)
-          expect(json_response.dig(:jwt)).to be_present
+          expect(json_response[:jwt]).to be_present
         end
 
         example '[error] Authenticate an invited user' do
@@ -92,24 +96,26 @@ resource 'Users' do
         end
 
         describe do
-          let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret')}
+          let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret') }
           let(:email) { '+324 875 12 12' }
           let(:password) { 'supersecret' }
+
           example_request 'Authenticate a registered user by phone number', document: false do
             assert_status 201
             json_response = json_parse(response_body)
-            expect(json_response.dig(:jwt)).to be_present
+            expect(json_response[:jwt]).to be_present
           end
         end
 
         describe do
-          let!(:user) { create(:user, password: 'supersecret')}
+          let!(:user) { create(:user, password: 'supersecret') }
           let(:email) { user.email }
           let(:password) { 'supersecret' }
+
           example_request 'Authenticate a registered user by email', document: false do
             assert_status 201
             json_response = json_parse(response_body)
-            expect(json_response.dig(:jwt)).to be_present
+            expect(json_response[:jwt]).to be_present
           end
         end
       end
@@ -164,7 +170,7 @@ resource 'Users' do
       end
 
       describe 'Creating an admin user' do
-        let(:roles) { [{type: 'admin'}] }
+        let(:roles) { [{ type: 'admin' }] }
 
         example 'creates a user, but not an admin', document: false do
           create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
@@ -216,6 +222,7 @@ resource 'Users' do
         before do
           create(:user, email: 'JeZuS@citizenlab.co')
         end
+
         let(:email) { 'jEzUs@citizenlab.co' }
 
         example_request '[error] Registering a user with case insensitive email duplicate', document: false do
@@ -238,6 +245,7 @@ resource 'Users' do
 
         describe do
           let(:email) { 'someone@citizenlab.co' }
+
           example_request 'Register with email when an email is passed', document: false do
             assert_status 201
             json_response = json_parse(response_body)
@@ -247,6 +255,7 @@ resource 'Users' do
 
         describe do
           let(:email) { '+32 487 36 58 98' }
+
           example_request 'Registers a user with a phone number in the email when a phone number is passed', document: false do
             assert_status 201
             json_response = json_parse(response_body)
@@ -288,7 +297,7 @@ resource 'Users' do
         end
 
         example 'Get all users on the second page with fixed page size' do
-          do_request({'page[number]' => 2, 'page[size]' => 2})
+          do_request({ 'page[number]' => 2, 'page[size]' => 2 })
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
@@ -332,7 +341,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].map{|u| u[:id]}).to match_array group_users.map(&:id)
+          expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
         end
 
         example 'List all users in group, ordered by role', skip: !CitizenLab.ee? do
@@ -343,15 +352,15 @@ resource 'Users' do
           both = create(:project_moderator, manual_groups: [group])
           both.add_role('admin').save!
 
-          group_users = [admin,both,moderator] + create_list(:user, 3, manual_groups: [group])
+          group_users = [admin, both, moderator] + create_list(:user, 3, manual_groups: [group])
 
           do_request(group: group.id, sort: '-role')
           json_response = json_parse(response_body)
 
           aggregate_failures 'testing json response' do
             expect(json_response[:data].size).to eq 6
-            expect(json_response[:data].map { |u| u[:id] }).to match_array group_users.map(&:id)
-            expect(json_response[:data].map { |u| u[:id] }.reverse.take(2)).to match_array [admin.id, both.id]
+            expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
+            expect(json_response[:data].pluck(:id).reverse.take(2)).to match_array [admin.id, both.id]
           end
         end
 
@@ -360,13 +369,13 @@ resource 'Users' do
             page_size = 5
             project = create(:project)
             group = create(:smart_group, rules: [
-              {ruleType: 'participated_in_project', predicate: 'in', value: [project.id]}
+              { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
             ])
-            (page_size + 1).times.map do |i|
+            Array.new(page_size + 1) do |_i|
               create(:idea, project: project, author: create(:user))
             end
 
-            do_request(group: group.id, page: {number: 1, size: page_size})
+            do_request(group: group.id, page: { number: 1, size: page_size })
             json_response = json_parse(response_body)
 
             expect(json_response[:links][:next]).to be_present
@@ -384,7 +393,7 @@ resource 'Users' do
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map { |u| u[:id] }).to match_array [a.id, m1.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, @user.id]
         end
 
         example 'List all users who can moderate', skip: !CitizenLab.ee? do
@@ -396,7 +405,7 @@ resource 'Users' do
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,m2.id,@user.id]
+          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
         end
 
         example 'List all admins' do
@@ -411,7 +420,7 @@ resource 'Users' do
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
         end
       end
 
@@ -432,12 +441,13 @@ resource 'Users' do
               create(:membership, user: usr, group: @group)
             end
           end
+
           let(:group) { @group.id }
 
           example_request 'XLSX export all users from a group' do
             expect(status).to eq 200
-            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map{|r| r['id']}).to match_array @members.map(&:id)
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map { |r| r['id'] }).to match_array @members.map(&:id)
           end
         end
 
@@ -447,12 +457,13 @@ resource 'Users' do
             @group = create(:group)
             @selected = @users.shuffle.take(4)
           end
+
           let(:users) { @selected.map(&:id) }
 
           example_request 'XLSX export all users given a list of user ids' do
             expect(status).to eq 200
-            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map{|r| r['id']}).to match_array @selected.map(&:id)
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map { |r| r['id'] }).to match_array @selected.map(&:id)
           end
         end
 
@@ -466,13 +477,14 @@ resource 'Users' do
               create(:membership, user: usr, group: @group)
             end
           end
+
           let(:group) { @group.id }
           let(:users) { @selected.map(&:id) }
 
           example_request 'XLSX export all users by filtering on both group and user ids', document: false do
             expect(status).to eq 200
-            xlsx_hash = XlsxService.new.xlsx_to_hash_array  RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.map{|r| r['id']}).to match_array (@members.map(&:id) & @selected.map(&:id))
+            xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
+            expect(xlsx_hash.map { |r| r['id'] }).to match_array(@members.map(&:id) & @selected.map(&:id))
           end
         end
       end
@@ -551,7 +563,7 @@ resource 'Users' do
       example_request 'Get the authenticated user' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq(@user.id)
-        expect(json_response.dig(:data, :attributes, :verified)).to eq false if CitizenLab.ee?
+        expect(json_response.dig(:data, :attributes, :verified)).to be false if CitizenLab.ee?
       end
     end
 
@@ -597,8 +609,8 @@ resource 'Users' do
           expect(response_data.dig(:attributes, :first_name)).to eq(first_name)
 
           if CitizenLab.ee?
-            expect(json_response_body[:included].select { |i| i[:type] == 'project' }.first&.dig(:attributes, :slug)).to eq project.slug
-            expect(json_response_body[:included].select { |i| i[:type] == 'permission' }.first&.dig(:attributes, :permitted_by)).to eq 'groups'
+            expect(json_response_body[:included].find { |i| i[:type] == 'project' }&.dig(:attributes, :slug)).to eq project.slug
+            expect(json_response_body[:included].find { |i| i[:type] == 'permission' }&.dig(:attributes, :permitted_by)).to eq 'groups'
             expect(response_data.dig(:relationships, :granted_permissions, :data).size).to eq(1)
           end
         end
@@ -632,6 +644,7 @@ resource 'Users' do
           token = Knock::AuthToken.new(payload: @user.to_token_payload).token
           header 'Authorization', "Bearer #{token}"
         end
+
         let(:mortal_user) { create(:user) }
         let(:id) { mortal_user.id }
         let(:roles) { [type: 'admin'] }
@@ -640,25 +653,25 @@ resource 'Users' do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :id)).to eq id
-          expect(json_response.dig(:data, :attributes, :roles)).to eq [{type: 'admin'}]
+          expect(json_response.dig(:data, :attributes, :roles)).to eq [{ type: 'admin' }]
         end
       end
 
       describe do
         example "Update a user's custom field values" do
           cf = create(:custom_field)
-          do_request(user: {custom_field_values: {cf.key => 'somevalue'}})
+          do_request(user: { custom_field_values: { cf.key => 'somevalue' } })
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'somevalue'
         end
 
         example "Clear out a user's custom field value" do
           cf = create(:custom_field)
-          @user.update!(custom_field_values: {cf.key => 'somevalue'})
+          @user.update!(custom_field_values: { cf.key => 'somevalue' })
 
-          do_request(user: {custom_field_values: {}})
+          do_request(user: { custom_field_values: {} })
           expect(response_status).to eq 200
-          expect(@user.reload.custom_field_values).to eq ({})
+          expect(@user.reload.custom_field_values).to eq({})
         end
 
         example 'Cannot modify values of hidden custom fields' do
@@ -666,7 +679,7 @@ resource 'Users' do
           some_value = 'some_value'
           @user.update!(custom_field_values: { cf.key => some_value })
 
-          do_request(user: {custom_field_values: {cf.key => 'another_value'}})
+          do_request(user: { custom_field_values: { cf.key => 'another_value' } })
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
@@ -676,9 +689,9 @@ resource 'Users' do
         example 'Cannot modify values of disabled custom fields' do
           cf = create(:custom_field, hidden: false, enabled: false)
           some_value = 'some_value'
-          @user.update!(custom_field_values: {cf.key => some_value})
+          @user.update!(custom_field_values: { cf.key => some_value })
 
-          do_request(user: {custom_field_values: {cf.key => 'another_value'}})
+          do_request(user: { custom_field_values: { cf.key => 'another_value' } })
           json_response = json_parse(response_body)
 
           expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
@@ -690,24 +703,24 @@ resource 'Users' do
         example 'The user avatar can be removed' do
           @user.update!(avatar: Rails.root.join('spec/fixtures/male_avatar_1.jpg').open)
           expect(@user.reload.avatar_url).to be_present
-          do_request user: {avatar: nil}
-          expect(@user.reload.avatar_url).to be nil
+          do_request user: { avatar: nil }
+          expect(@user.reload.avatar_url).to be_nil
         end
       end
 
       describe do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:custom_field_birthyear) }
-        let(:custom_field_values) {{
+        let(:custom_field_values) do
+          {
           cf.key => 'new value',
           birthyear_cf.key => birthyear
-        }}
+        } end
         let(:first_name) { 'Raymond' }
         let(:last_name) { 'Betancourt' }
         let(:email) { 'ray.mond@rocks.com' }
         let(:locale) { 'fr-FR' }
         let(:birthyear) { 1969 }
-
 
         example 'Can change many attributes of a user verified with FranceConnect', document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'franceconnect', user: @user)
@@ -725,14 +738,15 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) {{
+        let(:custom_field_values) do
+          {
           cf.key => 'new value',
           gender_cf.key => 'female'
-        }}
+        } end
 
         example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'bogus', user: @user)
-          @user.update!(custom_field_values: {cf.key => 'original value', gender_cf.key => 'male'})
+          @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
           do_request
           expect(response_status).to eq 200
           @user.reload
@@ -747,10 +761,10 @@ resource 'Users' do
         parameter :custom_field_values, 'An object that can only contain keys for custom fields for users', required: true
       end
 
-      let(:cf1) { create(:custom_field ) }
-      let(:cf2) { create(:custom_field_multiselect, required: true ) }
+      let(:cf1) { create(:custom_field) }
+      let(:cf2) { create(:custom_field_multiselect, required: true) }
       let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
-      let(:custom_field_values) {{ cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] }}
+      let(:custom_field_values) { { cf1.key => 'somevalue', cf2.key => [cf2_options.first.key] } }
 
       example 'Complete the registration of a user' do
         @user.update! registration_completed_at: nil
@@ -764,7 +778,7 @@ resource 'Users' do
 
       example '[error] Complete the registration of a user fails if not all required fields are provided' do
         @user.update! registration_completed_at: nil
-        do_request(user: {custom_field_values: {cf2.key => nil}})
+        do_request(user: { custom_field_values: { cf2.key => nil } })
         assert_status 422
       end
 
@@ -776,15 +790,16 @@ resource 'Users' do
       describe do
         let(:cf) { create(:custom_field) }
         let(:gender_cf) { create(:custom_field_gender) }
-        let(:custom_field_values) {{
+        let(:custom_field_values) do
+          {
           cf.key => 'new value',
-          gender_cf.key => 'female',
-        }}
+          gender_cf.key => 'female'
+        } end
 
         example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           @user.update!(
             registration_completed_at: nil,
-            custom_field_values: {cf.key => 'original value', gender_cf.key => 'male'}
+            custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' }
           )
           create(:verification, method_name: 'bogus', user: @user)
           do_request
@@ -820,7 +835,7 @@ resource 'Users' do
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 1
+        expect(json_response[:count]).to eq 1
       end
     end
 
@@ -834,7 +849,7 @@ resource 'Users' do
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 1
+        expect(json_response[:count]).to eq 1
       end
     end
 
@@ -851,7 +866,7 @@ resource 'Users' do
         do_request
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 2
+        expect(json_response[:count]).to eq 2
       end
 
       example 'Get the number of comments on ideas posted by one user' do
@@ -863,7 +878,7 @@ resource 'Users' do
         do_request post_type: 'Idea'
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 2
+        expect(json_response[:count]).to eq 2
       end
 
       example 'Get the number of comments on initiatives posted by one user' do
@@ -875,7 +890,7 @@ resource 'Users' do
         do_request post_type: 'Initiative'
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:count)).to eq 2
+        expect(json_response[:count]).to eq 2
       end
     end
   end

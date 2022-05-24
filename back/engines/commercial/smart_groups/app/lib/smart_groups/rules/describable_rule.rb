@@ -1,5 +1,6 @@
-module SmartGroups::Rules
+# frozen_string_literal: true
 
+module SmartGroups::Rules
   module DescribableRule
     extend ActiveSupport::Concern
 
@@ -15,14 +16,14 @@ module SmartGroups::Rules
             I18n.t!(
               "smart_group_rules.#{description_rule_type}.#{predicate}_#{value}",
               property: description_property(locale)
-              )
+            )
           rescue I18n::MissingTranslationData
             begin
               I18n.t!(
                 "smart_group_rules.#{description_rule_type}.#{predicate}",
                 property: description_property(locale),
                 value: description_value(locale)
-                )
+              )
             rescue I18n::MissingTranslationData
               raise "Unsupported rule description: smart_group_rules.#{description_rule_type}.#{predicate}{_#{value}}"
             end
@@ -31,7 +32,7 @@ module SmartGroups::Rules
       end
     end
 
-    def description_value locale
+    def description_value(_locale)
       value
     end
 
@@ -39,14 +40,12 @@ module SmartGroups::Rules
       self.class.rule_type
     end
 
-    def description_property locale
+    def description_property(_locale)
       nil
     end
 
     def value
       nil
     end
-
   end
-
 end

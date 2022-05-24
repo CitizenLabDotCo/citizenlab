@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Invite, type: :model do
@@ -8,7 +10,6 @@ RSpec.describe Invite, type: :model do
   end
 
   describe 'Deleting an invite' do
-
     it 'deletes the invitee when the invite is pending' do
       invite = create(:invite)
       invitee = invite.invitee

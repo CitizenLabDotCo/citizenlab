@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSpamReports < ActiveRecord::Migration[5.1]
   def change
     create_table :spam_reports, id: :uuid do |t|
@@ -11,6 +13,6 @@ class CreateSpamReports < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    add_index :spam_reports, [:spam_reportable_type, :spam_reportable_id], name: 'spam_reportable_index'
+    add_index :spam_reports, %i[spam_reportable_type spam_reportable_id], name: 'spam_reportable_index'
   end
 end

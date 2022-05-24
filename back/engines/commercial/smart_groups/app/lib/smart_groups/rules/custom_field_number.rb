@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class CustomFieldNumber
-
-    PREDICATE_VALUES = %w(is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w[is_empty not_is_empty is_equal not_is_equal is_larger_than is_larger_than_or_equal is_smaller_than is_smaller_than_or_equal]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
 
     include CustomFieldRule
 
@@ -13,37 +14,37 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate', 'value'],
+          type: 'object',
+          'required' => %w[ruleType customFieldId predicate value],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
-              "type": 'string',
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
             'value' => {
-              "type": 'number'
+              type: 'number'
             }
-          },
+          }
         },
         {
           'type' => 'object',
-          'required' => ['ruleType', 'customFieldId', 'predicate'],
+          'required' => %w[ruleType customFieldId predicate],
           'additionalProperties' => false,
           'properties' => {
             'ruleType' => {
               'type' => 'string',
-              'enum' => [rule_type],
+              'enum' => [rule_type]
             },
             'customFieldId' => {
-              "$ref": '#/definitions/customFieldId'
+              '$ref': '#/definitions/customFieldId'
             },
             'predicate' => {
               'type' => 'string',
@@ -58,13 +59,13 @@ module SmartGroups::Rules
       'custom_field_number'
     end
 
-    def initialize custom_field_id, predicate, value=nil
+    def initialize(custom_field_id, predicate, value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       if custom_field.input_type == 'number'
@@ -96,6 +97,5 @@ module SmartGroups::Rules
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
-
   end
 end

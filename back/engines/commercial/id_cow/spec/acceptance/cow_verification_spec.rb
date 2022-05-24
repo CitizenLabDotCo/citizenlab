@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 require 'savon/mock/spec_helper'
 
 resource 'Verifications' do
-
   explanation 'A Verifications is an attempt from a user to get verified'
   include Savon::SpecHelper
 
@@ -17,7 +18,7 @@ resource 'Verifications' do
     settings['verification'] = {
       allowed: true,
       enabled: true,
-      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }],
+      verification_methods: [{ name: 'cow', api_username: 'fake_username', api_password: 'fake_password', rut_empresa: 'fake_rut_empresa' }]
     }
     configuration.save!
   end
@@ -33,6 +34,7 @@ resource 'Verifications' do
         .to_return(status: 200, body: File.read('engines/commercial/id_cow/spec/fixtures/cow_wsdl.xml'), headers: {})
       savon.mock!
     end
+
     after do
       savon.unmock!
     end
@@ -73,6 +75,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '12.025.365-6' }
       let(:id_serial) { 'A001529382' }
+
       example 'Verify with cow' do
         savon.expects(:get_data_document)
              .with(message: {
@@ -80,7 +83,7 @@ resource 'Verifications' do
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '12025365',
-               'typens:NumSerie' => 'A001529382',
+               'typens:NumSerie' => 'A001529382'
              })
              .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
@@ -98,6 +101,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '11.111.111-1' }
       let(:id_serial) { 'A001529382' }
+
       example '[error] Verify with cow without a match' do
         savon.expects(:get_data_document)
              .with(message: {
@@ -105,7 +109,7 @@ resource 'Verifications' do
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '11111111',
-               'typens:NumSerie' => 'A001529382',
+               'typens:NumSerie' => 'A001529382'
              })
              .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
         do_request
@@ -118,6 +122,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '11.111.111-1' }
       let(:id_serial) { 'A.001.529.382' }
+
       example "[error] Verify with cow with a match that's not entitled to verification" do
         savon.expects(:get_data_document)
              .with(message: {
@@ -125,7 +130,7 @@ resource 'Verifications' do
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '11111111',
-               'typens:NumSerie' => 'A001529382',
+               'typens:NumSerie' => 'A001529382'
              })
              .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
         do_request
@@ -138,6 +143,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '125.326.452-1' }
       let(:id_serial) { 'A001529382' }
+
       example_request '[error] Verify with cow using invalid run' do
         assert_status 422
         json_response = json_parse response_body
@@ -148,6 +154,7 @@ resource 'Verifications' do
     describe do
       let(:run) { '12.025.365-6' }
       let(:id_serial) { '' }
+
       example_request '[error] Verify with cow using invalid id_serial' do
         assert_status 422
         json_response = json_parse response_body
@@ -170,8 +177,10 @@ resource 'Verifications' do
           verification_parameters: { run: @run, id_serial: @id_serial }
         )
       end
+
       let(:run) { @run }
       let(:id_serial) { @id_serial }
+
       example '[error] Verify with cow using credentials that are already taken' do
         savon.expects(:get_data_document)
              .with(message: :any)

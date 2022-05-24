@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from insights (originally 20210727120002)
 
 class CreateTextNetworks < ActiveRecord::Migration[6.0]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys::SurveyParticipationContext
   extend ActiveSupport::Concern
 
@@ -13,7 +15,7 @@ module Surveys::SurveyParticipationContext
       validates :survey_embed_url, presence: true
       validates :survey_service, presence: true, inclusion: { in: SURVEY_SERVICES }
       validates :survey_embed_url, if: %i[survey? typeform?], format: {
-        with: /\Ahttps:\/\/.*\.typeform\.com\/to\/.*\z/,
+        with: %r{\Ahttps://.*\.typeform\.com/to/.*\z},
         message: 'Not a valid Typeform embed URL'
       }
       validates :survey_embed_url, if: %i[survey? typeform?], format: {
@@ -21,31 +23,31 @@ module Surveys::SurveyParticipationContext
         message: 'Not a valid Typeform embed URL'
       }
       validates :survey_embed_url, if: %i[survey? survey_monkey?], format: {
-        with: /\Ahttps:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js\z/,
+        with: %r{\Ahttps://widget\.surveymonkey\.com/collect/website/js/.*\.js\z},
         message: 'Not a valid SurveyMonkey embed URL'
       }
       validates :survey_embed_url, if: %i[survey? google_forms?], format: {
-        with: /\Ahttps:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true\z/,
+        with: %r{\Ahttps://docs.google.com/forms/d/e/.*/viewform\?embedded=true\z},
         message: 'Not a valid Google Forms embed URL'
       }
       validates :survey_embed_url, if: %i[survey? enalyzer?], format: {
-        with: /\Ahttps:\/\/surveys.enalyzer.com\/?\?pid=.*\z/,
+        with: %r{\Ahttps://surveys.enalyzer.com/?\?pid=.*\z},
         message: 'Not a valid Enalyzer embed'
       }
       validates :survey_embed_url, if: %i[survey? survey_xact?], format: {
-        with: /\Ahttps:\/\/www\.survey-xact\.dk\/LinkCollector\?key=.*\z/,
+        with: %r{\Ahttps://www\.survey-xact\.dk/LinkCollector\?key=.*\z},
         message: 'Not a valid Survey Xact embed'
       }
       validates :survey_embed_url, if: %i[survey? qualtrics?], format: {
-        with: /\Ahttps:\/\/.*\.qualtrics\.com\/jfe\/form\/.*\z/,
+        with: %r{\Ahttps://.*\.qualtrics\.com/jfe/form/.*\z},
         message: 'Not a valid Qualtrics survey embed'
       }
       validates :survey_embed_url, if: %i[survey? smart_survey?], format: {
-        with: /\Ahttps:\/\/www\.smartsurvey\.co\.uk\/.*\z/,
+        with: %r{\Ahttps://www\.smartsurvey\.co\.uk/.*\z},
         message: 'Not a valid SmartSurvey survey embed'
       }
       validates :survey_embed_url, if: %i[survey? microsoft_forms?], format: {
-        with: /\Ahttps:\/\/.*\.(microsoft|office)\.com\//,
+        with: %r{\Ahttps://.*\.(microsoft|office)\.com/},
         message: 'Not a valid Microsoft Forms survey embed'
       }
       before_validation :strip_survey_embed_url
@@ -59,8 +61,6 @@ module Surveys::SurveyParticipationContext
   def typeform_form_id
     if survey? && typeform?
       URI(survey_embed_url).path.split('/').last
-    else
-      nil
     end
   end
 

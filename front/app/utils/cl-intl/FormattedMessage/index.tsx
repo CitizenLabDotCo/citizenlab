@@ -6,6 +6,8 @@ import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import { isRtl } from 'utils/styleUtils';
 
 type State = {
   tenantName: string | null;
@@ -75,7 +77,17 @@ export default class FormattedMessage extends React.PureComponent<
         values.orgName = orgName;
       }
 
-      return <OriginalFormattedMessage {...this.props} values={values} />;
+      const RtlBox = styled.span`
+        ${isRtl`
+	    direction: rtl;
+	`}
+      `;
+
+      return (
+        <RtlBox>
+          <OriginalFormattedMessage {...this.props} values={values} />
+        </RtlBox>
+      );
     }
 
     return null;

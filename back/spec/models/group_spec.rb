@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
@@ -64,7 +66,7 @@ RSpec.describe Group, type: :model do
     it 'does nothing for a manual group' do
       group = build(:group)
       create_list(:membership, 2, group: group)
-      expect(group).not_to receive(:update).with({memberships_count: 2})
+      expect(group).not_to receive(:update).with({ memberships_count: 2 })
       group.update_memberships_count!
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::UserType < GraphQL::Schema::Object
     description 'A registered or invited person on the platform'
@@ -26,7 +28,6 @@ module AdminApi
     field :slug, String, null: true
     field :locale, String, null: true
     field :avatar, UserAvatar, null: true
-
 
     field :unsubscription_token, String, null: true
 

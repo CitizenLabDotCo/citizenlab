@@ -63,7 +63,7 @@ const EmptyMessageMainLine = styled.div`
 
 const EmptyIdeas = () => {
   return (
-    <EmptyContainer>
+    <EmptyContainer aria-live="polite">
       <EmptyContainerInner>
         <IdeaIcon name="idea" />
         <EmptyMessage>
