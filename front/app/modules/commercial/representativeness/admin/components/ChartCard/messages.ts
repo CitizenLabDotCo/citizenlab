@@ -39,9 +39,9 @@ export default defineMessages({
     defaultMessage: 'Representativeness score:',
   },
   representativenessScoreTooltipText: {
-    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText2',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3',
     defaultMessage:
-      'The score shows how similar the distributions of platform users and total population. Learn more about {representativenessArticleLink}.',
+      'This score reflects how accurately platform user data reflects the total population. Learn more about {representativenessArticleLink}.',
   },
   openTableModalButtonText: {
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText',
