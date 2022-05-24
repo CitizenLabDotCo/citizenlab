@@ -11,6 +11,9 @@ import FieldInfo, { Props as FieldInfoProps } from './FieldInfo';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // typings
 import { ViewState } from '.';
 
@@ -42,7 +45,7 @@ const Footer = ({
   legendLabels,
   onClickSwitchToTableView,
 }: Props) => {
-  const { newBarFill, secondaryNewBarFill }: any = useTheme();
+  const { newBarFill }: any = useTheme();
 
   return (
     <>
@@ -62,10 +65,7 @@ const Footer = ({
         )}
 
         {!hideLegend && (
-          <Legend
-            labels={legendLabels}
-            colors={[newBarFill, secondaryNewBarFill]}
-          />
+          <Legend labels={legendLabels} colors={[newBarFill, colors.clBlue]} />
         )}
       </Box>
 

@@ -8,6 +8,9 @@ import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { LabelList, Tooltip } from 'recharts';
 
+// styling
+import { colors } from 'utils/styleUtils';
+
 // utils
 import { formatPercentage, formatTooltipValues, emptyString } from './utils';
 
@@ -22,7 +25,7 @@ interface Props {
 }
 
 const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
-  const { newBarFill, secondaryNewBarFill }: any = useTheme();
+  const { newBarFill }: any = useTheme();
 
   const hideLabels = data.length > 10;
   const slicedData = data.slice(0, 24);
@@ -35,7 +38,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
       bars={{
         name: barNames,
-        fill: [newBarFill, secondaryNewBarFill],
+        fill: [newBarFill, colors.clBlue],
         categoryGap: '20%',
       }}
       margin={DEFAULT_BAR_CHART_MARGIN}
