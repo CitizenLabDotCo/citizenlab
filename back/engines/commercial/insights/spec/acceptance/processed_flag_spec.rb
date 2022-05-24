@@ -31,12 +31,12 @@ resource 'Processed flag for view inputs' do
 
   shared_examples 'not-found requests' do
     example "returns 404 if a view doesn't exist", document: false do
-      do_request(view_id: "bad_uuid")
+      do_request(view_id: 'bad_uuid')
       assert_status 404
     end
 
     example "returns 404 if an input doesn't exist", document: false do
-      do_request(input_id: "bad_uuid")
+      do_request(input_id: 'bad_uuid')
       assert_status 404
     end
   end
@@ -50,7 +50,7 @@ resource 'Processed flag for view inputs' do
       example_request 'flags the input as processed' do
         assert_status 201
 
-        expect(input.processed(view)).to eq(true)
+        expect(input.processed(view)).to be(true)
       end
 
       example 'errors if the input was already processed' do

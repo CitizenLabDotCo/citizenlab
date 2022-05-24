@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 module OmniauthMethods
   class AzureActiveDirectory
-
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
       if configuration.feature_activated?('azure_ad_login')
-        env['omniauth.strategy'].options[:client_id] = configuration.settings("azure_ad_login", "client_id")
-        env['omniauth.strategy'].options[:tenant] = configuration.settings("azure_ad_login", "tenant")
+        env['omniauth.strategy'].options[:client_id] = configuration.settings('azure_ad_login', 'client_id')
+        env['omniauth.strategy'].options[:tenant] = configuration.settings('azure_ad_login', 'tenant')
       end
     end
 

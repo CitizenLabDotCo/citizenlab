@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering::VolunteeringParticipationContext
   extend ActiveSupport::Concern
 
@@ -11,7 +13,7 @@ module Volunteering::VolunteeringParticipationContext
   end
 
   def volunteering?
-    self.participation_method == 'volunteering'
+    participation_method == 'volunteering'
   end
 
   private

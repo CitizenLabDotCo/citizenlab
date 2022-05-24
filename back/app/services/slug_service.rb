@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class SlugService
   def generate_slug(record, string)
-    return nil if !string
+    return nil unless string
 
     slug = slugify(string)
     indexed_slug = nil
@@ -18,12 +20,12 @@ class SlugService
   # This is useful to persist theses records all at once, e.g. in a
   # transaction, where the normal one by one slug generation would fail.
   # The given block must extract the string to base the slug on from one record
-  def generate_slugs(unpersisted_records, &block)
+  def generate_slugs(unpersisted_records)
     return [] if unpersisted_records.blank?
 
     # Calculate slugs for every record individually
     slugs = unpersisted_records.map do |record|
-      slugify(block.call(record))
+      slugify(yield(record))
     end
 
     # Find the all the persisted duplicates
@@ -40,8 +42,7 @@ class SlugService
       # Fill in max_i for this slug
       unless max_i.key? slug
         max_i[slug] = db_occurences
-                      .map { |dbo| dbo.match(/^#{slug}\-(\d+)$/)&.yield_self { |matches| matches[1] } }
-                      .compact
+                      .filter_map { |dbo| dbo.match(/^#{slug}-(\d+)$/)&.then { |matches| matches[1] } }
                       .map(&:to_i)
                       .max || (db_occurences.include?(slug) ? 0 : nil)
       end

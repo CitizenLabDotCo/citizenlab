@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe InitiativeFile, type: :model do
-
-  context "file upload" do
-    it "should accept valid files" do
+  context 'file upload' do
+    it 'should accept valid files' do
       initiative = create(:initiative)
       [
-        ['minimal_mp3.mp3',   'audio/mpeg'], 
-        ['minimal_mpeg4.mp4', 'application/mp4'], 
-        ['audio_mp4.mp4',     'audio/mp4'], 
+        ['minimal_mp3.mp3',   'audio/mpeg'],
+        ['minimal_mpeg4.mp4', 'application/mp4'],
+        ['audio_mp4.mp4',     'audio/mp4'],
         ['minimal_pdf.pdf',   'application/pdf'],
         ['david.mp4',         'video/mp4'],
         ['david.mp3',         'audio/mpeg'],
@@ -20,10 +21,9 @@ RSpec.describe InitiativeFile, type: :model do
         ['david.xls',         'application/vnd.ms-excel']
       ].each do |filename, mime_type|
         base64 = "data:#{mime_type};base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
-        file = initiative.initiative_files.new(file_by_content: {name: filename, content: base64})
-        expect(file.save).to eq true
+        file = initiative.initiative_files.new(file_by_content: { name: filename, content: base64 })
+        expect(file.save).to be true
       end
     end
   end
-  
 end

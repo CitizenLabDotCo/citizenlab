@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::FolderSerializer < ::WebApi::V1::BaseSerializer
-
     attributes :title_multiloc, :description_preview_multiloc, :slug, :created_at, :updated_at
 
     attribute :description_multiloc do |object|
@@ -22,6 +23,5 @@ module ProjectFolders
     has_one :admin_publication, serializer: ::WebApi::V1::AdminPublicationSerializer
 
     has_many :images, serializer: ::WebApi::V1::ImageSerializer
-
   end
 end

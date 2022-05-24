@@ -1,17 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Graphql project" do
+RSpec.describe 'Graphql project' do
   let(:context) { {} }
-  let(:result) {
+  let(:result) do
     AdminApi::Schema.execute(
       query_string,
       context: context,
       variables: variables
     )
-  }
+  end
 
-  describe "project" do
-    let(:query_string) { %|
+  describe 'project' do
+    let(:query_string) do
+      %|
       query projectQuery($id: ID!) {
         project(id: $id) {
           id
@@ -21,22 +24,20 @@ RSpec.describe "Graphql project" do
           processType
         }
       }
-    |}
-
+    | end
 
     let(:project) { create(:project) }
-    let(:variables) { {id: project.id }}
+    let(:variables) { { id: project.id } }
 
-    it "returns all projects" do
+    it 'returns all projects' do
       response = result
-      expect(response.dig("data", "project")).to match ({
-        "id" => project.id,
-        "slug" => project.slug,
-        "publicationStatus" => project.admin_publication.publication_status,
-        "visibleTo" => project.visible_to,
-        "processType" => project.process_type
+      expect(response.dig('data', 'project')).to match({
+        'id' => project.id,
+        'slug' => project.slug,
+        'publicationStatus' => project.admin_publication.publication_status,
+        'visibleTo' => project.visible_to,
+        'processType' => project.process_type
       })
     end
-
   end
 end

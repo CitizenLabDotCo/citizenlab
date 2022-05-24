@@ -17,7 +17,7 @@ RSpec.describe Matomo::Client do
       it 'raises an error if MATOMO_HOST is missing' do
         stubbed_env = ENV.to_h
                          .except('MATOMO_HOST')
-                         .merge("MATOMO_AUTHORIZATION_TOKEN" => auth_token)
+                         .merge('MATOMO_AUTHORIZATION_TOKEN' => auth_token)
         stub_const('ENV', stubbed_env)
 
         expect { described_class.new }
@@ -27,7 +27,7 @@ RSpec.describe Matomo::Client do
       it 'raises an error if MATOMO_AUTHORIZATION_TOKEN is missing' do
         stubbed_env = ENV.to_h
                          .except('MATOMO_AUTHORIZATION_TOKEN')
-                         .merge("MATOMO_HOST" => base_uri)
+                         .merge('MATOMO_HOST' => base_uri)
         stub_const('ENV', stubbed_env)
 
         expect { described_class.new }
@@ -41,7 +41,6 @@ RSpec.describe Matomo::Client do
       [{ 'idSite' => 1, 'idVisit' => 2 }, { 'idSite' => 3, 'idVisit' => 4 }]
     end
 
-    # rubocop:disable RSpec/MultipleExpectations, RSpec/ExampleLength
     it 'sends a properly formatted request to matomo API' do
       allow(HTTParty).to receive(:post)
 
@@ -66,13 +65,11 @@ RSpec.describe Matomo::Client do
         })
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations, RSpec/ExampleLength
   end
 
   describe '#find_data_subjects' do
     let(:user_id) { 'user-id' }
 
-    # rubocop:disable RSpec/MultipleExpectations, RSpec/ExampleLength
     it 'sends a properly formatted request to matomo API' do
       allow(HTTParty).to receive(:post)
 
@@ -91,7 +88,6 @@ RSpec.describe Matomo::Client do
         })
       end
     end
-    # rubocop:enable RSpec/MultipleExpectations, RSpec/ExampleLength
   end
 
   describe '#error?' do

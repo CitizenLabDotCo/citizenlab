@@ -1,6 +1,7 @@
-class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
+# frozen_string_literal: true
 
-  class AdminPublication < ActiveRecord::Base
+class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
+  class AdminPublication < ApplicationRecord
     self.table_name = 'admin_publications'
   end
 

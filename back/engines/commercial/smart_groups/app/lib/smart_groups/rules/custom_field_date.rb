@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class CustomFieldDate
-
-    PREDICATE_VALUES = %w(is_before is_exactly is_after is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w[is_before is_exactly is_after is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
 
     include CustomFieldRule
 
@@ -10,48 +11,47 @@ module SmartGroups::Rules
     validates :value, absence: true, unless: :needs_value?
     validates :value, presence: true, if: :needs_value?
 
-
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          type: 'object',
+          'required' => %w[ruleType customFieldId predicate value],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+            'predicate' => {
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
-            "value" => {
-              "description" => "The date formatted as yyyy-mm-dd",
-              "type": "string",
-              "format": "date",
-              "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            'value' => {
+              'description' => 'The date formatted as yyyy-mm-dd',
+              type: 'string',
+              format: 'date',
+              pattern: '[0-9]{4}-[0-9]{2}-[0-9]{2}$'
             }
-          },
+          }
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => %w[ruleType customFieldId predicate],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }
@@ -62,17 +62,17 @@ module SmartGroups::Rules
       'custom_field_date'
     end
 
-    def initialize custom_field_id, predicate, value=nil
+    def initialize(custom_field_id, predicate, value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
-      if value.class == Time
-        self.value = value.to_date.to_s
+      self.value = if value.instance_of?(Time)
+        value.to_date.to_s
       else
-        self.value = value.to_s
+        value.to_s
       end
     end
 
-    def filter users_scope
+    def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       if custom_field.input_type == 'date'
@@ -93,8 +93,7 @@ module SmartGroups::Rules
       end
     end
 
-
-    def description_value locale
+    def description_value(locale)
       if value.present?
         locale ||= I18n.locale
         I18n.with_locale(locale) do
@@ -108,6 +107,5 @@ module SmartGroups::Rules
     def needs_value?
       !VALUELESS_PREDICATES.include?(predicate)
     end
-
   end
 end

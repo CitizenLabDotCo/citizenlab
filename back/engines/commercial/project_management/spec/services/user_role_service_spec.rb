@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe UserRoleService do
@@ -7,11 +9,11 @@ describe UserRoleService do
     let(:project) { create :project }
 
     it 'permits project moderators' do
-      expect(service.can_moderate_project? project, create(:project_moderator, projects: [project])).to be_truthy
+      expect(service.can_moderate_project?(project, create(:project_moderator, projects: [project]))).to be_truthy
     end
 
     it 'denies other project moderators' do
-      expect(service.can_moderate_project? project, create(:project_moderator, projects: [create(:project)])).to be false
+      expect(service.can_moderate_project?(project, create(:project_moderator, projects: [create(:project)]))).to be false
     end
   end
 

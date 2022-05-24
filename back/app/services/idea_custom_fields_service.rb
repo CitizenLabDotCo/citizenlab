@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class IdeaCustomFieldsService
-  def all_fields(custom_form, options = {})
+  def all_fields(custom_form, _options = {})
     default_fields(custom_form)
   end
 
@@ -23,9 +25,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.title.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: true,
         enabled: true,
         ordering: 1
@@ -45,9 +47,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.body.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: true,
         enabled: true,
         ordering: 2
@@ -67,9 +69,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.author_id.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: false,
         enabled: true,
         ordering: 3
@@ -83,15 +85,15 @@ class IdeaCustomFieldsService
         title_multiloc: ml_s.i18n_to_multiloc(
             'custom_fields.ideas.budget.title',
             locales: CL2_SUPPORTED_LOCALES
-        ),
+          ),
         description_multiloc: begin
                                 ml_s.i18n_to_multiloc(
                                   'custom_fields.ideas.budget.description',
                                   locales: CL2_SUPPORTED_LOCALES
                                 )
-                              rescue
+        rescue StandardError
                                 {}
-                              end,
+        end,
         required: false,
         enabled: true,
         ordering: 4
@@ -105,15 +107,15 @@ class IdeaCustomFieldsService
         title_multiloc: ml_s.i18n_to_multiloc(
             'custom_fields.ideas.proposed_budget.title',
             locales: CL2_SUPPORTED_LOCALES
-        ),
+          ),
         description_multiloc: begin
                                 ml_s.i18n_to_multiloc(
                                   'custom_fields.ideas.proposed_budget.description',
                                   locales: CL2_SUPPORTED_LOCALES
                                 )
-                              rescue
+        rescue StandardError
                                 {}
-                              end,
+        end,
         required: false,
         enabled: false,
         ordering: 4
@@ -133,9 +135,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.topic_ids.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: false,
         enabled: true,
         ordering: 5
@@ -155,9 +157,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.location.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: false,
         enabled: true,
         ordering: 6
@@ -177,9 +179,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.location.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: false,
         hidden: true,
         enabled: true,
@@ -200,9 +202,9 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.images.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: false,
         enabled: true,
         ordering: 8
@@ -222,13 +224,13 @@ class IdeaCustomFieldsService
               'custom_fields.ideas.attachments.description',
               locales: CL2_SUPPORTED_LOCALES
             )
-          rescue
+        rescue StandardError
             {}
-          end,
+        end,
         required: false,
         enabled: true,
         ordering: 9
-      ),
+      )
     ]
   end
 end

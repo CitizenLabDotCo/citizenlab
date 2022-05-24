@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdFranceconnect
   module FranceconnectVerification
     include Verification::VerificationMethod
@@ -7,11 +9,11 @@ module IdFranceconnect
     end
 
     def id
-      "68fecc38-9449-4087-9475-fc31e05a0936"
+      '68fecc38-9449-4087-9475-fc31e05a0936'
     end
 
     def name
-      "franceconnect"
+      'franceconnect'
     end
 
     def config_parameters

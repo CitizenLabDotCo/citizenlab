@@ -11,7 +11,8 @@ import SendFeedback from 'components/SendFeedback';
 import { Icon, useWindowSize } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // services
@@ -228,7 +229,11 @@ const MESSAGES_MAP: TMessagesMap = {
   'accessibility-statement': messages.accessibilityStatement,
 };
 
-const PlatformFooter = ({ className, insideModal }: Props) => {
+const PlatformFooter = ({
+  className,
+  insideModal,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
   const windowSize = useWindowSize();
   const customizedA11yHrefEnabled = useFeatureFlag({
@@ -263,11 +268,14 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
     windowSize.windowWidth <= viewportWidths.smallTablet;
   const hasCustomizedA11yFooterLink = getHasCustomizedA11yFooterLink();
   const customizedA11yHref = getCustomizedA11yHref();
+  const removeVendorBranding = useFeatureFlag({
+    name: 'remove_vendor_branding',
+  });
 
   return (
     <Container insideModal={insideModal} id="hook-footer" className={className}>
       <FooterContainer>
-        <PagesNav>
+        <PagesNav aria-label={formatMessage(messages.ariaLabel)}>
           <PagesNavList>
             {FOOTER_PAGES.map((slug: TFooterPage, index) => {
               return (
@@ -309,18 +317,19 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
         </PagesNav>
 
         <Right>
-          <PoweredBy>
-            <PoweredByText>
-              <FormattedMessage {...messages.poweredBy} />
-            </PoweredByText>
-            <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
-              <CitizenLabLogo
-                name="citizenlab-footer-logo"
-                title="CitizenLab"
-              />
-            </CitizenlabLink>
-          </PoweredBy>
-
+          {!removeVendorBranding && (
+            <PoweredBy>
+              <PoweredByText>
+                <FormattedMessage {...messages.poweredBy} />
+              </PoweredByText>
+              <CitizenlabLink href="https://www.citizenlab.co/" target="_blank">
+                <CitizenLabLogo
+                  name="citizenlab-footer-logo"
+                  title="CitizenLab"
+                />
+              </CitizenlabLink>
+            </PoweredBy>
+          )}
           <StyledSendFeedback showFeedbackText={smallerThanSmallTablet} />
         </Right>
       </FooterContainer>
@@ -328,4 +337,4 @@ const PlatformFooter = ({ className, insideModal }: Props) => {
   );
 };
 
-export default PlatformFooter;
+export default injectIntl(PlatformFooter);

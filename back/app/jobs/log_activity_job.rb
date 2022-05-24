@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LogActivityJob < ApplicationJob
   include SideFxHelper
   queue_as :default

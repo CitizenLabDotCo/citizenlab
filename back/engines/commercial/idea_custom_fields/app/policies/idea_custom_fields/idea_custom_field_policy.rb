@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaCustomFields
   class IdeaCustomFieldPolicy < ApplicationPolicy
     class Scope
@@ -13,9 +15,9 @@ module IdeaCustomFields
           scope.all
         elsif user&.project_moderator?
           scope
-            .joins("LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id")
-            .joins("LEFT JOIN projects ON projects.custom_form_id = custom_forms.id")
-            .where("projects.id" => ::UserRoleService.new.moderatable_projects(user))
+            .joins('LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id')
+            .joins('LEFT JOIN projects ON projects.custom_form_id = custom_forms.id')
+            .where('projects.id' => ::UserRoleService.new.moderatable_projects(user))
         else
           scope.none
         end
@@ -34,12 +36,12 @@ module IdeaCustomFields
       show?
     end
 
-    def can_view_custom_fields_for_project? project
+    def can_view_custom_fields_for_project?(project)
       user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
     end
 
     def permitted_attributes
-      if %w(title body).include? record.code
+      if %w[title body].include? record.code
         [
           description_multiloc: CL2_SUPPORTED_LOCALES
         ]
@@ -47,11 +49,10 @@ module IdeaCustomFields
         [
           :required,
           :enabled,
-          title_multiloc: CL2_SUPPORTED_LOCALES,
-          description_multiloc: CL2_SUPPORTED_LOCALES
+          { title_multiloc: CL2_SUPPORTED_LOCALES,
+          description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
     end
-
   end
 end

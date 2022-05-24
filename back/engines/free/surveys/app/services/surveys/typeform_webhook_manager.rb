@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'uri'
 
 module Surveys
-
   class TypeformWebhookManager
-
     # @param [Typeform::Api] tf_api
     # @param [String] typeform_secret_token Token used to verify that requests
     #   are coming from Typeform.
@@ -60,21 +60,23 @@ module Surveys
           tag: participation_context.id,
           url: webhook_url(participation_context),
           secret: @secret
-      )
-      Rails.logger.error("Failed to save typeform webhook",
-          form_url: form_url,
-          participation_context_id: participation_context.id,
-          participation_context_class: participation_context.class.name,
-          response: response.parsed_response
-      ) unless response.success?
+        )
+      unless response.success?
+        Rails.logger.error('Failed to save typeform webhook',
+            form_url: form_url,
+            participation_context_id: participation_context.id,
+            participation_context_class: participation_context.class.name,
+            response: response.parsed_response
+        )
+      end
       response
     end
 
     def delete_webhook(form_url, webhook_id)
       @tf_api.delete_webhook(
           form_id: embed_url_to_form_id(form_url),
-          tag: webhook_id,
-      )
+          tag: webhook_id
+        )
     end
 
     # Extracts the form_id from the Typeform form url.

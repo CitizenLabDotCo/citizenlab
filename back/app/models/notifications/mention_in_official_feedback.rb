@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notifications
@@ -53,15 +55,12 @@
 #
 module Notifications
   class MentionInOfficialFeedback < Notification
-
     validates :official_feedback, :post, :initiating_user, presence: true
 
-
-    ACTIVITY_TRIGGERS = {'OfficialFeedback' => {'mentioned' => true}}
+    ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'mentioned' => true } }
     EVENT_NAME = 'Mention in official feedback'
-    
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       official_feedback = activity.item
       recipient_id = activity.payload['mentioned_user']
       initiator_id = official_feedback&.user_id
@@ -80,13 +79,11 @@ module Notifications
         }
         if attributes[:post_type] == 'Idea'
           attributes[:project_id] = official_feedback.post.project_id
-        end 
-        [self.new(attributes)]
+        end
+        [new(attributes)]
       else
         []
       end
     end
-
   end
 end
-

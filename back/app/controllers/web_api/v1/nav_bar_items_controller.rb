@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::NavBarItemsController < ApplicationController
   include AddRemoveNavBarItems
 
@@ -33,13 +35,11 @@ class WebApi::V1::NavBarItemsController < ApplicationController
         @item = NavBarItem.new code: code
         add_nav_bar_item
       end
-    else
+    elsif @item
       # Disable
-      if @item
-        remove_nav_bar_item
-      else
+      remove_nav_bar_item
+    else
         render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
-      end
     end
   end
 end

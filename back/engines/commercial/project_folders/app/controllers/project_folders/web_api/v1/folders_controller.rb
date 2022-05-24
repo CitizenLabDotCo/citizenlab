@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::FoldersController < ::ApplicationController
     before_action :set_project_folder, only: %i[show update destroy]
@@ -75,15 +77,22 @@ module ProjectFolders
 
     def destroy
       frozen_folder = nil
+      frozen_projects = nil
+      @project_folder.projects.each do |project|
+        SideFxProjectService.new.before_destroy(project, current_user)
+      end
       ActiveRecord::Base.transaction do
-        @project_folder.projects.each(&:destroy!)
+        frozen_projects = @project_folder.projects.each(&:destroy!)
         frozen_folder = @project_folder.destroy
       end
       if frozen_folder.destroyed?
         SideFxService.new.after_destroy(frozen_folder, current_user)
+        frozen_projects.each do |project|
+          SideFxProjectService.new.after_destroy(project, current_user)
+        end
         head :ok
       else
-        head 500
+        head :internal_server_error
       end
     end
 

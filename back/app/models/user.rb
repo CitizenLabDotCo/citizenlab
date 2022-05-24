@@ -78,13 +78,12 @@ class User < ApplicationRecord
       where('lower(email) = lower(?)', email).first
     end
 
-
     # Returns the user record from the database which matches the specified
     # email address (case-insensitive) or raises `ActiveRecord::RecordNotFound`.
     # @param email [String] The email of the user
     # @return [User] The user record
     def find_by_cimail!(email)
-      find_by_cimail(email) || fail(ActiveRecord::RecordNotFound)
+      find_by_cimail(email) || raise(ActiveRecord::RecordNotFound)
     end
 
     # This method is used by knock to get the user.
@@ -127,6 +126,10 @@ class User < ApplicationRecord
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
 
+  before_validation :set_cl1_migrated, on: :create
+  before_validation :generate_slug
+  before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  before_validation :assign_email_or_phone, if: :email_changed?
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
@@ -172,8 +175,8 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
-    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
+    record.errors.add(:last_name, :blank) unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
+    record.errors.add(:password, :blank) unless record.password_digest.present? || record.identities.any? || record.invite_pending?
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
@@ -191,11 +194,6 @@ class User < ApplicationRecord
   validate :validate_email_domain_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
-
-  before_validation :set_cl1_migrated, on: :create
-  before_validation :generate_slug
-  before_validation :sanitize_bio_multiloc, if: :bio_multiloc
-  before_validation :assign_email_or_phone, if: :email_changed?
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -303,7 +301,8 @@ class User < ApplicationRecord
     !admin?
   end
 
-  def moderatable_project_ids # TODO include folders?
+  # TODO: include folders?
+  def moderatable_project_ids
     []
   end
 
@@ -380,7 +379,7 @@ class User < ApplicationRecord
   end
 
   def validate_email_domain_blacklist
-    return unless email.present?
+    return if email.blank?
 
     domain = email.split('@')&.last
     if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
@@ -415,7 +414,7 @@ class User < ApplicationRecord
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
-      if !notification.update initiating_user: nil
+      unless notification.update initiating_user: nil
         notification.destroy!
       end
     end
@@ -427,6 +426,7 @@ User.include_if_ee('Verification::Patches::User')
 
 User.include(UserConfirmation::Extensions::User)
 User.prepend_if_ee('MultiTenancy::Patches::User')
+User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('ProjectManagement::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')

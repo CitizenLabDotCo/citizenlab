@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-
-describe "seedfile", slow_test: true do
-  if !CitizenLab.ee?
-    it "generates a valid app configuration, user and initial data" do
+describe 'seedfile', slow_test: true do
+  unless CitizenLab.ee?
+    it 'generates a valid app configuration, user and initial data' do
       AppConfiguration.first.destroy!
 
-      load Rails.root.join("db","seeds.rb")
+      load Rails.root.join('db', 'seeds.rb')
       expect(AppConfiguration.count).to be(1)
-        
+
       expect(User.admin.count).to be > 0
       expect(StaticPage.count).to be > 3
       expect(IdeaStatus.count).to be > 0
@@ -22,5 +23,4 @@ describe "seedfile", slow_test: true do
       expect(EmailCampaigns::Campaign.count).to be > 0
     end
   end
-
 end

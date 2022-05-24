@@ -19,13 +19,17 @@ const TWO_COLUMNS = 'TwoColumn';
 const THREE_COLUMNS = 'ThreeColumn';
 const TEXT = 'Text';
 const IMAGE = 'Image';
+const IFRAME = 'Iframe';
+const ABOUT_BOX = 'AboutBox';
 
 type ComponentNamesType =
   | typeof CONTAINER
   | typeof TWO_COLUMNS
   | typeof THREE_COLUMNS
   | typeof TEXT
-  | typeof IMAGE;
+  | typeof IMAGE
+  | typeof IFRAME
+  | typeof ABOUT_BOX;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -39,11 +43,23 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.text;
     case IMAGE:
       return messages.image;
+    case IFRAME:
+      return messages.url;
+    case ABOUT_BOX:
+      return messages.aboutBox;
   }
 };
 
 const StyledBox = styled(Box)`
-  cursor: ${({ isRoot }: { isRoot: boolean }) => (isRoot ? 'auto' : 'move')};
+  ${({ isRoot }: { isRoot: boolean }) =>
+    isRoot
+      ? `cursor: auto;
+          padding: 4px;
+          width: 100%;
+          max-width: 1000px;
+          background-color: #fff;
+          min-height: 160px;`
+      : `cursor:move;`}
 `;
 
 const RenderNode = ({ render }) => {
@@ -63,16 +79,18 @@ const RenderNode = ({ render }) => {
     id,
     name,
     isHover,
+    hasError,
     connectors: { connect, drag },
   } = useNode((node) => ({
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
+    hasError: node.data.props.hasError,
   }));
 
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
 
-  // Handle two column hover state
+  // Handle multi-column hover state
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
@@ -111,20 +129,24 @@ const RenderNode = ({ render }) => {
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
-      border={`1px ${
-        solidBorderIsVisible
-          ? `solid ${colors.adminTextColor}`
+      borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      borderWidth="1px"
+      borderColor={
+        hasError
+          ? colors.clRedError
+          : solidBorderIsVisible
+          ? colors.adminTextColor
           : name !== TWO_COLUMNS && name !== THREE_COLUMNS
-          ? `dashed ${colors.separation}`
-          : `solid transparent`
-      } `}
+          ? colors.separation
+          : 'transparent'
+      }
       m="4px"
       isRoot={id === ROOT_NODE}
     >
       {nodeIsSelected && (
         <Box
           p="4px"
-          bgColor={colors.adminTextColor}
+          bgColor={hasError ? colors.clRedError : colors.adminTextColor}
           color="#fff"
           position="absolute"
           top="-28px"
@@ -133,7 +155,9 @@ const RenderNode = ({ render }) => {
           <FormattedMessage {...getComponentNameMessage(name)} />
         </Box>
       )}
-      {render}
+      <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>
+        {render}
+      </div>
     </StyledBox>
   );
 };

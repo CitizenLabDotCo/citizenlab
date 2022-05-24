@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe ParticipationContextService do
@@ -33,8 +35,8 @@ describe ParticipationContextService do
       permission = project.permissions.find_by(action: 'posting_idea')
       birthyear = create(:custom_field_birthyear)
       verified_members = create(:smart_group, rules: [
-        {ruleType: 'verified', predicate: 'is_verified'},
-        {value: 2002, ruleType: "custom_field_number", predicate: "is_smaller_than_or_equal", customFieldId: birthyear.id}
+        { ruleType: 'verified', predicate: 'is_verified' },
+        { value: 2002, ruleType: 'custom_field_number', predicate: 'is_smaller_than_or_equal', customFieldId: birthyear.id }
       ])
       permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
       expect(service.posting_idea_disabled_reason_for_project(project, create(:user, verified: true, birthyear: 2008))).to eq 'not_permitted'

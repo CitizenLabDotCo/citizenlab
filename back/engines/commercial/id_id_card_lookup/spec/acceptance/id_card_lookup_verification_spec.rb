@@ -1,13 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Verifications" do
-
+resource 'Verifications' do
   before do
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
-    header "Content-Type", "application/json"
+    header 'Content-Type', 'application/json'
     configuration = AppConfiguration.instance
     settings = configuration.settings
     settings['verification'] = {
@@ -18,25 +19,27 @@ resource "Verifications" do
         method_name_multiloc: { en: 'By social security number' },
         card_id_multiloc: { en: 'Social security number' },
         card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' },
-        card_id_placeholder: "xx-xxxxx-xx",
-        explainer_image_url: "https://some.fake/image.png"
-      }],
+        card_id_placeholder: 'xx-xxxxx-xx',
+        explainer_image_url: 'https://some.fake/image.png'
+      }]
     }
     configuration.save!
   end
 
-  post "web_api/v1/verification_methods/id_card_lookup/verification" do
+  post 'web_api/v1/verification_methods/id_card_lookup/verification' do
     with_options scope: :verification do
       parameter :card_id
     end
 
     describe do
       before do
-        @card_id = "123.46234-78B"
+        @card_id = '123.46234-78B'
         id_card = create(:id_id_card_lookup_id_card, card_id: @card_id)
       end
+
       let(:card_id) { @card_id }
-      example_request "Verify with id_card_lookup" do
+
+      example_request 'Verify with id_card_lookup' do
         assert_status 201
         expect(@user.reload.verified).to be true
       end

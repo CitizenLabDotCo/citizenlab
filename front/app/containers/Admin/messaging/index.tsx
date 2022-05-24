@@ -45,6 +45,7 @@ class MessagingDashboard extends React.PureComponent<
       tabs.push({
         label: formatMessage(messages.tabTexting),
         url: '/admin/messaging/texting',
+        statusLabel: 'Beta',
       });
     }
     if (

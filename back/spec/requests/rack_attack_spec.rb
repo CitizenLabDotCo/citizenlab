@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -238,7 +240,7 @@ describe 'Rack::Attack', type: :request, slow_test: true do
   # These tests are too slow to include in the CI, due to the number of requests they make, and are therefore skipped.
   # Remove skip statement to run in local dev environment, but do not push/merge that change to master.
 
-  it 'limits login requests from same IP to 4000 in 1 day', skip: "Too slow to include in CI" do
+  it 'limits login requests from same IP to 4000 in 1 day', skip: 'Too slow to include in CI' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     # Use a different email for each request, to avoid testing limit by email
@@ -272,7 +274,7 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     end
   end
 
-  it 'limits login requests for same email to 100 in 1 day', skip: "Too slow to include in CI" do
+  it 'limits login requests for same email to 100 in 1 day', skip: 'Too slow to include in CI' do
     # Use a different IP for each request, to avoid testing limit by IP
     10.times do |i|
       # Move time forward, each 10 requests, to avoid testing shorter time-limited rule
@@ -307,7 +309,7 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     end
   end
 
-  it 'limits requests to 1000 in 3 minutes', skip: "Too slow to include in CI" do
+  it 'limits requests to 1000 in 3 minutes', skip: 'Too slow to include in CI' do
     freeze_time do
       1000.times do |i|
         get '/web_api/v1/projects'

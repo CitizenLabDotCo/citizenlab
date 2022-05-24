@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::GroupsController < ApplicationController
   before_action :set_group, only: %i[show update destroy]
 
@@ -30,7 +32,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -46,7 +48,7 @@ class WebApi::V1::GroupsController < ApplicationController
       render json: WebApi::V1::GroupSerializer.new(
         @group.reload,
         params: fastjson_params
-        ).serialized_json, status: :ok
+      ).serialized_json, status: :ok
     else
       render json: { errors: @group.errors.details }, status: :unprocessable_entity
     end
@@ -60,7 +62,7 @@ class WebApi::V1::GroupsController < ApplicationController
       SideFxGroupService.new.after_destroy(@group, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

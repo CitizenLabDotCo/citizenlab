@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // components
-import { Title, Box } from '@citizenlab/cl2-component-library';
+import { Title, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 
 // craft
@@ -17,6 +17,9 @@ import { getComponentNameMessage } from '../RenderNode';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
 `;
@@ -25,7 +28,6 @@ const ContentBuilderSettings = () => {
   const { actions, selected, isEnabled } = useEditor((state, query) => {
     const currentNodeId: string = query.getEvent('selected').last();
     let selected;
-
     if (currentNodeId) {
       selected = {
         id: currentNodeId,
@@ -44,7 +46,16 @@ const ContentBuilderSettings = () => {
   });
 
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
-    <StyledBox bgColor={colors.adminDarkBackground} p="20px" w="400px">
+    <StyledBox
+      position="fixed"
+      right="0"
+      top={`${stylingConsts.menuHeight * 2}px`}
+      zIndex="99999"
+      p="20px"
+      w="400px"
+      h="100%"
+      background="#ffffff"
+    >
       <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />
       </Title>
@@ -52,6 +63,7 @@ const ContentBuilderSettings = () => {
       {selected.isDeletable ? (
         <Box display="flex">
           <Button
+            id="e2e-delete-button"
             icon="delete"
             buttonStyle="primary-outlined"
             borderColor={colors.clRed}
@@ -59,6 +71,7 @@ const ContentBuilderSettings = () => {
             iconColor={colors.clRed}
             onClick={() => {
               actions.delete(selected.id);
+              eventEmitter.emit('deleteContentBuilderElement', selected.id);
             }}
           >
             <FormattedMessage {...messages.delete} />

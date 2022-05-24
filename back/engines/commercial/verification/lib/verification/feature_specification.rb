@@ -19,12 +19,12 @@ module Verification
     end
 
     add_setting 'verification_methods', required: true, schema: {
-      "title": 'Verification Methods',
-      "private": true,
-      "type": 'array',
-      "default": [],
-      "items": {
-        "anyOf": VerificationService.new.all_methods.map do |method|
+      title: 'Verification Methods',
+      private: true,
+      type: 'array',
+      default: [],
+      items: {
+        anyOf: VerificationService.new.all_methods.map do |method|
           {
             type: 'object',
             title: method.name,
