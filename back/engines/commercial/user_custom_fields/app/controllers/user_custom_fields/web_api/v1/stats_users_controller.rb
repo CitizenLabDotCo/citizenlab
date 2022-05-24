@@ -5,23 +5,9 @@ module UserCustomFields
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
         def users_by_gender_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
+          users = find_users
 
           serie = users
-            .where(registration_completed_at: @start_at..@end_at)
             .group("custom_field_values->'gender'")
             .order(Arel.sql("custom_field_values->'gender'"))
             .count
@@ -41,23 +27,9 @@ module UserCustomFields
         end
 
         def users_by_birthyear_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
+          users = find_users
 
           serie = users
-            .where(registration_completed_at: @start_at..@end_at)
             .group("custom_field_values->'birthyear'")
             .order(Arel.sql("custom_field_values->'birthyear'"))
             .count
@@ -76,23 +48,9 @@ module UserCustomFields
         end
 
         def users_by_domicile_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
+          users = find_users
 
           serie = users
-            .where(registration_completed_at: @start_at..@end_at)
             .group("custom_field_values->'domicile'")
             .order(Arel.sql("custom_field_values->'domicile'"))
             .count
@@ -129,23 +87,9 @@ module UserCustomFields
         end
 
         def users_by_education_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
+          users = find_users
 
           serie = users
-            .where(registration_completed_at: @start_at..@end_at)
             .group("custom_field_values->'education'")
             .order(Arel.sql("custom_field_values->'education'"))
             .count
@@ -164,25 +108,11 @@ module UserCustomFields
         end
 
         def users_by_custom_field_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
+          users = find_users
 
           case @custom_field.input_type
           when 'select'
             serie = users
-              .where(registration_completed_at: @start_at..@end_at)
               .group("custom_field_values->'#{@custom_field.key}'")
               .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
               .count
@@ -191,7 +121,6 @@ module UserCustomFields
           when 'multiselect'
             serie = users
               .joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(custom_field_values->'#{@custom_field.key}') as field_value, id FROM users) as cfv ON users.id = cfv.id")
-              .where(registration_completed_at: @start_at..@end_at)
               .group('cfv.field_value')
               .order('cfv.field_value')
               .count
@@ -199,7 +128,6 @@ module UserCustomFields
             serie
           when 'checkbox'
             serie = users
-              .where(registration_completed_at: @start_at..@end_at)
               .group("custom_field_values->'#{@custom_field.key}'")
               .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
               .count
@@ -255,6 +183,25 @@ module UserCustomFields
 
         def multiloc_service
           @multiloc_service ||= MultilocService.new
+        end
+
+        def find_users
+          users = StatUserPolicy::Scope.new(current_user, User.active)
+                               .resolve
+                               .where(registration_completed_at: @start_at..@end_at)
+
+          if params[:group]
+            group = Group.find(params[:group])
+            users = users.merge(group.members)
+          end
+
+          if params[:project]
+            project = Project.find(params[:project])
+            participants = ParticipantsService.new.project_participants(project)
+            users = users.where(id: participants)
+          end
+
+          users
         end
       end
     end
