@@ -814,7 +814,6 @@
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Alle områder",
   "app.containers.AdminPage.ProjectEdit.areasLabel": "Geografiske områder",
-  "app.containers.AdminPage.ProjectEdit.areasLabelTooltip": "Du kan udvalgt de geografiske områder, som dette projekt er relevant for. Områderne kan indstilles {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "her",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Valg",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Liste",
