@@ -13,7 +13,11 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'can create an idea without author' do
-      expect(build(:idea, author: nil)).to be_valid
+      expect(build(:idea, author: nil).valid?(:create)).to be true
+    end
+
+    it 'cannot create an idea without author on publication' do
+      expect(build(:idea, author: nil).valid?(:publication)).to be false
     end
 
     context 'without custom form' do
@@ -35,38 +39,69 @@ RSpec.describe Idea, type: :model do
     context 'when creating ideas' do
       let(:idea) { build :idea, project: project }
 
-      %i[create publication].each do |validation_context|
-        context "on #{validation_context}" do
-          it 'can persist an idea' do
-            idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
-            expect(idea.valid?(validation_context)).to be true
-          end
+      context 'on create' do
+        it 'can persist an idea' do
+          idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
+          expect(idea.valid?(:create)).to be true
+        end
 
-          it 'can persist an idea without optional fields' do
-            idea.custom_field_values = { required_field.key => 7 }
-            expect(idea.valid?(validation_context)).to be true
-          end
+        it 'can persist an idea without optional fields' do
+          idea.custom_field_values = { required_field.key => 7 }
+          expect(idea.valid?(:create)).to be true
+        end
 
-          it 'cannot persist an idea with a non-existing field' do
-            idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
-            expect(idea.valid?(validation_context)).to be false
-          end
+        it 'cannot persist an idea with a non-existing field' do
+          idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+          expect(idea.valid?(:create)).to be true
+        end
 
-          it 'cannot persist an idea with an invalid field value' do
-            long_title = 'My long idea title. ' * 100
-            idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
-            expect(idea.valid?(validation_context)).to be false
-          end
+        it 'cannot persist an idea with an invalid field value' do
+          long_title = 'My long idea title. ' * 100
+          idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+          expect(idea.valid?(:create)).to be true
+        end
 
-          it 'cannot persist an idea without required field values' do
-            idea.custom_field_values = { optional_field.key => 'option1' }
-            expect(idea.valid?(validation_context)).to be false
-          end
+        it 'cannot persist an idea without required field values' do
+          idea.custom_field_values = { optional_field.key => 'option1' }
+          expect(idea.valid?(:create)).to be true
+        end
 
-          it 'cannot persist an idea with non-existing field options' do
-            idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
-            expect(idea.valid?(validation_context)).to be false
-          end
+        it 'cannot persist an idea with non-existing field options' do
+          idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
+          expect(idea.valid?(:create)).to be true
+        end
+      end
+
+      context 'on publication' do
+        it 'can persist an idea' do
+          idea.custom_field_values = { required_field.key => 63, optional_field.key => 'option1' }
+          expect(idea.valid?(:publication)).to be true
+        end
+
+        it 'can persist an idea without optional fields' do
+          idea.custom_field_values = { required_field.key => 7 }
+          expect(idea.valid?(:publication)).to be true
+        end
+
+        it 'cannot persist an idea with a non-existing field' do
+          idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+          expect(idea.valid?(:publication)).to be false
+        end
+
+        it 'cannot persist an idea with an invalid field value' do
+          long_title = 'My long idea title. ' * 100
+          idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+          expect(idea.valid?(:publication)).to be false
+        end
+
+        it 'cannot persist an idea without required field values' do
+          idea.custom_field_values = { optional_field.key => 'option1' }
+          expect(idea.valid?(:publication)).to be false
+        end
+
+        it 'cannot persist an idea with non-existing field options' do
+          idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
+          expect(idea.valid?(:publication)).to be false
         end
       end
 

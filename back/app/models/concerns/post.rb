@@ -50,7 +50,7 @@ module Post
       post.validates :title_multiloc, presence: true, multiloc: { presence: true }
       post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
       post.validates :author, presence: true, on: :publication
-      post.validates :author, presence: true, if: :author_id_changed? 
+      post.validates :author, presence: true, if: :author_id_changed?
       post.validates :slug, uniqueness: true, presence: true
 
       post.before_validation :strip_title
