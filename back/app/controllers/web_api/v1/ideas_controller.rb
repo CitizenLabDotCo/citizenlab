@@ -123,7 +123,7 @@ class WebApi::V1::IdeasController < ApplicationController
     verify_profanity @idea
 
     save_options = {}
-    save_options[:context] = :publication if @idea.published?
+    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if @idea.save save_options
         service.after_create(@idea, current_user)
@@ -158,7 +158,7 @@ class WebApi::V1::IdeasController < ApplicationController
     service.before_update(@idea, current_user)
 
     save_options = {}
-    save_options[:context] = :publication if @idea.published? # editing a published idea is re-publication
+    save_options[:context] = :publication if params.dig(:idea, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if @idea.save save_options
         authorize @idea
