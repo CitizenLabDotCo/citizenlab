@@ -33,6 +33,7 @@ const RepresentativenessDashboard = () => {
         <ChartFilters
           currentProjectFilter={currentProjectFilter}
           onProjectFilter={onProjectFilter}
+          noData={SHOW_EMPTY}
         />
       </Box>
 

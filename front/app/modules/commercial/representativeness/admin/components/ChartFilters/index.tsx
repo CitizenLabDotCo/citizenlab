@@ -18,19 +18,26 @@ import { IOption } from 'typings';
 interface Props {
   currentProjectFilter?: string;
   onProjectFilter: (filter: IOption) => void;
+  noData: boolean;
 }
 
-const ChartFilters = ({ currentProjectFilter, onProjectFilter }: Props) => (
+const ChartFilters = ({
+  currentProjectFilter,
+  onProjectFilter,
+  noData,
+}: Props) => (
   <Box display="flex" justifyContent="space-between" alignItems="flex-end">
     <ProjectFilter
       currentProjectFilter={currentProjectFilter}
       onProjectFilter={onProjectFilter}
     />
-    <Button
-      linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
-      text={<FormattedMessage {...messages.editBaseData} />}
-      bgColor={colors.clBlueDark}
-    />
+    {!noData && (
+      <Button
+        linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
+        text={<FormattedMessage {...messages.editBaseData} />}
+        bgColor={colors.clBlueDark}
+      />
+    )}
   </Box>
 );
 
