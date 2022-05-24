@@ -11,7 +11,17 @@ const configuration: ModuleConfiguration = {
     'admin.dashboards': [
       {
         path: 'representativeness',
-        container: () => import('./admin/containers/Dashboard'),
+        container: () => import('./admin/containers'),
+        indexRoute: {
+          container: () => import('./admin/containers/Dashboard'),
+        },
+        childRoutes: [
+          {
+            path: 'manage-data',
+            container: () =>
+              import('./admin/containers/ReferenceDataInterface'),
+          },
+        ],
       },
     ],
   },
