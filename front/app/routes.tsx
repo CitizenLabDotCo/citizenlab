@@ -104,7 +104,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profileedit',
+          path: 'profile/edit',
           element: (
             <LoadingComponent>
               <UsersEditPage />
