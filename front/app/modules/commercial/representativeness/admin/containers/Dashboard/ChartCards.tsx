@@ -34,7 +34,6 @@ const ChartCards = () => {
           customField={customField}
           key={customField.id}
           data={fakeData.gender.data}
-          representativenessScore={fakeData.gender.representativenessScore}
           includedUserPercentage={fakeData.gender.includedUsersPercentage}
           demographicDataDate={fakeData.gender.demographicDataDate}
         />
@@ -45,7 +44,6 @@ const ChartCards = () => {
           customField={customField}
           key={customField.id}
           data={fakeData.domicile.data}
-          representativenessScore={fakeData.domicile.representativenessScore}
           includedUserPercentage={fakeData.domicile.includedUsersPercentage}
           demographicDataDate={fakeData.domicile.demographicDataDate}
         />
@@ -56,7 +54,6 @@ const ChartCards = () => {
           customField={customField}
           key={customField.id}
           data={fakeData.domicileLong.data}
-          representativenessScore={fakeData.domicile.representativenessScore}
           includedUserPercentage={fakeData.domicile.includedUsersPercentage}
           demographicDataDate={fakeData.domicile.demographicDataDate}
         />

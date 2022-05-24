@@ -42,7 +42,6 @@ describe('<ChartCard />', () => {
       <ChartCard
         data={data}
         customField={customField}
-        representativenessScore={70}
         demographicDataDate={demographicDataDate}
         includedUserPercentage={85}
       />
@@ -51,21 +50,21 @@ describe('<ChartCard />', () => {
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
   });
 
-  it('renders representativeness score', () => {
-    const data = generateData(4);
+  // it('renders representativeness score', () => {
+  //   const data = generateData(4);
 
-    render(
-      <ChartCard
-        data={data}
-        customField={customField}
-        representativenessScore={70}
-        demographicDataDate={demographicDataDate}
-        includedUserPercentage={85}
-      />
-    );
+  //   render(
+  //     <ChartCard
+  //       data={data}
+  //       customField={customField}
+  //       representativenessScore={70}
+  //       demographicDataDate={demographicDataDate}
+  //       includedUserPercentage={85}
+  //     />
+  //   );
 
-    expect(screen.getByText('70')).toBeInTheDocument();
-  });
+  //   expect(screen.getByText('70')).toBeInTheDocument();
+  // });
 });
 
 describe('<ChartCard /> (chart view)', () => {
@@ -76,7 +75,6 @@ describe('<ChartCard /> (chart view)', () => {
       <ChartCard
         data={data}
         customField={customField}
-        representativenessScore={70}
         demographicDataDate={demographicDataDate}
         includedUserPercentage={85}
       />
@@ -93,7 +91,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -109,7 +106,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -125,7 +121,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -146,7 +141,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -160,7 +154,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -180,7 +173,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -196,7 +188,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -212,7 +203,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -233,7 +223,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -247,7 +236,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -267,7 +255,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -290,7 +277,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -309,7 +295,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -333,7 +318,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -350,7 +334,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -373,7 +356,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -396,7 +378,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -413,7 +394,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -432,7 +412,6 @@ describe('<ChartCard /> (chart view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -460,7 +439,6 @@ describe('<ChartCard /> (table view)', () => {
       <ChartCard
         data={data}
         customField={customField}
-        representativenessScore={70}
         demographicDataDate={demographicDataDate}
         includedUserPercentage={85}
       />
@@ -482,7 +460,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -501,7 +478,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -518,7 +494,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -535,7 +510,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -554,7 +528,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -572,7 +545,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -586,7 +558,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -600,7 +571,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -614,7 +584,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -630,7 +599,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -648,7 +616,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -662,7 +629,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -682,7 +648,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />
@@ -705,7 +670,6 @@ describe('<ChartCard /> (table view)', () => {
         <ChartCard
           data={data}
           customField={customField}
-          representativenessScore={70}
           demographicDataDate={demographicDataDate}
           includedUserPercentage={85}
         />

@@ -37,7 +37,7 @@ export type RepresentativenessData = RepresentativenessRow[];
 interface Props {
   customField: IUserCustomFieldData;
   data: RepresentativenessData;
-  representativenessScore: number;
+  // representativenessScore: number;
   includedUserPercentage: number;
   demographicDataDate: Moment;
 }
@@ -45,7 +45,6 @@ interface Props {
 const ChartCard = ({
   customField,
   data,
-  representativenessScore,
   includedUserPercentage,
   demographicDataDate,
   intl: { formatMessage },
@@ -79,7 +78,6 @@ const ChartCard = ({
       <Header
         title={title}
         svgNode={currentChartRef}
-        representativenessScore={representativenessScore}
         viewState={viewState}
         onChangeViewState={setViewState}
       />
