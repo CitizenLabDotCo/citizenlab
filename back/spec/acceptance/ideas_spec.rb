@@ -58,7 +58,7 @@ resource 'Ideas' do
       i1 = @ideas.first
       i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
-      i1.save
+      i1.save!
 
       do_request topics: [t1.id]
       json_response = json_parse(response_body)
@@ -72,7 +72,7 @@ resource 'Ideas' do
       i1 = @ideas.first
       i1.project.update!(allowed_input_topics: Topic.all)
       i1.topics << t1
-      i1.save
+      i1.save!
 
       do_request topics: [t1.id], sort: 'random'
       expect(status).to eq(200)
@@ -120,10 +120,10 @@ resource 'Ideas' do
 
       i1 = @ideas.first
       i1.areas = [a1]
-      i1.save
+      i1.save!
       i2 = @ideas.second
       i2.areas = [a2]
-      i2.save
+      i2.save!
 
       do_request areas: [a1.id, a2.id]
       json_response = json_parse(response_body)
@@ -771,12 +771,6 @@ resource 'Ideas' do
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
-
-      example '[error] Removing the author of a published idea', document: false do
-        @idea.update(publication_status: 'published')
-        do_request idea: { author_id: nil }
-        expect(status).to be >= 400
-      end
     end
 
     describe do
@@ -841,7 +835,7 @@ resource 'Ideas' do
           before do
             @project = create(:project_with_phases)
             @idea.project = @project
-            @idea.save
+            @idea.save!
             do_request(idea: { phase_ids: phase_ids })
           end
 
@@ -911,6 +905,14 @@ resource 'Ideas' do
 
           expect(@idea.reload).to be_valid
         end
+      end
+
+      example '[error] Removing the author of a published idea', document: false do
+        @idea.update! publication_status: 'published'
+        do_request idea: { author_id: nil }
+        assert_status 422
+        json_response = json_parse response_body
+        expect(json_response).to include_response_error(:author, 'blank')
       end
     end
 
