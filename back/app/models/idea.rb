@@ -85,16 +85,14 @@ class Idea < ApplicationRecord
 
   validates :custom_field_values, json: {
     schema: lambda {
-      extra_fields = CustomForm.where(project: project).first.custom_fields.reject(&:built_in?)
-      CustomFieldService.new.fields_to_json_schema(extra_fields)
+      idea_fields_schema
     },
     message: ->(errors) { errors }
   }, on: :publication
 
   validates :custom_field_values, json: {
     schema: lambda {
-      extra_fields = CustomForm.where(project: project).first.custom_fields.reject(&:built_in?)
-      CustomFieldService.new.fields_to_json_schema(extra_fields)
+      idea_fields_schema
     },
     message: ->(errors) { errors }
   }, if: :custom_field_values_changed?
@@ -205,6 +203,13 @@ class Idea < ApplicationRecord
 
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
+  end
+
+  def idea_fields_schema
+    return {} unless project.custom_form # The empty object schema accepts anything
+
+    extra_fields = project.custom_form.custom_fields.reject(&:built_in?)
+    CustomFieldService.new.fields_to_json_schema extra_fields
   end
 end
 

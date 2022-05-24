@@ -15,6 +15,15 @@ RSpec.describe Idea, type: :model do
     it 'can create an idea without author' do
       expect(build(:idea, author: nil)).to be_valid
     end
+
+    context 'without custom form' do
+      it 'can publish an idea without custom fields' do
+        project = create :project
+        CustomForm.where(project: project).first&.destroy!
+        idea = build :idea, project: project, custom_field_values: nil
+        expect(idea.save(on: :publication)).to be true
+      end
+    end
   end
 
   context 'with custom fields' do
