@@ -2,13 +2,13 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   pageTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageTitle',
-    defaultMessage: 'Representativeness report',
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageTitle2',
+    defaultMessage: 'Representativeness dashboard',
   },
   pageDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageDescription2',
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageDescription3',
     defaultMessage:
-      'See how representative your platform users are. Compare your users with total population data using the user data collected during user registration. Learn more about {representativenessArticleLink}.',
+      'See how representative your platform users are compared to the total population - based on data collected during user registration. Learn more about {representativenessArticleLink}.',
   },
   betaLabel: {
     id: 'app.containers.AdminPage.DashboardPage.representativeness.betaLabel',
