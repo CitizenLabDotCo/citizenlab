@@ -621,6 +621,7 @@
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescription3": "See how representative your platform users are compared to the total population - based on data collected during user registration. Learn more about {representativenessArticleLink}.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescriptionTemporary": "See how representative your platform users are compared to the total population - based on data collected during user registration.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageTitle2": "Representativeness dashboard",
+  "app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.backToDashboard": "Back to dashboard",
   "app.containers.AdminPage.DashboardPage.representativeness.submitBaseDataButton": "Submit base data",
   "app.containers.AdminPage.DashboardPage.resolutionday": "in Days",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "in Months",
