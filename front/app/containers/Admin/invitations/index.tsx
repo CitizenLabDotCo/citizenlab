@@ -10,7 +10,7 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-const InvitationsPage = React.memo((props: InjectedIntlProps) => {
+const InvitationsPage = (props: InjectedIntlProps) => {
   const tabs = [
     {
       label: props.intl.formatMessage(messages.tabInviteUsers),
@@ -37,6 +37,6 @@ const InvitationsPage = React.memo((props: InjectedIntlProps) => {
       <RouterOutlet />
     </TabbedResource>
   );
-});
+};
 
 export default injectIntl(InvitationsPage);

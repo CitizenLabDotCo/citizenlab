@@ -2,14 +2,14 @@ import React from 'react';
 import { LoadingComponent } from 'routes';
 import moduleConfiguration from 'modules';
 
-const AdminIdeasContainerComponent = React.lazy(() => import('./index'));
-const AdminIdeasAllComponent = React.lazy(() => import('./all'));
+const AdminIdeasContainer = React.lazy(() => import('./index'));
+const AdminIdeasAll = React.lazy(() => import('./all'));
 
 export default () => ({
   path: 'ideas',
   element: (
     <LoadingComponent>
-      <AdminIdeasContainerComponent />
+      <AdminIdeasContainer />
     </LoadingComponent>
   ),
   children: [
@@ -17,7 +17,7 @@ export default () => ({
       index: true,
       element: (
         <LoadingComponent>
-          <AdminIdeasAllComponent />
+          <AdminIdeasAll />
         </LoadingComponent>
       ),
     },
