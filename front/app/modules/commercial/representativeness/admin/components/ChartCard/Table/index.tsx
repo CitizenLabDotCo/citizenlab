@@ -39,7 +39,7 @@ const TableWrapper = ({
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const columns = [formatMessage(messages.item), ...legendLabels];
+  const columns = [title, ...legendLabels];
   const slicedData = data.slice(0, 12);
   const showModalButton = data.length > 12;
   const numberOfHiddenItems = data.length - 12;

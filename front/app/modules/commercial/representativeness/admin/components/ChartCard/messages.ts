@@ -43,10 +43,6 @@ export default defineMessages({
     defaultMessage:
       'The score shows how similar the distributions of platform users and total population. Learn more about {representativenessArticleLink}.',
   },
-  item: {
-    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.item',
-    defaultMessage: 'Item',
-  },
   openTableModalButtonText: {
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText',
     defaultMessage: 'Show {numberOfHiddenItems} more',
