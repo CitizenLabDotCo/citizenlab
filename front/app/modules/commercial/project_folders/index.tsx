@@ -129,15 +129,13 @@ const configuration: ModuleConfiguration = {
       </RenderOnPublicationType>
     ),
     'app.components.AdminPage.projects.form.additionalInputs.inputs': ({
-      onChange,
+      onProjectAttributesDiffChange,
       projectAttrs,
-      authUser,
     }) => (
       <FeatureFlag name="project_folders">
         <ProjectFolderSelect
-          onChange={onChange}
           projectAttrs={projectAttrs}
-          authUser={authUser}
+          onProjectAttributesDiffChange={onProjectAttributesDiffChange}
         />
       </FeatureFlag>
     ),

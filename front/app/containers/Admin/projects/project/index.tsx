@@ -4,6 +4,7 @@ import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -58,10 +59,6 @@ const ActionsContainer = styled.div`
   }
 `;
 
-interface ITracks {
-  clickNewIdea: ({ extra: object }) => void;
-}
-
 export interface InputProps {}
 
 interface DataProps {
@@ -85,8 +82,8 @@ interface State {
 
 interface Props extends InputProps, DataProps {}
 
-export class AdminProjectEdition extends PureComponent<
-  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps & ITracks,
+export class AdminProjectsProjectIndex extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
 > {
   constructor(props) {
@@ -99,7 +96,7 @@ export class AdminProjectEdition extends PureComponent<
       tabs: [
         {
           label: formatMessage(messages.generalTab),
-          url: 'edit',
+          url: '',
           name: 'general',
         },
         {
@@ -295,13 +292,9 @@ export class AdminProjectEdition extends PureComponent<
       phases,
       intl: { formatMessage },
       localize,
-      children,
       location: { pathname },
     } = this.props;
-    const childrenWithExtraProps = React.cloneElement(
-      children as React.ReactElement<any>,
-      { project }
-    );
+
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project)
@@ -359,7 +352,7 @@ export class AdminProjectEdition extends PureComponent<
             </ActionsContainer>
           </TopContainer>
           <TabbedResource {...tabbedProps}>
-            {childrenWithExtraProps}
+            <RouterOutlet />
           </TabbedResource>
         </>
       );
@@ -369,8 +362,8 @@ export class AdminProjectEdition extends PureComponent<
   }
 }
 
-const AdminProjectEditionWithHoCs = withRouter(
-  injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectEdition))
+const AdminProjectEditIndexWithHoCs = injectIntl(
+  injectLocalize(AdminProjectsProjectIndex)
 );
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
@@ -389,10 +382,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => (
-      <AdminProjectEditionWithHoCs {...inputProps} {...dataProps} />
+      <AdminProjectEditIndexWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>
-);
+));
