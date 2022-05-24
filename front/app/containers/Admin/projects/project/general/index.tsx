@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
-import { IProjectFormState, IProjectData } from 'services/projects';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { useParams } from 'react-router-dom';
 // components
@@ -13,7 +11,7 @@ import GeographicAreaInputs from './components/GeographicAreaInputs';
 import HeaderImageDropzone from './components/HeaderImageDropzone';
 import ProjectImageDropzone from './components/ProjectImageDropzone';
 import AttachmentsDropzone from './components/AttachmentsDropzone';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
+import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import {
   Section,
   SectionTitle,
@@ -30,16 +28,15 @@ import {
   StyledSectionField,
   ParticipationContextWrapper,
 } from './components/styling';
+// hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import useAreas from 'hooks/useAreas';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -59,6 +56,8 @@ import {
   IUpdatedProjectProperties,
   addProject,
   updateProject,
+  IProjectFormState,
+  IProjectData,
 } from 'services/projects';
 import { addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -143,7 +142,7 @@ const AdminProjectsProjectGeneral = ({
         setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
       }
     })();
-  }, [project]);
+  }, [project, publicationStatus]);
 
   useEffect(() => {
     (async () => {
@@ -208,7 +207,7 @@ const AdminProjectsProjectGeneral = ({
         }))
       );
     }
-  }, [areas]);
+  }, [areas, localize]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -325,32 +324,20 @@ const AdminProjectsProjectGeneral = ({
     }));
   };
 
-  const validateForm = () => {
-    const titleError = !isNilOrError(appConfigLocales)
-      ? validateTitle(
-          appConfigLocales,
-          projectAttrs.title_multiloc,
-          formatMessage(messages.noTitleErrorMessage)
-        )
-      : null;
-    const hasTitleError = !isEmpty(titleError);
-    setTitleError(!isEmpty(titleError) ? titleError : null);
-    const formIsValid = !hasTitleError;
-
-    return formIsValid;
-  };
-
   async function saveForm(
     participationContextConfig: IParticipationContextConfig | null
   ) {
+    // Should be split. Same func for existing/new project
+    // Makes things unnecessarily complicated (e.g. projectId below).
     let projectId = params.projectId;
-    const isNewProject = typeof projectId === 'string';
+    let isNewProject = false;
+    const isFormValid = validateForm();
 
-    if (!validateForm()) {
+    if (!isFormValid) {
       setSubmitState('error');
     }
 
-    if (validateForm() && !processing) {
+    if (isFormValid && !processing) {
       const nextProjectAttributesDiff: IUpdatedProjectProperties = {
         ...projectAttributesDiff,
         ...participationContextConfig,
@@ -364,6 +351,7 @@ const AdminProjectsProjectGeneral = ({
           } else {
             const project = await addProject(nextProjectAttributesDiff);
             projectId = project.data.id;
+            isNewProject = true;
           }
         }
 
@@ -418,16 +406,11 @@ const AdminProjectsProjectGeneral = ({
     }
   }
 
-  const save = async (
-    participationContextConfig: IParticipationContextConfig | null = null
-  ) => {
-    await saveForm(participationContextConfig);
-  };
-
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // if it's a new project of type continuous
+    // Simplify or document.
+    // Not clear what this means.
     if (projectType === 'continuous') {
       eventEmitter.emit('getParticipationContext');
     } else {
@@ -462,9 +445,35 @@ const AdminProjectsProjectGeneral = ({
       };
     });
     setSlug(slug);
+    // This validation part should move to validateForm
+    // Look out for complication with new project (where there's)
+    // no slug and form should validate without.
     const isSlugValid = validateSlug(slug);
     setShowSlugErrorMessage(!isSlugValid);
     setSubmitState(isSlugValid ? 'enabled' : 'disabled');
+  };
+
+  const validateForm = () => {
+    const titleError = !isNilOrError(appConfigLocales)
+      ? validateTitle(
+          appConfigLocales,
+          projectAttrs.title_multiloc,
+          formatMessage(messages.noTitleErrorMessage)
+        )
+      : null;
+    const hasTitleError = !isEmpty(titleError);
+    setTitleError(hasTitleError ? titleError : null);
+    const formIsValid = !hasTitleError;
+
+    return formIsValid;
+  };
+
+  // We should look into only having 1 save function (saveForm)
+  // And refactor this out
+  const save = async (
+    participationContextConfig: IParticipationContextConfig | null = null
+  ) => {
+    await saveForm(participationContextConfig);
   };
 
   const handleProjectAttributeDiffOnChange = (

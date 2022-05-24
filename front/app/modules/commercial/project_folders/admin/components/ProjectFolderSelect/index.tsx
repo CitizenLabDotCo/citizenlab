@@ -143,6 +143,8 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
       newRadioProjectFolderSelect: boolean
     ) => {
       setRadioFolderSelect(newRadioProjectFolderSelect);
+      // Not ideal that we set folderId to null.
+      // Should probably keep it for better UX.
       handleFolderIdChange(
         null,
         newRadioProjectFolderSelect ? 'disabled' : 'enabled'

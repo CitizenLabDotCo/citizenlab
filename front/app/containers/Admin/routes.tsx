@@ -2,13 +2,12 @@ import React, { lazy } from 'react';
 import createDashboardRoutes from './dashboard/routes';
 import createAdminInitiativesRoutes from './initiatives/routes';
 import createAdminUsersRoutes from './users/routes';
-// import invitationsRoutes from './invitations/routes';
+import invitationsRoutes from './invitations/routes';
 import createAdminProjectsRoutes from './projects/routes';
-// import settingsRoutes from './settings/routes';
-// import settingsAreasRoutes from './settings/areas/routes';
-// import pagesRoutes from './pages/routes';
+import settingsRoutes from './settings/routes';
+import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
-// import ideasRoutes from './ideas/routes';
+import ideasRoutes from './ideas/routes';
 
 // import moduleConfiguration from 'modules';
 const AdminContainer = lazy(() => import('containers/Admin'));
@@ -17,12 +16,16 @@ import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
 
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { combineLatest } from 'rxjs';
 import { authUserStream } from 'services/auth';
 import { isModerator } from 'services/permissions/roles';
 import { Navigate } from 'react-router-dom';
+
+const AdminWorkshopsComponent = lazy(
+  () => import('containers/Admin/workshops')
+);
+const AdminFaviconComponent = lazy(() => import('containers/Admin/favicon'));
 
 export const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -92,28 +95,27 @@ const createAdminRoutes = (_isUserAuthorized: boolean) => {
       createAdminInitiativesRoutes(),
       createAdminUsersRoutes(),
       createAdminProjectsRoutes(),
-      // settingsRoutes(),
-      // settingsAreasRoutes(),
-      // pagesRoutes(),
-      // invitationsRoutes(),
+      settingsRoutes(),
+      pagesRoutes(),
+      invitationsRoutes(),
       createAdminMessagingRoutes(),
-      // ideasRoutes(),
-      // {
-      //   path: 'workshops',
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/workshops'),
-      //     loading: LoadableLoadingAdmin,
-      //     delay: 500,
-      //   }),
-      // },
-      // {
-      //   path: 'favicon',
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/favicon'),
-      //     loading: LoadableLoadingAdmin,
-      //     delay: 500,
-      //   }),
-      // },
+      ideasRoutes(),
+      {
+        path: 'workshops',
+        element: (
+          <LoadingComponent>
+            <AdminWorkshopsComponent />
+          </LoadingComponent>
+        ),
+      },
+      {
+        path: 'favicon',
+        element: (
+          <LoadingComponent>
+            <AdminFaviconComponent />
+          </LoadingComponent>
+        ),
+      },
       // ...moduleConfiguration.routes.admin,
     ],
   };
