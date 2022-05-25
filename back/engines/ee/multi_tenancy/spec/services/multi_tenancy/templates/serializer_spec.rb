@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe MultiTenancy::Templates::Serializer do
-  describe '#run', slow_test: true do
+  describe '#run' do
     it 'successfully generates a tenant template from a given tenant' do
       load Rails.root.join('db/seeds.rb')
       localhost = Tenant.find_by(host: 'localhost')
@@ -51,6 +51,20 @@ describe MultiTenancy::Templates::Serializer do
 
       home_attributes = template.dig('models', 'nav_bar_item').find { |item| item['code'] == 'home' }
       expect(home_attributes['title_multiloc']).to be_blank
+    end
+
+    it 'can deal with projects with no admin publication' do
+      # The changes introduced by ticket CL-793 can be
+      # reverted once the issue with projects losing their
+      # admin publications is solved.
+
+      project = create :project
+      project.admin_publication.delete
+      expect(project.reload).to be_present
+      serializer = described_class.new(Tenant.current)
+      template = serializer.run
+
+      expect(template['models']).to be_present
     end
   end
 end
