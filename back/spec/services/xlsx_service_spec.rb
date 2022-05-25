@@ -175,26 +175,32 @@ describe XlsxService do
         multiselect_field_idx = headers.find_index 'Which option names sound good to you?'
         expect([number_field_idx, date_field_idx, select_field_idx, multiselect_field_idx]).to all(be_present)
         idea1_row = worksheet[1].cells.map(&:value)
-        expect([
-          idea1_row[number_field_idx],
-          idea1_row[date_field_idx],
-          idea1_row[select_field_idx],
-          idea1_row[multiselect_field_idx]
-        ]).to eq [9, '', '', 'Option 1, Option 2']
+        expect(
+          [
+            idea1_row[number_field_idx],
+            idea1_row[date_field_idx],
+            idea1_row[select_field_idx],
+            idea1_row[multiselect_field_idx]
+          ]
+        ).to eq [9, '', '', 'Option 1, Option 2']
         idea2_row = worksheet[2].cells.map(&:value)
-        expect([
-          idea2_row[number_field_idx],
-          idea2_row[date_field_idx],
-          idea2_row[select_field_idx],
-          idea2_row[multiselect_field_idx]
-        ]).to eq [22, '19-05-2022', 'Hippopotamus', '']
+        expect(
+          [
+            idea2_row[number_field_idx],
+            idea2_row[date_field_idx],
+            idea2_row[select_field_idx],
+            idea2_row[multiselect_field_idx]
+          ]
+        ).to eq [22, '19-05-2022', 'Hippopotamus', '']
         idea3_row = worksheet[3].cells.map(&:value)
-        expect([
-          idea3_row[number_field_idx],
-          idea3_row[date_field_idx],
-          idea3_row[select_field_idx],
-          idea3_row[multiselect_field_idx]
-        ]).to eq ['', '', 'Fruit fly', 'Option 1']
+        expect(
+          [
+            idea3_row[number_field_idx],
+            idea3_row[date_field_idx],
+            idea3_row[select_field_idx],
+            idea3_row[multiselect_field_idx]
+          ]
+        ).to eq ['', '', 'Fruit fly', 'Option 1']
       end
     end
   end
