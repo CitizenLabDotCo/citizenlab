@@ -1,8 +1,9 @@
 import React from 'react';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import Link from 'utils/cl-router/Link';
 
 // i18n
 import messages from './messages';
@@ -11,7 +12,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 const ReferenceDataInterface = () => {
   return (
     <>
-      <Box display="flex" justifyContent="flex-start">
+      <Box display="flex" justifyContent="flex-start" mb="32px">
         <Button
           linkTo="/admin/dashboard/representativeness"
           buttonStyle="text"
@@ -21,7 +22,23 @@ const ReferenceDataInterface = () => {
           text={<FormattedMessage {...messages.backToDashboard} />}
         />
       </Box>
-      <Title variant="h1">Manage data</Title>
+      <Box background="white" px="40px" pt="60px" pb="40px">
+        <Title variant="h2">
+          <FormattedMessage {...messages.pageTitle} />
+        </Title>
+        <Text color="label">
+          <FormattedMessage
+            {...messages.pageDescription}
+            values={{
+              userRegistrationLink: (
+                <Link to="/admin/settings/registration">
+                  <FormattedMessage {...messages.userRegistrationLink} />
+                </Link>
+              ),
+            }}
+          />
+        </Text>
+      </Box>
     </>
   );
 };

@@ -5,4 +5,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.backToDashboard',
     defaultMessage: 'Back to dashboard',
   },
+  pageTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageTitle',
+    defaultMessage: 'Manage data',
+  },
+  pageDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageDescription',
+    defaultMessage:
+      'Here you can show/hide items on the dashboard and enter the base data. Only the enabled fields for {userRegistrationLink} will appear here.',
+  },
+  userRegistrationLink: {
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.userRegistrationLink',
+    defaultMessage: 'user registration',
+  },
 });
