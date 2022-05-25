@@ -1318,7 +1318,6 @@
   "app.containers.admin.ContentBuilder.accordionTextValue": "This is expandable accordion content. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.admin.ContentBuilder.accordionTitleLabel": "Title",
   "app.containers.admin.ContentBuilder.accordionTitleValue": "Accordion title",
-  "app.containers.admin.ContentBuilder.accordionTooltipContentLabel": "Tooltip content",
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Height",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Height of the iframe window.",
