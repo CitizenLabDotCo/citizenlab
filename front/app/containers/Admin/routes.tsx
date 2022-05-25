@@ -11,12 +11,11 @@ import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 
 // components
 import { LoadingComponent } from 'routes';
 import { Navigate, useLocation } from 'react-router-dom';
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminWorkshopsComponent = lazy(
   () => import('containers/Admin/workshops')
@@ -137,7 +136,7 @@ const createAdminRoutes = () => {
           </LoadingComponent>
         ),
       },
-      // ...moduleConfiguration.routes.admin,
+      ...moduleConfiguration.routes.admin,
     ],
   };
 };

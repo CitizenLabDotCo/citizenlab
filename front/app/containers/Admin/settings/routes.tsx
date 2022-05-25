@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-// import moduleConfiguration from 'modules';
+import moduleConfiguration from 'modules';
 import { LoadingComponent } from 'routes';
 
 const AdminSettingsIndexComponent = React.lazy(
@@ -108,6 +108,6 @@ export default () => ({
         },
       ],
     },
-    // ...moduleConfiguration.routes['admin.settings'],
+    ...moduleConfiguration.routes['admin.settings'],
   ],
 });

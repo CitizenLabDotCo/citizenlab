@@ -22,8 +22,8 @@ import {
 } from 'react-router-dom';
 
 const Routes = () => {
-  const routes = useRoutes(createRoutes());
-
+  const importedRoutes = createRoutes();
+  const routes = useRoutes(importedRoutes);
   useEffect(() => {
     modules.afterMountApplication();
   }, []);

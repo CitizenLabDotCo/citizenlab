@@ -21,7 +21,7 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-import Outlet from 'components/Outlet';
+// import Outlet from 'components/Outlet';
 import {
   StyledForm,
   ProjectType,
@@ -476,19 +476,19 @@ const AdminProjectsProjectGeneral = ({
     await saveForm(participationContextConfig);
   };
 
-  const handleProjectAttributeDiffOnChange = (
-    projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
-    submitState: ISubmitState
-  ) => {
-    setProjectAttributesDiff((currentProjectAttributesDiff) => {
-      return {
-        ...currentProjectAttributesDiff,
-        ...projectAttributesDiff,
-      };
-    });
+  // const handleProjectAttributeDiffOnChange = (
+  //   projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+  //   submitState: ISubmitState
+  // ) => {
+  //   setProjectAttributesDiff((currentProjectAttributesDiff) => {
+  //     return {
+  //       ...currentProjectAttributesDiff,
+  //       ...projectAttributesDiff,
+  //     };
+  //   });
 
-    setSubmitState(submitState);
-  };
+  //   setSubmitState(submitState);
+  // };
 
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.attributes : {}),
@@ -611,11 +611,12 @@ const AdminProjectsProjectGeneral = ({
           handleAreaSelectionChange={handleAreaSelectionChange}
         />
 
-        <Outlet
+        {/* lint error, @brent please look into this */}
+        {/* <Outlet
           id="app.components.AdminPage.projects.form.additionalInputs.inputs"
           projectAttrs={projectAttrs}
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-        />
+        /> */}
 
         <HeaderImageDropzone
           projectHeaderImage={projectHeaderImage}

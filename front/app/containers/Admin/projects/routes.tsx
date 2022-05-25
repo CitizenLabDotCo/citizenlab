@@ -1,10 +1,9 @@
 import React, { lazy } from 'react';
-
-// import moduleConfiguration from 'modules';
-const AdminProjectsAndFolders = lazy(() => import('.'));
-const AdminProjectsList = lazy(() => import('./all'));
+import moduleConfiguration from 'modules';
 import { LoadingComponent } from 'routes';
 
+const AdminProjectsAndFolders = lazy(() => import('.'));
+const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
 const AdminProjectTimeline = lazy(() => import('./project/timeline'));
@@ -47,7 +46,8 @@ const createAdminProjectsRoutes = () => {
           </LoadingComponent>
         ),
       },
-      // ...moduleConfiguration.routes['admin.project_templates'],
+      ...moduleConfiguration.routes['admin.project_templates'],
+      ...moduleConfiguration.routes['admin.projects'],
       {
         path: 'new',
         element: (
@@ -153,8 +153,6 @@ const createAdminProjectsRoutes = () => {
               </LoadingComponent>
             ),
           },
-          // double check on this to make sure it goes in the right spot with regard to children/parent routes
-          // ...moduleConfiguration.routes['admin.projects'],
           {
             path: 'description',
             element: (
