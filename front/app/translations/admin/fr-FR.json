@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Archivé",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archivé",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Pas de lieu en particulier",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Zones géographiques",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Les projets peuvent être filtrés sur la page d'accueil à l'aide de zones. Les zones peuvent être définies {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "ici",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "Pas de zone spécifique",
