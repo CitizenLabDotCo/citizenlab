@@ -3,6 +3,7 @@ import { render, screen } from 'utils/testUtils/rtl';
 import TabbedResource from '.';
 import { WithRouterProps } from 'utils/withRouter';
 
+jest.mock('services/appConfiguration');
 jest.mock('utils/withRouter');
 jest.mock('utils/cl-router/Link');
 

@@ -5,10 +5,7 @@ import ContentBuilderPreview from './';
 let mockFeatureFlagData = true;
 
 jest.mock('services/locale');
-
-jest.mock('utils/withRouter');
-
-jest.mock('utis/withRouter', () => {
+jest.mock('utils/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

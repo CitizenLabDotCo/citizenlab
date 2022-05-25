@@ -29,7 +29,7 @@ jest.mock('modules/commercial/content_builder/services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
 jest.mock('utils/withRouter');
-jest.mock('utils/cl-router/Link', () => 'LinkText');
+jest.mock('utils/cl-router/Link', () => () => <a>LinkText</a>);
 
 const dummyFunction = jest.fn();
 const multiloc = 'en' as Multiloc;
