@@ -118,6 +118,7 @@ resource 'Ideas' do
 
   describe 'Update' do
     let(:project) { create(:continuous_project) }
+    let(:form) { create(:custom_form, project: project) }
     let(:idea) { create(:idea, author: user, project: project, custom_field_values: { 'extra_field' => 'test value' }) }
     let(:id) { idea.id }
 
@@ -126,12 +127,24 @@ resource 'Ideas' do
     end
 
     context 'when the extra field is required' do
-      before do
-        create(:custom_field_extra_custom_form, required: true, resource: create(:custom_form, project: project))
-      end
+      let!(:text_field) { create(:custom_field_extra_custom_form, required: true, resource: form) }
 
       context 'when the field value is given' do
-        let(:custom_field_values) { { 'extra_field' => 'Changed Value' } }
+        let(:custom_field_values) { { text_field.key => 'Changed Value' } }
+
+        patch 'web_api/v1/ideas/:id' do
+          example_request 'Update an idea with an extra field' do
+            assert_status 200
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+          end
+        end
+      end
+
+      context 'when the field value is given and another field value is added' do
+        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
+        let(:custom_field_values) { { text_field.key => 'Changed Value', select_field.key => 'option1' } }
 
         patch 'web_api/v1/ideas/:id' do
           example_request 'Update an idea with an extra field' do
@@ -144,7 +157,7 @@ resource 'Ideas' do
       end
 
       context 'when the field value is not given' do
-        let(:custom_field_values) { { 'extra_field' => nil } }
+        let(:custom_field_values) { { text_field.key => nil } }
 
         patch 'web_api/v1/ideas/:id' do
           example_request 'Update an idea with an extra field' do
