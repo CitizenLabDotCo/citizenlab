@@ -191,7 +191,12 @@ const ContentBuilderToolbox = ({
                 text={formatMessage(messages.accordionTextValue)}
                 openByDefault={false}
                 id="Accordion"
-              />
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
