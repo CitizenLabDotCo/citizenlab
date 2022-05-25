@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
+import React, { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
