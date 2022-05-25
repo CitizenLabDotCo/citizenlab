@@ -86,8 +86,7 @@ const RegistrationCustomFieldEdit = memo(
               title: localize(userCustomField.attributes.title_multiloc),
             }}
           >
-            {/* todo check to see if this works */}
-            <RouterOutlet context={{ customField: userCustomField }} />
+            <RouterOutlet />
           </TabbedResource>
         </>
       );
