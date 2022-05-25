@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Ovde se nalaze projekti sa vaše platforme.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekti",
   "app.containers.AdminPage.ProjectDashboard.published": "Objavljeno",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Izgled kolone",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Opis",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Opis početne stranice",
