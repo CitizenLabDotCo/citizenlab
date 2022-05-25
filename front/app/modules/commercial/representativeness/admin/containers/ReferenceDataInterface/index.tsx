@@ -4,6 +4,7 @@ import React from 'react';
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';
+import Fields from './Fields';
 
 // i18n
 import messages from './messages';
@@ -38,6 +39,8 @@ const ReferenceDataInterface = () => {
             }}
           />
         </Text>
+
+        <Fields />
       </Box>
     </>
   );
