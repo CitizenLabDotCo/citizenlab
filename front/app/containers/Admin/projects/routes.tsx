@@ -1,12 +1,30 @@
 import React, { lazy } from 'react';
-// import Loadable from 'react-loadable';
-// import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+
 // import moduleConfiguration from 'modules';
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 import { LoadingComponent } from 'routes';
+
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
+const AdminProjectTimeline = lazy(() => import('./project/timeline'));
+const AdminProjectTimelineNewAndEdit = lazy(
+  () => import('./project/timeline/edit')
+);
+const AdminProjectEvents = lazy(() => import('./project/events'));
+const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
+const AdminProjectPermissions = lazy(() => import('./project/permissions'));
+const AdminProjectSurveyResults = lazy(() => import('./project/surveyResults'));
+const AdminProjectPoll = lazy(() => import('./project/poll'));
+const AdminProjectDescription = lazy(() => import('./project/description'));
+const AdminProjectIdeas = lazy(() => import('./project/ideas'));
+const AdminProjectVolunteering = lazy(() => import('./project/volunteering'));
+const AdminProjectVolunteeringNew = lazy(
+  () => import('./project/volunteering/NewCause')
+);
+const AdminProjectVolunteeringEdit = lazy(
+  () => import('./project/volunteering/EditCause')
+);
 
 export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
@@ -29,6 +47,15 @@ const createAdminProjectsRoutes = () => {
           </LoadingComponent>
         ),
       },
+      // ...moduleConfiguration.routes['admin.project_templates'],
+      {
+        path: 'new',
+        element: (
+          <LoadingComponent>
+            <AdminProjectsProjectGeneral />
+          </LoadingComponent>
+        ),
+      },
       {
         path: ':projectId',
         element: (
@@ -36,6 +63,7 @@ const createAdminProjectsRoutes = () => {
             <AdminProjectsProjectIndex />
           </LoadingComponent>
         ),
+        // all routes under /admin/projects/:projectId
         children: [
           {
             index: true,
@@ -45,157 +73,138 @@ const createAdminProjectsRoutes = () => {
               </LoadingComponent>
             ),
           },
+          {
+            path: 'edit',
+            element: (
+              <LoadingComponent>
+                <AdminProjectsProjectIndex />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'timeline',
+            element: (
+              <LoadingComponent>
+                <AdminProjectTimeline />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'timeline/new',
+            element: (
+              <LoadingComponent>
+                <AdminProjectTimelineNewAndEdit />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'timeline/:id',
+            element: (
+              <LoadingComponent>
+                <AdminProjectTimelineNewAndEdit />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'events',
+            element: (
+              <LoadingComponent>
+                <AdminProjectEvents />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'events/new',
+            element: (
+              <LoadingComponent>
+                <AdminProjectEventsEdit />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'events/:id',
+            element: (
+              <LoadingComponent>
+                <AdminProjectEventsEdit />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'permissions',
+            element: (
+              <LoadingComponent>
+                <AdminProjectPermissions />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'survey-results',
+            element: (
+              <LoadingComponent>
+                <AdminProjectSurveyResults />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'poll',
+            element: (
+              <LoadingComponent>
+                <AdminProjectPoll />
+              </LoadingComponent>
+            ),
+          },
+          // double check on this to make sure it goes in the right spot with regard to children/parent routes
+          // ...moduleConfiguration.routes['admin.projects'],
+          {
+            path: 'description',
+            element: (
+              <LoadingComponent>
+                <AdminProjectDescription />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'ideas',
+            element: (
+              <LoadingComponent>
+                <AdminProjectIdeas />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'volunteering',
+            element: (
+              <LoadingComponent>
+                <AdminProjectVolunteering />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'volunteering/causes/new',
+            element: (
+              <LoadingComponent>
+                <AdminProjectVolunteeringNew />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'volunteering/phases/:phaseId/causes/new',
+            element: (
+              <LoadingComponent>
+                <AdminProjectVolunteeringNew />
+              </LoadingComponent>
+            ),
+          },
+          {
+            path: 'volunteering/causes/:causeId',
+            element: (
+              <LoadingComponent>
+                <AdminProjectVolunteeringEdit />
+              </LoadingComponent>
+            ),
+          },
         ],
       },
-      // {
-      // path: ':projectId/edit',
-      // component: Loadable({
-      //   loader: () => import('containers/Admin/projects/edit'),
-      //   loading: LoadableLoadingAdmin,
-      //   delay: 500,
-      // }),
-      // indexRoute: {
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/projects/edit/general'),
-      //     loading: () => null,
-      //   }),
-      // },
-      // childRoutes: [
-      //   {
-      //     path: '/:locale/admin/projects/new',
-      //     component: Loadable({
-      //       loader: () => import('containers/Admin/projects/edit/general'),
-      //       loading: LoadableLoadingAdmin,
-      //       delay: 500,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/description',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/description'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/ideas',
-      //     component: Loadable({
-      //       loader: () => import('containers/Admin/projects/edit/ideas'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/volunteering',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/volunteering'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/volunteering/causes/new',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/volunteering/NewCause'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/volunteering/phases/:phaseId/causes/new',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/volunteering/NewCause'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/volunteering/EditCause'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/timeline',
-      //     component: Loadable({
-      //       loader: () => import('containers/Admin/projects/edit/timeline'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/timeline/new',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/timeline/edit'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/timeline/:id',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/timeline/edit'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/events',
-      //     component: Loadable({
-      //       loader: () => import('containers/Admin/projects/edit/events'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/events/new',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/events/edit'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/events/:id',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/events/edit'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/events',
-      //     component: Loadable({
-      //       loader: () => import('containers/Admin/projects/edit/events'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/permissions',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/permissions'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/survey-results',
-      //     component: Loadable({
-      //       loader: () =>
-      //         import('containers/Admin/projects/edit/surveyResults'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   {
-      //     path: '/:locale/admin/projects/:projectId/poll',
-      //     component: Loadable({
-      //       loader: () => import('containers/Admin/projects/edit/poll'),
-      //       loading: () => null,
-      //     }),
-      //   },
-      //   ...moduleConfiguration.routes['admin.projects'],
-      // ],
-      // },
-      // ...moduleConfiguration.routes['admin.project_templates'],
     ],
   };
 };
