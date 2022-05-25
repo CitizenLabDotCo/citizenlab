@@ -7,6 +7,19 @@ module UserCustomFields
         XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         private_constant :XLSX_MIME_TYPE
 
+        def users_by_custom_field
+          json_response = { series: { users: user_counts } }
+
+          if custom_field.custom_field_options.present?
+            options = custom_field.custom_field_options.to_h { |o| [o.key, o.attributes.slice('title_multiloc')] }
+            json_response[:options] = options
+          end
+
+          render json: json_response
+        rescue NotSupportedFieldTypeError
+          head :not_implemented
+        end
+
         def users_by_gender_as_xlsx
           xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'gender', 'users'
           send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_gender.xlsx'
@@ -46,17 +59,6 @@ module UserCustomFields
         def users_by_education_as_xlsx
           xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'education', 'users'
           send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_education.xlsx'
-        end
-
-        def users_by_custom_field
-          if %w[select multiselect].include?(custom_field.input_type)
-            options = custom_field.custom_field_options.select(:key, :title_multiloc)
-            render json: { series: { users: user_counts }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
-          else
-            render json: { series: { users: user_counts } }
-          end
-        rescue NotSupportedFieldTypeError
-          head :not_implemented
         end
 
         def users_by_custom_field_as_xlsx
