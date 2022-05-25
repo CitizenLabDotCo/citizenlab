@@ -5,7 +5,7 @@ module UserCustomFields
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
         def users_by_gender_serie
-          count_users_by_custom_field(find_users, CustomField.find_by(key: 'gender'))
+          count_users_by_custom_field(find_users, custom_field)
         end
 
         def users_by_gender
@@ -18,7 +18,7 @@ module UserCustomFields
         end
 
         def users_by_birthyear_serie
-          count_users_by_custom_field(find_users, CustomField.find_by(key: 'birthyear'))
+          count_users_by_custom_field(find_users, custom_field)
         end
 
         def users_by_birthyear
@@ -31,7 +31,7 @@ module UserCustomFields
         end
 
         def users_by_domicile_serie
-          count_users_by_custom_field(find_users, CustomField.find_by(key: 'domicile'))
+          count_users_by_custom_field(find_users, custom_field)
         end
 
         def users_by_domicile
@@ -62,7 +62,7 @@ module UserCustomFields
         end
 
         def users_by_education_serie
-          count_users_by_custom_field(find_users, CustomField.find_by(key: 'education'))
+          count_users_by_custom_field(find_users, custom_field)
         end
 
         def users_by_education
@@ -105,7 +105,7 @@ module UserCustomFields
             users.joins(<<~SQL.squish).select('cfv.field_value as field_value')
               LEFT JOIN (
                 SELECT
-                  jsonb_array_elements(custom_field_values->'#{@custom_field.key}') as field_value,
+                  jsonb_array_elements(custom_field_values->'#{custom_field.key}') as field_value,
                   id as user_id
                 FROM users
               ) as cfv
@@ -116,45 +116,39 @@ module UserCustomFields
           end
         end
 
-        def users_by_custom_field_series
-          count_users_by_custom_field(find_users, @custom_field)
-        end
-
         def users_by_custom_field
-          @custom_field = CustomField.find(params[:custom_field_id])
-          serie = users_by_custom_field_series
-          if %w[select multiselect].include?(@custom_field.input_type)
-            options = @custom_field.custom_field_options.select(:key, :title_multiloc)
-            render json: { series: { users: serie }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
+          user_counts = count_users_by_custom_field(find_users, custom_field)
+          if %w[select multiselect].include?(custom_field.input_type)
+            options = custom_field.custom_field_options.select(:key, :title_multiloc)
+            render json: { series: { users: user_counts }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
           else
-            render json: { series: { users: serie } }
+            render json: { series: { users: user_counts } }
           end
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
 
         def users_by_custom_field_as_xlsx
-          @custom_field = CustomField.find(params[:custom_field_id])
+          user_counts = count_users_by_custom_field(find_users, custom_field)
 
-          if %w[select multiselect].include?(@custom_field.input_type)
-            serie = users_by_custom_field_series
-            options = @custom_field.custom_field_options.select(:key, :title_multiloc)
+          if %w[select multiselect].include?(custom_field.input_type)
+            options = custom_field.custom_field_options.select(:key, :title_multiloc)
 
             res = options.map do |option|
               {
                 'option_id' => option.key,
                 'option' => multiloc_service.t(option.title_multiloc),
-                'users' => serie[option.key] || 0
+                'users' => user_counts[option.key] || 0
               }
             end
             res.push({
               'option_id' => '_blank',
               'option' => 'unknown',
-              'users' => serie['_blank'] || 0
+              'users' => user_counts['_blank'] || 0
             })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
           else
-            xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_series, 'option', 'users'
+            xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'option', 'users'
           end
           send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
         rescue NotSupportedFieldTypeError
@@ -162,6 +156,22 @@ module UserCustomFields
         end
 
         private
+
+        def custom_field
+          @custom_field ||=
+            if params[:custom_field_id]
+              CustomField.find(params[:custom_field_id])
+            elsif (key = custom_field_key_from_path)
+              CustomField.find_by(key: key)
+            else
+              raise ActiveRecord::RecordNotFound
+            end
+        end
+
+        def custom_field_key_from_path
+          request.path.split('/').last
+                 .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)[:key]
+        end
 
         def do_authorize
           authorize :'user_custom_fields/stat_user'
