@@ -114,7 +114,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_topic
     serie = votes_by_topic_serie
     topics = Topic.all.select(:id, :title_multiloc)
-    render json: { series: { total: serie }, topics: topics.map { |t| [t.id, t.attributes.except('id')] }.to_h }
+    render json: { series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } }
   end
 
   def votes_by_topic_as_xlsx
@@ -151,7 +151,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def votes_by_project
     serie = votes_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { total: serie }, projects: projects.map { |p| [p.id, p.attributes.except('id')] }.to_h }
+    render json: { series: { total: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } }
   end
 
   def votes_by_project_as_xlsx
@@ -231,9 +231,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     data = %w[up down].index_with do |mode|
       serie.keys.select do |key_mode, _|
           key_mode == mode
-        end.map do |_, value|
+        end.to_h do |_, value|
           [(value || '_blank'), serie[[mode, value]]]
-        end.to_h
+        end
     end
     data['total'] = (data['up'].keys + data['down'].keys).uniq.index_with do |key|
       (data.dig('up', key) || 0) + (data.dig('down', key) || 0)
@@ -279,10 +279,10 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   def normalize_votes(data, key)
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
     data.transform_values do |buckets|
-      buckets.map do |value, number|
+      buckets.to_h do |value, number|
           denominator = (normalizing_data.dig('total', value) || 0) + 1
           [value, number.to_f * 100 / denominator.to_f]
-        end.to_h
+        end
     end
   end
 

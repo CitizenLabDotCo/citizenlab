@@ -16,33 +16,36 @@ FactoryBot.define do
       action { 'changed_title' }
       payload do
         {
-        'change' => [
-          { 'en' => 'old title' },
-          { 'en' => 'new title' }
-        ]
-      } end
+          'change' => [
+            { 'en' => 'old title' },
+            { 'en' => 'new title' }
+          ]
+        }
+      end
     end
 
     factory :changed_body_activity do
       action { 'changed_body' }
       payload do
         {
-        'change' => [
-          { 'en' => 'old body' },
-          { 'en' => 'new body' }
-        ]
-      } end
+          'change' => [
+            { 'en' => 'old body' },
+            { 'en' => 'new body' }
+          ]
+        }
+      end
     end
 
     factory :changed_status_activity do
       action { 'changed_status' }
       payload do
         {
-        'change' => %w[
-          somepreviousstatusid
-          somenewstatusid
-        ]
-      } end
+          'change' => %w[
+            somepreviousstatusid
+            somenewstatusid
+          ]
+        }
+      end
     end
 
     factory :comment_created_activity do
