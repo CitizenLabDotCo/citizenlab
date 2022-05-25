@@ -51,7 +51,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       options,
     } = data;
     const res = Object.entries(options)
-      .sort((a, b) => a[1]['ordering'] - b[1]['ordering'])
+      .sort((a, b) => a[1].ordering - b[1].ordering)
       .map(([key, value]) => ({
         value: users[key] || 0,
         name: this.props.localize(value.title_multiloc),
