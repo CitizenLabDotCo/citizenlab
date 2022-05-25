@@ -813,7 +813,6 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Alle områder",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Geografiske områder",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "her",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Valg",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Liste",

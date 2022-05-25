@@ -813,7 +813,6 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Allagaasivimmut inissinneqarpoq",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Allagaasivimmut inissinneqarpoq",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "All Areas",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Geographic areas",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "uani",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Selection",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cards",

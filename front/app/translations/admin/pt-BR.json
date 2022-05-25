@@ -813,7 +813,6 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Arquivar",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arquivar",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Todas as áreas",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Áreas geográficas",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "Aqui",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Seleção",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Na lista",

@@ -813,7 +813,6 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Archivé",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archivé",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Pas de lieu en particulier",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Zones géographiques",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "ici",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Sélectionnez un lieu",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Dans une liste",

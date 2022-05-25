@@ -813,7 +813,6 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Zarchiwizowany",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Zarchiwizowany",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Wszystkie obszary",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Obszary geograficzne",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "tutaj",
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabel": "Wybrane",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Na liście",
