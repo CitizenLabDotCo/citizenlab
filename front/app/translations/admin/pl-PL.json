@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Zarchiwizowany",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Zarchiwizowany",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Wszystkie obszary",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Obszary geograficzne",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Projects can be filtered on the homepage using areas. Areas can be set {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "tutaj",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "No specific area",
