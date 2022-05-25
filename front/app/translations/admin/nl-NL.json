@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Dit zijn de projecten die je beheert.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projecten",
   "app.containers.AdminPage.ProjectDashboard.published": "Gepubliceerd",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Kolom layout",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Volledige beschrijving",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Beschrijving op homepagina",
