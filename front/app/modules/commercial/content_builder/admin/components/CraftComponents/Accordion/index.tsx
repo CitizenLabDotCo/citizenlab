@@ -69,7 +69,9 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
         />
       </Box>
       <Box flex="0 1 100%" background="#ffffff">
-        <Label>{formatMessage(messages.accordionTextLabel)}</Label>
+        <Label htmlFor="quill-editor">
+          {formatMessage(messages.accordionTextLabel)}
+        </Label>
         <QuillEditor
           maxHeight="225px"
           noImages
@@ -83,14 +85,14 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Box display="flex" gap="16px" marginBottom="20px" flex="0 1 100%">
         <Toggle
-          id="e2e-default-open-toggle"
+          id="default-open-toggle"
           checked={openByDefault}
           onChange={() => {
             setProp((props) => (props.openByDefault = !openByDefault));
           }}
         />
         <Box mt="4px">
-          <Label>
+          <Label htmlFor="default-open-toggle">
             <FormattedMessage {...messages.accordionDefaultOpenLabel} />
           </Label>
         </Box>
