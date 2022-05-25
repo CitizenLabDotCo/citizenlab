@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Voici les projets sur la plateforme que vous modérez",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.AdminPage.ProjectDashboard.published": "Publié",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Mise en page des colonnes",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Description complète",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Description sur la page d'accueil",
