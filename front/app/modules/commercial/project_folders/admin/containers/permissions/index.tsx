@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
@@ -8,6 +7,9 @@ import { isProjectFolderModerator } from '../../../permissions/roles';
 
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
+
+// hooks
+import { useParams } from 'react-router-dom';
 
 // services
 import { useProjectFolderModerators } from '../../../hooks';
@@ -56,11 +58,12 @@ const UserSelectButton = styled(Button)`
   margin-left: 12px;
 `;
 
-const FolderPermissions = ({
-  params: { projectFolderId },
-  intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+const FolderPermissions = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const { projectFolderId } = useParams();
   const authUser = useAuthUser();
+
+  if (!projectFolderId) return null;
+
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
@@ -233,4 +236,4 @@ const FolderPermissions = ({
   );
 };
 
-export default withRouter(injectIntl(FolderPermissions));
+export default injectIntl(FolderPermissions);
