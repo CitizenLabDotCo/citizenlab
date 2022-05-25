@@ -5,4 +5,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.defaultField',
     defaultMessage: 'Default field',
   },
+  shownOnDashboard: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.shownOnDashboard',
+    defaultMessage: 'Shown on dashboard',
+  },
+  hiddenOnDashboard: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.hiddenOnDashboard',
+    defaultMessage: 'Hidden on dashboard',
+  },
 });

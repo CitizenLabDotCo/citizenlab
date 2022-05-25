@@ -1,4 +1,5 @@
 import React from 'react';
+import Tippy from '@tippyjs/react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -38,6 +39,13 @@ const StyledIcon = styled(Icon)`
   transform: translateY(-1px);
 `;
 
+const TooltipContent = styled.p`
+  color: white;
+  margin: 12px 16px;
+  font-size: 14px;
+  font-weight: 500px;
+`;
+
 const Field = ({
   enabled,
   titleMultiloc,
@@ -55,7 +63,22 @@ const Field = ({
       borderTop={`1px solid ${colors.separation}`}
     >
       <Box display="flex" alignItems="center">
-        <Toggle checked={enabled} onChange={onToggleEnabled} />
+        <Tippy
+          placement="top"
+          content={
+            <TooltipContent>
+              {enabled ? (
+                <FormattedMessage {...messages.shownOnDashboard} />
+              ) : (
+                <FormattedMessage {...messages.hiddenOnDashboard} />
+              )}
+            </TooltipContent>
+          }
+        >
+          <Box display="flex" alignItems="center">
+            <Toggle checked={enabled} onChange={onToggleEnabled} />
+          </Box>
+        </Tippy>
         <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
           {localize(titleMultiloc)}
         </Title>
