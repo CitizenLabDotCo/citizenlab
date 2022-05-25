@@ -1,6 +1,5 @@
 import { NavItem } from 'containers/Admin/sideBar';
 import { FC, useEffect } from 'react';
-import { getUrlLocale } from 'services/locale';
 import { InsertConfigurationOptions } from 'typings';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -21,12 +20,6 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
         featureName: insightsManualFlow
           ? 'insights_manual_flow'
           : 'project_reports',
-        isActive: (pathName) =>
-          pathName.startsWith(
-            `${
-              getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-            }/admin/insights`
-          ),
       },
       insertAfterName: 'projects',
     });

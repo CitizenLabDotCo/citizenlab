@@ -1,6 +1,5 @@
 import { NavItem } from 'containers/Admin/sideBar';
 import { FC, useEffect } from 'react';
-import { getUrlLocale } from 'services/locale';
 import { InsertConfigurationOptions } from 'typings';
 
 type Props = {
@@ -17,12 +16,6 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
           iconName: 'moderation',
           message: 'moderation',
           featureName: 'moderation',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/moderation`
-            ),
         },
         insertAfterName: 'dashboard',
       }),

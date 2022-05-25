@@ -143,7 +143,6 @@ export type NavItem = {
   iconName: IconNames;
   message: string;
   featureName?: TAppConfigurationSetting;
-  isActive?: (pathname: string) => boolean;
   count?: number;
   onlyCheckAllowed?: boolean;
   className?: ({ isActive: string }) => string | undefined;
