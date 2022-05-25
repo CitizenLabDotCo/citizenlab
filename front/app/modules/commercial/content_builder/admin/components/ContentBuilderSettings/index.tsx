@@ -19,9 +19,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
+`;
+
+const StyledCloseIconButton = styled(CloseIconButton)`
+  position: absolute;
+  right: 8px;
 `;
 
 const ContentBuilderSettings = () => {
@@ -45,6 +51,10 @@ const ContentBuilderSettings = () => {
     };
   });
 
+  const closeSettings = () => {
+    actions.selectNode();
+  };
+
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox
       position="fixed"
@@ -56,6 +66,13 @@ const ContentBuilderSettings = () => {
       h="100%"
       background="#ffffff"
     >
+      <StyledCloseIconButton
+        className="e2eBuilderSettingsClose"
+        a11y_buttonActionMessage={messages.a11y_closeSettingsPanel}
+        onClick={closeSettings}
+        iconColor={colors.label}
+        iconColorOnHover={'#000'}
+      />
       <Title variant="h2">
         <FormattedMessage {...getComponentNameMessage(selected.name)} />
       </Title>
