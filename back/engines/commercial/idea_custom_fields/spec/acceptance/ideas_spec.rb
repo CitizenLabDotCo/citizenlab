@@ -133,11 +133,25 @@ resource 'Ideas' do
         let(:custom_field_values) { { text_field.key => 'Changed Value' } }
 
         patch 'web_api/v1/ideas/:id' do
-          example_request 'Update an idea with an extra field' do
+          example_request 'Update an idea with a required extra field' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
             expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+          end
+        end
+      end
+
+      context 'when the field value is cleared' do
+        let(:custom_field_values) { { text_field.key => '' } }
+
+        patch 'web_api/v1/ideas/:id' do
+          example_request 'Clear a required extra field of an idea' do
+            assert_status 422
+            json_response = json_parse(response_body)
+            errors = json_response.dig(:errors, :custom_field_values)
+            expect(errors.size).to eq 1
+            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
           end
         end
       end
@@ -147,7 +161,7 @@ resource 'Ideas' do
         let(:custom_field_values) { { text_field.key => 'Changed Value', select_field.key => 'option1' } }
 
         patch 'web_api/v1/ideas/:id' do
-          example_request 'Update an idea with an extra field' do
+          example_request 'Update an idea with a required extra field and add an extra field' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
@@ -160,12 +174,42 @@ resource 'Ideas' do
         let(:custom_field_values) { { text_field.key => nil } }
 
         patch 'web_api/v1/ideas/:id' do
-          example_request 'Update an idea with an extra field' do
+          example_request 'Update an idea with a required extra field' do
             assert_status 422
             json_response = json_parse(response_body)
             errors = json_response.dig(:errors, :custom_field_values)
             expect(errors.size).to eq 1
             expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+          end
+        end
+      end
+    end
+
+    context 'when the extra field is optional' do
+      let!(:text_field) { create(:custom_field_extra_custom_form, required: false, resource: form) }
+
+      context 'when the field value is given' do
+        let(:custom_field_values) { { text_field.key => 'Changed Value' } }
+
+        patch 'web_api/v1/ideas/:id' do
+          example_request 'Update an idea with an optional extra field' do
+            assert_status 200
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+          end
+        end
+      end
+
+      context 'when the field value is cleared' do
+        let(:custom_field_values) { { text_field.key => '' } }
+
+        patch 'web_api/v1/ideas/:id' do
+          example_request 'Clear an optional extra field of an idea' do
+            assert_status 200
+            json_response = json_parse(response_body)
+            idea_from_db = Idea.find(json_response[:data][:id])
+            expect(idea_from_db.custom_field_values.to_h).to eq({})
           end
         end
       end

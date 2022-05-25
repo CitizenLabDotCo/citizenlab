@@ -84,7 +84,7 @@ class CustomFieldService
 
   def cleanup_custom_field_values!(custom_field_values)
     custom_field_values.each_key do |key|
-      next unless custom_field_values[key].nil?
+      next if custom_field_values[key].present?
 
       custom_field_values.delete key
     end

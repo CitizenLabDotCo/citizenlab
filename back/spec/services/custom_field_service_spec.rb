@@ -7,6 +7,16 @@ describe CustomFieldService do
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:locale) { 'en' }
 
+  describe 'cleanup_custom_field_values!' do
+    let(:field_values) { { 'key1' => nil, 'key2' => '', 'key3' => 'Not blank' } }
+
+    it 'destructively deletes keys with blank values from the argument and returns the argument' do
+      cleaned_values = service.cleanup_custom_field_values! field_values
+      expect(field_values).to eq({ 'key3' => 'Not blank' })
+      expect(cleaned_values).to be field_values
+    end
+  end
+
   describe 'fields_to_json_schema_multiloc' do
     let(:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
     let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
