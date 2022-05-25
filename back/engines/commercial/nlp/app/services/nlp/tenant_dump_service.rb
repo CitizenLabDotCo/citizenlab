@@ -40,7 +40,6 @@ module NLP
           author_name:          idea.author_name,
           location_description: idea.location_description,
           topics:               idea.topics.map(&:id),
-          areas:                idea.areas.map(&:id),
           upvotes_count:        idea.upvotes_count,
           downvotes_count:      idea.downvotes_count,
           updated_at:           idea.updated_at.iso8601,
@@ -51,7 +50,7 @@ module NLP
     end
 
     def encode_comments(idea)
-      children_map = idea.comments.map { |c| [c.id, []] }.to_h
+      children_map = idea.comments.to_h { |c| [c.id, []] }
       idea.comments.each do |c|
         if c.parent_id
           children_map[c.parent_id] += [c]

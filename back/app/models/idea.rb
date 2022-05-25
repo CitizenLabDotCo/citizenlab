@@ -66,8 +66,6 @@ class Idea < ApplicationRecord
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
-  has_many :areas_ideas, dependent: :destroy
-  has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_ideas_count, after_remove: :update_phase_ideas_count
   has_many :baskets_ideas, dependent: :destroy
@@ -101,18 +99,6 @@ class Idea < ApplicationRecord
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
-  end)
-
-  scope :with_all_areas, (proc do |area_ids|
-    uniq_area_ids = area_ids.uniq
-    joins(:areas_ideas)
-    .where(areas_ideas: { area_id: uniq_area_ids })
-    .group(:id).having('COUNT(*) = ?', uniq_area_ids.size)
-  end)
-
-  scope :with_some_areas, (proc do |area_ids|
-    with_dups = joins(:areas_ideas).where(areas_ideas: { area_id: area_ids })
-    where(id: with_dups)
   end)
 
   scope :in_phase, (proc do |phase_id|

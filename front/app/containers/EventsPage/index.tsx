@@ -23,7 +23,7 @@ export default () => (
 
     <Box as="main">
       <SectionContainer>
-        <StyledContentContainer>
+        <StyledContentContainer id="e2e-events-container">
           <UpcomingEvents />
           <PastEvents />
         </StyledContentContainer>

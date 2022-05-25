@@ -8,11 +8,12 @@ describe SmartGroups::Rules::CustomFieldDate do
 
     let(:valid_json_rule) do
       {
-      'ruleType' => 'custom_field_date',
-      'customFieldId' => custom_field.id,
-      'predicate' => 'is_before',
-      'value' => (Date.today - 1.day)
-    } end
+        'ruleType' => 'custom_field_date',
+        'customFieldId' => custom_field.id,
+        'predicate' => 'is_before',
+        'value' => (Date.today - 1.day)
+      }
+    end
     let(:valid_rule) { SmartGroups::Rules::CustomFieldDate.from_json(valid_json_rule) }
 
     it 'successfully validates a valid rule' do
@@ -65,44 +66,50 @@ describe SmartGroups::Rules::CustomFieldDate do
   describe 'description_multiloc' do
     let(:date_picker) do
       create(:custom_field_date, title_multiloc: {
-      'en'    => 'When will we have a new government?',
-      'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement?',
-      'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben?'
-    }) end
+        'en'    => 'When will we have a new government?',
+        'fr-FR' => 'Quand est-ce que on aura un nouveau gouvernement?',
+        'nl-NL' => 'Wanneer zullen we een nieuwe regering hebben?'
+      })
+    end
 
     let(:custom_field_date_is_before_rule) do
       SmartGroups::Rules::CustomFieldDate.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'is_before',
-      'customFieldId' => date_picker.id,
-      'value'         => '2027-11-08'
-    }) end
+        'ruleType'      => 'custom_field_date',
+        'predicate'     => 'is_before',
+        'customFieldId' => date_picker.id,
+        'value'         => '2027-11-08'
+      })
+    end
     let(:custom_field_date_is_after_rule) do
       SmartGroups::Rules::CustomFieldDate.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'is_after',
-      'customFieldId' => date_picker.id,
-      'value'         => '2027-11-08'
-    }) end
+        'ruleType'      => 'custom_field_date',
+        'predicate'     => 'is_after',
+        'customFieldId' => date_picker.id,
+        'value'         => '2027-11-08'
+      })
+    end
     let(:custom_field_date_is_exactly_rule) do
       SmartGroups::Rules::CustomFieldDate.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'is_exactly',
-      'customFieldId' => date_picker.id,
-      'value'         => '2027-11-08'
-    }) end
+        'ruleType'      => 'custom_field_date',
+        'predicate'     => 'is_exactly',
+        'customFieldId' => date_picker.id,
+        'value'         => '2027-11-08'
+      })
+    end
     let(:custom_field_date_is_empty_rule) do
       SmartGroups::Rules::CustomFieldDate.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'is_empty',
-      'customFieldId' => date_picker.id
-    }) end
+        'ruleType'      => 'custom_field_date',
+        'predicate'     => 'is_empty',
+        'customFieldId' => date_picker.id
+      })
+    end
     let(:custom_field_date_not_is_empty_rule) do
       SmartGroups::Rules::CustomFieldDate.from_json({
-      'ruleType'      => 'custom_field_date',
-      'predicate'     => 'not_is_empty',
-      'customFieldId' => date_picker.id
-    }) end
+        'ruleType'      => 'custom_field_date',
+        'predicate'     => 'not_is_empty',
+        'customFieldId' => date_picker.id
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       expect(custom_field_date_is_before_rule.description_multiloc).to eq({

@@ -129,4 +129,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
     defaultMessage: 'Column layout',
   },
+  a11y_closeSettingsPanel: {
+    id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
+    defaultMessage: 'Close settings panel',
+  },
 });

@@ -31,14 +31,6 @@ RSpec.describe Area, type: :model do
     end
   end
 
-  describe 'delete an area' do
-    it 'with an ideas assocated to it should succeed' do
-      area = create :area
-      create :idea, areas: [area]
-      expect { area.destroy }.not_to raise_error
-    end
-  end
-
   describe '#create' do
     before do
       create_list(:area, 3)

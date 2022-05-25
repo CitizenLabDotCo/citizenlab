@@ -145,6 +145,7 @@ const RenderNode = ({ render }) => {
     >
       {nodeIsSelected && (
         <Box
+          id="e2e-node-label"
           p="4px"
           bgColor={hasError ? colors.clRedError : colors.adminTextColor}
           color="#fff"
