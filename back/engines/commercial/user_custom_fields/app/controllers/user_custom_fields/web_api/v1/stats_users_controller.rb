@@ -4,13 +4,16 @@ module UserCustomFields
   module WebApi
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
+        XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        private_constant :XLSX_MIME_TYPE
+
         def users_by_gender
           render json: { series: { users: user_counts } }
         end
 
         def users_by_gender_as_xlsx
           xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'gender', 'users'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
+          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_gender.xlsx'
         end
 
         def users_by_birthyear
@@ -19,7 +22,7 @@ module UserCustomFields
 
         def users_by_birthyear_as_xlsx
           xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'birthyear', 'users'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear.xlsx'
+          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_birthyear.xlsx'
         end
 
         def users_by_domicile
@@ -45,7 +48,7 @@ module UserCustomFields
           end
 
           xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile.xlsx'
+          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_domicile.xlsx'
         end
 
         def users_by_education
@@ -54,7 +57,7 @@ module UserCustomFields
 
         def users_by_education_as_xlsx
           xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'education', 'users'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education.xlsx'
+          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_education.xlsx'
         end
 
         def users_by_custom_field
@@ -91,7 +94,7 @@ module UserCustomFields
           else
             xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'option', 'users'
           end
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
+          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_custom_field.xlsx'
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
