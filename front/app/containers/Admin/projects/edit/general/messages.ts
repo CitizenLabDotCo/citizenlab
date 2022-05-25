@@ -65,7 +65,7 @@ export default defineMessages({
     defaultMessage: 'Timeline',
   },
   areasLabelHint: {
-    id: 'app.containers.AdminPage.ProjectEdit.areasLabel',
+    id: 'app.containers.AdminPage.ProjectEdit.areasLabelHint',
     defaultMessage: 'Area filter',
   },
   areasLabelTooltipHint: {
