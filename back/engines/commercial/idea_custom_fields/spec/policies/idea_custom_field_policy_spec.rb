@@ -17,7 +17,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:upsert_by_code) }
 
-    it 'should not index the custom field' do
+    it 'excludes the custom field' do
       expect(scope.resolve.size).to eq 0
     end
   end
@@ -25,10 +25,29 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
   context "for a moderator of the field's project" do
     let(:user) { create(:project_moderator, projects: [project]) }
 
-    it { is_expected.to     permit(:show) }
-    it { is_expected.to     permit(:upsert_by_code) }
+    it { is_expected.to permit(:show) }
+    it { is_expected.to permit(:upsert_by_code) }
 
-    it 'should index the custom field' do
+    it 'includes the custom field' do
+      expect(scope.resolve.size).to eq 1
+    end
+  end
+
+  context "for a folder moderator of the field's project" do
+    let(:folder) { create(:project_folder, projects: [project]) }
+    let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+    before do
+      # The after create hook for project_folder changes records, so reload.
+      folder.reload
+      project.reload
+      user.reload
+    end
+
+    it { is_expected.to permit(:show) }
+    it { is_expected.to permit(:upsert_by_code) }
+
+    it 'includes the custom field' do
       expect(scope.resolve.size).to eq 1
     end
   end
@@ -39,7 +58,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:upsert_by_code) }
 
-    it 'should not index the custom field' do
+    it 'excludes the custom field' do
       expect(scope.resolve.size).to eq 0
     end
   end
@@ -50,7 +69,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.to     permit(:show) }
     it { is_expected.to     permit(:upsert_by_code) }
 
-    it 'should index the custom field' do
+    it 'includes the custom field' do
       expect(scope.resolve.size).to eq 1
     end
   end

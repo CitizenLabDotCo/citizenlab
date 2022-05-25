@@ -13,7 +13,7 @@ module IdeaCustomFields
       def resolve
         if user&.admin?
           scope.all
-        elsif user&.project_moderator?
+        elsif can_view_custom_fields_for_project?
           scope
             .joins('LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id')
             .joins('LEFT JOIN projects ON projects.custom_form_id = custom_forms.id')
@@ -25,14 +25,15 @@ module IdeaCustomFields
     end
 
     def show?
-      can_view_custom_fields_for_project? record&.resource&.project
+      can_view_custom_fields_for_project?
     end
 
     def upsert_by_code?
-      show?
+      can_view_custom_fields_for_project?
     end
 
-    def can_view_custom_fields_for_project?(project)
+    def can_view_custom_fields_for_project?
+      project = record&.resource&.project
       user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
     end
 
