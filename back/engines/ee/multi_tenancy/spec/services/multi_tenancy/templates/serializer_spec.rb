@@ -53,7 +53,7 @@ describe MultiTenancy::Templates::Serializer do
       expect(home_attributes['title_multiloc']).to be_blank
     end
 
-    it 'can deal with projects with no admin publication' do
+    it 'can deal with projects without admin publication' do
       # The changes introduced by ticket CL-793 can be
       # reverted once the issue with projects losing their
       # admin publications is solved.
@@ -65,6 +65,7 @@ describe MultiTenancy::Templates::Serializer do
       template = serializer.run
 
       expect(template['models']).to be_present
+      expect(template.dig('models', 'project', 0, 'admin_publication_attributes')).to be_nil
     end
   end
 end
