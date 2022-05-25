@@ -128,10 +128,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.accordionDefaultOpenLabel',
     defaultMessage: 'Open by default',
   },
-  accordionTooltipContentLabel: {
-    id: 'app.containers.admin.ContentBuilder.accordionTooltipContentLabel',
-    defaultMessage: 'Tooltip content',
-  },
   delete: {
     id: 'app.containers.admin.ContentBuilder.delete',
     defaultMessage: 'Delete',
