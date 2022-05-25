@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { useState } from 'react';
 
 // module
 import { InsertConfigurationOptions, ITab } from 'typings';
@@ -15,7 +15,7 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-const IdeasPage = memo(({ intl: { formatMessage } }: InjectedIntlProps) => {
+const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [tabs, setTabs] = useState<ITab[]>([
     {
       label: formatMessage(messages.tabManage),
@@ -48,6 +48,6 @@ const IdeasPage = memo(({ intl: { formatMessage } }: InjectedIntlProps) => {
       </TabbedResource>
     </>
   );
-});
+};
 
 export default injectIntl(IdeasPage);
