@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -44,54 +44,53 @@ const Footer = ({
   hideLegend,
   legendLabels,
   onClickSwitchToTableView,
-}: Props) => {
-  const { newBarFill }: any = useTheme();
+}: Props) => (
+  <>
+    <Box
+      width="100%"
+      p={dataIsTooLong ? smallPadding : normalPadding}
+      mt={dataIsTooLong || hideTicks ? '-20px' : undefined}
+      display="flex"
+      flexDirection="row"
+      justifyContent={'space-between'}
+    >
+      <FieldInfo
+        fieldIsRequired={fieldIsRequired}
+        includedUserPercentage={includedUserPercentage}
+      />
 
-  return (
-    <>
-      <Box
-        width="100%"
-        p={dataIsTooLong ? smallPadding : normalPadding}
-        mt={dataIsTooLong || hideTicks ? '-20px' : undefined}
-        display="flex"
-        flexDirection="row"
-        justifyContent={'space-between'}
-      >
-        <FieldInfo
-          fieldIsRequired={fieldIsRequired}
-          includedUserPercentage={includedUserPercentage}
+      {!hideLegend && (
+        <Legend
+          labels={legendLabels}
+          colors={[colors.adminTextColor, colors.clBlueLight]}
         />
-
-        {!hideLegend && (
-          <Legend labels={legendLabels} colors={[newBarFill, colors.clBlue]} />
-        )}
-      </Box>
-
-      {dataIsTooLong && viewState !== 'table' && (
-        <Box
-          p="0px 40px 32px 40px"
-          data-testid="representativeness-items-hidden-warning"
-        >
-          <Warning icon="info">
-            <FormattedMessage
-              {...messages.dataHiddenWarning}
-              values={{
-                numberOfHiddenItems,
-                tableViewLink: (
-                  <TableViewButton
-                    onClick={onClickSwitchToTableView}
-                    data-testid="switch-to-table-view-link"
-                  >
-                    <FormattedMessage {...messages.tableViewLinkText} />
-                  </TableViewButton>
-                ),
-              }}
-            />
-          </Warning>
-        </Box>
       )}
-    </>
-  );
-};
+    </Box>
+
+    {dataIsTooLong && viewState !== 'table' && (
+      <Box
+        p="0px 40px 32px 40px"
+        data-testid="representativeness-items-hidden-warning"
+      >
+        <Warning icon="info">
+          <FormattedMessage
+            {...messages.dataHiddenWarning}
+            values={{
+              numberOfHiddenItems,
+              tableViewLink: (
+                <TableViewButton
+                  onClick={onClickSwitchToTableView}
+                  data-testid="switch-to-table-view-link"
+                >
+                  <FormattedMessage {...messages.tableViewLinkText} />
+                </TableViewButton>
+              ),
+            }}
+          />
+        </Warning>
+      </Box>
+    )}
+  </>
+);
 
 export default Footer;

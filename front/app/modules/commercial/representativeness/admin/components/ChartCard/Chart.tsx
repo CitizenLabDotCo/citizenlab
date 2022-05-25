@@ -1,18 +1,16 @@
 import React from 'react';
 
-// hooks
-import { useTheme } from 'styled-components';
-
 // components
 import MultiBarChart from 'components/admin/Graphs/MultiBarChart';
 import { DEFAULT_BAR_CHART_MARGIN } from 'components/admin/Graphs/constants';
 import { LabelList, Tooltip } from 'recharts';
+import CustomTooltip from './CustomTooltip';
 
 // styling
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { formatPercentage, formatTooltipValues, emptyString } from './utils';
+import { formatPercentage, emptyString } from './utils';
 
 // typings
 import { RepresentativenessData } from './';
@@ -25,8 +23,6 @@ interface Props {
 }
 
 const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
-  const { newBarFill }: any = useTheme();
-
   const hideLabels = data.length > 10;
   const slicedData = data.slice(0, 24);
 
@@ -38,7 +34,7 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
       mapping={{ length: ['actualPercentage', 'referencePercentage'] }}
       bars={{
         name: barNames,
-        fill: [newBarFill, colors.clBlue],
+        fill: [colors.adminTextColor, colors.clBlueLight],
         categoryGap: '20%',
       }}
       margin={DEFAULT_BAR_CHART_MARGIN}
@@ -52,7 +48,12 @@ const Chart = ({ currentChartRef, data, barNames, hideTicks }: Props) => {
           : (props) => <LabelList {...props} formatter={formatPercentage} />
       }
       renderTooltip={(props) => (
-        <Tooltip {...props} formatter={formatTooltipValues} />
+        <Tooltip
+          {...props}
+          content={(props) => (
+            <CustomTooltip label={props.label} payload={props.payload as any} />
+          )}
+        />
       )}
     />
   );
