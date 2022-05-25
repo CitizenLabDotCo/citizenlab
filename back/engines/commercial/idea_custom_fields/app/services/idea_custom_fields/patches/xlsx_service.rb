@@ -5,7 +5,7 @@ module IdeaCustomFields
     module XlsxService
       def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
         if AppConfiguration.instance.feature_activated? 'idea_custom_fields'
-          super + custom_form_custom_field_columns(:itself, ideas)
+          super + custom_form_custom_field_columns(ideas)
         else
           super
         end
@@ -13,7 +13,7 @@ module IdeaCustomFields
 
       private
 
-      def custom_form_custom_field_columns(record_to_idea, ideas)
+      def custom_form_custom_field_columns(ideas)
         projects = ideas.map(&:project)
         idea_custom_fields = CustomField.where(resource: CustomForm.where(project: projects))
 
@@ -22,19 +22,17 @@ module IdeaCustomFields
 
         idea_custom_fields.map do |field|
           column_name = multiloc_service.t(field.title_multiloc)
-          { header: column_name, f: value_getter_for_custom_form_custom_field_columns(field, record_to_idea, options) }
+          { header: column_name, f: value_getter_for_custom_form_custom_field_columns(field, options) }
         end
       end
 
-      def value_getter_for_custom_form_custom_field_columns(field, record_to_idea, options)
-        if field.support_options? # field with option
-          lambda do |record|
-            idea = record.send(record_to_idea)
+      def value_getter_for_custom_form_custom_field_columns(field, options)
+        if field.support_options?
+          lambda do |idea|
             title_multiloc_for idea, field, options
           end
-        else # all other custom fields
-          lambda do |record|
-            idea = record.send(record_to_idea)
+        else
+          lambda do |idea|
             idea && idea.custom_field_values[field.key]
           end
         end
