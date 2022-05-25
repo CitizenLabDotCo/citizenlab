@@ -8,7 +8,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import { useNode } from '@craftjs/core';
 import {
   Box,
-  Accordion,
+  Accordion as AccordionComponent,
   Title,
   Input,
   Label,
@@ -22,12 +22,12 @@ import { useTheme } from 'styled-components';
 import messages from '../../../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-const AccordionSection = ({ text, title, openByDefault }) => {
+const Accordion = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();
 
   return (
     <Box id="e2e-accordion">
-      <Accordion
+      <AccordionComponent
         isOpenByDefault={openByDefault}
         title={
           <Box display="flex">
@@ -38,7 +38,7 @@ const AccordionSection = ({ text, title, openByDefault }) => {
         <QuillEditedContent textColor={theme.colorText}>
           <div dangerouslySetInnerHTML={{ __html: text }} />
         </QuillEditedContent>
-      </Accordion>
+      </AccordionComponent>
     </Box>
   );
 };
@@ -99,7 +99,7 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
   );
 });
 
-AccordionSection.craft = {
+Accordion.craft = {
   props: {
     text: '',
   },
@@ -108,4 +108,4 @@ AccordionSection.craft = {
   },
 };
 
-export default AccordionSection;
+export default Accordion;

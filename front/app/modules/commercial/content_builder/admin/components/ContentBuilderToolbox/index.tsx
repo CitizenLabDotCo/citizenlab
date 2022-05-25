@@ -20,7 +20,7 @@ import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
-import SimpleAccordion from '../CraftComponents/Accordion';
+import Accordion from '../CraftComponents/Accordion';
 
 // Intl
 import messages from '../../messages';
@@ -186,7 +186,7 @@ const ContentBuilderToolbox = ({
             connectors.create(
               ref,
               <Element
-                is={SimpleAccordion}
+                is={Accordion}
                 title={formatMessage(messages.accordionTitleValue)}
                 text={formatMessage(messages.accordionTextValue)}
                 openByDefault={false}
