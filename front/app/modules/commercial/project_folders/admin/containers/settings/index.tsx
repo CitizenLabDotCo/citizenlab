@@ -89,8 +89,6 @@ const FolderSettings = ({
   );
 };
 
-const FolderSettingsWithHoCs = withRouter(FolderSettings);
-
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => (
     <GetProjectFolder projectFolderId={params.projectFolderId}>
@@ -101,6 +99,6 @@ const Data = adopt<DataProps, WithRouterProps>({
 
 export default withRouter((inputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <FolderSettingsWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <FolderSettings {...inputProps} {...dataProps} />}
   </Data>
 ));
