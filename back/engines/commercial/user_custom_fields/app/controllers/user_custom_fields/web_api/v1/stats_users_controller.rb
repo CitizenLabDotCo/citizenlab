@@ -32,8 +32,8 @@ module UserCustomFields
               }
             end
 
-            blank_option = { 'option_id' => '_blank', 'option' => 'unknown', 'users' => counts['_blank'] || 0 }
-            res.push(blank_option)
+            blank_count = { 'option_id' => '_blank', 'option' => 'unknown', 'users' => counts['_blank'] }
+            res.push(blank_count)
 
             xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'option')
           else
@@ -47,42 +47,42 @@ module UserCustomFields
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
-          binding.pry
           render json: { series: { users: user_counts }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
         end
 
         def users_by_domicile_as_xlsx
-          serie = user_counts
+          counts = user_counts
+
           res = Area.all.map do |area|
             {
               'area_id' => area.id,
               'area' => MultilocService.new.t(area.title_multiloc),
-              'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
+              'users' => counts.fetch(area.id, 0)
             }
           end
-          unless serie.empty?
-            res.push({
+
+          unless counts.empty?
+            res.push(
               'area_id' => '_blank',
               'area' => 'unknown',
               'users' => serie.delete(nil) || 0
             })
           end
 
-          xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
-          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_domicile.xlsx'
+          xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
+          send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
         end
 
         private
 
         def custom_field
-          @custom_field ||=
-            if params[:custom_field_id]
-              CustomField.find(params[:custom_field_id])
-            elsif (key = custom_field_key_from_path)
-              CustomField.find_by(key: key)
-            else
-              raise ActiveRecord::RecordNotFound
-            end
+          @custom_field ||= if params[:custom_field_id]
+                              CustomField.find(params[:custom_field_id])
+                            elsif (key = custom_field_key_from_path)
+                              CustomField.find_by(key: key)
+                            else
+                              raise ActiveRecord::RecordNotFound
+                            end
         end
 
         def custom_field_key_from_path
@@ -137,13 +137,12 @@ module UserCustomFields
         end
 
         def do_authorize
-          authorize :'user_custom_fields/stat_user'
+          authorize(:'user_custom_fields/stat_user')
         end
 
         def find_users
-          users = StatUserPolicy::Scope.new(current_user, User.active)
-                                       .resolve
-                                       .where(registration_completed_at: @start_at..@end_at)
+          users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
+                    .where(registration_completed_at: @start_at..@end_at)
 
           if params[:group]
             group = Group.find(params[:group])
