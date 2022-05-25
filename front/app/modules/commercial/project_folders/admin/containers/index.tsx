@@ -131,10 +131,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter((inputProps) => (
-  <Data {...inputProps}>
+export default withRouter((props: WithRouterProps) => (
+  <Data {...props}>
     {(dataProps) => (
-      <AdminProjectFolderEditionWithHoCs {...inputProps} {...dataProps} />
+      <AdminProjectFolderEditionWithHoCs {...props} {...dataProps} />
     )}
   </Data>
 ));
