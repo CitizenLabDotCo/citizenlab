@@ -65,8 +65,8 @@ module UserCustomFields
             res.push(
               'area_id' => '_blank',
               'area' => 'unknown',
-              'users' => serie.delete(nil) || 0
-            })
+              'users' => counts['_blank']
+            )
           end
 
           xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
