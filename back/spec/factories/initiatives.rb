@@ -4,14 +4,16 @@ FactoryBot.define do
   factory :initiative do
     title_multiloc do
       {
-      'en' => 'Install water turbines on kanals',
-      'nl-BE' => 'Waterturbines op kanalen installeren'
-    } end
+        'en' => 'Install water turbines on kanals',
+        'nl-BE' => 'Waterturbines op kanalen installeren'
+      }
+    end
     body_multiloc do
       {
-      'en' => "<p>Surely we'll gain huge amounts of green energy from this!</p>",
-      'nl-BE' => '<p>Hier zullen we vast wel hopen groene energie uit halen!</p>'
-    } end
+        'en' => "<p>Surely we'll gain huge amounts of green energy from this!</p>",
+        'nl-BE' => '<p>Hier zullen we vast wel hopen groene energie uit halen!</p>'
+      }
+    end
     sequence(:slug) { |n| "turbines-on-kanals-#{n}" }
     publication_status { 'published' }
     author

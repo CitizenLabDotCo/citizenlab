@@ -5,34 +5,36 @@ require 'rails_helper'
 describe 'RequiredSettingsAttribute' do
   let(:schema1) do
     {
-    '$schema' => TenantSchema::ExtendedSchema::SCHEMA_URL,
-    type: 'object',
-    'properties' => {
-      'feature1' => {
-        'type' => 'object',
-        'required-settings' => ['setting1'],
-        'properties' => {
-          'allowed' => { 'type' => 'boolean' },
-          'enabled' => { 'type' => 'boolean' },
-          'setting1' => { 'type' => 'string' },
-          'setting2' => { 'type' => 'string' }
+      '$schema' => TenantSchema::ExtendedSchema::SCHEMA_URL,
+      type: 'object',
+      'properties' => {
+        'feature1' => {
+          'type' => 'object',
+          'required-settings' => ['setting1'],
+          'properties' => {
+            'allowed' => { 'type' => 'boolean' },
+            'enabled' => { 'type' => 'boolean' },
+            'setting1' => { 'type' => 'string' },
+            'setting2' => { 'type' => 'string' }
+          }
+        },
+        'feature2' => {
+          'type' => 'string'
         }
-      },
-      'feature2' => {
-        'type' => 'string'
       }
     }
-  } end
+  end
 
   let(:data) do
     {
-    'feature1' => {
-      'allowed' => true,
-      'enabled' => true,
-      'setting1' => 'foo',
-      'setting2' => 'bar'
+      'feature1' => {
+        'allowed' => true,
+        'enabled' => true,
+        'setting1' => 'foo',
+        'setting2' => 'bar'
+      }
     }
-  } end
+  end
 
   it 'validates an object that has the required setting' do
     expect(JSON::Validator.validate(schema1, data)).to be true

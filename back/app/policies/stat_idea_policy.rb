@@ -30,10 +30,6 @@ class StatIdeaPolicy < ApplicationPolicy
     show_stats?
   end
 
-  def ideas_by_area?
-    show_stats?
-  end
-
   def ideas_by_status?
     show_stats?
   end
@@ -55,10 +51,6 @@ class StatIdeaPolicy < ApplicationPolicy
   end
 
   def ideas_by_topic_as_xlsx?
-    show_stats?
-  end
-
-  def ideas_by_area_as_xlsx?
     show_stats?
   end
 

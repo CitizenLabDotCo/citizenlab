@@ -20,26 +20,27 @@ RSpec.describe 'Graphql pages' do
   describe 'publicPages' do
     let(:query_string) do
       %(
-    {
-      publicPages {
-        edges {
-          node {
-            id
-            href
-            titleMultiloc {
-              en
-              nlBe
+        {
+          publicPages {
+            edges {
+              node {
+                id
+                href
+                titleMultiloc {
+                  en
+                  nlBe
+                }
+                bodyMultiloc {
+                  en
+                  nlBe
+                }
+                slug
+              }
             }
-            bodyMultiloc {
-              en
-              nlBe
-            }
-            slug
           }
         }
-      }
-    }
-    ) end
+      )
+    end
 
     it 'returns all public pages' do
       p1, _p2, _p3 = create_list(:static_page, 3)

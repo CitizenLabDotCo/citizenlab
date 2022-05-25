@@ -26,7 +26,6 @@ export interface InputProps {
   authorId?: string;
   search?: string;
   topics?: string[];
-  areas?: string[];
   ideaStatusId?: string;
   projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
@@ -40,7 +39,6 @@ interface IQueryParameters {
   author: string | undefined;
   search: string | undefined;
   topics: string[] | undefined;
-  areas: string[] | undefined;
   idea_status: string | undefined;
   project_publication_status: ProjectPublicationStatus | undefined;
   bounding_box: number[] | undefined;
@@ -59,7 +57,6 @@ export type GetIdeasCountChildProps = State & {
   onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangeTopics: (topics: string[]) => void;
-  onChangeAreas: (areas: string[]) => void;
   onChangeIdeaStatus: (ideaStatus: string) => void;
   onChangeProjectPublicationStatus: (
     ProjectPublicationStatus: ProjectPublicationStatus
@@ -90,7 +87,6 @@ export default class GetIdeasCount extends React.Component<Props, State> {
         author: undefined,
         search: undefined,
         topics: undefined,
-        areas: undefined,
         idea_status: undefined,
         project_publication_status: undefined,
         bounding_box: undefined,
@@ -181,7 +177,6 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       author: props.authorId,
       search: props.search,
       topics: props.topics,
-      areas: props.areas,
       idea_status: props.ideaStatusId,
       project_publication_status: props.projectPublicationStatus,
       bounding_box: props.boundingBox,
@@ -217,13 +212,6 @@ export default class GetIdeasCount extends React.Component<Props, State> {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       topics,
-    });
-  };
-
-  handleAreasOnchange = (areas: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      areas,
     });
   };
 
@@ -272,7 +260,6 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       onChangePhase: this.handlePhaseOnChange,
       onChangeSearchTerm: this.handleSearchOnChange,
       onChangeTopics: this.handleTopicsOnChange,
-      onChangeAreas: this.handleAreasOnchange,
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
       onChangeProjectPublicationStatus:
         this.handleProjectPublicationStatusOnChange,

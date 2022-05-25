@@ -39,7 +39,7 @@ const Insights: React.FC<InjectedIntlProps & WithRouterProps> = ({
       : []),
   ];
   return (
-    <div>
+    <div id="e2e-insights-container">
       <HelmetIntl
         title={messages.helmetTitle}
         description={messages.helmetDescription}

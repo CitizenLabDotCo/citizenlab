@@ -93,7 +93,7 @@ class SettingsPage extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {children}
+          <div id="e2e-settings-container">{children}</div>
         </TabbedResource>
       </>
     );

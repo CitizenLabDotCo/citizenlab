@@ -330,14 +330,6 @@ RSpec.describe Idea, type: :model do
     end
   end
 
-  describe 'delete an idea' do
-    it 'with an area should succeed' do
-      area = create(:area)
-      idea = create(:idea, areas: [area])
-      expect { idea.destroy }.not_to raise_error
-    end
-  end
-
   describe 'title' do
     it 'is stripped from spaces at beginning and ending' do
       idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })

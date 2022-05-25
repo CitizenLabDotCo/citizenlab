@@ -62,13 +62,13 @@ module EmailCampaigns
       counts = where(campaign_id: campaign_id).group(:delivery_status).count
       total_count = where(campaign_id: campaign_id).count
       {
-        sent: STATUS_SUMMATION[:sent].map { |s| counts[s.to_s] || 0 }.inject(:+),
-        bounced: STATUS_SUMMATION[:bounced].map { |s| counts[s.to_s] || 0 }.inject(:+),
-        failed: STATUS_SUMMATION[:failed].map { |s| counts[s.to_s] || 0 }.inject(:+),
-        accepted: STATUS_SUMMATION[:accepted].map { |s| counts[s.to_s] || 0 }.inject(:+),
-        delivered: STATUS_SUMMATION[:delivered].map { |s| counts[s.to_s] || 0 }.inject(:+),
-        opened: STATUS_SUMMATION[:opened].map { |s| counts[s.to_s] || 0 }.inject(:+),
-        clicked: STATUS_SUMMATION[:clicked].map { |s| counts[s.to_s] || 0 }.inject(:+),
+        sent: STATUS_SUMMATION[:sent].sum { |s| counts[s.to_s] || 0 },
+        bounced: STATUS_SUMMATION[:bounced].sum { |s| counts[s.to_s] || 0 },
+        failed: STATUS_SUMMATION[:failed].sum { |s| counts[s.to_s] || 0 },
+        accepted: STATUS_SUMMATION[:accepted].sum { |s| counts[s.to_s] || 0 },
+        delivered: STATUS_SUMMATION[:delivered].sum { |s| counts[s.to_s] || 0 },
+        opened: STATUS_SUMMATION[:opened].sum { |s| counts[s.to_s] || 0 },
+        clicked: STATUS_SUMMATION[:clicked].sum { |s| counts[s.to_s] || 0 },
         total: total_count
       }
     end

@@ -186,9 +186,10 @@ resource 'Campaigns' do
     let!(:id) { campaign.id }
     let!(:deliveries) do
       create_list(:delivery, 20,
-      campaign: campaign,
-      delivery_status: 'accepted'
-      ) end
+        campaign: campaign,
+        delivery_status: 'accepted'
+      )
+    end
 
     example_request 'Get the delivery statistics of a sent campaing' do
       assert_status 200

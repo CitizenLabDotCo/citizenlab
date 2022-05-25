@@ -5,9 +5,10 @@ require 'rails_helper'
 describe SmartGroups::Rules::Role do
   let(:valid_json_rule) do
     {
-    'ruleType' => 'role',
-    'predicate' => 'is_admin'
-  } end
+      'ruleType' => 'role',
+      'predicate' => 'is_admin'
+    }
+  end
   let(:valid_rule) { SmartGroups::Rules::Role.from_json(valid_json_rule) }
 
   describe 'from_json' do
@@ -75,32 +76,38 @@ describe SmartGroups::Rules::Role do
       SmartGroups::Rules::Role.from_json({
       'ruleType'      => 'role',
       'predicate'     => 'is_admin'
-    }) end
+    })
+    end
     let(:role_not_is_admin_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType'      => 'role',
-      'predicate'     => 'not_is_admin'
-    }) end
+        'ruleType'      => 'role',
+        'predicate'     => 'not_is_admin'
+      })
+    end
     let(:role_is_project_moderator_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType'      => 'role',
-      'predicate'     => 'is_project_moderator'
-    }) end
+        'ruleType'      => 'role',
+        'predicate'     => 'is_project_moderator'
+      })
+    end
     let(:role_not_is_project_moderator_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType'      => 'role',
-      'predicate'     => 'not_is_project_moderator'
-    }) end
+        'ruleType'      => 'role',
+        'predicate'     => 'not_is_project_moderator'
+      })
+    end
     let(:role_is_normal_user_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType'      => 'role',
-      'predicate'     => 'is_normal_user'
-    }) end
+        'ruleType'      => 'role',
+        'predicate'     => 'is_normal_user'
+    })
+    end
     let(:role_not_is_normal_user_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType'      => 'role',
-      'predicate'     => 'not_is_normal_user'
-    }) end
+        'ruleType'      => 'role',
+        'predicate'     => 'not_is_normal_user'
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       # Stubbing the translations so the specs don't depend on those.

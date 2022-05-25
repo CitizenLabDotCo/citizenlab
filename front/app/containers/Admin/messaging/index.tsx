@@ -85,11 +85,13 @@ class MessagingDashboard extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {isEmpty(tabs) ? (
-            <FormattedMessage {...messages.noAccess} />
-          ) : (
-            children
-          )}
+          <div id="e2e-messaging-container">
+            {isEmpty(tabs) ? (
+              <FormattedMessage {...messages.noAccess} />
+            ) : (
+              children
+            )}
+          </div>
         </TabbedResource>
       </>
     );
