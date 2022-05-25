@@ -139,7 +139,7 @@ class XlsxService
     generate_xlsx 'Users', columns, users
   end
 
-  def generate_idea_xlsx_columns(ideas, view_private_attributes: false, with_tags: false)
+  def generate_idea_xlsx_columns(_ideas, view_private_attributes: false, with_tags: false)
     columns = [
       { header: 'id',                   f: ->(i) { i.id }, skip_sanitization: true },
       { header: 'title',                f: ->(i) { multiloc_service.t(i.title_multiloc) } },
@@ -162,7 +162,7 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 }
+      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
     columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
