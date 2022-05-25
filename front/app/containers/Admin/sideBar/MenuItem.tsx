@@ -49,7 +49,7 @@ const MenuItemLink = styled(Link)`
   transition: background-color 80ms ease-out;
 
   &:hover,
-  &.selected,
+  &.active,
   &.focus-visible {
     background: rgba(0, 0, 0, 0.36);
 
@@ -58,7 +58,7 @@ const MenuItemLink = styled(Link)`
     }
   }
 
-  &:not(.selected) {
+  &:not(.active) {
     .cl-icon {
       .cl-icon-primary {
         fill: ${colors.clIconPrimary};
@@ -69,7 +69,7 @@ const MenuItemLink = styled(Link)`
     }
   }
 
-  &.selected {
+  &.active {
     ${ArrowIcon} {
       opacity: 1;
     }
@@ -121,12 +121,7 @@ type Props = {
 export default ({ route }: Props) => {
   return (
     <HasPermission action="access" item={{ type: 'route', path: route.link }}>
-      <MenuItemLink
-        className={({ isActive }) =>
-          `${route.iconName} ${isActive ? 'selected' : ''}`
-        }
-        to={route.link}
-      >
+      <MenuItemLink to={route.link}>
         <IconWrapper className={route.iconName}>
           <Icon name={route.iconName} />
         </IconWrapper>

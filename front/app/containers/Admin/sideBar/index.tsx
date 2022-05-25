@@ -5,7 +5,6 @@ import { get } from 'lodash-es';
 
 // router
 import { withRouter, WithRouterProps } from 'utils/withRouter';
-import { getUrlLocale } from 'services/locale';
 
 // components
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
@@ -144,9 +143,10 @@ export type NavItem = {
   iconName: IconNames;
   message: string;
   featureName?: TAppConfigurationSetting;
-  isActive: (pathname: string) => boolean;
+  isActive?: (pathname: string) => boolean;
   count?: number;
   onlyCheckAllowed?: boolean;
+  className?: ({ isActive: string }) => string | undefined;
 };
 
 type Tracks = {
@@ -167,24 +167,12 @@ class Sidebar extends PureComponent<
           link: '/admin/dashboard',
           iconName: 'stats',
           message: 'dashboard',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/dashboard`
-            ),
         },
         {
           name: 'projects',
           link: '/admin/projects',
           iconName: 'folder',
           message: 'projects',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/projects`
-            ),
         },
         {
           name: 'workshops',
@@ -192,24 +180,12 @@ class Sidebar extends PureComponent<
           iconName: 'workshops',
           message: 'workshops',
           featureName: 'workshops',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/workshops`
-            ),
         },
         {
           name: 'ideas',
           link: '/admin/ideas',
           iconName: 'idea2',
           message: 'inputManager',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/ideas`
-            ),
         },
         {
           name: 'initiatives',
@@ -218,60 +194,30 @@ class Sidebar extends PureComponent<
           message: 'initiatives',
           featureName: 'initiatives',
           onlyCheckAllowed: true,
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/initiatives`
-            ),
         },
         {
           name: 'userinserts',
           link: '/admin/users',
           iconName: 'users',
           message: 'users',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/users`
-            ),
         },
         {
           name: 'invitations',
           link: '/admin/invitations',
           iconName: 'invitations',
           message: 'invitations',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/invitations`
-            ),
         },
         {
           name: 'messaging',
           link: '/admin/messaging',
           iconName: 'emails',
           message: 'messaging',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/messaging`
-            ),
         },
         {
           name: 'settings',
           link: '/admin/settings/general',
           iconName: 'setting',
           message: 'settings',
-          isActive: (pathName) =>
-            pathName.startsWith(
-              `${
-                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
-              }/admin/settings`
-            ),
         },
       ],
     };
