@@ -64,12 +64,13 @@ const getRedirectURL = (
     : null;
 
   // check if the unauthorized user is trying to access a template preview page (url pattern: /admin/projects/templates/[id])
-  // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
-  // if not, redirect them to the sign-in page
   if (urlSegments && isTemplatePreviewPage(urlSegments)) {
-    return `${localeSegment}/templates/${urlSegments[3]}`;
+    const templateId = urlSegments[3];
+    // if so, redirect them to the citizen-facing version of the template preview page (url pattern: /templates/[id])
+    return `${localeSegment}/templates/${templateId}`;
   }
 
+  // if not, redirect them to the sign-in page
   return `${localeSegment}/sign-in`;
 };
 
