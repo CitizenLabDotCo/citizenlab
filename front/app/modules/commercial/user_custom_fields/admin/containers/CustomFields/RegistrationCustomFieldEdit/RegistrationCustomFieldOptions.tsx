@@ -1,6 +1,9 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+// utils
+import { withRouter, WithRouterProps } from 'utils/withRouter';
+
 // services
 import {
   IUserCustomFieldOptionData,
@@ -10,8 +13,8 @@ import {
 
 // hooks
 import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
+import useUserCustomField from '../../../../hooks/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
-import { useUserCustomFieldOutletContext } from '.';
 
 // components
 import {
@@ -28,8 +31,11 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 const RegistrationCustomFieldOptions = memo(
-  ({ intl: { formatMessage } }: InjectedIntlProps) => {
-    const { customField } = useUserCustomFieldOutletContext();
+  ({
+    intl: { formatMessage },
+    params: { customFieldId },
+  }: InjectedIntlProps & WithRouterProps) => {
+    const customField = useUserCustomField(customFieldId);
 
     if (isNilOrError(customField)) return null;
 
@@ -131,4 +137,4 @@ const RegistrationCustomFieldOptions = memo(
   }
 );
 
-export default injectIntl(RegistrationCustomFieldOptions);
+export default withRouter(injectIntl(RegistrationCustomFieldOptions));
