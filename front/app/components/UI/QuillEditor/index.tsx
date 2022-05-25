@@ -80,6 +80,7 @@ const Container = styled.div<{
   edit: string;
   remove: string;
   maxHeight?: string;
+  minHeight?: string;
 }>`
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -236,7 +237,8 @@ const Container = styled.div<{
     ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {
-      min-height: 300px;
+      min-height: ${(props) => (props.minHeight ? props.minHeight : '300px')};
+    }
       max-height: ${(props) =>
         props.maxHeight
           ? props.maxHeight
@@ -265,6 +267,7 @@ export interface Props {
   hasError?: boolean;
   className?: string;
   maxHeight?: string;
+  minHeight?: string;
   onChange?: (html: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -385,6 +388,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     noVideos,
     limitedTextFormatting,
     maxHeight,
+    minHeight,
     hasError,
     className,
     setRef,
@@ -675,6 +679,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     return (
       <Container
         maxHeight={maxHeight}
+        minHeight={minHeight}
         className={classNames}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}
