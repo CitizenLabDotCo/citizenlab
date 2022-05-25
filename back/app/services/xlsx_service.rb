@@ -162,8 +162,7 @@ class XlsxService
       { header: 'latitude',             f: ->(i) { i.location_point&.coordinates&.last },                                  skip_sanitization: true },
       { header: 'longitude',            f: ->(i) { i.location_point&.coordinates&.first },                                 skip_sanitization: true },
       { header: 'location_description', f: ->(i) { i.location_description } },
-      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 },
-      *custom_form_custom_field_columns(:itself, ideas)
+      { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") },                       skip_sanitization: true, width: 2 }
     ]
     columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
@@ -270,21 +269,6 @@ class XlsxService
     end
   end
 
-  # @param [Symbol] record_to_user
-  # @param [Boolean] view_private_attributes
-  def custom_form_custom_field_columns(record_to_idea, ideas)
-    projects = ideas.map(&:project)
-    idea_custom_fields = CustomField.where(resource: CustomForm.where(project: projects))
-
-    # options keys are only unique in the scope of their field, namespacing to avoid collisions
-    options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }
-
-    idea_custom_fields.map do |field|
-      column_name = multiloc_service.t(field.title_multiloc)
-      { header: column_name, f: value_getter_for_custom_form_custom_field_columns(field, record_to_idea, options) }
-    end
-  end
-
   private
 
   def multiloc_service
@@ -323,20 +307,6 @@ class XlsxService
     end
   end
 
-  def value_getter_for_custom_form_custom_field_columns(field, record_to_idea, options)
-    if field.support_options? # field with option
-      lambda do |record|
-        idea = record.send(record_to_idea)
-        title_multiloc_for idea, field, options
-      end
-    else # all other custom fields
-      lambda do |record|
-        idea = record.send(record_to_idea)
-        idea && idea.custom_field_values[field.key]
-      end
-    end
-  end
-
   def private_attributes
     custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
       multiloc_service.t(field.title_multiloc)
@@ -364,4 +334,5 @@ class XlsxService
   end
 end
 
-XlsxService.prepend_if_ee('Verification::Patches::XlsxService')
+XlsxService.prepend_if_ee 'IdeaCustomFields::Patches::XlsxService'
+XlsxService.prepend_if_ee 'Verification::Patches::XlsxService'
