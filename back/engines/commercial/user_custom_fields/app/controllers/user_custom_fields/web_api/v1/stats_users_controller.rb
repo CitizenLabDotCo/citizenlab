@@ -61,7 +61,6 @@ module UserCustomFields
         end
 
         def users_by_custom_field
-          user_counts = count_users_by_custom_field(find_users, custom_field)
           if %w[select multiselect].include?(custom_field.input_type)
             options = custom_field.custom_field_options.select(:key, :title_multiloc)
             render json: { series: { users: user_counts }, options: options.map { |o| [o.key, o.attributes.except('key', 'id')] }.to_h }
@@ -73,7 +72,7 @@ module UserCustomFields
         end
 
         def users_by_custom_field_as_xlsx
-          user_counts = count_users_by_custom_field(find_users, custom_field)
+          counts = user_counts
 
           if %w[select multiselect].include?(custom_field.input_type)
             options = custom_field.custom_field_options.select(:key, :title_multiloc)
@@ -82,17 +81,18 @@ module UserCustomFields
               {
                 'option_id' => option.key,
                 'option' => multiloc_service.t(option.title_multiloc),
-                'users' => user_counts[option.key] || 0
+                'users' => counts[option.key] || 0
               }
             end
+
             res.push({
               'option_id' => '_blank',
               'option' => 'unknown',
-              'users' => user_counts['_blank'] || 0
+              'users' => counts['_blank'] || 0
             })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
           else
-            xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'option', 'users'
+            xlsx = XlsxService.new.generate_field_stats_xlsx counts, 'option', 'users'
           end
           send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_custom_field.xlsx'
         rescue NotSupportedFieldTypeError
