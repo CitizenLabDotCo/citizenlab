@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Her er de projekter, du administrerer på platformen.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekter",
   "app.containers.AdminPage.ProjectDashboard.published": "Offentliggjort",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Opsætning af kolonner",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beskrivelse",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Beskrivelse af hjemmesiden",
