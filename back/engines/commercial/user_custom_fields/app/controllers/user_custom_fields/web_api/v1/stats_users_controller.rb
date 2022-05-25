@@ -4,44 +4,35 @@ module UserCustomFields
   module WebApi
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
-        def users_by_gender_serie
+        def user_counts
           count_users_by_custom_field(find_users, custom_field)
         end
 
         def users_by_gender
-          render json: { series: { users: users_by_gender_serie } }
+          render json: { series: { users: user_counts } }
         end
 
         def users_by_gender_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie, 'gender', 'users'
+          xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'gender', 'users'
           send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
         end
 
-        def users_by_birthyear_serie
-          count_users_by_custom_field(find_users, custom_field)
-        end
-
         def users_by_birthyear
-          render json: { series: { users: users_by_birthyear_serie } }
+          render json: { series: { users: user_counts } }
         end
 
         def users_by_birthyear_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie, 'birthyear', 'users'
+          xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'birthyear', 'users'
           send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear.xlsx'
         end
 
-        def users_by_domicile_serie
-          count_users_by_custom_field(find_users, custom_field)
-        end
-
         def users_by_domicile
-          serie = users_by_domicile_serie
           areas = Area.all.select(:id, :title_multiloc)
-          render json: { series: { users: serie }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
+          render json: { series: { users: user_counts }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
         end
 
         def users_by_domicile_as_xlsx
-          serie = users_by_domicile_serie
+          serie = user_counts
           res = Area.all.map do |area|
             {
               'area_id' => area.id,
@@ -61,16 +52,12 @@ module UserCustomFields
           send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile.xlsx'
         end
 
-        def users_by_education_serie
-          count_users_by_custom_field(find_users, custom_field)
-        end
-
         def users_by_education
-          render json: { series: { users: users_by_education_serie } }
+          render json: { series: { users: user_counts } }
         end
 
         def users_by_education_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx users_by_education_serie, 'education', 'users'
+          xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'education', 'users'
           send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education.xlsx'
         end
 
