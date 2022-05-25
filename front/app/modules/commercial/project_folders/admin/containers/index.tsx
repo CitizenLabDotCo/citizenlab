@@ -14,6 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
@@ -59,7 +60,6 @@ const AdminProjectFolderEdition = memo<
     params: { projectFolderId },
     intl: { formatMessage },
     projectFolder,
-    children,
   }) => {
     const localize = useLocalize();
     const goBack = () => {
@@ -112,7 +112,9 @@ const AdminProjectFolderEdition = memo<
             </Button>
           )}
         </TopContainer>
-        <TabbedResource {...tabbedProps}>{children}</TabbedResource>
+        <TabbedResource {...tabbedProps}>
+          <RouterOutlet />
+        </TabbedResource>
       </>
     );
   }
