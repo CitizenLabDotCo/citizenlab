@@ -707,7 +707,7 @@
   "app.containers.AdminPage.ProjectDescription.errorMessage": "حدث خطأ ما، يُرجى المحاولة مجددًا في وقت لاحق",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "باستخدام مُنشئ الصفحات يمكنك استخدام مزيد من خيارات التخطيط المتقدمة. بالنسبة إلى اللغات التي لا يتوفر أي محتوى بها في مُنشئ الصفحات، سيتم عرض محتوى الوصف المعتاد للمشروع بدلاً من ذلك.",
   "app.containers.AdminPage.ProjectDescription.linkText": "تعديل الوصف في مُنشئ الصفحات",
-  "app.containers.AdminPage.ProjectDescription.mobilePreview": "Mobile preview",
+  "app.containers.AdminPage.ProjectDescription.mobilePreview": "معاينة الجوال",
   "app.containers.AdminPage.ProjectDescription.save": "حفظ",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "تم حفظ التغييرات.",
   "app.containers.AdminPage.ProjectDescription.saved": "تم الحفظ!",
