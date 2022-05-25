@@ -4,8 +4,21 @@ import React from 'react';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Row } from 'components/admin/ResourceList';
-import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Toggle,
+  Title,
+  Text,
+  Icon,
+} from '@citizenlab/cl2-component-library';
+
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc } from 'typings';
@@ -13,19 +26,55 @@ import { Multiloc } from 'typings';
 interface Props {
   enabled: boolean;
   titleMultiloc: Multiloc;
+  isDefault: boolean;
   onToggleEnabled: (event: React.FormEvent) => void;
 }
 
-const Field = ({ enabled, titleMultiloc, onToggleEnabled }: Props) => {
+const StyledText = styled(Text)`
+  font-weight: 500;
+`;
+
+const StyledIcon = styled(Icon)`
+  transform: translateY(-1px);
+`;
+
+const Field = ({
+  enabled,
+  titleMultiloc,
+  isDefault,
+  onToggleEnabled,
+}: Props) => {
   const localize = useLocalize();
 
   return (
-    <Row>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      py="20px"
+      borderTop={`1px solid ${colors.separation}`}
+    >
       <Box display="flex" alignItems="center">
         <Toggle checked={enabled} onChange={onToggleEnabled} />
-        <Text mb="0px">{localize(titleMultiloc)}</Text>
+        <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
+          {localize(titleMultiloc)}
+        </Title>
       </Box>
-    </Row>
+
+      <Box display="flex" alignItems="center">
+        {isDefault && (
+          <StyledText mt="0px" mb="0px" variant="bodyS" color="adminTextColor">
+            <FormattedMessage {...messages.defaultField} />
+          </StyledText>
+        )}
+        <StyledIcon
+          name="chevron-right"
+          height="12px"
+          fill={colors.label}
+          ml="16px"
+        />
+      </Box>
+    </Box>
   );
 };
 
