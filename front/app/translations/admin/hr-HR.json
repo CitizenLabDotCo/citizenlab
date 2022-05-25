@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Sva područja",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "Geografske oblasti",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Projects can be filtered on the homepage using areas. Areas can be set {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "ovde",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "No specific area",
