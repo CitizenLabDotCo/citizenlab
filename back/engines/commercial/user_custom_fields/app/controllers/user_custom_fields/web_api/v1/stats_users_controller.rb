@@ -20,18 +20,34 @@ module UserCustomFields
           head :not_implemented
         end
 
-        def users_by_gender_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'gender', 'users'
-          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_gender.xlsx'
-        end
+        def users_by_custom_field_as_xlsx
+          counts = user_counts
 
-        def users_by_birthyear_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'birthyear', 'users'
-          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_birthyear.xlsx'
+          if custom_field.custom_field_options.present?
+            res = custom_field.custom_field_options.map do |option|
+              {
+                'option_id' => option.key,
+                'option' => MultilocService.new.t(option.title_multiloc),
+                'users' => counts[option.key] || 0
+              }
+            end
+
+            blank_option = { 'option_id' => '_blank', 'option' => 'unknown', 'users' => counts['_blank'] || 0 }
+            res.push(blank_option)
+
+            xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'option')
+          else
+            xlsx = XlsxService.new.generate_field_stats_xlsx(counts, custom_field.key, 'users')
+          end
+
+          send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
+        rescue NotSupportedFieldTypeError
+          head :not_implemented
         end
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
+          binding.pry
           render json: { series: { users: user_counts }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
         end
 
@@ -40,7 +56,7 @@ module UserCustomFields
           res = Area.all.map do |area|
             {
               'area_id' => area.id,
-              'area' => multiloc_service.t(area.title_multiloc),
+              'area' => MultilocService.new.t(area.title_multiloc),
               'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
             }
           end
@@ -54,39 +70,6 @@ module UserCustomFields
 
           xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
           send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_domicile.xlsx'
-        end
-
-        def users_by_education_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx user_counts, 'education', 'users'
-          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_education.xlsx'
-        end
-
-        def users_by_custom_field_as_xlsx
-          counts = user_counts
-
-          if %w[select multiselect].include?(custom_field.input_type)
-            options = custom_field.custom_field_options.select(:key, :title_multiloc)
-
-            res = options.map do |option|
-              {
-                'option_id' => option.key,
-                'option' => multiloc_service.t(option.title_multiloc),
-                'users' => counts[option.key] || 0
-              }
-            end
-
-            res.push({
-              'option_id' => '_blank',
-              'option' => 'unknown',
-              'users' => counts['_blank'] || 0
-            })
-            xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
-          else
-            xlsx = XlsxService.new.generate_field_stats_xlsx counts, 'option', 'users'
-          end
-          send_data xlsx, type: XLSX_MIME_TYPE, filename: 'users_by_custom_field.xlsx'
-        rescue NotSupportedFieldTypeError
-          head :not_implemented
         end
 
         private
@@ -157,10 +140,6 @@ module UserCustomFields
           authorize :'user_custom_fields/stat_user'
         end
 
-        def multiloc_service
-          @multiloc_service ||= MultilocService.new
-        end
-
         def find_users
           users = StatUserPolicy::Scope.new(current_user, User.active)
                                        .resolve
@@ -178,6 +157,10 @@ module UserCustomFields
           end
 
           users
+        end
+
+        def filename(custom_field)
+          "users_by_#{custom_field.key}.xlsx"
         end
 
         class NotSupportedFieldTypeError < StandardError; end
