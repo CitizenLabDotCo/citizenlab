@@ -8,7 +8,7 @@ import Button from 'components/UI/Button';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-export default ({ children }) => {
+const ReferenceDataInterface = () => {
   return (
     <>
       <Box display="flex" justifyContent="flex-start">
@@ -22,7 +22,8 @@ export default ({ children }) => {
         />
       </Box>
       <Title variant="h1">Manage data</Title>
-      {children}
     </>
   );
 };
+
+export default ReferenceDataInterface;

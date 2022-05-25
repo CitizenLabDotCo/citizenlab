@@ -20,19 +20,6 @@ const configuration: ModuleConfiguration = {
             path: 'manage-data',
             container: () =>
               import('./admin/containers/ReferenceDataInterface'),
-            indexRoute: {
-              container: () =>
-                import(
-                  './admin/containers/ReferenceDataInterface/DashboardItems'
-                ),
-            },
-            childRoutes: [
-              {
-                path: 'base-data',
-                container: () =>
-                  import('./admin/containers/ReferenceDataInterface/BaseData'),
-              },
-            ],
           },
         ],
       },
