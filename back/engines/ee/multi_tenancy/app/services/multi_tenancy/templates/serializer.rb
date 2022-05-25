@@ -259,11 +259,6 @@ class MultiTenancy::Templates::Serializer
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_form),
-        'admin_publication_attributes' => {
-          'publication_status'         => p.admin_publication.publication_status,
-          'ordering'                   => p.admin_publication.ordering,
-          'parent_ref'                 => lookup_ref(p.admin_publication.parent_id, :admin_publication_attributes)
-        },
         'text_images_attributes'       => p.text_images.map{ |ti|
           {
             'imageable_field'          => ti.imageable_field,
@@ -274,6 +269,13 @@ class MultiTenancy::Templates::Serializer
           }
         }
       })
+      if p.admin_publication.present?
+        yml_project['admin_publication_attributes'] = {
+          'publication_status' => p.admin_publication.publication_status,
+          'ordering'           => p.admin_publication.ordering,
+          'parent_ref'         => lookup_ref(p.admin_publication.parent_id, :admin_publication_attributes)
+        }
+      end
       store_ref yml_project, p.id, :project
       yml_project
     end
