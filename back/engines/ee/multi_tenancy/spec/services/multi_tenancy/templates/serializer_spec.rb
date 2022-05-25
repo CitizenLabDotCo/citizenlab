@@ -17,7 +17,6 @@ describe MultiTenancy::Templates::Serializer do
       Apartment::Tenant.switch(tenant.schema_name) do
         MultiTenancy::TenantTemplateService.new.apply_template template
         expect(Area.count).to be > 0
-        expect(AreasIdea.count).to be > 0
         expect(Comment.count).to be > 0
         expect(CustomFieldOption.count).to be > 0
         expect(Event.count).to be > 0
@@ -52,6 +51,21 @@ describe MultiTenancy::Templates::Serializer do
 
       home_attributes = template.dig('models', 'nav_bar_item').find { |item| item['code'] == 'home' }
       expect(home_attributes['title_multiloc']).to be_blank
+    end
+
+    it 'can deal with projects without admin publication' do
+      # The changes introduced by ticket CL-793 can be
+      # reverted once the issue with projects losing their
+      # admin publications is solved.
+
+      project = create :project
+      project.admin_publication.delete
+      expect(project.reload).to be_present
+      serializer = described_class.new(Tenant.current)
+      template = serializer.run
+
+      expect(template['models']).to be_present
+      expect(template.dig('models', 'project', 0, 'admin_publication_attributes')).to be_nil
     end
   end
 end
