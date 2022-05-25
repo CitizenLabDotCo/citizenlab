@@ -5,10 +5,11 @@ require 'rails_helper'
 describe SmartGroups::Rules::Email do
   let(:valid_json_rule) do
     {
-    'ruleType' => 'email',
-    'predicate' => 'is',
-    'value' => 'hello@citizenlab.co'
-  } end
+      'ruleType' => 'email',
+      'predicate' => 'is',
+      'value' => 'hello@citizenlab.co'
+    }
+  end
   let(:valid_rule) { SmartGroups::Rules::Email.from_json(valid_json_rule) }
 
   describe 'from_json' do
@@ -80,52 +81,60 @@ describe SmartGroups::Rules::Email do
   describe 'description_multiloc' do
     let(:email_is_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'is',
-      'value'         => 'sebi@citizenlab.co'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'is',
+        'value'         => 'sebi@citizenlab.co'
+      })
+    end
     let(:email_not_is_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'not_is',
-      'value'         => 'sebi@citizenlab.co'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'not_is',
+        'value'         => 'sebi@citizenlab.co'
+      })
+    end
     let(:email_contains_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'contains',
-      'value'         => '@citizenlab'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'contains',
+        'value'         => '@citizenlab'
+      })
+    end
     let(:email_not_contains_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'not_contains',
-      'value'         => '@citizenlab'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'not_contains',
+        'value'         => '@citizenlab'
+      })
+    end
     let(:email_begins_with_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'begins_with',
-      'value'         => 'sebi'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'begins_with',
+        'value'         => 'sebi'
+      })
+    end
     let(:email_not_begins_with_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'not_begins_with',
-      'value'         => 'sebi'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'not_begins_with',
+        'value'         => 'sebi'
+      })
+    end
     let(:email_ends_on_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'ends_on',
-      'value'         => 'citizenlab.co'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'ends_on',
+        'value'         => 'citizenlab.co'
+      })
+    end
     let(:email_not_ends_on_rule) do
       SmartGroups::Rules::Email.from_json({
-      'ruleType'      => 'email',
-      'predicate'     => 'not_ends_on',
-      'value'         => 'citizenlab.co'
-    }) end
+        'ruleType'      => 'email',
+        'predicate'     => 'not_ends_on',
+        'value'         => 'citizenlab.co'
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       expect(email_is_rule.description_multiloc).to eq({

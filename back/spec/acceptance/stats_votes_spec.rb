@@ -263,9 +263,9 @@ resource 'Stats - Votes' do
           json_response = json_parse(response_body)
           aggregate_failures 'check response' do
             expect(json_response[:series].map { |_mode, values| values.size }.uniq.first).to eq((now.in_time_zone(@timezone).to_date - start_at.in_time_zone(@timezone).to_date).to_i + 1)
-            expect(json_response[:series][:up].values.inject(&:+)).to eq 3
-            expect(json_response[:series][:down].values.inject(&:+)).to eq 2
-            expect(json_response[:series][:total].values.inject(&:+)).to eq 5
+            expect(json_response[:series][:up].values.sum).to eq 3
+            expect(json_response[:series][:down].values.sum).to eq 2
+            expect(json_response[:series][:total].values.sum).to eq 5
           end
         end
       end
@@ -310,13 +310,13 @@ resource 'Stats - Votes' do
             expect(worksheet[0].cells.map(&:value)).to match %w[date up down total]
             up_col = worksheet.map { |col| col.cells[1].value }
             header, *ups = up_col
-            expect(ups.inject(&:+)).to eq 3
+            expect(ups.sum).to eq 3
             down_col = worksheet.map { |col| col.cells[2].value }
             header, *downs = down_col
-            expect(downs.inject(&:+)).to eq 2
+            expect(downs.sum).to eq 2
             total_col = worksheet.map { |col| col.cells[3].value }
             header, *totals = total_col
-            expect(totals.inject(&:+)).to eq 5
+            expect(totals.sum).to eq 5
           end
         end
       end
@@ -401,7 +401,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:total].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:total].values.sum).to eq 2
       end
     end
 
@@ -420,7 +420,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by topic filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:total].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:total].values.sum).to eq 2
       end
     end
   end
@@ -481,7 +481,7 @@ resource 'Stats - Votes' do
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 2
+        expect(amounts.sum).to eq 2
       end
     end
 
@@ -504,7 +504,7 @@ resource 'Stats - Votes' do
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 2
+        expect(amounts.sum).to eq 2
       end
     end
   end
@@ -557,7 +557,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by project filtered by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:total].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:total].values.sum).to eq 1
       end
     end
 
@@ -577,7 +577,7 @@ resource 'Stats - Votes' do
       example_request 'Votes by project filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:total].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:total].values.sum).to eq 1
       end
     end
   end
@@ -638,7 +638,7 @@ resource 'Stats - Votes' do
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        expect(amounts.sum).to eq 1
       end
     end
 
@@ -662,7 +662,7 @@ resource 'Stats - Votes' do
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        expect(amounts.sum).to eq 1
       end
     end
   end

@@ -26,7 +26,7 @@ module GeographicDashboard
         end
 
         def idea_geotags
-          @ideas.map { |idea| [idea.id, geotag(Tenant.current.id, idea, geocoder: 'google')] }.to_h
+          @ideas.to_h { |idea| [idea.id, geotag(Tenant.current.id, idea, geocoder: 'google')] }
         end
 
         def geotag_service

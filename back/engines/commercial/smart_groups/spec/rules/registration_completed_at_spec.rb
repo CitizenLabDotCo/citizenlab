@@ -6,10 +6,11 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
   describe 'validations' do
     let(:valid_json_rule) do
       {
-      'ruleType' => 'registration_completed_at',
-      'predicate' => 'is_before',
-      'value' => (Date.today - 1.day)
-    } end
+        'ruleType' => 'registration_completed_at',
+        'predicate' => 'is_before',
+        'value' => (Date.today - 1.day)
+      }
+    end
     let(:valid_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json(valid_json_rule) }
 
     it 'successfully validate the valid rule' do
@@ -60,32 +61,37 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
   describe 'description_multiloc' do
     let(:registration_completed_at_is_before_rule) do
       SmartGroups::Rules::RegistrationCompletedAt.from_json({
-      'ruleType'      => 'registration_completed_at',
-      'predicate'     => 'is_before',
-      'value'         => '2019-11-12'
-    }) end
+        'ruleType'      => 'registration_completed_at',
+        'predicate'     => 'is_before',
+        'value'         => '2019-11-12'
+      })
+    end
     let(:registration_completed_at_is_after_rule) do
       SmartGroups::Rules::RegistrationCompletedAt.from_json({
-      'ruleType'      => 'registration_completed_at',
-      'predicate'     => 'is_after',
-      'value'         => '2019-11-12'
-    }) end
+        'ruleType'      => 'registration_completed_at',
+        'predicate'     => 'is_after',
+        'value'         => '2019-11-12'
+      })
+    end
     let(:registration_completed_at_is_exactly_rule) do
       SmartGroups::Rules::RegistrationCompletedAt.from_json({
-      'ruleType'      => 'registration_completed_at',
-      'predicate'     => 'is_exactly',
-      'value'         => '2019-11-12'
-    }) end
+        'ruleType'      => 'registration_completed_at',
+        'predicate'     => 'is_exactly',
+        'value'         => '2019-11-12'
+      })
+    end
     let(:registration_completed_at_is_empty_rule) do
       SmartGroups::Rules::RegistrationCompletedAt.from_json({
-      'ruleType'      => 'registration_completed_at',
-      'predicate'     => 'is_empty'
-    }) end
+        'ruleType'      => 'registration_completed_at',
+        'predicate'     => 'is_empty'
+      })
+    end
     let(:registration_completed_at_not_is_empty_rule) do
       SmartGroups::Rules::RegistrationCompletedAt.from_json({
-      'ruleType'      => 'registration_completed_at',
-      'predicate'     => 'not_is_empty'
-    }) end
+        'ruleType'      => 'registration_completed_at',
+        'predicate'     => 'not_is_empty'
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       expect(registration_completed_at_is_before_rule.description_multiloc).to eq({

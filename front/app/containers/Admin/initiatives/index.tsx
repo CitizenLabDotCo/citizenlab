@@ -91,7 +91,7 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
             title={messages.metaTitle}
             description={messages.metaDescription}
           />
-          {children}
+          <div id="e2e-initiatives-admin-container">{children}</div>
         </TabbedResource>
       </>
     );

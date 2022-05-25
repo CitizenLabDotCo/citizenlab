@@ -56,10 +56,10 @@ class SideFxCommentService
   end
 
   def process_mentions(comment)
-    comment.body_multiloc = comment.body_multiloc.map do |locale, body|
+    comment.body_multiloc = comment.body_multiloc.to_h do |locale, body|
       new_body, users = @@mention_service.process_mentions(body)
       [locale, new_body]
-    end.to_h
+    end
   end
 
   def notify_mentioned_users(comment, user)
