@@ -20,15 +20,12 @@ import { shallowWithIntl } from 'utils/testUtils/withIntl';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { WithRouterProps } from 'utils/withRouter';
 
-jest.mock('react-scroll-to-component', () => {
-  return 'react-scroll-to-component';
-});
-
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');
 jest.mock('components/Outlet', () => 'outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-
+jest.mock('utils/withRouter');
+jest.mock('utils/cl-router/Link');
 const getRouterProps = (projectId, tabName?: string) =>
   ({
     location: {

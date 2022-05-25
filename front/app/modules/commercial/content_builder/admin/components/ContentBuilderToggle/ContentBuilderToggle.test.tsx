@@ -28,16 +28,8 @@ jest.mock('modules/commercial/content_builder/hooks/useContentBuilder', () => {
 jest.mock('modules/commercial/content_builder/services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
-jest.mock('react-router', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} />;
-      };
-    },
-    Link: () => 'LinkText',
-  };
-});
+jest.mock('utils/withRouter');
+jest.mock('utils/cl-router/Link', () => 'LinkText');
 
 const dummyFunction = jest.fn();
 const multiloc = 'en' as Multiloc;
