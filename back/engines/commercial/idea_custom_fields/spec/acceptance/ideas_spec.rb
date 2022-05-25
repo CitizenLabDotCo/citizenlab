@@ -225,7 +225,7 @@ resource 'Ideas' do
         user.add_role 'admin'
         user.save!
         form = create :custom_form, project: project
-        number_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
+        create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
         do_request
 
         assert_status 200
