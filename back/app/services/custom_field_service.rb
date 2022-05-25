@@ -84,7 +84,9 @@ class CustomFieldService
 
   def cleanup_custom_field_values!(custom_field_values)
     custom_field_values.each_key do |key|
-      next if custom_field_values[key].present?
+      value = custom_field_values[key]
+      is_boolean = !!value == value
+      next if is_boolean || value.present?
 
       custom_field_values.delete key
     end
