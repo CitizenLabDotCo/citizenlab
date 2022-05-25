@@ -44,7 +44,7 @@ describe('Settings panel options', () => {
     });
 
     cy.get('#e2e-text-box').click();
-    cy.get('.builderSettingsClose').click();
+    cy.get('.e2eBuilderSettingsClose').click();
 
     cy.get('#e2e-node-label').should('not.exist');
     cy.get('#e2e-delete-button').should('not.exist');

@@ -51,6 +51,10 @@ const ContentBuilderSettings = () => {
     };
   });
 
+  const closeSettings = () => {
+    actions.selectNode();
+  };
+
   return selected && isEnabled && selected.id !== ROOT_NODE ? (
     <StyledBox
       position="fixed"
@@ -63,11 +67,9 @@ const ContentBuilderSettings = () => {
       background="#ffffff"
     >
       <StyledCloseIconButton
-        className="builderSettingsClose"
+        className="e2eBuilderSettingsClose"
         a11y_buttonActionMessage={messages.a11y_closeSettingsPanel}
-        onClick={() => {
-          actions.selectNode();
-        }}
+        onClick={closeSettings}
         iconColor={colors.label}
         iconColorOnHover={'#000'}
       />
