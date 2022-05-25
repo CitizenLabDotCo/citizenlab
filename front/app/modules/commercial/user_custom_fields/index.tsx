@@ -109,12 +109,10 @@ const configuration: ModuleConfiguration = {
             element: <AdminCustomFieldEditComponent />,
             children: [
               {
-                // {/* todo check to see if this works with outlet context */}
                 path: 'field-settings',
                 element: <AdminCustomFieldRegistrationSettingsComponent />,
               },
               {
-                // {/* todo check to see if this works with outlet context */}
                 path: 'options',
                 element: <AdminCustomFieldRegistrationOptionsComponent />,
               },

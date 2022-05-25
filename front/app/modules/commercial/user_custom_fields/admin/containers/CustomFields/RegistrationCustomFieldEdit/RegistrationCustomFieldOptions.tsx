@@ -13,7 +13,6 @@ import {
 
 // hooks
 import useUserCustomFieldOptions from '../../../../hooks/useUserCustomFieldOptions';
-import useUserCustomField from '../../../../hooks/useUserCustomField';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -33,15 +32,12 @@ import { InjectedIntlProps } from 'react-intl';
 const RegistrationCustomFieldOptions = memo(
   ({
     intl: { formatMessage },
-    params: { customFieldId },
+    params: { userCustomFieldId },
   }: InjectedIntlProps & WithRouterProps) => {
-    const customField = useUserCustomField(customFieldId);
+    if (isNilOrError(userCustomFieldId)) return null;
 
-    if (isNilOrError(customField)) return null;
-
-    const userCustomFieldOptions = useUserCustomFieldOptions(customField.id);
+    const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
-    const userCustomFieldId = customField.id;
 
     const handleReorderCustomFieldOption = (
       customFieldOptionId: string,
