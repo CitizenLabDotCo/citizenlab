@@ -198,7 +198,7 @@ const configuration: ModuleConfiguration = {
         element: <FolderContainerComponent />,
         children: [
           {
-            path: '',
+            index: true,
             element: <FolderProjectsComponent />,
           },
           {

@@ -32,7 +32,7 @@ const configuration: ModuleConfiguration = {
         element: <AdminInsightsContainerComponent />,
         children: [
           {
-            path: '',
+            index: true,
             element: <AdminInsightsListComponent />,
           },
           {
