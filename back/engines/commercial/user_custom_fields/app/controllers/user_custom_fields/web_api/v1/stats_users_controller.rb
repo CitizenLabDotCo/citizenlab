@@ -6,15 +6,7 @@ module UserCustomFields
       class StatsUsersController < ::WebApi::V1::StatsController
         def users_by_gender_serie
           users = find_users
-
-          serie = users
-            .group("custom_field_values->'gender'")
-            .order(Arel.sql("custom_field_values->'gender'"))
-            .count
-
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
+          count_users(users, 'gender')
         end
 
         def users_by_gender
@@ -28,14 +20,7 @@ module UserCustomFields
 
         def users_by_birthyear_serie
           users = find_users
-
-          serie = users
-            .group("custom_field_values->'birthyear'")
-            .order(Arel.sql("custom_field_values->'birthyear'"))
-            .count
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
+          count_users(users, 'birthyear')
         end
 
         def users_by_birthyear
@@ -49,14 +34,7 @@ module UserCustomFields
 
         def users_by_domicile_serie
           users = find_users
-
-          serie = users
-            .group("custom_field_values->'domicile'")
-            .order(Arel.sql("custom_field_values->'domicile'"))
-            .count
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
+          count_users(users, 'domicile')
         end
 
         def users_by_domicile
@@ -88,14 +66,7 @@ module UserCustomFields
 
         def users_by_education_serie
           users = find_users
-
-          serie = users
-            .group("custom_field_values->'education'")
-            .order(Arel.sql("custom_field_values->'education'"))
-            .count
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
+          count_users(users, 'education')
         end
 
         def users_by_education
@@ -112,12 +83,7 @@ module UserCustomFields
 
           case @custom_field.input_type
           when 'select'
-            serie = users
-              .group("custom_field_values->'#{@custom_field.key}'")
-              .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
-              .count
-            serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-            serie
+            count_users(users, @custom_field.key)
           when 'multiselect'
             serie = users
               .joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(custom_field_values->'#{@custom_field.key}') as field_value, id FROM users) as cfv ON users.id = cfv.id")
@@ -127,12 +93,7 @@ module UserCustomFields
             serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
             serie
           when 'checkbox'
-            serie = users
-              .group("custom_field_values->'#{@custom_field.key}'")
-              .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
-              .count
-            serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-            serie
+            count_users(users, @custom_field.key)
           else
             head :not_implemented
           end
@@ -202,6 +163,15 @@ module UserCustomFields
           end
 
           users
+        end
+
+        def count_users(users, custom_field_key)
+          users.group("custom_field_values->'#{custom_field_key}'")
+               .order(Arel.sql("custom_field_values->'#{custom_field_key}'"))
+               .count
+               .tap do |counts|
+            counts['_blank'] = counts.delete(nil) || 0 unless counts.empty?
+          end
         end
       end
     end
