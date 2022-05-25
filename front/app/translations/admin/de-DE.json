@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Hier sind die Projekte, die Sie auf der Plattform verwalten.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Projekte",
   "app.containers.AdminPage.ProjectDashboard.published": "Veröffentlicht",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Spaltenlayout",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Beschreibung",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Kachel-Beschreibung",
