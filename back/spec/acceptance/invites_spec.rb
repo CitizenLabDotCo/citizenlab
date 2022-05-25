@@ -156,12 +156,13 @@ resource 'Invites' do
       describe do
         let(:emails) do
           [
-          'someemail@somedomain.net',
-          'someemail@somedomain.net',
-          'user_at_domain.com',
-          create(:user).email,
-          create(:invite).invitee.email
-        ] end
+            'someemail@somedomain.net',
+            'someemail@somedomain.net',
+            'user_at_domain.com',
+            create(:user).email,
+            create(:invite).invitee.email
+          ]
+        end
 
         example_request '[error] Bulk invite multiple users' do
           assert_status 422
@@ -195,15 +196,16 @@ resource 'Invites' do
         let(:users) { build_list(:user, 6) }
         let(:hash_array) do
           users.map.with_index do |user, i|
-          {
-            email: user.email,
-            first_name: rand(3) == 0 ? user.first_name : nil,
-            last_name: rand(3) == 0 ? user.last_name : nil,
-            language: i == 0 ? 'nl-NL' : nil,
-            admin: i == 0 ? true : nil,
-            groups: i == 0 ? create(:group).title_multiloc.values.first : nil
-          }
-        end end
+            {
+              email: user.email,
+              first_name: rand(3) == 0 ? user.first_name : nil,
+              last_name: rand(3) == 0 ? user.last_name : nil,
+              language: i == 0 ? 'nl-NL' : nil,
+              admin: i == 0 ? true : nil,
+              groups: i == 0 ? create(:group).title_multiloc.values.first : nil
+            }
+        end
+      end
         let(:group_ids) { [create(:group).id] }
         let(:roles) { [{ 'type' => 'admin' }] }
         let(:locale) { 'en' }
@@ -222,16 +224,17 @@ resource 'Invites' do
       describe do
         let(:hash_array) do
           [
-          { email: 'someemail@somedomain.net' },
-          { email: 'someemail@somedomain.net' },
-          { email: 'user_at_domain.com' },
-          { email: create(:user).email },
-          { email: create(:invite).invitee.email },
-          { locale: 'qq' },
-          { groups: 'A positive' },
-          { groups: 24 },
-          { admin: 'nope' }
-        ] end
+            { email: 'someemail@somedomain.net' },
+            { email: 'someemail@somedomain.net' },
+            { email: 'user_at_domain.com' },
+            { email: create(:user).email },
+            { email: create(:invite).invitee.email },
+            { locale: 'qq' },
+            { groups: 'A positive' },
+            { groups: 24 },
+            { admin: 'nope' }
+          ]
+        end
 
         example_request '[error] Bulk invite users with xlsx file' do
           assert_status 422

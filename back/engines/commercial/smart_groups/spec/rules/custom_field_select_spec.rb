@@ -9,11 +9,12 @@ describe SmartGroups::Rules::CustomFieldSelect do
 
     let(:valid_json_rule) do
       {
-      'ruleType' => 'custom_field_select',
-      'customFieldId' => custom_field.id,
-      'predicate' => 'has_value',
-      'value' => options.first.id
-    } end
+        'ruleType' => 'custom_field_select',
+        'customFieldId' => custom_field.id,
+        'predicate' => 'has_value',
+        'value' => options.first.id
+      }
+    end
     let(:valid_rule) { SmartGroups::Rules::CustomFieldSelect.from_json(valid_json_rule) }
 
     it 'successfully validate the valid rule' do
@@ -155,63 +156,72 @@ describe SmartGroups::Rules::CustomFieldSelect do
   describe 'description_multiloc' do
     let(:custom_field) do
       create(:custom_field_select, title_multiloc: {
-      'en'    => 'Where should we put the immigrants?',
-      'fr-FR' => 'Où devrions-nous placer les immigrants?',
-      'nl-NL' => 'Waar moeten we de immigraten plaatsen?'
-    }) end
+        'en'    => 'Where should we put the immigrants?',
+        'fr-FR' => 'Où devrions-nous placer les immigrants?',
+        'nl-NL' => 'Waar moeten we de immigraten plaatsen?'
+      })
+    end
     let(:train_station) do
       create(:custom_field_option, custom_field: custom_field, title_multiloc: {
-      'en'    => 'In the train station',
-      'fr-FR' => 'Dans la gare',
-      'nl-NL' => 'In het treinstation'
-    }) end
+        'en'    => 'In the train station',
+        'fr-FR' => 'Dans la gare',
+        'nl-NL' => 'In het treinstation'
+      })
+    end
     let(:schools) do
       create(:custom_field_option, custom_field: custom_field, title_multiloc: {
-      'en'    => 'In schools',
-      'fr-FR' => 'Dans les écoles',
-      'nl-NL' => 'In scholen'
-    }) end
+        'en'    => 'In schools',
+        'fr-FR' => 'Dans les écoles',
+        'nl-NL' => 'In scholen'
+      })
+    end
 
     let(:custom_field_select_has_value_rule) do
       SmartGroups::Rules::CustomFieldSelect.from_json({
-      'ruleType'      => 'custom_field_select',
-      'predicate'     => 'has_value',
-      'customFieldId' => custom_field.id,
-      'value'         => train_station.id
-    }) end
+        'ruleType'      => 'custom_field_select',
+        'predicate'     => 'has_value',
+        'customFieldId' => custom_field.id,
+        'value'         => train_station.id
+      })
+    end
     let(:custom_field_select_not_has_value_rule) do
       SmartGroups::Rules::CustomFieldSelect.from_json({
-      'ruleType'      => 'custom_field_select',
-      'predicate'     => 'not_has_value',
-      'customFieldId' => custom_field.id,
-      'value'         => train_station.id
-    }) end
+        'ruleType'      => 'custom_field_select',
+        'predicate'     => 'not_has_value',
+        'customFieldId' => custom_field.id,
+        'value'         => train_station.id
+      })
+    end
     let(:custom_field_select_is_one_of_rule) do
       SmartGroups::Rules::CustomFieldSelect.from_json({
-      'ruleType'      => 'custom_field_select',
-      'predicate'     => 'is_one_of',
-      'customFieldId' => custom_field.id,
-      'value'         => [train_station.id]
-    }) end
+        'ruleType'      => 'custom_field_select',
+        'predicate'     => 'is_one_of',
+        'customFieldId' => custom_field.id,
+        'value'         => [train_station.id]
+      })
+    end
     let(:custom_field_select_not_is_one_of_rule) do
       SmartGroups::Rules::CustomFieldSelect.from_json({
-      'ruleType'      => 'custom_field_select',
-      'predicate'     => 'not_is_one_of',
-      'customFieldId' => custom_field.id,
-      'value'         => [train_station.id, schools.id]
-    }) end
+        'ruleType'      => 'custom_field_select',
+        'predicate'     => 'not_is_one_of',
+        'customFieldId' => custom_field.id,
+        'value'         => [train_station.id, schools.id]
+      })
+    end
     let(:custom_field_select_is_empty_rule) do
       SmartGroups::Rules::CustomFieldSelect.from_json({
-      'ruleType'      => 'custom_field_select',
-      'predicate'     => 'is_empty',
-      'customFieldId' => custom_field.id
-    }) end
+        'ruleType'      => 'custom_field_select',
+        'predicate'     => 'is_empty',
+        'customFieldId' => custom_field.id
+      })
+    end
     let(:custom_field_select_not_is_empty_rule) do
       SmartGroups::Rules::CustomFieldSelect.from_json({
-      'ruleType'      => 'custom_field_select',
-      'predicate'     => 'not_is_empty',
-      'customFieldId' => custom_field.id
-    }) end
+        'ruleType'      => 'custom_field_select',
+        'predicate'     => 'not_is_empty',
+        'customFieldId' => custom_field.id
+      })
+    end
 
     # TODO: test education: return education description instead of number
 

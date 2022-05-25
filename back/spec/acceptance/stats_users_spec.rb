@@ -87,7 +87,7 @@ resource 'Stats - Users' do
         do_request
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 11
+        expect(json_response[:series][:users].values.sum).to eq 11
       end
     end
 
@@ -100,7 +100,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 9
+        expect(json_response[:series][:users].values.sum).to eq 9
       end
     end
 
@@ -121,7 +121,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 3
+        expect(json_response[:series][:users].values.sum).to eq 3
       end
     end
 
@@ -144,7 +144,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:users].values.sum).to eq 1
       end
     end
 
@@ -174,7 +174,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 3
+        expect(json_response[:series][:users].values.sum).to eq 3
       end
     end
   end
@@ -196,7 +196,7 @@ resource 'Stats - Users' do
 
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 11
+        expect(amounts.sum).to eq 11
       end
     end
 
@@ -223,7 +223,7 @@ resource 'Stats - Users' do
 
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 9
+        expect(amounts.sum).to eq 9
       end
     end
 
@@ -247,7 +247,7 @@ resource 'Stats - Users' do
 
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 3
+        expect(amounts.sum).to eq 3
       end
     end
 
@@ -273,7 +273,7 @@ resource 'Stats - Users' do
 
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        expect(amounts.sum).to eq 1
       end
     end
 
@@ -306,7 +306,7 @@ resource 'Stats - Users' do
 
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 3
+        expect(amounts.sum).to eq 3
       end
     end
   end
@@ -555,7 +555,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 4
+        expect(json_response[:series][:users].values.sum).to eq 4
       end
     end
 
@@ -579,7 +579,7 @@ resource 'Stats - Users' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:users].values.sum).to eq 1
       end
     end
 
@@ -606,7 +606,7 @@ resource 'Stats - Users' do
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:users].values.sum).to eq 1
       end
     end
 
@@ -639,7 +639,7 @@ resource 'Stats - Users' do
         json_response = json_parse(response_body)
         expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
         expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:users].values.sum).to eq 2
       end
     end
   end
@@ -675,7 +675,7 @@ resource 'Stats - Users' do
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
         header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 4
+        expect(amounts.sum).to eq 4
       end
     end
   end
