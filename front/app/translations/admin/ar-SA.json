@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "ها هي المشاريع التي تديرها على المنصة.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "المشاريع",
   "app.containers.AdminPage.ProjectDashboard.published": "تم النشر",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "مخطط أعمدة",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "الوصف",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "وصف الصفحة الرئيسية",
