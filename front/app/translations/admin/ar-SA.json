@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "مؤرشف",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "مؤرشف",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "جميع المناطق",
-  "app.containers.AdminPage.ProjectEdit.areasLabel": "المناطق الجغرافية",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "يمكن تصفية المشاريع في مناطق استخدام الصفحة الرئيسية. يمكن تعيين مناطق {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "هنا",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "لا توجد منطقة معينة",
