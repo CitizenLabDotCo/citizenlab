@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe MultiTenancy::Templates::Serializer do
-  describe '#run' do
+  describe '#run', slow_test: true do
     it 'successfully generates a tenant template from a given tenant' do
       load Rails.root.join('db/seeds.rb')
       localhost = Tenant.find_by(host: 'localhost')
