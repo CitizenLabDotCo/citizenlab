@@ -703,6 +703,7 @@
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Aquí están los proyectos que estás moderando en la plataforma.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageTitle": "Proyectos",
   "app.containers.AdminPage.ProjectDashboard.published": "Publicado",
+  "app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel": "Close settings panel",
   "app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel": "Diseño de columnas",
   "app.containers.AdminPage.ProjectDescription.descriptionLabel": "Descripción completa",
   "app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel": "Descripción en la página de inicio",
