@@ -4,21 +4,24 @@ import React, { lazy } from 'react';
 import createDashboardRoutes from './dashboard/routes';
 import createAdminInitiativesRoutes from './initiatives/routes';
 import createAdminUsersRoutes from './users/routes';
-// import invitationsRoutes from './invitations/routes';
-// import projectsRoutes from './projects/routes';
-// import settingsRoutes from './settings/routes';
-// import settingsAreasRoutes from './settings/areas/routes';
-// import pagesRoutes from './pages/routes';
+import invitationsRoutes from './invitations/routes';
+import createAdminProjectsRoutes from './projects/routes';
+import settingsRoutes from './settings/routes';
+import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
-// import ideasRoutes from './ideas/routes';
+import ideasRoutes from './ideas/routes';
 
 // import moduleConfiguration from 'modules';
 
 // components
-const AdminContainer = lazy(() => import('containers/Admin'));
 import { LoadingComponent } from 'routes';
 import { Navigate, useLocation } from 'react-router-dom';
 // import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+const AdminContainer = lazy(() => import('containers/Admin'));
+const AdminWorkshopsComponent = lazy(
+  () => import('containers/Admin/workshops')
+);
+const AdminFaviconComponent = lazy(() => import('containers/Admin/favicon'));
 
 // hooks
 import { usePermission } from 'services/permissions';
@@ -112,29 +115,28 @@ const createAdminRoutes = () => {
       createDashboardRoutes(),
       createAdminInitiativesRoutes(),
       createAdminUsersRoutes(),
-      // projectsRoutes(),
-      // settingsRoutes(),
-      // settingsAreasRoutes(),
-      // pagesRoutes(),
-      // invitationsRoutes(),
+      createAdminProjectsRoutes(),
+      settingsRoutes(),
+      pagesRoutes(),
+      invitationsRoutes(),
       createAdminMessagingRoutes(),
-      // ideasRoutes(),
-      // {
-      //   path: 'workshops',
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/workshops'),
-      //     loading: LoadableLoadingAdmin,
-      //     delay: 500,
-      //   }),
-      // },
-      // {
-      //   path: 'favicon',
-      //   component: Loadable({
-      //     loader: () => import('containers/Admin/favicon'),
-      //     loading: LoadableLoadingAdmin,
-      //     delay: 500,
-      //   }),
-      // },
+      ideasRoutes(),
+      {
+        path: 'workshops',
+        element: (
+          <LoadingComponent>
+            <AdminWorkshopsComponent />
+          </LoadingComponent>
+        ),
+      },
+      {
+        path: 'favicon',
+        element: (
+          <LoadingComponent>
+            <AdminFaviconComponent />
+          </LoadingComponent>
+        ),
+      },
       // ...moduleConfiguration.routes.admin,
     ],
   };

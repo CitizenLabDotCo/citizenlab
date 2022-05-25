@@ -10,17 +10,17 @@ export default defineMessages({
     defaultMessage:
       'Show all events posted on the participation platform of {orgName}.',
   },
-  upcomingAndOngoingEvents: {
-    id: 'app.containers.eventspage.upcomingAndOngoingEvents',
-    defaultMessage: 'Upcoming and ongoing events',
+  upcomingEvents: {
+    id: 'app.containers.eventspage.upcomingEvents',
+    defaultMessage: 'Upcoming events',
   },
   pastEvents: {
     id: 'app.containers.eventspage.pastEvents',
     defaultMessage: 'Past events',
   },
-  noUpcomingOrOngoingEvents: {
-    id: 'app.containers.eventspage.noUpcomingOrOngoingEvents',
-    defaultMessage: 'No upcoming or ongoing events are currently scheduled.',
+  noUpcomingEvents: {
+    id: 'app.containers.eventspage.noUpcomingEvents',
+    defaultMessage: 'No upcoming events are currently scheduled',
   },
   noPastEvents: {
     id: 'app.containers.eventspage.noPastEvents',

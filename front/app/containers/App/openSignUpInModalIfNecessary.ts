@@ -78,7 +78,10 @@ export default function openSignUpInModalIfNecessary(
       // otherwise, when any of the above-defined conditions is set to true, we do trigger the modal
       if (
         !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
-        (isAuthError || shouldCompleteRegistration || shouldVerify)
+        (isAuthError ||
+          shouldCompleteRegistration ||
+          shouldVerify ||
+          isInvitation)
       ) {
         openSignUpInModal({
           isInvitation,

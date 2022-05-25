@@ -11,14 +11,10 @@ const StyledEventsViewer = styled(EventsViewer)`
   margin-bottom: 135px;
 `;
 
-const CurrentAndUpcomingEvents = ({
-  intl: { formatMessage },
-}: InjectedIntlProps) => (
+export default injectIntl<InjectedIntlProps>(({ intl }) => (
   <StyledEventsViewer
-    title={formatMessage(messages.upcomingAndOngoingEvents)}
-    fallbackMessage={messages.noUpcomingOrOngoingEvents}
-    eventsTime="currentAndFuture"
+    title={intl.formatMessage(messages.upcomingEvents)}
+    fallbackMessage={messages.noUpcomingEvents}
+    eventsTime="future"
   />
-);
-
-export default injectIntl(CurrentAndUpcomingEvents);
+));

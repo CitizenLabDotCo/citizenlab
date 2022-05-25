@@ -19,6 +19,7 @@ import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -30,7 +31,6 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { IProjectData } from 'services/projects';
 import {
   eventStream,
   updateEvent,
@@ -53,15 +53,12 @@ interface DataProps {
   remoteEventFiles: GetRemoteFilesChildProps;
 }
 
-interface InputProps {
+interface Props extends DataProps {
   params: {
     id: string | null;
     projectId: string | null;
   };
-  project: IProjectData | null;
 }
-
-interface Props extends DataProps, InputProps {}
 
 interface State {
   locale: Locale | null;
@@ -82,7 +79,11 @@ interface State {
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectEventEdit extends PureComponent<Props, State> {
+class AdminProjectEventEdit extends PureComponent<
+  Props,
+  State,
+  WithRouterProps
+> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -205,9 +206,8 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
 
   handleOnSubmit = async (e) => {
     e.preventDefault();
-
-    if (!isNilOrError(this.props.project)) {
-      const projectId = this.props.project.id;
+    if (!isNilOrError(this.props.params.projectId)) {
+      const { projectId } = this.props.params;
       const { event, eventFiles, eventFilesToRemove } = this.state;
       let eventResponse = event;
       let redirect = false;
@@ -390,10 +390,10 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
   }
 }
 
-export default (props: InputProps) => (
+export default withRouter((props) => (
   <GetRemoteFiles resourceId={props.params.id} resourceType="event">
     {(remoteEventFiles) => (
       <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
     )}
   </GetRemoteFiles>
-);
+));

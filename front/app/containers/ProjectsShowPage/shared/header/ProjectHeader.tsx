@@ -107,6 +107,10 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
+                {/*
+                  Needs to change: Outlet should always render.
+                  Condition needs to be inside the Outlet.
+                */}
                 {projectFolderId && (
                   <Outlet
                     id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"

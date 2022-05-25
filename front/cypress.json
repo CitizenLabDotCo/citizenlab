@@ -4,7 +4,7 @@
   "baseUrl": "http://localhost:3000",
   "video": false,
   "chromeWebSecurity": false,
-  "numTestsKeptInMemory": 10,
+  "numTestsKeptInMemory": 0,
   "defaultCommandTimeout": 15000,
   "retries": 2
 }

@@ -1,10 +1,10 @@
-import React, { useMemo, memo, useCallback, useState } from 'react';
+import React, { useMemo, memo, useState } from 'react';
 import styled from 'styled-components';
+import { TOnProjectAttributesDiffChangeFunction } from 'utils/moduleUtils';
 
 // hooks
 import { useProjectFolders } from '../../../hooks';
 import useLocalize from 'hooks/useLocalize';
-import { IUserData } from 'services/users';
 
 // services
 import { IUpdatedProjectProperties } from 'services/projects';
@@ -13,7 +13,6 @@ import {
   isProjectFolderModerator,
   moderatesFolder,
 } from 'modules/commercial/project_folders/permissions/roles';
-import { onProjectFormStateChange } from 'containers/Admin/projects/edit/general';
 
 // components
 import { Radio, Select, IconTooltip } from '@citizenlab/cl2-component-library';
@@ -30,6 +29,7 @@ import { IOption } from 'typings';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import useAuthUser from 'hooks/useAuthUser';
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
@@ -43,22 +43,25 @@ declare module 'services/projects' {
 }
 
 interface Props {
-  onChange: onProjectFormStateChange;
   projectAttrs: IUpdatedProjectProperties;
-  authUser: IUserData;
+  onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
 
 const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
   ({
     projectAttrs: { folder_id },
-    onChange,
+    onProjectAttributesDiffChange,
     intl: { formatMessage },
-    authUser,
   }) => {
     const { projectFolders } = useProjectFolders({});
+    const authUser = useAuthUser();
     const localize = useLocalize();
-    const userIsProjectFolderModerator = isProjectFolderModerator(authUser);
-    const userIsAdmin = userHasRole({ data: authUser }, 'admin');
+    const userIsProjectFolderModerator = !isNilOrError(authUser)
+      ? isProjectFolderModerator(authUser)
+      : false;
+    const userIsAdmin = !isNilOrError(authUser)
+      ? userHasRole({ data: authUser }, 'admin')
+      : false;
     const userIsProjectFolderModeratorNotAdmin =
       userIsProjectFolderModerator && !userIsAdmin;
     const [radioFolderSelect, setRadioFolderSelect] = useState(
@@ -95,7 +98,12 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
             label: '',
           },
           ...projectFolders
-            .filter((folder) => moderatesFolder(authUser, folder.id))
+            .filter((folder) =>
+              moderatesFolder(
+                !isNilOrError(authUser) ? authUser : null,
+                folder.id
+              )
+            )
             .map((folder) => {
               return {
                 value: folder.id,
@@ -119,37 +127,29 @@ const ProjectFolderSelect = memo<Props & InjectedIntlProps>(
       }
     };
 
-    const handleFolderIdChange = useCallback(
-      (folderId: string | null, submitState: 'enabled' | 'disabled') => {
-        if (folderId === null) {
-          setFolderSelected(false);
-        } else {
-          setFolderSelected(true);
-        }
+    const handleFolderIdChange = (
+      folderId: string | null,
+      submitState: 'enabled' | 'disabled'
+    ) => {
+      setFolderSelected(folderId ? true : false);
 
-        onChange({
-          submitState,
-          'projectAttributesDiff.folder_id': folderId,
-        });
-      },
-      [onChange]
-    );
+      onProjectAttributesDiffChange(
+        { folder_id: folderId || undefined },
+        submitState
+      );
+    };
 
-    const onRadioFolderSelectChange = useCallback(
-      (newRadioProjectFolderSelect: boolean) => {
-        if (newRadioProjectFolderSelect === true) {
-          setRadioFolderSelect(true);
-          handleFolderIdChange(null, 'disabled');
-        }
-
-        if (newRadioProjectFolderSelect === false) {
-          setRadioFolderSelect(false);
-          handleFolderIdChange(null, 'enabled');
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [onChange]
-    );
+    const onRadioFolderSelectChange = (
+      newRadioProjectFolderSelect: boolean
+    ) => {
+      setRadioFolderSelect(newRadioProjectFolderSelect);
+      // Not ideal that we set folderId to null.
+      // Should probably keep it for better UX.
+      handleFolderIdChange(
+        null,
+        newRadioProjectFolderSelect ? 'disabled' : 'enabled'
+      );
+    };
 
     if (folderOptions.length > 0) {
       const defaultFolderSelectOptionValue = folderOptions[0].value;
