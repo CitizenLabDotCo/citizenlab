@@ -214,5 +214,24 @@ resource 'Ideas' do
         end
       end
     end
+
+    patch 'web_api/v1/ideas/:id' do
+      with_options(scope: :idea) { parameter :project_id }
+
+      let(:project) { create :project }
+      let(:project_id) { project.id }
+
+      example 'Moving an idea to a project with required custom custom field', document: false do
+        user.add_role 'admin'
+        user.save!
+        form = create :custom_form, project: project
+        number_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
+        do_request
+
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
+      end
+    end
   end
 end
