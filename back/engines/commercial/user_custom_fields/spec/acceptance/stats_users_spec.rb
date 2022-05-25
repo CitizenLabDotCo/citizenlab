@@ -59,7 +59,7 @@ resource 'Stats - Users' do
     example_request 'Users by gender' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response).to match({
+      expect(json_response).to include(
         series: {
           users: {
             female: 2,
@@ -67,7 +67,7 @@ resource 'Stats - Users' do
             _blank: 0
           }
         }
-      })
+      )
     end
   end
 
@@ -286,7 +286,7 @@ end
     example_request 'Users by education' do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response).to match({
+      expect(json_response).to include(
         series: {
           users: {
             '3': 2,
@@ -294,7 +294,7 @@ end
             _blank: 0
           }
         }
-      })
+      )
     end
   end
   get 'web_api/v1/stats/users_by_education_as_xlsx' do
