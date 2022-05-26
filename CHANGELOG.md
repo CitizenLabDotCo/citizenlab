@@ -5,6 +5,7 @@
 ### Fixed
 
 - [CL-788] Fixed issue with different URL when sharing idea from map vs list view
+- [CL-758] Fix custom field option ordering for dashboard charts
 
 ## 2022-05-20
 
