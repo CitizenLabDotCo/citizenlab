@@ -611,6 +611,7 @@ const AdminProjectsProjectGeneral = ({
           handleAreaSelectionChange={handleAreaSelectionChange}
         />
 
+        {/* to do */}
         {/* lint error, @brent please look into this */}
         {/* <Outlet
           id="app.components.AdminPage.projects.form.additionalInputs.inputs"
