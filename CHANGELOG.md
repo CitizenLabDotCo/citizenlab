@@ -2,6 +2,10 @@
 
 ## Next Release
 
+### Fixed
+
+- [CL-788] Fixed issue with different URL when sharing idea from map vs list view
+
 ## 2022-05-20
 
 ### Fixed
