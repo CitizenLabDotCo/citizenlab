@@ -18,12 +18,12 @@ const Fields = () => {
 
   return (
     <Box mt="32px">
-      {userCustomFields.map((userCustomField) => (
+      {userCustomFields.map(({ id, attributes }) => (
         <Field
           enabled={true}
-          isDefault={userCustomField.attributes.code !== null}
-          titleMultiloc={userCustomField.attributes.title_multiloc}
-          key={userCustomField.id}
+          isDefault={attributes.code !== null}
+          titleMultiloc={attributes.title_multiloc}
+          key={id}
           onToggleEnabled={noop}
         />
       ))}
