@@ -130,11 +130,6 @@ const AdminProjectsProjectGeneral = ({
           project.relationships.areas.data.length > 0 ? 'selection' : 'all'
         );
         setSlug(project.attributes.slug);
-        setProjectAttributesDiff({
-          admin_publication_attributes: {
-            publication_status: publicationStatus,
-          },
-        });
         const headerUrl = project.attributes.header_bg.large;
         const projectHeaderImage = headerUrl
           ? await convertUrlToUploadFile(headerUrl, null, null)
@@ -142,7 +137,7 @@ const AdminProjectsProjectGeneral = ({
         setProjectHeaderImage(projectHeaderImage ? [projectHeaderImage] : null);
       }
     })();
-  }, [project, publicationStatus]);
+  }, [project]);
 
   useEffect(() => {
     (async () => {
