@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
-import { Outlet as RouterOutlet, useOutletContext } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // services
 import {
@@ -29,8 +29,6 @@ const StyledGoBackButton = styled(GoBackButton)`
   display: flex;
   margin-bottom: 20px;
 `;
-
-type ContextType = { customField: IUserCustomFieldData | null };
 
 export interface Props {
   children: JSX.Element | null;
@@ -88,8 +86,7 @@ const RegistrationCustomFieldEdit = memo(
               title: localize(userCustomField.attributes.title_multiloc),
             }}
           >
-            {/* todo check to see if this works */}
-            <RouterOutlet context={{ customField: userCustomField }} />
+            <RouterOutlet />
           </TabbedResource>
         </>
       );
@@ -98,10 +95,5 @@ const RegistrationCustomFieldEdit = memo(
     return null;
   }
 );
-
-// based on the example here https://reactrouter.com/docs/en/v6/hooks/use-outlet-context
-export const useUserCustomFieldOutletContext = () => {
-  return useOutletContext<ContextType>();
-};
 
 export default withRouter(injectIntl(RegistrationCustomFieldEdit));

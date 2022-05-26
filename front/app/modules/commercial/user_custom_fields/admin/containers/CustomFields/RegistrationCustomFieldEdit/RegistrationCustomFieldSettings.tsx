@@ -2,24 +2,30 @@ import React from 'react';
 import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'react-router-dom';
+import { isNilOrError } from 'utils/helperUtils';
 
 import {
   updateCustomFieldForUsers,
   isBuiltInField,
 } from '../../../../services/userCustomFields';
+import useUserCustomField from '../../../../hooks/useUserCustomField';
 
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
 
-import { useUserCustomFieldOutletContext } from '.';
-
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-class RegistrationCustomFieldSettings extends React.Component {
-  initialValues = () => {
-    const { customField } = useUserCustomFieldOutletContext();
+const RegistrationCustomFieldSettings = () => {
+  const { userCustomFieldId } = useParams();
+  if (!userCustomFieldId) return null;
+
+  const customField = useUserCustomField(userCustomFieldId);
+  if (isNilOrError(customField)) return null;
+
+  const initialValues = () => {
     return (
       customField && {
         input_type: customField.attributes.input_type,
@@ -31,22 +37,21 @@ class RegistrationCustomFieldSettings extends React.Component {
     );
   };
 
-  changedValues = (initialValues, newValues) => {
+  const changedValues = (initialValues, newValues) => {
     const changedKeys = keys(newValues).filter(
       (key) => !isEqual(initialValues[key], newValues[key])
     );
     return pick(newValues, changedKeys);
   };
 
-  handleSubmit = (
+  const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
-    const { customField } = useUserCustomFieldOutletContext();
     if (!customField) return;
 
     updateCustomFieldForUsers(customField.id, {
-      ...this.changedValues(this.initialValues(), values),
+      ...changedValues(initialValues(), values),
     })
       .then(() => {
         clHistory.push('/admin/settings/registration');
@@ -62,9 +67,7 @@ class RegistrationCustomFieldSettings extends React.Component {
       });
   };
 
-  renderFn = (props) => {
-    const { customField } = useUserCustomFieldOutletContext();
-
+  const renderFn = (props) => {
     return (
       customField && (
         <RegistrationCustomFieldForm
@@ -77,20 +80,14 @@ class RegistrationCustomFieldSettings extends React.Component {
     );
   };
 
-  render() {
-    const { customField } = useUserCustomFieldOutletContext();
-
-    return (
-      customField && (
-        <Formik
-          initialValues={this.initialValues()}
-          onSubmit={this.handleSubmit}
-          render={this.renderFn}
-          validate={RegistrationCustomFieldForm['validate']}
-        />
-      )
-    );
-  }
-}
+  return (
+    <Formik
+      initialValues={initialValues()}
+      onSubmit={handleSubmit}
+      render={renderFn}
+      validate={RegistrationCustomFieldForm['validate']}
+    />
+  );
+};
 
 export default RegistrationCustomFieldSettings;

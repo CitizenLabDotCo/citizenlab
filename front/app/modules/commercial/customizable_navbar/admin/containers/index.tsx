@@ -8,9 +8,5 @@ export default () => {
   const featureEnabled = useFeatureFlag({ name: 'customizable_navbar' });
   if (!featureEnabled) return null;
 
-  return (
-    <>
-      <RouterOutlet />
-    </>
-  );
+  return <RouterOutlet />;
 };
