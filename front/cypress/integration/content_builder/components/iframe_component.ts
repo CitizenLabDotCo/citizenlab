@@ -4,8 +4,6 @@ describe('Content builder Iframe component', () => {
   let projectId = '';
   let projectSlug = '';
 
-  // Based on:
-  // https://nicknish.co/blog/cypress-targeting-elements-inside-iframes
   const getIframeBody = () => {
     return cy
       .get('iframe')
@@ -58,7 +56,7 @@ describe('Content builder Iframe component', () => {
       position: 'inside',
     });
     cy.get('#e2e-iframe-url').type(
-      // Typeform survey created in CitizenLab Methods Squad workspace for e2e
+      // Typeform survey created in CitizenLab Methods Squad workspace specifically for e2e
       'https://citizenlabco.typeform.com/to/cZtXQzTf'
     );
 
@@ -100,7 +98,7 @@ describe('Content builder Iframe component', () => {
       'rgb(224, 224, 224)'
     );
 
-    // Type valid URL, ensure border and error are gone, and save can be clicked
+    // Type valid URL
     cy.get('#e2e-iframe-url')
       .clear()
       .type('https://citizenlabco.typeform.com/to/cZtXQzTf');
@@ -115,8 +113,6 @@ describe('Content builder Iframe component', () => {
   });
 
   it('deletes Iframe component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.wait(2000); // Load iframe
     cy.get('#e2e-iframe').should('exist');
 
     cy.get('#e2e-content-builder-frame').click();
