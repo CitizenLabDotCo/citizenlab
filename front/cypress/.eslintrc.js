@@ -135,9 +135,6 @@ module.exports = {
         rulesDirectory: ['node_modules/tslint-react/rules'],
         rules: {
           'no-module-references': true,
-          'no-vanilla-formatted-messages': true,
-          'no-vanilla-lodash': true,
-          'no-vanilla-routing': true,
         },
       },
     ],

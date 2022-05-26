@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-// tslint:disable-next-line:no-vanilla-formatted-messages
+// eslint-disable-next-line no-restricted-imports
 import {
   injectIntl as originalInjectIntl,
   InjectedIntlProps,

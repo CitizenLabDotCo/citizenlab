@@ -85,14 +85,24 @@ module.exports = {
         paths: [
           {
             name: 'react-router-dom',
-            importNames: ['Link', 'useNavigate, NavLink'],
+            importNames: ['Link', 'useNavigate', 'NavLink'],
             message:
               "Please import the Link or useNavigate from utils/cl-router instead of directly from 'react-router-dom'",
+          },
+          {
+            name: 'react-intl',
+            importNames: ['FormattedMessage', 'injectIntl'],
+            message:
+              "Import FormattedMessage and injectIntl from 'utils/cl-intl' instead",
           },
           {
             name: 'history',
             message:
               "Please import history from utils/cl-router/cl-history instead of directly from 'history'",
+          },
+          {
+            name: 'lodash',
+            message: "module 'lodash' forbidden: use 'lodash-es' instead",
           },
         ],
       },
@@ -153,9 +163,6 @@ module.exports = {
         rulesDirectory: ['node_modules/tslint-react/rules'],
         rules: {
           'no-module-references': true,
-          'no-vanilla-formatted-messages': true,
-          'no-vanilla-lodash': true,
-          'no-vanilla-routing': true,
         },
       },
     ],

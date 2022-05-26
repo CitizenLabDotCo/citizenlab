@@ -1,6 +1,6 @@
 import FormattedMessage from './FormattedMessage';
 import injectIntl from './injectIntl';
-// tslint:disable-next-line:no-vanilla-formatted-messages
+// eslint-disable-next-line no-restricted-imports
 import {
   Messages,
   FormattedMessage as OriginalFormattedMessage,

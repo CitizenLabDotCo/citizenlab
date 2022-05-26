@@ -1,7 +1,5 @@
 {
   "rules": {
-    "no-vanilla-formatted-messages": true,
-    "no-vanilla-lodash": true,
     "no-module-references": true
   },
   "jsRules": {
