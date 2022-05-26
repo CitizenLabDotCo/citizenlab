@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { isNilOrError, isString } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
@@ -15,15 +15,13 @@ import { useParams } from 'react-router-dom';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 
 interface Props {
-  areaType: 'all' | 'selection';
-  handleAreaTypeChange: (value: 'all' | 'selection') => void;
   areaIds: string[] | undefined;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
 
+type TProjectAreaType = 'all' | 'selection';
+
 const GeographicAreaInputs = ({
-  areaType,
-  handleAreaTypeChange,
   areaIds,
   onProjectAttributesDiffChange,
 }: Props) => {
@@ -31,10 +29,18 @@ const GeographicAreaInputs = ({
   const areas = useAreas();
   const project = useProject({ projectId });
   const localize = useLocalize();
+  const [areaType, setAreaType] = useState<TProjectAreaType>('all');
 
   const handleAreaSelectionChange = (values: IOption[]) => {
     const selectedAreaIds = values.map((value) => value.value).filter(isString);
     onProjectAttributesDiffChange({ area_ids: selectedAreaIds });
+  };
+
+  const onAreaTypeChange = (areaType: TProjectAreaType) => {
+    setAreaType(areaType);
+    onProjectAttributesDiffChange({
+      area_ids: areaType === 'all' ? [] : areaIds,
+    });
   };
 
   if (!isNilOrError(areas)) {
@@ -83,7 +89,7 @@ const GeographicAreaInputs = ({
           />
         </SubSectionTitle>
         <Radio
-          onChange={handleAreaTypeChange}
+          onChange={onAreaTypeChange}
           currentValue={areaType}
           value="all"
           name="areas"
@@ -91,7 +97,7 @@ const GeographicAreaInputs = ({
           label={<FormattedMessage {...messages.areasAllLabel} />}
         />
         <Radio
-          onChange={handleAreaTypeChange}
+          onChange={onAreaTypeChange}
           currentValue={areaType}
           value="selection"
           name="areas"
@@ -117,9 +123,9 @@ const GeographicAreaInputs = ({
   return null;
 };
 
+export default GeographicAreaInputs;
+
 function getProjectArea(areas: IAreaData[], projectAreaId: string) {
   const projectArea = areas.find((area) => area.id === projectAreaId);
   return projectArea;
 }
-
-export default GeographicAreaInputs;

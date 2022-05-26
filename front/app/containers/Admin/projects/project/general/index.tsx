@@ -112,17 +112,12 @@ const AdminProjectsProjectGeneral = ({
     useState<IProjectFormState['showSlugErrorMessage']>(false);
   const [publicationStatus, setPublicationStatus] =
     useState<IProjectFormState['publicationStatus']>('draft');
-  const [areaType, setAreaType] =
-    useState<IProjectFormState['areaType']>('all');
 
   useEffect(() => {
     (async () => {
       if (!isNilOrError(project)) {
         setPublicationStatus(project.attributes.publication_status);
         setProjectType(project.attributes.process_type);
-        setAreaType(
-          project.relationships.areas.data.length > 0 ? 'selection' : 'all'
-        );
         setSlug(project.attributes.slug);
         const headerUrl = project.attributes.header_bg.large;
         const projectHeaderImage = headerUrl
@@ -283,15 +278,6 @@ const AdminProjectsProjectGeneral = ({
       ...projectAttributesDiff,
       topic_ids: topicIds,
     }));
-  };
-
-  const handleAreaTypeChange = (areaType: 'all' | 'selection') => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      area_ids: areaType === 'all' ? [] : projectAttributesDiff.area_ids,
-    }));
-    setAreaType(areaType);
   };
 
   async function saveForm(
@@ -561,8 +547,6 @@ const AdminProjectsProjectGeneral = ({
         />
 
         <GeographicAreaInputs
-          areaType={areaType}
-          handleAreaTypeChange={handleAreaTypeChange}
           areaIds={projectAttrs.area_ids}
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
         />

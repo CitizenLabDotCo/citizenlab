@@ -245,7 +245,6 @@ export interface IProjectFormState {
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
-  areaType: 'all' | 'selection';
   locale: Locale;
   currentTenant: IAppConfiguration | null;
   submitState: ISubmitState;

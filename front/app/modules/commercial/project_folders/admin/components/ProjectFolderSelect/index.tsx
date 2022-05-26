@@ -1,6 +1,6 @@
 import React, { useMemo, memo, useState } from 'react';
 import styled from 'styled-components';
-import { TOnProjectAttributesDiffChangeFunction } from 'utils/moduleUtils';
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/admin/projects/project/general';
 
 // hooks
 import { useProjectFolders } from '../../../hooks';
