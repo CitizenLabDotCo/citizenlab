@@ -23,8 +23,10 @@ const ReferenceDataInterface = () => (
       />
     </Box>
     <Box background="white" px="40px" pt="60px" pb="40px">
-      <Header />
-      <Fields />
+      <Box maxWidth="855px">
+        <Header />
+        <Fields />
+      </Box>
     </Box>
   </>
 );

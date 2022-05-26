@@ -1,8 +1,9 @@
 import React from 'react';
 
 // components
-import { Accordion, Box } from '@citizenlab/cl2-component-library';
+import { Accordion } from '@citizenlab/cl2-component-library';
 import FieldTitle from './FieldTitle';
+import FieldContent from './FieldContent';
 
 // typings
 import { Multiloc } from 'typings';
@@ -32,7 +33,7 @@ const Field = ({
           />
         }
       >
-        <Box>SUPPP</Box>
+        <FieldContent />
       </Accordion>
     </>
   );
