@@ -21,7 +21,7 @@ const Fields = () => {
       {userCustomFields.map((userCustomField) => (
         <Field
           enabled={true}
-          isDefault={true}
+          isDefault={userCustomField.attributes.code !== null}
           titleMultiloc={userCustomField.attributes.title_multiloc}
           key={userCustomField.id}
           onToggleEnabled={noop}

@@ -49,26 +49,34 @@ const FieldTitle = ({
   };
 
   return (
-    <Box py="20px" display="flex" justifyContent="space-between" width="100%">
-      <Tippy
-        placement="top"
-        content={
-          <TooltipContent>
-            {enabled ? (
-              <FormattedMessage {...messages.shownOnDashboard} />
-            ) : (
-              <FormattedMessage {...messages.hiddenOnDashboard} />
-            )}
-          </TooltipContent>
-        }
-      >
-        <Box display="flex" alignItems="center">
-          <Toggle checked={enabled} onChange={handleToggle} />
-        </Box>
-      </Tippy>
-      <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
-        {localize(titleMultiloc)}
-      </Title>
+    <Box
+      py="20px"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      width="100%"
+    >
+      <Box display="flex" alignItems="center">
+        <Tippy
+          placement="top"
+          content={
+            <TooltipContent>
+              {enabled ? (
+                <FormattedMessage {...messages.shownOnDashboard} />
+              ) : (
+                <FormattedMessage {...messages.hiddenOnDashboard} />
+              )}
+            </TooltipContent>
+          }
+        >
+          <Box display="flex" alignItems="center">
+            <Toggle checked={enabled} onChange={handleToggle} />
+          </Box>
+        </Tippy>
+        <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
+          {localize(titleMultiloc)}
+        </Title>
+      </Box>
 
       {isDefault && (
         <StyledText mt="0px" mb="0px" variant="bodyS" color="adminTextColor">
