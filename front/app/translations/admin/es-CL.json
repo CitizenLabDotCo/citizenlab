@@ -615,7 +615,6 @@
   "app.containers.AdminPage.DashboardPage.previousWeek": "Semana anterior",
   "app.containers.AdminPage.DashboardPage.previousYear": "Año anterior",
   "app.containers.AdminPage.DashboardPage.projectType": "Tipo de proyecto : {projectType}",
-<<<<<<< HEAD
   "app.containers.AdminPage.DashboardPage.representativeness.betaLabel": "BETA",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateDescription": "Este conjunto de datos base es necesario para calcular la representatividad de los usuarios de la plataforma en comparación con la población total.",
   "app.containers.AdminPage.DashboardPage.representativeness.emptyStateTitle": "proporcione un conjunto de datos base.",
@@ -623,8 +622,6 @@
   "app.containers.AdminPage.DashboardPage.representativeness.pageDescriptionTemporary": "Compruebe la representatividad de los usuarios de su plataforma en comparación con la población total, basándose en los datos recogidos durante el registro de los usuarios.",
   "app.containers.AdminPage.DashboardPage.representativeness.pageTitle2": "Panel de representatividad",
   "app.containers.AdminPage.DashboardPage.representativeness.submitBaseDataButton": "Enviar datos base",
-=======
->>>>>>> master
   "app.containers.AdminPage.DashboardPage.resolutionday": "en días",
   "app.containers.AdminPage.DashboardPage.resolutionmonth": "en meses",
   "app.containers.AdminPage.DashboardPage.resolutionweek": "en semanas",
