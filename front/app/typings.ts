@@ -99,6 +99,15 @@ export interface IOption {
   disabled?: boolean;
 }
 
+export function isOption(
+  maybeOption: {
+    value: string;
+    label: string;
+  } | null
+): maybeOption is IOption {
+  return maybeOption !== null;
+}
+
 export interface Message {
   id: string;
   defaultMessage: string;
