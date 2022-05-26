@@ -7,7 +7,7 @@ exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] 
     id="app.containers.Admin.dashboards.tabs"
     onData={[Function]}
   />
-  <withRouter(Component)
+  <Component
     resource={
       Object {
         "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
@@ -43,8 +43,8 @@ exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] 
         }
       }
     />
-    Required child
-  </withRouter(Component)>
+    <Outlet />
+  </Component>
 </Fragment>
 `;
 
@@ -55,7 +55,7 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
     id="app.containers.Admin.dashboards.tabs"
     onData={[Function]}
   />
-  <withRouter(Component)
+  <Component
     resource={
       Object {
         "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
@@ -91,7 +91,7 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
         }
       }
     />
-    Required child
-  </withRouter(Component)>
+    <Outlet />
+  </Component>
 </Fragment>
 `;

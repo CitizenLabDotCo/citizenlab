@@ -79,7 +79,7 @@ jest.mock('hooks/useLocale');
 
 jest.mock('utils/cl-intl');
 
-jest.mock('react-router', () => {
+jest.mock('utils/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

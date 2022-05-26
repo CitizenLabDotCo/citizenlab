@@ -7,7 +7,8 @@ import GlobalStyle from 'global-styles';
 import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
 import { LiveAnnouncer } from 'react-aria-live';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
+import history from 'utils/browserHistory';
 
 window.confirm = jest.fn(() => true);
 global.URL.createObjectURL = jest.fn();
@@ -16,7 +17,7 @@ Element.prototype.scrollIntoView = jest.fn();
 
 const AllTheProviders = ({ children }) => {
   return (
-    <Router>
+    <HistoryRouter history={history}>
       <LiveAnnouncer>
         <ThemeProvider theme={getTheme(null)}>
           <GlobalStyle />
@@ -25,7 +26,7 @@ const AllTheProviders = ({ children }) => {
           </IntlProvider>
         </ThemeProvider>
       </LiveAnnouncer>
-    </Router>
+    </HistoryRouter>
   );
 };
 
