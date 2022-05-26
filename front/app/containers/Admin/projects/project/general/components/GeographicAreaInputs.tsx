@@ -12,13 +12,13 @@ import useAreas from 'hooks/useAreas';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'services/areas';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   areaType: 'all' | 'selection';
   handleAreaTypeChange: (value: 'all' | 'selection') => void;
   areaIds: string[] | undefined;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
-  projectId: string | undefined;
 }
 
 const GeographicAreaInputs = ({
@@ -26,8 +26,8 @@ const GeographicAreaInputs = ({
   handleAreaTypeChange,
   areaIds,
   onProjectAttributesDiffChange,
-  projectId,
 }: Props) => {
+  const { projectId } = useParams();
   const areas = useAreas();
   const project = useProject({ projectId });
   const localize = useLocalize();

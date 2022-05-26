@@ -559,7 +559,6 @@ const AdminProjectsProjectGeneral = ({
           handleAreaTypeChange={handleAreaTypeChange}
           areaIds={projectAttrs.area_ids}
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-          projectId={params.projectId}
         />
 
         <Outlet
