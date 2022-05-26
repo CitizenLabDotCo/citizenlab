@@ -63,7 +63,7 @@ const useInsightsNetwork = (viewId: string) => {
     };
   }, [viewId]);
 
-  return { loading, network: insightsNetwork };
+  return { loading, network: insightsNetwork, setInsightsNetwork };
 };
 
 export default useInsightsNetwork;

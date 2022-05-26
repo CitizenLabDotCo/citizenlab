@@ -87,7 +87,7 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
 
   const networkRef = useRef<ForceGraphMethods>();
-  const { loading, network } = useNetwork(viewId);
+  const { loading, network, setInsightsNetwork } = useNetwork(viewId);
   const view = useInsightsView(viewId);
 
   useEffect(() => {
@@ -131,6 +131,13 @@ const Network = ({
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
 
+  const [highlightNode, setHighlightNode] = useState();
+
+  const handleNodeHover = (node) => {
+    setHighlightNode(undefined);
+    if (node) setHighlightNode(node.id);
+  };
+
   const nodeCanvasObject = (
     node: Node,
     ctx: CanvasRenderingContext2D,
@@ -140,18 +147,70 @@ const Network = ({
       const label = node.name;
       const nodeFontSize = 14 / (globalScale * 1.2);
       const nodeVerticalOffset = node.y - node.val / 3 - 2.5;
+      const textWidth = ctx.measureText(label).width;
       ctx.font = `${nodeFontSize}px Sans-Serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = nodeColors[node.color_index % nodeColors.length];
+      node.nodeVerticalOffset = nodeVerticalOffset;
+      node.textWidth = textWidth;
+      node.globalScale = globalScale;
+      node.nodeFontSize = nodeFontSize;
 
       if (globalScale >= visibleKeywordLabelScale) {
         ctx.fillText(label, node.x, nodeVerticalOffset);
+
+        if (highlightNode && node.id == highlightNode) {
+          const closeIcon = new Path2D(
+            'M7.84 6.5l4.89-4.84c.176-.174.274-.412.27-.66 0-.552-.447-1-1-1-.25.003-.488.107-.66.29L6.5 5.13 1.64.27C1.47.1 1.24.003 1 0 .448 0 0 .448 0 1c.01.23.105.45.27.61L5.16 6.5.27 11.34c-.177.173-.274.412-.27.66 0 .552.448 1 1 1 .246-.004.48-.105.65-.28L6.5 7.87l4.81 4.858c.183.184.433.28.69.27.553 0 1-.446 1-.998-.01-.23-.105-.45-.27-.61L7.84 6.5z'
+          );
+          const p = new Path2D();
+          const transform = {
+            a: 0.8 / globalScale,
+            d: 0.8 / globalScale,
+            e: node.x + textWidth / 2 + 5 / globalScale,
+            f: nodeVerticalOffset - 6 / globalScale,
+          };
+          p.addPath(closeIcon, transform);
+          ctx.fillStyle = '#596B7A';
+          ctx.fill(p);
+        }
       }
     }
   };
 
-  const handleNodeClick = (node: Node) => {
+  const handleNodeClick = (node: Node, event) => {
+    if (node.x && node.y) {
+      const ctx = event.target.getContext('2d');
+      const globalScale = node.globalScale;
+      const textWidth = node.textWidth;
+      const nodeVerticalOffset = node.nodeVerticalOffset;
+
+      const rect = new Path2D();
+      rect.rect(
+        node.x + textWidth / 2 + 5 / globalScale,
+        nodeVerticalOffset - 6 / globalScale,
+        12 / globalScale,
+        12 / globalScale
+      );
+      ctx.fill(rect);
+
+      if (ctx.isPointInPath(rect, event.offsetX, event.offsetY)) {
+        if (network && 'data' in network) {
+          const newNetwork = cloneDeep(network);
+          const { nodes, links } = newNetwork.data.attributes;
+          newNetwork.data.attributes = {
+            nodes: nodes.filter((n) => n.id !== node.id),
+            links: links.filter(
+              (l) => l.source !== node.id && l.target !== node.id
+            ),
+          };
+          setInsightsNetwork(newNetwork);
+          return;
+        }
+      }
+    }
+
     const keywords =
       query.keywords && typeof query.keywords === 'string'
         ? [query.keywords]
@@ -173,6 +232,51 @@ const Network = ({
       ),
     });
     trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
+  };
+
+  const nodePointerAreaPaint = (node, color, ctx) => {
+    ctx.fillStyle = color;
+    const globalScale = node.globalScale;
+    const textWidth = node.textWidth;
+    const nodeFontSize = node.nodeFontSize;
+    const nodeVerticalOffset = node.nodeVerticalOffset;
+    const val = Math.sqrt(Math.max(0, node.val || 1)) + 1 / globalScale;
+
+    // bubble
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, val, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // hide icon
+    ctx.fillRect(
+      node.x + textWidth / 2 + 5 / globalScale,
+      nodeVerticalOffset - 6 / globalScale,
+      12 / globalScale,
+      12 / globalScale
+    );
+
+    // label
+    ctx.fillRect(
+      node.x - textWidth / 2,
+      nodeVerticalOffset - nodeFontSize + 6 / globalScale,
+      textWidth,
+      nodeFontSize
+    );
+
+    // area in between
+    ctx.beginPath();
+    ctx.moveTo(
+      node.x - textWidth / 2,
+      nodeVerticalOffset - nodeFontSize + 6 / globalScale
+    );
+    ctx.lineTo(
+      node.x + textWidth / 2 + 20 / globalScale,
+      nodeVerticalOffset - nodeFontSize + 6 / globalScale
+    );
+    ctx.lineTo(node.x + val / 2, node.y);
+    ctx.lineTo(node.x - val / 2, node.y);
+    ctx.closePath();
+    ctx.fill();
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
@@ -304,6 +408,8 @@ const Network = ({
           nodeRelSize={1}
           ref={networkRef}
           onNodeClick={handleNodeClick}
+          onNodeHover={handleNodeHover}
+          nodePointerAreaPaint={nodePointerAreaPaint}
           graphData={networkAttributes}
           onEngineStop={handleEngineStop}
           nodeCanvasObjectMode={nodeCanvasObjectMode}
