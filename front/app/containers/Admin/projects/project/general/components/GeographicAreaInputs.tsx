@@ -1,5 +1,4 @@
 import React from 'react';
-import { TOnProjectAttributesDiffChangeFunction } from 'utils/moduleUtils';
 import { isNilOrError, isString } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
@@ -13,6 +12,7 @@ import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'services/areas';
 import { useParams } from 'react-router-dom';
+import { TOnProjectAttributesDiffChangeFunction } from '..';
 
 interface Props {
   areaType: 'all' | 'selection';
@@ -34,7 +34,7 @@ const GeographicAreaInputs = ({
 
   const handleAreaSelectionChange = (values: IOption[]) => {
     const selectedAreaIds = values.map((value) => value.value).filter(isString);
-    onProjectAttributesDiffChange({ area_ids: selectedAreaIds }, 'enabled');
+    onProjectAttributesDiffChange({ area_ids: selectedAreaIds });
   };
 
   if (!isNilOrError(areas)) {

@@ -65,6 +65,11 @@ import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 export const TIMEOUT = 350;
 
+export type TOnProjectAttributesDiffChangeFunction = (
+  projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+  submitState?: ISubmitState
+) => void;
+
 const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
@@ -441,19 +446,20 @@ const AdminProjectsProjectGeneral = ({
     await saveForm(participationContextConfig);
   };
 
-  const handleProjectAttributeDiffOnChange = (
-    projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
-    submitState: ISubmitState
-  ) => {
-    setProjectAttributesDiff((currentProjectAttributesDiff) => {
-      return {
-        ...currentProjectAttributesDiff,
-        ...projectAttributesDiff,
-      };
-    });
+  const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
+    (
+      projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+      submitState: ISubmitState = 'enabled'
+    ) => {
+      setProjectAttributesDiff((currentProjectAttributesDiff) => {
+        return {
+          ...currentProjectAttributesDiff,
+          ...projectAttributesDiff,
+        };
+      });
 
-    setSubmitState(submitState);
-  };
+      setSubmitState(submitState);
+    };
 
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.attributes : {}),
