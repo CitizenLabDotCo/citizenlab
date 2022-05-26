@@ -21,7 +21,7 @@ import {
 import ParticipationContext, {
   IParticipationContextConfig,
 } from '../participationContext';
-// import Outlet from 'components/Outlet';
+import Outlet from 'components/Outlet';
 import {
   StyledForm,
   ProjectType,
@@ -562,13 +562,11 @@ const AdminProjectsProjectGeneral = ({
           projectId={params.projectId}
         />
 
-        {/* to do */}
-        {/* lint error, @brent please look into this */}
-        {/* <Outlet
+        <Outlet
           id="app.components.AdminPage.projects.form.additionalInputs.inputs"
           projectAttrs={projectAttrs}
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
-        /> */}
+        />
 
         <HeaderImageDropzone
           projectHeaderImage={projectHeaderImage}
