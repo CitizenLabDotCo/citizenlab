@@ -12,8 +12,9 @@ describe ProjectPolicy do
     let!(:user) { create(:user, email: 'not-user@test.com') }
     let!(:group) do
       create(:smart_group, rules: [
-      { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-    ]) end
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
+    end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
     it { is_expected.not_to permit(:show)    }
@@ -34,8 +35,9 @@ describe ProjectPolicy do
     let!(:user) { create(:user, email: 'user@test.com') }
     let!(:group) do
       create(:smart_group, rules: [
-      { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-    ]) end
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
+    end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
     it { is_expected.to permit(:show) }

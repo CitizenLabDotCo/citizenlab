@@ -48,7 +48,7 @@ const IdeasPage = memo(
             title={messages.inputManagerMetaTitle}
             description={messages.inputManagerMetaDescription}
           />
-          {children}
+          <div id="e2e-input-manager-container">{children}</div>
         </TabbedResource>
       </>
     );

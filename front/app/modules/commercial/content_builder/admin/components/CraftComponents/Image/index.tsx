@@ -105,21 +105,23 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
         onRemove={handleOnRemove}
       />
       <Box mb="12px" display={imageFiles.length > 0 ? 'block' : 'none'} />
-      <Input
-        type="text"
-        id="imageAltTextInput"
-        onChange={handleChange}
-        value={alt}
-        label={
-          <span>
-            {formatMessage(messages.imageAltTextLabel)}{' '}
-            <IconTooltip
-              icon="info3"
-              content={formatMessage(messages.imageAltTextTooltip)}
-            />
-          </span>
-        }
-      />
+      <Box mt="16px">
+        <Input
+          type="text"
+          id="imageAltTextInput"
+          onChange={handleChange}
+          value={alt}
+          label={
+            <span>
+              {formatMessage(messages.imageAltTextLabel)}{' '}
+              <IconTooltip
+                icon="info3"
+                content={formatMessage(messages.imageAltTextTooltip)}
+              />
+            </span>
+          }
+        />
+      </Box>
     </Box>
   );
 });

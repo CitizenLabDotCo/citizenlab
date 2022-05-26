@@ -5,8 +5,9 @@ FactoryBot.define do
     map_config
     sequence(:title_multiloc) do |n|
       {
-      'en' => "Legend item #{n}"
-    } end
+        'en' => "Legend item #{n}"
+      }
+    end
     color { Faker::Color.hex_color }
   end
 end
