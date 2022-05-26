@@ -49,7 +49,6 @@ module.exports = function (api) {
             pure: true,
           },
         ],
-        'transform-es2015-modules-commonjs',
         '@babel/plugin-transform-modules-commonjs',
         '@babel/plugin-transform-runtime',
         'dynamic-import-node',
