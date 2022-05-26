@@ -243,6 +243,10 @@ const Container = styled.div<{
         props.maxHeight
           ? props.maxHeight
           : ({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
+      ${isRtl`
+	direction: rtl;
+	text-align: right;
+    `}
     }
 
     ${media.smallerThanMaxTablet`
@@ -858,13 +862,4 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
   }
 );
 
-const RtlQuil = styled(QuillEditor)`
-  ${isRtl`
-  .ql-editor {
-    direction: rtl;
-    text-align: right;
-  }
-`}
-`;
-
-export default injectIntl(RtlQuil);
+export default injectIntl(QuillEditor);
