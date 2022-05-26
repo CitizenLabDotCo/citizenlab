@@ -1,6 +1,6 @@
 import React from 'react';
 import { TOnProjectAttributesDiffChangeFunction } from 'utils/moduleUtils';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isString } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import { SubSectionTitle } from 'components/admin/Section';
@@ -11,7 +11,6 @@ import { IOption, isOption } from 'typings';
 import useAreas from 'hooks/useAreas';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-import { isString } from 'utils/helperUtils';
 import { IAreaData } from 'services/areas';
 
 interface Props {
