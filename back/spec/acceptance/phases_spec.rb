@@ -195,8 +195,9 @@ resource 'Phases' do
       describe do
         let(:description_multiloc) do
           {
-          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-        } end
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }
+        end
 
         example 'Create a phase with text image', document: false do
           ti_count = TextImage.count

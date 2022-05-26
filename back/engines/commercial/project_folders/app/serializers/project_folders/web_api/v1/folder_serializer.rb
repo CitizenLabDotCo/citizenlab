@@ -9,7 +9,7 @@ module ProjectFolders
     end
 
     attribute :header_bg do |object|
-      object.header_bg && object.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     attribute :visible_projects_count do |object, params|

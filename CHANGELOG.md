@@ -6,7 +6,9 @@
 
 - [CL-788] Fixed issue with different URL when sharing idea from map vs list view
 
-### 2022-05-20
+## 2022-05-20
+
+### Fixed
 
 - [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
 

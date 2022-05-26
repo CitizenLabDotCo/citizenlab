@@ -158,7 +158,7 @@ resource 'Stats - Users' do
       example_request 'Users by birthyear filtered by project' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:users].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:users].values.sum).to eq 1
       end
     end
 end

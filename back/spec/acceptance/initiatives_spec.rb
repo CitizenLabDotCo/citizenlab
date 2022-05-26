@@ -566,12 +566,12 @@ resource 'Initiatives' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response).to eq({
-        **InitiativeStatus.where(code: 'answered').ids.map do |id|
+        **InitiativeStatus.where(code: 'answered').ids.to_h do |id|
           [id.to_sym, { feedback_required: true }]
-        end.to_h,
-        **InitiativeStatus.where(code: 'ineligible').ids.map do |id|
+        end,
+        **InitiativeStatus.where(code: 'ineligible').ids.to_h do |id|
           [id.to_sym, { feedback_required: true }]
-        end.to_h
+        end
       })
     end
   end

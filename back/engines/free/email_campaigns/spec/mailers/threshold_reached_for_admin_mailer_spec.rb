@@ -23,11 +23,11 @@ RSpec.describe EmailCampaigns::ThresholdReachedForAdminMailer, type: :mailer do
           post_images: notification.post.initiative_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
           initiative_header_bg: {
-            versions: notification.post.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            versions: notification.post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           },
           assignee_first_name: notification.post.assignee.first_name,
           assignee_last_name: notification.post.assignee.last_name
