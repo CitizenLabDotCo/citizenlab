@@ -2,7 +2,8 @@ import React from 'react';
 
 // components
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import SortableFieldToggles from './SortableFieldToggles';
+import OptionToggles from './OptionToggles';
+import OptionInputs from './OptionInputs';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -35,12 +36,13 @@ const FieldContent = ({
         <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
           {formatMessage(messages.options).toUpperCase()}
         </Title>
-        <SortableFieldToggles fieldId={fieldId} />
+        <OptionToggles fieldId={fieldId} />
       </Box>
       <Box width="50%">
         <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
           {formatMessage(messages.numberOfTotalResidents).toUpperCase()}
         </Title>
+        <OptionInputs fieldId={fieldId} />
       </Box>
     </Box>
   </>
