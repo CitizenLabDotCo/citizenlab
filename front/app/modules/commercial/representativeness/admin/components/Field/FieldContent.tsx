@@ -32,13 +32,13 @@ const FieldContent = ({
       display="flex"
     >
       <Box width="50%">
-        <Title variant="h6" as="h4" mt="0px">
+        <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
           {formatMessage(messages.options).toUpperCase()}
         </Title>
         <SortableFieldToggles fieldId={fieldId} />
       </Box>
       <Box width="50%">
-        <Title variant="h6" as="h4" mt="0px">
+        <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
           {formatMessage(messages.numberOfTotalResidents).toUpperCase()}
         </Title>
       </Box>
