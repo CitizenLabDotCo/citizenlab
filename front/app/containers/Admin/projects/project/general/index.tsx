@@ -557,7 +557,7 @@ const AdminProjectsProjectGeneral = ({
         <GeographicAreaInputs
           areaType={areaType}
           handleAreaTypeChange={handleAreaTypeChange}
-          projectAttrs={projectAttrs}
+          areaIds={projectAttrs.area_ids}
           onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
           projectId={params.projectId}
         />

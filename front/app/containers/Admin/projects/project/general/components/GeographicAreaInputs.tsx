@@ -1,5 +1,4 @@
 import React from 'react';
-import { IUpdatedProjectProperties } from 'services/projects';
 import { TOnProjectAttributesDiffChangeFunction } from 'utils/moduleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
@@ -18,7 +17,7 @@ import { IAreaData } from 'services/areas';
 interface Props {
   areaType: 'all' | 'selection';
   handleAreaTypeChange: (value: 'all' | 'selection') => void;
-  projectAttrs: IUpdatedProjectProperties;
+  areaIds: string[] | undefined;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
   projectId: string | undefined;
 }
@@ -26,7 +25,7 @@ interface Props {
 const GeographicAreaInputs = ({
   areaType,
   handleAreaTypeChange,
-  projectAttrs,
+  areaIds,
   onProjectAttributesDiffChange,
   projectId,
 }: Props) => {
@@ -45,7 +44,7 @@ const GeographicAreaInputs = ({
       label: localize(area.attributes.title_multiloc),
     }));
     const projectAreaIds = [
-      ...(projectAttrs.area_ids ||
+      ...(areaIds ||
         (!isNilOrError(project)
           ? project.relationships.areas.data.map((area) => area.id)
           : [])),
