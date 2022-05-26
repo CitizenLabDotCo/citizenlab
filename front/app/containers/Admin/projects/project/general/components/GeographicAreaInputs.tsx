@@ -21,58 +21,62 @@ interface Props {
   handleAreaSelectionChange: (values: IOption[]) => void;
 }
 
-export default ({
+const GeographicAreaInputs = ({
   areaType,
   areasOptions,
   areasValues,
   handleAreaTypeChange,
   handleAreaSelectionChange,
-}: Props) => (
-  <StyledSectionField>
-    <SubSectionTitle>
-      <FormattedMessage {...messages.areasLabel} />
-      <IconTooltip
-        content={
-          <FormattedMessage
-            {...messages.areasLabelTooltip}
-            values={{
-              areasLabelTooltipLink: (
-                <Link to="/admin/settings/areas">
-                  <FormattedMessage {...messages.areasLabelTooltipLinkText} />
-                </Link>
-              ),
-            }}
-          />
-        }
+}: Props) => {
+  return (
+    <StyledSectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.areasLabel} />
+        <IconTooltip
+          content={
+            <FormattedMessage
+              {...messages.areasLabelTooltip}
+              values={{
+                areasLabelTooltipLink: (
+                  <Link to="/admin/settings/areas">
+                    <FormattedMessage {...messages.areasLabelTooltipLinkText} />
+                  </Link>
+                ),
+              }}
+            />
+          }
+        />
+      </SubSectionTitle>
+      <Radio
+        onChange={handleAreaTypeChange}
+        currentValue={areaType}
+        value="all"
+        name="areas"
+        id="areas-all"
+        label={<FormattedMessage {...messages.areasAllLabel} />}
       />
-    </SubSectionTitle>
-    <Radio
-      onChange={handleAreaTypeChange}
-      currentValue={areaType}
-      value="all"
-      name="areas"
-      id="areas-all"
-      label={<FormattedMessage {...messages.areasAllLabel} />}
-    />
-    <Radio
-      onChange={handleAreaTypeChange}
-      currentValue={areaType}
-      value="selection"
-      name="areas"
-      id="areas-selection"
-      className="e2e-areas-selection"
-      label={<FormattedMessage {...messages.areasSelectionLabel} />}
-    />
+      <Radio
+        onChange={handleAreaTypeChange}
+        currentValue={areaType}
+        value="selection"
+        name="areas"
+        id="areas-selection"
+        className="e2e-areas-selection"
+        label={<FormattedMessage {...messages.areasSelectionLabel} />}
+      />
 
-    {areaType === 'selection' && (
-      <StyledMultipleSelect
-        id="e2e-area-selector"
-        options={areasOptions}
-        value={areasValues}
-        onChange={handleAreaSelectionChange}
-        placeholder=""
-        disabled={areaType !== 'selection'}
-      />
-    )}
-  </StyledSectionField>
-);
+      {areaType === 'selection' && (
+        <StyledMultipleSelect
+          id="e2e-area-selector"
+          options={areasOptions}
+          value={areasValues}
+          onChange={handleAreaSelectionChange}
+          placeholder=""
+          disabled={areaType !== 'selection'}
+        />
+      )}
+    </StyledSectionField>
+  );
+};
+
+export default GeographicAreaInputs;
