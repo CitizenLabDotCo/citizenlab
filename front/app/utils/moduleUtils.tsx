@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
+import React, { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
@@ -562,11 +560,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
     );
   };
 
-  console.log({ mergedRoutes });
   const citizenRoutes = parseModuleRoutes(mergedRoutes?.citizen);
   const adminRoutes = parseModuleRoutes(mergedRoutes?.admin, RouteTypes.ADMIN);
-  console.log({ citizenRoutes });
-  console.log({ adminRoutes });
 
   return {
     outlets: mergedOutlets,
