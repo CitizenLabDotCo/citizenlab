@@ -79,6 +79,24 @@ module.exports = {
     'no-multiple-empty-lines': 'off',
     'no-new-wrappers': 'error',
     'no-param-reassign': 'error',
+    'no-restricted-imports': [
+      'error',
+      {
+        paths: [
+          {
+            name: 'react-router-dom',
+            importNames: ['Link', 'useNavigate, NavLink'],
+            message:
+              "Please import the Link or useNavigate from utils/cl-router instead of directly from 'react-router-dom'",
+          },
+          {
+            name: 'history',
+            message:
+              "Please import history from utils/cl-router/cl-history instead of directly from 'history'",
+          },
+        ],
+      },
+    ],
     'no-trailing-spaces': 'off',
     'no-underscore-dangle': 'off',
     'no-var': 'error',
