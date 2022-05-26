@@ -9,6 +9,7 @@ import FieldContent from './FieldContent';
 import { Multiloc } from 'typings';
 
 interface Props {
+  fieldId: string;
   enabled: boolean;
   titleMultiloc: Multiloc;
   isDefault: boolean;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const Field = ({
+  fieldId,
   enabled,
   titleMultiloc,
   isDefault,
@@ -33,7 +35,7 @@ const Field = ({
           />
         }
       >
-        <FieldContent />
+        <FieldContent fieldId={fieldId} />
       </Accordion>
     </>
   );

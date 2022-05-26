@@ -20,6 +20,7 @@ const Fields = () => {
     <Box mt="32px">
       {userCustomFields.map(({ id, attributes }) => (
         <Field
+          fieldId={id}
           enabled={true}
           isDefault={attributes.code !== null}
           titleMultiloc={attributes.title_multiloc}
