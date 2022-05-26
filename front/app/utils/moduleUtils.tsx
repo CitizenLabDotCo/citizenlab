@@ -67,7 +67,7 @@ import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
-import { TOnProjectAttributesDiffChangeFunction } from 'containers/admin/projects/project/general';
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 export type ITabsOutlet = {
   formatMessage: (
