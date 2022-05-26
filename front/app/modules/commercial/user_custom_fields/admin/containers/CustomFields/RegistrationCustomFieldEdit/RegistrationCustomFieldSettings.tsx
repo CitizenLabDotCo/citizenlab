@@ -2,8 +2,8 @@ import React from 'react';
 import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'react-router-dom';
 import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 import {
   updateCustomFieldForUsers,
@@ -18,11 +18,11 @@ import RegistrationCustomFieldForm, {
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-const RegistrationCustomFieldSettings = () => {
-  const { userCustomFieldId } = useParams();
-  if (!userCustomFieldId) return null;
-
+const RegistrationCustomFieldSettings = ({
+  params: { userCustomFieldId },
+}: WithRouterProps) => {
   const customField = useUserCustomField(userCustomFieldId);
+
   if (isNilOrError(customField)) return null;
 
   const initialValues = () => {
@@ -90,4 +90,4 @@ const RegistrationCustomFieldSettings = () => {
   );
 };
 
-export default RegistrationCustomFieldSettings;
+export default withRouter(RegistrationCustomFieldSettings);
