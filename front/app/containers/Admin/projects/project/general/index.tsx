@@ -30,8 +30,6 @@ import {
 } from './components/styling';
 // hooks
 import useProject from 'hooks/useProject';
-import useLocalize from 'hooks/useLocalize';
-import useAreas from 'hooks/useAreas';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -44,7 +42,7 @@ import { validateSlug } from 'utils/textUtils';
 import validateTitle from './utils/validateTitle';
 
 // typings
-import { IOption, Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 import useProjectFiles from 'hooks/useProjectFiles';
 import useProjectImages from 'hooks/useProjectImages';
@@ -71,25 +69,19 @@ const AdminProjectsProjectGeneral = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const params = useParams();
-  const localize = useLocalize();
   const project = useProject({ projectId: params.projectId });
   const appConfigLocales = useAppConfigurationLocales();
   const remoteProjectFiles = useProjectFiles(params.projectId);
   const remoteProjectImages = useProjectImages({
     projectId: params.projectId || null,
   });
-  const areas = useAreas();
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
   const [processing, setProcessing] =
     useState<IProjectFormState['processing']>(false);
   const [apiErrors, setApiErrors] = useState({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
-  >({
-    admin_publication_attributes: {
-      publication_status: 'draft',
-    },
-  });
+  >({});
   const [titleError, setTitleError] =
     useState<IProjectFormState['titleError']>(null);
   // We should probably not have projectType, slug, publicationStatus, etc.
@@ -117,9 +109,6 @@ const AdminProjectsProjectGeneral = ({
     useState<IProjectFormState['publicationStatus']>('draft');
   const [areaType, setAreaType] =
     useState<IProjectFormState['areaType']>('all');
-  const [areasOptions, setAreasOptions] = useState<
-    IProjectFormState['areasOptions']
-  >([]);
 
   useEffect(() => {
     (async () => {
@@ -192,17 +181,6 @@ const AdminProjectsProjectGeneral = ({
   function isUploadFile(file: UploadFile | null): file is UploadFile {
     return file !== null;
   }
-
-  useEffect(() => {
-    if (!isNilOrError(areas)) {
-      setAreasOptions(
-        areas.map((area) => ({
-          value: area.id,
-          label: localize(area.attributes.title_multiloc),
-        }))
-      );
-    }
-  }, [areas, localize]);
 
   const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     setSubmitState('enabled');
@@ -309,14 +287,6 @@ const AdminProjectsProjectGeneral = ({
       area_ids: areaType === 'all' ? [] : projectAttributesDiff.area_ids,
     }));
     setAreaType(areaType);
-  };
-
-  const handleAreaSelectionChange = (values: IOption[]) => {
-    setSubmitState('enabled');
-    setProjectAttributesDiff((projectAttributesDiff) => ({
-      ...projectAttributesDiff,
-      area_ids: values.map((value) => value.value),
-    }));
   };
 
   async function saveForm(
@@ -471,38 +441,24 @@ const AdminProjectsProjectGeneral = ({
     await saveForm(participationContextConfig);
   };
 
-  // const handleProjectAttributeDiffOnChange = (
-  //   projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
-  //   submitState: ISubmitState
-  // ) => {
-  //   setProjectAttributesDiff((currentProjectAttributesDiff) => {
-  //     return {
-  //       ...currentProjectAttributesDiff,
-  //       ...projectAttributesDiff,
-  //     };
-  //   });
+  const handleProjectAttributeDiffOnChange = (
+    projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
+    submitState: ISubmitState
+  ) => {
+    setProjectAttributesDiff((currentProjectAttributesDiff) => {
+      return {
+        ...currentProjectAttributesDiff,
+        ...projectAttributesDiff,
+      };
+    });
 
-  //   setSubmitState(submitState);
-  // };
+    setSubmitState(submitState);
+  };
 
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.attributes : {}),
     ...projectAttributesDiff,
   };
-  const areaIds =
-    projectAttrs.area_ids ||
-    (!isNilOrError(project) &&
-      project.relationships.areas.data.map((area) => area.id)) ||
-    [];
-  const areasValues = areaIds
-    .filter((id) => {
-      return areasOptions.some((areaOption) => areaOption.value === id);
-    })
-    .map((id) => {
-      return areasOptions.find(
-        (areaOption) => areaOption.value === id
-      ) as IOption;
-    });
 
   const selectedTopicIds = getSelectedTopicIds(
     projectAttributesDiff,
@@ -600,10 +556,10 @@ const AdminProjectsProjectGeneral = ({
 
         <GeographicAreaInputs
           areaType={areaType}
-          areasOptions={areasOptions}
-          areasValues={areasValues}
           handleAreaTypeChange={handleAreaTypeChange}
-          handleAreaSelectionChange={handleAreaSelectionChange}
+          projectAttrs={projectAttrs}
+          onProjectAttributesDiffChange={handleProjectAttributeDiffOnChange}
+          projectId={params.projectId}
         />
 
         {/* to do */}

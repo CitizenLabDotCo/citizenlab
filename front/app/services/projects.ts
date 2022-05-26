@@ -8,7 +8,6 @@ import {
   Multiloc,
   ImageSizes,
   UploadFile,
-  IOption,
   CLError,
 } from 'typings';
 import { IAreaData } from './areas';
@@ -249,7 +248,6 @@ export interface IProjectFormState {
   areaType: 'all' | 'selection';
   locale: Locale;
   currentTenant: IAppConfiguration | null;
-  areasOptions: IOption[];
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
