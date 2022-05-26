@@ -15,9 +15,6 @@ import RenderNode from '../RenderNode';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 
-import { Link, useNavigate } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
-
 type EditorProps = {
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
@@ -28,7 +25,6 @@ const Editor: React.FC<EditorProps> = ({
   isPreview,
   children,
 }) => {
-  console.log([Link, useNavigate, createBrowserHistory]);
   return (
     <CraftEditor
       resolver={{

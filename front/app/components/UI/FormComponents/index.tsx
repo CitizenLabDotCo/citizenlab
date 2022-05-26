@@ -9,9 +9,9 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-// eslint-disable-next-line no-restricted-imports
 import {
   Messages,
+  // eslint-disable-next-line no-restricted-imports
   FormattedMessage as OriginalFormattedMessage,
 } from 'react-intl';
 import messages from './messages';

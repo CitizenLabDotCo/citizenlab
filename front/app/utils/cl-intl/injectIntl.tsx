@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
-// eslint-disable-next-line no-restricted-imports
 import {
+  // eslint-disable-next-line no-restricted-imports
   injectIntl as originalInjectIntl,
   InjectedIntlProps,
   InjectIntlConfig,

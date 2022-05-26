@@ -1,8 +1,8 @@
 import FormattedMessage from './FormattedMessage';
 import injectIntl from './injectIntl';
-// eslint-disable-next-line no-restricted-imports
 import {
   Messages,
+  // eslint-disable-next-line no-restricted-imports
   FormattedMessage as OriginalFormattedMessage,
 } from 'react-intl';
 

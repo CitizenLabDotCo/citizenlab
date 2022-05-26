@@ -6,7 +6,6 @@ import { Path } from 'history';
 import updateLocationDescriptor from './updateLocationDescriptor';
 import { isNilOrError } from 'utils/helperUtils';
 import useLocale from 'hooks/useLocale';
-import { FormattedMessage, injectIntl } from 'react-intl';
 
 export type Props = {
   to: Path | string | { pathname: string };
