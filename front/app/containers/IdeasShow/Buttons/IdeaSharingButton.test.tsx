@@ -29,28 +29,14 @@ const mockIdeaData = {
   },
 };
 
-const viewId = '1';
 const ideaId = '5';
 
 jest.mock('services/projects');
-jest.mock('utils/cl-intl');
 jest.mock('services/auth');
 jest.mock('services/appConfiguration');
-jest.mock('resources/GetLocale', () => 'GetLocale');
 jest.mock('hooks/useProject', () => jest.fn(() => mockProjectData));
-jest.mock('utils/cl-router/Link');
 jest.mock('hooks/useIdea', () => {
   return jest.fn(() => mockIdeaData);
-});
-
-jest.mock('react-router', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} params={{ viewId }} />;
-      };
-    },
-  };
 });
 
 describe('IdeaSharingButton', () => {
