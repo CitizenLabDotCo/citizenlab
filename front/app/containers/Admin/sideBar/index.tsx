@@ -145,7 +145,6 @@ export type NavItem = {
   featureName?: TAppConfigurationSetting;
   count?: number;
   onlyCheckAllowed?: boolean;
-  className?: ({ isActive: string }) => string | undefined;
 };
 
 type Tracks = {
