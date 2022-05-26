@@ -13,6 +13,7 @@ import useAreas from 'hooks/useAreas';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { isString } from 'utils/helperUtils';
+import { IAreaData } from 'services/areas';
 
 interface Props {
   areaType: 'all' | 'selection';
@@ -43,11 +44,6 @@ const GeographicAreaInputs = ({
       value: area.id,
       label: localize(area.attributes.title_multiloc),
     }));
-    const getProjectArea = (projectAreaId: string) => {
-      const projectArea = areas.find((area) => area.id === projectAreaId);
-      return projectArea;
-    };
-
     const projectAreaIds = [
       ...(projectAttrs.area_ids ||
         (!isNilOrError(project)
@@ -56,7 +52,7 @@ const GeographicAreaInputs = ({
     ];
     const selectedAreaValues = projectAreaIds
       .map((projectAreaId) => {
-        const projectArea = getProjectArea(projectAreaId);
+        const projectArea = getProjectArea(areas, projectAreaId);
 
         return projectArea
           ? {
@@ -122,5 +118,10 @@ const GeographicAreaInputs = ({
 
   return null;
 };
+
+function getProjectArea(areas: IAreaData[], projectAreaId: string) {
+  const projectArea = areas.find((area) => area.id === projectAreaId);
+  return projectArea;
+}
 
 export default GeographicAreaInputs;
