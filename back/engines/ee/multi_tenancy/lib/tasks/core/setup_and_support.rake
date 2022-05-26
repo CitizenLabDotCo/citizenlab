@@ -29,7 +29,7 @@ namespace :setup_and_support do
           created += 1
         end
         logs += ["#{i}) Couldn't find idea #{d['ID']}"] if !idea
-        logs += ["#{i}) Couldn't find idea author #{d['ID']}"] if idea && !idea.author_id
+        logs += ["#{i}) Couldn't find idea author for idea #{d['ID']}"] if idea && !idea.author_id
         logs += ["#{i}) Couldn't find New Status '#{d['New Status']}' - does it exist for locale #{args[:locale]}?"] if d['New Status'] && !status
       end
 
