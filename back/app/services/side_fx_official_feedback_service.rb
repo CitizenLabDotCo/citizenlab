@@ -33,10 +33,10 @@ class SideFxOfficialFeedbackService
   private
 
   def process_mentions(feedback)
-    feedback.body_multiloc = feedback.body_multiloc.map do |locale, body|
+    feedback.body_multiloc = feedback.body_multiloc.to_h do |locale, body|
       new_body, users = @@mention_service.process_mentions(body)
       [locale, new_body]
-    end.to_h
+    end
   end
 
   def notify_mentioned_users(feedback, user)

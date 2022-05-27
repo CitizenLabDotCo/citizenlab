@@ -15,16 +15,17 @@ RSpec.describe 'Graphql project' do
   describe 'project' do
     let(:query_string) do
       %|
-      query projectQuery($id: ID!) {
-        project(id: $id) {
-          id
-          slug
-          publicationStatus
-          visibleTo
-          processType
+        query projectQuery($id: ID!) {
+          project(id: $id) {
+            id
+            slug
+            publicationStatus
+            visibleTo
+            processType
+          }
         }
-      }
-    | end
+      |
+    end
 
     let(:project) { create(:project) }
     let(:variables) { { id: project.id } }

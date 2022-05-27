@@ -18,6 +18,12 @@ type State = {
 
 type Props = OriginalFormattedMessage.Props;
 
+const RtlBox = styled.span`
+  ${isRtl`
+      direction: rtl;
+  `}
+`;
+
 export default class FormattedMessage extends React.PureComponent<
   Props,
   State
@@ -76,12 +82,6 @@ export default class FormattedMessage extends React.PureComponent<
       if (orgName) {
         values.orgName = orgName;
       }
-
-      const RtlBox = styled.span`
-        ${isRtl`
-	    direction: rtl;
-	`}
-      `;
 
       return (
         <RtlBox>

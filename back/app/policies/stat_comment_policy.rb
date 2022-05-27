@@ -28,10 +28,6 @@ class StatCommentPolicy < ApplicationPolicy
     show_stats?
   end
 
-  def ideas_by_area?
-    show_stats?
-  end
-
   def ideas_by_project?
     show_stats?
   end
