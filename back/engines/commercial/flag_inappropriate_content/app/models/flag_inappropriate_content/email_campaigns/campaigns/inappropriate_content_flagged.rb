@@ -70,8 +70,6 @@ module FlagInappropriateContent
           }
           d
         end
-        name_service = UserDisplayNameService.new AppConfiguration.instance, recipient
-        notification = activity.item
         payload = {
           flaggable_type: data[:flaggable_type],
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),

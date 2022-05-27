@@ -54,7 +54,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     votes = apply_project_filter(votes)
     votes = apply_topic_filter(votes)
 
-    serie = @@stats_service.group_by_time(
+    @@stats_service.group_by_time(
       votes.group(:mode),
       'votes.created_at',
       @start_at,
@@ -82,7 +82,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     votes = apply_project_filter(votes)
     votes = apply_topic_filter(votes)
 
-    serie = @@stats_service.group_by_time_cumulative(
+    @@stats_service.group_by_time_cumulative(
       votes.group(:mode),
       'votes.created_at',
       @start_at,

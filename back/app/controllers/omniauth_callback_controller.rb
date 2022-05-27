@@ -101,7 +101,7 @@ class OmniauthCallbackController < ApplicationController
     url = auth_service.logout_url(provider, user)
 
     redirect_to url
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound
     redirect_to Frontend::UrlService.new.home_url
   end
 

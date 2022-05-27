@@ -74,7 +74,7 @@ RSpec.describe Phase, type: :model do
 
     it 'fails when the associated project has overlapping phases' do
       project = create(:project, process_type: 'timeline')
-      other_phase = create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
+      create(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
       phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 3.days))
       expect(phase_left_overlap).to be_invalid
       phase_left_overlap = build(:phase, project: project.reload, start_at: (Time.now - 10.days), end_at: (Time.now - 5.days))

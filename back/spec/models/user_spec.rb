@@ -69,9 +69,9 @@ RSpec.describe User, type: :model do
 
   describe 'email' do
     it 'is invalid if there is a case insensitive duplicate' do
-      u1 = create(:user, email: 'KoEn@citizenlab.co')
-      u2 = build(:user, email: 'kOeN@citizenlab.co')
-      expect(u2).to be_invalid
+      create(:user, email: 'KoEn@citizenlab.co')
+      user = build(:user, email: 'kOeN@citizenlab.co')
+      expect(user).to be_invalid
     end
 
     it 'is invalid if the domain is on our blacklist' do

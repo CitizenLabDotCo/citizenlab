@@ -186,7 +186,7 @@ resource 'User Custom Fields' do
 
       if CitizenLab.ee?
         example "[error] Delete a custom field that's still referenced in a rules group" do
-          group = create(
+          create(
             :smart_group,
             rules: [
               { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }

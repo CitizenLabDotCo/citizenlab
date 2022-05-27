@@ -67,15 +67,15 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
 
     it 'filters out invitees' do
       moderator = create(:project_moderator)
-      invitee = create(:invited_user, roles: [{ type: 'project_moderator', project_id: create(:project).id }])
+      create(:invited_user, roles: [{ type: 'project_moderator', project_id: create(:project).id }])
 
       expect(campaign.apply_recipient_filters).to match([moderator])
     end
 
     it 'filters out moderators and normal users' do
-      admin = create(:admin)
+      create(:admin)
       moderator = create(:project_moderator)
-      user = create(:user)
+      create(:user)
 
       expect(campaign.apply_recipient_filters).to match([moderator])
     end

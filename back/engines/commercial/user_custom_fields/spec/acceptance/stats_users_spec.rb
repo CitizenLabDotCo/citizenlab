@@ -3,8 +3,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-multiloc_service = MultilocService.new
-
 def time_boundary_parameters(s)
   s.parameter :start_at, 'Date defining from where results should start', required: false
   s.parameter :end_at, 'Date defining till when results should go', required: false
@@ -15,6 +13,7 @@ def group_filter_parameter(s)
 end
 
 resource 'Stats - Users' do
+  let(:multiloc_service) { MultilocService.new }
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
   before do
@@ -95,11 +94,11 @@ resource 'Stats - Users' do
       expect(worksheet[0].cells.map(&:value)).to match %w[gender users]
 
       genders_col = worksheet.map { |col| col.cells[0].value }
-      header, *genders = genders_col
+      _header, *genders = genders_col
       expect(genders).to match_array %w[_blank unspecified male female]
 
       amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
+      _header, *amounts = amount_col
       expect(amounts).to match_array [0, 1, 1, 2]
     end
   end
@@ -186,11 +185,11 @@ resource 'Stats - Users' do
       expect(worksheet[0].cells.map(&:value)).to match %w[birthyear users]
 
       birthyears_col = worksheet.map { |col| col.cells[0].value }
-      header, *birthyears = birthyears_col
+      _header, *birthyears = birthyears_col
       expect(birthyears).to match_array [1976, 1980, '_blank']
 
       amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
+      _header, *amounts = amount_col
       expect(amounts).to match_array [1, 2, 0]
     end
   end
@@ -257,11 +256,11 @@ resource 'Stats - Users' do
       expect(worksheet[0].cells.map(&:value)).to match %w[area area_id users]
 
       areas_col = worksheet.map { |col| col.cells[1].value }
-      header, *areas = areas_col
+      _header, *areas = areas_col
       expect(areas).to match_array [@area1.id, @area2.id, @area3.id, '_blank']
 
       amount_col = worksheet.map { |col| col.cells[2].value }
-      header, *amounts = amount_col
+      _header, *amounts = amount_col
       expect(amounts).to match_array [0, 1, 2, 0]
     end
   end
@@ -320,11 +319,11 @@ resource 'Stats - Users' do
       expect(worksheet[0].cells.map(&:value)).to match %w[education users]
 
       areas_col = worksheet.map { |col| col.cells[0].value }
-      header, *areas = areas_col
+      _header, *areas = areas_col
       expect(areas).to match_array [3, 5, '_blank']
 
       amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
+      _header, *amounts = amount_col
       expect(amounts).to match_array [2, 1, 0]
     end
   end
@@ -510,15 +509,15 @@ resource 'Stats - Users' do
         expect(worksheet[0].cells.map(&:value)).to match %w[option option_id users]
 
         option_titles_col = worksheet.map { |col| col.cells[0].value }
-        header, *option_titles = option_titles_col
+        _header, *option_titles = option_titles_col
         expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), 'unknown']
 
         option_ids_col = worksheet.map { |col| col.cells[1].value }
-        header, *option_ids = option_ids_col
+        _header, *option_ids = option_ids_col
         expect(option_ids).to match_array [@option1.key, @option2.key, @option3.key, '_blank']
 
         users_col = worksheet.map { |col| col.cells[2].value }
-        header, *users = users_col
+        _header, *users = users_col
         expect(users).to match_array [0, 1, 1, 1]
       end
     end
@@ -553,11 +552,11 @@ resource 'Stats - Users' do
         expect(worksheet[0].cells.map(&:value)).to match %w[option option_id users]
 
         option_titles_col = worksheet.map { |col| col.cells[0].value }
-        header, *option_titles = option_titles_col
+        _header, *option_titles = option_titles_col
         expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), 'unknown']
 
         users_col = worksheet.map { |col| col.cells[2].value }
-        header, *users = users_col
+        _header, *users = users_col
         expect(users).to match_array [0, 2, 1, 1]
       end
     end
@@ -590,11 +589,11 @@ resource 'Stats - Users' do
         expect(worksheet[0].cells.map(&:value)).to match %w[option users]
 
         option_ids_col = worksheet.map { |col| col.cells[0].value }
-        header, *option_ids = option_ids_col
+        _header, *option_ids = option_ids_col
         expect(option_ids).to match_array %w[_blank false true]
 
         users_col = worksheet.map { |col| col.cells[1].value }
-        header, *users = users_col
+        _header, *users = users_col
         expect(users).to match_array [1, 1, 1]
       end
     end

@@ -68,29 +68,11 @@ Lint/OrAssignmentToConstant:
     - 'engines/commercial/insights/config/initializers/bunny.rb'
     - 'engines/commercial/nlp/config/initializers/bunny.rb'
 
-# Offense count: 1
-# This cop supports safe auto-correction (--auto-correct).
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'spec/spec_helper.rb'
-
-# Offense count: 1
-# This cop supports unsafe auto-correction (--auto-correct-all).
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: instance_of?, kind_of?, is_a?, eql?, respond_to?, equal?
-Lint/RedundantSafeNavigation:
-  Exclude:
-    - 'config/initializers/omniauth.rb'
-
 # Offense count: 61
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: present?, blank?, presence, try, try!
 Lint/SafeNavigationConsistency:
-  Enabled: false
-
-# Offense count: 254
-Lint/UselessAssignment:
   Enabled: false
 
 # Offense count: 329

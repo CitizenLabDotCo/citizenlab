@@ -62,7 +62,7 @@ class SideFxCommentService
 
   def process_mentions(comment)
     comment.body_multiloc = comment.body_multiloc.to_h do |locale, body|
-      new_body, users = @@mention_service.process_mentions(body)
+      new_body, _users = @@mention_service.process_mentions(body)
       [locale, new_body]
     end
   end

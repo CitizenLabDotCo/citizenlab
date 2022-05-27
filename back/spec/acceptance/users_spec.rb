@@ -248,7 +248,6 @@ resource 'Users' do
 
           example_request 'Register with email when an email is passed', document: false do
             assert_status 201
-            json_response = json_parse(response_body)
             expect(User.find_by(email: email)).to be_present
           end
         end
@@ -258,7 +257,6 @@ resource 'Users' do
 
           example_request 'Registers a user with a phone number in the email when a phone number is passed', document: false do
             assert_status 201
-            json_response = json_parse(response_body)
             expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
           end
         end
@@ -304,23 +302,27 @@ resource 'Users' do
         end
 
         example 'Search for users' do
-          u1 = create(:user, first_name: 'Joskelala')
-          u2 = create(:user, last_name: 'Rudolf')
+          users = [
+            create(:user, first_name: 'Joskelala'),
+            create(:user, last_name: 'Rudolf')
+          ]
 
           do_request search: 'joskela'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq u1.id
+          expect(json_response[:data][0][:id]).to eq users[0].id
         end
 
         example 'Search for users with sort parameter', document: false do
-          u1 = create(:user, first_name: 'Joskelala')
-          u2 = create(:user, last_name: 'Rudolf')
+          users = [
+            create(:user, first_name: 'Joskelala'),
+            create(:user, last_name: 'Rudolf')
+          ]
 
           do_request search: 'joskela', sort: 'role'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq u1.id
+          expect(json_response[:data][0][:id]).to eq users[0].id
         end
 
         example 'List all users sorted by last_name' do

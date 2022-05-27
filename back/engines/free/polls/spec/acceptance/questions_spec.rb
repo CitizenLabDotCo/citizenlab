@@ -19,7 +19,7 @@ resource 'Poll Questions' do
     before do
       @project = create(:continuous_poll_project)
       @questions = create_list(:poll_question, 3, :with_options, participation_context: @project)
-      other_question = create(:poll_question)
+      create(:poll_question)
     end
 
     let(:participation_context_id) { @project.id }
@@ -41,7 +41,7 @@ resource 'Poll Questions' do
     before do
       @phase = create(:poll_phase)
       @questions = create_list(:poll_question, 3, :with_options, participation_context: @phase)
-      other_question = create(:poll_question)
+      create(:poll_question)
     end
 
     let(:participation_context_id) { @phase.id }

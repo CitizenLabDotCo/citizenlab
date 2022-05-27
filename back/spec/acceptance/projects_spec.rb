@@ -131,7 +131,6 @@ resource 'Projects' do
               })
 
         do_request search: 'super-specific-title-string'
-        json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
         expect(response_ids).to eq [p1.id]
       end
@@ -193,7 +192,6 @@ resource 'Projects' do
 
       example 'Get a project includes the participants_count and avatars_count', document: false do
         idea = create(:idea)
-        author = idea.author
         project = idea.project
         do_request id: project.id
         expect(status).to eq 200
@@ -491,7 +489,7 @@ resource 'Projects' do
       end
 
       example 'Remove a project from a folder', skip: !CitizenLab.ee? do
-        folder = create(:project_folder, projects: [@project])
+        create(:project_folder, projects: [@project])
         do_request(project: { folder_id: nil })
         expect(json_response.dig(:data, :relationships, :folder, :data, :id)).to be_nil
         # Projects moved out of folders are added to the top
@@ -577,7 +575,6 @@ resource 'Projects' do
 
       example 'List all projects the current user can moderate' do
         n_moderating_projects = 3
-        pj1, pj2 = @projects.shuffle.take 2
         @projects.shuffle.take(n_moderating_projects).each do |pj|
           @moderator.add_role 'project_moderator', project_id: pj.id
         end
@@ -614,7 +611,7 @@ resource 'Projects' do
       end
 
       example 'Get projects with access rights' do
-        project = create(:project)
+        create(:project)
         do_request
         assert_status 200
         expect(json_response[:data].size).to eq 1
@@ -642,7 +639,6 @@ resource 'Projects' do
         )
 
         do_request search: 'super-specific-title-string'
-        json_response = json_parse(response_body)
         expect(response_data.size).to eq 1
         expect(response_ids).to eq [p1.id]
       end

@@ -91,9 +91,10 @@ module Insights
     def sort_by_approval(inputs)
       return inputs unless %w[approval -approval].include?(params[:sort])
       return inputs unless category_ids.size == 1
-      return inputs if (category_id = category_ids.first).nil?
 
       category_id = category_ids.first
+      return inputs if category_id.nil?
+
       order = params[:sort].start_with?('-') ? :asc : :desc
 
       inputs.joins(:insights_category_assignments)

@@ -123,7 +123,7 @@ resource 'User Custom Field Options' do
 
       if CitizenLab.ee?
         example "[error] Delete a custom field option that's still referenced in a rules group" do
-          group = create(
+          create(
             :smart_group,
             rules: [
               { ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id }

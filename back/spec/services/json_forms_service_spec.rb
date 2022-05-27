@@ -148,8 +148,8 @@ describe JsonFormsService do
         create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
         create(:custom_field, key: 'field3', input_type: 'select'),
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
-        field5 = create(:custom_field, key: 'field5', input_type: 'checkbox'),
-        field6 = create(:custom_field, key: 'field6', input_type: 'date'),
+        create(:custom_field, key: 'field5', input_type: 'checkbox'),
+        create(:custom_field, key: 'field6', input_type: 'date'),
         create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
         create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
       ]

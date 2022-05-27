@@ -49,7 +49,7 @@ describe SideFxIdeaService do
     end
 
     it "doesn't logs a 'first published by user' action job when ideas are created after the first one" do
-      idea1 = create(:idea, publication_status: 'published', author: user)
+      create(:idea, publication_status: 'published', author: user)
       idea2 = create(:idea, publication_status: 'published', author: user)
       expect { service.after_create(idea2, user) }
         .not_to have_enqueued_job(LogActivityJob).with(idea2, 'first_published_by_user', user, idea2.created_at.to_i)
@@ -71,7 +71,6 @@ describe SideFxIdeaService do
 
     it "logs a 'changed' action job when the idea has changed" do
       idea = create(:idea)
-      old_idea_title = idea.title_multiloc
       idea.update(title_multiloc: { en: 'something else' })
       expect { service.after_update(idea, user) }
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed', any_args).exactly(1).times

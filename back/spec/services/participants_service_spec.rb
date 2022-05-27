@@ -30,7 +30,7 @@ describe ParticipantsService do
     it 'returns participants across the whole platform since a given date' do
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
-      others = create_list(:user, 3)
+      create_list(:user, 3)
 
       travel_to Time.now - 100.days do
         create(:published_activity, user: pp1)
@@ -79,7 +79,8 @@ describe ParticipantsService do
       poll = create(:continuous_poll_project)
       responses = create_list(:poll_response, 2, participation_context: poll)
       participants = responses.map(&:user)
-      others = create_list(:user, 2) + [create(:poll_response, participation_context: create(:continuous_poll_project)).user]
+      create_list(:user, 2)
+      create(:poll_response, participation_context: create(:continuous_poll_project))
 
       expect(service.projects_participants([poll]).map(&:id)).to match_array participants.map(&:id)
     end
@@ -89,13 +90,13 @@ describe ParticipantsService do
       cause = create(:cause, participation_context: project)
       volunteers = create_list(:volunteer, 2, cause: cause)
       participants = volunteers.map(&:user)
-      other = create(:volunteer)
+      create(:volunteer)
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it 'returns participants of a given project since a given date' do
       project = create(:project)
-      other_project = create(:project)
+      create(:project)
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       others = create_list(:user, 3)
@@ -120,15 +121,15 @@ describe ParticipantsService do
 
     it 'returns only participants for specific actions' do
       project = create(:continuous_budgeting_project)
-      other_project = create(:project)
+      create(:project)
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      c = create(:comment, post: i, author: pp2)
-      v = create(:vote, votable: i, user: pp3)
-      b = create(:basket, ideas: [i], participation_context: project, user: pp4)
+      create(:comment, post: i, author: pp2)
+      create(:vote, votable: i, user: pp3)
+      create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: %i[posting budgeting]).map(&:id)).to match_array [pp1.id, pp4.id]
@@ -143,9 +144,9 @@ describe ParticipantsService do
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
       i1 = create(:idea, topics: [t1], author: pp1, project: project)
-      i2 = create(:idea, topics: [t2, t3], author: pp2, project: project)
-      i3 = create(:idea, topics: [t3], author: pp1, project: project)
-      i4 = create(:idea, topics: [], author: others.first, project: project)
+      create(:idea, topics: [t2, t3], author: pp2, project: project)
+      create(:idea, topics: [t3], author: pp1, project: project)
+      create(:idea, topics: [], author: others.first, project: project)
       create(:comment, post: i1, author: pp3)
 
       expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
@@ -153,15 +154,15 @@ describe ParticipantsService do
 
     it 'returns only participants for specific actions' do
       project = create(:project)
-      other_project = create(:project)
+      create(:project)
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
       c = create(:comment, post: i, author: pp2)
-      v1 = create(:vote, votable: i, user: pp3)
-      v2 = create(:vote, votable: c, user: pp4)
+      create(:vote, votable: i, user: pp3)
+      create(:vote, votable: c, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: [:comment_voting]).map(&:id)).to match_array [pp4.id]
@@ -175,8 +176,8 @@ describe ParticipantsService do
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
       i1 = create(:idea, idea_status: s1, author: pp1)
-      i2 = create(:idea, idea_status: s2, author: pp2)
-      i3 = create(:idea, idea_status: s3, author: others.first)
+      create(:idea, idea_status: s2, author: pp2)
+      create(:idea, idea_status: s3, author: others.first)
       create(:comment, post: i1, author: pp3)
 
       expect(service.idea_statuses_participants([s1, s2]).map(&:id)).to match_array participants.map(&:id)
@@ -184,15 +185,15 @@ describe ParticipantsService do
 
     it 'returns only participants for specific actions' do
       project = create(:continuous_budgeting_project)
-      other_project = create(:project)
+      create(:project)
       participants = create_list(:user, 4)
       pp1, pp2, pp3, pp4 = participants
       other = create(:user)
 
       i = create(:idea, project: project, author: pp1)
-      c = create(:comment, post: i, author: pp2)
-      v = create(:vote, votable: i, user: pp3)
-      b = create(:basket, ideas: [i], participation_context: project, user: pp4)
+      create(:comment, post: i, author: pp2)
+      create(:vote, votable: i, user: pp3)
+      create(:basket, ideas: [i], participation_context: project, user: pp4)
       create(:idea, author: other)
 
       expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
@@ -206,7 +207,7 @@ describe ParticipantsService do
     end
 
     it 'filters out an idea changed title activity' do
-      activity = create(:changed_title_activity)
+      create(:changed_title_activity)
       expect(service.filter_engaging_activities(Activity.all)).to be_empty
     end
   end
