@@ -230,6 +230,7 @@ const Network = ({
   };
 
   const handleNodeClick = (node: Node, event) => {
+    let removedNode = false;
     if (node.x && node.y) {
       const ctx = event.target.getContext('2d');
       const globalScale = node.globalScale;
@@ -256,7 +257,7 @@ const Network = ({
             ),
           };
           setInsightsNetwork(newNetwork);
-          return;
+          removedNode = true;
         }
       }
     }
@@ -266,22 +267,24 @@ const Network = ({
         ? [query.keywords]
         : query.keywords;
 
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        // Toggle selected keywords in url
-        {
-          ...query,
-          keywords: keywords
-            ? !keywords.includes(node.id)
-              ? [keywords, node.id]
-              : keywords.filter((keyword: string) => keyword !== node.id)
-            : node.id,
-        },
-        { addQueryPrefix: true, indices: false }
-      ),
-    });
-    trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
+    if (!removedNode || keywords.includes(node.id)) {
+      clHistory.replace({
+        pathname,
+        search: stringify(
+          // Toggle selected keywords in url
+          {
+            ...query,
+            keywords: keywords
+              ? !keywords.includes(node.id)
+                ? [keywords, node.id]
+                : keywords.filter((keyword: string) => keyword !== node.id)
+              : node.id,
+          },
+          { addQueryPrefix: true, indices: false }
+        ),
+      });
+      trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
+    }
   };
 
   const nodePointerAreaPaint = (node, color, ctx) => {
