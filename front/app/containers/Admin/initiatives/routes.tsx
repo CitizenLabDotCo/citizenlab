@@ -19,7 +19,6 @@ const createAdminInitiativesRoutes = () => ({
       element: <Navigate to="settings" />,
     },
     {
-      index: true,
       path: 'settings',
       element: (
         <LoadingComponent>
