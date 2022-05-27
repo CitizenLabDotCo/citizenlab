@@ -79,7 +79,6 @@ describe('Content builder Three Column component', () => {
       position: 'inside',
     });
 
-    cy.get('.e2eBuilderSettingsClose').click();
     cy.get('div#e2e-text-box').should('have.length', 3);
     cy.get('div#e2e-about-box').should('have.length', 3);
     cy.get('div#e2e-iframe').should('have.length', 3);
