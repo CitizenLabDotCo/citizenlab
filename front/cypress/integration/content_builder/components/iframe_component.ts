@@ -78,11 +78,9 @@ describe('Content builder Iframe component', () => {
     // Check that save is disabled
     cy.contains('Save').should('be.disabled');
     // Check that red border is present
-    cy.get('.e2eRenderNode').should(
-      'have.css',
-      'border-color',
-      'rgb(224, 224, 224)'
-    );
+    cy.get('.e2eRenderNode')
+      .last()
+      .should('have.css', 'border-color', 'rgb(214, 22, 7)');
 
     // Try URL for non-permitted source
     cy.get('#e2e-iframe-url').clear().type('https://www.citizenlab.co');
@@ -92,11 +90,9 @@ describe('Content builder Iframe component', () => {
     // Check that save is disabled
     cy.contains('Save').should('be.disabled');
     // Check that red border is present
-    cy.get('.e2eRenderNode').should(
-      'have.css',
-      'border-color',
-      'rgb(224, 224, 224)'
-    );
+    cy.get('.e2eRenderNode')
+      .last()
+      .should('have.css', 'border-color', 'rgb(214, 22, 7)');
 
     // Type valid URL
     cy.get('#e2e-iframe-url')
@@ -105,11 +101,9 @@ describe('Content builder Iframe component', () => {
     // Check that save is enabled
     cy.contains('Save').should('be.enabled');
     // Check that red border is gone
-    cy.get('.e2eRenderNode').should(
-      'have.css',
-      'border-color',
-      'rgb(224, 224, 224)'
-    );
+    cy.get('.e2eRenderNode')
+      .last()
+      .should('have.css', 'border-color', 'rgb(4, 77, 108)');
   });
 
   it('deletes Iframe component correctly', () => {
