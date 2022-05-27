@@ -612,7 +612,7 @@ resource 'Ideas' do
 
       before do
         project.permissions.find_by(action: 'posting_idea')
-               .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'groups', groups: [group])
       end
 
       example_request '[error] Create an idea in a project with groups posting permission', document: false do

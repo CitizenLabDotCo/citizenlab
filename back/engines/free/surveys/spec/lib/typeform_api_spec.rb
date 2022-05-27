@@ -62,7 +62,7 @@ describe Surveys::Typeform::Api do
            'Authorization' => "Bearer #{token}"
           }
         )
-         .to_return(status: 204, body: '', headers: {})
+        .to_return(status: 204, body: '', headers: {})
 
       response = api.delete_webhook(form_id: form_id, tag: 'test-hook')
       expect(response.success?).to be true

@@ -140,8 +140,8 @@ module Verification
         active: true,
         hashed_uid: hashed_uid(uid, method_name)
       )
-                                  .where.not(user: user)
-                                  .exists?
+        .where.not(user: user)
+        .exists?
     end
 
     def hashed_uid(uid, method_name)

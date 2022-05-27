@@ -38,7 +38,7 @@ module Surveys
     def delete_all_webhooks
       [Project.is_participation_context, Phase].each do |scope|
         scope.where(participation_method: 'survey', survey_service: 'typeform')
-             .each { |pc| delete_webhook(pc.survey_embed_url, pc.id) }
+          .each { |pc| delete_webhook(pc.survey_embed_url, pc.id) }
       end
     end
 
@@ -47,7 +47,7 @@ module Surveys
     def update_all_webhooks
       [Project.is_participation_context, Phase].each do |scope|
         scope.where(participation_method: 'survey', survey_service: 'typeform')
-             .each { |pc| save_webhook(pc.survey_embed_url, pc) }
+          .each { |pc| save_webhook(pc.survey_embed_url, pc) }
       end
     end
 

@@ -17,7 +17,7 @@ describe IdeaVotePolicy do
     let!(:project) do
       p = create(:continuous_project).tap do |project|
         project.permissions.find_by(action: 'voting_idea')
-               .update!(permitted_by: 'admins_moderators')
+          .update!(permitted_by: 'admins_moderators')
       end
     end
 

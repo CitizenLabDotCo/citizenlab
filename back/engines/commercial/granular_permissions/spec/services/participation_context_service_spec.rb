@@ -84,7 +84,7 @@ describe ParticipationContextService do
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         service.get_participation_context(project).permissions
-               .find_by(action: 'voting_idea')
+          .find_by(action: 'voting_idea')
       end
 
       it 'returns `not_signed_in` when user needs to be signed in' do
@@ -155,7 +155,7 @@ describe ParticipationContextService do
 
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
         service.get_participation_context(project).permissions.find_by(action: 'voting_idea')
-               .update!(permitted_by: 'users')
+          .update!(permitted_by: 'users')
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 

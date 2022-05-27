@@ -15,7 +15,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-                                 .where(published_at: @start_at..@end_at)
+      .where(published_at: @start_at..@end_at)
     @result = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
     render json: { count: @result.count }

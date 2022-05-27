@@ -19,7 +19,7 @@ resource 'Projects' do
       header 'Authorization', "Bearer #{token}"
 
       @projects = %w[published published draft published archived archived published]
-                  .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
+        .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     end
 
     get 'web_api/v1/projects' do
@@ -596,7 +596,7 @@ resource 'Projects' do
         header 'Authorization', "Bearer #{token}"
 
         @projects = %w[published published draft published archived published archived]
-                    .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
+          .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
       end
 
       example 'Admins moderate all projects', document: false do

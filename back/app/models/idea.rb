@@ -120,7 +120,7 @@ class Idea < ApplicationRecord
 
   scope :order_status, lambda { |direction = :desc|
     joins(:idea_status)
-    .order("idea_statuses.ordering #{direction}, ideas.id")
+      .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
   scope :feedback_needed, lambda {

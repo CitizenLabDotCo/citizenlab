@@ -60,9 +60,9 @@ resource 'Projects' do
         json_response = json_parse(response_body)
         ids = json_response[:data].pluck(:id)
         projects = Project.includes(:admin_publication)
-                          .where(admin_publications: { publication_status: %w[published archived] })
-                          .where(projects: { visible_to: 'public' })
-                          .or(projects_within_folder)
+          .where(admin_publications: { publication_status: %w[published archived] })
+          .where(projects: { visible_to: 'public' })
+          .or(projects_within_folder)
 
         expect(ids).to match_array projects.pluck(:id)
       end

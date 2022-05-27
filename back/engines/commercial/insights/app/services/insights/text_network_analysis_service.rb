@@ -46,8 +46,8 @@ module Insights
 
       # Remove existing networks for languages that are no longer present in the inputs.
       Insights::TextNetwork.where(view: view)
-                           .where.not(language: task_by_language.keys)
-                           .destroy_all
+        .where.not(language: task_by_language.keys)
+        .destroy_all
 
       task_by_language.map do |language, tna_task|
         Insights::TextNetworkAnalysisTaskView.create(view: view, task: tna_task, language: language)

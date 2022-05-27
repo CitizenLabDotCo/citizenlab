@@ -385,7 +385,7 @@ resource 'Initiatives' do
       before do
         PermissionsService.new.update_global_permissions
         Permission.find_by(permission_scope: nil, action: 'posting_initiative')
-                  .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'groups', groups: [group])
       end
 
       example '[error] Not authorized to create an initiative', document: false do

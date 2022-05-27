@@ -173,15 +173,15 @@ module EmailCampaigns
     def active_ideas
       @active_ideas ||= published_ideas.then do |ideas|
         ideas.select { |idea| total_idea_activity(idea).positive? }
-             .sort_by(&method(:total_idea_activity))
-             .last(N_TOP_IDEAS)
+          .sort_by(&method(:total_idea_activity))
+          .last(N_TOP_IDEAS)
       end
     end
 
     def new_ideas
       @new_ideas ||= published_ideas.where('published_at > ?', Time.now - days_ago)
-                                    .sort_by(&method(:total_idea_activity))
-                                    .last(N_TOP_IDEAS)
+        .sort_by(&method(:total_idea_activity))
+        .last(N_TOP_IDEAS)
     end
 
     def published_ideas
@@ -202,20 +202,20 @@ module EmailCampaigns
 
     def new_initiatives(time: Time.zone.today)
       @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
-                                     .order(published_at: :desc)
-                                     .includes(:initiative_images)
-                                     .map(&method(:serialize_initiative))
+        .order(published_at: :desc)
+        .includes(:initiative_images)
+        .map(&method(:serialize_initiative))
     end
 
     def successful_initiatives(time: Time.zone.today)
       @successful_initiatives ||= Initiative
-                                 .published
-                                 .joins(initiative_status_changes: :initiative_status)
-                                 .includes(:initiative_images)
-                                 .where(initiative_statuses: { code: 'threshold_reached' })
-                                 .where('initiative_status_changes.created_at > ?', time - 1.week)
-                                 .feedback_needed
-                                 .map(&method(:serialize_initiative))
+        .published
+        .joins(initiative_status_changes: :initiative_status)
+        .includes(:initiative_images)
+        .where(initiative_statuses: { code: 'threshold_reached' })
+        .where('initiative_status_changes.created_at > ?', time - 1.week)
+        .feedback_needed
+        .map(&method(:serialize_initiative))
     end
 
     def ideas_activity_counts(ideas)
