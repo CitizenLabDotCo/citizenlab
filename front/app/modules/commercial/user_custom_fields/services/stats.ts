@@ -11,21 +11,16 @@ export interface IUsersByGender {
     };
   };
   // Just making assumptions about what the response will look like here
-  referenceSeries: {
+  referenceSeries?: {
     users: {
       [key: string]: number;
     };
   };
+  referenceDataUploaded?: string;
 }
 
 export interface IUsersByRegistrationField {
   series: {
-    users: {
-      [key: string]: number;
-    };
-  };
-  // Just making assumptions about what the response will look like here
-  referenceSeries: {
     users: {
       [key: string]: number;
     };
@@ -36,16 +31,17 @@ export interface IUsersByRegistrationField {
       ordering: number;
     };
   };
-}
-
-export interface IUsersByDomicile {
-  series: {
+  // Just making assumptions about what the response will look like here
+  referenceSeries?: {
     users: {
       [key: string]: number;
     };
   };
-  // Just making assumptions about what the response will look like here
-  referenceSeries: {
+  referenceDataUploaded?: string;
+}
+
+export interface IUsersByDomicile {
+  series: {
     users: {
       [key: string]: number;
     };
@@ -55,8 +51,16 @@ export interface IUsersByDomicile {
       title_multiloc: Multiloc;
     };
   };
+  // Just making assumptions about what the response will look like here
+  referenceSeries?: {
+    users: {
+      [key: string]: number;
+    };
+  };
+  referenceDataUploaded?: string;
 }
 
+// Ignoring this one for this iteration
 export interface IUsersByBirthyear {
   series: {
     users: {
@@ -64,6 +68,11 @@ export interface IUsersByBirthyear {
     };
   };
 }
+
+export type TStreamResponse =
+  | IUsersByRegistrationField
+  | IUsersByGender
+  | IUsersByDomicile;
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;

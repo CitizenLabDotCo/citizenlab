@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
+import moment, { Moment } from 'moment';
 
 // services
 import {
   usersByRegFieldStream,
   usersByGenderStream,
   usersByDomicileStream,
+  TStreamResponse,
 } from 'modules/commercial/user_custom_fields/services/stats';
+
+// utils
+import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
-import { NilOrError } from 'utils/helperUtils';
 
 export interface RepresentativenessRow {
   name: string;
@@ -35,7 +39,11 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   const [referenceData, setReferenceData] = useState<
     RepresentativenessData | NilOrError
   >();
-  const [includedUsers, setIncludedUsers] = useState<number | NilOrError>();
+  const [includedUsersPercentage, setIncludedUsersPercentage] = useState<
+    number | NilOrError
+  >();
+  const [uploadDate, setUploadDate] = useState<Moment | NilOrError>();
+
   const code = field.attributes.code;
 
   useEffect(() => {
@@ -45,12 +53,45 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
       return;
     }
 
-    // TODO get data from stream
-    // TODO transform data, calc percentages etc
-    // TODO also get included data percentage
+    const observable = stream(
+      { queryParameters: { project: projectId } },
+      field.id
+    ).observable;
+
+    const subscription = observable.subscribe(
+      (usersByField: TStreamResponse | NilOrError) => {
+        if (isNilOrError(usersByField)) {
+          setReferenceData(usersByField);
+          setIncludedUsersPercentage(usersByField);
+          setUploadDate(usersByField);
+          return;
+        }
+
+        const referenceData = toReferenceData(usersByField);
+        const includedUsersPercentage =
+          getIncludedUsersPercentage(usersByField);
+        setReferenceData(referenceData);
+        setIncludedUsersPercentage(includedUsersPercentage);
+
+        if (usersByField.referenceDataUploaded) {
+          // Might need to change this depending on the date string format
+          setUploadDate(moment(usersByField.referenceDataUploaded));
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, [code]);
 
-  return { referenceData, includedUsers };
+  return { referenceData, includedUsersPercentage, uploadDate };
 }
 
 export default useReferenceData;
+
+const toReferenceData = (x: any): any => {
+  // TODO
+};
+
+const getIncludedUsersPercentage = (x: any): any => {
+  // TODO
+};
