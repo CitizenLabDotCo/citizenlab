@@ -16,7 +16,7 @@ export interface IUsersByGender {
       [key: string]: number;
     };
   };
-  referenceDataUploaded?: string;
+  referenceDataUploadDate?: string;
 }
 
 export interface IUsersByRegistrationField {
@@ -37,7 +37,7 @@ export interface IUsersByRegistrationField {
       [key: string]: number;
     };
   };
-  referenceDataUploaded?: string;
+  referenceDataUploadDate?: string;
 }
 
 export interface IUsersByDomicile {
@@ -57,7 +57,7 @@ export interface IUsersByDomicile {
       [key: string]: number;
     };
   };
-  referenceDataUploaded?: string;
+  referenceDataUploadDate?: string;
 }
 
 // Ignoring this one for this iteration

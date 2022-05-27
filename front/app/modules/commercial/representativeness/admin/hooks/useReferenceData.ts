@@ -81,9 +81,9 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
         setIncludedUserPercentage(includedUsersPercentage);
         setReferenceDataUploaded(true);
 
-        if (usersByField.referenceDataUploaded) {
+        if (usersByField.referenceDataUploadDate) {
           // Might need to change this depending on the date string format
-          setUploadDate(moment(usersByField.referenceDataUploaded));
+          setUploadDate(moment(usersByField.referenceDataUploadDate));
         }
       }
     );
@@ -101,10 +101,19 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
 
 export default useReferenceData;
 
-const toReferenceData = (x: any): any => {
-  // TODO
+const isGenderData = (usersByField: TStreamResponse) =>
+  !('options' in usersByField);
+
+const toReferenceData = (
+  usersByField: TStreamResponse
+): RepresentativenessData => {
+  if (isGenderData(usersByField)) {
+    // TODO implement this
+  }
+
+  // TODO implement this
 };
 
-const getIncludedUserPercentage = (x: any): any => {
-  // TODO
+const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
+  // TODO implement this
 };
