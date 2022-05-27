@@ -15,7 +15,8 @@ describe ProjectPolicy do
         :smart_group,
         rules: [
           { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-        ])
+        ]
+      )
     end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
@@ -40,7 +41,8 @@ describe ProjectPolicy do
         :smart_group,
         rules: [
           { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-        ])
+        ]
+      )
     end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 

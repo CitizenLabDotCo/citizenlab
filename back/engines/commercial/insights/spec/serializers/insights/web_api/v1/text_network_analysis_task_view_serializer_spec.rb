@@ -19,7 +19,8 @@ RSpec.describe Insights::WebApi::V1::TextNetworkAnalysisTaskViewSerializer do
               created_at: task_view.created_at
             }
           }
-        })
+        }
+      )
     end
   end
 end

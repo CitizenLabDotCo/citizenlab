@@ -117,8 +117,7 @@ FactoryBot.define do
                                    end_at: end_at - 1,
                                    start_at: end_at -= rand(1..120).days,
                                    project: project,
-                                   **phase_config
-                                  )
+                                   **phase_config)
         end
 
         start_at = active_phase.end_at
@@ -128,8 +127,7 @@ FactoryBot.define do
                                    start_at: start_at + 1,
                                    end_at: start_at += rand(1..120).days,
                                    project: project,
-                                   **phase_config
-                                  )
+                                   **phase_config)
         end
       end
     end

@@ -143,7 +143,8 @@ class ParticipantsService
         output.where(item_type: activity[:item_type], action: activity[:action])
       else
         output.or(
-          activities_scope.where(item_type: activity[:item_type], action: activity[:action]))
+          activities_scope.where(item_type: activity[:item_type], action: activity[:action])
+        )
       end
     end
     output

@@ -101,7 +101,3 @@ Metrics/MethodLength:
   IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
   - 'db/migrate/**/*'
-
-Layout/MultilineMethodCallBraceLayout:
-  # Depends on Layout/ArgumentAlignment
-  EnforcedStyle: new_line

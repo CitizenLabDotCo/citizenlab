@@ -127,7 +127,8 @@ resource 'User Custom Field Options' do
             :smart_group,
             rules: [
               { ruleType: 'custom_field_select', customFieldId: @custom_field.id, predicate: 'has_value', value: id }
-            ])
+            ]
+          )
           do_request
           assert_status 422
           expect(CustomFieldOption.find(id)).to be_present

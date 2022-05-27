@@ -14,7 +14,8 @@ describe AdminPublicationPolicy do
         :smart_group,
         rules: [
           { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-        ])
+        ]
+      )
     end
     let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 

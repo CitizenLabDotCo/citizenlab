@@ -190,7 +190,8 @@ resource 'User Custom Fields' do
             :smart_group,
             rules: [
               { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
-            ])
+            ]
+          )
           do_request
           assert_status 422
           expect(CustomField.find(id)).to be_present

@@ -132,12 +132,10 @@ describe InvitesService do
       before do
         create(:custom_field,
                key: 'checkbox_field',
-               input_type: 'checkbox'
-              )
+               input_type: 'checkbox')
         create(:custom_field,
                key: 'number_field',
-               input_type: 'number'
-              )
+               input_type: 'number')
       end
 
       let(:hash_array) do
