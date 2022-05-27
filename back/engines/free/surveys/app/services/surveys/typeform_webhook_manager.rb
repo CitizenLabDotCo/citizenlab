@@ -62,11 +62,12 @@ module Surveys
         secret: @secret
       )
       unless response.success?
-        Rails.logger.error('Failed to save typeform webhook',
-            form_url: form_url,
-            participation_context_id: participation_context.id,
-            participation_context_class: participation_context.class.name,
-            response: response.parsed_response
+        Rails.logger.error(
+          'Failed to save typeform webhook',
+          form_url: form_url,
+          participation_context_id: participation_context.id,
+          participation_context_class: participation_context.class.name,
+          response: response.parsed_response
         )
       end
       response

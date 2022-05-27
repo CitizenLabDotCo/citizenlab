@@ -85,9 +85,9 @@ FactoryBot.define do
         end_at = evaluator.last_end_at
         evaluator.phases_count.times do
           project.phases << create(:phase,
-            end_at: end_at - 1,
-            start_at: end_at -= rand(1..72).days,
-            project: project)
+                                   end_at: end_at - 1,
+                                   start_at: end_at -= rand(1..72).days,
+                                   project: project)
         end
       end
     end
@@ -101,7 +101,8 @@ FactoryBot.define do
       after(:create) do |project, evaluator|
         phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
 
-        active_phase = create(:phase,
+        active_phase = create(
+          :phase,
           start_at: Faker::Date.between(from: 6.months.ago, to: Time.zone.now),
           end_at: Faker::Date.between(from: 1.day.from_now, to: 6.months.from_now),
           project: project,
@@ -113,22 +114,22 @@ FactoryBot.define do
         phases_before.to_s.chars.map(&:to_sym).reverse_each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(:phase,
-            end_at: end_at - 1,
-            start_at: end_at -= rand(1..120).days,
-            project: project,
-            **phase_config
-          )
+                                   end_at: end_at - 1,
+                                   start_at: end_at -= rand(1..120).days,
+                                   project: project,
+                                   **phase_config
+                                  )
         end
 
         start_at = active_phase.end_at
         phases_after.to_s.chars.map(&:to_sym).each do |sequence_char|
           phase_config = evaluator.phases_config[sequence_char].clone || {}
           project.phases << create(:phase,
-            start_at: start_at + 1,
-            end_at: start_at += rand(1..120).days,
-            project: project,
-            **phase_config
-          )
+                                   start_at: start_at + 1,
+                                   end_at: start_at += rand(1..120).days,
+                                   project: project,
+                                   **phase_config
+                                  )
         end
       end
     end
@@ -142,9 +143,9 @@ FactoryBot.define do
         start_at = evaluator.first_start_at
         evaluator.phases_count.times do
           project.phases << create(:phase,
-            start_at: start_at + 1,
-            end_at: start_at += rand(1..120).days,
-            project: project)
+                                   start_at: start_at + 1,
+                                   end_at: start_at += rand(1..120).days,
+                                   project: project)
         end
       end
     end

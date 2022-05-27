@@ -621,21 +621,25 @@ resource 'Projects' do
       end
 
       example 'Search for projects does not return projects with draft status' do
-        p1 = create(:project,
-              admin_publication_attributes: { publication_status: 'published' },
-              title_multiloc: {
-                en: 'super-specific-title-string-1',
-                'fr-BE': 'a title',
-                'nl-BE': 'a title'
-              })
+        p1 = create(
+          :project,
+          admin_publication_attributes: { publication_status: 'published' },
+          title_multiloc: {
+            en: 'super-specific-title-string-1',
+            'fr-BE': 'a title',
+            'nl-BE': 'a title'
+          }
+        )
 
-        create(:project,
+        create(
+          :project,
           admin_publication_attributes: { publication_status: 'draft' },
           title_multiloc: {
             en: 'super-specific-title-string-2',
             'fr-BE': 'a title',
             'nl-BE': 'a title'
-          })
+          }
+        )
 
         do_request search: 'super-specific-title-string'
         json_response = json_parse(response_body)

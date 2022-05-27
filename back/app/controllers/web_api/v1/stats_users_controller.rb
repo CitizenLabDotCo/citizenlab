@@ -91,9 +91,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   def users_by_time_cumulative_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx users_by_time_cumulative_serie, 'users_by_time_cumulative'
 
-    send_data xlsx,
-     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: 'users_by_time_cumulative.xlsx'
+    send_data(
+      xlsx,
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      filename: 'users_by_time_cumulative.xlsx'
+    )
   end
 
   def active_users_by_time_cumulative_serie
@@ -172,9 +174,11 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
   def active_users_by_time_as_xlsx
     xlsx = XlsxService.new.generate_time_stats_xlsx active_users_by_time_serie, 'active_users_by_time'
-    send_data xlsx,
-     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-     filename: 'active_users_by_time.xlsx'
+    send_data(
+      xlsx,
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      filename: 'active_users_by_time.xlsx'
+    )
   end
 
   def users_engagement_scores

@@ -51,16 +51,20 @@ class Idea < ApplicationRecord
   belongs_to :idea_status, optional: true
 
   counter_culture :idea_status, touch: true
-  counter_culture :project,
+  counter_culture(
+    :project,
     column_name: proc { |idea| idea.publication_status == 'published' ? 'ideas_count' : nil },
     column_names: {
       ['ideas.publication_status = ?', 'published'] => 'ideas_count'
     },
     touch: true
+  )
 
-  counter_culture :project,
+  counter_culture(
+    :project,
     column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
+  )
 
   belongs_to :assignee, class_name: 'User', optional: true
 

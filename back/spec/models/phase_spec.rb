@@ -96,7 +96,8 @@ RSpec.describe Phase, type: :model do
 
   describe 'max_budget' do
     it 'can be updated in a project with just one phase' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: { sequence: 'xc' },
         current_phase_attrs: { participation_method: 'budgeting', max_budget: 1234 }
       )

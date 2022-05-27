@@ -84,7 +84,7 @@ class IdeaCustomFieldsService
         input_type: 'number',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.budget.title',
-            locales: CL2_SUPPORTED_LOCALES
+          locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
                                 ml_s.i18n_to_multiloc(
@@ -106,7 +106,7 @@ class IdeaCustomFieldsService
         input_type: 'number',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.proposed_budget.title',
-            locales: CL2_SUPPORTED_LOCALES
+          locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
                                 ml_s.i18n_to_multiloc(

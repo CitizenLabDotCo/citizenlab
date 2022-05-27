@@ -14,11 +14,11 @@ describe JsonFormsService do
     let(:fields) do
       [
         create(:custom_field,
-          key: 'field1',
-          input_type: 'text',
-          title_multiloc: title_multiloc,
-          description_multiloc: description_multiloc
-        )
+               key: 'field1',
+               input_type: 'text',
+               title_multiloc: title_multiloc,
+               description_multiloc: description_multiloc
+              )
       ]
     end
 
@@ -105,8 +105,7 @@ describe JsonFormsService do
                   const: 'option_b',
                   title: 'youth council'
                 }
-              ]
-             }
+              ] }
               },
            'field5' =>
             { type: 'boolean' },
@@ -129,24 +128,15 @@ describe JsonFormsService do
                   const: 'option_b',
                   title: 'youth council'
                 }
-              ]
-             }
-            },
+              ] } },
             'field9' =>
             { type: 'array',
              items:               { properties:                 { file_by_content:                   { properties:                     { file:                       { type: 'string' },
-                    name:                       { type: 'string' }
-                    },
-                  type: 'object'
-                  },
-                  name:                   { type: 'string' }
-                },
-                type: 'object'
-              }
-            }
-          },
-         required: %w[field2 field8 field9]
-        }
+                    name:                       { type: 'string' } },
+                  type: 'object' },
+                  name:                   { type: 'string' } },
+                type: 'object' } } },
+         required: %w[field2 field8 field9] }
       )
     end
   end

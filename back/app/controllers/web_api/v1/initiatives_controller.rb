@@ -50,8 +50,10 @@ class WebApi::V1::InitiativesController < ApplicationController
   def filter_counts
     initiatives = policy_scope(Initiative)
     search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-    initiatives = PostsFilteringService.new.apply_common_initiative_index_filters initiatives, params,
-                                                                                   search_last_names
+    initiatives = PostsFilteringService.new.apply_common_initiative_index_filters(
+      initiatives, params,
+      search_last_names
+    )
     counts = {
       'initiative_status_id' => {},
       'area_id' => {},

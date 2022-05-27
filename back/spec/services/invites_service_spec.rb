@@ -38,21 +38,25 @@ describe InvitesService do
 
     context 'with user custom fields configured' do
       before do
-        create(:custom_field,
+        create(
+          :custom_field,
           key: 'text_field',
           input_type: 'text',
           title_multiloc: { 'en' => 'size', 'nl-NL' => 'grootte' },
           description_multiloc: { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' }
         )
-        create(:custom_field,
+        create(
+          :custom_field,
           key: 'checkbox_field',
           input_type: 'checkbox'
         )
-        create(:custom_field,
+        create(
+          :custom_field,
           key: 'float_field',
           input_type: 'number'
         )
-        create(:custom_field,
+        create(
+          :custom_field,
           key: 'integer_field',
           input_type: 'number'
         )

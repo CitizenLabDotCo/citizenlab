@@ -46,7 +46,7 @@ describe WebApi::V1::Notifications::NotificationSerializer do
     it 'serializes CommentOnYourInitiative correctly' do
       expect_serializer_to_hide_name(
         john, jane, admin, :comment_on_your_initiative,
-         WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
+        WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
       )
     end
 

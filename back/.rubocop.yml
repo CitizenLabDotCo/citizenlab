@@ -47,6 +47,9 @@ Layout/CaseIndentation:
 Layout/EndAlignment:
   EnforcedStyleAlignWith: start_of_line
 
+Layout/TrailingWhitespace:
+  AllowInHeredoc: true
+
 Metrics/ClassLength:
   Max: 300
   CountAsOne: ['array', 'hash', 'heredoc']
