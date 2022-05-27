@@ -104,7 +104,14 @@ const ButtonContainer = styled.div`
 `;
 
 const PreferencesButton = styled(Button)`
-  margin-left: 10px;
+  ${media.smallerThanMinTablet`
+  margin-right: 10px;
+  order: 1;
+  `}
+`;
+
+const AcceptButton = styled(Button)`
+  margin-right: 10px;
 
   ${media.smallerThanMinTablet`
     margin-right: 0px;
@@ -112,19 +119,12 @@ const PreferencesButton = styled(Button)`
   `}
 
   ${isRtl`
-    margin-right: 10px;
-    margin-left: 0px;
+    margin-right: 0px;
+    margin-left: 10px;
 
     ${media.smallerThanMinTablet`
-        margin-right: 0px;
+        margin-left: 0px;
     `}
-  `}
-`;
-
-const AcceptButton = styled(Button)`
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-    order: 1;
   `}
 `;
 
