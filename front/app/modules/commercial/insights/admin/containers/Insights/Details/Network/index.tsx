@@ -483,7 +483,10 @@ const Network = ({
               placement="bottom"
               content={
                 <TooltipContentList>
-                  {hiddenNodes.map((n) => (
+                  {(hiddenNodes.length > 10
+                    ? [...hiddenNodes.slice(0, 9), '...']
+                    : hiddenNodes
+                  ).map((n) => (
                     <li key={n}>{n}</li>
                   ))}
                 </TooltipContentList>
