@@ -1,4 +1,5 @@
 import { isString } from 'lodash-es';
+// eslint-disable-next-line no-restricted-imports
 import { Location } from 'history';
 import {
   getUrlLocale,
