@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ProjectsController < ::ApplicationController
   before_action :set_project, only: %i[show update reorder destroy]
   skip_before_action :authenticate_user

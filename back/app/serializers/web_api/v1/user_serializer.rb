@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attributes :first_name, :slug, :locale, :roles, :highest_role, :bio_multiloc, :registration_completed_at, :invite_status, :created_at, :updated_at
 
@@ -20,7 +22,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :avatar, if: proc { |object|
     object.avatar
   } do |object|
-    object.avatar.versions.map { |k, v| [k.to_s, v.url] }.to_h
+    object.avatar.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
   attribute :unread_notifications do |object|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AdminPublicationPolicy do
@@ -9,8 +11,9 @@ describe AdminPublicationPolicy do
     let!(:user) { create(:user, email: 'not-user@test.com') }
     let!(:group) do
       create(:smart_group, rules: [
-      { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-    ]) end
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
+    end
     let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 
     it { is_expected.not_to permit(:reorder) }

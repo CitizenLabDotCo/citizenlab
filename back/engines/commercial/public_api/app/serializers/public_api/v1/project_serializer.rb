@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
   @@multiloc_service = MultilocService.new
 
@@ -18,7 +20,7 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def images
     object.project_images.map do |idea_image|
-      idea_image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      idea_image.image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 

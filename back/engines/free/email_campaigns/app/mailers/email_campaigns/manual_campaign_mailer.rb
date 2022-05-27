@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class ManualCampaignMailer < ApplicationMailer
     helper_method :body, :body_text

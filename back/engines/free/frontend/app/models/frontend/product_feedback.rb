@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Frontend
   # NOTE: Not an ActiveRecord model, merely used for validations
   class ProductFeedback

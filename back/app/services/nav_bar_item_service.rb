@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NavBarItemService
   def auto_reposition!(item)
     if !item.custom? && (position = candidate_position(item))

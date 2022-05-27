@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeImageUploader < BaseImageUploader
   version :small do
     process resize_to_fill: [96, 96]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Idea, type: :model do
@@ -161,14 +163,6 @@ RSpec.describe Idea, type: :model do
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
-    end
-  end
-
-  describe 'delete an idea' do
-    it 'with an area should succeed' do
-      area = create(:area)
-      idea = create(:idea, areas: [area])
-      expect { idea.destroy }.not_to raise_error
     end
   end
 

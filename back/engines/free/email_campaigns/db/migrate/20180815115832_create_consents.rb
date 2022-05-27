@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateConsents < ActiveRecord::Migration[5.1]
   def change
     create_table :email_campaigns_consents, id: :uuid do |t|

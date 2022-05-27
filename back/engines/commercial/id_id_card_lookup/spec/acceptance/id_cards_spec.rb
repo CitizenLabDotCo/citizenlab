@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -28,16 +30,17 @@ resource 'Verification Id Cards', admin_api: true do
 
     let(:card_ids) do
       %w[
-      aaa1
-      bbb2
-      ccc3
-      ddd4
-      eee5
-      fff6
-      ggg7
-      hhh8
-      iii9
-    ] end
+        aaa1
+        bbb2
+        ccc3
+        ddd4
+        eee5
+        fff6
+        ggg7
+        hhh8
+        iii9
+      ]
+    end
 
     let(:file) { "data:text/csv;base64,#{Base64.encode64(card_ids.join("\n"))}" }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddTimestampsToGroupsProjectsAndMemberships < ActiveRecord::Migration[5.1]
   def change
     change_table(:groups_projects) do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   class SideFxInappropriateContentFlagService
     def after_mark_as_deleted(flag, user)

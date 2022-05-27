@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::VotesController < ApplicationController
   before_action :set_vote, only: %i[show destroy]
   before_action :set_votable_type_and_id, only: %i[index create up down]

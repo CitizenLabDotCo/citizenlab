@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::FoldersController < ::ApplicationController
     before_action :set_project_folder, only: %i[show update destroy]

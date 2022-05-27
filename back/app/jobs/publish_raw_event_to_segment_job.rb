@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublishRawEventToSegmentJob < ApplicationJob
   queue_as :default
 

@@ -29,6 +29,7 @@ export interface BarProps {
   fill?: string[];
   opacity?: (string | number)[];
   isAnimationActive?: boolean;
+  categoryGap?: string | number;
 }
 
 interface CategoryProps {

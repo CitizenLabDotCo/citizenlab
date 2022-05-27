@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class ResetUserEmail < ApplicationInteractor
     delegate :user, to: :context

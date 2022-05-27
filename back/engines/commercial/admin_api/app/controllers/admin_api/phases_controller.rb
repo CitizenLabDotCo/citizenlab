@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class PhasesController < AdminApiController
     before_action :set_project

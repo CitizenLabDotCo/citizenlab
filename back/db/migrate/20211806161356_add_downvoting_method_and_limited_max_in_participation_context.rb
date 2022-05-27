@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDownvotingMethodAndLimitedMaxInParticipationContext < ActiveRecord::Migration[6.1]
   def change
     %i[projects phases].each do |tablename|

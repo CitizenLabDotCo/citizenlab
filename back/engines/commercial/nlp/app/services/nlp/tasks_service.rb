@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NLP
   class TasksService
     def initialize(api = nil)

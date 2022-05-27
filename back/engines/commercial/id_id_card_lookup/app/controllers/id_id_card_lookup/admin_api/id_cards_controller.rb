@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdIdCardLookup
   module AdminApi
     class IdCardsController < ::AdminApi::AdminApiController

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::GroupsProjectsController < ApplicationController
   before_action :set_groups_project, only: %i[show destroy]
 

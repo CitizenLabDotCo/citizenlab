@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering::UserDecorator
   extend ActiveSupport::Concern
 

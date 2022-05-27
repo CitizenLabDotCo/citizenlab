@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MovePublicationStatusFromProjectsToAdminPublications < ActiveRecord::Migration[6.0]
   def change
     Project.where.not(publication_status: 'published').includes(:admin_publication).each do |project|

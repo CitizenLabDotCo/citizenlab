@@ -95,7 +95,7 @@ const DeletionDialog = ({ closeDialog }: Props) => {
               {...messages.privacyReasons}
               values={{
                 conditionsLink: (
-                  <Link to="/pages/cookie-policy" target="_blank">
+                  <Link to="/pages/terms-and-conditions" target="_blank">
                     <FormattedMessage {...messages.conditionsLinkText} />
                   </Link>
                 ),

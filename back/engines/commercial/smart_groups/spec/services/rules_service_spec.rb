@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SmartGroups::RulesService do
@@ -31,11 +33,12 @@ describe SmartGroups::RulesService do
 
   let(:rules) do
     [
-    { 'ruleType' => 'custom_field_text', 'customFieldId' => cf1.id, 'predicate' => 'is', 'value' => 'three' },
-    { 'ruleType' => 'custom_field_text', 'customFieldId' => cf2.id, 'predicate' => 'is', 'value' => 'a' },
-    { 'ruleType' => 'custom_field_select', 'customFieldId' => cf3.id, 'predicate' => 'has_value', 'value' => options[1].id },
-    { 'ruleType' => 'role', 'predicate' => 'is_admin' }
-  ] end
+      { 'ruleType' => 'custom_field_text', 'customFieldId' => cf1.id, 'predicate' => 'is', 'value' => 'three' },
+      { 'ruleType' => 'custom_field_text', 'customFieldId' => cf2.id, 'predicate' => 'is', 'value' => 'a' },
+      { 'ruleType' => 'custom_field_select', 'customFieldId' => cf3.id, 'predicate' => 'has_value', 'value' => options[1].id },
+      { 'ruleType' => 'role', 'predicate' => 'is_admin' }
+    ]
+  end
 
   describe 'generate_rules_json_schema' do
     let!(:cf1) { create(:custom_field) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class ResetUserConfirmationCode < ApplicationInteractor
     delegate :user, :first_code, to: :context

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys
   class XlsxService
     def generate_survey_results_xlsx(responses)

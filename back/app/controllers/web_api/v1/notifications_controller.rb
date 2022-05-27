@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::NotificationsController < ApplicationController
   before_action :set_notification, only: %i[show mark_read]
   before_action do

@@ -30,17 +30,24 @@ import { isNilOrError } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 
 const BodyWrapper = styled.div`
   display: flex;
   align-items: flex-start;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 6px;
   margin-left: -4px;
   margin-top: -2px;
+  ${isRtl`
+    margin-left: 6px;
+    margin-right: -4px;
+  `}
 `;
 
 const Body = styled.div`

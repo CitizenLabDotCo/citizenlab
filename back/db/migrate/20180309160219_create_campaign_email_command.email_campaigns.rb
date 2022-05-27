@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from email_campaigns (originally 20180309153637)
 class CreateCampaignEmailCommand < ActiveRecord::Migration[5.1]
   def change

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PermissionPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope

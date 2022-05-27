@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddDescriptionPreviewMultilocToProjects < ActiveRecord::Migration[5.1]
   def change
     add_column :projects, :description_preview_multiloc, :jsonb, default: {}

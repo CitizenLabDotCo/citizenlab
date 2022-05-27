@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :user_with_confirmation, parent: :user do
     invite_status { nil }

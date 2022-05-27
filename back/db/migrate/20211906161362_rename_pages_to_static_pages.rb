@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenamePagesToStaticPages < ActiveRecord::Migration[6.1]
   def change
     rename_table :pages, :static_pages

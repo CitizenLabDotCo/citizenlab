@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NavBarItemPolicy < ApplicationPolicy
   FEATURES_CODES = { 'initiatives' => 'proposals' }.freeze
 

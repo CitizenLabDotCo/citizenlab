@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Frontend
   module WebApi
     module V1

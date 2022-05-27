@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :poll_option, class: 'Polls::Option' do
     question { create(:poll_question) }

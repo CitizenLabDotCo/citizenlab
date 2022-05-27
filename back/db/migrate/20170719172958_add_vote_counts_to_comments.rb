@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddVoteCountsToComments < ActiveRecord::Migration[5.1]
   def change
     add_column :comments, :upvotes_count, :integer, null: false, default: 0

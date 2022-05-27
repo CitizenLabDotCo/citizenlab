@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameNotificationsUser < ActiveRecord::Migration[5.1]
   def change
     remove_column :notifications, :user_id

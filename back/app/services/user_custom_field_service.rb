@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserCustomFieldService
   def delete_custom_field_values(field)
     User

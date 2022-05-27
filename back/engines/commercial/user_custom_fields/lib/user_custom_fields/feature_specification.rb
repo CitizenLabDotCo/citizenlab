@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserCustomFields
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification

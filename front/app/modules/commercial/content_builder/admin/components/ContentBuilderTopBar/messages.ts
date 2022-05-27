@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.viewPublicProject',
     defaultMessage: 'View project',
   },
+  mobilePreview: {
+    id: 'app.containers.AdminPage.ProjectDescription.mobilePreview',
+    defaultMessage: 'Mobile preview',
+  },
 });

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NLP
   class SimilarityService
     def similarity(tenant_id, idea, locale: nil, idea_ids: nil, min_score: nil, max_ideas: nil)

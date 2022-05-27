@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 PublicApi::Engine.routes.draw do
   namespace :v1 do
     post 'authenticate' => 'api_token#create'

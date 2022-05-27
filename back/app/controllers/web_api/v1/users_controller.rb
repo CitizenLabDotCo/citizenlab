@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::UsersController < ::ApplicationController
   before_action :set_user, only: %i[show update destroy ideas_count initiatives_count comments_count]
   skip_before_action :authenticate_user, only: %i[create show by_slug by_invite ideas_count initiatives_count comments_count]
@@ -19,27 +21,27 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if params[:search].blank?
       @users = case params[:sort]
-        when 'created_at'
-          @users.order(created_at: :asc)
-        when '-created_at'
-          @users.order(created_at: :desc)
-        when 'last_name'
-          @users.order(last_name: :asc)
-        when '-last_name'
-          @users.order(last_name: :desc)
-        when 'email'
-          @users.order(email: :asc) if view_private_attributes?
-        when '-email'
-          @users.order(email: :desc) if view_private_attributes?
-        when 'role'
-          @users.order_role(:asc)
-        when '-role'
-          @users.order_role(:desc)
-        when nil
-          @users
-        else
+      when 'created_at'
+        @users.order(created_at: :asc)
+      when '-created_at'
+        @users.order(created_at: :desc)
+      when 'last_name'
+        @users.order(last_name: :asc)
+      when '-last_name'
+        @users.order(last_name: :desc)
+      when 'email'
+        @users.order(email: :asc) if view_private_attributes?
+      when '-email'
+        @users.order(email: :desc) if view_private_attributes?
+      when 'role'
+        @users.order_role(:asc)
+      when '-role'
+        @users.order_role(:desc)
+      when nil
+        @users
+      else
           raise 'Unsupported sort method'
-        end
+      end
     end
 
     @users = paginate @users

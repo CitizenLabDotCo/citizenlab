@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateLayers < ActiveRecord::Migration[6.0]
   def change
     create_table :maps_layers, id: :uuid do |t|

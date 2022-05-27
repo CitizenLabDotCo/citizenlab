@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::SpamReportsController < ApplicationController
   before_action :set_spam_report, only: %i[show update destroy]
   before_action :set_spam_reportable_type_and_id, only: %i[index create]

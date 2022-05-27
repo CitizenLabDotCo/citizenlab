@@ -49,6 +49,9 @@ const Title = styled.h2<{ hasPublications: boolean }>`
       hasPublications ? '36' : '20'}px;
     margin-left: 4px;
   `}
+  ${isRtl`
+    direction: rtl;
+  `}
 `;
 
 const Container = styled.div`

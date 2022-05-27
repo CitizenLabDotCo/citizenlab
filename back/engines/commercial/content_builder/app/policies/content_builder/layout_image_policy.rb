@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   class LayoutImagePolicy < ApplicationPolicy
     def create?

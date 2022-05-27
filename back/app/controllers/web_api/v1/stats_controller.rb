@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::StatsController < ApplicationController
   before_action :do_authorize, :parse_time_boundaries
   skip_before_action :authenticate_user

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MachineTranslations
   module WebApi
     module V1

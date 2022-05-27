@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   module CustomFieldRule
     extend ActiveSupport::Concern

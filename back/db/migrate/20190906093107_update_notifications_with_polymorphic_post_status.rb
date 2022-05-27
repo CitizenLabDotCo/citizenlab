@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateNotificationsWithPolymorphicPostStatus < ActiveRecord::Migration[5.2]
   def change
     rename_column :notifications, :idea_status_id, :post_status_id

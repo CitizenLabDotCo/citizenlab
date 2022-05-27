@@ -91,9 +91,9 @@ class SanitizationService
   end
 
   def remove_hidden_spaces(html)
-    html&.gsub!('&nbsp;', ' ')
-    html&.gsub!('&#65279;', '')
-    html
+    return unless html
+
+    html.gsub('&nbsp;', ' ').gsub('&#65279;', '')
   end
 
   class IframeScrubber < Rails::Html::PermitScrubber

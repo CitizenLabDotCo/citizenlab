@@ -4,6 +4,55 @@
 
 - [CL-729] Do not show proposals navbar item if corresponding feature is disabled
 
+## 2022-05-26_2
+
+### Fixed
+
+- [CL-758] Fix custom field option ordering for dashboard charts
+
+## 2022-05-26
+
+### Fixed
+
+- [CL-788] Fixed issue with different URL when sharing idea from map vs list view
+
+## 2022-05-20
+
+### Fixed
+
+- [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
+
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
+## 17-05-22
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
+
+## 2022-05-16
+
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
+
 ## 2022-05-13
 
 ### Added

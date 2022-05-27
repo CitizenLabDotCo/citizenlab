@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Texting::PhoneNumber
   MIN_LENGTH = 7 # pretty random
   MAX_LENGTH = 15 # https://en.wikipedia.org/wiki/E.164

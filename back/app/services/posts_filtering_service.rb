@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PostsFilteringService
   def apply_common_initiative_index_filters(initiatives, params, search_last_names = true)
     initiatives = apply_common_post_index_filters(initiatives, params, search_last_names)

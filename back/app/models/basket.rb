@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: baskets
@@ -31,7 +33,7 @@ class Basket < ApplicationRecord
   scope :submitted, -> { where.not(submitted_at: nil) }
 
   def total_budget
-    ideas.pluck(:budget).compact.inject(0) { |sum, x| sum + x }
+    ideas.pluck(:budget).compact.sum
   end
 
   def budget_exceeds_limit?

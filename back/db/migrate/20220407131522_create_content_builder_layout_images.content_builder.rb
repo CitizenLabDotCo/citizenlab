@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from content_builder (originally 20220407131141)
 class CreateContentBuilderLayoutImages < ActiveRecord::Migration[6.1]
   def change

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePendingTasks < ActiveRecord::Migration[6.0]
   def change
     create_table :tagging_pending_tasks, id: :uuid do |t|

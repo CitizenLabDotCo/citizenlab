@@ -104,8 +104,8 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
         onAdd={handleOnAdd}
         onRemove={handleOnRemove}
       />
-      <Box mb="12px" />
-      {imageFiles.length > 0 && (
+      <Box mb="12px" display={imageFiles.length > 0 ? 'block' : 'none'} />
+      <Box mt="16px">
         <Input
           type="text"
           id="imageAltTextInput"
@@ -121,7 +121,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
             </span>
           }
         />
-      )}
+      </Box>
     </Box>
   );
 });

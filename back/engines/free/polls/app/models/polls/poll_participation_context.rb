@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls::PollParticipationContext
   extend ActiveSupport::Concern
 

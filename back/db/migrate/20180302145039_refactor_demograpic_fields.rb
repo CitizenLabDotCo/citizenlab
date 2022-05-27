@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RefactorDemograpicFields < ActiveRecord::Migration[5.1]
   def stringify_values(obj)
     obj.transform_values do |v|

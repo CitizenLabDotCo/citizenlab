@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::CustomFieldOptionsController < ApplicationController
   before_action :set_option, only: %i[show update reorder destroy]
   before_action :set_custom_field, only: %i[index create]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :debug do
   desc 'Running a test job'
   task active_job: :environment do

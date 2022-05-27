@@ -5,7 +5,6 @@ import { Button, useBreakpoint, Box } from '@citizenlab/cl2-component-library';
 
 // hooks
 import useProject from 'hooks/useProject';
-import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 // utils
@@ -24,7 +23,6 @@ interface Props {
 const GoBackButton = memo(
   ({ projectId, className, insideModal, deselectIdeaOnMap }: Props) => {
     const project = useProject({ projectId });
-    const locale = useLocale();
     const localize = useLocalize();
     const isSmallTablet = useBreakpoint('smallTablet');
 
@@ -52,12 +50,11 @@ const GoBackButton = memo(
       clHistory.push('/');
     };
 
-    if (!isNilOrError(project) && !isNilOrError(locale)) {
+    if (!isNilOrError(project)) {
       return (
         <Button
           className={className}
           id="e2e-idea-other-link"
-          locale={locale}
           icon="circle-arrow-left"
           onClick={onGoBack}
           buttonStyle="text"

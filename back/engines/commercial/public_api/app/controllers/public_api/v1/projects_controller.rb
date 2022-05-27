@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicApi
   class V1::ProjectsController < PublicApiController
     before_action :set_project, only: [:show]

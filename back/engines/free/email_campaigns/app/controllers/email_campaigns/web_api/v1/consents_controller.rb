@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::ConsentsController < EmailCampaignsController
     before_action :set_consent, only: :update

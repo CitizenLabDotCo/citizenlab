@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDeliveries < ActiveRecord::Migration[5.1]
   def change
     create_table :email_campaigns_deliveries, id: :uuid do |t|

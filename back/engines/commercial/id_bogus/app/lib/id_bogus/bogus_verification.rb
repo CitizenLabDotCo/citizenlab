@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdBogus
   # Fake method for testing purposes only
   class BogusVerification

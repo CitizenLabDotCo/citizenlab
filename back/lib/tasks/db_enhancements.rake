@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ####### Important information ####################
 # This file is used to setup a shared extensions #
 # within a dedicated schema. This gives us the   #

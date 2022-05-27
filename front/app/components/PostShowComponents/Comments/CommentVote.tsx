@@ -36,7 +36,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, isRtl } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // a11y
@@ -111,6 +111,10 @@ const UpvoteButton = styled.button`
 
 const UpvoteCount = styled.div`
   margin-left: 6px;
+  ${isRtl`
+    margin-right: 6px;
+    margin-left: auto;
+  `}
 `;
 
 interface InputProps {

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::ProjectFolderType < GraphQL::Schema::Object
     description 'A city defined scope to constrain the citizen input received'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InitiativeStatusChangeSerializer < WebApi::V1::BaseSerializer
   attribute :created_at, :updated_at
 

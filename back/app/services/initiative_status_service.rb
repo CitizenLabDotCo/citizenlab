@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeStatusService
   MANUAL_TRANSITIONS = {
     'proposed' => {
@@ -90,9 +92,9 @@ class InitiativeStatusService
     return [] unless initiative.initiative_status_id
 
     codes = MANUAL_TRANSITIONS[initiative.initiative_status.code]
-    InitiativeStatus.where(code: codes.keys).pluck(:code, :id).map do |code, id|
+    InitiativeStatus.where(code: codes.keys).pluck(:code, :id).to_h do |code, id|
       [id, codes[code]]
-    end.to_h
+    end
   end
 
   def transition_type(initiative_status)

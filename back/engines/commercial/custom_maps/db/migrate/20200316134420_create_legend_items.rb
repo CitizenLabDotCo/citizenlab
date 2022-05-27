@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateLegendItems < ActiveRecord::Migration[6.0]
   def change
     create_table :maps_legend_items, id: :uuid do |t|

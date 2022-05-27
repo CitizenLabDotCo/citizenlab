@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def create_for_current_locales
   translations = {}
   AppConfiguration.instance.settings.dig('core', 'locales').each { |locale| translations[locale] = yield }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativesFinder < ApplicationFinder
   default_sort 'new'
 

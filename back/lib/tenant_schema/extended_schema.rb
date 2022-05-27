@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TenantSchema
   class ExtendedSchema < JSON::Schema::Draft4
     # Using this in your schema will force loading the schema extension.
