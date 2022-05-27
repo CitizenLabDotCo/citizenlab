@@ -21,12 +21,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.title.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.title.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: true,
         enabled: true,
@@ -43,12 +43,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.body.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.body.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: true,
         enabled: true,
@@ -65,12 +65,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.author_id.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.author_id.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: false,
         enabled: true,
@@ -87,12 +87,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-                                ml_s.i18n_to_multiloc(
-                                  'custom_fields.ideas.budget.description',
-                                  locales: CL2_SUPPORTED_LOCALES
-                                )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.budget.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-                                {}
+          {}
         end,
         required: false,
         enabled: true,
@@ -109,12 +109,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-                                ml_s.i18n_to_multiloc(
-                                  'custom_fields.ideas.proposed_budget.description',
-                                  locales: CL2_SUPPORTED_LOCALES
-                                )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.proposed_budget.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-                                {}
+          {}
         end,
         required: false,
         enabled: false,
@@ -131,12 +131,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.topic_ids.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.topic_ids.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: false,
         enabled: true,
@@ -153,12 +153,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.location.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: false,
         enabled: true,
@@ -175,12 +175,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.location.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.location.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: false,
         hidden: true,
@@ -198,12 +198,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.images.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.images.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: false,
         enabled: true,
@@ -220,12 +220,12 @@ class IdeaCustomFieldsService
           locales: CL2_SUPPORTED_LOCALES
         ),
         description_multiloc: begin
-            ml_s.i18n_to_multiloc(
-              'custom_fields.ideas.attachments.description',
-              locales: CL2_SUPPORTED_LOCALES
-            )
+          ml_s.i18n_to_multiloc(
+            'custom_fields.ideas.attachments.description',
+            locales: CL2_SUPPORTED_LOCALES
+          )
         rescue StandardError
-            {}
+          {}
         end,
         required: false,
         enabled: true,

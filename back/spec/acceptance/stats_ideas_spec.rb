@@ -240,7 +240,7 @@ resource 'Stats - Ideas' do
       before do
         @project = create(:project)
         travel_to start_at + 2.months do
-        create(:idea, project: @project, idea_status: @proposed)
+          create(:idea, project: @project, idea_status: @proposed)
         end
       end
 

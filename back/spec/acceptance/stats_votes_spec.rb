@@ -103,16 +103,16 @@ resource 'Stats - Votes' do
 
     get 'web_api/v1/stats/votes_by_domicile' do
       before do
-       @eversem = create(:area, title_multiloc: { 'en' => 'Eversem' }).id
-       @wolvertem = create(:area, title_multiloc: { 'en' => 'Wolvertem' }).id
-       @ideas = create_list(:idea, 3, idea_status: @idea_status)
-       @someone = create(:user, domicile: @eversem)
-       create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
-       create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-       [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
-         create(:vote, mode: mode, votable: @ideas.sample,
-           user: (domicile ? create(:user, domicile: domicile) : create(:user)))
-       end
+        @eversem = create(:area, title_multiloc: { 'en' => 'Eversem' }).id
+        @wolvertem = create(:area, title_multiloc: { 'en' => 'Wolvertem' }).id
+        @ideas = create_list(:idea, 3, idea_status: @idea_status)
+        @someone = create(:user, domicile: @eversem)
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
+          create(:vote, mode: mode, votable: @ideas.sample,
+            user: (domicile ? create(:user, domicile: domicile) : create(:user)))
+        end
       end
 
       time_boundary_parameters self

@@ -230,9 +230,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .count
     data = %w[up down].index_with do |mode|
       serie.keys.select do |key_mode, _|
-          key_mode == mode
+        key_mode == mode
       end.to_h do |_, value|
-          [(value || '_blank'), serie[[mode, value]]]
+        [(value || '_blank'), serie[[mode, value]]]
       end
     end
     data['total'] = (data['up'].keys + data['down'].keys).uniq.index_with do |key|
@@ -280,8 +280,8 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
     data.transform_values do |buckets|
       buckets.to_h do |value, number|
-          denominator = (normalizing_data.dig('total', value) || 0) + 1
-          [value, number.to_f * 100 / denominator.to_f]
+        denominator = (normalizing_data.dig('total', value) || 0) + 1
+        [value, number.to_f * 100 / denominator.to_f]
       end
     end
   end

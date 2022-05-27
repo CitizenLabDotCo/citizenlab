@@ -40,7 +40,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       when nil
         @users
       else
-          raise 'Unsupported sort method'
+        raise 'Unsupported sort method'
       end
     end
 
@@ -89,9 +89,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def by_invite
-   @user = Invite.find_by!(token: params[:token])&.invitee
-   authorize @user
-   show
+    @user = Invite.find_by!(token: params[:token])&.invitee
+    authorize @user
+    show
   end
 
   def create

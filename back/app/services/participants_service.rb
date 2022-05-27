@@ -154,7 +154,7 @@ class ParticipantsService
     activities_scope
       .select("(CASE
         #{ENGAGING_ACTIVITIES.map do |activity|
-          "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
+            "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
           end.join(' ')
         }
       ELSE 0 END) as score")
