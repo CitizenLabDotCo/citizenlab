@@ -127,8 +127,9 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     it 'does not include the details category when there are no fields inside' do
+      codes = %w[proposed_budget budget topic_ids location_description]
       continuous.each do |f|
-        if %w[proposed_budget budget topic_ids location_description].include?(f.code)
+        if codes.include?(f.code)
           f.update(enabled: false)
         end
       end
@@ -138,8 +139,9 @@ describe 'JsonFormsService ideas overrides' do
     end
 
     it 'does not include the images and attachments category when there are no fields inside' do
+      codes = %w[idea_images_attributes idea_files_attributes]
       continuous.each do |f|
-        if %w[idea_images_attributes idea_files_attributes].include?(f.code)
+        if codes.include?(f.code)
           f.update(enabled: false)
         end
       end

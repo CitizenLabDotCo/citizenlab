@@ -162,18 +162,6 @@ Naming/PredicateName:
     - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/user_digest.rb'
     - 'engines/free/onboarding/app/services/onboarding/onboarding_service.rb'
 
-# Offense count: 9
-# Configuration parameters: MinSize.
-Performance/CollectionLiteralInLoop:
-  Exclude:
-    - 'app/controllers/web_api/v1/ideas_controller.rb'
-    - 'app/controllers/web_api/v1/initiatives_controller.rb'
-    - 'app/services/anonymize_user_service.rb'
-    - 'engines/commercial/admin_api/spec/services/project_copy_service_spec.rb'
-    - 'engines/free/surveys/lib/surveys/typeform/api.rb'
-    - 'lib/tasks/tenant_template_csv_to_yml.rake'
-    - 'spec/services/json_forms_ideas_override_spec.rb'
-
 # Offense count: 10
 Performance/MethodObjectAsBlock:
   Exclude:

@@ -96,15 +96,14 @@ namespace :tenant_template do
   def convert_ideas(csv_ideas, locales,
                     ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash,
                     yml_votes, yml_ideas_topics, yml_idea_images)
+    statuses = %w[proposed under_consideration accepted implemented rejected]
     csv_ideas.map do |csv_idea|
       yml_idea = {
         'title_multiloc' => make_multiloc(csv_idea['Title'], locales),
         'body_multiloc' => make_multiloc(md_to_html(csv_idea['Body']), locales),
         'author_ref'         => users_hash[csv_idea['Author ID']],
         'project_ref'        => projects_hash[csv_idea['Project ID']],
-        'idea_status_ref'    => idea_statuses_hash[%w[proposed under_consideration
-                                                      accepted implemented
-                                                      rejected].sample],
+        'idea_status_ref'    => idea_statuses_hash[statuses.sample],
         'publication_status' => 'published'
       }
       generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
