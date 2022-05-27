@@ -47,7 +47,6 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       ...moduleConfiguration.routes['admin.project_templates'],
-      ...moduleConfiguration.routes['admin.projects'],
       {
         path: ':projectId',
         element: (
@@ -185,6 +184,7 @@ const createAdminProjectsRoutes = () => {
               </LoadingComponent>
             ),
           },
+          ...moduleConfiguration.routes['admin.projects.project'],
         ],
       },
     ],

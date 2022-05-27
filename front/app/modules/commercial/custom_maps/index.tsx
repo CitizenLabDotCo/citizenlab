@@ -44,9 +44,9 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/map',
+        path: 'map',
         element: <CustomMapConfigComponent />,
       },
     ],
