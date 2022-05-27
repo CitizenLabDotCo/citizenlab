@@ -12,6 +12,7 @@ import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { NilOrError } from 'utils/helperUtils';
 
 export interface RepresentativenessRow {
   name: string;
@@ -31,7 +32,10 @@ const getStream = (code: TCustomFieldCode | null) => {
 };
 
 function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
-  const [referenceData, setReferenceData] = useState();
+  const [referenceData, setReferenceData] = useState<
+    RepresentativenessData | NilOrError
+  >();
+  const [includedUsers, setIncludedUsers] = useState<number | NilOrError>();
   const code = field.attributes.code;
 
   useEffect(() => {
@@ -40,7 +44,13 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
       setReferenceData(null);
       return;
     }
+
+    // TODO get data from stream
+    // TODO transform data, calc percentages etc
+    // TODO also get included data percentage
   }, [code]);
+
+  return { referenceData, includedUsers };
 }
 
 export default useReferenceData;
