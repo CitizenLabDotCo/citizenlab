@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-790] Events date picker now has the correct date format for US-based tenants
+
 ### Added
 
 - [CL-729] Do not show proposals navbar item if corresponding feature is disabled
