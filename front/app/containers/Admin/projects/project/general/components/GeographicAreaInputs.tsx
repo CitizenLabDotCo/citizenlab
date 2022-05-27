@@ -36,7 +36,7 @@ const GeographicAreaInputs = ({
     onProjectAttributesDiffChange({ area_ids: selectedAreaIds });
   };
 
-  const onAreaTypeChange = (areaType: TProjectAreaType) => {
+  const handleAreaTypeOnChange = (areaType: TProjectAreaType) => {
     setAreaType(areaType);
     onProjectAttributesDiffChange({
       area_ids: areaType === 'all' ? [] : areaIds,
@@ -66,13 +66,24 @@ const GeographicAreaInputs = ({
       value: area.id,
       label: localize(area.attributes.title_multiloc),
     }));
+
     const projectAreaIds = [
+      // areaIds coming from the parent form. These are the ones coming from
+      // changes (via the handle functions above) saved in the form projectAttributesDiff.
+      // This will always be undefined on initial load.
       ...(areaIds ||
+        // If there aren't any yet, we check if we already have areaIds saved
+        // to the project.
+        // After you select/remove areas, projectAttributesDiff will include
+        // these and they will already be in areaIds above.
         (!isNilOrError(project)
           ? project.relationships.areas.data.map((area) => area.id)
           : [])),
     ];
-    const selectedAreaValues = mapProjectAreaIdsToAreaOptions(projectAreaIds, areas);
+    const selectedAreaValues = mapProjectAreaIdsToAreaOptions(
+      projectAreaIds,
+      areas
+    );
 
     return (
       <StyledSectionField>
@@ -96,7 +107,7 @@ const GeographicAreaInputs = ({
           />
         </SubSectionTitle>
         <Radio
-          onChange={onAreaTypeChange}
+          onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="all"
           name="areas"
@@ -104,7 +115,7 @@ const GeographicAreaInputs = ({
           label={<FormattedMessage {...messages.areasAllLabel} />}
         />
         <Radio
-          onChange={onAreaTypeChange}
+          onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="selection"
           name="areas"
@@ -119,7 +130,6 @@ const GeographicAreaInputs = ({
             options={areaOptions}
             value={selectedAreaValues}
             onChange={handleAreaSelectionChange}
-            placeholder=""
             disabled={areaType !== 'selection'}
           />
         )}
