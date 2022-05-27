@@ -116,7 +116,7 @@ const PreferencesButton = styled(Button)`
     margin-left: 0px;
 
     ${media.smallerThanMinTablet`
-        margin-left: 0px;
+        margin-right: 0px;
     `}
   `}
 `;
