@@ -53,6 +53,13 @@ describe XlsxService do
       expect(options_col).to include(custom_options[0].title_multiloc['en'])
     end
 
+    it 'includes hidden custom fields' do
+      create :custom_field, title_multiloc: { 'en' => 'Hidden field' }
+      headers = worksheet[0].cells.map(&:value)
+      field_idx = headers.find_index 'Hidden field'
+      expect(field_idx).to be_present
+    end
+
     describe do
       let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: false) }
 

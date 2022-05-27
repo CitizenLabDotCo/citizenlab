@@ -141,6 +141,13 @@ describe XlsxService do
           ]
         ).to eq ['', '', 'Fruit fly', 'Option 1']
       end
+
+      it 'includes hidden custom fields' do
+        hidden_field = create(:custom_field, :for_custom_form, resource: @form, title_multiloc: { 'en' => 'Hidden field' })
+        headers = worksheet[0].cells.map(&:value)
+        field_idx = headers.find_index 'Hidden field'
+        expect(field_idx).to be_present
+      end
     end
   end
 end
