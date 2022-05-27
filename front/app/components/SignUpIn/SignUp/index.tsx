@@ -370,11 +370,6 @@ const SignUp = ({
             )}
           </>
         )}
-        <h1>hello</h1>
-        <h1>hello</h1>
-        <h1>hello</h1>
-        <h1>hello</h1>
-        <h1>hello</h1>
       </StyledModalContentContainer>
     </Container>
   );
