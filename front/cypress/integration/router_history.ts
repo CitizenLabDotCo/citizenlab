@@ -64,7 +64,7 @@ describe('router history', () => {
       });
   });
 
-  it('works with nested routes (idea form)', () => {
+  it.skip('works with nested routes (idea form)', () => {
     // Go to new idea form
     cy.get('#project-ideabutton').click();
     cy.location('pathname').should(
