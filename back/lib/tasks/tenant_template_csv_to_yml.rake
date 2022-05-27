@@ -100,8 +100,8 @@ namespace :tenant_template do
                    'author_ref'         => users_hash[csv_idea['Author ID']],
                    'project_ref'        => projects_hash[csv_idea['Project ID']],
                    'idea_status_ref'    => idea_statuses_hash[%w[proposed under_consideration
-                                                                accepted implemented
-                                                                rejected].sample],
+                                                                 accepted implemented
+                                                                 rejected].sample],
                    'publication_status' => 'published'
                  }
       generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)

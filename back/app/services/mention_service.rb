@@ -25,9 +25,9 @@ class MentionService
     mention = user_to_mention(user)
     name_service = UserDisplayNameService.new(AppConfiguration.instance)
     text.gsub(
-        /#{mention}/i,
+      /#{mention}/i,
         "<span class=\"cl-mention-user\" data-user-id=\"#{user.id}\" data-user-slug=\"#{user.slug}\">@#{name_service.display_name(user)}</span>"
-      )
+    )
   end
 
   # Replaces plain mentions ('@mention') by mention tags ('<span ...>@mention</span>') in 'text'.

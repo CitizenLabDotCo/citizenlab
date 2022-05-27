@@ -368,9 +368,12 @@ resource 'Users' do
           example 'with correct pagination', document: false do
             page_size = 5
             project = create(:project)
-            group = create(:smart_group, rules: [
-              { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
-            ])
+            group = create(
+              :smart_group,
+              rules: [
+                { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
+              ]
+            )
             Array.new(page_size + 1) do |_i|
               create(:idea, project: project, author: create(:user))
             end
@@ -591,13 +594,13 @@ resource 'Users' do
         before do
           if CitizenLab.ee?
             old_timers = create(:smart_group, rules: [
-              {
-                ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal',
-                value: 1988
-              }
-            ])
+                                  {
+                                    ruleType: 'custom_field_number',
+                                    customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
+                                    predicate: 'is_smaller_than_or_equal',
+                                    value: 1988
+                                  }
+                                ])
 
             project.permissions.find_by(action: 'posting_idea')
                    .update!(permitted_by: 'groups', groups: [old_timers])

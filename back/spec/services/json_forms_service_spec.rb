@@ -76,18 +76,18 @@ describe JsonFormsService do
             {
              type: 'string',
              oneOf: [
-              {
-                const: 'option_1',
-                title: 'youth council'
-              },
-              {
-                const: 'option_2',
-                title: 'youth council'
-              },
-              {
-                const: 'option_3',
-                title: 'youth council'
-              }
+               {
+                 const: 'option_1',
+                 title: 'youth council'
+               },
+               {
+                 const: 'option_2',
+                 title: 'youth council'
+               },
+               {
+                 const: 'option_3',
+                 title: 'youth council'
+               }
              ]
             },
            'field4' =>
@@ -105,7 +105,7 @@ describe JsonFormsService do
                   const: 'option_b',
                   title: 'youth council'
                 }
-               ]
+              ]
              }
               },
            'field5' =>
@@ -129,7 +129,7 @@ describe JsonFormsService do
                   const: 'option_b',
                   title: 'youth council'
                 }
-               ]
+              ]
              }
             },
             'field9' =>
@@ -172,58 +172,58 @@ describe JsonFormsService do
       expect(ui_schema[:type]).to be_present
       expect(ui_schema[:options]).to be_present
       expect(ui_schema[:elements]).to match([
-        {
-          type: 'Control',
-          scope: '#/properties/field1',
-          label: 'Did you attend',
-          options: {
-            description: 'Which councils are you attending in our city?',
-            transform: 'trim_on_blur'
-          }
-        },
-        {
-          type: 'Control',
-          scope: '#/properties/field2',
-          label: 'Did you attend',
-          options: {
-            description: 'Which councils are you attending in our city?',
-            textarea: true,
-            transform: 'trim_on_blur'
-          }
-        },
-        {
-          type: 'Control',
-          label: 'Did you attend',
-          options: {
-            description: 'Which councils are you attending in our city?'
-          },
-          scope: '#/properties/field3'
-        },
-        {
-          type: 'Control',
-          label: 'Did you attend',
-          options: {
-            description: 'Which councils are you attending in our city?'
-          },
-          scope: '#/properties/field4'
-        },
-        {
-          type: 'Control',
-          label: 'Did you attend',
-          options: {
-            description: 'Which councils are you attending in our city?'
-          },
-          scope: '#/properties/field5'
-        },
-        {
-          type: 'Control',
-          label: 'Did you attend',
-          options: {
-            description: 'Which councils are you attending in our city?'
-          },
-          scope: '#/properties/field6'
-        }
-      ])
+                                              {
+                                                type: 'Control',
+                                                scope: '#/properties/field1',
+                                                label: 'Did you attend',
+                                                options: {
+                                                  description: 'Which councils are you attending in our city?',
+                                                  transform: 'trim_on_blur'
+                                                }
+                                              },
+                                              {
+                                                type: 'Control',
+                                                scope: '#/properties/field2',
+                                                label: 'Did you attend',
+                                                options: {
+                                                  description: 'Which councils are you attending in our city?',
+                                                  textarea: true,
+                                                  transform: 'trim_on_blur'
+                                                }
+                                              },
+                                              {
+                                                type: 'Control',
+                                                label: 'Did you attend',
+                                                options: {
+                                                  description: 'Which councils are you attending in our city?'
+                                                },
+                                                scope: '#/properties/field3'
+                                              },
+                                              {
+                                                type: 'Control',
+                                                label: 'Did you attend',
+                                                options: {
+                                                  description: 'Which councils are you attending in our city?'
+                                                },
+                                                scope: '#/properties/field4'
+                                              },
+                                              {
+                                                type: 'Control',
+                                                label: 'Did you attend',
+                                                options: {
+                                                  description: 'Which councils are you attending in our city?'
+                                                },
+                                                scope: '#/properties/field5'
+                                              },
+                                              {
+                                                type: 'Control',
+                                                label: 'Did you attend',
+                                                options: {
+                                                  description: 'Which councils are you attending in our city?'
+                                                },
+                                                scope: '#/properties/field6'
+                                              }
+                                            ])
     end
   end
 end

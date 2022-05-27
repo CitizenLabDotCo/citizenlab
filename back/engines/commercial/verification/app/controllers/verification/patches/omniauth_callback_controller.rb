@@ -26,10 +26,11 @@ module Verification
             begin
               handle_verification(auth, @user)
               update_user!(auth, @user, verification_method)
-              redirect_to(add_uri_params(
+              url = add_uri_params(
                 Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
                 omniauth_params.merge(verification_success: true).except('pathname')
-              ))
+              )
+              redirect_to url
             rescue VerificationService::VerificationTakenError
               fail_verification('taken')
             rescue VerificationService::NotEntitledError
@@ -43,10 +44,11 @@ module Verification
 
       def fail_verification(error)
         omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
-        redirect_to(add_uri_params(
+        url = add_uri_params(
           Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
           omniauth_params.merge(verification_error: true, error: error)
-        ))
+        )
+        redirect_to url
       end
 
       def verification_service

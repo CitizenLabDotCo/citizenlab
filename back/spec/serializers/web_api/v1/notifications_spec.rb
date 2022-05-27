@@ -38,37 +38,37 @@ describe WebApi::V1::Notifications::NotificationSerializer do
 
     it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :comment_on_your_comment,
-          WebApi::V1::Notifications::CommentOnYourCommentSerializer
-        )
+        john, jane, admin, :comment_on_your_comment,
+        WebApi::V1::Notifications::CommentOnYourCommentSerializer
+      )
     end
 
     it 'serializes CommentOnYourInitiative correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :comment_on_your_initiative,
-          WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
-        )
+        john, jane, admin, :comment_on_your_initiative,
+         WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
+      )
     end
 
     it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :comment_on_your_idea,
-          WebApi::V1::Notifications::CommentOnYourIdeaSerializer
-        )
+        john, jane, admin, :comment_on_your_idea,
+        WebApi::V1::Notifications::CommentOnYourIdeaSerializer
+      )
     end
 
     it 'serializes InitiativeAssignedToYouSerializer correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :initiative_assigned_to_you,
-          WebApi::V1::Notifications::InitiativeAssignedToYouSerializer
-        )
+        john, jane, admin, :initiative_assigned_to_you,
+        WebApi::V1::Notifications::InitiativeAssignedToYouSerializer
+      )
     end
 
     it 'serializes MentionInComment correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :mention_in_comment,
-          WebApi::V1::Notifications::MentionInCommentSerializer
-        )
+        john, jane, admin, :mention_in_comment,
+        WebApi::V1::Notifications::MentionInCommentSerializer
+      )
     end
   end
 end

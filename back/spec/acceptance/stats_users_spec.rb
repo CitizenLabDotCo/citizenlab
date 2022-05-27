@@ -523,8 +523,8 @@ resource 'Stats - Users' do
         header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 3
+      end
     end
-  end
   end
 
   get 'web_api/v1/stats/active_users_by_time' do

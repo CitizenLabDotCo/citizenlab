@@ -259,8 +259,8 @@ class InvitesService
       fail_now
     else
       invites = hash_array.map do |invite_params|
-      build_invite(invite_params, default_params, inviter)
-    end
+        build_invite(invite_params, default_params, inviter)
+      end
 
       invitees = invites.map(&:invitee)
       UserSlugService.new.generate_slugs(invitees)

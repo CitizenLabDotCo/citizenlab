@@ -231,9 +231,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     data = %w[up down].index_with do |mode|
       serie.keys.select do |key_mode, _|
           key_mode == mode
-        end.to_h do |_, value|
+      end.to_h do |_, value|
           [(value || '_blank'), serie[[mode, value]]]
-        end
+      end
     end
     data['total'] = (data['up'].keys + data['down'].keys).uniq.index_with do |key|
       (data.dig('up', key) || 0) + (data.dig('down', key) || 0)
@@ -282,7 +282,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       buckets.to_h do |value, number|
           denominator = (normalizing_data.dig('total', value) || 0) + 1
           [value, number.to_f * 100 / denominator.to_f]
-        end
+      end
     end
   end
 

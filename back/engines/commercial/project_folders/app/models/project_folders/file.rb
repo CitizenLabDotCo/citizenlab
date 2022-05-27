@@ -37,10 +37,10 @@ module ProjectFolders
     def extension_whitelist
       unless EXTENSION_WHITELIST.include? name.split('.').last.downcase
         errors.add(
-            :file,
-            :extension_whitelist_error,
-            message: 'Unsupported file extension'
-          )
+          :file,
+          :extension_whitelist_error,
+          message: 'Unsupported file extension'
+        )
       end
     end
   end

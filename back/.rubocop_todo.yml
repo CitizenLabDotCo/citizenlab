@@ -34,64 +34,6 @@ Gemspec/RequiredRubyVersion:
 Layout/ArgumentAlignment:
   Enabled: false
 
-# Offense count: 6
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: with_first_element, with_fixed_indentation
-Layout/ArrayAlignment:
-  Exclude:
-    - 'config/environments/production.rb'
-    - 'config/environments/staging.rb'
-    - 'lib/tasks/tenant_template_csv_to_yml.rake'
-
-# Offense count: 19
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyleAlignWith.
-# SupportedStylesAlignWith: either, start_of_block, start_of_line
-Layout/BlockAlignment:
-  Exclude:
-    - 'app/controllers/web_api/v1/stats_votes_controller.rb'
-    - 'app/services/invites_service.rb'
-    - 'engines/commercial/flag_inappropriate_content/spec/acceptance/inappropriate_content_flags_spec.rb'
-    - 'engines/commercial/project_management/spec/acceptance/moderators_spec.rb'
-    - 'engines/commercial/user_custom_fields/spec/acceptance/stats_users_spec.rb'
-    - 'engines/commercial/verification/spec/acceptance/locked_attributes_spec.rb'
-    - 'engines/free/user_confirmation/spec/interactors/user_confirmation/confirm_user_spec.rb'
-    - 'spec/acceptance/invites_spec.rb'
-    - 'spec/acceptance/stats_users_spec.rb'
-    - 'spec/policies/project_file_policy_spec.rb'
-    - 'spec/policies/project_image_policy_spec.rb'
-    - 'spec/services/json_forms_ideas_override_spec.rb'
-    - 'spec/support/validation_error_helpers.rb'
-
-# Offense count: 35
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: consistent, consistent_relative_to_receiver, special_for_inner_method_call, special_for_inner_method_call_in_parentheses
-Layout/FirstArgumentIndentation:
-  Enabled: false
-
-# Offense count: 35
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Layout/FirstArrayElementIndentation:
-  Exclude:
-    - 'engines/commercial/idea_assignment/spec/services/idea_assignment/idea_assignment_service_spec.rb'
-    - 'engines/commercial/moderation/spec/acceptance/moderations_spec.rb'
-    - 'engines/commercial/nlp/spec/acceptance/tag_suggestion_spec.rb'
-    - 'engines/commercial/smart_groups/spec/policies/admin_publication_policy_spec.rb'
-    - 'engines/commercial/smart_groups/spec/policies/project_policy_spec.rb'
-    - 'engines/commercial/user_custom_fields/spec/acceptance/user_custom_field_options_spec.rb'
-    - 'engines/commercial/user_custom_fields/spec/acceptance/user_custom_fields_spec.rb'
-    - 'engines/commercial/verification/spec/acceptance/verification_methods_spec.rb'
-    - 'engines/commercial/verification/spec/services/participation_context_service_spec.rb'
-    - 'engines/free/email_campaigns/spec/services/email_campaigns/delivery_service_spec.rb'
-    - 'spec/acceptance/users_spec.rb'
-    - 'spec/services/json_forms_service_spec.rb'
-    - 'spec/services/profanity_service_spec.rb'
-    - 'spec/services/url_validation_service_spec.rb'
-
 # Offense count: 83
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: Width, AllowedPatterns, IgnoredPatterns.

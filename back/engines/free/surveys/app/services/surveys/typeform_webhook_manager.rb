@@ -56,11 +56,11 @@ module Surveys
     # Creates or updates a Typeform webhook
     def save_webhook(form_url, participation_context)
       response = @tf_api.create_or_update_webhook(
-          form_id: embed_url_to_form_id(form_url),
-          tag: participation_context.id,
-          url: webhook_url(participation_context),
-          secret: @secret
-        )
+        form_id: embed_url_to_form_id(form_url),
+        tag: participation_context.id,
+        url: webhook_url(participation_context),
+        secret: @secret
+      )
       unless response.success?
         Rails.logger.error('Failed to save typeform webhook',
             form_url: form_url,
@@ -74,9 +74,9 @@ module Surveys
 
     def delete_webhook(form_url, webhook_id)
       @tf_api.delete_webhook(
-          form_id: embed_url_to_form_id(form_url),
-          tag: webhook_id
-        )
+        form_id: embed_url_to_form_id(form_url),
+        tag: webhook_id
+      )
     end
 
     # Extracts the form_id from the Typeform form url.

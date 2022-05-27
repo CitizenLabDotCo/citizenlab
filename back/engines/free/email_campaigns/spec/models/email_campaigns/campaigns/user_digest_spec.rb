@@ -47,12 +47,12 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
 
       expected_author_name = "#{top_idea.author.first_name} #{top_idea.author.last_name[0]}."
       expect(
-          command.dig(:event_payload, :top_ideas, 0, :author_name)
-        ).to eq(expected_author_name)
+        command.dig(:event_payload, :top_ideas, 0, :author_name)
+      ).to eq(expected_author_name)
 
       expect(
-          command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
-        ).to eq("#{top_comment.author.last_name[0]}.")
+        command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
+      ).to eq("#{top_comment.author.last_name[0]}.")
 
       # @todo No new initiatives and successful initiatives in this digest
     end

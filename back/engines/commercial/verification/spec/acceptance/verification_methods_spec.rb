@@ -30,17 +30,19 @@ resource 'Verification methods' do
     example_request 'Lists all active verification methods' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data]).to eq([
-        { id: '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f', type: 'verification_method', attributes: { name: 'cow' } },
-        { id: '516e134d-e22b-4386-a783-0db4c2708256', type: 'verification_method', attributes: {
-          name: 'id_card_lookup',
-          method_name_multiloc: { en: 'By social security number' },
-          card_id_multiloc: { en: 'Social security number' },
-          card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' },
-          card_id_placeholder: 'xx-xxxxx-xx',
-          explainer_image_url: 'https://some.fake/image.png'
-        } }
-      ])
+      expect(json_response[:data]).to eq(
+        [
+          { id: '7ccd453d-0eaf-412a-94a2-ae703b1b3e3f', type: 'verification_method', attributes: { name: 'cow' } },
+          { id: '516e134d-e22b-4386-a783-0db4c2708256', type: 'verification_method', attributes: {
+            name: 'id_card_lookup',
+            method_name_multiloc: { en: 'By social security number' },
+            card_id_multiloc: { en: 'Social security number' },
+            card_id_tooltip_multiloc: { en: 'You can find this number on you card. We just check, we don\'t store it' },
+            card_id_placeholder: 'xx-xxxxx-xx',
+            explainer_image_url: 'https://some.fake/image.png'
+          } }
+        ]
+      )
     end
   end
 end

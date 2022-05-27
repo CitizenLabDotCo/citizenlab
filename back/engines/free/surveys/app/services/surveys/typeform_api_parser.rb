@@ -49,9 +49,9 @@ module Surveys
 
     def response_to_surveys_response(tf_response, field_id_to_title, form_id)
       Response.new(
-          **parse_root(tf_response, form_id),
-          answers: parse_answers(tf_response['answers'], field_id_to_title)
-        )
+        **parse_root(tf_response, form_id),
+        answers: parse_answers(tf_response['answers'], field_id_to_title)
+      )
     end
 
     def parse_root(tf_response, form_id)

@@ -40,11 +40,11 @@ describe 'JsonFormsService ideas overrides' do
       project_with_phases = create(:project_with_phases)
       project_with_phases.phases[0].update(participation_method: 'budgeting')
       IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_phases))
-     end
+    end
     let(:timeline_ideas_project_fields) do
       project_with_phases = create(:project_with_phases)
       IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_phases))
-     end
+    end
 
     it 'is not included for normal users' do
       schema = service.ui_and_json_multiloc_schemas(AppConfiguration.instance, continuous_pb_project_fields, user)[:json_schema_multiloc][locale]

@@ -27,12 +27,12 @@ describe Surveys::Typeform::Api do
     it 'creates a webhooks' do
       stub_request(:put, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
-           body: "{\"url\":\"#{webhook_url}\",\"enabled\":true,\"secret\":\"wontsay\"}",
-           headers: {
-            'Authorization' => "Bearer #{token}",
-            'Content-Type' => 'application/json'
-           }
-         )
+          body: "{\"url\":\"#{webhook_url}\",\"enabled\":true,\"secret\":\"wontsay\"}",
+          headers: {
+           'Authorization' => "Bearer #{token}",
+           'Content-Type' => 'application/json'
+          }
+        )
         .to_return(
           status: 200,
           body: '{"created_at": "2019-01-17T13:55:57.391777Z", "enabled": true, "form_id": "USLYB6", "id": "01D1E1HMTEYSY2XVDPZTYVT823", "tag": "test-hook", "updated_at": "2019-01-17T13:58:33.45316Z", "url": "http://some.fake.url/hooks/typeform", "verify_ssl": false}',
@@ -58,10 +58,10 @@ describe Surveys::Typeform::Api do
     it 'deletes a webhook' do
       stub_request(:delete, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
-           headers: {
-            'Authorization' => "Bearer #{token}"
-           }
-         )
+          headers: {
+           'Authorization' => "Bearer #{token}"
+          }
+        )
          .to_return(status: 204, body: '', headers: {})
 
       response = api.delete_webhook(form_id: form_id, tag: 'test-hook')

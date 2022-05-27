@@ -83,8 +83,8 @@ resource 'Moderators' do
 
   post 'web_api/v1/projects/:project_id/moderators' do
     with_options scope: :moderator do
-        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
-      end
+      parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+    end
     ValidationErrorHelper.new.error_fields(self, User)
 
     context 'when moderator' do

@@ -110,32 +110,32 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
     describe 'filtered by group' do
-    before do
-      travel_to start_at + 16.days do
-        create_list(:user, 2, birthyear: 1980)
-        create(:user, birthyear: 1976)
-        @group = create(:group)
-        User.all.each { |u| create(:membership, user: u, group: @group) }
-        create(:user, birthyear: 1980)
+      before do
+        travel_to start_at + 16.days do
+          create_list(:user, 2, birthyear: 1980)
+          create(:user, birthyear: 1976)
+          @group = create(:group)
+          User.all.each { |u| create(:membership, user: u, group: @group) }
+          create(:user, birthyear: 1980)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request 'Users by birthyear' do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response).to match({
+          series: {
+            users: {
+              '1980': 2,
+              '1976': 1,
+              _blank: 0
+            }
+          }
+        })
       end
     end
-
-    let(:group) { @group.id }
-
-    example_request 'Users by birthyear' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response).to match({
-        series: {
-          users: {
-            '1980': 2,
-            '1976': 1,
-            _blank: 0
-          }
-        }
-      })
-    end
-  end
 
     describe 'filtered by project' do
       before do
@@ -161,7 +161,7 @@ resource 'Stats - Users' do
         expect(json_response[:series][:users].values.sum).to eq 1
       end
     end
-end
+  end
 
   get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
     time_boundary_parameters self

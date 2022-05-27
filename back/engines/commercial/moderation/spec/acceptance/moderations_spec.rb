@@ -59,9 +59,9 @@ resource 'Moderations' do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].pluck(:id)).to eq [@m2.id, @m3.id]
         expect(JSON.parse(JSON.generate(json_response))['data'].map { |d| d.dig('attributes', 'belongs_to') }).to eq [
-         { 'project' => { 'id' => @project.id, 'slug' => @project.slug, 'title_multiloc' => @project.title_multiloc }, 'idea' => { 'id' => @m3.id, 'slug' => @m3.slug, 'title_multiloc' => { 'en' => 'More bicycle repairmen' } } },
-         { 'project' => { 'id' => @project.id, 'slug' => @project.slug, 'title_multiloc' => @project.title_multiloc } }
-       ]
+          { 'project' => { 'id' => @project.id, 'slug' => @project.slug, 'title_multiloc' => @project.title_multiloc }, 'idea' => { 'id' => @m3.id, 'slug' => @m3.slug, 'title_multiloc' => { 'en' => 'More bicycle repairmen' } } },
+          { 'project' => { 'id' => @project.id, 'slug' => @project.slug, 'title_multiloc' => @project.title_multiloc } }
+        ]
       end
     end
 

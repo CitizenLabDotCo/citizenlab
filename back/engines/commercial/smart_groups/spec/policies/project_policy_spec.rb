@@ -11,9 +11,11 @@ describe ProjectPolicy do
   context "for a user on a private groups project where she's no member of a rules group with access" do
     let!(:user) { create(:user, email: 'not-user@test.com') }
     let!(:group) do
-      create(:smart_group, rules: [
-        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-      ])
+      create(
+        :smart_group,
+        rules: [
+          { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+        ])
     end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
@@ -34,9 +36,11 @@ describe ProjectPolicy do
   context "for a user on a private groups project where she's a member of a rules group with access" do
     let!(:user) { create(:user, email: 'user@test.com') }
     let!(:group) do
-      create(:smart_group, rules: [
-        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-      ])
+      create(
+        :smart_group,
+        rules: [
+          { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+        ])
     end
     let!(:project) { create(:project, visible_to: 'groups', groups: [group]) }
 
