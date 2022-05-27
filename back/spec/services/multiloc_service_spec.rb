@@ -15,10 +15,11 @@ describe MultilocService do
     let(:user) { create(:user, locale: 'en') }
     let(:translations) do
       {
-      'nl-BE' => 'woord',
-      'fr-FR' => 'mot',
-      'en' => 'word'
-    } end
+        'nl-BE' => 'woord',
+        'fr-FR' => 'mot',
+        'en' => 'word'
+      }
+    end
 
     it 'returns nil when the provided translations are nil' do
       expect(service.t(nil)).to be_nil

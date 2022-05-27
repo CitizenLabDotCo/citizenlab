@@ -34,7 +34,9 @@ const InvitationsPage = (props: InjectedIntlProps) => {
         title={messages.helmetTitle}
         description={messages.helmetDescription}
       />
-      <RouterOutlet />
+      <div id="e2e-invitations-container">
+        <RouterOutlet />
+      </div>
     </TabbedResource>
   );
 };

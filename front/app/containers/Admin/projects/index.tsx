@@ -11,7 +11,9 @@ const AdminProjectsAndFolders = () => (
       title={messages.helmetTitle}
       description={messages.helmetDescription}
     />
-    <RouterOutlet />
+    <div id="e2e-projects-admin-container">
+      <RouterOutlet />
+    </div>
   </>
 );
 

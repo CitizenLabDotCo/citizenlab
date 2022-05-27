@@ -293,7 +293,7 @@ module EmailCampaigns
     end
 
     def version_urls(image)
-      image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 end

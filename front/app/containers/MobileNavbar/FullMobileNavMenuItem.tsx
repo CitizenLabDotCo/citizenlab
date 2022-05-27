@@ -50,7 +50,6 @@ const FullMobileNavMenuItem = ({
     <StyledLink
       onClick={onClick}
       to={linkTo}
-      className={({ isActive }) => (isActive ? 'active' : undefined)}
       onlyActiveOnIndex={onlyActiveOnIndex}
     >
       <T value={navigationItemTitle} />

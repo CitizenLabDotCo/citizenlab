@@ -147,7 +147,7 @@ resource 'Stats - Comments' do
             assert_status 200
 
             expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
-            expect(json_response[:series][:comments].values.inject(&:+)).to eq 5
+            expect(json_response[:series][:comments].values.sum).to eq 5
           end
         end
       end
@@ -236,7 +236,7 @@ resource 'Stats - Comments' do
             expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
             amount_col = worksheet.map { |col| col.cells[1].value }
             header, *amounts = amount_col
-            expect(amounts.inject(&:+)).to eq 5
+            expect(amounts.sum).to eq 5
           end
         end
 
@@ -382,7 +382,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by project' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
+          expect(json_response[:series][:comments].values.sum).to eq 2
         end
       end
 
@@ -402,7 +402,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
+          expect(json_response[:series][:comments].values.sum).to eq 2
         end
       end
     end
@@ -483,7 +483,7 @@ resource 'Stats - Comments' do
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 2
+          expect(amounts.sum).to eq 2
         end
       end
 
@@ -508,7 +508,7 @@ resource 'Stats - Comments' do
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 2
+          expect(amounts.sum).to eq 2
         end
       end
     end
@@ -570,7 +570,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
+          expect(json_response[:series][:comments].values.sum).to eq 1
         end
       end
 
@@ -591,7 +591,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
+          expect(json_response[:series][:comments].values.sum).to eq 1
         end
       end
     end
@@ -667,7 +667,7 @@ resource 'Stats - Comments' do
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 1
+          expect(amounts.sum).to eq 1
         end
       end
 
@@ -693,7 +693,7 @@ resource 'Stats - Comments' do
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 1
+          expect(amounts.sum).to eq 1
         end
       end
     end

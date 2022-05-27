@@ -8,11 +8,12 @@ describe SmartGroups::Rules::CustomFieldNumber do
 
     let(:valid_json_rule) do
       {
-      'ruleType' => 'custom_field_number',
-      'customFieldId' => custom_field.id,
-      'predicate' => 'is_smaller_than',
-      'value' => 42
-    } end
+        'ruleType' => 'custom_field_number',
+        'customFieldId' => custom_field.id,
+        'predicate' => 'is_smaller_than',
+        'value' => 42
+      }
+    end
     let(:valid_rule) { SmartGroups::Rules::CustomFieldNumber.from_json(valid_json_rule) }
 
     it 'successfully validates a valid rule' do
@@ -80,65 +81,74 @@ describe SmartGroups::Rules::CustomFieldNumber do
   describe 'description_multiloc' do
     let(:number_picker) do
       create(:custom_field_number, title_multiloc: {
-      'en'    => 'How many politicians do you need to solve climate change?',
-      'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat?',
-      'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?'
-    }) end
+        'en'    => 'How many politicians do you need to solve climate change?',
+        'fr-FR' => 'Combien de politicians faut-il pour resoudre le changement du climat?',
+        'nl-NL' => 'Hoeveel politici heb je nodig om klimaatsverandering op te lossen?'
+      })
+    end
 
     let(:custom_field_number_is_equal_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'is_equal',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'is_equal',
+        'customFieldId' => number_picker.id,
+        'value'         => 0
+      })
+    end
     let(:custom_field_number_not_is_equal_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'not_is_equal',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'not_is_equal',
+        'customFieldId' => number_picker.id,
+        'value'         => 0
+      })
+    end
     let(:custom_field_number_is_larger_than_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'is_larger_than',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'is_larger_than',
+        'customFieldId' => number_picker.id,
+        'value'         => 0
+      })
+    end
     let(:custom_field_number_is_larger_than_or_equal_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'is_larger_than_or_equal',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'is_larger_than_or_equal',
+        'customFieldId' => number_picker.id,
+        'value'         => 0
+      })
+    end
     let(:custom_field_number_is_smaller_than_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'is_smaller_than',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'is_smaller_than',
+        'customFieldId' => number_picker.id,
+        'value'         => 0
+      })
+    end
     let(:custom_field_number_is_smaller_than_or_equal_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'is_smaller_than_or_equal',
-      'customFieldId' => number_picker.id,
-      'value'         => 0
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'is_smaller_than_or_equal',
+        'customFieldId' => number_picker.id,
+        'value'         => 0
+      })
+    end
     let(:custom_field_number_is_empty_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'is_empty',
-      'customFieldId' => number_picker.id
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'is_empty',
+        'customFieldId' => number_picker.id
+      })
+    end
     let(:custom_field_number_not_is_empty_rule) do
       SmartGroups::Rules::CustomFieldNumber.from_json({
-      'ruleType'      => 'custom_field_number',
-      'predicate'     => 'not_is_empty',
-      'customFieldId' => number_picker.id
-    }) end
+        'ruleType'      => 'custom_field_number',
+        'predicate'     => 'not_is_empty',
+        'customFieldId' => number_picker.id
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       expect(custom_field_number_is_equal_rule.description_multiloc).to eq({

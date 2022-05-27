@@ -64,9 +64,9 @@ class ApplicationMailer < ActionMailer::Base
 
   def localize_for_recipient(multiloc_or_struct)
     multiloc = case multiloc_or_struct
-               when Hash       then multiloc_or_struct
-               when OpenStruct then multiloc_or_struct.to_h.stringify_keys
-               end
+    when Hash       then multiloc_or_struct
+    when OpenStruct then multiloc_or_struct.to_h.stringify_keys
+    end
 
     multiloc_service.t(multiloc, recipient).html_safe if multiloc
   end

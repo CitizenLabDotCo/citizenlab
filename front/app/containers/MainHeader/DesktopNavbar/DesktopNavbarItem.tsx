@@ -75,19 +75,12 @@ interface Props {
 }
 
 const DesktopNavbarItem = ({
-  className,
   linkTo,
   navigationItemTitle,
   onlyActiveOnIndex,
 }: Props) => (
   <NavigationItem data-testid="desktop-navbar-item">
-    <StyledLink
-      to={linkTo}
-      className={({ isActive }) =>
-        isActive ? `active ${className}` : className
-      }
-      onlyActiveOnIndex={onlyActiveOnIndex}
-    >
+    <StyledLink to={linkTo} onlyActiveOnIndex={onlyActiveOnIndex}>
       <NavigationItemBorder />
       <T value={navigationItemTitle} />
     </StyledLink>

@@ -190,7 +190,6 @@ Rails.application.routes.draw do
         get 'ideas_by_time_cumulative', **route_params
         get 'ideas_by_topic', **route_params
         get 'ideas_by_project', **route_params
-        get 'ideas_by_area', **route_params
         get 'ideas_by_status', **route_params
         get 'ideas_by_status_as_xlsx', **route_params
 
@@ -198,7 +197,6 @@ Rails.application.routes.draw do
         get 'ideas_by_time_cumulative_as_xlsx', **route_params
         get 'ideas_by_topic_as_xlsx', **route_params
         get 'ideas_by_project_as_xlsx', **route_params
-        get 'ideas_by_area_as_xlsx', **route_params
 
         route_params = { controller: 'stats_initiatives' }
         get 'initiatives_count', **route_params

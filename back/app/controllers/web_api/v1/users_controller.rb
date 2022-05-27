@@ -21,27 +21,27 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if params[:search].blank?
       @users = case params[:sort]
-        when 'created_at'
-          @users.order(created_at: :asc)
-        when '-created_at'
-          @users.order(created_at: :desc)
-        when 'last_name'
-          @users.order(last_name: :asc)
-        when '-last_name'
-          @users.order(last_name: :desc)
-        when 'email'
-          @users.order(email: :asc) if view_private_attributes?
-        when '-email'
-          @users.order(email: :desc) if view_private_attributes?
-        when 'role'
-          @users.order_role(:asc)
-        when '-role'
-          @users.order_role(:desc)
-        when nil
-          @users
-        else
+      when 'created_at'
+        @users.order(created_at: :asc)
+      when '-created_at'
+        @users.order(created_at: :desc)
+      when 'last_name'
+        @users.order(last_name: :asc)
+      when '-last_name'
+        @users.order(last_name: :desc)
+      when 'email'
+        @users.order(email: :asc) if view_private_attributes?
+      when '-email'
+        @users.order(email: :desc) if view_private_attributes?
+      when 'role'
+        @users.order_role(:asc)
+      when '-role'
+        @users.order_role(:desc)
+      when nil
+        @users
+      else
           raise 'Unsupported sort method'
-        end
+      end
     end
 
     @users = paginate @users

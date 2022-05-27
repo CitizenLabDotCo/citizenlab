@@ -815,7 +815,7 @@
   "app.containers.IdeasShow.ideasWhatsAppMessage": "Poprzyj tę sprawę: {postTitle}",
   "app.containers.IdeasShow.issueEmailSharingBody": "Poprzyj tę sprawę '{postTitle}' w {postUrl}!",
   "app.containers.IdeasShow.issueEmailSharingSubject": "Poprzyj tę sprawę: {postTitle}",
-  "app.containers.IdeasShow.issueSharingModalTitle": "Dziękujemy za przesławnie Twojej sprawy!",
+  "app.containers.IdeasShow.issueSharingModalTitle": "Dziękujemy za przesłanie Twojego komentarza!",
   "app.containers.IdeasShow.issueTwitterMessage": "Poprzyj tę sprawę: {postTitle}",
   "app.containers.IdeasShow.optionEmailSharingBody": "Poprzyj tę opcję '{postTitle}' w {postUrl}!",
   "app.containers.IdeasShow.optionEmailSharingSubject": "Poprzyj tę opcję: {postTitle}",

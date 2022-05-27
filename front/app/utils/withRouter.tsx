@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   useLocation,
+  // eslint-disable-next-line no-restricted-imports
   useNavigate,
   useParams,
   useSearchParams,
