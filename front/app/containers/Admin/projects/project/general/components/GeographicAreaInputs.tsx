@@ -43,18 +43,11 @@ const GeographicAreaInputs = ({
     });
   };
 
-  if (!isNilOrError(areas)) {
-    const areaOptions: IOption[] = areas.map((area) => ({
-      value: area.id,
-      label: localize(area.attributes.title_multiloc),
-    }));
-    const projectAreaIds = [
-      ...(areaIds ||
-        (!isNilOrError(project)
-          ? project.relationships.areas.data.map((area) => area.id)
-          : [])),
-    ];
-    const selectedAreaValues = projectAreaIds
+  const mapProjectAreaIdsToAreaOptions = (
+    projectAreaIds: string[],
+    areas: IAreaData[]
+  ) => {
+    projectAreaIds
       .map((projectAreaId) => {
         const projectArea = getProjectArea(areas, projectAreaId);
 
@@ -66,6 +59,20 @@ const GeographicAreaInputs = ({
           : null;
       })
       .filter(isOption);
+  };
+
+  if (!isNilOrError(areas)) {
+    const areaOptions: IOption[] = areas.map((area) => ({
+      value: area.id,
+      label: localize(area.attributes.title_multiloc),
+    }));
+    const projectAreaIds = [
+      ...(areaIds ||
+        (!isNilOrError(project)
+          ? project.relationships.areas.data.map((area) => area.id)
+          : [])),
+    ];
+    const selectedAreaValues = mapProjectAreaIdsToAreaOptions(projectAreaIds, areas);
 
     return (
       <StyledSectionField>
