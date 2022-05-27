@@ -1,5 +1,9 @@
 # Changelog
 
+### Changed
+
+- [CL-830] 'Accept' button now before 'Manage' button on cookie banner, and both buttons now the same style.
+
 ## 2022-05-26_2
 
 ### Fixed
