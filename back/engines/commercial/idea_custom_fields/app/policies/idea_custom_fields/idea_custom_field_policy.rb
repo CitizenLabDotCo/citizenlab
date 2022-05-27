@@ -11,25 +11,25 @@ module IdeaCustomFields
       end
 
       def resolve
-        if user&.admin?
-          scope.all
-        elsif user&.project_moderator?
-          scope
-            .joins('LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id')
-            .joins('LEFT JOIN projects ON projects.custom_form_id = custom_forms.id')
-            .where('projects.id' => ::UserRoleService.new.moderatable_projects(user))
-        else
-          scope.none
-        end
+        return scope.none unless user
+        return scope.all if user.admin?
+
+        moderatable_projects = ::UserRoleService.new.moderatable_projects(user)
+        return scope.none if moderatable_projects.empty?
+
+        scope
+          .joins('LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id')
+          .joins('LEFT JOIN projects ON projects.custom_form_id = custom_forms.id')
+          .where('projects.id' => moderatable_projects)
       end
     end
 
     def show?
-      can_view_custom_fields_for_project? record&.resource&.project
+      can_view_custom_fields?
     end
 
     def upsert_by_code?
-      show?
+      can_view_custom_fields?
     end
 
     def can_view_custom_fields_for_project?(project)
@@ -49,6 +49,12 @@ module IdeaCustomFields
           description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
+    end
+
+    private
+
+    def can_view_custom_fields?
+      can_view_custom_fields_for_project?(record&.resource&.project)
     end
   end
 end
