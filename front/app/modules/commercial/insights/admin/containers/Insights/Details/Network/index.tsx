@@ -97,6 +97,7 @@ const Network = ({
   const [highlightNode, setHighlightNode] = useState();
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
   const [hiddenNodes, setHiddenNodes] = useState<Array<string>>([]);
+  const [closeIconPath, setcloseIconPath] = useState<string | null>();
   const [originalNetwork, setOriginalNetwork] = useState<
     IInsightsNetwork | undefined | Error
   >();
@@ -106,6 +107,15 @@ const Network = ({
   const view = useInsightsView(viewId);
   const tooltipRef = document.getElementsByClassName('graph-tooltip')[0];
   const canvasRef = useRef<HTMLCanvasElement | undefined>();
+
+  useEffect(() => {
+    const iconClose = <Icon name="close" />;
+    const iconCloseString = renderToString(iconClose);
+    const div = document.createElement('div');
+    div.innerHTML = iconCloseString;
+    const iconPathElement = div.querySelector('path');
+    if (iconPathElement) setcloseIconPath(iconPathElement.getAttribute('d'));
+  }, []);
 
   useEffect(() => {
     if (!network) return;
@@ -159,20 +169,6 @@ const Network = ({
     }
   }, []);
 
-  const getCloseIconPath = () => {
-    const iconClose = <Icon name="close" />;
-    const iconCloseString = renderToString(iconClose);
-    const div = document.createElement('div');
-    div.innerHTML = iconCloseString;
-    const iconPathElement = div.querySelector('path');
-    return iconPathElement && iconPathElement.getAttribute('d');
-  };
-
-  let closeIconPath;
-  if (document && !closeIconPath) {
-    closeIconPath = getCloseIconPath();
-  }
-
   const handleEngineStop = () => {
     if (initialRender && networkRef.current) {
       networkRef.current.zoomToFit();
@@ -211,7 +207,7 @@ const Network = ({
 
         if (highlightNode && node.id == highlightNode) {
           // Draw hide icon
-          const hideIcon = new Path2D(closeIconPath);
+          const hideIcon = new Path2D(closeIconPath || '');
           const p = new Path2D();
           const transform = {
             a: 0.8 / globalScale,
