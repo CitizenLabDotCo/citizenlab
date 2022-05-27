@@ -1,11 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
+import { combineLatest, map } from 'rxjs';
+
+// services
 import {
   referenceDistributionStream,
   IReferenceDistribution,
 } from '../services/referenceDistribution';
+
+// utils
 import { isNilOrError, NilOrError, isNil, isError } from 'utils/helperUtils';
 import { isEqual } from 'lodash-es';
-import { combineLatest, map } from 'rxjs';
 
 /*
  * This function is really complicated right now. It has to check if any

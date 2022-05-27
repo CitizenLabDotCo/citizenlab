@@ -10,10 +10,22 @@ export interface IUsersByGender {
       [key: string]: number;
     };
   };
+  // Just making assumptions about what the response will look like here
+  referenceSeries: {
+    users: {
+      [key: string]: number;
+    };
+  };
 }
 
 export interface IUsersByRegistrationField {
   series: {
+    users: {
+      [key: string]: number;
+    };
+  };
+  // Just making assumptions about what the response will look like here
+  referenceSeries: {
     users: {
       [key: string]: number;
     };
@@ -28,6 +40,12 @@ export interface IUsersByRegistrationField {
 
 export interface IUsersByDomicile {
   series: {
+    users: {
+      [key: string]: number;
+    };
+  };
+  // Just making assumptions about what the response will look like here
+  referenceSeries: {
     users: {
       [key: string]: number;
     };
