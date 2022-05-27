@@ -401,6 +401,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.networkHideNode',
     defaultMessage: 'Hide from map',
   },
+  networkShowHiddenNodes: {
+    id: 'app.containers.Admin.Insights.Details.networkShowHiddenNodes',
+    defaultMessage: 'Show hidden',
+  },
   networkTitleTooltip: {
     id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',
     defaultMessage:

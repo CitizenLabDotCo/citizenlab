@@ -19,7 +19,10 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
-import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
+import {
+  IInsightsNetworkNode,
+  IInsightsNetwork,
+} from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -40,6 +43,7 @@ import Button from 'components/UI/Button';
 import {
   TooltipContent,
   SectionTitle,
+  TooltipContentList,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
 // tracking
@@ -92,12 +96,22 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
   const [highlightNode, setHighlightNode] = useState();
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
+  const [hiddenNodes, setHiddenNodes] = useState<Array<string>>([]);
+  const [originalNetwork, setOriginalNetwork] = useState<
+    IInsightsNetwork | undefined | Error
+  >();
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network, setInsightsNetwork } = useNetwork(viewId);
   const view = useInsightsView(viewId);
   const tooltipRef = document.getElementsByClassName('graph-tooltip')[0];
   const canvasRef = useRef<HTMLCanvasElement | undefined>();
+
+  useEffect(() => {
+    if (!network) return;
+    if (originalNetwork) return;
+    setOriginalNetwork(network);
+  });
 
   useEffect(() => {
     if (canvasRef.current) return;
@@ -257,6 +271,7 @@ const Network = ({
             ),
           };
           setInsightsNetwork(newNetwork);
+          setHiddenNodes([...hiddenNodes, node.name]);
           removedNode = true;
         }
       }
@@ -267,7 +282,7 @@ const Network = ({
         ? [query.keywords]
         : query.keywords;
 
-    if (!removedNode || keywords.includes(node.id)) {
+    if (!removedNode || (keywords && keywords.includes(node.id))) {
       clHistory.replace({
         pathname,
         search: stringify(
@@ -285,6 +300,11 @@ const Network = ({
       });
       trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
     }
+  };
+
+  const handleShowHiddenNodesClick = () => {
+    setInsightsNetwork(originalNetwork);
+    setHiddenNodes([]);
   };
 
   const nodePointerAreaPaint = (node, color, ctx) => {
@@ -452,6 +472,31 @@ const Network = ({
             }
           />
         </SectionTitle>
+        {hiddenNodes.length > 0 && (
+          <Box
+            mt="12px"
+            style={{
+              cursor: 'pointer',
+              width: 'fit-content',
+            }}
+            onClick={handleShowHiddenNodesClick}
+          >
+            <IconTooltip
+              mr="5px"
+              icon="eye"
+              placement="bottom"
+              content={
+                <TooltipContentList>
+                  {hiddenNodes.map((n) => (
+                    <li key={n}>{n}</li>
+                  ))}
+                </TooltipContentList>
+              }
+            />
+            {formatMessage(messages.networkShowHiddenNodes) +
+              ` (${hiddenNodes.length})`}
+          </Box>
+        )}
       </Box>
       {height && width && (
         <ForceGraph2D

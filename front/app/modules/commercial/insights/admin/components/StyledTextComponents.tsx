@@ -12,3 +12,8 @@ export const SectionTitle = styled.h2`
 export const TooltipContent = styled.p`
   font-weight: normal;
 `;
+
+export const TooltipContentList = styled.ul`
+  margin: 0 0 0 15px;
+  padding: 0;
+`;
