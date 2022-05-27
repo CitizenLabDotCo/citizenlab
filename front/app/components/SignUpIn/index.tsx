@@ -72,7 +72,6 @@ const SignUpIn = ({
         {metaData.flow === 'signup' ? (
           <SignUp
             metaData={metaData}
-            windowHeight={windowHeight}
             customHeader={customSignUpHeader}
             onSignUpCompleted={onSignUpInCompleted}
             onGoToSignIn={onToggleSelectedMethod}
@@ -80,7 +79,6 @@ const SignUpIn = ({
         ) : (
           <SignIn
             metaData={metaData}
-            windowHeight={windowHeight}
             customHeader={customSignInHeader}
             onSignInCompleted={onSignUpInCompleted}
             onGoToSignUp={onToggleSelectedMethod}
