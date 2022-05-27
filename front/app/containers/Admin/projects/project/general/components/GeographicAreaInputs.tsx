@@ -6,7 +6,7 @@ import { SubSectionTitle } from 'components/admin/Section';
 import { StyledSectionField, StyledMultipleSelect } from './styling';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { IOption, isOption } from 'typings';
+import { IOption, isIOption } from 'typings';
 import useAreas from 'hooks/useAreas';
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
@@ -58,7 +58,7 @@ const GeographicAreaInputs = ({
             }
           : null;
       })
-      .filter(isOption);
+      .filter(isIOption);
   };
 
   if (!isNilOrError(areas)) {

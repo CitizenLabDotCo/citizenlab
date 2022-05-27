@@ -99,7 +99,7 @@ export interface IOption {
   disabled?: boolean;
 }
 
-export function isOption(
+export function isIOption(
   maybeOption: {
     value: string;
     label: string;
