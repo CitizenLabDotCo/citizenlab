@@ -6,6 +6,7 @@ import useReferenceData from '../../hooks/useReferenceData';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
+import EmptyCard from './EmptyCard';
 import Header from './Header';
 import Chart from './Chart';
 import Table from './Table';
@@ -39,6 +40,7 @@ const ChartCard = ({
     referenceData: data,
     includedUserPercentage,
     uploadDate,
+    referenceDataUploaded,
   } = useReferenceData(customField, projectFilter);
 
   const hideTicks = isNilOrError(data) ? undefined : data.length > 12;
@@ -53,18 +55,30 @@ const ChartCard = ({
       ? 'table'
       : 'chart'
   );
+
   const localize = useLocalize();
-  const handleClickSwitchToTableView = () => setViewState('table');
+
+  if (referenceDataUploaded === false) {
+    return (
+      <EmptyCard
+        titleMultiloc={customField.attributes.title_multiloc}
+        isComingSoon={false}
+      />
+    );
+  }
 
   if (
     isNilOrError(data) ||
     isNilOrError(includedUserPercentage) ||
     isNilOrError(uploadDate) ||
+    referenceDataUploaded === undefined ||
     hideTicks === undefined ||
     viewState === undefined
   ) {
     return null;
   }
+
+  const handleClickSwitchToTableView = () => setViewState('table');
 
   const dataIsTooLong = data.length > 24;
   const numberOfHiddenItems = data.length - 24;

@@ -43,6 +43,9 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
     number | NilOrError
   >();
   const [uploadDate, setUploadDate] = useState<Moment | NilOrError>();
+  const [referenceDataUploaded, setReferenceDataUploaded] = useState<
+    boolean | undefined
+  >();
 
   const code = field.attributes.code;
 
@@ -67,10 +70,16 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
           return;
         }
 
+        if (!usersByField.referenceSeries) {
+          setReferenceDataUploaded(false);
+          return;
+        }
+
         const referenceData = toReferenceData(usersByField);
         const includedUsersPercentage = getIncludedUserPercentage(usersByField);
         setReferenceData(referenceData);
         setIncludedUserPercentage(includedUsersPercentage);
+        setReferenceDataUploaded(true);
 
         if (usersByField.referenceDataUploaded) {
           // Might need to change this depending on the date string format
@@ -82,7 +91,12 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
     return () => subscription.unsubscribe();
   }, [code]);
 
-  return { referenceData, includedUserPercentage, uploadDate };
+  return {
+    referenceData,
+    includedUserPercentage,
+    uploadDate,
+    referenceDataUploaded,
+  };
 }
 
 export default useReferenceData;
