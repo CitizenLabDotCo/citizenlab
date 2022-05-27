@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-
+import { renderToString } from 'react-dom/server';
 // graph
 import ForceGraph2D, {
   ForceGraphMethods,
@@ -30,7 +30,12 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Spinner,
+  IconTooltip,
+  Icon,
+} from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
 import {
   TooltipContent,
@@ -140,6 +145,20 @@ const Network = ({
     }
   }, []);
 
+  const getCloseIconPath = () => {
+    const iconClose = <Icon name="close" />;
+    const iconCloseString = renderToString(iconClose);
+    const div = document.createElement('div');
+    div.innerHTML = iconCloseString;
+    const iconPathElement = div.querySelector('path');
+    return iconPathElement && iconPathElement.getAttribute('d');
+  };
+
+  let closeIconPath;
+  if (document && !closeIconPath) {
+    closeIconPath = getCloseIconPath();
+  }
+
   const handleEngineStop = () => {
     if (initialRender && networkRef.current) {
       networkRef.current.zoomToFit();
@@ -178,9 +197,7 @@ const Network = ({
 
         if (highlightNode && node.id == highlightNode) {
           // Draw hide icon
-          const hideIcon = new Path2D(
-            'M7.84 6.5l4.89-4.84c.176-.174.274-.412.27-.66 0-.552-.447-1-1-1-.25.003-.488.107-.66.29L6.5 5.13 1.64.27C1.47.1 1.24.003 1 0 .448 0 0 .448 0 1c.01.23.105.45.27.61L5.16 6.5.27 11.34c-.177.173-.274.412-.27.66 0 .552.448 1 1 1 .246-.004.48-.105.65-.28L6.5 7.87l4.81 4.858c.183.184.433.28.69.27.553 0 1-.446 1-.998-.01-.23-.105-.45-.27-.61L7.84 6.5z'
-          );
+          const hideIcon = new Path2D(closeIconPath);
           const p = new Path2D();
           const transform = {
             a: 0.8 / globalScale,
@@ -189,7 +206,7 @@ const Network = ({
             f: nodeVerticalOffset - 6 / globalScale,
           };
           p.addPath(hideIcon, transform);
-          ctx.fillStyle = '#596B7A';
+          ctx.fillStyle = colors.label;
           ctx.fill(p);
 
           // Change tooltip text on icon hover
