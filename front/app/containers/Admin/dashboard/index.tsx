@@ -93,7 +93,9 @@ export const DashboardsPage = memo(
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          <RouterOutlet />
+          <div id="e2e-dashboard-container">
+            <RouterOutlet />
+          </div>
         </DashboardTabs>
       </>
     );

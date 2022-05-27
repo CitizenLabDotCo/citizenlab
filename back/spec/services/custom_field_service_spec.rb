@@ -12,13 +12,14 @@ describe CustomFieldService do
     let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
     let(:fields) do
       [
-      create(:custom_field,
-        key: 'field1',
-        input_type: 'text',
-        title_multiloc: title_multiloc,
-        description_multiloc: description_multiloc
-      )
-    ] end
+        create(:custom_field,
+          key: 'field1',
+          input_type: 'text',
+          title_multiloc: title_multiloc,
+          description_multiloc: description_multiloc
+        )
+      ]
+    end
 
     it 'creates localized schemas with titles and descriptions for all languages' do
       schema = service.fields_to_json_schema_multiloc(AppConfiguration.instance, fields)

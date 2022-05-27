@@ -93,7 +93,9 @@ class SettingsPage extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          <RouterOutlet />
+          <div id="e2e-settings-container">
+            <RouterOutlet />
+          </div>
         </TabbedResource>
       </>
     );

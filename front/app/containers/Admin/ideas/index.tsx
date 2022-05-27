@@ -44,7 +44,10 @@ const IdeasPage = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           title={messages.inputManagerMetaTitle}
           description={messages.inputManagerMetaDescription}
         />
-        <RouterOutlet />
+        <div id="e2e-input-manager-container">
+          {' '}
+          <RouterOutlet />
+        </div>
       </TabbedResource>
     </>
   );

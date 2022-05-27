@@ -189,12 +189,13 @@ describe XlsxService do
   describe 'hash_to_xlsx' do
     let(:hash_array) do
       [
-      { 'a' => 1, 'b' => 'two' },
-      { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
-      { 'b' => 'four', 'c' => 'party' },
-      { 'f' => 'fête' },
-      {}
-    ] end
+        { 'a' => 1, 'b' => 'two' },
+        { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
+        { 'b' => 'four', 'c' => 'party' },
+        { 'f' => 'fête' },
+        {}
+      ]
+    end
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
@@ -208,12 +209,13 @@ describe XlsxService do
   describe 'xlsx_to_hash_array' do
     let(:hash_array) do
       [
-      { 'a' => 1, 'b' => 'two' },
-      { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
-      { 'b' => 'four', 'c' => 'party' },
-      { 'f' => 'fête' },
-      {}
-    ] end
+        { 'a' => 1, 'b' => 'two' },
+        { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
+        { 'b' => 'four', 'c' => 'party' },
+        { 'f' => 'fête' },
+        {}
+      ]
+    end
 
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:round_trip_hash_array) { service.xlsx_to_hash_array(xlsx) }
