@@ -14,13 +14,20 @@ import { combineLatest, map } from 'rxjs';
  * Clearly this is super inefficient, and ideally this should be done
  * on the backend using a dedicated endpoint.
  */
-function useAnyReferenceDataUploaded(fieldIds: string[]): boolean | NilOrError {
+function useAnyReferenceDataUploaded(
+  fieldIds?: string[]
+): boolean | NilOrError {
   const [anyReferenceDataUploaded, setAnyReferenceDataUploaded] = useState<
     boolean | NilOrError
   >();
   const fieldIdsRef = useRef<string[] | undefined>();
 
   useEffect(() => {
+    if (!fieldIds) {
+      setAnyReferenceDataUploaded(null);
+      return;
+    }
+
     if (isEqual(fieldIds, fieldIdsRef.current)) return;
     fieldIdsRef.current = fieldIds;
 
