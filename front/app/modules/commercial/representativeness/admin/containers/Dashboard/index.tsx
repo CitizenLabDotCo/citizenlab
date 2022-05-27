@@ -50,7 +50,13 @@ const RepresentativenessDashboard = () => {
         />
       </Box>
 
-      <Box>{anyReferenceDataUploaded ? <ChartCards /> : <EmptyState />}</Box>
+      <Box>
+        {anyReferenceDataUploaded ? (
+          <ChartCards projectFilter={currentProjectFilter} />
+        ) : (
+          <EmptyState />
+        )}
+      </Box>
     </>
   );
 };

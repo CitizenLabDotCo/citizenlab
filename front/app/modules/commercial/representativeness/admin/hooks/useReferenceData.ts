@@ -39,7 +39,7 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   const [referenceData, setReferenceData] = useState<
     RepresentativenessData | NilOrError
   >();
-  const [includedUsersPercentage, setIncludedUsersPercentage] = useState<
+  const [includedUserPercentage, setIncludedUserPercentage] = useState<
     number | NilOrError
   >();
   const [uploadDate, setUploadDate] = useState<Moment | NilOrError>();
@@ -62,16 +62,15 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
       (usersByField: TStreamResponse | NilOrError) => {
         if (isNilOrError(usersByField)) {
           setReferenceData(usersByField);
-          setIncludedUsersPercentage(usersByField);
+          setIncludedUserPercentage(usersByField);
           setUploadDate(usersByField);
           return;
         }
 
         const referenceData = toReferenceData(usersByField);
-        const includedUsersPercentage =
-          getIncludedUsersPercentage(usersByField);
+        const includedUsersPercentage = getIncludedUserPercentage(usersByField);
         setReferenceData(referenceData);
-        setIncludedUsersPercentage(includedUsersPercentage);
+        setIncludedUserPercentage(includedUsersPercentage);
 
         if (usersByField.referenceDataUploaded) {
           // Might need to change this depending on the date string format
@@ -83,7 +82,7 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
     return () => subscription.unsubscribe();
   }, [code]);
 
-  return { referenceData, includedUsersPercentage, uploadDate };
+  return { referenceData, includedUserPercentage, uploadDate };
 }
 
 export default useReferenceData;
@@ -92,6 +91,6 @@ const toReferenceData = (x: any): any => {
   // TODO
 };
 
-const getIncludedUsersPercentage = (x: any): any => {
+const getIncludedUserPercentage = (x: any): any => {
   // TODO
 };

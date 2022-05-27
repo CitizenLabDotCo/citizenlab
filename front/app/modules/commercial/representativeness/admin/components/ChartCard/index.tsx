@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
+import useReferenceData from '../../hooks/useReferenceData';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -17,38 +18,53 @@ import messages from './messages';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
-import { Moment } from 'moment';
-import { RepresentativenessData } from '../../hooks/useReferenceData';
 
 // utils
 import { getLegendLabels } from './utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type ViewState = 'chart' | 'table';
 
 interface Props {
   customField: IUserCustomFieldData;
-  data: RepresentativenessData;
-  // representativenessScore: number;
-  includedUserPercentage: number;
-  demographicDataDate: Moment;
+  projectFilter?: string;
 }
 
 const ChartCard = ({
   customField,
-  data,
-  includedUserPercentage,
-  demographicDataDate,
+  projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const hideTicks = data.length > 12;
+  const {
+    referenceData: data,
+    includedUserPercentage,
+    uploadDate,
+  } = useReferenceData(customField, projectFilter);
+
+  const hideTicks = isNilOrError(data) ? undefined : data.length > 12;
+
   const preferTableView = hideTicks;
 
   const currentChartRef = useRef<SVGElement>();
-  const [viewState, setViewState] = useState<ViewState>(
-    preferTableView ? 'table' : 'chart'
+  const [viewState, setViewState] = useState<ViewState | undefined>(
+    preferTableView === undefined
+      ? undefined
+      : preferTableView
+      ? 'table'
+      : 'chart'
   );
   const localize = useLocalize();
   const handleClickSwitchToTableView = () => setViewState('table');
+
+  if (
+    isNilOrError(data) ||
+    isNilOrError(includedUserPercentage) ||
+    isNilOrError(uploadDate) ||
+    hideTicks === undefined ||
+    viewState === undefined
+  ) {
+    return null;
+  }
 
   const dataIsTooLong = data.length > 24;
   const numberOfHiddenItems = data.length - 24;
@@ -59,7 +75,7 @@ const ChartCard = ({
     formatMessage(messages.totalPopulation),
   ];
 
-  const legendLabels = getLegendLabels(barNames, demographicDataDate);
+  const legendLabels = getLegendLabels(barNames, uploadDate);
 
   const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
