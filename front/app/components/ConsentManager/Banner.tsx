@@ -104,7 +104,7 @@ const ButtonContainer = styled.div`
 `;
 
 const PreferencesButton = styled(Button)`
-  margin-right: 10px;
+  margin-left: 10px;
 
   ${media.smallerThanMinTablet`
     margin-right: 0px;
@@ -112,8 +112,8 @@ const PreferencesButton = styled(Button)`
   `}
 
   ${isRtl`
-    margin-right: 0;
-    margin-left: 10px;
+    margin-right: 10px;
+    margin-left: 0px;
 
     ${media.smallerThanMinTablet`
         margin-left: 0px;
@@ -172,16 +172,6 @@ class Banner extends PureComponent<Props> {
               </Line>
             </Left>
             <ButtonContainer>
-              <PreferencesButton
-                borderColor="transparent"
-                textColor="#fff"
-                bgColor={colors.adminTextColor}
-                bgHoverColor={rgba(255, 255, 255, 0.15)}
-                onClick={onChangePreferences}
-                className="integration-open-modal"
-              >
-                <FormattedMessage {...messages.manage} />
-              </PreferencesButton>
               <AcceptButton
                 className="e2e-accept-cookies-btn"
                 buttonStyle="primary-inverse"
@@ -191,6 +181,15 @@ class Banner extends PureComponent<Props> {
               >
                 <FormattedMessage {...messages.accept} />
               </AcceptButton>
+              <PreferencesButton
+                className="integration-open-modal"
+                buttonStyle="primary-inverse"
+                textColor={colors.adminTextColor}
+                textHoverColor={colors.adminTextColor}
+                onClick={onChangePreferences}
+              >
+                <FormattedMessage {...messages.manage} />
+              </PreferencesButton>
             </ButtonContainer>
           </ContentContainerInner>
         </ContentContainer>
