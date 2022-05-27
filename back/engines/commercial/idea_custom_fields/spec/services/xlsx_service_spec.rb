@@ -143,10 +143,29 @@ describe XlsxService do
       end
 
       it 'includes hidden custom fields' do
-        hidden_field = create(:custom_field, :for_custom_form, resource: @form, title_multiloc: { 'en' => 'Hidden field' })
+        hidden_field = create(
+          :custom_field,
+          :for_custom_form,
+          resource: @form,
+          hidden: true,
+          title_multiloc: { 'en' => 'Hidden field' }
+        )
         headers = worksheet[0].cells.map(&:value)
         field_idx = headers.find_index 'Hidden field'
         expect(field_idx).to be_present
+      end
+
+      it 'excludes disabled custom fields' do
+        hidden_field = create(
+          :custom_field,
+          :for_custom_form,
+          resource: @form,
+          enabled: false,
+          title_multiloc: { 'en' => 'Disabled field' }
+        )
+        headers = worksheet[0].cells.map(&:value)
+        field_idx = headers.find_index 'Disabled field'
+        expect(field_idx).to be_nil
       end
     end
   end

@@ -54,10 +54,17 @@ describe XlsxService do
     end
 
     it 'includes hidden custom fields' do
-      create :custom_field, title_multiloc: { 'en' => 'Hidden field' }
+      create :custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' }
       headers = worksheet[0].cells.map(&:value)
       field_idx = headers.find_index 'Hidden field'
       expect(field_idx).to be_present
+    end
+
+    it 'excludes disabled custom fields' do
+      create :custom_field, enabled: false, title_multiloc: { 'en' => 'Disabled field' }
+      headers = worksheet[0].cells.map(&:value)
+      field_idx = headers.find_index 'Disabled field'
+      expect(field_idx).to be_nil
     end
 
     describe do
