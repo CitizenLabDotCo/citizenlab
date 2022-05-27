@@ -21,6 +21,7 @@ const TEXT = 'Text';
 const IMAGE = 'Image';
 const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
+const ACCORDION = 'Accordion';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -29,7 +30,8 @@ type ComponentNamesType =
   | typeof TEXT
   | typeof IMAGE
   | typeof IFRAME
-  | typeof ABOUT_BOX;
+  | typeof ABOUT_BOX
+  | typeof ACCORDION;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -47,6 +49,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.url;
     case ABOUT_BOX:
       return messages.aboutBox;
+    case ACCORDION:
+      return messages.accordion;
   }
 };
 
@@ -130,6 +134,8 @@ const RenderNode = ({ render }) => {
       id={id}
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      minHeight={id === ROOT_NODE ? '160px' : '0px'}
+      background="#fff"
       borderWidth="1px"
       borderColor={
         hasError
@@ -145,6 +151,7 @@ const RenderNode = ({ render }) => {
     >
       {nodeIsSelected && (
         <Box
+          id="e2e-node-label"
           p="4px"
           bgColor={hasError ? colors.clRedError : colors.adminTextColor}
           color="#fff"

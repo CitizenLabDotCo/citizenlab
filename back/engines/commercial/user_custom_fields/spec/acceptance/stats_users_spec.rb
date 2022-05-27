@@ -370,9 +370,9 @@ end
         json_response = json_parse(response_body)
         expect(json_response).to match({
           options: {
-            @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
-            @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
-            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys }
+            @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
+            @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
+            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
           },
           series: {
             users: {
@@ -414,9 +414,9 @@ end
         json_response = json_parse(response_body)
         expect(json_response).to match({
           options: {
-            @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
-            @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
-            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys }
+            @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
+            @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
+            @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
           },
           series: {
             users: {

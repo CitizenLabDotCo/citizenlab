@@ -1,6 +1,16 @@
 # Changelog
 
-## Next Release
+## 2022-05-26_2
+
+### Fixed
+
+- [CL-758] Fix custom field option ordering for dashboard charts
+
+## 2022-05-26
+
+### Fixed
+
+- [CL-788] Fixed issue with different URL when sharing idea from map vs list view
 
 ### Added
 
