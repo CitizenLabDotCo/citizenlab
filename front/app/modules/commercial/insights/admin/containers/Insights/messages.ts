@@ -397,6 +397,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Insights.Details.networkTitle',
     defaultMessage: 'Keywords map',
   },
+  networkHideNode: {
+    id: 'app.containers.Admin.Insights.Details.networkHideNode',
+    defaultMessage: 'Hide from map',
+  },
   networkTitleTooltip: {
     id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',
     defaultMessage:
