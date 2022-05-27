@@ -18,21 +18,12 @@ import messages from './messages';
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 import { Moment } from 'moment';
+import { RepresentativenessData } from '../../hooks/useReferenceData';
 
 // utils
 import { getLegendLabels } from './utils';
 
 export type ViewState = 'chart' | 'table';
-
-export interface RepresentativenessRow {
-  name: string;
-  actualPercentage: number;
-  referencePercentage: number;
-  actualNumber: number;
-  referenceNumber: number;
-}
-
-export type RepresentativenessData = RepresentativenessRow[];
 
 interface Props {
   customField: IUserCustomFieldData;
