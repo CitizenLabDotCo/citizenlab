@@ -19,8 +19,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const SHOW_EMPTY = false;
-
 const RepresentativenessDashboard = () => {
   const customFields = useUserCustomFields({ inputTypes: ['select'] });
   const fieldIds = isNilOrError(customFields)
