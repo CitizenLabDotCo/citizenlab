@@ -114,7 +114,11 @@ class Streams {
     const rootStreamIds = [authApiEndpoint, currentAppConfigurationEndpoint];
 
     rootStreamIds.forEach((rootStreamId) => {
-      promisesToAwait.push(this.streams[rootStreamId].fetch());
+      const rootStream = this.streams[rootStreamId];
+
+      if (rootStream) {
+        promisesToAwait.push(rootStream.fetch());
+      }
     });
 
     // Here we loop through all streams that are currently in the browser memory.
@@ -134,21 +138,21 @@ class Streams {
         !includes(rootStreamIds, streamId) &&
         !streamId.endsWith('/users/custom_fields/schema')
       ) {
+        const stream = this.streams[streamId];
         // If the stream is currently active
         // (= being subscribed to by one or more components that are mounted when reset() gets called)
         // we inlcude the stream in the list of streams to refetch.
         // Otherwise we include the stream in the list of streams that will be removed,
         // with the exception of the custom fields stream
-        if (
-          this.isActiveStream(streamId) ||
-          modules?.streamsToReset?.includes(streamId)
-        ) {
-          promises.push(this.streams[streamId].fetch());
-        } else {
-          this.deleteStream(
-            streamId,
-            this.streams[streamId].params.apiEndpoint
-          );
+        if (stream) {
+          if (
+            this.isActiveStream(streamId) ||
+            modules?.streamsToReset?.includes(streamId)
+          ) {
+            promises.push(stream.fetch());
+          } else {
+            this.deleteStream(streamId, stream.params.apiEndpoint);
+          }
         }
       }
     });
@@ -214,20 +218,21 @@ class Streams {
   // To determine this, we use the internal rxjs refCount property, which keeps track
   // of the subscribe count for any given stream.
   isActiveStream(streamId: string) {
-    const refCount = cloneDeep(
-      // @ts-ignore (todo: fix this later, not sure how else to do this)
-      this.streams[streamId].observable.source['_refCount']
-    );
-    const isCacheStream = cloneDeep(this.streams[streamId].cacheStream);
+    const stream = this.streams[streamId];
 
-    // If a stream is cached we keep at least 1 subscription to it open at all times,
-    // and therefore it will always have a refCount of at least 1.
-    // Hence we have to check for a count larger than 1 to determine if the stream is
-    // actively being used.
-    // None-cached streams on the other hand are not subscribed to by default and
-    // have a refCount of 0 when not actively used.
-    if ((isCacheStream && refCount > 1) || (!isCacheStream && refCount > 0)) {
-      return true;
+    if (stream) {
+      const refCount = cloneDeep(stream.observable?.source?.['_refCount']);
+      const isCacheStream = cloneDeep(stream.cacheStream);
+
+      // If a stream is cached we keep at least 1 subscription to it open at all times,
+      // and therefore it will always have a refCount of at least 1.
+      // Hence we have to check for a count larger than 1 to determine if the stream is
+      // actively being used.
+      // None-cached streams on the other hand are not subscribed to by default and
+      // have a refCount of 0 when not actively used.
+      if ((isCacheStream && refCount > 1) || (!isCacheStream && refCount > 0)) {
+        return true;
+      }
     }
 
     return false;
@@ -240,42 +245,66 @@ class Streams {
   // - When a fetch inside of streams.get() returns an error
   // -> here we destroy the stream so it can be re-initiated
   deleteStream(streamId: string, apiEndpoint: string) {
-    if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
-      this.streamIdsByApiEndPointWithQuery[apiEndpoint] =
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+    let streamIdsByApiEndPointWithQuery =
+      this.streamIdsByApiEndPointWithQuery[apiEndpoint];
+    let streamIdsByApiEndPointWithoutQuery =
+      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint];
+    const stream = this.streams[streamId];
+
+    if (
+      includes(streamIdsByApiEndPointWithQuery, streamId) &&
+      streamIdsByApiEndPointWithQuery
+    ) {
+      streamIdsByApiEndPointWithQuery = streamIdsByApiEndPointWithQuery.filter(
+        (value) => {
           return value !== streamId;
-        });
+        }
+      );
     }
 
     if (
-      includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)
+      includes(streamIdsByApiEndPointWithoutQuery, streamId) &&
+      streamIdsByApiEndPointWithoutQuery
     ) {
-      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] =
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
+      streamIdsByApiEndPointWithoutQuery =
+        streamIdsByApiEndPointWithoutQuery.filter((value) => {
           return value !== streamId;
         });
     }
 
-    if (streamId && this.streams[streamId]) {
-      Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
-        if (includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[dataId] =
-            this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+    if (stream) {
+      Object.keys(stream.dataIds).forEach((dataId) => {
+        let streamIdsByDataIdWithQuery =
+          this.streamIdsByDataIdWithQuery[dataId];
+        let streamIdsByDataIdWithoutQuery =
+          this.streamIdsByDataIdWithoutQuery[dataId];
+
+        if (
+          includes(streamIdsByDataIdWithQuery, streamId) &&
+          streamIdsByDataIdWithQuery
+        ) {
+          streamIdsByDataIdWithQuery = streamIdsByDataIdWithQuery.filter(
+            (value) => {
               return value !== streamId;
-            });
+            }
+          );
         }
 
-        if (includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithoutQuery[dataId] =
-            this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+        if (
+          includes(streamIdsByDataIdWithoutQuery, streamId) &&
+          streamIdsByDataIdWithoutQuery
+        ) {
+          streamIdsByDataIdWithoutQuery = streamIdsByDataIdWithoutQuery.filter(
+            (value) => {
               return value !== streamId;
-            });
+            }
+          );
         }
       });
-    }
 
-    if (this.streams[streamId] && this.streams[streamId].subscription) {
-      (this.streams[streamId].subscription as Subscription).unsubscribe();
+      if (stream.subscription) {
+        stream.subscription.unsubscribe();
+      }
     }
 
     delete this.streams[streamId];
@@ -398,7 +427,10 @@ class Streams {
         this.streamIdsByDataIdWithQuery[dataId] &&
         !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)
       ) {
-        this.streamIdsByDataIdWithQuery[dataId].push(streamId);
+        const streamIds = this.streamIdsByDataIdWithQuery[dataId];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
         this.streamIdsByDataIdWithQuery[dataId] = [streamId];
       }
@@ -409,7 +441,10 @@ class Streams {
         this.streamIdsByDataIdWithoutQuery[dataId] &&
         !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)
       ) {
-        this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
+        const streamIds = this.streamIdsByDataIdWithQuery[dataId];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
         this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
       }
@@ -433,7 +468,10 @@ class Streams {
       if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
       } else {
-        this.streamIdsByApiEndPointWithQuery[apiEndpoint].push(streamId);
+        const streamIds = this.streamIdsByApiEndPointWithQuery[apiEndpoint];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       }
     }
 
@@ -441,7 +479,10 @@ class Streams {
       if (!this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = [streamId];
       } else {
-        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].push(streamId);
+        const streamIds = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint];
+        if (streamIds) {
+          streamIds.push(streamId);
+        }
       }
     }
   }
@@ -487,7 +528,7 @@ class Streams {
     );
 
     // If a stream with the calculated streamId does not yet exist
-    if (!has(this.streams, streamId)) {
+    if (!this.streams[streamId]) {
       const { bodyData } = params;
       const lastUrlSegment = apiEndpoint.substr(
         apiEndpoint.lastIndexOf('/') + 1
@@ -503,49 +544,52 @@ class Streams {
       const observer: IObserver<T | null> = null as any;
 
       // Here we fetch the data for the given andpoint and push it into the associated stream
-      const fetch = () => {
-        return request<any>(
-          apiEndpoint,
-          bodyData,
-          { method: 'GET' },
-          queryParameters
-        )
-          .then((response) => {
-            // grab the response and push it into the stream
-            this.streams?.[streamId]?.observer?.next(response);
-            return response;
-          })
-          .catch((error) => {
-            // When the endpoint returns an error we destroy the stream
-            // so it can again be recreated afterwards and start of with
-            // a 'clean slate' to retry the endpoint.
-            // Note: streams.ts will first push the error object into
-            // the stream and only afterwards destroy it, so that any subscriber still gets the error object.
-            // When an unsuscribe -> resubscribe action occurs in the hook
-            // or component, streams.ts will create and fetch the stream from scratch again.
-            // Note: when we're dealing with either the authUser stream or
-            // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
-            // because these 2 endpoints produce error responses whenever
-            // the user is not logged. There are however not 'true' errors
-            // (e.g. not similar to, for example, a connection failure error)
-            // but rather the back-end telling us the user needs to be logged in to use the endpoint.
-            // We can therefore view errors from these 2 endpoints as valid return values
-            // and exclude them from the error-handling logic.
-            if (
-              streamId !== authApiEndpoint &&
-              streamId !== currentOnboardingCampaignsApiEndpoint
-            ) {
-              // push the error reponse into the stream
-              this.streams[streamId].observer.next(error);
-              // destroy the stream
-              this.deleteStream(streamId, apiEndpoint);
-              reportError(error);
-            } else if (streamId === authApiEndpoint) {
-              this.streams[streamId].observer.next(null);
-            }
-
-            return null;
-          });
+      const fetch = async () => {
+        const stream = this.streams[streamId];
+        try {
+          const response = await request<any>(
+            apiEndpoint,
+            bodyData,
+            { method: 'GET' },
+            queryParameters
+          );
+          // grab the response and push it into the stream
+          if (stream) {
+            stream.observer.next(response);
+          }
+          return response;
+        } catch (error) {
+          // When the endpoint returns an error we destroy the stream
+          // so it can again be recreated afterwards and start of with
+          // a 'clean slate' to retry the endpoint.
+          // Note: streams.ts will first push the error object into
+          // the stream and only afterwards destroy it, so that any subscriber still gets the error object.
+          // When an unsuscribe -> resubscribe action occurs in the hook
+          // or component, streams.ts will create and fetch the stream from scratch again.
+          // Note: when we're dealing with either the authUser stream or
+          // the currentOnboardingCampaigns stream we do not destory the stream when an error occurs,
+          // because these 2 endpoints produce error responses whenever
+          // the user is not logged. There are however not 'true' errors
+          // (e.g. not similar to, for example, a connection failure error)
+          // but rather the back-end telling us the user needs to be logged in to use the endpoint.
+          // We can therefore view errors from these 2 endpoints as valid return values
+          // and exclude them from the error-handling logic.
+          if (
+            streamId !== authApiEndpoint &&
+            streamId !== currentOnboardingCampaignsApiEndpoint &&
+            stream
+          ) {
+            // push the error reponse into the stream
+            stream.observer.next(error);
+            // destroy the stream
+            this.deleteStream(streamId, apiEndpoint);
+            reportError(error);
+            throw error;
+          } else if (streamId === authApiEndpoint && stream) {
+            stream.observer.next(null);
+          }
+          return null;
+        }
       };
 
       // The observable constant here can be considered as the pipe
@@ -558,8 +602,9 @@ class Streams {
       const observable = new Observable<T | null>((observer) => {
         const dataId = lastUrlSegment;
 
-        if (this.streams[streamId]) {
-          this.streams[streamId].observer = observer;
+        const stream = this.streams[streamId];
+        if (stream) {
+          stream.observer = observer;
         }
 
         // When we know the stream represents a single-item endpoint,
@@ -594,10 +639,13 @@ class Streams {
         // https://www.learnrxjs.io/learn-rxjs/operators/transformation/scan
         startWith('initial' as any),
         scan((accumulated: T, current: T | pureFn<T>) => {
+          const stream = this.streams[streamId];
           let data: any = accumulated;
           const dataIds = {};
 
-          this.streams[streamId].type = 'unknown';
+          if (stream) {
+            stream.type = 'unknown';
+          }
 
           // I don't think we still have uss cases were current is a function
           // instead of a value (was an early experiment)
@@ -611,7 +659,11 @@ class Streams {
 
             // endpoints that return an array of objects
             if (isArray(innerData)) {
-              this.streams[streamId].type = 'arrayOfObjects';
+              const stream = this.streams[streamId];
+
+              if (stream) {
+                stream.type = 'arrayOfObjects';
+              }
               // loop through the array of objects
               innerData
                 .filter((item) => has(item, 'id'))
@@ -636,7 +688,10 @@ class Streams {
             // endpoints that return a single object
             else if (isObject(innerData) && has(innerData, 'id')) {
               const dataId = innerData['id'];
-              this.streams[streamId].type = 'singleObject';
+              const stream = this.streams[streamId];
+              if (stream) {
+                stream.type = 'singleObject';
+              }
               dataIds[dataId] = true;
               if (cacheStream) {
                 // write the endpoint response to the key-value object cache
@@ -675,7 +730,9 @@ class Streams {
             }
           }
 
-          this.streams[streamId].dataIds = dataIds;
+          if (stream) {
+            stream.dataIds = dataIds;
+          }
 
           return this.deepFreeze(data);
         }),
@@ -708,8 +765,10 @@ class Streams {
         // to make sure there at any give time at least 1 subscriber
         // (you can kind of view this as being similar to a subscription to the stream in App.tsx...
         // it will stay subscribed as long as the user is on the platform)
-        this.streams[streamId].subscription =
-          this.streams[streamId].observable.subscribe();
+        const stream = this.streams[streamId];
+        if (stream) {
+          stream.subscription = stream.observable.subscribe();
+        }
       }
 
       return this.streams[streamId] as IStream<T>;
@@ -741,41 +800,46 @@ class Streams {
           (streamId) => {
             const stream = this.streams[streamId];
 
-            if (
-              stream.cacheStream &&
-              stream.type === 'singleObject' &&
-              !isEmpty(response?.['data']) &&
-              !isArray(response?.['data'])
-            ) {
-              stream.observer.next(this.deepFreeze(response));
-            } else if (
-              stream.cacheStream &&
-              stream.type === 'arrayOfObjects' &&
-              !isEmpty(response?.['data'])
-            ) {
-              stream.observer.next((previous) => {
-                let data: any;
-                const previousResponseData = previous?.data || [];
-                if (isArray(response['data'])) {
-                  data = [...previousResponseData, ...response['data']];
-                } else {
-                  data = [...previousResponseData, response['data']];
-                }
+            if (stream) {
+              if (
+                stream.cacheStream &&
+                stream.type === 'singleObject' &&
+                !isEmpty(response?.['data']) &&
+                !isArray(response?.['data'])
+              ) {
+                stream.observer.next(this.deepFreeze(response));
+              } else if (
+                stream.cacheStream &&
+                stream.type === 'arrayOfObjects' &&
+                !isEmpty(response?.['data'])
+              ) {
+                stream.observer.next((previous) => {
+                  let data: any;
+                  const previousResponseData = previous?.data || [];
+                  if (isArray(response['data'])) {
+                    data = [...previousResponseData, ...response['data']];
+                  } else {
+                    data = [...previousResponseData, response['data']];
+                  }
 
-                return this.deepFreeze({
-                  ...previous,
-                  data,
+                  return this.deepFreeze({
+                    ...previous,
+                    data,
+                  });
                 });
-              });
-            } else {
-              promises.push(stream.fetch());
+              } else {
+                promises.push(stream.fetch());
+              }
             }
           }
         );
       }
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       });
 
       if (waitForRefetchesToResolve) {
@@ -815,19 +879,21 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
-        if (!stream.cacheStream) {
-          promises.push(stream.fetch());
-        } else if (streamHasDataId && stream.type === 'singleObject') {
-          stream.observer.next(response);
-        } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) =>
-            this.deepFreeze({
-              ...previous,
-              data: previous.data.map((child) =>
-                child.id === dataId ? response['data'] : child
-              ),
-            })
-          );
+        if (stream) {
+          if (!stream.cacheStream) {
+            promises.push(stream.fetch());
+          } else if (streamHasDataId && stream.type === 'singleObject') {
+            stream.observer.next(response);
+          } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
+            stream.observer.next((previous) =>
+              this.deepFreeze({
+                ...previous,
+                data: previous.data.map((child) =>
+                  child.id === dataId ? response['data'] : child
+                ),
+              })
+            );
+          }
         }
       });
 
@@ -835,7 +901,10 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       });
 
       if (waitForRefetchesToResolve) {
@@ -872,17 +941,19 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
-        if (stream && !stream.cacheStream) {
-          promises.push(stream.fetch());
-        } else if (streamHasDataId && stream.type === 'singleObject') {
-          stream.observer.next(undefined);
-        } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) =>
-            this.deepFreeze({
-              ...previous,
-              data: previous.data.filter((child) => child.id !== dataId),
-            })
-          );
+        if (stream) {
+          if (!stream.cacheStream) {
+            promises.push(stream.fetch());
+          } else if (streamHasDataId && stream.type === 'singleObject') {
+            stream.observer.next(undefined);
+          } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
+            stream.observer.next((previous) =>
+              this.deepFreeze({
+                ...previous,
+                data: previous.data.filter((child) => child.id !== dataId),
+              })
+            );
+          }
         }
       });
 
@@ -890,7 +961,10 @@ class Streams {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint],
         this.streamIdsByDataIdWithQuery[dataId]
       ).forEach((streamId) => {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       });
 
       if (waitForRefetchesToResolve) {
@@ -913,8 +987,8 @@ class Streams {
   }
 
   async fetchAllWith({
-    dataId,
-    apiEndpoint,
+    dataId = [],
+    apiEndpoint = [],
     partialApiEndpoint,
     regexApiEndpoint,
     onlyFetchActiveStreams,
@@ -925,7 +999,7 @@ class Streams {
     regexApiEndpoint?: RegExp[];
     onlyFetchActiveStreams?: boolean;
   }) {
-    const keys = [...(dataId || []), ...(apiEndpoint || [])];
+    const keys = [...dataId, ...apiEndpoint];
     const promises: Promise<any>[] = [];
 
     const streamIds1 = flatten(
@@ -941,22 +1015,22 @@ class Streams {
     if (partialApiEndpoint && partialApiEndpoint.length > 0) {
       forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
         partialApiEndpoint.forEach((endpoint) => {
-          if (
-            key.includes(endpoint) &&
-            this.streamIdsByApiEndPointWithQuery[key]
-          ) {
-            streamIds2.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          const streamIdsByApiEndPointWithQuery =
+            this.streamIdsByApiEndPointWithQuery[key];
+
+          if (key.includes(endpoint) && streamIdsByApiEndPointWithQuery) {
+            streamIds2.push(...streamIdsByApiEndPointWithQuery);
           }
         });
       });
 
       forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
         partialApiEndpoint.forEach((endpoint) => {
-          if (
-            key.includes(endpoint) &&
-            this.streamIdsByApiEndPointWithoutQuery[key]
-          ) {
-            streamIds2.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          const streamIdsByApiEndPointWithoutQuery =
+            this.streamIdsByApiEndPointWithoutQuery[key];
+
+          if (key.includes(endpoint) && streamIdsByApiEndPointWithoutQuery) {
+            streamIds2.push(...streamIdsByApiEndPointWithoutQuery);
           }
         });
       });
@@ -966,16 +1040,22 @@ class Streams {
     if (regexApiEndpoint && regexApiEndpoint.length > 0) {
       forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
         regexApiEndpoint.forEach((regex) => {
-          if (regex.test(key) && this.streamIdsByApiEndPointWithQuery[key]) {
-            streamIds3.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          const streamIdsByApiEndPointWithQuery =
+            this.streamIdsByApiEndPointWithQuery[key];
+
+          if (regex.test(key) && streamIdsByApiEndPointWithQuery) {
+            streamIds3.push(...streamIdsByApiEndPointWithQuery);
           }
         });
       });
 
       forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
         regexApiEndpoint.forEach((regex) => {
-          if (regex.test(key) && this.streamIdsByApiEndPointWithoutQuery[key]) {
-            streamIds3.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          const streamIdsByApiEndPointWithoutQuery =
+            this.streamIdsByApiEndPointWithoutQuery[key];
+
+          if (regex.test(key) && streamIdsByApiEndPointWithoutQuery) {
+            streamIds3.push(...streamIdsByApiEndPointWithoutQuery);
           }
         });
       });
@@ -989,7 +1069,10 @@ class Streams {
 
     uniq(mergedStreamIds).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
-        promises.push(this.streams[streamId].fetch());
+        const stream = this.streams[streamId];
+        if (stream) {
+          promises.push(stream.fetch());
+        }
       }
     });
 
