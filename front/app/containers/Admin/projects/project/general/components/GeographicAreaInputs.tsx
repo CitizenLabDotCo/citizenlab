@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isNilOrError, isString } from 'utils/helperUtils';
 import { IconTooltip, Radio } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
@@ -31,6 +31,14 @@ const GeographicAreaInputs = ({
   const localize = useLocalize();
   const [areaType, setAreaType] = useState<TProjectAreaType>('all');
 
+  useEffect(() => {
+    if (!isNilOrError(project)) {
+      setAreaType(
+        project.relationships.areas.data.length > 0 ? 'selection' : 'all'
+      );
+    }
+  }, [project]);
+
   const handleAreaSelectionChange = (values: IOption[]) => {
     const selectedAreaIds = values.map((value) => value.value).filter(isString);
     onProjectAttributesDiffChange({ area_ids: selectedAreaIds });
@@ -47,7 +55,7 @@ const GeographicAreaInputs = ({
     projectAreaIds: string[],
     areas: IAreaData[]
   ) => {
-    projectAreaIds
+    return projectAreaIds
       .map((projectAreaId) => {
         const projectArea = getProjectArea(areas, projectAreaId);
 
