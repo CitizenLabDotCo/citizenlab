@@ -75,30 +75,30 @@ module SmartGroups::Rules
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      if custom_field.input_type == 'date'
-        case predicate
-        when 'is_before'
-          users_scope.where("(custom_field_values->>'#{key}')::date < (?)::date", value)
-        when 'is_after'
-          users_scope.where("(custom_field_values->>'#{key}')::date > (?)::date", value)
-        when 'is_exactly'
-          users_scope.where("(custom_field_values->>'#{key}')::date >= (?)::date AND (custom_field_values->>'#{key}')::date < ((?)::date + '1 day'::interval)", value, value)
-        when 'is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NULL")
-        when 'not_is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
-        else
-          raise "Unsupported predicate #{predicate}"
-        end
+      return unless custom_field.input_type == 'date'
+
+      case predicate
+      when 'is_before'
+        users_scope.where("(custom_field_values->>'#{key}')::date < (?)::date", value)
+      when 'is_after'
+        users_scope.where("(custom_field_values->>'#{key}')::date > (?)::date", value)
+      when 'is_exactly'
+        users_scope.where("(custom_field_values->>'#{key}')::date >= (?)::date AND (custom_field_values->>'#{key}')::date < ((?)::date + '1 day'::interval)", value, value)
+      when 'is_empty'
+        users_scope.where("custom_field_values->>'#{key}' IS NULL")
+      when 'not_is_empty'
+        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
+      else
+        raise "Unsupported predicate #{predicate}"
       end
     end
 
     def description_value(locale)
-      if value.present?
-        locale ||= I18n.locale
-        I18n.with_locale(locale) do
-          I18n.l Date.parse(value), format: :default
-        end
+      return if value.blank?
+
+      locale ||= I18n.locale
+      I18n.with_locale(locale) do
+        I18n.l Date.parse(value), format: :default
       end
     end
 

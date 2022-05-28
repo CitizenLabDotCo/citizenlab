@@ -152,21 +152,21 @@ module SmartGroups::Rules
     end
 
     def validate_value_inclusion
-      if needs_value?
-        allowed_values = ['outside'] + Area.ids
-        is_included = if value.is_a? Array
-          (value - allowed_values).blank?
-        else
-          allowed_values.include? value
-        end
-        unless is_included
-          errors.add(
-            :value,
-            :inclusion,
-            message: 'All values must be existing area IDs or the value "outside"'
-          )
-        end
+      return unless needs_value?
+
+      allowed_values = ['outside'] + Area.ids
+      is_included = if value.is_a? Array
+        (value - allowed_values).blank?
+      else
+        allowed_values.include? value
       end
+      return if is_included
+
+      errors.add(
+        :value,
+        :inclusion,
+        message: 'All values must be existing area IDs or the value "outside"'
+      )
     end
   end
 end

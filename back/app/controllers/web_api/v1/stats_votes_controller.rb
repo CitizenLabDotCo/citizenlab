@@ -287,15 +287,15 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def render_no_data
-    if @no_data
-      render json: { series: { up: {}, down: {}, total: {} } }
-    end
+    return unless @no_data
+
+    render json: { series: { up: {}, down: {}, total: {} } }
   end
 
   def render_no_data_as_xlsx
-    if @no_data
-      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
-    end
+    return unless @no_data
+
+    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize

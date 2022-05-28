@@ -149,20 +149,20 @@ class Initiative < ApplicationRecord
   end
 
   def assignee_can_moderate_initiatives
-    if assignee && !UserRoleService.new.can_moderate_initiatives?(assignee)
-      errors.add(
-        :assignee_id,
-        :assignee_can_not_moderate_initiatives,
-        message: 'The assignee can not moderate citizen initiatives'
-      )
-    end
+    return unless assignee && !UserRoleService.new.can_moderate_initiatives?(assignee)
+
+    errors.add(
+      :assignee_id,
+      :assignee_can_not_moderate_initiatives,
+      message: 'The assignee can not moderate citizen initiatives'
+    )
   end
 
   def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
-    if initial_status && initiative_status_changes.empty? && !draft?
-      initiative_status_changes.build(initiative_status: initial_status)
-    end
+    return unless initial_status && initiative_status_changes.empty? && !draft?
+
+    initiative_status_changes.build(initiative_status: initial_status)
   end
 end
 

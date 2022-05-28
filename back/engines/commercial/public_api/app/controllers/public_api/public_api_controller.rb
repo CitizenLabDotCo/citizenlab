@@ -29,9 +29,9 @@ module PublicApi
     end
 
     def check_api_token
-      unless current_publicapi_apiclient
-        head :unauthorized
-      end
+      return if current_publicapi_apiclient
+
+      head :unauthorized
     end
   end
 end

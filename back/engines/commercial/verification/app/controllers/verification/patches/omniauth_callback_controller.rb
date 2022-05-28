@@ -10,10 +10,9 @@ module Verification
       def handle_verification(auth, user)
         configuration = AppConfiguration.instance
         return unless configuration.feature_activated?('verification')
+        return unless verification_service.is_active?(configuration, auth.provider)
 
-        if verification_service.is_active?(configuration, auth.provider)
-          verification_service.verify_omniauth(auth: auth, user: user)
-        end
+        verification_service.verify_omniauth(auth: auth, user: user)
       end
 
       def verification_callback(verification_method)

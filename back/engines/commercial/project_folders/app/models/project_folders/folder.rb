@@ -59,9 +59,9 @@ module ProjectFolders
       # Built-in presence validation does not work.
       # Admin publication must always be present
       # once the folder was created.
-      if id.present? && admin_publication&.id.blank?
-        errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
-      end
+      return unless id.present? && admin_publication&.id.blank?
+
+      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
     end
 
     def generate_slug

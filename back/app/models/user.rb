@@ -382,9 +382,9 @@ class User < ApplicationRecord
     return if email.blank?
 
     domain = email.split('@')&.last
-    if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-      errors.add(:email, :domain_blacklisted, value: domain)
-    end
+    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+
+    errors.add(:email, :domain_blacklisted, value: domain)
   end
 
   def validate_minimum_password_length

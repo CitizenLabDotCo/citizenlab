@@ -136,11 +136,11 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def update_user!(auth, user, authver_method)
-    if authver_method.respond_to? :updateable_user_attrs
-      attrs = authver_method.updateable_user_attrs
-      update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
-      user.update!(update_hash)
-    end
+    return unless authver_method.respond_to? :updateable_user_attrs
+
+    attrs = authver_method.updateable_user_attrs
+    update_hash = authver_method.profile_to_user_attrs(auth).slice(*attrs).compact
+    user.update!(update_hash)
   end
 
   private
@@ -148,12 +148,11 @@ class OmniauthCallbackController < ApplicationController
   # Return locale if a locale can be parsed from pathname which matches an app locale
   # and is not the default locale, otherwise return nil.
   def selected_locale(omniauth_params)
-    locales = AppConfiguration.instance.settings.dig('core', 'locales')
+    return unless omniauth_params['sso_pathname']
 
-    if omniauth_params['sso_pathname']
-      selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
-      return selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
-    end
+    locales = AppConfiguration.instance.settings.dig('core', 'locales')
+    selected_locale = omniauth_params['sso_pathname'].split('/', 2)[1].split('/')[0]
+    return selected_locale if selected_locale != locales.first && locales.include?(selected_locale)
   end
 
   def get_verification_method(_provider)

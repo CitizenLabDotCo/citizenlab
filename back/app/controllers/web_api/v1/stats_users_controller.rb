@@ -212,15 +212,15 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   private
 
   def render_no_data
-    if @no_data
-      render json: { series: { users: {} } }
-    end
+    return unless @no_data
+
+    render json: { series: { users: {} } }
   end
 
   def render_no_data_as_xlsx
-    if @no_data
-      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
-    end
+    return unless @no_data
+
+    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize

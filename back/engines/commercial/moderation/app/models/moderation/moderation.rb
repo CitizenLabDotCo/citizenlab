@@ -49,9 +49,9 @@ module Moderation
     end
 
     def source_record
-      if %w[Idea Initiative Comment].include? moderatable_type
-        moderatable_type.constantize.find(id)
-      end
+      return unless %w[Idea Initiative Comment].include? moderatable_type
+
+      moderatable_type.constantize.find(id)
     end
 
     def belongs_to(_preloaded = {})

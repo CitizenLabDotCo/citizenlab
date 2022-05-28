@@ -598,11 +598,6 @@ Style/ClassVars:
     - 'engines/commercial/user_custom_fields/app/controllers/user_custom_fields/web_api/v1/stats_users_controller.rb'
     - 'engines/free/volunteering/app/services/volunteering/xlsx_service.rb'
 
-# Offense count: 97
-# Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
-Style/GuardClause:
-  Enabled: false
-
 # Offense count: 16
 Style/MultilineBlockChain:
   Exclude:

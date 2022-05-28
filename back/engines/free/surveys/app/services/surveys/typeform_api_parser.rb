@@ -23,9 +23,9 @@ module Surveys
       unless response.success?
         if [401, 403].include? response.code
           raise AuthorizationError.new(error_key: response.parsed_response['code'], description: response.parsed_response['description'])
-        else
-          raise "Unhandled Typeform API error: #{response.parsed_response}"
         end
+
+        raise "Unhandled Typeform API error: #{response.parsed_response}"
       end
       tf_form = response.parsed_response
       field_id_to_title = extract_field_titles(tf_form)

@@ -46,9 +46,9 @@ module Verification
 
           raise Pundit::NotAuthorizedError unless AppConfiguration.instance.feature_activated?('verification')
 
-          unless @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
-            raise Pundit::NotAuthorizedError
-          end
+          return if @ver_ser.active_methods(AppConfiguration.instance).include?(@verification_method)
+
+          raise Pundit::NotAuthorizedError
         end
       end
     end

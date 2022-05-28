@@ -26,14 +26,14 @@ module Polls::PollParticipationContext
   private
 
   def poll_questions_allowed_in_participation_method
-    if !poll? && poll_questions.present?
-      errors.add(:base, :cannot_contain_poll_questions, questions_count: poll_questions.size, message: 'cannot contain poll questions in the current non-poll participation context')
-    end
+    return unless !poll? && poll_questions.present?
+
+    errors.add(:base, :cannot_contain_poll_questions, questions_count: poll_questions.size, message: 'cannot contain poll questions in the current non-poll participation context')
   end
 
   def anonymous_immutable_after_responses
-    if poll_anonymous_changed? && poll_responses.any?
-      errors.add(:poll_anonymous, :cant_change_after_first_response, message: "can't change after the first response came in")
-    end
+    return unless poll_anonymous_changed? && poll_responses.any?
+
+    errors.add(:poll_anonymous, :cant_change_after_first_response, message: "can't change after the first response came in")
   end
 end
