@@ -454,14 +454,6 @@ Rails/OutputSafety:
     - 'engines/free/email_campaigns/app/mailers/email_campaigns/first_idea_published_mailer.rb'
     - 'engines/free/email_campaigns/app/mailers/email_campaigns/idea_published_mailer.rb'
 
-# Offense count: 1
-# This cop supports unsafe auto-correction (--auto-correct-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: conservative, aggressive
-Rails/PluckInWhere:
-  Exclude:
-    - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/your_proposed_initiatives_digest.rb'
-
 # Offense count: 52
 # This cop supports safe auto-correction (--auto-correct).
 Rails/RedundantPresenceValidationOnBelongsTo:
