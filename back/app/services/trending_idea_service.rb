@@ -16,7 +16,7 @@ class TrendingIdeaService
       .joins(:idea_status)
       .joins(:idea_trending_info)
       .select(
-        <<-SQL
+        <<-SQL.squish
           ideas.id,
           NOT (
             ideas.upvotes_count - ideas.downvotes_count < 0 OR
@@ -30,7 +30,7 @@ class TrendingIdeaService
     ideas
       .joins("INNER JOIN (#{sub_query.to_sql}) sub ON ideas.id = sub.id")
       .select(
-        <<-SQL
+        <<-SQL.squish
           ideas.*,
           CASE WHEN sub.is_trending THEN sub.score_abs ELSE (-1/sub.score_abs) END as trending_score
         SQL

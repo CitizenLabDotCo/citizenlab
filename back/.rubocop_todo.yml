@@ -436,15 +436,6 @@ Rails/ReversibleMigration:
 Rails/SkipsModelValidations:
   Enabled: false
 
-# Offense count: 7
-# This cop supports safe auto-correction (--auto-correct).
-Rails/SquishedSQLHeredocs:
-  Exclude:
-    - 'app/services/trending_idea_service.rb'
-    - 'db/migrate/20181011143305_add_unique_lower_email_index_to_users.rb'
-    - 'db/migrate/20220120154239_create_data_sources.insights.rb'
-    - 'engines/commercial/insights/db/migrate/20220120074543_create_data_sources.rb'
-
 # Offense count: 174
 # This cop supports safe auto-correction (--auto-correct).
 # Configuration parameters: EnforcedStyle.
