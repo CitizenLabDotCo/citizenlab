@@ -27,16 +27,6 @@ Gemspec/OrderedDependencies:
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
-# Offense count: 21
-# Configuration parameters: IgnoredMethods.
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'app/services/xlsx_service.rb'
-    - 'engines/commercial/idea_assignment/spec/services/side_fx_idea_spec.rb'
-    - 'engines/commercial/project_folders/spec/models/user_spec.rb'
-    - 'engines/free/polls/spec/acceptance/questions_spec.rb'
-    - 'spec/models/user_spec.rb'
-
 # Offense count: 6
 # Configuration parameters: IgnoreLiteralBranches, IgnoreConstantBranches.
 Lint/DuplicateBranch:
