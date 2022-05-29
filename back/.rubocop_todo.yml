@@ -410,18 +410,6 @@ Rails/LexicallyScopedActionFilter:
     - 'app/controllers/application_controller.rb'
     - 'app/controllers/web_api/v1/projects_controller.rb'
 
-# Offense count: 7
-# This cop supports unsafe auto-correction (--auto-correct-all).
-Rails/NegateInclude:
-  Exclude:
-    - 'app/models/notifications/mention_in_official_feedback.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/custom_field_date.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/custom_field_number.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/custom_field_select.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/custom_field_text.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/lives_in.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/registration_completed_at.rb'
-
 # Offense count: 6
 Rails/OutputSafety:
   Exclude:
