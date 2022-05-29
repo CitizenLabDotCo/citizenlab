@@ -27,17 +27,6 @@ Gemspec/OrderedDependencies:
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
-# Offense count: 6
-# Configuration parameters: IgnoreLiteralBranches, IgnoreConstantBranches.
-Lint/DuplicateBranch:
-  Exclude:
-    - 'app/models/idea.rb'
-    - 'app/services/participation_context_service.rb'
-    - 'app/services/user_role_service.rb'
-    - 'engines/commercial/flag_inappropriate_content/app/models/flag_inappropriate_content/email_campaigns/campaigns/inappropriate_content_flagged.rb'
-    - 'engines/commercial/user_custom_fields/app/controllers/user_custom_fields/web_api/v1/stats_users_controller.rb'
-    - 'engines/free/frontend/app/services/frontend/url_service.rb'
-
 # Offense count: 2
 Lint/MissingSuper:
   Exclude:

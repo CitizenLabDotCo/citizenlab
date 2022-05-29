@@ -131,7 +131,6 @@ class Idea < ApplicationRecord
   scope :order_with, lambda { |scope_name|
     case scope_name
     when 'random'   then order_random
-    when 'trending' then order_trending
     when 'popular'  then order_popular
     when 'new'      then order_new
     when '-new'     then order_new(:asc)
