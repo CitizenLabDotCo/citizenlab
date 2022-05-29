@@ -73,7 +73,7 @@ class ApplicationController < ActionController::API
   def page_links(collection)
     # Inspired by https://github.com/davidcelis/api-pagination/blob/master/lib/grape/pagination.rb
     pages = ApiPagination.send :pages_from, collection
-    links = pages.transform_values(&method(:build_link))
+    links = pages.transform_values { |number| build_link(number) }
     links[:self] = build_link collection.current_page
     links[:first] ||= build_link 1
     links[:last] ||= build_link [collection.total_pages, 1].max

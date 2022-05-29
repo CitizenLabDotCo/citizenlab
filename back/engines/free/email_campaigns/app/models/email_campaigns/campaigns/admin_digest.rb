@@ -149,14 +149,14 @@ module EmailCampaigns
         {
           project: serialize_project(project),
           current_phase: phase ? serialize_phase(phase) : nil,
-          top_ideas: top_ideas_grouped_by_project[project.id].map(&method(:serialize_idea))
+          top_ideas: top_ideas_grouped_by_project[project.id].map { |idea| serialize_idea(idea) }
         }
       end
     end
 
     def top_project_ids
       project_ideas_total_activity_sum = lambda { |project_id|
-        top_ideas_grouped_by_project[project_id].sum(&method(:total_idea_activity))
+        top_ideas_grouped_by_project[project_id].sum { |idea| total_idea_activity(idea) }
       }
 
       @top_project_ids ||= top_ideas_grouped_by_project.keys.sort_by(&project_ideas_total_activity_sum).reverse
@@ -173,14 +173,14 @@ module EmailCampaigns
     def active_ideas
       @active_ideas ||= published_ideas.then do |ideas|
         ideas.select { |idea| total_idea_activity(idea).positive? }
-          .sort_by(&method(:total_idea_activity))
+          .sort_by { |idea| total_idea_activity(idea) }
           .last(N_TOP_IDEAS)
       end
     end
 
     def new_ideas
       @new_ideas ||= published_ideas.where('published_at > ?', Time.now - days_ago)
-        .sort_by(&method(:total_idea_activity))
+        .sort_by { |idea| total_idea_activity(idea) }
         .last(N_TOP_IDEAS)
     end
 
@@ -204,7 +204,7 @@ module EmailCampaigns
       @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
         .order(published_at: :desc)
         .includes(:initiative_images)
-        .map(&method(:serialize_initiative))
+        .map { |initiative| serialize_initiative(initiative) }
     end
 
     def successful_initiatives(time: Time.zone.today)
@@ -215,7 +215,7 @@ module EmailCampaigns
         .where(initiative_statuses: { code: 'threshold_reached' })
         .where('initiative_status_changes.created_at > ?', time - 1.week)
         .feedback_needed
-        .map(&method(:serialize_initiative))
+        .map { |initiative| serialize_initiative(initiative) }
     end
 
     def ideas_activity_counts(ideas)
@@ -280,7 +280,7 @@ module EmailCampaigns
         upvotes_count: initiative.upvotes_count,
         comments_count: initiative.comments_count,
         threshold_reached_at: initiative.threshold_reached_at&.iso8601,
-        images: initiative.initiative_images.map(&method(:serialize_image)),
+        images: initiative.initiative_images.map { |image| serialize_image(image) },
         header_bg: { versions: version_urls(initiative.header_bg) }
       }
     end

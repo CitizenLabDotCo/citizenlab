@@ -122,13 +122,6 @@ Naming/PredicateName:
     - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/user_digest.rb'
     - 'engines/free/onboarding/app/services/onboarding/onboarding_service.rb'
 
-# Offense count: 10
-Performance/MethodObjectAsBlock:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/mailers/application_mailer.rb'
-    - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/admin_digest.rb'
-
 # Offense count: 39
 RSpec/AnyInstance:
   Enabled: false
