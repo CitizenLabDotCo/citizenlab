@@ -67,7 +67,7 @@ module Notifications
         recipient_id = official_feedback.post.author_id
         initiator_id = official_feedback&.user_id
 
-        if !InitiativeStatusChange.where(official_feedback: official_feedback).exists? && (recipient_id != initiator_id)
+        if !InitiativeStatusChange.exists?(official_feedback: official_feedback) && (recipient_id != initiator_id)
           [new(
             recipient_id: recipient_id,
             initiating_user_id: initiator_id,

@@ -514,18 +514,6 @@ Rails/WhereEquals:
     - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/registration_completed_at.rb'
     - 'engines/commercial/verification/lib/verification/smart_groups/rules/verified.rb'
 
-# Offense count: 5
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: exists, where
-Rails/WhereExists:
-  Exclude:
-    - 'app/models/common_password.rb'
-    - 'app/models/notifications/official_feedback_on_commented_initiative.rb'
-    - 'app/models/notifications/official_feedback_on_voted_initiative.rb'
-    - 'app/models/notifications/official_feedback_on_your_initiative.rb'
-    - 'app/policies/application_policy.rb'
-
 # Offense count: 2
 # This cop supports safe auto-correction (--auto-correct).
 Security/JSONLoad:
