@@ -462,19 +462,6 @@ Rails/UnknownEnv:
   Exclude:
     - 'config/initializers/carrierwave.rb'
 
-# Offense count: 13
-# This cop supports safe auto-correction (--auto-correct).
-Rails/WhereEquals:
-  Exclude:
-    - 'app/controllers/web_api/v1/invites_controller.rb'
-    - 'app/models/initiative.rb'
-    - 'app/services/posts_filtering_service.rb'
-    - 'engines/commercial/admin_api/app/services/admin_api/project_copy_service.rb'
-    - 'engines/commercial/flag_inappropriate_content/app/controllers/flag_inappropriate_content/patches/web_api/v1/moderations_controller.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/email.rb'
-    - 'engines/commercial/smart_groups/app/lib/smart_groups/rules/registration_completed_at.rb'
-    - 'engines/commercial/verification/lib/verification/smart_groups/rules/verified.rb'
-
 # Offense count: 2
 # This cop supports safe auto-correction (--auto-correct).
 Security/JSONLoad:

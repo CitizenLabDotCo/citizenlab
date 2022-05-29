@@ -21,9 +21,9 @@ class WebApi::V1::InvitesController < ApplicationController
       @invites = @invites.search_by_all(params[:search])
       # Started happening when moved from rails 5.1 -> 5.2
       # https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Table+Aliasing
-      @invites = @invites.where('invitees_invites.invite_status = ?', params[:invite_status]) if params[:invite_status].present?
+      @invites = @invites.where(invitees_invites: { invite_status: params[:invite_status] }) if params[:invite_status].present?
     elsif params[:invite_status].present?
-      @invites = @invites.where('users.invite_status = ?', params[:invite_status])
+      @invites = @invites.where(users: { invite_status: params[:invite_status] })
     end
 
     if params[:sort].present? && params[:search].blank?

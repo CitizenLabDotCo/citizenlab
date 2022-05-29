@@ -77,7 +77,7 @@ module SmartGroups::Rules
       when 'is_exactly'
         users_scope.where("registration_completed_at::date >= (?)::date AND registration_completed_at::date < ((?)::date + '1 day'::interval)", value, value)
       when 'is_empty'
-        users_scope.where('registration_completed_at IS NULL')
+        users_scope.where(registration_completed_at: nil)
       when 'not_is_empty'
         users_scope.where.not(registration_completed_at: nil)
       else

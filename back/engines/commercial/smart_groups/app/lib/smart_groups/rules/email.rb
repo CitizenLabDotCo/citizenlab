@@ -53,7 +53,7 @@ module SmartGroups::Rules
     def filter(users_scope)
       case predicate
       when 'is'
-        users_scope.where('email = ?', value)
+        users_scope.where(email: value)
       when 'not_is'
         users_scope.where('email IS NULL or email != ?', value)
       when 'contains'

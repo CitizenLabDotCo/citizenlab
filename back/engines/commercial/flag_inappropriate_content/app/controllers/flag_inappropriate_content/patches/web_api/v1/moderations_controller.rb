@@ -19,9 +19,9 @@ module FlagInappropriateContent
             return unless params.include? :is_flagged
 
             @moderations = if ActiveModel::Type::Boolean.new.cast params[:is_flagged]
-              @moderations.where(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
+              @moderations.where(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where(deleted_at: nil))
             else
-              @moderations.where.not(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
+              @moderations.where.not(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where(deleted_at: nil))
             end
           end
         end
