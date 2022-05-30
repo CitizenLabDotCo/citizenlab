@@ -64,7 +64,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
       <Box flex="0 0 100%">
         <Input
-          id="e2e-iframe-url-input"
+          id="e2e-content-builder-iframe-url-input"
           label={
             <span>
               {formatMessage(messages.iframeUrlLabel)}{' '}
@@ -114,7 +114,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 0 100%">
         <Input
           type="text"
-          id="iframeTitleInput"
+          id="e2e-content-builder-iframe-title-input"
           onChange={(value) => {
             setProp((props) => (props.title = value));
           }}

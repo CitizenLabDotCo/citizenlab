@@ -45,7 +45,7 @@ describe('Content builder Iframe component', () => {
     cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
-    cy.get('#e2e-iframe-url-input').type(
+    cy.get('#e2e-content-builder-iframe-url-input').type(
       // Typeform survey created in CitizenLab Methods Squad workspace specifically for e2e
       'https://citizenlabco.typeform.com/to/cZtXQzTf'
     );
@@ -63,7 +63,9 @@ describe('Content builder Iframe component', () => {
     });
 
     // Try invalid URL
-    cy.get('#e2e-iframe-url-input').clear().type('https://citizen');
+    cy.get('#e2e-content-builder-iframe-url-input')
+      .clear()
+      .type('https://citizen');
     cy.contains('Must provide a valid URL.').should('be.visible');
     // Check that save is disabled
     cy.contains('Save').should('be.disabled');
@@ -73,7 +75,9 @@ describe('Content builder Iframe component', () => {
       .should('have.css', 'border-color', 'rgb(214, 22, 7)');
 
     // Try URL for non-permitted source
-    cy.get('#e2e-iframe-url-input').clear().type('https://www.citizenlab.co');
+    cy.get('#e2e-content-builder-iframe-url-input')
+      .clear()
+      .type('https://www.citizenlab.co');
     cy.contains(
       'You cannot embed content from this website for security reasons'
     ).should('be.visible');
@@ -85,7 +89,7 @@ describe('Content builder Iframe component', () => {
       .should('have.css', 'border-color', 'rgb(214, 22, 7)');
 
     // Type valid URL
-    cy.get('#e2e-iframe-url-input')
+    cy.get('#e2e-content-builder-iframe-url-input')
       .clear()
       .type('https://citizenlabco.typeform.com/to/cZtXQzTf');
     // Check that save is enabled
