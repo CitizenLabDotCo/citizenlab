@@ -64,7 +64,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
       <Box flex="0 0 100%">
         <Input
-          id="e2e-iframe-url"
+          id="e2e-iframe-url-input"
           label={
             <span>
               {formatMessage(messages.iframeUrlLabel)}{' '}
@@ -94,7 +94,6 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Box flex="0 0 100%">
         <Input
-          id="e2e-iframe-height"
           label={
             <span>
               {formatMessage(messages.iframeHeightLabel)}{' '}

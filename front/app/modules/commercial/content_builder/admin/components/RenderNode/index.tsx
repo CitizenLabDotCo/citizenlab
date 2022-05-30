@@ -132,7 +132,7 @@ const RenderNode = ({ render }) => {
 
   return (
     <StyledBox
-      className="e2eRenderNode"
+      className="e2e-render-node"
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
