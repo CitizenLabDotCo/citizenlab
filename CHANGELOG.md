@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- [CL-667] Fixed many RuboCop offences
+
 ### Fixed
 
 - [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
