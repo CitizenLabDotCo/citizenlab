@@ -4,16 +4,6 @@ describe('Content builder Iframe component', () => {
   let projectId = '';
   let projectSlug = '';
 
-  const getIframeBody = () => {
-    return cy
-      .get('iframe')
-      .its('0.contentDocument')
-      .should('exist')
-      .its('body')
-      .should('not.be.undefined')
-      .then(cy.wrap);
-  };
-
   before(() => {
     cy.setAdminLoginCookie();
     cy.getAuthUser().then((user) => {
@@ -63,14 +53,14 @@ describe('Content builder Iframe component', () => {
     // Confirms that iframe displays correctly on live page
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.visit(`/projects/${projectSlug}`);
-    cy.wait(2000); // Load iframe
-    getIframeBody().get('h1').first().should('exist');
+    cy.get('#e2e-content-builder-iframe-component').should('exist');
   });
 
   it('handles Iframe errors correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.wait(5000); // Load iframe
-    cy.get('#e2e-content-builder-frame').click('center');
+    cy.get('#e2e-content-builder-iframe-component').click('center', {
+      force: true,
+    });
 
     // Try invalid URL
     cy.get('#e2e-iframe-url-input').clear().type('https://citizen');
@@ -111,7 +101,6 @@ describe('Content builder Iframe component', () => {
 
     cy.get('#e2e-content-builder-frame').click();
     cy.get('#e2e-delete-button').click();
-    cy.wait(2000); // Wait for iframe deletion
     cy.get('#e2e-content-builder-topbar-save').click();
 
     cy.visit(`/projects/${projectSlug}`);
