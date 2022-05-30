@@ -12,7 +12,7 @@ describe SideFxProjectService do
     it "sets the default_assignee to the user that creates the project if it's not a super admin" do
       create(:super_admin)
       create(:admin)
-      create(:admin)
+      admin2 = create(:admin)
       expect { service.before_create(project, admin2) }.to change(project, :default_assignee)
         .from(nil).to(admin2)
     end
