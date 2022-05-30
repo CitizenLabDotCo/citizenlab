@@ -61,13 +61,11 @@ module UserCustomFields
             }
           end
 
-          unless counts.empty?
-            res.push(
-              'area_id' => '_blank',
-              'area' => 'unknown',
-              'users' => counts['_blank']
-            )
-          end
+          res.push(
+            'area_id' => '_blank',
+            'area' => 'unknown',
+            'users' => counts['_blank']
+          )
 
           xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
           send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
