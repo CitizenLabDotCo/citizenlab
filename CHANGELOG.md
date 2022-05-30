@@ -2,10 +2,13 @@
 
 ## Next release
 
+## 2022-05-30
+
 ### Fixed
 
 - [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
 - [CL-790] Events date picker now has the correct date format for US-based tenants
+- [CL-832] Remove enable/disable toggle from title and description fields in the idea form
 
 ### Added
 
