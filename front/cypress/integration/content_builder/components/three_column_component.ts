@@ -63,16 +63,9 @@ describe('Content builder Three Column component', () => {
     cy.get('div#e2e-single-column').should('have.length', 3); // Only original container columns
     cy.get('#e2e-two-column').should('not.exist');
     cy.get('#e2e-three-column').should('have.length', 1); // Only original container
-    cy.get('#e2e-content-builder-topbar-save').click();
 
     // Permitted components added to all columns
-    cy.get('#e2e-draggable-iframe').dragAndDrop('div#e2e-single-column', {
-      position: 'inside',
-    });
     cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-image').dragAndDrop('div#e2e-single-column', {
       position: 'inside',
     });
     cy.get('#e2e-draggable-text').dragAndDrop('div#e2e-single-column', {
@@ -81,12 +74,14 @@ describe('Content builder Three Column component', () => {
 
     cy.get('div#e2e-text-box').should('have.length', 3);
     cy.get('div#e2e-about-box').should('have.length', 3);
-    cy.get('div#e2e-iframe').should('have.length', 3);
-    cy.get('div#e2e-image').should('have.length', 3);
 
-    // Check column exists on live page
+    cy.get('#e2e-content-builder-topbar-save').click();
+
+    // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-three-column').should('exist');
+    cy.get('div#e2e-text-box').should('have.length', 3);
+    cy.get('div#e2e-about-box').should('have.length', 3);
   });
 
   it('deletes Three Column component correctly', () => {

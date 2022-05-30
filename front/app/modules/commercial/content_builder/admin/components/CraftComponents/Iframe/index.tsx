@@ -24,7 +24,7 @@ interface Props {
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
   return (
-    <Box id="e2e-iframe" minHeight="26px">
+    <Box id="e2e-content-builder-iframe-component" minHeight="26px">
       {!hasError && url && (
         <iframe src={url} title={title} width="100%" height={height} />
       )}

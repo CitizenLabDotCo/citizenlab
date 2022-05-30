@@ -81,7 +81,7 @@ describe('Content builder Container component', () => {
 
     cy.get('#e2e-text-box').should('exist');
     cy.get('#e2e-about-box').should('exist');
-    cy.get('#e2e-iframe').should('exist');
+    cy.get('#e2e-content-builder-iframe-component').should('exist');
     cy.get('#e2e-image').should('exist');
 
     // Check column exists on live page

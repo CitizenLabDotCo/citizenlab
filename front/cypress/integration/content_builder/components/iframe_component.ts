@@ -69,7 +69,7 @@ describe('Content builder Iframe component', () => {
 
   it('handles Iframe errors correctly', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.wait(3000); // Load iframe
+    cy.wait(5000); // Load iframe
     cy.get('#e2e-content-builder-frame').click('center');
 
     // Try invalid URL
@@ -107,7 +107,7 @@ describe('Content builder Iframe component', () => {
   });
 
   it('deletes Iframe component correctly', () => {
-    cy.get('#e2e-iframe').should('exist');
+    cy.get('#e2e-content-builder-iframe-component').should('exist');
 
     cy.get('#e2e-content-builder-frame').click();
     cy.get('#e2e-delete-button').click();
@@ -115,6 +115,6 @@ describe('Content builder Iframe component', () => {
     cy.get('#e2e-content-builder-topbar-save').click();
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-iframe').should('not.exist');
+    cy.get('#e2e-content-builder-iframe-component').should('not.exist');
   });
 });
