@@ -35,16 +35,5 @@ FactoryBot.define do
         end
       end
     end
-
-    factory :idea_with_areas do
-      transient do
-        areas_count { 2 }
-      end
-      after(:create) do |idea, evaluator|
-        evaluator.areas_count.times do |_i|
-          idea.areas << create(:area)
-        end
-      end
-    end
   end
 end

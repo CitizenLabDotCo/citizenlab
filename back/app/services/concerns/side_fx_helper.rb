@@ -2,7 +2,7 @@
 
 module SideFxHelper
   def clean_time_attributes(hash)
-    hash.map do |k, v|
+    hash.to_h do |k, v|
       case v
       when Time
         [k, v.to_i]
@@ -11,7 +11,7 @@ module SideFxHelper
       else
         [k, v]
       end
-    end.to_h
+    end
   end
 
   # We can't pass a GlobalID of a deleted resource, since ActiveJob evaluates

@@ -13,15 +13,15 @@ module AdminApi
     delegate :host, :settings, :style, to: :configuration
 
     def logo
-      configuration.logo && configuration.logo.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      configuration.logo && configuration.logo.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     def header_bg
-      configuration.header_bg && configuration.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      configuration.header_bg && configuration.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     def favicon
-      configuration.favicon && configuration.favicon.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      configuration.favicon && configuration.favicon.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     def configuration

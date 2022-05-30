@@ -1,8 +1,31 @@
 # Changelog
 
-## Next Release
+## Next release
 
-### 2022-05-20
+### Fixed
+
+- [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
+- [CL-790] Events date picker now has the correct date format for US-based tenants
+
+### Added
+
+- [CL-729] Do not show proposals navbar item if corresponding feature is disabled
+
+## 2022-05-26_2
+
+### Fixed
+
+- [CL-758] Fix custom field option ordering for dashboard charts
+
+## 2022-05-26
+
+### Fixed
+
+- [CL-788] Fixed issue with different URL when sharing idea from map vs list view
+
+## 2022-05-20
+
+### Fixed
 
 - [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
 
