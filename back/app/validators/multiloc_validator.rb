@@ -14,7 +14,7 @@ class MultilocValidator < ActiveModel::EachValidator
 
   def validate_presence(record, attribute, value)
     if (options[:presence] && !value.is_a?(Hash)) || (!options[:presence] && !(value.is_a?(Hash) || value.nil?))
-      record.errors[attribute] << (options[:message] || 'is not a translation hash')
+      record.errors.add attribute, (options[:message] || 'is not a translation hash')
       return
     end
 

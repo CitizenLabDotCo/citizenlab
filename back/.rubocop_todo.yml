@@ -356,11 +356,6 @@ Rails/Date:
     - 'engines/commercial/smart_groups/spec/rules/custom_field_date_spec.rb'
     - 'engines/commercial/smart_groups/spec/rules/registration_completed_at_spec.rb'
 
-# Offense count: 1
-Rails/DeprecatedActiveModelErrorsMethods:
-  Exclude:
-    - 'app/validators/multiloc_validator.rb'
-
 # Offense count: 4
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: slashes, arguments
