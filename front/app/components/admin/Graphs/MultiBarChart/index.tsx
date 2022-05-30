@@ -63,7 +63,7 @@ export interface Props {
   innerRef?: RefObject<any>;
 }
 
-const BarChart = ({
+const MultiBarChart = ({
   width,
   height,
   data,
@@ -115,6 +115,8 @@ const BarChart = ({
         layout={rechartsLayout}
         margin={margin}
         ref={innerRef}
+        barGap={0}
+        barCategoryGap={bars?.categoryGap}
       >
         {renderTooltip &&
           renderTooltip({
@@ -168,4 +170,4 @@ const BarChart = ({
   );
 };
 
-export default BarChart;
+export default MultiBarChart;
