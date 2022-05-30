@@ -26,7 +26,7 @@ const configuration: ModuleConfiguration = {
         element: <CustomNavbarContainer />,
         children: [
           {
-            index: true,
+            path: '',
             element: <CustomNavbarSettingsComponent />,
           },
           {
