@@ -31,7 +31,9 @@ const Accordion = ({ text, title, openByDefault }) => {
         isOpenByDefault={openByDefault}
         title={
           <Box display="flex">
-            <Title variant="h3">{title}</Title>
+            <Title variant="h3" color="colorText">
+              {title}
+            </Title>
           </Box>
         }
       >

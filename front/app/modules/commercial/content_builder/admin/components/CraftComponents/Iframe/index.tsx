@@ -24,7 +24,7 @@ interface Props {
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
   return (
-    <Box minHeight="26px">
+    <Box id="e2e-content-builder-iframe-component" minHeight="26px">
       {!hasError && url && (
         <iframe src={url} title={title} width="100%" height={height} />
       )}
@@ -64,6 +64,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
       <Box flex="0 0 100%">
         <Input
+          id="e2e-content-builder-iframe-url-input"
           label={
             <span>
               {formatMessage(messages.iframeUrlLabel)}{' '}
@@ -113,7 +114,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
       <Box flex="0 0 100%">
         <Input
           type="text"
-          id="iframeTitleInput"
+          id="e2e-content-builder-iframe-title-input"
           onChange={(value) => {
             setProp((props) => (props.title = value));
           }}
