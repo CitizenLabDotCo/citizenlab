@@ -1,6 +1,4 @@
 import React, { lazy } from 'react';
-// import adminRoutes from 'containers/Admin/routes';
-// import moduleConfiguration from 'modules';
 import LoadingComponent from 'components/UI/Loading';
 import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';

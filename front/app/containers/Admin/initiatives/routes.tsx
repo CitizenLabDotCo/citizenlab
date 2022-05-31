@@ -5,7 +5,7 @@ const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
 
 const AdminInitiativesManage = lazy(() => import('./manage'));
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 const createAdminInitiativesRoutes = () => ({
   path: 'initiatives',
   element: (

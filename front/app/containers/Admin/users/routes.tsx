@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 
 const createAdminUsersRoutes = () => ({
   path: 'users',

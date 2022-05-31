@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = React.lazy(() => import('./index'));

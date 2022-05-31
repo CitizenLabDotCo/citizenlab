@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 
 const AdminInvitationsContainerComponent = React.lazy(() => import('.'));
 const AdminInvitationsInviteComponent = React.lazy(() => import('./invite'));

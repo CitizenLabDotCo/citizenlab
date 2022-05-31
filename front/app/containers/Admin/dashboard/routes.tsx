@@ -4,7 +4,7 @@ const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
 
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 
 const createAdminDashboardRoutes = () => {
   return {

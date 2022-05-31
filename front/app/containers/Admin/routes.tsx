@@ -14,7 +14,7 @@ import ideasRoutes from './ideas/routes';
 import moduleConfiguration from 'modules';
 
 // components
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminWorkshopsComponent = lazy(

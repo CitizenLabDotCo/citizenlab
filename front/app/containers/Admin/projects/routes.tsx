@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));

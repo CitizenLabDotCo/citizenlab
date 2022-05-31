@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import moduleConfiguration from 'modules';
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 
 const AdminSettingsIndexComponent = React.lazy(
   () => import('containers/Admin/settings')

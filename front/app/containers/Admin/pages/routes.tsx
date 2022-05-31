@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoadingComponent } from 'routes';
+import LoadingComponent from 'components/UI/Loading';
 
 const AdminPagesIndexComponent = React.lazy(() => import('.'));
 const AdminPagesAllComponent = React.lazy(() => import('./All'));
