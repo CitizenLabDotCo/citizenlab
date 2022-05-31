@@ -81,10 +81,10 @@ module Verification
       raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
 
       uid = if method.respond_to?(:profile_to_uid)
-              method.profile_to_uid(auth)
-            else
-              auth['uid']
-            end
+        method.profile_to_uid(auth)
+      else
+        auth['uid']
+      end
       make_verification(user: user, method_name: method.name, uid: uid)
     end
 
@@ -140,8 +140,8 @@ module Verification
         active: true,
         hashed_uid: hashed_uid(uid, method_name)
       )
-                                  .where.not(user: user)
-                                  .exists?
+        .where.not(user: user)
+        .exists?
     end
 
     def hashed_uid(uid, method_name)

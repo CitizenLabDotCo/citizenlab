@@ -16,7 +16,8 @@ class BaseSideFxService
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_resource),
       'deleted', user, Time.now.to_i,
-      payload: { resource_name => serialized_resource })
+      payload: { resource_name => serialized_resource }
+    )
   end
 
   private

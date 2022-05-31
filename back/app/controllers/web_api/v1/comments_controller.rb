@@ -19,19 +19,19 @@ class WebApi::V1::CommentsController < ApplicationController
       .includes(*include_attrs)
 
     root_comments = case params[:sort]
-      when 'new'
-        root_comments.order(created_at: :desc)
-      when '-new'
-        root_comments.order(created_at: :asc)
-      when 'upvotes_count'
-        root_comments.order(upvotes_count: :asc, lft: :asc)
-      when '-upvotes_count'
-        root_comments.order(upvotes_count: :desc, lft: :asc)
-      when nil
-        root_comments.order(lft: :asc)
-      else
-        raise 'Unsupported sort method'
-      end
+    when 'new'
+      root_comments.order(created_at: :desc)
+    when '-new'
+      root_comments.order(created_at: :asc)
+    when 'upvotes_count'
+      root_comments.order(upvotes_count: :asc, lft: :asc)
+    when '-upvotes_count'
+      root_comments.order(upvotes_count: :desc, lft: :asc)
+    when nil
+      root_comments.order(lft: :asc)
+    else
+      raise 'Unsupported sort method'
+    end
     root_comments = paginate root_comments
 
     fully_expanded_root_comments = Comment.where(id: root_comments)

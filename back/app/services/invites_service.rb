@@ -259,8 +259,8 @@ class InvitesService
       fail_now
     else
       invites = hash_array.map do |invite_params|
-      build_invite(invite_params, default_params, inviter)
-    end
+        build_invite(invite_params, default_params, inviter)
+      end
 
       invitees = invites.map(&:invitee)
       UserSlugService.new.generate_slugs(invitees)
@@ -293,8 +293,8 @@ class InvitesService
     invites.each_with_object(Hash.new { [] }).with_index do |(invite, object), index|
       object[invite.invitee.email] += [index]
     end
-    .select { |email, row_indexes| email && row_indexes.size > 1 }
-    .each do |email, row_indexes|
+      .select { |email, row_indexes| email && row_indexes.size > 1 }
+      .each do |email, row_indexes|
       add_error(:emails_duplicate, rows: row_indexes, value: email)
     end
     # run validations

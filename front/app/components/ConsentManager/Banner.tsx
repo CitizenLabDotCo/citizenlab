@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
@@ -103,7 +103,7 @@ const ButtonContainer = styled.div`
   `}
 `;
 
-const PreferencesButton = styled(Button)`
+const AcceptButton = styled(Button)`
   margin-right: 10px;
 
   ${media.smallerThanMinTablet`
@@ -112,16 +112,16 @@ const PreferencesButton = styled(Button)`
   `}
 
   ${isRtl`
-    margin-right: 0;
+    margin-right: 0px;
     margin-left: 10px;
 
     ${media.smallerThanMinTablet`
-        margin-left: 0px;
+      margin-left: 0px;
     `}
   `}
 `;
 
-const AcceptButton = styled(Button)`
+const PreferencesButton = styled(Button)`
   ${media.smallerThanMinTablet`
     margin-right: 10px;
     order: 1;
@@ -146,63 +146,58 @@ interface Props {
   onChangePreferences: () => void;
 }
 
-class Banner extends PureComponent<Props> {
-  render() {
-    const { onAccept, onChangePreferences } = this.props;
-
-    const policyLink = (
-      <StyledLink to="/pages/cookie-policy">
-        <FormattedMessage {...messages.policyLink} />
-      </StyledLink>
-    );
-
-    return (
-      <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
-        <ContentContainer mode="page">
-          <ContentContainerInner>
-            <Left>
-              <Line className="first">
-                <FormattedMessage
-                  {...messages.mainText}
-                  values={{ policyLink }}
-                />
-              </Line>
-              <Line className="second">
-                <FormattedMessage {...messages.subText} />
-              </Line>
-            </Left>
-            <ButtonContainer>
-              <PreferencesButton
-                borderColor="transparent"
-                textColor="#fff"
-                bgColor={colors.adminTextColor}
-                bgHoverColor={rgba(255, 255, 255, 0.15)}
-                onClick={onChangePreferences}
-                className="integration-open-modal"
-              >
-                <FormattedMessage {...messages.manage} />
-              </PreferencesButton>
-              <AcceptButton
-                className="e2e-accept-cookies-btn"
-                buttonStyle="primary-inverse"
-                textColor={colors.adminTextColor}
-                textHoverColor={colors.adminTextColor}
-                onClick={onAccept}
-              >
-                <FormattedMessage {...messages.accept} />
-              </AcceptButton>
-            </ButtonContainer>
-          </ContentContainerInner>
-        </ContentContainer>
-        <StyledCloseIconButton
-          a11y_buttonActionMessage={messages.ariaButtonClose}
-          onClick={onAccept}
-          iconColor={rgba(255, 255, 255, 0.7)}
-          iconColorOnHover={'#fff'}
-        />
-      </Container>
-    );
-  }
-}
+const Banner = ({ onAccept, onChangePreferences }: Props) => {
+  return (
+    <Container tabIndex={0} role="dialog" id="e2e-cookie-banner">
+      <ContentContainer mode="page">
+        <ContentContainerInner>
+          <Left>
+            <Line className="first">
+              <FormattedMessage
+                {...messages.mainText}
+                values={{
+                  policyLink: (
+                    <StyledLink to="/pages/cookie-policy">
+                      <FormattedMessage {...messages.policyLink} />
+                    </StyledLink>
+                  ),
+                }}
+              />
+            </Line>
+            <Line className="second">
+              <FormattedMessage {...messages.subText} />
+            </Line>
+          </Left>
+          <ButtonContainer>
+            <AcceptButton
+              className="e2e-accept-cookies-btn"
+              buttonStyle="primary-inverse"
+              textColor={colors.adminTextColor}
+              textHoverColor={colors.adminTextColor}
+              onClick={onAccept}
+            >
+              <FormattedMessage {...messages.accept} />
+            </AcceptButton>
+            <PreferencesButton
+              className="integration-open-modal"
+              buttonStyle="primary-inverse"
+              textColor={colors.adminTextColor}
+              textHoverColor={colors.adminTextColor}
+              onClick={onChangePreferences}
+            >
+              <FormattedMessage {...messages.manage} />
+            </PreferencesButton>
+          </ButtonContainer>
+        </ContentContainerInner>
+      </ContentContainer>
+      <StyledCloseIconButton
+        a11y_buttonActionMessage={messages.ariaButtonClose}
+        onClick={onAccept}
+        iconColor={rgba(255, 255, 255, 0.7)}
+        iconColorOnHover={'#fff'}
+      />
+    </Container>
+  );
+};
 
 export default Banner;

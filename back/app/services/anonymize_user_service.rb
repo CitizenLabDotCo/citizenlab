@@ -101,8 +101,9 @@ class AnonymizeUserService
   def random_custom_field_values(user: nil)
     custom_field_values = {}
     if user
+      properties = %w[gender education birthyear]
       user[:custom_field_values].each do |property, value|
-        if %w[gender education birthyear].include? property
+        if properties.include? property
           custom_field_values[property] = value
         end
       end
@@ -194,23 +195,24 @@ class AnonymizeUserService
   end
 
   def random_bio(locales)
-    locales.map do |locale|
-      bio = case %w[greek hipster movie rick_and_morty game_of_thrones nil].sample
-            when 'greek'
-              Faker::GreekPhilosophers.quote
-            when 'hipster'
-              Faker::Hipster.paragraph
-            when 'movie'
-              Faker::Movie.quote
-            when 'rick_and_morty'
-              Faker::TvShows::RickAndMorty.quote
-            when 'game_of_thrones'
-              Faker::TvShows::GameOfThrones.quote
-            when 'nil'
-              ''
-            end
+    bios = %w[greek hipster movie rick_and_morty game_of_thrones nil]
+    locales.to_h do |locale|
+      bio = case bios.sample
+      when 'greek'
+        Faker::GreekPhilosophers.quote
+      when 'hipster'
+        Faker::Hipster.paragraph
+      when 'movie'
+        Faker::Movie.quote
+      when 'rick_and_morty'
+        Faker::TvShows::RickAndMorty.quote
+      when 'game_of_thrones'
+        Faker::TvShows::GameOfThrones.quote
+      when 'nil'
+        ''
+      end
       [locale, bio]
-    end.to_h
+    end
   end
 
   def random_registration(user: nil, start_at: (Time.now - 1.month))

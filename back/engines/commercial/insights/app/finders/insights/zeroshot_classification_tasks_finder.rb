@@ -25,7 +25,7 @@ module Insights
       return tasks if inputs.nil?
 
       tasks.joins(:tasks_inputs)
-           .where('insights_zeroshot_classification_tasks_inputs.input_id' => [inputs])
+        .where('insights_zeroshot_classification_tasks_inputs.input_id' => [inputs])
     end
   end
 end

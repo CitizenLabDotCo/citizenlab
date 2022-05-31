@@ -227,8 +227,8 @@ describe Insights::InputsFinder do
 
         it 'does not order inputs by approval status' do
           is_ordered = finder_result
-                         .order_values
-                         .any? { |o| o.to_sql.include?('"insights_category_assignments"."approved"') }
+            .order_values
+            .any? { |o| o.to_sql.include?('"insights_category_assignments"."approved"') }
           expect(is_ordered).to be false
         end
       end

@@ -121,7 +121,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_project
     serie = comments_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { comments: serie }, projects: projects.map { |p| [p.id, p.attributes.except('id')] }.to_h }
+    render json: { series: { comments: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } }
   end
 
   def comments_by_project_as_xlsx
@@ -171,15 +171,15 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def render_no_data
-    if @no_data
-      render json: { series: { comments: {} } }
-    end
+    return unless @no_data
+
+    render json: { series: { comments: {} } }
   end
 
   def render_no_data_as_xlsx
-    if @no_data
-      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
-    end
+    return unless @no_data
+
+    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize

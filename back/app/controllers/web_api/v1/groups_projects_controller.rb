@@ -14,7 +14,7 @@ class WebApi::V1::GroupsProjectsController < ApplicationController
     when '-new'
       @groups_projects.order_new(:asc)
     when nil
-       @groups_projects
+      @groups_projects
     else
       raise 'Unsupported sort method'
     end

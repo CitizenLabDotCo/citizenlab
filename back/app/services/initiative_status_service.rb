@@ -92,9 +92,9 @@ class InitiativeStatusService
     return [] unless initiative.initiative_status_id
 
     codes = MANUAL_TRANSITIONS[initiative.initiative_status.code]
-    InitiativeStatus.where(code: codes.keys).pluck(:code, :id).map do |code, id|
+    InitiativeStatus.where(code: codes.keys).pluck(:code, :id).to_h do |code, id|
       [id, codes[code]]
-    end.to_h
+    end
   end
 
   def transition_type(initiative_status)
@@ -111,8 +111,8 @@ class InitiativeStatusService
 
   def log_status_change(change, user: nil)
     LogActivityJob.perform_later(change.initiative, 'changed_status', user, change.created_at.to_i)
-    if change.initiative_status.code == 'threshold_reached'
-      LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)
-    end
+    return unless change.initiative_status.code == 'threshold_reached'
+
+    LogActivityJob.perform_later(change.initiative, 'reached_threshold', user, change.created_at.to_i)
   end
 end

@@ -10,7 +10,7 @@ class WebApi::V1::MemberSerializer < WebApi::V1::BaseSerializer
   attribute :avatar, if: proc { |object|
     object.avatar
   } do |object|
-    object.avatar.versions.map { |k, v| [k.to_s, v.url] }.to_h
+    object.avatar.versions.to_h { |k, v| [k.to_s, v.url] }
   end
 
   attribute :is_member, if: proc { |_object, params|

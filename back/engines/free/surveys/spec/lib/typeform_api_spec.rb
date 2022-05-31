@@ -27,12 +27,12 @@ describe Surveys::Typeform::Api do
     it 'creates a webhooks' do
       stub_request(:put, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
-           body: "{\"url\":\"#{webhook_url}\",\"enabled\":true,\"secret\":\"wontsay\"}",
-           headers: {
-            'Authorization' => "Bearer #{token}",
-            'Content-Type' => 'application/json'
-           }
-         )
+          body: "{\"url\":\"#{webhook_url}\",\"enabled\":true,\"secret\":\"wontsay\"}",
+          headers: {
+           'Authorization' => "Bearer #{token}",
+           'Content-Type' => 'application/json'
+          }
+        )
         .to_return(
           status: 200,
           body: '{"created_at": "2019-01-17T13:55:57.391777Z", "enabled": true, "form_id": "USLYB6", "id": "01D1E1HMTEYSY2XVDPZTYVT823", "tag": "test-hook", "updated_at": "2019-01-17T13:58:33.45316Z", "url": "http://some.fake.url/hooks/typeform", "verify_ssl": false}',
@@ -58,11 +58,11 @@ describe Surveys::Typeform::Api do
     it 'deletes a webhook' do
       stub_request(:delete, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
-           headers: {
-            'Authorization' => "Bearer #{token}"
-           }
-         )
-         .to_return(status: 204, body: '', headers: {})
+          headers: {
+           'Authorization' => "Bearer #{token}"
+          }
+        )
+        .to_return(status: 204, body: '', headers: {})
 
       response = api.delete_webhook(form_id: form_id, tag: 'test-hook')
       expect(response.success?).to be true
@@ -192,60 +192,61 @@ describe Surveys::Typeform::Api do
   describe 'form' do
     let(:form_body) do
       {
-      'id' => 'USLYB6',
-      'title' => 'webhooks dev',
-      'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },
-      'workspace' => { 'href' => 'https://api.typeform.com/workspaces/9jt4CG' },
-      'settings' =>
-      { 'is_public' => true,
-       'is_trial' => false,
-       'language' => 'en',
-       'progress_bar' => 'proportion',
-       'show_progress_bar' => false,
-       'show_typeform_branding' => true,
-       'meta' => { 'allow_indexing' => false } },
-      'welcome_screens' =>
-      [{ 'ref' => 'cd813ca7-1647-4ec1-9910-376e095423c4',
-        'title' => 'Welcome!',
-        'properties' => { 'show_button' => true, 'button_text' => 'Start' } }],
-      'thankyou_screens' =>
-      [{ 'ref' => 'default_tys',
-        'title' => 'Done! Your information was sent perfectly.',
-        'properties' => { 'show_button' => false, 'share_icons' => false } }],
-      'fields' =>
-      [{ 'id' => 'IspfFyBxDu9D',
-        'title' => 'What is your name?',
-        'ref' => '60f27960-ee4f-4720-b93b-a9ff3c2488cd',
-        'validations' => { 'required' => false },
-        'type' => 'short_text' },
-       { 'id' => 'xlqRjVwtd5En',
-        'title' => 'How tall are you?',
-        'ref' => '7eb52f7c-153d-46d4-8dcc-d555599e43ff',
-        'properties' =>
-         { 'randomize' => false,
-          'allow_multiple_selection' => false,
-          'allow_other_choice' => false,
-          'vertical_alignment' => true,
-          'choices' =>
-           [{ 'id' => 'HncIN75Kbyjx',
-             'ref' => 'a0d6675b-db4d-4ae2-9613-181a32739537',
-             'label' => 'mini' },
-            { 'id' => 'Ju2T7idNmas0',
-             'ref' => 'e32f3ec8-f3cd-4f3c-9b0a-9a5493ad928d',
-             'label' => 'short' },
-            { 'id' => 'a04OR7HAe67Y',
-             'ref' => 'd9973f3a-bc29-4138-b30f-04de21b3d3e3',
-             'label' => 'medium' },
-            { 'id' => 'ZMZs51iA4JMh',
-             'ref' => '47b4485a-760f-4297-9ef4-d8a3056ca006',
-             'label' => 'tall' },
-            { 'id' => 'W8dCYa08HFAK',
-             'ref' => 'fcd68aaf-a7f6-46c5-a408-3b1626795353',
-             'label' => 'giant' }] },
-        'validations' => { 'required' => false },
-        'type' => 'multiple_choice' }],
-      '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
-    } end
+        'id' => 'USLYB6',
+        'title' => 'webhooks dev',
+        'theme' => { 'href' => 'https://api.typeform.com/themes/6lPNE6' },
+        'workspace' => { 'href' => 'https://api.typeform.com/workspaces/9jt4CG' },
+        'settings' =>
+        { 'is_public' => true,
+        'is_trial' => false,
+        'language' => 'en',
+        'progress_bar' => 'proportion',
+        'show_progress_bar' => false,
+        'show_typeform_branding' => true,
+        'meta' => { 'allow_indexing' => false } },
+        'welcome_screens' =>
+        [{ 'ref' => 'cd813ca7-1647-4ec1-9910-376e095423c4',
+          'title' => 'Welcome!',
+          'properties' => { 'show_button' => true, 'button_text' => 'Start' } }],
+        'thankyou_screens' =>
+        [{ 'ref' => 'default_tys',
+          'title' => 'Done! Your information was sent perfectly.',
+          'properties' => { 'show_button' => false, 'share_icons' => false } }],
+        'fields' =>
+        [{ 'id' => 'IspfFyBxDu9D',
+          'title' => 'What is your name?',
+          'ref' => '60f27960-ee4f-4720-b93b-a9ff3c2488cd',
+          'validations' => { 'required' => false },
+          'type' => 'short_text' },
+         { 'id' => 'xlqRjVwtd5En',
+           'title' => 'How tall are you?',
+           'ref' => '7eb52f7c-153d-46d4-8dcc-d555599e43ff',
+           'properties' =>
+           { 'randomize' => false,
+             'allow_multiple_selection' => false,
+             'allow_other_choice' => false,
+             'vertical_alignment' => true,
+             'choices' =>
+             [{ 'id' => 'HncIN75Kbyjx',
+               'ref' => 'a0d6675b-db4d-4ae2-9613-181a32739537',
+               'label' => 'mini' },
+              { 'id' => 'Ju2T7idNmas0',
+              'ref' => 'e32f3ec8-f3cd-4f3c-9b0a-9a5493ad928d',
+              'label' => 'short' },
+              { 'id' => 'a04OR7HAe67Y',
+              'ref' => 'd9973f3a-bc29-4138-b30f-04de21b3d3e3',
+              'label' => 'medium' },
+              { 'id' => 'ZMZs51iA4JMh',
+              'ref' => '47b4485a-760f-4297-9ef4-d8a3056ca006',
+              'label' => 'tall' },
+              { 'id' => 'W8dCYa08HFAK',
+              'ref' => 'fcd68aaf-a7f6-46c5-a408-3b1626795353',
+              'label' => 'giant' }] },
+           'validations' => { 'required' => false },
+           'type' => 'multiple_choice' }],
+        '_links' => { 'display' => 'https://citizenlabco.typeform.com/to/USLYB6' }
+      }
+    end
 
     it 'gets a form' do
       stub_request(:get, "https://api.typeform.com/forms/#{form_id}")

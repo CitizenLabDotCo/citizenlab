@@ -2,9 +2,9 @@
 
 class PublicApi::V1::ApiTokenController < Knock::AuthTokenController
   def authenticate
-    unless entity.present? && entity.authenticate(auth_params[:client_secret])
-      raise Knock.not_found_exception_class
-    end
+    return if entity.present? && entity.authenticate(auth_params[:client_secret])
+
+    raise Knock.not_found_exception_class
   end
 
   def entity_name

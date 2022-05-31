@@ -49,23 +49,19 @@ resource 'Stats - Ideas' do
 
     @project1 = create(:project)
     @project2 = create(:project)
-    @project3 = create(:project)
     @proposed = create(:idea_status, code: 'proposed')
     @ideas_with_topics = []
     @ideas_with_status = []
-    @ideas_with_areas = []
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.month do
-      i = create(:idea, project: @project3, idea_status: @proposed)
+      i = create(:idea, project: @project2, idea_status: @proposed)
       create(:official_feedback, post: i)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
       @ideas_with_topics += create_list(:idea_with_topics, 2, project: @project1, idea_status: @proposed)
-      @ideas_with_areas += create_list(:idea_with_areas, 3, project: @project2, idea_status: @proposed)
     end
     travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 5.months do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1, idea_status: @proposed)
-      @ideas_with_areas += create_list(:idea_with_areas, 2, project: @project2, idea_status: @proposed)
-      create(:idea, project: @project3, idea_status: @proposed)
+      create(:idea, project: @project2, idea_status: @proposed)
     end
   end
 
@@ -133,7 +129,7 @@ resource 'Stats - Ideas' do
         topic = create(:topic)
         @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end
@@ -141,7 +137,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by topic filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
 
@@ -160,7 +156,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by topic filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:ideas].values.sum).to eq 2
       end
     end
   end
@@ -180,7 +176,7 @@ resource 'Stats - Ideas' do
         topic = create(:topic)
         @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end
@@ -190,8 +186,8 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        _header, *amounts = amount_col
+        expect(amounts.sum).to eq 1
       end
     end
 
@@ -212,8 +208,8 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 2
+        _header, *amounts = amount_col
+        expect(amounts.sum).to eq 2
       end
     end
   end
@@ -244,14 +240,14 @@ resource 'Stats - Ideas' do
       before do
         @project = create(:project)
         travel_to start_at + 2.months do
-        create(:idea, project: @project, idea_status: @proposed)
+          create(:idea, project: @project, idea_status: @proposed)
         end
       end
 
       example_request 'Ideas by status filtered by project' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
 
@@ -270,7 +266,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by status filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
   end
@@ -290,7 +286,7 @@ resource 'Stats - Ideas' do
         topic = create(:topic)
         @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end
@@ -300,8 +296,8 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match_array %w[ideas status status_id]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        _header, *amounts = amount_col
+        expect(amounts.sum).to eq 1
       end
     end
 
@@ -322,8 +318,8 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match_array %w[status status_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
-        expect(amounts.inject(&:+)).to eq 1
+        _header, *amounts = amount_col
+        expect(amounts.sum).to eq 1
       end
     end
   end
@@ -343,10 +339,9 @@ resource 'Stats - Ideas' do
         json_response = json_parse(response_body)
         expect(json_response[:series][:ideas].stringify_keys).to match({
           @project1.id => 5,
-          @project2.id => 5,
-          @project3.id => 1
+          @project2.id => 1
         })
-        expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id, @project3.id]
+        expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
       end
     end
 
@@ -366,7 +361,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by project filtered by topic' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
 
@@ -379,7 +374,7 @@ resource 'Stats - Ideas' do
         travel_to start_at + 8.months do
           @group = create(:group)
           user = create(:user, manual_groups: [@group])
-          idea = create(:idea, author: user)
+          create(:idea, author: user)
           create(:idea)
         end
       end
@@ -387,7 +382,7 @@ resource 'Stats - Ideas' do
       example_request 'Ideas by project filtered by group' do
         assert_status 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.sum).to eq 1
       end
     end
   end
@@ -406,16 +401,16 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         project_col = worksheet.map { |col| col.cells[1].value }
-        header, *projects = project_col
-        expect(projects).to match_array [@project1.id, @project2.id, @project3.id]
+        _header, *projects = project_col
+        expect(projects).to match_array [@project1.id, @project2.id]
 
         project_name_col = worksheet.map { |col| col.cells[0].value }
-        header, *project_names = project_name_col
-        expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc), multiloc_service.t(@project3.title_multiloc)]
+        _header, *project_names = project_name_col
+        expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
 
         idea_col = worksheet.map { |col| col.cells[2].value }
-        header, *ideas = idea_col
-        expect(ideas).to match_array [5, 5, 1]
+        _header, *ideas = idea_col
+        expect(ideas).to match_array [5, 1]
       end
     end
 
@@ -437,8 +432,8 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         idea_col = worksheet.map { |col| col.cells[2].value }
-        header, *ideas = idea_col
-        expect(ideas.inject(&:+)).to eq 1
+        _header, *ideas = idea_col
+        expect(ideas.sum).to eq 1
       end
     end
 
@@ -451,7 +446,7 @@ resource 'Stats - Ideas' do
         travel_to start_at + 8.months do
           @group = create(:group)
           user = create(:user, manual_groups: [@group])
-          idea = create(:idea, author: user)
+          create(:idea, author: user)
           create(:idea)
         end
       end
@@ -461,54 +456,9 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         idea_col = worksheet.map { |col| col.cells[2].value }
-        header, *ideas = idea_col
-        expect(ideas.inject(&:+)).to eq 1
+        _header, *ideas = idea_col
+        expect(ideas.sum).to eq 1
       end
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_area' do
-    time_boundary_parameters self
-    project_filter_parameter self
-    topic_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-    example_request 'Ideas by area' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expected_areas = @ideas_with_areas.flat_map { |i| i.areas_ideas.map(&:area_id) }.uniq
-      expect(json_response[:series][:ideas].keys.map(&:to_s).uniq - expected_areas).to eq []
-      expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
-    end
-  end
-
-  get 'web_api/v1/stats/ideas_by_area_as_xlsx' do
-    time_boundary_parameters self
-    project_filter_parameter self
-    topic_filter_parameter self
-    group_filter_parameter self
-    feedback_needed_filter_parameter self
-
-    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
-
-    example_request 'Ideas by area' do
-      assert_status 200
-      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match %w[area area_id ideas]
-      expected_areas = @ideas_with_areas.flat_map { |i| i.areas_ideas.map(&:area_id) }.uniq
-
-      area_id_col = worksheet.map { |col| col.cells[1].value }
-      header, *area_ids = area_id_col
-      expect(area_ids.map(&:to_s).uniq - expected_areas).to eq []
-
-      idea_col = worksheet.map { |col| col.cells[2].value }
-      header, *ideas = idea_col
-      expect(ideas.map(&:class).uniq).to eq [Integer]
     end
   end
 
@@ -527,7 +477,7 @@ resource 'Stats - Ideas' do
       assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:series][:ideas].size).to eq end_at.yday
-      expect(json_response[:series][:ideas].values.inject(&:+)).to eq 11
+      expect(json_response[:series][:ideas].values.sum).to eq 6
     end
 
     describe 'with time filter outside of platform lifetime' do
@@ -634,8 +584,8 @@ resource 'Stats - Ideas' do
       expect(worksheet.count).to eq end_at.yday + 1
       expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
       amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
-      expect(amounts.inject(&:+)).to eq 11
+      _header, *amounts = amount_col
+      expect(amounts.sum).to eq 6
     end
 
     describe 'with time filter outside of platform lifetime' do
@@ -678,7 +628,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         # monotonically increasing
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
 
         expect(amounts.last).to eq Idea.published.count

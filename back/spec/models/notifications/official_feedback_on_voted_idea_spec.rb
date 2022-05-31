@@ -31,7 +31,7 @@ RSpec.describe Notifications::OfficialFeedbackOnVotedIdea, type: :model do
 
     it "doesn't generate notifications for the idea author" do
       idea = create(:idea)
-      vote = create(:vote, votable: idea, user: idea.author)
+      create(:vote, votable: idea, user: idea.author)
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)

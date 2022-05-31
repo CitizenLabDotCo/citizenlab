@@ -16,23 +16,28 @@ class SideFxCommentService
   end
 
   def before_update(comment, _user)
-    if comment.body_multiloc_changed?
-      comment.body_updated_at = Time.now
-      process_mentions(comment)
-    end
+    return unless comment.body_multiloc_changed?
+
+    comment.body_updated_at = Time.now
+    process_mentions(comment)
   end
 
   def after_update(comment, user)
     LogActivityJob.perform_later(comment, 'changed', user, comment.updated_at.to_i)
-    if comment.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
-      notify_updated_mentioned_users(comment, user)
-    end
+    return unless comment.body_multiloc_previously_changed?
+
+    LogActivityJob.perform_later(comment, 'changed_body', user, comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
+    notify_updated_mentioned_users(comment, user)
   end
 
   def after_mark_as_deleted(comment, user, reason_code, other_reason)
-    LogActivityJob.perform_later(comment, 'marked_as_deleted', user, comment.updated_at.to_i,
-      payload: { reason_code: reason_code, other_reason: other_reason })
+    LogActivityJob.perform_later(
+      comment,
+      'marked_as_deleted',
+      user,
+      comment.updated_at.to_i,
+      payload: { reason_code: reason_code, other_reason: other_reason }
+    )
   end
 
   def before_destroy(comment, user); end
@@ -47,19 +52,19 @@ class SideFxCommentService
   def check_participation_context(comment, user)
     pcs = ParticipationContextService.new
     idea = comment.post if comment.post_type == 'Idea'
-    if idea
-      disallowed_reason = pcs.commenting_disabled_reason_for_idea(idea, user)
-      if disallowed_reason
-        raise ClErrors::TransactionError.new(error_key: disallowed_reason)
-      end
-    end
+    return unless idea
+
+    disallowed_reason = pcs.commenting_disabled_reason_for_idea(idea, user)
+    return unless disallowed_reason
+
+    raise ClErrors::TransactionError.new(error_key: disallowed_reason)
   end
 
   def process_mentions(comment)
-    comment.body_multiloc = comment.body_multiloc.map do |locale, body|
-      new_body, users = @@mention_service.process_mentions(body)
+    comment.body_multiloc = comment.body_multiloc.to_h do |locale, body|
+      new_body, _users = @@mention_service.process_mentions(body)
       [locale, new_body]
-    end.to_h
+    end
   end
 
   def notify_mentioned_users(comment, user)

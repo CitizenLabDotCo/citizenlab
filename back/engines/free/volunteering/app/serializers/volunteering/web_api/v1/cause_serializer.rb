@@ -16,12 +16,12 @@ module Volunteering
       if params[:vbci]
         params.dig(:vbci, object.id)
       else
-         object.volunteers.where(user_id: current_user(params)&.id).first
-       end
+        object.volunteers.where(user_id: current_user(params)&.id).first
+      end
     end
 
     attribute :image, if: proc { |object| object.image } do |object|
-      object.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      object.image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 end

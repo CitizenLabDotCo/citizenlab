@@ -12,9 +12,12 @@ RSpec.describe CustomFieldOption, type: :model do
     end
 
     it 'is not allowed when there are references in smart_group_rules' do
-      group = create(:smart_group, rules: [
-                       { ruleType: 'custom_field_select', customFieldId: cf.id, predicate: 'has_value', value: cfo.id }
-                     ])
+      create(
+        :smart_group,
+        rules: [
+          { ruleType: 'custom_field_select', customFieldId: cf.id, predicate: 'has_value', value: cfo.id }
+        ]
+      )
       expect(cfo.destroy).to be false
       expect(cfo.errors[:base].size).to eq 1
     end

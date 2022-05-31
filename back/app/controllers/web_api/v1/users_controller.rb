@@ -21,27 +21,27 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if params[:search].blank?
       @users = case params[:sort]
-        when 'created_at'
-          @users.order(created_at: :asc)
-        when '-created_at'
-          @users.order(created_at: :desc)
-        when 'last_name'
-          @users.order(last_name: :asc)
-        when '-last_name'
-          @users.order(last_name: :desc)
-        when 'email'
-          @users.order(email: :asc) if view_private_attributes?
-        when '-email'
-          @users.order(email: :desc) if view_private_attributes?
-        when 'role'
-          @users.order_role(:asc)
-        when '-role'
-          @users.order_role(:desc)
-        when nil
-          @users
-        else
-          raise 'Unsupported sort method'
-        end
+      when 'created_at'
+        @users.order(created_at: :asc)
+      when '-created_at'
+        @users.order(created_at: :desc)
+      when 'last_name'
+        @users.order(last_name: :asc)
+      when '-last_name'
+        @users.order(last_name: :desc)
+      when 'email'
+        @users.order(email: :asc) if view_private_attributes?
+      when '-email'
+        @users.order(email: :desc) if view_private_attributes?
+      when 'role'
+        @users.order_role(:asc)
+      when '-role'
+        @users.order_role(:desc)
+      when nil
+        @users
+      else
+        raise 'Unsupported sort method'
+      end
     end
 
     @users = paginate @users
@@ -89,9 +89,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def by_invite
-   @user = Invite.find_by!(token: params[:token])&.invitee
-   authorize @user
-   show
+    @user = Invite.find_by!(token: params[:token])&.invitee
+    authorize @user
+    show
   end
 
   def create
@@ -207,10 +207,10 @@ class WebApi::V1::UsersController < ::ApplicationController
     # the custom field value updates cleared out by the
     # policy (which should stay like before instead of
     # being cleared out).
-    if current_user&.custom_field_values && params[:user][:custom_field_values]
-      (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-        params[:user][:custom_field_values][clear_key] = nil
-      end
+    return unless current_user&.custom_field_values && params[:user][:custom_field_values]
+
+    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
+      params[:user][:custom_field_values][clear_key] = nil
     end
   end
 

@@ -147,7 +147,7 @@ resource 'Stats - Comments' do
             assert_status 200
 
             expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
-            expect(json_response[:series][:comments].values.inject(&:+)).to eq 5
+            expect(json_response[:series][:comments].values.sum).to eq 5
           end
         end
       end
@@ -235,8 +235,8 @@ resource 'Stats - Comments' do
             expect(worksheet.count).to eq start_at.in_time_zone(@timezone).end_of_month.day + 1
             expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
             amount_col = worksheet.map { |col| col.cells[1].value }
-            header, *amounts = amount_col
-            expect(amounts.inject(&:+)).to eq 5
+            _header, *amounts = amount_col
+            expect(amounts.sum).to eq 5
           end
         end
 
@@ -276,7 +276,7 @@ resource 'Stats - Comments' do
             # monotonically increasing
             expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
             amount_col = worksheet.map { |col| col.cells[1].value }
-            header, *amounts = amount_col
+            _header, *amounts = amount_col
             expect(amounts.sort).to eq amounts
             expect(amounts.last).to eq 6
           end
@@ -310,7 +310,7 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
           amount_col = worksheet.map { |col| col.cells[1].value }
-          header, *amounts = amount_col
+          _header, *amounts = amount_col
           expect(amounts.last).to eq 1
         end
       end
@@ -347,13 +347,13 @@ resource 'Stats - Comments' do
             idea1 = create(:idea, topics: [@topic1], project: project)
             idea2 = create(:idea, topics: [@topic2], project: project)
             idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
-            idea4 = create(:idea)
-            comment1 = create(:comment, post: idea1)
-            comment2 = create(:comment, post: idea1)
-            comment3 = create(:comment, post: idea2)
-            comment4 = create(:comment, post: idea3)
+            create(:idea)
+            create(:comment, post: idea1)
+            create(:comment, post: idea1)
+            create(:comment, post: idea2)
+            create(:comment, post: idea3)
           end
-          comment5 = create(:comment)
+          create(:comment)
         end
 
         example_request 'Comments by topic' do
@@ -382,7 +382,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by project' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
+          expect(json_response[:series][:comments].values.sum).to eq 2
         end
       end
 
@@ -402,7 +402,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by topic filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
+          expect(json_response[:series][:comments].values.sum).to eq 2
         end
       end
     end
@@ -438,13 +438,13 @@ resource 'Stats - Comments' do
             idea1 = create(:idea, topics: [@topic1], project: project)
             idea2 = create(:idea, topics: [@topic2], project: project)
             idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
-            idea4 = create(:idea)
-            comment1 = create(:comment, post: idea1)
-            comment2 = create(:comment, post: idea1)
-            comment3 = create(:comment, post: idea2)
-            comment4 = create(:comment, post: idea3)
+            create(:idea)
+            create(:comment, post: idea1)
+            create(:comment, post: idea1)
+            create(:comment, post: idea2)
+            create(:comment, post: idea3)
           end
-          comment5 = create(:comment)
+          create(:comment)
         end
 
         example_request 'Comments by topic' do
@@ -453,11 +453,11 @@ resource 'Stats - Comments' do
           expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id comments]
 
           topic_ids_col = worksheet.map { |col| col.cells[1].value }
-          header, *topic_ids = topic_ids_col
+          _header, *topic_ids = topic_ids_col
           expect(topic_ids).to match_array [@topic1.id, @topic2.id]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
-          header, *amounts = amount_col
+          _header, *amounts = amount_col
           expect(amounts).to match_array [3, 2]
         end
       end
@@ -482,8 +482,8 @@ resource 'Stats - Comments' do
           expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
-          header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 2
+          _header, *amounts = amount_col
+          expect(amounts.sum).to eq 2
         end
       end
 
@@ -507,8 +507,8 @@ resource 'Stats - Comments' do
           expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
-          header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 2
+          _header, *amounts = amount_col
+          expect(amounts.sum).to eq 2
         end
       end
     end
@@ -535,11 +535,11 @@ resource 'Stats - Comments' do
             idea1 = create(:idea, project: @project1)
             idea2 = create(:idea, project: @project1)
             idea3 = create(:idea, project: @project2)
-            idea4 = create(:idea)
-            comment1 = create(:comment, post: idea1)
-            comment2 = create(:comment, post: idea1)
-            comment3 = create(:comment, post: idea2)
-            comment4 = create(:comment, post: idea3)
+            create(:idea)
+            create(:comment, post: idea1)
+            create(:comment, post: idea1)
+            create(:comment, post: idea2)
+            create(:comment, post: idea3)
           end
         end
 
@@ -570,7 +570,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by topic' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
+          expect(json_response[:series][:comments].values.sum).to eq 1
         end
       end
 
@@ -591,7 +591,7 @@ resource 'Stats - Comments' do
 
         example_request 'Comments by project filtered by group' do
           assert_status 200
-          expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
+          expect(json_response[:series][:comments].values.sum).to eq 1
         end
       end
     end
@@ -618,11 +618,11 @@ resource 'Stats - Comments' do
             idea1 = create(:idea, project: @project1)
             idea2 = create(:idea, project: @project1)
             idea3 = create(:idea, project: @project2)
-            idea4 = create(:idea)
-            comment1 = create(:comment, post: idea1)
-            comment2 = create(:comment, post: idea1)
-            comment3 = create(:comment, post: idea2)
-            comment4 = create(:comment, post: idea3)
+            create(:idea)
+            create(:comment, post: idea1)
+            create(:comment, post: idea1)
+            create(:comment, post: idea2)
+            create(:comment, post: idea3)
           end
         end
 
@@ -631,15 +631,15 @@ resource 'Stats - Comments' do
           worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
           expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
           project_id_col = worksheet.map { |col| col.cells[1].value }
-          header, *project_ids = project_id_col
+          _header, *project_ids = project_id_col
           expect(project_ids).to match_array [@project1.id, @project2.id]
 
           project_name_col = worksheet.map { |col| col.cells[0].value }
-          header, *project_names = project_name_col
+          _header, *project_names = project_name_col
           expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
 
           comment_col = worksheet.map { |col| col.cells[2].value }
-          header, *comments = comment_col
+          _header, *comments = comment_col
           expect(comments).to match_array [3, 1]
         end
       end
@@ -666,8 +666,8 @@ resource 'Stats - Comments' do
           expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
-          header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 1
+          _header, *amounts = amount_col
+          expect(amounts.sum).to eq 1
         end
       end
 
@@ -692,8 +692,8 @@ resource 'Stats - Comments' do
           expect(worksheet[0].cells.map(&:value)).to match %w[project project_id comments]
 
           amount_col = worksheet.map { |col| col.cells[2].value }
-          header, *amounts = amount_col
-          expect(amounts.inject(&:+)).to eq 1
+          _header, *amounts = amount_col
+          expect(amounts.sum).to eq 1
         end
       end
     end

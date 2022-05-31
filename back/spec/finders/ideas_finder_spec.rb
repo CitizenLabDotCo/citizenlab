@@ -11,7 +11,6 @@ describe IdeasFinder do
 
   before_all do
     create_list(:idea_with_topics, 5, project: create(:project_with_phases))
-    create_list(:idea_with_areas, 5, project: create(:project_with_phases))
   end
 
   context 'when passing a sort param' do
@@ -234,21 +233,6 @@ describe IdeasFinder do
     end
   end
 
-  describe '#areas_condition' do
-    let(:area_ids) { Area.first(2).pluck(:id) }
-    let(:expected_record_ids) do
-      Idea.includes(:areas_ideas).where(areas_ideas: { area_id: area_ids }).distinct.pluck(:id)
-    end
-
-    before do
-      params[:areas] = area_ids
-    end
-
-    it 'returns the correct records' do
-      expect(result_record_ids).to match_array expected_record_ids
-    end
-  end
-
   describe '#phase_condition' do
     let(:phase_id) { Phase.pick(:id) }
     let(:expected_record_ids) { Idea.includes(:ideas_phases).where(ideas_phases: { phase_id: phase_id }).pluck(:id) }
@@ -279,8 +263,8 @@ describe IdeasFinder do
     let(:publication_status) { 'draft' }
     let(:expected_record_ids) do
       Idea.includes(project: :admin_publication)
-          .where(projects: { admin_publications: { publication_status: publication_status } })
-          .pluck(:id)
+        .where(projects: { admin_publications: { publication_status: publication_status } })
+        .pluck(:id)
     end
 
     before do

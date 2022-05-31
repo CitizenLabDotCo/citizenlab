@@ -4,18 +4,18 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
   @@multiloc_service = MultilocService.new
 
   attributes :id,
-    :title,
-    :body_html,
-    :author_name,
-    :upvotes_count,
-    :downvotes_count,
-    :comments_count,
-    :published_at,
-    :images,
-    :href,
-    :project_id,
-    :project_title,
-    :status
+             :title,
+             :body_html,
+             :author_name,
+             :upvotes_count,
+             :downvotes_count,
+             :comments_count,
+             :published_at,
+             :images,
+             :href,
+             :project_id,
+             :project_title,
+             :status
 
   def title
     @@multiloc_service.t(object.title_multiloc)
@@ -27,7 +27,7 @@ class PublicApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   def images
     object.idea_images.map do |idea_image|
-      idea_image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      idea_image.image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 

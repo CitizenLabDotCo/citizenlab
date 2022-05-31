@@ -75,11 +75,11 @@ module EmailCampaigns
                 images: initiative.initiative_images.map do |image|
                   {
                     ordering: image.ordering,
-                    versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                    versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
                   }
                 end,
                 header_bg: {
-                  versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+                  versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
                 }
               }
             end
@@ -96,7 +96,7 @@ module EmailCampaigns
     private
 
     def filter_authors_of_proposed_initiatives(users_scope, _options = {})
-      users_scope.where(id: Initiative.published.proposed.pluck(:author_id))
+      users_scope.where(id: Initiative.published.proposed.select(:author_id))
     end
   end
 end

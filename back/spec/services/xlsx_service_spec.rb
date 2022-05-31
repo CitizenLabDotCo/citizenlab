@@ -189,37 +189,39 @@ describe XlsxService do
   describe 'hash_to_xlsx' do
     let(:hash_array) do
       [
-      { 'a' => 1, 'b' => 'two' },
-      { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
-      { 'b' => 'four', 'c' => 'party' },
-      { 'f' => 'fête' },
-      {}
-    ] end
+        { 'a' => 1, 'b' => 'two' },
+        { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
+        { 'b' => 'four', 'c' => 'party' },
+        { 'f' => 'fête' },
+        {}
+      ]
+    end
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:workbook) { RubyXL::Parser.parse_buffer(xlsx) }
     let(:worksheet) { workbook.worksheets[0] }
 
     it 'correctly converts a hash array to a xlsx stream' do
-       expect(worksheet[0].cells.map(&:value)).to match %w[a b c f]
-       expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
+      expect(worksheet[0].cells.map(&:value)).to match %w[a b c f]
+      expect(worksheet[2].cells.map(&:value)).to match [2, 'three', 'fiesta', nil]
     end
   end
 
   describe 'xlsx_to_hash_array' do
     let(:hash_array) do
       [
-      { 'a' => 1, 'b' => 'two' },
-      { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
-      { 'b' => 'four', 'c' => 'party' },
-      { 'f' => 'fête' },
-      {}
-    ] end
+        { 'a' => 1, 'b' => 'two' },
+        { 'a' => 2, 'b' => 'three', 'c' => 'fiesta' },
+        { 'b' => 'four', 'c' => 'party' },
+        { 'f' => 'fête' },
+        {}
+      ]
+    end
 
     let(:xlsx) { service.hash_array_to_xlsx(hash_array) }
     let(:round_trip_hash_array) { service.xlsx_to_hash_array(xlsx) }
 
     it 'correctly converts an xlsx to a hash array' do
-       expect(round_trip_hash_array).to eq hash_array
+      expect(round_trip_hash_array).to eq hash_array
     end
   end
 

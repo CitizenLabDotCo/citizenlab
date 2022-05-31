@@ -8,9 +8,10 @@ FactoryBot.define do
     publication_status { 'published' }
     body_multiloc do
       {
-      'en' => '<p>I think this is a very good idea!</p>',
-      'nl-BE' => '<p>Geweldig idee!</p>'
-    } end
+        'en' => '<p>I think this is a very good idea!</p>',
+        'nl-BE' => '<p>Geweldig idee!</p>'
+      }
+    end
 
     factory :comment_with_mentions do
       transient do
@@ -35,8 +36,9 @@ FactoryBot.define do
     publication_status { 'published' }
     body_multiloc do
       {
-      'en' => '<p>After some more thinking, there are some issues actually ...!</p>',
-      'nl-BE' => '<p>Na een nachtje slapen moet ik toegeven dat er toch nog wel problemen mee zijn</p>'
-    } end
+        'en' => '<p>After some more thinking, there are some issues actually ...!</p>',
+        'nl-BE' => '<p>Na een nachtje slapen moet ik toegeven dat er toch nog wel problemen mee zijn</p>'
+      }
+    end
   end
 end

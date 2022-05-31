@@ -64,9 +64,9 @@ class ApplicationMailer < ActionMailer::Base
 
   def localize_for_recipient(multiloc_or_struct)
     multiloc = case multiloc_or_struct
-               when Hash       then multiloc_or_struct
-               when OpenStruct then multiloc_or_struct.to_h.stringify_keys
-               end
+    when Hash       then multiloc_or_struct
+    when OpenStruct then multiloc_or_struct.to_h.stringify_keys
+    end
 
     multiloc_service.t(multiloc, recipient).html_safe if multiloc
   end
@@ -179,8 +179,8 @@ class ApplicationMailer < ActionMailer::Base
 
   def to_deep_struct(obj)
     case obj
-    when Hash  then OpenStruct.new(obj.transform_values(&method(:to_deep_struct)))
-    when Array then obj.map(&method(:to_deep_struct))
+    when Hash  then OpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) })
+    when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
     else            obj
     end
   end

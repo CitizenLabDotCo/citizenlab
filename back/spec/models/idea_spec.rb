@@ -32,13 +32,15 @@ RSpec.describe Idea, type: :model do
 
   context 'feedback_needed' do
     it 'should select ideas with no official feedback or no idea status change' do
-      i1 = create(:idea, idea_status: create(:idea_status_proposed))
-      create(:official_feedback, post: i1)
-      i2 = create(:idea, idea_status: create(:idea_status_accepted))
-      i3 = create(:idea, idea_status: create(:idea_status_proposed))
-      i4 = create(:idea, idea_status: create(:idea_status_viewed))
+      ideas = [
+        create(:idea, idea_status: create(:idea_status_proposed)),
+        create(:idea, idea_status: create(:idea_status_accepted)),
+        create(:idea, idea_status: create(:idea_status_proposed)),
+        create(:idea, idea_status: create(:idea_status_viewed))
+      ]
+      create(:official_feedback, post: ideas[0])
 
-      expect(Idea.feedback_needed.ids).to match_array [i3.id]
+      expect(Idea.feedback_needed.ids).to match_array [ideas[2].id]
     end
   end
 
@@ -163,14 +165,6 @@ RSpec.describe Idea, type: :model do
         'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>'
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
-    end
-  end
-
-  describe 'delete an idea' do
-    it 'with an area should succeed' do
-      area = create(:area)
-      idea = create(:idea, areas: [area])
-      expect { idea.destroy }.not_to raise_error
     end
   end
 

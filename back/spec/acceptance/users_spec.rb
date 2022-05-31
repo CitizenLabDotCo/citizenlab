@@ -248,7 +248,6 @@ resource 'Users' do
 
           example_request 'Register with email when an email is passed', document: false do
             assert_status 201
-            json_response = json_parse(response_body)
             expect(User.find_by(email: email)).to be_present
           end
         end
@@ -258,7 +257,6 @@ resource 'Users' do
 
           example_request 'Registers a user with a phone number in the email when a phone number is passed', document: false do
             assert_status 201
-            json_response = json_parse(response_body)
             expect(User.find_by(email: 'phone+32487365898@test.com')).to be_present
           end
         end
@@ -304,23 +302,27 @@ resource 'Users' do
         end
 
         example 'Search for users' do
-          u1 = create(:user, first_name: 'Joskelala')
-          u2 = create(:user, last_name: 'Rudolf')
+          users = [
+            create(:user, first_name: 'Joskelala'),
+            create(:user, last_name: 'Rudolf')
+          ]
 
           do_request search: 'joskela'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq u1.id
+          expect(json_response[:data][0][:id]).to eq users[0].id
         end
 
         example 'Search for users with sort parameter', document: false do
-          u1 = create(:user, first_name: 'Joskelala')
-          u2 = create(:user, last_name: 'Rudolf')
+          users = [
+            create(:user, first_name: 'Joskelala'),
+            create(:user, last_name: 'Rudolf')
+          ]
 
           do_request search: 'joskela', sort: 'role'
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data][0][:id]).to eq u1.id
+          expect(json_response[:data][0][:id]).to eq users[0].id
         end
 
         example 'List all users sorted by last_name' do
@@ -368,9 +370,12 @@ resource 'Users' do
           example 'with correct pagination', document: false do
             page_size = 5
             project = create(:project)
-            group = create(:smart_group, rules: [
-              { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
-            ])
+            group = create(
+              :smart_group,
+              rules: [
+                { ruleType: 'participated_in_project', predicate: 'in', value: [project.id] }
+              ]
+            )
             Array.new(page_size + 1) do |_i|
               create(:idea, project: project, author: create(:user))
             end
@@ -591,16 +596,16 @@ resource 'Users' do
         before do
           if CitizenLab.ee?
             old_timers = create(:smart_group, rules: [
-              {
-                ruleType: 'custom_field_number',
-                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                predicate: 'is_smaller_than_or_equal',
-                value: 1988
-              }
-            ])
+                                  {
+                                    ruleType: 'custom_field_number',
+                                    customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
+                                    predicate: 'is_smaller_than_or_equal',
+                                    value: 1988
+                                  }
+                                ])
 
             project.permissions.find_by(action: 'posting_idea')
-                   .update!(permitted_by: 'groups', groups: [old_timers])
+              .update!(permitted_by: 'groups', groups: [old_timers])
           end
         end
 
@@ -713,9 +718,10 @@ resource 'Users' do
         let(:birthyear_cf) { create(:custom_field_birthyear) }
         let(:custom_field_values) do
           {
-          cf.key => 'new value',
-          birthyear_cf.key => birthyear
-        } end
+            cf.key => 'new value',
+            birthyear_cf.key => birthyear
+          }
+        end
         let(:first_name) { 'Raymond' }
         let(:last_name) { 'Betancourt' }
         let(:email) { 'ray.mond@rocks.com' }
@@ -740,9 +746,10 @@ resource 'Users' do
         let(:gender_cf) { create(:custom_field_gender) }
         let(:custom_field_values) do
           {
-          cf.key => 'new value',
-          gender_cf.key => 'female'
-        } end
+            cf.key => 'new value',
+            gender_cf.key => 'female'
+          }
+        end
 
         example "Can't change gender of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           create(:verification, method_name: 'bogus', user: @user)
@@ -792,9 +799,10 @@ resource 'Users' do
         let(:gender_cf) { create(:custom_field_gender) }
         let(:custom_field_values) do
           {
-          cf.key => 'new value',
-          gender_cf.key => 'female'
-        } end
+            cf.key => 'new value',
+            gender_cf.key => 'female'
+          }
+        end
 
         example "Can't change some custom_field_values of a user verified with Bogus", document: false, skip: !CitizenLab.ee? do
           @user.update!(

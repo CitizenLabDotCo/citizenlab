@@ -12,7 +12,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params)
-                                                 .where(publication_type: Project.name)
+      .where(publication_type: Project.name)
 
     # Not very satisfied with this ping-pong of SQL queries (knowing that the
     # AdminPublicationsFilteringService is also making a request on projects).
@@ -20,7 +20,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     # scope.
 
     @projects = Project.where(id: publications.select(:publication_id))
-                       .includes(:project_images, :phases, :areas, admin_publication: [:children])
+      .includes(:project_images, :phases, :areas, admin_publication: [:children])
     @projects = paginate @projects
 
     @projects = if params[:search].present?
