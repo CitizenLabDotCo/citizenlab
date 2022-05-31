@@ -6,6 +6,10 @@
 
 - [CL-667] Fixed many RuboCop offences
 
+### Fixed
+
+- [CL-845] Fixed an issue with the Sign Up modal where it was impossible to scroll down on smaller screens, which made registration on certain Android devices impossible
+
 ## 2022-05-30
 
 ### Changed
