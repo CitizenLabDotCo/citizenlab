@@ -15,7 +15,7 @@ const ExistingSMS = lazy(() => import('./texting/ExistingSMSCampaign'));
 const createAdminMessagingRoutes = () => ({
   path: 'messaging',
   element: (
-    <Loading>
+    <Loading admin>
       <MessagingIndex />
     </Loading>
   ),
@@ -23,7 +23,7 @@ const createAdminMessagingRoutes = () => ({
     {
       path: 'emails/custom',
       element: (
-        <Loading>
+        <Loading admin>
           <CustomEmailsIndex />
         </Loading>
       ),
@@ -31,7 +31,7 @@ const createAdminMessagingRoutes = () => ({
         {
           path: 'new',
           element: (
-            <Loading>
+            <Loading admin>
               <CustomEmailsNew />
             </Loading>
           ),
@@ -39,7 +39,7 @@ const createAdminMessagingRoutes = () => ({
         {
           path: ':campaignId',
           element: (
-            <Loading>
+            <Loading admin>
               <CustomEmailsShow />
             </Loading>
           ),
@@ -47,7 +47,7 @@ const createAdminMessagingRoutes = () => ({
             {
               path: 'edit',
               element: (
-                <Loading>
+                <Loading admin>
                   <CustomEmailsEdit />
                 </Loading>
               ),
@@ -59,7 +59,7 @@ const createAdminMessagingRoutes = () => ({
     {
       path: 'emails/automated',
       element: (
-        <Loading>
+        <Loading admin>
           <AutomatedEmails />
         </Loading>
       ),
@@ -67,7 +67,7 @@ const createAdminMessagingRoutes = () => ({
     {
       path: 'texting',
       element: (
-        <Loading>
+        <Loading admin>
           <CampaignList />
         </Loading>
       ),
@@ -75,7 +75,7 @@ const createAdminMessagingRoutes = () => ({
         {
           path: 'new',
           element: (
-            <Loading>
+            <Loading admin>
               <NewSMS />
             </Loading>
           ),
@@ -83,7 +83,7 @@ const createAdminMessagingRoutes = () => ({
         {
           path: ':campaignId',
           element: (
-            <Loading>
+            <Loading admin>
               <ExistingSMS />
             </Loading>
           ),
@@ -91,7 +91,7 @@ const createAdminMessagingRoutes = () => ({
             {
               path: 'preview',
               element: (
-                <Loading>
+                <Loading admin>
                   <PreviewSMS />
                 </Loading>
               ),

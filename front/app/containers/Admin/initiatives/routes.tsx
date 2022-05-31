@@ -9,7 +9,7 @@ const AdminInitiativesManage = lazy(() => import('./manage'));
 const createAdminInitiativesRoutes = () => ({
   path: 'initiatives',
   element: (
-    <Loading>
+    <Loading admin>
       <AdminInitiativesIndex />
     </Loading>
   ),
@@ -22,7 +22,7 @@ const createAdminInitiativesRoutes = () => ({
       index: true,
       path: 'settings',
       element: (
-        <Loading>
+        <Loading admin>
           <AdminInitiativesSettings />
         </Loading>
       ),
@@ -30,7 +30,7 @@ const createAdminInitiativesRoutes = () => ({
     {
       path: 'manage',
       element: (
-        <Loading>
+        <Loading admin>
           <AdminInitiativesManage />
         </Loading>
       ),

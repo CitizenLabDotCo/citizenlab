@@ -8,7 +8,7 @@ const AdminInvitationsAll = lazy(() => import('./all'));
 export default () => ({
   path: 'invitations',
   element: (
-    <Loading>
+    <Loading admin>
       <AdminInvitationsContainer />
     </Loading>
   ),
@@ -16,7 +16,7 @@ export default () => ({
     {
       index: true,
       element: (
-        <Loading>
+        <Loading admin>
           <AdminInvitationsInvite />
         </Loading>
       ),
@@ -24,7 +24,7 @@ export default () => ({
     {
       path: 'all',
       element: (
-        <Loading>
+        <Loading admin>
           <AdminInvitationsAll />
         </Loading>
       ),

@@ -45,7 +45,7 @@ export default function createRoutes() {
         {
           index: true,
           element: (
-            <Loading admin={false}>
+            <Loading>
               <LandingPage />
             </Loading>
           ),
@@ -53,7 +53,7 @@ export default function createRoutes() {
         {
           path: 'sign-in',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <SignUpInPage />
             </Loading>
           ),
@@ -61,7 +61,7 @@ export default function createRoutes() {
         {
           path: 'sign-up',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <SignUpInPage />
             </Loading>
           ),
@@ -69,7 +69,7 @@ export default function createRoutes() {
         {
           path: 'invite',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <LandingPage />
             </Loading>
           ),
@@ -77,7 +77,7 @@ export default function createRoutes() {
         {
           path: 'complete-signup',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <LandingPage />
             </Loading>
           ),
@@ -85,7 +85,7 @@ export default function createRoutes() {
         {
           path: 'authentication-error',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <LandingPage />
             </Loading>
           ),
@@ -93,7 +93,7 @@ export default function createRoutes() {
         {
           path: 'site-map',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <SiteMap />
             </Loading>
           ),
@@ -101,7 +101,7 @@ export default function createRoutes() {
         {
           path: 'profile/edit',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <UsersEditPage />
             </Loading>
           ),
@@ -109,7 +109,7 @@ export default function createRoutes() {
         {
           path: 'profile/:userSlug',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <UsersShowPage />
             </Loading>
           ),
@@ -117,7 +117,7 @@ export default function createRoutes() {
         {
           path: 'ideas/edit/:ideaId',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <IdeasEditPage />
             </Loading>
           ),
@@ -125,7 +125,7 @@ export default function createRoutes() {
         {
           path: 'ideas',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <IdeasIndexPage />
             </Loading>
           ),
@@ -133,7 +133,7 @@ export default function createRoutes() {
         {
           path: 'ideas/:slug',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <IdeasShowPage />
             </Loading>
           ),
@@ -141,7 +141,7 @@ export default function createRoutes() {
         {
           path: 'initiatives',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <InitiativesIndexPage />
             </Loading>
           ),
@@ -149,7 +149,7 @@ export default function createRoutes() {
         {
           path: 'initiatives/edit/:initiativeId',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <InitiativesEditPage />
             </Loading>
           ),
@@ -157,7 +157,7 @@ export default function createRoutes() {
         {
           path: 'initiatives/new',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <InitiativesNewPage />
             </Loading>
           ),
@@ -166,7 +166,7 @@ export default function createRoutes() {
         {
           path: 'initiatives/:slug',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <InitiativesShowPage />
             </Loading>
           ),
@@ -174,7 +174,7 @@ export default function createRoutes() {
         {
           path: 'projects/:slug/ideas/new',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <IdeasNewPage />
             </Loading>
           ),
@@ -183,7 +183,7 @@ export default function createRoutes() {
         {
           path: 'projects',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <ProjectsIndexPage />
             </Loading>
           ),
@@ -191,7 +191,7 @@ export default function createRoutes() {
         {
           path: 'projects/:slug',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <ProjectsShowPage />
             </Loading>
           ),
@@ -199,7 +199,7 @@ export default function createRoutes() {
             {
               index: true,
               element: (
-                <Loading admin={false}>
+                <Loading>
                   <ProjectsShowPage />
                 </Loading>
               ),
@@ -207,7 +207,7 @@ export default function createRoutes() {
             {
               path: ':phaseNumber',
               element: (
-                <Loading admin={false}>
+                <Loading>
                   <ProjectsShowPage />
                 </Loading>
               ),
@@ -215,7 +215,7 @@ export default function createRoutes() {
             {
               path: '*',
               element: (
-                <Loading admin={false}>
+                <Loading>
                   <ProjectsShowPage />
                 </Loading>
               ),
@@ -225,7 +225,7 @@ export default function createRoutes() {
         {
           path: 'events',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <EventsPage />
             </Loading>
           ),
@@ -233,7 +233,7 @@ export default function createRoutes() {
         {
           path: 'pages/cookie-policy',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <CookiePolicy />
             </Loading>
           ),
@@ -241,7 +241,7 @@ export default function createRoutes() {
         {
           path: 'pages/accessibility-statement',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <AccessibilityStatement />
             </Loading>
           ),
@@ -249,7 +249,7 @@ export default function createRoutes() {
         {
           path: 'pages/:slug',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <PagesShowPage />
             </Loading>
           ),
@@ -257,7 +257,7 @@ export default function createRoutes() {
         {
           path: 'password-recovery',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <PasswordRecovery />
             </Loading>
           ),
@@ -266,7 +266,7 @@ export default function createRoutes() {
           // Used as link in email received for password recovery
           path: 'reset-password',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <PasswordReset />
             </Loading>
           ),
@@ -274,7 +274,7 @@ export default function createRoutes() {
         {
           path: 'subscription-ended',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <SubscriptionEndedPage />
             </Loading>
           ),
@@ -282,7 +282,7 @@ export default function createRoutes() {
         {
           path: 'email-settings',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <EmailSettingsPage />
             </Loading>
           ),
@@ -291,7 +291,7 @@ export default function createRoutes() {
         {
           path: '*',
           element: (
-            <Loading admin={false}>
+            <Loading>
               <PagesShowPage />
             </Loading>
           ),

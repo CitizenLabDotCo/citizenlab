@@ -9,7 +9,7 @@ const createAdminDashboardRoutes = () => {
   return {
     path: 'dashboard',
     element: (
-      <Loading>
+      <Loading admin>
         <DashboardWrapper />
       </Loading>
     ),
@@ -17,7 +17,7 @@ const createAdminDashboardRoutes = () => {
       {
         index: true,
         element: (
-          <Loading>
+          <Loading admin>
             <Summary />
           </Loading>
         ),
@@ -25,7 +25,7 @@ const createAdminDashboardRoutes = () => {
       {
         path: 'users',
         element: (
-          <Loading>
+          <Loading admin>
             <Users />
           </Loading>
         ),

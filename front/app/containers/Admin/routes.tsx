@@ -93,7 +93,7 @@ const IndexElement = () => {
   if (redirectURL) return <Navigate to={redirectURL} />;
 
   return (
-    <Loading>
+    <Loading admin>
       <AdminContainer />
     </Loading>
   );
@@ -120,7 +120,7 @@ const createAdminRoutes = () => {
       {
         path: 'workshops',
         element: (
-          <Loading>
+          <Loading admin>
             <AdminWorkshops />
           </Loading>
         ),
@@ -128,7 +128,7 @@ const createAdminRoutes = () => {
       {
         path: 'favicon',
         element: (
-          <Loading>
+          <Loading admin>
             <AdminFavicon />
           </Loading>
         ),
