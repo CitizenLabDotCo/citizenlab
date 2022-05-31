@@ -46,13 +46,6 @@ Lint/RedundantCopDisableDirective:
   Exclude:
     - 'spec/spec_helper.rb'
 
-# Offense count: 61
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: present?, blank?, presence, try, try!
-Lint/SafeNavigationConsistency:
-  Enabled: false
-
 # Offense count: 329
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:

@@ -11,9 +11,9 @@ module EmailCampaigns
       end
 
       def resolve
-        if user&.active? && user.admin?
+        if user&.active? && user&.admin?
           scope.all
-        elsif user&.active? && user.project_moderator?
+        elsif user&.active? && user&.project_moderator?
           projects = Project.where(id: user.moderatable_project_ids)
           if projects.any? { |p| p.visible_to == 'public' }
             scope.where(type: EmailCampaigns::Campaigns::Manual.name)
@@ -44,7 +44,7 @@ module EmailCampaigns
       if record.instance_of?(EmailCampaigns::Campaigns::Manual)
         can_access_and_modify?
       else
-        user&.active? && user.admin?
+        user&.active? && user&.admin?
       end
     end
 
@@ -52,7 +52,7 @@ module EmailCampaigns
       if record.instance_of?(EmailCampaigns::Campaigns::Manual)
         !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
       else
-        user&.active? && user.admin?
+        user&.active? && user&.admin?
       end
     end
 
@@ -84,8 +84,8 @@ module EmailCampaigns
 
     def can_access_and_modify?
       user&.active? && (
-        user.admin? ||
-        (user.project_moderator? && moderator_can_access_and_modify?)
+        user&.admin? ||
+        (user&.project_moderator? && moderator_can_access_and_modify?)
       )
     end
 
