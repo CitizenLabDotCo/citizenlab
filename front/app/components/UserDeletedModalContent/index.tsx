@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -63,11 +63,15 @@ const Subtitle = styled.h3`
   }
 `;
 
-interface Props {
+interface InputProps {
   userSuccessfullyDeleted: boolean;
 }
 
-const UserDeletedModalContent = ({ userSuccessfullyDeleted }: Props) =>
+interface DataProps {}
+
+export interface Props extends InputProps, DataProps {}
+
+export default memo(({ userSuccessfullyDeleted }: Props) =>
   userSuccessfullyDeleted ? (
     <Container>
       <img src={illustration} alt="illu" />
@@ -87,6 +91,5 @@ const UserDeletedModalContent = ({ userSuccessfullyDeleted }: Props) =>
     </Container>
   ) : (
     <FormattedMessage {...messages.userDeletionFailed} />
-  );
-
-export default UserDeletedModalContent;
+  )
+);
