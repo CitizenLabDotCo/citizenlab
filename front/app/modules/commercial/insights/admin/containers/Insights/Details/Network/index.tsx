@@ -18,10 +18,7 @@ import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
 import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
-import {
-  IInsightsNetworkNode,
-  IInsightsNetwork,
-} from 'modules/commercial/insights/services/insightsNetwork';
+import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -90,22 +87,13 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
   const [highlightNode, setHighlightNode] = useState();
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
-  const [hiddenNodes, setHiddenNodes] = useState<Array<string>>([]);
-  const [originalNetwork, setOriginalNetwork] = useState<
-    IInsightsNetwork | undefined | Error
-  >();
+  const [hiddenNodes, setHiddenNodes] = useState<Array<Node>>([]);
 
   const networkRef = useRef<ForceGraphMethods>();
-  const { loading, network, setInsightsNetwork } = useNetwork(viewId);
+  const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
   const tooltipRef = document.getElementsByClassName('graph-tooltip')[0];
   const canvasRef = useRef<HTMLCanvasElement | undefined>();
-
-  useEffect(() => {
-    if (!network) return;
-    if (originalNetwork) return;
-    setOriginalNetwork(network);
-  });
 
   useEffect(() => {
     if (canvasRef.current) return;
@@ -243,19 +231,8 @@ const Network = ({
       ctx.fill(rect);
 
       if (ctx.isPointInPath(rect, event.offsetX, event.offsetY)) {
-        if (network && 'data' in network) {
-          const newNetwork = cloneDeep(network);
-          const { nodes, links } = newNetwork.data.attributes;
-          newNetwork.data.attributes = {
-            nodes: nodes.filter((n) => n.id !== node.id),
-            links: links.filter(
-              (l) => l.source !== node.id && l.target !== node.id
-            ),
-          };
-          setInsightsNetwork(newNetwork);
-          setHiddenNodes([...hiddenNodes, node.name]);
-          removedNode = true;
-        }
+        setHiddenNodes([...hiddenNodes, node]);
+        removedNode = true;
       }
     }
 
@@ -284,10 +261,7 @@ const Network = ({
     }
   };
 
-  const handleShowHiddenNodesClick = () => {
-    setInsightsNetwork(originalNetwork);
-    setHiddenNodes([]);
-  };
+  const handleShowHiddenNodesClick = () => setHiddenNodes([]);
 
   const nodePointerAreaPaint = (node, color, ctx) => {
     ctx.fillStyle = color;
@@ -357,6 +331,13 @@ const Network = ({
 
   const nodeColor = (node: Node) =>
     nodeColors[node.color_index % nodeColors.length];
+
+  const nodeVisibility = (node: Node) => !hiddenNodes.includes(node);
+  const linkVisibility = ({ source, target }) => {
+    return hiddenNodes.every(
+      (n: Node) => ![source.id, target.id].includes(n.id)
+    );
+  };
 
   const exportNetwork = () => {
     const srcCanvas = document.getElementsByTagName('canvas')[0];
@@ -472,8 +453,8 @@ const Network = ({
                   {(hiddenNodes.length > 10
                     ? [...hiddenNodes.slice(0, 9), '...']
                     : hiddenNodes
-                  ).map((n) => (
-                    <li key={n}>{n}</li>
+                  ).map((node: Node) => (
+                    <li key={node.id}>{node.name}</li>
                   ))}
                 </TooltipContentList>
               }
@@ -488,18 +469,20 @@ const Network = ({
           height={height}
           width={width}
           cooldownTicks={50}
-          nodeRelSize={1}
+          enableNodeDrag={false}
           ref={networkRef}
+          graphData={networkAttributes}
           onNodeClick={handleNodeClick}
           onNodeHover={handleNodeHover}
-          nodePointerAreaPaint={nodePointerAreaPaint}
-          graphData={networkAttributes}
           onEngineStop={handleEngineStop}
+          onZoomEnd={onZoomEnd}
+          linkVisibility={linkVisibility}
+          nodeVisibility={nodeVisibility}
+          nodeRelSize={1}
+          nodePointerAreaPaint={nodePointerAreaPaint}
           nodeCanvasObjectMode={nodeCanvasObjectMode}
           nodeCanvasObject={nodeCanvasObject}
-          onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
-          enableNodeDrag={false}
         />
       )}
       <Box
