@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Seo
   class ApplicationController < ActionController::Base
     include OutletRenderer

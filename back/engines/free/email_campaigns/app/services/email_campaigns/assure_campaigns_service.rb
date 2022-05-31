@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class AssureCampaignsService
     def assure_campaigns

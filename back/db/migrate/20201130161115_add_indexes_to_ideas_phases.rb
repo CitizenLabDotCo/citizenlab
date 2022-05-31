@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddIndexesToIdeasPhases < ActiveRecord::Migration[6.0]
   def change
     IdeasPhase.find_by_sql('SELECT idea_id, phase_id FROM ideas_phases GROUP BY idea_id, phase_id HAVING COUNT(*) > 1').each do |ideas_phase|

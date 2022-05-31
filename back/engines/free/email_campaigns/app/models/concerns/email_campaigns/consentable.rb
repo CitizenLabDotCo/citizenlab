@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   module Consentable
     extend ActiveSupport::Concern

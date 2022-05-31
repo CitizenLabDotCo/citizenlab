@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdIdCardLookup
   # Verifies a user by matching their entered ID card id against an uploaded list
   class IdCardLookupVerification

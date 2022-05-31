@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MapConfigSerializer
   include FastJsonapi::ObjectSerializer
 

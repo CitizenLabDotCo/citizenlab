@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Graphql folder' do
@@ -13,14 +15,15 @@ RSpec.describe 'Graphql folder' do
   describe 'folder' do
     let(:query_string) do
       %|
-      query projectFolderQuery($id: ID!) {
-        projectFolder(id: $id) {
-          id
-          slug
-          publicationStatus
+        query projectFolderQuery($id: ID!) {
+          projectFolder(id: $id) {
+            id
+            slug
+            publicationStatus
+          }
         }
-      }
-    | end
+      |
+    end
 
     let(:folder) { create(:project_folder) }
     let(:variables) { { id: folder.id } }

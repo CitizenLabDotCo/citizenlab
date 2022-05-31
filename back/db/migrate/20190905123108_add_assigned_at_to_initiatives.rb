@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddAssignedAtToInitiatives < ActiveRecord::Migration[5.2]
   def change
     return if column_exists? :initiatives, :assigned_at

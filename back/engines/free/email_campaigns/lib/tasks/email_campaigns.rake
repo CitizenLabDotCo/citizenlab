@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :email_campaigns do
   desc 'Sends out the scheduled email campaigns that are due. Needs to be called every hour on the hour'
   task schedule_email_campaigns: :environment do |_t, _args|

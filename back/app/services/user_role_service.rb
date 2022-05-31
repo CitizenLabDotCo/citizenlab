@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserRoleService
   def can_moderate?(object, user)
     return true if user.admin?

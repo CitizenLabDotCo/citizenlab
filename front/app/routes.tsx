@@ -2,6 +2,8 @@ import React, { lazy } from 'react';
 // import adminRoutes from 'containers/Admin/routes';
 // import moduleConfiguration from 'modules';
 import LoadingComponent from 'components/UI/Loading';
+import createAdminRoutes from 'containers/Admin/routes';
+import moduleConfiguration from 'modules';
 
 const LandingPage = lazy(() => import('containers/LandingPage'));
 const SignUpInPage = lazy(() => import('containers/SignUpInPage'));
@@ -99,7 +101,7 @@ export default function createRoutes() {
           ),
         },
         {
-          path: 'profileedit',
+          path: 'profile/edit',
           element: (
             <LoadingComponent>
               <UsersEditPage />
@@ -179,7 +181,7 @@ export default function createRoutes() {
             </LoadingComponent>
           ),
         },
-        // adminRoutes(),
+        createAdminRoutes(),
         {
           path: 'projects',
           element: (
@@ -287,7 +289,7 @@ export default function createRoutes() {
             </LoadingComponent>
           ),
         },
-        // ...moduleConfiguration.routes.citizen,
+        ...moduleConfiguration.routes.citizen,
         {
           path: '*',
           element: (

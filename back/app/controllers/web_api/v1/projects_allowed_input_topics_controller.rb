@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
   before_action :set_projects_allowed_input_topic, only: %i[show reorder destroy]
   skip_before_action :authenticate_user

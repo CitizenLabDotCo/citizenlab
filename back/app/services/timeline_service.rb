@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimelineService
   def future_phases(project, time = Time.now)
     date = time.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
@@ -60,7 +62,7 @@ class TimelineService
     today = Time.now.in_time_zone(AppConfiguration.instance.settings('core', 'timezone')).to_date
     starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
     ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)
-    projects.map do |project|
+    projects.to_h do |project|
       active = if project.continuous? || project.phases.blank?
         nil
       elsif today > ends[project.id]
@@ -71,6 +73,6 @@ class TimelineService
         :present
       end
       [project.id, active]
-    end.to_h
+    end
   end
 end

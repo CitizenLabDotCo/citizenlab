@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class ThresholdReachedForAdminMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -17,11 +19,11 @@ module EmailCampaigns
           post_images: post.initiative_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
           initiative_header_bg: {
-            versions: post.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            versions: post.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           },
           assignee_first_name: 'Lady',
           assignee_last_name: 'Gaga'

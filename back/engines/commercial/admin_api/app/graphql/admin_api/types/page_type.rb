@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::PageType < GraphQL::Schema::Object
     description 'An information page, maintained by the city'

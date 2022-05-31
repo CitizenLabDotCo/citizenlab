@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   class SideFxResponseService
     include SideFxHelper

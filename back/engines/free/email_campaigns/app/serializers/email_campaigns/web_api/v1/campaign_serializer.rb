@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     attributes :created_at, :updated_at

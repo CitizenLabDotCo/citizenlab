@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::QueryType < GraphQL::Schema::Object
     description 'The query root of this schema'
@@ -55,13 +57,13 @@ module AdminApi
 
       if args[:sort].present? && args[:search].blank?
         ideas = case args[:sort]
-          when 'trending'
-            TrendingIdeaService.new.sort_trending ideas
-          when 'popular'
-            ideas.order_popular
-          when 'new'
-            ideas.order_new
-          end
+        when 'trending'
+          TrendingIdeaService.new.sort_trending ideas
+        when 'popular'
+          ideas.order_popular
+        when 'new'
+          ideas.order_new
+        end
       end
 
       ideas = ideas.with_some_topics(Topic.where(id: args[:topics])) if args[:topics].present?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::ModeratorsController < ApplicationController
     before_action :do_authorize

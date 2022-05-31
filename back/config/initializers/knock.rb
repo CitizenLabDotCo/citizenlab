@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Knock.setup do |config|
   ## Expiration claim
   ## ----------------

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: polls_response_options
@@ -37,7 +39,7 @@ module Polls
             :option_and_response_not_in_same_poll,
             message: 'The selected option is not associated with the same participation context than the response'
           )
-        end
+      end
     end
   end
 end

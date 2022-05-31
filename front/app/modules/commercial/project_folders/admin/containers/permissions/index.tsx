@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { WithRouterProps } from 'utils/withRouter';
 import AsyncSelect from 'react-select/async';
 import { first } from 'rxjs/operators';
 import { IOption } from 'typings';
@@ -31,6 +30,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 const Container = styled.div`
   width: 100%;
@@ -57,9 +57,9 @@ const UserSelectButton = styled(Button)`
 `;
 
 const FolderPermissions = ({
-  params: { projectFolderId },
   intl: { formatMessage },
-}: WithRouterProps & InjectedIntlProps) => {
+  params: { projectFolderId },
+}: InjectedIntlProps & WithRouterProps) => {
   const authUser = useAuthUser();
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
@@ -233,4 +233,4 @@ const FolderPermissions = ({
   );
 };
 
-export default injectIntl(FolderPermissions);
+export default withRouter(injectIntl(FolderPermissions));

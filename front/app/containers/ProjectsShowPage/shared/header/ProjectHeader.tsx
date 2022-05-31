@@ -6,12 +6,11 @@ import { canModerateProject } from 'services/permissions/rules/projectPermission
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import { Button } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -91,12 +90,11 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
     const [moduleActive, setModuleActive] = useState(false);
 
-    const locale = useLocale();
     const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectFolderId = project?.attributes.folder_id;
 
-    if (!isNilOrError(locale) && !isNilOrError(project)) {
+    if (!isNilOrError(project)) {
       const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
       const userCanEditProject =
         !isNilOrError(authUser) &&
@@ -109,6 +107,10 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
+                {/*
+                  Needs to change: Outlet should always render.
+                  Condition needs to be inside the Outlet.
+                */}
                 {projectFolderId && (
                   <Outlet
                     id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
@@ -119,7 +121,6 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
-                    locale={locale}
                     linkTo={`/admin/projects/${project.id}/edit`}
                     buttonStyle="secondary"
                     padding="5px 8px"

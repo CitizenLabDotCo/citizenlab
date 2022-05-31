@@ -32,6 +32,7 @@ const StyledRightColumn = styled(RightColumn)`
   margin: 0;
   max-width: 100%;
   align-items: center;
+  padding-bottom: 100px;
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {

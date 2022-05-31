@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sms_tools'
 
 class Texting::Sms

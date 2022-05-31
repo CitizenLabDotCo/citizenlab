@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 UserCustomFields::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do

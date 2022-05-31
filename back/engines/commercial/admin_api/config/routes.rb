@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 AdminApi::Engine.routes.draw do
   resources :tenants do
     get :settings_schema, on: :collection

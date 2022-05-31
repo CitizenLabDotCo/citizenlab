@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::InvitesController < ApplicationController
   # when accepting an invite, the user is still to be logged in;
   # hence, no user is logged in, therefore we do not want to
@@ -22,7 +24,7 @@ class WebApi::V1::InvitesController < ApplicationController
       @invites = @invites.where('invitees_invites.invite_status = ?', params[:invite_status]) if params[:invite_status].present?
     elsif params[:invite_status].present?
       @invites = @invites.where('users.invite_status = ?', params[:invite_status])
-end
+    end
 
     if params[:sort].present? && params[:search].blank?
       @invites = case params[:sort]

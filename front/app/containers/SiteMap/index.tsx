@@ -283,7 +283,7 @@ const SiteMap = ({ projects, authUser }: Props) => {
                     .filter((page) => page.attributes.code !== 'custom')
                     .map((item) => (
                       <li key={item.id}>
-                        <Link to={`/${item.attributes.slug}`}>
+                        <Link to={`/pages/${item.attributes.slug}`}>
                           {localize(item.attributes.title_multiloc)}
                         </Link>
                       </li>

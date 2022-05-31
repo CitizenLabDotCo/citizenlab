@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::SpamReportSerializer < WebApi::V1::BaseSerializer
   attributes :reason_code, :other_reason, :reported_at
 

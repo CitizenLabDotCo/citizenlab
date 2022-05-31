@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Helper class for generating documentation output that describes which
 # validation errors can occur on models.
 

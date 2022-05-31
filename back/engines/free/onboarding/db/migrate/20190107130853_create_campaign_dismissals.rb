@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCampaignDismissals < ActiveRecord::Migration[5.2]
   def change
     create_table :onboarding_campaign_dismissals, id: :uuid do |t|

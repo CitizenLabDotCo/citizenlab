@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'texting/version'
 require 'texting/engine'
 

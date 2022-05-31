@@ -189,7 +189,15 @@ export interface IProjectData {
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string; medium: string; large: string } | null;
+  // header_bg is only a string or null when it's
+  // in IUpdatedProjectProperties. The ImageSizes needed
+  // to be added because we go from string here to ImageSizes
+  // in IProjectAttributes (also in this file) when we save an image
+  // selected for upload. ImageSizes needs to be here, because
+  // Otherwise TS will complain about this mismatch in
+  // front/app/containers/Admin/projects/general/index.tsx
+  // This oddity needs to be dealt with
+  header_bg?: string | ImageSizes | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;

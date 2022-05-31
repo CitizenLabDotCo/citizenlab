@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class ParticipatedInTopic
     include ActiveModel::Validations

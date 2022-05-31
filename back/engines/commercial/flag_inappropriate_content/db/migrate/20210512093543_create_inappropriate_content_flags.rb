@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateInappropriateContentFlags < ActiveRecord::Migration[6.0]
   def change
     create_table :flag_inappropriate_content_inappropriate_content_flags, id: :uuid do |t|

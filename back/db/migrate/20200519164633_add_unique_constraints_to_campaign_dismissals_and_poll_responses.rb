@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddUniqueConstraintsToCampaignDismissalsAndPollResponses < ActiveRecord::Migration[6.0]
   def change
     add_index :polls_responses, %i[participation_context_id participation_context_type user_id], unique: true, name: 'index_polls_responses_on_participation_context_and_user_id'

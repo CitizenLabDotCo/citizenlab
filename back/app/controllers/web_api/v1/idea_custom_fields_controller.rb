@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   before_action :set_custom_form, only: %i[schema json_forms_schema]
   skip_after_action :verify_policy_scoped

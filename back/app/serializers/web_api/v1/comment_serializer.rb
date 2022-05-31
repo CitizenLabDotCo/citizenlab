@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
   attributes :upvotes_count, :downvotes_count, :publication_status, :children_count, :created_at, :updated_at
 

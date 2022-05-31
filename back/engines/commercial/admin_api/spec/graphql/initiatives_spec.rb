@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Graphql initiatives' do
@@ -18,32 +20,33 @@ RSpec.describe 'Graphql initiatives' do
   describe 'publicInitiatives' do
     let(:query_string) do
       %|
-      query {
-        publicInitiatives(first: 5) {
-          edges {
-            node {
-              id
-              href
-              titleMultiloc {
-                en
-                nlBe
-                frBe
-                frFr
-              }
-              images(first: 1) {
-                edges {
-                  node {
-                    smallUrl
+        query {
+          publicInitiatives(first: 5) {
+            edges {
+              node {
+                id
+                href
+                titleMultiloc {
+                  en
+                  nlBe
+                  frBe
+                  frFr
+                }
+                images(first: 1) {
+                  edges {
+                    node {
+                      smallUrl
+                    }
                   }
                 }
+                upvotesCount
+                commentsCount
               }
-              upvotesCount
-              commentsCount
             }
           }
         }
-      }
-    | end
+      |
+    end
 
     it 'returns all public initiatives with fields' do
       create_list(:initiative, 5)

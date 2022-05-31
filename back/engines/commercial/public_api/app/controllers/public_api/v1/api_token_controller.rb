@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PublicApi::V1::ApiTokenController < Knock::AuthTokenController
   def authenticate
     unless entity.present? && entity.authenticate(auth_params[:client_secret])

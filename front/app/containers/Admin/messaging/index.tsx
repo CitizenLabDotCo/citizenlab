@@ -10,6 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import GetPermission from 'resources/GetPermission';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
@@ -67,7 +68,6 @@ class MessagingDashboard extends React.PureComponent<
 
   render() {
     const {
-      children,
       intl: { formatMessage },
     } = this.props;
     const tabs = this.tabs();
@@ -85,11 +85,13 @@ class MessagingDashboard extends React.PureComponent<
             title={messages.helmetTitle}
             description={messages.helmetDescription}
           />
-          {isEmpty(tabs) ? (
-            <FormattedMessage {...messages.noAccess} />
-          ) : (
-            children
-          )}
+          <div id="e2e-messaging-container">
+            {isEmpty(tabs) ? (
+              <FormattedMessage {...messages.noAccess} />
+            ) : (
+              <RouterOutlet />
+            )}
+          </div>
         </TabbedResource>
       </>
     );

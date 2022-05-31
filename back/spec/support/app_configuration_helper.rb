@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AppConfigurationHelper
   def enable_phone_login
     settings = AppConfiguration.instance.settings

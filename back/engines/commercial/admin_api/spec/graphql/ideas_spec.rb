@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Graphql ideas' do
@@ -18,33 +20,34 @@ RSpec.describe 'Graphql ideas' do
   describe 'publicIdeas' do
     let(:query_string) do
       %|
-      query publicIdeas($projects: [ID!], $topics: [ID!], $sort: IdeaSorting) {
-        publicIdeas(first: 5, projects: $projects, topics: $topics, sort: $sort) {
-          edges {
-            node {
-              id
-              href
-              titleMultiloc {
-                en
-                nlBe
-                frBe
-                frFr
-              }
-              images(first: 1) {
-                edges {
-                  node {
-                    smallUrl
+        query publicIdeas($projects: [ID!], $topics: [ID!], $sort: IdeaSorting) {
+          publicIdeas(first: 5, projects: $projects, topics: $topics, sort: $sort) {
+            edges {
+              node {
+                id
+                href
+                titleMultiloc {
+                  en
+                  nlBe
+                  frBe
+                  frFr
+                }
+                images(first: 1) {
+                  edges {
+                    node {
+                      smallUrl
+                    }
                   }
                 }
+                upvotesCount
+                downvotesCount
+                commentsCount
               }
-              upvotesCount
-              downvotesCount
-              commentsCount
             }
           }
         }
-      }
-    | end
+      |
+    end
 
     it 'returns all public ideas with fields' do
       create_list(:idea, 5)

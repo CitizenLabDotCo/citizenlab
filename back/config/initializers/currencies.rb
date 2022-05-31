@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 CL2_SUPPORTED_CURRENCIES = [
   'CRE', # these two currencies should be at the top of the list because they are preferable choise
   'TOK', # CRE and TOK are 'virtual currencies' and not real word currencies

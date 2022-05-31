@@ -63,12 +63,12 @@ class Permission < ApplicationRecord
     return if moderator? user
 
     reason = case permitted_by
-             when 'users' then :not_signed_in unless user
-             when 'admins_moderators' then :not_permitted
-             when 'groups' then denied_when_permitted_by_groups?(user)
-             else
-               raise "Unsupported permitted_by: '#{permitted_by}'."
-             end
+    when 'users' then :not_signed_in unless user
+    when 'admins_moderators' then :not_permitted
+    when 'groups' then denied_when_permitted_by_groups?(user)
+    else
+      raise "Unsupported permitted_by: '#{permitted_by}'."
+    end
 
     Permission.denied_reasons[reason]
   end

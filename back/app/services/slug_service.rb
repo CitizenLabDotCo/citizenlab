@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SlugService
   def generate_slug(record, string)
     return nil unless string

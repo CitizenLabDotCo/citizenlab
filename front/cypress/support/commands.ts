@@ -49,7 +49,7 @@ declare global {
   }
 }
 
-export function randomString(length: number = 15) {
+export function randomString(length = 15) {
   let text = '';
   const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
 

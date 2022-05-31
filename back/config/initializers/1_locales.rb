@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'i18n/backend/fallbacks'
 
 CL2_SUPPORTED_LOCALES = %i[en ar-MA ar-SA en-GB en-CA nl-BE nl-NL fr-BE fr-FR de-DE it-IT

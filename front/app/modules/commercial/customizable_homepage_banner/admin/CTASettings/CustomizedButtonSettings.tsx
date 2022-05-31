@@ -32,11 +32,11 @@ const TextSettings = styled.div`
 //    in each language. It can be implemented, but it would be custom and complicated.
 
 // FE validations are inspired by:
-// front/app/containers/Admin/projects/edit/general/utils/validate.ts
+// front/app/containers/Admin/projects/general/utils/validate.ts
 // front/app/containers/Admin/settings/customize/index.tsx
 
 // Similar input is used here (see validate)
-// front/app/containers/Admin/projects/edit/general/index.tsx
+// front/app/containers/Admin/projects/general/index.tsx
 const getTextErrors = (
   textMultiloc: Multiloc | undefined,
   errors: CLErrors,
@@ -110,7 +110,7 @@ const CustomizedButtonSettings = ({
     // We set it to {} because if it's set to the current error and there are two empty locale inputs,
     // cursor jumps to the next empty locale input after typing the first letter in the first empty locale input.
     // For the same reason we don't calculate the errors on every render.
-    // The same done in front/app/containers/Admin/projects/edit/general/index.tsx  #handleTitleMultilocOnChange
+    // The same done in front/app/containers/Admin/projects/general/index.tsx  #handleTitleMultilocOnChange
     setTextError({});
   };
   const handleUrlOnChange = (url: string) => handleOnChange('url')(url);

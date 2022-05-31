@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'publication filtering model' do |model_name|
   with_options scope: :page do
     parameter :number, 'Page number'

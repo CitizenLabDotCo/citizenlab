@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   module Patches
     module SideFxProjectService
@@ -18,10 +20,10 @@ module IdeaAssignment
 
       def set_default_assignee(project, current_user)
         project.default_assignee ||= if current_user&.super_admin?
-                                       ::User.oldest_admin
-                                     else
-                                       current_user
-                                     end
+          ::User.oldest_admin
+        else
+          current_user
+        end
       end
     end
   end

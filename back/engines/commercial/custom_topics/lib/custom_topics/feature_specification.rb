@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomTopics
   module FeatureSpecification
     extend CitizenLab::Mixins::FeatureSpecification

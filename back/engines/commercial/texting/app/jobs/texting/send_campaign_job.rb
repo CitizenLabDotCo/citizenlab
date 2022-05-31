@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Texting
   class SendCampaignJob < ApplicationJob
     perform_retries false

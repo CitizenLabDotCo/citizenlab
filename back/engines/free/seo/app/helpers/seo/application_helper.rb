@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Seo
   module ApplicationHelper
     def localize_url(url, locale)

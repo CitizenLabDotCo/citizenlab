@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TenantSchema
   class RequiredSettingsAttribute < JSON::Schema::Attribute
     def self.validate(current_schema, data, fragments, processor, _validator, options = {})

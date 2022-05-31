@@ -16,9 +16,6 @@ import Error from 'components/UI/Error';
 // services
 import { updateInsightsCategory } from 'modules/commercial/insights/services/insightsCategories';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -68,7 +65,6 @@ const RenameCategory = ({
   params: { viewId },
   location: { query },
 }: RenameCategoryProps) => {
-  const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
@@ -98,8 +94,6 @@ const RenameCategory = ({
     }
   };
 
-  if (isNilOrError(locale)) return null;
-
   return (
     <Container data-testid="insights">
       <Title>{formatMessage(messages.renameCategoryModalTitle)}</Title>
@@ -118,17 +112,12 @@ const RenameCategory = ({
           <Button
             processing={loading}
             disabled={!name}
-            locale={locale}
             onClick={handleSubmit}
             bgColor={colors.adminTextColor}
           >
             {formatMessage(messages.renameCategoryModalSave)}
           </Button>
-          <Button
-            locale={locale}
-            onClick={closeRenameModal}
-            buttonStyle="secondary"
-          >
+          <Button onClick={closeRenameModal} buttonStyle="secondary">
             {formatMessage(messages.renameCategoryModalCancel)}
           </Button>
         </ButtonContainer>

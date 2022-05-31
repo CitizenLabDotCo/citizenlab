@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::NavBarItemSerializer < ::WebApi::V1::BaseSerializer
   attributes :code, :ordering, :created_at, :updated_at
 

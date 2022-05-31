@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::FolderSerializer < ::WebApi::V1::BaseSerializer
     attributes :title_multiloc, :description_preview_multiloc, :slug, :created_at, :updated_at
@@ -7,7 +9,7 @@ module ProjectFolders
     end
 
     attribute :header_bg do |object|
-      object.header_bg && object.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     attribute :visible_projects_count do |object, params|

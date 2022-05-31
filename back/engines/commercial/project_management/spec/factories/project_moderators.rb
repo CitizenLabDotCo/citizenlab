@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :project_moderator, class: User, parent: :user do
     transient do

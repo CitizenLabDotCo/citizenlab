@@ -1,6 +1,7 @@
 import React from 'react';
-// tslint:disable-next-line:no-vanilla-routing
+// eslint-disable-next-line no-restricted-imports
 import { NavLink as RouterLink, NavLinkProps } from 'react-router-dom';
+// eslint-disable-next-line no-restricted-imports
 import { Path } from 'history';
 import updateLocationDescriptor from './updateLocationDescriptor';
 import { isNilOrError } from 'utils/helperUtils';

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddChildrenCountToComments < ActiveRecord::Migration[5.2]
   def change
     add_column :comments, :children_count, :integer, null: false, default: 0

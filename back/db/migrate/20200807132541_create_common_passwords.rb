@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCommonPasswords < ActiveRecord::Migration[6.0]
   def change
     create_table :common_passwords, id: :uuid do |t|

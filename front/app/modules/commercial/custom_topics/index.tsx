@@ -7,6 +7,19 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
+const AdminAllowedTopicsComponent = React.lazy(
+  () => import('./admin/containers/ProjectAllowedInputTopics')
+);
+const AdminTopicsIndexComponent = React.lazy(
+  () => import('./admin/containers/TopicsSettings/all')
+);
+const AdminTopicsNewComponent = React.lazy(
+  () => import('./admin/containers/TopicsSettings/New')
+);
+const AdminTopicsEditComponent = React.lazy(
+  () => import('./admin/containers/TopicsSettings/Edit')
+);
+
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
   phases: IPhaseData[] | null;
@@ -42,25 +55,21 @@ const configuration: ModuleConfiguration = {
     'admin.projects': [
       {
         path: '/:locale/admin/projects/:projectId/allowed-input-topics',
-        name: 'topics',
-        container: () => import('./admin/containers/ProjectAllowedInputTopics'),
+        element: <AdminAllowedTopicsComponent />,
       },
     ],
     'admin.settings': [
       {
         path: '/:locale/admin/settings/topics',
-        name: 'admin topics index',
-        container: () => import('./admin/containers/TopicsSettings/all'),
+        element: <AdminTopicsIndexComponent />,
       },
       {
         path: '/:locale/admin/settings/topics/new',
-        name: 'admin topics new',
-        container: () => import('./admin/containers/TopicsSettings/New'),
+        element: <AdminTopicsNewComponent />,
       },
       {
         path: '/:locale/admin/settings/topics/:topicId/edit',
-        name: 'admin topic edit',
-        container: () => import('./admin/containers/TopicsSettings/Edit'),
+        element: <AdminTopicsEditComponent />,
       },
     ],
   },

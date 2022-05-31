@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserCustomFields
   class StatUserPolicy < ApplicationPolicy
     def users_by_gender?

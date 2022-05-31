@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::External::InviteSerializer < ActiveModel::Serializer
   attributes :id, :invite_text, :accepted_at, :activate_invite_url
 

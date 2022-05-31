@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::ConsentSerializer < ::WebApi::V1::BaseSerializer
     attributes :consented, :created_at, :updated_at

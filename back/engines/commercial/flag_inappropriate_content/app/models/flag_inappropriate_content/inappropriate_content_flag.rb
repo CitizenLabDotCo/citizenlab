@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: flag_inappropriate_content_inappropriate_content_flags

@@ -28,7 +28,7 @@ module Finder
       def default_sort(scope)
         @_default_sort, @_default_sort_order = scope.first if scope.is_a? Hash
 
-        @_default_sort_order = scope.to_s.delete_prefix!('-') ? :asc : :desc
+        @_default_sort_order = scope.to_s.start_with?('-') ? :asc : :desc
         @_default_sort       = scope.to_s
       end
 
@@ -66,11 +66,11 @@ module Finder
       sort_option = _sort_scopes[_sort_method.to_sym]
 
       @records = case sort_option
-                 when ->(so) { so.respond_to?(:call) } then  sort_option.call(@records)
-                 when Hash                             then  _sort_from_hash(sort_option)
-                 when Symbol                           then  @records.send(sort_option)
-                 else                                        @records.order(sort_option)
-                 end
+      when ->(so) { so.respond_to?(:call) } then  sort_option.call(@records)
+      when Hash                             then  _sort_from_hash(sort_option)
+      when Symbol                           then  @records.send(sort_option)
+      else @records.order(sort_option)
+      end
     end
 
     def _sort_with_attribute

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdIdCardLookup
   class LoadIdCardsJob < ApplicationJob
     queue_as :default

@@ -16,9 +16,6 @@ import Error from 'components/UI/Error';
 // services
 import { updateInsightsView } from 'modules/commercial/insights/services/insightsViews';
 
-// hooks
-import useLocale from 'hooks/useLocale';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -63,7 +60,6 @@ const RenameInsightsView = ({
   originalViewName,
   intl: { formatMessage },
 }: RenameInsightsViewProps & InjectedIntlProps) => {
-  const locale = useLocale();
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<CLErrors | undefined>();
 
@@ -88,8 +84,6 @@ const RenameInsightsView = ({
     }
   };
 
-  if (isNilOrError(locale)) return null;
-
   return (
     <Container data-testid="insights">
       <Title>{formatMessage(messages.renameModalTitle)}</Title>
@@ -106,17 +100,12 @@ const RenameInsightsView = ({
           <Button
             processing={loading}
             disabled={!name}
-            locale={locale}
             onClick={handleSubmit}
             bgColor={colors.adminTextColor}
           >
             {formatMessage(messages.renameModalSaveView)}
           </Button>
-          <Button
-            locale={locale}
-            onClick={closeRenameModal}
-            buttonStyle="secondary"
-          >
+          <Button onClick={closeRenameModal} buttonStyle="secondary">
             {formatMessage(messages.renameModalCancel)}
           </Button>
         </ButtonContainer>

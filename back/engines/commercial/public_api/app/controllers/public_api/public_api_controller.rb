@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PublicApi
   class PublicApiController < ActionController::API
     include Knock::Authenticable

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MentionService
   # @param [User] user
   # @return [String] mention

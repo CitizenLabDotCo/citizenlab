@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Also, see FE validations in front/app/modules/commercial/customizable_homepage_banner/
 # TODO: Move this module to some commercial engine (e.g. when we create sth like `configurability`)
 module CustomizableHomepageBannerSettings

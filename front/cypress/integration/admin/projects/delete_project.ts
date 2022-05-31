@@ -10,7 +10,6 @@ describe('Admin: delete project', () => {
     cy.apiCreateProject(generateProject({})).then((project) => {
       const projectTitleToDelete =
         project.body.data.attributes.title_multiloc['en'];
-      const projectIdToDelete = project.body.data.id;
 
       cy.contains('.e2e-admin-projects-list-item', projectTitleToDelete)
         .find('.e2e-admin-delete-publication')
@@ -28,7 +27,6 @@ describe('Admin: delete project', () => {
     cy.apiCreateFolder(generateProjectFolder({})).then((project) => {
       const folderTitleToDelete =
         project.body.data.attributes.title_multiloc['en'];
-      const folderIdToDelete = project.body.data.id;
       cy.log(folderTitleToDelete);
 
       cy.contains('.e2e-admin-adminPublications-list-item', folderTitleToDelete)

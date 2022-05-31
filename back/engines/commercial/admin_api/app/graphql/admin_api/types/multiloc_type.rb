@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::MultilocType < GraphQL::Schema::Object
     CL2_SUPPORTED_LOCALES.each do |loc|

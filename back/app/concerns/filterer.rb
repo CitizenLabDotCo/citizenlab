@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The Filterer mixin can help you to implement filtering services that applies a sequence of filter.
 # The mixin allows the registration of new filters to the filtering service.
 #

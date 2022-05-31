@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Verification
   class VerificationPolicy < ApplicationPolicy
     class Scope

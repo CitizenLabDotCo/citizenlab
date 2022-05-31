@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationService
   NOTIFICATION_CLASSES = [
     Notifications::AdminRightsReceived,
@@ -41,10 +43,10 @@ class NotificationService
   end
 
   def serializers
-    notification_classes.map do |klaz|
+    notification_classes.to_h do |klaz|
       module_prefix = klaz.name.split(/Notifications::/, 2).first # After https://stackoverflow.com/a/7523966/3585671
       [klaz, "#{module_prefix}WebApi::V1::Notifications::#{klaz.name.demodulize}Serializer".constantize]
-    end.to_h
+    end
   end
 end
 

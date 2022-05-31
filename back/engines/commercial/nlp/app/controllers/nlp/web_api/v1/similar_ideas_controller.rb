@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NLP
   module WebApi
     module V1

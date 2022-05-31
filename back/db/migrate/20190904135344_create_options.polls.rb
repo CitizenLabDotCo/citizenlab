@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from polls (originally 20190904143810)
 class CreateOptions < ActiveRecord::Migration[5.2]
   def change

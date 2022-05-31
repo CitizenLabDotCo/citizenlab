@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ParticipantsService
   ENGAGING_ACTIVITIES = [
     { item_type: 'Comment', action: 'created', score: 3 },
@@ -16,8 +18,8 @@ class ParticipantsService
   def participants(options = {})
     since = options[:since]
     # After https://stackoverflow.com/a/25356375
-    multiwhere = '(activities.item_type, activities.action) IN ('
-    multiwhere << (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ') << ')'
+    list = (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ')
+    multiwhere = "(activities.item_type, activities.action) IN (#{list})"
     users = User
       .joins(:activities)
       .where(

@@ -489,7 +489,7 @@ pl:
       trending_ideas: "Modne pomysły"
       trending_ideas_text: "Interesuje Cię, co się dzieje na platformie? Oto trzy najmodniejsze pomysły i to, co ludzie o nich mówią."
       no_notifications: "Brak powiadomień"
-      one_notification: "1 notification"
+      one_notification: "1 powiadomienie"
       multiple_notifications: "Powiadomienia: %{notifCount}"
       no_unread_notifications: "Nie masz żadnych nieprzeczytanych powiadomień. Odwiedź platformę, aby wnieść swój wkład i wygenerować nowe powiadomienia!"
       unread_notifications: "Masz nieprzeczytane powiadomienia. Odwiedź platformę, aby dowiedzieć się, co się dzieje!"

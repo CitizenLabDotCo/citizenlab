@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :project_folder_file, class: ProjectFolders::File do
     project_folder

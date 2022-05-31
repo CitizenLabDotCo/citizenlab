@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Area, type: :model do
@@ -26,14 +28,6 @@ RSpec.describe Area, type: :model do
     it 'with invalid locales marks the model as invalid' do
       area = build :area, description_multiloc: { 'se-BI' => 'awesome area' }
       expect(area).to be_invalid
-    end
-  end
-
-  describe 'delete an area' do
-    it 'with an ideas assocated to it should succeed' do
-      area = create :area
-      create :idea, areas: [area]
-      expect { area.destroy }.not_to raise_error
     end
   end
 
