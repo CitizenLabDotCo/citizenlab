@@ -155,7 +155,7 @@ export default defineMessages({
     defaultMessage: 'Column layout',
   },
   whiteSpace: {
-    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceRadioLabel',
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
     defaultMessage: 'White space',
   },
   whiteSpaceRadioLabel: {
