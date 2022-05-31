@@ -100,7 +100,7 @@ gem 'activerecord-postgis-adapter', '~> 7.0.0'
 # We need `config.download_retry_count`.
 # It should be available in the version next to 2.2.2
 gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git',
-                   ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
+  ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.12'
 

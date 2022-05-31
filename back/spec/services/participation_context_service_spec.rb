@@ -297,7 +297,7 @@ describe ParticipationContextService do
 
       it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
         project = create(:continuous_project, voting_enabled: true,
-                                              downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
         create(:vote, mode: 'down', user: user, votable: idea)
         vote = build(:vote, mode: 'down', user: user, votable: idea)
@@ -307,7 +307,7 @@ describe ParticipationContextService do
 
       it 'returns nil if the downvoting limit was not reached' do
         project = create(:continuous_project, voting_enabled: true,
-                                              downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
         create(:vote, mode: 'up', user: user, votable: idea)
         vote = build(:vote, mode: 'down', user: user, votable: idea)
@@ -356,7 +356,7 @@ describe ParticipationContextService do
 
       it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
         project = create(:continuous_project, voting_enabled: true,
-                                              downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
         create(:vote, mode: 'down', user: user, votable: idea)
 
@@ -455,7 +455,7 @@ describe ParticipationContextService do
 
       it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
         project = create(:project_with_current_phase,
-                         current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
+          current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
         create(:vote, mode: 'up', user: user, votable: create(:idea, project: project, phases: project.phases))
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'

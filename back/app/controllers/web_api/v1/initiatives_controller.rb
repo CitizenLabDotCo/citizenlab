@@ -40,10 +40,10 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
-                                                       view_private_attributes: Pundit.policy!(current_user,
-                                                                                               User).view_private_attributes?
+        view_private_attributes: Pundit.policy!(current_user,
+          User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                      filename: 'initiatives.xlsx'
+        filename: 'initiatives.xlsx'
     end
   end
 

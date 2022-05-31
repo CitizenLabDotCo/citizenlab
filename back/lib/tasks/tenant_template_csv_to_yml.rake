@@ -31,8 +31,8 @@ namespace :tenant_template do
     yml_ideas_topics   = []
     yml_idea_images    = []
     yml_ideas          = convert_ideas(read_csv('Ideas', args), locales, ideas_hash, users_hash,
-                                       projects_hash, topics_hash, idea_statuses_hash, yml_votes,
-                                       yml_ideas_topics, yml_idea_images)
+      projects_hash, topics_hash, idea_statuses_hash, yml_votes,
+      yml_ideas_topics, yml_idea_images)
     yml_comments       = convert_comments(read_csv('Comments', args), locales, comments_hash, ideas_hash, users_hash)
     yml_events         = convert_events(read_csv('Events', args), locales, projects_hash)
     yml_phases         = convert_phases(read_csv('Phases', args), locales, projects_hash)
@@ -94,8 +94,8 @@ namespace :tenant_template do
   end
 
   def convert_ideas(csv_ideas, locales,
-                    ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash,
-                    yml_votes, yml_ideas_topics, yml_idea_images)
+    ideas_hash, users_hash, projects_hash, topics_hash, idea_statuses_hash,
+    yml_votes, yml_ideas_topics, yml_idea_images)
     statuses = %w[proposed under_consideration accepted implemented rejected]
     csv_ideas.map do |csv_idea|
       yml_idea = {

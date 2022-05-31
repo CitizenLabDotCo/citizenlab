@@ -96,8 +96,8 @@ class Project < ApplicationRecord
   validate :admin_publication_must_exist
 
   pg_search_scope :search_by_all,
-                  against: %i[title_multiloc description_multiloc description_preview_multiloc],
-                  using: { tsearch: { prefix: true } }
+    against: %i[title_multiloc description_multiloc description_preview_multiloc],
+    using: { tsearch: { prefix: true } }
 
   scope :with_all_areas, (proc do |area_ids|
     uniq_area_ids = area_ids.uniq

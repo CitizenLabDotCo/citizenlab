@@ -32,9 +32,26 @@ Style/NumericPredicate:
   # are not the same if `something` is not a number.
   Enabled: false
 
-Layout/FirstHashElementIndentation:
-  # Wait for a decision on Layout/HashAlignment.
+Layout/FirstArgumentIndentation:
   EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
 
 Layout/CaseIndentation:
   EnforcedStyle: end

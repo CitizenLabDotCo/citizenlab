@@ -64,7 +64,7 @@ describe SideFxIdeaService do
         have_enqueued_job(LogActivityJob).with(idea, 'published', user, idea.created_at.to_i).exactly(1).times
       .and(
         have_enqueued_job(LogActivityJob).with(idea, 'first_published_by_user', user,
-                                               idea.created_at.to_i).exactly(1).times
+          idea.created_at.to_i).exactly(1).times
       )
       )
     end
@@ -83,7 +83,7 @@ describe SideFxIdeaService do
       idea.update(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed_title', any_args,
-                                                   payload: { change: [old_idea_title, idea.title_multiloc] }).exactly(1).times
+          payload: { change: [old_idea_title, idea.title_multiloc] }).exactly(1).times
     end
 
     it "logs a 'changed_body' action job when the body has changed" do
@@ -92,7 +92,7 @@ describe SideFxIdeaService do
       idea.update(body_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed_body', any_args,
-                                                   payload: { change: [old_idea_body, idea.body_multiloc] })
+          payload: { change: [old_idea_body, idea.body_multiloc] })
     end
 
     it "logs a 'changed_status' action job when the idea_status has changed" do
@@ -102,7 +102,7 @@ describe SideFxIdeaService do
       idea.update(idea_status: new_idea_status)
       expect { service.after_update(idea, user) }
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed_status', user, idea.updated_at.to_i,
-                                                   payload: { change: [old_idea_status.id, new_idea_status.id] }).exactly(1).times
+          payload: { change: [old_idea_status.id, new_idea_status.id] }).exactly(1).times
     end
   end
 
