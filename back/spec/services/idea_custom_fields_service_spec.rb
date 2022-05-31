@@ -33,7 +33,7 @@ describe IdeaCustomFieldsService do
     it 'lists keys' do
       project = create :project
       form = create :custom_form, project: project
-      required_field = create(
+      create(
         :custom_field,
         :for_custom_form,
         resource: form,
@@ -48,7 +48,7 @@ describe IdeaCustomFieldsService do
         required: false,
         key: 'optional_field'
       )
-      multiselect_field = create(
+      create(
         :custom_field_multiselect,
         :for_custom_form,
         resource: form,
@@ -56,7 +56,7 @@ describe IdeaCustomFieldsService do
         key: 'multiselect_field'
       )
       create :custom_field_option, custom_field: optional_field
-      build_in_required_field = create(
+      create(
         :custom_field_multiselect,
         :for_custom_form,
         resource: form,

@@ -258,7 +258,6 @@ class XlsxService
   def user_custom_field_columns(record_to_user, view_private_attributes)
     return [] unless view_private_attributes
 
-    areas = Area.all.index_by(&:id)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)

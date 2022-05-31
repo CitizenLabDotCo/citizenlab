@@ -10,7 +10,7 @@ describe XlsxService do
     before do
       @project = create :project
       @form = create :custom_form, project: @project
-      number_field = create(
+      create(
         :custom_field,
         :for_custom_form,
         resource: @form,
@@ -24,8 +24,6 @@ describe XlsxService do
     context 'when idea_custom_fields is deactivated' do
       before do
         SettingsService.new.deactivate_feature! 'idea_custom_fields'
-
-        fields1 = { 'number_field' => 9, 'multiselect_field' => %w[option1 option2] }
         @idea1 = create(:idea, project: @project, custom_field_values: { 'number_field' => 4 })
       end
 
@@ -44,7 +42,7 @@ describe XlsxService do
       before do
         SettingsService.new.activate_feature! 'idea_custom_fields'
 
-        date_field = create(
+        create(
           :custom_field,
           :for_custom_form,
           resource: @form,
@@ -143,7 +141,7 @@ describe XlsxService do
       end
 
       it 'includes hidden custom fields' do
-        hidden_field = create(
+        create(
           :custom_field,
           :for_custom_form,
           resource: @form,
@@ -156,7 +154,7 @@ describe XlsxService do
       end
 
       it 'excludes disabled custom fields' do
-        hidden_field = create(
+        create(
           :custom_field,
           :for_custom_form,
           resource: @form,
