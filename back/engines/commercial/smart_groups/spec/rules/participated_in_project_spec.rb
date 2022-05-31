@@ -5,10 +5,11 @@ require 'rails_helper'
 describe SmartGroups::Rules::ParticipatedInProject do
   let(:valid_json_rule) do
     {
-    'ruleType' => 'participated_in_project',
-    'predicate' => 'in',
-    'value' => create_list(:project, 2).map(&:id)
-  } end
+      'ruleType' => 'participated_in_project',
+      'predicate' => 'in',
+      'value' => create_list(:project, 2).map(&:id)
+    }
+  end
   let(:valid_rule) { SmartGroups::Rules::ParticipatedInProject.from_json(valid_json_rule) }
 
   describe 'from_json' do
@@ -148,89 +149,103 @@ describe SmartGroups::Rules::ParticipatedInProject do
   describe 'description_multiloc' do
     let(:project1) do
       create(:project, title_multiloc: {
-      'en'    => 'beer',
-      'fr-FR' => 'bière',
-      'nl-NL' => 'bier'
-    }) end
+        'en'    => 'beer',
+        'fr-FR' => 'bière',
+        'nl-NL' => 'bier'
+      })
+    end
     let(:project2) do
       create(:project, title_multiloc: {
-      'en'    => 'delayed',
-      'fr-FR' => 'retardé',
-      'nl-NL' => 'uitgesteld'
-    }) end
+        'en'    => 'delayed',
+        'fr-FR' => 'retardé',
+        'nl-NL' => 'uitgesteld'
+      })
+    end
 
     let(:participated_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'in',
-      'value'         => [project1.id, project2.id]
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'in',
+        'value'         => [project1.id, project2.id]
+      })
+    end
     let(:participated_not_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'not_in',
-      'value'         => project1.id
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'not_in',
+        'value'         => project1.id
+      })
+    end
     let(:participated_posted_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'posted_in',
-      'value'         => [project1.id, project2.id]
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'posted_in',
+        'value'         => [project1.id, project2.id]
+      })
+    end
     let(:participated_not_posted_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'not_posted_in',
-      'value'         => project1.id
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'not_posted_in',
+        'value'         => project1.id
+      })
+    end
     let(:participated_commented_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'commented_in',
-      'value'         => [project1.id, project2.id]
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'commented_in',
+        'value'         => [project1.id, project2.id]
+      })
+    end
     let(:participated_not_commented_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'not_commented_in',
-      'value'         => project1.id
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'not_commented_in',
+        'value'         => project1.id
+      })
+    end
     let(:participated_voted_idea_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'voted_idea_in',
-      'value'         => [project1.id, project2.id]
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'voted_idea_in',
+        'value'         => [project1.id, project2.id]
+      })
+    end
     let(:participated_not_voted_idea_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'not_voted_idea_in',
-      'value'         => project1.id
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'not_voted_idea_in',
+        'value'         => project1.id
+      })
+    end
     let(:participated_voted_comment_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'voted_comment_in',
-      'value'         => [project1.id, project2.id]
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'voted_comment_in',
+        'value'         => [project1.id, project2.id]
+      })
+    end
     let(:participated_not_voted_comment_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'not_voted_comment_in',
-      'value'         => project1.id
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'not_voted_comment_in',
+        'value'         => project1.id
+      })
+    end
     let(:participated_budgeted_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'budgeted_in',
-      'value'         => [project1.id, project2.id]
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'budgeted_in',
+        'value'         => [project1.id, project2.id]
+      })
+    end
     let(:participated_not_budgeted_in_project_in_rule) do
       SmartGroups::Rules::ParticipatedInProject.from_json({
-      'ruleType'      => 'participated_in_project',
-      'predicate'     => 'not_budgeted_in',
-      'value'         => project1.id
-    }) end
+        'ruleType'      => 'participated_in_project',
+        'predicate'     => 'not_budgeted_in',
+        'value'         => project1.id
+      })
+    end
 
     it 'successfully translates different combinations of rules' do
       expect(participated_in_project_in_rule.description_multiloc).to eq({

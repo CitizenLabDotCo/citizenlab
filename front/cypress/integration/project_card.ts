@@ -44,6 +44,13 @@ describe('Project card component', () => {
     projectCard.get('.e2e-project-card-cta').contains('Submit your idea');
   });
 
+  it('navigates to project page on click title', () => {
+    cy.get('.e2e-project-card-project-title').first().click();
+
+    cy.url().should('include', '/en/projects');
+    cy.get('#e2e-project-page');
+  });
+
   after(() => {
     cy.apiRemoveProject(projectId);
   });

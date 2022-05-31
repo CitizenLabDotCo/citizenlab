@@ -85,6 +85,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.aboutBox',
     defaultMessage: 'About Box',
   },
+  accordion: {
+    id: 'app.containers.admin.ContentBuilder.accordion',
+    defaultMessage: 'Accordion',
+  },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',
@@ -102,6 +106,27 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.textValue',
     defaultMessage:
       'This is some text. You can edit and format it by using the editor in the panel on the right.',
+  },
+  accordionTitleValue: {
+    id: 'app.containers.admin.ContentBuilder.accordionTitleValue',
+    defaultMessage: 'Accordion title',
+  },
+  accordionTitleLabel: {
+    id: 'app.containers.admin.ContentBuilder.accordionTitleLabel',
+    defaultMessage: 'Title',
+  },
+  accordionTextLabel: {
+    id: 'app.containers.admin.ContentBuilder.accordionTextLabel',
+    defaultMessage: 'Text',
+  },
+  accordionTextValue: {
+    id: 'app.containers.admin.ContentBuilder.accordionTextValue',
+    defaultMessage:
+      'This is expandable accordion content. You can edit and format it by using the editor in the panel on the right.',
+  },
+  accordionDefaultOpenLabel: {
+    id: 'app.containers.admin.ContentBuilder.accordionDefaultOpenLabel',
+    defaultMessage: 'Open by default',
   },
   delete: {
     id: 'app.containers.admin.ContentBuilder.delete',
@@ -128,5 +153,9 @@ export default defineMessages({
   columnLayoutRadioLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
     defaultMessage: 'Column layout',
+  },
+  a11y_closeSettingsPanel: {
+    id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
+    defaultMessage: 'Close settings panel',
   },
 });

@@ -72,7 +72,7 @@ module CitizenLab
       # Mapping from setting name to setting json schema.
       # @return [Hash<String, Hash>]
       def settings_props
-        settings.map { |setting| [setting.name, setting.schema] }.to_h
+        settings.to_h { |setting| [setting.name, setting.schema] }
       end
     end
 

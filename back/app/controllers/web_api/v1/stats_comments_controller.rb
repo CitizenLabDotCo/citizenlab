@@ -121,7 +121,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_project
     serie = comments_by_project_serie
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: { series: { comments: serie }, projects: projects.map { |p| [p.id, p.attributes.except('id')] }.to_h }
+    render json: { series: { comments: serie }, projects: projects.to_h { |p| [p.id, p.attributes.except('id')] } }
   end
 
   def comments_by_project_as_xlsx

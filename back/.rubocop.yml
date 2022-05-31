@@ -44,6 +44,9 @@ Layout/FirstHashElementIndentation:
 Layout/CaseIndentation:
   EnforcedStyle: end
 
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
 Metrics/ClassLength:
   Max: 300
   CountAsOne: ['array', 'hash', 'heredoc']

@@ -44,7 +44,7 @@ class WebApi::V1::IdeasController < ApplicationController
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
-      includes: %i[author topics areas project idea_status idea_files]
+      includes: %i[author topics project idea_status idea_files]
     ).find_records
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: fastjson_params)
@@ -55,7 +55,7 @@ class WebApi::V1::IdeasController < ApplicationController
       params,
       scope: policy_scope(Idea).where(publication_status: 'published'),
       current_user: current_user,
-      includes: %i[author topics areas project idea_status idea_files],
+      includes: %i[author topics project idea_status idea_files],
       paginate: false
     ).find_records
 
@@ -74,17 +74,15 @@ class WebApi::V1::IdeasController < ApplicationController
     ).find_records
     counts = {
       'idea_status_id' => {},
-      'area_id' => {},
       'topic_id' => {}
     }
     all_ideas.published
       .joins('FULL OUTER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .joins('FULL OUTER JOIN areas_ideas ON areas_ideas.idea_id = ideas.id')
-      .select('idea_status_id, areas_ideas.area_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
+      .select('idea_status_id, ideas_topics.topic_id, COUNT(DISTINCT(ideas.id)) as count')
       .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
-      .group('GROUPING SETS (idea_status_id, areas_ideas.area_id, ideas_topics.topic_id)')
+      .group('GROUPING SETS (idea_status_id, ideas_topics.topic_id)')
       .each do |record|
-        %w[idea_status_id area_id topic_id].each do |attribute|
+        %w[idea_status_id topic_id].each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end
@@ -97,7 +95,7 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: WebApi::V1::IdeaSerializer.new(
       @idea,
       params: fastjson_params,
-      include: %i[author topics areas user_vote idea_images]
+      include: %i[author topics user_vote idea_images]
     ).serialized_json
   end
 
@@ -126,7 +124,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload,
           params: fastjson_params,
-          include: %i[author topics areas phases user_vote idea_images]
+          include: %i[author topics phases user_vote idea_images]
         ).serialized_json, status: :created
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -138,7 +136,6 @@ class WebApi::V1::IdeasController < ApplicationController
   def update
     service = SideFxIdeaService.new
 
-    params[:idea][:area_ids] ||= [] if params[:idea].key?(:area_ids)
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
 
@@ -157,7 +154,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           @idea.reload,
           params: fastjson_params,
-          include: %i[author topics areas user_vote idea_images]
+          include: %i[author topics user_vote idea_images]
         ).serialized_json, status: :ok
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -198,8 +195,7 @@ class WebApi::V1::IdeasController < ApplicationController
       { location_point_geojson: [:type, { coordinates: [] }],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         body_multiloc: CL2_SUPPORTED_LOCALES,
-        topic_ids: [],
-        area_ids: [] }
+        topic_ids: [] }
     ]
     project = @idea&.project || Project.find(params.dig(:idea, :project_id))
     if project && UserRoleService.new.can_moderate_project?(project, current_user)

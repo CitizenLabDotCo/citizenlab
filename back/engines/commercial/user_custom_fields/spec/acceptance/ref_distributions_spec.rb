@@ -70,12 +70,14 @@ resource 'Representativeness reference distributions' do
   end
 
   post 'web_api/v1/users/custom_fields/:custom_field_id/reference_distribution' do
-    parameter :distribution, 'The distribution as (unnormalized) counts', required: true
+    parameter :distribution, <<~DESC, required: true
+      The distribution as population counts for each custom field option.
+    DESC
 
     let(:custom_field_id) { custom_field.id }
     let(:custom_field) do
-      create(:custom_field_select, resource_type: 'User').tap do |cf|
-        create_list(:custom_field_option, 2, custom_field: cf)
+      create(:custom_field_select, resource_type: 'User').tap do |custom_field|
+        create_list(:custom_field_option, 2, custom_field: custom_field)
       end
     end
 

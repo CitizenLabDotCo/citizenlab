@@ -4,30 +4,30 @@
 module Surveys::TypeformParser
   def extract_value_from_answer(answer)
     case answer[:type]
-      when 'text'
+    when 'text'
         answer[:text]
-      when 'choice'
+    when 'choice'
         answer[:choice][:label]
-      when 'choices'
+    when 'choices'
         answer[:choices][:labels]
-      when 'email'
+    when 'email'
         answer[:email]
-      when 'url'
+    when 'url'
         answer[:url]
-      when 'file_url'
+    when 'file_url'
         answer[:file_url]
-      when 'boolean'
+    when 'boolean'
         answer[:boolean]
-      when 'number'
+    when 'number'
         answer[:number]
-      when 'date'
+    when 'date'
         answer[:date]
-      when 'payment'
+    when 'payment'
         answer[:payment]
-      when 'phone_number'
+    when 'phone_number'
         answer[:phone_number]
-      else
+    else
         raise "Unsupported typeform answer type #{answer[:type]}"
-      end
+    end
   end
 end

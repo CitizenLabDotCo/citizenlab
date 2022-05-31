@@ -56,7 +56,6 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   end
 
   has_many :topics
-  has_many :areas
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
 

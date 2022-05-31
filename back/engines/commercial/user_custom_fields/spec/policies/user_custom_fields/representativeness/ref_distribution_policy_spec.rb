@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UserCustomFields::Representativeness::RefDistributionPolicy, type: :policy do
+RSpec.describe UserCustomFields::Representativeness::RefDistributionPolicy do
   subject(:policy) { described_class.new(user, ref_distribution) }
 
   let_it_be(:ref_distribution) { create(:ref_distribution) }

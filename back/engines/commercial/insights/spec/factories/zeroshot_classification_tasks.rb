@@ -24,10 +24,10 @@ FactoryBot.define do
 
     categories do
       view = if inputs
-               association(:view_from_projects, projects: inputs.map(&:project))
-             else
-               association(:view)
-             end
+        association(:view_from_projects, projects: inputs.map(&:project))
+      else
+        association(:view)
+      end
 
       Array.new(categories_count) { association(:category, view: view) }
     end
