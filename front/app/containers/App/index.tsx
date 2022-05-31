@@ -30,13 +30,11 @@ import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableModal from 'components/Loadable/Modal';
-import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
-
+import Modal from 'components/UI/Modal';
 import Outlet from 'components/Outlet';
-
+import UserDeletedModalContent from 'components/UserDeletedModalContent';
 import { LiveAnnouncer } from 'react-aria-live';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
@@ -500,14 +498,16 @@ class App extends PureComponent<Props, State> {
                     </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <LoadableModal
-                      opened={userDeletedSuccessfullyModalOpened}
-                      close={this.closeUserDeletedModal}
-                    >
-                      <LoadableUserDeleted
-                        userSuccessfullyDeleted={userSuccessfullyDeleted}
-                      />
-                    </LoadableModal>
+                    <Suspense fallback={null}>
+                      <Modal
+                        opened={userDeletedSuccessfullyModalOpened}
+                        close={this.closeUserDeletedModal}
+                      >
+                        <UserDeletedModalContent
+                          userSuccessfullyDeleted={userSuccessfullyDeleted}
+                        />
+                      </Modal>
+                    </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <SignUpInModal
