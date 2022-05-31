@@ -87,14 +87,16 @@ const WhiteSpaceSettings = () => {
         label={<FormattedMessage {...messages.whiteSpaceRadioLarge} />}
         isRequired
       />
-      <Toggle
-        onChange={() => {
-          setProp((props) => (props.withDivider = !props.withDivider));
-        }}
-        checked={withDivider}
-        id="white-space-divider"
-        label={<FormattedMessage {...messages.whiteSpaceDividerLabel} />}
-      />
+      <Box mt="40px">
+        <Toggle
+          onChange={() => {
+            setProp((props) => (props.withDivider = !props.withDivider));
+          }}
+          checked={withDivider}
+          id="white-space-divider"
+          label={<FormattedMessage {...messages.whiteSpaceDividerLabel} />}
+        />
+      </Box>
     </Box>
   );
 };
