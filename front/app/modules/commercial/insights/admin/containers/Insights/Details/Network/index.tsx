@@ -85,7 +85,7 @@ const Network = ({
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
-  const [highlightNode, setHighlightNode] = useState();
+  const [hoverNode, setHoverNode] = useState<Node | undefined>();
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
   const [hiddenNodes, setHiddenNodes] = useState<Array<Node>>([]);
 
@@ -150,10 +150,7 @@ const Network = ({
 
   const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
 
-  const handleNodeHover = (node) => {
-    setHighlightNode(undefined);
-    if (node) setHighlightNode(node.id);
-  };
+  const handleNodeHover = (node: Node) => setHoverNode(node);
 
   const nodeCanvasObject = (
     node: Node,
@@ -177,7 +174,7 @@ const Network = ({
       if (globalScale >= visibleKeywordLabelScale) {
         ctx.fillText(label, node.x, nodeVerticalOffset);
 
-        if (highlightNode && node.id == highlightNode) {
+        if (node == hoverNode) {
           // Draw hide icon
           const hideIcon = new Path2D(
             'M7.84 6.5l4.89-4.84c.176-.174.274-.412.27-.66 0-.552-.447-1-1-1-.25.003-.488.107-.66.29L6.5 5.13 1.64.27C1.47.1 1.24.003 1 0 .448 0 0 .448 0 1c.01.23.105.45.27.61L5.16 6.5.27 11.34c-.177.173-.274.412-.27.66 0 .552.448 1 1 1 .246-.004.48-.105.65-.28L6.5 7.87l4.81 4.858c.183.184.433.28.69.27.553 0 1-.446 1-.998-.01-.23-.105-.45-.27-.61L7.84 6.5z'
