@@ -523,8 +523,8 @@ GEM
     api-pagination (4.8.2)
     ast (2.4.2)
     attr_required (1.0.1)
-    awesome_nested_set (3.4.0)
-      activerecord (>= 4.0.0, < 7.0)
+    awesome_nested_set (3.5.0)
+      activerecord (>= 4.0.0, < 7.1)
     aws-eventstream (1.2.0)
     aws-partitions (1.583.0)
     aws-sdk-core (3.130.2)
@@ -1134,7 +1134,7 @@ DEPENDENCIES
   admin_api!
   annotate
   api-pagination (~> 4.8.2)
-  awesome_nested_set (~> 3.4.0)
+  awesome_nested_set (~> 3.5.0)
   aws-sdk-s3 (~> 1)
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
