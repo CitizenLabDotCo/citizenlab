@@ -26,13 +26,9 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
   validate :validate_distribution_options
 
-  def total_count
-    distribution.values.sum
-  end
-
   def probabilities_and_counts
     distribution.transform_values do |count|
-      { count: count, probability: count.to_f / total_count }
+      { count: count, probability: count.to_f / total_population }
     end
   end
 
@@ -42,5 +38,11 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
     unless distribution.keys.to_set <= value_ids.to_set
       errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
     end
+  end
+
+  private
+
+  def total_population
+    @total_population ||= distribution.values.sum
   end
 end
