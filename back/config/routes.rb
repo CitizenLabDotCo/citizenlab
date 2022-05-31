@@ -27,8 +27,8 @@ Rails.application.routes.draw do
       concern :post do
         resources :activities, only: [:index]
         resources :comments, shallow: true,
-          concerns: %i[votable spam_reportable],
-          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
+                             concerns: %i[votable spam_reportable],
+                             defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end

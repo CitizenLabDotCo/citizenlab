@@ -49,11 +49,11 @@ module ParticipationContext
         before_validation :set_input_term
       end
       validates :upvoting_limited_max, presence: true,
-        numericality: { only_integer: true, greater_than: 0 },
-        if: %i[ideation_or_budgeting? upvoting_limited?]
+                                       numericality: { only_integer: true, greater_than: 0 },
+                                       if: %i[ideation_or_budgeting? upvoting_limited?]
       validates :downvoting_limited_max, presence: true,
-        numericality: { only_integer: true, greater_than: 0 },
-        if: %i[ideation_or_budgeting? downvoting_limited?]
+                                         numericality: { only_integer: true, greater_than: 0 },
+                                         if: %i[ideation_or_budgeting? downvoting_limited?]
 
       # ideation?
       with_options if: :ideation? do
@@ -67,10 +67,10 @@ module ParticipationContext
       end
       validates :min_budget,
                 numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
-                if: %i[budgeting? max_budget] }
+                                if: %i[budgeting? max_budget] }
       validates :max_budget,
                 numericality: { greater_than_or_equal_to: :min_budget,
-                if: %i[budgeting? min_budget] }
+                                if: %i[budgeting? min_budget] }
     end
   end
 

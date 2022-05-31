@@ -297,7 +297,7 @@ describe ParticipationContextService do
 
       it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
         project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+                                              downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
         create(:vote, mode: 'down', user: user, votable: idea)
         vote = build(:vote, mode: 'down', user: user, votable: idea)
@@ -307,7 +307,7 @@ describe ParticipationContextService do
 
       it 'returns nil if the downvoting limit was not reached' do
         project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+                                              downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
         create(:vote, mode: 'up', user: user, votable: idea)
         vote = build(:vote, mode: 'down', user: user, votable: idea)
@@ -356,7 +356,7 @@ describe ParticipationContextService do
 
       it 'returns `downvoting_limited_max_reached` if the downvoting limit was reached' do
         project = create(:continuous_project, voting_enabled: true,
-          downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
+                                              downvoting_enabled: true, downvoting_method: 'limited', downvoting_limited_max: 1)
         idea = create(:idea, project: project)
         create(:vote, mode: 'down', user: user, votable: idea)
 
@@ -490,7 +490,7 @@ describe ParticipationContextService do
         project = create(
           :project_with_current_phase,
           phases_config: { sequence: 'xxcxx', c: { voting_enabled: true },
-          x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } }
+                           x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } }
         )
         phase = project.phases.order(:start_at).first
         ideas = create_list(:idea, 2, project: project, phases: project.phases)

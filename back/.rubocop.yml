@@ -32,10 +32,6 @@ Style/NumericPredicate:
   # are not the same if `something` is not a number.
   Enabled: false
 
-Layout/HashAlignment:
-  # There are a lot of places where EnforcedColonStyle: table is expected, so disabled for now.
-  Enabled: false
-
 Layout/FirstHashElementIndentation:
   # Wait for a decision on Layout/HashAlignment.
   Enabled: false

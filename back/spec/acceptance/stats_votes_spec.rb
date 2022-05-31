@@ -77,7 +77,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [['up', 1984], ['up', 1992], ['down', 1992], ['up', nil]].each do |mode, birthyear|
           create(:vote, mode: mode, votable: @ideas.sample,
-            user: (birthyear ? create(:user, birthyear: birthyear) : create(:user)))
+                        user: (birthyear ? create(:user, birthyear: birthyear) : create(:user)))
         end
       end
 
@@ -111,7 +111,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
           create(:vote, mode: mode, votable: @ideas.sample,
-            user: (domicile ? create(:user, domicile: domicile) : create(:user)))
+                        user: (domicile ? create(:user, domicile: domicile) : create(:user)))
         end
       end
 
@@ -143,7 +143,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [%w[up 2], %w[up 7], %w[down 7], ['up', nil]].each do |mode, education|
           create(:vote, mode: mode, votable: @ideas.sample,
-            user: (education ? create(:user, education: education) : create(:user)))
+                        user: (education ? create(:user, education: education) : create(:user)))
         end
       end
 
@@ -175,7 +175,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [%w[up female], %w[up male], %w[down male], ['up', nil]].each do |mode, gender|
           create(:vote, mode: mode, votable: @ideas.sample,
-            user: (gender ? create(:user, gender: gender) : create(:user)))
+                        user: (gender ? create(:user, gender: gender) : create(:user)))
         end
       end
 
@@ -211,7 +211,7 @@ resource 'Stats - Votes' do
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
         [['up', @opt1], ['up', @opt2], ['down', @opt2], ['down', @opt3], ['up', nil]].each do |mode, opt|
           create(:vote, mode: mode, votable: @ideas.sample,
-            user: (opt ? create(:user, custom_field_values: { @custom_field.key => opt.key }) : create(:user)))
+                        user: (opt ? create(:user, custom_field_values: { @custom_field.key => opt.key }) : create(:user)))
         end
       end
 

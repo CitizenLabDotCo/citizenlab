@@ -65,13 +65,13 @@ namespace :tenant_template do
     csv_users.map do |csv_user|
       yml_user = {
         'email' => csv_user['Email'],
-        'first_name'        => csv_user['First Name'],
-        'last_name'         => csv_user['Last Name'],
-        'locale'            => locales.first,
-        'bio_multiloc'      => make_multiloc(md_to_html(csv_user['Biography (Optional)']), locales),
-        'gender'            => csv_user['Gender'],
-        'birthyear'	        => rand(10) == 0 ? nil : rand(1925..2004),
-        'domicile'          => rand(10) == 0 ? nil : generate_domicile,
+        'first_name' => csv_user['First Name'],
+        'last_name' => csv_user['Last Name'],
+        'locale' => locales.first,
+        'bio_multiloc' => make_multiloc(md_to_html(csv_user['Biography (Optional)']), locales),
+        'gender' => csv_user['Gender'],
+        'birthyear'	=> rand(10) == 0 ? nil : rand(1925..2004),
+        'domicile' => rand(10) == 0 ? nil : generate_domicile,
         'password' => csv_user['Password (Optional)'] || generate_password,
         'remote_avatar_url' => csv_user['Image URL (Optional)']
       }
@@ -101,9 +101,9 @@ namespace :tenant_template do
       yml_idea = {
         'title_multiloc' => make_multiloc(csv_idea['Title'], locales),
         'body_multiloc' => make_multiloc(md_to_html(csv_idea['Body']), locales),
-        'author_ref'         => users_hash[csv_idea['Author ID']],
-        'project_ref'        => projects_hash[csv_idea['Project ID']],
-        'idea_status_ref'    => idea_statuses_hash[statuses.sample],
+        'author_ref' => users_hash[csv_idea['Author ID']],
+        'project_ref' => projects_hash[csv_idea['Project ID']],
+        'idea_status_ref' => idea_statuses_hash[statuses.sample],
         'publication_status' => 'published'
       }
       generate_and_add_votes(csv_idea, yml_idea, yml_votes, users_hash)
@@ -119,8 +119,8 @@ namespace :tenant_template do
       yml_comment = {
         'body_multiloc' => make_multiloc(md_to_html(csv_comment['Body']), locales),
         'author_ref' => users_hash[csv_comment['Author ID']],
-        'idea_ref'      => ideas_hash[csv_comment['Idea ID']],
-        'parent_ref'    => comments_hash[csv_comment['Comment ID (Optional)']]
+        'idea_ref' => ideas_hash[csv_comment['Idea ID']],
+        'parent_ref' => comments_hash[csv_comment['Comment ID (Optional)']]
       }
       comments_hash[csv_comment['ID']] = yml_comment
       yml_comment
@@ -133,10 +133,10 @@ namespace :tenant_template do
       {
         'title_multiloc' => make_multiloc(csv_event['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_event['Description']), locales),
-        'location_multiloc'    => make_multiloc(csv_event['Location'], locales),
-        'project_ref'          => projects_hash[csv_event['Project ID']],
-        'start_at'             => start_at,
-        'end_at'               => start_at + 1.day
+        'location_multiloc' => make_multiloc(csv_event['Location'], locales),
+        'project_ref' => projects_hash[csv_event['Project ID']],
+        'start_at' => start_at,
+        'end_at' => start_at + 1.day
       }
     end
   end
@@ -151,9 +151,9 @@ namespace :tenant_template do
       {
         'title_multiloc' => make_multiloc(csv_phase['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_phase['Description']), locales),
-        'project_ref'          => projects_hash[csv_phase['Project ID']],
-        'start_at'             => start_at,
-        'end_at'               => end_at
+        'project_ref' => projects_hash[csv_phase['Project ID']],
+        'start_at' => start_at,
+        'end_at' => end_at
       }
     end
   end
@@ -183,8 +183,8 @@ namespace :tenant_template do
       mode = z[0]
       user = z[1]
       {
-        'mode'        => mode,
-        'user_ref'    => user,
+        'mode' => mode,
+        'user_ref' => user,
         'votable_ref' => yml_idea
       }
     end

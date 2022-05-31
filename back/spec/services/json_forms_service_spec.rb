@@ -66,12 +66,12 @@ describe JsonFormsService do
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         { type: 'object',
-         additionalProperties: false,
-         properties:           { 'field1' =>
+          additionalProperties: false,
+          properties: { 'field1' =>
             { type: 'string' },
-           'field2' =>
+                        'field2' =>
            { type: 'string' },
-           'field3' =>
+                        'field3' =>
             {
              type: 'string',
              oneOf: [
@@ -89,53 +89,53 @@ describe JsonFormsService do
                }
              ]
             },
-           'field4' =>
+                        'field4' =>
             {
              type: 'array',
              uniqueItems: true,
              minItems: 0,
-             items:               { type: 'string',
-              oneOf: [
-                {
-                  const: 'option_a',
-                  title: 'youth council'
-                },
-                {
-                  const: 'option_b',
-                  title: 'youth council'
-                }
-              ] }
+             items: { type: 'string',
+                      oneOf: [
+                        {
+                          const: 'option_a',
+                          title: 'youth council'
+                        },
+                        {
+                          const: 'option_b',
+                          title: 'youth council'
+                        }
+                      ] }
               },
-           'field5' =>
+                        'field5' =>
             { type: 'boolean' },
-           'field6' =>
+                        'field6' =>
             { type: 'string',
-             format: 'date' },
-            'field7' =>
+              format: 'date' },
+                        'field7' =>
             { type: 'number' },
-           'field8' =>
+                        'field8' =>
             { type: 'array',
-             uniqueItems: true,
-             minItems: 1,
-             items:               { type: 'string',
-              oneOf: [
-                {
-                  const: 'option_a',
-                  title: 'youth council'
-                },
-                {
-                  const: 'option_b',
-                  title: 'youth council'
-                }
-              ] } },
-            'field9' =>
+              uniqueItems: true,
+              minItems: 1,
+              items: { type: 'string',
+                       oneOf: [
+                         {
+                           const: 'option_a',
+                           title: 'youth council'
+                         },
+                         {
+                           const: 'option_b',
+                           title: 'youth council'
+                         }
+                       ] } },
+                        'field9' =>
             { type: 'array',
-             items:               { properties:                 { file_by_content:                   { properties:                     { file:                       { type: 'string' },
-                    name:                       { type: 'string' } },
-                  type: 'object' },
-                  name:                   { type: 'string' } },
-                type: 'object' } } },
-         required: %w[field2 field8 field9] }
+              items: { properties: { file_by_content: { properties: { file: { type: 'string' },
+                                                                      name: { type: 'string' } },
+                                                        type: 'object' },
+                                     name: { type: 'string' } },
+                       type: 'object' } } },
+          required: %w[field2 field8 field9] }
       )
     end
   end
