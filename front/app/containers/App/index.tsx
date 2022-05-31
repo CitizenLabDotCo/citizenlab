@@ -26,12 +26,12 @@ import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
+import LoadableUserDeleted from './UserDeletedModalContent/LoadableUserDeleted';
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
-import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 
