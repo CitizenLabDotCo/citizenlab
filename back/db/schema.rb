@@ -335,11 +335,13 @@ ActiveRecord::Schema.define(version: 2022_05_31_123916) do
 
   create_table "home_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "header_avatars_enabled", default: true, null: false
-    t.boolean "top_info_section_enabled", default: false, null: false
+    t.boolean "top_info_section_enabled", default: true, null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
-    t.boolean "bottom_info_section_enabled", default: false, null: false
+    t.boolean "bottom_info_section_enabled", default: true, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.boolean "events_enabled", default: false, null: false
+    t.boolean "projects_enabled", default: true, null: false
+    t.boolean "banner_enabled", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.string "banner_signed_in_header"
     t.string "banner_signed_in_text"
@@ -347,6 +349,8 @@ ActiveRecord::Schema.define(version: 2022_05_31_123916) do
     t.string "banner_signed_in_url"
     t.string "banner_signed_out_header"
     t.string "banner_signed_out_subheader"
+    t.string "banner_signed_out_header_overlay_color"
+    t.integer "banner_signed_out_header_overlay_opacity"
     t.string "banner_signed_out_text"
     t.string "banner_signed_out_type", default: "sign_up_button", null: false
     t.string "banner_signed_out_url"

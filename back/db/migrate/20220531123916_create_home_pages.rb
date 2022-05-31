@@ -23,6 +23,8 @@ class CreateHomePages < ActiveRecord::Migration[6.1]
       t.string :banner_signed_in_url
       t.string :banner_signed_out_header
       t.string :banner_signed_out_subheader
+      t.string :banner_signed_out_header_overlay_color
+      t.integer :banner_signed_out_header_overlay_opacity
       t.string :banner_signed_out_text
       t.string :banner_signed_out_type, default: 'sign_up_button', null: false
       t.string :banner_signed_out_url
