@@ -174,6 +174,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceRadioLarge',
     defaultMessage: 'Large',
   },
+  whiteSpaceDividerLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceDividerLabel',
+    defaultMessage: 'Include border',
+  },
   a11y_closeSettingsPanel: {
     id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',
     defaultMessage: 'Close settings panel',

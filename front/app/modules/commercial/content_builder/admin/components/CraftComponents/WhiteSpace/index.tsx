@@ -5,6 +5,7 @@ import {
   Box,
   Radio,
   Title,
+  Toggle,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import Divider from 'components/admin/Divider';
@@ -12,11 +13,11 @@ import Divider from 'components/admin/Divider';
 // craft
 import { useNode, UserComponent } from '@craftjs/core';
 
-// Intl
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
-const WhiteSpace: UserComponent = ({ size }) => {
+const WhiteSpace: UserComponent = ({ size, withDivider }) => {
   const isPhone = useBreakpoint('phone');
 
   const calculatePaddingY = () => {
@@ -33,7 +34,7 @@ const WhiteSpace: UserComponent = ({ size }) => {
   };
   return (
     <Box id="e2e-white-space" w="100%" paddingY={calculatePaddingY()}>
-      <Divider />
+      {withDivider && <Divider m="0" />}
     </Box>
   );
 };
@@ -42,8 +43,10 @@ const WhiteSpaceSettings = () => {
   const {
     actions: { setProp },
     size,
+    withDivider,
   } = useNode((node) => ({
     size: node.data.props.size,
+    withDivider: node.data.props.withDivider,
   }));
 
   return (
@@ -83,6 +86,14 @@ const WhiteSpaceSettings = () => {
         value="large"
         label={<FormattedMessage {...messages.whiteSpaceRadioLarge} />}
         isRequired
+      />
+      <Toggle
+        onChange={() => {
+          setProp((props) => (props.withDivider = !props.withDivider));
+        }}
+        checked={withDivider}
+        id="white-space-divider"
+        label={<FormattedMessage {...messages.whiteSpaceDividerLabel} />}
       />
     </Box>
   );
