@@ -99,7 +99,7 @@ module SmartGroups
     # @return [Group::ActiveRecord_Relation]
     def group_if_users_included(users, group)
       ::Group.where(id: group.id)
-             .where(filter(users, group.rules).arel.exists)
+        .where(filter(users, group.rules).arel.exists)
     end
   end
 end

@@ -9,8 +9,8 @@ module IdeaCustomFields
 
     def index
       @custom_fields = IdeaCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
-                                               .where(resource: @custom_form)
-                                               .order(:ordering)
+        .where(resource: @custom_form)
+        .order(:ordering)
 
       if IdeaCustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
         # Some fields exist but should not be shown in the input form settings, and we filter them

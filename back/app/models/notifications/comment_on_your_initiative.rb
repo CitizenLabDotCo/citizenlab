@@ -69,11 +69,11 @@ module Notifications
 
       if recipient_id && initiator_id && (comment.post_type == 'Initiative') && (recipient_id != initiator_id)
         [new(
-           recipient_id: recipient_id,
-           initiating_user_id: initiator_id,
-           post: initiative,
-           comment: comment
-         )]
+          recipient_id: recipient_id,
+          initiating_user_id: initiator_id,
+          post: initiative,
+          comment: comment
+        )]
       else
         []
       end

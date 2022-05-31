@@ -11,7 +11,7 @@ module Insights
 
       def destroy
         assignment = assignment_service.approved_assignments(input, view)
-                                       .find_by!(category_id: params.require(:id))
+          .find_by!(category_id: params.require(:id))
         status = assignment.destroy.destroyed? ? :ok : 500
         head status
       end
@@ -44,7 +44,7 @@ module Insights
 
       def input
         @input ||= Insights::InputsFinder.new(view).execute
-                                         .find(params.require(:input_id))
+          .find(params.require(:input_id))
       end
 
       # @return [Array<Insights::Category>]
@@ -58,8 +58,8 @@ module Insights
       def serialize_categories(input)
         options = { include: %i[categories], params: fastjson_params({ view: view }) }
         InputSerializer.new(input, options)
-                       .serializable_hash
-                       .dig(:data, :relationships, :categories)
+          .serializable_hash
+          .dig(:data, :relationships, :categories)
       end
     end
   end

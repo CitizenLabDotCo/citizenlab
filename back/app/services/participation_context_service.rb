@@ -151,17 +151,18 @@ class ParticipationContextService
     # to either return multiple reasons or have
     # a predefined ranking of reasons to return
     # the reason with the highest rank.
-    if !context
-      VOTING_DISABLED_REASONS[:project_inactive]
-    elsif (reason = general_idea_voting_disabled_reason(context, user))
-      reason
-    elsif idea && !in_current_context?(idea, context)
-      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    elsif mode && (reason = mode_specific_idea_voting_disabled_reason(mode, context, user))
-      reason
-    else
-      permission_denied_reason user, 'voting_idea', context
+    return VOTING_DISABLED_REASONS[:project_inactive] unless context
+
+    reason = general_idea_voting_disabled_reason(context, user)
+    return reason if reason
+    return VOTING_DISABLED_REASONS[:idea_not_in_current_phase] if idea && !in_current_context?(idea, context)
+
+    if mode
+      reason = mode_specific_idea_voting_disabled_reason(mode, context, user)
+      return reason if reason
     end
+
+    permission_denied_reason user, 'voting_idea', context
   end
 
   def cancelling_votes_disabled_reason_for_idea(idea, user)

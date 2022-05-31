@@ -6,7 +6,7 @@ RSpec.describe Notification, type: :model do
   describe 'make_notifications_on' do
     it 'makes project_folder_moderation_rights_received notifications on user project_folder_moderation_rights_received' do
       folder = create(:project_folder)
-      admin = create(:admin)
+      create(:admin)
       user = create(:user)
       activity = create(:activity, item: user, action: 'project_folder_moderation_rights_received', payload: { project_folder_id: folder.id })
 

@@ -8,7 +8,7 @@ RSpec.describe Notifications::OfficialFeedbackOnCommentedInitiative, type: :mode
       initiative = create(:initiative)
       comment1 = create(:comment, post: initiative)
       comment2 = create(:comment, post: initiative)
-      comment3 = create(:comment, post: initiative, author: comment2.author)
+      create(:comment, post: initiative, author: comment2.author)
       create(:comment)
 
       official_feedback = create(:official_feedback, post: initiative)

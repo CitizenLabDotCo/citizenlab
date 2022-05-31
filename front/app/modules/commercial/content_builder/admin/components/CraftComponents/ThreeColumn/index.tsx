@@ -17,7 +17,7 @@ const ThreeColumn: UserComponent = () => {
       minHeight="40px"
       display="flex"
       w="100%"
-      gap="4px"
+      gap="16px"
     >
       <Box flex="1">
         <Element id="column1" is={Container} canvas />

@@ -4,12 +4,19 @@
 
 ### Changed
 
+- [CL-667] Fixed many RuboCop offences
+
+## 2022-05-30
+
+### Changed
+
 - [CL-830] 'Accept' button now before 'Manage' button on cookie banner, and both buttons now the same style.
 
 ### Fixed
 
 - [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
 - [CL-790] Events date picker now has the correct date format for US-based tenants
+- [CL-832] Remove enable/disable toggle from title and description fields in the idea form
 - [CL-833] Fix creating a new registration field in FR and AR-MA
 
 ### Added

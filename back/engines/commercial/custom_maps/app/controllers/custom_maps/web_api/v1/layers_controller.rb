@@ -54,15 +54,15 @@ module CustomMaps
 
         def layer_params
           params.require(:layer)
-                .permit(
-                  :default_enabled,
-                  :marker_svg_url,
-                  geojson_file: %i[filename base64],
-                  title_multiloc: CL2_SUPPORTED_LOCALES
-                ).tap do |whitelisted|
-                  whitelisted[:geojson] = params.dig(:layer, :geojson)
-                  whitelisted.permit!
-                end
+            .permit(
+              :default_enabled,
+              :marker_svg_url,
+              geojson_file: %i[filename base64],
+              title_multiloc: CL2_SUPPORTED_LOCALES
+            ).tap do |whitelisted|
+            whitelisted[:geojson] = params.dig(:layer, :geojson)
+            whitelisted.permit!
+          end
         end
 
         def serialized_layer

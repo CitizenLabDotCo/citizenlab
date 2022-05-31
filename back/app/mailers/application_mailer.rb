@@ -179,8 +179,8 @@ class ApplicationMailer < ActionMailer::Base
 
   def to_deep_struct(obj)
     case obj
-    when Hash  then OpenStruct.new(obj.transform_values(&method(:to_deep_struct)))
-    when Array then obj.map(&method(:to_deep_struct))
+    when Hash  then OpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) })
+    when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
     else            obj
     end
   end

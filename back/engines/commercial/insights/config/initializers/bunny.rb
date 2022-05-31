@@ -11,7 +11,7 @@ BUNNY_CON ||= CitizenLab::Bunny.connect(rabbitmq_uri)
 channel = BUNNY_CON.create_channel
 exchange = channel.topic('cl2nlp', durable: true)
 queue = channel.queue('cl2_back.insights.zeroshot', durable: true)
-               .bind(exchange, routing_key: 'zeroshot.inference')
+  .bind(exchange, routing_key: 'zeroshot.inference')
 
 queue.subscribe do |_delivery_info, _properties, payload|
   payload = JSON.parse(payload)

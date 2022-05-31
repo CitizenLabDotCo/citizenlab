@@ -185,7 +185,8 @@ resource 'Campaigns' do
     let(:campaign) { create(:manual_campaign) }
     let!(:id) { campaign.id }
     let!(:deliveries) do
-      create_list(:delivery, 20,
+      create_list(
+        :delivery, 20,
         campaign: campaign,
         delivery_status: 'accepted'
       )

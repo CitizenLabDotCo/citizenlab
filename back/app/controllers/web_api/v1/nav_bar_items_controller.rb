@@ -40,7 +40,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
       # Disable
       remove_nav_bar_item
     else
-        render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
+      render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
     end
   end
 end

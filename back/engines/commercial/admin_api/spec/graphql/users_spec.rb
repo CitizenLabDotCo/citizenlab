@@ -14,7 +14,7 @@ RSpec.describe 'Graphql user' do
 
   describe 'user' do
     let(:query_string) do
-        %|
+      %|
         query userQuery($id: ID!) {
           user(id: $id) {
             id

@@ -50,18 +50,22 @@ class Comment < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  counter_culture :post,
+  counter_culture(
+    :post,
     column_name: proc { |model| model.published? ? 'comments_count' : nil },
     column_names: {
       ['comments.publication_status = ?', 'published'] => 'comments_count'
     },
     touch: true
-  counter_culture %i[idea project],
+  )
+  counter_culture(
+    %i[idea project],
     column_name: proc { |model| model.published? ? 'comments_count' : nil },
     column_names: {
       ['comments.publication_status = ?', 'published'] => 'comments_count'
     },
     touch: true
+  )
 
   # This code allows us to do something like comments.include(:idea)
   # After https://stackoverflow.com/a/16124295/3585671

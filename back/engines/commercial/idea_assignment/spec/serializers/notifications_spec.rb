@@ -14,18 +14,18 @@ describe WebApi::V1::Notifications::NotificationSerializer do
     expect(slug.downcase).not_to include(user1.last_name.downcase)
 
     last_name = serializer_class
-                .new(notification, params: { current_user: user1 })
-                .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification, params: { current_user: user1 })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq user1.last_name
 
     last_name = serializer_class
-                .new(notification, params: { current_user: admin })
-                .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification, params: { current_user: admin })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq user1.last_name
 
     last_name = serializer_class
-                .new(notification_from_admin, params: { current_user: user2 })
-                .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification_from_admin, params: { current_user: user2 })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq admin.last_name
   end
 

@@ -52,7 +52,7 @@ module Insights
       validate_inputs!(inputs)
 
       assignments_attrs = inputs.to_a.product(categories)
-                                .map { |input, category| new_assignment_attrs(input, category) }
+        .map { |input, category| new_assignment_attrs(input, category) }
 
       if set_processed
         view_ids = categories.pluck(:view_id).uniq
@@ -76,7 +76,7 @@ module Insights
     def add_suggestions_batch(inputs, categories)
       validate_inputs!(inputs)
       assignments_attrs = inputs.to_a.product(categories) # yields all pairs of input x category
-                                .map { |input, category| new_assignment_attrs(input, category, approved: false) }
+        .map { |input, category| new_assignment_attrs(input, category, approved: false) }
       batch_create(assignments_attrs)
     end
 

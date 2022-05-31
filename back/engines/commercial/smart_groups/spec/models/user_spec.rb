@@ -27,12 +27,14 @@ RSpec.describe User, type: :model do
   describe 'in_group' do
     it 'gets all users in a rules group' do
       group = create(:smart_group)
-      user1 = create(:user, email: 'jos@test.com')
-      user2 = create(:user, email: 'jules@test.com')
-      user3 = create(:user)
-      user4 = create(:user, manual_groups: [create(:group)])
+      users = [
+        create(:user, email: 'jos@test.com'),
+        create(:user, email: 'jules@test.com'),
+        create(:user),
+        create(:user, manual_groups: [create(:group)])
+      ]
 
-      expect(User.in_group(group).pluck(:id)).to match_array [user1.id, user2.id]
+      expect(User.in_group(group).pluck(:id)).to match_array [users[0].id, users[1].id]
     end
   end
 
@@ -42,7 +44,7 @@ RSpec.describe User, type: :model do
       group2 = create(:group)
       user1 = create(:user, email: 'jos@test.com', manual_groups: [group2])
       user2 = create(:user, email: 'jules@test.com')
-      user3 = create(:user)
+      create(:user)
       user4 = create(:user, manual_groups: [group2])
 
       expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]

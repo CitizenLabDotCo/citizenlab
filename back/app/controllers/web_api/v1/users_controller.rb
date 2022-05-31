@@ -40,7 +40,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       when nil
         @users
       else
-          raise 'Unsupported sort method'
+        raise 'Unsupported sort method'
       end
     end
 
@@ -89,9 +89,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def by_invite
-   @user = Invite.find_by!(token: params[:token])&.invitee
-   authorize @user
-   show
+    @user = Invite.find_by!(token: params[:token])&.invitee
+    authorize @user
+    show
   end
 
   def create
@@ -207,10 +207,10 @@ class WebApi::V1::UsersController < ::ApplicationController
     # the custom field value updates cleared out by the
     # policy (which should stay like before instead of
     # being cleared out).
-    if current_user&.custom_field_values && params[:user][:custom_field_values]
-      (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
-        params[:user][:custom_field_values][clear_key] = nil
-      end
+    return unless current_user&.custom_field_values && params[:user][:custom_field_values]
+
+    (current_user.custom_field_values.keys - (params[:user][:custom_field_values].keys || [])).each do |clear_key|
+      params[:user][:custom_field_values][clear_key] = nil
     end
   end
 

@@ -204,8 +204,8 @@ resource 'Invites' do
               admin: i == 0 ? true : nil,
               groups: i == 0 ? create(:group).title_multiloc.values.first : nil
             }
+          end
         end
-      end
         let(:group_ids) { [create(:group).id] }
         let(:roles) { [{ 'type' => 'admin' }] }
         let(:locale) { 'en' }
