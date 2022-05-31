@@ -93,7 +93,7 @@ const WhiteSpaceSettings = () => {
             setProp((props) => (props.withDivider = !props.withDivider));
           }}
           checked={withDivider}
-          id="white-space-divider"
+          id="e2e-white-space-divider-toggle"
           label={<FormattedMessage {...messages.whiteSpaceDividerLabel} />}
         />
       </Box>
