@@ -74,8 +74,8 @@ resource 'Representativeness reference distributions' do
 
     let(:custom_field_id) { custom_field.id }
     let(:custom_field) do
-      create(:custom_field_select, resource_type: 'User').tap do |cf|
-        create_list(:custom_field_option, 2, custom_field: cf)
+      create(:custom_field_select, resource_type: 'User').tap do |custom_field|
+        create_list(:custom_field_option, 2, custom_field: custom_field)
       end
     end
 

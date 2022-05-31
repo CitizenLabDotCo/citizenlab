@@ -9,9 +9,9 @@ FactoryBot.define do
     custom_field do
       # We use 'create' instead of 'association' because in any case we need the
       # identifiers of custom field options to define the distribution.
-      create(:custom_field_select, resource_type: 'User').tap do |cf|
+      create(:custom_field_select, resource_type: 'User').tap do |custom_field|
         nb_options.times do
-          create(:custom_field_option, custom_field: cf)
+          create(:custom_field_option, custom_field: custom_field)
         end
       end
     end
