@@ -12,6 +12,7 @@
 #  bottom_info_section_multiloc             :jsonb            not null
 #  events_enabled                           :boolean          default(FALSE), not null
 #  projects_enabled                         :boolean          default(TRUE), not null
+#  projects_header                          :jsonb            not null
 #  banner_enabled                           :boolean          default(TRUE), not null
 #  banner_layout                            :string           default("full_width_banner_layout"), not null
 #  banner_signed_in_header                  :string
