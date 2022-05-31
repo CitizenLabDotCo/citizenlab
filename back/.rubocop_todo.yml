@@ -174,7 +174,7 @@ RSpec/EmptyExampleGroup:
 # Offense count: 575
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
-  Max: 109
+  Max: 218
 
 # Offense count: 101
 # This cop supports safe auto-correction (--auto-correct).

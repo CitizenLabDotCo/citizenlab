@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :setup_and_support do
   desc 'Add text field to project'
   task :add_custom_fields, %i[host project_slug yml_url] => [:environment] do |_t, args|

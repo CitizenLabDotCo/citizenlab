@@ -16,11 +16,10 @@ describe JsonFormsService do
         [
 
           create(:custom_field,
-            key: 'field1',
-            input_type: 'text',
-            title_multiloc: title_multiloc,
-            description_multiloc: description_multiloc
-          )
+                 key: 'field1',
+                 input_type: 'text',
+                 title_multiloc: title_multiloc,
+                 description_multiloc: description_multiloc)
         ]
       end
 
@@ -101,8 +100,7 @@ describe JsonFormsService do
                     const: 'option_b',
                     title: 'youth council'
                   }
-                ]
-              }
+                ] }
                 },
             'field5' =>
               { type: 'boolean' },
@@ -125,24 +123,15 @@ describe JsonFormsService do
                     const: 'option_b',
                     title: 'youth council'
                   }
-                ]
-              }
-              },
+                ] } },
               'field9' =>
               { type: 'array',
               items:               { properties:                 { file_by_content:                   { properties:                     { file:                       { type: 'string' },
-                      name:                       { type: 'string' }
-                      },
-                    type: 'object'
-                    },
-                    name:                   { type: 'string' }
-                  },
-                  type: 'object'
-                }
-              }
-            },
-          required: %w[field2 field8 field9]
-          }
+                      name:                       { type: 'string' } },
+                    type: 'object' },
+                    name:                   { type: 'string' } },
+                  type: 'object' } } },
+          required: %w[field2 field8 field9] }
         )
       end
     end
@@ -154,8 +143,8 @@ describe JsonFormsService do
           create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
           create(:custom_field, key: 'field3', input_type: 'select'),
           create(:custom_field, key: 'field4', input_type: 'multiselect'),
-          field5 = create(:custom_field, key: 'field5', input_type: 'checkbox'),
-          field6 = create(:custom_field, key: 'field6', input_type: 'date'),
+          create(:custom_field, key: 'field5', input_type: 'checkbox'),
+          create(:custom_field, key: 'field6', input_type: 'date'),
           create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
           create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
         ]
@@ -168,58 +157,58 @@ describe JsonFormsService do
         expect(ui_schema[:type]).to be_present
         expect(ui_schema[:options]).to be_present
         expect(ui_schema[:elements]).to match([
-          {
-            type: 'Control',
-            scope: '#/properties/field1',
-            label: 'Did you attend',
-            options: {
-              description: 'Which councils are you attending in our city?',
-              transform: 'trim_on_blur'
-            }
-          },
-          {
-            type: 'Control',
-            scope: '#/properties/field2',
-            label: 'Did you attend',
-            options: {
-              description: 'Which councils are you attending in our city?',
-              textarea: true,
-              transform: 'trim_on_blur'
-            }
-          },
-          {
-            type: 'Control',
-            label: 'Did you attend',
-            options: {
-              description: 'Which councils are you attending in our city?'
-            },
-            scope: '#/properties/field3'
-          },
-          {
-            type: 'Control',
-            label: 'Did you attend',
-            options: {
-              description: 'Which councils are you attending in our city?'
-            },
-            scope: '#/properties/field4'
-          },
-          {
-            type: 'Control',
-            label: 'Did you attend',
-            options: {
-              description: 'Which councils are you attending in our city?'
-            },
-            scope: '#/properties/field5'
-          },
-          {
-            type: 'Control',
-            label: 'Did you attend',
-            options: {
-              description: 'Which councils are you attending in our city?'
-            },
-            scope: '#/properties/field6'
-          }
-        ])
+                                                {
+                                                  type: 'Control',
+                                                  scope: '#/properties/field1',
+                                                  label: 'Did you attend',
+                                                  options: {
+                                                    description: 'Which councils are you attending in our city?',
+                                                    transform: 'trim_on_blur'
+                                                  }
+                                                },
+                                                {
+                                                  type: 'Control',
+                                                  scope: '#/properties/field2',
+                                                  label: 'Did you attend',
+                                                  options: {
+                                                    description: 'Which councils are you attending in our city?',
+                                                    textarea: true,
+                                                    transform: 'trim_on_blur'
+                                                  }
+                                                },
+                                                {
+                                                  type: 'Control',
+                                                  label: 'Did you attend',
+                                                  options: {
+                                                    description: 'Which councils are you attending in our city?'
+                                                  },
+                                                  scope: '#/properties/field3'
+                                                },
+                                                {
+                                                  type: 'Control',
+                                                  label: 'Did you attend',
+                                                  options: {
+                                                    description: 'Which councils are you attending in our city?'
+                                                  },
+                                                  scope: '#/properties/field4'
+                                                },
+                                                {
+                                                  type: 'Control',
+                                                  label: 'Did you attend',
+                                                  options: {
+                                                    description: 'Which councils are you attending in our city?'
+                                                  },
+                                                  scope: '#/properties/field5'
+                                                },
+                                                {
+                                                  type: 'Control',
+                                                  label: 'Did you attend',
+                                                  options: {
+                                                    description: 'Which councils are you attending in our city?'
+                                                  },
+                                                  scope: '#/properties/field6'
+                                                }
+                                              ])
       end
     end
   end
@@ -235,8 +224,8 @@ describe JsonFormsService do
         form = create :custom_form, project: project
         required_field = create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number'
         optional_field = create :custom_field_select, :for_custom_form, resource: form, required: false
-        option1 = create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
-        option2 = create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
+        create :custom_field_option, custom_field: optional_field, key: 'option1', title_multiloc: { 'en' => 'Rabbit' }
+        create :custom_field_option, custom_field: optional_field, key: 'option2', title_multiloc: { 'en' => 'Bear' }
         build_in_required_field = create(
           :custom_field_multiselect,
           :for_custom_form,
