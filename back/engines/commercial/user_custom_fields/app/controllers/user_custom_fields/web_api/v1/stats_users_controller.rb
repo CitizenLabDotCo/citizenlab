@@ -47,7 +47,7 @@ module UserCustomFields
 
         def users_by_domicile
           areas = Area.all.select(:id, :title_multiloc)
-          render json: { series: { users: user_counts }, areas: areas.map { |a| [a.id, a.attributes.except('id')] }.to_h }
+          render json: { series: { users: user_counts }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
         end
 
         def users_by_domicile_as_xlsx
@@ -74,13 +74,14 @@ module UserCustomFields
         private
 
         def custom_field
-          @custom_field ||= if params[:custom_field_id]
+          @custom_field ||=
+            if params[:custom_field_id]
                               CustomField.find(params[:custom_field_id])
-                            elsif (key = custom_field_key_from_path)
+            elsif (key = custom_field_key_from_path)
                               CustomField.find_by(key: key)
-                            else
+            else
                               raise ActiveRecord::RecordNotFound
-                            end
+            end
         end
 
         def custom_field_key_from_path
