@@ -16,8 +16,8 @@ module ProjectFolders
 
     def index
       @moderators = User.project_folder_moderator(params[:project_folder_id])
-                        .page(params.dig(:page, :number))
-                        .per(params.dig(:page, :size))
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
 
       render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: fastjson_params)
     end

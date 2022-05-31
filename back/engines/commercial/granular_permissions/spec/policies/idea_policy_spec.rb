@@ -13,7 +13,7 @@ describe IdeaPolicy do
     let!(:project) do
       create(:continuous_project, posting_enabled: false).tap do |project|
         project.permissions.find_by(action: 'posting_idea')
-               .update!(permitted_by: 'admins_moderators')
+          .update!(permitted_by: 'admins_moderators')
       end
     end
 

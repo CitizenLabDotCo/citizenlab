@@ -8,7 +8,7 @@ class PostsFilteringService
     if params[:initiative_status].present?
       initiatives = initiatives
         .left_outer_joins(:initiative_initiative_status)
-        .where('initiative_initiative_statuses.initiative_status_id = ?', params[:initiative_status])
+        .where(initiative_initiative_statuses: { initiative_status_id: params[:initiative_status] })
     end
     initiatives = initiatives.where(assignee_id: params[:assignee]) if params[:assignee].present?
     initiatives = initiatives.feedback_needed if params[:feedback_needed].present?

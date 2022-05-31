@@ -9,8 +9,8 @@ module UserCustomFields
 
     def index
       @custom_fields = UserCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
-                                                   .where(resource_type: @resource_type)
-                                                   .order(:ordering)
+        .where(resource_type: @resource_type)
+        .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json

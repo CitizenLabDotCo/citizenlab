@@ -127,14 +127,16 @@ resource 'Ideas' do
       pr = create(:project_with_phases)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
-      i1 = create(:idea, phases: [ph1], project: pr)
-      i2 = create(:idea, phases: [ph2], project: pr)
-      i3 = create(:idea, phases: [ph1, ph2], project: pr)
+      ideas = [
+        create(:idea, phases: [ph1], project: pr),
+        create(:idea, phases: [ph2], project: pr),
+        create(:idea, phases: [ph1, ph2], project: pr)
+      ]
 
       do_request phase: ph2.id
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].pluck(:id)).to match_array [i2.id, i3.id]
+      expect(json_response[:data].pluck(:id)).to match_array [ideas[1].id, ideas[2].id]
     end
 
     example 'List all ideas in published projects' do
@@ -176,13 +178,15 @@ resource 'Ideas' do
     end
 
     example 'Search for ideas' do
-      i1 = create(:idea, title_multiloc: { en: 'This idea is uniqque' })
-      i2 = create(:idea, title_multiloc: { en: 'This one origiinal' })
+      initiatives = [
+        create(:idea, title_multiloc: { en: 'This idea is uniqque' }),
+        create(:idea, title_multiloc: { en: 'This one origiinal' })
+      ]
 
       do_request search: 'uniqque'
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i1.id
+      expect(json_response[:data][0][:id]).to eq initiatives[0].id
     end
 
     example 'List all ideas sorted by new' do
@@ -204,7 +208,6 @@ resource 'Ideas' do
 
     example 'List all ideas includes the user_vote', document: false do
       vote = create(:vote, user: @user)
-      idea = vote.votable
 
       do_request
       json_response = json_parse(response_body)
@@ -612,7 +615,7 @@ resource 'Ideas' do
 
       before do
         project.permissions.find_by(action: 'posting_idea')
-               .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'groups', groups: [group])
       end
 
       example_request '[error] Create an idea in a project with groups posting permission', document: false do

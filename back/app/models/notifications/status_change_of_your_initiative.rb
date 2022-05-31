@@ -67,11 +67,11 @@ module Notifications
 
       if initiative && recipient_id
         [new(
-           recipient_id: recipient_id,
-           initiating_user_id: activity.user_id,
-           post: initiative,
-           post_status: initiative.initiative_status
-         )]
+          recipient_id: recipient_id,
+          initiating_user_id: activity.user_id,
+          post: initiative,
+          post_status: initiative.initiative_status
+        )]
       else
         []
       end

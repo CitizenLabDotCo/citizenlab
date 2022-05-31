@@ -15,10 +15,10 @@ module FlagInappropriateContent
 
     def maybe_delete!(flag)
       # if not flagged by NLP and there are no remaining spam reports
-      if !flag.toxicity_label && flag.flaggable.spam_reports.empty?
-        flag.destroy!
-        LogActivityJob.perform_later(flag, 'deleted', nil, Time.now.to_i)
-      end
+      return unless !flag.toxicity_label && flag.flaggable.spam_reports.empty?
+
+      flag.destroy!
+      LogActivityJob.perform_later(flag, 'deleted', nil, Time.now.to_i)
     end
   end
 end

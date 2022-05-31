@@ -68,7 +68,7 @@ describe SideFxIdeaService do
       project = create(:project, default_assignee: default_assignee)
       idea = create(:idea, project: project, publication_status: 'draft', assignee: create(:admin))
       idea.publication_status = 'published'
-      expect { service.before_update(idea, user) }.not_to change { idea.assignee }
+      expect { service.before_update(idea, user) }.not_to(change { idea.assignee })
     end
   end
 

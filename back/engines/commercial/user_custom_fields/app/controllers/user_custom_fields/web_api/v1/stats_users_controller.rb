@@ -182,7 +182,7 @@ module UserCustomFields
           end
 
           case @custom_field.input_type
-          when 'select'
+          when 'select', 'checkbox'
             serie = users
               .where(registration_completed_at: @start_at..@end_at)
               .group("custom_field_values->'#{@custom_field.key}'")
@@ -199,14 +199,6 @@ module UserCustomFields
               .count
             serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
             serie
-          when 'checkbox'
-            serie = users
-              .where(registration_completed_at: @start_at..@end_at)
-              .group("custom_field_values->'#{@custom_field.key}'")
-              .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
-              .count
-            serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-            serie
           else
             head :not_implemented
           end
@@ -216,7 +208,7 @@ module UserCustomFields
           @custom_field = CustomField.find(params[:custom_field_id])
           serie = users_by_custom_field_serie
           if %w[select multiselect].include?(@custom_field.input_type)
-            options = @custom_field.custom_field_options.select(:key, :title_multiloc)
+            options = @custom_field.custom_field_options.select(:key, :title_multiloc, :ordering)
             render json: { series: { users: serie }, options: options.to_h { |o| [o.key, o.attributes.except('key', 'id')] } }
           else
             render json: { series: { users: serie } }

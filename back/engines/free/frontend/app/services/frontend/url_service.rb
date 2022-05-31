@@ -24,9 +24,7 @@ module Frontend
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment ### comments do not have a path yet, we return the post path for now
-        return model_to_path(model_instance.post)
-      when OfficialFeedback ### official feedbacks do not have a path yet, we return the post path for now
+      when Comment, OfficialFeedback ### comments and official feedbacks do not have a path yet, we return the post path for now
         return model_to_path(model_instance.post)
       else
         subroute = nil

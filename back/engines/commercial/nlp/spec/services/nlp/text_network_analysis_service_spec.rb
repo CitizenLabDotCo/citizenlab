@@ -52,8 +52,8 @@ describe NLP::TextNetworkAnalysisService do
         task_ids = tasks_by_language.values # identifiers returned by the NLP API
 
         expect(nlp_client).to receive(:text_network_analysis)
-                                .with(Tenant.current.id, inputs.pluck(:id))
-                                .and_return(tasks_by_language)
+          .with(Tenant.current.id, inputs.pluck(:id))
+          .and_return(tasks_by_language)
 
         task_by_locale = service.analyse(inputs, handler_class)
         tna_tasks = task_by_locale.values

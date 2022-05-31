@@ -13,15 +13,15 @@ module PublicApi
         .per([params[:page_size]&.to_i || 12, 24].min)
 
       render json: @projects,
-        each_serializer: V1::ProjectSerializer,
-        adapter: :json,
-        meta: meta_properties(@projects)
+             each_serializer: V1::ProjectSerializer,
+             adapter: :json,
+             meta: meta_properties(@projects)
     end
 
     def show
       render json: @project,
-        serializer: V1::ProjectSerializer,
-        adapter: :json
+             serializer: V1::ProjectSerializer,
+             adapter: :json
     end
 
     def set_project

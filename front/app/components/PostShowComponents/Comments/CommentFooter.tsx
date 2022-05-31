@@ -46,9 +46,6 @@ const Left = styled.ul`
   margin: 0;
   padding: 0;
 
-  ${isRtl`
-  `}
-
   & li {
     margin-right: 12px;
 

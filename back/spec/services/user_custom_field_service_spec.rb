@@ -9,8 +9,8 @@ describe UserCustomFieldService do
     it 'deletes the custom field values from all users' do
       cf1 = create(:custom_field)
       cf2 = create(:custom_field)
-      users_with_cf = create_list(:user, 5, custom_field_values: { cf1.key => 'some_value', cf2.key => 'other_value' })
-      users_without_cf = create_list(:user, 5)
+      create_list(:user, 5, custom_field_values: { cf1.key => 'some_value', cf2.key => 'other_value' })
+      create_list(:user, 5)
       service.delete_custom_field_values(cf1)
       expect(User.all.map { |u| u.custom_field_values.keys }.flatten).to include(cf2.key)
       expect(User.all.map { |u| u.custom_field_values.keys }.flatten).not_to include(cf1.key)

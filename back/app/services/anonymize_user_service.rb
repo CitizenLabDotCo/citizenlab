@@ -101,8 +101,9 @@ class AnonymizeUserService
   def random_custom_field_values(user: nil)
     custom_field_values = {}
     if user
+      properties = %w[gender education birthyear]
       user[:custom_field_values].each do |property, value|
-        if %w[gender education birthyear].include? property
+        if properties.include? property
           custom_field_values[property] = value
         end
       end
@@ -194,8 +195,9 @@ class AnonymizeUserService
   end
 
   def random_bio(locales)
+    bios = %w[greek hipster movie rick_and_morty game_of_thrones nil]
     locales.to_h do |locale|
-      bio = case %w[greek hipster movie rick_and_morty game_of_thrones nil].sample
+      bio = case bios.sample
       when 'greek'
         Faker::GreekPhilosophers.quote
       when 'hipster'

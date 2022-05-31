@@ -16,7 +16,7 @@ module Volunteering
       if params[:vbci]
         params.dig(:vbci, object.id)
       else
-         object.volunteers.where(user_id: current_user(params)&.id).first
+        object.volunteers.where(user_id: current_user(params)&.id).first
       end
     end
 

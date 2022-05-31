@@ -25,6 +25,6 @@ class CommonPassword < ApplicationRecord
 
   def self.check(password)
     # Returns true when the password is common
-    where(password: password).exists?
+    exists?(password: password)
   end
 end

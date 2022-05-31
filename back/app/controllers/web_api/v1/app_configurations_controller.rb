@@ -41,6 +41,6 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
 
   def config_params
     @config_params ||= params.require(:app_configuration)
-                             .permit(:logo, :header_bg, :favicon, homepage_info_multiloc: {}, settings: {}, style: {})
+      .permit(:logo, :header_bg, :favicon, homepage_info_multiloc: {}, settings: {}, style: {})
   end
 end

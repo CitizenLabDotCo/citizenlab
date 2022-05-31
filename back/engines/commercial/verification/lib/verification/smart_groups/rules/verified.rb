@@ -50,9 +50,9 @@ module Verification
         def filter(users_scope)
           case predicate
           when 'is_verified'
-            users_scope.where('verified = ?', true)
+            users_scope.where(verified: true)
           when 'not_is_verified'
-            users_scope.where('verified = ?', false)
+            users_scope.where(verified: false)
           else
             raise "Unsupported predicate #{predicate}"
           end
