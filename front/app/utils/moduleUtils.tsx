@@ -508,7 +508,7 @@ const convertConfigurationToRoute = ({
   children,
 }: RouteConfiguration) => ({
   path,
-  element: <Loading admin={type !== RouteTypes.CITIZEN}>{element}</Loading>,
+  element: <Loading admin={type === RouteTypes.ADMIN}>{element}</Loading>,
   indexRoute:
     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
   children:
