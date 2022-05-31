@@ -125,10 +125,10 @@ resource 'Projects' do
 
       example 'Search for projects' do
         p1 = create(:project, title_multiloc: {
-                en: 'super-specific-title-string',
-                'fr-BE': 'a title',
-                'nl-BE': 'a title'
-              })
+          en: 'super-specific-title-string',
+          'fr-BE': 'a title',
+          'nl-BE': 'a title'
+        })
 
         do_request search: 'super-specific-title-string'
         expect(response_data.size).to eq 1

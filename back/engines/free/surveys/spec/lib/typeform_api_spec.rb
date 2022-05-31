@@ -29,8 +29,8 @@ describe Surveys::Typeform::Api do
         .with(
           body: "{\"url\":\"#{webhook_url}\",\"enabled\":true,\"secret\":\"wontsay\"}",
           headers: {
-           'Authorization' => "Bearer #{token}",
-           'Content-Type' => 'application/json'
+            'Authorization' => "Bearer #{token}",
+            'Content-Type' => 'application/json'
           }
         )
         .to_return(
@@ -59,7 +59,7 @@ describe Surveys::Typeform::Api do
       stub_request(:delete, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
           headers: {
-           'Authorization' => "Bearer #{token}"
+            'Authorization' => "Bearer #{token}"
           }
         )
         .to_return(status: 204, body: '', headers: {})

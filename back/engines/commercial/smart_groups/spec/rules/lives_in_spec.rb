@@ -147,10 +147,10 @@ describe SmartGroups::Rules::LivesIn do
     end
     let(:lives_in_not_outside_rule) do
       SmartGroups::Rules::LivesIn.from_json({
-      'ruleType' => 'lives_in',
-      'predicate' => 'not_has_value',
-      'value' => 'outside'
-    })
+        'ruleType' => 'lives_in',
+        'predicate' => 'not_has_value',
+        'value' => 'outside'
+      })
     end
     let(:lives_in_is_one_of_rule) do
       SmartGroups::Rules::LivesIn.from_json({

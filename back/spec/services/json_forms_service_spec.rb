@@ -73,39 +73,39 @@ describe JsonFormsService do
            { type: 'string' },
                         'field3' =>
             {
-             type: 'string',
-             oneOf: [
-               {
-                 const: 'option_1',
-                 title: 'youth council'
-               },
-               {
-                 const: 'option_2',
-                 title: 'youth council'
-               },
-               {
-                 const: 'option_3',
-                 title: 'youth council'
-               }
-             ]
+              type: 'string',
+              oneOf: [
+                {
+                  const: 'option_1',
+                  title: 'youth council'
+                },
+                {
+                  const: 'option_2',
+                  title: 'youth council'
+                },
+                {
+                  const: 'option_3',
+                  title: 'youth council'
+                }
+              ]
             },
                         'field4' =>
             {
-             type: 'array',
-             uniqueItems: true,
-             minItems: 0,
-             items: { type: 'string',
-                      oneOf: [
-                        {
-                          const: 'option_a',
-                          title: 'youth council'
-                        },
-                        {
-                          const: 'option_b',
-                          title: 'youth council'
-                        }
-                      ] }
-              },
+              type: 'array',
+              uniqueItems: true,
+              minItems: 0,
+              items: { type: 'string',
+                       oneOf: [
+                         {
+                           const: 'option_a',
+                           title: 'youth council'
+                         },
+                         {
+                           const: 'option_b',
+                           title: 'youth council'
+                         }
+                       ] }
+            },
                         'field5' =>
             { type: 'boolean' },
                         'field6' =>

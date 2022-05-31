@@ -34,7 +34,6 @@ Style/NumericPredicate:
 
 Layout/FirstHashElementIndentation:
   # Wait for a decision on Layout/HashAlignment.
-  Enabled: false
   EnforcedStyle: consistent
 
 Layout/CaseIndentation:

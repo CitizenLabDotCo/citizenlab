@@ -74,9 +74,9 @@ describe SmartGroups::Rules::Role do
   describe 'description_multiloc' do
     let(:role_is_admin_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType' => 'role',
-      'predicate' => 'is_admin'
-    })
+        'ruleType' => 'role',
+        'predicate' => 'is_admin'
+      })
     end
     let(:role_not_is_admin_rule) do
       SmartGroups::Rules::Role.from_json({
@@ -100,7 +100,7 @@ describe SmartGroups::Rules::Role do
       SmartGroups::Rules::Role.from_json({
         'ruleType' => 'role',
         'predicate' => 'is_normal_user'
-    })
+      })
     end
     let(:role_not_is_normal_user_rule) do
       SmartGroups::Rules::Role.from_json({

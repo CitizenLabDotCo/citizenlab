@@ -126,8 +126,8 @@ describe CustomFieldService do
               description: 'Which councils are you attending in our city?',
               type: 'array',
               items: {
-               type: 'string',
-               format: 'data-url'
+                type: 'string',
+                format: 'data-url'
               } } },
           required: %w[field2 field8 field9] }
       )

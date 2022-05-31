@@ -123,7 +123,7 @@ module UserCustomFields
               'area_id' => '_blank',
               'area' => 'unknown',
               'users' => serie.delete(nil) || 0
-              })
+            })
           end
 
           xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
@@ -233,7 +233,7 @@ module UserCustomFields
               'option_id' => '_blank',
               'option' => 'unknown',
               'users' => serie['_blank'] || 0
-              })
+            })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
           else
             xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_serie, 'option', 'users'
