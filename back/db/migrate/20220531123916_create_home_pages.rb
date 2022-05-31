@@ -13,6 +13,9 @@ class CreateHomePages < ActiveRecord::Migration[6.1]
 
       t.boolean :events_enabled, default: false, null: false
 
+      t.boolean :projects_enabled, default: true, null: false
+
+      t.boolean :banner_enabled, default: true, null: false
       t.string :banner_layout, default: 'full_width_banner_layout', null: false
       t.string :banner_signed_in_header
       t.string :banner_signed_in_text
