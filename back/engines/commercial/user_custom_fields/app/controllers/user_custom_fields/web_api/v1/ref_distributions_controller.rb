@@ -36,7 +36,7 @@ module UserCustomFields
       end
 
       def side_fx
-        Representativeness::SideFxRefDistributionService.new
+        @side_fx ||= Representativeness::SideFxRefDistributionService.new
       end
 
       def reference_distribution
