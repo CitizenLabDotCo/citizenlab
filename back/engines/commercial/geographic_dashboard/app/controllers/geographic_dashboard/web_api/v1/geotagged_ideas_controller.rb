@@ -8,9 +8,9 @@ module GeographicDashboard
 
         def index
           @ideas = policy_scope(Idea)
-                   .page(params.dig(:page, :number))
-                   .per(params.dig(:page, :size))
-                   .where(location_point: nil)
+            .page(params.dig(:page, :number))
+            .per(params.dig(:page, :size))
+            .where(location_point: nil)
 
           render json: serialized_geotagged_ideas, status: :ok
         end

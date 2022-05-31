@@ -27,13 +27,13 @@ RSpec.describe SegmentRegulationsClient do
         body = JSON.parse(body)
         expect(body).to match({
           'regulation_type' => 'Delete',
-          'attributes' => { 'name' => 'userId', 'values' => match_array(user_ids.shuffle) } }
-                             )
+          'attributes' => { 'name' => 'userId', 'values' => match_array(user_ids.shuffle) }
+        })
 
         expect(headers).to eq({
           Authorization: "Bearer #{token}",
-          'Content-Type': 'application/json' }
-                             )
+          'Content-Type': 'application/json'
+        })
       end
     end
   end

@@ -36,8 +36,7 @@ resource 'Mentions' do
         user = create(:user, first_name: first_name)
         create(:comment, post: idea, author: user)
       end
-      comment = create(:comment, post: idea)
-      author_not_mentioned = comment.author
+      create(:comment, post: idea)
 
       idea_related = comments.map(&:author)
 

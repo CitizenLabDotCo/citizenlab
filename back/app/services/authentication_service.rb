@@ -25,9 +25,9 @@ class AuthenticationService
 
   def logout_url(provider, user)
     auth_method = method_by_provider(provider)
-    if supports_logout?(provider)
-      auth_method.logout_url(user)
-    end
+    return unless supports_logout?(provider)
+
+    auth_method.logout_url(user)
   end
 
   def supports_logout?(provider)

@@ -13,8 +13,9 @@ describe AdminApi::ProjectCopyService do
       end
       create(:idea_status, code: 'proposed')
       expected_count = 0
+      slugs = [nil, 'Your coolest tricks to cool down the city']
       [false, true].each do |include_ideas|
-        [nil, 'Your coolest tricks to cool down the city'].each do |new_slug|
+        slugs.each do |new_slug|
           template = Apartment::Tenant.switch('localhost') do
             project = Project.all.sample
             service.export project, include_ideas: include_ideas, new_slug: new_slug

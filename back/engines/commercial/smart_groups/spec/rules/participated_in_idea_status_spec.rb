@@ -43,7 +43,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it 'reject a rule with a single-value predicate and an array of values' do
-      rule = valid_json_rule.tap { |r| r['predicate'] = 'not_in' }
+      valid_json_rule['predicate'] = 'not_in'
       expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
   end

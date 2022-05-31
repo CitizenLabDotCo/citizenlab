@@ -33,7 +33,7 @@ module Texting
 
     def self.this_month_segments_count
       where.not(status: statuses.fetch(:draft))
-           .where('sent_at > ?', Time.zone.now.beginning_of_month).sum(&:segments_count)
+        .where('sent_at > ?', Time.zone.now.beginning_of_month).sum(&:segments_count)
     end
 
     def phone_numbers=(value)

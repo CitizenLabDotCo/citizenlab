@@ -46,9 +46,9 @@ module IdFranceconnect
 
     def logout_url(user)
       last_identity = user.identities
-                          .where(provider: 'franceconnect')
-                          .order(created_at: :desc)
-                          .limit(1)
+        .where(provider: 'franceconnect')
+        .order(created_at: :desc)
+        .limit(1)
                         &.first
       id_token = last_identity.auth_hash.dig('credentials', 'id_token')
 

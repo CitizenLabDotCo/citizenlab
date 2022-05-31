@@ -149,12 +149,16 @@ describe EmailCampaigns::DeliveryService do
       ConsentableDisableableCampaignAForTest.create!(enabled: false)
       ConsentableDisableableCampaignBForTest.create!(enabled: true)
 
-      allow(service).to receive(:campaign_classes).and_return([
-        NonConsentableCampaignForTest,
-        ConsentableCampaignForTest,
-        ConsentableDisableableCampaignAForTest,
-        ConsentableDisableableCampaignBForTest
-      ])
+      allow(service).to receive(
+        :campaign_classes
+      ).and_return(
+        [
+          NonConsentableCampaignForTest,
+          ConsentableCampaignForTest,
+          ConsentableDisableableCampaignAForTest,
+          ConsentableDisableableCampaignBForTest
+        ]
+      )
     end
 
     it 'returns all campaign types that return true to #consentable_for?, for the given user and have an enabled campaign' do

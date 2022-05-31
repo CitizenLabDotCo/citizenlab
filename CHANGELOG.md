@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- [CL-667] Fixed many RuboCop offences
+
 ## 2022-05-30
 
 ### Changed
