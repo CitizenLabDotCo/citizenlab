@@ -97,7 +97,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for proposed_budget field' do
       let(:code) { 'proposed_budget' }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
@@ -108,7 +108,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for topic_ids field' do
       let(:code) { 'topic_ids' }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
@@ -119,7 +119,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for location_description field' do
       let(:code) { 'location_description' }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
@@ -130,7 +130,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for location_point_geojson field' do
       let(:code) { 'location_point_geojson' }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
@@ -141,7 +141,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for idea_images_attributes field' do
       let(:code) { 'idea_images_attributes' }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
@@ -152,7 +152,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for idea_files_attributes field' do
       let(:code) { 'idea_files_attributes' }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
@@ -163,7 +163,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     describe 'for a custom custom field' do
       let(:code) { nil }
 
-      it 'only allows description changes' do
+      it 'allows all changes' do
         expect(policy.permitted_attributes).to match_array [
           :required, :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
