@@ -327,25 +327,6 @@ Rails/AddColumnIndex:
     - 'db/migrate/20200527093956_add_code_to_topics.rb'
     - 'db/migrate/20210217112905_add_project_folder_id_to_notifications.project_folders.rb'
 
-# Offense count: 14
-# Configuration parameters: Include.
-# Include: db/migrate/*.rb
-Rails/CreateTableWithTimestamps:
-  Exclude:
-    - 'db/migrate/20170318143940_create_join_table_projects_topics.rb'
-    - 'db/migrate/20170318144700_create_join_table_areas_projects.rb'
-    - 'db/migrate/20170318181018_create_join_table_ideas_topics.rb'
-    - 'db/migrate/20170319000059_create_join_table_areas_ideas.rb'
-    - 'db/migrate/20171010114629_create_groups_projects.rb'
-    - 'db/migrate/20171010114644_create_memberships.rb'
-    - 'db/migrate/20171031131310_create_page_links.rb'
-    - 'db/migrate/20190603100709_create_join_table_areas_initiatives.rb'
-    - 'db/migrate/20190603100803_create_join_table_initiatives_topics.rb'
-    - 'db/migrate/20191210205216_create_id_cards.id_id_card_lookup.rb'
-    - 'db/migrate/20191218161144_create_unsubscription_tokens.email_campaigns.rb'
-    - 'db/migrate/20200807132541_create_common_passwords.rb'
-    - 'db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb'
-
 # Offense count: 15
 # Configuration parameters: EnforcedStyle, AllowToTime.
 # SupportedStyles: strict, flexible
