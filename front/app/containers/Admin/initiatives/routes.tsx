@@ -1,17 +1,17 @@
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import moduleConfiguration from 'modules';
+import Loading from 'components/UI/Loading';
 const AdminInitiativesIndex = lazy(() => import('.'));
 const AdminInitiativesSettings = lazy(() => import('./settings'));
 
 const AdminInitiativesManage = lazy(() => import('./manage'));
-import LoadingComponent from 'components/UI/Loading';
 const createAdminInitiativesRoutes = () => ({
   path: 'initiatives',
   element: (
-    <LoadingComponent>
+    <Loading>
       <AdminInitiativesIndex />
-    </LoadingComponent>
+    </Loading>
   ),
   children: [
     {
@@ -22,17 +22,17 @@ const createAdminInitiativesRoutes = () => ({
       index: true,
       path: 'settings',
       element: (
-        <LoadingComponent>
+        <Loading>
           <AdminInitiativesSettings />
-        </LoadingComponent>
+        </Loading>
       ),
     },
     {
       path: 'manage',
       element: (
-        <LoadingComponent>
+        <Loading>
           <AdminInitiativesManage />
-        </LoadingComponent>
+        </Loading>
       ),
     },
     ...moduleConfiguration.routes['admin.initiatives'],

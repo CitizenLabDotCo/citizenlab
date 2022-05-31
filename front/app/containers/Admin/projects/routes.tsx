@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
-import LoadingComponent from 'components/UI/Loading';
+import Loading from 'components/UI/Loading';
 
 const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
@@ -33,17 +33,17 @@ const createAdminProjectsRoutes = () => {
   return {
     path: 'projects',
     element: (
-      <LoadingComponent>
+      <Loading>
         <AdminProjectsAndFolders />
-      </LoadingComponent>
+      </Loading>
     ),
     children: [
       {
         index: true,
         element: (
-          <LoadingComponent>
+          <Loading>
             <AdminProjectsList />
-          </LoadingComponent>
+          </Loading>
         ),
       },
       ...moduleConfiguration.routes['admin.project_templates'],
@@ -51,154 +51,154 @@ const createAdminProjectsRoutes = () => {
       {
         path: 'new',
         element: (
-          <LoadingComponent>
+          <Loading>
             <AdminProjectsProjectGeneral />
-          </LoadingComponent>
+          </Loading>
         ),
       },
       {
         path: ':projectId',
         element: (
-          <LoadingComponent>
+          <Loading>
             <AdminProjectsProjectIndex />
-          </LoadingComponent>
+          </Loading>
         ),
         // all routes under /admin/projects/:projectId
         children: [
           {
             index: true,
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectsProjectGeneral />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'edit',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectsProjectIndex />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'timeline',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectTimeline />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'timeline/new',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectTimelineNewAndEdit />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'timeline/:id',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectTimelineNewAndEdit />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'events',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectEvents />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'events/new',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectEventsEdit />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'events/:id',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectEventsEdit />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'permissions',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectPermissions />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'survey-results',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectSurveyResults />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'poll',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectPoll />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'description',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectDescription />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'ideas',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectIdeas />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'volunteering',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectVolunteering />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'volunteering/causes/new',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectVolunteeringNew />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'volunteering/phases/:phaseId/causes/new',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectVolunteeringNew />
-              </LoadingComponent>
+              </Loading>
             ),
           },
           {
             path: 'volunteering/causes/:causeId',
             element: (
-              <LoadingComponent>
+              <Loading>
                 <AdminProjectVolunteeringEdit />
-              </LoadingComponent>
+              </Loading>
             ),
           },
         ],

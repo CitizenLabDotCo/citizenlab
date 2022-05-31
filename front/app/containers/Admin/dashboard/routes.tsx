@@ -1,34 +1,33 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
+import Loading from 'components/UI/Loading';
 const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
-
-import LoadingComponent from 'components/UI/Loading';
 
 const createAdminDashboardRoutes = () => {
   return {
     path: 'dashboard',
     element: (
-      <LoadingComponent>
+      <Loading>
         <DashboardWrapper />
-      </LoadingComponent>
+      </Loading>
     ),
     children: [
       {
         index: true,
         element: (
-          <LoadingComponent>
+          <Loading>
             <Summary />
-          </LoadingComponent>
+          </Loading>
         ),
       },
       {
         path: 'users',
         element: (
-          <LoadingComponent>
+          <Loading>
             <Users />
-          </LoadingComponent>
+          </Loading>
         ),
       },
       ...moduleConfiguration.routes['admin.dashboards'],

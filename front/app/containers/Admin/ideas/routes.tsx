@@ -1,24 +1,24 @@
-import React from 'react';
-import LoadingComponent from 'components/UI/Loading';
+import React, { lazy } from 'react';
+import Loading from 'components/UI/Loading';
 import moduleConfiguration from 'modules';
 
-const AdminIdeasContainer = React.lazy(() => import('./index'));
-const AdminIdeasAll = React.lazy(() => import('./all'));
+const AdminIdeasContainer = lazy(() => import('./index'));
+const AdminIdeasAll = lazy(() => import('./all'));
 
 export default () => ({
   path: 'ideas',
   element: (
-    <LoadingComponent>
+    <Loading>
       <AdminIdeasContainer />
-    </LoadingComponent>
+    </Loading>
   ),
   children: [
     {
       index: true,
       element: (
-        <LoadingComponent>
+        <Loading>
           <AdminIdeasAll />
-        </LoadingComponent>
+        </Loading>
       ),
     },
     ...moduleConfiguration.routes['admin.ideas'],

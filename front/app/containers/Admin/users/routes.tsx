@@ -2,30 +2,30 @@ import React, { lazy } from 'react';
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
-import LoadingComponent from 'components/UI/Loading';
+import Loading from 'components/UI/Loading';
 
 const createAdminUsersRoutes = () => ({
   path: 'users',
   element: (
-    <LoadingComponent>
+    <Loading>
       <AdminUsersIndex />
-    </LoadingComponent>
+    </Loading>
   ),
   children: [
     {
       index: true,
       element: (
-        <LoadingComponent>
+        <Loading>
           <AdminAllUsers />
-        </LoadingComponent>
+        </Loading>
       ),
     },
     {
       path: ':groupId',
       element: (
-        <LoadingComponent>
+        <Loading>
           <AdminUsersGroup />
-        </LoadingComponent>
+        </Loading>
       ),
     },
   ],

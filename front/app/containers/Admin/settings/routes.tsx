@@ -1,37 +1,35 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import moduleConfiguration from 'modules';
-import LoadingComponent from 'components/UI/Loading';
+import Loading from 'components/UI/Loading';
 
-const AdminSettingsIndexComponent = React.lazy(
-  () => import('containers/Admin/settings')
-);
-const AdminSettingsGeneralComponent = React.lazy(
+const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
+const AdminSettingsGeneral = lazy(
   () => import('containers/Admin/settings/general')
 );
-const AdminSettingsCustomizeComponent = React.lazy(
+const AdminSettingsCustomize = lazy(
   () => import('containers/Admin/settings/customize')
 );
-const AdminSettingsPagesComponent = React.lazy(
+const AdminSettingsPages = lazy(
   () => import('containers/Admin/settings/pages')
 );
-const AdminSettingsPoliciesComponent = React.lazy(
+const AdminSettingsPolicies = lazy(
   () => import('containers/Admin/settings/policies')
 );
-const AdminSettingsRegistrationComponent = React.lazy(
+const AdminSettingsRegistration = lazy(
   () => import('containers/Admin/settings/registration')
 );
 // areas
-const AdminAreasAllComponent = React.lazy(() => import('./areas/all'));
-const AdminAreasNewComponent = React.lazy(() => import('./areas/New'));
-const AdminAreasEditComponent = React.lazy(() => import('./areas/Edit'));
+const AdminAreasAll = lazy(() => import('./areas/all'));
+const AdminAreasNew = lazy(() => import('./areas/New'));
+const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 
 export default () => ({
   path: 'settings',
   element: (
-    <LoadingComponent>
-      <AdminSettingsIndexComponent />
-    </LoadingComponent>
+    <Loading>
+      <AdminSettingsIndex />
+    </Loading>
   ),
   children: [
     {
@@ -42,41 +40,41 @@ export default () => ({
       index: true,
       path: 'general',
       element: (
-        <LoadingComponent>
-          <AdminSettingsGeneralComponent />
-        </LoadingComponent>
+        <Loading>
+          <AdminSettingsGeneral />
+        </Loading>
       ),
     },
     {
       path: 'customize',
       element: (
-        <LoadingComponent>
-          <AdminSettingsCustomizeComponent />
-        </LoadingComponent>
+        <Loading>
+          <AdminSettingsCustomize />
+        </Loading>
       ),
     },
     {
       path: 'pages',
       element: (
-        <LoadingComponent>
-          <AdminSettingsPagesComponent />
-        </LoadingComponent>
+        <Loading>
+          <AdminSettingsPages />
+        </Loading>
       ),
     },
     {
       path: 'policies',
       element: (
-        <LoadingComponent>
-          <AdminSettingsPoliciesComponent />
-        </LoadingComponent>
+        <Loading>
+          <AdminSettingsPolicies />
+        </Loading>
       ),
     },
     {
       path: 'registration',
       element: (
-        <LoadingComponent>
-          <AdminSettingsRegistrationComponent />
-        </LoadingComponent>
+        <Loading>
+          <AdminSettingsRegistration />
+        </Loading>
       ),
     },
     {
@@ -85,25 +83,25 @@ export default () => ({
         {
           index: true,
           element: (
-            <LoadingComponent>
-              <AdminAreasAllComponent />
-            </LoadingComponent>
+            <Loading>
+              <AdminAreasAll />
+            </Loading>
           ),
         },
         {
           path: 'new',
           element: (
-            <LoadingComponent>
-              <AdminAreasNewComponent />
-            </LoadingComponent>
+            <Loading>
+              <AdminAreasNew />
+            </Loading>
           ),
         },
         {
           path: ':areaId',
           element: (
-            <LoadingComponent>
-              <AdminAreasEditComponent />
-            </LoadingComponent>
+            <Loading>
+              <AdminAreasEdit />
+            </Loading>
           ),
         },
       ],

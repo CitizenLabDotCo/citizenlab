@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import LoadingComponent from 'components/UI/Loading';
+import Loading from 'components/UI/Loading';
 import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 
@@ -45,179 +45,179 @@ export default function createRoutes() {
         {
           index: true,
           element: (
-            <LoadingComponent>
+            <Loading>
               <LandingPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'sign-in',
           element: (
-            <LoadingComponent>
+            <Loading>
               <SignUpInPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'sign-up',
           element: (
-            <LoadingComponent>
+            <Loading>
               <SignUpInPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'invite',
           element: (
-            <LoadingComponent>
+            <Loading>
               <LandingPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'complete-signup',
           element: (
-            <LoadingComponent>
+            <Loading>
               <LandingPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'authentication-error',
           element: (
-            <LoadingComponent>
+            <Loading>
               <LandingPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'site-map',
           element: (
-            <LoadingComponent>
+            <Loading>
               <SiteMap />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'profile/edit',
           element: (
-            <LoadingComponent>
+            <Loading>
               <UsersEditPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'profile/:userSlug',
           element: (
-            <LoadingComponent>
+            <Loading>
               <UsersShowPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'ideas/edit/:ideaId',
           element: (
-            <LoadingComponent>
+            <Loading>
               <IdeasEditPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'ideas',
           element: (
-            <LoadingComponent>
+            <Loading>
               <IdeasIndexPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'ideas/:slug',
           element: (
-            <LoadingComponent>
+            <Loading>
               <IdeasShowPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'initiatives',
           element: (
-            <LoadingComponent>
+            <Loading>
               <InitiativesIndexPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'initiatives/edit/:initiativeId',
           element: (
-            <LoadingComponent>
+            <Loading>
               <InitiativesEditPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'initiatives/new',
           element: (
-            <LoadingComponent>
+            <Loading>
               <InitiativesNewPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
         {
           path: 'initiatives/:slug',
           element: (
-            <LoadingComponent>
+            <Loading>
               <InitiativesShowPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'projects/:slug/ideas/new',
           element: (
-            <LoadingComponent>
+            <Loading>
               <IdeasNewPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         createAdminRoutes(),
         {
           path: 'projects',
           element: (
-            <LoadingComponent>
+            <Loading>
               <ProjectsIndexPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'projects/:slug',
           element: (
-            <LoadingComponent>
+            <Loading>
               <ProjectsShowPage />
-            </LoadingComponent>
+            </Loading>
           ),
           children: [
             {
               index: true,
               element: (
-                <LoadingComponent>
+                <Loading>
                   <ProjectsShowPage />
-                </LoadingComponent>
+                </Loading>
               ),
             },
             {
               path: ':phaseNumber',
               element: (
-                <LoadingComponent>
+                <Loading>
                   <ProjectsShowPage />
-                </LoadingComponent>
+                </Loading>
               ),
             },
             {
               path: '*',
               element: (
-                <LoadingComponent>
+                <Loading>
                   <ProjectsShowPage />
-                </LoadingComponent>
+                </Loading>
               ),
             },
           ],
@@ -225,75 +225,75 @@ export default function createRoutes() {
         {
           path: 'events',
           element: (
-            <LoadingComponent>
+            <Loading>
               <EventsPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'pages/cookie-policy',
           element: (
-            <LoadingComponent>
+            <Loading>
               <CookiePolicy />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'pages/accessibility-statement',
           element: (
-            <LoadingComponent>
+            <Loading>
               <AccessibilityStatement />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'pages/:slug',
           element: (
-            <LoadingComponent>
+            <Loading>
               <PagesShowPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'password-recovery',
           element: (
-            <LoadingComponent>
+            <Loading>
               <PasswordRecovery />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           // Used as link in email received for password recovery
           path: 'reset-password',
           element: (
-            <LoadingComponent>
+            <Loading>
               <PasswordReset />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'subscription-ended',
           element: (
-            <LoadingComponent>
+            <Loading>
               <SubscriptionEndedPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         {
           path: 'email-settings',
           element: (
-            <LoadingComponent>
+            <Loading>
               <EmailSettingsPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
         ...moduleConfiguration.routes.citizen,
         {
           path: '*',
           element: (
-            <LoadingComponent>
+            <Loading>
               <PagesShowPage />
-            </LoadingComponent>
+            </Loading>
           ),
         },
       ],
