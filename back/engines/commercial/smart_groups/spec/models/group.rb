@@ -23,7 +23,6 @@ RSpec.describe Group, type: :model do
     it 'has consistent responses between member and member_ids for rules groups' do
       g1 = create(:group)
       g1.members << create_list(:user, 5)
-      members = g1.members
       expect(g1.member_ids).to match g1.members.map(&:id)
     end
 
@@ -32,7 +31,6 @@ RSpec.describe Group, type: :model do
       create(:user, email: 'u1@test.com')
       create(:user, email: 'u2@test.com')
       create(:user, email: 'u3@not-in-group.com')
-      members = g1.members
       expect(g1.member_ids).to match g1.members.map(&:id)
     end
   end

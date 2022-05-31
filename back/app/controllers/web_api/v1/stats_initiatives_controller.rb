@@ -110,9 +110,9 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
   end
 
   def render_no_data
-    if @no_data
-      render json: { series: { initiatives: {} } }
-    end
+    return unless @no_data
+
+    render json: { series: { initiatives: {} } }
   end
 
   def do_authorize

@@ -19,8 +19,8 @@ module Volunteering::VolunteeringParticipationContext
   private
 
   def causes_allowed_in_participation_method
-    if !volunteering? && causes.present?
-      errors.add(:base, :cannot_contain_causes, causes_count: causes.size, message: 'cannot contain causes in the current non-volunteering participation context')
-    end
+    return unless !volunteering? && causes.present?
+
+    errors.add(:base, :cannot_contain_causes, causes_count: causes.size, message: 'cannot contain causes in the current non-volunteering participation context')
   end
 end

@@ -25,9 +25,9 @@ module CustomizableHomepageBannerSettings
 
   def validate_customizable_homepage_banner_text(button_config, error_prefix)
     locales = settings.dig('core', 'locales')
-    if button_config.blank? || locales.any? { |locale| button_config['text'][locale].blank? }
-      errors.add("#{error_prefix}.text", I18n.t('errors.messages.blank'))
-    end
+    return unless button_config.blank? || locales.any? { |locale| button_config['text'][locale].blank? }
+
+    errors.add("#{error_prefix}.text", I18n.t('errors.messages.blank'))
   end
 
   def validate_customizable_homepage_banner_url(button_config, error_prefix)

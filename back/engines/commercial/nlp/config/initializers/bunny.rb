@@ -17,7 +17,7 @@ channel = BUNNY_CON.create_channel
 exchange = channel.topic('cl2nlp', durable: true)
 
 queue = channel.queue(QUEUE_NAME, durable: true)
-               .bind(exchange, routing_key: ROUTING_KEY)
+  .bind(exchange, routing_key: ROUTING_KEY)
 
 queue.subscribe do |_delivery_info, _properties, payload|
   payload = JSON.parse(payload)

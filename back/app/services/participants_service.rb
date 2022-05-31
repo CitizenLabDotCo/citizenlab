@@ -143,7 +143,8 @@ class ParticipantsService
         output.where(item_type: activity[:item_type], action: activity[:action])
       else
         output.or(
-          activities_scope.where(item_type: activity[:item_type], action: activity[:action]))
+          activities_scope.where(item_type: activity[:item_type], action: activity[:action])
+        )
       end
     end
     output
@@ -154,7 +155,7 @@ class ParticipantsService
     activities_scope
       .select("(CASE
         #{ENGAGING_ACTIVITIES.map do |activity|
-          "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
+            "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}"
           end.join(' ')
         }
       ELSE 0 END) as score")

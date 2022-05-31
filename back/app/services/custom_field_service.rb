@@ -79,7 +79,7 @@ class CustomFieldService
   end
 
   def keyify(str)
-    str.parameterize.tr('-', '_')
+    str.parameterize.tr('-', '_').presence || '_'
   end
 
   def cleanup_custom_field_values!(custom_field_values)

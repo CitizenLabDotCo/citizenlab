@@ -105,10 +105,10 @@ module Post
     end
 
     def generate_slug
-      unless slug
-        title = MultilocService.new.t title_multiloc, author
-        self.slug ||= SlugService.new.generate_slug self, title
-      end
+      return if slug
+
+      title = MultilocService.new.t title_multiloc, author
+      self.slug ||= SlugService.new.generate_slug self, title
     end
 
     def set_published_at

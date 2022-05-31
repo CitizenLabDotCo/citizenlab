@@ -95,7 +95,8 @@ describe 'google authentication', type: :request do
   end
 
   it 'updates the avatar when re-authenticating an existing user with an avatar' do
-    user = create(:user,
+    user = create(
+      :user,
       email: 'boris.brompton@orange.uk',
       avatar: Pathname.new(Rails.root.join('spec/fixtures/female_avatar_3.jpg')).open
     )

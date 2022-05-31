@@ -23,11 +23,10 @@ describe CustomFieldService do
     let(:fields) do
       [
         create(:custom_field,
-          key: 'field1',
-          input_type: 'text',
-          title_multiloc: title_multiloc,
-          description_multiloc: description_multiloc
-        )
+               key: 'field1',
+               input_type: 'text',
+               title_multiloc: title_multiloc,
+               description_multiloc: description_multiloc)
       ]
     end
 
@@ -139,8 +138,7 @@ describe CustomFieldService do
              items: {
                type: 'string',
                format: 'data-url'
-              } }
-           },
+              } } },
          required: %w[field2 field8 field9] }
       )
     end

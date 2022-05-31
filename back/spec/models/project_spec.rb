@@ -51,11 +51,11 @@ RSpec.describe Project, type: :model do
     it 'remains up to date when an idea changes project' do
       p1 = create(:project)
       p2 = create(:project)
-      i = create(:idea, project: p1)
-      c = create(:comment, post: i)
+      idea = create(:idea, project: p1)
+      create(:comment, post: idea)
 
       expect(p1.reload.comments_count).to eq 1
-      i.update! project: p2
+      idea.update! project: p2
       expect(p1.reload.comments_count).to eq 0
       expect(p2.reload.comments_count).to eq 1
       expect(p2.reload.comments_count).to eq 1

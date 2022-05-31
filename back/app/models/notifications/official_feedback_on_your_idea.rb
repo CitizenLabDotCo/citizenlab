@@ -68,12 +68,12 @@ module Notifications
         initiator_id = official_feedback&.user_id
         if official_feedback && recipient_id && initiator_id && (recipient_id != initiator_id)
           [new(
-             recipient_id: recipient_id,
-             initiating_user_id: initiator_id,
-             post: official_feedback.post,
-             official_feedback: official_feedback,
-             project_id: official_feedback.post.project_id
-           )]
+            recipient_id: recipient_id,
+            initiating_user_id: initiator_id,
+            post: official_feedback.post,
+            official_feedback: official_feedback,
+            project_id: official_feedback.post.project_id
+          )]
         else
           []
         end

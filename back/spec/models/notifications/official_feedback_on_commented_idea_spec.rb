@@ -8,7 +8,7 @@ RSpec.describe Notifications::OfficialFeedbackOnCommentedIdea, type: :model do
       idea = create(:idea)
       comment1 = create(:comment, post: idea)
       comment2 = create(:comment, post: idea)
-      comment3 = create(:comment, post: idea, author: comment2.author)
+      create(:comment, post: idea, author: comment2.author)
       create(:comment)
 
       official_feedback = create(:official_feedback, post: idea)
@@ -32,7 +32,7 @@ RSpec.describe Notifications::OfficialFeedbackOnCommentedIdea, type: :model do
 
     it "doesn't generate notifications for the idea author" do
       idea = create(:idea)
-      comment = create(:comment, post: idea, author: idea.author)
+      create(:comment, post: idea, author: idea.author)
 
       official_feedback = create(:official_feedback, post: idea)
       activity = create(:activity, item: official_feedback, action: :created)

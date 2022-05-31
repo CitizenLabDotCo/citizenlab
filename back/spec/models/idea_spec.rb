@@ -196,13 +196,15 @@ RSpec.describe Idea, type: :model do
 
   context 'feedback_needed' do
     it 'should select ideas with no official feedback or no idea status change' do
-      i1 = create(:idea, idea_status: create(:idea_status_proposed))
-      create(:official_feedback, post: i1)
-      i2 = create(:idea, idea_status: create(:idea_status_accepted))
-      i3 = create(:idea, idea_status: create(:idea_status_proposed))
-      i4 = create(:idea, idea_status: create(:idea_status_viewed))
+      ideas = [
+        create(:idea, idea_status: create(:idea_status_proposed)),
+        create(:idea, idea_status: create(:idea_status_accepted)),
+        create(:idea, idea_status: create(:idea_status_proposed)),
+        create(:idea, idea_status: create(:idea_status_viewed))
+      ]
+      create(:official_feedback, post: ideas[0])
 
-      expect(Idea.feedback_needed.ids).to match_array [i3.id]
+      expect(Idea.feedback_needed.ids).to match_array [ideas[2].id]
     end
   end
 
