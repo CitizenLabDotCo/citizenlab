@@ -167,7 +167,7 @@ module UserCustomFields
 
           if by_option_key
             option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
-            counts.transform_keys { |option_id| option_id_to_key[option_id] }
+            counts.transform_keys! { |option_id| option_id_to_key[option_id] }
           end
 
           counts
