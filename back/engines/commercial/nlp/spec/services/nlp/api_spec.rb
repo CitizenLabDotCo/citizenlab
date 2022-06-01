@@ -61,7 +61,7 @@ RSpec.describe NLP::Api do
 
       expect(HTTParty).to have_received(:post) do |_path, options|
         authorization_header = options.dig(:headers, 'access_token')
-        expect(authorization_header).to eq("#{authorization_token}")
+        expect(authorization_header).to eq(authorization_token)
       end
     end
   end
