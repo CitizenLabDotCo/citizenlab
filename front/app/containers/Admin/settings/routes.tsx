@@ -37,7 +37,6 @@ export default () => ({
       element: <Navigate to="general" />,
     },
     {
-      index: true,
       path: 'general',
       element: (
         <Loading admin>

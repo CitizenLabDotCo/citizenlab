@@ -52,23 +52,23 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/allowed-input-topics',
+        path: 'allowed-input-topics',
         element: <AdminAllowedTopicsComponent />,
       },
     ],
     'admin.settings': [
       {
-        path: '/:locale/admin/settings/topics',
+        path: 'topics',
         element: <AdminTopicsIndexComponent />,
       },
       {
-        path: '/:locale/admin/settings/topics/new',
+        path: 'topics/new',
         element: <AdminTopicsNewComponent />,
       },
       {
-        path: '/:locale/admin/settings/topics/:topicId/edit',
+        path: 'topics/:topicId/edit',
         element: <AdminTopicsEditComponent />,
       },
     ],

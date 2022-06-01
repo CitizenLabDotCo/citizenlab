@@ -74,14 +74,6 @@ const createAdminProjectsRoutes = () => {
             ),
           },
           {
-            path: 'edit',
-            element: (
-              <Loading admin>
-                <AdminProjectsProjectIndex />
-              </Loading>
-            ),
-          },
-          {
             path: 'timeline',
             element: (
               <Loading admin>
@@ -201,6 +193,7 @@ const createAdminProjectsRoutes = () => {
               </Loading>
             ),
           },
+          ...moduleConfiguration.routes['admin.projects.project'],
         ],
       },
     ],

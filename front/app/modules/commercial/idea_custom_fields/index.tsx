@@ -41,9 +41,9 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/ideaform',
+        path: 'ideaform',
         element: <AdminProjectIdeaEditFormComponent />,
       },
     ],

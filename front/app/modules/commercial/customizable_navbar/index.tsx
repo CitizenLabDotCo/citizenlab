@@ -26,7 +26,10 @@ const configuration: ModuleConfiguration = {
         element: <CustomNavbarContainer />,
         children: [
           {
-            index: true,
+            // to be changed when refactoring
+            // path: '' should only be used for redirects on
+            // index. Search the codebase for examples
+            path: '',
             element: <CustomNavbarSettingsComponent />,
           },
           {
