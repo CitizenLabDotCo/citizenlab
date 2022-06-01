@@ -37,7 +37,6 @@ import useProjectFolderFiles from '../../../hooks/useProjectFolderFiles';
 import useAdminPublication from 'hooks/useAdminPublication';
 import SlugInput from 'components/admin/SlugInput';
 import { validateSlug } from 'utils/textUtils';
-import { adminProjectFoldersIndexPath } from '../../../utils/routeUtils';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -292,8 +291,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ...imagesToAddPromises,
                   ...filesToAddPromises,
                 ]));
-
-              clHistory.push(adminProjectFoldersIndexPath(projectFolder.id));
+              clHistory.push(`/admin/projects/folders/${projectFolder.id}`);
             }
           }
         } catch (errors) {
