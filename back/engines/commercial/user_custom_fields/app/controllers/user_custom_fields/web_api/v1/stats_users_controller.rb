@@ -14,8 +14,9 @@ module UserCustomFields
           } }
 
           if custom_field.custom_field_options.present?
-            options = custom_field.custom_field_options.to_h { |o| [o.key, o.attributes.slice('title_multiloc')] }
-            json_response[:options] = options
+            json_response[:options] = custom_field.custom_field_options.to_h do |o|
+              [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+            end
           end
 
           render json: json_response
