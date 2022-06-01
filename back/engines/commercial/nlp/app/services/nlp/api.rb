@@ -181,7 +181,7 @@ module NLP
     end
 
     def authorization_header
-      { 'Authorization' => "Token #{@authorization_token}" }
+      { 'access_token' => @authorization_token }
     end
   end
 end
