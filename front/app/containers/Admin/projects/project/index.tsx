@@ -264,10 +264,16 @@ export class AdminProjectsProjectIndex extends PureComponent<
       }
     });
 
-    return cleanedTabs.map((tab) => ({
-      ...tab,
-      url: `${baseTabsUrl}/${tab.url}`,
-    }));
+    return cleanedTabs.map((tab) => {
+      // the "general" tab url is an empty string, so we don't want to add
+      // a slash to the end of the URL
+      const url =
+        tab.url === '' ? `${baseTabsUrl}` : `${baseTabsUrl}/${tab.url}`;
+      return {
+        ...tab,
+        url,
+      };
+    });
   };
 
   goBack = () => {
@@ -303,7 +309,6 @@ export class AdminProjectsProjectIndex extends PureComponent<
       },
       tabs: !isNilOrError(project) ? this.getTabs(project.id, project) : [],
     };
-
     if (!isNilOrError(project) && phases !== undefined) {
       const inputTerm = getInputTerm(
         project?.attributes.process_type,
