@@ -24,14 +24,12 @@ module UserCustomFields
         end
 
         def users_by_custom_field_as_xlsx
-          counts = user_counts
-
           if custom_field.custom_field_options.present?
             res = custom_field.custom_field_options.map do |option|
               {
                 'option_id' => option.key,
                 'option' => MultilocService.new.t(option.title_multiloc),
-                'users' => counts[option.key] || 0
+                'users' => user_counts[option.key] || 0
               }
             end
 
@@ -40,7 +38,7 @@ module UserCustomFields
 
             xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'option')
           else
-            xlsx = XlsxService.new.generate_field_stats_xlsx(counts, custom_field.key, 'users')
+            xlsx = XlsxService.new.generate_field_stats_xlsx(user_counts, custom_field.key, 'users')
           end
 
           send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
@@ -54,20 +52,18 @@ module UserCustomFields
         end
 
         def users_by_domicile_as_xlsx
-          counts = user_counts
-
           res = Area.all.map do |area|
             {
               'area_id' => area.id,
               'area' => MultilocService.new.t(area.title_multiloc),
-              'users' => counts.fetch(area.id, 0)
+              'users' => user_counts.fetch(area.id, 0)
             }
           end
 
           res.push(
             'area_id' => '_blank',
             'area' => 'unknown',
-            'users' => counts['_blank']
+            'users' => user_counts['_blank']
           )
 
           xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
@@ -93,7 +89,7 @@ module UserCustomFields
         end
 
         def user_counts
-          count_users_by_custom_field(find_users, custom_field)
+          @user_counts ||= count_users_by_custom_field(find_users, custom_field)
         end
 
         def count_users_by_custom_field(users, custom_field)
