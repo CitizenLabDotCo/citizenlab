@@ -2,11 +2,9 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 
 // component to test
-// ! it is the component without the HoCs (data, localization...)
 import { AdminProjectsProjectIndex } from '.';
 
 // mock data and functions to replace the HoCs
-// import { GetPhasesChildProps } from 'resources/GetPhases';
 import {
   mockPhaseIdeationData,
   mockPhaseSurveyTypeformData,
