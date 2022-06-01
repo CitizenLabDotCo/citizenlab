@@ -193,7 +193,7 @@ class Idea < ApplicationRecord
   def idea_fields_schema
     return {} unless project.custom_form # The empty object schema accepts anything
 
-    extra_fields = project.custom_form.custom_fields.reject(&:built_in?).select(&:enabled)
+    extra_fields = IdeaCustomFieldsService.new.all_fields(project.custom_form).reject(&:built_in?)
     CustomFieldService.new.fields_to_json_schema extra_fields
   end
 end

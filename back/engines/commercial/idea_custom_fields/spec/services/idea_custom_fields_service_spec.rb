@@ -10,13 +10,16 @@ describe IdeaCustomFieldsService do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title_multiloc')
       cf2 = create(:custom_field, resource: custom_form, code: nil)
+      topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
+      disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
       output = service.all_fields(custom_form, filter_unmodifiable: true)
       expect(output).to include cf1
       expect(output).to include cf2
+      expect(output).not_to include disabled_field
+      expect(output).not_to include topic_field
       expect(output.map(&:code)).to match_array [
         'title_multiloc',
         'body_multiloc',
-        'topic_ids',
         'location_description',
         'proposed_budget',
         'idea_images_attributes',
