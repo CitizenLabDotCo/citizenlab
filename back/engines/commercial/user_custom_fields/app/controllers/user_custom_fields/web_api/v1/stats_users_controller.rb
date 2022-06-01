@@ -10,7 +10,7 @@ module UserCustomFields
         def users_by_custom_field
           json_response = { series: {
             users: user_counts,
-            expected_users: expected_user_counts(user_counts.values.sum, by_option_key: true)
+            expected_users: expected_user_counts
           } }
 
           if custom_field.custom_field_options.present?
@@ -156,17 +156,16 @@ module UserCustomFields
           users
         end
 
-        def expected_user_counts(total_nb_users, by_option_key: false)
-          return if (ref_distribution = custom_field.current_ref_distribution).blank?
+        def expected_user_counts
+          @expected_user_counts ||=
+            if (ref_distribution = custom_field.current_ref_distribution).present?
 
-          counts = ref_distribution.expected_counts(total_nb_users)
+              nb_users_with_response = user_counts.values.sum - user_counts['_blank']
+              expected_counts = ref_distribution.expected_counts(nb_users_with_response)
 
-          if by_option_key
-            option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
-            counts.transform_keys! { |option_id| option_id_to_key[option_id] }
-          end
-
-          counts
+              option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
+              expected_counts.transform_keys { |option_id| option_id_to_key[option_id] }
+            end
         end
 
         def filename(custom_field)
