@@ -3,6 +3,7 @@ import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { moderatesFolder } from '../../../permissions/roles';
+import { adminProjectFoldersSettingsPath } from '../../../utils/routeUtils';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -205,7 +206,7 @@ const ProjectFolderShowPage = memo<{
                   <ButtonBar>
                     <EditButton
                       icon="edit"
-                      linkTo={`/admin/projects/folders/${projectFolder.id}/settings`}
+                      linkTo={adminProjectFoldersSettingsPath(projectFolder.id)}
                       buttonStyle="secondary"
                       padding="5px 8px"
                     >
