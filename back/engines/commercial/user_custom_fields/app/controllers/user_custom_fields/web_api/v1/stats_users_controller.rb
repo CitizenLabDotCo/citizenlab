@@ -24,24 +24,7 @@ module UserCustomFields
         end
 
         def users_by_custom_field_as_xlsx
-          if custom_field.custom_field_options.present?
-            res = custom_field.custom_field_options.map do |option|
-              {
-                'option_id' => option.key,
-                'option' => MultilocService.new.t(option.title_multiloc),
-                'users' => user_counts[option.key] || 0
-              }
-            end
-
-            blank_count = { 'option_id' => '_blank', 'option' => 'unknown', 'users' => counts['_blank'] }
-            res.push(blank_count)
-
-            xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'option')
-          else
-            xlsx = XlsxService.new.generate_field_stats_xlsx(user_counts, custom_field.key, 'users')
-          end
-
-          send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
+          send_data(users_by_custom_field_xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
@@ -71,6 +54,32 @@ module UserCustomFields
         end
 
         private
+
+        def users_by_custom_field_xlsx
+          xlsx_columns =
+            if (options = custom_field.custom_field_options).present?
+              {
+                option: localized_option_titles(options) << '_blank',
+                option_id: options.pluck(:key) << '_blank'
+              }.tap do |cols|
+                cols[:users] = user_counts.fetch_values(*cols[:option_id]) { 0 }
+                if expected_user_counts.present?
+                  cols[:expected_users] = expected_user_counts.fetch_values(*cols[:option_id]) { 0 }
+                end
+              end
+            else
+              {
+                option: user_counts.keys,
+                users: user_counts.values
+              }
+            end
+
+          XlsxService.new.xlsx_from_columns(xlsx_columns)
+        end
+
+        def localized_option_titles(options)
+          options.map { |o| MultilocService.new.t(o.title_multiloc) }
+        end
 
         def custom_field
           @custom_field ||=
