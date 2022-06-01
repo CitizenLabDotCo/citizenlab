@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 import moduleConfiguration from 'modules';
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 const DashboardWrapper = lazy(() => import('.'));
 const Summary = lazy(() => import('./summary'));
 const Users = lazy(() => import('./users'));
@@ -9,25 +9,25 @@ const createAdminDashboardRoutes = () => {
   return {
     path: 'dashboard',
     element: (
-      <Loading>
+      <PageLoading>
         <DashboardWrapper />
-      </Loading>
+      </PageLoading>
     ),
     children: [
       {
         index: true,
         element: (
-          <Loading>
+          <PageLoading>
             <Summary />
-          </Loading>
+          </PageLoading>
         ),
       },
       {
         path: 'users',
         element: (
-          <Loading>
+          <PageLoading>
             <Users />
-          </Loading>
+          </PageLoading>
         ),
       },
       ...moduleConfiguration.routes['admin.dashboards'],

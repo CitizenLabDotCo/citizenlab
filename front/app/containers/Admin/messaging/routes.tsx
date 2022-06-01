@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
@@ -15,41 +15,41 @@ const ExistingSMS = lazy(() => import('./texting/ExistingSMSCampaign'));
 const createAdminMessagingRoutes = () => ({
   path: 'messaging',
   element: (
-    <Loading>
+    <PageLoading>
       <MessagingIndex />
-    </Loading>
+    </PageLoading>
   ),
   children: [
     {
       path: 'emails/custom',
       element: (
-        <Loading>
+        <PageLoading>
           <CustomEmailsIndex />
-        </Loading>
+        </PageLoading>
       ),
       children: [
         {
           path: 'new',
           element: (
-            <Loading>
+            <PageLoading>
               <CustomEmailsNew />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: ':campaignId',
           element: (
-            <Loading>
+            <PageLoading>
               <CustomEmailsShow />
-            </Loading>
+            </PageLoading>
           ),
           children: [
             {
               path: 'edit',
               element: (
-                <Loading>
+                <PageLoading>
                   <CustomEmailsEdit />
-                </Loading>
+                </PageLoading>
               ),
             },
           ],
@@ -59,41 +59,41 @@ const createAdminMessagingRoutes = () => ({
     {
       path: 'emails/automated',
       element: (
-        <Loading>
+        <PageLoading>
           <AutomatedEmails />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: 'texting',
       element: (
-        <Loading>
+        <PageLoading>
           <CampaignList />
-        </Loading>
+        </PageLoading>
       ),
       children: [
         {
           path: 'new',
           element: (
-            <Loading>
+            <PageLoading>
               <NewSMS />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: ':campaignId',
           element: (
-            <Loading>
+            <PageLoading>
               <ExistingSMS />
-            </Loading>
+            </PageLoading>
           ),
           children: [
             {
               path: 'preview',
               element: (
-                <Loading>
+                <PageLoading>
                   <PreviewSMS />
-                </Loading>
+                </PageLoading>
               ),
             },
           ],

@@ -12,7 +12,7 @@ import {
   TSignUpStep,
 } from 'components/SignUpIn/SignUp';
 
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 
 import { GroupCreationModal } from 'containers/Admin/users';
@@ -499,7 +499,7 @@ const convertConfigurationToRoute = ({
   children,
 }: RouteConfiguration) => ({
   path,
-  element: <Loading>{element}</Loading>,
+  element: <PageLoading>{element}</PageLoading>,
   indexRoute:
     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
   children:

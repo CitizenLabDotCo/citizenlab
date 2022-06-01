@@ -7,7 +7,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const Loading = ({ children }: Props) => {
+const PageLoading = ({ children }: Props) => {
   const { pathname } = useLocation();
   const admin = isAdminRoute(pathname);
   return (
@@ -15,4 +15,4 @@ const Loading = ({ children }: Props) => {
   );
 };
 
-export default Loading;
+export default PageLoading;

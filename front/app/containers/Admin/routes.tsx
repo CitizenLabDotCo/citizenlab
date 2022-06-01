@@ -13,7 +13,7 @@ import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 
 // components
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
@@ -93,9 +93,9 @@ const IndexElement = () => {
   if (redirectURL) return <Navigate to={redirectURL} />;
 
   return (
-    <Loading>
+    <PageLoading>
       <AdminContainer />
-    </Loading>
+    </PageLoading>
   );
 };
 
@@ -120,17 +120,17 @@ const createAdminRoutes = () => {
       {
         path: 'workshops',
         element: (
-          <Loading>
+          <PageLoading>
             <AdminWorkshops />
-          </Loading>
+          </PageLoading>
         ),
       },
       {
         path: 'favicon',
         element: (
-          <Loading>
+          <PageLoading>
             <AdminFavicon />
-          </Loading>
+          </PageLoading>
         ),
       },
       ...moduleConfiguration.routes.admin,

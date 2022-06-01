@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 import createAdminRoutes from 'containers/Admin/routes';
 import moduleConfiguration from 'modules';
 
@@ -45,179 +45,179 @@ export default function createRoutes() {
         {
           index: true,
           element: (
-            <Loading>
+            <PageLoading>
               <LandingPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'sign-in',
           element: (
-            <Loading>
+            <PageLoading>
               <SignUpInPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'sign-up',
           element: (
-            <Loading>
+            <PageLoading>
               <SignUpInPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'invite',
           element: (
-            <Loading>
+            <PageLoading>
               <LandingPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'complete-signup',
           element: (
-            <Loading>
+            <PageLoading>
               <LandingPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'authentication-error',
           element: (
-            <Loading>
+            <PageLoading>
               <LandingPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'site-map',
           element: (
-            <Loading>
+            <PageLoading>
               <SiteMap />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'profile/edit',
           element: (
-            <Loading>
+            <PageLoading>
               <UsersEditPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'profile/:userSlug',
           element: (
-            <Loading>
+            <PageLoading>
               <UsersShowPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'ideas/edit/:ideaId',
           element: (
-            <Loading>
+            <PageLoading>
               <IdeasEditPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'ideas',
           element: (
-            <Loading>
+            <PageLoading>
               <IdeasIndexPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'ideas/:slug',
           element: (
-            <Loading>
+            <PageLoading>
               <IdeasShowPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'initiatives',
           element: (
-            <Loading>
+            <PageLoading>
               <InitiativesIndexPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'initiatives/edit/:initiativeId',
           element: (
-            <Loading>
+            <PageLoading>
               <InitiativesEditPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'initiatives/new',
           element: (
-            <Loading>
+            <PageLoading>
               <InitiativesNewPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         // super important that this comes AFTER initiatives/new, if it comes before, new is interpreted as a slug
         {
           path: 'initiatives/:slug',
           element: (
-            <Loading>
+            <PageLoading>
               <InitiativesShowPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'projects/:slug/ideas/new',
           element: (
-            <Loading>
+            <PageLoading>
               <IdeasNewPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         createAdminRoutes(),
         {
           path: 'projects',
           element: (
-            <Loading>
+            <PageLoading>
               <ProjectsIndexPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'projects/:slug',
           element: (
-            <Loading>
+            <PageLoading>
               <ProjectsShowPage />
-            </Loading>
+            </PageLoading>
           ),
           children: [
             {
               index: true,
               element: (
-                <Loading>
+                <PageLoading>
                   <ProjectsShowPage />
-                </Loading>
+                </PageLoading>
               ),
             },
             {
               path: ':phaseNumber',
               element: (
-                <Loading>
+                <PageLoading>
                   <ProjectsShowPage />
-                </Loading>
+                </PageLoading>
               ),
             },
             {
               path: '*',
               element: (
-                <Loading>
+                <PageLoading>
                   <ProjectsShowPage />
-                </Loading>
+                </PageLoading>
               ),
             },
           ],
@@ -225,75 +225,75 @@ export default function createRoutes() {
         {
           path: 'events',
           element: (
-            <Loading>
+            <PageLoading>
               <EventsPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'pages/cookie-policy',
           element: (
-            <Loading>
+            <PageLoading>
               <CookiePolicy />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'pages/accessibility-statement',
           element: (
-            <Loading>
+            <PageLoading>
               <AccessibilityStatement />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'pages/:slug',
           element: (
-            <Loading>
+            <PageLoading>
               <PagesShowPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'password-recovery',
           element: (
-            <Loading>
+            <PageLoading>
               <PasswordRecovery />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           // Used as link in email received for password recovery
           path: 'reset-password',
           element: (
-            <Loading>
+            <PageLoading>
               <PasswordReset />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'subscription-ended',
           element: (
-            <Loading>
+            <PageLoading>
               <SubscriptionEndedPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'email-settings',
           element: (
-            <Loading>
+            <PageLoading>
               <EmailSettingsPage />
-            </Loading>
+            </PageLoading>
           ),
         },
         ...moduleConfiguration.routes.citizen,
         {
           path: '*',
           element: (
-            <Loading>
+            <PageLoading>
               <PagesShowPage />
-            </Loading>
+            </PageLoading>
           ),
         },
       ],

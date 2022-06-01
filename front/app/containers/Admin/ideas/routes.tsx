@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
@@ -8,17 +8,17 @@ const AdminIdeasAll = lazy(() => import('./all'));
 export default () => ({
   path: 'ideas',
   element: (
-    <Loading>
+    <PageLoading>
       <AdminIdeasContainer />
-    </Loading>
+    </PageLoading>
   ),
   children: [
     {
       index: true,
       element: (
-        <Loading>
+        <PageLoading>
           <AdminIdeasAll />
-        </Loading>
+        </PageLoading>
       ),
     },
     ...moduleConfiguration.routes['admin.ideas'],

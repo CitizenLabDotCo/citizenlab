@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 
 const AdminPagesIndex = lazy(() => import('.'));
 const AdminPagesAll = lazy(() => import('./All'));
@@ -9,33 +9,33 @@ const AdminPagesEdit = lazy(() => import('./EditPageForm'));
 export default () => ({
   path: 'pages',
   element: (
-    <Loading>
+    <PageLoading>
       <AdminPagesIndex />
-    </Loading>
+    </PageLoading>
   ),
   children: [
     {
       index: true,
       element: (
-        <Loading>
+        <PageLoading>
           <AdminPagesAll />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: 'new',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminPagesNew />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: ':pageId',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminPagesEdit />
-        </Loading>
+        </PageLoading>
       ),
     },
   ],

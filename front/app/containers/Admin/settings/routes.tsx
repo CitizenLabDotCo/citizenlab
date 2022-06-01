@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Navigate } from 'react-router-dom';
 import moduleConfiguration from 'modules';
-import Loading from 'components/UI/Loading';
+import PageLoading from 'components/UI/PageLoading';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
 const AdminSettingsGeneral = lazy(
@@ -27,9 +27,9 @@ const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 export default () => ({
   path: 'settings',
   element: (
-    <Loading>
+    <PageLoading>
       <AdminSettingsIndex />
-    </Loading>
+    </PageLoading>
   ),
   children: [
     {
@@ -39,41 +39,41 @@ export default () => ({
     {
       path: 'general',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminSettingsGeneral />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: 'customize',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminSettingsCustomize />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: 'pages',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminSettingsPages />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: 'policies',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminSettingsPolicies />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
       path: 'registration',
       element: (
-        <Loading>
+        <PageLoading>
           <AdminSettingsRegistration />
-        </Loading>
+        </PageLoading>
       ),
     },
     {
@@ -82,25 +82,25 @@ export default () => ({
         {
           index: true,
           element: (
-            <Loading>
+            <PageLoading>
               <AdminAreasAll />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: 'new',
           element: (
-            <Loading>
+            <PageLoading>
               <AdminAreasNew />
-            </Loading>
+            </PageLoading>
           ),
         },
         {
           path: ':areaId',
           element: (
-            <Loading>
+            <PageLoading>
               <AdminAreasEdit />
-            </Loading>
+            </PageLoading>
           ),
         },
       ],
