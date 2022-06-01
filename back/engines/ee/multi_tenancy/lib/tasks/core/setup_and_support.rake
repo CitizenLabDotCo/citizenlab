@@ -23,7 +23,7 @@ namespace :setup_and_support do
         user = User.find_by email: d['Feedback Email']
         if idea
           if status && idea.idea_status != status
-            idea.update!(idea_status: status) if status
+            idea.update!(idea_status: status)
             LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: { change: idea.idea_status_id_previous_change })
           end
           feedback = OfficialFeedback.create!(post: idea, body_multiloc: { args[:locale] => text }, author_multiloc: { args[:locale] => name }, user: user)
