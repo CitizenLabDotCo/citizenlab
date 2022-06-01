@@ -14,8 +14,22 @@ def group_filter_parameter(s)
   s.parameter :group, 'Group ID. Only return users that are a member of the given group', required: false
 end
 
+shared_examples 'xlsx export' do |field_name|
+  example_request "Users xlsx by #{field_name}" do
+    expect(response_status).to eq 200
+
+    worksheet = RubyXL::Parser.parse_buffer(response_body)[0]
+    worksheet_values = xlsx_worksheet_to_array(worksheet)
+
+    expect(worksheet.sheet_name).to eq(expected_worksheet_name)
+    expect(worksheet_values).to match(expected_worksheet_values)
+  end
+end
+
 resource 'Stats - Users' do
   let!(:now) { Time.now.in_time_zone(@timezone) }
+  let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+  let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
   before do
     create(:custom_field_birthyear)
@@ -36,8 +50,9 @@ resource 'Stats - Users' do
     travel_to(end_at + 1.day) { create(:user) }
   end
 
-  let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
-  let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+  def xlsx_worksheet_to_array(worksheet)
+    worksheet.map { |row| row.cells.map(&:value) }
+  end
 
   get 'web_api/v1/stats/users_by_gender' do
     time_boundary_parameters self
@@ -107,18 +122,17 @@ resource 'Stats - Users' do
 
     let(:group) { @group.id }
 
-    example_request 'Users by gender' do
-      expect(response_status).to eq 200
-      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match %w[gender users]
-
-      genders_col = worksheet.map { |col| col.cells[0].value }
-      header, *genders = genders_col
-      expect(genders).to match_array %w[_blank unspecified male female]
-
-      amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
-      expect(amounts).to match_array [0, 1, 1, 2]
+    include_examples('xlsx export', 'gender') do
+      let(:expected_worksheet_name) { 'usersbygender' }
+      let(:expected_worksheet_values) do
+        [
+          %w[option option_id users],
+          ['youth council', 'male',            1],
+          ['youth council', 'female',          2],
+          ['youth council', 'unspecified',     1],
+          ['_blank',        '_blank',          0]
+        ]
+      end
     end
   end
 
@@ -194,18 +208,16 @@ resource 'Stats - Users' do
 
     let(:group) { @group.id }
 
-    example_request 'Users by birthyear' do
-      expect(response_status).to eq 200
-      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match %w[birthyear users]
-
-      birthyears_col = worksheet.map { |col| col.cells[0].value }
-      header, *birthyears = birthyears_col
-      expect(birthyears).to match_array [1976, 1980, '_blank']
-
-      amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
-      expect(amounts).to match_array [1, 2, 0]
+    include_examples('xlsx export', 'birthyear') do
+      let(:expected_worksheet_name) { 'usersbybirthyear' }
+      let(:expected_worksheet_values) do
+        [
+          %w[option users],
+          [1976,       1],
+          [1980,       2],
+          ['_blank',       0]
+        ]
+      end
     end
   end
 
@@ -325,18 +337,21 @@ resource 'Stats - Users' do
 
     let(:group) { @group.id }
 
-    example_request 'Users by education' do
-      expect(response_status).to eq 200
-      worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-      expect(worksheet[0].cells.map(&:value)).to match %w[education users]
-
-      areas_col = worksheet.map { |col| col.cells[0].value }
-      header, *areas = areas_col
-      expect(areas).to match_array [3, 5, '_blank']
-
-      amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
-      expect(amounts).to match_array [2, 1, 0]
+    include_examples('xlsx export', 'education') do
+      let(:expected_worksheet_name) { 'usersbyeducation' }
+      let(:expected_worksheet_values) do
+        [
+          %w[option option_id users],
+          ['youth council', 2, 0],
+          ['youth council', 3, 2],
+          ['youth council', 4, 0],
+          ['youth council', 5, 1],
+          ['youth council', 6, 0],
+          ['youth council', 7, 0],
+          ['youth council', 8, 0],
+          ['_blank', '_blank', 0]
+        ]
+      end
     end
   end
 
@@ -487,7 +502,7 @@ resource 'Stats - Users' do
     describe 'with select field' do
       before do
         @group = create(:group)
-        @custom_field = create(:custom_field_select)
+        @custom_field = create(:custom_field_select, key: 'select_field')
         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
 
         # We create an option on a different custom_field, but with the same
@@ -515,29 +530,24 @@ resource 'Stats - Users' do
       let(:group) { @group.id }
       let(:custom_field_id) { @custom_field.id }
 
-      example_request 'Users by custom field (select)' do
-        expect(response_status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[option option_id users]
-
-        option_titles_col = worksheet.map { |col| col.cells[0].value }
-        header, *option_titles = option_titles_col
-        expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), 'unknown']
-
-        option_ids_col = worksheet.map { |col| col.cells[1].value }
-        header, *option_ids = option_ids_col
-        expect(option_ids).to match_array [@option1.key, @option2.key, @option3.key, '_blank']
-
-        users_col = worksheet.map { |col| col.cells[2].value }
-        header, *users = users_col
-        expect(users).to match_array [0, 1, 1, 1]
+      include_examples('xlsx export', 'custom field (select)') do
+        let(:expected_worksheet_name) { 'usersbyselectfield' }
+        let(:expected_worksheet_values) do
+          [
+            %w[option option_id users],
+            ['youth council', @option1.key, 1],
+            ['youth council', @option2.key, 1],
+            ['youth council', @option3.key, 0],
+            ['_blank', '_blank', 1]
+          ]
+        end
       end
     end
 
     describe 'with multiselect field' do
       before do
         @group = create(:group)
-        @custom_field = create(:custom_field_multiselect)
+        @custom_field = create(:custom_field_multiselect, key: 'multiselect_field')
         @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
         travel_to(start_at - 1.day) do
           create(:user, custom_field_values: { @custom_field.key => [@option1.key] }, manual_groups: [@group])
@@ -558,25 +568,24 @@ resource 'Stats - Users' do
       let(:group) { @group.id }
       let(:custom_field_id) { @custom_field.id }
 
-      example_request 'Users by custom field (multiselect)' do
-        expect(response_status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[option option_id users]
-
-        option_titles_col = worksheet.map { |col| col.cells[0].value }
-        header, *option_titles = option_titles_col
-        expect(option_titles).to match_array [multiloc_service.t(@option1.title_multiloc), multiloc_service.t(@option2.title_multiloc), multiloc_service.t(@option3.title_multiloc), 'unknown']
-
-        users_col = worksheet.map { |col| col.cells[2].value }
-        header, *users = users_col
-        expect(users).to match_array [0, 2, 1, 1]
+      include_examples('xlsx export', 'custom field (multiselect)') do
+        let(:expected_worksheet_name) { 'usersbymultiselectfield' }
+        let(:expected_worksheet_values) do
+          [
+            %w[option option_id users],
+            ['youth council', @option1.key, 2],
+            ['youth council', @option2.key, 1],
+            ['youth council', @option3.key, 0],
+            ['_blank', '_blank', 1]
+          ]
+        end
       end
     end
 
     describe 'with checkbox field' do
       before do
         @group = create(:group)
-        @custom_field = create(:custom_field_checkbox)
+        @custom_field = create(:custom_field_checkbox, key: 'checkbox_field')
         travel_to(start_at - 1.day) do
           create(:user, custom_field_values: { @custom_field.key => false }, manual_groups: [@group])
         end
@@ -595,18 +604,16 @@ resource 'Stats - Users' do
       let(:group) { @group.id }
       let(:custom_field_id) { @custom_field.id }
 
-      example_request 'Users by custom field (checkbox)' do
-        expect(response_status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[option users]
-
-        option_ids_col = worksheet.map { |col| col.cells[0].value }
-        header, *option_ids = option_ids_col
-        expect(option_ids).to match_array %w[_blank false true]
-
-        users_col = worksheet.map { |col| col.cells[1].value }
-        header, *users = users_col
-        expect(users).to match_array [1, 1, 1]
+      include_examples('xlsx export', 'custom field (checkbox)') do
+        let(:expected_worksheet_name) { 'usersbycheckboxfield' }
+        let(:expected_worksheet_values) do
+          [
+            %w[option users],
+            ['false', 1],
+            ['true', 1],
+            ['_blank', 1]
+          ]
+        end
       end
     end
   end
