@@ -170,7 +170,7 @@ module UserCustomFields
               }
             end
 
-          XlsxService.new.xlsx_from_columns(xlsx_columns)
+          XlsxService.new.xlsx_from_columns(xlsx_columns, sheetname: "users_by_#{custom_field.key}")
         end
 
         def localized_option_titles(options)
