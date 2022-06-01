@@ -1,15 +1,12 @@
-/* eslint-disable react/no-children-prop */
-// @ts-nocheck
-// libraries
 import React from 'react';
-import { render, screen, within } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 
 // component to test
 // ! it is the component without the HoCs (data, localization...)
 import { AdminProjectsProjectIndex } from '.';
 
 // mock data and functions to replace the HoCs
-import { GetPhasesChildProps } from 'resources/GetPhases';
+// import { GetPhasesChildProps } from 'resources/GetPhases';
 import {
   mockPhaseIdeationData,
   mockPhaseSurveyTypeformData,
@@ -43,13 +40,16 @@ const getRouterProps = (projectId, tabName?: string) =>
 
 const children = () => <div />;
 
+const additionalProps = {
+  previousPathName: 'www.gobackurl.com',
+};
+
 describe('<AdminProjectEdition />', () => {
   const intl = getDummyIntlObject();
 
   it('renders the correct set of tabs for a continuous information project', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
     const phases = [];
     const project = getProject(
       'continuousInformation',
@@ -62,14 +62,15 @@ describe('<AdminProjectEdition />', () => {
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = ['General', 'Description', 'Events'];
@@ -81,7 +82,6 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous typeform survey project', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject(
@@ -92,18 +92,19 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousTypeform');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = ['General', 'Description', 'Survey Results', 'Events'];
@@ -118,7 +119,6 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous non-typeform survey project', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject(
@@ -129,18 +129,19 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousGoogleForm');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = ['General', 'Description', 'Events'];
@@ -155,7 +156,6 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous typeform survey project if surveys are disabled', async () => {
     const surveys_enabled = false;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject(
@@ -166,18 +166,19 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousTypeform');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = ['General', 'Description', 'Events'];
@@ -192,7 +193,6 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a continuous typeform survey project if typeform is disabled', async () => {
     const surveys_enabled = true;
     const typeform_enabled = false;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject(
@@ -203,18 +203,19 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousTypeform');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = ['General', 'Description', 'Events'];
@@ -229,24 +230,24 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with a single information phase', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const project = getProject('timelineInformation', 'timeline');
-    const phases = [mockPhaseInformationData];
+    const phases = [mockPhaseInformationData, mockPhaseInformationData];
     const routerProps = getRouterProps('timelineInformation');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = [
@@ -267,27 +268,24 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with an ideation phase', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const project = getProject('timelineIdeation', 'timeline');
-    const phases = [
-      mockPhaseInformationData,
-      mockPhaseIdeationData,
-    ] as GetPhasesChildProps;
+    const phases = [mockPhaseIdeationData, mockPhaseIdeationData];
     const routerProps = getRouterProps('timelineIdeation');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = [
@@ -308,24 +306,24 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with a typeform survey phase', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const project = getProject('timelineIdeation', 'timeline');
     const phases = [mockPhaseInformationData, mockPhaseSurveyTypeformData];
     const routerProps = getRouterProps('timelineIdeation');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = [
@@ -348,24 +346,24 @@ describe('<AdminProjectEdition />', () => {
   it('renders the correct set of tabs for a timeline project with a googleform survey phase', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const project = getProject('timelineIdeation', 'timeline');
     const phases = [mockPhaseInformationData, mockPhaseSurveyGoogleFormData];
     const routerProps = getRouterProps('timelineIdeation');
 
-    const { container } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
     const tabNames = [
@@ -386,7 +384,6 @@ describe('<AdminProjectEdition />', () => {
   it('lets you see the button to view the project', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject('whatever', 'timeline', 'poll');
@@ -396,54 +393,50 @@ describe('<AdminProjectEdition />', () => {
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
-    const viewProjectButton = await screen.findByRole('button', {
-      label: 'View Project',
-    });
+    const viewProjectButton = await screen.findByText('View project');
     expect(viewProjectButton).toBeInTheDocument();
   });
 
   it('lets you view the button to add a new idea when appropriate', async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject('continuousIdeation', 'continuous', 'ideation');
     const routerProps = getRouterProps('continuousIdeation', 'ideas');
 
-    const { getByText } = render(
+    render(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         phases={phases}
         project={project}
-        children={children}
         intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
-    const newIdeaButton = await screen.findByRole('button', {
-      label: 'Add new idea',
-    });
+    const newIdeaButton = await screen.findByText('Add an idea');
     expect(newIdeaButton).toBeInTheDocument();
   });
 
   it("doesn't let you add an idea when there's no ideation phase", async () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
-    const granularPermissionsEnabled = true;
 
     const phases = [];
     const project = getProject(
@@ -453,20 +446,22 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousInformation', 'general');
 
-    const wrapper = shallowWithIntl(
+    shallowWithIntl(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
         typeform_enabled={typeform_enabled}
         phases={phases}
-        granularPermissionsEnabled={granularPermissionsEnabled}
         project={project}
-        children={children}
+        intl={intl}
         {...routerProps}
         {...localizeProps}
-      />
+        {...additionalProps}
+      >
+        {children}
+      </AdminProjectsProjectIndex>
     );
 
-    const newIdeaButton = await screen.queryByText('Add new idea');
+    const newIdeaButton = await screen.queryByText('Add an idea');
     expect(newIdeaButton).toBeNull();
   });
 });
