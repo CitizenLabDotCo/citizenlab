@@ -1,7 +1,7 @@
 namespace :setup_and_support do
 
   desc "Mass official feedback"
-  task :mass_official_feedback, [:url,:host,:locale] => [:environment] do |t, args|
+  task :mass_official_feedback, [:url,:host,:locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do
@@ -12,26 +12,31 @@ namespace :setup_and_support do
       end
 
       logs = []
+      created = 0
       data.each_with_index do |d, i|
         idea = Idea.find d['ID']
         status = if d['New Status'].present?
-          IdeaStatus.all.select{|i| i.title_multiloc[args[:locale]].downcase.strip == d['New Status'].downcase.strip}.first
-        end
+                   IdeaStatus.all.select{ |i| i.title_multiloc[args[:locale]].downcase.strip == d['New Status'].downcase.strip }.first
+                 end
         name = d['Feedback Author Name']
         text = d['Feedback']
         user = User.find_by email: d['Feedback Email']
-        if idea && status
-          idea.idea_status = status
-          idea.save!
-          LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
-          feedback = OfficialFeedback.create!(post: idea, body_multiloc: {args[:locale] => text}, author_multiloc: {args[:locale] => name}, user: user)
+        if idea
+          if status && idea.idea_status != status
+            idea.update!(idea_status: status) if status
+            LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: { change: idea.idea_status_id_previous_change })
+          end
+          feedback = OfficialFeedback.create!(post: idea, body_multiloc: { args[:locale] => text }, author_multiloc: { args[:locale] => name }, user: user)
           LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
+          created += 1
         end
         logs += ["#{i}) Couldn't find idea #{d['ID']}"] if !idea
-        logs += ["#{i}) Couldn't find idea author #{d['ID']}"] if idea && !idea.author_id
+        logs += ["#{i}) Couldn't find idea author for idea #{d['ID']}"] if idea && !idea.author_id
+        logs += ["#{i}) Couldn't find New Status '#{d['New Status']}' - does it exist for locale #{args[:locale]}?"] if d['New Status'] && !status
       end
-      logs.each{|l| puts l} && true
 
+      puts "Created #{created} official feedbacks"
+      logs.each{ |l| puts l } && true
     end
   end
 
