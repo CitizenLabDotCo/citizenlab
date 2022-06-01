@@ -47,15 +47,6 @@ const createAdminProjectsRoutes = () => {
         ),
       },
       ...moduleConfiguration.routes['admin.project_templates'],
-      ...moduleConfiguration.routes['admin.projects'],
-      {
-        path: 'new',
-        element: (
-          <LoadingComponent>
-            <AdminProjectsProjectGeneral />
-          </LoadingComponent>
-        ),
-      },
       {
         path: ':projectId',
         element: (
@@ -70,14 +61,6 @@ const createAdminProjectsRoutes = () => {
             element: (
               <LoadingComponent>
                 <AdminProjectsProjectGeneral />
-              </LoadingComponent>
-            ),
-          },
-          {
-            path: 'edit',
-            element: (
-              <LoadingComponent>
-                <AdminProjectsProjectIndex />
               </LoadingComponent>
             ),
           },
@@ -201,6 +184,7 @@ const createAdminProjectsRoutes = () => {
               </LoadingComponent>
             ),
           },
+          ...moduleConfiguration.routes['admin.projects.project'],
         ],
       },
     ],

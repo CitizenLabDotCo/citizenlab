@@ -1,7 +1,7 @@
 import React, { useState, memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
@@ -121,7 +121,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
-                    linkTo={`/admin/projects/${project.id}/edit`}
+                    linkTo={adminProjectsProjectPath(project.id)}
                     buttonStyle="secondary"
                     padding="5px 8px"
                   >
