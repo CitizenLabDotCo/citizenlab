@@ -75,8 +75,8 @@ const AdminProjectFolderEdition = memo<
       tabs: [
         {
           label: formatMessage(messages.projectFolderProjectsTab),
-          url: `/admin/projects/folders/${projectFolderId}`,
-          name: 'index',
+          url: `/admin/projects/folders/${projectFolderId}/projects`,
+          name: 'projects',
         },
         {
           label: formatMessage(messages.projectFolderSettingsTab),
