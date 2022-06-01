@@ -3,8 +3,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-multiloc_service = MultilocService.new
-
 def time_boundary_parameters(s)
   s.parameter :start_at, 'Date defining from where results should start', required: false
   s.parameter :end_at, 'Date defining till when results should go', required: false
@@ -32,6 +30,8 @@ resource 'Stats - Users' do
   let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
   before do
+    admin_header_token
+
     create(:custom_field_birthyear)
     create(:custom_field_gender, :with_options)
     create(:custom_field_domicile)
@@ -39,9 +39,6 @@ resource 'Stats - Users' do
 
     CustomField.find_by(code: 'education').update(enabled: true)
 
-    @current_user = create(:admin)
-    token = Knock::AuthToken.new(payload: @current_user.to_token_payload).token
-    header 'Authorization', "Bearer #{token}"
     header 'Content-Type', 'application/json'
     Tenant.current.update!(created_at: now - 2.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
