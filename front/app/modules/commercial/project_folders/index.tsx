@@ -178,13 +178,13 @@ const configuration: ModuleConfiguration = {
         element: <FolderShowPage />,
       },
     ],
-    admin: [
+    ['admin.projects']: [
       {
-        path: 'projects/folders/new',
+        path: 'folders/new',
         element: <FolderSettings />,
       },
       {
-        path: 'projects/folders/:projectFolderId',
+        path: 'folders/:projectFolderId',
         element: <FolderContainer />,
         children: [
           {
