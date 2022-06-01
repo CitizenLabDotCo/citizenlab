@@ -25,6 +25,8 @@ shared_examples 'xlsx export' do |field_name|
 end
 
 resource 'Stats - Users' do
+  header 'Content-Type', 'application/json'
+
   let!(:now) { Time.now.in_time_zone(@timezone) }
   let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
   let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
@@ -39,7 +41,6 @@ resource 'Stats - Users' do
 
     CustomField.find_by(code: 'education').update(enabled: true)
 
-    header 'Content-Type', 'application/json'
     Tenant.current.update!(created_at: now - 2.years)
     @timezone = AppConfiguration.instance.settings('core', 'timezone')
 
