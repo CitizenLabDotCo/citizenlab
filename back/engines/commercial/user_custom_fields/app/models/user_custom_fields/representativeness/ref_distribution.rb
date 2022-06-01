@@ -27,9 +27,14 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   validate :validate_distribution_options
 
   def probabilities_and_counts
-    distribution.transform_values do |count|
-      { count: count, probability: count.to_f / total_population }
+    distribution.merge(probabilities) do |_option_id, count, probability|
+      { count: count, probability: probability }
     end
+  end
+
+  # Returns the expected count distribution for a given (total) number of users.
+  def expected_counts(nb_users)
+    probabilities.transform_values { |probability| (probability * nb_users).round(1) }
   end
 
   def validate_distribution_options
@@ -44,5 +49,9 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
 
   def total_population
     @total_population ||= distribution.values.sum
+  end
+
+  def probabilities
+    distribution.transform_values { |count| count.to_f / total_population }
   end
 end

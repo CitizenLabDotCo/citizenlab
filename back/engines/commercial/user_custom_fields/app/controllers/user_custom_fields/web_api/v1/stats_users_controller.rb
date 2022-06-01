@@ -8,7 +8,10 @@ module UserCustomFields
         private_constant :XLSX_MIME_TYPE
 
         def users_by_custom_field
-          json_response = { series: { users: user_counts } }
+          json_response = { series: {
+            users: user_counts,
+            expected_users: expected_user_counts(user_counts.values.sum, by_option_key: true)
+          } }
 
           if custom_field.custom_field_options.present?
             options = custom_field.custom_field_options.to_h { |o| [o.key, o.attributes.slice('title_multiloc')] }
@@ -155,6 +158,19 @@ module UserCustomFields
           end
 
           users
+        end
+
+        def expected_user_counts(total_nb_users, by_option_key: false)
+          return if (ref_distribution = custom_field.current_ref_distribution).blank?
+
+          counts = ref_distribution.expected_counts(total_nb_users)
+
+          if by_option_key
+            option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
+            counts.transform_keys { |option_id| option_id_to_key[option_id] }
+          end
+
+          counts
         end
 
         def filename(custom_field)
