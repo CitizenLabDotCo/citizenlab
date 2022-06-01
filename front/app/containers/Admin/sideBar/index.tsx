@@ -8,7 +8,7 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import FeatureFlag from 'components/FeatureFlag';
+import FeaturedMenuItem from './FeaturedMenuItem';
 import MenuItem from './MenuItem';
 
 // i18n
@@ -22,7 +22,6 @@ import { media, colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // resources
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetIdeasCount, {
   GetIdeasCountChildProps,
 } from 'resources/GetIdeasCount';
@@ -142,7 +141,7 @@ export type NavItem = {
   link: string;
   iconName: IconNames;
   message: string;
-  featureName?: TAppConfigurationSetting;
+  featureNames?: TAppConfigurationSetting[];
   count?: number;
   onlyCheckAllowed?: boolean;
 };
@@ -173,7 +172,7 @@ class Sidebar extends PureComponent<
           link: '/admin/workshops',
           iconName: 'workshops',
           message: 'workshops',
-          featureName: 'workshops',
+          featureNames: ['workshops'],
         },
         {
           name: 'ideas',
@@ -186,7 +185,7 @@ class Sidebar extends PureComponent<
           link: '/admin/initiatives',
           iconName: 'initiativesAdminMenuIcon',
           message: 'initiatives',
-          featureName: 'initiatives',
+          featureNames: ['initiatives'],
           onlyCheckAllowed: true,
         },
         {
@@ -206,6 +205,11 @@ class Sidebar extends PureComponent<
           link: '/admin/messaging',
           iconName: 'emails',
           message: 'messaging',
+          featureNames: [
+            'manual_emailing',
+            'automated_emailing_control',
+            'texting',
+          ],
         },
         {
           name: 'settings',
@@ -270,35 +274,13 @@ class Sidebar extends PureComponent<
           onData={this.handleData}
         />
         <MenuInner id="sidebar">
-          {navItems.map((navItem) => {
-            if (navItem.name === 'emails') {
-              return (
-                <GetFeatureFlag name="manual_emailing" key={navItem.name}>
-                  {(manualEmailing) => (
-                    <GetFeatureFlag name="automated_emailing_control">
-                      {(automatedEmailing) =>
-                        manualEmailing || automatedEmailing ? (
-                          <MenuItem route={navItem} key={navItem.name} />
-                        ) : null
-                      }
-                    </GetFeatureFlag>
-                  )}
-                </GetFeatureFlag>
-              );
-            } else if (navItem.featureName) {
-              return (
-                <FeatureFlag
-                  name={navItem.featureName}
-                  onlyCheckAllowed={navItem.onlyCheckAllowed}
-                  key={navItem.name}
-                >
-                  <MenuItem route={navItem} key={navItem.name} />
-                </FeatureFlag>
-              );
-            } else {
-              return <MenuItem route={navItem} key={navItem.name} />;
-            }
-          })}
+          {navItems.map((navItem) =>
+            navItem.featureNames ? (
+              <FeaturedMenuItem navItem={navItem} key={navItem.name} />
+            ) : (
+              <MenuItem route={navItem} key={navItem.name} />
+            )
+          )}
           <Spacer />
           <GetStartedLink
             href={formatMessage(messages.linkToSupportCenter)}

@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
+
 ## 2022-06-13
 
 ### Changed
