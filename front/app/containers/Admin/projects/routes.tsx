@@ -33,7 +33,7 @@ const createAdminProjectsRoutes = () => {
   return {
     path: 'projects',
     element: (
-      <Loading admin>
+      <Loading>
         <AdminProjectsAndFolders />
       </Loading>
     ),
@@ -41,17 +41,16 @@ const createAdminProjectsRoutes = () => {
       {
         index: true,
         element: (
-          <Loading admin>
+          <Loading>
             <AdminProjectsList />
           </Loading>
         ),
       },
       ...moduleConfiguration.routes['admin.project_templates'],
-      ...moduleConfiguration.routes['admin.projects'],
       {
         path: 'new',
         element: (
-          <Loading admin>
+          <Loading>
             <AdminProjectsProjectGeneral />
           </Loading>
         ),
@@ -59,7 +58,7 @@ const createAdminProjectsRoutes = () => {
       {
         path: ':projectId',
         element: (
-          <Loading admin>
+          <Loading>
             <AdminProjectsProjectIndex />
           </Loading>
         ),
@@ -68,7 +67,7 @@ const createAdminProjectsRoutes = () => {
           {
             index: true,
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectsProjectGeneral />
               </Loading>
             ),
@@ -76,7 +75,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'timeline',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectTimeline />
               </Loading>
             ),
@@ -84,7 +83,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'timeline/new',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectTimelineNewAndEdit />
               </Loading>
             ),
@@ -92,7 +91,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'timeline/:id',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectTimelineNewAndEdit />
               </Loading>
             ),
@@ -100,7 +99,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'events',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectEvents />
               </Loading>
             ),
@@ -108,7 +107,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'events/new',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectEventsEdit />
               </Loading>
             ),
@@ -116,7 +115,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'events/:id',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectEventsEdit />
               </Loading>
             ),
@@ -124,7 +123,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'permissions',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectPermissions />
               </Loading>
             ),
@@ -132,7 +131,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'survey-results',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectSurveyResults />
               </Loading>
             ),
@@ -140,7 +139,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'poll',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectPoll />
               </Loading>
             ),
@@ -148,7 +147,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'description',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectDescription />
               </Loading>
             ),
@@ -156,7 +155,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'ideas',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectIdeas />
               </Loading>
             ),
@@ -164,7 +163,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'volunteering',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectVolunteering />
               </Loading>
             ),
@@ -172,7 +171,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'volunteering/causes/new',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectVolunteeringNew />
               </Loading>
             ),
@@ -180,7 +179,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'volunteering/phases/:phaseId/causes/new',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectVolunteeringNew />
               </Loading>
             ),
@@ -188,7 +187,7 @@ const createAdminProjectsRoutes = () => {
           {
             path: 'volunteering/causes/:causeId',
             element: (
-              <Loading admin>
+              <Loading>
                 <AdminProjectVolunteeringEdit />
               </Loading>
             ),

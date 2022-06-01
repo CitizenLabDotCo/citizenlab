@@ -7,7 +7,7 @@ import Loading from 'components/UI/Loading';
 const createAdminUsersRoutes = () => ({
   path: 'users',
   element: (
-    <Loading admin>
+    <Loading>
       <AdminUsersIndex />
     </Loading>
   ),
@@ -15,7 +15,7 @@ const createAdminUsersRoutes = () => ({
     {
       index: true,
       element: (
-        <Loading admin>
+        <Loading>
           <AdminAllUsers />
         </Loading>
       ),
@@ -23,7 +23,7 @@ const createAdminUsersRoutes = () => ({
     {
       path: ':groupId',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminUsersGroup />
         </Loading>
       ),

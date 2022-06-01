@@ -8,7 +8,7 @@ const AdminIdeasAll = lazy(() => import('./all'));
 export default () => ({
   path: 'ideas',
   element: (
-    <Loading admin>
+    <Loading>
       <AdminIdeasContainer />
     </Loading>
   ),
@@ -16,7 +16,7 @@ export default () => ({
     {
       index: true,
       element: (
-        <Loading admin>
+        <Loading>
           <AdminIdeasAll />
         </Loading>
       ),

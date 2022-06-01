@@ -499,7 +499,7 @@ const convertConfigurationToRoute = ({
   children,
 }: RouteConfiguration) => ({
   path,
-  element: <Loading admin={type === RouteTypes.ADMIN}>{element}</Loading>,
+  element: <Loading>{element}</Loading>,
   indexRoute:
     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
   children:

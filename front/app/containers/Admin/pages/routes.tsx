@@ -9,7 +9,7 @@ const AdminPagesEdit = lazy(() => import('./EditPageForm'));
 export default () => ({
   path: 'pages',
   element: (
-    <Loading admin>
+    <Loading>
       <AdminPagesIndex />
     </Loading>
   ),
@@ -17,7 +17,7 @@ export default () => ({
     {
       index: true,
       element: (
-        <Loading admin>
+        <Loading>
           <AdminPagesAll />
         </Loading>
       ),
@@ -25,7 +25,7 @@ export default () => ({
     {
       path: 'new',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminPagesNew />
         </Loading>
       ),
@@ -33,7 +33,7 @@ export default () => ({
     {
       path: ':pageId',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminPagesEdit />
         </Loading>
       ),

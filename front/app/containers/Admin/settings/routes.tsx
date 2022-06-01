@@ -27,7 +27,7 @@ const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 export default () => ({
   path: 'settings',
   element: (
-    <Loading admin>
+    <Loading>
       <AdminSettingsIndex />
     </Loading>
   ),
@@ -39,7 +39,7 @@ export default () => ({
     {
       path: 'general',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminSettingsGeneral />
         </Loading>
       ),
@@ -47,7 +47,7 @@ export default () => ({
     {
       path: 'customize',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminSettingsCustomize />
         </Loading>
       ),
@@ -55,7 +55,7 @@ export default () => ({
     {
       path: 'pages',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminSettingsPages />
         </Loading>
       ),
@@ -63,7 +63,7 @@ export default () => ({
     {
       path: 'policies',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminSettingsPolicies />
         </Loading>
       ),
@@ -71,7 +71,7 @@ export default () => ({
     {
       path: 'registration',
       element: (
-        <Loading admin>
+        <Loading>
           <AdminSettingsRegistration />
         </Loading>
       ),
@@ -82,7 +82,7 @@ export default () => ({
         {
           index: true,
           element: (
-            <Loading admin>
+            <Loading>
               <AdminAreasAll />
             </Loading>
           ),
@@ -90,7 +90,7 @@ export default () => ({
         {
           path: 'new',
           element: (
-            <Loading admin>
+            <Loading>
               <AdminAreasNew />
             </Loading>
           ),
@@ -98,7 +98,7 @@ export default () => ({
         {
           path: ':areaId',
           element: (
-            <Loading admin>
+            <Loading>
               <AdminAreasEdit />
             </Loading>
           ),
