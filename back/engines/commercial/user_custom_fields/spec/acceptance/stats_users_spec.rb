@@ -185,8 +185,7 @@ resource 'Stats - Users' do
 
       example_request 'Users by birthyear filtered by project' do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:series][:users].values.sum).to eq 1
+        expect(json_response_body[:series][:users].values.sum).to eq 1
       end
     end
   end
@@ -241,8 +240,7 @@ resource 'Stats - Users' do
 
     example_request 'Users by domicile' do
       expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response).to match({
+      expect(json_response_body).to match({
         areas: {
           @area1.id.to_sym => { title_multiloc: @area1.title_multiloc.symbolize_keys },
           @area2.id.to_sym => { title_multiloc: @area2.title_multiloc.symbolize_keys },
