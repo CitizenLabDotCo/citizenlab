@@ -453,8 +453,6 @@ describe('<AdminProjectEdition />', () => {
     );
     const routerProps = getRouterProps('continuousInformation', 'general');
 
-    // passing in mock data to replace the HoCs
-    // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(
       <AdminProjectsProjectIndex
         surveys_enabled={surveys_enabled}
