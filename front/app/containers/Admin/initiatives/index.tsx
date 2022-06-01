@@ -92,7 +92,10 @@ const InitiativesPage = memo<InjectedIntlProps & WithRouterProps>(
             title={messages.metaTitle}
             description={messages.metaDescription}
           />
-          <RouterOutlet />
+          <div id="e2e-initiatives-admin-container">
+            {' '}
+            <RouterOutlet />
+          </div>
         </TabbedResource>
       </>
     );

@@ -8,9 +8,6 @@ import { isProjectFolderModerator } from '../../../permissions/roles';
 // utils
 import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
-// hooks
-import { useParams } from 'react-router-dom';
-
 // services
 import { useProjectFolderModerators } from '../../../hooks';
 import { IUsers, IUserData, usersStream } from 'services/users';
@@ -33,6 +30,7 @@ import { List, Row } from 'components/admin/ResourceList';
 import Avatar from 'components/Avatar';
 import selectStyles from 'components/UI/MultipleSelect/styles';
 import { isAdmin } from 'services/permissions/roles';
+import { withRouter, WithRouterProps } from 'utils/withRouter';
 
 const Container = styled.div`
   width: 100%;
@@ -58,12 +56,11 @@ const UserSelectButton = styled(Button)`
   margin-left: 12px;
 `;
 
-const FolderPermissions = ({ intl: { formatMessage } }: InjectedIntlProps) => {
-  const { projectFolderId } = useParams();
+const FolderPermissions = ({
+  intl: { formatMessage },
+  params: { projectFolderId },
+}: InjectedIntlProps & WithRouterProps) => {
   const authUser = useAuthUser();
-
-  if (!projectFolderId) return null;
-
   const folderModerators = useProjectFolderModerators(projectFolderId);
 
   const [selectedUserOptions, setSelectedUserOptions] = useState<IOption[]>([]);
@@ -236,4 +233,4 @@ const FolderPermissions = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   );
 };
 
-export default injectIntl(FolderPermissions);
+export default withRouter(injectIntl(FolderPermissions));

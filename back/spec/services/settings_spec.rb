@@ -47,29 +47,30 @@ describe SettingsService do
   describe 'add_missing_settings' do
     let(:schema) do
       {
-      'properties' => {
-        'feature1' => {
-          'required-settings' => %w[setting1 setting2 setting4],
-          'properties' => {
-            'setting1' => {
-              'type' => 'string',
-              'default' => 'default_value_setting_1'
-            },
-            'setting2' => {
-              'type' => 'boolean',
-              'default' => true
-            },
-            'setting3' => {
-              'type' => 'string'
-            },
-            'setting4' => {
-              'type' => 'boolean',
-              'default' => false
+        'properties' => {
+          'feature1' => {
+            'required-settings' => %w[setting1 setting2 setting4],
+            'properties' => {
+              'setting1' => {
+                'type' => 'string',
+                'default' => 'default_value_setting_1'
+              },
+              'setting2' => {
+                'type' => 'boolean',
+                'default' => true
+              },
+              'setting3' => {
+                'type' => 'string'
+              },
+              'setting4' => {
+                'type' => 'boolean',
+                'default' => false
+              }
             }
           }
         }
       }
-    } end
+    end
 
     it 'adds required settings with a default' do
       settings = {
@@ -159,7 +160,8 @@ describe SettingsService do
           }
         }
       }
-    } end
+    }
+    end
 
     it 'leaves schema settings alone' do
       settings = {
@@ -182,17 +184,18 @@ describe SettingsService do
   describe 'remove_private_settings' do
     let(:schema) do
       {
-      'type' => 'object',
-      'properties' => {
-        'a' => {
-          'type' => 'object',
-          'properties' => {
-            'setting1' => { 'type' => 'boolean' },
-            'setting2' => { 'type' => 'string', 'private' => true }
+        'type' => 'object',
+        'properties' => {
+          'a' => {
+            'type' => 'object',
+            'properties' => {
+              'setting1' => { 'type' => 'boolean' },
+              'setting2' => { 'type' => 'string', 'private' => true }
+            }
           }
         }
       }
-    } end
+    end
 
     it 'leaves non-private schema settings alone' do
       settings = {

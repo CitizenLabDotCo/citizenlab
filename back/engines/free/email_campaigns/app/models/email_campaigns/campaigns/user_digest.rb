@@ -106,9 +106,9 @@ module EmailCampaigns
     end
 
     def notifications_counts
-      User.includes(:unread_notifications).map do |u|
+      User.includes(:unread_notifications).to_h do |u|
         [u.id, u.unread_notifications.size]
-      end.to_h
+      end
     end
 
     def top_ideas
@@ -154,7 +154,7 @@ module EmailCampaigns
         idea_images: idea.idea_images.map do |image|
           {
             ordering: image.ordering,
-            versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
           }
         end,
         top_comments: idea.comments
@@ -202,11 +202,11 @@ module EmailCampaigns
           images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
           header_bg: {
-            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           }
         }
       end
@@ -235,11 +235,11 @@ module EmailCampaigns
           images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end,
           header_bg: {
-            versions: initiative.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+            versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           }
         }
       end

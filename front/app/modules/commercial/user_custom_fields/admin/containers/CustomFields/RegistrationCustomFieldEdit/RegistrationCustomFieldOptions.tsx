@@ -34,8 +34,6 @@ const RegistrationCustomFieldOptions = memo(
     intl: { formatMessage },
     params: { userCustomFieldId },
   }: InjectedIntlProps & WithRouterProps) => {
-    if (isNilOrError(userCustomFieldId)) return null;
-
     const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
     const localize = useLocalize();
 
