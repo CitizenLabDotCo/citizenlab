@@ -1,5 +1,4 @@
 import React, { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
-
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
@@ -15,11 +14,7 @@ import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 import { GroupCreationModal } from 'containers/Admin/users';
 import { NormalFormValues } from 'containers/Admin/users/NormalGroupForm';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
-import {
-  IProjectData,
-  IUpdatedProjectProperties,
-  IProjectFormState,
-} from 'services/projects';
+import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
 import { mergeWith, castArray, clamp } from 'lodash-es';
@@ -72,7 +67,7 @@ import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
-import { ISubmitState } from 'components/admin/SubmitWrapper';
+import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -100,11 +95,6 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
   customFieldsSignupHelperTextMultiloc?: Multiloc | null;
   userConfirmationSetting?: AppConfigurationFeature;
 };
-
-export type TOnProjectAttributesDiffChangeFunction = (
-  projectAttributesDiff: IProjectFormState['projectAttributesDiff'],
-  submitState: ISubmitState
-) => void;
 
 export type OutletsPropertyMap = {
   'app.containers.Navbar.projectlist.item': {
@@ -458,7 +448,7 @@ type RecursivePartial<T> = {
 interface Routes {
   citizen: RouteConfiguration[];
   admin: RouteConfiguration[];
-  'admin.projects': RouteConfiguration[];
+  'admin.projects.project': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
@@ -581,8 +571,8 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
       ),
-      'admin.projects': parseModuleRoutes(
-        mergedRoutes?.['admin.projects'],
+      'admin.projects.project': parseModuleRoutes(
+        mergedRoutes?.['admin.projects.project'],
         RouteTypes.ADMIN
       ),
       'admin.project_templates': parseModuleRoutes(
