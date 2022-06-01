@@ -60,8 +60,8 @@ RSpec.describe NLP::Api do
       service.text_network_analysis_for_project('tenant-id', 'project-id', 'en')
 
       expect(HTTParty).to have_received(:post) do |_path, options|
-        authorization_header = options.dig(:headers, 'Authorization')
-        expect(authorization_header).to eq("Token #{authorization_token}")
+        authorization_header = options.dig(:headers, 'access_token')
+        expect(authorization_header).to eq("#{authorization_token}")
       end
     end
   end
@@ -92,7 +92,7 @@ RSpec.describe NLP::Api do
         expect(path).to eq('/v2/tenants/tenant-id/text_network_analysis')
 
         expected_headers = {
-          'Authorization' => 'Token authorization-token',
+          'access_token' => 'authorization-token',
           'Content-Type' => 'application/json'
         }
         expect(options[:headers]).to eq(expected_headers)
@@ -119,7 +119,7 @@ RSpec.describe NLP::Api do
 
       expect(HTTParty).to have_received(:post) do |path, options|
         expected_headers = {
-          'Authorization' => 'Token authorization-token',
+          'access_token' => 'authorization-token',
           'Content-Type' => 'application/json'
         }
         expect(options[:headers]).to eq(expected_headers)
