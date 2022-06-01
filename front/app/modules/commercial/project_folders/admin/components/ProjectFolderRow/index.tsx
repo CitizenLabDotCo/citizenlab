@@ -1,6 +1,6 @@
 import React, { memo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { adminProjectFoldersIndexPath } from '../../../utils/routeUtils';
+
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
@@ -162,7 +162,7 @@ const ProjectFolderRow = memo<Props>(({ publication }) => {
               className={`e2e-admin-edit-project ${
                 publication.attributes.publication_title_multiloc['en-GB'] || ''
               }`}
-              linkTo={adminProjectFoldersIndexPath(publication.publicationId)}
+              linkTo={`/admin/projects/folders/${publication.publicationId}`}
               buttonStyle="secondary"
               icon="edit"
               disabled={

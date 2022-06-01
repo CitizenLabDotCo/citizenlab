@@ -3,11 +3,6 @@ import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'utils/withRouter';
-import {
-  adminProjectFoldersIndexPath,
-  adminProjectFoldersSettingsPath,
-  adminProjectFoldersPermissionsPath,
-} from '../../utils/routeUtils';
 
 // Services
 import { isAdmin } from 'services/permissions/roles';
@@ -80,12 +75,12 @@ const AdminProjectFolderEdition = memo<
       tabs: [
         {
           label: formatMessage(messages.projectFolderProjectsTab),
-          url: adminProjectFoldersIndexPath(projectFolderId),
-          name: 'projects',
+          url: `/admin/projects/folders/${projectFolderId}`,
+          name: 'index',
         },
         {
           label: formatMessage(messages.projectFolderSettingsTab),
-          url: adminProjectFoldersSettingsPath(projectFolderId),
+          url: `/admin/projects/folders/${projectFolderId}/settings`,
           name: 'settings',
         },
       ],
@@ -96,7 +91,7 @@ const AdminProjectFolderEdition = memo<
         ...tabbedProps,
         tabs: tabbedProps.tabs.concat({
           label: formatMessage(messages.projectFolderPermissionsTab),
-          url: adminProjectFoldersPermissionsPath(projectFolderId),
+          url: `/admin/projects/folders/${projectFolderId}/permissions`,
           name: 'permissions',
         }),
       };
