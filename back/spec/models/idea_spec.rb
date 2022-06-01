@@ -35,6 +35,7 @@ RSpec.describe Idea, type: :model do
     let(:form) { create :custom_form, project: project }
     let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
     let!(:optional_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
+    let!(:disabled_field) { create :custom_field, :for_custom_form, resource: form, enabled: false, required: false, input_type: 'text' }
 
     context 'when creating ideas' do
       let(:idea) { build :idea, project: project }
@@ -70,6 +71,11 @@ RSpec.describe Idea, type: :model do
           idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
           expect(idea.valid?(:create)).to be true
         end
+
+        it 'can persist an idea with disabled field values' do
+          idea.custom_field_values = { required_field.key => 15, disabled_field.key => 'my value' }
+          expect(idea.valid?(:create)).to be true
+        end
       end
 
       context 'on publication' do
@@ -101,6 +107,11 @@ RSpec.describe Idea, type: :model do
 
         it 'cannot persist an idea with non-existing field options' do
           idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
+          expect(idea.valid?(:publication)).to be false
+        end
+
+        it 'cannot persist an idea with disabled field values' do
+          idea.custom_field_values = { required_field.key => 15, disabled_field.key => 'my value' }
           expect(idea.valid?(:publication)).to be false
         end
       end
@@ -157,6 +168,11 @@ RSpec.describe Idea, type: :model do
             idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
             expect(idea.valid?(validation_context)).to be false
           end
+
+          it 'cannot persist an idea with disabled field values' do
+            idea.custom_field_values = { required_field.key => 15, disabled_field.key => 'my value' }
+            expect(idea.valid?(validation_context)).to be false
+          end
         end
       end
 
@@ -177,6 +193,12 @@ RSpec.describe Idea, type: :model do
         idea.title_multiloc = { 'en' => 'Updated idea title' }
         idea.reload
         expect(idea.save(context: :publication)).to be false
+      end
+
+      it 'can persist an idea without disabled required field values' do
+        disabled_field.update! required: true
+        idea.custom_field_values = { required_field.key => 39 }
+        expect(idea.save).to be true
       end
     end
   end
