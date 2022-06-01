@@ -24,7 +24,7 @@ module UserCustomFields
         end
 
         def users_by_custom_field_as_xlsx
-          send_data(users_by_custom_field_xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
+          send_data(users_by_custom_field_xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
         rescue NotSupportedFieldTypeError
           head :not_implemented
         end
@@ -50,35 +50,13 @@ module UserCustomFields
           )
 
           xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
-          send_data(xlsx, type: XLSX_MIME_TYPE, filename: filename(custom_field))
+          send_data(xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
         end
 
         private
 
-        def users_by_custom_field_xlsx
-          xlsx_columns =
-            if (options = custom_field.custom_field_options).present?
-              {
-                option: localized_option_titles(options) << '_blank',
-                option_id: options.pluck(:key) << '_blank'
-              }.tap do |cols|
-                cols[:users] = user_counts.fetch_values(*cols[:option_id]) { 0 }
-                if expected_user_counts.present?
-                  cols[:expected_users] = expected_user_counts.fetch_values(*cols[:option_id]) { 0 }
-                end
-              end
-            else
-              {
-                option: user_counts.keys,
-                users: user_counts.values
-              }
-            end
-
-          XlsxService.new.xlsx_from_columns(xlsx_columns)
-        end
-
-        def localized_option_titles(options)
-          options.map { |o| MultilocService.new.t(o.title_multiloc) }
+        def do_authorize
+          authorize(:'user_custom_fields/stat_user')
         end
 
         def custom_field
@@ -143,10 +121,6 @@ module UserCustomFields
           end
         end
 
-        def do_authorize
-          authorize(:'user_custom_fields/stat_user')
-        end
-
         def find_users
           users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
                     .where(registration_completed_at: @start_at..@end_at)
@@ -177,7 +151,33 @@ module UserCustomFields
             end
         end
 
-        def filename(custom_field)
+        def users_by_custom_field_xlsx
+          xlsx_columns =
+            if (options = custom_field.custom_field_options).present?
+              {
+                option: localized_option_titles(options) << '_blank',
+                option_id: options.pluck(:key) << '_blank'
+              }.tap do |cols|
+                cols[:users] = user_counts.fetch_values(*cols[:option_id]) { 0 }
+                if expected_user_counts.present?
+                  cols[:expected_users] = expected_user_counts.fetch_values(*cols[:option_id]) { 0 }
+                end
+              end
+            else
+              {
+                option: user_counts.keys,
+                users: user_counts.values
+              }
+            end
+
+          XlsxService.new.xlsx_from_columns(xlsx_columns)
+        end
+
+        def localized_option_titles(options)
+          options.map { |o| MultilocService.new.t(o.title_multiloc) }
+        end
+
+        def xlsx_export_filename(custom_field)
           "users_by_#{custom_field.key}.xlsx"
         end
 
