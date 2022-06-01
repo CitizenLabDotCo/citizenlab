@@ -1,14 +1,18 @@
-import React, { MouseEvent, KeyboardEvent, FunctionComponent } from 'react';
+import React, {
+  MouseEvent,
+  KeyboardEvent,
+  FunctionComponent,
+  ReactNode,
+  ReactElement,
+} from 'react';
+
 import { ILeafletMapConfig } from 'components/UI/LeafletMap/useLeaflet';
 import {
   TSignUpStepConfigurationObject,
   TSignUpStep,
 } from 'components/SignUpIn/SignUp';
 
-import {
-  LoadableLoadingAdmin,
-  LoadableLoadingCitizen,
-} from 'components/UI/LoadableLoading';
+import PageLoading from 'components/UI/PageLoading';
 import { ISignUpInMetaData, TSignUpInFlow } from 'components/SignUpIn';
 
 import { GroupCreationModal } from 'containers/Admin/users';
@@ -132,7 +136,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.contentBuilderLayout': {
     onMount: (isVisible: boolean) => void;
-    childrenToRender: React.ReactNode;
+    childrenToRender: ReactNode;
   };
   'app.containers.Admin.projects.edit.description.contentBuilder': {
     onMount: () => void;
@@ -427,7 +431,7 @@ export type OutletId = keyof Outlets;
 export type RouteConfiguration = {
   path?: string;
   name?: string;
-  element?: React.ReactElement;
+  element?: ReactElement;
   type?: string;
   index?: boolean;
   children?: RouteConfiguration[];
@@ -487,19 +491,6 @@ export const RouteTypes = {
   ADMIN: 'admin',
 };
 
-const LoadingComponent = ({ type, children }) => {
-  if (type === RouteTypes.CITIZEN) {
-    return (
-      <React.Suspense fallback={LoadableLoadingCitizen}>
-        {children}
-      </React.Suspense>
-    );
-  }
-  return (
-    <React.Suspense fallback={LoadableLoadingAdmin}>{children}</React.Suspense>
-  );
-};
-
 const convertConfigurationToRoute = ({
   path,
   element,
@@ -508,7 +499,7 @@ const convertConfigurationToRoute = ({
   children,
 }: RouteConfiguration) => ({
   path,
-  element: <LoadingComponent type={type}>{element}</LoadingComponent>,
+  element: <PageLoading>{element}</PageLoading>,
   indexRoute:
     indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
   children:

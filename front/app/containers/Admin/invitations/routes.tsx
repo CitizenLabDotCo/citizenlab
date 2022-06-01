@@ -1,32 +1,32 @@
-import React from 'react';
-import { LoadingComponent } from 'routes';
+import React, { lazy } from 'react';
+import PageLoading from 'components/UI/PageLoading';
 
-const AdminInvitationsContainerComponent = React.lazy(() => import('.'));
-const AdminInvitationsInviteComponent = React.lazy(() => import('./invite'));
-const AdminInvitationsAllComponent = React.lazy(() => import('./all'));
+const AdminInvitationsContainer = lazy(() => import('.'));
+const AdminInvitationsInvite = lazy(() => import('./invite'));
+const AdminInvitationsAll = lazy(() => import('./all'));
 
 export default () => ({
   path: 'invitations',
   element: (
-    <LoadingComponent>
-      <AdminInvitationsContainerComponent />
-    </LoadingComponent>
+    <PageLoading>
+      <AdminInvitationsContainer />
+    </PageLoading>
   ),
   children: [
     {
       index: true,
       element: (
-        <LoadingComponent>
-          <AdminInvitationsInviteComponent />
-        </LoadingComponent>
+        <PageLoading>
+          <AdminInvitationsInvite />
+        </PageLoading>
       ),
     },
     {
       path: 'all',
       element: (
-        <LoadingComponent>
-          <AdminInvitationsAllComponent />
-        </LoadingComponent>
+        <PageLoading>
+          <AdminInvitationsAll />
+        </PageLoading>
       ),
     },
   ],
