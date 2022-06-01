@@ -56,18 +56,36 @@ resource 'Stats - Users' do
 
     let(:group) { @group.id }
 
-    example_request 'Users by gender' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response).to include(
-        series: {
-          users: {
-            female: 2,
-            unspecified: 1,
-            _blank: 0
+    context "when 'gender' custom field has no reference distribution" do
+      example_request 'Users by gender' do
+        expect(response_status).to eq 200
+        expect(json_response_body).to include(
+          series: {
+            users: { female: 2, unspecified: 1, _blank: 0 },
+            expected_users: nil
           }
-        }
-      )
+        )
+      end
+    end
+
+    context "when 'gender' custom field has a reference distribution" do
+      before do
+        create(:ref_distribution, custom_field: CustomField.find_by(key: 'gender'))
+      end
+
+      example_request 'Users by gender with expected user counts' do
+        expect(response_status).to eq 200
+        expect(json_response_body).to include(
+          series: {
+            users: { female: 2, unspecified: 1, _blank: 0 },
+            expected_users: {
+              male: kind_of(Numeric),
+              female: kind_of(Numeric),
+              unspecified: kind_of(Numeric)
+            }
+          }
+        )
+      end
     end
   end
 
@@ -110,32 +128,28 @@ resource 'Stats - Users' do
     parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
     describe 'filtered by group' do
-    before do
-      travel_to start_at + 16.days do
-        create_list(:user, 2, birthyear: 1980)
-        create(:user, birthyear: 1976)
-        @group = create(:group)
-        User.all.each { |u| create(:membership, user: u, group: @group) }
-        create(:user, birthyear: 1980)
+      before do
+        travel_to start_at + 16.days do
+          create_list(:user, 2, birthyear: 1980)
+          create(:user, birthyear: 1976)
+          @group = create(:group)
+          User.all.each { |u| create(:membership, user: u, group: @group) }
+          create(:user, birthyear: 1980)
+        end
+      end
+
+      let(:group) { @group.id }
+
+      example_request 'Users by birthyear' do
+        expect(response_status).to eq 200
+        expect(json_response_body).to match({
+          series: {
+            users: { '1980': 2, '1976': 1, _blank: 0 },
+            expected_users: nil
+          }
+        })
       end
     end
-
-    let(:group) { @group.id }
-
-    example_request 'Users by birthyear' do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response).to match({
-        series: {
-          users: {
-            '1980': 2,
-            '1976': 1,
-            _blank: 0
-          }
-        }
-      })
-    end
-  end
 
     describe 'filtered by project' do
       before do
@@ -161,7 +175,7 @@ resource 'Stats - Users' do
         expect(json_response[:series][:users].values.sum).to eq 1
       end
     end
-end
+  end
 
   get 'web_api/v1/stats/users_by_birthyear_as_xlsx' do
     time_boundary_parameters self
@@ -285,18 +299,15 @@ end
 
     example_request 'Users by education' do
       expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response).to include(
+      expect(json_response_body).to include(
         series: {
-          users: {
-            '3': 2,
-            '5': 1,
-            _blank: 0
-          }
+          users: { '3': 2, '5': 1, _blank: 0 },
+          expected_users: nil
         }
       )
     end
   end
+
   get 'web_api/v1/stats/users_by_education_as_xlsx' do
     time_boundary_parameters self
     group_filter_parameter self
@@ -367,8 +378,7 @@ end
 
       example_request 'Users by custom field (select)' do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response).to match({
+        expect(json_response_body).to match({
           options: {
             @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
             @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
@@ -379,7 +389,8 @@ end
               @option1.key.to_sym => 1,
               @option2.key.to_sym => 1,
               _blank: 1
-            }
+            },
+            expected_users: nil
           }
         })
       end
@@ -411,8 +422,7 @@ end
 
       example_request 'Users by custom field (multiselect)' do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response).to match({
+        expect(json_response_body).to match({
           options: {
             @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
             @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
@@ -423,7 +433,8 @@ end
               @option1.key.to_sym => 2,
               @option2.key.to_sym => 1,
               _blank: 1
-            }
+            },
+            expected_users: nil
           }
         })
       end
@@ -453,8 +464,7 @@ end
 
       example_request 'Users by custom field (checkbox)' do
         expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response).to match({
+        expect(json_response_body).to match({
           series: {
             users: {
               # rubocop:disable Lint/BooleanSymbol
@@ -462,7 +472,8 @@ end
               false: 1,
               # rubocop:enable Lint/BooleanSymbol
               _blank: 1
-            }
+            },
+            expected_users: nil
           }
         })
       end
