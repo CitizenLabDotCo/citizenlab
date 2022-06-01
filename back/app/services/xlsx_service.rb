@@ -109,12 +109,6 @@ class XlsxService
   end
 
   def generate_field_stats_xlsx(serie, key_name, value_name)
-
-    # create a list of lambda to extract the value at a given index 'i' with i from 0 to n
-    lambdas = [0..n].map do |index|
-
-    end
-
     columns = [
       { header: key_name,   f: ->(item) { item[0] } },
       { header: value_name, f: ->(item) { item[1] } }
