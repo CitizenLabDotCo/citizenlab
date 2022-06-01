@@ -458,13 +458,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-        <SlugInput
-          slug={slug}
-          resource="folder"
-          apiErrors={errors}
-          showSlugErrorMessage={showSlugErrorMessage}
-          handleSlugOnChange={handleSlugOnChange}
-        />
+        <SectionField>
+          <SlugInput
+            slug={slug}
+            resource="folder"
+            apiErrors={errors}
+            showSlugErrorMessage={showSlugErrorMessage}
+            handleSlugOnChange={handleSlugOnChange}
+          />
+        </SectionField>
         <SectionField>
           <TextAreaMultilocWithLocaleSwitcher
             valueMultiloc={shortDescriptionMultiloc}
