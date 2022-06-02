@@ -10,7 +10,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     publications = publication_filterer.filter(publications, params)
 
     @publications = publications.includes(:publication, :children)
-                                .order(:ordering)
+      .order(:ordering)
     @publications = paginate @publications
 
     render json: linked_json(

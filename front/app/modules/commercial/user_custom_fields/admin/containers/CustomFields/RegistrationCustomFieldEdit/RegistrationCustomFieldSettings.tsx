@@ -3,7 +3,7 @@ import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 import {
   updateCustomFieldForUsers,

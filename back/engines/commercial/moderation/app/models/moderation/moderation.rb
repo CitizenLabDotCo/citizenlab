@@ -27,14 +27,13 @@ module Moderation
     has_one :moderation_status, foreign_key: :moderatable_id
 
     pg_search_scope :search_by_all,
-        against: %i[content_title_multiloc content_body_multiloc],
-        using: { tsearch: { prefix: true } }
+                    against: %i[content_title_multiloc content_body_multiloc],
+                    using: { tsearch: { prefix: true } }
 
     scope :with_moderation_status, (proc do |status|
       moderations = joins("LEFT JOIN moderation_moderation_statuses \
           ON moderation_moderation_statuses.moderatable_id = moderation_moderations.id AND \
-             moderation_moderation_statuses.moderatable_type = moderation_moderations.moderatable_type"
-                         )
+             moderation_moderation_statuses.moderatable_type = moderation_moderations.moderatable_type")
       case status
       when 'read'
         moderations.where("moderation_moderation_statuses.status = 'read'")
@@ -50,9 +49,9 @@ module Moderation
     end
 
     def source_record
-      if %w[Idea Initiative Comment].include? moderatable_type
-        moderatable_type.constantize.find(id)
-      end
+      return unless %w[Idea Initiative Comment].include? moderatable_type
+
+      moderatable_type.constantize.find(id)
     end
 
     def belongs_to(_preloaded = {})

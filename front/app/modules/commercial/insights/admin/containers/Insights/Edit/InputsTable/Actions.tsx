@@ -100,7 +100,7 @@ const DropdownFooterButton = styled(Button)`
 
 // Typings
 import { InjectedIntlProps } from 'react-intl';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 interface Props {
   className?: string;

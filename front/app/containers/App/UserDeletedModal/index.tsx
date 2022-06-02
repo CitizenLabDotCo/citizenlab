@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -11,6 +11,7 @@ import FormattedAnchor from 'components/FormattedAnchor';
 
 // images
 import illustration from './illustration.png';
+import Modal from 'components/UI/Modal';
 
 const Container = styled.div`
   width: 100%;
@@ -63,33 +64,41 @@ const Subtitle = styled.h3`
   }
 `;
 
-interface InputProps {
+interface Props {
   userSuccessfullyDeleted: boolean;
+  modalOpened: boolean;
+  closeUserDeletedModal: () => void;
 }
 
-interface DataProps {}
+const UserDeletedModal = ({
+  userSuccessfullyDeleted,
+  modalOpened,
+  closeUserDeletedModal,
+}: Props) => {
+  return (
+    <Modal opened={modalOpened} close={closeUserDeletedModal}>
+      {userSuccessfullyDeleted ? (
+        <Container>
+          <img src={illustration} alt="illu" />
+          <Title className="e2e-user-deleted-success-modal-content">
+            <FormattedMessage {...messages.userDeletedTitle} />
+          </Title>
+          <Subtitle>
+            <FormattedAnchor
+              mainMessage={messages.userDeletedSubtitle}
+              mainMessageLinkKey="contactLink"
+              linkTextMessage={messages.userDeletedSubtitleLinkText}
+              urlMessage={messages.userDeletedSubtitleLinkUrl}
+              urlMessageValues={{ url: window.location.href }}
+              target="_blank"
+            />
+          </Subtitle>
+        </Container>
+      ) : (
+        <FormattedMessage {...messages.userDeletionFailed} />
+      )}
+    </Modal>
+  );
+};
 
-export interface Props extends InputProps, DataProps {}
-
-export default memo(({ userSuccessfullyDeleted }: Props) =>
-  userSuccessfullyDeleted ? (
-    <Container>
-      <img src={illustration} alt="illu" />
-      <Title className="e2e-user-deleted-success-modal-content">
-        <FormattedMessage {...messages.userDeletedTitle} />
-      </Title>
-      <Subtitle>
-        <FormattedAnchor
-          mainMessage={messages.userDeletedSubtitle}
-          mainMessageLinkKey="contactLink"
-          linkTextMessage={messages.userDeletedSubtitleLinkText}
-          urlMessage={messages.userDeletedSubtitleLinkUrl}
-          urlMessageValues={{ url: window.location.href }}
-          target="_blank"
-        />
-      </Subtitle>
-    </Container>
-  ) : (
-    <FormattedMessage {...messages.userDeletionFailed} />
-  )
-);
+export default UserDeletedModal;

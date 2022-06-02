@@ -1,5 +1,5 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { globalState } from 'services/globalState';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 

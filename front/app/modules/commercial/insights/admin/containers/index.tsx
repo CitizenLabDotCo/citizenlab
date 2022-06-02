@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components

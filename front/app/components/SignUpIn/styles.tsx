@@ -97,7 +97,6 @@ export const StyledHeaderTitle = styled((props) => <HeaderTitle {...props} />)<{
 
 export const StyledModalContentContainer = styled(ModalContentContainer)<{
   inModal: boolean;
-  windowHeight: string;
   headerHeight: string;
 }>`
   ${(props) =>
@@ -108,8 +107,7 @@ export const StyledModalContentContainer = styled(ModalContentContainer)<{
       max-height: calc(85vh - ${props.headerHeight});
 
       ${media.smallerThanMinTablet`
-        max-height: ${(props) =>
-          `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
+        max-height: ${(props) => `calc(85vh - 30px - ${props.headerHeight})`};
       `}
     `}
 

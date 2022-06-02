@@ -5,7 +5,7 @@ import ContentBuilderLayout from './';
 let mockLocationData = { pathname: 'admin/content-builder' };
 let mockFeatureFlagData = true;
 
-jest.mock('utils/withRouter', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

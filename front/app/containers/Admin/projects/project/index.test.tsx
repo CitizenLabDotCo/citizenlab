@@ -15,13 +15,13 @@ import { getProject } from 'services/__mocks__/projects';
 import { shallowWithIntl } from 'utils/testUtils/withIntl';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
-import { WithRouterProps } from 'utils/withRouter';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 
 // what needs to be mocked by jest to render the component
 jest.mock('utils/cl-intl');
 jest.mock('components/Outlet', () => 'outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-jest.mock('utils/withRouter');
+jest.mock('utils/cl-router/withRouter');
 jest.mock('utils/cl-router/Link');
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');

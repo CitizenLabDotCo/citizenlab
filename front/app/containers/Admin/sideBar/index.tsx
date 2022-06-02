@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // router
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';

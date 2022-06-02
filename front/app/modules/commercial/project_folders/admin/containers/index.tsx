@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Services
 import { isAdmin } from 'services/permissions/roles';
@@ -75,8 +75,8 @@ const AdminProjectFolderEdition = memo<
       tabs: [
         {
           label: formatMessage(messages.projectFolderProjectsTab),
-          url: `/admin/projects/folders/${projectFolderId}`,
-          name: 'index',
+          url: `/admin/projects/folders/${projectFolderId}/projects`,
+          name: 'projects',
         },
         {
           label: formatMessage(messages.projectFolderSettingsTab),

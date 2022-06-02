@@ -19,7 +19,7 @@ resource 'Poll Questions' do
     before do
       @project = create(:continuous_poll_project)
       @questions = create_list(:poll_question, 3, :with_options, participation_context: @project)
-      other_question = create(:poll_question)
+      create(:poll_question)
     end
 
     let(:participation_context_id) { @project.id }
@@ -28,7 +28,7 @@ resource 'Poll Questions' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response[:data].map { |d| d[:relationships][:options][:data].size }).to eq [3, 3, 3]
-      expect(json_response[:included].pluck(:id)).to match_array @questions.flat_map { |q| q.options.map(&:id) }
+      expect(json_response[:included].pluck(:id)).to match_array(@questions.flat_map { |q| q.options.map(&:id) })
     end
   end
 
@@ -41,7 +41,7 @@ resource 'Poll Questions' do
     before do
       @phase = create(:poll_phase)
       @questions = create_list(:poll_question, 3, :with_options, participation_context: @phase)
-      other_question = create(:poll_question)
+      create(:poll_question)
     end
 
     let(:participation_context_id) { @phase.id }
@@ -50,7 +50,7 @@ resource 'Poll Questions' do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
       expect(json_response[:data].map { |d| d[:relationships][:options][:data].size }).to eq [3, 3, 3]
-      expect(json_response[:included].pluck(:id)).to match_array @questions.flat_map { |q| q.options.map(&:id) }
+      expect(json_response[:included].pluck(:id)).to match_array(@questions.flat_map { |q| q.options.map(&:id) })
     end
   end
 

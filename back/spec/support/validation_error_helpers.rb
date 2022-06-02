@@ -28,8 +28,8 @@ class ValidationErrorHelper
 
   def model_error_codes(model)
     attrs_errs = model.validators.flat_map do |validator|
-        validator.attributes.map { |a| [a, ERROR_DETAILS[validator.class]] }
-      end.select(&:last)
+      validator.attributes.map { |a| [a, ERROR_DETAILS[validator.class]] }
+    end.select(&:last)
     to_h_appended(attrs_errs)
       .transform_values { |error_codes| error_codes&.flatten&.compact&.uniq }
   end

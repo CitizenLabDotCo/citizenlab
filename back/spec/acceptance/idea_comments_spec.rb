@@ -232,7 +232,8 @@ resource 'Comments' do
         },
         parent: {
           data: { id: parent.id, type: 'comment' }
-        })
+        }
+      )
       expect(json_response.dig(:included, 0, :attributes)).to include(
         first_name: comment.author.first_name,
         locale: comment.author.locale

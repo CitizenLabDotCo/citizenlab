@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import clHistory from 'utils/cl-router/history';

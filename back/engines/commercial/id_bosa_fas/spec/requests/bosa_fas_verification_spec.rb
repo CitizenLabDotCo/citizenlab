@@ -29,14 +29,18 @@ describe 'bosa_fas verification', type: :request do
          'expires_in' => 3599,
          'scope' => 'openid profile egovnrn' },
       'extra' =>
-        { 'raw_info' =>
-          { 'prefLanguage' => 'en',
-           'mail' => 'hypoliet.verhipperd@gmail.com',
-           'surname' => 'Verhipperd',
-           'givenName' => 'Hypoliet',
-           'iss' => 'http://idp.iamfas.int.belgium.be:80/fas/oauth2',
-           'egovNRN' => '93051822361',
-           'fedid' => 'a8fb031d4ef30757ea70912b2876a4c2878309e0' } } })
+        {
+          'raw_info' => {
+            'prefLanguage' => 'en',
+            'mail' => 'hypoliet.verhipperd@gmail.com',
+            'surname' => 'Verhipperd',
+            'givenName' => 'Hypoliet',
+            'iss' => 'http://idp.iamfas.int.belgium.be:80/fas/oauth2',
+            'egovNRN' => '93051822361',
+            'fedid' => 'a8fb031d4ef30757ea70912b2876a4c2878309e0'
+          }
+        }
+    })
 
     configuration = AppConfiguration.instance
     settings = configuration.settings
@@ -87,7 +91,8 @@ describe 'bosa_fas verification', type: :request do
   end
 
   it 'fails when the RRN has already been used' do
-    create(:verification,
+    create(
+      :verification,
       method_name: 'bosa_fas',
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '93051822361', 'bosa_fas')
     )

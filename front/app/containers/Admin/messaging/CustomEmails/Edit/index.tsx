@@ -12,7 +12,7 @@ import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';

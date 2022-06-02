@@ -1,41 +1,41 @@
-import React from 'react';
-import { LoadingComponent } from 'routes';
+import React, { lazy } from 'react';
+import PageLoading from 'components/UI/PageLoading';
 
-const AdminPagesIndexComponent = React.lazy(() => import('.'));
-const AdminPagesAllComponent = React.lazy(() => import('./All'));
-const AdminPagesNewComponent = React.lazy(() => import('./NewPageForm'));
-const AdminPagesEditComponent = React.lazy(() => import('./EditPageForm'));
+const AdminPagesIndex = lazy(() => import('.'));
+const AdminPagesAll = lazy(() => import('./All'));
+const AdminPagesNew = lazy(() => import('./NewPageForm'));
+const AdminPagesEdit = lazy(() => import('./EditPageForm'));
 
 export default () => ({
   path: 'pages',
   element: (
-    <LoadingComponent>
-      <AdminPagesIndexComponent />
-    </LoadingComponent>
+    <PageLoading>
+      <AdminPagesIndex />
+    </PageLoading>
   ),
   children: [
     {
       index: true,
       element: (
-        <LoadingComponent>
-          <AdminPagesAllComponent />
-        </LoadingComponent>
+        <PageLoading>
+          <AdminPagesAll />
+        </PageLoading>
       ),
     },
     {
       path: 'new',
       element: (
-        <LoadingComponent>
-          <AdminPagesNewComponent />
-        </LoadingComponent>
+        <PageLoading>
+          <AdminPagesNew />
+        </PageLoading>
       ),
     },
     {
       path: ':pageId',
       element: (
-        <LoadingComponent>
-          <AdminPagesEditComponent />
-        </LoadingComponent>
+        <PageLoading>
+          <AdminPagesEdit />
+        </PageLoading>
       ),
     },
   ],

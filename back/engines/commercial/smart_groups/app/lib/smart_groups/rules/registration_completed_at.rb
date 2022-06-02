@@ -77,7 +77,7 @@ module SmartGroups::Rules
       when 'is_exactly'
         users_scope.where("registration_completed_at::date >= (?)::date AND registration_completed_at::date < ((?)::date + '1 day'::interval)", value, value)
       when 'is_empty'
-        users_scope.where('registration_completed_at IS NULL')
+        users_scope.where(registration_completed_at: nil)
       when 'not_is_empty'
         users_scope.where.not(registration_completed_at: nil)
       else
@@ -96,18 +96,18 @@ module SmartGroups::Rules
     end
 
     def description_value(locale)
-      if value.present?
-        locale ||= I18n.locale
-        I18n.with_locale(locale) do
-          I18n.l Date.parse(value), format: :default
-        end
+      return if value.blank?
+
+      locale ||= I18n.locale
+      I18n.with_locale(locale) do
+        I18n.l Date.parse(value), format: :default
       end
     end
 
     private
 
     def needs_value?
-      !VALUELESS_PREDICATES.include?(predicate)
+      VALUELESS_PREDICATES.exclude?(predicate)
     end
   end
 end

@@ -1,4 +1,5 @@
 import React, { lazy } from 'react';
+import moduleConfiguration from 'modules';
 
 // routes
 import createDashboardRoutes from './dashboard/routes';
@@ -11,16 +12,12 @@ import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
 
-import moduleConfiguration from 'modules';
-
 // components
-import { LoadingComponent } from 'routes';
+import PageLoading from 'components/UI/PageLoading';
 import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
-const AdminWorkshopsComponent = lazy(
-  () => import('containers/Admin/workshops')
-);
-const AdminFaviconComponent = lazy(() => import('containers/Admin/favicon'));
+const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
+const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 
 // hooks
 import { usePermission } from 'services/permissions';
@@ -96,9 +93,9 @@ const IndexElement = () => {
   if (redirectURL) return <Navigate to={redirectURL} />;
 
   return (
-    <LoadingComponent>
+    <PageLoading>
       <AdminContainer />
-    </LoadingComponent>
+    </PageLoading>
   );
 };
 
@@ -123,17 +120,17 @@ const createAdminRoutes = () => {
       {
         path: 'workshops',
         element: (
-          <LoadingComponent>
-            <AdminWorkshopsComponent />
-          </LoadingComponent>
+          <PageLoading>
+            <AdminWorkshops />
+          </PageLoading>
         ),
       },
       {
         path: 'favicon',
         element: (
-          <LoadingComponent>
-            <AdminFaviconComponent />
-          </LoadingComponent>
+          <PageLoading>
+            <AdminFavicon />
+          </PageLoading>
         ),
       },
       ...moduleConfiguration.routes.admin,

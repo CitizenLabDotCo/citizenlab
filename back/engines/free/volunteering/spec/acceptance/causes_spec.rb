@@ -19,7 +19,7 @@ resource 'Volunteering Causes' do
     before do
       @project = create(:continuous_volunteering_project)
       @causes = create_list(:cause, 3, participation_context: @project)
-      other_cause = create(:cause)
+      create(:cause)
     end
 
     let(:participation_context_id) { @project.id }
@@ -39,7 +39,7 @@ resource 'Volunteering Causes' do
     before do
       @phase = create(:volunteering_phase)
       @causes = create_list(:cause, 3, participation_context: @phase)
-      other_cause = create(:cause)
+      create(:cause)
     end
 
     let(:participation_context_id) { @phase.id }

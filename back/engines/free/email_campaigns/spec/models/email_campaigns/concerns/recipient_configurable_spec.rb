@@ -14,17 +14,19 @@ RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
       g1 = create(:group)
       g2 = create(:group)
 
-      u1 = create(:user, manual_groups: [g1])
-      u2 = create(:user, email: 'u2@test.com')
-      u3 = create(:user, manual_groups: [g1], email: 'u3@test.com')
+      users = [
+        create(:user, manual_groups: [g1]),
+        create(:user, email: 'u2@test.com'),
+        create(:user, manual_groups: [g1], email: 'u3@test.com')
+      ]
 
       campaign.update!(groups: [g1, g2])
 
-      expect(campaign.apply_recipient_filters.all).to match_array [u1, u3]
+      expect(campaign.apply_recipient_filters.all).to match_array [users[0], users[2]]
     end
 
     it 'returns all users when there are no associated groups' do
-      users = create_list(:user, 3)
+      create_list(:user, 3)
       campaign.update!(groups: [])
       expect(campaign.apply_recipient_filters.count).to eq User.all.count
     end
@@ -37,7 +39,7 @@ RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
 
     it 'only returns active users, even when the inactive are in the associated group' do
       g1 = create(:group)
-      u1 = create(:invited_user, manual_groups: [g1])
+      create(:invited_user, manual_groups: [g1])
       campaign.update!(groups: [g1])
       expect(campaign.apply_recipient_filters).to be_empty
     end
