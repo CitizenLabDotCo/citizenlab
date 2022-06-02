@@ -41,7 +41,7 @@ You can also contribute [translations](https://developers.citizenlab.co/guide-co
 
 ## License
 
-Source code in this repository is covered by
+Source code in this repository is covered by:
 
 (i) a dual license under the open-source "GNU Affero General Public License v3" and the commercial "CitizenLab Commercial License v1" or
 
