@@ -21,7 +21,6 @@ import { WithRouterProps } from 'utils/cl-router/withRouter';
 jest.mock('utils/cl-intl');
 jest.mock('components/Outlet', () => 'outlet');
 jest.mock('modules', () => ({ streamsToReset: [] }));
-jest.mock('utils/cl-router/withRouter');
 jest.mock('utils/cl-router/Link');
 jest.mock('hooks/useLocale');
 jest.mock('services/locale');
