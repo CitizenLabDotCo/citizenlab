@@ -49,6 +49,10 @@ FALLBACK_LOCALES = %i[
   sr
 ].freeze
 
+# We don't want the rest of app to rely on the fallback locales, but promote the main locales (`CL2_SUPPORTED_LOCALES`)
+# instead, so let's make the fallbacks private to be sure.
+private_constant :FALLBACK_LOCALES
+
 I18n.available_locales = CL2_SUPPORTED_LOCALES + FALLBACK_LOCALES
 I18n.default_locale = :en
 
