@@ -52,10 +52,11 @@ module JsonFormsIdeasOverrides
   end
 
   def custom_form_to_json_schema(fields, locale = 'en')
+    built_in_fields = fields.select(&:built_in?)
     {
       type: 'object',
       additionalProperties: false,
-      properties: fields.select(&:built_in?).inject({}) do |memo, built_in_field|
+      properties: built_in_fields.inject({}) do |memo, built_in_field|
         override_method = "#{built_in_field.resource_type.underscore}_#{built_in_field.code}_to_json_schema_field"
         memo[built_in_field.key] =
           if built_in_field.code && respond_to?(override_method, true)
@@ -64,10 +65,11 @@ module JsonFormsIdeasOverrides
             send("#{built_in_field.input_type}_to_json_schema_field", built_in_field, locale)
           end
         memo.tap do |properties|
-          properties['custom_field_values'] = {
+          extra_fields = fields.reject(&:built_in?)
+          custom_fields_schema = {
             type: 'object',
             additionalProperties: false,
-            properties: fields.reject(&:built_in?).each_with_object({}) do |field, accu|
+            properties: extra_fields.each_with_object({}) do |field, accu|
               override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
               accu[field.key] =
                 if field.code && respond_to?(override_method, true)
@@ -77,11 +79,14 @@ module JsonFormsIdeasOverrides
                 end
             end
           }
+          required = extra_fields.select(&:enabled).select(&:required).map(&:key)
+          custom_fields_schema[:required] = required if required.any?
+          properties['custom_field_values'] = custom_fields_schema
         end
       end
     }.tap do |output|
-      required = fields.select(&:enabled).select(&:required).map(&:key)
-      output[:required] = required unless required.empty?
+      required = built_in_fields.select(&:enabled).select(&:required).map(&:key)
+      output[:required] = required if required.any?
     end
   end
 
