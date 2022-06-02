@@ -36,6 +36,7 @@ const StyledRightColumn = styled(RightColumn)`
 `;
 
 const ContentBuilderPage = ({ params: { projectId } }) => {
+  debugger;
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
