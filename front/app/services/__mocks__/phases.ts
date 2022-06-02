@@ -1,11 +1,6 @@
-import {
-  InputTerm,
-  ParticipationMethod,
-  PresentationMode,
-  VotingMethod,
-} from 'services/participationContexts';
+import { IPhaseData } from 'services/phases';
 
-export const mockPhaseInformationData = {
+export const mockPhaseInformationData: IPhaseData = {
   id: 'MockPhaseInformationId',
   type: 'phase',
   attributes: {
@@ -21,55 +16,55 @@ export const mockPhaseInformationData = {
     upvoting_limited_max: 0,
     downvoting_enabled: false,
     downvoting_limited_max: 0,
-    participation_method: 'information' as ParticipationMethod, // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
-    upvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    downvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    input_term: 'idea' as InputTerm,
-    presentation_mode: 'card' as PresentationMode, // 'card' | 'map'
+    participation_method: 'information', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
+    input_term: 'idea',
+    presentation_mode: 'card', // 'card' | 'map'
     ideas_count: 3,
-    // max_budget?: number,
-    // survey_service?: SurveyServices,
-    // survey_embed_url?: string,
   },
   relationships: {
     permissions: {
-      data: [], // IRelationship[],
+      data: [],
     },
     project: {
       data: {
         id: 'projectId',
         type: 'project',
-      }, // IRelationship,
+      },
     },
     user_basket: {
       data: null, // IRelationship | null,
     },
   },
 };
-export const mockPhasePollData = {
+export const mockPhasePollData: IPhaseData = {
   id: 'MockPhasePollId',
   type: 'phase',
   attributes: {
-    title_multiloc: 'A Mock Poll phase',
-    description_multiloc: 'For testing purposes',
+    title_multiloc: { en: 'A Mock Poll phase' },
+    description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
     participation_method: 'poll', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
-    // posting_enabled: false,
-    // commenting_enabled: false,
-    // voting_enabled: false,
-    // voting_method: 'limited', // 'limited' | 'unlimited'
-    // voting_limited_max: 0,
-    // presentation_mode: 'card' // 'card' | 'map'
-    // max_budget?: number,
-    // survey_service?: SurveyServices,
-    // survey_embed_url?: string,
+    posting_enabled: false,
+    commenting_enabled: false,
+    voting_enabled: false,
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_limited_max: 0,
+    presentation_mode: 'card', // 'card' | 'map'
+    max_budget: 3,
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
+    input_term: 'idea',
+    downvoting_enabled: false,
+    downvoting_limited_max: 0,
+    ideas_count: 3,
   },
   relationships: {
     permissions: {
-      //    data: []// IRelationship[],
+      data: [],
     },
     project: {
       data: {
@@ -77,13 +72,10 @@ export const mockPhasePollData = {
         type: 'project',
       }, // IRelationship,
     },
-    // user_basket: {
-    //   data: null // IRelationship | null,
-    // }
   },
 };
 
-export const mockPhaseIdeationData = {
+export const mockPhaseIdeationData: IPhaseData = {
   id: 'MockPhaseIdeationId',
   type: 'phase',
   attributes: {
@@ -93,18 +85,17 @@ export const mockPhaseIdeationData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'ideation' as ParticipationMethod, // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    participation_method: 'ideation', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
     posting_enabled: true,
     commenting_enabled: true,
     voting_enabled: true,
-    upvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    downvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    voting_limited_max: 5,
-    presentation_mode: 'card' as PresentationMode, // 'card' | 'map'
-    upvoting_limited_max: 0,
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
+    upvoting_limited_max: 5,
+    presentation_mode: 'card', // 'card' | 'map'
     downvoting_enabled: false,
     downvoting_limited_max: 0,
-    input_term: 'idea' as InputTerm,
+    input_term: 'idea',
     ideas_count: 3,
   },
   relationships: {
@@ -123,7 +114,7 @@ export const mockPhaseIdeationData = {
   },
 };
 
-export const mockPhaseSurveyTypeformData = {
+export const mockPhaseSurveyTypeformData: IPhaseData = {
   id: 'MockPhaseSurveyTypeformId',
   type: 'phase',
   attributes: {
@@ -133,19 +124,18 @@ export const mockPhaseSurveyTypeformData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'survey' as ParticipationMethod, // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
-    upvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    downvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    input_term: 'idea' as InputTerm,
-    presentation_mode: 'card' as PresentationMode, // 'card' | 'map'
+    participation_method: 'survey', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
+    input_term: 'idea',
+    presentation_mode: 'card', // 'card' | 'map'
     ideas_count: 3,
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    voting_limited_max: 0,
+    upvoting_limited_max: 0,
     survey_service: 'typeform', // SurveyServices: 'typeform' | 'survey_monkey' | 'google_forms' cf participationContexts.ts
     survey_embed_url: 'myTestSurvey.typeform.com',
-    upvoting_limited_max: 0,
     downvoting_enabled: false,
     downvoting_limited_max: 0,
   },
@@ -165,7 +155,7 @@ export const mockPhaseSurveyTypeformData = {
   },
 };
 
-export const mockPhaseSurveyGoogleFormData = {
+export const mockPhaseSurveyGoogleFormData: IPhaseData = {
   id: 'MockPhaseSurveyGoogleFormId',
   type: 'phase',
   attributes: {
@@ -175,15 +165,14 @@ export const mockPhaseSurveyGoogleFormData = {
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'survey' as ParticipationMethod, // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
-    upvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    downvoting_method: 'limited' as VotingMethod, // 'limited' | 'unlimited'
-    input_term: 'idea' as InputTerm,
-    presentation_mode: 'card' as PresentationMode, // 'card' | 'map'
+    participation_method: 'survey', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    upvoting_method: 'limited', // 'limited' | 'unlimited'
+    downvoting_method: 'limited', // 'limited' | 'unlimited'
+    input_term: 'idea',
+    presentation_mode: 'card', // 'card' | 'map'
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    voting_limited_max: 0,
     upvoting_limited_max: 0,
     downvoting_enabled: false,
     downvoting_limited_max: 0,
