@@ -217,7 +217,7 @@ resource 'Stats - Users' do
   end
 
   describe 'by_domicile endpoints' do
-    before do # rubocop:disable RSpec/ScatteredSetup
+    before do
       travel_to start_at + 16.days do
         @area1, @area2, @area3 = create_list(:area, 3)
         group_members = [@area1, @area1, @area2].map { |area| create(:user, domicile: area.id) }
