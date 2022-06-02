@@ -69,6 +69,14 @@ class CustomField < ApplicationRecord
     !!code
   end
 
+  def hidden?
+    hidden
+  end
+
+  def enabled?
+    enabled
+  end
+
   private
 
   def set_default_enabled
