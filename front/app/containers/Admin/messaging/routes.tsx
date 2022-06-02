@@ -27,34 +27,30 @@ const createAdminMessagingRoutes = () => ({
           <CustomEmailsIndex />
         </PageLoading>
       ),
-      children: [
-        {
-          path: 'new',
-          element: (
-            <PageLoading>
-              <CustomEmailsNew />
-            </PageLoading>
-          ),
-        },
-        {
-          path: ':campaignId',
-          element: (
-            <PageLoading>
-              <CustomEmailsShow />
-            </PageLoading>
-          ),
-          children: [
-            {
-              path: 'edit',
-              element: (
-                <PageLoading>
-                  <CustomEmailsEdit />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-      ],
+    },
+    {
+      path: 'emails/custom/new',
+      element: (
+        <PageLoading>
+          <CustomEmailsNew />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'emails/custom/:campaignId',
+      element: (
+        <PageLoading>
+          <CustomEmailsShow />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'emails/custom/:campaignId/edit',
+      element: (
+        <PageLoading>
+          <CustomEmailsEdit />
+        </PageLoading>
+      ),
     },
     {
       path: 'emails/automated',
@@ -71,34 +67,30 @@ const createAdminMessagingRoutes = () => ({
           <CampaignList />
         </PageLoading>
       ),
-      children: [
-        {
-          path: 'new',
-          element: (
-            <PageLoading>
-              <NewSMS />
-            </PageLoading>
-          ),
-        },
-        {
-          path: ':campaignId',
-          element: (
-            <PageLoading>
-              <ExistingSMS />
-            </PageLoading>
-          ),
-          children: [
-            {
-              path: 'preview',
-              element: (
-                <PageLoading>
-                  <PreviewSMS />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-      ],
+    },
+    {
+      path: 'texting/new',
+      element: (
+        <PageLoading>
+          <NewSMS />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'texting/:campaignId',
+      element: (
+        <PageLoading>
+          <ExistingSMS />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'texting/:campaignId/preview',
+      element: (
+        <PageLoading>
+          <PreviewSMS />
+        </PageLoading>
+      ),
     },
   ],
 });

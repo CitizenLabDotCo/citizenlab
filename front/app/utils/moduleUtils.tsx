@@ -435,10 +435,6 @@ export type RouteConfiguration = {
   type?: string;
   index?: boolean;
   children?: RouteConfiguration[];
-  // deprecated properties, remove once all routes have been converted
-  indexRoute?: RouteConfiguration;
-  container?: any;
-  childRoutes?: RouteConfiguration[];
 };
 
 type RecursivePartial<T> = {
@@ -496,20 +492,23 @@ const convertConfigurationToRoute = ({
   path,
   element,
   type = RouteTypes.CITIZEN,
-  indexRoute,
+  index,
   children,
-}: RouteConfiguration) => ({
-  path,
-  element: <PageLoading>{element}</PageLoading>,
-  indexRoute:
-    indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
-  children:
-    children &&
-    children.length > 0 &&
-    children.map((childRoute) =>
-      convertConfigurationToRoute({ ...childRoute, type })
-    ),
-});
+}: RouteConfiguration) => {
+  const returnObject = {
+    path,
+    element: <PageLoading>{element}</PageLoading>,
+    index,
+    children:
+      children &&
+      children.length > 0 &&
+      children.map((childRoute) =>
+        convertConfigurationToRoute({ ...childRoute, type })
+      ),
+  };
+
+  return returnObject;
+};
 
 const parseModuleRoutes = (
   routes: RouteConfiguration[] = [],
