@@ -361,23 +361,36 @@ resource 'Stats - Users' do
         let(:group) { @group.id }
         let(:custom_field_id) { @custom_field.id }
 
-        example_request 'Users by custom field (select)' do
-          expect(response_status).to eq 200
-          expect(json_response_body).to match({
-            options: {
-              @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-              @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-              @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
-            },
-            series: {
-              users: {
-                @option1.key.to_sym => 1,
-                @option2.key.to_sym => 1,
-                _blank: 1
+        context 'when the custom field has no reference distribution' do
+          example_request 'Users by custom field (select)' do
+            expect(response_status).to eq 200
+            expect(json_response_body).to match({
+              options: {
+                @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
+                @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
+                @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
               },
-              expected_users: nil
-            }
-          })
+              series: {
+                users: {
+                  @option1.key.to_sym => 1,
+                  @option2.key.to_sym => 1,
+                  _blank: 1
+                },
+                expected_users: nil
+              }
+            })
+          end
+        end
+
+        context 'when the custom field has a reference distribution' do
+          before { create(:ref_distribution, custom_field: @custom_field) }
+
+          example_request 'Users by custom field (select) including expected nb of users' do
+            expect(response_status).to eq 200
+            expect(json_response_body).to include(series: hash_including(
+              expected_users: @custom_field.custom_field_options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
+            ))
+          end
         end
       end
 
@@ -500,16 +513,35 @@ resource 'Stats - Users' do
         let(:group) { @group.id }
         let(:custom_field_id) { @custom_field.id }
 
-        include_examples('xlsx export', 'custom field (select)') do
-          let(:expected_worksheet_name) { 'usersbyselectfield' }
-          let(:expected_worksheet_values) do
-            [
-              %w[option option_id users],
-              ['youth council', @option1.key, 1],
-              ['youth council', @option2.key, 1],
-              ['youth council', @option3.key, 0],
-              ['_blank', '_blank', 1]
-            ]
+        describe 'when the custom field has no reference distribution' do
+          include_examples('xlsx export', 'custom field (select)') do
+            let(:expected_worksheet_name) { 'usersbyselectfield' }
+            let(:expected_worksheet_values) do
+              [
+                %w[option option_id users],
+                ['youth council', @option1.key, 1],
+                ['youth council', @option2.key, 1],
+                ['youth council', @option3.key, 0],
+                ['_blank', '_blank', 1]
+              ]
+            end
+          end
+        end
+
+        describe 'when the custom field has a reference distribution' do
+          before { create(:ref_distribution, custom_field: @custom_field) }
+
+          include_examples('xlsx export', 'custom field (select) including expected nb of users') do
+            let(:expected_worksheet_name) { 'usersbyselectfield' }
+            let(:expected_worksheet_values) do
+              [
+                %w[option option_id users expected_users],
+                ['youth council', @option1.key, 1, kind_of(Numeric)],
+                ['youth council', @option2.key, 1, kind_of(Numeric)],
+                ['youth council', @option3.key, 0, kind_of(Numeric)],
+                ['_blank', '_blank', 1, 0]
+              ]
+            end
           end
         end
       end
