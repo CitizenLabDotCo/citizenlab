@@ -2,6 +2,12 @@
 
 # Validates an attribute to be a valid CSS color.
 class CssColorValidator < ActiveModel::EachValidator
+  # Validates that the attribute is a valid CSS color.
+  # Accepted formats:
+  # Hex: `#abcdef`, `#FFF`
+  # RGB(A): `rgb(255, 255, 255)`, `rgba(255, 255, 255, 0)`
+  # HSL: `hsl(180, 50%, 50%)`
+  # Keywords: `none`, `transparent`, `inherit`
   def validate_each(record, attribute, value)
     return if record.errors.present? || value.nil?
 
@@ -11,7 +17,7 @@ class CssColorValidator < ActiveModel::EachValidator
   private
 
   def validate_css_color(record, attribute, value)
-    return if hex_notation?(value) || rgb_notation?(value) || rgba_notation?(value) || hsl_notation?(value) || other_notation?(value)
+    return if hex_notation?(value) || rgb_notation?(value) || rgba_notation?(value) || hsl_notation?(value) || keyword_notation?(value)
 
     record.errors.add(attribute, :format)
   end
@@ -32,7 +38,7 @@ class CssColorValidator < ActiveModel::EachValidator
     /^hsl\(\s*(0|[1-9]\d?|[12]\d\d|3[0-5]\d)\s*,\s*((0|[1-9]\d?|100)%)\s*,\s*((0|[1-9]\d?|100)%)\s*\)$/.match?(value)
   end
 
-  def other_notation?(value)
+  def keyword_notation?(value)
     %w[none transparent inherit].include?(value)
   end
 end
