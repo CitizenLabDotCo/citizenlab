@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 import Banner from './Banner';
 import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Footer from './Footer';
-import LoadableModal from 'components/Loadable/Modal';
+import Modal from 'components/UI/Modal';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -155,7 +155,7 @@ export default class Container extends PureComponent<Props, State> {
 
     return (
       <>
-        <LoadableModal
+        <Modal
           opened={isDialogOpen}
           close={this.closeDialog}
           header={<FormattedMessage {...messages.title} />}
@@ -181,7 +181,7 @@ export default class Container extends PureComponent<Props, State> {
               <FormattedMessage {...messages.confirmation} tagName="h1" />
             </ContentContainer>
           )}
-        </LoadableModal>
+        </Modal>
 
         {isConsentRequired && (
           <Banner onAccept={accept} onChangePreferences={this.openDialog} />
