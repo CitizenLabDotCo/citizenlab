@@ -20,9 +20,17 @@ export const withRouter = (Component: React.ComponentType<any>) => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
+    // normally you have to do searchParams.get('key'),
+    // we create a normal key/value object here and pass it down
+    const searchParamsObj = {};
+    for (const queryParamsPair of searchParams.entries()) {
+      const [key, val] = queryParamsPair;
+      searchParamsObj[key] = val;
+    }
+
     return (
       <Component
-        location={{ ...location, query: searchParams }}
+        location={{ ...location, query: searchParamsObj }}
         params={params}
         navigate={navigate}
         {...props}
