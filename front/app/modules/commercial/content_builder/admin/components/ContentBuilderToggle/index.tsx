@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Typings
 import { Locale, Multiloc } from 'typings';

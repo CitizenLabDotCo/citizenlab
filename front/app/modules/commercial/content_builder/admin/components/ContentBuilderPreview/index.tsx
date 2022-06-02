@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // hooks
 import useProject from 'hooks/useProject';

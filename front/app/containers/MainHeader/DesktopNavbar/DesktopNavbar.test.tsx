@@ -24,7 +24,6 @@ jest.mock('hooks/useAdminPublications', () =>
   }))
 );
 
-jest.mock('utils/withRouter');
 jest.mock('utils/cl-router/Link');
 
 describe('<DesktopNavbar />', () => {

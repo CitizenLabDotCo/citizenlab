@@ -24,7 +24,7 @@ const viewId = '1';
 
 let mockLocationData = { pathname: '', query: {} };
 
-jest.mock('utils/withRouter', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

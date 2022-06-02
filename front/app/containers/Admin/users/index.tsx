@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik, FormikActions } from 'formik';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 

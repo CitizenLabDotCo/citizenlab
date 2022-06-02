@@ -1,7 +1,7 @@
 import React from 'react';
 
 // routing
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 
 // style

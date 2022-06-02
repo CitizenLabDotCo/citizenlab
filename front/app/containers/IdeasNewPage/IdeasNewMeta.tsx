@@ -22,7 +22,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { getInputTerm } from 'services/participationContexts';

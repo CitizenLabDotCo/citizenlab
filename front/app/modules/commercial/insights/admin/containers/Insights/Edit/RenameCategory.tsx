@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
