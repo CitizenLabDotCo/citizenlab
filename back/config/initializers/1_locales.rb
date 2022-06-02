@@ -30,30 +30,27 @@ CL2_SUPPORTED_LOCALES = %i[
   hr-HR
 ].freeze
 
-FALLBACK_LOCALES = %i[
-  ar
-  da
-  de
-  es
-  fr
-  hr
-  hu
-  it
-  kl
-  lb
-  nb
-  nl
-  pl
-  pt
-  ro
-  sr
-].freeze
+fallback_locales =
+  %i[
+    ar
+    da
+    de
+    es
+    fr
+    hr
+    hu
+    it
+    kl
+    lb
+    nb
+    nl
+    pl
+    pt
+    ro
+    sr
+  ].freeze
 
-# We don't want the rest of app to rely on the fallback locales, but promote the main locales (`CL2_SUPPORTED_LOCALES`)
-# instead, so let's make the fallbacks private to be sure.
-private_constant :FALLBACK_LOCALES
-
-I18n.available_locales = CL2_SUPPORTED_LOCALES + FALLBACK_LOCALES
+I18n.available_locales = CL2_SUPPORTED_LOCALES + fallback_locales
 I18n.default_locale = :en
 
 # This allows a lookup of e.g. 'nl-NL' to fallback to 'nl'.
