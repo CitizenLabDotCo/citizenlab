@@ -94,7 +94,7 @@ class Initiative < ApplicationRecord
   scope :with_status_code, (proc do |code|
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where('initiative_statuses.code = ?', code)
+      .where(initiative_statuses: { code: code })
   end)
 
   scope :order_status, lambda { |direction = :asc|
@@ -106,7 +106,7 @@ class Initiative < ApplicationRecord
   scope :feedback_needed, lambda {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where('initiative_statuses.code = ?', 'threshold_reached')
+      .where(initiative_statuses: { code: 'threshold_reached' })
   }
 
   scope :no_feedback_needed, lambda {
@@ -117,7 +117,7 @@ class Initiative < ApplicationRecord
   scope :proposed, lambda {
     joins('LEFT OUTER JOIN initiative_initiative_statuses ON initiatives.id = initiative_initiative_statuses.initiative_id')
       .joins('LEFT OUTER JOIN initiative_statuses ON initiative_statuses.id = initiative_initiative_statuses.initiative_status_id')
-      .where('initiative_statuses.code = ?', 'proposed')
+      .where(initiative_statuses: { code: 'proposed' })
   }
 
   def votes_needed(configuration = AppConfiguration.instance)
@@ -149,20 +149,20 @@ class Initiative < ApplicationRecord
   end
 
   def assignee_can_moderate_initiatives
-    if assignee && !UserRoleService.new.can_moderate_initiatives?(assignee)
-      errors.add(
-        :assignee_id,
-        :assignee_can_not_moderate_initiatives,
-        message: 'The assignee can not moderate citizen initiatives'
-      )
-    end
+    return unless assignee && !UserRoleService.new.can_moderate_initiatives?(assignee)
+
+    errors.add(
+      :assignee_id,
+      :assignee_can_not_moderate_initiatives,
+      message: 'The assignee can not moderate citizen initiatives'
+    )
   end
 
   def initialize_initiative_status_changes
     initial_status = InitiativeStatus.find_by code: 'proposed'
-    if initial_status && initiative_status_changes.empty? && !draft?
-      initiative_status_changes.build(initiative_status: initial_status)
-    end
+    return unless initial_status && initiative_status_changes.empty? && !draft?
+
+    initiative_status_changes.build(initiative_status: initial_status)
   end
 end
 

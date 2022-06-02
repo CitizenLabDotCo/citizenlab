@@ -155,25 +155,25 @@ module SmartGroups::Rules
     private
 
     def needs_value?
-      !VALUELESS_PREDICATES.include?(predicate)
+      VALUELESS_PREDICATES.exclude?(predicate)
     end
 
     def validate_value_inclusion
-      if needs_value?
-        custom_field_ids = CustomFieldOption.where(custom_field_id: custom_field_id).map(&:id)
-        is_included = if value.is_a? Array
-          (value - custom_field_ids).blank?
-        else
-          custom_field_ids.include? value
-        end
-        unless is_included
-          errors.add(
-            :value,
-            :inclusion,
-            message: 'All values must be existing custom field option IDs'
-          )
-        end
+      return unless needs_value?
+
+      custom_field_ids = CustomFieldOption.where(custom_field_id: custom_field_id).map(&:id)
+      is_included = if value.is_a? Array
+        (value - custom_field_ids).blank?
+      else
+        custom_field_ids.include? value
       end
+      return if is_included
+
+      errors.add(
+        :value,
+        :inclusion,
+        message: 'All values must be existing custom field option IDs'
+      )
     end
   end
 end

@@ -20,15 +20,15 @@ module PublicApi
       @ideas = TrendingIdeaService.new.sort_trending @ideas
 
       render json: @ideas,
-        each_serializer: V1::IdeaSerializer,
-        adapter: :json,
-        meta: meta_properties(@ideas)
+             each_serializer: V1::IdeaSerializer,
+             adapter: :json,
+             meta: meta_properties(@ideas)
     end
 
     def show
       render json: @idea,
-        serializer: V1::IdeaSerializer,
-        adapter: :json
+             serializer: V1::IdeaSerializer,
+             adapter: :json
     end
 
     def set_idea

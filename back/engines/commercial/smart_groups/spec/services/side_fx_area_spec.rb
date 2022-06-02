@@ -14,8 +14,8 @@ describe SideFxAreaService do
         predicate: 'has_value',
         value: area.id
       }])
-      group2 = create(:smart_group)
-      group3 = create(:group)
+      create(:smart_group)
+      create(:group)
       service.before_destroy(area, user)
       expect { group1.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect(Group.count).to eq 2

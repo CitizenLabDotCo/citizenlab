@@ -78,14 +78,14 @@ resource 'Verifications' do
 
       example 'Verify with cow' do
         savon.expects(:get_data_document)
-             .with(message: {
+          .with(message: {
                'typens:RUTEmpresa' => 'fake_rut_empresa',
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '12025365',
                'typens:NumSerie' => 'A001529382'
              })
-             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
+          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
         assert_status 201
         expect(@user.reload.verified).to be true
@@ -104,14 +104,14 @@ resource 'Verifications' do
 
       example '[error] Verify with cow without a match' do
         savon.expects(:get_data_document)
-             .with(message: {
+          .with(message: {
                'typens:RUTEmpresa' => 'fake_rut_empresa',
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '11111111',
                'typens:NumSerie' => 'A001529382'
              })
-             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
+          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -125,14 +125,14 @@ resource 'Verifications' do
 
       example "[error] Verify with cow with a match that's not entitled to verification" do
         savon.expects(:get_data_document)
-             .with(message: {
+          .with(message: {
                'typens:RUTEmpresa' => 'fake_rut_empresa',
                'typens:DVEmpresa' => 'k',
                'typens:CodTipoDocumento' => 'C',
                'typens:NumRUN' => '11111111',
                'typens:NumSerie' => 'A001529382'
              })
-             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
+          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body
@@ -168,8 +168,8 @@ resource 'Verifications' do
         @run = '12.025.365-6'
         @id_serial = 'A001529382'
         savon.expects(:get_data_document)
-             .with(message: :any)
-             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
+          .with(message: :any)
+          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
 
         Verification::VerificationService.new.verify_sync(
           user: other_user,
@@ -183,8 +183,8 @@ resource 'Verifications' do
 
       example '[error] Verify with cow using credentials that are already taken' do
         savon.expects(:get_data_document)
-             .with(message: :any)
-             .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
+          .with(message: :any)
+          .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
         assert_status 422
         json_response = json_parse response_body

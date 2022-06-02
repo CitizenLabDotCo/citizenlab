@@ -80,5 +80,5 @@ describe ProjectFilePolicy do
         expect(scope.resolve.size).to eq 1
       end
     end
- end
+  end
 end

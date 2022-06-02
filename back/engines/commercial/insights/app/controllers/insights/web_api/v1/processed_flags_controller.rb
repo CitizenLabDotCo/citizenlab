@@ -25,7 +25,7 @@ module Insights
 
       def input
         @input ||= Insights::InputsFinder.new(view).execute
-                                         .find(params.require(:input_id))
+          .find(params.require(:input_id))
       end
     end
   end

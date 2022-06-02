@@ -14,7 +14,7 @@ module ProjectFolders
       # Array of publication IDs for folders that
       # still have visible children left.
       parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
-                                              .includes(:admin_publication).pluck('admin_publications.parent_id').compact
+        .includes(:admin_publication).pluck('admin_publications.parent_id').compact
       # Caches the counts of visible children for
       # the current user.
       visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }

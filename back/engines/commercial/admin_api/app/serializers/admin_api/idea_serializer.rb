@@ -3,12 +3,12 @@
 module AdminApi
   class IdeaSerializer < ActiveModel::Serializer
     attributes :id,
-      :title_multiloc,
-      :body_multiloc,
-      :published_at,
-      :project_id,
-      :created_at,
-      :updated_at
+               :title_multiloc,
+               :body_multiloc,
+               :published_at,
+               :project_id,
+               :created_at,
+               :updated_at
 
     has_many :topics
     belongs_to :author

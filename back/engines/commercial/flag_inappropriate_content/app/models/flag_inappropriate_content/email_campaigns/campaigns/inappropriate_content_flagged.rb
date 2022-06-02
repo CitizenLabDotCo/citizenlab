@@ -70,18 +70,13 @@ module FlagInappropriateContent
           }
           d
         end
-        name_service = UserDisplayNameService.new AppConfiguration.instance, recipient
-        notification = activity.item
         payload = {
           flaggable_type: data[:flaggable_type],
           flaggable_author_name: UserDisplayNameService.new(AppConfiguration.instance, recipient).display_name!(data[:flaggable_author]),
           flaggable_url: Frontend::UrlService.new.model_to_url(data[:flaggable], locale: recipient.locale)
         }
         case data[:flaggable_type]
-        when Idea.name
-          payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
-          payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
-        when Initiative.name
+        when Idea.name, Initiative.name
           payload[:flaggable_title_multiloc] = data[:flaggable].title_multiloc
           payload[:flaggable_body_multiloc] = data[:flaggable].body_multiloc
         when Comment.name

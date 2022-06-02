@@ -171,8 +171,8 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     }
-  }
-              ))
+  })
+)
 
 # Creates a default admin account.
 User.create!(
