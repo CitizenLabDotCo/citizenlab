@@ -12,9 +12,10 @@ describe 'JsonFormsService ideas overrides' do
   let(:user) { create(:user) }
 
   describe '#custom_form_to_json_schema' do
-    context 'when there are built-in fields only' do
-      it 'returns the JSON schema for all built-in fields' do
+    context 'when there are default fields only' do
+      it 'returns the JSON schema for all enabled default fields' do
         schema = service.custom_form_to_json_schema(fields)
+        # proposed_budget is a disabled default field, so it is excluded
         expect(schema).to eq({
           type: 'object',
           additionalProperties: false,
@@ -44,7 +45,6 @@ describe 'JsonFormsService ideas overrides' do
             },
             'author_id' => { type: 'string' },
             'budget' => { type: 'number' },
-            'proposed_budget' => { type: 'number' },
             'topic_ids' => {
               type: 'array',
               uniqueItems: true,
@@ -86,11 +86,12 @@ describe 'JsonFormsService ideas overrides' do
       end
     end
 
-    context 'when there is a required custom field' do
+    context 'when there is a required extra field' do
       let!(:custom_field) { create(:custom_field_number, required: true, resource: custom_form) }
 
-      it 'returns the JSON schema for all built-in fields and the custom field' do
+      it 'returns the JSON schema for all enabled default fields and the extra field' do
         schema = service.custom_form_to_json_schema(fields)
+        # proposed_budget is a disabled default field, so it is excluded
         expect(schema).to eq({
           type: 'object',
           additionalProperties: false,
@@ -104,12 +105,6 @@ describe 'JsonFormsService ideas overrides' do
                 'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
               }
             },
-            'custom_field_values' => {
-              type: 'object',
-              additionalProperties: false,
-              properties: { 'field_1' => { type: 'number' } },
-              required: ['field_1']
-            },
             'body_multiloc' => {
               type: 'object',
               minProperties: 1,
@@ -121,7 +116,6 @@ describe 'JsonFormsService ideas overrides' do
             },
             'author_id' => { type: 'string' },
             'budget' => { type: 'number' },
-            'proposed_budget' => { type: 'number' },
             'topic_ids' => {
               type: 'array',
               uniqueItems: true,
@@ -156,6 +150,12 @@ describe 'JsonFormsService ideas overrides' do
                   name: { type: 'string' }
                 }
               }
+            },
+            'custom_field_values' => {
+              type: 'object',
+              additionalProperties: false,
+              properties: { 'field_1' => { type: 'number' } },
+              required: ['field_1']
             }
           },
           required: %w[title_multiloc body_multiloc]
