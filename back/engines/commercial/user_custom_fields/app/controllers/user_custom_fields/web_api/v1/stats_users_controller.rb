@@ -73,7 +73,7 @@ module UserCustomFields
 
         def custom_field_key_from_path
           request.path.split('/').last
-                 .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)[:key]
+                 .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)&.[](:key)
         end
 
         def user_counts
