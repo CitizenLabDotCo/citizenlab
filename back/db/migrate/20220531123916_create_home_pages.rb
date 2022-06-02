@@ -3,8 +3,6 @@
 class CreateHomePages < ActiveRecord::Migration[6.1]
   def change
     create_table :home_pages, id: :uuid do |t|
-      t.boolean :header_avatars_enabled, default: true, null: false
-
       t.boolean :top_info_section_enabled, default: true, null: false
       t.jsonb :top_info_section_multiloc, default: {}, null: false
 
@@ -16,17 +14,19 @@ class CreateHomePages < ActiveRecord::Migration[6.1]
       t.boolean :projects_enabled, default: true, null: false
       t.jsonb :projects_header, default: {}, null: false
 
+      t.boolean :banner_avatars_enabled, default: true, null: false
+
       t.boolean :banner_enabled, default: true, null: false
       t.string :banner_layout, default: 'full_width_banner_layout', null: false
-      t.string :banner_signed_in_header
-      t.string :banner_signed_in_text
+      t.jsonb :banner_signed_in_header, default: true, null: false
+      t.jsonb :banner_signed_in_text, default: true, null: false
       t.string :banner_signed_in_type, default: 'no_button', null: false
       t.string :banner_signed_in_url
-      t.string :banner_signed_out_header
-      t.string :banner_signed_out_subheader
+      t.jsonb :banner_signed_out_header, default: true, null: false
+      t.jsonb :banner_signed_out_subheader, default: true, null: false
       t.string :banner_signed_out_header_overlay_color
       t.integer :banner_signed_out_header_overlay_opacity
-      t.string :banner_signed_out_text
+      t.jsonb :banner_signed_out_text, default: true, null: false
       t.string :banner_signed_out_type, default: 'sign_up_button', null: false
       t.string :banner_signed_out_url
 
