@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
+# Validates hash attributes that are used to store multilocalized strings, hence the name Multiloc.
 class MultilocValidator < ActiveModel::EachValidator
+  # Validates an attribute that is used as a multiloc hash.
+  # The attribute must be a hash, where keys are a valid locale string (see `CL2_SUPPORTED_LOCALES`) and the values a
+  # localized translation string.
+  #
+  # Example:
+  # ```
+  # class Page
+  #   validates :title, multiloc: true
+  # end
+  #
+  # page = Page.new
+  # page.title = { 'en' => 'Summer is great', 'de-DE' => 'Sommer ist großartig' }
+  # ```
+  #
+  # Options:
+  # - `presence`: [Boolean] If `true`, validates that all values are present in the hash
+  # - `html`: [Boolean] If `true`, validates that all values are valid HTML or plain text
+  # - `value_type`: [Class] Validates that all values are of the specified type
   def validate_each(record, attribute, value)
     validate_presence record, attribute, value
     return if record.errors.present? || value.nil?
