@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Contains settings & configuration data of the homepage.
 # == Schema Information
 #
 # Table name: home_pages
@@ -29,6 +30,5 @@
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #
-# Contains settings & configuration data of the homepage.
 class HomePage < ApplicationRecord
 end
