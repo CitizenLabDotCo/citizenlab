@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arkiveret",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Alle områder",
-  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Områdefilter",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Projekter kan filtreres på hjemmesiden ved hjælp af områder. Områder kan indstilles {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "her",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "Intet specifikt område",
