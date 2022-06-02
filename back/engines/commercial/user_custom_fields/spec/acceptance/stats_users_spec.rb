@@ -27,24 +27,24 @@ end
 resource 'Stats - Users' do
   header 'Content-Type', 'application/json'
 
-  let(:timezone) { AppConfiguration.instance.settings('core', 'timezone')}
-  let(:now) { Time.now.in_time_zone(timezone) }
-  let(:start_at) { (now - 1.year).in_time_zone(timezone).beginning_of_year }
-  let(:end_at) { (now - 1.year).in_time_zone(timezone).end_of_year }
+  let_it_be(:timezone) { AppConfiguration.instance.settings('core', 'timezone') }
+  let_it_be(:now) { Time.now.in_time_zone(timezone) }
+  let_it_be(:start_at) { (now - 1.year).in_time_zone(timezone).beginning_of_year }
+  let_it_be(:end_at) { (now - 1.year).in_time_zone(timezone).end_of_year }
 
-  before do
-    admin_header_token
+  before_all do
+    Tenant.current.update!(created_at: now - 2.years)
 
     create(:custom_field_birthyear)
     create(:custom_field_gender, :with_options)
     create(:custom_field_domicile)
-    create(:custom_field_education, :with_options).update(enabled: true)
-
-    Tenant.current.update!(created_at: now - 2.years)
+    create(:custom_field_education, :with_options, enabled: true)
 
     travel_to(start_at - 1.day) { create(:user) }
     travel_to(end_at + 1.day) { create(:user) }
   end
+
+  before { admin_header_token }
 
   def create_group(members)
     create(:group).tap do |group|
