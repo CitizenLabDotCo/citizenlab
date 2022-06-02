@@ -54,7 +54,7 @@ I18n.default_locale = :en
 
 # This allows a lookup of e.g. 'nl-NL' to fallback to 'nl'.
 # In order for this to work, we need to support more locales in CL2_SUPPORTED_LOCALES than
-# we actually want to support for tenants, which is the reason # CL2_SUPPORTED_LOCALES exists.
+# we actually want to support for tenants, which is why CL2_SUPPORTED_LOCALES exists in the first place.
 I18n::Backend::Simple.include I18n::Backend::Fallbacks
 
 # Load application custom translations in order to use them in other initializers (after https://stackoverflow.com/a/53918536/3585671)
