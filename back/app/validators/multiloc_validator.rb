@@ -17,9 +17,10 @@ class MultilocValidator < ActiveModel::EachValidator
   # ```
   #
   # Options:
-  # - `presence`: [Boolean] If `true`, validates that all values are present in the hash
-  # - `html`: [Boolean] If `true`, validates that all values are valid HTML or plain text
-  # - `value_type`: [Class] Validates that all values are of the specified type
+  # - `html`: [Boolean] If `true`, validates that all values are valid HTML or plain text (default: `false`)
+  # - `message`: [String] A custom error message
+  # - `presence`: [Boolean] If `true`, validates that all values are present in the hash (default: `false`)
+  # - `value_type`: [Class] To overwrite the expected type of the values. (default: `String`)
   def validate_each(record, attribute, value)
     validate_presence record, attribute, value
     return if record.errors.present? || value.nil?
