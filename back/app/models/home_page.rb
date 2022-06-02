@@ -31,4 +31,28 @@
 #  updated_at                               :datetime         not null
 #
 class HomePage < ApplicationRecord
+  validates :top_info_section_enabled, inclusion: [true, false]
+  validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }
+
+  validates :bottom_info_section_enabled, inclusion: [true, false]
+  validates :bottom_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }
+
+  validates :events_enabled, inclusion: [true, false]
+  validates :projects_enabled, inclusion: [true, false]
+
+  validates :banner_avatars_enabled, inclusion: [true, false]
+  validates :banner_enabled, inclusion: [true, false]
+  validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
+  validates :banner_signed_in_header, presence: true, multiloc: true
+  validates :banner_signed_in_text, presence: true, multiloc: true
+  validates :banner_signed_in_type, inclusion: %w[customized_button no_button]
+
+  validates :banner_signed_out_header, presence: true, multiloc: true
+  validates :banner_signed_out_subheader, presence: true, multiloc: true
+  validates :banner_signed_out_header_overlay_color, css_color: true
+  validates :banner_signed_out_header_overlay_opacity, numericality: { only_integer: true,
+                                                                       in: [0..100],
+                                                                       allow_nil: true }
+  validates :banner_signed_out_text, presence: true, multiloc: true
+  validates :banner_signed_out_type, inclusion: %w[sign_up_button customized_button no_button]
 end
