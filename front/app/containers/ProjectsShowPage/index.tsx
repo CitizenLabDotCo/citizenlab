@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components

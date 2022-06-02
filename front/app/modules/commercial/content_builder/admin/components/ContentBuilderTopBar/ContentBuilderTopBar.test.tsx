@@ -48,7 +48,7 @@ jest.mock('../../../services/contentBuilder', () => ({
 
 const mockParams = { projectId: 'id' };
 
-jest.mock('utils/withRouter', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

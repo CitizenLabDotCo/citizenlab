@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';

@@ -10,7 +10,7 @@ const viewId = '1';
 jest.mock('services/locale');
 jest.mock('utils/cl-intl');
 
-jest.mock('utils/withRouter', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {

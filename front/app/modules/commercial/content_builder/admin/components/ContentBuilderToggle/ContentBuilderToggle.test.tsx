@@ -28,7 +28,6 @@ jest.mock('modules/commercial/content_builder/hooks/useContentBuilder', () => {
 jest.mock('modules/commercial/content_builder/services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
-jest.mock('utils/withRouter');
 jest.mock('utils/cl-router/Link', () => () => (
   <a href="www.google.com">LinkText</a>
 ));

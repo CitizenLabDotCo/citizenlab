@@ -19,7 +19,7 @@ import { IconTooltip, Label } from '@citizenlab/cl2-component-library';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

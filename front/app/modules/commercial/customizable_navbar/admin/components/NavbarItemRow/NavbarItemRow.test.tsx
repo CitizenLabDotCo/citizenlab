@@ -4,7 +4,7 @@ import NavbarItemRow from '.';
 
 jest.mock('services/locale');
 jest.mock('services/appConfiguration');
-jest.mock('utils/withRouter');
+jest.mock('utils/cl-router/withRouter');
 jest.mock('utils/cl-router/Link');
 
 const title = { en: 'English title' };

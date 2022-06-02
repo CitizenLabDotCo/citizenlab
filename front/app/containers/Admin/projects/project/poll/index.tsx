@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'utils/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { isError } from 'lodash-es';
