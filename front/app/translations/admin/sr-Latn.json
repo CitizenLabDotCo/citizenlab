@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Arhivirano",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Sva područja",
-  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Filter područja",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Projekti se mogu filtrirati na početnoj stranici pomoću oblasti. Oblasti se mogu postaviti na {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "ovde",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "Nema određene oblasti",
