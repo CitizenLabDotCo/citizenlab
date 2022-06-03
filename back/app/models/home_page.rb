@@ -34,6 +34,8 @@ class HomePage < ApplicationRecord
   before_validation :sanitize_top_info_section_multiloc, if: :top_info_section_enabled
   before_validation :sanitize_bottom_info_section_multiloc, if: :bottom_info_section_enabled
 
+  validate :only_one_home_page, on: :create
+
   validates :top_info_section_enabled, inclusion: [true, false]
   validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :top_info_section_enabled
 
@@ -79,5 +81,10 @@ class HomePage < ApplicationRecord
     self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
     self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
     self[attribute] = @service.linkify_multiloc(self[attribute])
+  end
+
+  # Validates that there is only one homepage. Adds an error in case a homepage record already exists.
+  def only_one_home_page
+    errors.add(:base, :invalid, message: 'There can be only one homepage') if HomePage.any?
   end
 end
