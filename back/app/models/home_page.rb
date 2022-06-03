@@ -85,6 +85,6 @@ class HomePage < ApplicationRecord
 
   # Validates that there is only one homepage. Adds an error in case a homepage record already exists.
   def only_one_home_page
-    errors.add(:base, :invalid, message: 'There can be only one homepage') if HomePage.any?
+    errors.add(:base, :invalid, message: 'There can be only one homepage record') if HomePage.exists?
   end
 end
