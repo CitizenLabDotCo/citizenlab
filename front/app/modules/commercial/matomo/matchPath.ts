@@ -78,12 +78,14 @@ export function getAllPathsFromRoutes(route) {
       return `${head}/${path || ''}`;
     }
   }
+
   function paths(route: RouteConfiguration, head: string) {
-    if (route.childRoutes) {
-      if (route.indexRoute) {
+    // to do: check into this vs. master
+    if (route.children) {
+      if (route.children[0].index) {
         res.push(makeRoute(head, route.path));
       }
-      route.childRoutes.forEach((r) => paths(r, makeRoute(head, route.path)));
+      route.children.forEach((r) => paths(r, makeRoute(head, route.path)));
     } else {
       res.push(makeRoute(head, route.path));
     }

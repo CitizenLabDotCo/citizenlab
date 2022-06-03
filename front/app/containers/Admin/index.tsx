@@ -110,11 +110,10 @@ export const chartTheme = (theme) => {
 
 type Props = {
   className?: string;
-  children: React.ReactNode;
 };
 
 const AdminPage = memo<Props & WithRouterProps>(
-  ({ className, children, location: { pathname } }) => {
+  ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
@@ -193,7 +192,7 @@ const AdminPage = memo<Props & WithRouterProps>(
             <Outlet
               id="app.containers.Admin.contentBuilderLayout"
               onMount={setAdminFullWidthContentToVisible}
-              childrenToRender={children}
+              childrenToRender={<RouterOutlet />}
             />
           </Container>
         </ThemeProvider>

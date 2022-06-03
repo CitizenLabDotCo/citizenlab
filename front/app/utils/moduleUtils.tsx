@@ -21,7 +21,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
-import { mergeWith, castArray, clamp } from 'lodash-es';
+import { mergeWith, castArray, clamp, omitBy, isNil } from 'lodash-es';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
@@ -435,10 +435,6 @@ export type RouteConfiguration = {
   type?: string;
   index?: boolean;
   children?: RouteConfiguration[];
-  // deprecated properties, remove once all routes have been converted
-  indexRoute?: RouteConfiguration;
-  container?: any;
-  childRoutes?: RouteConfiguration[];
 };
 
 type RecursivePartial<T> = {
@@ -496,20 +492,23 @@ const convertConfigurationToRoute = ({
   path,
   element,
   type = RouteTypes.CITIZEN,
-  indexRoute,
+  index,
   children,
-}: RouteConfiguration) => ({
-  path,
-  element: <PageLoading>{element}</PageLoading>,
-  indexRoute:
-    indexRoute && convertConfigurationToRoute({ ...indexRoute, type }),
-  children:
-    children &&
-    children.length > 0 &&
-    children.map((childRoute) =>
-      convertConfigurationToRoute({ ...childRoute, type })
-    ),
-});
+}: RouteConfiguration) => {
+  const routeObject = {
+    path,
+    element: <PageLoading>{element}</PageLoading>,
+    index,
+    children:
+      children &&
+      children.length > 0 &&
+      children.map((childRoute) =>
+        convertConfigurationToRoute({ ...childRoute, type })
+      ),
+  };
+
+  return omitBy(routeObject, isNil);
+};
 
 const parseModuleRoutes = (
   routes: RouteConfiguration[] = [],
