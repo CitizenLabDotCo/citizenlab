@@ -48,6 +48,10 @@ export type InputTerm =
   | 'issue'
   | 'contribution';
 
+export type VotingMethod = 'limited' | 'unlimited';
+
+export type PresentationMode = 'card' | 'map';
+
 export function getInputTerm(
   processType: ProcessType,
   project: IProjectData | undefined | null | Error,
