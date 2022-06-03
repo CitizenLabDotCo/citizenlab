@@ -211,8 +211,8 @@ describe 'JsonFormsService ideas overrides' do
               'custom_field_values' => {
                 type: 'object',
                 additionalProperties: false,
-                properties: { 'field_1' => { type: 'number' } },
-                required: ['field_1']
+                properties: { custom_field.key => { type: 'number' } },
+                required: [custom_field.key]
               }
             },
             required: %w[title_multiloc body_multiloc]
