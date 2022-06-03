@@ -108,7 +108,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -145,7 +145,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -182,7 +182,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -219,7 +219,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -257,7 +257,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -295,7 +295,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -334,7 +334,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
@@ -373,7 +373,7 @@ describe('<AdminProjectEdition />', () => {
     tabNames.forEach((tabName) => {
       expect(screen.getByText(tabName)).toBeInTheDocument();
     });
-    expect(screen.getAllByTestId('e2e-resource-single-tab')).toHaveLength(
+    expect(screen.getAllByTestId('resource-single-tab')).toHaveLength(
       tabNames.length
     );
   });
