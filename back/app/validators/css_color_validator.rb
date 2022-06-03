@@ -24,11 +24,11 @@ class CssColorValidator < ActiveModel::EachValidator
   private
 
   def validate_css_color(record, attribute, value)
-    return if hex_notation?(value) ||
-              rgb_notation?(value) ||
-              rgba_notation?(value) ||
-              hsl_notation?(value) ||
-              keyword_notation?(value)
+    return if [hex_notation?(value),
+               rgb_notation?(value),
+               rgba_notation?(value),
+               hsl_notation?(value),
+               keyword_notation?(value)].any?
 
     record.errors.add(attribute, :format)
   end
