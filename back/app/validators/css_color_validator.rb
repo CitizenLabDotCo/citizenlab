@@ -16,7 +16,7 @@ class CssColorValidator < ActiveModel::EachValidator
   # Keywords: `none`, `transparent`, `inherit`
   # @note Does not accept color names (such as `brown`, `yellow`) yet
   def validate_each(record, attribute, value)
-    return if record.errors.present? || value.nil?
+    return if value.nil?
 
     validate_css_color(record, attribute, value)
   end
