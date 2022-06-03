@@ -120,17 +120,6 @@ RSpec.describe Idea, type: :model do
         idea.publication_status = 'draft'
         expect(idea.save).to be true
       end
-
-      it 'does not persist an idea with disabled field values' do
-        disabled_field_options = { resource: form, required: false, enabled: false, input_type: 'text' }
-        disabled_field = create :custom_field, :for_custom_form, disabled_field_options
-        idea.custom_field_values = { required_field.key => 194, disabled_field.key => 'my text' }
-        idea.location_description = 'Brussels'
-        expect(idea.save).to be true
-        idea.reload
-        expect(idea.location_description).to eq 'Brussels'
-        expect(idea.custom_field_values).to eq({ required_field.key => 194 })
-      end
     end
 
     context 'when updating ideas' do
