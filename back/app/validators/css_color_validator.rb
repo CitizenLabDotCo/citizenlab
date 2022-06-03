@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Validates an attribute to be a valid CSS color.
+# @see CssColorValidator#validate_each
 class CssColorValidator < ActiveModel::EachValidator
   HEX_PATTERN = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/.freeze
   HSL_PATTERN = /^hsl\(\s*(0|[1-9]\d?|[12]\d\d|3[0-5]\d)\s*,\s*((0|[1-9]\d?|100)%)\s*,\s*((0|[1-9]\d?|100)%)\s*\)$/.freeze
@@ -8,12 +8,13 @@ class CssColorValidator < ActiveModel::EachValidator
   RGBA_PATTERN = /^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*((0.[1-9])|[01])\s*\)$/.freeze
   RGB_PATTERN = /^rgb\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*\)$/.freeze
 
-  # Validates that the attribute is a valid CSS color.
+  # Validates that the attribute is a valid CSS color, same as the validation we have in `style.schema.json`.
   # Accepted formats:
   # Hex: `#abcdef`, `#FFF`
   # RGB(A): `rgb(255, 255, 255)`, `rgba(255, 255, 255, 0)`
   # HSL: `hsl(180, 50%, 50%)`
   # Keywords: `none`, `transparent`, `inherit`
+  # @note Does not accept color names (such as `brown`, `yellow`) yet
   def validate_each(record, attribute, value)
     return if record.errors.present? || value.nil?
 
