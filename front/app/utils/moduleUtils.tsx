@@ -21,7 +21,7 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { IProjectData, IUpdatedProjectProperties } from 'services/projects';
 import { ITabItem } from 'components/UI/Tabs';
 import { OutletRenderProps } from 'components/Outlet';
-import { mergeWith, castArray, clamp } from 'lodash-es';
+import { mergeWith, castArray, clamp, omitBy, isNil } from 'lodash-es';
 
 import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
@@ -72,9 +72,6 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
-
-// utils
-import { omitBy, isNil } from 'lodash-es';
 
 export type ITabsOutlet = {
   formatMessage: (
