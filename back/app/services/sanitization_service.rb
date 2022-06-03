@@ -47,7 +47,6 @@ class SanitizationService
   #
   #   sanitation_service.remove_empty_trailing_tags('<h1>Nice</h1><p></p>') # => '<h1>Nice</h1>'
   #   sanitation_service.remove_empty_trailing_tags('<h1>Nice</h1><h2><br></h2>') # => '<h1>Nice</h1>'
-  #
   def remove_empty_trailing_tags(html)
     html = remove_hidden_spaces(html)
 
@@ -62,12 +61,18 @@ class SanitizationService
     end
   end
 
+  # Turns URLs in text into HTML links
+  # @param multiloc [Hash] A multiloc hash, its values will be linkified.
+  # @return [Hash] The multiloc hash with it's content (values) being transformed into links.
   def linkify_multiloc(multiloc)
     multiloc.each_with_object({}) do |(locale, text), output|
       output[locale] = linkify(text) if text
     end
   end
 
+  # Turns URLs in text into HTML links
+  # @param html [String] Text that will be linkified.
+  # @return [String] The text with it's content being transformed into links.
   def linkify(html)
     Rinku.auto_link(html, :all, 'target="_blank" rel="noreferrer noopener nofollow"', nil, Rinku::AUTOLINK_SHORT_DOMAINS)
   end
