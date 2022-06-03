@@ -73,7 +73,7 @@ class HomePage < ApplicationRecord
   # - Removes invalid HTML
   # - Removes empty trailing tags
   # - Automatically links URLs
-  def sanitize_info_section_mulitloc(attribute)
+  def sanitize_info_section_multiloc(attribute)
     @service ||= SanitizationService.new
 
     self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
