@@ -15,8 +15,8 @@ describe IdeaCustomFieldsService do
       output = service.all_fields(custom_form, filter_unmodifiable: true)
       expect(output).to include cf1
       expect(output).to include cf2
-      expect(output).not_to include disabled_field
-      expect(output).not_to include topic_field
+      expect(output).to include disabled_field
+      expect(output).to include topic_field
       expect(output.map(&:code)).to match_array [
         'title_multiloc',
         'body_multiloc',
@@ -24,6 +24,8 @@ describe IdeaCustomFieldsService do
         'proposed_budget',
         'idea_images_attributes',
         'idea_files_attributes',
+        'topic_ids',
+        nil,
         nil
       ]
     end
@@ -56,6 +58,31 @@ describe IdeaCustomFieldsService do
         location_description
         idea_images_attributes
         idea_files_attributes
+      ]
+    end
+  end
+
+  describe 'visible_fields' do
+    it 'exclude disabled and hidden fields' do
+      custom_form = create :custom_form
+      title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
+      extra_field = create :custom_field, resource: custom_form, code: nil
+      topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
+      disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
+      hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
+      output = service.visible_fields custom_form, filter_unmodifiable: true
+      expect(output).to include title_field
+      expect(output).to include extra_field
+      expect(output).not_to include disabled_field
+      expect(output).not_to include hidden_field
+      expect(output).not_to include topic_field
+      expect(output.map(&:code)).to match_array [
+        'title_multiloc',
+        'body_multiloc',
+        'location_description',
+        'idea_images_attributes',
+        'idea_files_attributes',
+        nil
       ]
     end
   end
