@@ -30,7 +30,7 @@ RSpec.describe Idea, type: :model do
     end
   end
 
-  context 'with custom fields' do
+  context 'with custom fields', skip: !CitizenLab.ee? do
     let(:project) { create :project }
     let(:form) { create :custom_form, project: project }
     let!(:required_field) { create :custom_field, :for_custom_form, resource: form, required: true, input_type: 'number' }
