@@ -220,7 +220,7 @@ resource 'Stats - Users' do
     before do
       travel_to start_at + 16.days do
         @area1, @area2, @area3 = create_list(:area, 3)
-        group_members = [@area1, @area1, @area2].map { |area| create(:user, domicile: area.id) }
+        group_members = [@area1, @area1, @area2, nil].map { |area| create(:user, domicile: area&.id) }
         @group = create_group(group_members)
         _non_member = create(:user, birthyear: 1980)
       end
@@ -236,19 +236,11 @@ resource 'Stats - Users' do
       example_request 'Users by domicile' do
         expect(response_status).to eq 200
         expect(json_response_body).to match({
-          areas: {
-            @area1.id.to_sym => { title_multiloc: @area1.title_multiloc.symbolize_keys },
-            @area2.id.to_sym => { title_multiloc: @area2.title_multiloc.symbolize_keys },
-            @area3.id.to_sym => { title_multiloc: @area3.title_multiloc.symbolize_keys }
-          },
+          areas: Area.all.to_h { |area| [area.id, area.attributes.slice('title_multiloc')] },
           series: {
-            users: {
-              @area1.id.to_sym => 2,
-              @area2.id.to_sym => 1,
-              _blank: 0
-            }
+            users: { @area1.id => 2, @area2.id => 1, _blank: 1 }
           }
-        })
+        }.deep_symbolize_keys)
       end
     end
 
@@ -257,18 +249,17 @@ resource 'Stats - Users' do
       group_filter_parameter self
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
-      example_request 'Users by domicile' do
-        expect(response_status).to eq 200
-        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet[0].cells.map(&:value)).to match %w[area area_id users]
-
-        areas_col = worksheet.map { |col| col.cells[1].value }
-        header, *areas = areas_col
-        expect(areas).to match_array [@area1.id, @area2.id, @area3.id, '_blank']
-
-        amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
-        expect(amounts).to match_array [0, 1, 2, 0]
+      include_examples('xlsx export', 'domicile') do
+        let(:expected_worksheet_name) { 'usersbyarea' }
+        let(:expected_worksheet_values) do
+          [
+            %w[area area_id users],
+            ['Westside', Area.ids[0], 2],
+            ['Westside', Area.ids[1], 1],
+            ['Westside', Area.ids[2], 0],
+            ['unknown', '_blank', 1]
+          ]
+        end
       end
     end
   end
