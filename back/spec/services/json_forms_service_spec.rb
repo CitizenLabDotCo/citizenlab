@@ -270,7 +270,8 @@ describe JsonFormsService do
                             { const: 'option2', title: 'Bear' }
                           ]
                       }
-                    }
+                    },
+                    required: [required_field.key]
                   },
                   'idea_files_attributes' => {
                     type: 'array',
@@ -279,7 +280,7 @@ describe JsonFormsService do
                     items: { type: 'string' }
                   }
                 },
-                required: [required_field.key, 'topic_ids']
+                required: ['topic_ids']
               }
             },
             ui_schema_multiloc: {
