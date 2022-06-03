@@ -69,6 +69,10 @@ class HomePage < ApplicationRecord
     sanitize_info_section_multiloc(:bottom_info_section_multiloc)
   end
 
+  # Sanitizes an info section multiloc.
+  # - Removes invalid HTML
+  # - Removes empty trailing tags
+  # - Automatically links URLs
   def sanitize_info_section_mulitloc(attribute)
     @service ||= SanitizationService.new
 
