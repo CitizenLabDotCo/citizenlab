@@ -58,12 +58,12 @@ const WhiteSpaceSettings = () => {
         onChange={(value) => {
           setProp((props) => (props.size = value));
         }}
+        currentValue={size}
         id="white-space-small"
         name="size"
         value="small"
         label={<FormattedMessage {...messages.whiteSpaceRadioSmall} />}
         isRequired
-        currentValue={size}
       />
       <Radio
         onChange={(value) => {

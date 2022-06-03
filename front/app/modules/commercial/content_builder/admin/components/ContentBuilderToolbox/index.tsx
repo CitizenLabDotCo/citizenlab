@@ -222,7 +222,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="accordion"
+            icon="collapse-all"
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
