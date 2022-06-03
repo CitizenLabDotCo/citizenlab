@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Afgerond",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Afgerond",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Alle gebieden",
-  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Gebiedsfilter",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Projecten kunnen op de homepage worden gefilterd met behulp van gebieden. Gebieden kunnen worden ingesteld {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "hier",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "Geen specifiek gebied",
