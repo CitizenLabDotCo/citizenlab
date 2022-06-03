@@ -31,6 +31,9 @@
 #  updated_at                               :datetime         not null
 #
 class HomePage < ApplicationRecord
+  before_validation :sanitize_top_info_section_multiloc, if: :top_info_section_enabled?
+  before_validation :sanitize_bottom_info_section_multiloc, if: :bottom_info_section_enabled?
+
   validates :top_info_section_enabled, inclusion: [true, false]
   validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }
 
@@ -55,4 +58,22 @@ class HomePage < ApplicationRecord
                                                                        allow_nil: true }
   validates :banner_signed_out_text, presence: true, multiloc: true
   validates :banner_signed_out_type, inclusion: %w[sign_up_button customized_button no_button]
+
+  private
+
+  def sanitize_top_info_section_multiloc
+    sanitize_info_section_multiloc(:top_info_section_multiloc)
+  end
+
+  def sanitize_bottom_info_section_multiloc
+    sanitize_info_section_multiloc(:bottom_info_section_multiloc)
+  end
+
+  def sanitize_info_section_mulitloc(attribute)
+    @service ||= SanitizationService.new
+
+    self[attribute] = @service.sanitize_multiloc(self[attribute], %i[title alignment list decoration link image video])
+    self[attribute] = @service.remove_multiloc_empty_trailing_tags(self[attribute])
+    self[attribute] = @service.linkify_multiloc(self[attribute])
+  end
 end

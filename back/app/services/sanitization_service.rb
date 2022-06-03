@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Sanitizes external input that is potentially malicious or not wanted for other reasons.
 class SanitizationService
   # https://blog.arkency.com/2015/09/sanitizing-html-input-youtube-iframes/
 
@@ -9,6 +10,10 @@ class SanitizationService
 
   private_constant :SANITIZER
 
+  # Sanitizes a string from malicious and unwanted input.
+  # @param sanitize [String] string input to be sanitized
+  # @param features [Array<Symbol>] A list of allowed features
+  # @note TODO: What exactly is a feature? HTML tags, attributes? Predefined list somewhere?
   def sanitize(text, features)
     scrubber = IframeScrubber.new(features)
 
@@ -35,7 +40,6 @@ class SanitizationService
     end
   end
 
-  #
   # Remove any empty `EDITOR_STRUCTURE_TAGS` positioned as last children of an html string
   # and returns the resulting html string.
   #
@@ -44,7 +48,6 @@ class SanitizationService
   #   sanitation_service.remove_empty_trailing_tags('<h1>Nice</h1><p></p>') # => '<h1>Nice</h1>'
   #   sanitation_service.remove_empty_trailing_tags('<h1>Nice</h1><h2><br></h2>') # => '<h1>Nice</h1>'
   #
-
   def remove_empty_trailing_tags(html)
     html = remove_hidden_spaces(html)
 
