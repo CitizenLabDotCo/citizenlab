@@ -13,141 +13,67 @@ describe 'JsonFormsService ideas overrides' do
 
   describe '#custom_form_to_json_schema' do
     context 'when there are default fields only' do
-      if CitizenLab.ee?
-        it 'returns the JSON schema for all enabled default fields' do
-          schema = service.custom_form_to_json_schema(fields)
-          expect(schema).to eq({
-            type: 'object',
-            additionalProperties: false,
-            properties: {
-              'title_multiloc' => {
-                type: 'object',
-                minProperties: 1,
-                properties: {
-                  'en' => { type: 'string', minLength: 10, maxLength: 80 },
-                  'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
-                  'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
-                }
-              },
-              'body_multiloc' => {
-                type: 'object',
-                minProperties: 1,
-                properties: {
-                  'en' => { type: 'string', minLength: 40 },
-                  'fr-FR' => { type: 'string', minLength: 40 },
-                  'nl-NL' => { type: 'string', minLength: 40 }
-                }
-              },
-              'author_id' => { type: 'string' },
-              'budget' => { type: 'number' },
-              'topic_ids' => {
-                type: 'array',
-                uniqueItems: true,
-                minItems: 0,
-                items: { type: 'string' }
-              },
-              'location_description' => { type: 'string' },
-              'idea_images_attributes' => {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: { image: { type: 'string' } }
-                }
-              },
-              'idea_files_attributes' => {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    file_by_content: {
-                      type: 'object',
-                      properties: { file: { type: 'string' }, name: { type: 'string' } }
-                    },
-                    name: { type: 'string' }
-                  }
-                }
-              },
-              'custom_field_values' => {
-                type: 'object',
-                additionalProperties: false,
-                properties: {}
+      it 'returns the JSON schema for all enabled non-hidden default fields' do
+        schema = service.custom_form_to_json_schema(fields)
+        expect(schema).to eq({
+          type: 'object',
+          additionalProperties: false,
+          properties: {
+            'title_multiloc' => {
+              type: 'object',
+              minProperties: 1,
+              properties: {
+                'en' => { type: 'string', minLength: 10, maxLength: 80 },
+                'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
+                'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
               }
             },
-            required: %w[title_multiloc body_multiloc]
-          })
-        end
-      else
-        it 'returns the JSON schema for all default fields, even disabled' do
-          schema = service.custom_form_to_json_schema(fields)
-          expect(schema).to eq({
-            type: 'object',
-            additionalProperties: false,
-            properties: {
-              'title_multiloc' => {
-                type: 'object',
-                minProperties: 1,
-                properties: {
-                  'en' => { type: 'string', minLength: 10, maxLength: 80 },
-                  'fr-FR' => { type: 'string', minLength: 10, maxLength: 80 },
-                  'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
-                }
-              },
-              'proposed_budget' => { type: 'number' },
-              'body_multiloc' => {
-                type: 'object',
-                minProperties: 1,
-                properties: {
-                  'en' => { type: 'string', minLength: 40 },
-                  'fr-FR' => { type: 'string', minLength: 40 },
-                  'nl-NL' => { type: 'string', minLength: 40 }
-                }
-              },
-              'author_id' => { type: 'string' },
-              'budget' => { type: 'number' },
-              'topic_ids' => {
-                type: 'array',
-                uniqueItems: true,
-                minItems: 0,
-                items: { type: 'string' }
-              },
-              'location_description' => { type: 'string' },
-              'location_point_geojson' => {
-                required: %w[type coordinates],
-                type: 'object',
-                properties: {
-                  type: { type: 'string', enum: ['Point'] },
-                  coordinates: { type: 'array', minItems: 2, items: { type: 'number' } }
-                }
-              },
-              'idea_images_attributes' => {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: { image: { type: 'string' } }
-                }
-              },
-              'idea_files_attributes' => {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    file_by_content: {
-                      type: 'object',
-                      properties: { file: { type: 'string' }, name: { type: 'string' } }
-                    },
-                    name: { type: 'string' }
-                  }
-                }
-              },
-              'custom_field_values' => {
-                type: 'object',
-                additionalProperties: false,
-                properties: {}
+            'body_multiloc' => {
+              type: 'object',
+              minProperties: 1,
+              properties: {
+                'en' => { type: 'string', minLength: 40 },
+                'fr-FR' => { type: 'string', minLength: 40 },
+                'nl-NL' => { type: 'string', minLength: 40 }
               }
             },
-            required: %w[title_multiloc body_multiloc]
-          })
-        end
+            'author_id' => { type: 'string' },
+            'budget' => { type: 'number' },
+            'topic_ids' => {
+              type: 'array',
+              uniqueItems: true,
+              minItems: 0,
+              items: { type: 'string' }
+            },
+            'location_description' => { type: 'string' },
+            'idea_images_attributes' => {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: { image: { type: 'string' } }
+              }
+            },
+            'idea_files_attributes' => {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  file_by_content: {
+                    type: 'object',
+                    properties: { file: { type: 'string' }, name: { type: 'string' } }
+                  },
+                  name: { type: 'string' }
+                }
+              }
+            },
+            'custom_field_values' => {
+              type: 'object',
+              additionalProperties: false,
+              properties: {}
+            }
+          },
+          required: %w[title_multiloc body_multiloc]
+        })
       end
     end
 
@@ -155,7 +81,7 @@ describe 'JsonFormsService ideas overrides' do
       let!(:custom_field) { create(:custom_field_number, required: true, resource: custom_form) }
 
       if CitizenLab.ee?
-        it 'returns the JSON schema for all enabled default fields and the extra field' do
+        it 'returns the JSON schema for all enabled non-hidden default fields, and the extra field' do
           schema = service.custom_form_to_json_schema(fields)
           expect(schema).to eq({
             type: 'object',
@@ -219,7 +145,7 @@ describe 'JsonFormsService ideas overrides' do
           })
         end
       else
-        it 'returns the JSON schema for all default fields (the extra field is ignored)' do
+        it 'returns the JSON schema for all enabled non-hidden default fields (the extra field is ignored)' do
           schema = service.custom_form_to_json_schema(fields)
           expect(schema).to eq({
             type: 'object',
@@ -234,7 +160,6 @@ describe 'JsonFormsService ideas overrides' do
                   'nl-NL' => { type: 'string', minLength: 10, maxLength: 80 }
                 }
               },
-              'proposed_budget' => { type: 'number' },
               'body_multiloc' => {
                 type: 'object',
                 minProperties: 1,
@@ -253,14 +178,6 @@ describe 'JsonFormsService ideas overrides' do
                 items: { type: 'string' }
               },
               'location_description' => { type: 'string' },
-              'location_point_geojson' => {
-                required: %w[type coordinates],
-                type: 'object',
-                properties: {
-                  type: { type: 'string', enum: ['Point'] },
-                  coordinates: { type: 'array', minItems: 2, items: { type: 'number' } }
-                }
-              },
               'idea_images_attributes' => {
                 type: 'array',
                 items: {
