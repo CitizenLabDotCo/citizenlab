@@ -49,7 +49,6 @@ class HomePage < ApplicationRecord
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
   validates :banner_signed_in_header_multiloc, presence: true, multiloc: true
-  validates :banner_signed_in_text_multiloc, presence: true, multiloc: true
   validates :banner_signed_in_type, inclusion: %w[customized_button no_button]
 
   validates :banner_signed_out_header_multiloc, presence: true, multiloc: true
@@ -58,8 +57,18 @@ class HomePage < ApplicationRecord
   validates :banner_signed_out_header_overlay_opacity, numericality: { only_integer: true,
                                                                        in: [0..100],
                                                                        allow_nil: true }
-  validates :banner_signed_out_text_multiloc, presence: true, multiloc: true
+
   validates :banner_signed_out_type, inclusion: %w[sign_up_button customized_button no_button]
+
+  with_options if: -> { banner_signed_out_type == 'customized_button' } do
+    validates :banner_signed_out_text_multiloc, presence: true, multiloc: { presence: true }
+    validates :banner_signed_out_url, presence: true, url: true
+  end
+
+  with_options if: -> { banner_signed_in_type == 'customized_button' } do
+    validates :banner_signed_in_text_multiloc, presence: true, multiloc: { presence: true }
+    validates :banner_signed_in_url, presence: true, url: true
+  end
 
   private
 
