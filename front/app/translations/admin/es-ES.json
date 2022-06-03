@@ -813,7 +813,7 @@
   "app.containers.AdminPage.ProjectEdit.archived": "Archivado",
   "app.containers.AdminPage.ProjectEdit.archivedStatus": "Archivado",
   "app.containers.AdminPage.ProjectEdit.areasAllLabel": "Todas las localidades o zonas",
-  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Area filter",
+  "app.containers.AdminPage.ProjectEdit.areasLabelHint": "Filtro de área",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipHint": "Se pueden filtrar los proyectos en la página de inicio utilizando áreas. Las áreas se pueden establecer {areasLabelTooltipLink}.",
   "app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText": "aquí",
   "app.containers.AdminPage.ProjectEdit.areasNoneLabel": "Sin área específica",
