@@ -73,6 +73,9 @@ import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
+// utils
+import { omitBy, isNil } from 'lodash-es';
+
 export type ITabsOutlet = {
   formatMessage: (
     messageDescriptor: MessageDescriptor,
@@ -495,7 +498,7 @@ const convertConfigurationToRoute = ({
   index,
   children,
 }: RouteConfiguration) => {
-  const returnObject = {
+  const routeObject = {
     path,
     element: <PageLoading>{element}</PageLoading>,
     index,
@@ -507,7 +510,7 @@ const convertConfigurationToRoute = ({
       ),
   };
 
-  return returnObject;
+  return omitBy(routeObject, isNil);
 };
 
 const parseModuleRoutes = (

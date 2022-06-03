@@ -25,7 +25,17 @@ export const withRouter = (Component: React.ComponentType<any>) => {
     const searchParamsObj = {};
     for (const queryParamsPair of searchParams.entries()) {
       const [key, val] = queryParamsPair;
-      searchParamsObj[key] = val;
+
+      if (searchParamsObj[key] !== undefined) {
+        if (Array.isArray(searchParamsObj[key])) {
+          searchParamsObj[key].push(val);
+        } else {
+          const previousValue = searchParamsObj[key];
+          searchParamsObj[key] = [previousValue, val];
+        }
+      } else {
+        searchParamsObj[key] = val;
+      }
     }
 
     return (
