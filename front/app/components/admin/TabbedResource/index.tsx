@@ -185,7 +185,7 @@ class TabbedResource extends React.PureComponent<
                     <Tab
                       key={tab.url}
                       className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                      data-testid="e2e-resource-single-tab"
+                      data-testid="resource-single-tab"
                     >
                       <FormattedTabLink tab={tab} />
                     </Tab>
@@ -198,7 +198,7 @@ class TabbedResource extends React.PureComponent<
                 <Tab
                   key={tab.url}
                   className={`${tab.name} ${this.activeClassForTab(tab)}`}
-                  data-testid="e2e-resource-single-tab"
+                  data-testid="resource-single-tab"
                 >
                   <FormattedTabLink tab={tab} />
                 </Tab>
