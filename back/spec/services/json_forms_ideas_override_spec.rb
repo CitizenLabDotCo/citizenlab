@@ -8,7 +8,7 @@ describe 'JsonFormsService ideas overrides' do
   let(:locale) { 'en' }
   let(:project) { create(:project) }
   let(:custom_form) { create(:custom_form, project: project) }
-  let(:fields) { IdeaCustomFieldsService.new.all_fields(custom_form) }
+  let(:fields) { IdeaCustomFieldsService.new.visible_fields(custom_form) }
   let(:user) { create(:user) }
 
   describe '#custom_form_to_json_schema' do
@@ -47,14 +47,6 @@ describe 'JsonFormsService ideas overrides' do
                 items: { type: 'string' }
               },
               'location_description' => { type: 'string' },
-              'location_point_geojson' => {
-                required: %w[type coordinates],
-                type: 'object',
-                properties: {
-                  type: { type: 'string', enum: ['Point'] },
-                  coordinates: { type: 'array', minItems: 2, items: { type: 'number' } }
-                }
-              },
               'idea_images_attributes' => {
                 type: 'array',
                 items: {
@@ -196,14 +188,6 @@ describe 'JsonFormsService ideas overrides' do
                 items: { type: 'string' }
               },
               'location_description' => { type: 'string' },
-              'location_point_geojson' => {
-                required: %w[type coordinates],
-                type: 'object',
-                properties: {
-                  type: { type: 'string', enum: ['Point'] },
-                  coordinates: { type: 'array', minItems: 2, items: { type: 'number' } }
-                }
-              },
               'idea_images_attributes' => {
                 type: 'array',
                 items: {
