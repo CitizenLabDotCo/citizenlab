@@ -8,7 +8,7 @@ import FieldInfo, { Props as FieldInfoProps } from '../FieldInfo';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // typings
-import { RepresentativenessData } from '..';
+import { RepresentativenessData } from '../../../hooks/useReferenceData';
 
 interface Props extends FieldInfoProps {
   open: boolean;
