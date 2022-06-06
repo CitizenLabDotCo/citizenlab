@@ -1,5 +1,16 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
+- [CL-790] Events date picker now has the correct date format for US-based tenants
+
+### Added
+
+- [CL-729] Do not show proposals navbar item if corresponding feature is disabled
+
 ## 2022-05-26_2
 
 ### Fixed

@@ -6,6 +6,12 @@ require 'rubyXL'
 describe XlsxService do
   let(:service) { XlsxService.new }
 
+  def xlsx_to_array(xlsx, sheet_index: 0)
+    workbook = RubyXL::Parser.parse_buffer(xlsx)
+    worksheet = workbook[sheet_index]
+    worksheet.map { |row| row.cells.map(&:value) }
+  end
+
   describe 'escape_formula' do
     it 'retains normal text' do
       text = '1 + 2 = 3'
@@ -222,6 +228,45 @@ describe XlsxService do
 
     it 'correctly converts an xlsx to a hash array' do
        expect(round_trip_hash_array).to eq hash_array
+    end
+  end
+
+  describe '#xlsx_from_rows' do
+    let(:rows) do
+      [
+        %w[col1 col2],
+        ['a', 1],
+        ['b', 0]
+      ]
+    end
+
+    it 'converts a list of rows to an xlsx stream' do
+      xlsx = service.xlsx_from_rows(rows)
+      parsed_rows = xlsx_to_array(xlsx)
+      expect(rows).to eq(parsed_rows)
+    end
+  end
+
+  describe '#xlsx_from_columns' do
+    let(:columns) do
+      {
+        col1: %w[a b],
+        col2: [1, 0]
+      }
+    end
+
+    let(:expected_rows) do
+      [
+        %w[col1 col2],
+        ['a', 1],
+        ['b', 0]
+      ]
+    end
+
+    it 'converts a list of columns to an xlsx stream' do
+      xlsx = service.xlsx_from_columns(columns)
+      parsed_rows = xlsx_to_array(xlsx)
+      expect(expected_rows).to eq(parsed_rows)
     end
   end
 

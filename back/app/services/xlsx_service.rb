@@ -52,6 +52,23 @@ class XlsxService
     end
   end
 
+  def xlsx_from_rows(rows, sheetname: 'sheet 1')
+    header, *rows = rows
+
+    instances = rows.map { |row| header.zip(row).to_h }
+    columns = header.map do |colname|
+      { header: colname, f: ->(item) { item[colname] } }
+    end
+
+    generate_xlsx(sheetname, columns, instances)
+  end
+
+  def xlsx_from_columns(columns, sheetname: 'sheet 1')
+    header = columns.keys
+    rows = columns.values.transpose
+    xlsx_from_rows([header, *rows], sheetname: sheetname)
+  end
+
   def generate_xlsx(sheetname, columns, instances)
     columns = columns.uniq { |c| c[:header] }
     pa = Axlsx::Package.new
@@ -89,14 +106,6 @@ class XlsxService
       { header: 'amount', f: ->(item) { item[1] } }
     ]
     generate_xlsx name, columns, serie
-  end
-
-  def generate_field_stats_xlsx(serie, key_name, value_name)
-    columns = [
-      { header: key_name,   f: ->(item) { item[0] } },
-      { header: value_name, f: ->(item) { item[1] } }
-    ]
-    generate_xlsx "#{value_name}_by_#{key_name}", columns, serie
   end
 
   def generate_res_stats_xlsx(serie, resource_name, grouped_by)

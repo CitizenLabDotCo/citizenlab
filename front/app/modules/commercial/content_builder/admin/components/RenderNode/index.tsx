@@ -68,18 +68,6 @@ const StyledBox = styled(Box)`
 
 const RenderNode = ({ render }) => {
   const {
-    isActive,
-    isDeletable,
-    parentId,
-    actions: { selectNode },
-    query: { node },
-  } = useEditor((_, query) => ({
-    isActive: query.getEvent('selected').contains(id),
-    parentId: id && query.node(id).ancestors()[0],
-    isDeletable: id && query.node(id).isDeletable(),
-  }));
-
-  const {
     id,
     name,
     isHover,
@@ -90,6 +78,20 @@ const RenderNode = ({ render }) => {
     name: node.data.name as ComponentNamesType,
     hasError: node.data.props.hasError,
   }));
+
+  const {
+    isActive,
+    isDeletable,
+    parentId,
+    actions: { selectNode },
+    query: { node },
+  } = useEditor((_, query) => {
+    return {
+      isActive: id && query.getEvent('selected').contains(id),
+      parentId: id && query.node(id).ancestors()[0],
+      isDeletable: id && query.node(id).isDeletable(),
+    };
+  });
 
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
