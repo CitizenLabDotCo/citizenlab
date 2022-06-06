@@ -1,4 +1,4 @@
-FROM node16.14.0-chrome99-ff97
+FROM cypress/browsers:node16.14.0-chrome99-ff97
 
 WORKDIR /front
 
