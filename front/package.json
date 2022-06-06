@@ -31,7 +31,7 @@
     "test:update-snapshots": "jest --updateSnapshot",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --runInBand --coverage --coverageReporters=text-summary",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --spec 'cypress/e2e/**/*.ts'",
+    "cypress:run": "DEBUG=cypress:* cypress run --spec 'cypress/e2e/**/*.ts'",
     "majestic": "majestic --port 4231",
     "find-unused-messages": "node internals/scripts/find-unused-messages.js",
     "prettier": "prettier --write .",
