@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment, { Moment } from 'moment';
 
 // services
 import {
@@ -42,7 +41,6 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   const [includedUserPercentage, setIncludedUserPercentage] = useState<
     number | NilOrError
   >();
-  const [uploadDate, setUploadDate] = useState<Moment | NilOrError>();
   const [referenceDataUploaded, setReferenceDataUploaded] = useState<
     boolean | undefined
   >();
@@ -66,11 +64,10 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
         if (isNilOrError(usersByField)) {
           setReferenceData(usersByField);
           setIncludedUserPercentage(usersByField);
-          setUploadDate(usersByField);
           return;
         }
 
-        if (!usersByField.referenceSeries) {
+        if (!usersByField.series.expected_users) {
           setReferenceDataUploaded(false);
           return;
         }
@@ -80,11 +77,6 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
         setReferenceData(referenceData);
         setIncludedUserPercentage(includedUsersPercentage);
         setReferenceDataUploaded(true);
-
-        if (usersByField.referenceDataUploadDate) {
-          // Might need to change this depending on the date string format
-          setUploadDate(moment(usersByField.referenceDataUploadDate));
-        }
       }
     );
 
@@ -94,26 +86,40 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   return {
     referenceData,
     includedUserPercentage,
-    uploadDate,
     referenceDataUploaded,
   };
 }
 
 export default useReferenceData;
 
-const isGenderData = (usersByField: TStreamResponse) =>
-  !('options' in usersByField);
-
-const toReferenceData = (
-  usersByField: TStreamResponse
-): RepresentativenessData => {
-  if (isGenderData(usersByField)) {
-    // TODO implement this
-  }
-
-  // TODO implement this
+const toReferenceData = (usersByField: TStreamResponse): any => {
+  console.log(usersByField.series);
+  const { users, expected_users } = usersByField.series;
+  const data = Object.keys(users)
+    .filter((opt) => opt !== '_blank')
+    .map((opt) => ({
+      name: opt,
+      actualPercentage: Math.round(
+        (users[opt] / Object.values(users).reduce((acc, v) => v + acc, 0)) * 100
+      ),
+      referencePercentage: Math.round(
+        (expected_users[opt] /
+          Object.values(expected_users).reduce((acc, v) => v + acc, 0)) *
+          100
+      ),
+      actualNumber: users[opt],
+      referenceNumber: expected_users[opt],
+    }));
+  console.log(data);
+  return data;
 };
 
 const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
-  // TODO implement this
+  const { users } = usersByField.series;
+  const known = Object.keys(users)
+    .filter((opt) => opt !== '_blank')
+    .reduce((acc, v) => users[v] + acc, 0);
+  const total = Object.values(users).reduce((v, acc) => v + acc, 0);
+  console.log('known / total', known, total);
+  return Math.round((known / total) * 100);
 };

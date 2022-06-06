@@ -9,19 +9,18 @@ export interface IUsersByGender {
     users: {
       [key: string]: number;
     };
-  };
-  // Just making assumptions about what the response will look like here
-  referenceSeries?: {
-    users: {
+    expected_users: {
       [key: string]: number;
     };
   };
-  referenceDataUploadDate?: string;
 }
 
 export interface IUsersByRegistrationField {
   series: {
     users: {
+      [key: string]: number;
+    };
+    expected_users: {
       [key: string]: number;
     };
   };
@@ -31,18 +30,14 @@ export interface IUsersByRegistrationField {
       ordering: number;
     };
   };
-  // Just making assumptions about what the response will look like here
-  referenceSeries?: {
-    users: {
-      [key: string]: number;
-    };
-  };
-  referenceDataUploadDate?: string;
 }
 
 export interface IUsersByDomicile {
   series: {
     users: {
+      [key: string]: number;
+    };
+    expected_users: {
       [key: string]: number;
     };
   };
@@ -51,13 +46,6 @@ export interface IUsersByDomicile {
       title_multiloc: Multiloc;
     };
   };
-  // Just making assumptions about what the response will look like here
-  referenceSeries?: {
-    users: {
-      [key: string]: number;
-    };
-  };
-  referenceDataUploadDate?: string;
 }
 
 // Ignoring this one for this iteration
