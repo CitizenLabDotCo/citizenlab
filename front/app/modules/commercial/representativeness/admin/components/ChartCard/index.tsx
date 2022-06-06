@@ -39,22 +39,13 @@ const ChartCard = ({
   const {
     referenceData: data,
     includedUserPercentage,
-    uploadDate,
     referenceDataUploaded,
   } = useReferenceData(customField, projectFilter);
 
   const hideTicks = isNilOrError(data) ? undefined : data.length > 12;
 
-  const preferTableView = hideTicks;
-
   const currentChartRef = useRef<SVGElement>();
-  const [viewState, setViewState] = useState<ViewState | undefined>(
-    preferTableView === undefined
-      ? undefined
-      : preferTableView
-      ? 'table'
-      : 'chart'
-  );
+  const [viewState, setViewState] = useState<ViewState | undefined>('chart');
 
   const localize = useLocalize();
 
@@ -70,7 +61,6 @@ const ChartCard = ({
   if (
     isNilOrError(data) ||
     isNilOrError(includedUserPercentage) ||
-    isNilOrError(uploadDate) ||
     referenceDataUploaded === undefined ||
     hideTicks === undefined ||
     viewState === undefined
@@ -89,7 +79,7 @@ const ChartCard = ({
     formatMessage(messages.totalPopulation),
   ];
 
-  const legendLabels = getLegendLabels(barNames, uploadDate);
+  const legendLabels = getLegendLabels(barNames);
 
   const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
