@@ -5,24 +5,16 @@ class IdeaCustomFieldsService
     default_fields(custom_form)
   end
 
-  def configurable_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
-    all_fields(
-      custom_form,
-      custom_fields_scope: custom_fields_scope,
-      filter_unmodifiable: filter_unmodifiable
-    ).reject(&:hidden?)
+  def configurable_fields(custom_form, filter_unmodifiable: false)
+    all_fields(custom_form, filter_unmodifiable: filter_unmodifiable).reject(&:hidden?)
   end
 
   def reportable_fields(custom_form)
     all_fields(custom_form).select(&:enabled?).reject(&:built_in?)
   end
 
-  def visible_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
-    configurable_fields(
-      custom_form,
-      custom_fields_scope: custom_fields_scope,
-      filter_unmodifiable: filter_unmodifiable
-    ).select(&:enabled?)
+  def visible_fields(custom_form, filter_unmodifiable: false)
+    configurable_fields(custom_form, filter_unmodifiable: filter_unmodifiable).select(&:enabled?)
   end
 
   def extra_visible_fields(custom_form)
