@@ -28,7 +28,7 @@ class ProjectsFilteringService
   HOMEPAGE_FILTER_PARAMS << :areas
   add_filter('by_areas') do |scope, options|
     areas = options[:areas]
-    areas ? scope.with_some_areas(areas) : scope
+    areas ? scope.with_some_areas(areas).or(scope.with_all_areas) : scope
   end
 
   add_filter('filter_ids') do |scope, options|

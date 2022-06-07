@@ -122,6 +122,7 @@ export interface IProjectAttributes {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   input_term: InputTerm;
+  include_all_areas: boolean;
   action_descriptor: {
     posting_idea: {
       enabled: boolean;
@@ -238,7 +239,7 @@ export interface IProjectFormState {
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
-  areaType: 'all' | 'selection';
+  areaType: 'none' | 'all' | 'selection';
   locale: Locale;
   currentTenant: IAppConfiguration | null;
   areasOptions: IOption[];

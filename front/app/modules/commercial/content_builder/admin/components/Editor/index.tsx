@@ -15,6 +15,7 @@ import RenderNode from '../RenderNode';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
 
 type EditorProps = {
   isPreview: boolean;
@@ -38,6 +39,7 @@ const Editor: React.FC<EditorProps> = ({
         Iframe,
         AboutBox,
         Accordion,
+        WhiteSpace,
       }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}

@@ -1,6 +1,10 @@
 # Changelog
 
-## Next release
+### Added
+
+- [CL-774] Add new option when adding areas to a project: "No areas"
+
+## 2022-05-31
 
 ### Changed
 
