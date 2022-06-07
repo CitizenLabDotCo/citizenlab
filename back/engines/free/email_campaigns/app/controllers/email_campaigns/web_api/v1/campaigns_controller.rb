@@ -144,12 +144,12 @@ module EmailCampaigns
     end
 
     def user_not_authorized(exception)
-      if %w[create? update? destroy? do_send? send_preview? deliveries? stats?].include? exception.query
-        if !current_user.admin? && current_user.project_moderator?
-          render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
-        else
-          render json: { errors: { base: [{ error: 'unauthorized' }] } }, status: :unauthorized
-        end
+      return unless %w[create? update? destroy? do_send? send_preview? deliveries? stats?].include? exception.query
+
+      if !current_user.admin? && current_user.project_moderator?
+        render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
+      else
+        render json: { errors: { base: [{ error: 'unauthorized' }] } }, status: :unauthorized
       end
     end
   end

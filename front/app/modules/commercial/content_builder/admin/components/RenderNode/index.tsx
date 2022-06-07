@@ -21,6 +21,8 @@ const TEXT = 'Text';
 const IMAGE = 'Image';
 const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
+const ACCORDION = 'Accordion';
+const WHITE_SPACE = 'WhiteSpace';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -29,7 +31,9 @@ type ComponentNamesType =
   | typeof TEXT
   | typeof IMAGE
   | typeof IFRAME
-  | typeof ABOUT_BOX;
+  | typeof ABOUT_BOX
+  | typeof ACCORDION
+  | typeof WHITE_SPACE;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -47,6 +51,10 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.url;
     case ABOUT_BOX:
       return messages.aboutBox;
+    case ACCORDION:
+      return messages.accordion;
+    case WHITE_SPACE:
+      return messages.whiteSpace;
   }
 };
 
@@ -64,18 +72,6 @@ const StyledBox = styled(Box)`
 
 const RenderNode = ({ render }) => {
   const {
-    isActive,
-    isDeletable,
-    parentId,
-    actions: { selectNode },
-    query: { node },
-  } = useEditor((_, query) => ({
-    isActive: query.getEvent('selected').contains(id),
-    parentId: id && query.node(id).ancestors()[0],
-    isDeletable: id && query.node(id).isDeletable(),
-  }));
-
-  const {
     id,
     name,
     isHover,
@@ -86,6 +82,20 @@ const RenderNode = ({ render }) => {
     name: node.data.name as ComponentNamesType,
     hasError: node.data.props.hasError,
   }));
+
+  const {
+    isActive,
+    isDeletable,
+    parentId,
+    actions: { selectNode },
+    query: { node },
+  } = useEditor((_, query) => {
+    return {
+      isActive: id && query.getEvent('selected').contains(id),
+      parentId: id && query.node(id).ancestors()[0],
+      isDeletable: id && query.node(id).isDeletable(),
+    };
+  });
 
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
@@ -126,10 +136,13 @@ const RenderNode = ({ render }) => {
 
   return (
     <StyledBox
+      className="e2e-render-node"
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"
       borderStyle={solidBorderIsVisible ? 'solid' : 'dashed'}
+      minHeight={id === ROOT_NODE ? '160px' : '0px'}
+      background="#fff"
       borderWidth="1px"
       borderColor={
         hasError
@@ -145,6 +158,7 @@ const RenderNode = ({ render }) => {
     >
       {nodeIsSelected && (
         <Box
+          id="e2e-node-label"
           p="4px"
           bgColor={hasError ? colors.clRedError : colors.adminTextColor}
           color="#fff"

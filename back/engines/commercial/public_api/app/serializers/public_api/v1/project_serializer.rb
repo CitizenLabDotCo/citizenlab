@@ -4,11 +4,11 @@ class PublicApi::V1::ProjectSerializer < ActiveModel::Serializer
   @@multiloc_service = MultilocService.new
 
   attributes :id,
-    :title,
-    :description_html,
-    :ideas_count,
-    :href,
-    :images
+             :title,
+             :description_html,
+             :ideas_count,
+             :href,
+             :images
 
   def title
     @@multiloc_service.t(object.title_multiloc)

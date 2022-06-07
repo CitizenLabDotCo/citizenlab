@@ -129,7 +129,7 @@ resource 'Stats - Ideas' do
         topic = create(:topic)
         @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end
@@ -176,7 +176,7 @@ resource 'Stats - Ideas' do
         topic = create(:topic)
         @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end
@@ -186,7 +186,7 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
       end
     end
@@ -208,7 +208,7 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 2
       end
     end
@@ -240,7 +240,7 @@ resource 'Stats - Ideas' do
       before do
         @project = create(:project)
         travel_to start_at + 2.months do
-        create(:idea, project: @project, idea_status: @proposed)
+          create(:idea, project: @project, idea_status: @proposed)
         end
       end
 
@@ -286,7 +286,7 @@ resource 'Stats - Ideas' do
         topic = create(:topic)
         @project = create(:project, allowed_input_topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end
@@ -296,7 +296,7 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match_array %w[ideas status status_id]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
       end
     end
@@ -318,7 +318,7 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match_array %w[status status_id ideas]
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
       end
     end
@@ -374,7 +374,7 @@ resource 'Stats - Ideas' do
         travel_to start_at + 8.months do
           @group = create(:group)
           user = create(:user, manual_groups: [@group])
-          idea = create(:idea, author: user)
+          create(:idea, author: user)
           create(:idea)
         end
       end
@@ -401,15 +401,15 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         project_col = worksheet.map { |col| col.cells[1].value }
-        header, *projects = project_col
+        _header, *projects = project_col
         expect(projects).to match_array [@project1.id, @project2.id]
 
         project_name_col = worksheet.map { |col| col.cells[0].value }
-        header, *project_names = project_name_col
+        _header, *project_names = project_name_col
         expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
 
         idea_col = worksheet.map { |col| col.cells[2].value }
-        header, *ideas = idea_col
+        _header, *ideas = idea_col
         expect(ideas).to match_array [5, 1]
       end
     end
@@ -432,7 +432,7 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         idea_col = worksheet.map { |col| col.cells[2].value }
-        header, *ideas = idea_col
+        _header, *ideas = idea_col
         expect(ideas.sum).to eq 1
       end
     end
@@ -446,7 +446,7 @@ resource 'Stats - Ideas' do
         travel_to start_at + 8.months do
           @group = create(:group)
           user = create(:user, manual_groups: [@group])
-          idea = create(:idea, author: user)
+          create(:idea, author: user)
           create(:idea)
         end
       end
@@ -456,7 +456,7 @@ resource 'Stats - Ideas' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         idea_col = worksheet.map { |col| col.cells[2].value }
-        header, *ideas = idea_col
+        _header, *ideas = idea_col
         expect(ideas.sum).to eq 1
       end
     end
@@ -584,7 +584,7 @@ resource 'Stats - Ideas' do
       expect(worksheet.count).to eq end_at.yday + 1
       expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
       amount_col = worksheet.map { |col| col.cells[1].value }
-      header, *amounts = amount_col
+      _header, *amounts = amount_col
       expect(amounts.sum).to eq 6
     end
 
@@ -628,7 +628,7 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         # monotonically increasing
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
 
         expect(amounts.last).to eq Idea.published.count

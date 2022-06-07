@@ -52,10 +52,11 @@ module Surveys
         page_size = params[:page_size] || 1000
         before = nil
         output = []
+        statuses = [401, 403]
         loop do
           page_params = before ? params.merge(before: before) : params
           responses_page = responses(form_id: form_id, **page_params.merge(page_size: page_size))
-          if [401, 403].include? responses_page.code
+          if statuses.include? responses_page.code
             raise TypeformApiParser::AuthorizationError.new(
               error_key: JSON.parse(responses_page.parsed_response)['code'],
               description: JSON.parse(responses_page.parsed_response)['description']

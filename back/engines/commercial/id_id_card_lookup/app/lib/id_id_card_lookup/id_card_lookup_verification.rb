@@ -59,15 +59,12 @@ module IdIdCardLookup
     end
 
     def verify_sync(card_id: nil)
-      if card_id.blank?
-        raise Verification::VerificationService::ParameterInvalidError, 'card_id'
-      elsif IdCard.find_by_card_id(card_id)
-        {
-          uid: IdCardService.new.normalize(card_id)
-        }
-      else
-        raise Verification::VerificationService::NoMatchError
-      end
+      raise Verification::VerificationService::ParameterInvalidError, 'card_id' if card_id.blank?
+      raise Verification::VerificationService::NoMatchError unless IdCard.find_by_card_id(card_id)
+
+      {
+        uid: IdCardService.new.normalize(card_id)
+      }
     end
   end
 end

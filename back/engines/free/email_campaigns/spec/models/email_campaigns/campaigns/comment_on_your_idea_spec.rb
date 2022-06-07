@@ -35,9 +35,9 @@ RSpec.describe EmailCampaigns::Campaigns::CommentOnYourIdea, type: :model do
       expect(notification.initiating_user.admin?).to be false
 
       command = campaign.generate_commands(
-          recipient: notification_activity.item.recipient,
-          activity: notification_activity
-        ).first
+        recipient: notification_activity.item.recipient,
+        activity: notification_activity
+      ).first
 
       initial = "#{notification.initiating_user.last_name[0]}."
       expect(command.dig(:event_payload, :initiating_user_last_name)).to eq(initial)

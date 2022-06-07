@@ -20,6 +20,8 @@ import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
+import Accordion from '../CraftComponents/Accordion';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
 
 // Intl
 import messages from '../../messages';
@@ -177,6 +179,52 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-accordion"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element
+                is={Accordion}
+                title={formatMessage(messages.accordionTitleValue)}
+                text={formatMessage(messages.accordionTextValue)}
+                openByDefault={false}
+                id="Accordion"
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="accordion"
+            label={formatMessage(messages.accordion)}
+          />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-white-space"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element is={WhiteSpace} size="small" id="WhiteSpace" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="collapse-all"
+            label={formatMessage(messages.whiteSpace)}
+          />
         </DraggableElement>
       </Box>
     </Box>

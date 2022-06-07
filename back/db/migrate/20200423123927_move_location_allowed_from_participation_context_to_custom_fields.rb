@@ -21,12 +21,12 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
-              ml_s.i18n_to_multiloc(
-                'custom_fields.ideas.location.description',
-                locales: CL2_SUPPORTED_LOCALES
-              )
+            ml_s.i18n_to_multiloc(
+              'custom_fields.ideas.location.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
           rescue StandardError
-              {}
+            {}
           end,
           required: false,
           enabled: false
@@ -53,12 +53,12 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
             locales: CL2_SUPPORTED_LOCALES
           ),
           description_multiloc: begin
-              ml_s.i18n_to_multiloc(
-                'custom_fields.ideas.location.description',
-                locales: CL2_SUPPORTED_LOCALES
-              )
+            ml_s.i18n_to_multiloc(
+              'custom_fields.ideas.location.description',
+              locales: CL2_SUPPORTED_LOCALES
+            )
           rescue StandardError
-              {}
+            {}
           end,
           required: false,
           enabled: false

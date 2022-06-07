@@ -20,7 +20,7 @@ class CreateDataSources < ActiveRecord::Migration[6.1]
     reversible do |dir|
       dir.up do
         select_all('SELECT * FROM insights_views').each do |view|
-          insert_query = <<~SQL
+          insert_query = <<~SQL.squish
             INSERT INTO insights_data_sources (view_id, origin_type, origin_id, created_at, updated_at)
             VALUES ('#{view['id']}', 'Project', '#{view['scope_id']}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
           SQL
@@ -31,7 +31,7 @@ class CreateDataSources < ActiveRecord::Migration[6.1]
 
       dir.down do
         select_all('SELECT * FROM insights_data_sources').each do |data_source|
-          update_query = <<~SQL
+          update_query = <<~SQL.squish
             UPDATE insights_views
             SET scope_id = '#{data_source['origin_id']}'
             WHERE id = '#{data_source['view_id']}'

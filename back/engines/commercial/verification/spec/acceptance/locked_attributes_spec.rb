@@ -11,7 +11,7 @@ resource 'Users - Locked attributes' do
     @user = create(:user)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
-    end
+  end
 
   get 'web_api/v1/users/me/locked_attributes' do
     with_options scope: :page do
@@ -40,7 +40,7 @@ resource 'Users - Locked attributes' do
         expect(status).to eq(401)
       end
     end
-end
+  end
 
   get 'web_api/v1/users/custom_fields/json_forms_schema', document: false do
     before do

@@ -68,34 +68,34 @@ module SmartGroups::Rules
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      if custom_field.input_type == 'number'
-        case predicate
-        when 'is_equal'
-          users_scope.where("(custom_field_values->>'#{key}')::float = ?", value)
-        when 'not_is_equal'
-          users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::float != ?", value)
-        when 'is_larger_than'
-          users_scope.where("(custom_field_values->>'#{key}')::float > ?", value)
-        when 'is_larger_than_or_equal'
-          users_scope.where("(custom_field_values->>'#{key}')::float >= ?", value)
-        when 'is_smaller_than'
-          users_scope.where("(custom_field_values->>'#{key}')::float < ?", value)
-        when 'is_smaller_than_or_equal'
-          users_scope.where("(custom_field_values->>'#{key}')::float <= ?", value)
-        when 'is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NULL")
-        when 'not_is_empty'
-          users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
-        else
-          raise "Unsupported predicate #{predicate}"
-        end
+      return unless custom_field.input_type == 'number'
+
+      case predicate
+      when 'is_equal'
+        users_scope.where("(custom_field_values->>'#{key}')::float = ?", value)
+      when 'not_is_equal'
+        users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::float != ?", value)
+      when 'is_larger_than'
+        users_scope.where("(custom_field_values->>'#{key}')::float > ?", value)
+      when 'is_larger_than_or_equal'
+        users_scope.where("(custom_field_values->>'#{key}')::float >= ?", value)
+      when 'is_smaller_than'
+        users_scope.where("(custom_field_values->>'#{key}')::float < ?", value)
+      when 'is_smaller_than_or_equal'
+        users_scope.where("(custom_field_values->>'#{key}')::float <= ?", value)
+      when 'is_empty'
+        users_scope.where("custom_field_values->>'#{key}' IS NULL")
+      when 'not_is_empty'
+        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
+      else
+        raise "Unsupported predicate #{predicate}"
       end
     end
 
     private
 
     def needs_value?
-      !VALUELESS_PREDICATES.include?(predicate)
+      VALUELESS_PREDICATES.exclude?(predicate)
     end
   end
 end

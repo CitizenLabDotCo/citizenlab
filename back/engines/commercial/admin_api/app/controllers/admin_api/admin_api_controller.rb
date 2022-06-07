@@ -9,10 +9,10 @@ module AdminApi
     rescue_from ClErrors::TransactionError, with: :transaction_error
 
     def authenticate_request
-      unless request.headers['Authorization'] == ENV.fetch('ADMIN_API_TOKEN')
-        render json: { error: 'Not Authorized' }, status: :unauthorized
-        false
-      end
+      return if request.headers['Authorization'] == ENV.fetch('ADMIN_API_TOKEN')
+
+      render json: { error: 'Not Authorized' }, status: :unauthorized
+      false
     end
 
     def switch_tenant(&block)
