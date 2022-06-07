@@ -3,5 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe HomePage, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it 'only allows once instance of homepage to exist' do
+      create(:home_page)
+      second_home_page = build(:home_page)
+      expect(second_home_page.save).to be(false)
+      expect(second_home_page.errors[:base]).not_to be_empty
+    end
+  end
 end
