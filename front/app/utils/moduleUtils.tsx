@@ -590,7 +590,6 @@ export const insertConfiguration =
     configuration,
     insertAfterName,
     insertBeforeName,
-    removeName,
   }: InsertConfigurationOptions<T>) =>
   (items: T[]): T[] => {
     const itemAlreadyInserted = items.some(
@@ -618,16 +617,6 @@ export const insertConfiguration =
       configuration,
       ...items.slice(insertIndex),
     ];
-
-    if (removeName) {
-      const removeIndex = newItems.findIndex(
-        (item) => removeName === item.name
-      );
-
-      if (removeIndex > -1) {
-        newItems.splice(removeIndex, 1);
-      }
-    }
 
     return newItems;
   };

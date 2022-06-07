@@ -1,6 +1,6 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import Tab from './admin/components/Tab';
+import SidebarNavItem from './admin/components/SidebarNavItem';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 
@@ -49,7 +49,6 @@ const configuration: ModuleConfiguration = {
     ],
   },
   outlets: {
-    'app.containers.Admin.settings.tabs': (props) => <Tab {...props} />,
     'app.containers.Admin.settings.customize.Events': (props) => (
       <ModuleActive {...props} />
     ),
@@ -64,6 +63,9 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.settings.policies.subTitle': () => (
       <PoliciesSubtitle />
+    ),
+    'app.containers.Admin.sideBar.navItems': (props) => (
+      <SidebarNavItem {...props} />
     ),
   },
 };
