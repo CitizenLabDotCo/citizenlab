@@ -35,16 +35,6 @@ describe IdeaCustomFieldsService do
       expect(service.all_fields(custom_form)).to all(be_valid)
     end
 
-    it "doesn't return anything outside of the passed custom_fields_scope" do
-      custom_form = create(:custom_form)
-      cf1 = create(:custom_field, resource: custom_form)
-      cf2 = create(:custom_field, resource: custom_form)
-      custom_fields_scope = CustomField.where(id: cf1)
-      output = service.all_fields(custom_form, custom_fields_scope: custom_fields_scope)
-      expect(output.size).to be > 1
-      expect(output).not_to include(cf2)
-    end
-
     it 'takes the order of the built-in fields' do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'location_description')
