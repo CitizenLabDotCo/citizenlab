@@ -67,10 +67,10 @@ module Notifications
 
       if invite && recipient_id && initiator_id
         [new(
-           recipient_id: recipient_id,
-           initiating_user_id: initiator_id,
-           invite: invite
-         )]
+          recipient_id: recipient_id,
+          initiating_user_id: initiator_id,
+          invite: invite
+        )]
       else
         []
       end

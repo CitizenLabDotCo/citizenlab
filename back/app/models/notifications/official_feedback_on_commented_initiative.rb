@@ -64,9 +64,8 @@ module Notifications
     def self.make_notifications_on(activity)
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
-      with_status_change = InitiativeStatusChange.where(official_feedback: official_feedback).exists?
 
-      if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.where(official_feedback: official_feedback).exists?
+      if official_feedback.post_type == 'Initiative' && initiator_id && !InitiativeStatusChange.exists?(official_feedback: official_feedback)
         User.active
           .joins(:comments).merge(Comment.published)
           .where(comments: { post: official_feedback.post })

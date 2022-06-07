@@ -96,7 +96,7 @@ module EmailCampaigns
     private
 
     def filter_authors_of_proposed_initiatives(users_scope, _options = {})
-      users_scope.where(id: Initiative.published.proposed.pluck(:author_id))
+      users_scope.where(id: Initiative.published.proposed.select(:author_id))
     end
   end
 end

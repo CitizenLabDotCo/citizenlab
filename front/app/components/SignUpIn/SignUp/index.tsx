@@ -105,7 +105,6 @@ export type TDataLoadedPerOutlet = {
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  windowHeight: number;
   customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
@@ -118,7 +117,6 @@ const SignUp = ({
   onSignUpCompleted,
   onGoToSignIn,
   className,
-  windowHeight,
 }: Props & InjectedIntlProps) => {
   const authUser = useAuthUser();
   const tenant = useAppConfiguration();
@@ -313,7 +311,6 @@ const SignUp = ({
 
       <StyledModalContentContainer
         inModal={!!metaData.inModal}
-        windowHeight={`${windowHeight}px`}
         headerHeight={headerHeight}
         ref={modalContentRef}
       >

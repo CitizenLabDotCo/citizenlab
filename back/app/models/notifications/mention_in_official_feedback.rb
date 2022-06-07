@@ -69,7 +69,7 @@ module Notifications
       participant_ids += official_feedback.post.comments.pluck(:author_id)
       participant_ids.uniq!
 
-      if recipient_id && initiator_id && (recipient_id != initiator_id) && !participant_ids.include?(recipient_id)
+      if recipient_id && initiator_id && (recipient_id != initiator_id) && participant_ids.exclude?(recipient_id)
         attributes = {
           recipient_id: recipient_id,
           initiating_user_id: initiator_id,

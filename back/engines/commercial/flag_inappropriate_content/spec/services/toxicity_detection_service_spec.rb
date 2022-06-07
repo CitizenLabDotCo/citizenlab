@@ -27,7 +27,7 @@ describe FlagInappropriateContent::ToxicityDetectionService do
 
     it 'reintroduces a deleted flag if no toxicity was detected' do
       comment = create(:comment, body_multiloc: { 'en' => 'wanker' })
-      flag = create(:inappropriate_content_flag, flaggable: comment, deleted_at: Time.now)
+      create(:inappropriate_content_flag, flaggable: comment, deleted_at: Time.now)
       service.flag_toxicity! comment, attributes: [:body_multiloc]
       expect(comment.reload.inappropriate_content_flag).to be_present
       expect(comment.reload.inappropriate_content_flag.deleted_at).to be_blank

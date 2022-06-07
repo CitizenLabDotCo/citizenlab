@@ -34,7 +34,7 @@ class SideFxOfficialFeedbackService
 
   def process_mentions(feedback)
     feedback.body_multiloc = feedback.body_multiloc.to_h do |locale, body|
-      new_body, users = @@mention_service.process_mentions(body)
+      new_body, _users = @@mention_service.process_mentions(body)
       [locale, new_body]
     end
   end

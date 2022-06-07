@@ -17,9 +17,9 @@ class SideFxAreaService
 
   def before_destroy(area, _user)
     domicile_custom_field = CustomField.with_resource_type('User').find_by(code: 'domicile')
-    if domicile_custom_field
-      UserCustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
-    end
+    return unless domicile_custom_field
+
+    UserCustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
   end
 
   def after_destroy(frozen_area, user)

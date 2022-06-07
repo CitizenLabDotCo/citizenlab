@@ -32,13 +32,13 @@ module Polls
     accepts_nested_attributes_for :response_options
 
     def validate_participation_context_poll
-      if participation_context && !participation_context.poll?
-        errors.add(
-          :participation_context,
-          :not_poll,
-          message: 'the participation_context does not have the "poll" participation_method'
-        )
-      end
+      return unless participation_context && !participation_context.poll?
+
+      errors.add(
+        :participation_context,
+        :not_poll,
+        message: 'the participation_context does not have the "poll" participation_method'
+      )
     end
 
     def validate_option_count

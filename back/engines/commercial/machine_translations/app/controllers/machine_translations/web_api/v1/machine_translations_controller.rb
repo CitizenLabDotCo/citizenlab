@@ -33,12 +33,10 @@ module MachineTranslations
               @translation = MachineTranslationService.new.build_translation_for @translation_attributes
               authorize @translation
             rescue ClErrors::TransactionError => e
-              if e.error_key == :translatable_blank
-                render json: { errors: { base: [{ error: 'translatable_blank' }] } }, status: :unprocessable_entity
-                return
-              else
-                raise e
-              end
+              raise e unless e.error_key == :translatable_blank
+
+              render json: { errors: { base: [{ error: 'translatable_blank' }] } }, status: :unprocessable_entity
+              return
             end
             unless @translation.save
               render json: { errors: @translation.errors.details }, status: :unprocessable_entity

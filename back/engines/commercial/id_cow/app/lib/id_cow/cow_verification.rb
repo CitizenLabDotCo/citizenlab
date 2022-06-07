@@ -92,11 +92,10 @@ module IdCow
 
     # For all other combinations that do not fit in these 4 alternatives, they must be blocked from voting.
     def valid_response!(estado_respuesta:, ind_vigencia: nil, ind_bloqueo: nil)
-      if estado_respuesta != '000'
-        raise Verification::VerificationService::NoMatchError
-      elsif !(ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo)))
-        raise Verification::VerificationService::NotEntitledError
-      end
+      raise Verification::VerificationService::NoMatchError if estado_respuesta != '000'
+      return if ind_vigencia == 'S' || (ind_vigencia == 'N' && ['NO BLOQUEADO', 'RENOVACION', 'TEMPORAL'].include?(ind_bloqueo))
+
+      raise Verification::VerificationService::NotEntitledError
     end
 
     def run_valid?(run)

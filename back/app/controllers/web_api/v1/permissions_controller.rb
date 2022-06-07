@@ -6,9 +6,9 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def index
     @permissions = policy_scope(Permission)
-                   .includes(:permission_scope)
-                   .where(permission_scope_id: permission_scope_id)
-                   .order(created_at: :desc)
+      .includes(:permission_scope)
+      .where(permission_scope_id: permission_scope_id)
+      .order(created_at: :desc)
     @permissions = paginate @permissions
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)

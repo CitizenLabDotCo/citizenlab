@@ -49,7 +49,6 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, activity:, time: nil)
-      notification = activity.item
       [{
         event_payload: {
 

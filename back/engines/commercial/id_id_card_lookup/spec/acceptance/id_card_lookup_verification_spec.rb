@@ -34,7 +34,7 @@ resource 'Verifications' do
     describe do
       before do
         @card_id = '123.46234-78B'
-        id_card = create(:id_id_card_lookup_id_card, card_id: @card_id)
+        create(:id_id_card_lookup_id_card, card_id: @card_id)
       end
 
       let(:card_id) { @card_id }

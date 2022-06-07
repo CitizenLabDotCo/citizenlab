@@ -118,25 +118,25 @@ module EmailCampaigns
         .order(assigned_at: :desc)
         .includes(:initiative_images)
         .map do |initiative|
-          {
-            id: initiative.id,
-            title_multiloc: initiative.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: initiative.published_at&.iso8601,
-            assigned_at: initiative.assigned_at&.iso8601,
-            author_name: name_service.display_name!(initiative.author),
-            upvotes_count: initiative.upvotes_count,
-            comments_count: initiative.comments_count,
-            images: initiative.initiative_images.map do |image|
-              {
-                ordering: image.ordering,
-                versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-              }
-            end,
-            header_bg: {
-              versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at&.iso8601,
+          assigned_at: initiative.assigned_at&.iso8601,
+          author_name: name_service.display_name!(initiative.author),
+          upvotes_count: initiative.upvotes_count,
+          comments_count: initiative.comments_count,
+          images: initiative.initiative_images.map do |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
+          end,
+          header_bg: {
+            versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           }
+        }
       end
     end
 
@@ -154,26 +154,26 @@ module EmailCampaigns
         .order(upvotes_count: :desc)
         .includes(:initiative_images)
         .map do |initiative|
-          {
-            id: initiative.id,
-            title_multiloc: initiative.title_multiloc,
-            url: Frontend::UrlService.new.model_to_url(initiative),
-            published_at: initiative.published_at&.iso8601,
-            assigned_at: initiative.assigned_at&.iso8601,
-            author_name: name_service.display_name!(initiative.author),
-            upvotes_count: initiative.upvotes_count,
-            comments_count: initiative.comments_count,
-            threshold_reached_at: initiative.threshold_reached_at&.iso8601,
-            images: initiative.initiative_images.map do |image|
-              {
-                ordering: image.ordering,
-                versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
-              }
-            end,
-            header_bg: {
-              versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
+        {
+          id: initiative.id,
+          title_multiloc: initiative.title_multiloc,
+          url: Frontend::UrlService.new.model_to_url(initiative),
+          published_at: initiative.published_at&.iso8601,
+          assigned_at: initiative.assigned_at&.iso8601,
+          author_name: name_service.display_name!(initiative.author),
+          upvotes_count: initiative.upvotes_count,
+          comments_count: initiative.comments_count,
+          threshold_reached_at: initiative.threshold_reached_at&.iso8601,
+          images: initiative.initiative_images.map do |image|
+            {
+              ordering: image.ordering,
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
+          end,
+          header_bg: {
+            versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
           }
+        }
       end
     end
   end
