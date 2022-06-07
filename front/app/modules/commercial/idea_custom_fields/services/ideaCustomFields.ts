@@ -55,7 +55,7 @@ export function ideaCustomFieldsStream(
   projectId: string,
   streamParams: IStreamParams | null = null
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields`;
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   return streams.get<IIdeaCustomFields>({ apiEndpoint, ...streamParams });
 }
 
