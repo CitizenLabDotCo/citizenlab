@@ -91,28 +91,20 @@ describe IdeaCustomFieldsService do
   end
 
   describe 'reportable_fields' do
-    it 'exclude disabled fields' do
+    it 'exclude disabled and built-in fields' do
       custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
       hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
-      output = service.reportable_fields custom_form, filter_unmodifiable: true
-      expect(output).to include title_field
+      output = service.reportable_fields custom_form
+      expect(output).not_to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
       expect(output).to include hidden_field
       expect(output).not_to include topic_field
-      expect(output.map(&:code)).to match_array [
-        'title_multiloc',
-        'body_multiloc',
-        'location_description',
-        'idea_images_attributes',
-        'idea_files_attributes',
-        nil,
-        nil
-      ]
+      expect(output.size).to eq 2
     end
   end
 

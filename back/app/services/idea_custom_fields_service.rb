@@ -13,12 +13,8 @@ class IdeaCustomFieldsService
     ).reject(&:hidden?)
   end
 
-  def reportable_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
-    all_fields(
-      custom_form,
-      custom_fields_scope: custom_fields_scope,
-      filter_unmodifiable: filter_unmodifiable
-    ).select(&:enabled?)
+  def reportable_fields(custom_form)
+    all_fields(custom_form).select(&:enabled?).reject(&:built_in?)
   end
 
   def visible_fields(custom_form, custom_fields_scope: nil, filter_unmodifiable: false)
