@@ -20,8 +20,6 @@ import { endsWith } from 'utils/helperUtils';
 import 'assets/semantic/semantic.min.css';
 import { rgba } from 'polished';
 
-import Outlet from 'components/Outlet';
-
 const Container = styled.div`
   display: flex;
   background: ${colors.background};
@@ -119,8 +117,6 @@ const AdminPage = memo<Props & WithRouterProps>(
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const [adminFullWidthContent, setAdminFullWidthContent] = useState(false);
-
     useEffect(() => {
       const subscriptions = [
         globalState
@@ -134,9 +130,6 @@ const AdminPage = memo<Props & WithRouterProps>(
         subscriptions.forEach((subscription) => subscription.unsubscribe());
       };
     }, []);
-
-    const setAdminFullWidthContentToVisible = (isVisible) =>
-      setAdminFullWidthContent(isVisible);
 
     const userCanViewAdmin = () =>
       hasPermission({
@@ -177,23 +170,14 @@ const AdminPage = memo<Props & WithRouterProps>(
       >
         <ThemeProvider theme={chartTheme}>
           <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            {!adminFullWidthContent && (
-              <>
-                <Sidebar />
-                <RightColumn
-                  className={`${fullWidth && 'fullWidth'} ${
-                    noPadding && 'noPadding'
-                  }`}
-                >
-                  {children}
-                </RightColumn>
-              </>
-            )}
-            <Outlet
-              id="app.containers.Admin.contentBuilderLayout"
-              onMount={setAdminFullWidthContentToVisible}
-              childrenToRender={children}
-            />
+            <Sidebar />
+            <RightColumn
+              className={`${fullWidth && 'fullWidth'} ${
+                noPadding && 'noPadding'
+              }`}
+            >
+              {children}
+            </RightColumn>
           </Container>
         </ThemeProvider>
       </HasPermission>

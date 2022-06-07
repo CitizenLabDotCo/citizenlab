@@ -132,10 +132,6 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
   };
-  'app.containers.Admin.contentBuilderLayout': {
-    onMount: (isVisible: boolean) => void;
-    childrenToRender: React.ReactNode;
-  };
   'app.containers.Admin.projects.edit.description.contentBuilder': {
     onMount: () => void;
     valueMultiloc: Multiloc | null | undefined;
