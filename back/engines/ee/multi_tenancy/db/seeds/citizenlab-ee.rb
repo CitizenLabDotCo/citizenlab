@@ -213,6 +213,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      representativeness: {
+        enabled: true,
+        allowed: true
+      },
       content_builder: {
         enabled: true,
         allowed: true
