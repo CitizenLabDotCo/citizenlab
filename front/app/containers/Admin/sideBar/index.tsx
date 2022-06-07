@@ -211,6 +211,12 @@ class Sidebar extends PureComponent<
           ],
         },
         {
+          name: 'menu',
+          link: '/admin/pages-menu',
+          iconName: 'blankPage',
+          message: 'menu',
+        },
+        {
           name: 'settings',
           link: '/admin/settings/general',
           iconName: 'setting',
