@@ -5,7 +5,7 @@ import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hoo
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, Text, Input } from '@citizenlab/cl2-component-library';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 // stylings
@@ -25,7 +25,7 @@ interface Props {
   fieldId: string;
 }
 
-const SortableFieldToggles = ({ fieldId }: Props) => {
+const OptionRows = ({ fieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(fieldId);
   const localize = useLocalize();
 
@@ -45,11 +45,18 @@ const SortableFieldToggles = ({ fieldId }: Props) => {
                 dropRow={handleDropRow}
                 noStyling
               >
-                <Box ml="8px" display="flex" alignItems="center">
+                <Box pl="8px" display="flex" alignItems="center" width="50%">
                   <Toggle checked={true} onChange={console.log} />
                   <StyledText ml="12px" variant="bodyM" color="adminTextColor">
                     {localize(attributes.title_multiloc)}
                   </StyledText>
+                </Box>
+
+                <Box ml="-20px" display="flex" alignItems="center" width="50%">
+                  <Input type="number" />
+                  <Text ml="16px" mr="24px">
+                    50%
+                  </Text>
                 </Box>
               </SortableRow>
             )
@@ -60,4 +67,4 @@ const SortableFieldToggles = ({ fieldId }: Props) => {
   );
 };
 
-export default SortableFieldToggles;
+export default OptionRows;
