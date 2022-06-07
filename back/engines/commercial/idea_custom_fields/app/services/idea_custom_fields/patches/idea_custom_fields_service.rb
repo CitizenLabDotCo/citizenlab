@@ -3,8 +3,8 @@
 module IdeaCustomFields
   module Patches
     module IdeaCustomFieldsService
-      def all_fields(custom_form, filter_unmodifiable: false)
-        custom_and_default_fields(custom_form, filter_unmodifiable: filter_unmodifiable)
+      def all_fields(custom_form)
+        custom_and_default_fields custom_form
       end
 
       def find_or_build_field(custom_form, code)
@@ -14,22 +14,14 @@ module IdeaCustomFields
 
       private
 
-      def custom_and_default_fields(custom_form, filter_unmodifiable: false)
-        # Some fields exist but should not be shown in the input form settings, and we filter them here when the filter_unmodifiable flag is true
-        db_cfs = custom_form.custom_fields
-        db_cfs = db_cfs.where.not(code: %w[location_point_geojson author_id budget]).or(db_cfs.where(code: nil)) if filter_unmodifiable
-
-        bi_cfs = default_fields(custom_form)
-        bi_cfs = bi_cfs.filter { |cf| cf.code != 'location_point_geojson' && cf.code != 'author_id' && cf.code != 'budget' } if filter_unmodifiable
-        bi_codes = bi_cfs.map(&:code)
-
-        replacing, additional = db_cfs.partition { |c| bi_codes.include? c.code }
-
+      def custom_and_default_fields(custom_form)
+        persisted_fields = custom_form.custom_fields
+        default_fields = default_fields custom_form
         [
-          *bi_cfs.map do |bi_cf|
-            replacing.find { |c| bi_cf.code == c.code } || bi_cf
+          *default_fields.map do |default_field|
+            persisted_fields.find { |c| default_field.code == c.code } || default_field
           end,
-          *additional
+          *persisted_fields.reject(&:built_in?)
         ]
       end
     end

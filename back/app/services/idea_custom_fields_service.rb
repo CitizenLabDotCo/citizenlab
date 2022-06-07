@@ -6,7 +6,9 @@ class IdeaCustomFieldsService
   end
 
   def configurable_fields(custom_form)
-    all_fields(custom_form, filter_unmodifiable: true).reject(&:hidden?)
+    all_fields(custom_form).reject(&:hidden?).select do |field|
+      %w[location_point_geojson author_id budget].exclude? field.code
+    end
   end
 
   def reportable_fields(custom_form)
