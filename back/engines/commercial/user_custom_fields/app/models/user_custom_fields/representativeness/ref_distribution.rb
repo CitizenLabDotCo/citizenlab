@@ -38,9 +38,8 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
 
   def validate_distribution_options
     return if custom_field.blank? || distribution.blank?
+    return if distribution.keys.to_set <= value_ids.to_set
 
-    unless distribution.keys.to_set <= value_ids.to_set
-      errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
-    end
+    errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
   end
 end
