@@ -59,7 +59,7 @@ const ContentBuilderSettings = () => {
     <StyledBox
       position="fixed"
       right="0"
-      top={`${stylingConsts.menuHeight * 2}px`}
+      top={`${stylingConsts.menuHeight}px`}
       zIndex="99999"
       p="20px"
       w="400px"

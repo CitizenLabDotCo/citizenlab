@@ -11,6 +11,14 @@ const configuration: ModuleConfiguration = {
         name: 'content_builder',
         container: () => import('./admin/containers'),
       },
+      {
+        path: 'content-builder/projects/:projectId/mobile-preview',
+        name: 'content_builder_mobile_preview',
+        container: () =>
+          import(
+            './admin/components/ContentBuilderMobileView/MobileViewPreview'
+          ),
+      },
     ],
   },
   outlets: {
