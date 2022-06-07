@@ -19,16 +19,16 @@ class CreateHomePages < ActiveRecord::Migration[6.1]
       t.boolean :banner_enabled, default: true, null: false
       t.string :banner_layout, default: 'full_width_banner_layout', null: false
       t.jsonb :banner_signed_in_header_multiloc, default: {}, null: false
-      t.jsonb :banner_signed_in_text_multiloc, default: {}, null: false
-      t.string :banner_signed_in_type, default: 'no_button', null: false
-      t.string :banner_signed_in_url
+      t.jsonb :cta_signed_in_text_multiloc, default: {}, null: false
+      t.string :cta_signed_in_type, default: 'no_button', null: false
+      t.string :cta_signed_in_url
       t.jsonb :banner_signed_out_header_multiloc, default: {}, null: false
       t.jsonb :banner_signed_out_subheader_multiloc, default: {}, null: false
       t.string :banner_signed_out_header_overlay_color
       t.integer :banner_signed_out_header_overlay_opacity
-      t.jsonb :banner_signed_out_text_multiloc, default: {}, null: false
-      t.string :banner_signed_out_type, default: 'sign_up_button', null: false
-      t.string :banner_signed_out_url
+      t.jsonb :cta_signed_out_text_multiloc, default: {}, null: false
+      t.string :cta_signed_out_type, default: 'sign_up_button', null: false
+      t.string :cta_signed_out_url
 
       t.timestamps
     end
