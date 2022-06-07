@@ -19,7 +19,7 @@ interface Props {
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
 
-type TProjectAreaType = 'all' | 'selection';
+type TProjectAreaType = 'none' | 'all' | 'selection';
 
 const GeographicAreaInputs = ({
   areaIds,
@@ -29,12 +29,21 @@ const GeographicAreaInputs = ({
   const areas = useAreas();
   const project = useProject({ projectId });
   const localize = useLocalize();
-  const [areaType, setAreaType] = useState<TProjectAreaType>('all');
+  const [areaType, setAreaType] = useState<TProjectAreaType>('none');
 
   useEffect(() => {
     if (!isNilOrError(project)) {
       setAreaType(
-        project.relationships.areas.data.length > 0 ? 'selection' : 'all'
+        // if we have at least one project area
+        project.relationships.areas.data.length > 0
+          ? // areaType is 'selection'
+            'selection'
+          : // else if include_all_areas is true
+          project.attributes.include_all_areas
+          ? // areaType is 'all'
+            'all'
+          : // else areaType is 'none'
+            'none'
       );
     }
   }, [project]);
@@ -47,7 +56,8 @@ const GeographicAreaInputs = ({
   const handleAreaTypeOnChange = (areaType: TProjectAreaType) => {
     setAreaType(areaType);
     onProjectAttributesDiffChange({
-      area_ids: areaType === 'all' ? [] : areaIds,
+      area_ids: areaType === 'selection' ? areaIds : [],
+      include_all_areas: areaType === 'all',
     });
   };
 
@@ -96,11 +106,11 @@ const GeographicAreaInputs = ({
     return (
       <StyledSectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.areasLabel} />
+          <FormattedMessage {...messages.areasLabelHint} />
           <IconTooltip
             content={
               <FormattedMessage
-                {...messages.areasLabelTooltip}
+                {...messages.areasLabelTooltipHint}
                 values={{
                   areasLabelTooltipLink: (
                     <Link to="/admin/settings/areas">
@@ -114,6 +124,14 @@ const GeographicAreaInputs = ({
             }
           />
         </SubSectionTitle>
+        <Radio
+          onChange={handleAreaTypeOnChange}
+          currentValue={areaType}
+          value="none"
+          name="areas"
+          id="areas-none"
+          label={<FormattedMessage {...messages.areasNoneLabel} />}
+        />
         <Radio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}

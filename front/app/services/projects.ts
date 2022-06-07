@@ -121,6 +121,7 @@ export interface IProjectAttributes {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   input_term: InputTerm;
+  include_all_areas: boolean;
   action_descriptor: {
     posting_idea: {
       enabled: boolean;
@@ -227,6 +228,7 @@ export interface IUpdatedProjectProperties {
   input_term?: InputTerm;
   slug?: string;
   topic_ids?: string[];
+  include_all_areas?: boolean;
 }
 
 export interface IProjectFormState {
