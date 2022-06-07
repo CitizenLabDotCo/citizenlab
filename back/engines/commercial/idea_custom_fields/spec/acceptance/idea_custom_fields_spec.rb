@@ -16,7 +16,7 @@ resource 'Idea Custom Fields' do
       header 'Authorization', "Bearer #{token}"
     end
 
-    get 'web_api/v1/projects/:project_id/custom_fields' do
+    get 'web_api/v1/admin/projects/:project_id/custom_fields' do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
       let!(:custom_field) { create :custom_field, :for_custom_form, resource: create(:custom_form, project: project) }
@@ -32,7 +32,7 @@ resource 'Idea Custom Fields' do
       end
     end
 
-    get 'web_api/v1/projects/:project_id/custom_fields/:id' do
+    get 'web_api/v1/admin/projects/:project_id/custom_fields/:id' do
       let(:custom_field) { create(:custom_field, :for_custom_form) }
       let(:id) { custom_field.id }
 
@@ -43,7 +43,7 @@ resource 'Idea Custom Fields' do
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/custom_fields/by_code/:code' do
+    patch 'web_api/v1/admin/projects/:project_id/custom_fields/by_code/:code' do
       with_options scope: :custom_field do
         parameter :required, 'Whether filling out the field is mandatory', required: false
         parameter :enabled, 'Whether the field is active or not', required: false

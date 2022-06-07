@@ -65,7 +65,7 @@ export function updateIdeaCustomField(
   code: string,
   object: IUpdatedIdeaCustomFieldProperties
 ) {
-  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${code}`;
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields/by_code/${code}`;
   const updateObject = { custom_field: object };
   return streams.update<IIdeaCustomField>(
     apiEndpoint,
