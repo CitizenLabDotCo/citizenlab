@@ -16,7 +16,7 @@ class IdeaCustomFieldsService
   end
 
   def visible_fields(custom_form)
-    configurable_fields(custom_form).select(&:enabled?)
+    all_fields(custom_form).reject(&:hidden?).select(&:enabled?)
   end
 
   def extra_visible_fields(custom_form)

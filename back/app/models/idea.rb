@@ -154,11 +154,6 @@ class Idea < ApplicationRecord
 
   private
 
-  def needs_custom_field_validation?
-    has_custom_fields = project && CustomForm.exists?(project: project)
-    has_custom_fields && (new_record? || custom_field_values_changed?)
-  end
-
   def sanitize_body_multiloc
     service = SanitizationService.new
     self.body_multiloc = service.sanitize_multiloc(
