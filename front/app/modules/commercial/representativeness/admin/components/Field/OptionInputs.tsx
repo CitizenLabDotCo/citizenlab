@@ -19,7 +19,7 @@ const OptionInputs = ({ fieldId }: Props) => {
 
   return (
     <>
-      {userCustomFieldOptions.map((field) => (
+      {userCustomFieldOptions.map(() => (
         <Box display="flex" alignItems="center">
           <Input type="number" />
           <Text ml="16px" mr="24px">
