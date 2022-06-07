@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-774] Add new option when adding areas to a project: "No areas"
+
 ## 2022-05-31
 
 ### Changed
@@ -38,10 +42,6 @@
 ### Fixed
 
 - [CL-788] Fixed issue with different URL when sharing idea from map vs list view
-
-### Added
-
-- [CL-774] Add new option when adding areas to a project: "No areas"
 
 ## 2022-05-20
 
