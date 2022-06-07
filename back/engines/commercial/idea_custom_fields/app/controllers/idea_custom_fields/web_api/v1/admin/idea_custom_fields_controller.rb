@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module IdeaCustomFields
-  class WebApi::V1::IdeaCustomFieldsController < ApplicationController
+  class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index]
     skip_after_action :verify_policy_scoped
