@@ -54,7 +54,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     votes = apply_project_filter(votes)
     votes = apply_topic_filter(votes)
 
-    serie = @@stats_service.group_by_time(
+    @@stats_service.group_by_time(
       votes.group(:mode),
       'votes.created_at',
       @start_at,
@@ -82,7 +82,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     votes = apply_project_filter(votes)
     votes = apply_topic_filter(votes)
 
-    serie = @@stats_service.group_by_time_cumulative(
+    @@stats_service.group_by_time_cumulative(
       votes.group(:mode),
       'votes.created_at',
       @start_at,
@@ -230,10 +230,10 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .count
     data = %w[up down].index_with do |mode|
       serie.keys.select do |key_mode, _|
-          key_mode == mode
-        end.to_h do |_, value|
-          [(value || '_blank'), serie[[mode, value]]]
-        end
+        key_mode == mode
+      end.to_h do |_, value|
+        [(value || '_blank'), serie[[mode, value]]]
+      end
     end
     data['total'] = (data['up'].keys + data['down'].keys).uniq.index_with do |key|
       (data.dig('up', key) || 0) + (data.dig('down', key) || 0)
@@ -280,22 +280,22 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     normalizing_data = votes_by_custom_field_key(key, {}, 'absolute')
     data.transform_values do |buckets|
       buckets.to_h do |value, number|
-          denominator = (normalizing_data.dig('total', value) || 0) + 1
-          [value, number.to_f * 100 / denominator.to_f]
-        end
+        denominator = (normalizing_data.dig('total', value) || 0) + 1
+        [value, number.to_f * 100 / denominator.to_f]
+      end
     end
   end
 
   def render_no_data
-    if @no_data
-      render json: { series: { up: {}, down: {}, total: {} } }
-    end
+    return unless @no_data
+
+    render json: { series: { up: {}, down: {}, total: {} } }
   end
 
   def render_no_data_as_xlsx
-    if @no_data
-      render json: { errors: 'no data for this period' }, status: :unprocessable_entity
-    end
+    return unless @no_data
+
+    render json: { errors: 'no data for this period' }, status: :unprocessable_entity
   end
 
   def do_authorize

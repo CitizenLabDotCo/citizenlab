@@ -64,7 +64,8 @@ describe ParticipationContextService do
       it "returns 'not_permitted' when commenting is disabled in a continuous project" do
         project = create(:continuous_project)
         permission = project.permissions.find_by(action: 'commenting_idea')
-        permission.update!(permitted_by: 'groups',
+        permission.update!(
+          permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
         expect(service.commenting_idea_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
@@ -83,7 +84,7 @@ describe ParticipationContextService do
       let(:idea) { create(:idea, project: project, phases: [project.phases[2]]) }
       let(:permission) do
         service.get_participation_context(project).permissions
-               .find_by(action: 'voting_idea')
+          .find_by(action: 'voting_idea')
       end
 
       it 'returns `not_signed_in` when user needs to be signed in' do
@@ -111,7 +112,8 @@ describe ParticipationContextService do
           project = create(:continuous_project)
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
-          permission.update!(permitted_by: 'groups',
+          permission.update!(
+            permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
           expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
@@ -128,7 +130,8 @@ describe ParticipationContextService do
           project = create(:continuous_project)
           idea = create(:idea, project: project)
           permission = project.permissions.find_by(action: 'voting_idea')
-          permission.update!(permitted_by: 'groups',
+          permission.update!(
+            permitted_by: 'groups',
             group_ids: create_list(:group, 2).map(&:id)
           )
           expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'not_permitted'
@@ -152,7 +155,7 @@ describe ParticipationContextService do
 
       it "returns `not_signed_in` if it's in the current phase and user needs to be signed in" do
         service.get_participation_context(project).permissions.find_by(action: 'voting_idea')
-               .update!(permitted_by: 'users')
+          .update!(permitted_by: 'users')
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, nil)).to eq 'not_signed_in'
       end
 
@@ -166,7 +169,8 @@ describe ParticipationContextService do
         project = create(:continuous_project)
         idea = create(:idea, project: project)
         permission = project.permissions.find_by(action: 'voting_idea')
-        permission.update!(permitted_by: 'groups',
+        permission.update!(
+          permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq 'not_permitted'
@@ -197,7 +201,8 @@ describe ParticipationContextService do
     it 'returns `not_permitted` when taking the survey is not permitted' do
       project = create(:continuous_survey_project)
       permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
-      permission.update!(permitted_by: 'groups',
+      permission.update!(
+        permitted_by: 'groups',
         group_ids: create_list(:group, 2).map(&:id)
       )
       expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
@@ -234,8 +239,10 @@ describe ParticipationContextService do
   describe 'budgeting_disabled_reasons' do
     context 'for timeline projects' do
       it 'returns `not_signed_in` when user needs to be signed in' do
-        project = create(:project_with_current_phase,
-          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
+        project = create(
+          :project_with_current_phase,
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 }
+        )
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
         permission.update!(permitted_by: 'users')
@@ -243,11 +250,14 @@ describe ParticipationContextService do
       end
 
       it 'returns `not_permitted` when the idea is in the current phase and budgeting is not permitted' do
-        project = create(:project_with_current_phase,
-          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
+        project = create(
+          :project_with_current_phase,
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 }
+        )
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
-        permission.update!(permitted_by: 'groups',
+        permission.update!(
+          permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'not_permitted'
@@ -264,7 +274,8 @@ describe ParticipationContextService do
       it "returns 'not_permitted' when budgeting is disabled in a continuous project" do
         project = create(:continuous_budgeting_project)
         permission = project.permissions.find_by(action: 'budgeting')
-        permission.update!(permitted_by: 'groups',
+        permission.update!(
+          permitted_by: 'groups',
           group_ids: create_list(:group, 2).map(&:id)
         )
         idea = create(:idea, project: project)
@@ -281,7 +292,8 @@ describe ParticipationContextService do
 
   describe 'future_posting_enabled_phase' do
     it 'returns the first upcoming phase that has posting enabled' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: {
           sequence: 'xcxxxxxy',
           x: { permissions_config: { posting_idea: false } },
@@ -293,7 +305,8 @@ describe ParticipationContextService do
     end
 
     it 'returns nil if no next phase has posting enabled' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: {
           sequence: 'xcyyy',
           y: { permissions_config: { posting_idea: false } }
@@ -305,7 +318,8 @@ describe ParticipationContextService do
 
   describe 'future_voting_enabled_phase' do
     it 'returns the first upcoming phase that has voting enabled' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: {
           sequence: 'xcxxxxxy',
           x: { permissions_config: { voting_idea: false } },
@@ -318,7 +332,8 @@ describe ParticipationContextService do
     end
 
     it 'returns nil if no next phase has voting enabled' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: {
           sequence: 'xcyyy',
           y: { permissions_config: { voting_idea: false } }
@@ -331,7 +346,8 @@ describe ParticipationContextService do
 
   describe 'future_commenting_enabled_phase' do
     it 'returns the first upcoming phase that has commenting enabled' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: {
           sequence: 'xcxxxxxy',
           x: { permissions_config: { commenting_idea: false } },
@@ -343,7 +359,8 @@ describe ParticipationContextService do
     end
 
     it 'returns nil if no next phase has commenting enabled' do
-      project = create(:project_with_current_phase,
+      project = create(
+        :project_with_current_phase,
         phases_config: {
           sequence: 'xcyyy',
           y: { permissions_config: { commenting_idea: false } }

@@ -35,7 +35,7 @@ resource 'ActionDescriptors' do
       before do
         PermissionsService.new.update_all_permissions
         Permission.find_by(permission_scope: nil, action: 'commenting_initiative')
-                  .update!(permitted_by: 'groups', groups: create_list(:group, 2))
+          .update!(permitted_by: 'groups', groups: create_list(:group, 2))
       end
 
       example_request 'Get the global action descriptors for initiatives' do

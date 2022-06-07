@@ -527,7 +527,7 @@ module AdminApi
     end
 
     def yml_comments(shift_timestamps: 0)
-      (Comment.where('parent_id IS NULL').where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where.not(parent_id: nil).where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
+      (Comment.where(parent_id: nil).where(post_id: @project.ideas.published.where.not(author_id: nil).ids, post_type: 'Idea') + Comment.where.not(parent_id: nil).where(post_id: @project.ideas.published.ids, post_type: 'Idea')).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
           'post_ref'           => lookup_ref(c.post_id, :idea),

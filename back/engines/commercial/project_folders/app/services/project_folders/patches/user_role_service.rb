@@ -38,7 +38,7 @@ module ProjectFolders
 
         admin_publications =
           AdminPublication.joins(:parent)
-                          .where(parents_admin_publications: {
+            .where(parents_admin_publications: {
                                    publication_type: 'ProjectFolders::Folder',
                                    publication_id: user.moderated_project_folder_ids
                                  })

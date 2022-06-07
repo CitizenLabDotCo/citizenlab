@@ -103,8 +103,8 @@ resource 'Groups' do
 
         describe do
           before do
-            member = create(:user, email: 'k@k.com', registration_completed_at: Time.now)
-            not_really_member = create(:user, email: 'kk@kk.com', registration_completed_at: nil)
+            create(:user, email: 'k@k.com', registration_completed_at: Time.now)
+            create(:user, email: 'kk@kk.com', registration_completed_at: nil)
           end
 
           let(:title_multiloc) { build(:group).title_multiloc }

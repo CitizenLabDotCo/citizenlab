@@ -15,6 +15,16 @@ RSpec.describe CustomField, type: :model do
       cf3 = create(:custom_field)
       expect([cf1, cf2, cf3].map(&:key).uniq).to match [cf1, cf2, cf3].map(&:key)
     end
+
+    it 'generates a key made of non-Latin letters of title' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'abbaالرئيسية' })
+      expect(cf.key).to eq('abba')
+    end
+
+    it 'generates a present key from non-Latin title' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'الرئيسية' })
+      expect(cf.key).to be_present
+    end
   end
 
   describe 'description sanitizer' do

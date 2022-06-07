@@ -51,7 +51,7 @@ FactoryBot.define do
 
     factory :franceconnect_identity do
       provider { 'franceconnect' }
-      auth_hash {}
+      auth_hash { nil }
     end
   end
 end

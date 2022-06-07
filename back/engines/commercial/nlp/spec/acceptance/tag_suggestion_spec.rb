@@ -23,16 +23,20 @@ resource 'TagSuggestion' do
 
     describe do
       example 'returns tag suggestions' do
-        allow_any_instance_of(NLP::TagSuggestionService).to receive(:suggest).and_return([
-          {
-            'text' => 'kaggle',
-            'frequency' => 11
-          },
-          {
-            'text' => 'google',
-            'frequency' => 10
-          }
-        ])
+        allow_any_instance_of(NLP::TagSuggestionService).to receive(
+          :suggest
+        ).and_return(
+          [
+            {
+              'text' => 'kaggle',
+              'frequency' => 11
+            },
+            {
+              'text' => 'google',
+              'frequency' => 10
+            }
+          ]
+        )
         do_request
 
         expect(status).to eq 200

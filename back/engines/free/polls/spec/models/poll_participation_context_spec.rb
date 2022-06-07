@@ -16,14 +16,14 @@ describe Polls::PollParticipationContext do
   describe 'anonymous_immutable_after_responses' do
     it 'allows editing poll_anonymous before the first response comes in' do
       pc = create(:continuous_poll_project, poll_anonymous: true)
-      question = create(:poll_question, participation_context: pc)
+      create(:poll_question, participation_context: pc)
       pc.poll_anonymous = false
       expect(pc).to be_valid
     end
 
     it "doesn't allow editing poll_anonymous after the first response came in" do
       pc = create(:continuous_poll_project, poll_anonymous: true)
-      question = create(:poll_question, participation_context: pc)
+      create(:poll_question, participation_context: pc)
       create(:poll_response, participation_context: pc)
       pc.poll_anonymous = false
       expect(pc).to be_invalid

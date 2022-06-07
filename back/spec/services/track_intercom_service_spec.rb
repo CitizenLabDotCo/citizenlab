@@ -59,14 +59,18 @@ describe TrackIntercomService do
       expect(contact).to receive(:email=).with(user.email)
       expect(contact).to receive(:name=).with("#{user.first_name} #{user.last_name}")
       expect(contact).to receive(:signed_up_at=).with(user.registration_completed_at)
-      expect(contact).to receive(:custom_attributes=).with(hash_including(
-        isAdmin: true,
-        isSuperAdmin: false,
-        highestRole: 'admin',
-        firstName: user.first_name,
-        lastName: user.last_name,
-        locale: user.locale
-      ))
+      expect(contact).to receive(
+        :custom_attributes=
+      ).with(
+        hash_including(
+          isAdmin: true,
+          isSuperAdmin: false,
+          highestRole: 'admin',
+          firstName: user.first_name,
+          lastName: user.last_name,
+          locale: user.locale
+        )
+      )
 
       expect(contacts_api).to receive(:save).with(contact).and_return(contact)
 

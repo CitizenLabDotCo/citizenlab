@@ -79,7 +79,7 @@ describe UrlValidationService do
 
   describe '#whitelisted? and #video_whitelisted?' do
     let :valid_video_urls do
-        [
+      [
         'https://www.youtube.com/embed/something?showinfo=0',
         'https://youtube.com/embed/something?showinfo=0',
         'https://player.vimeo.com/video/1',

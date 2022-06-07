@@ -81,14 +81,14 @@ module Insights
 
       def create_params
         @create_params ||= params.require(:category)
-                                 .permit(:name)
-                                 .merge(view_id: params.require(:view_id))
+          .permit(:name)
+          .merge(view_id: params.require(:view_id))
       end
 
       def input_filter_params
         @input_filter_params ||= params.require(:category)
-                                 .permit(inputs: [:search, { keywords: [], categories: [] }])
-                                 .fetch(:inputs, nil)
+          .permit(inputs: [:search, { keywords: [], categories: [] }])
+          .fetch(:inputs, nil)
       end
 
       def update_params

@@ -14,8 +14,8 @@ class ProjectsFilteringService
         ).resolve
 
       Project.includes(:admin_publication)
-             .where(id: homepage_publications.where(publication_type: 'Project').select(:publication_id))
-             .or(Project.includes(:admin_publication).where(admin_publication: { parent_id: homepage_publications }))
+        .where(id: homepage_publications.where(publication_type: 'Project').select(:publication_id))
+        .or(Project.includes(:admin_publication).where(admin_publication: { parent_id: homepage_publications }))
     end
   end
 

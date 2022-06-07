@@ -38,17 +38,17 @@ module IdBogus
       else
         if desired_error.present?
           raise Verification::VerificationService::ParameterInvalidError, 'desired_error'
-        else
-          {
-            uid: SecureRandom.alphanumeric(24),
-            attributes: {
-              last_name: 'BOGUS'
-            },
-            custom_field_values: {
-              gender: 'female'
-            }
-          }
         end
+
+        {
+          uid: SecureRandom.alphanumeric(24),
+          attributes: {
+            last_name: 'BOGUS'
+          },
+          custom_field_values: {
+            gender: 'female'
+          }
+        }
       end
     end
 

@@ -65,7 +65,7 @@ resource 'Volunteering Volunteers' do
       before do
         @cause = create(:cause)
         @volunteers = create_list(:volunteer, 3, cause: @cause)
-        other_volunteer = create(:volunteer)
+        create(:volunteer)
       end
 
       let(:cause_id) { @cause.id }
@@ -86,8 +86,8 @@ resource 'Volunteering Volunteers' do
         @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
         @cause2 = create(:cause, participation_context: @project)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
-        other_cause = create(:cause)
-        other_volunteer = create(:volunteer)
+        create(:cause)
+        create(:volunteer)
       end
 
       let(:participation_context_id) { @project.id }
