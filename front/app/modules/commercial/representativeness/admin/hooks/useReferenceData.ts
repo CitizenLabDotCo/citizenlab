@@ -93,7 +93,6 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
 export default useReferenceData;
 
 const toReferenceData = (usersByField: TStreamResponse): any => {
-  console.log(usersByField.series);
   const { users, expected_users } = usersByField.series;
   const data = Object.keys(users)
     .filter((opt) => opt !== '_blank')
@@ -110,7 +109,6 @@ const toReferenceData = (usersByField: TStreamResponse): any => {
       actualNumber: users[opt],
       referenceNumber: expected_users[opt],
     }));
-  console.log(data);
   return data;
 };
 
@@ -120,6 +118,5 @@ const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
     .filter((opt) => opt !== '_blank')
     .reduce((acc, v) => users[v] + acc, 0);
   const total = Object.values(users).reduce((v, acc) => v + acc, 0);
-  console.log('known / total', known, total);
   return Math.round((known / total) * 100);
 };
