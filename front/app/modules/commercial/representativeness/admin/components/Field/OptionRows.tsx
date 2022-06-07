@@ -5,8 +5,9 @@ import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hoo
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Box, Toggle, Text, Input } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import PopulationInput from './PopulationInput';
 
 // stylings
 import styled from 'styled-components';
@@ -53,10 +54,7 @@ const OptionRows = ({ fieldId }: Props) => {
                 </Box>
 
                 <Box ml="-20px" display="flex" alignItems="center" width="50%">
-                  <Input type="number" />
-                  <Text ml="16px" mr="24px">
-                    50%
-                  </Text>
+                  <PopulationInput />
                 </Box>
               </SortableRow>
             )
