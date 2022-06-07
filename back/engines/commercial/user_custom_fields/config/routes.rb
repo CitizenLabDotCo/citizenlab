@@ -11,6 +11,8 @@ UserCustomFields::Engine.routes.draw do
           resources :custom_field_options, controller: '/web_api/v1/custom_field_options' do
             patch 'reorder', on: :member
           end
+
+          resource :reference_distribution, controller: 'ref_distributions', only: %i[show create destroy]
         end
       end
 
