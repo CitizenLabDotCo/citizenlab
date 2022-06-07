@@ -131,6 +131,7 @@ export default injectIntl<Props & InjectedIntlProps>(
                     enalyzer: formatMessage(messages.enalyzer),
                     qualtrics: formatMessage(messages.qualtrics),
                     smart_survey: formatMessage(messages.smart_survey),
+                    snap_survey: formatMessage(messages.snap_survey),
                     microsoft_forms: formatMessage(messages.microsoft_forms),
                   }[provider]
                 }
