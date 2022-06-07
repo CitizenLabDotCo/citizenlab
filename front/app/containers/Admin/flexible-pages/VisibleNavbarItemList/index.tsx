@@ -4,7 +4,7 @@ import React from 'react';
 import {
   reorderNavbarItem,
   removeNavbarItem,
-} from '../../../../services/navbar';
+} from 'modules/commercial/customizable_navbar/services/navbar';
 import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
 
@@ -15,7 +15,7 @@ import {
   LockedRow,
 } from 'components/admin/ResourceList';
 import { SubSectionTitle } from 'components/admin/Section';
-import NavbarItemRow from '../../../components/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/flexible-pages/NavbarItemRow';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
@@ -29,13 +29,17 @@ import messages from './messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '../..';
+import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  const navbarItems = useNavbarItems();
+  const navbarItems = useNavbarItems({ standard: true });
   const pageSlugById = usePageSlugById();
+  const customizableNavbarEnabled = useFeatureFlag({
+    name: 'customizable_navbar',
+  });
 
   if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
@@ -73,9 +77,11 @@ const VisibleNavbarItemList = ({
 
   return (
     <>
-      <SubSectionTitle>
-        <FormattedMessage {...messages.navigationItems} />
-      </SubSectionTitle>
+      {customizableNavbarEnabled && (
+        <SubSectionTitle>
+          <FormattedMessage {...messages.navigationItems} />
+        </SubSectionTitle>
+      )}
 
       <SortableList
         items={navbarItems}
@@ -113,7 +119,8 @@ const VisibleNavbarItemList = ({
                   title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   showEditButton
-                  showRemoveButton
+                  showRemoveButton={customizableNavbarEnabled}
+                  showDeleteButton={customizableNavbarEnabled}
                   viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}

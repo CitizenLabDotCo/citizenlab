@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-870] Move "navigation" to primary nav item
+
 ## 2022-06-22
 
 ### Fixed

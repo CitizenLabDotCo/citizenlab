@@ -113,6 +113,10 @@ const IconWrapper = styled.div`
   &.processing svg {
     height: 31px;
   }
+
+  &.blankPage svg {
+    height: 31px;
+  }
 `;
 
 type Props = {
