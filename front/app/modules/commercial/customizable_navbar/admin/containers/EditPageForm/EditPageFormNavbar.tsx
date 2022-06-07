@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { getInitialFormValues, createPageUpdateData } from './utils';
-import { NAVIGATION_PATH } from '..';
+import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
 
 // services
 import { updatePage } from 'services/pages';

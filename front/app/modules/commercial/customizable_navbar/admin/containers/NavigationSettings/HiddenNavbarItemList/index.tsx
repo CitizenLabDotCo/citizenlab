@@ -13,7 +13,7 @@ import usePageSlugById from 'hooks/usePageSlugById';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import NavbarItemRow from '../../../components/NavbarItemRow';
+import NavbarItemRow from 'containers/Admin/flexible-pages/NavbarItemRow';
 import Header from './Header';
 
 // i18n
@@ -25,7 +25,7 @@ import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
 import getItemsNotInNavbar, { IItemNotInNavbar } from './getItemsNotInNavbar';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '../..';
+import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
 
 const FIXED_PAGES_SET = new Set<TPageCode>(FIXED_PAGES);
 const removeFixedPages = (page: IPageData) =>
@@ -103,6 +103,7 @@ const HiddenNavbarItemList = ({
               isDefaultPage={item.type === 'default_item'}
               showEditButton={item.type !== 'default_item'}
               showAddButton
+              showDeleteButton
               viewButtonLink={getViewButtonLink(item)}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}

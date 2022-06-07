@@ -4,6 +4,7 @@
 
 ### Changed
 
+- [CL-870] Move "navigation" to primary nav item
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
 
 ## 2022-06-22
