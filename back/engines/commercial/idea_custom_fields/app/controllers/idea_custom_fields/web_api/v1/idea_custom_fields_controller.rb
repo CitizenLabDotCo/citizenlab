@@ -4,19 +4,13 @@ module IdeaCustomFields
   class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index]
-    skip_before_action :authenticate_user
     skip_after_action :verify_policy_scoped
 
     def index
-      @custom_fields = IdeaCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
-        .where(resource: @custom_form)
-        .order(:ordering)
-
-      if IdeaCustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
-        # Some fields exist but should not be shown in the input form settings, and we filter them
-        @custom_fields = IdeaCustomFieldsService.new.all_fields(@custom_form, custom_fields_scope: @custom_fields, filter_unmodifiable: true)
-      end
-      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
+      authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
+      fields = IdeaCustomFieldsService.new.configurable_fields @custom_form, filter_unmodifiable: true
+      fields = fields.sort_by(&:ordering)
+      render json: ::WebApi::V1::CustomFieldSerializer.new(fields, params: fastjson_params).serialized_json
     end
 
     def show

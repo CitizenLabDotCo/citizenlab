@@ -14,8 +14,9 @@ module IdeaCustomFields
       private
 
       def custom_form_custom_field_columns(ideas)
-        projects = ideas.map(&:project)
-        idea_custom_fields = CustomField.enabled.where(resource: CustomForm.where(project: projects))
+        idea_custom_fields = ideas.map(&:project).flat_map do |project|
+          ::IdeaCustomFieldsService.new.reportable_fields project.custom_form
+        end
 
         # options keys are only unique in the scope of their field, namespacing to avoid collisions
         options = CustomFieldOption.where(custom_field: idea_custom_fields).index_by { |option| namespace(option.custom_field_id, option.key) }

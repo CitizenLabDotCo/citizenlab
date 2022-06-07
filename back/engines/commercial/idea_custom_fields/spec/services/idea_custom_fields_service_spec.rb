@@ -98,7 +98,7 @@ describe IdeaCustomFieldsService do
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
       hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
-      output = service.reportable_fields custom_form, filter_unmodifiable: true
+      output = service.reportable_fields custom_form
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
