@@ -12,7 +12,7 @@ describe IdeaCustomFieldsService do
       cf2 = create(:custom_field, resource: custom_form, code: nil)
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.all_fields(custom_form, filter_unmodifiable: true)
+      output = service.all_fields custom_form
       expect(output).to include cf1
       expect(output).to include cf2
       expect(output).to include disabled_field
@@ -25,6 +25,9 @@ describe IdeaCustomFieldsService do
         'idea_images_attributes',
         'idea_files_attributes',
         'topic_ids',
+        'author_id',
+        'budget',
+        'location_point_geojson',
         nil,
         nil
       ]
@@ -38,14 +41,17 @@ describe IdeaCustomFieldsService do
     it 'takes the order of the built-in fields' do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'location_description')
-      output = service.all_fields(custom_form, filter_unmodifiable: true)
+      output = service.all_fields custom_form
       expect(output).to include cf1
       expect(output.map(&:code)).to eq %w[
         title_multiloc
         body_multiloc
+        author_id
+        budget
         proposed_budget
         topic_ids
         location_description
+        location_point_geojson
         idea_images_attributes
         idea_files_attributes
       ]
@@ -60,7 +66,7 @@ describe IdeaCustomFieldsService do
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
       hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
-      output = service.configurable_fields custom_form, filter_unmodifiable: true
+      output = service.configurable_fields custom_form
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).to include disabled_field
@@ -106,7 +112,7 @@ describe IdeaCustomFieldsService do
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
       hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
-      output = service.visible_fields custom_form, filter_unmodifiable: true
+      output = service.visible_fields custom_form
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
