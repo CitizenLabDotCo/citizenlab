@@ -8,8 +8,16 @@ module IdeaCustomFields
       end
 
       def find_or_build_field(custom_form, code)
-        custom_form&.custom_fields&.find_by(code: code) ||
-          default_fields(custom_form).find { |bicf| bicf.code == code }
+        return unless custom_form
+
+        custom_form.custom_fields.find_by(code: code) ||
+          default_fields(custom_form).find { |default_field| default_field.code == code }
+      end
+
+      def find_field_by_id(custom_form, id)
+        return unless custom_form
+
+        custom_form.custom_fields.find_by(id: id)
       end
 
       private

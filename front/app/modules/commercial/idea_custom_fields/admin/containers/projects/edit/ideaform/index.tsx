@@ -177,14 +177,12 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
               const ideaCustomFieldCode = ideaCustomFields.data.find(
                 (item) => item.id === ideaCustomFieldId
               )?.attributes?.code;
-              return ideaCustomFieldCode
-                ? updateIdeaCustomField(
-                    projectId,
-                    ideaCustomFieldId,
-                    ideaCustomFieldCode,
-                    changes[ideaCustomFieldId]
-                  )
-                : Promise.resolve();
+              return updateIdeaCustomField(
+                projectId,
+                ideaCustomFieldId,
+                ideaCustomFieldCode,
+                changes[ideaCustomFieldId]
+              );
             }
           );
 

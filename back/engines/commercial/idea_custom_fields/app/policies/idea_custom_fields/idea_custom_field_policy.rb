@@ -14,6 +14,10 @@ module IdeaCustomFields
       can_configure_custom_fields? record&.resource&.project
     end
 
+    def update?
+      upsert_by_code?
+    end
+
     def permitted_attributes
       if %w[title_multiloc body_multiloc].include? record.code
         [

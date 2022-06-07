@@ -15,6 +15,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.not_to permit(:index) }
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:upsert_by_code) }
+    it { is_expected.not_to permit(:update) }
   end
 
   context "for a moderator of the field's project" do
@@ -23,6 +24,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:upsert_by_code) }
+    it { is_expected.to permit(:update) }
   end
 
   context "for a folder moderator of the field's project" do
@@ -39,6 +41,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.to permit(:index) }
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:upsert_by_code) }
+    it { is_expected.to permit(:update) }
   end
 
   context 'for a moderator of another project' do
@@ -47,6 +50,7 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
     it { is_expected.not_to permit(:index) }
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:upsert_by_code) }
+    it { is_expected.not_to permit(:update) }
   end
 
   context 'for an admin' do

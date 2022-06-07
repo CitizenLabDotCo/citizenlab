@@ -7,6 +7,7 @@ IdeaCustomFields::Engine.routes.draw do
         resources :projects, only: [] do
           resources :custom_fields, only: %i[index show], controller: 'idea_custom_fields' do
             patch 'by_code/:code', action: 'upsert_by_code', on: :collection
+            patch 'update/:id', action: 'update', on: :collection
           end
         end
       end

@@ -5,6 +5,49 @@ require 'rails_helper'
 describe IdeaCustomFieldsService do
   let(:service) { described_class.new }
 
+  describe '#find_field_by_id' do
+    it 'returns nil if the given custom form is nil' do
+      expect(service.find_field_by_id(nil, 'some_id')).to be_nil
+    end
+
+    it 'returns the field with the given id if the field exists' do
+      custom_form = create(:custom_form)
+      custom_field = create(:custom_field, resource: custom_form, code: 'title_multiloc')
+      expect(service.find_field_by_id(custom_form, custom_field.id)).to eq custom_field
+    end
+
+    it 'returns nil if there is no field with the given id' do
+      custom_form = create(:custom_form)
+      create(:custom_field, resource: custom_form, code: 'title_multiloc')
+      expect(service.find_field_by_id(custom_form, 'unknown_id')).to be_nil
+    end
+  end
+
+  describe '#find_or_build_field' do
+    it 'returns nil if the given custom form is nil' do
+      expect(service.find_or_build_field(nil, 'some_id')).to be_nil
+    end
+
+    it 'returns the default field with the given code if the field is persisted' do
+      custom_form = create(:custom_form)
+      custom_field = create(:custom_field, resource: custom_form, code: 'title_multiloc')
+      expect(service.find_or_build_field(custom_form, custom_field.code)).to eq custom_field
+    end
+
+    it 'returns the default field with the given code if the field is not persisted yet' do
+      custom_form = create(:custom_form)
+      field = service.find_or_build_field(custom_form, 'title_multiloc')
+      expect(field.code).to eq 'title_multiloc'
+      expect(field.key).to eq 'title_multiloc'
+      expect(field.input_type).to eq 'text_multiloc'
+    end
+
+    it 'returns nil if there is no default field with the given code' do
+      custom_form = create(:custom_form)
+      expect(service.find_or_build_field(custom_form, 'unknown_id')).to be_nil
+    end
+  end
+
   describe 'all_fields' do
     it 'overrides built in custom fields with database custom fields by code' do
       custom_form = create(:custom_form)
