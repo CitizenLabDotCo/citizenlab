@@ -206,6 +206,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      representativeness: {
+        enabled: true,
+        allowed: true
+      },
       content_builder: {
         enabled: true,
         allowed: true
@@ -329,6 +333,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       microsoft_forms_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      snap_survey_surveys: {
         enabled: true,
         allowed: true
       },

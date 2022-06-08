@@ -41,6 +41,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        representativeness: {
+          enabled: true,
+          allowed: true
+        },
         custom_idea_statuses: {
           enabled: true,
           allowed: true
@@ -158,6 +162,10 @@ namespace :cl2_back do
           allowed: true
         },
         microsoft_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        snap_survey_surveys: {
           enabled: true,
           allowed: true
         },
@@ -310,7 +318,8 @@ namespace :cl2_back do
     side_fx_tenant.before_apply_template tenant, tenant_template
     Apartment::Tenant.switch tenant.schema_name do
       side_fx_tenant.around_apply_template(tenant, tenant_template) do
-        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template, external_subfolder: 'release'
+        MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template,
+                                                                           external_subfolder: 'release'
       end
       User.create!(
         roles: [{ type: 'admin' }],
