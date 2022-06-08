@@ -83,6 +83,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -94,6 +96,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -106,6 +110,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -124,6 +130,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -154,6 +162,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -181,6 +191,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
         />
@@ -196,6 +208,8 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          selectedLocale="en"
+          setSelectedLocale={() => {}}
           mobilePreviewEnabled={true}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
         />

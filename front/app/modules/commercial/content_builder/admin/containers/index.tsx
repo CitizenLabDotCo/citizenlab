@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { withRouter } from 'react-router';
 import { FocusOn } from 'react-focus-on';
@@ -26,6 +26,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
+import { Locale } from 'typings';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -41,13 +42,22 @@ const ContentBuilderPage = ({
   location: { pathname },
 }) => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
-  const locale = useLocale();
+  const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
+
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
   const featureEnabled = useFeatureFlag({ name: 'content_builder' });
+  const locale = useLocale();
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
     code: PROJECT_DESCRIPTION_CODE,
   });
+
+  useEffect(() => {
+    if (!isNilOrError(locale)) {
+      setSelectedLocale(locale);
+    }
+  }, [locale]);
 
   const editorData =
     !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
@@ -82,8 +92,8 @@ const ContentBuilderPage = ({
               <ContentBuilderTopBar
                 mobilePreviewEnabled={mobilePreviewEnabled}
                 setMobilePreviewEnabled={setMobilePreviewEnabled}
-                // selectedLocale={selectedLocale}
-                // setSelectedLocale={setSelectedLocale}
+                selectedLocale={selectedLocale}
+                setSelectedLocale={setSelectedLocale}
               />
               <Box
                 mt={`${stylingConsts.menuHeight}px`}

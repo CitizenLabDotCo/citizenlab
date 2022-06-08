@@ -5,6 +5,7 @@ import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
 import { useEditor } from '@craftjs/core';
 import useLocale from 'hooks/useLocale';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -19,6 +20,7 @@ import {
   Text,
   Title,
   Toggle,
+  LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -39,21 +41,29 @@ import {
 } from '../../../services/contentBuilder';
 import eventEmitter from 'utils/eventEmitter';
 
+// types
+import { Locale } from 'typings';
+
 type ContentBuilderTopBarProps = {
   mobilePreviewEnabled: boolean;
   setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedLocale: Locale | undefined;
+  setSelectedLocale: React.Dispatch<React.SetStateAction<Locale | undefined>>;
 } & WithRouterProps;
 
 const ContentBuilderTopBar = ({
   params: { projectId },
   mobilePreviewEnabled,
   setMobilePreviewEnabled,
+  selectedLocale,
+  setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
   const locale = useLocale();
   const project = useProject({ projectId });
+  const locales = useAppConfigurationLocales();
 
   const [contentBuilderErrors, setContentBuilderErrors] = useState<
     Record<string, boolean>
@@ -112,6 +122,10 @@ const ContentBuilderTopBar = ({
     }
   };
 
+  const selectLocale = (locale: Locale) => {
+    setSelectedLocale(locale);
+  };
+
   return (
     <Box
       position="fixed"
@@ -148,6 +162,22 @@ const ContentBuilderTopBar = ({
             </>
           )}
         </Box>
+        {!isNilOrError(locales) && selectedLocale && locales.length > 0 && (
+          <Box
+            borderLeft={`1px solid ${colors.separation}`}
+            borderRight={`1px solid ${colors.separation}`}
+            h="100%"
+            p="24px"
+          >
+            <LocaleSwitcher
+              locales={locales}
+              selectedLocale={selectedLocale}
+              onSelectedLocaleChange={selectLocale}
+              // values={getLocaleSwitcherValues()}
+            />
+          </Box>
+        )}
+        <Box ml="24px" />
         <Toggle
           id="e2e-mobile-preview-toggle"
           label={<FormattedMessage {...messages.mobilePreview} />}
