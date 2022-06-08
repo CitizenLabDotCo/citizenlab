@@ -6,7 +6,7 @@ module UserCustomFields
       class UserCustomFieldSerializer < ::WebApi::V1::CustomFieldSerializer
         # Warning: This creates an N+1 query problem.
         # If the performance becomes an issue, +current_ref_distribution+ should be implemented as
-        # association on CustomField, either through a +belongs_to+ or a +has_one+.
+        # an association on CustomField, either through a +belongs_to+ or an +has_one+.
         # * +belongs_to+ would probably be the best option, but it's more work to implement.
         #   (It would certainly require a join table and we would have to implement the lifecycle
         #   logic to keep that table up to date.)
