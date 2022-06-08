@@ -16,9 +16,12 @@ import {
   IUserCustomFieldData,
   TCustomFieldCode,
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { Multiloc } from 'typings';
 
 export interface RepresentativenessRow {
   name: string;
+  key: string;
+  title_multiloc: Multiloc;
   actualPercentage: number;
   referencePercentage: number;
   actualNumber: number;
@@ -94,10 +97,10 @@ export default useReferenceData;
 
 const toReferenceData = (usersByField: TStreamResponse): any => {
   const { users, expected_users } = usersByField.series;
-  const data = Object.keys(users)
+  let data = Object.keys(users)
     .filter((opt) => opt !== '_blank')
     .map((opt) => ({
-      name: opt,
+      key: opt,
       actualPercentage: Math.round(
         (users[opt] / Object.values(users).reduce((acc, v) => v + acc, 0)) * 100
       ),
@@ -109,6 +112,15 @@ const toReferenceData = (usersByField: TStreamResponse): any => {
       actualNumber: users[opt],
       referenceNumber: expected_users[opt],
     }));
+  if ('options' in usersByField) {
+    const { options } = usersByField;
+    data = data
+      .sort((a, b) => options[a.key].ordering - options[b.key].ordering)
+      .map((opt) => ({
+        ...opt,
+        title_multiloc: options[opt.key].title_multiloc,
+      }));
+  }
   return data;
 };
 

@@ -36,13 +36,12 @@ const ChartCard = ({
   projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const {
-    referenceData: data,
-    includedUserPercentage,
-    referenceDataUploaded,
-  } = useReferenceData(customField, projectFilter);
+  const { referenceData, includedUserPercentage, referenceDataUploaded } =
+    useReferenceData(customField, projectFilter);
 
-  const hideTicks = isNilOrError(data) ? undefined : data.length > 12;
+  const hideTicks = isNilOrError(referenceData)
+    ? undefined
+    : referenceData.length > 12;
 
   const currentChartRef = useRef<SVGElement>();
   const [viewState, setViewState] = useState<ViewState | undefined>('chart');
@@ -59,7 +58,7 @@ const ChartCard = ({
   }
 
   if (
-    isNilOrError(data) ||
+    isNilOrError(referenceData) ||
     isNilOrError(includedUserPercentage) ||
     referenceDataUploaded === undefined ||
     hideTicks === undefined ||
@@ -70,8 +69,8 @@ const ChartCard = ({
 
   const handleClickSwitchToTableView = () => setViewState('table');
 
-  const dataIsTooLong = data.length > 24;
-  const numberOfHiddenItems = data.length - 24;
+  const dataIsTooLong = referenceData.length > 24;
+  const numberOfHiddenItems = referenceData.length - 24;
   const hideLegend = viewState === 'table';
 
   const barNames = [
@@ -83,6 +82,10 @@ const ChartCard = ({
 
   const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
+  const data = referenceData.map((opt) => ({
+    ...opt,
+    name: localize(opt.title_multiloc),
+  }));
 
   return (
     <Box background="white" mb="36px" borderRadius="3px">
