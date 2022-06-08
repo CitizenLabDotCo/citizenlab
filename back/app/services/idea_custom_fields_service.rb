@@ -19,11 +19,15 @@ class IdeaCustomFieldsService
     all_fields(custom_form).reject(&:hidden?).select(&:enabled?)
   end
 
+  def enabled_fields(custom_form)
+    all_fields(custom_form).select(&:enabled?)
+  end
+
   def extra_visible_fields(custom_form)
     visible_fields(custom_form).reject(&:built_in?)
   end
 
-  def allowed_custom_field_keys(custom_form)
+  def allowed_extra_field_keys(custom_form)
     enabled_extra_fields = all_fields(custom_form).find_all do |field|
       !field.built_in? && field.enabled && !field.hidden
     end
