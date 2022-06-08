@@ -30,11 +30,41 @@ export interface RepresentativenessRow {
 
 export type RepresentativenessData = RepresentativenessRow[];
 
-const getStream = (code: TCustomFieldCode | null) => {
-  if (code === null) return usersByRegFieldStream;
-  if (code === 'gender') return usersByGenderStream;
-  if (code === 'domicile') return usersByDomicileStream;
-  return undefined;
+const getSubscription = (
+  code: TCustomFieldCode | null,
+  fieldId: string,
+  projectId: string | undefined,
+  handleStreamResponse: (usersByField: TStreamResponse) => void
+) => {
+  if (code === null) {
+    const observable = usersByRegFieldStream(
+      { queryParameters: { project: projectId } },
+      fieldId
+    ).observable;
+
+    const subscription = observable.subscribe(handleStreamResponse);
+    return subscription;
+  }
+
+  if (code === 'gender') {
+    const observable = usersByGenderStream({
+      queryParameters: { project: projectId },
+    }).observable;
+
+    const subscription = observable.subscribe(handleStreamResponse);
+    return subscription;
+  }
+
+  if (code === 'domicile') {
+    const observable = usersByDomicileStream({
+      queryParameters: { project: projectId },
+    }).observable;
+
+    const subscription = observable.subscribe(handleStreamResponse);
+    return subscription;
+  }
+
+  return;
 };
 
 function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
@@ -49,42 +79,41 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   >();
 
   const code = field.attributes.code;
+  const fieldId = field.id;
 
   useEffect(() => {
-    const stream = getStream(code);
-    if (!stream) {
-      setReferenceData(null);
-      return;
-    }
-
-    const observable = stream(
-      { queryParameters: { project: projectId } },
-      field.id
-    ).observable;
-
-    const subscription = observable.subscribe(
-      (usersByField: TStreamResponse | NilOrError) => {
-        if (isNilOrError(usersByField)) {
-          setReferenceData(usersByField);
-          setIncludedUserPercentage(usersByField);
-          return;
-        }
-
-        if (!usersByField.series.expected_users) {
-          setReferenceDataUploaded(false);
-          return;
-        }
-
-        const referenceData = toReferenceData(usersByField);
-        const includedUsersPercentage = getIncludedUserPercentage(usersByField);
-        setReferenceData(referenceData);
-        setIncludedUserPercentage(includedUsersPercentage);
-        setReferenceDataUploaded(true);
+    const handleStreamResponse = (usersByField: TStreamResponse) => {
+      if (isNilOrError(usersByField)) {
+        setReferenceData(usersByField);
+        setIncludedUserPercentage(usersByField);
+        return;
       }
+
+      if (!usersByField.series.expected_users) {
+        setReferenceDataUploaded(false);
+        return;
+      }
+
+      const referenceData = toReferenceData(usersByField);
+      const includedUsersPercentage = getIncludedUserPercentage(usersByField);
+      setReferenceData(referenceData);
+      setIncludedUserPercentage(includedUsersPercentage);
+      setReferenceDataUploaded(true);
+    };
+
+    const subscription = getSubscription(
+      code,
+      fieldId,
+      projectId,
+      handleStreamResponse
     );
 
-    return () => subscription.unsubscribe();
-  }, [code]);
+    if (subscription) {
+      return () => subscription.unsubscribe();
+    }
+
+    return;
+  }, [code, fieldId, projectId]);
 
   return {
     referenceData,
