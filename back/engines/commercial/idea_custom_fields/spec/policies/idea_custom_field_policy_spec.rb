@@ -114,17 +114,6 @@ describe IdeaCustomFields::IdeaCustomFieldPolicy do
       end
     end
 
-    describe 'for location_point_geojson field' do
-      let(:code) { 'location_point_geojson' }
-
-      it 'allows all changes' do
-        expect(policy.permitted_attributes).to match_array [
-          :required, :enabled,
-          { title_multiloc: CL2_SUPPORTED_LOCALES, description_multiloc: CL2_SUPPORTED_LOCALES }
-        ]
-      end
-    end
-
     describe 'for idea_images_attributes field' do
       let(:code) { 'idea_images_attributes' }
 
