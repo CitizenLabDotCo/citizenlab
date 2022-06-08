@@ -340,7 +340,7 @@ ActiveRecord::Schema.define(version: 2022_05_31_123916) do
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.boolean "events_enabled", default: false, null: false
     t.boolean "projects_enabled", default: true, null: false
-    t.jsonb "projects_header", default: {}, null: false
+    t.jsonb "projects_header_multiloc", default: {}, null: false
     t.boolean "banner_avatars_enabled", default: true, null: false
     t.boolean "banner_enabled", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
