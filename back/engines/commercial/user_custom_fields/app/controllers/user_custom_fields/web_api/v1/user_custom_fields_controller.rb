@@ -13,7 +13,7 @@ module UserCustomFields
         .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
-      render json: serialize_custom_fields(@custom_fields, params: fastjson_params, include: [:current_ref_distribution])
+      render json: serialize_custom_fields(@custom_fields, params: fastjson_params)
     end
 
     def schema
