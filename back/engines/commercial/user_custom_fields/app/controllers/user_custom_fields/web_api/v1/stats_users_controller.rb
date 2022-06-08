@@ -123,7 +123,7 @@ module UserCustomFields
               'area_id' => '_blank',
               'area' => 'unknown',
               'users' => serie.delete(nil) || 0
-              })
+            })
           end
 
           xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
@@ -182,7 +182,7 @@ module UserCustomFields
           end
 
           case @custom_field.input_type
-          when 'select'
+          when 'select', 'checkbox'
             serie = users
               .where(registration_completed_at: @start_at..@end_at)
               .group("custom_field_values->'#{@custom_field.key}'")
@@ -196,14 +196,6 @@ module UserCustomFields
               .where(registration_completed_at: @start_at..@end_at)
               .group('cfv.field_value')
               .order('cfv.field_value')
-              .count
-            serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-            serie
-          when 'checkbox'
-            serie = users
-              .where(registration_completed_at: @start_at..@end_at)
-              .group("custom_field_values->'#{@custom_field.key}'")
-              .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
               .count
             serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
             serie
@@ -241,7 +233,7 @@ module UserCustomFields
               'option_id' => '_blank',
               'option' => 'unknown',
               'users' => serie['_blank'] || 0
-              })
+            })
             xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
           else
             xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_serie, 'option', 'users'

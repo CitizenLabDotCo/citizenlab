@@ -43,7 +43,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it 'reject a rule with a single-value predicate and an array of values' do
-      rule = valid_json_rule.tap { |r| r['predicate'] = 'not_in' }
+      valid_json_rule['predicate'] = 'not_in'
       expect(build(:smart_group, rules: [valid_json_rule])).to be_invalid
     end
   end
@@ -126,14 +126,14 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
   describe 'description_multiloc' do
     let(:garbage_status) do
       create(:idea_status, title_multiloc: {
-        'en'    => 'in the garbage can',
+        'en' => 'in the garbage can',
         'fr-FR' => 'dans la poubelle',
         'nl-NL' => 'in de prullenmand'
       })
     end
     let(:delayed_status) do
       create(:idea_status, title_multiloc: {
-        'en'    => 'delayed',
+        'en' => 'delayed',
         'fr-FR' => 'retardé',
         'nl-NL' => 'uitgesteld'
       })
@@ -141,123 +141,123 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
 
     let(:participated_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'in',
-        'value'         => [garbage_status.id, delayed_status.id]
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'in',
+        'value' => [garbage_status.id, delayed_status.id]
       })
     end
     let(:participated_not_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'not_in',
-        'value'         => garbage_status.id
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'not_in',
+        'value' => garbage_status.id
       })
     end
     let(:participated_posted_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'posted_in',
-        'value'         => [garbage_status.id]
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'posted_in',
+        'value' => [garbage_status.id]
       })
     end
     let(:participated_not_posted_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'not_posted_in',
-        'value'         => garbage_status.id
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'not_posted_in',
+        'value' => garbage_status.id
       })
     end
     let(:participated_commented_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'commented_in',
-        'value'         => [garbage_status.id, delayed_status.id]
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'commented_in',
+        'value' => [garbage_status.id, delayed_status.id]
       })
     end
     let(:participated_not_commented_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'not_commented_in',
-        'value'         => garbage_status.id
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'not_commented_in',
+        'value' => garbage_status.id
       })
     end
     let(:participated_voted_idea_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'voted_idea_in',
-        'value'         => [garbage_status.id]
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'voted_idea_in',
+        'value' => [garbage_status.id]
       })
     end
     let(:participated_not_voted_idea_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'not_voted_idea_in',
-        'value'         => garbage_status.id
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'not_voted_idea_in',
+        'value' => garbage_status.id
       })
     end
     let(:participated_voted_comment_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'voted_comment_in',
-        'value'         => [garbage_status.id, delayed_status.id]
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'voted_comment_in',
+        'value' => [garbage_status.id, delayed_status.id]
       })
     end
     let(:participated_not_voted_comment_in_idea_status_in_rule) do
       SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
-        'ruleType'      => 'participated_in_idea_status',
-        'predicate'     => 'not_voted_comment_in',
-        'value'         => garbage_status.id
+        'ruleType' => 'participated_in_idea_status',
+        'predicate' => 'not_voted_comment_in',
+        'value' => garbage_status.id
       })
     end
 
     it 'successfully translates different combinations of rules' do
       expect(participated_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Participation in an idea with one of the following statuses in the garbage can, delayed',
+        'en' => 'Participation in an idea with one of the following statuses in the garbage can, delayed',
         'fr-FR' => 'Participation dans une idée avec statut est un de dans la poubelle, retardé',
         'nl-NL' => 'Participatie in een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })
       expect(participated_not_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'No participation in an idea with status in the garbage can',
+        'en' => 'No participation in an idea with status in the garbage can',
         'fr-FR' => 'Pas de participation dans une idée avec statut dans la poubelle',
         'nl-NL' => 'Geen participatie in een idea met status in de prullenmand'
       })
       expect(participated_posted_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Posted an idea with one of the following statuses in the garbage can',
+        'en' => 'Posted an idea with one of the following statuses in the garbage can',
         'fr-FR' => 'Posté une idée avec statut est un de dans la poubelle',
         'nl-NL' => 'Plaatste een idee met één van de volgende statussen in de prullenmand'
       })
       expect(participated_not_posted_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Did not post an idea with status in the garbage can',
+        'en' => 'Did not post an idea with status in the garbage can',
         'fr-FR' => 'N\'as pas posté une idée avec statut dans la poubelle',
         'nl-NL' => 'Plaatste geen idee met status in de prullenmand'
       })
       expect(participated_commented_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Commented on an idea with one of the following statuses in the garbage can, delayed',
+        'en' => 'Commented on an idea with one of the following statuses in the garbage can, delayed',
         'fr-FR' => 'Commenté sur une idée avec statut est un de dans la poubelle, retardé',
         'nl-NL' => 'Reageerde op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })
       expect(participated_not_commented_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Did not comment on an idea with status in the garbage can',
+        'en' => 'Did not comment on an idea with status in the garbage can',
         'fr-FR' => 'N\'as pas commenté sur une idée avec statut dans la poubelle',
         'nl-NL' => 'Reageerde niet op een idee met status in de prullenmand'
       })
       expect(participated_voted_idea_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Voted on an idea with one of the following statuses in the garbage can',
+        'en' => 'Voted on an idea with one of the following statuses in the garbage can',
         'fr-FR' => 'Voté pour une idée avec statut est un de dans la poubelle',
         'nl-NL' => 'Stemde op een idee met één van de volgende statussen in de prullenmand'
       })
       expect(participated_not_voted_idea_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Did not vote on an idea with status in the garbage can',
+        'en' => 'Did not vote on an idea with status in the garbage can',
         'fr-FR' => 'N\'as pas voté pour une idée avec statut dans la poubelle',
         'nl-NL' => 'Stemde niet op een idee met status in de prullenmand'
       })
       expect(participated_voted_comment_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Voted on a comment on an idea with one of the following statuses in the garbage can, delayed',
+        'en' => 'Voted on a comment on an idea with one of the following statuses in the garbage can, delayed',
         'fr-FR' => 'Voté pour un commentaire sur une idée avec statut est un de dans la poubelle, retardé',
         'nl-NL' => 'Stemde op een reactie op een idee met één van de volgende statussen in de prullenmand, uitgesteld'
       })
       expect(participated_not_voted_comment_in_idea_status_in_rule.description_multiloc).to eq({
-        'en'    => 'Did not vote on a comment on an idea with status in the garbage can',
+        'en' => 'Did not vote on a comment on an idea with status in the garbage can',
         'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée avec statut dans la poubelle',
         'nl-NL' => 'Stemde niet op een reactie op een idee met status in de prullenmand'
       })

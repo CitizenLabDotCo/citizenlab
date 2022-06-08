@@ -40,23 +40,26 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
-                                                       view_private_attributes: Pundit.policy!(current_user,
-                                                                                               User).view_private_attributes?
+        view_private_attributes: Pundit.policy!(current_user,
+          User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                      filename: 'initiatives.xlsx'
+        filename: 'initiatives.xlsx'
     end
   end
 
   def filter_counts
     initiatives = policy_scope(Initiative)
     search_last_names = !UserDisplayNameService.new(AppConfiguration.instance, current_user).restricted?
-    initiatives = PostsFilteringService.new.apply_common_initiative_index_filters initiatives, params,
-                                                                                   search_last_names
+    initiatives = PostsFilteringService.new.apply_common_initiative_index_filters(
+      initiatives, params,
+      search_last_names
+    )
     counts = {
       'initiative_status_id' => {},
       'area_id' => {},
       'topic_id' => {}
     }
+    attributes = %w[initiative_status_id area_id topic_id]
     initiatives
       .joins('FULL OUTER JOIN initiatives_topics ON initiatives_topics.initiative_id = initiatives.id')
       .joins('FULL OUTER JOIN areas_initiatives ON areas_initiatives.initiative_id = initiatives.id')
@@ -65,7 +68,7 @@ class WebApi::V1::InitiativesController < ApplicationController
       .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group('GROUPING SETS (initiative_initiative_statuses.initiative_status_id, areas_initiatives.area_id, initiatives_topics.topic_id)')
       .each do |record|
-        %w[initiative_status_id area_id topic_id].each do |attribute|
+        attributes.each do |attribute|
           id = record.send attribute
           counts[attribute][id] = record.count if id
         end

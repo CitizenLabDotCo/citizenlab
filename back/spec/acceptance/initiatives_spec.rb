@@ -118,18 +118,20 @@ resource 'Initiatives' do
     end
 
     example 'Search for initiatives' do
-      u = create(:user)
-      i1 = create(:initiative, title_multiloc: { en: 'This initiative is uniqque' })
-      i2 = create(:initiative, title_multiloc: { en: 'This one origiinal' })
+      create(:user)
+      initiatives = [
+        create(:initiative, title_multiloc: { en: 'This initiative is uniqque' }),
+        create(:initiative, title_multiloc: { en: 'This one origiinal' })
+      ]
 
       do_request search: 'uniqque'
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
-      expect(json_response[:data][0][:id]).to eq i1.id
+      expect(json_response[:data][0][:id]).to eq initiatives[0].id
     end
 
     example 'List all initiatives sorted by new' do
-      u = create(:user)
+      create(:user)
       i1 = create(:initiative)
 
       do_request sort: 'new'
@@ -139,8 +141,8 @@ resource 'Initiatives' do
     end
 
     example 'List all initiatives by random ordering', document: false do
-      u = create(:user)
-      i1 = create(:initiative)
+      create(:user)
+      create(:initiative)
 
       do_request sort: 'random'
       json_response = json_parse(response_body)
@@ -385,7 +387,7 @@ resource 'Initiatives' do
       before do
         PermissionsService.new.update_global_permissions
         Permission.find_by(permission_scope: nil, action: 'posting_initiative')
-                  .update!(permitted_by: 'groups', groups: [group])
+          .update!(permitted_by: 'groups', groups: [group])
       end
 
       example '[error] Not authorized to create an initiative', document: false do

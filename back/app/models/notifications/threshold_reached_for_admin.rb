@@ -68,11 +68,11 @@ module Notifications
         recipient_id == initiator_id
       end.map do |recipient_id|
         new(
-         recipient_id: recipient_id,
-         initiating_user_id: initiator_id,
-         post: initiative,
-         post_status: initiative.initiative_status
-       )
+          recipient_id: recipient_id,
+          initiating_user_id: initiator_id,
+          post: initiative,
+          post_status: initiative.initiative_status
+        )
       end
     end
   end

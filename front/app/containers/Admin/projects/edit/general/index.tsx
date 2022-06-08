@@ -254,13 +254,14 @@ class AdminProjectEditGeneral extends PureComponent<
     }));
   };
 
-  handleAreaTypeChange = (value: 'all' | 'selection') => {
+  handleAreaTypeChange = (value: 'none' | 'all' | 'selection') => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       areaType: value,
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        area_ids: value === 'all' ? [] : projectAttributesDiff.area_ids,
+        area_ids: value === 'selection' ? projectAttributesDiff.area_ids : [],
+        include_all_areas: value === 'all',
       },
     }));
   };

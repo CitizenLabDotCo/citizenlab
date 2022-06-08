@@ -21,7 +21,7 @@ module NLP
     def parse_ideas(ideas, locale)
       ideas.map do |idea|
         ActionView::Base.full_sanitizer.sanitize(idea.body_multiloc[locale])
-      end.reject(&:blank?)
+      end.compact_blank
     end
   end
 end

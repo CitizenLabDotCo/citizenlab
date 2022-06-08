@@ -13,12 +13,12 @@ class RenameProjectFoldersTables < ActiveRecord::Migration[6.0]
     reversible do |dir|
       dir.up do
         AdminPublication.where(publication_type: 'ProjectFolder')
-                        .update_all(publication_type: 'ProjectFolders::Folder')
+          .update_all(publication_type: 'ProjectFolders::Folder')
       end
 
       dir.down do
         AdminPublication.where(publication_type: 'ProjectFolders::Folder')
-                        .update_all(publication_type: 'ProjectFolder')
+          .update_all(publication_type: 'ProjectFolder')
       end
     end
   end

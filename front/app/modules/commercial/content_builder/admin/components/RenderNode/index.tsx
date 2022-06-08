@@ -22,6 +22,7 @@ const IMAGE = 'Image';
 const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
 const ACCORDION = 'Accordion';
+const WHITE_SPACE = 'WhiteSpace';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -31,7 +32,8 @@ type ComponentNamesType =
   | typeof IMAGE
   | typeof IFRAME
   | typeof ABOUT_BOX
-  | typeof ACCORDION;
+  | typeof ACCORDION
+  | typeof WHITE_SPACE;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -51,6 +53,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.aboutBox;
     case ACCORDION:
       return messages.accordion;
+    case WHITE_SPACE:
+      return messages.whiteSpace;
   }
 };
 
@@ -132,6 +136,7 @@ const RenderNode = ({ render }) => {
 
   return (
     <StyledBox
+      className="e2e-render-node"
       ref={(ref) => ref && connect(drag(ref))}
       id={id}
       position="relative"

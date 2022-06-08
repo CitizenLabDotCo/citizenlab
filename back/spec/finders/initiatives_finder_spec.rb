@@ -91,8 +91,8 @@ describe InitiativesFinder do
 
     it 'sorts initiatives by \'author_name\'' do
       expect(record_ids).to eq Initiative.includes(:author)
-                                         .order('users.first_name ASC', 'users.last_name ASC')
-                                         .pluck(:id)
+        .order('users.first_name ASC', 'users.last_name ASC')
+        .pluck(:id)
     end
   end
 
@@ -104,8 +104,8 @@ describe InitiativesFinder do
 
     it 'sorts initiatives by \'author_name\'' do
       expect(record_ids).to eq Initiative.includes(:author)
-                                         .order('users.first_name DESC', 'users.last_name DESC')
-                                         .pluck(:id)
+        .order('users.first_name DESC', 'users.last_name DESC')
+        .pluck(:id)
     end
   end
 
@@ -152,9 +152,9 @@ describe InitiativesFinder do
 
     it 'filters by initiative_status' do
       filtered_ids = Initiative
-                     .left_outer_joins(:initiative_initiative_status)
-                     .where(initiative_initiative_statuses: { initiative_status_id: initiative_status_id })
-                     .pluck(:id)
+        .left_outer_joins(:initiative_initiative_status)
+        .where(initiative_initiative_statuses: { initiative_status_id: initiative_status_id })
+        .pluck(:id)
       expect(record_ids).to match_array filtered_ids
     end
   end

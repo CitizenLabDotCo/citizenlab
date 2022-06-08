@@ -62,16 +62,18 @@ describe ProfanityService do
 
     it 'returns matches for multilple languages' do
       text = 'His recipe for chili con carne is so stupid.'
-      expect(service.search_blocked_words(text)).to match_array([
-        {
-          word: 'con',
-          language: 'fr'
-        },
-        {
-          word: 'stupid',
-          language: 'en'
-        }
-      ])
+      expect(service.search_blocked_words(text)).to match_array(
+        [
+          {
+            word: 'con',
+            language: 'fr'
+          },
+          {
+            word: 'stupid',
+            language: 'en'
+          }
+        ]
+      )
     end
 
     it 'matches case-insensitively' do

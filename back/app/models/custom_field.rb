@@ -40,7 +40,7 @@ class CustomField < ApplicationRecord
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
-    message: 'only letters, numbers and underscore' }
+                                                                                                  message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -76,10 +76,10 @@ class CustomField < ApplicationRecord
   end
 
   def generate_key
-    unless key
-      self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
-        self.class.find_by(key: key_proposal, resource_type: resource_type)
-      end
+    return if key
+
+    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+      self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end
 
@@ -92,3 +92,4 @@ class CustomField < ApplicationRecord
 end
 
 CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
+CustomField.include_if_ee('UserCustomFields::Patches::CustomField')

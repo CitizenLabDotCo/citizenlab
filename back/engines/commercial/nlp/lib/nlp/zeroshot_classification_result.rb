@@ -27,7 +27,7 @@ module NLP
       @json_message = json_message.is_a?(String) ? JSON.parse(json_message) : json_message
 
       predictions = @json_message.dig('result', 'data', 'final_predictions').to_a
-                                 .flat_map { |json_pred| Prediction.from_json(json_pred) }
+        .flat_map { |json_pred| Prediction.from_json(json_pred) }
 
       new(
         @json_message.fetch('task_id'), # raises an exception if the key is missing

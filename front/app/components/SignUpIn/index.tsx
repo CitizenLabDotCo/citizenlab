@@ -2,7 +2,7 @@ import React from 'react';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // component
 import SignUp from './SignUp';
@@ -56,7 +56,6 @@ const SignUpIn = ({
   className,
 }: Props) => {
   const appConfiguration = useAppConfiguration();
-  const { windowHeight } = useWindowSize();
 
   const onToggleSelectedMethod = () => {
     const flow = getNewFlow(metaData.flow);
@@ -72,7 +71,6 @@ const SignUpIn = ({
         {metaData.flow === 'signup' ? (
           <SignUp
             metaData={metaData}
-            windowHeight={windowHeight}
             customHeader={customSignUpHeader}
             onSignUpCompleted={onSignUpInCompleted}
             onGoToSignIn={onToggleSelectedMethod}
@@ -80,7 +78,6 @@ const SignUpIn = ({
         ) : (
           <SignIn
             metaData={metaData}
-            windowHeight={windowHeight}
             customHeader={customSignInHeader}
             onSignInCompleted={onSignUpInCompleted}
             onGoToSignUp={onToggleSelectedMethod}

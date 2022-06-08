@@ -21,15 +21,15 @@ class SpamReportPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (record.user_id == user.id || user.admin?)
+    user&.active? && (record.user_id == user.id || user&.admin?)
   end
 
   def show?
-    user&.active? && (record.user_id == user.id || user.admin?)
+    user&.active? && (record.user_id == user.id || user&.admin?)
   end
 
   def update?
-    user&.active? && (record.user_id == user.id || user.admin?)
+    user&.active? && (record.user_id == user.id || user&.admin?)
   end
 
   def destroy?
