@@ -33,6 +33,14 @@ describe('parsePopulationValue', () => {
     expect(parsePopulationValue('1,')).toBe('1');
     expect(parsePopulationValue('1000,')).toBe('1,000');
     expect(parsePopulationValue('1000,000,')).toBe('1,000,000');
-    expect(parsePopulationValue('1000,000,,,,')).toBe('1,000,000');
+    expect(parsePopulationValue('1000,000,,,')).toBe('1,000,000');
+  });
+
+  it('returns correct string if value has multiple commas', () => {
+    expect(parsePopulationValue('1,000,0000')).toBe('10,000,000');
+  });
+
+  it('returns null if value is longer than 11 characters (e.g. 100,000,0000', () => {
+    expect(parsePopulationValue('100,000,0000')).toBeNull();
   });
 });

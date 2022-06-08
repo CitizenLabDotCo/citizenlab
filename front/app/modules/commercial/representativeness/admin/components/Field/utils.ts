@@ -8,5 +8,6 @@ export const parsePopulationValue = (value: string) => {
 };
 
 const validValueRegex = /^\d[\d\,]*$/;
-const isInvalid = (value: string) => !validValueRegex.test(value);
-const asNumber = (value: string) => parseInt(value.replace(',', ''));
+const isInvalid = (value: string) =>
+  !validValueRegex.test(value) || value.length > 11;
+const asNumber = (value: string) => parseInt(value.replace(/\,/g, ''));
