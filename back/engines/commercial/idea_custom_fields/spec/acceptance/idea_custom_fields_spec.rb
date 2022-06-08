@@ -19,7 +19,9 @@ resource 'Idea Custom Fields' do
     get 'web_api/v1/admin/projects/:project_id/custom_fields' do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
-      let!(:custom_field) { create :custom_field, :for_custom_form, resource: create(:custom_form, project: project) }
+      let!(:custom_field) do
+        create :custom_field, :for_custom_form, resource: create(:custom_form, project: project), enabled: false
+      end
 
       example_request 'List all allowed custom fields for a project' do
         assert_status 200
@@ -40,6 +42,13 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq id
+      end
+
+      example 'Get one disabled field', document: false do
+        custom_field.update! enabled: false
+        do_request
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :id)).to eq id
       end
     end
 
@@ -86,6 +95,14 @@ resource 'Idea Custom Fields' do
             expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
             expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
+          end
+
+          example 'Update a disabled field', document: false do
+            create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: code
+            do_request(custom_field: { enabled: true })
+            assert_status 200
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :attributes, :enabled)).to be true
           end
         end
 

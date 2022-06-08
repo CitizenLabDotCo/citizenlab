@@ -167,6 +167,8 @@ describe IdeaCustomFieldsService do
         'location_description',
         'idea_images_attributes',
         'idea_files_attributes',
+        'author_id',
+        'budget',
         nil
       ]
     end
