@@ -14,7 +14,8 @@ export type TSurveyService =
   | 'enalyzer'
   | 'qualtrics'
   | 'smart_survey'
-  | 'microsoft_forms';
+  | 'microsoft_forms'
+  | 'snap_survey';
 
 export type ParticipationMethod =
   | 'ideation'

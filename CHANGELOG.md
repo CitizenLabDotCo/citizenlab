@@ -6,6 +6,10 @@
 
 ## 2022-05-31
 
+### Added
+
+- [CL-906] Added support for Snap Survey
+
 ### Changed
 
 - [CL-667] Fixed many RuboCop offences
