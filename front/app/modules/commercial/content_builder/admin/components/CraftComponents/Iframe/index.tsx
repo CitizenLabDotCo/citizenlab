@@ -14,12 +14,16 @@ import { useNode } from '@craftjs/core';
 // events
 import eventEmitter from 'utils/eventEmitter';
 
+// types
+import { Locale } from 'typings';
+
 interface Props {
   url: string;
   height: number;
   hasError: boolean;
   errorType?: string;
   title?: string;
+  selectedLocale: Locale;
 }
 
 const Iframe = ({ url, height, hasError, title }: Props) => {

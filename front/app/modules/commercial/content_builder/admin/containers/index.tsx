@@ -126,7 +126,9 @@ const ContentBuilderPage = ({
                 mt={`${stylingConsts.menuHeight}px`}
                 display={mobilePreviewEnabled ? 'none' : 'flex'}
               >
-                <ContentBuilderToolbox />
+                {selectedLocale && (
+                  <ContentBuilderToolbox selectedLocale={selectedLocale} />
+                )}
                 <StyledRightColumn>
                   <Box width="1000px">
                     <ContentBuilderFrame editorData={editorData} />

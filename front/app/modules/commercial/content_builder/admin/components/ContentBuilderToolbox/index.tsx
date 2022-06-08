@@ -1,16 +1,16 @@
 import React from 'react';
 
-// Craft
+// craft
 import { useEditor, Element } from '@craftjs/core';
 
-// Router
+// router
 import { withRouter, WithRouterProps } from 'react-router';
 
-// Intl
+// intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// Components
+// components
 import ToolboxItem from './ToolboxItem';
 import { Box } from '@citizenlab/cl2-component-library';
 import Container from '../CraftComponents/Container';
@@ -23,21 +23,30 @@ import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
 
-// Intl
+// intl
 import messages from '../../messages';
 
-// Styles
+// styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// types
+import { Locale } from 'typings';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
+type ContentBuilderToolboxProps = {
+  selectedLocale: Locale;
+} & WithRouterProps &
+  InjectedIntlProps;
+
 const ContentBuilderToolbox = ({
+  selectedLocale,
   intl: { formatMessage },
   params: { projectId },
-}: InjectedIntlProps & WithRouterProps) => {
+}: ContentBuilderToolboxProps) => {
   const {
     connectors,
     actions: { selectNode },
@@ -157,6 +166,7 @@ const ContentBuilderToolbox = ({
                 url=""
                 height={500}
                 hasError={false}
+                selectedLocale={selectedLocale}
               />,
               {
                 onCreate: (node) => {
