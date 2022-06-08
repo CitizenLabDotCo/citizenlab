@@ -5,6 +5,10 @@ class IdeaCustomFieldsService
     @custom_form = custom_form
   end
 
+  def all_fields
+    default_fields
+  end
+
   def configurable_fields
     all_fields.select do |field|
       %w[author_id budget].exclude? field.code
