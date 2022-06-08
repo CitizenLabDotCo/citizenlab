@@ -72,8 +72,8 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     travel_to(20.seconds.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.12' }
       post '/web_api/v1/user_token',
-           params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-           headers: headers
+        params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+        headers: headers
       expect(status).to eq(404) # Not found
     end
   end
@@ -112,13 +112,13 @@ describe 'Rack::Attack', type: :request, slow_test: true do
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/users',
-           params: '{ "user": { "email": "a12@b.com",
+        params: '{ "user": { "email": "a12@b.com",
                                 "password": "test123456",
                                 "locale": "en",
                                 "first_name": "Jane",
                                 "last_name": "Doe" }
                     }',
-           headers: headers
+        headers: headers
       expect(status).to eq(201) # Created
     end
   end
@@ -179,8 +179,8 @@ describe 'Rack::Attack', type: :request, slow_test: true do
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/users/reset_password_email',
-           params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[11].email.to_s),
-           headers: headers
+        params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[11].email.to_s),
+        headers: headers
       expect(status).to eq(202) # Accepted
     end
   end

@@ -1,8 +1,21 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-06-08
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
+
 ### Added
 
 - [CL-774] Add new option when adding areas to a project: "No areas"
+- [CL-906] Added support for Snap Survey
 
 ## 2022-05-31
 

@@ -13,10 +13,10 @@ describe CustomFieldService do
     let(:fields) do
       [
         create(:custom_field,
-               key: 'field1',
-               input_type: 'text',
-               title_multiloc: title_multiloc,
-               description_multiloc: description_multiloc)
+          key: 'field1',
+          input_type: 'text',
+          title_multiloc: title_multiloc,
+          description_multiloc: description_multiloc)
       ]
     end
 
@@ -75,61 +75,61 @@ describe CustomFieldService do
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         { type: 'object',
-         additionalProperties: false,
-         properties:           { 'field1' =>
+          additionalProperties: false,
+          properties: { 'field1' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string' },
-           'field2' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string' },
+                        'field2' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string' },
-           'field3' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string' },
+                        'field3' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string',
-             enum: %w[option_1 option_2 option_3],
-             enumNames: ['youth council', 'youth council', 'youth council'] },
-           'field4' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string',
+              enum: %w[option_1 option_2 option_3],
+              enumNames: ['youth council', 'youth council', 'youth council'] },
+                        'field4' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'array',
-             uniqueItems: true,
-             items:               { type: 'string',
-               enum: %w[option_a option_b],
-               enumNames: ['youth council', 'youth council'] },
-             minItems: 0 },
-           'field5' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'array',
+              uniqueItems: true,
+              items: { type: 'string',
+                       enum: %w[option_a option_b],
+                       enumNames: ['youth council', 'youth council'] },
+              minItems: 0 },
+                        'field5' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'boolean' },
-           'field6' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'boolean' },
+                        'field6' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string',
-             format: 'date' },
-            'field7' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string',
+              format: 'date' },
+                        'field7' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'number' },
-           'field8' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'number' },
+                        'field8' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'array',
-             uniqueItems: true,
-             items:               { type: 'string',
-               enum: %w[option_a option_b],
-               enumNames: ['youth council', 'youth council'] },
-             minItems: 1 },
-            'field9' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'array',
+              uniqueItems: true,
+              items: { type: 'string',
+                       enum: %w[option_a option_b],
+                       enumNames: ['youth council', 'youth council'] },
+              minItems: 1 },
+                        'field9' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'array',
-             items: {
-               type: 'string',
-               format: 'data-url'
+              description: 'Which councils are you attending in our city?',
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'data-url'
               } } },
-         required: %w[field2 field8 field9] }
+          required: %w[field2 field8 field9] }
       )
     end
 
@@ -178,14 +178,14 @@ describe CustomFieldService do
       schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
       expect(schema).to match(
         { 'field1' => {},
-         'field2' => { 'ui:widget': 'textarea' },
-         'field3' => {},
-         'field4' => {},
-         'field5' => {},
-         'field6' => {},
-         'field7' => { 'ui:widget': 'hidden' },
-         'field8' => { 'ui:widget': 'hidden' },
-         'ui:order' =>
+          'field2' => { 'ui:widget': 'textarea' },
+          'field3' => {},
+          'field4' => {},
+          'field5' => {},
+          'field6' => {},
+          'field7' => { 'ui:widget': 'hidden' },
+          'field8' => { 'ui:widget': 'hidden' },
+          'ui:order' =>
              %w[field1 field2 field3 field6 field5 field4 field7 field8] }
       )
     end

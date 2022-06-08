@@ -79,12 +79,12 @@ resource 'Verifications' do
       example 'Verify with cow' do
         savon.expects(:get_data_document)
           .with(message: {
-               'typens:RUTEmpresa' => 'fake_rut_empresa',
-               'typens:DVEmpresa' => 'k',
-               'typens:CodTipoDocumento' => 'C',
-               'typens:NumRUN' => '12025365',
-               'typens:NumSerie' => 'A001529382'
-             })
+            'typens:RUTEmpresa' => 'fake_rut_empresa',
+            'typens:DVEmpresa' => 'k',
+            'typens:CodTipoDocumento' => 'C',
+            'typens:NumRUN' => '12025365',
+            'typens:NumSerie' => 'A001529382'
+          })
           .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match.xml'))
         do_request
         assert_status 201
@@ -105,12 +105,12 @@ resource 'Verifications' do
       example '[error] Verify with cow without a match' do
         savon.expects(:get_data_document)
           .with(message: {
-               'typens:RUTEmpresa' => 'fake_rut_empresa',
-               'typens:DVEmpresa' => 'k',
-               'typens:CodTipoDocumento' => 'C',
-               'typens:NumRUN' => '11111111',
-               'typens:NumSerie' => 'A001529382'
-             })
+            'typens:RUTEmpresa' => 'fake_rut_empresa',
+            'typens:DVEmpresa' => 'k',
+            'typens:CodTipoDocumento' => 'C',
+            'typens:NumRUN' => '11111111',
+            'typens:NumSerie' => 'A001529382'
+          })
           .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_no_match.xml'))
         do_request
         assert_status 422
@@ -126,12 +126,12 @@ resource 'Verifications' do
       example "[error] Verify with cow with a match that's not entitled to verification" do
         savon.expects(:get_data_document)
           .with(message: {
-               'typens:RUTEmpresa' => 'fake_rut_empresa',
-               'typens:DVEmpresa' => 'k',
-               'typens:CodTipoDocumento' => 'C',
-               'typens:NumRUN' => '11111111',
-               'typens:NumSerie' => 'A001529382'
-             })
+            'typens:RUTEmpresa' => 'fake_rut_empresa',
+            'typens:DVEmpresa' => 'k',
+            'typens:CodTipoDocumento' => 'C',
+            'typens:NumRUN' => '11111111',
+            'typens:NumSerie' => 'A001529382'
+          })
           .returns(File.read('engines/commercial/id_cow/spec/fixtures/get_data_document_match_no_citizen.xml'))
         do_request
         assert_status 422
