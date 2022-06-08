@@ -20,7 +20,7 @@ const PopulationInput = () => {
   return (
     <>
       <Input type="text" value={value} onChange={handleChange} />
-      <Text ml="16px" mr="24px">
+      <Text ml="16px" mr="24px" color="adminTextColor">
         50%
       </Text>
     </>
