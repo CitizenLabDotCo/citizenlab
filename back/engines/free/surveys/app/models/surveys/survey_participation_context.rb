@@ -5,7 +5,7 @@ module Surveys::SurveyParticipationContext
 
   SURVEY_SERVICES = %w[
     typeform survey_monkey google_forms enalyzer
-    survey_xact qualtrics microsoft_forms smart_survey
+    survey_xact qualtrics microsoft_forms smart_survey snap_survey
   ].freeze
 
   included do
@@ -41,6 +41,10 @@ module Surveys::SurveyParticipationContext
       validates :survey_embed_url, if: %i[survey? qualtrics?], format: {
         with: %r{\Ahttps://.*\.qualtrics\.com/jfe/form/.*\z},
         message: 'Not a valid Qualtrics survey embed'
+      }
+      validates :survey_embed_url, if: %i[survey? snap_survey?], format: {
+        with: %r{\Ahttps://.*\.welcomesyourfeedback.net|snapsurveys.com/.*\z},
+        message: 'Not a valid Snap Survey embed URL'
       }
       validates :survey_embed_url, if: %i[survey? smart_survey?], format: {
         with: %r{\Ahttps://www\.smartsurvey\.co\.uk/.*\z},
@@ -88,6 +92,10 @@ module Surveys::SurveyParticipationContext
 
   def qualtrics?
     survey_service == 'qualtrics'
+  end
+
+  def snap_survey?
+    survey_service == 'snap_survey'
   end
 
   def microsoft_forms?

@@ -92,3 +92,4 @@ class CustomField < ApplicationRecord
 end
 
 CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
+CustomField.include_if_ee('UserCustomFields::Patches::CustomField')
