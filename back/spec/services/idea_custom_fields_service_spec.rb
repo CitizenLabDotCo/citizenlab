@@ -22,7 +22,6 @@ describe IdeaCustomFieldsService do
         proposed_budget
         topic_ids
         location_description
-        location_point_geojson
         idea_images_attributes
         idea_files_attributes
       ]

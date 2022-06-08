@@ -70,7 +70,6 @@ describe IdeaCustomFieldsService do
         'topic_ids',
         'author_id',
         'budget',
-        'location_point_geojson',
         nil,
         nil
       ]
@@ -94,7 +93,6 @@ describe IdeaCustomFieldsService do
         proposed_budget
         topic_ids
         location_description
-        location_point_geojson
         idea_images_attributes
         idea_files_attributes
       ]
@@ -102,18 +100,16 @@ describe IdeaCustomFieldsService do
   end
 
   describe 'configurable_fields' do
-    it 'excludes hidden fields' do
+    it 'includes all fields' do
       custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
       output = service.configurable_fields custom_form
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).to include disabled_field
-      expect(output).not_to include hidden_field
       expect(output).to include topic_field
       expect(output.map(&:code)).to match_array [
         'title_multiloc',
@@ -136,30 +132,26 @@ describe IdeaCustomFieldsService do
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
       output = service.reportable_fields custom_form
       expect(output).not_to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
-      expect(output).to include hidden_field
       expect(output).not_to include topic_field
-      expect(output.size).to eq 2
+      expect(output.size).to eq 1
     end
   end
 
   describe 'visible_fields' do
-    it 'excludes disabled and hidden fields' do
+    it 'excludes disabled fields' do
       custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
       output = service.visible_fields custom_form
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
-      expect(output).not_to include hidden_field
       expect(output).not_to include topic_field
       expect(output.map(&:code)).to match_array [
         'title_multiloc',
@@ -181,12 +173,10 @@ describe IdeaCustomFieldsService do
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
       output = service.enabled_fields custom_form
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
-      expect(output).to include hidden_field
       expect(output).not_to include topic_field
       expect(output.map(&:code)).to match_array [
         'title_multiloc',
@@ -194,28 +184,24 @@ describe IdeaCustomFieldsService do
         'author_id',
         'budget',
         'location_description',
-        'location_point_geojson',
         'idea_images_attributes',
         'idea_files_attributes',
-        nil,
         nil
       ]
     end
   end
 
   describe 'extra_visible_fields' do
-    it 'excludes disabled, hidden and built-in fields' do
+    it 'excludes disabled and built-in fields' do
       custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      hidden_field = create :custom_field, :for_custom_form, resource: custom_form, hidden: true, required: false
       output = service.extra_visible_fields custom_form
       expect(output).not_to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
-      expect(output).not_to include hidden_field
       expect(output).not_to include topic_field
       expect(output.map(&:code)).to match_array [nil]
     end
