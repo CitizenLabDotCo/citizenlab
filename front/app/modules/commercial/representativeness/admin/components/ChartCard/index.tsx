@@ -19,6 +19,10 @@ import messages from './messages';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import {
+  RepresentativenessRow,
+  RepresentativenessRowPre,
+} from '../../hooks/useReferenceData';
 
 // utils
 import { getLegendLabels } from './utils';
@@ -82,10 +86,12 @@ const ChartCard = ({
 
   const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
-  const data = referenceData.map((opt) => ({
-    ...opt,
-    name: localize(opt.title_multiloc),
-  }));
+  const data = referenceData.map(
+    (opt: RepresentativenessRowPre): RepresentativenessRow => {
+      const { title_multiloc, ..._opt } = opt;
+      return { ..._opt, name: localize(title_multiloc) };
+    }
+  );
 
   return (
     <Box background="white" mb="36px" borderRadius="3px">

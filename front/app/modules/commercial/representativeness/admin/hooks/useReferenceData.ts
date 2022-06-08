@@ -18,14 +18,18 @@ import {
 } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 import { Multiloc } from 'typings';
 
-export interface RepresentativenessRow {
-  name: string;
-  key: string;
-  title_multiloc: Multiloc;
+interface RepresentativenessRowBase {
   actualPercentage: number;
   referencePercentage: number;
   actualNumber: number;
   referenceNumber: number;
+}
+export interface RepresentativenessRow extends RepresentativenessRowBase {
+  name: string;
+}
+
+export interface RepresentativenessRowPre extends RepresentativenessRowBase {
+  title_multiloc: Multiloc;
 }
 
 export type RepresentativenessData = RepresentativenessRow[];
@@ -69,7 +73,7 @@ const getSubscription = (
 
 function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   const [referenceData, setReferenceData] = useState<
-    RepresentativenessData | NilOrError
+    RepresentativenessRowPre[] | NilOrError
   >();
   const [includedUserPercentage, setIncludedUserPercentage] = useState<
     number | NilOrError
@@ -124,32 +128,29 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
 
 export default useReferenceData;
 
-const toReferenceData = (usersByField: TStreamResponse): any => {
+const toReferenceData = (
+  usersByField: TStreamResponse
+): RepresentativenessRowPre[] => {
   const { users, expected_users } = usersByField.series;
+  const options =
+    'options' in usersByField ? usersByField.options : usersByField.areas;
+  const totalActualUsers = Object.values(users).reduce((acc, v) => v + acc, 0);
+  const totalReferenceUsers = Object.values(expected_users).reduce(
+    (acc, v) => v + acc,
+    0
+  );
   let data = Object.keys(users)
     .filter((opt) => opt !== '_blank')
     .map((opt) => ({
-      key: opt,
-      actualPercentage: Math.round(
-        (users[opt] / Object.values(users).reduce((acc, v) => v + acc, 0)) * 100
-      ),
+      title_multiloc: options[opt].title_multiloc,
+      actualPercentage: Math.round((users[opt] / totalReferenceUsers) * 100),
       referencePercentage: Math.round(
-        (expected_users[opt] /
-          Object.values(expected_users).reduce((acc, v) => v + acc, 0)) *
-          100
+        (expected_users[opt] / totalActualUsers) * 100
       ),
       actualNumber: users[opt],
       referenceNumber: expected_users[opt],
     }));
-  if ('options' in usersByField) {
-    const { options } = usersByField;
-    data = data
-      .sort((a, b) => options[a.key].ordering - options[b.key].ordering)
-      .map((opt) => ({
-        ...opt,
-        title_multiloc: options[opt.key].title_multiloc,
-      }));
-  }
+
   return data;
 };
 
