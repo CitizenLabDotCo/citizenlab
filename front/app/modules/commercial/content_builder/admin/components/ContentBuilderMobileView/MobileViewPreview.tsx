@@ -66,18 +66,18 @@ const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
 
   return modalPortalElement && !isNilOrError(project)
     ? createPortal(
-        <Box
-          display="flex"
-          flexDirection="column"
-          w="100%"
-          zIndex="10000"
-          position="fixed"
-          h="100vh"
-          bgColor="#fff"
-          p="20px"
-        >
-          <FocusOn>
-            <Box data-testid="contentBuilderPreview">
+        <FocusOn>
+          <Box
+            display="flex"
+            flexDirection="column"
+            w="100%"
+            zIndex="10000"
+            position="fixed"
+            height="100vh"
+            bgColor="#fff"
+            overflowY="auto"
+          >
+            <Box data-testid="contentBuilderPreview" p="20px">
               {loadingContentBuilderLayout && <Spinner />}
               {!loadingContentBuilderLayout && contentBuilderContent && (
                 <Box data-testid="contentBuilderPreviewContent">
@@ -95,8 +95,8 @@ const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
                 </Box>
               )}
             </Box>
-          </FocusOn>
-        </Box>,
+          </Box>
+        </FocusOn>,
         modalPortalElement
       )
     : null;
