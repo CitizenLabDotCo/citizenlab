@@ -12,13 +12,12 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
       onData({
         configuration: {
           name: 'menu',
-          link: '/admin/menu',
-          // iconName: 'blankPage',
-          iconName: 'close',
+          link: '/admin/pages-menu',
+          iconName: 'blankPage',
           message: 'menu',
           featureNames: ['customizable_navbar'],
         },
-        insertAfterName: 'settings',
+        insertAfterName: 'projects',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
