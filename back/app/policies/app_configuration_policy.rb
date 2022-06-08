@@ -19,7 +19,7 @@ class AppConfigurationPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def create?

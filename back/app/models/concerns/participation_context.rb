@@ -33,7 +33,7 @@ module ParticipationContext
       # ideation? or budgeting?
       with_options if: :ideation_or_budgeting? do
         validates :presentation_mode,
-                  inclusion: { in: PRESENTATION_MODES }, allow_nil: true
+          inclusion: { in: PRESENTATION_MODES }, allow_nil: true
 
         validates :posting_enabled, inclusion: { in: [true, false] }
         validates :commenting_enabled, inclusion: { in: [true, false] }
@@ -66,11 +66,11 @@ module ParticipationContext
         validates :max_budget, presence: true
       end
       validates :min_budget,
-                numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
-                if: %i[budgeting? max_budget] }
+        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_budget,
+                        if: %i[budgeting? max_budget] }
       validates :max_budget,
-                numericality: { greater_than_or_equal_to: :min_budget,
-                if: %i[budgeting? min_budget] }
+        numericality: { greater_than_or_equal_to: :min_budget,
+                        if: %i[budgeting? min_budget] }
     end
   end
 

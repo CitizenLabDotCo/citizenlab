@@ -7,8 +7,8 @@ RSpec.describe User, type: :model do
     let!(:manual_group) { create(:group) }
     let!(:rules_group) do
       create(:smart_group, rules: [
-               { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-             ])
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
     end
 
     it 'returns rule groups' do
