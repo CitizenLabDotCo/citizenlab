@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import OptionRows from './OptionRows';
 
 // styling
@@ -35,10 +35,20 @@ const FieldContent = ({
           {formatMessage(messages.options).toUpperCase()}
         </Title>
       </Box>
-      <Box width="50%">
+      <Box width="50%" display="flex" justifyContent="space-between">
         <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
           {formatMessage(messages.numberOfTotalResidents).toUpperCase()}
         </Title>
+        <Text
+          mr="44px"
+          color="label"
+          mt="0px"
+          mb="0px"
+          variant="bodyS"
+          fontWeight="bold"
+        >
+          %
+        </Text>
       </Box>
     </Box>
 
