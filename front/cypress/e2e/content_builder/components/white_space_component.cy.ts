@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder White space component', () => {
+describe.skip('Content builder White space component', () => {
   let projectId = '';
   let projectSlug = '';
 
