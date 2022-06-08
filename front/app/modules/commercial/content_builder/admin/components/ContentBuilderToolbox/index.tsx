@@ -13,7 +13,6 @@ import { InjectedIntlProps } from 'react-intl';
 // Components
 import ToolboxItem from './ToolboxItem';
 import { Box } from '@citizenlab/cl2-component-library';
-import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
@@ -57,21 +56,6 @@ const ContentBuilderToolbox = ({
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
-        <DraggableElement
-          id="e2e-draggable-single-column"
-          ref={(ref) =>
-            ref &&
-            connectors.create(
-              ref,
-              <Element canvas is={Container} id="container" />
-            )
-          }
-        >
-          <ToolboxItem
-            icon="column1"
-            label={formatMessage(messages.oneColumn)}
-          />
-        </DraggableElement>
         <DraggableElement
           id="e2e-draggable-two-column"
           ref={(ref) =>
