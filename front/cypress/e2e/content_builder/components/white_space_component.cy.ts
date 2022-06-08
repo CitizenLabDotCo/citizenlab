@@ -34,7 +34,6 @@ describe.skip('Content builder White space component', () => {
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
-
   after(() => {
     cy.apiRemoveProject(projectId);
   });
