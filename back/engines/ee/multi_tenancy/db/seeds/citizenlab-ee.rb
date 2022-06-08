@@ -336,6 +336,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      snap_survey_surveys: {
+        enabled: true,
+        allowed: true
+      },
       events_widget: {
         enabled: true,
         allowed: true
