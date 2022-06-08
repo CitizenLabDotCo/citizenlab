@@ -43,6 +43,7 @@ const ContentBuilderPage = ({
 }) => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
+  const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -60,8 +61,12 @@ const ContentBuilderPage = ({
   }, [locale]);
 
   const editorData =
-    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
-      ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
+    !isNilOrError(contentBuilderLayout) && selectedLocale
+      ? draftData && draftData[selectedLocale]
+        ? draftData[selectedLocale]
+        : contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
+            selectedLocale
+          ]
       : undefined;
 
   const handleEditorChange = (nodes: SerializedNodes) => {
@@ -70,14 +75,25 @@ const ContentBuilderPage = ({
       iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
   };
 
-  const handleSelectedLocaleChange = (locale: Locale) => {
-    setSelectedLocale(locale);
+  const handleSelectedLocaleChange = ({
+    locale,
+    editorData,
+  }: {
+    locale: Locale;
+    editorData: SerializedNodes;
+  }) => {
+    if (selectedLocale && selectedLocale !== locale) {
+      setDraftData({ ...draftData, [selectedLocale]: editorData });
+    }
+
     iframeRef.current &&
       iframeRef.current.contentWindow &&
       iframeRef.current.contentWindow.postMessage(
         { selectedLocale: locale },
         window.location.href
       );
+
+    setSelectedLocale(locale);
   };
 
   const modalPortalElement = document.getElementById('modal-portal');
@@ -104,6 +120,7 @@ const ContentBuilderPage = ({
                 setMobilePreviewEnabled={setMobilePreviewEnabled}
                 selectedLocale={selectedLocale}
                 onSelectLocale={handleSelectedLocaleChange}
+                draftEditorData={draftData}
               />
               <Box
                 mt={`${stylingConsts.menuHeight}px`}

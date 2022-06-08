@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 // hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-import { useEditor } from '@craftjs/core';
-import useLocale from 'hooks/useLocale';
+import { useEditor, SerializedNodes } from '@craftjs/core';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
@@ -48,7 +47,11 @@ type ContentBuilderTopBarProps = {
   mobilePreviewEnabled: boolean;
   setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
-  onSelectLocale: (locale: Locale) => void;
+  draftEditorData?: Record<string, SerializedNodes>;
+  onSelectLocale: (args: {
+    locale: Locale;
+    editorData: SerializedNodes;
+  }) => void;
 } & WithRouterProps;
 
 const ContentBuilderTopBar = ({
@@ -57,11 +60,11 @@ const ContentBuilderTopBar = ({
   setMobilePreviewEnabled,
   selectedLocale,
   onSelectLocale,
+  draftEditorData,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
-  const locale = useLocale();
   const project = useProject({ projectId });
   const locales = useAppConfigurationLocales();
 
@@ -108,18 +111,28 @@ const ContentBuilderTopBar = ({
   };
 
   const handleSave = async () => {
-    if (!isNilOrError(locale)) {
+    if (selectedLocale) {
       try {
         setLoading(true);
         await addContentBuilderLayout(
           { projectId, code: PROJECT_DESCRIPTION_CODE },
-          { craftjs_jsonmultiloc: { [locale]: JSON.parse(query.serialize()) } }
+          {
+            craftjs_jsonmultiloc: {
+              ...draftEditorData,
+              [selectedLocale]: query.getSerializedNodes(),
+            },
+          }
         );
       } catch {
         // Do nothing
       }
       setLoading(false);
     }
+  };
+
+  const handleSelectLocale = (locale: Locale) => {
+    const editorData = query.getSerializedNodes();
+    onSelectLocale({ locale, editorData });
   };
 
   return (
@@ -168,7 +181,7 @@ const ContentBuilderTopBar = ({
             <LocaleSwitcher
               locales={locales}
               selectedLocale={selectedLocale}
-              onSelectedLocaleChange={onSelectLocale}
+              onSelectedLocaleChange={handleSelectLocale}
               // values={getLocaleSwitcherValues()}
             />
           </Box>

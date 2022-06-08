@@ -116,6 +116,7 @@ describe('ContentBuilderTopBar', () => {
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
+          draftEditorData={{ en: {} }}
         />
       </Editor>
     );

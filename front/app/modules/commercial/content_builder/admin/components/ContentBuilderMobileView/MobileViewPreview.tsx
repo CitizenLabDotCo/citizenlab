@@ -53,7 +53,6 @@ const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
   }
 
   const locale = selectedLocale || platformLocale;
-  console.log(locale);
   const loadingContentBuilderLayout = contentBuilderLayout === undefined;
 
   const contentBuilderSavedContent =
