@@ -40,7 +40,7 @@ RSpec.describe Notification, type: :model do
     end
 
     it 'makes an idea marked as spam notification on spam report created' do
-      recipient = create(:admin)
+      create(:admin)
       idea = create(:idea)
       spam_report = create(:spam_report, spam_reportable: idea)
       activity = create(:activity, item: spam_report, action: 'created')
@@ -50,7 +50,7 @@ RSpec.describe Notification, type: :model do
     end
 
     it 'makes a comment marked as spam notification on spam report created' do
-      recipient = create(:admin)
+      create(:admin)
       comment = create(:comment)
       spam_report = create(:spam_report, spam_reportable: comment)
       activity = create(:activity, item: spam_report, action: 'created')
@@ -115,7 +115,7 @@ RSpec.describe Notification, type: :model do
 
   it 'deleting a comment also deletes notifications requiring that comment' do
     comment = create(:comment)
-    notification = create(:comment_on_your_idea, comment: comment)
+    create(:comment_on_your_idea, comment: comment)
     count = Notification.count
     comment.destroy!
     expect(Notification.count).to eq(count - 1)
@@ -131,7 +131,7 @@ RSpec.describe Notification, type: :model do
 
   it 'deleting an idea status also deletes notifications requiring that idea status' do
     idea_status = create(:idea_status)
-    notification = create(:status_change_of_your_idea, post_status: idea_status)
+    create(:status_change_of_your_idea, post_status: idea_status)
     count = Notification.count
     idea_status.destroy!
     expect(Notification.count).to eq(count - 1)
@@ -139,7 +139,7 @@ RSpec.describe Notification, type: :model do
 
   it 'deleting an initiative status also deletes notifications requiring that initiative status' do
     initiative_status = create(:initiative_status)
-    notification = create(:status_change_of_your_initiative, post_status: initiative_status)
+    create(:status_change_of_your_initiative, post_status: initiative_status)
     count = Notification.count
     initiative_status.destroy!
     expect(Notification.count).to eq(count - 1)
@@ -147,7 +147,7 @@ RSpec.describe Notification, type: :model do
 
   it 'deleting an invite also deletes notifications requiring that invite' do
     invite = create(:invite)
-    notification = create(:invite_accepted, invite: invite)
+    create(:invite_accepted, invite: invite)
     count = Notification.count
     invite.destroy!
     expect(Notification.count).to eq(count - 1)
@@ -155,7 +155,7 @@ RSpec.describe Notification, type: :model do
 
   it 'deleting an official feedback also deletes notifications requiring that official feedback' do
     official_feedback = create(:official_feedback)
-    notification = create(:official_feedback_on_your_idea, official_feedback: official_feedback)
+    create(:official_feedback_on_your_idea, official_feedback: official_feedback)
     count = Notification.count
     official_feedback.destroy!
     expect(Notification.count).to eq(count - 1)

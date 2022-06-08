@@ -11,7 +11,6 @@ import {
   Accordion as AccordionComponent,
   Title,
   Input,
-  Label,
   Toggle,
 } from '@citizenlab/cl2-component-library';
 
@@ -20,7 +19,7 @@ import { useTheme } from 'styled-components';
 
 // intl
 import messages from '../../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 const Accordion = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();
@@ -31,7 +30,9 @@ const Accordion = ({ text, title, openByDefault }) => {
         isOpenByDefault={openByDefault}
         title={
           <Box display="flex">
-            <Title variant="h3">{title}</Title>
+            <Title variant="h3" color="colorText">
+              {title}
+            </Title>
           </Box>
         }
       >
@@ -69,10 +70,8 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
         />
       </Box>
       <Box flex="0 1 100%" background="#ffffff">
-        <Label htmlFor="quill-editor">
-          {formatMessage(messages.accordionTextLabel)}
-        </Label>
         <QuillEditor
+          label={formatMessage(messages.accordionTextLabel)}
           maxHeight="225px"
           noImages
           noVideos
@@ -83,19 +82,15 @@ const AccordionSettings = injectIntl(({ intl: { formatMessage } }) => {
           }}
         />
       </Box>
-      <Box display="flex" gap="16px" marginBottom="20px" flex="0 1 100%">
+      <Box marginBottom="20px">
         <Toggle
           id="default-open-toggle"
           checked={openByDefault}
           onChange={() => {
             setProp((props) => (props.openByDefault = !openByDefault));
           }}
+          label={formatMessage(messages.accordionDefaultOpenLabel)}
         />
-        <Box mt="4px">
-          <Label htmlFor="default-open-toggle">
-            <FormattedMessage {...messages.accordionDefaultOpenLabel} />
-          </Label>
-        </Box>
       </Box>
     </Box>
   );

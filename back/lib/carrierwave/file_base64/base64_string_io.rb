@@ -9,7 +9,7 @@ module Carrierwave
         @file_name = file_name
         @file_extension = file_extension
 
-        description, encoded_bytes = encoded_file.split ','
+        _description, encoded_bytes = encoded_file.split ','
         raise ArgumentError if !encoded_bytes || encoded_bytes.eql?('(null)')
 
         bytes = ::Base64.decode64 encoded_bytes

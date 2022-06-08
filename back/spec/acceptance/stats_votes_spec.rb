@@ -103,16 +103,16 @@ resource 'Stats - Votes' do
 
     get 'web_api/v1/stats/votes_by_domicile' do
       before do
-       @eversem = create(:area, title_multiloc: { 'en' => 'Eversem' }).id
-       @wolvertem = create(:area, title_multiloc: { 'en' => 'Wolvertem' }).id
-       @ideas = create_list(:idea, 3, idea_status: @idea_status)
-       @someone = create(:user, domicile: @eversem)
-       create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
-       create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
-       [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
-         create(:vote, mode: mode, votable: @ideas.sample,
-           user: (domicile ? create(:user, domicile: domicile) : create(:user)))
-       end
+        @eversem = create(:area, title_multiloc: { 'en' => 'Eversem' }).id
+        @wolvertem = create(:area, title_multiloc: { 'en' => 'Wolvertem' }).id
+        @ideas = create_list(:idea, 3, idea_status: @idea_status)
+        @someone = create(:user, domicile: @eversem)
+        create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
+        create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
+        [['up', @eversem], ['up', @wolvertem], ['down', @wolvertem], ['up', nil]].each do |mode, domicile|
+          create(:vote, mode: mode, votable: @ideas.sample,
+            user: (domicile ? create(:user, domicile: domicile) : create(:user)))
+        end
       end
 
       time_boundary_parameters self
@@ -309,13 +309,13 @@ resource 'Stats - Votes' do
 
             expect(worksheet[0].cells.map(&:value)).to match %w[date up down total]
             up_col = worksheet.map { |col| col.cells[1].value }
-            header, *ups = up_col
+            _header, *ups = up_col
             expect(ups.sum).to eq 3
             down_col = worksheet.map { |col| col.cells[2].value }
-            header, *downs = down_col
+            _header, *downs = down_col
             expect(downs.sum).to eq 2
             total_col = worksheet.map { |col| col.cells[3].value }
-            header, *totals = total_col
+            _header, *totals = total_col
             expect(totals.sum).to eq 5
           end
         end
@@ -453,11 +453,11 @@ resource 'Stats - Votes' do
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
 
         topic_ids_col = worksheet.map { |col| col.cells[1].value }
-        header, *topic_ids = topic_ids_col
+        _header, *topic_ids = topic_ids_col
         expect(topic_ids).to match_array [topic1.id, topic2.id]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts).to match_array [3, 2]
       end
     end
@@ -480,7 +480,7 @@ resource 'Stats - Votes' do
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 2
       end
     end
@@ -503,7 +503,7 @@ resource 'Stats - Votes' do
         expect(worksheet[0].cells.map(&:value)).to match %w[topic topic_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 2
       end
     end
@@ -608,11 +608,11 @@ resource 'Stats - Votes' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
 
         project_ids_col = worksheet.map { |col| col.cells[1].value }
-        header, *project_ids = project_ids_col
+        _header, *project_ids = project_ids_col
         expect(project_ids).to match_array [project1.id, project2.id]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts).to match_array [3, 1]
       end
     end
@@ -637,7 +637,7 @@ resource 'Stats - Votes' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
       end
     end
@@ -661,7 +661,7 @@ resource 'Stats - Votes' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id votes]
 
         amount_col = worksheet.map { |col| col.cells[2].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
       end
     end

@@ -28,12 +28,12 @@ RSpec.describe User, type: :model do
 
     it 'is invalid when the user has an unknown role type' do
       u = build(:user, roles: [{ type: 'stonecarver' }])
-      expect { u.valid? }.to change { u.errors[:roles] }
+      expect { u.valid? }.to(change { u.errors[:roles] })
     end
 
     it 'is invalid when a project_folder_moderator is missing a project_folder_id' do
       u = build(:user, roles: [{ type: 'project_folder_moderator' }])
-      expect { u.valid? }.to change { u.errors[:roles] }
+      expect { u.valid? }.to(change { u.errors[:roles] })
     end
   end
 

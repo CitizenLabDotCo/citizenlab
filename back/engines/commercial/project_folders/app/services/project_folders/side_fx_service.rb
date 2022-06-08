@@ -20,10 +20,10 @@ module ProjectFolders
     def after_destroy(frozen_folder, user)
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
       LogActivityJob.perform_later(
-          encode_frozen_resource(frozen_folder), 'deleted',
-          user, Time.now.to_i,
-          payload: { project_folder: serialized_folder }
-        )
+        encode_frozen_resource(frozen_folder), 'deleted',
+        user, Time.now.to_i,
+        payload: { project_folder: serialized_folder }
+      )
     end
   end
 end

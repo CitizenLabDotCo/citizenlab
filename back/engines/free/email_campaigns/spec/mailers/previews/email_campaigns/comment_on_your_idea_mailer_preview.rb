@@ -4,7 +4,6 @@ module EmailCampaigns
   class CommentOnYourIdeaMailerPreview < ActionMailer::Preview
     def campaign_mail
       invitee = User.first
-      inviter = User.last
 
       command = {
         recipient: invitee,
@@ -21,7 +20,7 @@ module EmailCampaigns
             'nl-BE': 'Wijgmaal verkeersvrij dorpsplein'
           },
           post_author_name: 'Sander Van Garsse'
-          }
+        }
       }
 
       campaign = EmailCampaigns::Campaigns::CommentOnYourIdea.first

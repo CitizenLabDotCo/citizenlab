@@ -14,7 +14,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewInitiativeForAdmin, type: :model do
 
     it 'filters out normal users' do
       initiative = create(:initiative)
-      user = create(:user)
+      create(:user)
       admin = create(:admin)
 
       expect(campaign.apply_recipient_filters(activity: create(:activity, item: initiative, action: 'published')).ids).to match_array([admin.id])
@@ -27,7 +27,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewInitiativeForAdmin, type: :model do
     it 'filters out everyone if the author is admin' do
       author = create(:admin)
       initiative = create(:initiative, author: author)
-      admin = create(:admin)
+      create(:admin)
 
       expect(campaign.apply_recipient_filters(activity: create(:activity, item: initiative, action: 'published')).count).to eq 0
     end

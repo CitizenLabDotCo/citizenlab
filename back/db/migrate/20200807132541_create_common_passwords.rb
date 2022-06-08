@@ -6,8 +6,8 @@ class CreateCommonPasswords < ActiveRecord::Migration[6.0]
       t.string :password, index: true
     end
 
-    if File.exist?(CommonPassword::COMMON_PASSWORDS_FILE) && !CommonPassword.exists?
-      CommonPassword.initialize!
-    end
+    return unless File.exist?(CommonPassword::COMMON_PASSWORDS_FILE) && !CommonPassword.exists?
+
+    CommonPassword.initialize!
   end
 end

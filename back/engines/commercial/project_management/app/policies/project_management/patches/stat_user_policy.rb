@@ -16,8 +16,8 @@ module ProjectManagement
           return scope.none unless user.project_moderator?
 
           ::UserRoleService.new.moderatable_projects(user)
-              .map { |project| ::ProjectPolicy::InverseScope.new(project, scope).resolve }
-              .reduce(:or)
+            .map { |project| ::ProjectPolicy::InverseScope.new(project, scope).resolve }
+            .reduce(:or)
         end
       end
 

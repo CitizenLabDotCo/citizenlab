@@ -416,7 +416,7 @@ de:
       title_added_as_folderadmin: 'Sie wurden als OrdnermanagerIn hinzugefügt'
       x_projects: '%{numberOfProjects} Projekte'
     project_phase_started:
-      cta_view_phase: 'Entdecken Sie diese neue Phase'
+      cta_view_phase: 'Zur neuen Phase'
       event_description: 'Das Projekt auf der Plattform von %{organizationName} befindet sich nun in einer neuen Phase. Klicke auf den Link unten, um mehr zu erfahren!'
       main_header: 'Eine neue Phase für das Projekt ''%{projectName}'' gestartet'
       new_phase: 'Dieses Projekt ist nun in der Phase ''%{phaseTitle}'''

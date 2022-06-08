@@ -103,7 +103,7 @@ export default defineMessages({
   createSurveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.createSurveyDescription',
     defaultMessage:
-      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey or Microsoft Forms survey.',
+      'Embed a Typeform, Google Form, Enalyzer, SurveyXact, Qualtrics, SmartSurvey, Snap Survey or Microsoft Forms survey.',
   },
   conductParticipatoryBudgetingText: {
     id: 'app.containers.AdminPage.ProjectEdit.conductParticipatoryBudgetingText',
@@ -315,6 +315,10 @@ export default defineMessages({
   smart_survey: {
     id: 'app.containers.AdminPage.ProjectEdit.smart_survey',
     defaultMessage: 'SmartSurvey',
+  },
+  snap_survey: {
+    id: 'app.containers.AdminPage.ProjectEdit.snap_survey',
+    defaultMessage: 'Snap Survey',
   },
   microsoft_forms: {
     id: 'app.containers.AdminPage.ProjectEdit.microsoft_forms',

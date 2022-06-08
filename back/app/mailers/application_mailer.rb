@@ -12,16 +12,16 @@ class ApplicationMailer < ActionMailer::Base
   delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
-                :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
-                :text_direction
+    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
+    :text_direction
 
   helper_method :organization_name, :recipient_name,
-                :url_service, :multiloc_service, :organization_name,
-                :loc, :localize_for_recipient, :recipient_first_name
+    :url_service, :multiloc_service, :organization_name,
+    :loc, :localize_for_recipient, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
-                :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
-                :header_logo_only?, :remove_vendor_branding?
+    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+    :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
 
@@ -179,8 +179,8 @@ class ApplicationMailer < ActionMailer::Base
 
   def to_deep_struct(obj)
     case obj
-    when Hash  then OpenStruct.new(obj.transform_values(&method(:to_deep_struct)))
-    when Array then obj.map(&method(:to_deep_struct))
+    when Hash  then OpenStruct.new(obj.transform_values { |nested_object| to_deep_struct(nested_object) })
+    when Array then obj.map { |nested_object| to_deep_struct(nested_object) }
     else            obj
     end
   end

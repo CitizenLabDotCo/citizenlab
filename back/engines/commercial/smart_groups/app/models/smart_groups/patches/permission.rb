@@ -11,9 +11,9 @@ module SmartGroups
 
         rules = groups.where(membership_type: 'rules').map do |group|
           group.rules
-               .select(&not_verified_rule)
-               .map(&parse_rule_json)
-               .map(&:description_multiloc)
+            .select(&not_verified_rule)
+            .map(&parse_rule_json)
+            .map(&:description_multiloc)
         end
 
         rules.reject(&:empty?)

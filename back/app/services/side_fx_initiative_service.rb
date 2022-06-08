@@ -13,16 +13,16 @@ class SideFxInitiativeService
 
   def after_create(initiative, user)
     initiative.update!(body_multiloc: TextImageService.new.swap_data_images(initiative, :body_multiloc))
-    if initiative.published?
-      after_publish initiative, user
-    end
+    return unless initiative.published?
+
+    after_publish initiative, user
   end
 
   def before_update(initiative, user)
     initiative.body_multiloc = TextImageService.new.swap_data_images(initiative, :body_multiloc)
-    if initiative.publication_status_change == %w[draft published]
-      before_publish initiative, user
-    end
+    return unless initiative.publication_status_change == %w[draft published]
+
+    before_publish initiative, user
   end
 
   def after_update(initiative, user)
@@ -41,9 +41,9 @@ class SideFxInitiativeService
       LogActivityJob.perform_later(initiative, 'changed_title', user, initiative.updated_at.to_i, payload: { change: initiative.title_multiloc_previous_change })
     end
 
-    if initiative.body_multiloc_previously_changed?
-      LogActivityJob.perform_later(initiative, 'changed_body', user, initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
-    end
+    return unless initiative.body_multiloc_previously_changed?
+
+    LogActivityJob.perform_later(initiative, 'changed_body', user, initiative.updated_at.to_i, payload: { change: initiative.body_multiloc_previous_change })
   end
 
   def before_destroy(initiative, user); end
@@ -67,10 +67,10 @@ class SideFxInitiativeService
 
   def set_assignee(initiative)
     default_assignee = User.active.admin.order(:created_at).reject(&:super_admin?).first
-    if !initiative.assignee && default_assignee
-      initiative.assignee = default_assignee
-      @automatic_assignment = true
-    end
+    return unless !initiative.assignee && default_assignee
+
+    initiative.assignee = default_assignee
+    @automatic_assignment = true
   end
 
   def add_autovote(initiative)
@@ -80,9 +80,9 @@ class SideFxInitiativeService
 
   def log_activity_jobs_after_published(initiative, user)
     LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'published', user, initiative.published_at.to_i)
-    if first_user_initiative? initiative, user
-      LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'first_published_by_user', user, initiative.published_at.to_i)
-    end
+    return unless first_user_initiative? initiative, user
+
+    LogActivityJob.set(wait: 20.seconds).perform_later(initiative, 'first_published_by_user', user, initiative.published_at.to_i)
   end
 
   def first_user_initiative?(initiative, user)

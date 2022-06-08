@@ -19,7 +19,6 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
     let!(:votes) { create_list(:vote, 3, mode: 'up', votable: top_idea) + [top_idea] }
     let!(:top_comment) { create(:comment, post: top_idea, created_at: Time.now - 3.minutes) }
     let!(:comments) { create_list(:comment, 3, post: top_idea, parent: top_comment) + create_list(:comment, 5, post: top_idea) + [top_comment] }
-    let!(:votes) { create_list(:vote, 3, mode: 'up', votable: top_idea) + [top_idea] }
     let!(:draft_project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }, created_at: Time.now - 2.minutes) }
 
     it 'generates a command with the desired payload and tracked content' do
@@ -47,12 +46,12 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
 
       expected_author_name = "#{top_idea.author.first_name} #{top_idea.author.last_name[0]}."
       expect(
-          command.dig(:event_payload, :top_ideas, 0, :author_name)
-        ).to eq(expected_author_name)
+        command.dig(:event_payload, :top_ideas, 0, :author_name)
+      ).to eq(expected_author_name)
 
       expect(
-          command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
-        ).to eq("#{top_comment.author.last_name[0]}.")
+        command.dig(:event_payload, :top_ideas, 0, :top_comments, 0, :author_last_name)
+      ).to eq("#{top_comment.author.last_name[0]}.")
 
       # @todo No new initiatives and successful initiatives in this digest
     end

@@ -72,8 +72,9 @@ module UserCustomFields
         end
 
         def custom_field_key_from_path
-          request.path.split('/').last
-                 .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)&.[](:key)
+          request
+            .path.split('/').last
+            .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)&.[](:key)
         end
 
         def user_counts
@@ -86,10 +87,11 @@ module UserCustomFields
           # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
           # error while rewriting the SELECT clause. This is because the 'field_value' column is a
           # computed column and it does not seem to be supported properly by the +count+ method.
-          counts = field_values.order('field_value')
-                               .group('field_value')
-                               .select('COUNT(*) as count')
-                               .to_a.pluck(:field_value, :count).to_h
+          counts = field_values
+            .order('field_value')
+            .group('field_value')
+            .select('COUNT(*) as count')
+            .to_a.pluck(:field_value, :count).to_h
 
           counts['_blank'] = counts.delete(nil) || 0
           counts
@@ -124,7 +126,7 @@ module UserCustomFields
 
         def find_users
           users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
-                    .where(registration_completed_at: @start_at..@end_at)
+            .where(registration_completed_at: @start_at..@end_at)
 
           if params[:group]
             group = Group.find(params[:group])
