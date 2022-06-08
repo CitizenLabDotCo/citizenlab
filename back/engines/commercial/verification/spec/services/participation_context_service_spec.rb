@@ -138,7 +138,7 @@ describe ParticipationContextService do
     context 'timeline project' do
       it "returns 'not_verified' if it's in the current phase and voting is not permitted and a permitted group requires verification" do
         project = create(:project_with_current_phase,
-                         current_phase_attrs: { permissions_config: { voting_idea: false } })
+          current_phase_attrs: { permissions_config: { voting_idea: false } })
         permission = TimelineService.new.current_phase(project).permissions.find_by(action: 'voting_idea')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])
         permission.update!(permitted_by: 'groups', groups: [create(:group), verified_members])
@@ -183,7 +183,7 @@ describe ParticipationContextService do
     context 'for timeline projects' do
       it 'returns `not_verified` when the idea is in the current phase and budgeting is not permitted and a permitted group requires verification' do
         project = create(:project_with_current_phase,
-                         current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
+          current_phase_attrs: { participation_method: 'budgeting', max_budget: 10_000 })
         idea = create(:idea, project: project, phases: [project.phases[2]])
         permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
         verified_members = create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])

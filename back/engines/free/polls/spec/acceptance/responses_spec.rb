@@ -47,9 +47,9 @@ resource 'Poll Responses' do
         @q1 = create(:poll_question, :with_options, participation_context: @participation_context)
         @u1 = create(:user)
         @r1 = create(:poll_response,
-                     user: @u1,
-                     participation_context: @participation_context,
-                     response_options: [create(:poll_response_option, option: @q1.options.first)])
+          user: @u1,
+          participation_context: @participation_context,
+          response_options: [create(:poll_response_option, option: @q1.options.first)])
       end
 
       let(:participation_context_id) { @participation_context.id }

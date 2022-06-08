@@ -1,4 +1,9 @@
 # Changelog
+## Next release
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
 
 ### Added
 
