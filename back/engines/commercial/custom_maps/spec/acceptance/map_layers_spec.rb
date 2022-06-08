@@ -9,11 +9,11 @@ resource 'Map Layers' do
   let!(:project)      { create(:project) }
   let!(:map_config)   do
     create(:map_config,
-           :with_positioning,
-           :with_tile_provider,
-           :with_layers,
-           :with_legend,
-           project: project)
+      :with_positioning,
+      :with_tile_provider,
+      :with_layers,
+      :with_legend,
+      project: project)
   end
 
   let(:project_id)    { project.id }

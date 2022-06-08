@@ -104,10 +104,10 @@ module JsonFormsIdeasOverrides
       minProperties: 1,
       properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
         {
-            type: 'string',
-            minLength: 10,
-            maxLength: 80
-          }
+          type: 'string',
+          minLength: 10,
+          maxLength: 80
+        }
       end
     }
   end
@@ -133,9 +133,9 @@ module JsonFormsIdeasOverrides
       minProperties: 1,
       properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
         {
-            type: 'string',
-            minLength: 40
-          }
+          type: 'string',
+          minLength: 40
+        }
       end
     }
   end
@@ -163,7 +163,7 @@ module JsonFormsIdeasOverrides
       uniqueItems: true,
       minItems: field.enabled && field.required ? 1 : 0,
       items: {
-          type: 'string'
+        type: 'string'
       }.tap do |items|
         unless topics.empty?
           items[:oneOf] = topics.map do |topic|

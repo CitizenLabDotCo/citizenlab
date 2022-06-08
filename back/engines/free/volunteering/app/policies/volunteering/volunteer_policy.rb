@@ -24,7 +24,7 @@ module Volunteering
 
     def index_xlsx?
       # TODO: also allow folder moderators
-      user&.active? && (user.admin? || user.project_moderator?)
+      user&.active? && (user&.admin? || user&.project_moderator?)
     end
 
     def create?

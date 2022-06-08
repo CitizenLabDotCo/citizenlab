@@ -20,7 +20,7 @@ module EmailCampaigns
             'nl-BE': 'Wijgmaal verkeersvrij dorpsplein'
           },
           post_author_name: 'Sander Van Garsse'
-          }
+        }
       }
 
       campaign = EmailCampaigns::Campaigns::CommentOnYourIdea.first

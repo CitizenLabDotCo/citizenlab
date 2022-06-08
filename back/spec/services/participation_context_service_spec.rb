@@ -455,7 +455,7 @@ describe ParticipationContextService do
 
       it 'returns `upvoting_limited_max_reached` if the upvoting limit was reached' do
         project = create(:project_with_current_phase,
-                         current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
+          current_phase_attrs: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 1 })
         create(:vote, mode: 'up', user: user, votable: create(:idea, project: project, phases: project.phases))
 
         expect(service.idea_voting_disabled_reason_for(project, user, mode: 'up')).to eq 'upvoting_limited_max_reached'
@@ -490,7 +490,7 @@ describe ParticipationContextService do
         project = create(
           :project_with_current_phase,
           phases_config: { sequence: 'xxcxx', c: { voting_enabled: true },
-          x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } }
+                           x: { voting_enabled: true, upvoting_method: 'limited', upvoting_limited_max: 2 } }
         )
         phase = project.phases.order(:start_at).first
         ideas = create_list(:idea, 2, project: project, phases: project.phases)

@@ -81,99 +81,99 @@ describe SmartGroups::Rules::Email do
   describe 'description_multiloc' do
     let(:email_is_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'is',
-        'value'         => 'sebi@citizenlab.co'
+        'ruleType' => 'email',
+        'predicate' => 'is',
+        'value' => 'sebi@citizenlab.co'
       })
     end
     let(:email_not_is_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'not_is',
-        'value'         => 'sebi@citizenlab.co'
+        'ruleType' => 'email',
+        'predicate' => 'not_is',
+        'value' => 'sebi@citizenlab.co'
       })
     end
     let(:email_contains_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'contains',
-        'value'         => '@citizenlab'
+        'ruleType' => 'email',
+        'predicate' => 'contains',
+        'value' => '@citizenlab'
       })
     end
     let(:email_not_contains_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'not_contains',
-        'value'         => '@citizenlab'
+        'ruleType' => 'email',
+        'predicate' => 'not_contains',
+        'value' => '@citizenlab'
       })
     end
     let(:email_begins_with_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'begins_with',
-        'value'         => 'sebi'
+        'ruleType' => 'email',
+        'predicate' => 'begins_with',
+        'value' => 'sebi'
       })
     end
     let(:email_not_begins_with_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'not_begins_with',
-        'value'         => 'sebi'
+        'ruleType' => 'email',
+        'predicate' => 'not_begins_with',
+        'value' => 'sebi'
       })
     end
     let(:email_ends_on_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'ends_on',
-        'value'         => 'citizenlab.co'
+        'ruleType' => 'email',
+        'predicate' => 'ends_on',
+        'value' => 'citizenlab.co'
       })
     end
     let(:email_not_ends_on_rule) do
       SmartGroups::Rules::Email.from_json({
-        'ruleType'      => 'email',
-        'predicate'     => 'not_ends_on',
-        'value'         => 'citizenlab.co'
+        'ruleType' => 'email',
+        'predicate' => 'not_ends_on',
+        'value' => 'citizenlab.co'
       })
     end
 
     it 'successfully translates different combinations of rules' do
       expect(email_is_rule.description_multiloc).to eq({
-        'en'    => 'e-mail is sebi@citizenlab.co',
+        'en' => 'e-mail is sebi@citizenlab.co',
         'fr-FR' => 'adresse e-mail est sebi@citizenlab.co',
         'nl-NL' => 'e-mail is sebi@citizenlab.co'
       })
       expect(email_not_is_rule.description_multiloc).to eq({
-        'en'    => 'e-mail is not sebi@citizenlab.co',
+        'en' => 'e-mail is not sebi@citizenlab.co',
         'fr-FR' => 'adresse e-mail n\'est pas sebi@citizenlab.co',
         'nl-NL' => 'e-mail is niet sebi@citizenlab.co'
       })
       expect(email_contains_rule.description_multiloc).to eq({
-        'en'    => 'e-mail contains @citizenlab',
+        'en' => 'e-mail contains @citizenlab',
         'fr-FR' => 'adresse e-mail contient @citizenlab',
         'nl-NL' => 'e-mail bevat @citizenlab'
       })
       expect(email_not_contains_rule.description_multiloc).to eq({
-        'en'    => 'e-mail doesn\'t contain @citizenlab',
+        'en' => 'e-mail doesn\'t contain @citizenlab',
         'fr-FR' => 'adresse e-mail ne contient pas @citizenlab',
         'nl-NL' => 'e-mail bevat niet @citizenlab'
       })
       expect(email_begins_with_rule.description_multiloc).to eq({
-        'en'    => 'e-mail begins with sebi',
+        'en' => 'e-mail begins with sebi',
         'fr-FR' => 'adresse e-mail commence par sebi',
         'nl-NL' => 'e-mail begint op sebi'
       })
       expect(email_not_begins_with_rule.description_multiloc).to eq({
-        'en'    => 'e-mail doesn\'t begin with sebi',
+        'en' => 'e-mail doesn\'t begin with sebi',
         'fr-FR' => 'adresse e-mail ne commence pas par sebi',
         'nl-NL' => 'e-mail begint niet op sebi'
       })
       expect(email_ends_on_rule.description_multiloc).to eq({
-        'en'    => 'e-mail ends on citizenlab.co',
+        'en' => 'e-mail ends on citizenlab.co',
         'fr-FR' => 'adresse e-mail se termine sur citizenlab.co',
         'nl-NL' => 'e-mail eindigt op citizenlab.co'
       })
       expect(email_not_ends_on_rule.description_multiloc).to eq({
-        'en'    => 'e-mail doesn\'t end on citizenlab.co',
+        'en' => 'e-mail doesn\'t end on citizenlab.co',
         'fr-FR' => 'adresse e-mail ne se termine pas sur citizenlab.co',
         'nl-NL' => 'e-mail eindigt niet op citizenlab.co'
       })

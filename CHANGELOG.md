@@ -1,10 +1,19 @@
 # Changelog
+## Next release
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
 
 ### Added
 
 - [CL-774] Add new option when adding areas to a project: "No areas"
 
 ## 2022-05-31
+
+### Added
+
+- [CL-906] Added support for Snap Survey
 
 ### Changed
 

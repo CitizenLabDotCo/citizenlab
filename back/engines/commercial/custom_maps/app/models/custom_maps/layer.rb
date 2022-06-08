@@ -38,8 +38,8 @@ module CustomMaps
     validates :default_enabled, inclusion: { in: [true, false] }
     validates :geojson, presence: true, json: { schema: GEOJSON_SCHEMA, message: ->(errors) { errors } }
     validates :marker_svg_url,
-              format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
-              allow_nil: true
+      format: { with: %r{\Ahttps://.*\z}, message: 'should start with https://' },
+      allow_nil: true
 
     before_validation :set_default_enabled, :decode_geojson_file
 

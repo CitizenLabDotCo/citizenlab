@@ -28,7 +28,7 @@ module IdeaCustomFields
           :required,
           :enabled,
           { title_multiloc: CL2_SUPPORTED_LOCALES,
-          description_multiloc: CL2_SUPPORTED_LOCALES }
+            description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
     end
