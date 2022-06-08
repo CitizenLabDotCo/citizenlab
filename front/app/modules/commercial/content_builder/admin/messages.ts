@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.url',
     defaultMessage: 'Embed',
   },
+  error: {
+    id: 'app.containers.admin.ContentBuilder.error',
+    defaultMessage: 'error',
+  },
   iframeUrlLabel: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
     defaultMessage: 'Website address',
