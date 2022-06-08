@@ -1,34 +1,34 @@
 # frozen_string_literal: true
 
 class IdeaCustomFieldsService
-  def all_fields(custom_form, _options = {})
-    default_fields(custom_form)
+  def initialize(custom_form)
+    @custom_form = custom_form
   end
 
-  def configurable_fields(custom_form)
-    all_fields(custom_form).select do |field|
+  def configurable_fields
+    all_fields.select do |field|
       %w[author_id budget].exclude? field.code
     end
   end
 
-  def reportable_fields(custom_form)
-    all_fields(custom_form).select(&:enabled?).reject(&:built_in?)
+  def reportable_fields
+    all_fields.select(&:enabled?).reject(&:built_in?)
   end
 
-  def visible_fields(custom_form)
-    all_fields(custom_form).select(&:enabled?)
+  def visible_fields
+    all_fields.select(&:enabled?)
   end
 
-  def enabled_fields(custom_form)
-    all_fields(custom_form).select(&:enabled?)
+  def enabled_fields
+    all_fields.select(&:enabled?)
   end
 
-  def extra_visible_fields(custom_form)
-    visible_fields(custom_form).reject(&:built_in?)
+  def extra_visible_fields
+    visible_fields.reject(&:built_in?)
   end
 
-  def allowed_extra_field_keys(custom_form)
-    enabled_extra_fields = all_fields(custom_form).find_all do |field|
+  def allowed_extra_field_keys
+    enabled_extra_fields = all_fields.find_all do |field|
       !field.built_in? && field.enabled
     end
     fields_with_array_keys, fields_with_simple_keys = enabled_extra_fields.partition do |field|
@@ -42,7 +42,9 @@ class IdeaCustomFieldsService
 
   private
 
-  def default_fields(custom_form)
+  attr_reader :custom_form
+
+  def default_fields
     ml_s = MultilocService.new
     [
       CustomField.new(

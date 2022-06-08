@@ -3,59 +3,62 @@
 require 'rails_helper'
 
 describe IdeaCustomFieldsService do
-  let(:service) { described_class.new }
+  let(:custom_form) { create(:custom_form) }
+  let(:service) { described_class.new custom_form }
 
   describe '#find_field_by_id' do
-    it 'returns nil if the given custom form is nil' do
-      expect(service.find_field_by_id(nil, 'some_id')).to be_nil
+    context 'when the custom form is nil' do
+      let(:custom_form) { nil }
+
+      it 'returns nil' do
+        expect(service.find_field_by_id('some_id')).to be_nil
+      end
     end
 
     it 'returns the field with the given id if the field exists' do
-      custom_form = create(:custom_form)
       custom_field = create(:custom_field, resource: custom_form, code: 'title_multiloc')
-      expect(service.find_field_by_id(custom_form, custom_field.id)).to eq custom_field
+      expect(service.find_field_by_id(custom_field.id)).to eq custom_field
     end
 
     it 'returns nil if there is no field with the given id' do
-      custom_form = create(:custom_form)
       create(:custom_field, resource: custom_form, code: 'title_multiloc')
-      expect(service.find_field_by_id(custom_form, 'unknown_id')).to be_nil
+      expect(service.find_field_by_id('unknown_id')).to be_nil
     end
   end
 
   describe '#find_or_build_field' do
-    it 'returns nil if the given custom form is nil' do
-      expect(service.find_or_build_field(nil, 'some_id')).to be_nil
+    context 'when the custom form is nil' do
+      let(:custom_form) { nil }
+
+      it 'returns nil' do
+        expect(service.find_or_build_field('some_id')).to be_nil
+      end
     end
 
     it 'returns the default field with the given code if the field is persisted' do
-      custom_form = create(:custom_form)
       custom_field = create(:custom_field, resource: custom_form, code: 'title_multiloc')
-      expect(service.find_or_build_field(custom_form, custom_field.code)).to eq custom_field
+      expect(service.find_or_build_field(custom_field.code)).to eq custom_field
     end
 
     it 'returns the default field with the given code if the field is not persisted yet' do
-      custom_form = create(:custom_form)
-      field = service.find_or_build_field(custom_form, 'title_multiloc')
+      field = service.find_or_build_field('title_multiloc')
       expect(field.code).to eq 'title_multiloc'
       expect(field.key).to eq 'title_multiloc'
       expect(field.input_type).to eq 'text_multiloc'
     end
 
     it 'returns nil if there is no default field with the given code' do
-      custom_form = create(:custom_form)
-      expect(service.find_or_build_field(custom_form, 'unknown_id')).to be_nil
+      expect(service.find_or_build_field('unknown_id')).to be_nil
     end
   end
 
   describe 'all_fields' do
     it 'overrides built in custom fields with database custom fields by code' do
-      custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title_multiloc')
       cf2 = create(:custom_field, resource: custom_form, code: nil)
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.all_fields custom_form
+      output = service.all_fields
       expect(output).to include cf1
       expect(output).to include cf2
       expect(output).to include disabled_field
@@ -76,14 +79,12 @@ describe IdeaCustomFieldsService do
     end
 
     it 'outputs valid custom fields' do
-      custom_form = create(:custom_form)
-      expect(service.all_fields(custom_form)).to all(be_valid)
+      expect(service.all_fields).to all(be_valid)
     end
 
     it 'takes the order of the built-in fields' do
-      custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'location_description')
-      output = service.all_fields custom_form
+      output = service.all_fields
       expect(output).to include cf1
       expect(output.map(&:code)).to eq %w[
         title_multiloc
@@ -101,12 +102,11 @@ describe IdeaCustomFieldsService do
 
   describe 'configurable_fields' do
     it 'includes all fields' do
-      custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.configurable_fields custom_form
+      output = service.configurable_fields
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).to include disabled_field
@@ -127,12 +127,11 @@ describe IdeaCustomFieldsService do
 
   describe 'reportable_fields' do
     it 'excludes disabled and built-in fields' do
-      custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.reportable_fields custom_form
+      output = service.reportable_fields
       expect(output).not_to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
@@ -143,12 +142,11 @@ describe IdeaCustomFieldsService do
 
   describe 'visible_fields' do
     it 'excludes disabled fields' do
-      custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.visible_fields custom_form
+      output = service.visible_fields
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
@@ -168,12 +166,11 @@ describe IdeaCustomFieldsService do
 
   describe 'enabled_fields' do
     it 'excludes disabled fields' do
-      custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.enabled_fields custom_form
+      output = service.enabled_fields
       expect(output).to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
@@ -193,12 +190,11 @@ describe IdeaCustomFieldsService do
 
   describe 'extra_visible_fields' do
     it 'excludes disabled and built-in fields' do
-      custom_form = create :custom_form
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
       extra_field = create :custom_field, resource: custom_form, code: nil
       topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
       disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.extra_visible_fields custom_form
+      output = service.extra_visible_fields
       expect(output).not_to include title_field
       expect(output).to include extra_field
       expect(output).not_to include disabled_field

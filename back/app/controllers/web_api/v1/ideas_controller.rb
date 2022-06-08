@@ -196,7 +196,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def idea_attributes
     project = @idea&.project || Project.find(params.dig(:idea, :project_id))
     custom_form = project.custom_form || CustomForm.new(project: project)
-    enabled_field_keys = IdeaCustomFieldsService.new.enabled_fields(custom_form).map { |field| field.key.to_sym }
+    enabled_field_keys = IdeaCustomFieldsService.new(custom_form).enabled_fields.map { |field| field.key.to_sym }
 
     attributes = idea_simple_attributes(enabled_field_keys)
     complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
@@ -223,7 +223,7 @@ class WebApi::V1::IdeasController < ApplicationController
     complex_attributes = {
       location_point_geojson: [:type, { coordinates: [] }]
     }
-    allowed_extra_field_keys = IdeaCustomFieldsService.new.allowed_extra_field_keys custom_form
+    allowed_extra_field_keys = IdeaCustomFieldsService.new(custom_form).allowed_extra_field_keys
     if allowed_extra_field_keys.any?
       complex_attributes[:custom_field_values] = allowed_extra_field_keys
     end

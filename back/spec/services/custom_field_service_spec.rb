@@ -160,7 +160,7 @@ describe CustomFieldService do
 
     it 'it creates a valid schema for the built in idea custom fields' do
       custom_form = create(:custom_form)
-      fields = IdeaCustomFieldsService.new.all_fields(custom_form)
+      fields = IdeaCustomFieldsService.new(custom_form).all_fields
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end

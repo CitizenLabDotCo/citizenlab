@@ -3,18 +3,18 @@
 module IdeaCustomFields
   module Patches
     module IdeaCustomFieldsService
-      def all_fields(custom_form)
-        custom_and_default_fields custom_form
+      def all_fields
+        custom_and_default_fields
       end
 
-      def find_or_build_field(custom_form, code)
+      def find_or_build_field(code)
         return unless custom_form
 
         custom_form.custom_fields.find_by(code: code) ||
-          default_fields(custom_form).find { |default_field| default_field.code == code }
+          default_fields.find { |default_field| default_field.code == code }
       end
 
-      def find_field_by_id(custom_form, id)
+      def find_field_by_id(id)
         return unless custom_form
 
         custom_form.custom_fields.find_by(id: id)
@@ -22,9 +22,8 @@ module IdeaCustomFields
 
       private
 
-      def custom_and_default_fields(custom_form)
+      def custom_and_default_fields
         persisted_fields = custom_form.custom_fields
-        default_fields = default_fields custom_form
         [
           *default_fields.map do |default_field|
             persisted_fields.find { |c| default_field.code == c.code } || default_field
