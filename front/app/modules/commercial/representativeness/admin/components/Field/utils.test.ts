@@ -44,7 +44,7 @@ describe('parsePopulationValue', () => {
     );
   });
 
-  it('returns null if value is longer than 11 characters (e.g. 100,000,0000', () => {
+  it('returns null if value is longer than 11 characters (e.g. 100,000,0000)', () => {
     expect(parsePopulationValue('100,000,0000').formattedValue).toBeNull();
   });
 });
