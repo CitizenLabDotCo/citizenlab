@@ -6,8 +6,8 @@ class IdeaCustomFieldsService
   end
 
   def configurable_fields(custom_form)
-    all_fields(custom_form).reject(&:hidden?).select do |field|
-      %w[location_point_geojson author_id budget].exclude? field.code
+    all_fields(custom_form).select do |field|
+      %w[author_id budget].exclude? field.code
     end
   end
 
@@ -16,7 +16,7 @@ class IdeaCustomFieldsService
   end
 
   def visible_fields(custom_form)
-    all_fields(custom_form).reject(&:hidden?).select(&:enabled?)
+    all_fields(custom_form).select(&:enabled?)
   end
 
   def enabled_fields(custom_form)
@@ -29,7 +29,7 @@ class IdeaCustomFieldsService
 
   def allowed_extra_field_keys(custom_form)
     enabled_extra_fields = all_fields(custom_form).find_all do |field|
-      !field.built_in? && field.enabled && !field.hidden
+      !field.built_in? && field.enabled
     end
     fields_with_array_keys, fields_with_simple_keys = enabled_extra_fields.partition do |field|
       field.input_type == 'multiselect'
@@ -202,29 +202,6 @@ class IdeaCustomFieldsService
       CustomField.new(
         id: SecureRandom.uuid,
         resource: custom_form,
-        key: 'location_point_geojson',
-        code: 'location_point_geojson',
-        input_type: 'point',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.location.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.location.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        hidden: true,
-        enabled: true,
-        ordering: 8
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
         key: 'idea_images_attributes',
         code: 'idea_images_attributes',
         input_type: 'image_files',
@@ -242,7 +219,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: true,
-        ordering: 9
+        ordering: 8
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -264,7 +241,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: true,
-        ordering: 10
+        ordering: 9
       )
     ]
   end
