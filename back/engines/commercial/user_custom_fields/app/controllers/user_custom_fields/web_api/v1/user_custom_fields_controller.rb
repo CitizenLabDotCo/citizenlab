@@ -13,7 +13,7 @@ module UserCustomFields
         .order(:ordering)
       @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
 
-      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
+      render json: serialize_custom_fields(@custom_fields, params: fastjson_params, include: [:current_ref_distribution])
     end
 
     def schema
@@ -33,7 +33,7 @@ module UserCustomFields
     end
 
     def show
-      render json: ::WebApi::V1::CustomFieldSerializer.new(@custom_field, params: fastjson_params).serialized_json
+      render json: serialize_custom_fields(@custom_field, params: fastjson_params)
     end
 
     def create
@@ -45,10 +45,7 @@ module UserCustomFields
 
       if @custom_field.save
         SideFxCustomFieldService.new.after_create(@custom_field, current_user)
-        render json: ::WebApi::V1::CustomFieldSerializer.new(
-          @custom_field,
-          params: fastjson_params
-        ).serialized_json, status: :created
+        render json: serialize_custom_fields(@custom_field, params: fastjson_params), status: :created
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -59,10 +56,7 @@ module UserCustomFields
       authorize @custom_field, policy_class: UserCustomFieldPolicy
       if @custom_field.save
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: ::WebApi::V1::CustomFieldSerializer.new(
-          @custom_field.reload,
-          params: fastjson_params
-        ).serialized_json, status: :ok
+        render json: serialize_custom_fields(@custom_field.reload, params: fastjson_params), status: :ok
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -71,10 +65,7 @@ module UserCustomFields
     def reorder
       if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
         SideFxCustomFieldService.new.after_update(@custom_field, current_user)
-        render json: ::WebApi::V1::CustomFieldSerializer.new(
-          @custom_field.reload,
-          params: fastjson_params
-        ).serialized_json, status: :ok
+        render json: serialize_custom_fields(@custom_field.reload, params: fastjson_params), status: :ok
       else
         render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
       end
@@ -127,6 +118,10 @@ module UserCustomFields
           UserCustomFieldPolicy.new(current_user, resource)
             .send("permitted_attributes_for_#{params[:action]}")
         )
+    end
+
+    def serialize_custom_fields(...)
+      UserCustomFields::WebApi::V1::UserCustomFieldSerializer.new(...).serialized_json
     end
   end
 end
