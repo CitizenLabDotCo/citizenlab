@@ -6,6 +6,4 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attribute :hidden, if: proc { |object, _params|
     object.resource_type == 'User'
   }
-
-  has_many :ref_distributions, key: "current_ref_distribution"
 end
