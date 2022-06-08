@@ -10,11 +10,10 @@ const PopulationInput = () => {
   const [value, setValue] = useState('');
 
   const handleChange = (value: string) => {
-    const formatted = parsePopulationValue(value);
-    console.log(formatted);
+    const { formattedValue } = parsePopulationValue(value);
 
-    if (formatted !== null) {
-      setValue(formatted);
+    if (formattedValue !== null) {
+      setValue(formattedValue);
     }
   };
 

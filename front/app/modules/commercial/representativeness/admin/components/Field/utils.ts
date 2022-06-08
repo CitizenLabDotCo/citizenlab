@@ -1,10 +1,18 @@
 import { formatThousands } from '../ChartCard/utils';
 
 export const parsePopulationValue = (value: string) => {
-  if (value === '') return '';
-  if (isInvalid(value)) return null;
+  if (value === '') {
+    return { formattedValue: '', numericValue: null };
+  }
 
-  return formatThousands(asNumber(value));
+  if (isInvalid(value)) {
+    return { formattedValue: null, numericValue: null };
+  }
+
+  const numericValue = asNumber(value);
+  const formattedValue: string = formatThousands(numericValue);
+
+  return { numericValue, formattedValue };
 };
 
 const validValueRegex = /^\d[\d\,]*$/;
