@@ -121,7 +121,8 @@ class MultiTenancy::Templates::Serializer
         'created_at'           => c.created_at.to_s,
         'updated_at'           => c.updated_at.to_s,
         'enabled'              => c.enabled,
-        'code'                 => c.code
+        'code'                 => c.code,
+        'hidden'               => c.hidden
       }
       if c.resource_type == User.name
         yml_custom_field['resource_type'] = c.resource_type
