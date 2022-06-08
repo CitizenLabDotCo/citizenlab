@@ -2,6 +2,8 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isEmpty } from 'lodash-es';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // module specific
 import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/useIdeaCustomFields';
@@ -187,6 +189,8 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
           );
 
           await Promise.all(promises);
+          const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`
+          await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
           setChanges({});
           setProcessing(false);
           setSuccess(true);
