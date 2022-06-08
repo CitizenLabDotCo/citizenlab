@@ -1,12 +1,21 @@
 import { parsePopulationValue } from './utils';
 
 describe('parsePopulationValue', () => {
+  it('returns empty string if value is emtpy string', () => {
+    expect(parsePopulationValue('')).toBe('');
+  });
+
   it('returns null if value contains anything other than numbers or commas', () => {
     expect(parsePopulationValue('a')).toBeNull();
     expect(parsePopulationValue('1a')).toBeNull();
     expect(parsePopulationValue('1,a')).toBeNull();
     expect(parsePopulationValue('-1,000')).toBeNull();
     expect(parsePopulationValue('%,000')).toBeNull();
+  });
+
+  it('returns null if value starts with comma', () => {
+    expect(parsePopulationValue(',1')).toBeNull();
+    expect(parsePopulationValue(',111')).toBeNull();
   });
 
   it('returns null if value contains only commas', () => {
