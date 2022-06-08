@@ -5,14 +5,12 @@ import { FocusOn } from 'react-focus-on';
 // hooks
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 import useLocale from 'hooks/useLocale';
-import useLocalize from 'hooks/useLocalize';
 import useProject from 'hooks/useProject';
 
 // components
 import Editor from '../Editor';
 import ContentBuilderFrame from '../ContentBuilderFrame';
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
-import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -24,8 +22,8 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
-  const locale = useLocale();
-  const localize = useLocalize();
+  const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
+  const platformLocale = useLocale();
   const project = useProject({ projectId });
 
   const modalPortalElement = document.getElementById('modal-portal');
@@ -42,25 +40,32 @@ const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
         if (e.origin === window.location.origin && e.data.ROOT) {
           setDraftData(e.data);
         }
+        if (e.origin === window.location.origin && e.data.selectedLocale) {
+          setSelectedLocale(e.data.selectedLocale);
+        }
       },
       false
     );
   }, []);
 
+  if (isNilOrError(platformLocale)) {
+    return null;
+  }
+
+  const locale = selectedLocale || platformLocale;
+  console.log(locale);
   const loadingContentBuilderLayout = contentBuilderLayout === undefined;
 
   const contentBuilderSavedContent =
     !isNilOrError(contentBuilderLayout) &&
-    !isNilOrError(locale) &&
     contentBuilderLayout.data.attributes.enabled &&
     contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
 
   const contentBuilderContent = draftData || contentBuilderSavedContent;
 
-  const savedEditorData =
-    !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
-      ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
-      : undefined;
+  const savedEditorData = !isNilOrError(contentBuilderLayout)
+    ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
+    : undefined;
 
   const editorData = draftData || savedEditorData;
 
@@ -77,21 +82,16 @@ const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
             bgColor="#fff"
             overflowY="auto"
           >
-            <Box data-testid="contentBuilderPreview" p="20px">
+            <Box p="20px">
+              <Title color="colorText" variant="h1">
+                {project.attributes.title_multiloc[locale]}
+              </Title>
               {loadingContentBuilderLayout && <Spinner />}
               {!loadingContentBuilderLayout && contentBuilderContent && (
-                <Box data-testid="contentBuilderPreviewContent">
-                  <Title color="colorText" variant="h1">
-                    {localize(project.attributes.title_multiloc)}
-                  </Title>
+                <Box>
                   <Editor isPreview={true}>
                     <ContentBuilderFrame editorData={editorData} />
                   </Editor>
-                </Box>
-              )}
-              {!loadingContentBuilderLayout && !contentBuilderContent && (
-                <Box data-testid="contentBuilderProjectDescription">
-                  <ProjectInfo projectId={projectId} />
                 </Box>
               )}
             </Box>

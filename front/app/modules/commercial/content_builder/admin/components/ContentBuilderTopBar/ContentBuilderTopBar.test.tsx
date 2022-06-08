@@ -86,7 +86,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -99,7 +99,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -113,7 +113,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -133,7 +133,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -165,7 +165,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
         />
@@ -194,7 +194,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
         />
@@ -211,7 +211,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
-          setSelectedLocale={() => {}}
+          onSelectLocale={() => {}}
           mobilePreviewEnabled={true}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
         />

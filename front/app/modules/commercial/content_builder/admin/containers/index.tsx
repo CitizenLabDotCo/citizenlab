@@ -70,6 +70,16 @@ const ContentBuilderPage = ({
       iframeRef.current.contentWindow.postMessage(nodes, window.location.href);
   };
 
+  const handleSelectedLocaleChange = (locale: Locale) => {
+    setSelectedLocale(locale);
+    iframeRef.current &&
+      iframeRef.current.contentWindow &&
+      iframeRef.current.contentWindow.postMessage(
+        { selectedLocale: locale },
+        window.location.href
+      );
+  };
+
   const modalPortalElement = document.getElementById('modal-portal');
   const contentBuilderVisible =
     featureEnabled &&
@@ -93,7 +103,7 @@ const ContentBuilderPage = ({
                 mobilePreviewEnabled={mobilePreviewEnabled}
                 setMobilePreviewEnabled={setMobilePreviewEnabled}
                 selectedLocale={selectedLocale}
-                setSelectedLocale={setSelectedLocale}
+                onSelectLocale={handleSelectedLocaleChange}
               />
               <Box
                 mt={`${stylingConsts.menuHeight}px`}

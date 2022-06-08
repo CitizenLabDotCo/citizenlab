@@ -48,7 +48,7 @@ type ContentBuilderTopBarProps = {
   mobilePreviewEnabled: boolean;
   setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
-  setSelectedLocale: React.Dispatch<React.SetStateAction<Locale | undefined>>;
+  onSelectLocale: (locale: Locale) => void;
 } & WithRouterProps;
 
 const ContentBuilderTopBar = ({
@@ -56,7 +56,7 @@ const ContentBuilderTopBar = ({
   mobilePreviewEnabled,
   setMobilePreviewEnabled,
   selectedLocale,
-  setSelectedLocale,
+  onSelectLocale,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
@@ -122,10 +122,6 @@ const ContentBuilderTopBar = ({
     }
   };
 
-  const selectLocale = (locale: Locale) => {
-    setSelectedLocale(locale);
-  };
-
   return (
     <Box
       position="fixed"
@@ -172,7 +168,7 @@ const ContentBuilderTopBar = ({
             <LocaleSwitcher
               locales={locales}
               selectedLocale={selectedLocale}
-              onSelectedLocaleChange={selectLocale}
+              onSelectedLocaleChange={onSelectLocale}
               // values={getLocaleSwitcherValues()}
             />
           </Box>
