@@ -46,6 +46,8 @@ jest.mock('../../../services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
 
+jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
+
 const mockParams = { projectId: 'id' };
 
 jest.mock('react-router', () => {
