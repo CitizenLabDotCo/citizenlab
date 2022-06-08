@@ -8,7 +8,6 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import { Icon, IconNames } from '@citizenlab/cl2-component-library';
-import FeaturedMenuItem from './FeaturedMenuItem';
 import MenuItem from './MenuItem';
 
 // i18n
@@ -274,13 +273,9 @@ class Sidebar extends PureComponent<
           onData={this.handleData}
         />
         <MenuInner id="sidebar">
-          {navItems.map((navItem) =>
-            navItem.featureNames ? (
-              <FeaturedMenuItem navItem={navItem} key={navItem.name} />
-            ) : (
-              <MenuItem route={navItem} key={navItem.name} />
-            )
-          )}
+          {navItems.map((navItem) => (
+            <MenuItem navItem={navItem} key={navItem.name} />
+          ))}
           <Spacer />
           <GetStartedLink
             href={formatMessage(messages.linkToSupportCenter)}

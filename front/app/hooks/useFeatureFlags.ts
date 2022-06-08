@@ -4,17 +4,18 @@ import {
   IAppConfiguration,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
-import { get } from 'lodash-es';
 
 type Parameters = {
   names: TAppConfigurationSetting[];
   onlyCheckAllowed?: boolean;
+  onlyOneFeatureFlagRequired?: boolean;
 };
 
 // copied and modified from front/app/hooks/useFeatureFlag.ts
-export default function useSomeFeatureFlags({
+export default function useFeatureFlags({
   names,
   onlyCheckAllowed,
+  onlyOneFeatureFlagRequired = true,
 }: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
     | IAppConfiguration['data']['attributes']['settings']
@@ -32,9 +33,14 @@ export default function useSomeFeatureFlags({
     return subscription.unsubscribe();
   }, []);
 
-  return names.some(
-    (name) =>
-      get(tenantSettings, `${name}.allowed`) === true &&
-      (onlyCheckAllowed || get(tenantSettings, `${name}.enabled`) === true)
+  const isFeatureActive = (featureName: TAppConfigurationSetting) =>
+    tenantSettings?.[featureName]?.allowed &&
+    (onlyCheckAllowed || tenantSettings?.[featureName]?.enabled);
+
+  return (
+    names.length === 0 ||
+    (onlyOneFeatureFlagRequired
+      ? names.some(isFeatureActive)
+      : names.every(isFeatureActive))
   );
 }
