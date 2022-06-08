@@ -196,26 +196,48 @@ class WebApi::V1::IdeasController < ApplicationController
   def idea_attributes
     project = @idea&.project || Project.find(params.dig(:idea, :project_id))
     custom_form = project.custom_form || CustomForm.new(project: project)
-    allowed_custom_field_keys = IdeaCustomFieldsService.new.allowed_custom_field_keys custom_form
+    enabled_field_keys = IdeaCustomFieldsService.new.enabled_fields(custom_form).map { |field| field.key.to_sym }
 
-    attributes = [
-      :publication_status,
-      :project_id,
-      :author_id,
-      :location_description,
-      :proposed_budget,
-      [idea_images_attributes: [:image]],
-      [{ idea_files_attributes: [{ file_by_content: %i[content name] }, :name] }],
-      { location_point_geojson: [:type, { coordinates: [] }],
-        custom_field_values: allowed_custom_field_keys,
-        title_multiloc: CL2_SUPPORTED_LOCALES,
-        body_multiloc: CL2_SUPPORTED_LOCALES,
-        topic_ids: [] }
-    ]
-    if project && UserRoleService.new.can_moderate_project?(project, current_user)
-      attributes += %i[idea_status_id budget] + [phase_ids: []]
+    attributes = idea_simple_attributes(enabled_field_keys)
+    complex_attributes = idea_complex_attributes(custom_form, enabled_field_keys)
+    attributes << complex_attributes if complex_attributes.any?
+    if UserRoleService.new.can_moderate_project?(project, current_user)
+      attributes.concat %i[idea_status_id budget] + [phase_ids: []]
     end
     attributes
+  end
+
+  def idea_simple_attributes(enabled_field_keys)
+    simple_attributes = %i[location_description proposed_budged] & enabled_field_keys
+    simple_attributes.concat %i[publication_status project_id author_id]
+    if enabled_field_keys.include?(:idea_images_attributes)
+      simple_attributes << [idea_images_attributes: [:image]]
+    end
+    if enabled_field_keys.include?(:idea_files_attributes)
+      simple_attributes << [{ idea_files_attributes: [{ file_by_content: %i[content name] }, :name] }]
+    end
+    simple_attributes
+  end
+
+  def idea_complex_attributes(custom_form, enabled_field_keys)
+    complex_attributes = {}
+    if enabled_field_keys.include?(:location_point_geojson)
+      complex_attributes[:location_point_geojson] = [:type, { coordinates: [] }]
+    end
+    allowed_extra_field_keys = IdeaCustomFieldsService.new.allowed_extra_field_keys custom_form
+    if allowed_extra_field_keys.any?
+      complex_attributes[:custom_field_values] = allowed_extra_field_keys
+    end
+    if enabled_field_keys.include?(:title_multiloc)
+      complex_attributes[:title_multiloc] = CL2_SUPPORTED_LOCALES
+    end
+    if enabled_field_keys.include?(:body_multiloc)
+      complex_attributes[:body_multiloc] = CL2_SUPPORTED_LOCALES
+    end
+    if enabled_field_keys.include?(:topic_ids)
+      complex_attributes[:topic_ids] = []
+    end
+    complex_attributes
   end
 
   def idea_params

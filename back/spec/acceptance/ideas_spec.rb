@@ -500,6 +500,7 @@ resource 'Ideas' do
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
       parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
       parameter :budget, 'The budget needed to realize the idea, as determined by the city'
       parameter :idea_images_attributes, 'an array of base64 images to create'
       parameter :idea_files_attributes, 'an array of base64 files to create'
@@ -537,6 +538,21 @@ resource 'Ideas' do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response[:data][:attributes][:upvotes_count]).to eq 1
+      end
+
+      describe 'Values for disabled fields are ignored' do
+        let(:proposed_budget) { 12_345 }
+
+        example_request 'Create an idea with values for disabled fields', document: false do
+          expect(status).to be 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Plant more trees'
+          # proposed_budget is disabled, so its given value was ignored.
+          expect(json_response.dig(:data, :attributes, :proposed_budget)).to be_nil
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+          expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+        end
       end
     end
 
@@ -693,6 +709,7 @@ resource 'Ideas' do
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to'
       parameter :location_description, 'A human readable description of the location the idea applies to'
+      parameter :proposed_budget, 'The budget needed to realize the idea, as proposed by the author'
       parameter :budget, 'The budget needed to realize the idea, as determined by the city'
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
@@ -702,11 +719,10 @@ resource 'Ideas' do
     let(:id) { @idea.id }
     let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
     let(:location_description) { 'Watkins Road 8' }
+    let(:title_multiloc) { { 'en' => 'Changed title' } }
+    let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
     describe do
-      let(:title_multiloc) { { 'en' => 'Changed title' } }
-      let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
-
       example_request 'Update an idea' do
         expect(status).to be 200
         json_response = json_parse(response_body)
@@ -725,6 +741,21 @@ resource 'Ideas' do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
+      end
+    end
+
+    describe 'Values for disabled fields are ignored' do
+      let(:proposed_budget) { 12_345 }
+
+      example_request 'Update an idea with values for disabled fields', document: false do
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+        # proposed_budget is disabled, so its given value was ignored.
+        expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq @idea.proposed_budget
+        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+        expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+        expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
       end
     end
 

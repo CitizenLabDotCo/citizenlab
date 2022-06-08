@@ -29,7 +29,7 @@ describe IdeaCustomFieldsService do
     end
   end
 
-  describe 'allowed_custom_field_keys' do
+  describe 'allowed_extra_field_keys' do
     it 'lists keys' do
       project = create :project
       form = create :custom_form, project: project
@@ -65,7 +65,7 @@ describe IdeaCustomFieldsService do
         code: 'topic_ids'
       )
 
-      output = service.allowed_custom_field_keys form
+      output = service.allowed_extra_field_keys form
       if CitizenLab.ee?
         expect(output).to match_array [:required_field, :optional_field, { multiselect_field: [] }]
       else
