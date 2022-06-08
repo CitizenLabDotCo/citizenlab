@@ -6,8 +6,8 @@ export default defineMessages({
     defaultMessage: 'Back to dashboard',
   },
   pageTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageTitle',
-    defaultMessage: 'Manage data',
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageTitle2',
+    defaultMessage: 'Edit base data',
   },
   pageDescription: {
     id: 'app.containers.AdminPage.DashboardPage.representativeness.referenceDataInterface.pageDescription',
