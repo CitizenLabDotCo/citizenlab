@@ -104,16 +104,16 @@ class User < ApplicationRecord
   mount_base64_uploader :avatar, AvatarUploader
 
   pg_search_scope :search_by_all,
-                  against: %i[first_name last_name email],
-                  using: { tsearch: { prefix: true } }
+    against: %i[first_name last_name email],
+    using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_full_name,
-                  against: %i[first_name last_name],
-                  using: { tsearch: { prefix: true } }
+    against: %i[first_name last_name],
+    using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_first_name,
-                  against: [:first_name],
-                  using: { tsearch: { prefix: true } }
+    against: [:first_name],
+    using: { tsearch: { prefix: true } }
 
   scope :by_username, lambda { |username|
     AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
@@ -382,9 +382,9 @@ class User < ApplicationRecord
     return if email.blank?
 
     domain = email.split('@')&.last
-    if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-      errors.add(:email, :domain_blacklisted, value: domain)
-    end
+    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+
+    errors.add(:email, :domain_blacklisted, value: domain)
   end
 
   def validate_minimum_password_length

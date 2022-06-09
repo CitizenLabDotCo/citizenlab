@@ -17,8 +17,7 @@ describe JsonFormsService do
           key: 'field1',
           input_type: 'text',
           title_multiloc: title_multiloc,
-          description_multiloc: description_multiloc
-        )
+          description_multiloc: description_multiloc)
       ]
     end
 
@@ -67,86 +66,76 @@ describe JsonFormsService do
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         { type: 'object',
-         additionalProperties: false,
-         properties:           { 'field1' =>
+          additionalProperties: false,
+          properties: { 'field1' =>
             { type: 'string' },
-           'field2' =>
+                        'field2' =>
            { type: 'string' },
-           'field3' =>
+                        'field3' =>
             {
-             type: 'string',
-             oneOf: [
-              {
-                const: 'option_1',
-                title: 'youth council'
-              },
-              {
-                const: 'option_2',
-                title: 'youth council'
-              },
-              {
-                const: 'option_3',
-                title: 'youth council'
-              }
-             ]
-            },
-           'field4' =>
-            {
-             type: 'array',
-             uniqueItems: true,
-             minItems: 0,
-             items:               { type: 'string',
+              type: 'string',
               oneOf: [
                 {
-                  const: 'option_a',
+                  const: 'option_1',
                   title: 'youth council'
                 },
                 {
-                  const: 'option_b',
+                  const: 'option_2',
+                  title: 'youth council'
+                },
+                {
+                  const: 'option_3',
                   title: 'youth council'
                 }
-               ]
-             }
-              },
-           'field5' =>
+              ]
+            },
+                        'field4' =>
+            {
+              type: 'array',
+              uniqueItems: true,
+              minItems: 0,
+              items: { type: 'string',
+                       oneOf: [
+                         {
+                           const: 'option_a',
+                           title: 'youth council'
+                         },
+                         {
+                           const: 'option_b',
+                           title: 'youth council'
+                         }
+                       ] }
+            },
+                        'field5' =>
             { type: 'boolean' },
-           'field6' =>
+                        'field6' =>
             { type: 'string',
-             format: 'date' },
-            'field7' =>
+              format: 'date' },
+                        'field7' =>
             { type: 'number' },
-           'field8' =>
+                        'field8' =>
             { type: 'array',
-             uniqueItems: true,
-             minItems: 1,
-             items:               { type: 'string',
-              oneOf: [
-                {
-                  const: 'option_a',
-                  title: 'youth council'
-                },
-                {
-                  const: 'option_b',
-                  title: 'youth council'
-                }
-               ]
-             }
-            },
-            'field9' =>
+              uniqueItems: true,
+              minItems: 1,
+              items: { type: 'string',
+                       oneOf: [
+                         {
+                           const: 'option_a',
+                           title: 'youth council'
+                         },
+                         {
+                           const: 'option_b',
+                           title: 'youth council'
+                         }
+                       ] } },
+                        'field9' =>
             { type: 'array',
-             items:               { properties:                 { file_by_content:                   { properties:                     { file:                       { type: 'string' },
-                    name:                       { type: 'string' }
-                    },
-                  type: 'object'
-                  },
-                  name:                   { type: 'string' }
-                },
-                type: 'object'
-              }
-            }
-          },
-         required: %w[field2 field8 field9]
-        }
+              items: { properties: { file_by_content: { properties: { file: { type: 'string' },
+                                                                      name: { type: 'string' } },
+                                                        type: 'object' },
+                                     name: { type: 'string' } },
+                       type: 'object' } } },
+          required: %w[field2 field8 field9] }
       )
     end
   end
@@ -158,8 +147,8 @@ describe JsonFormsService do
         create(:custom_field, key: 'field2', input_type: 'multiline_text', required: true),
         create(:custom_field, key: 'field3', input_type: 'select'),
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
-        field5 = create(:custom_field, key: 'field5', input_type: 'checkbox'),
-        field6 = create(:custom_field, key: 'field6', input_type: 'date'),
+        create(:custom_field, key: 'field5', input_type: 'checkbox'),
+        create(:custom_field, key: 'field6', input_type: 'date'),
         create(:custom_field, key: 'field7', input_type: 'multiline_text', enabled: false, required: true),
         create(:custom_field, key: 'field8', input_type: 'text', hidden: true, enabled: true)
       ]

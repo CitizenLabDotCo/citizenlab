@@ -114,7 +114,8 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
         expect(first_setting).to have_attributes(
           name: 'live_edit',
           required: true,
-          schema: live_edit_schema)
+          schema: live_edit_schema
+        )
       end
     end
 

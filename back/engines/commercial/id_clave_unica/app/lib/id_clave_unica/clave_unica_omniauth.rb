@@ -19,26 +19,26 @@ module IdClaveUnica
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      if Verification::VerificationService.new.is_active?(configuration, name)
-        options = env['omniauth.strategy'].options
-        options[:scope] = %i[openid run name]
-        options[:response_type] = :code
-        options[:state] = true
-        options[:nonce] = true
-        options[:issuer] = issuer
-        options[:send_scope_to_token_endpoint] = false
-        options[:client_options] = {
-          identifier: config[:client_id],
-          secret: config[:client_secret],
-          port: 443,
-          scheme: 'https',
-          host: host,
-          authorization_endpoint: '/openid/authorize',
-          token_endpoint: '/openid/token',
-          userinfo_endpoint: '/openid/userinfo',
-          redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback"
-        }
-      end
+      return unless Verification::VerificationService.new.is_active?(configuration, name)
+
+      options = env['omniauth.strategy'].options
+      options[:scope] = %i[openid run name]
+      options[:response_type] = :code
+      options[:state] = true
+      options[:nonce] = true
+      options[:issuer] = issuer
+      options[:send_scope_to_token_endpoint] = false
+      options[:client_options] = {
+        identifier: config[:client_id],
+        secret: config[:client_secret],
+        port: 443,
+        scheme: 'https',
+        host: host,
+        authorization_endpoint: '/openid/authorize',
+        token_endpoint: '/openid/token',
+        userinfo_endpoint: '/openid/userinfo',
+        redirect_uri: "#{configuration.base_backend_uri}/auth/clave_unica/callback"
+      }
     end
 
     def host

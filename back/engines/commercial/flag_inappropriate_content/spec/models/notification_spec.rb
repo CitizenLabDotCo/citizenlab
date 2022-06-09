@@ -7,7 +7,7 @@ RSpec.describe Notification, type: :model do
     it 'makes inappropriate_content_flagged notifications on inappropriate_content_flag created' do
       flag = create(:inappropriate_content_flag)
       admin = create(:admin)
-      user = create(:user)
+      create(:user)
       activity = create(:activity, item: flag, action: 'created')
 
       notifications = FlagInappropriateContent::Notifications::InappropriateContentFlagged.make_notifications_on activity

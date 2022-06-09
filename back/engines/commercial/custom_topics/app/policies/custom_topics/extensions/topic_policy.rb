@@ -4,11 +4,11 @@ module CustomTopics
   module Extensions
     module TopicPolicy
       def create?
-        user&.active? && user.admin?
+        user&.active? && user&.admin?
       end
 
       def update?
-        user&.active? && user.admin?
+        user&.active? && user&.admin?
       end
 
       def reorder?

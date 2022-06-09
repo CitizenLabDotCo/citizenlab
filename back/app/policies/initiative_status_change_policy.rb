@@ -11,7 +11,7 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
 
     def resolve
       # Disabled
-      if user&.active? && user.admin?
+      if user&.active? && user&.admin?
         scope.all
       else
         scope.none
@@ -20,10 +20,10 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def show?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 end

@@ -8,7 +8,6 @@ module EmailCampaigns
 
     def body
       multiloc_service = MultilocService.new
-      frontend_service = Frontend::UrlService.new
       @app_configuration = AppConfiguration.instance
 
       body_html_with_liquid = multiloc_service.t(command[:body_multiloc], recipient)

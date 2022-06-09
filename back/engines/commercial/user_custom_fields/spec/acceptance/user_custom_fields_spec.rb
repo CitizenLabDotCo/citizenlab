@@ -42,12 +42,51 @@ resource 'User Custom Fields' do
   end
 
   get 'web_api/v1/users/custom_fields/:id' do
-    let(:id) { @custom_fields.first.id }
+    let(:id) { custom_field.id }
+    let(:expected_response) do
+      {
+        id: id,
+        type: 'user_custom_field',
+        attributes: {
+          key: custom_field.key,
+          input_type: custom_field.input_type,
+          title_multiloc: custom_field.title_multiloc,
+          description_multiloc: custom_field.description_multiloc,
+          required: custom_field.required,
+          hidden: custom_field.hidden,
+          enabled: custom_field.enabled,
+          ordering: custom_field.ordering,
+          code: custom_field.code,
+          created_at: custom_field.created_at.as_json,
+          updated_at: custom_field.updated_at.as_json
+        },
+        relationships: {
+          current_ref_distribution: expected_ref_distribution_linkage
+        }
+      }.deep_symbolize_keys
+    end
 
-    example_request 'Get one custom field by id' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @custom_fields.first.id
+    context 'when the custom field has a reference distribution' do
+      let(:ref_distribution) { create(:ref_distribution) }
+      let(:custom_field) { ref_distribution.custom_field }
+      let(:expected_ref_distribution_linkage) do
+        { data: { type: 'reference_distribution', id: ref_distribution.id } }
+      end
+
+      example_request 'Get one custom field by id' do
+        assert_status 200
+        expect(response_data).to match(expected_response)
+      end
+    end
+
+    context 'when the custom field does not have a reference distribution' do
+      let(:custom_field) { @custom_fields.first }
+      let(:expected_ref_distribution_linkage) { { data: nil } }
+
+      example_request 'Get one custom field by id with reference distribution' do
+        assert_status 200
+        expect(response_data).to match(expected_response)
+      end
     end
   end
 
@@ -186,9 +225,12 @@ resource 'User Custom Fields' do
 
       if CitizenLab.ee?
         example "[error] Delete a custom field that's still referenced in a rules group" do
-          group = create(:smart_group, rules: [
-            { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
-          ])
+          create(
+            :smart_group,
+            rules: [
+              { ruleType: 'custom_field_text', customFieldId: id, predicate: 'is_empty' }
+            ]
+          )
           do_request
           assert_status 422
           expect(CustomField.find(id)).to be_present

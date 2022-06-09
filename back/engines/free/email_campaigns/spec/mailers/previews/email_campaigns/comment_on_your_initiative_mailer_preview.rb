@@ -4,7 +4,6 @@ module EmailCampaigns
   class CommentOnYourInitiativeMailerPreview < ActionMailer::Preview
     def campaign_mail
       invitee = User.first
-      inviter = User.last
 
       command = {
         recipient: invitee,

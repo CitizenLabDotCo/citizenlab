@@ -28,7 +28,7 @@ class XlsxService
       wb.add_worksheet do |sheet|
         sheet.add_row headers, style: header_style(s)
         hash_array.each do |hash|
-          sheet.add_row headers.map { |header| hash[header] }
+          sheet.add_row(headers.map { |header| hash[header] })
         end
       end
     end

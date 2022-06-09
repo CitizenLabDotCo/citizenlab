@@ -16,7 +16,7 @@ import useAdminPublications from 'hooks/useAdminPublications';
 import useProjectFolder from '../../../hooks/useProjectFolder';
 
 // typings
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 interface Props {
   hightestTitle: 'h3' | 'h4';

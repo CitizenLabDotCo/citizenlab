@@ -263,8 +263,8 @@ describe IdeasFinder do
     let(:publication_status) { 'draft' }
     let(:expected_record_ids) do
       Idea.includes(project: :admin_publication)
-          .where(projects: { admin_publications: { publication_status: publication_status } })
-          .pluck(:id)
+        .where(projects: { admin_publications: { publication_status: publication_status } })
+        .pluck(:id)
     end
 
     before do

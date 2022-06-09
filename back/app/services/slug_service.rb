@@ -31,8 +31,8 @@ class SlugService
     # Find the all the persisted duplicates
     claz = unpersisted_records.first.class
     db_occurences = claz
-                    .where('slug SIMILAR TO ?', "(#{slugs.join('|')})%")
-                    .pluck(:slug)
+      .where('slug SIMILAR TO ?', "(#{slugs.join('|')})%")
+      .pluck(:slug)
 
     # hash that will map vanilla slugs to the highest index found
     # e.g. {'john' => 3} if {slug: 'john-3'} exists
@@ -42,9 +42,9 @@ class SlugService
       # Fill in max_i for this slug
       unless max_i.key? slug
         max_i[slug] = db_occurences
-                      .filter_map { |dbo| dbo.match(/^#{slug}-(\d+)$/)&.then { |matches| matches[1] } }
-                      .map(&:to_i)
-                      .max || (db_occurences.include?(slug) ? 0 : nil)
+          .filter_map { |dbo| dbo.match(/^#{slug}-(\d+)$/)&.then { |matches| matches[1] } }
+          .map(&:to_i)
+          .max || (db_occurences.include?(slug) ? 0 : nil)
       end
 
       # Generate the indexed slug from the vanilla slug
@@ -67,8 +67,8 @@ class SlugService
       str.downcase.parameterize.tr('_', '-')
     else
       str.downcase.strip
-         .gsub(/[^\p{L}\p{N}]+/, '-') # replace all characters that are not letters or numbers
-         .gsub(/\A-+|-+\z/, '') # remove leading and trailing dashes
+        .gsub(/[^\p{L}\p{N}]+/, '-') # replace all characters that are not letters or numbers
+        .gsub(/\A-+|-+\z/, '') # remove leading and trailing dashes
     end
   end
 

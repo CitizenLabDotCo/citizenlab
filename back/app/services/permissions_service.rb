@@ -75,8 +75,8 @@ class PermissionsService
   def remove_extras_actions(scope, actions = nil)
     actions ||= self.class.actions(scope)
     Permission.where(permission_scope: scope)
-              .where.not(action: actions)
-              .destroy_all
+      .where.not(action: actions)
+      .destroy_all
   end
 
   def add_missing_actions(scope, actions = nil)
