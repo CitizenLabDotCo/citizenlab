@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  month: {
+    id: 'app.containers.AdminPage.DashboardPage.components.DateSelects.month',
+    defaultMessage: 'month',
+  },
+  year: {
+    id: 'app.containers.AdminPage.DashboardPage.components.DateSelects.year',
+    defaultMessage: 'year',
+  },
   january: {
     id: 'app.containers.AdminPage.DashboardPage.components.DateSelects.january',
     defaultMessage: 'january',
