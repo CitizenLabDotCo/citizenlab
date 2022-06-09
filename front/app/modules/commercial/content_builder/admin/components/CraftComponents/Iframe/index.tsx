@@ -45,6 +45,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     hasError,
     errorType,
     title,
+    selectedLocale,
   } = useNode((node) => ({
     url: node.data.props.url,
     height: node.data.props.height,
@@ -52,6 +53,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     title: node.data.props.title,
     hasError: node.data.props.hasError,
     errorType: node.data.props.errorType,
+    selectedLocale: node.data.props.selectedLocale,
   }));
 
   const handleChange = (value: string) => {
@@ -60,7 +62,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     setProp((props) => (props.errorType = validation[1]));
     setProp((props) => (props.hasError = !validation[0]));
     eventEmitter.emit('contentBuilderError', {
-      [id]: !validation[0],
+      [id]: { hasError: !validation[0], selectedLocale },
     });
   };
 

@@ -54,6 +54,11 @@ type ContentBuilderTopBarProps = {
   }) => void;
 } & WithRouterProps;
 
+type ContentBuilderErrors = Record<
+  string,
+  { hasError: boolean; selectedLocale: string }
+>;
+
 const ContentBuilderTopBar = ({
   params: { projectId },
   mobilePreviewEnabled,
@@ -68,9 +73,8 @@ const ContentBuilderTopBar = ({
   const project = useProject({ projectId });
   const locales = useAppConfigurationLocales();
 
-  const [contentBuilderErrors, setContentBuilderErrors] = useState<
-    Record<string, boolean>
-  >({});
+  const [contentBuilderErrors, setContentBuilderErrors] =
+    useState<ContentBuilderErrors>({});
 
   useEffect(() => {
     const subscription = eventEmitter
@@ -78,7 +82,7 @@ const ContentBuilderTopBar = ({
       .subscribe(({ eventValue }) => {
         setContentBuilderErrors((contentBuilderErrors) => ({
           ...contentBuilderErrors,
-          ...(eventValue as Record<string, boolean>),
+          ...(eventValue as ContentBuilderErrors),
         }));
       });
     return () => {
@@ -102,9 +106,28 @@ const ContentBuilderTopBar = ({
     };
   }, []);
 
-  const disableSave = Object.values(contentBuilderErrors).some(
-    (value: boolean) => value === true
-  );
+  if (isNilOrError(locales)) {
+    return null;
+  }
+
+  const localesWithError = Object.values(contentBuilderErrors)
+    .filter((node) => node.hasError)
+    .map((node) => node.selectedLocale);
+
+  const disableSave = localesWithError.length > 0;
+
+  const localesValues = locales.reduce((acc, locale) => {
+    if (localesWithError.includes(locale)) {
+      return {
+        ...acc,
+        [locale]: '',
+      };
+    }
+    return {
+      ...acc,
+      [locale]: 'NON-EMPTY-VALUE',
+    };
+  }, {});
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/description`);
@@ -182,7 +205,7 @@ const ContentBuilderTopBar = ({
               locales={locales}
               selectedLocale={selectedLocale}
               onSelectedLocaleChange={handleSelectLocale}
-              // values={getLocaleSwitcherValues()}
+              values={{ localesValues }}
             />
           </Box>
         )}
