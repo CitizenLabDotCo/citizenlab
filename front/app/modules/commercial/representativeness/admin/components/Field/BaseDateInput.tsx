@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 const BaseDateInput = () => (
   <Box display="flex" mt="28px" width="100%">
     <Box width="50%">
-      <Text variant="bodyM" color="label" fontWeight="">
+      <Text variant="bodyM" color="label">
         <Icon
           name="calendar"
           width="16px"

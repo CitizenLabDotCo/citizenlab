@@ -17,10 +17,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // typings
 import { Multiloc } from 'typings';
 
-const StyledText = styled(Text)`
-  font-weight: 500;
-`;
-
 const TooltipContent = styled.p`
   color: white;
   margin: 12px 16px;
@@ -79,9 +75,9 @@ const FieldTitle = ({
       </Box>
 
       {isDefault && (
-        <StyledText mt="0px" mb="0px" variant="bodyS" color="adminTextColor">
+        <Text mt="0px" mb="0px" variant="bodyS" color="adminTextColor">
           <FormattedMessage {...messages.defaultField} />
-        </StyledText>
+        </Text>
       )}
     </Box>
   );

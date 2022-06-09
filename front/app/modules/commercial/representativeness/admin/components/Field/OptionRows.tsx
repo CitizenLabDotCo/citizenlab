@@ -9,18 +9,11 @@ import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import PopulationInput from './PopulationInput';
 
-// stylings
-import styled from 'styled-components';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
-
-const StyledText = styled(Text)`
-  font-weight: 500;
-`;
 
 interface Props {
   fieldId: string;
@@ -48,9 +41,9 @@ const OptionRows = ({ fieldId }: Props) => {
               >
                 <Box pl="8px" display="flex" alignItems="center" width="50%">
                   <Toggle checked={true} onChange={console.log} />
-                  <StyledText ml="12px" variant="bodyM" color="adminTextColor">
+                  <Text ml="12px" variant="bodyM" color="adminTextColor">
                     {localize(attributes.title_multiloc)}
-                  </StyledText>
+                  </Text>
                 </Box>
 
                 <Box ml="-20px" display="flex" alignItems="center" width="50%">

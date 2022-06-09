@@ -4,7 +4,6 @@ import React from 'react';
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
 
 // styling
-import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
@@ -12,11 +11,6 @@ import { formatPercentage, formatThousands } from './utils';
 
 // typings
 import { RepresentativenessRow } from '.';
-
-const StyledText = styled(Text)`
-  display: inline;
-  font-weight: 500;
-`;
 
 interface CustomTooltipProps {
   label?: string;
@@ -38,12 +32,12 @@ interface RowProps {
 
 const Row = ({ name, percentage, number, colorName }: RowProps) => (
   <Box pb="8px">
-    <StyledText color={colorName} fontSize="s">
+    <Text color={colorName} fontSize="s" display="inline">
       {name}: {formatPercentage(percentage)}
-    </StyledText>
-    <StyledText ml="4px" color="secondaryText" fontSize="s">
+    </Text>
+    <Text ml="4px" color="secondaryText" fontSize="s">
       ({formatThousands(number)})
-    </StyledText>
+    </Text>
   </Box>
 );
 
