@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SearchInput,
   SearchInputProps,
@@ -18,61 +18,57 @@ export interface Props {
   size?: SearchInputProps['size'];
 }
 
-const SearchInputWrapper = memo<Props & InjectedIntlProps>(
-  ({
-    placeholder,
-    ariaLabel,
-    debounce,
-    setClearButtonRef,
-    onChange,
-    className,
-    size,
-    intl: { formatMessage },
-  }) => {
-    const [searchTerm, setSearchTerm] = useState<string | null>(null);
+const SearchInputWrapper = ({
+  placeholder,
+  ariaLabel,
+  debounce,
+  setClearButtonRef,
+  onChange,
+  className,
+  size,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
-    const handleOnChange = useCallback(
-      (searchTerm: string | null) => {
-        setSearchTerm(searchTerm);
-        onChange(searchTerm);
-      },
-      [onChange]
-    );
+  const handleOnChange = useCallback(
+    (searchTerm: string | null) => {
+      setSearchTerm(searchTerm);
+      onChange(searchTerm);
+    },
+    [onChange]
+  );
 
-    const handleClearButtonRef = useCallback(
-      (element: HTMLButtonElement) => {
-        setClearButtonRef?.(element);
-      },
-      [setClearButtonRef]
-    );
+  const handleClearButtonRef = useCallback(
+    (element: HTMLButtonElement) => {
+      setClearButtonRef?.(element);
+    },
+    [setClearButtonRef]
+  );
 
-    return (
-      <>
-        <Label htmlFor="search-input" hidden>
-          {formatMessage(messages.searchLabel)}
-        </Label>
-        <SearchInput
-          id="search-input"
-          placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
-          ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
-          debounce={debounce}
-          className={className}
-          setClearButtonRef={handleClearButtonRef}
-          onChange={handleOnChange}
-          i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
-          i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
-            searchTerm,
-          })}
-          i18nSearchTermBlankMessage={formatMessage(
-            messages.a11y_searchTermBlank
-          )}
-          size={size}
-        />
-      </>
-    );
-  }
-);
+  return (
+    <>
+      <Label htmlFor="search-input" hidden>
+        {formatMessage(messages.searchLabel)}
+      </Label>
+      <SearchInput
+        id="search-input"
+        placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
+        ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
+        debounce={debounce}
+        className={className}
+        setClearButtonRef={handleClearButtonRef}
+        onChange={handleOnChange}
+        i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
+        i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
+          searchTerm,
+        })}
+        i18nSearchTermBlankMessage={formatMessage(
+          messages.a11y_searchTermBlank
+        )}
+        size={size}
+      />
+    </>
+  );
+};
 
-const SearchInputWrapperWithHoC = injectIntl(SearchInputWrapper);
-
-export default SearchInputWrapperWithHoC;
+export default injectIntl(SearchInputWrapper);
