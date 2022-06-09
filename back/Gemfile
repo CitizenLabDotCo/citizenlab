@@ -133,7 +133,7 @@ gem 'simple_segment', '~>1.2'
 # This fork was made to update the version of jws which is
 # required for the google omniauth gem.
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
-gem 'omniauth_openid_connect', '~> 0.3.3'
+gem 'omniauth_openid_connect', '~> 0.4.0'
 # Forked to support a userinfo response in JWT form
 # Can go back to vanilla when this PR is merged and released:
 # https://github.com/nov/openid_connect/pull/48
