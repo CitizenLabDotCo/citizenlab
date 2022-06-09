@@ -4,248 +4,187 @@ module UserCustomFields
   module WebApi
     module V1
       class StatsUsersController < ::WebApi::V1::StatsController
-        @@multiloc_service = MultilocService.new
-
-        def users_by_gender_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          serie = users
-            .where(registration_completed_at: @start_at..@end_at)
-            .group("custom_field_values->'gender'")
-            .order(Arel.sql("custom_field_values->'gender'"))
-            .count
-
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
-        end
-
-        def users_by_gender
-          render json: { series: { users: users_by_gender_serie } }
-        end
-
-        def users_by_gender_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx users_by_gender_serie, 'gender', 'users'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_gender.xlsx'
-        end
-
-        def users_by_birthyear_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          serie = users
-            .where(registration_completed_at: @start_at..@end_at)
-            .group("custom_field_values->'birthyear'")
-            .order(Arel.sql("custom_field_values->'birthyear'"))
-            .count
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
-        end
-
-        def users_by_birthyear
-          render json: { series: { users: users_by_birthyear_serie } }
-        end
-
-        def users_by_birthyear_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx users_by_birthyear_serie, 'birthyear', 'users'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_birthyear.xlsx'
-        end
-
-        def users_by_domicile_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          serie = users
-            .where(registration_completed_at: @start_at..@end_at)
-            .group("custom_field_values->'domicile'")
-            .order(Arel.sql("custom_field_values->'domicile'"))
-            .count
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
-        end
-
-        def users_by_domicile
-          serie = users_by_domicile_serie
-          areas = Area.all.select(:id, :title_multiloc)
-          render json: { series: { users: serie }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
-        end
-
-        def users_by_domicile_as_xlsx
-          serie = users_by_domicile_serie
-          res = Area.all.map do |area|
-            {
-              'area_id' => area.id,
-              'area' => @@multiloc_service.t(area.title_multiloc),
-              'users' => serie.find { |entry| entry[0] == area.id }&.at(1) || 0
-            }
-          end
-          unless serie.empty?
-            res.push({
-              'area_id' => '_blank',
-              'area' => 'unknown',
-              'users' => serie.delete(nil) || 0
-            })
-          end
-
-          xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'area'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_domicile.xlsx'
-        end
-
-        def users_by_education_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          serie = users
-            .where(registration_completed_at: @start_at..@end_at)
-            .group("custom_field_values->'education'")
-            .order(Arel.sql("custom_field_values->'education'"))
-            .count
-          serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-
-          serie
-        end
-
-        def users_by_education
-          render json: { series: { users: users_by_education_serie } }
-        end
-
-        def users_by_education_as_xlsx
-          xlsx = XlsxService.new.generate_field_stats_xlsx users_by_education_serie, 'education', 'users'
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_education.xlsx'
-        end
-
-        def users_by_custom_field_serie
-          users = StatUserPolicy::Scope.new(current_user, User.active).resolve
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          ps = ParticipantsService.new
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ps.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          case @custom_field.input_type
-          when 'select', 'checkbox'
-            serie = users
-              .where(registration_completed_at: @start_at..@end_at)
-              .group("custom_field_values->'#{@custom_field.key}'")
-              .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
-              .count
-            serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-            serie
-          when 'multiselect'
-            serie = users
-              .joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(custom_field_values->'#{@custom_field.key}') as field_value, id FROM users) as cfv ON users.id = cfv.id")
-              .where(registration_completed_at: @start_at..@end_at)
-              .group('cfv.field_value')
-              .order('cfv.field_value')
-              .count
-            serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-            serie
-          else
-            head :not_implemented
-          end
-        end
+        XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        private_constant :XLSX_MIME_TYPE
 
         def users_by_custom_field
-          @custom_field = CustomField.find(params[:custom_field_id])
-          serie = users_by_custom_field_serie
-          if %w[select multiselect].include?(@custom_field.input_type)
-            options = @custom_field.custom_field_options.select(:key, :title_multiloc, :ordering)
-            render json: { series: { users: serie }, options: options.to_h { |o| [o.key, o.attributes.except('key', 'id')] } }
-          else
-            render json: { series: { users: serie } }
+          json_response = { series: {
+            users: user_counts,
+            expected_users: expected_user_counts
+          } }
+
+          if custom_field.custom_field_options.present?
+            json_response[:options] = custom_field.custom_field_options.to_h do |o|
+              [o.key, o.attributes.slice('title_multiloc', 'ordering')]
+            end
           end
+
+          render json: json_response
+        rescue NotSupportedFieldTypeError
+          head :not_implemented
         end
 
         def users_by_custom_field_as_xlsx
-          @custom_field = CustomField.find(params[:custom_field_id])
+          send_data(users_by_custom_field_xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
+        rescue NotSupportedFieldTypeError
+          head :not_implemented
+        end
 
-          if %w[select multiselect].include?(@custom_field.input_type)
-            serie = users_by_custom_field_serie
-            options = @custom_field.custom_field_options.select(:key, :title_multiloc)
+        def users_by_domicile
+          areas = Area.all.select(:id, :title_multiloc)
+          render json: { series: { users: user_counts }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
+        end
 
-            res = options.map do |option|
-              {
-                'option_id' => option.key,
-                'option' => @@multiloc_service.t(option.title_multiloc),
-                'users' => serie[option.key] || 0
-              }
-            end
-            res.push({
-              'option_id' => '_blank',
-              'option' => 'unknown',
-              'users' => serie['_blank'] || 0
-            })
-            xlsx = XlsxService.new.generate_res_stats_xlsx res, 'users', 'option'
-          else
-            xlsx = XlsxService.new.generate_field_stats_xlsx users_by_custom_field_serie, 'option', 'users'
+        def users_by_domicile_as_xlsx
+          res = Area.all.map do |area|
+            {
+              'area_id' => area.id,
+              'area' => MultilocService.new.t(area.title_multiloc),
+              'users' => user_counts.fetch(area.id, 0)
+            }
           end
-          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users_by_custom_field.xlsx'
+
+          res.push(
+            'area_id' => '_blank',
+            'area' => 'unknown',
+            'users' => user_counts['_blank']
+          )
+
+          xlsx = XlsxService.new.generate_res_stats_xlsx(res, 'users', 'area')
+          send_data(xlsx, type: XLSX_MIME_TYPE, filename: xlsx_export_filename(custom_field))
         end
 
         private
 
         def do_authorize
-          authorize :'user_custom_fields/stat_user'
+          authorize(:'user_custom_fields/stat_user')
         end
+
+        def custom_field
+          @custom_field ||=
+            if params[:custom_field_id]
+              CustomField.find(params[:custom_field_id])
+            elsif (key = custom_field_key_from_path)
+              CustomField.find_by(key: key)
+            else
+              raise ActiveRecord::RecordNotFound
+            end
+        end
+
+        def custom_field_key_from_path
+          request
+            .path.split('/').last
+            .match(/^users_by_(?<key>gender|education|birthyear|domicile)/)&.[](:key)
+        end
+
+        def user_counts
+          @user_counts ||= count_users_by_custom_field(find_users, custom_field)
+        end
+
+        def count_users_by_custom_field(users, custom_field)
+          field_values = select_field_values(users, custom_field)
+
+          # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
+          # error while rewriting the SELECT clause. This is because the 'field_value' column is a
+          # computed column and it does not seem to be supported properly by the +count+ method.
+          counts = field_values
+            .order('field_value')
+            .group('field_value')
+            .select('COUNT(*) as count')
+            .to_a.pluck(:field_value, :count).to_h
+
+          counts['_blank'] = counts.delete(nil) || 0
+          counts
+        end
+
+        # Returns an ActiveRecord::Relation of all the custom field values for the given users.
+        # It returns a view (result set) with a single column named 'field_value'. Essentially,
+        # something that looks like:
+        #   SELECT ... AS field_value FROM ...
+        #
+        # Each user results in one or multiple rows, depending on the type of custom field.
+        # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
+        # If the custom field has no value for a given user, the resulting row contains NULL.
+        def select_field_values(users, custom_field)
+          case custom_field.input_type
+          when 'select', 'checkbox', 'number'
+            users.select("custom_field_values->'#{custom_field.key}' as field_value")
+          when 'multiselect'
+            users.joins(<<~SQL.squish).select('cfv.field_value as field_value')
+              LEFT JOIN (
+                SELECT
+                  jsonb_array_elements(custom_field_values->'#{custom_field.key}') as field_value,
+                  id as user_id
+                FROM users
+              ) as cfv
+              ON users.id = cfv.user_id
+            SQL
+          else
+            raise NotSupportedFieldTypeError
+          end
+        end
+
+        def find_users
+          users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
+            .where(registration_completed_at: @start_at..@end_at)
+
+          if params[:group]
+            group = Group.find(params[:group])
+            users = users.merge(group.members)
+          end
+
+          if params[:project]
+            project = Project.find(params[:project])
+            participants = ParticipantsService.new.project_participants(project)
+            users = users.where(id: participants)
+          end
+
+          users
+        end
+
+        def expected_user_counts
+          @expected_user_counts ||=
+            if (ref_distribution = custom_field.current_ref_distribution).present?
+
+              nb_users_with_response = user_counts.values.sum - user_counts['_blank']
+              expected_counts = ref_distribution.expected_counts(nb_users_with_response)
+
+              option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
+              expected_counts.transform_keys { |option_id| option_id_to_key[option_id] }
+            end
+        end
+
+        def users_by_custom_field_xlsx
+          xlsx_columns =
+            if (options = custom_field.custom_field_options).present?
+              {
+                option: localized_option_titles(options) << '_blank',
+                option_id: options.pluck(:key) << '_blank'
+              }.tap do |cols|
+                cols[:users] = user_counts.fetch_values(*cols[:option_id]) { 0 }
+                if expected_user_counts.present?
+                  cols[:expected_users] = expected_user_counts.fetch_values(*cols[:option_id]) { 0 }
+                end
+              end
+            else
+              {
+                option: user_counts.keys,
+                users: user_counts.values
+              }
+            end
+
+          XlsxService.new.xlsx_from_columns(xlsx_columns, sheetname: "users_by_#{custom_field.key}")
+        end
+
+        def localized_option_titles(options)
+          options.map { |o| MultilocService.new.t(o.title_multiloc) }
+        end
+
+        def xlsx_export_filename(custom_field)
+          "users_by_#{custom_field.key}.xlsx"
+        end
+
+        class NotSupportedFieldTypeError < StandardError; end
       end
     end
   end

@@ -13,4 +13,8 @@ module UserCustomFields::Patches::CustomField
       )
     end
   end
+
+  def current_ref_distribution
+    ref_distributions.order(created_at: :desc).first
+  end
 end
