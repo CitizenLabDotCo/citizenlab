@@ -30,8 +30,8 @@ export default defineMessages({
     defaultMessage: 'Search',
   },
   a11y_searchResultsHaveChanged: {
-    // Keeping this id so we don't have to redo translations
     id: 'app.containers.SearchInput.a11y_searchResultsHaveChanged',
-    defaultMessage: '{numberOfSearchResults} search results have loaded.',
+    defaultMessage:
+      '{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.',
   },
 });
