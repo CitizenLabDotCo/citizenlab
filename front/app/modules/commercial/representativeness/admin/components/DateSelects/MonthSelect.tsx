@@ -36,7 +36,7 @@ const MONTHS: Month[] = [
   { monthNumber: 12, monthMessage: messages.december },
 ];
 
-interface IMonthSelectOption {
+interface IMonthOption {
   value: MonthNumber;
   label: string;
 }
@@ -44,15 +44,15 @@ interface IMonthSelectOption {
 type OmittedSelectProps = 'onChange' | 'value' | 'options';
 
 interface Props extends Omit<SelectProps, OmittedSelectProps> {
-  onChange: (option: IMonthSelectOption) => void;
-  value: IMonthSelectOption | MonthNumber;
+  onChange: (option: IMonthOption) => void;
+  value?: IMonthOption | MonthNumber;
 }
 
 const MonthSelect = ({
   intl: { formatMessage },
   ...otherProps
 }: Props & InjectedIntlProps) => {
-  const options: IMonthSelectOption[] = MONTHS.map(
+  const options: IMonthOption[] = MONTHS.map(
     ({ monthNumber, monthMessage }) => ({
       value: monthNumber,
       label: capitalize(formatMessage(monthMessage)),
