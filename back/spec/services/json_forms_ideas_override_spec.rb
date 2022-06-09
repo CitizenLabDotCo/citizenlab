@@ -37,8 +37,6 @@ describe 'JsonFormsService ideas overrides' do
                 'nl-NL' => { type: 'string', minLength: 40 }
               }
             },
-            'author_id' => { type: 'string' },
-            'budget' => { type: 'number' },
             'topic_ids' => {
               type: 'array',
               uniqueItems: true,
@@ -105,8 +103,6 @@ describe 'JsonFormsService ideas overrides' do
                   'nl-NL' => { type: 'string', minLength: 40 }
                 }
               },
-              'author_id' => { type: 'string' },
-              'budget' => { type: 'number' },
               'topic_ids' => {
                 type: 'array',
                 uniqueItems: true,
@@ -169,8 +165,6 @@ describe 'JsonFormsService ideas overrides' do
                   'nl-NL' => { type: 'string', minLength: 40 }
                 }
               },
-              'author_id' => { type: 'string' },
-              'budget' => { type: 'number' },
               'topic_ids' => {
                 type: 'array',
                 uniqueItems: true,
@@ -224,82 +218,6 @@ describe 'JsonFormsService ideas overrides' do
       schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'topic_ids', :items, :oneOf).pluck(:const)).to match @projects_allowed_input_topics.map(&:topic_id)
-    end
-  end
-
-  describe 'budget field' do
-    before { SettingsService.new.activate_feature! 'participatory_budgeting' }
-
-    let(:continuous_pb_project_fields) { IdeaCustomFieldsService.new(create(:custom_form, project: create(:continuous_budgeting_project))).all_fields }
-    let(:timeline_pb_project_fields) do
-      project_with_phases = create(:project_with_phases)
-      project_with_phases.phases[0].update(participation_method: 'budgeting')
-      IdeaCustomFieldsService.new(create(:custom_form, project: project_with_phases)).all_fields
-    end
-    let(:timeline_ideas_project_fields) do
-      project_with_phases = create(:project_with_phases)
-      IdeaCustomFieldsService.new(create(:custom_form, project: project_with_phases)).all_fields
-    end
-
-    it 'is not included for normal users' do
-      schema = service.ui_and_json_multiloc_schemas(continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'budget')).to be_nil
-    end
-
-    context 'when admin' do
-      before { user.update!(roles: [{ type: 'admin' }]) }
-
-      it 'is included in a project that has a PB phase' do
-        schema = service.ui_and_json_multiloc_schemas(timeline_pb_project_fields, user)[:json_schema_multiloc][locale]
-        expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to match({ type: 'number' })
-      end
-
-      it 'is not included in a project that has no PB phase' do
-        schema = service.ui_and_json_multiloc_schemas(timeline_ideas_project_fields, user)[:json_schema_multiloc][locale]
-        expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to be_nil
-      end
-
-      it 'is included in a continuous PB project' do
-        schema = service.ui_and_json_multiloc_schemas(continuous_pb_project_fields, user)[:json_schema_multiloc][locale]
-        expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to match({ type: 'number' })
-      end
-
-      it 'is not included in a continuous ideation project' do
-        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
-        expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'budget')).to be_nil
-      end
-    end
-  end
-
-  describe 'author_id field' do
-    before { SettingsService.new.activate_feature! 'idea_author_change' }
-
-    it 'is not inluded for normal users, irrespective of the feature flag' do
-      schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
-      expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'author_id')).to be_nil
-    end
-
-    context 'when admin' do
-      before { user.update!(roles: [{ type: 'admin' }]) }
-
-      it 'is included when the feature is active' do
-        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
-        expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'author_id')).to match({ type: 'string' })
-      end
-
-      it 'is not included when the feature is not active' do
-        SettingsService.new.deactivate_feature! 'idea_author_change'
-        schema = service.ui_and_json_multiloc_schemas(fields, user)[:json_schema_multiloc][locale]
-        expect(JSON::Validator.validate!(metaschema, schema)).to be true
-        expect(schema.dig(:properties, 'author_id')).to be_nil
-      end
     end
   end
 
