@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
   SearchInput,
   SearchInputProps,
@@ -30,20 +30,14 @@ const SearchInputWrapper = ({
 }: Props & InjectedIntlProps) => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
-  const handleOnChange = useCallback(
-    (searchTerm: string | null) => {
-      setSearchTerm(searchTerm);
-      onChange(searchTerm);
-    },
-    [onChange]
-  );
+  const handleOnChange = (searchTerm: string | null) => {
+    setSearchTerm(searchTerm);
+    onChange(searchTerm);
+  };
 
-  const handleClearButtonRef = useCallback(
-    (element: HTMLButtonElement) => {
-      setClearButtonRef?.(element);
-    },
-    [setClearButtonRef]
-  );
+  const handleClearButtonRef = (element: HTMLButtonElement) => {
+    setClearButtonRef?.(element);
+  };
 
   return (
     <>
