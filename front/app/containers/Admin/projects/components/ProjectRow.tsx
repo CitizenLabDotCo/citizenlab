@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -75,7 +76,7 @@ export default ({
       className={`
         e2e-admin-edit-publication
       `}
-      linkTo={`/admin/projects/${publication.publicationId}/edit`}
+      linkTo={adminProjectsProjectPath(publication.publicationId)}
       buttonStyle="secondary"
       icon="edit"
       type="button"

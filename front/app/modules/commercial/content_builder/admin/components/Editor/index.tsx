@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'utils/cl-router/withRouter';
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 
 // components

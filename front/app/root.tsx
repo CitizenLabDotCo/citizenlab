@@ -3,8 +3,7 @@ import 'regenerator-runtime/runtime';
 import React, { useEffect } from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import { useScroll } from 'react-router-scroll';
+
 import 'assets/css/reset.min.css';
 import 'assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
@@ -15,25 +14,29 @@ import createRoutes from './routes';
 import { init } from '@sentry/browser';
 import OutletsProvider from 'containers/OutletsProvider';
 import modules from 'modules';
+import history from 'utils/browserHistory';
 
-const rootRoute = {
-  component: App,
-  childRoutes: createRoutes(),
-};
+import {
+  unstable_HistoryRouter as HistoryRouter,
+  useRoutes,
+} from 'react-router-dom';
 
-const Root = () => {
+const Routes = () => {
+  const importedRoutes = createRoutes();
+  const routes = useRoutes(importedRoutes);
   useEffect(() => {
     modules.afterMountApplication();
   }, []);
 
+  return <App>{routes}</App>;
+};
+const Root = () => {
   return (
     <OutletsProvider>
       <LanguageProvider>
-        <Router
-          history={browserHistory}
-          routes={rootRoute}
-          render={applyRouterMiddleware(useScroll())}
-        />
+        <HistoryRouter history={history}>
+          <Routes />
+        </HistoryRouter>
       </LanguageProvider>
     </OutletsProvider>
   );
