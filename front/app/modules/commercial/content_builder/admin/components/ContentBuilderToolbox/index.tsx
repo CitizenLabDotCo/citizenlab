@@ -221,7 +221,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="collapse-all"
+            icon="dashedBorderRectangle"
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
