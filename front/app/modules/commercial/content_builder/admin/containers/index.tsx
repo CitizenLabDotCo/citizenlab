@@ -11,22 +11,26 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
 import ContentBuilderMobileView from '../components/ContentBuilderMobileView';
+
 // craft
 import Editor from '../components/Editor';
 import ContentBuilderToolbox from '../components/ContentBuilderToolbox';
 import ContentBuilderTopBar from '../components/ContentBuilderTopBar';
 import ContentBuilderFrame from '../components/ContentBuilderFrame';
 import ContentBuilderSettings from '../components/ContentBuilderSettings';
+
 // hooks
 import { PROJECT_DESCRIPTION_CODE } from '../../services/contentBuilder';
 import useLocale from 'hooks/useLocale';
 import useContentBuilderLayout from '../../hooks/useContentBuilder';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
+import eventEmitter from 'utils/eventEmitter';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -36,6 +40,11 @@ const StyledRightColumn = styled(RightColumn)`
   align-items: center;
   padding-bottom: 100px;
 `;
+
+type ContentBuilderErrors = Record<
+  string,
+  { hasError: boolean; selectedLocale: Locale }
+>;
 
 const ContentBuilderPage = ({
   params: { projectId },
@@ -49,6 +58,7 @@ const ContentBuilderPage = ({
 
   const featureEnabled = useFeatureFlag({ name: 'content_builder' });
   const locale = useLocale();
+  const locales = useAppConfigurationLocales();
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
     code: PROJECT_DESCRIPTION_CODE,
@@ -59,6 +69,47 @@ const ContentBuilderPage = ({
       setSelectedLocale(locale);
     }
   }, [locale]);
+
+  const [contentBuilderErrors, setContentBuilderErrors] =
+    useState<ContentBuilderErrors>({});
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('contentBuilderError')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => ({
+          ...contentBuilderErrors,
+          ...(eventValue as ContentBuilderErrors),
+        }));
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent('deleteContentBuilderElement')
+      .subscribe(({ eventValue }) => {
+        setContentBuilderErrors((contentBuilderErrors) => {
+          const deletedElementId = eventValue as string;
+          const { [deletedElementId]: _deletedElementId, ...rest } =
+            contentBuilderErrors;
+          return rest;
+        });
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  if (isNilOrError(locales)) {
+    return null;
+  }
+
+  const localesWithError = Object.values(contentBuilderErrors)
+    .filter((node) => node.hasError)
+    .map((node) => node.selectedLocale);
 
   const editorData =
     !isNilOrError(contentBuilderLayout) && selectedLocale
@@ -116,6 +167,7 @@ const ContentBuilderPage = ({
           <FocusOn>
             <Editor isPreview={false} onNodesChange={handleEditorChange}>
               <ContentBuilderTopBar
+                localesWithError={localesWithError}
                 mobilePreviewEnabled={mobilePreviewEnabled}
                 setMobilePreviewEnabled={setMobilePreviewEnabled}
                 selectedLocale={selectedLocale}

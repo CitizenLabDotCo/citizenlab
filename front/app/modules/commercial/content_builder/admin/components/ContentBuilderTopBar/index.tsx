@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
@@ -38,12 +38,12 @@ import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
-import eventEmitter from 'utils/eventEmitter';
 
 // types
 import { Locale } from 'typings';
 
 type ContentBuilderTopBarProps = {
+  localesWithError: Locale[];
   mobilePreviewEnabled: boolean;
   setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
@@ -54,11 +54,6 @@ type ContentBuilderTopBarProps = {
   }) => void;
 } & WithRouterProps;
 
-type ContentBuilderErrors = Record<
-  string,
-  { hasError: boolean; selectedLocale: string }
->;
-
 const ContentBuilderTopBar = ({
   params: { projectId },
   mobilePreviewEnabled,
@@ -66,6 +61,7 @@ const ContentBuilderTopBar = ({
   selectedLocale,
   onSelectLocale,
   draftEditorData,
+  localesWithError,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
@@ -73,46 +69,9 @@ const ContentBuilderTopBar = ({
   const project = useProject({ projectId });
   const locales = useAppConfigurationLocales();
 
-  const [contentBuilderErrors, setContentBuilderErrors] =
-    useState<ContentBuilderErrors>({});
-
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('contentBuilderError')
-      .subscribe(({ eventValue }) => {
-        setContentBuilderErrors((contentBuilderErrors) => ({
-          ...contentBuilderErrors,
-          ...(eventValue as ContentBuilderErrors),
-        }));
-      });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('deleteContentBuilderElement')
-      .subscribe(({ eventValue }) => {
-        setContentBuilderErrors((contentBuilderErrors) => {
-          const deletedElementId = eventValue as string;
-          const { [deletedElementId]: _deletedElementId, ...rest } =
-            contentBuilderErrors;
-          return rest;
-        });
-      });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
   if (isNilOrError(locales)) {
     return null;
   }
-
-  const localesWithError = Object.values(contentBuilderErrors)
-    .filter((node) => node.hasError)
-    .map((node) => node.selectedLocale);
 
   const disableSave = localesWithError.length > 0;
 
