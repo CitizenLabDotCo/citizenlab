@@ -125,6 +125,9 @@ const createAdminRoutes = () => {
           </PageLoading>
         ),
       },
+      // This path is only reachable via URL.
+      // It's a pragmatic solution to reduce workload
+      // on the team so admins can set their favicon.
       {
         path: 'favicon',
         element: (
