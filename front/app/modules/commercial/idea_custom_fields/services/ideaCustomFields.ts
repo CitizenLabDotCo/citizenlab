@@ -67,7 +67,7 @@ export async function updateIdeaCustomField(
 ) {
   const apiEndpoint = code
     ? `${API_PATH}/admin/projects/${projectId}/custom_fields/by_code/${code}`
-    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update/${ideaCustomFieldId}`
+    : `${API_PATH}/admin/projects/${projectId}/custom_fields/update/${ideaCustomFieldId}`;
   const updateObject = { custom_field: object };
   return streams.update<IIdeaCustomField>(
     apiEndpoint,
@@ -77,6 +77,6 @@ export async function updateIdeaCustomField(
 }
 
 export async function refetchCustomFields(projectId) {
-  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`;
   streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
 }

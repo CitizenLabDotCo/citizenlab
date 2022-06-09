@@ -8,7 +8,7 @@ import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/use
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
-  refetchCustomFields
+  refetchCustomFields,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
