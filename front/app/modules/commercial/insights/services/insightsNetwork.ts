@@ -15,10 +15,6 @@ export interface IInsightsNetworkNode {
   cluster_id: string | null;
   color: string;
   color_index: number;
-  nodeVerticalOffset: number;
-  textWidth: number;
-  globalScale: number;
-  nodeFontSize: number;
 }
 
 export interface IInsightsNetworkLink {

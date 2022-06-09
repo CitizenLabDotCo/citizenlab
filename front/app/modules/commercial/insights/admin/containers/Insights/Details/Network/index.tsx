@@ -49,7 +49,13 @@ import messages from '../../messages';
 import styled from 'styled-components';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
-type Node = NodeObject & IInsightsNetworkNode;
+interface IInsightsNetworkNodeMeta extends IInsightsNetworkNode {
+  nodeVerticalOffset: number;
+  textWidth: number;
+  globalScale: number;
+  nodeFontSize: number;
+}
+type Node = NodeObject & IInsightsNetworkNodeMeta;
 
 const zoomStep = 0.2;
 const chargeStrength = -10;
