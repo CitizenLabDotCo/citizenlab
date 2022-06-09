@@ -49,7 +49,7 @@ export interface IUserCustomFieldData {
       data: IRelationship;
     };
     current_ref_distribution: {
-      data: IRelationship[];
+      data: IRelationship;
     };
   };
 }

@@ -24,7 +24,7 @@ import tracks from './tracks';
 const hasAnyReferenceData = (customFields: IUserCustomFieldData[]) =>
   customFields.some(
     ({ relationships }) =>
-      relationships && relationships.current_ref_distribution.data.length > 0
+      relationships && !!relationships.current_ref_distribution.data
   );
 
 const RepresentativenessDashboard = () => {
