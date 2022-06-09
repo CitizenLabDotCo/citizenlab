@@ -6,6 +6,7 @@ import {
   Image as ImageComponent,
   Input,
   IconTooltip,
+  colors,
 } from '@citizenlab/cl2-component-library';
 
 // image upload
@@ -20,6 +21,7 @@ import messages from '../../../messages';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
+import { Icon } from 'semantic-ui-react';
 
 const Image = ({
   imageUrl,
@@ -32,6 +34,17 @@ const Image = ({
 }) => {
   return (
     <Box id="e2e-image" style={{ pointerEvents: 'none' }} minHeight="26px">
+      {!imageUrl && (
+        <Box
+          display="flex"
+          alignItems="center"
+          flexDirection="column"
+          justifyContent="center"
+          padding="20px"
+        >
+          <Icon size="huge" name="image" color="grey" />
+        </Box>
+      )}
       {imageUrl && (
         <ImageComponent
           width="100%"

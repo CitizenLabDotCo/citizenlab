@@ -12,7 +12,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Components
 import ToolboxItem from './ToolboxItem';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
@@ -57,6 +57,9 @@ const ContentBuilderToolbox = ({
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
+        <Title ml="5px" variant="h5" as="h1">
+          LAYOUT
+        </Title>
         <DraggableElement
           id="e2e-draggable-single-column"
           ref={(ref) =>
@@ -107,6 +110,29 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.threeColumn)}
           />
         </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-white-space"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element is={WhiteSpace} size="small" id="WhiteSpace" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="dashedBorderRectangle"
+            label={formatMessage(messages.whiteSpace)}
+          />
+        </DraggableElement>
+        <Title ml="5px" variant="h5" as="h1">
+          CONTENT
+        </Title>
         <DraggableElement
           id="e2e-draggable-text"
           ref={(ref) =>
@@ -204,26 +230,6 @@ const ContentBuilderToolbox = ({
           <ToolboxItem
             icon="accordion"
             label={formatMessage(messages.accordion)}
-          />
-        </DraggableElement>
-        <DraggableElement
-          id="e2e-draggable-white-space"
-          ref={(ref) =>
-            ref &&
-            connectors.create(
-              ref,
-              <Element is={WhiteSpace} size="small" id="WhiteSpace" />,
-              {
-                onCreate: (node) => {
-                  selectNode(node.rootNodeId);
-                },
-              }
-            )
-          }
-        >
-          <ToolboxItem
-            icon="dashedBorderRectangle"
-            label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
       </Box>
