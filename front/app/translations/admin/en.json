@@ -1349,6 +1349,7 @@
   "app.containers.admin.ContentBuilder.accordionTitleValue": "Accordion title",
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.error": "error",
+  "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Height",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Height of the iframe window.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "e.g. 120px",
