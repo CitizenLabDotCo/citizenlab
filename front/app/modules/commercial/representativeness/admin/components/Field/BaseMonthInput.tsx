@@ -12,15 +12,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 const BaseDateInput = () => (
   <Box display="flex" mt="28px" width="100%">
-    <Box width="50%">
+    <Box width="50%" display="flex" alignItems="center">
+      <Icon
+        name="calendar"
+        width="16px"
+        height="16px"
+        fill={colors.label}
+        mr="12px"
+        mb="3px"
+      />
       <Text variant="bodyM" color="label">
-        <Icon
-          name="calendar"
-          width="16px"
-          height="16px"
-          fill={colors.label}
-          display="inline"
-        />
         <FormattedMessage {...messages.baseMonth} />
       </Text>
     </Box>
