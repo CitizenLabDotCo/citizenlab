@@ -7,7 +7,6 @@ import {
   addContentBuilderLayout,
 } from '../../../services/contentBuilder';
 import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IContentBuilderLayoutData = {
   id: '2',
@@ -76,7 +75,13 @@ jest.mock('@craftjs/core', () => {
   const originalModule = jest.requireActual('@craftjs/core');
   return {
     ...originalModule,
-    useEditor: () => ({ query: { serialize: jest.fn(() => '{}') } }),
+    useEditor: () => ({
+      query: {
+        getSerializedNodes: jest.fn(() => {
+          return {};
+        }),
+      },
+    }),
   };
 });
 
@@ -123,6 +128,7 @@ describe('ContentBuilderTopBar', () => {
         />
       </Editor>
     );
+
     await act(async () => {
       fireEvent.click(screen.getByTestId('contentBuilderTopBarSaveButton'));
     });
@@ -133,7 +139,24 @@ describe('ContentBuilderTopBar', () => {
     );
   });
   it('enables and disables save in accordance with the error status', async () => {
-    render(
+    const { rerender } = render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={() => {}}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+
+    const saveButton = within(
+      screen.getByTestId('contentBuilderTopBarSaveButton')
+    ).getByRole('button');
+
+    expect(saveButton).toBeDisabled();
+    rerender(
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
@@ -144,52 +167,6 @@ describe('ContentBuilderTopBar', () => {
         />
       </Editor>
     );
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someId: true });
-      eventEmitter.emit('contentBuilderError', { someOtherId: true });
-    });
-
-    const saveButton = within(
-      screen.getByTestId('contentBuilderTopBarSaveButton')
-    ).getByRole('button');
-
-    expect(saveButton).toBeDisabled();
-
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someId: false });
-    });
-    expect(saveButton).toBeDisabled();
-
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someOtherId: false });
-    });
-    expect(saveButton).not.toBeDisabled();
-  });
-  it('re-enables save when the element with the error is deleted', async () => {
-    render(
-      <Editor>
-        <ContentBuilderTopBar
-          selectedLocale="en"
-          localesWithError={[]}
-          onSelectLocale={() => {}}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
-        />
-      </Editor>
-    );
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someId: true });
-    });
-
-    const saveButton = within(
-      screen.getByTestId('contentBuilderTopBarSaveButton')
-    ).getByRole('button');
-
-    expect(saveButton).toBeDisabled();
-
-    await act(async () => {
-      eventEmitter.emit('deleteContentBuilderElement', 'someId');
-    });
 
     expect(saveButton).not.toBeDisabled();
   });
