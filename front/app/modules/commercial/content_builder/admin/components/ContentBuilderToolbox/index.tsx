@@ -3,8 +3,8 @@ import React from 'react';
 // craft
 import { useEditor, Element } from '@craftjs/core';
 
-// router
-import { withRouter, WithRouterProps } from 'react-router';
+// Router
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -232,7 +232,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="collapse-all"
+            icon="dashedBorderRectangle"
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>

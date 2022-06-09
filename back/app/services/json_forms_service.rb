@@ -177,8 +177,8 @@ class JsonFormsService
       minProperties: 1,
       properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
         {
-            type: 'string'
-          }
+          type: 'string'
+        }
       end
     }
   end
@@ -206,8 +206,8 @@ class JsonFormsService
       minProperties: 1,
       properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
         {
-            type: 'string'
-          }
+          type: 'string'
+        }
       end
     }
   end
@@ -235,8 +235,8 @@ class JsonFormsService
       minProperties: 1,
       properties: AppConfiguration.instance.settings('core', 'locales').index_with do |_locale|
         {
-            type: 'string'
-          }
+          type: 'string'
+        }
       end
     }
   end
@@ -290,7 +290,7 @@ class JsonFormsService
       uniqueItems: true,
       minItems: field.enabled && field.required ? 1 : 0,
       items: {
-          type: 'string'
+        type: 'string'
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?

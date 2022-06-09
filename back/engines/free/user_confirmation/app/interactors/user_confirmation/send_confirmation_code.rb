@@ -3,9 +3,9 @@
 module UserConfirmation
   class SendConfirmationCode < ApplicationOrganizer
     organize ResetUserEmail,
-             ResetUserConfirmationCode,
-             DeliverConfirmationCode,
-             ScheduleCodeExpiration
+      ResetUserConfirmationCode,
+      DeliverConfirmationCode,
+      ScheduleCodeExpiration
 
     delegate :user, to: :context
 

@@ -1,6 +1,7 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { globalState } from 'services/globalState';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
@@ -107,11 +108,10 @@ export const chartTheme = (theme) => {
 
 type Props = {
   className?: string;
-  children: React.ReactNode;
 };
 
 const AdminPage = memo<Props & WithRouterProps>(
-  ({ className, children, location: { pathname } }) => {
+  ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
@@ -176,7 +176,7 @@ const AdminPage = memo<Props & WithRouterProps>(
                 noPadding && 'noPadding'
               }`}
             >
-              {children}
+              <RouterOutlet />
             </RightColumn>
           </Container>
         </ThemeProvider>
@@ -185,4 +185,4 @@ const AdminPage = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter<Props>(AdminPage);
+export default withRouter(AdminPage);

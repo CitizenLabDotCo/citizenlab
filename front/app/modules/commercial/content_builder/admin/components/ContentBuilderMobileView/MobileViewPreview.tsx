@@ -18,7 +18,7 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();

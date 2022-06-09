@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Accordion component', () => {
+describe.skip('Content builder Accordion component', () => {
   let projectId = '';
   let projectSlug = '';
 

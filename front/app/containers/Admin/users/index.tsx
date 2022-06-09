@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik, FormikActions } from 'formik';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
 import GetFeatureFlag, {
@@ -165,7 +166,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             onCreateGroup={this.openGroupCreationModal}
           />
           <ChildWrapper id="e2e-users-container">
-            {this.props.children}
+            <RouterOutlet />
           </ChildWrapper>
         </Wrapper>
 
@@ -204,7 +205,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const UsersPageWithHocs = withRouter<Props>(UsersPage);
+const UsersPageWithHocs = withRouter(UsersPage);
 
 export default (props) => (
   <GetFeatureFlag name="verification">

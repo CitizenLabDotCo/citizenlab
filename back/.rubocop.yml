@@ -32,14 +32,26 @@ Style/NumericPredicate:
   # are not the same if `something` is not a number.
   Enabled: false
 
-Layout/HashAlignment:
-  # There are a lot of places where EnforcedColonStyle: table is expected, so disabled for now.
-  Enabled: false
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
 
 Layout/FirstHashElementIndentation:
-  # Wait for a decision on Layout/HashAlignment.
-  Enabled: false
   EnforcedStyle: consistent
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
 
 Layout/CaseIndentation:
   EnforcedStyle: end
@@ -70,6 +82,23 @@ Rails/DynamicFindBy:
     - find_by_cimail
     - find_by_cimail!
     - find_by_card_id
+
+Rails/CreateTableWithTimestamps:
+  # Some migrations do not add timestamps, so they are excluded.
+  Exclude:
+    - 'db/migrate/20170318143940_create_join_table_projects_topics.rb'
+    - 'db/migrate/20170318144700_create_join_table_areas_projects.rb'
+    - 'db/migrate/20170318181018_create_join_table_ideas_topics.rb'
+    - 'db/migrate/20170319000059_create_join_table_areas_ideas.rb'
+    - 'db/migrate/20171010114629_create_groups_projects.rb'
+    - 'db/migrate/20171010114644_create_memberships.rb'
+    - 'db/migrate/20171031131310_create_page_links.rb'
+    - 'db/migrate/20190603100709_create_join_table_areas_initiatives.rb'
+    - 'db/migrate/20190603100803_create_join_table_initiatives_topics.rb'
+    - 'db/migrate/20191210205216_create_id_cards.id_id_card_lookup.rb'
+    - 'db/migrate/20191218161144_create_unsubscription_tokens.email_campaigns.rb'
+    - 'db/migrate/20200807132541_create_common_passwords.rb'
+    - 'db/migrate/20210619133856_create_zeroshot_classification_tables.insights.rb'
 
 RSpec/SharedContext:
   Exclude:

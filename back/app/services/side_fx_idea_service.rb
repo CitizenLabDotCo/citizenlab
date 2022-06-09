@@ -66,7 +66,7 @@ class SideFxIdeaService
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
     serialized_idea['location_point'] = serialized_idea['location_point'].to_s
     LogActivityJob.perform_later(encode_frozen_resource(frozen_idea), 'deleted', user, Time.now.to_i,
-                                 payload: { idea: serialized_idea })
+      payload: { idea: serialized_idea })
   end
 
   private

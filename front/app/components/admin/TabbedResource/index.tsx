@@ -1,7 +1,7 @@
 import React from 'react';
 
 // routing
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 
 // style
@@ -185,6 +185,7 @@ class TabbedResource extends React.PureComponent<
                     <Tab
                       key={tab.url}
                       className={`${tab.name} ${this.activeClassForTab(tab)}`}
+                      data-testid="resource-single-tab"
                     >
                       <FormattedTabLink tab={tab} />
                     </Tab>
@@ -197,6 +198,7 @@ class TabbedResource extends React.PureComponent<
                 <Tab
                   key={tab.url}
                   className={`${tab.name} ${this.activeClassForTab(tab)}`}
+                  data-testid="resource-single-tab"
                 >
                   <FormattedTabLink tab={tab} />
                 </Tab>

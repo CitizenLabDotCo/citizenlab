@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { withRouter } from 'react-router';
 import { FocusOn } from 'react-focus-on';
+import { withRouter } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';

@@ -1,7 +1,7 @@
 import React, { useState, memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
@@ -107,6 +107,10 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
+                {/*
+                  Needs to change: Outlet should always render.
+                  Condition needs to be inside the Outlet.
+                */}
                 {projectFolderId && (
                   <Outlet
                     id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
@@ -117,7 +121,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
-                    linkTo={`/admin/projects/${project.id}/edit`}
+                    linkTo={adminProjectsProjectPath(project.id)}
                     buttonStyle="secondary"
                     padding="5px 8px"
                   >

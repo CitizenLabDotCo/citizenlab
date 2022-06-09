@@ -190,6 +190,7 @@ const isValidUrl = (url: string) => {
     /^https:\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
     /^https:\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
     /^https:\/\/(.+)?(wistia\.com|wi\.st)\/.*\//,
+    /^https:\/\/(.+\.)(welcomesyourfeedback.net|snapsurveys.com)\//,
   ];
 
   invalidUrl = !urlWhiteList.some((rx) => rx.test(url));

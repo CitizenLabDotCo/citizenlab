@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Three Column component', () => {
+describe.skip('Content builder Three Column component', () => {
   let projectId = '';
   let projectSlug = '';
 

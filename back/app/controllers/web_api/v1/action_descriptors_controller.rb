@@ -6,10 +6,10 @@ class WebApi::V1::ActionDescriptorsController < ApplicationController
 
   def initiatives
     descriptors = {
-      posting_initiative:          { enabled: true, disabled_reason: nil },
-      commenting_initiative:       { enabled: true, disabled_reason: nil },
-      voting_initiative:           { enabled: true, disabled_reason: nil },
-      comment_voting_initiative:   { enabled: true, disabled_reason: nil },
+      posting_initiative: { enabled: true, disabled_reason: nil },
+      commenting_initiative: { enabled: true, disabled_reason: nil },
+      voting_initiative: { enabled: true, disabled_reason: nil },
+      comment_voting_initiative: { enabled: true, disabled_reason: nil },
       cancelling_initiative_votes: { enabled: true, disabled_reason: nil }
     }
     render(json: descriptors)
