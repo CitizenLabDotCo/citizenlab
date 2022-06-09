@@ -45,7 +45,7 @@ const EmptyState = () => {
               width="164px"
               mb="16px"
               bgColor={colors.adminTextColor}
-              linkTo="https://citizenlabco.typeform.com/to/wwXLjcL6"
+              linkTo="/admin/dashboard/representativeness/edit-base-data"
             >
               <FormattedMessage {...messages.submitBaseDataButton} />
             </Button>
