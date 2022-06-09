@@ -10,6 +10,7 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 // components
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
 import ContentBuilderMobileView from '../components/ContentBuilderMobileView';
 
 // craft
@@ -31,6 +32,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import { SerializedNodes } from '@craftjs/core';
 import { Locale } from 'typings';
 import eventEmitter from 'utils/eventEmitter';
+
+// intl
+import messages from '../messages';
+import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 const StyledRightColumn = styled(RightColumn)`
   min-height: calc(100vh - ${stylingConsts.menuHeight}px);
@@ -183,6 +188,18 @@ const ContentBuilderPage = ({
                 )}
                 <StyledRightColumn>
                   <Box width="1000px">
+                    {localesWithError.length > 0 && (
+                      <Error
+                        text={
+                          <FormattedMessage
+                            {...messages.errorMessage}
+                            values={{
+                              locale: localesWithError[0].toUpperCase(),
+                            }}
+                          />
+                        }
+                      />
+                    )}
                     <ContentBuilderFrame editorData={editorData} />
                   </Box>
                 </StyledRightColumn>

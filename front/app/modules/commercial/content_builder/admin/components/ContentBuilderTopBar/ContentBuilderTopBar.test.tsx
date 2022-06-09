@@ -86,6 +86,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
@@ -99,6 +100,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
@@ -113,6 +115,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
@@ -134,6 +137,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
@@ -166,6 +170,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={() => {}}
@@ -195,6 +200,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={false}
           setMobilePreviewEnabled={setMobilePreviewEnabled}
@@ -212,6 +218,7 @@ describe('ContentBuilderTopBar', () => {
       <Editor>
         <ContentBuilderTopBar
           selectedLocale="en"
+          localesWithError={[]}
           onSelectLocale={() => {}}
           mobilePreviewEnabled={true}
           setMobilePreviewEnabled={setMobilePreviewEnabled}

@@ -41,6 +41,11 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.error',
     defaultMessage: 'error',
   },
+  errorMessage: {
+    id: 'app.containers.admin.ContentBuilder.errorMessage',
+    defaultMessage:
+      'There is an error on { locale } content, please fix the issue to be able to save your changes',
+  },
   iframeUrlLabel: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
     defaultMessage: 'Website address',
