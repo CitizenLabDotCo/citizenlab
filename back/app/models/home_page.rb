@@ -37,10 +37,10 @@ class HomePage < ApplicationRecord
   validate :only_one_home_page, on: :create
 
   validates :top_info_section_enabled, inclusion: [true, false]
-  validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :top_info_section_enabled
+  validates :top_info_section_multiloc, multiloc: true, if: :top_info_section_enabled
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
-  validates :bottom_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :bottom_info_section_enabled
+  validates :bottom_info_section_multiloc, multiloc: true, if: :bottom_info_section_enabled
 
   validates :events_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
@@ -48,10 +48,10 @@ class HomePage < ApplicationRecord
   validates :banner_avatars_enabled, inclusion: [true, false]
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
-  validates :banner_signed_in_header_multiloc, presence: true, multiloc: true
+  validates :banner_signed_in_header_multiloc, multiloc: true
 
-  validates :banner_signed_out_header_multiloc, presence: true, multiloc: true
-  validates :banner_signed_out_subheader_multiloc, presence: true, multiloc: true
+  validates :banner_signed_out_header_multiloc, multiloc: true
+  validates :banner_signed_out_subheader_multiloc, multiloc: true
   validates :banner_signed_out_header_overlay_color, css_color: true
   validates :banner_signed_out_header_overlay_opacity, numericality: { only_integer: true,
                                                                        in: [0..100],
