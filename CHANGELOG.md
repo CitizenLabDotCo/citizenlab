@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+
 ## 2022-06-08_2
 
 ### Fixed
