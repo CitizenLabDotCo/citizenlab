@@ -17,7 +17,7 @@ const configuration: ModuleConfiguration = {
         },
         childRoutes: [
           {
-            path: 'manage-data',
+            path: 'edit-base-data',
             container: () =>
               import('./admin/containers/ReferenceDataInterface'),
           },
