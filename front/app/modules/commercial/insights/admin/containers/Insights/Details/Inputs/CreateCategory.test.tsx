@@ -10,16 +10,16 @@ const viewId = '1';
 jest.mock('services/locale');
 jest.mock('utils/cl-intl');
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
         return <Component {...props} params={{ viewId }} />;
       };
     },
-    Link: () => 'Link',
   };
 });
+jest.mock('utils/cl-router/Link');
 
 jest.mock('modules/commercial/insights/services/insightsCategories', () => ({
   addInsightsCategory: jest.fn(),

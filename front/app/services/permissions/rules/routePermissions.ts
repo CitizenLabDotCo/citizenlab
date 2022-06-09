@@ -36,8 +36,8 @@ export const isModeratedProjectRoute = (
   return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
 };
 
-export const isAdminRoute = (item: IRouteItem) => {
-  return /^\/admin/.test(item.path);
+export const isAdminRoute = (path: string) => {
+  return /^\/admin/.test(path);
 };
 
 export const tenantIsChurned = (tenant: IAppConfigurationData) => {
@@ -49,7 +49,7 @@ export const canAccessRoute = (
   user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
-  if (isAdminRoute(item)) {
+  if (isAdminRoute(item.path)) {
     if (isSuperAdmin(user)) {
       return true;
     }

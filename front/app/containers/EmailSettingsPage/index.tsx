@@ -8,7 +8,7 @@ import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 // Styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';

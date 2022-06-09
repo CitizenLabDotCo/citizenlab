@@ -17,19 +17,24 @@ UserCustomFields::Engine.routes.draw do
       end
 
       scope 'stats' do
-        route_params = { controller: 'stats_users' }
+        with_options controller: 'stats_users' do
+          get 'users_by_domicile'
+          get 'users_by_domicile_as_xlsx'
 
-        get 'users_by_gender', **route_params
-        get 'users_by_birthyear', **route_params
-        get 'users_by_domicile', **route_params
-        get 'users_by_education', **route_params
-        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
+          with_options action: :users_by_custom_field do
+            get 'users_by_gender'
+            get 'users_by_birthyear'
+            get 'users_by_education'
+            get 'users_by_custom_field/:custom_field_id'
+          end
 
-        get 'users_by_gender_as_xlsx', **route_params
-        get 'users_by_birthyear_as_xlsx', **route_params
-        get 'users_by_domicile_as_xlsx', **route_params
-        get 'users_by_education_as_xlsx', **route_params
-        get 'users_by_custom_field_as_xlsx/:custom_field_id', action: :users_by_custom_field_as_xlsx, **route_params
+          with_options action: :users_by_custom_field_as_xlsx do
+            get 'users_by_gender_as_xlsx'
+            get 'users_by_birthyear_as_xlsx'
+            get 'users_by_education_as_xlsx'
+            get 'users_by_custom_field_as_xlsx/:custom_field_id'
+          end
+        end
       end
     end
   end

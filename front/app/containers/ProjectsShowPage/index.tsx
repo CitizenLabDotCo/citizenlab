@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -35,7 +35,6 @@ import { IProjectData } from 'services/projects';
 // other
 import { isValidPhase } from './phaseParam';
 import { anyIsUndefined, isNilOrError, isApiError } from 'utils/helperUtils';
-import getScrollToEventId from './getScrollToEventId';
 
 const Container = styled.main<{ background: string }>`
   flex: 1 0 auto;
@@ -157,14 +156,13 @@ const ProjectsShowPageWrapper = memo<WithRouterProps>(
   ({ location: { pathname, query }, params: { slug, phaseNumber } }) => {
     const project = useProject({ projectSlug: slug });
     const phases = usePhases(project?.id);
+    const { scrollToEventId } = query;
+    const processType = project?.attributes?.process_type;
 
     const urlSegments = pathname
       .replace(/^\/|\/$/g, '')
       .split('/')
       .filter((segment) => segment !== '');
-
-    const scrollToEventId = getScrollToEventId(query, urlSegments);
-    const processType = project?.attributes?.process_type;
 
     // If processType is 'timeline' but the phases aren't loaded yet: don't render yet
     if (processType === 'timeline' && isNilOrError(phases)) return null;

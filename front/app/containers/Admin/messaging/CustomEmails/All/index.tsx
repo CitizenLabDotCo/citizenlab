@@ -42,11 +42,9 @@ const NoCampaignsDescription = styled.p`
   max-width: 450px;
 `;
 
-interface InputProps {}
-
 interface DataProps extends GetCampaignsChildProps {}
 
-export interface Props extends InputProps, DataProps {}
+export interface Props extends DataProps {}
 
 interface State {}
 
@@ -111,10 +109,8 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 
 const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
 
-export default (inputProps: Props) => (
+export default () => (
   <GetCampaigns campaignNames={['manual']} pageSize={10}>
-    {(campaigns) => (
-      <CampaignsWithInjectedIntl {...inputProps} {...campaigns} />
-    )}
+    {(campaigns) => <CampaignsWithInjectedIntl {...campaigns} />}
   </GetCampaigns>
 );
