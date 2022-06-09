@@ -327,7 +327,6 @@ const IdeasWithoutFiltersSidebar = ({
           </RightFilterArea>
         </FiltersArea>
         <IdeasView
-          aria-live="polite"
           list={list}
           querying={querying}
           onLoadMore={ideas.onLoadMore}
