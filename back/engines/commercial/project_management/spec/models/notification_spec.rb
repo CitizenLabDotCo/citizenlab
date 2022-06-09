@@ -14,7 +14,7 @@ RSpec.describe Notification, type: :model do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
       activity = create(:activity, item: moderator, action: 'project_moderation_rights_given',
-                                   payload: { project_id: project.id })
+        payload: { project_id: project.id })
 
       notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
       expect(notifications).to be_present

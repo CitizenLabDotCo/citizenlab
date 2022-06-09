@@ -212,7 +212,7 @@ class CustomFieldService
       uniqueItems: true,
       minItems: field.enabled && field.required ? 1 : 0,
       items: {
-          type: 'string'
+        type: 'string'
       }.tap do |items|
         options = field.custom_field_options.order(:ordering)
         unless options.empty?

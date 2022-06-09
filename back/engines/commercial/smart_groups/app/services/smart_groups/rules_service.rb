@@ -5,17 +5,17 @@ module SmartGroups
     include RulableService
 
     add_rules SmartGroups::Rules::CustomFieldText,
-              SmartGroups::Rules::CustomFieldSelect,
-              SmartGroups::Rules::CustomFieldCheckbox,
-              SmartGroups::Rules::CustomFieldDate,
-              SmartGroups::Rules::CustomFieldNumber,
-              SmartGroups::Rules::Role,
-              SmartGroups::Rules::Email,
-              SmartGroups::Rules::LivesIn,
-              SmartGroups::Rules::RegistrationCompletedAt,
-              SmartGroups::Rules::ParticipatedInProject,
-              SmartGroups::Rules::ParticipatedInTopic,
-              SmartGroups::Rules::ParticipatedInIdeaStatus
+      SmartGroups::Rules::CustomFieldSelect,
+      SmartGroups::Rules::CustomFieldCheckbox,
+      SmartGroups::Rules::CustomFieldDate,
+      SmartGroups::Rules::CustomFieldNumber,
+      SmartGroups::Rules::Role,
+      SmartGroups::Rules::Email,
+      SmartGroups::Rules::LivesIn,
+      SmartGroups::Rules::RegistrationCompletedAt,
+      SmartGroups::Rules::ParticipatedInProject,
+      SmartGroups::Rules::ParticipatedInTopic,
+      SmartGroups::Rules::ParticipatedInIdeaStatus
 
     JSON_SCHEMA_SKELETON = {
       'description' => 'Schema for validating the rules used in smart groups',
