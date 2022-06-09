@@ -17,7 +17,9 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'cannot create an idea without author on publication' do
-      expect(build(:idea, author: nil).valid?(:publication)).to be false
+      idea = build(:idea, author: nil)
+      expect(idea.valid?(:publication)).to be false
+      expect(idea.errors.details).to eq({ author: [{ error: :blank }] })
     end
 
     context 'without custom form' do
@@ -93,9 +95,12 @@ RSpec.describe Idea, type: :model do
           non_existing_key = 'nonexisting_field'
           idea.custom_field_values = { required_field.key => 15, non_existing_key => 22 }
           expect(idea.valid?(:publication)).to be false
-          error = idea.errors.details[:custom_field_values].first
-          expect(error[:error]).to start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema")
-          expect(error[:value]).to eq({ required_field.key => 15, non_existing_key => 22 })
+          expect(idea.errors.details.to_h).to match(
+            custom_field_values: [{
+              error: start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema"),
+              value: { required_field.key => 15, non_existing_key => 22 }
+            }]
+          )
         end
 
         it 'cannot persist an idea with an invalid field value' do
@@ -110,16 +115,36 @@ RSpec.describe Idea, type: :model do
         it 'cannot persist an idea without required field values' do
           idea.custom_field_values = { optional_field.key => 'option1' }
           expect(idea.valid?(:publication)).to be false
+          expect(idea.errors.details.to_h).to match(
+            custom_field_values: [{
+              error: start_with("The property '#/' did not contain a required property of '#{required_field.key}' in schema"),
+              value: { optional_field.key => 'option1' } # No value present for required_field.key, because it was not given.
+            }]
+          )
         end
 
         it 'cannot persist an idea with non-existing field options' do
-          idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
+          non_existing_option = 'non-existing-option'
+          idea.custom_field_values = { required_field.key => 15, optional_field.key => non_existing_option }
           expect(idea.valid?(:publication)).to be false
+          expect(idea.errors.details.to_h).to match(
+            custom_field_values: [{
+              error: start_with("The property '#/#{optional_field.key}' value \"#{non_existing_option}\" did not match one of the following values: option1, option2 in schema"),
+              value: { required_field.key => 15, optional_field.key => non_existing_option }
+            }]
+          )
         end
 
         it 'cannot persist an idea with disabled field values' do
-          idea.custom_field_values = { required_field.key => 15, disabled_field.key => 'my value' }
+          value_for_disabled_field = 'my value'
+          idea.custom_field_values = { required_field.key => 15, disabled_field.key => value_for_disabled_field }
           expect(idea.valid?(:publication)).to be false
+          expect(idea.errors.details.to_h).to match(
+            custom_field_values: [{
+              error: start_with("The property '#/' contains additional properties [\"#{disabled_field.key}\"] outside of the schema when none are allowed in schema"),
+              value: { required_field.key => 15, disabled_field.key => value_for_disabled_field }
+            }]
+          )
         end
       end
 
@@ -145,29 +170,59 @@ RSpec.describe Idea, type: :model do
           end
 
           it 'cannot persist an idea with a non-existing field' do
-            idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+            non_existing_key = 'nonexisting_field'
+            idea.custom_field_values = { required_field.key => 15, non_existing_key => 22 }
             expect(idea.valid?(validation_context)).to be false
+            expect(idea.errors.details.to_h).to match(
+              custom_field_values: [{
+                error: start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema"),
+                value: { required_field.key => 15, non_existing_key => 22 }
+              }]
+            )
           end
 
           it 'cannot persist an idea with an invalid field value' do
-            long_title = 'My long idea title. ' * 100
-            idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+            idea.proposed_budget = -1
+            idea.custom_field_values = { required_field.key => 80 }
             expect(idea.valid?(validation_context)).to be false
+            expect(idea.errors.details).to eq({
+              proposed_budget: [{ error: :greater_than_or_equal_to, value: -1, count: 0 }]
+            })
           end
 
           it 'cannot persist an idea without required field values' do
             idea.custom_field_values = { optional_field.key => 'option1' }
             expect(idea.valid?(validation_context)).to be false
+            expect(idea.errors.details.to_h).to match(
+              custom_field_values: [{
+                error: start_with("The property '#/' did not contain a required property of '#{required_field.key}' in schema"),
+                value: { optional_field.key => 'option1' } # No value present for required_field.key, because it was not given.
+              }]
+            )
           end
 
           it 'cannot persist an idea with non-existing field options' do
-            idea.custom_field_values = { required_field.key => 15, optional_field.key => 'non-existing-option' }
+            non_existing_option = 'non-existing-option'
+            idea.custom_field_values = { required_field.key => 15, optional_field.key => non_existing_option }
             expect(idea.valid?(validation_context)).to be false
+            expect(idea.errors.details.to_h).to match(
+              custom_field_values: [{
+                error: start_with("The property '#/#{optional_field.key}' value \"#{non_existing_option}\" did not match one of the following values: option1, option2 in schema"),
+                value: { required_field.key => 15, optional_field.key => non_existing_option }
+              }]
+            )
           end
 
           it 'cannot persist an idea with disabled field values' do
-            idea.custom_field_values = { required_field.key => 15, disabled_field.key => 'my value' }
+            value_for_disabled_field = 'my value'
+            idea.custom_field_values = { required_field.key => 15, disabled_field.key => value_for_disabled_field }
             expect(idea.valid?(validation_context)).to be false
+            expect(idea.errors.details.to_h).to match(
+              custom_field_values: [{
+                error: start_with("The property '#/' contains additional properties [\"#{disabled_field.key}\"] outside of the schema when none are allowed in schema"),
+                value: { required_field.key => 15, disabled_field.key => value_for_disabled_field }
+              }]
+            )
           end
         end
       end
@@ -176,19 +231,26 @@ RSpec.describe Idea, type: :model do
         idea.update!(custom_field_values: { required_field.key => 7 })
         optional_field.update! required: true
         idea.reload
-        expect(idea.update(author: create(:user))).to be true
+        idea.author = create(:user)
+        expect(idea.save).to be true
         # Make a valid change to the field values to trigger the custom field values validation,
         # because the validation is only performed if `custom_field_values` changes.
-        idea.custom_field_values['optional_field.key'] = 'option1'
-        expect(idea.valid?).to be false
+        idea.custom_field_values[optional_field.key] = 'option1'
+        expect(idea.valid?).to be true
       end
 
       it 'cannot persist other attributes of an idea with unchanged invalid custom field values when publishing' do
         idea.update!(custom_field_values: { required_field.key => 7 })
         optional_field.update! required: true
-        idea.title_multiloc = { 'en' => 'Updated idea title' }
         idea.reload
+        idea.title_multiloc = { 'en' => 'Updated idea title' }
         expect(idea.save(context: :publication)).to be false
+        expect(idea.errors.details.to_h).to match(
+          custom_field_values: [{
+            error: start_with("The property '#/' did not contain a required property of '#{optional_field.key}' in schema"),
+            value: { required_field.key => 7 } # No value present for optional_field.key, because it was not given.
+          }]
+        )
       end
 
       it 'can persist an idea without disabled required field values' do
