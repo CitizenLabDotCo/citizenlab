@@ -288,6 +288,7 @@ const IdeasWithoutFiltersSidebar = ({
               <StyledSearchInput
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
+                numberOfSearchResults={list.length}
               />
             )}
           </LeftFilterArea>

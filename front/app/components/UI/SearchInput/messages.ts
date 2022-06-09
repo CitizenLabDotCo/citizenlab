@@ -29,4 +29,9 @@ export default defineMessages({
     id: 'app.containers.SearchInput.searchLabel',
     defaultMessage: 'Search',
   },
+  a11y_searchResultsHaveChanged: {
+    // Keeping this id so we don't have to redo translations
+    id: 'app.containers.SearchInput.a11y_searchResultsHaveChanged',
+    defaultMessage: 'New search results have loaded.',
+  },
 });
