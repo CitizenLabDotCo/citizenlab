@@ -15,4 +15,14 @@ namespace :fix_existing_tenants do
       end
     end
   end
+
+  desc 'Remove non-customizable idea form fields'
+  task remove_non_customizable_custom_idea_fields: [:environment] do
+    Tenant.all.each do |tenant|
+      puts "Processing tenant #{tenant.host}..."
+      Apartment::Tenant.switch(tenant.schema_name) do
+        CustomField.where(code: %w[location_point_geojson author_id budget]).each(&:destroy!)
+      end
+    end
+  end
 end
