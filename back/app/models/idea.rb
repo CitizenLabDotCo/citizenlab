@@ -181,7 +181,7 @@ class Idea < ApplicationRecord
   def idea_fields_schema
     return {} unless project.custom_form # The empty object schema accepts anything
 
-    extra_fields = IdeaCustomFieldsService.new.extra_visible_fields(project.custom_form)
+    extra_fields = IdeaCustomFieldsService.new(project.custom_form).extra_visible_fields
     CustomFieldService.new.fields_to_json_schema extra_fields
   end
 end

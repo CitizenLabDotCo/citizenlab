@@ -8,7 +8,7 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new.all_fields @custom_form
+      fields = IdeaCustomFieldsService.new(@custom_form).all_fields
       fields = fields.sort_by(&:ordering)
       render json: ::WebApi::V1::CustomFieldSerializer.new(fields, params: fastjson_params).serialized_json
     end
@@ -22,7 +22,7 @@ module IdeaCustomFields
     # default fields.
     def update
       update_field do |custom_form|
-        IdeaCustomFieldsService.new.find_field_by_id(custom_form, params[:id])
+        IdeaCustomFieldsService.new(custom_form).find_field_by_id(params[:id])
       end
     end
 
@@ -30,7 +30,7 @@ module IdeaCustomFields
     # `update` should be used for extra fields.
     def upsert_by_code
       update_field do |custom_form|
-        IdeaCustomFieldsService.new.find_or_build_field(custom_form, params[:code])
+        IdeaCustomFieldsService.new(custom_form).find_or_build_field(params[:code])
       end
     end
 

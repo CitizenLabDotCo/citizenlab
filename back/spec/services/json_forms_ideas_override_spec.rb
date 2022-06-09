@@ -8,7 +8,7 @@ describe 'JsonFormsService ideas overrides' do
   let(:locale) { 'en' }
   let(:project) { create(:project) }
   let(:custom_form) { create(:custom_form, project: project) }
-  let(:fields) { IdeaCustomFieldsService.new.visible_fields(custom_form) }
+  let(:fields) { IdeaCustomFieldsService.new(custom_form).visible_fields }
   let(:user) { create(:user) }
 
   describe '#custom_form_to_json_schema' do
@@ -230,15 +230,15 @@ describe 'JsonFormsService ideas overrides' do
   describe 'budget field' do
     before { SettingsService.new.activate_feature! 'participatory_budgeting' }
 
-    let(:continuous_pb_project_fields) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:continuous_budgeting_project))) }
+    let(:continuous_pb_project_fields) { IdeaCustomFieldsService.new(create(:custom_form, project: create(:continuous_budgeting_project))).all_fields }
     let(:timeline_pb_project_fields) do
       project_with_phases = create(:project_with_phases)
       project_with_phases.phases[0].update(participation_method: 'budgeting')
-      IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_phases))
+      IdeaCustomFieldsService.new(create(:custom_form, project: project_with_phases)).all_fields
     end
     let(:timeline_ideas_project_fields) do
       project_with_phases = create(:project_with_phases)
-      IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_phases))
+      IdeaCustomFieldsService.new(create(:custom_form, project: project_with_phases)).all_fields
     end
 
     it 'is not included for normal users' do
@@ -304,11 +304,11 @@ describe 'JsonFormsService ideas overrides' do
   end
 
   describe 'fields_to_ui_schema' do
-    let(:continuous) { IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: create(:continuous_project, input_term: 'option'))) }
+    let(:continuous) { IdeaCustomFieldsService.new(create(:custom_form, project: create(:continuous_project, input_term: 'option'))).all_fields }
     let(:timeline) do
       project_with_current_phase = create(:project_with_current_phase)
       TimelineService.new.current_phase(project_with_current_phase).update(input_term: 'option')
-      IdeaCustomFieldsService.new.all_fields(create(:custom_form, project: project_with_current_phase))
+      IdeaCustomFieldsService.new(create(:custom_form, project: project_with_current_phase)).all_fields
     end
 
     it 'uses the right input_term in a continuous project' do
