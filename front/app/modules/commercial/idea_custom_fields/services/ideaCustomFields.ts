@@ -75,3 +75,8 @@ export async function updateIdeaCustomField(
     updateObject
   );
 }
+
+export async function refetchCustomFields(projectId) {
+  const apiEndpoint = `${API_PATH}/admin/projects/${projectId}/custom_fields`
+  streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+}
