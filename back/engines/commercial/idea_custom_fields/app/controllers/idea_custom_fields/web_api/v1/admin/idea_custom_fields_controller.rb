@@ -8,7 +8,7 @@ module IdeaCustomFields
 
     def index
       authorize CustomField.new(resource: @custom_form), :index?, policy_class: IdeaCustomFieldPolicy
-      fields = IdeaCustomFieldsService.new.configurable_fields @custom_form
+      fields = IdeaCustomFieldsService.new.all_fields @custom_form
       fields = fields.sort_by(&:ordering)
       render json: ::WebApi::V1::CustomFieldSerializer.new(fields, params: fastjson_params).serialized_json
     end

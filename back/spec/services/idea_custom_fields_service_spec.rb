@@ -17,8 +17,6 @@ describe IdeaCustomFieldsService do
       expect(output.map(&:code)).to eq %w[
         title_multiloc
         body_multiloc
-        author_id
-        budget
         proposed_budget
         topic_ids
         location_description

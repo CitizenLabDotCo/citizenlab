@@ -68,8 +68,6 @@ describe IdeaCustomFieldsService do
         'idea_images_attributes',
         'idea_files_attributes',
         'topic_ids',
-        'author_id',
-        'budget',
         nil,
         nil
       ]
@@ -88,39 +86,11 @@ describe IdeaCustomFieldsService do
       expect(output.map(&:code)).to eq %w[
         title_multiloc
         body_multiloc
-        author_id
-        budget
         proposed_budget
         topic_ids
         location_description
         idea_images_attributes
         idea_files_attributes
-      ]
-    end
-  end
-
-  describe 'configurable_fields' do
-    it 'includes all fields' do
-      custom_form = create :custom_form
-      title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
-      extra_field = create :custom_field, resource: custom_form, code: nil
-      topic_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, code: 'topic_ids'
-      disabled_field = create :custom_field, :for_custom_form, resource: custom_form, enabled: false, required: true
-      output = service.configurable_fields custom_form
-      expect(output).to include title_field
-      expect(output).to include extra_field
-      expect(output).to include disabled_field
-      expect(output).to include topic_field
-      expect(output.map(&:code)).to match_array [
-        'title_multiloc',
-        'body_multiloc',
-        'location_description',
-        'idea_images_attributes',
-        'idea_files_attributes',
-        'proposed_budget',
-        'topic_ids',
-        nil,
-        nil
       ]
     end
   end
@@ -159,8 +129,6 @@ describe IdeaCustomFieldsService do
         'location_description',
         'idea_images_attributes',
         'idea_files_attributes',
-        'author_id',
-        'budget',
         nil
       ]
     end
@@ -181,8 +149,6 @@ describe IdeaCustomFieldsService do
       expect(output.map(&:code)).to match_array [
         'title_multiloc',
         'body_multiloc',
-        'author_id',
-        'budget',
         'location_description',
         'idea_images_attributes',
         'idea_files_attributes',

@@ -5,12 +5,6 @@ class IdeaCustomFieldsService
     default_fields(custom_form)
   end
 
-  def configurable_fields(custom_form)
-    all_fields(custom_form).select do |field|
-      %w[author_id budget].exclude? field.code
-    end
-  end
-
   def reportable_fields(custom_form)
     all_fields(custom_form).select(&:enabled?).reject(&:built_in?)
   end
@@ -65,7 +59,7 @@ class IdeaCustomFieldsService
         end,
         required: true,
         enabled: true,
-        ordering: 1
+        ordering: 0
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -87,51 +81,7 @@ class IdeaCustomFieldsService
         end,
         required: true,
         enabled: true,
-        ordering: 2
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'author_id',
-        code: 'author_id',
-        input_type: 'text',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.author_id.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.author_id.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 3
-      ),
-      CustomField.new(
-        id: SecureRandom.uuid,
-        resource: custom_form,
-        key: 'budget',
-        code: 'budget',
-        input_type: 'number',
-        title_multiloc: ml_s.i18n_to_multiloc(
-          'custom_fields.ideas.budget.title',
-          locales: CL2_SUPPORTED_LOCALES
-        ),
-        description_multiloc: begin
-          ml_s.i18n_to_multiloc(
-            'custom_fields.ideas.budget.description',
-            locales: CL2_SUPPORTED_LOCALES
-          )
-        rescue StandardError
-          {}
-        end,
-        required: false,
-        enabled: true,
-        ordering: 4
+        ordering: 1
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -153,7 +103,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: false,
-        ordering: 5
+        ordering: 2
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -175,7 +125,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: true,
-        ordering: 6
+        ordering: 3
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -197,7 +147,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: true,
-        ordering: 7
+        ordering: 4
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -219,7 +169,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: true,
-        ordering: 8
+        ordering: 5
       ),
       CustomField.new(
         id: SecureRandom.uuid,
@@ -241,7 +191,7 @@ class IdeaCustomFieldsService
         end,
         required: false,
         enabled: true,
-        ordering: 9
+        ordering: 6
       )
     ]
   end
