@@ -67,7 +67,12 @@ const ContentBuilderToolbox = ({
                 is={TwoColumn}
                 columnLayout="1-1"
                 id="twoColumn"
-              />
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
@@ -82,7 +87,12 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element canvas is={ThreeColumn} id="threeColumn" />
+              <Element canvas is={ThreeColumn} id="threeColumn" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
@@ -158,7 +168,12 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element is={AboutBox} id="AboutBox" projectId={projectId} />
+              <Element is={AboutBox} id="AboutBox" projectId={projectId} />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
