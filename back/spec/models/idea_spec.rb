@@ -90,14 +90,21 @@ RSpec.describe Idea, type: :model do
         end
 
         it 'cannot persist an idea with a non-existing field' do
-          idea.custom_field_values = { required_field.key => 15, 'nonexisting_field' => 22 }
+          non_existing_key = 'nonexisting_field'
+          idea.custom_field_values = { required_field.key => 15, non_existing_key => 22 }
           expect(idea.valid?(:publication)).to be false
+          error = idea.errors.details[:custom_field_values].first
+          expect(error[:error]).to start_with("The property '#/' contains additional properties [\"#{non_existing_key}\"] outside of the schema when none are allowed in schema")
+          expect(error[:value]).to eq({ required_field.key => 15, non_existing_key => 22 })
         end
 
         it 'cannot persist an idea with an invalid field value' do
-          long_title = 'My long idea title. ' * 100
-          idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
+          idea.proposed_budget = -1
+          idea.custom_field_values = { required_field.key => 80 }
           expect(idea.valid?(:publication)).to be false
+          expect(idea.errors.details).to eq({
+            proposed_budget: [{ error: :greater_than_or_equal_to, value: -1, count: 0 }]
+          })
         end
 
         it 'cannot persist an idea without required field values' do
