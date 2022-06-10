@@ -37,7 +37,6 @@ export interface IUsersByDomicile {
   };
 }
 
-// Ignoring this one for this iteration
 export interface IUsersByBirthyear {
   series: {
     users: {
