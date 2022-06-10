@@ -7,12 +7,14 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 
+/** @deprecated Use `React Router hooks` instead */
 export interface WithRouterProps {
   location: ReturnType<typeof useLocation> & { query: Record<string, any> };
   params: Record<string, string>;
   navigate: ReturnType<typeof useNavigate>;
 }
 
+/** @deprecated Use `React Router hooks` instead */
 export const withRouter = <T extends WithRouterProps = WithRouterProps>(
   Component: React.ComponentType<T>
 ) => {
