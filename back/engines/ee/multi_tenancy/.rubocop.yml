@@ -92,3 +92,7 @@ Metrics/MethodLength:
 Lint/Void:
   Exclude:
     - 'config/initializers/sentry.rb'
+
+Naming/FileName:
+  Exclude:
+    - 'db/seeds/citizenlab-ee.rb'

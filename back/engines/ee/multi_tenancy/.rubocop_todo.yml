@@ -74,14 +74,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 28
 
-# Offense count: 1
-# Configuration parameters: ExpectMatchingDefinition, CheckDefinitionPathHierarchy, CheckDefinitionPathHierarchyRoots, Regex, IgnoreExecutableScripts, AllowedAcronyms.
-# CheckDefinitionPathHierarchyRoots: lib, spec, test, src
-# AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
-Naming/FileName:
-  Exclude:
-    - 'db/seeds/citizenlab-ee.rb'
-
 # Offense count: 3
 # Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
 # AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
