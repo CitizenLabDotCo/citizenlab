@@ -24,11 +24,6 @@ Lint/HashCompareByIdentity:
   Exclude:
     - 'app/services/multi_tenancy/tenant_template_service.rb'
 
-# Offense count: 1
-Lint/RequireParentheses:
-  Exclude:
-    - 'lib/tasks/core/migrate_nav_bar_items.rake'
-
 # Offense count: 6
 Lint/RescueException:
   Exclude:

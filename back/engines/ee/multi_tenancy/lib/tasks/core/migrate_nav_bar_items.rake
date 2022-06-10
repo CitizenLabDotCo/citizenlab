@@ -32,7 +32,7 @@ namespace :migrate_nav_bar_items do
             puts "Failed to add nav bar item #{item.code}" unless item.save
           end
           [%w[proposals initiatives], %w[all_input ideas_overview], %w[events events_page]].each do |code, feature_name|
-            unless config.feature_activated? feature_name && !NavBarItem.find_by(code: code)&.destroy && NavBarItem.find_by(code: code)
+            unless config.feature_activated?(feature_name) && !NavBarItem.find_by(code: code)&.destroy && NavBarItem.find_by(code: code)
               puts "Failed to remove nav bar item #{code}"
             end
           end
