@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-# @deprecated Use {HeaderBgUploader} instead.
-class AppHeaderBgUploader < BaseImageUploader
+# Uploads a header background image in large, medium, small sizes and stores them in a directory based on the
+# AppConfiguration id and model id.
+class HeaderBgUploader < BaseImageUploader
   def store_dir
-    'uploads/header-background'
+    File.join('uploads', AppConfiguration.instance.id, 'header-background', model.id)
   end
 
   version :large do
@@ -18,5 +19,3 @@ class AppHeaderBgUploader < BaseImageUploader
     process safe_resize_to_fill_for_gif: [520, 250]
   end
 end
-
-AppHeaderBgUploader.prepend_if_ee('MultiTenancy::Patches::AppHeaderBgUploader')
