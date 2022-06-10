@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+
 ## 2022-06-08_2
 
 ### Fixed
