@@ -939,7 +939,7 @@ if Apartment::Tenant.current == 'localhost'
 
       if project
         custom_form = project.custom_form || CustomForm.create!(project: project)
-        built_in_custom_field = IdeaCustomFieldsService.new.find_or_build_field(custom_form, ['title_multiloc','body_multiloc','location_description'].shuffle.first)
+        built_in_custom_field = IdeaCustomFieldsService.new(custom_form).find_or_build_field ['title_multiloc','body_multiloc','location_description'].shuffle.first
         built_in_custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
         built_in_custom_field.save!
         if rand(3) == 0
