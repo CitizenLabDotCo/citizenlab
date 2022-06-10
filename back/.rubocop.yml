@@ -104,19 +104,7 @@ RSpec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
 
-Gemspec/RequireMFA:
-# Discussion needed
-  Enabled: false
-
-Style/FetchEnvVar:
-# Discussion needed
-  Enabled: false
-
 Style/IfUnlessModifier:
-  Enabled: false
-
-Rails/I18nLocaleTexts:
-# Discussion needed
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
