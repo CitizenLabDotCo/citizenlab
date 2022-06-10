@@ -42,9 +42,9 @@ namespace :fix_existing_tenants do
         puts "#{tenant.name} --- tenant locales changed to #{tenant.settings['core']['locales']}"
 
         # *** Update all multiloc fields
+        classes = ['PgSearch::Document', 'Apartment::Adapters::AbstractAdapter::SeparateDbConnectionHandler']
         ApplicationRecord.descendants.each do |klass|
-          next if ['PgSearch::Document',
-            'Apartment::Adapters::AbstractAdapter::SeparateDbConnectionHandler'].include? klass.name
+          next if classes.include? klass.name
 
           klass.column_names.grep(/.*_multiloc$/).each do |multiloc_column|
             klass.all.each do |instance|

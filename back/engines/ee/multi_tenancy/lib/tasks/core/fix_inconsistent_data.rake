@@ -135,10 +135,11 @@ namespace :inconsistent_data do
 
   task fix_users_with_deleted_domicile: :environment do
     service = UserCustomFieldService.new
+    outside = ['outside']
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        deleted_area_ids = User.all.map(&:domicile).compact.uniq - (['outside'] + Area.ids)
+        deleted_area_ids = User.all.map(&:domicile).compact.uniq - (outside + Area.ids)
         deleted_area_ids.each do |area_id|
           service.delete_custom_field_option_values area_id,
             CustomField.with_resource_type('User').find_by(key: 'domicile')

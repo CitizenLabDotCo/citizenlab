@@ -74,16 +74,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 28
 
-# Offense count: 8
-# Configuration parameters: MinSize.
-Performance/CollectionLiteralInLoop:
-  Exclude:
-    - 'lib/tasks/core/complex_migrations.rake'
-    - 'lib/tasks/core/fix_inconsistent_data.rake'
-    - 'lib/tasks/core/migrate_nav_bar_items.rake'
-    - 'lib/tasks/core/remap_locales.rake'
-    - 'lib/tasks/core/remap_participation_smart_group_rule_predicates.rake'
-
 # Offense count: 1
 Performance/MethodObjectAsBlock:
   Exclude:

@@ -9,11 +9,16 @@ namespace :migrate_nav_bar_items do
     5. Delete migrated tenant settings through separate release."
 
   task :set_page_codes, [] => [:environment] do
+    codes_and_slugs = [
+      %w[about information],
+      %w[privacy-policy privacy-policy],
+      %w[terms-and-conditions terms-and-conditions],
+      %w[faq faq], %w[proposals initiatives]
+    ]
     Tenant.all.each do |tenant|
       puts tenant.host
       Apartment::Tenant.switch(tenant.schema_name) do
-        [%w[about information], %w[privacy-policy privacy-policy], %w[terms-and-conditions terms-and-conditions],
-          %w[faq faq], %w[proposals initiatives]].each do |code, slug|
+        codes_and_slugs.each do |code, slug|
           unless StaticPage.find_by(slug: slug)&.update_column(:code, code)
             puts "Failed to set code #{code} for page #{slug}"
           end
@@ -23,6 +28,8 @@ namespace :migrate_nav_bar_items do
   end
 
   task :add_default_items, [] => [:environment] do
+    codes_and_feature_names = [%w[proposals initiatives], %w[all_input ideas_overview], %w[events events_page]]
+    codes_and_slugs = [%w[about information], %w[faq faq]]
     Tenant.all.each do |tenant|
       puts tenant.host
       Apartment::Tenant.switch(tenant.schema_name) do
@@ -31,12 +38,12 @@ namespace :migrate_nav_bar_items do
           NavBarItemService.new.default_items.each do |item|
             puts "Failed to add nav bar item #{item.code}" unless item.save
           end
-          [%w[proposals initiatives], %w[all_input ideas_overview], %w[events events_page]].each do |code, feature_name|
+          codes_and_feature_names.each do |code, feature_name|
             unless config.feature_activated?(feature_name) && !NavBarItem.find_by(code: code)&.destroy && NavBarItem.find_by(code: code)
               puts "Failed to remove nav bar item #{code}"
             end
           end
-          [%w[about information], %w[faq faq]].each do |code, slug|
+          codes_and_slugs.each do |code, slug|
             next unless (page = StaticPage.find_by slug: slug)
 
             item = NavBarItem.new code: 'custom', static_page: page

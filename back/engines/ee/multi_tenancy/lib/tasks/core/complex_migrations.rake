@@ -26,9 +26,9 @@ namespace :complex_migrations do
     puts 'Processing topic mapping'
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     is_mapping = {}
+    conditions = ['is', 'synonym of']
     data.each do |d|
-      next unless d['tenant_id'].present? && d['id'].present? && ['is',
-        'synonym of'].include?(d['Link_to']) && d['Current_topic'].present?
+      next unless d['tenant_id'].present? && d['id'].present? && conditions.include?(d['Link_to']) && d['Current_topic'].present?
 
       is_mapping[d['tenant_id']] ||= {}
       code = topic_code_mapping[d['Current_topic']]
@@ -84,8 +84,9 @@ namespace :complex_migrations do
         end
 
         # Add new topics
+        codes = %w[safety services other]
         base_topics.select do |tp|
-          %w[safety services other].include?(tp['code']) && Topic.find_by(code: tp['code']).blank?
+          codes.include?(tp['code']) && Topic.find_by(code: tp['code']).blank?
         end.sort_by do |tp|
           tp['ordering']
         end.each do |tp|

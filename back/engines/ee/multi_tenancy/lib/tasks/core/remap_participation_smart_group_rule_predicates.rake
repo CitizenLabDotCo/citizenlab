@@ -9,9 +9,9 @@ namespace :cl2back do
         updated_groups = 0
         Group.where(membership_type: 'rules').each do |g|
           has_changed = false
+          types = %w[participated_in_idea_status participated_in_project participated_in_topic]
           new_rules = g.rules.each do |rule|
-            next unless %w[participated_in_idea_status participated_in_project
-              participated_in_topic].include? rule['ruleType']
+            next unless types.include? rule['ruleType']
 
             if rule['predicate'] == 'is'
               rule['predicate'] = 'in'
