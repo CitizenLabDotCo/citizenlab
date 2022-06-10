@@ -17,7 +17,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
           message: 'menu',
           featureNames: ['customizable_navbar'],
         },
-        insertAfterName: 'projects',
+        insertBeforeName: 'settings',
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

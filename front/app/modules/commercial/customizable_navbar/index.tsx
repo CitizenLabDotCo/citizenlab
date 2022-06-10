@@ -20,9 +20,9 @@ const EditNavbarItemComponent = React.lazy(
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.settings': [
+    admin: [
       {
-        path: 'navigation',
+        path: 'pages-menu',
         element: <CustomNavbarContainer />,
         children: [
           {
