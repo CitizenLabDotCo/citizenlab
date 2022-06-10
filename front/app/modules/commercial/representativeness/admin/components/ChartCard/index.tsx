@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
@@ -43,12 +43,16 @@ const ChartCard = ({
   const { referenceData, includedUserPercentage, referenceDataUploaded } =
     useReferenceData(customField, projectFilter);
 
-  const hideTicks = isNilOrError(referenceData)
-    ? undefined
-    : referenceData.length > 12;
-
   const currentChartRef = useRef<SVGElement>();
-  const [viewState, setViewState] = useState<ViewState | undefined>('chart');
+  const [viewState, setViewState] = useState<ViewState>('chart');
+  const [hideTicks, setHideTicks] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isNilOrError(referenceData) && referenceData.length > 12) {
+      setViewState('table');
+      setHideTicks(true);
+    }
+  }, [referenceData]);
 
   const localize = useLocalize();
 
@@ -64,9 +68,7 @@ const ChartCard = ({
   if (
     isNilOrError(referenceData) ||
     isNilOrError(includedUserPercentage) ||
-    referenceDataUploaded === undefined ||
-    hideTicks === undefined ||
-    viewState === undefined
+    referenceDataUploaded === undefined
   ) {
     return null;
   }

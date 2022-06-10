@@ -139,7 +139,7 @@ const toReferenceData = (
     (acc, v) => v + acc,
     0
   );
-  let data = Object.keys(users)
+  const data = Object.keys(users)
     .filter((opt) => opt !== '_blank')
     .map((opt) => ({
       title_multiloc: options[opt].title_multiloc,
