@@ -119,7 +119,7 @@ type Props = {
   navItem: NavItem;
 };
 
-export default ({ navItem }: Props) => {
+const MenuItem = ({ navItem }: Props) => {
   return useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
@@ -138,3 +138,5 @@ export default ({ navItem }: Props) => {
     </HasPermission>
   ) : null;
 };
+
+export default MenuItem;

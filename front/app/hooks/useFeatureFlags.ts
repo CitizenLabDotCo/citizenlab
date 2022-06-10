@@ -14,7 +14,7 @@ type Parameters = {
 // copied and modified from front/app/hooks/useFeatureFlag.ts
 export default function useFeatureFlags({
   names,
-  onlyCheckAllowed,
+  onlyCheckAllowed = false,
   onlyOneFeatureFlagRequired = true,
 }: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
