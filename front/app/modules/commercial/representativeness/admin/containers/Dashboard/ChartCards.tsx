@@ -18,7 +18,7 @@ interface Props {
 }
 
 const isSupported = ({ attributes }: IUserCustomFieldData) =>
-  attributes.input_type === 'select';
+  attributes.code !== 'domicile';
 
 const ChartCards = ({ projectFilter }: Props) => {
   const customFields = useUserCustomFields({ inputTypes: ['select'] });
