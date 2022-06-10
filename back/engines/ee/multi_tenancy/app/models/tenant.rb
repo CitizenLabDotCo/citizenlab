@@ -143,14 +143,14 @@ class Tenant < ApplicationRecord
     configuration.cleanup_settings
   end
 
-  def feature_activated?(f)
+  def feature_activated?(feature)
     ActiveSupport::Deprecation.warn('Tenant#feature_activated is deprecated. Use AppConfiguration#feature_activated? instead.')
-    configuration.feature_activated?(f)
+    configuration.feature_activated?(feature)
   end
 
-  def has_feature?(f)
+  def has_feature?(feature)
     ActiveSupport::Deprecation.warn('Tenant#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
-    configuration.feature_activated?(f)
+    configuration.feature_activated?(feature)
   end
 
   def closest_locale_to(locale)

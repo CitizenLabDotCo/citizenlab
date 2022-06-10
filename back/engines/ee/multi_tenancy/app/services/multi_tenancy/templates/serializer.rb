@@ -364,23 +364,23 @@ module MultiTenancy
         end
       end
 
-      def yml_participation_context(pc)
+      def yml_participation_context(context)
         yml_pc = {
-          'presentation_mode' => pc.presentation_mode,
-          'participation_method' => pc.participation_method,
-          'posting_enabled' => pc.posting_enabled,
-          'commenting_enabled' => pc.commenting_enabled,
-          'voting_enabled' => pc.voting_enabled,
-          'upvoting_method' => pc.upvoting_method,
-          'upvoting_limited_max' => pc.upvoting_limited_max,
-          'downvoting_enabled' => pc.downvoting_enabled,
-          'downvoting_method' => pc.downvoting_method,
-          'downvoting_limited_max' => pc.downvoting_limited_max,
-          'max_budget' => pc.max_budget
+          'presentation_mode' => context.presentation_mode,
+          'participation_method' => context.participation_method,
+          'posting_enabled' => context.posting_enabled,
+          'commenting_enabled' => context.commenting_enabled,
+          'voting_enabled' => context.voting_enabled,
+          'upvoting_method' => context.upvoting_method,
+          'upvoting_limited_max' => context.upvoting_limited_max,
+          'downvoting_enabled' => context.downvoting_enabled,
+          'downvoting_method' => context.downvoting_method,
+          'downvoting_limited_max' => context.downvoting_limited_max,
+          'max_budget' => context.max_budget
         }
         if yml_pc['participation_method'] == 'survey'
-          yml_pc['survey_embed_url'] = pc.survey_embed_url
-          yml_pc['survey_service'] = pc.survey_service
+          yml_pc['survey_embed_url'] = context.survey_embed_url
+          yml_pc['survey_service'] = context.survey_service
         end
         yml_pc
       end

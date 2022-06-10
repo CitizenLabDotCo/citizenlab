@@ -74,14 +74,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 28
 
-# Offense count: 3
-# Configuration parameters: MinNameLength, AllowNamesEndingInNumbers, AllowedNames, ForbiddenNames.
-# AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
-Naming/MethodParameterName:
-  Exclude:
-    - 'app/models/tenant.rb'
-    - 'app/services/multi_tenancy/templates/serializer.rb'
-
 # Offense count: 1
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.
 # NamePrefix: is_, has_, have_
