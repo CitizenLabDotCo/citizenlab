@@ -126,21 +126,6 @@ RSpec/BeforeAfterAll:
 RSpec/ContextWording:
   Enabled: false
 
-# Offense count: 10
-# Configuration parameters: IgnoredMetadata.
-RSpec/DescribeClass:
-  Exclude:
-    - 'engines/commercial/admin_api/spec/graphql/folders_spec.rb'
-    - 'engines/commercial/admin_api/spec/graphql/ideas_spec.rb'
-    - 'engines/commercial/admin_api/spec/graphql/initiatives_spec.rb'
-    - 'engines/commercial/admin_api/spec/graphql/pages_spec.rb'
-    - 'engines/commercial/admin_api/spec/graphql/projects_spec.rb'
-    - 'engines/commercial/admin_api/spec/graphql/users_spec.rb'
-    - 'engines/free/email_campaigns/spec/tasks/email_campaigns_task_spec.rb'
-    - 'spec/db/seedfile_spec.rb'
-    - 'spec/services/json_forms_ideas_override_spec.rb'
-    - 'spec/services/json_forms_user_override_spec.rb'
-
 # Offense count: 576
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
