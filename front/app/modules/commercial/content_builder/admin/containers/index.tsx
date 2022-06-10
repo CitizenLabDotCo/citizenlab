@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { withRouter } from 'utils/cl-router/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';
@@ -35,7 +35,7 @@ const StyledRightColumn = styled(RightColumn)`
   padding-bottom: 100px;
 `;
 
-const ContentBuilderPage = ({ params: { projectId } }) => {
+const ContentBuilderPage = ({ params: { projectId } }: WithRouterProps) => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
