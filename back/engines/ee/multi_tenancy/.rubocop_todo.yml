@@ -33,12 +33,6 @@ Lint/RescueException:
     - 'lib/tasks/core/fix_html_multiloc.rake'
 
 # Offense count: 1
-# Configuration parameters: AllowKeywordBlockArguments.
-Lint/UnderscorePrefixedVariableName:
-  Exclude:
-    - 'spec/services/track_intercom_service_spec.rb'
-
-# Offense count: 1
 # Configuration parameters: Methods.
 Lint/UnexpectedBlockArity:
   Exclude:

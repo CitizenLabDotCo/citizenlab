@@ -25,10 +25,10 @@ describe TrackIntercomService do
       zero_contacts = OpenStruct.new(count: 0)
       expect(contacts_api).to receive(:search).and_return(zero_contacts)
 
-      _contact = double.as_null_object
+      contact = double.as_null_object
       expect(contacts_api).to receive(:create) do |payload|
         expect(payload[:custom_attributes]).to include(expected_tenant_props)
-      end.and_return(_contact)
+      end.and_return(contact)
 
       service.identify_user(user)
     end
