@@ -88,3 +88,7 @@ Metrics/MethodLength:
   IgnoredMethods: ['included', 'prepended', 'extended']
   Exclude:
   - '**/db/migrate/**/*'
+
+Lint/Void:
+  Exclude:
+    - 'config/initializers/sentry.rb'

@@ -38,12 +38,6 @@ Lint/UnexpectedBlockArity:
   Exclude:
     - 'lib/tasks/core/template_phases.rake'
 
-# Offense count: 1
-# Configuration parameters: CheckForMethodsWithNoSideEffects.
-Lint/Void:
-  Exclude:
-    - 'config/initializers/sentry.rb'
-
 # Offense count: 30
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:
