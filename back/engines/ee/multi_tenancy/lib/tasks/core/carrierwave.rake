@@ -5,7 +5,7 @@ namespace :carrierwave do
   task :recreate_versions, %i[models attributes] => [:environment] do |_t, args|
     models = args[:models]&.split
     attributes = args[:attributes]&.split
-    MODELS = {
+    models = {
       IdeaImage => ['image'],
       User => ['avatar'],
       ProjectImage => ['image'],
@@ -16,7 +16,7 @@ namespace :carrierwave do
     each_tenant do |tenant|
       puts("Enqueueing #{tenant} RecreateVersionsJobs")
       Apartment::Tenant.switch(tenant) do
-        MODELS.each do |claz, attrs|
+        models.each do |claz, attrs|
           attrs = attrs.select { |attribute| attributes.include? attribute } if attributes
           next unless !models || models.include?(claz.name)
 

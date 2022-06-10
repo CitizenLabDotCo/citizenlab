@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :complex_migrations do
-  TOPIC_CODE_MAPPING = {
+  topic_code_mapping = {
     'Nature and animals' => 'nature',
     'Cleanliness and waste' => 'waste',
     'Sustainable development' => 'sustainability',
@@ -31,7 +31,7 @@ namespace :complex_migrations do
         'synonym of'].include?(d['Link_to']) && d['Current_topic'].present?
 
       is_mapping[d['tenant_id']] ||= {}
-      code = TOPIC_CODE_MAPPING[d['Current_topic']]
+      code = topic_code_mapping[d['Current_topic']]
       errors += ["No topic code found for #{d['Current_topic']} (tenant #{d['tenant_id']})"] unless code
       is_mapping[d['tenant_id']][d['id']] = code
     end
@@ -40,7 +40,7 @@ namespace :complex_migrations do
       next unless d['tenant_id'].present? && d['id'].present? && d['Link_to'] == 'subtopic of' && d['Merge'].present? && d['Current_topic'].present?
 
       sub_mapping[d['tenant_id']] ||= {}
-      code = TOPIC_CODE_MAPPING[d['Current_topic']]
+      code = topic_code_mapping[d['Current_topic']]
       errors += ["No topic code found for #{d['Current_topic']} (tenant #{d['tenant_id']})"] unless code
       sub_mapping[d['tenant_id']][d['id']] = { 'code' => code, 'merge' => (d['Merge'] == 'TRUE') }
     end

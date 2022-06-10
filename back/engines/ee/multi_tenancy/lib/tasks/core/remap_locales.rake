@@ -9,7 +9,7 @@ namespace :fix_existing_tenants do
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
-        DRY_RUN = !!args[:dry_run]
+        dry_run = !!args[:dry_run]
 
         tenant = Tenant.current
         loc_map = locales_map_for_tenant(generic_locale_mapping, tenant)
@@ -38,7 +38,7 @@ namespace :fix_existing_tenants do
             multiloc_transform(tenant.settings['core']['meta_description'], loc_map)
         end
 
-        tenant.save unless DRY_RUN
+        tenant.save unless dry_run
         puts "#{tenant.name} --- tenant locales changed to #{tenant.settings['core']['locales']}"
 
         # *** Update all multiloc fields
@@ -50,7 +50,7 @@ namespace :fix_existing_tenants do
             klass.all.each do |instance|
               original = instance.send(multiloc_column)
               transformed = multiloc_transform(original, loc_map)
-              instance.update_columns(multiloc_column => transformed) unless DRY_RUN
+              instance.update_columns(multiloc_column => transformed) unless dry_run
               puts "#{tenant.name} --- #{klass.name} #{instance.id} #{multiloc_column} converted to #{transformed.transform_values do |v|
                                                                                                         v&.truncate(7)
                                                                                                       end }"
@@ -62,7 +62,7 @@ namespace :fix_existing_tenants do
         User.all.each do |user|
           old_locale = user.locale
           new_locale = loc_map[user.locale]
-          user.update_columns(locale: loc_map[user.locale]) unless DRY_RUN
+          user.update_columns(locale: loc_map[user.locale]) unless dry_run
           puts "#{tenant.name} --- User #{user.id} locale changed from #{old_locale} to #{new_locale}"
         end
       end

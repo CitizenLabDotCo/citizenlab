@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :fix_existing_tenants do
-  TIMEZONE_MAPPING = {
+  timezone_mapping = {
     'Africa/Dakar' => 'UTC',
     'Africa/Johannesburg' => 'Cairo',
     'Africa/Kampala' => 'Nairobi',
@@ -40,7 +40,7 @@ namespace :fix_existing_tenants do
       tz = tenant.settings.dig('core', 'timezone')
       next if ActiveSupport::TimeZone.all.map(&:name).include?(tz)
 
-      new_tz = TIMEZONE_MAPPING[tz]
+      new_tz = timezone_mapping[tz]
       unless new_tz
         puts "No timezone mapping found for #{tz}!"
         new_tz = 'Brussels'
