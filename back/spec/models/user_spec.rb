@@ -390,7 +390,7 @@ RSpec.describe User, type: :model do
       expect(user.in_any_groups?(Group.none)).to be false
       expect(user.in_any_groups?(Group.where(id: group1))).to be true
       expect(user.in_any_groups?(Group.where(id: [group1, group2]))).to be true
-      expect(user.in_any_groups?(Group.where(id: group2))).to be_falsy
+      expect(user).not_to be_in_any_groups(Group.where(id: group2))
     end
   end
 

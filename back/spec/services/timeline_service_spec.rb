@@ -85,7 +85,7 @@ describe TimelineService do
     it 'returns falsy when the given idea is not in the active phase' do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [project.phases.find { |p| p != service.current_phase(project) }])
-      expect(service.is_in_active_phase?(idea)).to be_falsy
+      expect(service).not_to be_is_in_active_phase(idea)
     end
   end
 
