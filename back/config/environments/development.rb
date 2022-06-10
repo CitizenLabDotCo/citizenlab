@@ -84,11 +84,13 @@ Rails.application.configure do
   config.rails_semantic_logger.started    = true
   config.rails_semantic_logger.processing = true
   config.rails_semantic_logger.rendered   = true
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
   # No whitelist for host header
   config.hosts = nil
+
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
@@ -102,6 +104,7 @@ Rails.application.configure do
     # Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
     # Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
   end
+
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 end
