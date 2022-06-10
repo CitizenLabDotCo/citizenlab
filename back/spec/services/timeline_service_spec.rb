@@ -79,7 +79,7 @@ describe TimelineService do
     it 'returns truthy when the given idea is in the active phase' do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [service.current_phase(project)])
-      expect(service.is_in_active_phase?(idea)).to be_truthy
+      expect(service.is_in_active_phase?(idea)).to be true
     end
 
     it 'returns falsy when the given idea is not in the active phase' do

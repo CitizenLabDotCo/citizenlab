@@ -59,14 +59,14 @@ RSpec.describe User, type: :model do
       user2 = create(:user, email: 'jules@test.com')
       user3 = create(:user, email: 'jules@something.com')
 
-      expect(user1.in_any_groups?(Group.where(id: group1))).to be_truthy
-      expect(user1.in_any_groups?(Group.where(id: group2))).to be_truthy
-      expect(user1.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
-      expect(user1.in_any_groups?(Group.none)).to be_falsey
-      expect(user2.in_any_groups?(Group.where(id: [group1]))).to be_truthy
+      expect(user1.in_any_groups?(Group.where(id: group1))).to be true
+      expect(user1.in_any_groups?(Group.where(id: group2))).to be true
+      expect(user1.in_any_groups?(Group.where(id: [group1, group2]))).to be true
+      expect(user1.in_any_groups?(Group.none)).to be false
+      expect(user2.in_any_groups?(Group.where(id: [group1]))).to be true
       expect(user2.in_any_groups?(Group.where(id: [group2]))).to be_falsy
-      expect(user2.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
-      expect(user3.in_any_groups?(Group.where(id: [group1, group2]))).to be_falsey
+      expect(user2.in_any_groups?(Group.where(id: [group1, group2]))).to be true
+      expect(user3.in_any_groups?(Group.where(id: [group1, group2]))).to be false
     end
   end
 end
