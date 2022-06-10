@@ -17,8 +17,8 @@ namespace :setup_and_support do
       data.each_with_index do |d, i|
         idea = Idea.find d['ID']
         status = if d['New Status'].present?
-          IdeaStatus.all.find do |i|
-            i.title_multiloc[args[:locale]].downcase.strip == d['New Status'].downcase.strip
+          IdeaStatus.all.find do |some_idea|
+            some_idea.title_multiloc[args[:locale]].downcase.strip == d['New Status'].downcase.strip
           end
         end
         name = d['Feedback Author Name']

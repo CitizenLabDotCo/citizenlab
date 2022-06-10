@@ -32,15 +32,6 @@ Lint/RescueException:
     - 'lib/tasks/core/complex_migrations.rake'
     - 'lib/tasks/core/fix_html_multiloc.rake'
 
-# Offense count: 9
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'app/services/multi_tenancy/templates/serializer.rb'
-    - 'db/seeds/citizenlab-ee.rb'
-    - 'lib/tasks/core/fix_weak_passwords.rake'
-    - 'lib/tasks/core/setup_and_support.rake'
-    - 'lib/tasks/core/template_phases.rake'
-
 # Offense count: 1
 # Configuration parameters: AllowKeywordBlockArguments.
 Lint/UnderscorePrefixedVariableName:

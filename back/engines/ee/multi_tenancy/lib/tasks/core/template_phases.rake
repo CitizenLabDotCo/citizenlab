@@ -21,15 +21,15 @@ namespace :fix_templates do
       phases_by_project[phase_h['project_ref']] = (phases_by_project[phase_h['project_ref']] || []) + [phase_h]
     end
     # sort phases of each project by start time
-    phases_by_project.each do |key, phase_hs|
-      phases_by_project[key] = phase_hs.sort do |phase_h|
+    phases_by_project.each do |key, phases|
+      phases_by_project[key] = phases.sort do |phase_h|
         phase_h['start_at']
       end.reverse
     end
     # reset timestamps to ensure there is no more overlap
-    phases_by_project.each do |_key, phase_hs|
+    phases_by_project.each do |_key, phases|
       t = nil
-      phase_hs.each do |phase_h|
+      phases.each do |phase_h|
         t = (t && (t + 1.day)) || phase_h['start_at']
         phase_h['start_at'] = t
         t += rand(1..30).days

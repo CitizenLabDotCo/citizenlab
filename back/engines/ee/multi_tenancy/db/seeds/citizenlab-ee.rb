@@ -664,8 +664,8 @@ if Apartment::Tenant.current == 'localhost'
             end
             question
           end
-          User.order('RANDOM()').take(rand(1..5)).each do |user|
-            response = Polls::Response.create!(user: user, participation_context: phase)
+          User.order('RANDOM()').take(rand(1..5)).each do |some_user|
+            response = Polls::Response.create!(user: some_user, participation_context: phase)
             questions.each do |q|
               response.response_options.create!(option: rand_instance(q.options))
             end
@@ -690,9 +690,9 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       ([User.find_by(email: 'moderator@citizenlab.co')] + User.where.not(email: %w[admin@citizenlab.co
-        user@citizenlab.co]).shuffle.take(rand(5))).each do |moderator|
-        moderator.add_role 'project_moderator', project_id: project.id
-        moderator.save!
+        user@citizenlab.co]).shuffle.take(rand(5))).each do |some_moderator|
+        some_moderator.add_role 'project_moderator', project_id: project.id
+        some_moderator.save!
       end
 
       if rand(5) == 0
@@ -812,10 +812,10 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     Phase.where(participation_method: 'budgeting').each do |phase|
-      User.all.shuffle.take(rand(1..20)).each do |user|
+      User.all.shuffle.take(rand(1..20)).each do |some_user|
         chosen_ideas = phase.project.ideas.select(&:budget).shuffle.take(rand(10))
         Basket.create!({
-          user: user,
+          user: some_user,
           participation_context: phase,
           ideas: chosen_ideas
         })
@@ -995,8 +995,8 @@ if Apartment::Tenant.current == 'localhost'
 end
 
 unless Apartment::Tenant.current == 'public'
-  User.find_each do |user|
-    EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+  User.find_each do |some_user|
+    EmailCampaigns::UnsubscriptionToken.create!(user_id: some_user.id)
   end
   MultiTenancy::TenantService.new.finalize_creation Tenant.current
 end

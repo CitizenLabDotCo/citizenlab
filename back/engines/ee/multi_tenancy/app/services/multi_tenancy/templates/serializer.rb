@@ -630,13 +630,13 @@ module MultiTenancy
             'idea_status_ref' => lookup_ref(i.idea_status_id, :idea_status),
             'budget' => i.budget,
             'proposed_budget' => i.proposed_budget,
-            'text_images_attributes' => i.text_images.map do |i|
+            'text_images_attributes' => i.text_images.map do |idea|
               {
-                'imageable_field' => i.imageable_field,
-                'remote_image_url' => i.image_url,
-                'text_reference' => i.text_reference,
-                'created_at' => i.created_at.to_s,
-                'updated_at' => i.updated_at.to_s
+                'imageable_field' => idea.imageable_field,
+                'remote_image_url' => idea.image_url,
+                'text_reference' => idea.text_reference,
+                'created_at' => idea.created_at.to_s,
+                'updated_at' => idea.updated_at.to_s
               }
             end
           }

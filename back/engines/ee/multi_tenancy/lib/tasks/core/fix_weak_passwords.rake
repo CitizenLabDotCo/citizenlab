@@ -11,10 +11,10 @@ namespace :fix_existing_tenants do
         User.admin.select do |admin|
           admin.email.ends_with? '@citizenlab.co'
         end.each do |admin|
-          pwd = weak_passwords.find do |pwd|
+          password = weak_passwords.find do |pwd|
             admin.authenticate pwd
           end
-          next unless pwd
+          next unless password
 
           puts "Weak password found for #{admin.email}, updating..."
           admin.password = SecureRandom.urlsafe_base64 32
