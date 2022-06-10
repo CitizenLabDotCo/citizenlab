@@ -160,10 +160,6 @@ RSpec/DescribeClass:
     - 'spec/services/json_forms_ideas_override_spec.rb'
     - 'spec/services/json_forms_user_override_spec.rb'
 
-# Offense count: 361
-RSpec/EmptyExampleGroup:
-  Enabled: false
-
 # Offense count: 576
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:

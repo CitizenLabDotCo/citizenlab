@@ -116,6 +116,12 @@ RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
 
+RSpec/EmptyExampleGroup:
+  # `context` and `describe` are found as empty example groups when
+  # `example_request`, `post`, etc are used, so exclude acceptance tests.
+  Exclude:
+    - '**/spec/acceptance/**/*'
+
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
   IgnoredMethods: ['included', 'prepended', 'extended']
