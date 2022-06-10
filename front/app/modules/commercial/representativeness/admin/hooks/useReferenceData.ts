@@ -28,7 +28,8 @@ export interface RepresentativenessRow extends RepresentativenessRowBase {
   name: string;
 }
 
-export interface RepresentativenessRowPre extends RepresentativenessRowBase {
+export interface RepresentativenessRowMultiloc
+  extends RepresentativenessRowBase {
   title_multiloc: Multiloc;
 }
 
@@ -73,7 +74,7 @@ const getSubscription = (
 
 function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
   const [referenceData, setReferenceData] = useState<
-    RepresentativenessRowPre[] | NilOrError
+    RepresentativenessRowMultiloc[] | NilOrError
   >();
   const [includedUserPercentage, setIncludedUserPercentage] = useState<
     number | NilOrError
@@ -130,7 +131,7 @@ export default useReferenceData;
 
 const toReferenceData = (
   usersByField: TStreamResponse
-): RepresentativenessRowPre[] => {
+): RepresentativenessRowMultiloc[] => {
   const { users, expected_users } = usersByField.series;
   const options =
     'options' in usersByField ? usersByField.options : usersByField.areas;

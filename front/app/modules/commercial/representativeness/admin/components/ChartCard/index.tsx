@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import useLocalize from 'hooks/useLocalize';
 import useReferenceData, {
   RepresentativenessRow,
-  RepresentativenessRowPre,
+  RepresentativenessRowMultiloc,
 } from '../../hooks/useReferenceData';
 
 // components
@@ -95,7 +95,7 @@ const ChartCard = ({
   const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
   const data = referenceData.map(
-    (opt: RepresentativenessRowPre): RepresentativenessRow => {
+    (opt: RepresentativenessRowMultiloc): RepresentativenessRow => {
       const { title_multiloc, ..._opt } = opt;
       return { ..._opt, name: localize(title_multiloc) };
     }
