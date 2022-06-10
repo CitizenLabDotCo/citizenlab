@@ -63,7 +63,7 @@ namespace :fix_existing_tenants do
         imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
             attributes.each do |attribute|
-              multiloc = instance.send attribute
+              instance.send attribute
               begin
                 multiloc = TextImageService.new.swap_data_images instance, attribute
                 instance.send "#{attribute}=", multiloc
@@ -237,10 +237,10 @@ end
 
 def convert_html(html)
   doc = Nokogiri::HTML.fragment(html)
-  h2s = doc.css('h2').each do |node|
+  doc.css('h2').each do |node|
     node.name = 'h3'
   end
-  h1s = doc.css('h1').each do |node|
+  doc.css('h1').each do |node|
     node.name = 'h2'
   end
   doc.to_s

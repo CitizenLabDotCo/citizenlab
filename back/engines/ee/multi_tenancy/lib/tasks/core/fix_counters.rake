@@ -50,7 +50,6 @@ namespace :fix_existing_tenants do
   end
 
   task fix_membership_counters: [:environment] do |_t, _args|
-    fixes = []
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
         UpdateMemberCountJob.perform_later

@@ -3,7 +3,6 @@
 namespace :fix_existing_tenants do
   desc 'Delete new idea/initiative/comment for admin notifications'
   task delete_admin_new_content_notifications: [:environment] do |_t, _args|
-    failures = []
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
         types = ['Notifications::NewIdeaForAdmin', 'Notifications::NewCommentForAdmin',
@@ -19,7 +18,6 @@ namespace :fix_existing_tenants do
 
   desc 'Delete notifications with deleted required relationships'
   task delete_invalid_notifications: [:environment] do |_t, _args|
-    failures = []
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
         notifications = Notification.where(initiating_user_id: nil)

@@ -38,16 +38,6 @@ Lint/UnexpectedBlockArity:
   Exclude:
     - 'lib/tasks/core/template_phases.rake'
 
-# Offense count: 11
-Lint/UselessAssignment:
-  Exclude:
-    - 'db/seeds/citizenlab-ee.rb'
-    - 'lib/tasks/core/fix_counters.rake'
-    - 'lib/tasks/core/fix_html_multiloc.rake'
-    - 'lib/tasks/core/fix_notifications.rake'
-    - 'lib/tasks/core/setup_and_support.rake'
-    - 'spec/tasks/email_campaigns_task_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: CheckForMethodsWithNoSideEffects.
 Lint/Void:

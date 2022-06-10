@@ -266,7 +266,7 @@ namespace :setup_and_support do
     emails = open(args[:url]).readlines.map(&:strip)
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       users = User.where email: emails
-      votes = Vote.where(user: users).destroy_all
+      Vote.where(user: users).destroy_all
       users.destroy_all
     end
   end

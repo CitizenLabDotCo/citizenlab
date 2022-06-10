@@ -108,7 +108,7 @@ if %w[public example_org].include? Apartment::Tenant.current
   # rake db:reset clears all instances before repopulating the db.
   CommonPassword.initialize!
 
-  t = Tenant.create!(
+  Tenant.create!(
     id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
     host: 'localhost',
@@ -969,7 +969,7 @@ if Apartment::Tenant.current == 'localhost'
     zoom_level: 14
   )
 
-  layer1 = CustomMaps::Layer.create!(
+  CustomMaps::Layer.create!(
     map_config: map_config,
     title_multiloc: { en: 'Districts', 'nl-BE': 'Districten' },
     geojson: JSON.parse(File.read(CustomMaps::Engine.root.join('spec', 'fixtures', 'brussels-districts.geojson'))),
@@ -985,7 +985,7 @@ if Apartment::Tenant.current == 'localhost'
     { map_config: map_config, title_multiloc: { 'fr-BE': 'Pentagone' }, color: '#249e0c' }
   ])
 
-  layer2 = CustomMaps::Layer.create!(
+  CustomMaps::Layer.create!(
     map_config: map_config,
     title_multiloc: { en: 'Public toilets', 'nl-BE': 'Publieke toiletten' },
     geojson: JSON.parse(File.read(CustomMaps::Engine.root.join('spec', 'fixtures',
