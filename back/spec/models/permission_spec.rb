@@ -72,7 +72,7 @@ RSpec.describe Permission, type: :model do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { expect(everyone_permission.denied_reason(user)).to be false }
+      it { expect(everyone_permission.denied_reason(user)).to be_nil }
       it { expect(users_permission.denied_reason(user)).to eq('not_signed_in') }
       it { expect(admins_mods_permission.denied_reason(user)).to eq('not_permitted') }
     end
@@ -80,16 +80,16 @@ RSpec.describe Permission, type: :model do
     context 'when user is admin' do
       let(:admin) { build(:admin) }
 
-      it { expect(everyone_permission.denied_reason(admin)).to be false }
-      it { expect(users_permission.denied_reason(admin)).to be false }
-      it { expect(admins_mods_permission.denied_reason(admin)).to be false }
+      it { expect(everyone_permission.denied_reason(admin)).to be_nil }
+      it { expect(users_permission.denied_reason(admin)).to be_nil }
+      it { expect(admins_mods_permission.denied_reason(admin)).to be_nil }
     end
 
     context 'when signed in' do
       let(:user) { build(:user) }
 
-      it { expect(everyone_permission.denied_reason(user)).to be false }
-      it { expect(users_permission.denied_reason(user)).to be false }
+      it { expect(everyone_permission.denied_reason(user)).to be_nil }
+      it { expect(users_permission.denied_reason(user)).to be_nil }
       it { expect(admins_mods_permission.denied_reason(user)).to eq 'not_permitted' }
     end
   end
