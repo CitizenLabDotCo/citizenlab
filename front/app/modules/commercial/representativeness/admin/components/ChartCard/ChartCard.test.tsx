@@ -158,7 +158,7 @@ describe('<ChartCard /> (chart view)', () => {
   describe('12 < N <= 24', () => {
     it('does not render chart by default', () => {
       const { container } = render(
-        <ChartCard customField={{ ...customField, id: '16', log: true }} />
+        <ChartCard customField={{ ...customField, id: '16' }} />
       );
 
       expect(
