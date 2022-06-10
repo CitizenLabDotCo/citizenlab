@@ -153,7 +153,7 @@ const ContentBuilderTopBar = ({
             </>
           )}
         </Box>
-        {!isNilOrError(locales) && selectedLocale && locales.length > 0 && (
+        {!isNilOrError(locales) && selectedLocale && locales.length > 1 && (
           <Box
             borderLeft={`1px solid ${colors.separation}`}
             borderRight={`1px solid ${colors.separation}`}
@@ -161,6 +161,7 @@ const ContentBuilderTopBar = ({
             p="24px"
           >
             <LocaleSwitcher
+              data-testid="contentBuilderLocaleSwitcher"
               locales={locales}
               selectedLocale={selectedLocale}
               onSelectedLocaleChange={handleSelectLocale}

@@ -45,7 +45,10 @@ jest.mock('../../../services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
 
-jest.mock('hooks/useAppConfigurationLocales', () => jest.fn(() => ['en']));
+let mockLocalesData = ['en'];
+jest.mock('hooks/useAppConfigurationLocales', () =>
+  jest.fn(() => mockLocalesData)
+);
 
 const mockParams = { projectId: 'id' };
 
@@ -205,5 +208,72 @@ describe('ContentBuilderTopBar', () => {
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
     expect(setMobilePreviewEnabled).toHaveBeenCalledWith(false);
+  });
+
+  it('does not render locale switcher when there is only one locale', () => {
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.queryByText('en')).not.toBeInTheDocument();
+  });
+
+  it('renders locale switcher when there is only one locale', () => {
+    mockLocalesData = ['en', 'fr-FR'];
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('en')).toBeInTheDocument();
+  });
+
+  it('calls onSelectLocale correctly when the locale is changed', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={onSelectLocale}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    fireEvent.click(screen.getByText('fr-FR'));
+    expect(onSelectLocale).toHaveBeenCalledWith({
+      editorData: {},
+      locale: 'fr-FR',
+    });
+  });
+
+  it('shows locale switcher error correctly', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={onSelectLocale}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('en').firstChild).toHaveClass('empty');
   });
 });
