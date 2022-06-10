@@ -23,8 +23,10 @@ const generateData = (n: number) => {
   return data;
 };
 
-jest.mock('../../hooks/useReferenceData', () => (field) => ({
-  referenceData: generateData(field.id as number),
+let mockData = generateData(4);
+
+jest.mock('../../hooks/useReferenceData', () => () => ({
+  referenceData: mockData,
   includedUserPercentage: 85,
   referenceDataUploaded: true,
 }));
@@ -53,7 +55,7 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('N <= 10', () => {
-    customField.id = '6';
+    mockData = generateData(6);
     it('renders chart by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '6' }} />
@@ -105,6 +107,7 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('10 < N <= 12', () => {
+    mockData = generateData(11);
     it('renders chart by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '11' }} />
@@ -156,6 +159,7 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('12 < N <= 24', () => {
+    mockData = generateData(16);
     it('does not render chart by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '16' }} />
@@ -230,6 +234,7 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('24 < N', () => {
+    mockData = generateData(26);
     it('does not render chart by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '26' }} />
@@ -291,6 +296,7 @@ describe('<ChartCard /> (chart view)', () => {
 });
 
 describe('<ChartCard /> (table view)', () => {
+  mockData = generateData(6);
   it('does not render legend in table view', () => {
     const { container } = render(
       <ChartCard customField={{ ...customField, id: '6' }} />
@@ -305,6 +311,7 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('N <= 12', () => {
+    mockData = generateData(4);
     it('does not render table by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '4' }} />
@@ -361,6 +368,7 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('12 < N <= 24', () => {
+    mockData = generateData(16);
     it('renders table by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '16' }} />
@@ -399,6 +407,7 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('24 < N', () => {
+    mockData = generateData(26);
     it('renders included users percentage', () => {
       render(<ChartCard customField={{ ...customField, id: '26' }} />);
 
@@ -415,6 +424,7 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('Opening modal', () => {
+    mockData = generateData(16);
     it('opens modal on click button', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '16' }} />
