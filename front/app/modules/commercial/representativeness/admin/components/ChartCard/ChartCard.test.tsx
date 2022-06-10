@@ -41,7 +41,7 @@ let customField: any = {
 
 describe('<ChartCard />', () => {
   it('renders title', () => {
-    render(<ChartCard customField={{ ...customField, id: '4' }} />);
+    render(<ChartCard customField={customField} />);
 
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
   });
@@ -49,17 +49,18 @@ describe('<ChartCard />', () => {
 
 describe('<ChartCard /> (chart view)', () => {
   it('renders legend', () => {
-    render(<ChartCard customField={{ ...customField, id: '4' }} />);
+    render(<ChartCard customField={customField} />);
 
     expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
   });
 
   describe('N <= 10', () => {
-    mockData = generateData(6);
+    beforeEach(() => {
+      mockData = generateData(6);
+    });
+
     it('renders chart by default', () => {
-      const { container } = render(
-        <ChartCard customField={{ ...customField, id: '6' }} />
-      );
+      const { container } = render(<ChartCard customField={customField} />);
 
       expect(
         container.querySelector('.recharts-responsive-container')
@@ -67,9 +68,7 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders labels', () => {
-      const { container } = render(
-        <ChartCard customField={{ ...customField, id: '6' }} />
-      );
+      const { container } = render(<ChartCard customField={customField} />);
 
       waitFor(() => {
         expect(container.querySelectorAll('.recharts-label')).toHaveLength(8);
@@ -107,10 +106,13 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('10 < N <= 12', () => {
-    mockData = generateData(11);
+    beforeEach(() => {
+      mockData = generateData(11);
+    });
+
     it('renders chart by default', () => {
       const { container } = render(
-        <ChartCard customField={{ ...customField, id: '11' }} />
+        <ChartCard customField={{ ...customField, id: 'abcd' }} />
       );
 
       expect(
@@ -159,7 +161,10 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('12 < N <= 24', () => {
-    mockData = generateData(16);
+    beforeEach(() => {
+      mockData = generateData(16);
+    });
+
     it('does not render chart by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '16' }} />
@@ -234,7 +239,10 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('24 < N', () => {
-    mockData = generateData(26);
+    beforeEach(() => {
+      mockData = generateData(26);
+    });
+
     it('does not render chart by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '26' }} />
@@ -296,7 +304,10 @@ describe('<ChartCard /> (chart view)', () => {
 });
 
 describe('<ChartCard /> (table view)', () => {
-  mockData = generateData(6);
+  beforeEach(() => {
+    mockData = generateData(6);
+  });
+
   it('does not render legend in table view', () => {
     const { container } = render(
       <ChartCard customField={{ ...customField, id: '6' }} />
@@ -311,7 +322,10 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('N <= 12', () => {
-    mockData = generateData(4);
+    beforeEach(() => {
+      mockData = generateData(4);
+    });
+
     it('does not render table by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '4' }} />
@@ -368,7 +382,10 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('12 < N <= 24', () => {
-    mockData = generateData(16);
+    beforeEach(() => {
+      mockData = generateData(16);
+    });
+
     it('renders table by default', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '16' }} />
@@ -378,9 +395,7 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders correct number of rows', () => {
-      const { container } = render(
-        <ChartCard customField={{ ...customField, id: '16' }} />
-      );
+      const { container } = render(<ChartCard customField={customField} />);
 
       expect(container.querySelectorAll('tbody > tr')).toHaveLength(12);
     });
@@ -407,7 +422,10 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('24 < N', () => {
-    mockData = generateData(26);
+    beforeEach(() => {
+      mockData = generateData(26);
+    });
+
     it('renders included users percentage', () => {
       render(<ChartCard customField={{ ...customField, id: '26' }} />);
 
@@ -424,7 +442,10 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('Opening modal', () => {
-    mockData = generateData(16);
+    beforeEach(() => {
+      mockData = generateData(16);
+    });
+
     it('opens modal on click button', () => {
       const { container } = render(
         <ChartCard customField={{ ...customField, id: '16' }} />

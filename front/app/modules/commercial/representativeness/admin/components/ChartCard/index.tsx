@@ -44,15 +44,20 @@ const ChartCard = ({
     useReferenceData(customField, projectFilter);
 
   const currentChartRef = useRef<SVGElement>();
-  const [viewState, setViewState] = useState<ViewState>('chart');
-  const [hideTicks, setHideTicks] = useState<boolean>(false);
+  const [viewState, setViewState] = useState<ViewState | undefined>(
+    isNilOrError(referenceData)
+      ? undefined
+      : referenceData.length > 12
+      ? 'table'
+      : 'chart'
+  );
 
   useEffect(() => {
-    if (!isNilOrError(referenceData) && referenceData.length > 12) {
-      setViewState('table');
-      setHideTicks(true);
-    }
-  }, [referenceData]);
+    if (viewState !== undefined) return;
+    if (isNilOrError(referenceData)) return;
+
+    setViewState(referenceData.length > 12 ? 'table' : 'chart');
+  }, [referenceData, viewState]);
 
   const localize = useLocalize();
 
@@ -68,13 +73,15 @@ const ChartCard = ({
   if (
     isNilOrError(referenceData) ||
     isNilOrError(includedUserPercentage) ||
-    referenceDataUploaded === undefined
+    referenceDataUploaded === undefined ||
+    viewState === undefined
   ) {
     return null;
   }
 
   const handleClickSwitchToTableView = () => setViewState('table');
 
+  const hideTicks = referenceData.length > 12;
   const dataIsTooLong = referenceData.length > 24;
   const numberOfHiddenItems = referenceData.length - 24;
   const hideLegend = viewState === 'table';
