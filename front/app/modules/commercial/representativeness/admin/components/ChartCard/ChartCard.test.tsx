@@ -31,7 +31,7 @@ jest.mock('../../hooks/useReferenceData', () => () => ({
   referenceDataUploaded: true,
 }));
 
-let customField: any = {
+const customField: any = {
   id: '4',
   attributes: {
     title_multiloc: { en: 'FIELD TITLE' },

@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
-import useReferenceData from '../../hooks/useReferenceData';
+import useReferenceData, {
+  RepresentativenessRow,
+  RepresentativenessRowPre,
+} from '../../hooks/useReferenceData';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -19,10 +22,6 @@ import messages from './messages';
 
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
-import {
-  RepresentativenessRow,
-  RepresentativenessRowPre,
-} from '../../hooks/useReferenceData';
 
 // utils
 import { getLegendLabels } from './utils';

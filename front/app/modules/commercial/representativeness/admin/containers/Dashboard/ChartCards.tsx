@@ -40,6 +40,7 @@ const ChartCards = ({ projectFilter }: Props) => {
         return (
           <EmptyCard
             titleMultiloc={customField.attributes.title_multiloc}
+            key={customField.id}
             isComingSoon
           />
         );
