@@ -424,6 +424,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
           debounce={1500}
+          a11y_numberOfSearchResults={list ? list.length : 0}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
@@ -505,6 +506,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <MobileSearchInput
                   setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list.length}
                 />
 
                 <MobileFilterButton

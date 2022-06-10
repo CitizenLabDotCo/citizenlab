@@ -17,7 +17,9 @@ export interface Props {
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
-  numberOfSearchResults?: number;
+  // This prop will ensure that screen readers
+  // get notified when the number of results have changed.
+  a11y_numberOfSearchResults: number;
 }
 
 const SearchInputWrapper = ({
@@ -29,7 +31,7 @@ const SearchInputWrapper = ({
   className,
   size,
   intl: { formatMessage },
-  numberOfSearchResults,
+  a11y_numberOfSearchResults,
 }: Props & InjectedIntlProps) => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
@@ -46,7 +48,7 @@ const SearchInputWrapper = ({
     <>
       <ScreenReaderOnly aria-live="assertive">
         {formatMessage(messages.a11y_searchResultsHaveChanged, {
-          numberOfSearchResults,
+          numberOfSearchResults: a11y_numberOfSearchResults,
         })}
       </ScreenReaderOnly>
       <Label htmlFor="search-input" hidden>

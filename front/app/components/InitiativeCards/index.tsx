@@ -445,6 +445,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
           ariaLabel={this.searchAriaLabel}
           setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
+          a11y_numberOfSearchResults={list?.length || 0}
         />
         <StyledInitiativesStatusFilter
           selectedStatusId={selectedInitiativeFilters.initiative_status}
@@ -535,6 +536,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   ariaLabel={this.searchAriaLabel}
                   setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list?.length || 0}
                 />
 
                 <MobileFilterButton
