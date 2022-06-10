@@ -13,13 +13,6 @@ Gemspec/RequiredRubyVersion:
   Exclude:
     - 'multi_tenancy.gemspec'
 
-# Offense count: 6
-# Configuration parameters: IgnoreLiteralBranches, IgnoreConstantBranches.
-Lint/DuplicateBranch:
-  Exclude:
-    - 'app/controllers/multi_tenancy/patches/email_campaigns/hooks/mailgun_events_controller.rb'
-    - 'lib/tasks/core/sync_tenants.rake'
-
 # Offense count: 1
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:

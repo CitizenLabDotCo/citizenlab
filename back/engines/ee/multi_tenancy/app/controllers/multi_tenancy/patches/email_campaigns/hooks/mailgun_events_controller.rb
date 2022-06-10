@@ -18,9 +18,7 @@ module MultiTenancy
             else
               head :not_acceptable
             end
-          rescue Apartment::TenantNotFound
-            head :not_acceptable
-          rescue ActiveRecord::RecordNotFound
+          rescue Apartment::TenantNotFound, ActiveRecord::RecordNotFound
             head :not_acceptable
           end
         end

@@ -52,11 +52,8 @@ namespace :sync_tenants do
                   translation = I18n.with_locale(locale) { I18n.t!(field_value) }
                   [locale, translation]
                 end
-              elsif field_name.end_with?('_ref')
-                nil
-              elsif field_name.end_with?('_timediff')
-                nil
-              elsif model_name.exclude?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
+              elsif field_name.end_with?('_ref', '_timediff') ||
+                    (model_name.exclude?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file'))
                 nil
               else
                 field_value
@@ -105,11 +102,8 @@ namespace :sync_tenants do
                   translation = I18n.with_locale(locale) { I18n.t!(field_value) }
                   [locale, translation]
                 end
-              elsif field_name.end_with?('_ref')
-                nil
-              elsif field_name.end_with?('_timediff')
-                nil
-              elsif model_name.exclude?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
+              elsif field_name.end_with?('_ref', '_timediff') ||
+                    (model_name.exclude?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file'))
                 nil
               else
                 field_value
@@ -147,9 +141,7 @@ def object_from_template(classname, attributes)
     else
       StaticPage.where(code: attributes['code']).first
     end
-  when 'Project'
-    nil
-  when 'Event'
+  when 'Project', 'Event'
     nil
   when 'CustomField'
     CustomField.with_resource_type('User').where(code: attributes['code']).first
