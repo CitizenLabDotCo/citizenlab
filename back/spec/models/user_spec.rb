@@ -307,12 +307,12 @@ RSpec.describe User, type: :model do
     end
 
     it 'sorts from higher level roles to lower level roles by default' do
-      serie = User.order_role.map { |u| u.roles.size }
+      serie = described_class.order_role.map { |u| u.roles.size }
       expect(serie).to eq serie.sort.reverse
     end
 
     it 'sorts from lower level roles to higher level roles with option asc' do
-      serie = User.order_role(:desc).map { |u| u.roles.size }
+      serie = described_class.order_role(:desc).map { |u| u.roles.size }
       expect(serie).to eq serie.sort
     end
   end
@@ -367,7 +367,7 @@ RSpec.describe User, type: :model do
       group = create(:group)
       users = create_list(:user, 3, manual_groups: [group])
       create_list(:user, 2)
-      expect(User.in_group(group).pluck(:id)).to match_array users.map(&:id)
+      expect(described_class.in_group(group).pluck(:id)).to match_array users.map(&:id)
     end
   end
 
@@ -379,7 +379,7 @@ RSpec.describe User, type: :model do
       user2 = create(:user, email: 'jules@test.com', manual_groups: [group1])
       user4 = create(:user, manual_groups: [group2])
 
-      expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]
+      expect(described_class.in_any_group([group1, group2])).to match_array [user1, user2, user4]
     end
   end
 
@@ -397,26 +397,26 @@ RSpec.describe User, type: :model do
   describe '.find_by_cimail' do
     it 'finds a user with the same email but different caps' do
       some_user = create(:user, email: 'SeBi@citizenlab.co')
-      same_user = User.find_by_cimail 'sEbI@citizenlab.co'
+      same_user = described_class.find_by_cimail 'sEbI@citizenlab.co'
 
       expect(some_user.id).to eq same_user&.id
     end
 
     it 'returns nil if no user record with that email was found' do
-      expect(User.find_by_cimail('doesnotexist@example.com')).to be_nil
+      expect(described_class.find_by_cimail('doesnotexist@example.com')).to be_nil
     end
   end
 
   describe '.find_by_cimail!' do
     it 'finds a user with the same email but different caps' do
       some_user = create(:user, email: 'SeBi@citizenlab.co')
-      same_user = User.find_by_cimail!('sEbI@citizenlab.co')
+      same_user = described_class.find_by_cimail!('sEbI@citizenlab.co')
 
       expect(some_user.id).to eq(same_user.id)
     end
 
     it 'raises if no user record with that email was found' do
-      expect { User.find_by_cimail!('doesnotexist@example.com') }
+      expect { described_class.find_by_cimail!('doesnotexist@example.com') }
         .to raise_error(ActiveRecord::RecordNotFound)
     end
   end

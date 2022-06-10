@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe TimelineService do
-  let(:service) { TimelineService.new }
+  let(:service) { described_class.new }
 
   before do
     settings = AppConfiguration.instance.settings

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ParticipationContextService do
-  let(:service) { ParticipationContextService.new }
+  let(:service) { described_class.new }
 
   describe 'posting_idea_disabled_reason_for_project' do
     let(:project) { create(:project_with_current_phase) }

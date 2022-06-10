@@ -160,13 +160,6 @@ RSpec/DescribeClass:
     - 'spec/services/json_forms_ideas_override_spec.rb'
     - 'spec/services/json_forms_user_override_spec.rb'
 
-# Offense count: 358
-# This cop supports safe auto-correction (--auto-correct).
-# Configuration parameters: SkipBlocks, EnforcedStyle.
-# SupportedStyles: described_class, explicit
-RSpec/DescribedClass:
-  Enabled: false
-
 # Offense count: 361
 RSpec/EmptyExampleGroup:
   Enabled: false

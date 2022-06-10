@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe GroupPolicy do
-  subject { GroupPolicy.new(user, group) }
+  subject { described_class.new(user, group) }
 
   let(:scope) { GroupPolicy::Scope.new(user, Group) }
 

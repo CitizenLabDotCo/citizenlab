@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ProfanityService do
-  let(:service) { ProfanityService.new }
+  let(:service) { described_class.new }
 
   describe 'search_blocked_words' do
     before { Rails.cache.clear } # for some reason, caching is enabled while testing
