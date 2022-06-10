@@ -74,15 +74,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 28
 
-# Offense count: 4
-# Configuration parameters: EnforcedStyle, CheckMethodNames, CheckSymbols, AllowedIdentifiers, AllowedPatterns.
-# SupportedStyles: snake_case, normalcase, non_integer
-# AllowedIdentifiers: capture3, iso8601, rfc1123_date, rfc822, rfc2822, rfc3339
-Naming/VariableNumber:
-  Exclude:
-    - 'spec/jobs/publish_generic_event_to_rabbit_job_spec.rb'
-    - 'spec/services/publish_generic_event_to_rabbit_job_spec.rb'
-
 # Offense count: 8
 # Configuration parameters: MinSize.
 Performance/CollectionLiteralInLoop:

@@ -8,7 +8,7 @@ RSpec.describe PublishGenericEventToRabbitJob, type: :job do
   describe '#perform' do
     let(:bunny) { instance_double(Bunny::Session) }
     let(:routing_key) { 'routing_key' }
-    let(:generic_event) { { field_1: 'value1', field_2: 'value2' } }
+    let(:generic_event) { { field1: 'value1', field2: 'value2' } }
 
     it 'include tenant properties in RabbitMQ events' do
       tenant_properties = MultiTenancy::TrackingTenantService.new.tenant_properties
