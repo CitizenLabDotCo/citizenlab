@@ -129,25 +129,24 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
 
 export default useReferenceData;
 
+const sum = (values: number[]) => values.reduce((acc, v) => v + acc, 0);
+const percentage = (num: number, denom: number) =>
+  Math.round((num / denom) * 100);
+
 const toReferenceData = (
   usersByField: TStreamResponse
 ): RepresentativenessRowMultiloc[] => {
   const { users, expected_users } = usersByField.series;
   const options =
     'options' in usersByField ? usersByField.options : usersByField.areas;
-  const totalActualUsers = Object.values(users).reduce((acc, v) => v + acc, 0);
-  const totalReferenceUsers = Object.values(expected_users).reduce(
-    (acc, v) => v + acc,
-    0
-  );
+  const totalActualUsers = sum(Object.values(users));
+  const totalReferenceUsers = sum(Object.values(expected_users));
   const data = Object.keys(users)
     .filter((opt) => opt !== '_blank')
     .map((opt) => ({
       title_multiloc: options[opt].title_multiloc,
-      actualPercentage: Math.round((users[opt] / totalReferenceUsers) * 100),
-      referencePercentage: Math.round(
-        (expected_users[opt] / totalActualUsers) * 100
-      ),
+      actualPercentage: percentage(users[opt], totalReferenceUsers),
+      referencePercentage: percentage(expected_users[opt], totalActualUsers),
       actualNumber: users[opt],
       referenceNumber: expected_users[opt],
     }));
@@ -160,6 +159,6 @@ const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
   const known = Object.keys(users)
     .filter((opt) => opt !== '_blank')
     .reduce((acc, v) => users[v] + acc, 0);
-  const total = Object.values(users).reduce((v, acc) => v + acc, 0);
-  return Math.round((known / total) * 100);
+  const total = sum(Object.values(users));
+  return percentage(known, total);
 };
