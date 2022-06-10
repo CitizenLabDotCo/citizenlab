@@ -45,18 +45,15 @@ class Tenant < ApplicationRecord
     end
   end
 
+  after_initialize :custom_initialization
+  before_validation :validate_missing_feature_dependencies
+  before_validation :ensure_style
   after_create :create_apartment_tenant
   after_create :create_app_configuration, if: :auto_config
 
-  after_destroy :delete_apartment_tenant
-
   after_update :update_tenant_schema, if: :saved_change_to_host?
   after_update :update_app_configuration, if: :config_sync_enabled
-
-  after_initialize :custom_initialization
-
-  before_validation :validate_missing_feature_dependencies
-  before_validation :ensure_style
+  after_destroy :delete_apartment_tenant
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
@@ -223,9 +220,9 @@ class Tenant < ApplicationRecord
     find_by!(host: host_name).switch!
   end
 
-  def self.switch_each(&blk)
+  def self.switch_each
     find_each do |tenant|
-      tenant.switch { blk.call(tenant) }
+      tenant.switch { yield(tenant) }
     end
   end
 
@@ -289,12 +286,12 @@ class Tenant < ApplicationRecord
     carrierwave_attrs = %w[logo favicon header_bg]
     common_attrs = (old_attributes.keys & new_attributes.keys) - carrierwave_attrs
     new_attributes
-        .slice(*common_attrs)
-        .select { |k,v| v != old_attributes[k] }
-        .tap do |attrs|
-          attrs[:logo]      = new_obj.logo      if new_obj.logo_previously_changed?
-          attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
-          attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
+      .slice(*common_attrs)
+      .reject { |k, v| v == old_attributes[k] }
+      .tap do |attrs|
+      attrs[:logo] = new_obj.logo if new_obj.logo_previously_changed?
+      attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
+      attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
     end
   end
 

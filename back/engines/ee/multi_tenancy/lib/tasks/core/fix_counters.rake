@@ -1,20 +1,45 @@
+# frozen_string_literal: true
 
 namespace :fix_existing_tenants do
-  desc "Fix the counts for all existing tenants."
-  task :fix_counters => [:environment] do |t, args|
+  desc 'Fix the counts for all existing tenants.'
+  task fix_counters: [:environment] do |_t, _args|
     fixes = []
     Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+      Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
         puts "Processing tenant #{tenant.host}..."
 
-        fixes += Idea.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += IdeasPhase.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Comment.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += OfficialFeedback.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Membership.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Vote.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += EmailCampaigns::Delivery.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
-        fixes += Volunteering::Volunteer.counter_culture_fix_counts(skip_unsupported: true).map{|fix| fix[:tenant] = tenant.host; fix}
+        fixes += Idea.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += IdeasPhase.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += Comment.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += OfficialFeedback.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += Membership.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += Vote.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += EmailCampaigns::Delivery.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
+        fixes += Volunteering::Volunteer.counter_culture_fix_counts(skip_unsupported: true).map do |fix|
+          fix[:tenant] = tenant.host
+          fix
+        end
       end
     end
 
@@ -24,13 +49,11 @@ namespace :fix_existing_tenants do
     end
   end
 
-  task :fix_membership_counters => [:environment] do |t, args|
+  task fix_membership_counters: [:environment] do |_t, _args|
     fixes = []
     Tenant.all.each do |tenant|
-      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
-
+      Apartment::Tenant.switch(tenant.host.tr('.', '_')) do
         UpdateMemberCountJob.perform_later
-
       end
     end
   end

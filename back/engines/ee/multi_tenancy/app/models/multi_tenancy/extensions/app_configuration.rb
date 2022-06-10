@@ -44,7 +44,7 @@ module MultiTenancy
 
       def validate_lifecycle_stage_change
         if settings_changed?
-          prev_demo = settings_was.dig('core', 'lifecycle_stage') == 'demo' 
+          prev_demo = settings_was.dig('core', 'lifecycle_stage') == 'demo'
           currently_demo = settings.dig('core', 'lifecycle_stage') == 'demo'
           if prev_demo != currently_demo
             errors.add(
@@ -65,8 +65,8 @@ module MultiTenancy
         def from_tenants(tenants)
           colnames = column_names.join(', ')
           sql_query = tenants.map(&:schema_name)
-                             .map { |schema| "SELECT #{colnames} FROM \"#{schema}\".app_configurations" }
-                             .join(' UNION ')
+            .map { |schema| "SELECT #{colnames} FROM \"#{schema}\".app_configurations" }
+            .join(' UNION ')
 
           app_configuration = ActiveRecord::Base.connection.execute(sql_query)
           app_configuration.map { |record| new(record) }

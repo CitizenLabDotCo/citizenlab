@@ -6,6 +6,7 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
   subject(:service) { described_class.new(params) }
 
   let(:params) { {} }
+
   let_it_be(:churned_tenant) { create(:tenant, lifecycle: 'churned') }
 
   def create_lifecycle_activity(tenant, lifecycle)
@@ -13,7 +14,7 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
       item: tenant,
       action: 'changed_lifecycle_stage',
       payload: { 'changes' => ['active', lifecycle] },
-      acted_at: Time.now
+      acted_at: Time.zone.now
     ).reload
     # Reloading to get the exact value of `acted_at` as stored in the DB
     # (lower precision).
@@ -28,7 +29,7 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
 
       it "is 'nil' if missing from the environment" do
         stub_const('ENV', ENV.to_h.except('CHURNED_TENANT_PII_RETENTION_PERIOD'))
-        expect(service.pii_retention_period).to eq(nil)
+        expect(service.pii_retention_period).to be_nil
       end
     end
 
@@ -111,9 +112,9 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     let(:params) { { pii_retention_period: 5 } }
 
     where(:churn_datetime, :expired) do
-      Date.today          | false
-      Date.today - 5.days | false
-      Date.today - 6.days | true
+      Date.today | false
+      (Date.today - 5.days) | false
+      (Date.today - 6.days) | true
     end
 
     with_them do

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe MultiTenancy::SideFxTenantService do
-  let(:service) { MultiTenancy::SideFxTenantService.new }
+  let(:service) { described_class.new }
   let(:current_user) { create(:user) }
 
   describe 'after_create' do
@@ -16,18 +18,21 @@ describe MultiTenancy::SideFxTenantService do
   describe 'around_apply_template' do
     it 'logs a created_failed activity if loading of the templates throws an error' do
       tenant = Tenant.current
-      expect { service.around_apply_template(tenant, 'base') { raise RuntimeError.new }}.to raise_error(RuntimeError).and(
+      expect do
+        service.around_apply_template(tenant, 'base') do
+          raise RuntimeError
+        end
+      end.to raise_error(RuntimeError).and(
         have_enqueued_job(LogActivityJob).with(tenant, 'creation_failed', any_args)
       )
     end
 
     it 'does not log a ceation_failed activity when no error is raised in the block' do
       tenant = Tenant.current
-      expect { service.around_apply_template(tenant, 'base') {}}.not_to(
+      expect { service.around_apply_template(tenant, 'base') {} }.not_to(
         have_enqueued_job(LogActivityJob).with(tenant, 'creation_failed')
       )
     end
-
   end
 
   describe 'after_update' do
@@ -49,8 +54,8 @@ describe MultiTenancy::SideFxTenantService do
       tenant.update!(host: 'some-domain.net')
       expect { service.after_update(tenant, current_user) }
         .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', current_user, tenant.updated_at.to_i,
-                                                   payload: { changes: [old_host, 'some-domain.net'] })
-                                             .and have_enqueued_job(Seo::UpdateGoogleHostJob)
+          payload: { changes: [old_host, 'some-domain.net'] })
+        .and have_enqueued_job(Seo::UpdateGoogleHostJob)
     end
 
     it "logs a 'changed_lifecycle_stage' action job when the tenant has changed" do
@@ -61,7 +66,7 @@ describe MultiTenancy::SideFxTenantService do
       tenant.update!(settings: settings)
       expect { service.after_update(tenant, current_user) }
         .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user,
-                                                   tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'churned'] })
+          tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'churned'] })
     end
 
     it "logs a 'changed_lifecycle_stage' action job when the tenant has changed" do
@@ -74,8 +79,8 @@ describe MultiTenancy::SideFxTenantService do
       tenant.update!(settings: settings)
       expect { service.after_update(tenant, current_user) }
         .to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user,
-                                                   tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'active'] })
-                                             .and have_enqueued_job(Seo::UpdateGoogleHostJob)
+          tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'active'] })
+        .and have_enqueued_job(Seo::UpdateGoogleHostJob)
     end
   end
 

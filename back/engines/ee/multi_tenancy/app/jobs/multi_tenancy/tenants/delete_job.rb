@@ -29,7 +29,7 @@ module MultiTenancy
             "in #{retry_interval.inspect}."
           )
           DeleteJob.set(wait: retry_interval)
-                   .perform_later(tenant, last_user_count: user_count, retry_interval: retry_interval)
+            .perform_later(tenant, last_user_count: user_count, retry_interval: retry_interval)
 
         else
           raise Aborted, "Deletion of '#{tenant.id}' is aborted because the "\

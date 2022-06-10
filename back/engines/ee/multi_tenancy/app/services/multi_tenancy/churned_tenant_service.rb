@@ -38,9 +38,9 @@ module MultiTenancy
 
     def _churn_datetime(tenant)
       Activity.where(item_id: tenant.id, action: 'changed_lifecycle_stage')
-              .where("payload -> 'changes' ->> 1 = 'churned'")
-              .order(created_at: :desc)
-              .first&.acted_at
+        .where("payload -> 'changes' ->> 1 = 'churned'")
+        .order(created_at: :desc)
+        .first&.acted_at
     end
 
     def pii_expired?(churn_datetime)

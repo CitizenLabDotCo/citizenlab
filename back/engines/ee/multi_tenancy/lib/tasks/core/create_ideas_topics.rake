@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Intended for use in setting up DEMO platforms only!
 namespace :demos do
   desc 'Create Ideas Topics.'
@@ -21,16 +23,16 @@ namespace :demos do
           topics = topics.strip.split(';')
 
           topics.each do |tp|
-            unless tp == ''
-              topic = Topic.find_by("title_multiloc @> '{\"#{locale}\":\"#{tp.strip}\"}'")
-              if topic
-                IdeasTopic.create!(idea: idea, topic: topic)
+            next if tp == ''
 
-                t_count += 1
-              else
-                errors += ["Couldn't find topic #{tp.inspect}"]
-                puts "ERROR: Couldn't find topic #{tp.inspect}"
-              end
+            topic = Topic.find_by("title_multiloc @> '{\"#{locale}\":\"#{tp.strip}\"}'")
+            if topic
+              IdeasTopic.create!(idea: idea, topic: topic)
+
+              t_count += 1
+            else
+              errors += ["Couldn't find topic #{tp.inspect}"]
+              puts "ERROR: Couldn't find topic #{tp.inspect}"
             end
           end
 

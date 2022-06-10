@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 namespace :fix_existing_tenants do
-  desc "Migrate the participated in project, topic and idea status rules where non-negation predicates now support array values"
-  task :migrate_group_participants_multivalues => [:environment] do |t, args|
+  desc 'Migrate the participated in project, topic and idea status rules where non-negation predicates now support array values'
+  task migrate_group_participants_multivalues: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
-      rule_types = ['participated_in_project', 'participated_in_topic', 'participated_in_idea_status']
+      rule_types = %w[participated_in_project participated_in_topic participated_in_idea_status]
       Apartment::Tenant.switch(tenant.schema_name) do
         subquery = Group.select('jsonb_array_elements(rules) as rule, id')
         groups = Group.rules
@@ -15,15 +17,24 @@ namespace :fix_existing_tenants do
             case rule['ruleType']
             when 'participated_in_project'
               rule.clone.tap do |new_rule|
-                new_rule['value'] = [new_rule['value']] if !new_rule['value'].is_a?(Array) && SmartGroups::Rules::ParticipatedInProject::MULTIVALUE_PREDICATES.include?(new_rule['predicate'])
+                if !new_rule['value'].is_a?(Array) && SmartGroups::Rules::ParticipatedInProject::MULTIVALUE_PREDICATES.include?(new_rule['predicate'])
+                  new_rule['value'] =
+                    [new_rule['value']]
+                end
               end
             when 'participated_in_topic'
               rule.clone.tap do |new_rule|
-                new_rule['value'] = [new_rule['value']] if !new_rule['value'].is_a?(Array) && SmartGroups::Rules::ParticipatedInTopic::MULTIVALUE_PREDICATES.include?(new_rule['predicate'])
+                if !new_rule['value'].is_a?(Array) && SmartGroups::Rules::ParticipatedInTopic::MULTIVALUE_PREDICATES.include?(new_rule['predicate'])
+                  new_rule['value'] =
+                    [new_rule['value']]
+                end
               end
             when 'participated_in_idea_status'
               rule.clone.tap do |new_rule|
-                new_rule['value'] = [new_rule['value']] if !new_rule['value'].is_a?(Array) && SmartGroups::Rules::ParticipatedInIdeaStatus::MULTIVALUE_PREDICATES.include?(new_rule['predicate'])
+                if !new_rule['value'].is_a?(Array) && SmartGroups::Rules::ParticipatedInIdeaStatus::MULTIVALUE_PREDICATES.include?(new_rule['predicate'])
+                  new_rule['value'] =
+                    [new_rule['value']]
+                end
               end
             else
               rule

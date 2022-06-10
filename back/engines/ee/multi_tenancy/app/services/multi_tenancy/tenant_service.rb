@@ -38,7 +38,7 @@ module MultiTenancy
     end
 
     def finalize_creation(tenant)
-      tenant.switch do 
+      tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
         PermissionsService.new.update_all_permissions # fix permissions
         TrackTenantJob.perform_later tenant
@@ -89,7 +89,7 @@ module MultiTenancy
       update_tenant(tenant, { host: "#{tenant.host}-#{SecureRandom.hex(4)}" })
 
       tenant_side_fx.before_destroy(tenant)
-      tenant.update!(deleted_at: Time.now) # Mark the tenant as deleted.
+      tenant.update!(deleted_at: Time.zone.now) # Mark the tenant as deleted.
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.
@@ -98,7 +98,7 @@ module MultiTenancy
       MultiTenancy::Tenants::DeleteJob.perform_later(tenant, job_opts)
     end
 
-    def shift_timestamps num_days
+    def shift_timestamps(num_days)
       raise 'Attempted to shift timestamps of active tenant!' if Tenant.current.active?
       raise 'Attempted to shift timestamps of churned tenant!' if Tenant.current.churned?
 
@@ -109,21 +109,21 @@ module MultiTenancy
         if [Activity.name, Tenant.name, AppConfiguration.name].include? claz.name
           timestamp_attrs.delete 'created_at'
         end
-        if timestamp_attrs.present?
-          query = timestamp_attrs.map do |timestamp_attr|
-            "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
-          end.join(', ')
-          claz.update_all [query, { num_days: num_days }]
+        next if timestamp_attrs.blank?
 
-          # We want to avoid timestamps to go to the future, while allowing future
-          # timestamps to remain in the future (e.g. future timeline phases, expiration
-          # date etc.)
-          timestamp_attrs.each do |atr|
-            instances = claz.where("#{atr} > NOW()")
-                            .where("(#{atr} - ':num_days DAY'::INTERVAL) < NOW()", num_days: num_days)
-            query = "#{atr} = (#{atr} - ':num_days DAY'::INTERVAL)"
-            instances.update_all [query, { num_days: num_days }]
-          end
+        query = timestamp_attrs.map do |timestamp_attr|
+          "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
+        end.join(', ')
+        claz.update_all [query, { num_days: num_days }]
+
+        # We want to avoid timestamps to go to the future, while allowing future
+        # timestamps to remain in the future (e.g. future timeline phases, expiration
+        # date etc.)
+        timestamp_attrs.each do |atr|
+          instances = claz.where("#{atr} > NOW()")
+            .where("(#{atr} - ':num_days DAY'::INTERVAL) < NOW()", num_days: num_days)
+          query = "#{atr} = (#{atr} - ':num_days DAY'::INTERVAL)"
+          instances.update_all [query, { num_days: num_days }]
         end
       end
       LogActivityJob.perform_later(
@@ -142,7 +142,8 @@ module MultiTenancy
     # @param [String] template_name
     # @param [Enumerable<String>] config_locales
     def validate_locales(template_name, config_locales)
-      required_locales = ::MultiTenancy::TenantTemplateService.new.required_locales(template_name, external_subfolder: 'test')
+      required_locales = ::MultiTenancy::TenantTemplateService.new.required_locales(template_name,
+        external_subfolder: 'test')
       unless required_locales.to_set <= config_locales.to_set
         raise ClErrors::TransactionError.new(error_key: :missing_locales)
       end
@@ -154,9 +155,9 @@ module MultiTenancy
     # @param [AppConfiguration] app_config
     # @param [Hash] attrs attributes (hash-like)
     def remove_images!(app_config, attrs)
-      app_config.remove_logo! if attrs.include?('logo') and attrs['logo'].nil?
-      app_config.remove_header_bg! if attrs.include?('header_bg') and attrs['header_bg'].nil?
-      app_config.remove_favicon! if attrs.include?('favicon') and attrs['favicon'].nil?
+      app_config.remove_logo! if attrs.include?('logo') && attrs['logo'].nil?
+      app_config.remove_header_bg! if attrs.include?('header_bg') && attrs['header_bg'].nil?
+      app_config.remove_favicon! if attrs.include?('favicon') && attrs['favicon'].nil?
     end
   end
 end

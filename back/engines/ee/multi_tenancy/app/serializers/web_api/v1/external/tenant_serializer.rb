@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 # This serializer is defined directly in the +WebApi+ namespace instead of the
 # +MultiTenancy+ namespace (`MultiTenancy::WebApi::...`) because +Notification+
 # (and maybe other places) is using dynamic dispatching to pick the right
@@ -16,11 +15,11 @@ module WebApi
         delegate :host, :settings, :style, to: :configuration
 
         def logo
-          configuration.logo && configuration.logo.versions.map { |k, v| [k.to_s, v.url] }.to_h
+          configuration.logo && configuration.logo.versions.to_h { |k, v| [k.to_s, v.url] }
         end
 
         def header_bg
-          configuration.header_bg && configuration.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+          configuration.header_bg && configuration.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
         end
 
         def configuration

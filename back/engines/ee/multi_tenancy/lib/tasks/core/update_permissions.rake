@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 namespace :fix_existing_tenants do
-  desc "Add the missing permissions."
-  task :update_permissions => [:environment] do |t, args|
+  desc 'Add the missing permissions.'
+  task update_permissions: [:environment] do |_t, _args|
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         PermissionsService.new.update_all_permissions
@@ -8,8 +10,8 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc "Migrate changes in action names"
-  task :migrate_action_names => [:environment] do |t, args|
+  desc 'Migrate changes in action names'
+  task migrate_action_names: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         Permission.where(action: 'posting').update_all action: 'posting_idea'
@@ -19,8 +21,8 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc "Add the missing global permissions."
-  task :update_global_permissions => [:environment] do |t, args|
+  desc 'Add the missing global permissions.'
+  task update_global_permissions: [:environment] do |_t, _args|
     Tenant.creation_finalized.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         PermissionsService.new.update_global_permissions
@@ -29,7 +31,7 @@ namespace :fix_existing_tenants do
   end
 
   desc "Migrate permitted by's after introducing users value"
-  task :migrate_permitted_bies => [:environment] do |t, args|
+  task migrate_permitted_bies: [:environment] do |_t, _args|
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         Permission.where(permitted_by: 'everyone').where.not(action: 'taking_survey').update_all permitted_by: 'users'
@@ -37,8 +39,8 @@ namespace :fix_existing_tenants do
     end
   end
 
-  desc "Migrate initiatives posting_enabled before removal"
-  task :migrate_initiatives_posting_enabled => [:environment] do |t, args|
+  desc 'Migrate initiatives posting_enabled before removal'
+  task migrate_initiatives_posting_enabled: [:environment] do |_t, _args|
     Tenant.all.select do |tenant|
       tenant.settings.dig('initiatives', 'posting_enabled') == false
     end.each do |tenant|
