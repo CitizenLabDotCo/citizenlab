@@ -62,11 +62,11 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
 
     it 'returns true when there are at least 3 trending ideas' do
       create_list(:idea, 3, published_at: Time.now - 1.minute)
-      expect(campaign.is_content_worth_sending?({})).to be true
+      expect(campaign.content_worth_sending?({})).to be true
     end
 
     it 'returns false when there are less than 3 trending ideas' do
-      expect(campaign.is_content_worth_sending?({})).to be false
+      expect(campaign.content_worth_sending?({})).to be false
     end
   end
 

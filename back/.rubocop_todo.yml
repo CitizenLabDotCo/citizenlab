@@ -103,25 +103,6 @@ Naming/AccessorMethodName:
 Naming/MethodParameterName:
   Enabled: false
 
-# Offense count: 11
-# Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros.
-# NamePrefix: is_, has_, have_
-# ForbiddenPrefixes: is_, has_, have_
-# AllowedMethods: is_a?
-# MethodDefinitionMacros: define_method, define_singleton_method
-Naming/PredicateName:
-  Exclude:
-    - 'app/models/app_configuration.rb'
-    - 'app/services/multiloc_service.rb'
-    - 'app/services/timeline_service.rb'
-    - 'app/services/timezone_service.rb'
-    - 'engines/commercial/project_folders/app/models/project_folders/patches/project.rb'
-    - 'engines/commercial/verification/app/services/verification/verification_service.rb'
-    - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/admin_digest.rb'
-    - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/moderator_digest.rb'
-    - 'engines/free/email_campaigns/app/models/email_campaigns/campaigns/user_digest.rb'
-    - 'engines/free/onboarding/app/services/onboarding/onboarding_service.rb'
-
 # Offense count: 39
 RSpec/AnyInstance:
   Enabled: false
