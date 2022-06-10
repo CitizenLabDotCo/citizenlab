@@ -21,6 +21,8 @@ module MultiTenancy
       end
     end
 
-    config.to_prepare(&method(:reload_extensions))
+    config.to_prepare do
+      MultiTenancy::Engine.reload_extensions
+    end
   end
 end
