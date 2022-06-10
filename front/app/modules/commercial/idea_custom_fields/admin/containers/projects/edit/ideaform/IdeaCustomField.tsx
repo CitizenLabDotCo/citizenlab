@@ -168,6 +168,7 @@ interface Props {
     updatedProperties: IUpdatedIdeaCustomFieldProperties
   ) => void;
   className?: string;
+  id: string;
 }
 
 const disablableFields = [
@@ -186,6 +187,7 @@ export default memo<Props>(
     onChange,
     onCollapseExpand,
     className,
+    id,
   }) => {
     const canSetEnabled = disablableFields.find(
       (field) => field === ideaCustomField.attributes.key
@@ -234,7 +236,7 @@ export default memo<Props>(
     }, [fieldRequired, ideaCustomField, onChange]);
 
     const handleCollapseExpand = useCallback(() => {
-      onCollapseExpand(ideaCustomField.id);
+      onCollapseExpand(id);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ideaCustomField]);
 
