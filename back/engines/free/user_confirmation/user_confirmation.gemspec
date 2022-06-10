@@ -17,5 +17,5 @@ Gem::Specification.new do |spec|
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   spec.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
-  spec.add_dependency 'rails', '~> 6.1'
+  spec.add_dependency 'rails', '~> 7.0'
 end
