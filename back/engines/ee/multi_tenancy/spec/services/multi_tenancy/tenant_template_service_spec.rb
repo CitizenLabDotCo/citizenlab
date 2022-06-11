@@ -15,13 +15,6 @@ describe MultiTenancy::TenantTemplateService do
     it 'raises an error if the requested template was not found' do
       expect do
         service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist',
-          external_subfolder: false)
-      end.to raise_error
-    end
-
-    it 'raises an error if the requested template was not found' do
-      expect do
-        service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist',
           external_subfolder: 'test')
       end.to raise_error
     end

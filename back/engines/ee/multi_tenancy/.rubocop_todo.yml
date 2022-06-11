@@ -85,12 +85,6 @@ RSpec/ExampleLength:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# Offense count: 4
-RSpec/RepeatedDescription:
-  Exclude:
-    - 'spec/services/multi_tenancy/side_fx_tenant_service_spec.rb'
-    - 'spec/services/multi_tenancy/tenant_template_service_spec.rb'
-
 # Offense count: 9
 RSpec/StubbedMock:
   Exclude:

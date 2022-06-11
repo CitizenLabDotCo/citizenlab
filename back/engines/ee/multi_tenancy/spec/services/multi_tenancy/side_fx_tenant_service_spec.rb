@@ -69,7 +69,7 @@ describe MultiTenancy::SideFxTenantService do
           tenant.updated_at.to_i, payload: { changes: [old_lifecycle_stage, 'churned'] })
     end
 
-    it "logs a 'changed_lifecycle_stage' action job when the tenant has changed" do
+    it "logs a 'changed_lifecycle_stage' action job when an active tenant has changed" do
       tenant = Tenant.current
       settings = tenant.settings
       settings['core']['lifecycle_stage'] = 'churned'
