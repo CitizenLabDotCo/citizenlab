@@ -96,3 +96,8 @@ Lint/Void:
 Naming/FileName:
   Exclude:
     - 'db/seeds/citizenlab-ee.rb'
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/db/seedfile_spec.rb'
+    - 'spec/tasks/email_campaigns_task_spec.rb'

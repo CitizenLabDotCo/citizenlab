@@ -79,13 +79,6 @@ RSpec/BeforeAfterAll:
   Exclude:
     - 'spec/tasks/email_campaigns_task_spec.rb'
 
-# Offense count: 2
-# Configuration parameters: IgnoredMetadata.
-RSpec/DescribeClass:
-  Exclude:
-    - 'spec/db/seedfile_spec.rb'
-    - 'spec/tasks/email_campaigns_task_spec.rb'
-
 # Offense count: 31
 # Configuration parameters: CountAsOne.
 RSpec/ExampleLength:
