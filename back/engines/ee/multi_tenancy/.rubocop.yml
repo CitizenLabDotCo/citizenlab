@@ -101,3 +101,7 @@ RSpec/DescribeClass:
   Exclude:
     - 'spec/db/seedfile_spec.rb'
     - 'spec/tasks/email_campaigns_task_spec.rb'
+    
+RSpec/BeforeAfterAll:
+  Exclude:
+    - 'spec/tasks/email_campaigns_task_spec.rb'
