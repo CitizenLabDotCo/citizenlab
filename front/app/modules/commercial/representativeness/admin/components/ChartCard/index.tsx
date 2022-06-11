@@ -48,16 +48,14 @@ const getXlsxEndpoint = (
   code: TCustomFieldCode | null,
   customFieldId: string
 ): string => {
-  let xslxEndpoint: string;
   switch (code) {
     case 'gender':
-      xslxEndpoint = usersByGenderXlsxEndpoint;
+      return usersByGenderXlsxEndpoint;
     case 'domicile':
-      xslxEndpoint = usersByDomicileXlsxEndpoint;
+      return usersByDomicileXlsxEndpoint;
     default:
-      xslxEndpoint = usersByRegFieldXlsxEndpoint(customFieldId);
+      return usersByRegFieldXlsxEndpoint(customFieldId);
   }
-  return xslxEndpoint;
 };
 
 const ChartCard = ({
