@@ -74,12 +74,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 28
 
-# Offense count: 2
-RSpec/AnyInstance:
-  Exclude:
-    - 'spec/jobs/multi_tenancy/tenants/delete_job_spec.rb'
-    - 'spec/services/multi_tenancy/side_fx_tenant_service_spec.rb'
-
 # Offense count: 1
 RSpec/BeforeAfterAll:
   Exclude:

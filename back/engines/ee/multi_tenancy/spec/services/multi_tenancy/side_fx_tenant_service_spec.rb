@@ -86,7 +86,9 @@ describe MultiTenancy::SideFxTenantService do
 
   describe 'before_destroy' do
     it 'calls the TypeformWebhookManager to clean up' do
-      expect_any_instance_of(Surveys::TypeformWebhookManager).to receive(:delete_all_webhooks)
+      manager = instance_double(Surveys::TypeformWebhookManager)
+      allow(Surveys::TypeformWebhookManager).to receive(:new).and_return(manager)
+      expect(manager).to receive(:delete_all_webhooks)
       service.before_destroy(Tenant.current, current_user)
     end
   end
