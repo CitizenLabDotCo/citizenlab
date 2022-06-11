@@ -15,7 +15,8 @@ interface Props extends FieldInfoProps {
   title: string;
   columns: string[];
   data: RepresentativenessData;
-  svgNode: React.RefObject<SVGElement | undefined>;
+  projectFilter: string | undefined;
+  xlsxEndpoint: string;
   onClose: () => void;
 }
 
@@ -26,7 +27,8 @@ const TableModal = ({
   data,
   includedUserPercentage,
   fieldIsRequired,
-  svgNode,
+  projectFilter,
+  xlsxEndpoint,
   onClose,
 }: Props) => (
   <Modal
@@ -50,7 +52,11 @@ const TableModal = ({
               fieldIsRequired={fieldIsRequired}
             />
           </Box>
-          <ReportExportMenu name={title} svgNode={svgNode} />
+          <ReportExportMenu
+            name={title}
+            currentProjectFilter={projectFilter}
+            xlsxEndpoint={xlsxEndpoint}
+          />
         </Box>
       </Box>
     }

@@ -7,6 +7,13 @@ import useReferenceData, {
   RepresentativenessRowMultiloc,
 } from '../../hooks/useReferenceData';
 
+// services
+import {
+  usersByRegFieldXlsxEndpoint,
+  usersByGenderXlsxEndpoint,
+  usersByDomicileXlsxEndpoint,
+} from 'modules/commercial/user_custom_fields/services/stats';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import EmptyCard from './EmptyCard';
@@ -21,7 +28,10 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import {
+  IUserCustomFieldData,
+  TCustomFieldCode,
+} from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 // utils
 import { getLegendLabels } from './utils';
@@ -33,6 +43,22 @@ interface Props {
   customField: IUserCustomFieldData;
   projectFilter?: string;
 }
+
+const getXlsxEndpoint = (
+  code: TCustomFieldCode | null,
+  customFieldId: string
+): string => {
+  let xslxEndpoint: string;
+  switch (code) {
+    case 'gender':
+      xslxEndpoint = usersByGenderXlsxEndpoint;
+    case 'domicile':
+      xslxEndpoint = usersByDomicileXlsxEndpoint;
+    default:
+      xslxEndpoint = usersByRegFieldXlsxEndpoint(customFieldId);
+  }
+  return xslxEndpoint;
+};
 
 const ChartCard = ({
   customField,
@@ -94,6 +120,10 @@ const ChartCard = ({
 
   const title = localize(customField.attributes.title_multiloc);
   const fieldIsRequired = customField.attributes.required;
+  const xlsxEndpoint = getXlsxEndpoint(
+    customField.attributes.code,
+    customField.id
+  );
   const data = referenceData.map(
     (opt: RepresentativenessRowMultiloc): RepresentativenessRow => {
       const { title_multiloc, ..._opt } = opt;
@@ -107,6 +137,8 @@ const ChartCard = ({
         title={title}
         svgNode={currentChartRef}
         viewState={viewState}
+        projectFilter={projectFilter}
+        xlsxEndpoint={xlsxEndpoint}
         onChangeViewState={setViewState}
       />
       {viewState === 'chart' && (
@@ -124,7 +156,8 @@ const ChartCard = ({
           legendLabels={legendLabels}
           includedUserPercentage={includedUserPercentage}
           fieldIsRequired={fieldIsRequired}
-          svgNode={currentChartRef}
+          projectFilter={projectFilter}
+          xlsxEndpoint={xlsxEndpoint}
         />
       )}
       <Footer
