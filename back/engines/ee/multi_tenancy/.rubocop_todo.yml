@@ -89,11 +89,6 @@ RSpec/SubjectStub:
     - 'spec/jobs/publish_generic_event_to_rabbit_job_spec.rb'
     - 'spec/services/publish_generic_event_to_rabbit_job_spec.rb'
 
-# Offense count: 2
-RSpec/UnspecifiedException:
-  Exclude:
-    - 'spec/services/multi_tenancy/tenant_template_service_spec.rb'
-
 # Offense count: 3
 # Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:
