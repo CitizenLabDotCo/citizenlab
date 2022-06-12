@@ -30,10 +30,10 @@ namespace :fix_existing_tenants do
 
   desc 'Resanitizes attributes that can contain HTML'
   task resanitize: [:environment] do |_t, _args|
-    html_multilocs = Cl2DataListingService.new.cl2_schema_root_models.map do |claz|
+    html_multilocs = Cl2DataListingService.new.cl2_schema_root_models.filter_map do |claz|
       atrs = Cl2DataListingService.new.html_multiloc_attributes claz
       [claz, atrs] if atrs
-    end.compact.to_h
+    end.to_h
 
     html_attributes = {
       **html_multilocs,

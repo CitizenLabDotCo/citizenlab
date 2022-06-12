@@ -421,7 +421,7 @@ module MultiTenancy
       end
 
       def yml_unsubscription_tokens
-        EmailCampaigns::UnsubscriptionToken.all.map do |ut|
+        EmailCampaigns::UnsubscriptionToken.all.filter_map do |ut|
           user_ref = lookup_ref(ut.user_id, :user)
           next unless user_ref # only add tokens for users we include in template
 
@@ -429,7 +429,7 @@ module MultiTenancy
             'user_ref' => user_ref,
             'token' => ut.token
           }
-        end.compact
+        end
       end
 
       def yml_baskets
@@ -536,7 +536,7 @@ module MultiTenancy
       end
 
       def yml_memberships
-        Membership.all.map do |m|
+        Membership.all.filter_map do |m|
           user = lookup_ref(m.user_id, :user)
           next unless user
 
@@ -546,7 +546,7 @@ module MultiTenancy
             'created_at' => m.created_at.to_s,
             'updated_at' => m.updated_at.to_s
           }
-        end.compact
+        end
       end
 
       def yml_static_pages
@@ -756,14 +756,14 @@ module MultiTenancy
       end
 
       def yml_areas_initiatives
-        AreasInitiative.where(initiative: Initiative.published).map do |a|
+        AreasInitiative.where(initiative: Initiative.published).filter_map do |a|
           next unless lookup_ref(a.initiative_id, :initiative)
 
           {
             'area_ref' => lookup_ref(a.area_id, :area),
             'initiative_ref' => lookup_ref(a.initiative_id, :initiative)
           }
-        end.compact
+        end
       end
 
       def yml_initiative_files

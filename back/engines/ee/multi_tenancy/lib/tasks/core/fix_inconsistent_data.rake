@@ -110,12 +110,12 @@ namespace :inconsistent_data do
       Apartment::Tenant.switch(tenant.schema_name) do
         deleted_keys = {}
         CustomField.with_resource_type('User').where(input_type: 'multiselect').pluck(:key).each do |key|
-          used_keys = User.select("custom_field_values->'#{key}' as user_options").map(&:user_options).compact.flatten.uniq
+          used_keys = User.select("custom_field_values->'#{key}' as user_options").filter_map(&:user_options).flatten.uniq
           deleted_keys[key] =
             used_keys - CustomField.with_resource_type('User').find_by(key: key).custom_field_options.pluck(:key)
         end
         CustomField.with_resource_type('User').where(input_type: 'select').pluck(:key).each do |key|
-          used_keys = User.select("custom_field_values->'#{key}' as user_option").map(&:user_option).compact.uniq
+          used_keys = User.select("custom_field_values->'#{key}' as user_option").filter_map(&:user_option).uniq
           deleted_keys[key] =
             used_keys - (CustomField.with_resource_type('User').find_by(key: key).custom_field_options.pluck(:key) + ['outside'])
         end
@@ -137,7 +137,7 @@ namespace :inconsistent_data do
 
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        deleted_area_ids = User.all.map(&:domicile).compact.uniq - (outside + Area.ids)
+        deleted_area_ids = User.all.filter_map(&:domicile).uniq - (outside + Area.ids)
         deleted_area_ids.each do |area_id|
           service.delete_custom_field_option_values area_id,
             CustomField.with_resource_type('User').find_by(key: 'domicile')
