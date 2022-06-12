@@ -11,7 +11,7 @@ module MultiTenancy
 
     def available_templates(external_subfolder: 'release')
       template_names = {}
-      template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
+      template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
         File.basename(file, '.yml')
       end
       if external_subfolder
@@ -312,7 +312,7 @@ module MultiTenancy
       elsif template_name.is_a? Hash
         template_name
       elsif template_name.nil?
-        YAML.safe_load open(Rails.root.join('config', 'tenant_templates', 'base.yml')).read
+        YAML.safe_load open(Rails.root.join('config/tenant_templates/base.yml')).read
       else
         throw 'Could not resolve template'
       end

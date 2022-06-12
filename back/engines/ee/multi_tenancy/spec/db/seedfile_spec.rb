@@ -9,10 +9,10 @@ describe 'seedfile', slow_test: true do
   # deleted after the tests
   it 'generates a valid tenant and user' do
     expect(Tenant.count).to be(1)
-    load Rails.root.join('db', 'seeds.rb')
+    load Rails.root.join('db/seeds.rb')
     expect(Tenant.count).to be(3)
     Apartment::Tenant.switch('localhost') do
-      load Rails.root.join('db', 'seeds.rb')
+      load Rails.root.join('db/seeds.rb')
       # The default tenant has a locked id to make it easier for other related
       # projects to have seeddata that works out of the box with cl2-back
       expect(Tenant.current.id).to eq 'c72c5211-8e03-470b-9564-04ec0a8c322b'
@@ -45,7 +45,7 @@ describe 'seedfile', slow_test: true do
       expect(Volunteering::Volunteer.count).to be > 10
     end
     Apartment::Tenant.switch('empty_localhost') do
-      load Rails.root.join('db', 'seeds.rb')
+      load Rails.root.join('db/seeds.rb')
       expect(Tenant.current.id).to eq '07ff8088-cc78-4307-9a1c-ebb6fb836f96'
       expect(User.count).to be 1
       expect(User.find_by(email: 'admin@citizenlab.co').id).to eq 'e0d698fc-5969-439f-9fe6-e74fe82b567a'
