@@ -8,9 +8,10 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        User.admin.select do |admin|
+        citizenlab_admins = User.admin.select do |admin|
           admin.email.ends_with? '@citizenlab.co'
-        end.each do |admin|
+        end
+        citizenlab_admins.each do |admin|
           password = weak_passwords.find do |pwd|
             admin.authenticate pwd
           end

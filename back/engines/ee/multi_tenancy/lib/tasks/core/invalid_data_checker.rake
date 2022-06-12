@@ -19,15 +19,17 @@ namespace :checks do
       end
     end
 
-    Tenant.select do |tenant|
+    active_tenants = Tenant.select do |tenant|
       tenant.settings.dig('core',
         'lifecycle_stage') == 'active' || tenant.host.ends_with?(ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost'))
-    end.each do |tenant|
+    end
+    active_tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Processing #{tenant.host}..."
-        Cl2DataListingService.new.cl2_schema_leaf_models.reject do |claz|
+        schema_leaf_models = Cl2DataListingService.new.cl2_schema_leaf_models.reject do |claz|
           skip_class_for_inconsistent_data_checking? claz
-        end.each do |claz|
+        end
+        schema_leaf_models.each do |claz|
           t1 = Time.zone.now
           claz.all.find_each do |object|
             errors = validation_errors object

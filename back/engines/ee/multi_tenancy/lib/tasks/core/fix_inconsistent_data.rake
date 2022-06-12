@@ -197,9 +197,10 @@ namespace :inconsistent_data do
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Processing #{tenant.host}..."
         Cl2DataListingService.new.cl2_schema_root_models.each do |claz|
-          claz.column_names.select do |col|
+          multiloc_column_names = claz.column_names.select do |col|
             col.end_with? '_multiloc'
-          end.each do |col|
+          end
+          multiloc_column_names.each do |col|
             tups = if claz.columns_hash[col].type == :jsonb
               sql = <<-SQL.squish
                 SELECT *

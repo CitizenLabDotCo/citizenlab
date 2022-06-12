@@ -190,9 +190,10 @@ namespace :setup_and_support do
         )
       end
 
-      User.all.select do |user|
+      users_with_birthyear = User.all.select do |user|
         user.birthyear.present?
-      end.each do |user|
+      end
+      users_with_birthyear.each do |user|
         user.custom_field_values[field.key] = user.birthyear.to_s
         unless user.save
           errors += [user.errors.messages]

@@ -85,11 +85,13 @@ namespace :complex_migrations do
 
         # Add new topics
         codes = %w[safety services other]
-        base_topics.select do |tp|
+        topics = base_topics.select do |tp|
           codes.include?(tp['code']) && Topic.find_by(code: tp['code']).blank?
-        end.sort_by do |tp|
+        end
+        ordered_topics = topics.sort_by do |tp|
           tp['ordering']
-        end.each do |tp|
+        end
+        ordered_topics.each do |tp|
           title_multiloc = CL2_SUPPORTED_LOCALES.to_h do |locale|
             translation = I18n.with_locale(locale) { I18n.t!("topics.#{tp['code']}") }
             [locale, translation]
@@ -174,9 +176,13 @@ namespace :complex_migrations do
         custom_min = code_seq.each_index.find { |i| code_seq[i] == 'custom' }
         custom_max = code_seq.each_index.reverse.find { |i| code_seq[i] == 'custom' }
         # Preserve order when there's custom topics in between default topics
-        preserve_order = custom_min.present? && custom_max.present? && code_seq.each_index.reject do |i|
-                                                                         code_seq[i] == 'custom'
-                                                                       end.select { |i| custom_min < i && i < custom_max }.present?
+        preserve_order = custom_min.present? && custom_max.present?
+        if preserve_order
+          selected_indexes = code_seq.each_index.select do |i|
+            code_seq[i] != 'custom' && custom_min < i && i < custom_max
+          end
+          preserve_order &&= selected_indexes.present?
+        end
 
         unless preserve_order
           Topic.defaults.sort_by do |topic|

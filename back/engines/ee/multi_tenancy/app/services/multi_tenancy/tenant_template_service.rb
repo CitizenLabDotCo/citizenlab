@@ -128,9 +128,10 @@ module MultiTenancy
 
       # Required to make templates tests work in which case file storage is used
       if Rails.env.test?
-        new_attributes.keys.select do |key|
+        keys = new_attributes.keys.select do |key|
           key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
-        end.each do |key|
+        end
+        keys.each do |key|
           new_key = key.gsub('remote_', '').gsub('_url', '')
           new_attributes[new_key] = File.open "public#{new_attributes[key]}"
           new_attributes.delete key

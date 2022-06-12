@@ -49,9 +49,10 @@ namespace :templates do
       end
       sleep 1 until futures.values.all?(&:complete?)
 
-      futures.select do |_, future|
+      rejected_futures = futures.select do |_, future|
         future.rejected?
-      end.map do |template, future|
+      end
+      rejected_futures.map do |template, future|
         puts "Template application #{template} failed!"
         puts future.reason.message
         ErrorReporter.report future.reason

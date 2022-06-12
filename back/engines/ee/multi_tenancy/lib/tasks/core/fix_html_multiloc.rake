@@ -97,15 +97,14 @@ namespace :fix_existing_tenants do
               multiloc.each_key do |k|
                 text = multiloc[k]
                 doc = Nokogiri::HTML.fragment(text)
-                doc.css('img')
-                  .select do |img|
-                    img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))}
-                  end
-                  .each do |img|
-                    url = img.attr('src')
-                    path = "#{Frontend::UrlService.new.home_url}/uploads/#{url.partition('/uploads/').last}"
-                    img.set_attribute('src', path)
-                  end
+                allowed_images = doc.css('img').select do |img|
+                  img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))}
+                end
+                allowed_images.each do |img|
+                  url = img.attr('src')
+                  path = "#{Frontend::UrlService.new.home_url}/uploads/#{url.partition('/uploads/').last}"
+                  img.set_attribute('src', path)
+                end
                 multiloc[k] = doc.to_s
               end
               multiloc = TextImageService.new.swap_data_images object, attribute
@@ -130,21 +129,20 @@ namespace :fix_existing_tenants do
               multiloc&.keys&.each do |k|
                 text = multiloc[k]
                 doc = Nokogiri::HTML.fragment(text)
-                doc.css('img')
-                  .select do |img|
-                    (img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))} &&
-                      img.attr('src').exclude?("#{tenant.host}/uploads/") &&
-                      img.attr('src').exclude?('s3.amazonaws.com') &&
-                      img.attr('src').exclude?('res.cloudinary.com')
-                    )
-                  end
-                  .each do |img|
-                    results[tenant.host] ||= {}
-                    results[tenant.host][claz.name] ||= {}
-                    results[tenant.host][claz.name][instance.id] ||= {}
-                    results[tenant.host][claz.name][instance.id][attribute] ||= []
-                    results[tenant.host][claz.name][instance.id][attribute] += [img.attr('src')]
-                  end
+                allowed_images = doc.css('img').select do |img|
+                  (img.attr('src') =~ %r{^$|^((http://.+)|(https://.+))} &&
+                    img.attr('src').exclude?("#{tenant.host}/uploads/") &&
+                    img.attr('src').exclude?('s3.amazonaws.com') &&
+                    img.attr('src').exclude?('res.cloudinary.com')
+                  )
+                end
+                allowed_images.each do |img|
+                  results[tenant.host] ||= {}
+                  results[tenant.host][claz.name] ||= {}
+                  results[tenant.host][claz.name][instance.id] ||= {}
+                  results[tenant.host][claz.name][instance.id][attribute] ||= []
+                  results[tenant.host][claz.name][instance.id][attribute] += [img.attr('src')]
+                end
               end
             end
           end

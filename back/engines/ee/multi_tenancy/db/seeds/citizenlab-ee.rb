@@ -710,13 +710,15 @@ if Apartment::Tenant.current == 'localhost'
       if project&.timeline?
         phases = project.phases.sample(rand(project.phases.size)).select(&:can_contain_ideas?)
       end
+      offsets = Array.new(rand(3)) do
+        rand(project.allowed_input_topics.count)
+      end
+      topics = offsets.uniq.map { |offset| project.allowed_input_topics.offset(offset).first }
       idea = Idea.create!({
         title_multiloc: create_for_some_locales { Faker::Lorem.sentence[0...80] },
         body_multiloc: create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
         idea_status: rand_instance(IdeaStatus.all),
-        topics: Array.new(rand(3)) do
-                  rand(project.allowed_input_topics.count)
-                end.uniq.map { |offset| project.allowed_input_topics.offset(offset).first },
+        topics: topics,
         author: rand_instance(User.all),
         project: project,
         phases: phases,
