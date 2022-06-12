@@ -37,10 +37,10 @@ class HomePage < ApplicationRecord
   validate :only_one_home_page, on: :create
 
   validates :top_info_section_enabled, inclusion: [true, false]
-  validates :top_info_section_multiloc, multiloc: true, if: :top_info_section_enabled
+  validates :top_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :top_info_section_enabled
 
   validates :bottom_info_section_enabled, inclusion: [true, false]
-  validates :bottom_info_section_multiloc, multiloc: true, if: :bottom_info_section_enabled
+  validates :bottom_info_section_multiloc, presence: true, multiloc: { html: true, presence: true }, if: :bottom_info_section_enabled
 
   validates :events_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
