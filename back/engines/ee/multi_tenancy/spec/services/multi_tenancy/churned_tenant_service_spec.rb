@@ -59,7 +59,7 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     context 'when PII retention period is over' do
       before do
         churned_tenant.switch do
-          churning_activity.update(acted_at: Date.today - 3.days)
+          churning_activity.update(acted_at: Time.zone.today - 3.days)
         end
       end
 
@@ -112,9 +112,9 @@ RSpec.describe MultiTenancy::ChurnedTenantService do
     let(:params) { { pii_retention_period: 5 } }
 
     where(:churn_datetime, :expired) do
-      Date.today | false
-      (Date.today - 5.days) | false
-      (Date.today - 6.days) | true
+      Time.zone.today | false
+      (Time.zone.today - 5.days) | false
+      (Time.zone.today - 6.days) | true
     end
 
     with_them do

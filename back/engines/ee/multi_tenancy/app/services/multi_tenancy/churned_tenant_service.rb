@@ -44,7 +44,7 @@ module MultiTenancy
     end
 
     def pii_expired?(churn_datetime)
-      today = Date.today
+      today = Time.zone.today
       (today - churn_datetime) > pii_retention_period
     end
 
