@@ -121,12 +121,10 @@ namespace :inconsistent_data do
         end
         deleted_keys.each do |field_key, option_keys|
           field = CustomField.with_resource_type('User').find_by key: field_key
-          if field.custom_field_options.exists?(key: option_keys)
-            raise 'Trying to delete existing option'
-          else
-            option_keys.each do |option_key|
-              service.delete_custom_field_option_values option_key, field
-            end
+          raise 'Trying to delete existing option' if field.custom_field_options.exists?(key: option_keys)
+
+          option_keys.each do |option_key|
+            service.delete_custom_field_option_values option_key, field
           end
         end
       end

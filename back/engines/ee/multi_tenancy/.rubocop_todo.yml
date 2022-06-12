@@ -165,15 +165,6 @@ Style/CombinableLoops:
   Exclude:
     - 'lib/tasks/core/template_phases.rake'
 
-# Offense count: 5
-# Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
-Style/GuardClause:
-  Exclude:
-    - 'app/models/multi_tenancy/extensions/app_configuration.rb'
-    - 'app/models/tenant.rb'
-    - 'app/services/multi_tenancy/tenant_service.rb'
-    - 'lib/tasks/core/fix_inconsistent_data.rake'
-
 # Offense count: 14
 Style/MultilineBlockChain:
   Exclude:

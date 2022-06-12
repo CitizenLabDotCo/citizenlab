@@ -309,21 +309,20 @@ class Tenant < ApplicationRecord
   def validate_missing_feature_dependencies
     ss = SettingsService.new
     missing_dependencies = ss.missing_dependencies(settings, AppConfiguration::Settings.json_schema)
-    unless missing_dependencies.empty?
-      errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
-    end
+    return if missing_dependencies.empty?
+
+    errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
   end
 
   def valid_host_format
     return if host == 'localhost'
+    return unless host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
 
-    if host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
-      errors.add(
-        :host,
-        :invalid_format,
-        message: 'The chosen host does not have a valid format'
-      )
-    end
+    errors.add(
+      :host,
+      :invalid_format,
+      message: 'The chosen host does not have a valid format'
+    )
   end
 
   def ensure_style
