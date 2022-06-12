@@ -101,13 +101,6 @@ RSpec/VerifiedDoubles:
 Rails/SkipsModelValidations:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: Environments.
-# Environments: development, test, production
-Rails/UnknownEnv:
-  Exclude:
-    - 'config/initializers/apartment.rb'
-
 # Offense count: 32
 Security/Open:
   Exclude:

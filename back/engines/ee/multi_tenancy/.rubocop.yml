@@ -105,3 +105,7 @@ RSpec/DescribeClass:
 RSpec/BeforeAfterAll:
   Exclude:
     - 'spec/tasks/email_campaigns_task_spec.rb'
+
+Rails/UnknownEnv:
+  # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
+  Environments: [development, test, production, staging]
