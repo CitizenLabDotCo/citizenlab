@@ -1,9 +1,9 @@
 models:
   home_page:
     -
-      top_info_section_enabled: true
+      top_info_section_enabled: false
       top_info_section_multiloc: {}
-      bottom_info_section_enabled: true
+      bottom_info_section_enabled: false
       bottom_info_section_multiloc: {}
       events_enabled: false
       projects_enabled: true

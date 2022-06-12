@@ -334,9 +334,9 @@ ActiveRecord::Schema.define(version: 2022_05_31_123916) do
   end
 
   create_table "home_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.boolean "top_info_section_enabled", default: true, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
-    t.boolean "bottom_info_section_enabled", default: true, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.boolean "events_enabled", default: false, null: false
     t.boolean "projects_enabled", default: true, null: false
@@ -1014,6 +1014,7 @@ ActiveRecord::Schema.define(version: 2022_05_31_123916) do
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
+    t.check_constraint "jsonb_typeof(value) = 'object'::text", name: "valid_value"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -6,9 +6,9 @@
 # Table name: home_pages
 #
 #  id                                       :uuid             not null, primary key
-#  top_info_section_enabled                 :boolean          default(TRUE), not null
+#  top_info_section_enabled                 :boolean          default(FALSE), not null
 #  top_info_section_multiloc                :jsonb            not null
-#  bottom_info_section_enabled              :boolean          default(TRUE), not null
+#  bottom_info_section_enabled              :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc             :jsonb            not null
 #  events_enabled                           :boolean          default(FALSE), not null
 #  projects_enabled                         :boolean          default(TRUE), not null
