@@ -165,11 +165,6 @@ Style/CombinableLoops:
   Exclude:
     - 'lib/tasks/core/template_phases.rake'
 
-# Offense count: 2
-Style/OpenStructUse:
-  Exclude:
-    - 'spec/services/track_intercom_service_spec.rb'
-
 # Offense count: 50
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, AllowedPatterns, IgnoredPatterns.

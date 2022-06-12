@@ -22,7 +22,7 @@ describe TrackIntercomService do
       contacts_api = double
       expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
 
-      zero_contacts = OpenStruct.new(count: 0)
+      zero_contacts = { count: 0 }
       expect(contacts_api).to receive(:search).and_return(zero_contacts)
 
       contact = double.as_null_object
@@ -39,7 +39,7 @@ describe TrackIntercomService do
       contacts_api = double
       contact = double
       expect(intercom).to receive(:contacts).twice.and_return(contacts_api)
-      expect(contacts_api).to receive(:search).and_return(OpenStruct.new({ count: 0 }))
+      expect(contacts_api).to receive(:search).and_return({ count: 0 })
       expect(contacts_api).to receive(:create).and_return(contact)
 
       companies_api = double
