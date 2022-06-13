@@ -63,29 +63,28 @@ export default ({
   hidePublicationStatusLabel,
   className,
 }: Props) => {
-  const [isBeingDeleted, setIsBeingDeleted] = useState<boolean>(false);
-  const [deletionError, setDeletionError] = useState<string>('');
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
+  const [deletionError, setDeletionError] = useState('');
   const authUser = useAuthUser();
 
   const projectGroups = useProjectGroups({
     projectId: publication.publicationId,
   });
 
+  const buttonDisabled =
+    isBeingDeleted ||
+    (!isNilOrError(authUser) &&
+      !canModerateProject(publication.publicationId, { data: authUser }));
+
   const ManageButton = (
     <RowButton
-      className={`
-        e2e-admin-edit-publication
-      `}
+      className="e2e-admin-edit-publication"
       linkTo={adminProjectsProjectPath(publication.publicationId)}
       buttonStyle="secondary"
       icon="edit"
       type="button"
       key="manage"
-      disabled={
-        isBeingDeleted ||
-        (!isNilOrError(authUser) &&
-          !canModerateProject(publication.publicationId, { data: authUser }))
-      }
+      disabled={buttonDisabled}
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
