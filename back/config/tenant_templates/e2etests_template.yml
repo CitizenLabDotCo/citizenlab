@@ -1,24 +1,7 @@
 ---
 models:
   home_page:
-    -
-      top_info_section_enabled: false
-      top_info_section_multiloc: {}
-      bottom_info_section_enabled: false
-      bottom_info_section_multiloc: {}
-      events_enabled: false
-      projects_enabled: true
-      projects_header_multiloc: {}
-      banner_avatars_enabled: true
-      banner_enabled: true
-      banner_layout: "full_width_banner_layout"
-      banner_signed_in_header_multiloc: {}
-      cta_signed_in_text_multiloc: {}
-      cta_signed_in_type: "no_button"
-      banner_signed_out_header_multiloc: {}
-      banner_signed_out_subheader_multiloc: {}
-      cta_signed_out_text_multiloc: {}
-      cta_signed_out_type: "sign_up_button"
+    - {}
   idea_status:
     -
       title_multiloc: idea_statuses.proposed
