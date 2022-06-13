@@ -1,35 +1,29 @@
 import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // components
-import {
-  Section,
-  SectionTitle,
-  SectionDescription,
-} from 'components/admin/Section';
 import VisibleNavbarItemList from './VisibleNavbarItemList';
 import HiddenNavbarItemList from './HiddenNavbarItemList';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import TabbedResource from 'components/admin/TabbedResource';
 
-const NavigationSettings = () => (
-  <Section>
-    <SectionTitle>
-      <FormattedMessage {...messages.pageTitle} />
-    </SectionTitle>
-
-    <SectionDescription>
-      <FormattedMessage {...messages.pageSubtitle} />
-    </SectionDescription>
-
+const NavigationSettings = ({ intl: { formatMessage } }: InjectedIntlProps) => (
+  <TabbedResource
+    resource={{
+      title: formatMessage(messages.pageHeader),
+      subtitle: formatMessage(messages.pageSubtitle),
+    }}
+  >
     <Box mb="44px">
       <VisibleNavbarItemList />
     </Box>
 
     <HiddenNavbarItemList />
-  </Section>
+  </TabbedResource>
 );
 
-export default NavigationSettings;
+export default injectIntl(NavigationSettings);

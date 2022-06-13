@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  pageTitle: {
-    id: 'app.modules.navbar.admin.containers.pageTitle',
-    defaultMessage: 'Navigation bar and platform pages',
+  pageHeader: {
+    id: 'app.modules.navbar.admin.containers.pageHeader',
+    defaultMessage: 'Pages & menu',
   },
   pageSubtitle: {
     id: 'app.modules.navbar.admin.containers.pageSubtitle',
