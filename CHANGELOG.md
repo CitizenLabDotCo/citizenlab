@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
 ## 2022-06-08_2
 
 ### Fixed
