@@ -6,6 +6,7 @@ import { FocusOn } from 'react-focus-on';
 import useContentBuilderLayout from '../../../hooks/useContentBuilder';
 import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
+import { useParams } from 'react-router-dom';
 
 // components
 import Editor from '../Editor';
@@ -18,15 +19,14 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../services/contentBuilder';
 
 // types
 import { SerializedNodes } from '@craftjs/core';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
+export const MobileViewPreview = () => {
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const [selectedLocale, setSelectedLocale] = useState<string | undefined>();
+  const { projectId } = useParams() as { projectId: string };
   const platformLocale = useLocale();
   const project = useProject({ projectId });
 
-  const modalPortalElement = document.getElementById('modal-portal');
   const contentBuilderLayout = useContentBuilderLayout({
     projectId,
     code: PROJECT_DESCRIPTION_CODE,
@@ -68,37 +68,41 @@ const MobileViewPreview = ({ params: { projectId } }: WithRouterProps) => {
 
   const editorData = draftData || savedEditorData;
 
-  return modalPortalElement && !isNilOrError(project)
-    ? createPortal(
-        <FocusOn>
-          <Box
-            display="flex"
-            flexDirection="column"
-            w="100%"
-            zIndex="10000"
-            position="fixed"
-            height="100vh"
-            bgColor="#fff"
-            overflowY="auto"
-          >
-            <Box p="20px">
-              <Title color="colorText" variant="h1">
-                {project.attributes.title_multiloc[locale]}
-              </Title>
-              {loadingContentBuilderLayout && <Spinner />}
-              {!loadingContentBuilderLayout && contentBuilderContent && (
-                <Box>
-                  <Editor isPreview={true}>
-                    <ContentBuilderFrame editorData={editorData} />
-                  </Editor>
-                </Box>
-              )}
+  return !isNilOrError(project) ? (
+    <FocusOn>
+      <Box
+        display="flex"
+        flexDirection="column"
+        w="100%"
+        zIndex="10000"
+        position="fixed"
+        height="100vh"
+        bgColor="#fff"
+        overflowY="auto"
+      >
+        <Box p="20px">
+          <Title color="colorText" variant="h1">
+            {project.attributes.title_multiloc[locale]}
+          </Title>
+          {loadingContentBuilderLayout && <Spinner />}
+          {!loadingContentBuilderLayout && contentBuilderContent && (
+            <Box>
+              <Editor isPreview={true}>
+                <ContentBuilderFrame editorData={editorData} />
+              </Editor>
             </Box>
-          </Box>
-        </FocusOn>,
-        modalPortalElement
-      )
-    : null;
+          )}
+        </Box>
+      </Box>
+    </FocusOn>
+  ) : null;
 };
 
-export default withRouter(MobileViewPreview);
+const MobileViewPreviewModal = () => {
+  const modalPortalElement = document.getElementById('modal-portal');
+
+  return modalPortalElement
+    ? createPortal(<MobileViewPreview />, modalPortalElement)
+    : null;
+};
+export default MobileViewPreviewModal;
