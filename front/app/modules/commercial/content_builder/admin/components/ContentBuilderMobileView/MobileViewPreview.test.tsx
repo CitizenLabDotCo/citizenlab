@@ -2,8 +2,9 @@ import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import { MobileViewPreview } from './MobileViewPreview';
 
+let mockLocale = 'en';
 jest.mock('services/locale');
-jest.mock('hooks/useLocale');
+jest.mock('hooks/useLocale', () => jest.fn(() => mockLocale));
 jest.mock('hooks/useLocalize');
 
 const DEFAULT_CONTENT_BUILDER_LAYOUT_DATA = {
@@ -46,11 +47,19 @@ jest.mock('hooks/useProject', () => {
 });
 
 describe('Mobile Preview Content', () => {
-  it('should shows content builder content when content builder is not enabled', () => {
+  it('should render', () => {
     render(<MobileViewPreview />);
     expect(
       screen.getByTestId('contentBuilderMobilePreviewContent')
     ).toBeInTheDocument();
+    expect(screen.getByText('Test Project')).toBeInTheDocument();
+  });
+
+  it('should show correct title with a different locale', () => {
+    mockLocale = 'fr-FR';
+    render(<MobileViewPreview />);
+
+    expect(screen.getByText('Test Projet')).toBeInTheDocument();
   });
 
   it('shows loading state correctly', () => {
