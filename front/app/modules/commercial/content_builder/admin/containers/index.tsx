@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
-import { withRouter } from 'utils/cl-router/withRouter';
+import { useParams, useLocation } from 'react-router-dom';
 
 // styles
 import styled from 'styled-components';
@@ -51,13 +51,12 @@ type ContentBuilderErrors = Record<
   { hasError: boolean; selectedLocale: Locale }
 >;
 
-const ContentBuilderPage = ({
-  params: { projectId },
-  location: { pathname },
-}) => {
+export const ContentBuilderPage = () => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
+  const { pathname } = useLocation();
+  const { projectId } = useParams() as { projectId: string };
 
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
@@ -152,74 +151,73 @@ const ContentBuilderPage = ({
     setSelectedLocale(locale);
   };
 
-  const modalPortalElement = document.getElementById('modal-portal');
   const contentBuilderVisible =
-    featureEnabled &&
-    pathname.includes('admin/content-builder') &&
-    modalPortalElement;
+    featureEnabled && pathname.includes('admin/content-builder');
 
-  return contentBuilderVisible
-    ? createPortal(
-        <Box
-          display="flex"
-          flexDirection="column"
-          w="100%"
-          zIndex="10000"
-          position="fixed"
-          bgColor={colors.adminBackground}
-          h="100vh"
-        >
-          <FocusOn>
-            <Editor isPreview={false} onNodesChange={handleEditorChange}>
-              <ContentBuilderTopBar
-                localesWithError={localesWithError}
-                mobilePreviewEnabled={mobilePreviewEnabled}
-                setMobilePreviewEnabled={setMobilePreviewEnabled}
-                selectedLocale={selectedLocale}
-                onSelectLocale={handleSelectedLocaleChange}
-                draftEditorData={draftData}
-              />
-              <Box
-                mt={`${stylingConsts.menuHeight}px`}
-                display={mobilePreviewEnabled ? 'none' : 'flex'}
-              >
-                {selectedLocale && (
-                  <ContentBuilderToolbox selectedLocale={selectedLocale} />
-                )}
-                <StyledRightColumn>
-                  <Box width="1000px">
-                    {localesWithError.length > 0 && (
-                      <Error
-                        text={
-                          <FormattedMessage
-                            {...messages.errorMessage}
-                            values={{
-                              locale: localesWithError[0].toUpperCase(),
-                            }}
-                          />
-                        }
+  return contentBuilderVisible ? (
+    <Box
+      display="flex"
+      flexDirection="column"
+      w="100%"
+      zIndex="10000"
+      position="fixed"
+      bgColor={colors.adminBackground}
+      h="100vh"
+      data-testid="contentBuilderPage"
+    >
+      <FocusOn>
+        <Editor isPreview={false} onNodesChange={handleEditorChange}>
+          <ContentBuilderTopBar
+            localesWithError={localesWithError}
+            mobilePreviewEnabled={mobilePreviewEnabled}
+            setMobilePreviewEnabled={setMobilePreviewEnabled}
+            selectedLocale={selectedLocale}
+            onSelectLocale={handleSelectedLocaleChange}
+            draftEditorData={draftData}
+          />
+          <Box
+            mt={`${stylingConsts.menuHeight}px`}
+            display={mobilePreviewEnabled ? 'none' : 'flex'}
+          >
+            {selectedLocale && (
+              <ContentBuilderToolbox selectedLocale={selectedLocale} />
+            )}
+            <StyledRightColumn>
+              <Box width="1000px">
+                {localesWithError.length > 0 && (
+                  <Error
+                    text={
+                      <FormattedMessage
+                        {...messages.errorMessage}
+                        values={{
+                          locale: localesWithError[0].toUpperCase(),
+                        }}
                       />
-                    )}
-                    <ContentBuilderFrame editorData={editorData} />
-                  </Box>
-                </StyledRightColumn>
-                <ContentBuilderSettings />
+                    }
+                  />
+                )}
+                <ContentBuilderFrame editorData={editorData} />
               </Box>
-              <Box
-                justifyContent="center"
-                display={mobilePreviewEnabled ? 'flex' : 'none'}
-              >
-                <ContentBuilderMobileView
-                  projectId={projectId}
-                  ref={iframeRef}
-                />
-              </Box>
-            </Editor>
-          </FocusOn>
-        </Box>,
-        modalPortalElement
-      )
+            </StyledRightColumn>
+            <ContentBuilderSettings />
+          </Box>
+          <Box
+            justifyContent="center"
+            display={mobilePreviewEnabled ? 'flex' : 'none'}
+          >
+            <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
+          </Box>
+        </Editor>
+      </FocusOn>
+    </Box>
+  ) : null;
+};
+
+const ContentBuilderPageModal = () => {
+  const modalPortalElement = document.getElementById('modal-portal');
+  return modalPortalElement
+    ? createPortal(<ContentBuilderPage />, modalPortalElement)
     : null;
 };
 
-export default withRouter(ContentBuilderPage);
+export default ContentBuilderPageModal;
