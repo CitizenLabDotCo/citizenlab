@@ -8,14 +8,12 @@ import {
 type Parameters = {
   names: TAppConfigurationSetting[];
   onlyCheckAllowed?: boolean;
-  onlyOneFeatureFlagRequired?: boolean;
 };
 
 // copied and modified from front/app/hooks/useFeatureFlag.ts
 export default function useFeatureFlags({
   names,
   onlyCheckAllowed = false,
-  onlyOneFeatureFlagRequired = true,
 }: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
     | IAppConfiguration['data']['attributes']['settings']
@@ -37,10 +35,5 @@ export default function useFeatureFlags({
     tenantSettings?.[featureName]?.allowed &&
     (onlyCheckAllowed || tenantSettings?.[featureName]?.enabled);
 
-  return (
-    names.length === 0 ||
-    (onlyOneFeatureFlagRequired
-      ? names.some(isFeatureActive)
-      : names.every(isFeatureActive))
-  );
+  return names.length === 0 || names.some(isFeatureActive);
 }
