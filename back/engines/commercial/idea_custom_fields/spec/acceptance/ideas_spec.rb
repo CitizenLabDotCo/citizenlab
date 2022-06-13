@@ -12,6 +12,8 @@ resource 'Ideas' do
     header 'Content-Type', 'application/json'
     token = Knock::AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
+
+    SettingsService.new.activate_feature! 'dynamic_idea_form'
   end
 
   describe 'Create' do
