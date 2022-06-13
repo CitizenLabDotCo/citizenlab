@@ -7,6 +7,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 type ContentBuilderLayoutProps = {
+  children?: React.ReactNode;
   onMount: (isVisible: boolean) => void;
 } & WithRouterProps;
 

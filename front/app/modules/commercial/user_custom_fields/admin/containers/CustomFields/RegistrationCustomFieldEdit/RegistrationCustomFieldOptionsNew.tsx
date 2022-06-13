@@ -18,13 +18,9 @@ import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';
 
-export interface Props {
-  userCustomFieldId: string;
-}
-
 const RegistrationCustomFieldOptionsNew = ({
   params: { userCustomFieldId },
-}: Props & WithRouterProps) => {
+}: WithRouterProps) => {
   const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }

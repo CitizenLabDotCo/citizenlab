@@ -31,7 +31,7 @@ const StyledGoBackButton = styled(GoBackButton)`
 `;
 
 export interface Props {
-  children: JSX.Element | null;
+  children?: React.ReactNode;
 }
 
 const RegistrationCustomFieldEdit = memo(
