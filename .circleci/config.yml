@@ -180,7 +180,7 @@ jobs:
     steps:
       - pending_citizenlab_github_status
       - run: bundle
-      - run: bundle exec rubocop --format simple
+      - run: bundle exec rubocop -c .rubocop.yml --format simple
       - final_citizenlab_github_status
 
   back-test:

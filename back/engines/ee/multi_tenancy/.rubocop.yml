@@ -10,10 +10,7 @@ AllCops:
   NewCops: enable
   Exclude:
   - 'db/schema.rb'
-  - '**/*.builder'
-  - '**/.*.*'
-  - '**/bin/**/*'
-  - 'engines/ee/**/*'
+  - 'bin/**/*'
 
 Style/Documentation:
   # Most classes are not documented, so turn off this Cop.
