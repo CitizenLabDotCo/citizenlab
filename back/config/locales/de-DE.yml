@@ -17,12 +17,12 @@ de:
   initiative_statuses:
     proposed: vorgeschlagen
     proposed_description: vorgeschlagen
-    expired: abgelaufen
-    expired_description: abgelaufen
+    expired: Grenzwert nicht erreicht
+    expired_description: Grenzwert nicht erreicht
     threshold_reached: Schwelle erreicht
     threshold_reached_description: Schwelle erreicht
-    answered: beantwortet
-    answered_description: beantwortet
+    answered: Grenzwert erreicht und beantwortet
+    answered_description: Grenzwert erreicht und beantwortet
     ineligible: untauglich
     ineligible_description: untauglich
   topics:
