@@ -14,18 +14,18 @@ describe WebApi::V1::Notifications::NotificationSerializer do
     expect(slug.downcase).not_to include(user1.last_name.downcase)
 
     last_name = serializer_class
-                    .new(notification, params: { current_user: user1 })
-                    .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification, params: { current_user: user1 })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq user1.last_name
 
     last_name = serializer_class
-                    .new(notification, params: { current_user: admin })
-                    .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification, params: { current_user: admin })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq user1.last_name
 
     last_name = serializer_class
-                    .new(notification_from_admin, params: { current_user: user2 })
-                    .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification_from_admin, params: { current_user: user2 })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq admin.last_name
   end
 
@@ -38,37 +38,37 @@ describe WebApi::V1::Notifications::NotificationSerializer do
 
     it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :comment_on_your_comment,
-          WebApi::V1::Notifications::CommentOnYourCommentSerializer
-        )
+        john, jane, admin, :comment_on_your_comment,
+        WebApi::V1::Notifications::CommentOnYourCommentSerializer
+      )
     end
 
     it 'serializes CommentOnYourInitiative correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :comment_on_your_initiative,
-          WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
-        )
+        john, jane, admin, :comment_on_your_initiative,
+        WebApi::V1::Notifications::CommentOnYourInitiativeSerializer
+      )
     end
 
     it 'serializes CommentOnYourComment correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :comment_on_your_idea,
-          WebApi::V1::Notifications::CommentOnYourIdeaSerializer
-        )
+        john, jane, admin, :comment_on_your_idea,
+        WebApi::V1::Notifications::CommentOnYourIdeaSerializer
+      )
     end
 
     it 'serializes InitiativeAssignedToYouSerializer correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :initiative_assigned_to_you,
-          WebApi::V1::Notifications::InitiativeAssignedToYouSerializer
-        )
+        john, jane, admin, :initiative_assigned_to_you,
+        WebApi::V1::Notifications::InitiativeAssignedToYouSerializer
+      )
     end
 
     it 'serializes MentionInComment correctly' do
       expect_serializer_to_hide_name(
-          john, jane, admin, :mention_in_comment,
-          WebApi::V1::Notifications::MentionInCommentSerializer
-        )
+        john, jane, admin, :mention_in_comment,
+        WebApi::V1::Notifications::MentionInCommentSerializer
+      )
     end
   end
 end

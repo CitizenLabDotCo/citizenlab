@@ -18,7 +18,7 @@ resource 'Poll Options' do
 
     before do
       @question = create(:poll_question, :with_options)
-      other_option = create(:poll_option)
+      create(:poll_option)
     end
 
     let(:poll_question_id) { @question.id }

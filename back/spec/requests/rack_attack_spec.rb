@@ -21,22 +21,28 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     # Use a different email for each request, to avoid testing limit by email
     freeze_time do
       10.times do |i|
-        post '/web_api/v1/user_token',
-            params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{i}@b.com"),
-            headers: headers
+        post(
+          '/web_api/v1/user_token',
+          params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{i}@b.com"),
+          headers: headers
+        )
       end
       expect(status).to eq(404) # Not found
 
-      post '/web_api/v1/user_token',
-          params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
-          headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
-      post '/web_api/v1/user_token',
-           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
-           headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(404) # Not found
     end
   end
@@ -46,24 +52,28 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     freeze_time do
       10.times do |i|
         headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i + 1}" }
-        post '/web_api/v1/user_token',
-            params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-            headers: headers
+        post(
+          '/web_api/v1/user_token',
+          params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+          headers: headers
+        )
       end
       expect(status).to eq(404) # Not found
 
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.11' }
-      post '/web_api/v1/user_token',
-          params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-          headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.12' }
       post '/web_api/v1/user_token',
-           params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-           headers: headers
+        params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+        headers: headers
       expect(status).to eq(404) # Not found
     end
   end
@@ -74,37 +84,41 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     # Use a different email for each request, to emulate multiple account creation attempts
     freeze_time do
       10.times do |i|
-        post '/web_api/v1/users',
-            params: '{ "user": { "email": "INSERT",
-                                  "password": "test123456",
-                                  "locale": "en",
-                                  "first_name": "Jane",
-                                  "last_name": "Doe" }
-                      }'.gsub('INSERT', "a#{i + 1}@b.com"),
-            headers: headers
+        post(
+          '/web_api/v1/users',
+          params: '{ "user": { "email": "INSERT",
+                              "password": "test123456",
+                              "locale": "en",
+                              "first_name": "Jane",
+                              "last_name": "Doe" }
+                  }'.gsub('INSERT', "a#{i + 1}@b.com"),
+          headers: headers
+        )
       end
       expect(status).to eq(201) # Created
 
-      post '/web_api/v1/users',
-          params: '{ "user": { "email": "a11@b.com",
-                                "password": "test123456",
-                                "locale": "en",
-                                "first_name": "Jane",
-                                "last_name": "Doe" }
-                    }',
-          headers: headers
+      post(
+        '/web_api/v1/users',
+        params: '{ "user": { "email": "a11@b.com",
+                            "password": "test123456",
+                            "locale": "en",
+                            "first_name": "Jane",
+                            "last_name": "Doe" }
+                }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/users',
-           params: '{ "user": { "email": "a12@b.com",
+        params: '{ "user": { "email": "a12@b.com",
                                 "password": "test123456",
                                 "locale": "en",
                                 "first_name": "Jane",
                                 "last_name": "Doe" }
                     }',
-           headers: headers
+        headers: headers
       expect(status).to eq(201) # Created
     end
   end
@@ -114,22 +128,28 @@ describe 'Rack::Attack', type: :request, slow_test: true do
 
     freeze_time do
       10.times do
-        post '/web_api/v1/users/reset_password',
-            params: '{ "user": { "password": "new_password", "token": "invalid-token" } }',
-            headers: headers
+        post(
+          '/web_api/v1/users/reset_password',
+          params: '{ "user": { "password": "new_password", "token": "invalid-token" } }',
+          headers: headers
+        )
       end
       expect(status).to eq(401) # Unauthorized
 
-      post '/web_api/v1/users/reset_password',
-          params: '{ "user": { "password": "new_password", "token": "invalid-token" } }',
-          headers: headers
+      post(
+        '/web_api/v1/users/reset_password',
+        params: '{ "user": { "password": "new_password", "token": "invalid-token" } }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
-      post '/web_api/v1/users/reset_password',
-           params: '{ "user": { "password": "new_password", "token": "invalid-token" } }',
-           headers: headers
+      post(
+        '/web_api/v1/users/reset_password',
+        params: '{ "user": { "password": "new_password", "token": "invalid-token" } }',
+        headers: headers
+      )
       expect(status).to eq(401) # Unauthorized
     end
   end
@@ -141,22 +161,26 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     # Use a different email for each request, to avoid testing limit by email
     freeze_time do
       10.times do |i|
-        post '/web_api/v1/users/reset_password_email',
-            params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[i].email.to_s),
-            headers: headers
+        post(
+          '/web_api/v1/users/reset_password_email',
+          params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[i].email.to_s),
+          headers: headers
+        )
       end
       expect(status).to eq(202) # Accepted
 
-      post '/web_api/v1/users/reset_password_email',
-          params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[10].email.to_s),
-          headers: headers
+      post(
+        '/web_api/v1/users/reset_password_email',
+        params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[10].email.to_s),
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/users/reset_password_email',
-           params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[11].email.to_s),
-           headers: headers
+        params: '{ "user": { "email": "INSERT" } }'.gsub('INSERT', users[11].email.to_s),
+        headers: headers
       expect(status).to eq(202) # Accepted
     end
   end
@@ -201,37 +225,43 @@ describe 'Rack::Attack', type: :request, slow_test: true do
 
     freeze_time do
       10.times do
-        post '/web_api/v1/invites/by_token/:token/accept',
-            params: '{ "user": { "email": "a@b.com",
-                                  "first_name": "Jane",
-                                  "last_name": "Doe",
-                                  "password": "test1234",
-                                  "token": "invalid-token" }
-                      }',
-            headers: headers
+        post(
+          '/web_api/v1/invites/by_token/:token/accept',
+          params: '{ "user": { "email": "a@b.com",
+                              "first_name": "Jane",
+                              "last_name": "Doe",
+                              "password": "test1234",
+                              "token": "invalid-token" }
+                  }',
+          headers: headers
+        )
       end
       expect(status).to eq(401) # Unauthorized
 
-      post '/web_api/v1/invites/by_token/:token/accept',
-          params: '{ "user": { "email": "a@b.com",
-                                "first_name": "Jane",
-                                "last_name": "Doe",
-                                "password": "test1234",
-                                "token": "invalid-token" }
-                  }',
-          headers: headers
+      post(
+        '/web_api/v1/invites/by_token/:token/accept',
+        params: '{ "user": { "email": "a@b.com",
+                            "first_name": "Jane",
+                            "last_name": "Doe",
+                            "password": "test1234",
+                            "token": "invalid-token" }
+              }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(20.seconds.from_now) do
-      post '/web_api/v1/invites/by_token/:token/accept',
-           params: '{ "user": { "email": "a@b.com",
-                                "first_name": "Jane",
-                                "last_name": "Doe",
-                                "password": "test1234",
-                                "token": "invalid-token" }
-                    }',
-           headers: headers
+      post(
+        '/web_api/v1/invites/by_token/:token/accept',
+        params: '{ "user": { "email": "a@b.com",
+                            "first_name": "Jane",
+                            "last_name": "Doe",
+                            "password": "test1234",
+                            "token": "invalid-token" }
+                }',
+        headers: headers
+      )
       expect(status).to eq(401) # Unauthorized
     end
   end
@@ -249,9 +279,11 @@ describe 'Rack::Attack', type: :request, slow_test: true do
       travel_to((i * 20).seconds.from_now) do
         10.times do |j|
           iter = (10 * i) + (j + 1)
-          post '/web_api/v1/user_token',
-               params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{iter}@b.com"),
-               headers: headers
+          post(
+            '/web_api/v1/user_token',
+            params: '{ "auth": { "email": "INSERT", "password": "test123456" } }'.gsub('INSERT', "a#{iter}@b.com"),
+            headers: headers
+          )
           print "Target: 4000 requests. Requests made: #{iter}\r"
           $stdout.flush
         end
@@ -260,16 +292,20 @@ describe 'Rack::Attack', type: :request, slow_test: true do
     expect(status).to eq(404) # Not found
 
     travel_to(134.minutes.from_now) do
-      post '/web_api/v1/user_token',
-           params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
-           headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "email": "a11@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(27.hours.from_now) do
-      post '/web_api/v1/user_token',
-           params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
-           headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "INSERT": "a12@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(404) # Not found
     end
   end
@@ -282,9 +318,11 @@ describe 'Rack::Attack', type: :request, slow_test: true do
         10.times do |j|
           iter = (10 * i) + (j + 1)
           headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{iter}" }
-          post '/web_api/v1/user_token',
-               params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-               headers: headers
+          post(
+            '/web_api/v1/user_token',
+            params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+            headers: headers
+          )
           print "Target: 100 requests. Requests made: #{iter}\r"
           $stdout.flush
         end
@@ -294,17 +332,21 @@ describe 'Rack::Attack', type: :request, slow_test: true do
 
     travel_to(10.minutes.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.101' }
-      post '/web_api/v1/user_token',
-           params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-           headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(25.hours.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.102' }
-      post '/web_api/v1/user_token',
-           params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
-           headers: headers
+      post(
+        '/web_api/v1/user_token',
+        params: '{ "auth": { "email": "a@b.com", "password": "test123456" } }',
+        headers: headers
+      )
       expect(status).to eq(404) # Not found
     end
   end

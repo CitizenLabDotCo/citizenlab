@@ -51,16 +51,20 @@ class Idea < ApplicationRecord
   belongs_to :idea_status, optional: true
 
   counter_culture :idea_status, touch: true
-  counter_culture :project,
+  counter_culture(
+    :project,
     column_name: proc { |idea| idea.publication_status == 'published' ? 'ideas_count' : nil },
     column_names: {
       ['ideas.publication_status = ?', 'published'] => 'ideas_count'
     },
     touch: true
+  )
 
-  counter_culture :project,
+  counter_culture(
+    :project,
     column_name: 'comments_count',
     delta_magnitude: proc { |idea| idea.comments_count }
+  )
 
   belongs_to :assignee, class_name: 'User', optional: true
 
@@ -89,13 +93,6 @@ class Idea < ApplicationRecord
 
   after_update :fix_comments_count_on_projects
 
-  scope :with_all_topics, (proc do |topic_ids|
-    uniq_topic_ids = topic_ids.uniq
-    joins(:ideas_topics)
-    .where(ideas_topics: { topic_id: uniq_topic_ids })
-    .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
-  end)
-
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
     where(id: ideas)
@@ -116,7 +113,7 @@ class Idea < ApplicationRecord
 
   scope :order_status, lambda { |direction = :desc|
     joins(:idea_status)
-    .order("idea_statuses.ordering #{direction}, ideas.id")
+      .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
   scope :feedback_needed, lambda {
@@ -127,7 +124,6 @@ class Idea < ApplicationRecord
   scope :order_with, lambda { |scope_name|
     case scope_name
     when 'random'   then order_random
-    when 'trending' then order_trending
     when 'popular'  then order_popular
     when 'new'      then order_new
     when '-new'     then order_new(:asc)
@@ -162,9 +158,9 @@ class Idea < ApplicationRecord
   end
 
   def fix_comments_count_on_projects
-    if project_id_previously_changed?
-      Comment.counter_culture_fix_counts only: [%i[idea project]]
-    end
+    return unless project_id_previously_changed?
+
+    Comment.counter_culture_fix_counts only: [%i[idea project]]
   end
 
   def update_phase_ideas_count(_)

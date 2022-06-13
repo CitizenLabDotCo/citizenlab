@@ -3,8 +3,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-multiloc_service = MultilocService.new
-
 def time_boundary_parameters(s)
   s.parameter :start_at, 'Date defining from where results should start', required: false
   s.parameter :end_at, 'Date defining till when results should go', required: false
@@ -26,6 +24,7 @@ end
 resource 'Stats - Users' do
   explanation 'The various stats endpoints can be used to show how certain properties of users.'
 
+  let(:multiloc_service) { MultilocService.new }
   let!(:now) { Time.now.in_time_zone(@timezone) }
 
   before do
@@ -195,7 +194,7 @@ resource 'Stats - Users' do
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
 
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 11
       end
     end
@@ -222,7 +221,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 9
       end
     end
@@ -246,7 +245,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 3
       end
     end
@@ -272,7 +271,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 1
       end
     end
@@ -305,7 +304,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
 
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 3
       end
     end
@@ -431,7 +430,7 @@ resource 'Stats - Users' do
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 10
       end
@@ -457,7 +456,7 @@ resource 'Stats - Users' do
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 5
       end
@@ -485,7 +484,7 @@ resource 'Stats - Users' do
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 1
       end
@@ -520,11 +519,11 @@ resource 'Stats - Users' do
         # monotonically increasing
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sort).to eq amounts
         expect(amount_col.last).to eq 3
+      end
     end
-  end
   end
 
   get 'web_api/v1/stats/active_users_by_time' do
@@ -674,7 +673,7 @@ resource 'Stats - Users' do
         expect(worksheet.count).to eq start_at.end_of_month.day + 1
         expect(worksheet[0].cells.map(&:value)).to match %w[date amount]
         amount_col = worksheet.map { |col| col.cells[1].value }
-        header, *amounts = amount_col
+        _header, *amounts = amount_col
         expect(amounts.sum).to eq 4
       end
     end

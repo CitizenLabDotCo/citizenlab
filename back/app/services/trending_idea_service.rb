@@ -16,7 +16,7 @@ class TrendingIdeaService
       .joins(:idea_status)
       .joins(:idea_trending_info)
       .select(
-        <<-SQL
+        <<-SQL.squish
           ideas.id,
           NOT (
             ideas.upvotes_count - ideas.downvotes_count < 0 OR
@@ -30,7 +30,7 @@ class TrendingIdeaService
     ideas
       .joins("INNER JOIN (#{sub_query.to_sql}) sub ON ideas.id = sub.id")
       .select(
-        <<-SQL
+        <<-SQL.squish
           ideas.*,
           CASE WHEN sub.is_trending THEN sub.score_abs ELSE (-1/sub.score_abs) END as trending_score
         SQL
@@ -41,7 +41,6 @@ class TrendingIdeaService
     # used for testing purposes
     upvotes_ago = activity_ago idea.upvotes # .select { |v| v.user&.id != idea.author&.id }
     comments_ago = activity_ago idea.comments # .select { |c| c.author&.id != idea.author&.id }
-    last_activity_at = (upvotes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)]).min
     mean_activity_at = mean(upvotes_ago + comments_ago + [(Time.now.to_i - idea.published_at.to_i)])
     score = trending_score_formula (idea.upvotes_count - idea.downvotes_count), mean_activity_at
     if (idea.upvotes_count - idea.downvotes_count) < 0

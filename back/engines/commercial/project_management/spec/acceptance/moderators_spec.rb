@@ -83,8 +83,8 @@ resource 'Moderators' do
 
   post 'web_api/v1/projects/:project_id/moderators' do
     with_options scope: :moderator do
-        parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
-      end
+      parameter :user_id, 'The id of user to become moderator (the id of the moderator will be the same).', required: true
+    end
     ValidationErrorHelper.new.error_fields(self, User)
 
     context 'when moderator' do
@@ -154,24 +154,32 @@ resource 'Moderators' do
           roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
       end
       let!(:u2) do
-        create(:user,
+        create(
+          :user,
           first_name: 'Jon', last_name: 'Smith', email: 'freddy1@zmail.com',
-          roles: [{ 'type' => 'project_moderator', 'project_id' => other_project.id }])
+          roles: [{ 'type' => 'project_moderator', 'project_id' => other_project.id }]
+        )
       end
       let!(:u3) do
-        create(:user,
+        create(
+          :user,
           first_name: 'Jonny', last_name: 'Johnson', email: 'freddy2@zmail.com',
-          roles: [])
+          roles: []
+        )
       end
       let!(:u4) do
-        create(:user,
+        create(
+          :user,
           first_name: 'Freddy', last_name: 'Johnson', email: 'freddy3@zmail.com',
-          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }, { 'type' => 'project_moderator', 'project_id' => other_project.id }])
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }, { 'type' => 'project_moderator', 'project_id' => other_project.id }]
+        )
       end
       let!(:u5) do
-        create(:user,
+        create(
+          :user,
           first_name: 'Freddy', last_name: 'Smith', email: 'freddy4@zmail.com',
-          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }]
+        )
       end
 
       example_request 'Search for users and whether or not they are moderator of the project' do

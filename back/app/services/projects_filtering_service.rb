@@ -14,8 +14,8 @@ class ProjectsFilteringService
         ).resolve
 
       Project.includes(:admin_publication)
-             .where(id: homepage_publications.where(publication_type: 'Project').select(:publication_id))
-             .or(Project.includes(:admin_publication).where(admin_publication: { parent_id: homepage_publications }))
+        .where(id: homepage_publications.where(publication_type: 'Project').select(:publication_id))
+        .or(Project.includes(:admin_publication).where(admin_publication: { parent_id: homepage_publications }))
     end
   end
 
@@ -28,7 +28,7 @@ class ProjectsFilteringService
   HOMEPAGE_FILTER_PARAMS << :areas
   add_filter('by_areas') do |scope, options|
     areas = options[:areas]
-    areas ? scope.with_some_areas(areas) : scope
+    areas ? scope.with_some_areas(areas).or(scope.with_all_areas) : scope
   end
 
   add_filter('filter_ids') do |scope, options|

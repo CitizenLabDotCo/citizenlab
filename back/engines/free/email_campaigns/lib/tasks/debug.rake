@@ -16,9 +16,9 @@ namespace :debug do
       command   = campaign.generate_commands.tap { |c| c.first.merge!(recipient: recipient) }.first
 
       campaign.mailer_class
-              .with(campaign: campaign, command: command)
-              .campaign_mail
-              .deliver_later
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_later
     end
   end
 end

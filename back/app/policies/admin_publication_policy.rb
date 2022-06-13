@@ -22,7 +22,7 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def reorder?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
 
   def permitted_attributes_for_reorder

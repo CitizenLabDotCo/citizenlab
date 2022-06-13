@@ -13,7 +13,7 @@ module SmartGroups
         return unless ::Group.using_custom_field(self).exists?
 
         errors.add(:base, :dangling_group_references,
-                   message: ::Group.using_custom_field(self).all.map(&:id).join(','))
+          message: ::Group.using_custom_field(self).all.map(&:id).join(','))
         throw :abort
       end
     end

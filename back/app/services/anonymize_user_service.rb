@@ -82,16 +82,16 @@ class AnonymizeUserService
     end
 
     {
-      'first_name'                => first_name,
-      'last_name'                 => last_name,
-      'email'                     => email,
-      'password'                  => SecureRandom.urlsafe_base64(32),
-      'locale'                    => locale,
-      'custom_field_values'       => custom_field_values.to_json,
-      'bio_multiloc'              => bio,
+      'first_name' => first_name,
+      'last_name' => last_name,
+      'email' => email,
+      'password' => SecureRandom.urlsafe_base64(32),
+      'locale' => locale,
+      'custom_field_values' => custom_field_values.to_json,
+      'bio_multiloc' => bio,
       'registration_completed_at' => registration,
-      'created_at'                => registration,
-      'verified'                  => random_verified,
+      'created_at' => registration,
+      'verified' => random_verified,
       **avatar
     }
   end
@@ -101,8 +101,9 @@ class AnonymizeUserService
   def random_custom_field_values(user: nil)
     custom_field_values = {}
     if user
+      properties = %w[gender education birthyear]
       user[:custom_field_values].each do |property, value|
-        if %w[gender education birthyear].include? property
+        if properties.include? property
           custom_field_values[property] = value
         end
       end
@@ -119,14 +120,14 @@ class AnonymizeUserService
 
   def random_birthyear
     min_age, max_age = weighted_choice({
-      [14, 20]  => 7,
-      [20, 30]  => 22,
-      [30, 40]  => 32,
-      [40, 50]  => 25,
-      [50, 60]  => 15,
-      [60, 70]  => 10,
-      [70, 80]  => 5,
-      [80, 90]  => 3,
+      [14, 20] => 7,
+      [20, 30] => 22,
+      [30, 40] => 32,
+      [40, 50] => 25,
+      [50, 60] => 15,
+      [60, 70] => 10,
+      [70, 80] => 5,
+      [80, 90] => 3,
       [90, 100] => 1
     })
     age = rand(max_age - min_age) + min_age
@@ -194,8 +195,9 @@ class AnonymizeUserService
   end
 
   def random_bio(locales)
+    bios = %w[greek hipster movie rick_and_morty game_of_thrones nil]
     locales.to_h do |locale|
-      bio = case %w[greek hipster movie rick_and_morty game_of_thrones nil].sample
+      bio = case bios.sample
       when 'greek'
         Faker::GreekPhilosophers.quote
       when 'hipster'

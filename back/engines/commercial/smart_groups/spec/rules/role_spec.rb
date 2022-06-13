@@ -74,38 +74,38 @@ describe SmartGroups::Rules::Role do
   describe 'description_multiloc' do
     let(:role_is_admin_rule) do
       SmartGroups::Rules::Role.from_json({
-      'ruleType'      => 'role',
-      'predicate'     => 'is_admin'
-    })
+        'ruleType' => 'role',
+        'predicate' => 'is_admin'
+      })
     end
     let(:role_not_is_admin_rule) do
       SmartGroups::Rules::Role.from_json({
-        'ruleType'      => 'role',
-        'predicate'     => 'not_is_admin'
+        'ruleType' => 'role',
+        'predicate' => 'not_is_admin'
       })
     end
     let(:role_is_project_moderator_rule) do
       SmartGroups::Rules::Role.from_json({
-        'ruleType'      => 'role',
-        'predicate'     => 'is_project_moderator'
+        'ruleType' => 'role',
+        'predicate' => 'is_project_moderator'
       })
     end
     let(:role_not_is_project_moderator_rule) do
       SmartGroups::Rules::Role.from_json({
-        'ruleType'      => 'role',
-        'predicate'     => 'not_is_project_moderator'
+        'ruleType' => 'role',
+        'predicate' => 'not_is_project_moderator'
       })
     end
     let(:role_is_normal_user_rule) do
       SmartGroups::Rules::Role.from_json({
-        'ruleType'      => 'role',
-        'predicate'     => 'is_normal_user'
-    })
+        'ruleType' => 'role',
+        'predicate' => 'is_normal_user'
+      })
     end
     let(:role_not_is_normal_user_rule) do
       SmartGroups::Rules::Role.from_json({
-        'ruleType'      => 'role',
-        'predicate'     => 'not_is_normal_user'
+        'ruleType' => 'role',
+        'predicate' => 'not_is_normal_user'
       })
     end
 
@@ -114,32 +114,32 @@ describe SmartGroups::Rules::Role do
       I18n.load_path += Dir[Rails.root.join('spec/fixtures/locales/*.yml')]
 
       expect(role_is_admin_rule.description_multiloc).to eq({
-        'en'    => 'Role is admin',
+        'en' => 'Role is admin',
         'fr-FR' => 'Statut est administrateur',
         'nl-NL' => 'Rol is beheerder'
       })
       expect(role_not_is_admin_rule.description_multiloc).to eq({
-        'en'    => 'Role is not admin',
+        'en' => 'Role is not admin',
         'fr-FR' => 'Statut n\'est pas administrateur',
         'nl-NL' => 'Rol is niet beheerder'
       })
       expect(role_is_project_moderator_rule.description_multiloc).to eq({
-        'en'    => 'Role is project moderator',
+        'en' => 'Role is project moderator',
         'fr-FR' => 'Statut est modérateur de projet',
         'nl-NL' => 'Rol is project moderator'
       })
       expect(role_not_is_project_moderator_rule.description_multiloc).to eq({
-        'en'    => 'Role is not project moderator',
+        'en' => 'Role is not project moderator',
         'fr-FR' => 'Statut n\'est pas modérateur de projet',
         'nl-NL' => 'Rol is niet project moderator'
       })
       expect(role_is_normal_user_rule.description_multiloc).to eq({
-        'en'    => 'Role is normal user',
+        'en' => 'Role is normal user',
         'fr-FR' => 'Statut est utilisateur normal',
         'nl-NL' => 'Rol is gewone gebruiker'
       })
       expect(role_not_is_normal_user_rule.description_multiloc).to eq({
-        'en'    => 'Role is not normal user',
+        'en' => 'Role is not normal user',
         'fr-FR' => 'Statut n\'est pas utilisateur normal',
         'nl-NL' => 'Rol is niet gewone gebruiker'
       })

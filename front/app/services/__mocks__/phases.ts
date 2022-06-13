@@ -1,190 +1,197 @@
-export const mockPhaseInformationData = {
+import { IPhaseData } from 'services/phases';
+
+export const mockPhaseInformationData: IPhaseData = {
   id: 'MockPhaseInformationId',
   type: 'phase',
   attributes: {
-    title_multiloc: 'A Mock Information phase',
-    description_multiloc: 'For testing purposes',
+    title_multiloc: { en: 'A Mock Information phase' },
+    description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'information', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    upvoting_method: 'limited', // 'limited' | 'unlimited'
     upvoting_limited_max: 0,
     downvoting_enabled: false,
-    downvoting_method: 'limited', // 'limited' | 'unlimited'
     downvoting_limited_max: 0,
-
-    presentation_mode: 'card', // 'card' | 'map'
-    // max_budget?: number,
-    // survey_service?: SurveyServices,
-    // survey_embed_url?: string,
+    participation_method: 'information',
+    upvoting_method: 'limited',
+    downvoting_method: 'limited',
+    input_term: 'idea',
+    presentation_mode: 'card',
+    ideas_count: 3,
   },
   relationships: {
     permissions: {
-      data: [], // IRelationship[],
+      data: [],
     },
     project: {
       data: {
         id: 'projectId',
         type: 'project',
-      }, // IRelationship,
+      },
     },
     user_basket: {
-      data: null, // IRelationship | null,
+      data: null,
     },
   },
 };
-export const mockPhasePollData = {
+export const mockPhasePollData: IPhaseData = {
   id: 'MockPhasePollId',
   type: 'phase',
   attributes: {
-    title_multiloc: 'A Mock Poll phase',
-    description_multiloc: 'For testing purposes',
+    title_multiloc: { en: 'A Mock Poll phase' },
+    description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'poll', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
-    // posting_enabled: false,
-    // commenting_enabled: false,
-    // voting_enabled: false,
-    // voting_method: 'limited', // 'limited' | 'unlimited'
-    // voting_limited_max: 0,
-    // presentation_mode: 'card' // 'card' | 'map'
-    // max_budget?: number,
-    // survey_service?: SurveyServices,
-    // survey_embed_url?: string,
+    participation_method: 'poll',
+    posting_enabled: false,
+    commenting_enabled: false,
+    voting_enabled: false,
+    upvoting_method: 'limited',
+    upvoting_limited_max: 0,
+    presentation_mode: 'card',
+    max_budget: 3,
+    downvoting_method: 'limited',
+    input_term: 'idea',
+    downvoting_enabled: false,
+    downvoting_limited_max: 0,
+    ideas_count: 3,
   },
   relationships: {
     permissions: {
-      //    data: []// IRelationship[],
+      data: [],
     },
     project: {
       data: {
         id: 'projectId',
         type: 'project',
-      }, // IRelationship,
+      },
     },
-    // user_basket: {
-    //   data: null // IRelationship | null,
-    // }
   },
 };
 
-export const mockPhaseIdeationData = {
+export const mockPhaseIdeationData: IPhaseData = {
   id: 'MockPhaseIdeationId',
   type: 'phase',
   attributes: {
-    title_multiloc: 'A Mock Ideation phase',
-    description_multiloc: 'For testing purposes',
+    title_multiloc: { en: 'A Mock Information phase' },
+    description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'ideation', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    participation_method: 'ideation',
     posting_enabled: true,
     commenting_enabled: true,
     voting_enabled: true,
-    upvoting_method: 'limited', // 'limited' | 'unlimited'
-    downvoting_method: 'limited', // 'limited' | 'unlimited'
-    voting_limited_max: 5,
-    presentation_mode: 'card', // 'card' | 'map'
-    // max_budget?: number,
-    // survey_service?: SurveyServices,
-    // survey_embed_url?: string,
+    upvoting_method: 'limited',
+    downvoting_method: 'limited',
+    upvoting_limited_max: 5,
+    presentation_mode: 'card',
+    downvoting_enabled: false,
+    downvoting_limited_max: 0,
+    input_term: 'idea',
+    ideas_count: 3,
   },
   relationships: {
     permissions: {
-      data: [], // IRelationship[],
+      data: [],
     },
     project: {
       data: {
         id: 'projectId',
         type: 'project',
-      }, // IRelationship,
+      },
     },
     user_basket: {
-      data: null, // IRelationship | null,
+      data: null,
     },
   },
 };
 
-export const mockPhaseSurveyTypeformData = {
+export const mockPhaseSurveyTypeformData: IPhaseData = {
   id: 'MockPhaseSurveyTypeformId',
   type: 'phase',
   attributes: {
-    title_multiloc: 'A Mock Survey Typeform phase',
-    description_multiloc: 'For testing purposes',
+    title_multiloc: { en: 'A Mock Information phase' },
+    description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'survey', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    participation_method: 'survey',
+    upvoting_method: 'limited',
+    downvoting_method: 'limited',
+    input_term: 'idea',
+    presentation_mode: 'card',
+    ideas_count: 3,
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    upvoting_method: 'limited', // 'limited' | 'unlimited'
-    downvoting_method: 'limited', // 'limited' | 'unlimited'
-    voting_limited_max: 0,
-    presentation_mode: 'card', // 'card' | 'map'
-    // max_budget?: number,
-    survey_service: 'typeform', // SurveyServices: 'typeform' | 'survey_monkey' | 'google_forms' cf participationContexts.ts
+    upvoting_limited_max: 0,
+    survey_service: 'typeform',
     survey_embed_url: 'myTestSurvey.typeform.com',
+    downvoting_enabled: false,
+    downvoting_limited_max: 0,
   },
   relationships: {
     permissions: {
-      data: [], // IRelationship[],
+      data: [],
     },
     project: {
       data: {
         id: 'projectId',
         type: 'project',
-      }, // IRelationship,
+      },
     },
     user_basket: {
-      data: null, // IRelationship | null,
+      data: null,
     },
   },
 };
 
-export const mockPhaseSurveyGoogleFormData = {
+export const mockPhaseSurveyGoogleFormData: IPhaseData = {
   id: 'MockPhaseSurveyGoogleFormId',
   type: 'phase',
   attributes: {
-    title_multiloc: 'A Mock Survey Google Form phase',
-    description_multiloc: 'For testing purposes',
+    title_multiloc: { en: 'A Mock Information phase' },
+    description_multiloc: { en: 'For testing purposes' },
     start_at: 'today',
     end_at: 'one week from now',
     created_at: 'yesterday',
     updated_at: 'yesterday but later',
-    participation_method: 'survey', // 'ideation' | 'information' | 'survey' | 'budgeting'; cf participationContexts.ts
+    participation_method: 'survey',
+    upvoting_method: 'limited',
+    downvoting_method: 'limited',
+    input_term: 'idea',
+    presentation_mode: 'card',
     posting_enabled: false,
     commenting_enabled: false,
     voting_enabled: false,
-    upvoting_method: 'limited', // 'limited' | 'unlimited'
-    downvoting_method: 'limited', // 'limited' | 'unlimited'
-    voting_limited_max: 0,
-    presentation_mode: 'card', // 'card' | 'map'
-    // max_budget?: number,
-    survey_service: 'google_forms', // SurveyServices: 'typeform' | 'survey_monkey' | 'google_forms' cf participationContexts.ts
+    upvoting_limited_max: 0,
+    downvoting_enabled: false,
+    downvoting_limited_max: 0,
+    survey_service: 'google_forms',
     survey_embed_url: 'myTestSurvey.google_forms.com',
+    ideas_count: 2,
   },
   relationships: {
     permissions: {
-      data: [], // IRelationship[],
+      data: [],
     },
     project: {
       data: {
         id: 'projectId',
         type: 'project',
-      }, // IRelationship,
+      },
     },
     user_basket: {
-      data: null, // IRelationship | null,
+      data: null,
     },
   },
 };

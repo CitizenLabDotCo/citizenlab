@@ -67,12 +67,12 @@ module Notifications
 
       if idea && recipient_id
         [new(
-           recipient_id: recipient_id,
-           initiating_user_id: activity.user_id,
-           post: idea,
-           project_id: idea.project_id,
-           post_status: idea.idea_status
-         )]
+          recipient_id: recipient_id,
+          initiating_user_id: activity.user_id,
+          post: idea,
+          project_id: idea.project_id,
+          post_status: idea.idea_status
+        )]
       else
         []
       end

@@ -14,9 +14,9 @@ module Polls
             authorize Response, :index_xlsx?
           end
           @responses = policy_scope(Response)
-          .where(participation_context: @participation_context)
-          .includes(:user, response_options: [:option])
-          .order(:created_at)
+            .where(participation_context: @participation_context)
+            .includes(:user, response_options: [:option])
+            .order(:created_at)
           I18n.with_locale(current_user&.locale) do
             xlsx = XlsxService.new.generate_poll_results_xlsx @participation_context, @responses, current_user
             send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'polling_results.xlsx'
@@ -46,11 +46,11 @@ module Polls
           end
 
           @counts = policy_scope(Response)
-                    .joins(:response_options)
-                    .where(participation_context: @participation_context)
-                    .group('polls_response_options.option_id')
-                    .order('polls_response_options.option_id')
-                    .count
+            .joins(:response_options)
+            .where(participation_context: @participation_context)
+            .group('polls_response_options.option_id')
+            .order('polls_response_options.option_id')
+            .count
 
           render json: { series: { options: @counts } }
         end

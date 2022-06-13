@@ -4,7 +4,7 @@ import React from 'react';
 import { useEditor, Element } from '@craftjs/core';
 
 // Router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Intl
 import { injectIntl } from 'utils/cl-intl';
@@ -21,6 +21,7 @@ import Image from '../CraftComponents/Image';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
 
 // Intl
 import messages from '../../messages';
@@ -203,6 +204,26 @@ const ContentBuilderToolbox = ({
           <ToolboxItem
             icon="accordion"
             label={formatMessage(messages.accordion)}
+          />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-white-space"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element is={WhiteSpace} size="small" id="WhiteSpace" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem
+            icon="dashedBorderRectangle"
+            label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
       </Box>

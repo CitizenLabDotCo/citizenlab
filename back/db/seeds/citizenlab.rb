@@ -103,6 +103,10 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     },
+    snap_survey_surveys: {
+      enabled: true,
+      allowed: true
+    },
     microsoft_forms_surveys: {
       enabled: true,
       allowed: true
@@ -171,8 +175,8 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     }
-  }
-              ))
+  })
+)
 
 # Creates a default admin account.
 User.create!(
