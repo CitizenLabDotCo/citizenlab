@@ -45,7 +45,7 @@ jest.mock('hooks/useProject', () => {
   }));
 });
 
-describe('Preview', () => {
+describe('Mobile Preview Content', () => {
   it('should shows content builder content when content builder is not enabled', () => {
     render(<MobileViewPreview />);
     expect(
