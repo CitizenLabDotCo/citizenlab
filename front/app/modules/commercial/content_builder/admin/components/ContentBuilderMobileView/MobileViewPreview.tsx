@@ -33,19 +33,19 @@ export const MobileViewPreview = () => {
   });
 
   useEffect(() => {
-    window.addEventListener(
-      'message',
-      (e) => {
-        // Make sure there is a root node in the draft data
-        if (e.origin === window.location.origin && e.data.ROOT) {
-          setDraftData(e.data);
-        }
-        if (e.origin === window.location.origin && e.data.selectedLocale) {
-          setSelectedLocale(e.data.selectedLocale);
-        }
-      },
-      false
-    );
+    const handleMessage = (e: MessageEvent) => {
+      // Make sure there is a root node in the draft data
+      if (e.origin === window.location.origin && e.data.ROOT) {
+        setDraftData(e.data);
+      }
+      if (e.origin === window.location.origin && e.data.selectedLocale) {
+        setSelectedLocale(e.data.selectedLocale);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
   }, []);
 
   if (isNilOrError(platformLocale)) {

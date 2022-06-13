@@ -196,7 +196,10 @@ export const ContentBuilderPage = () => {
                     }
                   />
                 )}
-                <ContentBuilderFrame editorData={editorData} />
+                <ContentBuilderFrame
+                  key={selectedLocale}
+                  editorData={editorData}
+                />
               </Box>
             </StyledRightColumn>
             <ContentBuilderSettings />
