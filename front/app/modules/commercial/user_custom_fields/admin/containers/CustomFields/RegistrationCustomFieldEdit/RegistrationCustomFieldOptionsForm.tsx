@@ -26,14 +26,12 @@ const CancelButton = styled(Button)``;
 // Typings
 import { Multiloc } from 'typings';
 
-export interface Props {}
-
 export interface FormValues {
   title_multiloc: Multiloc;
 }
 
 class RegistrationCustomFieldOptionsForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps & WithRouterProps, FormValues>
+  InjectedFormikProps<InjectedIntlProps & WithRouterProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};

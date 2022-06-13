@@ -2,6 +2,12 @@
 
 ## Next release
 
+## 2022-06-13
+
+### Changed
+
+- [TEC-11] Upgraded react-router frontend dependency
+
 ## 2022-06-08_2
 
 ### Fixed
