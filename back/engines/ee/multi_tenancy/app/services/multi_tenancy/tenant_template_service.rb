@@ -31,11 +31,14 @@ module MultiTenancy
           model_name_pluralized: model_name.pluralize
         })
         model_class = get_model_class(model_name)
+
         fields.each do |attributes|
+          attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
           minutes_spent = Time.now - t1
           if max_time && (minutes_spent > max_time)
             raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
           end
+
           model = model_class.new
           image_assignments = {}
           restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
