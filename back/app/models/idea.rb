@@ -85,16 +85,6 @@ class Idea < ApplicationRecord
 
   validates :proposed_budget, numericality: { greater_than_or_equal_to: 0, if: :proposed_budget }
 
-  validates :custom_field_values, json: {
-    schema: -> { idea_fields_schema },
-    message: ->(errors) { errors }
-  }, on: :publication
-
-  validates :custom_field_values, json: {
-    schema: -> { idea_fields_schema },
-    message: ->(errors) { errors }
-  }, if: %i[custom_field_values_changed? persisted?]
-
   with_options unless: :draft? do
     validates :idea_status, presence: true
     validates :project, presence: true
@@ -177,13 +167,6 @@ class Idea < ApplicationRecord
   def update_phase_ideas_count(_)
     IdeasPhase.counter_culture_fix_counts only: %i[phase]
   end
-
-  def idea_fields_schema
-    return {} unless project.custom_form # The empty object schema accepts anything
-
-    extra_fields = IdeaCustomFieldsService.new(project.custom_form).extra_visible_fields
-    CustomFieldService.new.fields_to_json_schema extra_fields
-  end
 end
 
 Idea.include_if_ee 'FlagInappropriateContent::Concerns::Flaggable'
@@ -191,3 +174,4 @@ Idea.include_if_ee 'Insights::Concerns::Input'
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
+Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'
