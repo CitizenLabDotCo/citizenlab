@@ -173,12 +173,14 @@ jobs:
     executor:
       name: cl2-back
       image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /cl2_back/engines/ee/multi_tenancy
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: test
       CITIZENLAB_EE: true
     steps:
+      - pending_citizenlab_github_status
       - run: bundle exec rubocop --format simple
+      - final_citizenlab_github_status
 
   back-test:
     resource_class: small
