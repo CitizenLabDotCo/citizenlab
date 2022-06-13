@@ -25,12 +25,6 @@ Lint/RescueException:
     - 'lib/tasks/core/complex_migrations.rake'
     - 'lib/tasks/core/fix_html_multiloc.rake'
 
-# Offense count: 1
-# Configuration parameters: Methods.
-Lint/UnexpectedBlockArity:
-  Exclude:
-    - 'lib/tasks/core/template_phases.rake'
-
 # Offense count: 30
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:

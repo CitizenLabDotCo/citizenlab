@@ -22,7 +22,7 @@ namespace :fix_templates do
     end
     phases_by_project.each do |key, phases|
       # sort phases of each project by start time
-      phases_by_project[key] = phases.sort do |phase_h|
+      phases_by_project[key] = phases.sort_by do |phase_h|
         phase_h['start_at']
       end.reverse
       # reset timestamps to ensure there is no more overlap
