@@ -334,7 +334,7 @@
   "app.components.ProjectCard.comment": "Kommentar",
   "app.components.ProjectCard.contributeYourInput": "Beitrag einreichen",
   "app.components.ProjectCard.finished": "Beendet",
-  "app.components.ProjectCard.joinDiscussion": "Schließen Sie sich der Diskussion an",
+  "app.components.ProjectCard.joinDiscussion": "Mitreden",
   "app.components.ProjectCard.learnMore": "Mehr erfahren",
   "app.components.ProjectCard.remaining": "Noch {timeRemaining}",
   "app.components.ProjectCard.submitAnIssue": "Kommentieren",
