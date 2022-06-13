@@ -10,6 +10,7 @@ import {
 } from '../roles';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 export const MODERATOR_INDEX_ROUTES = [
   '/admin/projects',
@@ -30,14 +31,19 @@ export const isModeratedProjectRoute = (
   item: IRouteItem,
   user: IUser | null
 ) => {
-  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
-  const matches = idRegexp.exec(item.path);
+  const { pathname: pathNameWithoutLocale } = removeLocale(item.path);
+  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
+  const matches = pathNameWithoutLocale
+    ? idRegexp.exec(pathNameWithoutLocale)
+    : false;
   const pathProjectId = matches && matches[1];
-  return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
+  return pathProjectId && isProjectModerator(user, pathProjectId);
 };
 
 export const isAdminRoute = (path: string) => {
-  return /^\/admin/.test(path);
+  const { pathname: pathNameWithoutLocale } = removeLocale(path);
+
+  return pathNameWithoutLocale ? /^\/admin/.test(pathNameWithoutLocale) : false;
 };
 
 export const tenantIsChurned = (tenant: IAppConfigurationData) => {

@@ -12,19 +12,37 @@ import {
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
   user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
+  const { pathname: pathNameWithoutLocale } = removeLocale(item.path);
+  const userIsProjectFolderModerator = user
+    ? isProjectFolderModerator(user.data)
+    : false;
+
   return (
     canAccessRoute(item, user, tenant) ||
-    (isAdminRoute(item.path) &&
-      (user ? isProjectFolderModerator(user.data) : false) &&
-      MODERATOR_INDEX_ROUTES.includes(item.path))
+    (typeof pathNameWithoutLocale === 'string' &&
+      userIsProjectFolderModerator &&
+      (isModeratorRoute(pathNameWithoutLocale) ||
+        isProjectFolderRoute(pathNameWithoutLocale)))
   );
 };
+
+function isModeratorRoute(pathNameWithoutLocale: string) {
+  return MODERATOR_INDEX_ROUTES.includes(pathNameWithoutLocale);
+}
+
+function isProjectFolderRoute(pathNameWithoutLocale: string) {
+  return pathNameWithoutLocale
+    ? isAdminRoute(pathNameWithoutLocale) &&
+        /\/folders\/?/.test(pathNameWithoutLocale)
+    : false;
+}
 
 definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
 
