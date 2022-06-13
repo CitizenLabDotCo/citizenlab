@@ -27,6 +27,14 @@ import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
+import {
+  drawHideIcon,
+  drawHideIconClickBox,
+  drawHideIconArea,
+  drawBubbleArea,
+  drawLabelArea,
+  drawAreaInBetween,
+} from 'modules/commercial/insights/utils/canvasShapes';
 
 // components
 import { Box, Spinner, IconTooltip } from '@citizenlab/cl2-component-library';
@@ -49,7 +57,7 @@ import messages from '../../messages';
 import styled from 'styled-components';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
-interface IInsightsNetworkNodeMeta extends IInsightsNetworkNode {
+export interface IInsightsNetworkNodeMeta extends IInsightsNetworkNode {
   nodeVerticalOffset: number;
   textWidth: number;
   globalScale: number;
@@ -182,29 +190,11 @@ const Network = ({
 
         if (node == hoverNode) {
           // Draw hide icon
-          const hideIcon = new Path2D(
-            'M7.84 6.5l4.89-4.84c.176-.174.274-.412.27-.66 0-.552-.447-1-1-1-.25.003-.488.107-.66.29L6.5 5.13 1.64.27C1.47.1 1.24.003 1 0 .448 0 0 .448 0 1c.01.23.105.45.27.61L5.16 6.5.27 11.34c-.177.173-.274.412-.27.66 0 .552.448 1 1 1 .246-.004.48-.105.65-.28L6.5 7.87l4.81 4.858c.183.184.433.28.69.27.553 0 1-.446 1-.998-.01-.23-.105-.45-.27-.61L7.84 6.5z'
-          );
-          const p = new Path2D();
-          const transform = {
-            a: 0.8 / globalScale,
-            d: 0.8 / globalScale,
-            e: node.x + textWidth / 2 + 5 / globalScale,
-            f: nodeVerticalOffset - 6 / globalScale,
-          };
-          p.addPath(hideIcon, transform);
-          ctx.fillStyle = colors.label;
-          ctx.fill(p);
+          drawHideIcon(ctx, node);
 
           // Change tooltip text on icon hover
           const [offsetX, offsetY] = pointerPosition;
-          const rect = new Path2D();
-          rect.rect(
-            node.x + textWidth / 2 + 5 / globalScale,
-            nodeVerticalOffset - 6 / globalScale,
-            12 / globalScale,
-            12 / globalScale
-          );
+          const rect = drawHideIconClickBox(node);
 
           if (ctx.isPointInPath(rect, offsetX, offsetY)) {
             tooltipRef.textContent = formatMessage(messages.networkHideNode);
@@ -219,21 +209,12 @@ const Network = ({
   const handleNodeClick = (node: Node, event) => {
     let removedNode = false;
     if (node.x && node.y) {
-      const ctx = event.target.getContext('2d');
-      const globalScale = node.globalScale;
-      const textWidth = node.textWidth;
-      const nodeVerticalOffset = node.nodeVerticalOffset;
+      const { target, offsetX, offsetY } = event;
+      const ctx = target.getContext('2d');
 
-      const rect = new Path2D();
-      rect.rect(
-        node.x + textWidth / 2 + 5 / globalScale,
-        nodeVerticalOffset - 6 / globalScale,
-        12 / globalScale,
-        12 / globalScale
-      );
-      ctx.fill(rect);
+      const rect = drawHideIconClickBox(node);
 
-      if (ctx.isPointInPath(rect, event.offsetX, event.offsetY)) {
+      if (ctx.isPointInPath(rect, offsetX, offsetY)) {
         setHiddenNodes([...hiddenNodes, node]);
         removedNode = true;
       }
@@ -268,47 +249,11 @@ const Network = ({
 
   const nodePointerAreaPaint = (node, color, ctx) => {
     ctx.fillStyle = color;
-    const globalScale = node.globalScale;
-    const textWidth = node.textWidth;
-    const nodeFontSize = node.nodeFontSize;
-    const nodeVerticalOffset = node.nodeVerticalOffset;
-    const val = Math.sqrt(Math.max(0, node.val || 1)) + 1 / globalScale;
 
-    // bubble
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, val, 0, 2 * Math.PI);
-    ctx.fill();
-
-    // hide icon
-    ctx.fillRect(
-      node.x + textWidth / 2 + 5 / globalScale,
-      nodeVerticalOffset - 6 / globalScale,
-      12 / globalScale,
-      12 / globalScale
-    );
-
-    // label
-    ctx.fillRect(
-      node.x - textWidth / 2,
-      nodeVerticalOffset - nodeFontSize + 6 / globalScale,
-      textWidth,
-      nodeFontSize
-    );
-
-    // area in between
-    ctx.beginPath();
-    ctx.moveTo(
-      node.x - textWidth / 2,
-      nodeVerticalOffset - nodeFontSize + 6 / globalScale
-    );
-    ctx.lineTo(
-      node.x + textWidth / 2 + 20 / globalScale,
-      nodeVerticalOffset - nodeFontSize + 6 / globalScale
-    );
-    ctx.lineTo(node.x + val / 2, node.y);
-    ctx.lineTo(node.x - val / 2, node.y);
-    ctx.closePath();
-    ctx.fill();
+    drawHideIconArea(ctx, node);
+    drawBubbleArea(ctx, node);
+    drawLabelArea(ctx, node);
+    drawAreaInBetween(ctx, node);
   };
 
   const onZoomEnd = ({ k }: { k: number }) => {
