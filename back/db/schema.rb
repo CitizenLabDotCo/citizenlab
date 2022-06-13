@@ -1014,7 +1014,6 @@ ActiveRecord::Schema.define(version: 2022_05_31_123916) do
 
   create_table "que_values", primary_key: "key", id: :text, force: :cascade do |t|
     t.jsonb "value", default: {}, null: false
-    t.check_constraint "jsonb_typeof(value) = 'object'::text", name: "valid_value"
   end
 
   create_table "spam_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
