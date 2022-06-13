@@ -79,6 +79,7 @@ export const MobileViewPreview = () => {
         height="100vh"
         bgColor="#fff"
         overflowY="auto"
+        data-testid="contentBuilderMobilePreviewContent"
       >
         <Box p="20px">
           <Title color="colorText" variant="h1">
