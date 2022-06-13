@@ -179,6 +179,7 @@ jobs:
       CITIZENLAB_EE: true
     steps:
       - pending_citizenlab_github_status
+      - run: bundle
       - run: bundle exec rubocop --format simple
       - final_citizenlab_github_status
 
