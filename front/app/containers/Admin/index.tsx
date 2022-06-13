@@ -5,7 +5,7 @@ import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
-import { hasPermission } from 'services/permissions';
+import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
 // components
@@ -115,6 +115,10 @@ type Props = {
 const AdminPage = memo<Props & WithRouterProps>(
   ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
+    const userCanViewAdmin = usePermission({
+      action: 'access',
+      item: { type: 'route', path: '/admin' },
+    });
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
@@ -135,25 +139,16 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const setAdminFullWidthContentToVisible = (isVisible) =>
+    const setAdminFullWidthContentToVisible = (isVisible: boolean) =>
       setAdminFullWidthContent(isVisible);
 
-    const userCanViewAdmin = () =>
-      hasPermission({
-        action: 'access',
-        item: { type: 'route', path: '/admin' },
-      });
-
     useEffect(() => {
-      if (
-        authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin())
-      ) {
+      if (authUser === null || (authUser !== undefined && !userCanViewAdmin)) {
         clHistory.push('/');
       }
     }, [authUser]);
 
-    if (!userCanViewAdmin()) {
+    if (!userCanViewAdmin) {
       return null;
     }
 
