@@ -37,7 +37,7 @@ export const isModeratedProjectRoute = (
     ? idRegexp.exec(pathNameWithoutLocale)
     : false;
   const pathProjectId = matches && matches[1];
-  return pathProjectId && isProjectModerator(user, pathProjectId);
+  return pathProjectId ? isProjectModerator(user, pathProjectId) : false;
 };
 
 export const isAdminRoute = (path: string) => {
