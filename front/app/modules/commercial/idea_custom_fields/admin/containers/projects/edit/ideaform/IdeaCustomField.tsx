@@ -56,12 +56,12 @@ const CustomFieldTitle = styled.div`
   font-weight: 500;
 `;
 
-const CollapsedContent = styled.div`
+const HeadingContainer = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
 `;
 
-const CollapseContainerInner = styled.div`
+const CollapsedContainer = styled.div`
   padding-top: 10px;
   margin-bottom: 25px;
   width: 100%;
@@ -174,22 +174,21 @@ export default memo<Props>(
         <Container className={`${className || ''} ${first ? 'first' : ''}`}>
           <Accordion
             title={
-              <CollapsedContent
+              <HeadingContainer
                 onMouseDown={removeFocusAfterMouseClick}
                 onClick={handleCollapseExpand}
                 className={`
-                ${collapsed ? 'collapsed' : 'expanded'}
                 e2e-${ideaCustomField.attributes.code}-setting-collapsed
               `}
               >
                 <CustomFieldTitle>
                   <T value={ideaCustomField.attributes.title_multiloc} />
                 </CustomFieldTitle>
-              </CollapsedContent>
+              </HeadingContainer>
             }
             isOpenByDefault={!collapsed}
           >
-            <CollapseContainerInner>
+            <CollapsedContainer>
               <Toggles>
                 {canSetEnabled && (
                   <ToggleContainer>
@@ -248,7 +247,7 @@ export default memo<Props>(
                   />
                 </Suspense>
               )}
-            </CollapseContainerInner>
+            </CollapsedContainer>
           </Accordion>
         </Container>
       );
