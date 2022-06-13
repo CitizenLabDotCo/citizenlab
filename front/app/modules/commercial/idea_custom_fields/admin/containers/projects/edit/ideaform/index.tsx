@@ -109,7 +109,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
 
     // We are using a custom created id because the ids on the backend change on initial update
     const getCustomFieldId = (ideaCustomField: IIdeaCustomFieldData) =>
-      `${ideaCustomField.type}${ideaCustomField.attributes.key}`;
+      `${ideaCustomField.type}_${ideaCustomField.attributes.key}`;
 
     useEffect(() => {
       if (!isNilOrError(ideaCustomFields) && isEmpty(collapsed)) {

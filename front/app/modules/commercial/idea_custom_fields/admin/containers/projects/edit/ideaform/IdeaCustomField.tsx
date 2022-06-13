@@ -52,7 +52,7 @@ const CustomFieldTitle = styled.div`
 `;
 
 const StyledAccordion = styled(Accordion)`
-  border-bottom: solid 0px ${colors.separation};
+  border-bottom: none;
 `;
 
 const HeadingContainer = styled.div`
@@ -165,7 +165,7 @@ export default memo<Props>(
     const handleCollapseExpand = useCallback(() => {
       onCollapseExpand(id);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ideaCustomField]);
+    }, [id]);
 
     if (!isNilOrError(ideaCustomField)) {
       return (
@@ -174,7 +174,6 @@ export default memo<Props>(
             title={
               <HeadingContainer
                 onMouseDown={removeFocusAfterMouseClick}
-                onClick={handleCollapseExpand}
                 className={`
                 e2e-${ideaCustomField.attributes.code}-setting-collapsed
               `}
@@ -185,6 +184,7 @@ export default memo<Props>(
               </HeadingContainer>
             }
             isOpenByDefault={!collapsed}
+            onChange={handleCollapseExpand}
           >
             <CollapsedContainer>
               <Toggles>
