@@ -8,7 +8,7 @@ import { isAdmin } from 'services/permissions/roles';
 import {
   canAccessRoute,
   isAdminRoute,
-  MODERATOR_ROUTES,
+  MODERATOR_INDEX_ROUTES,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
@@ -22,7 +22,7 @@ const canUserAccessAdminFolderRoute = (
     canAccessRoute(item, user, tenant) ||
     (isAdminRoute(item.path) &&
       (user ? isProjectFolderModerator(user.data) : false) &&
-      MODERATOR_ROUTES.includes(item.path))
+      MODERATOR_INDEX_ROUTES.includes(item.path))
   );
 };
 

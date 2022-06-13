@@ -11,7 +11,7 @@ import {
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
-export const MODERATOR_ROUTES = [
+export const MODERATOR_INDEX_ROUTES = [
   '/admin/projects',
   '/admin/messaging',
   '/admin/ideas',
@@ -22,8 +22,8 @@ export const MODERATOR_ROUTES = [
   '/admin/insights',
 ];
 
-export const isModeratorRoute = (item: IRouteItem) => {
-  return MODERATOR_ROUTES.includes(item.path);
+export const isModeratorIndexRoute = (item: IRouteItem) => {
+  return MODERATOR_INDEX_ROUTES.includes(item.path);
 };
 
 export const isModeratedProjectRoute = (
@@ -62,7 +62,7 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (isModerator(user) && isModeratorRoute(item)) {
+    if (isModerator(user) && isModeratorIndexRoute(item)) {
       return true;
     }
 
