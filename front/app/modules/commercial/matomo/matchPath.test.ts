@@ -4,8 +4,7 @@ describe('getAllPathsFromRoutes', () => {
   it('should return all paths from routes', () => {
     const mockRoutes = {
       path: '/:locale',
-      indexRoute: {},
-      childRoutes: [
+      children: [
         {
           path: 'sign-in',
         },
@@ -20,12 +19,10 @@ describe('getAllPathsFromRoutes', () => {
         },
         {
           path: 'admin',
-          indexRoute: {},
-          childRoutes: [
+          children: [
             {
               path: 'dashboard',
-              indexRoute: {},
-              childRoutes: [
+              children: [
                 {
                   path: 'users',
                 },
