@@ -26,7 +26,7 @@ const AdminProjectVolunteeringEdit = lazy(
 );
 
 export function adminProjectsProjectPath(projectId: string) {
-  return `/admin/projects/${projectId}`;
+  return `/admin/projects/${projectId}/`;
 }
 
 const createAdminProjectsRoutes = () => {
