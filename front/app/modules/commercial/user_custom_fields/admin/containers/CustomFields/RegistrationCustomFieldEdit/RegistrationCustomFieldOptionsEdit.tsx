@@ -22,13 +22,9 @@ import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';
 
-export interface Props {
-  userCustomFieldId: string;
-}
-
 const RegistrationCustomFieldOptionsEdit = ({
   params: { userCustomFieldId, userCustomFieldOptionId },
-}: Props & WithRouterProps) => {
+}: WithRouterProps) => {
   const userCustomFieldOption = useUserCustomFieldOption(
     userCustomFieldId,
     userCustomFieldOptionId
