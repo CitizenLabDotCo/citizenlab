@@ -44,7 +44,7 @@ namespace :complex_migrations do
       errors += ["No topic code found for #{d['Current_topic']} (tenant #{d['tenant_id']})"] unless code
       sub_mapping[d['tenant_id']][d['id']] = { 'code' => code, 'merge' => (d['Merge'] == 'TRUE') }
     end
-    base_topics = YAML.safe_load(open(Rails.root.join('config/tenant_templates/base.yml')).read).dig('models',
+    base_topics = YAML.load(open(Rails.root.join('config/tenant_templates/base.yml')).read).dig('models',
       'topic')
 
     if errors.present?

@@ -72,7 +72,7 @@ describe MultiTenancy::TenantTemplateService do
                 nl-BE: Minima et ipsa debitis.
               code: title_multiloc
       YAML
-      template = YAML.safe_load(yml)
+      template = YAML.load(yml)
 
       service.apply_template(template)
 
@@ -102,7 +102,7 @@ describe MultiTenancy::TenantTemplateService do
                 publication_status: published
                 parent_attributes_ref: *1
       YAML
-      template = YAML.safe_load(yml)
+      template = YAML.load(yml)
 
       service.apply_template(template)
 

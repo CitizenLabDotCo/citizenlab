@@ -13,7 +13,7 @@ namespace :templates do
   task :import, %i[host file] => [:environment] do |_t, args|
     host = args[:host]
     Apartment::Tenant.switch(host.tr('.', '_')) do
-      ::MultiTenancy::TenantTemplateService.new.resolve_and_apply_template YAML.safe_load(open(args[:file]).read)
+      ::MultiTenancy::TenantTemplateService.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
     end
   end
 
@@ -86,7 +86,7 @@ namespace :templates do
   end
 
   task :change_locale, %i[template_name locale_from locale_to] => [:environment] do |_t, args|
-    template = YAML.safe_load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
+    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
     service = ::MultiTenancy::TenantTemplateService.new
 
     template = service.change_locales template, args[:locale_from], args[:locale_to]

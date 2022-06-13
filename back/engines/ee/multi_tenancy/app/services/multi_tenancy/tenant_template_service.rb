@@ -302,17 +302,17 @@ module MultiTenancy
         throw 'Unknown template' unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
         internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
         if File.exist? internal_path
-          YAML.safe_load open(internal_path).read
+          YAML.load open(internal_path).read
         else
           s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
           bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
           object = bucket.object("#{external_subfolder}/#{template_name}.yml")
-          YAML.safe_load object.get.body.read
+          YAML.load object.get.body.read
         end
       elsif template_name.is_a? Hash
         template_name
       elsif template_name.nil?
-        YAML.safe_load open(Rails.root.join('config/tenant_templates/base.yml')).read
+        YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
       else
         throw 'Could not resolve template'
       end
