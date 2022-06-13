@@ -41,11 +41,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  border-bottom: solid 1px ${colors.separation};
-
-  &.first {
-    border-top: solid 1px ${colors.separation};
-  }
 `;
 
 const CustomFieldTitle = styled.div`
@@ -54,6 +49,10 @@ const CustomFieldTitle = styled.div`
   font-size: ${fontSizes.l}px;
   line-height: normal;
   font-weight: 500;
+`;
+
+const StyledAccordion = styled(Accordion)`
+  border-bottom: solid 0px ${colors.separation};
 `;
 
 const HeadingContainer = styled.div`
@@ -112,7 +111,6 @@ export default memo<Props>(
   ({
     ideaCustomField,
     collapsed,
-    first,
     onChange,
     onCollapseExpand,
     className,
@@ -171,8 +169,8 @@ export default memo<Props>(
 
     if (!isNilOrError(ideaCustomField)) {
       return (
-        <Container className={`${className || ''} ${first ? 'first' : ''}`}>
-          <Accordion
+        <Container className={`${className || ''}`}>
+          <StyledAccordion
             title={
               <HeadingContainer
                 onMouseDown={removeFocusAfterMouseClick}
@@ -248,7 +246,7 @@ export default memo<Props>(
                 </Suspense>
               )}
             </CollapsedContainer>
-          </Accordion>
+          </StyledAccordion>
         </Container>
       );
     }
