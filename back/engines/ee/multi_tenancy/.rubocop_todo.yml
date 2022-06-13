@@ -78,11 +78,6 @@ RSpec/ExampleLength:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# Offense count: 9
-RSpec/StubbedMock:
-  Exclude:
-    - 'spec/services/track_intercom_service_spec.rb'
-
 # Offense count: 2
 RSpec/SubjectStub:
   Exclude:
