@@ -1,6 +1,10 @@
+// utils
 import { colors } from 'utils/styleUtils';
+
+// typings
 import { IInsightsNetworkNodeMeta } from 'modules/commercial/insights/admin/containers/Insights/Details/Network';
 import { NodeObject } from 'react-force-graph-2d';
+
 type Node = NodeObject & IInsightsNetworkNodeMeta;
 
 function hideIconBoxParams(node: Node): [number, number, number, number] {

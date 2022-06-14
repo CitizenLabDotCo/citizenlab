@@ -42,8 +42,8 @@ import Button from 'components/UI/Button';
 import {
   TooltipContent,
   SectionTitle,
-  TooltipContentList,
 } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import ShowHiddenNodes from 'modules/commercial/insights/admin/components/ShowHiddenNodes';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -257,7 +257,9 @@ const Network = ({
     trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
   };
 
-  const handleShowHiddenNodesClick = () => setHiddenNodes([]);
+  const handleShowHiddenNodesClick = () => {
+    setHiddenNodes([]);
+  };
 
   const nodePointerAreaPaint = (node, color, ctx) => {
     ctx.fillStyle = color;
@@ -395,34 +397,10 @@ const Network = ({
             }
           />
         </SectionTitle>
-        {hiddenNodes.length > 0 && (
-          <Box
-            mt="12px"
-            style={{
-              cursor: 'pointer',
-              width: 'fit-content',
-            }}
-            onClick={handleShowHiddenNodesClick}
-          >
-            <IconTooltip
-              mr="5px"
-              icon="eye"
-              placement="bottom"
-              content={
-                <TooltipContentList>
-                  {(hiddenNodes.length > 10
-                    ? [...hiddenNodes.slice(0, 9), '...']
-                    : hiddenNodes
-                  ).map((node: Node) => (
-                    <li key={node.id}>{node.name}</li>
-                  ))}
-                </TooltipContentList>
-              }
-            />
-            {formatMessage(messages.networkShowHiddenNodes) +
-              ` (${hiddenNodes.length})`}
-          </Box>
-        )}
+        <ShowHiddenNodes
+          hiddenNodes={hiddenNodes}
+          handleShowHiddenNodesClick={handleShowHiddenNodesClick}
+        />
       </Box>
       {height && width && (
         <ForceGraph2D
