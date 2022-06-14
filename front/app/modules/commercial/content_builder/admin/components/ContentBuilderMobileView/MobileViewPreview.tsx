@@ -48,19 +48,12 @@ export const MobileViewPreview = () => {
     };
   }, []);
 
-  if (isNilOrError(platformLocale)) {
+  if (isNilOrError(platformLocale) || isNilOrError(project)) {
     return null;
   }
 
   const locale = selectedLocale || platformLocale;
-  const loadingContentBuilderLayout = contentBuilderLayout === undefined;
-
-  const contentBuilderSavedContent =
-    !isNilOrError(contentBuilderLayout) &&
-    contentBuilderLayout.data.attributes.enabled &&
-    contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
-
-  const contentBuilderContent = draftData || contentBuilderSavedContent;
+  const isLoadingContentBuilderLayout = contentBuilderLayout === undefined;
 
   const savedEditorData = !isNilOrError(contentBuilderLayout)
     ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
@@ -68,7 +61,7 @@ export const MobileViewPreview = () => {
 
   const editorData = draftData || savedEditorData;
 
-  return !isNilOrError(project) ? (
+  return (
     <FocusOn>
       <Box
         display="flex"
@@ -85,8 +78,8 @@ export const MobileViewPreview = () => {
           <Title color="colorText" variant="h1">
             {project.attributes.title_multiloc[locale]}
           </Title>
-          {loadingContentBuilderLayout && <Spinner />}
-          {!loadingContentBuilderLayout && contentBuilderContent && (
+          {isLoadingContentBuilderLayout && <Spinner />}
+          {!isLoadingContentBuilderLayout && editorData && (
             <Box>
               <Editor isPreview={true}>
                 <ContentBuilderFrame editorData={editorData} />
@@ -96,7 +89,7 @@ export const MobileViewPreview = () => {
         </Box>
       </Box>
     </FocusOn>
-  ) : null;
+  );
 };
 
 const MobileViewPreviewModal = () => {

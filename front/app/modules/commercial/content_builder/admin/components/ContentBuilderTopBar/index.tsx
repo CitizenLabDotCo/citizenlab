@@ -76,15 +76,9 @@ const ContentBuilderTopBar = ({
   const disableSave = localesWithError.length > 0;
 
   const localesValues = locales.reduce((acc, locale) => {
-    if (localesWithError.includes(locale)) {
-      return {
-        ...acc,
-        [locale]: '',
-      };
-    }
     return {
       ...acc,
-      [locale]: 'NON-EMPTY-VALUE',
+      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
     };
   }, {});
 

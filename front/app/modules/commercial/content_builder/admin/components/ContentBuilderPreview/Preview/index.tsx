@@ -32,7 +32,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     code: PROJECT_DESCRIPTION_CODE,
   });
 
-  const loadingContentBuilderLayout = contentBuilderLayout === undefined;
+  const isLoadingContentBuilderLayout = contentBuilderLayout === undefined;
 
   const contentBuilderContent =
     !isNilOrError(contentBuilderLayout) &&
@@ -47,8 +47,8 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
 
   return (
     <Box data-testid="contentBuilderPreview">
-      {loadingContentBuilderLayout && <Spinner />}
-      {!loadingContentBuilderLayout && contentBuilderContent && (
+      {isLoadingContentBuilderLayout && <Spinner />}
+      {!isLoadingContentBuilderLayout && contentBuilderContent && (
         <Box data-testid="contentBuilderPreviewContent">
           <Title color="colorText" variant="h1">
             {localize(projectTitle)}
@@ -58,7 +58,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
           </Editor>
         </Box>
       )}
-      {!loadingContentBuilderLayout && !contentBuilderContent && (
+      {!isLoadingContentBuilderLayout && !contentBuilderContent && (
         <Box data-testid="contentBuilderProjectDescription">
           <ProjectInfo projectId={projectId} />
         </Box>

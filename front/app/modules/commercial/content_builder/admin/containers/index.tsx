@@ -107,7 +107,10 @@ export const ContentBuilderPage = () => {
     };
   }, []);
 
-  if (isNilOrError(locales)) {
+  const contentBuilderVisible =
+    featureEnabled && pathname.includes('admin/content-builder');
+
+  if (isNilOrError(locales) && contentBuilderVisible) {
     return null;
   }
 
@@ -115,14 +118,17 @@ export const ContentBuilderPage = () => {
     .filter((node) => node.hasError)
     .map((node) => node.selectedLocale);
 
-  const editorData =
-    !isNilOrError(contentBuilderLayout) && selectedLocale
-      ? draftData && draftData[selectedLocale]
-        ? draftData[selectedLocale]
-        : contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
-            selectedLocale
-          ]
-      : undefined;
+  const getEditorData = () => {
+    if (!isNilOrError(contentBuilderLayout) && selectedLocale) {
+      if (draftData && draftData[selectedLocale]) {
+        return draftData[selectedLocale];
+      } else {
+        return contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[
+          selectedLocale
+        ];
+      }
+    } else return undefined;
+  };
 
   const handleEditorChange = (nodes: SerializedNodes) => {
     iframeRef.current &&
@@ -151,10 +157,7 @@ export const ContentBuilderPage = () => {
     setSelectedLocale(locale);
   };
 
-  const contentBuilderVisible =
-    featureEnabled && pathname.includes('admin/content-builder');
-
-  return contentBuilderVisible ? (
+  return (
     <Box
       display="flex"
       flexDirection="column"
@@ -198,7 +201,7 @@ export const ContentBuilderPage = () => {
                 )}
                 <ContentBuilderFrame
                   key={selectedLocale}
-                  editorData={editorData}
+                  editorData={getEditorData()}
                 />
               </Box>
             </StyledRightColumn>
@@ -213,7 +216,7 @@ export const ContentBuilderPage = () => {
         </Editor>
       </FocusOn>
     </Box>
-  ) : null;
+  );
 };
 
 const ContentBuilderPageModal = () => {
