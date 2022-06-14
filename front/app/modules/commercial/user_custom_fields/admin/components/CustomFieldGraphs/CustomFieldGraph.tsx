@@ -211,6 +211,8 @@ const CustomFieldsGraph = ({
               svgNode={currentChartRef}
               xlsxEndpoint={xlsxEndpoint}
               currentProjectFilter={currentProject}
+              startAt={startAt}
+              endAt={endAt}
             />
           )}
         </GraphCardHeader>
