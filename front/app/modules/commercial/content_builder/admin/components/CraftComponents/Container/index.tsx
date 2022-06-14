@@ -9,6 +9,7 @@ import Text from '../Text';
 import Image from '../Image';
 import AboutBox from '../AboutBox';
 import Iframe from '../Iframe';
+import WhiteSpace from '../WhiteSpace';
 import Accordion from '../Accordion';
 
 const Container: UserComponent = ({ children }) => {
@@ -28,6 +29,7 @@ Container.craft = {
           node.data.type === Image ||
           node.data.type === Iframe ||
           node.data.type === Accordion ||
+          node.data.type === WhiteSpace ||
           node.data.type === AboutBox
       );
     },

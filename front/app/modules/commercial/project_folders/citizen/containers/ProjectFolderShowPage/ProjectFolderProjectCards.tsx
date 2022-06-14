@@ -27,12 +27,10 @@ const StyledProjectCard = styled(ProjectCard)<{ isEven: boolean }>`
   margin: 0px;
   margin-right: ${(props) => (props.isEven ? '20px' : '0px')};
   margin-bottom: 20px;
-
   &.oneCardPerRow {
     width: 100%;
     margin-right: 0px;
   }
-
   ${media.smallerThanMinTablet`
     width: 100%;
     margin: 0;
