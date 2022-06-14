@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Enregistrer",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Enregistré !",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Politique de cookies",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Modifiez les pages À propos et FAQ de votre plateforme. D'autres pages, notamment les conditions générales et la politique de confidentialité, peuvent être modifiées dans l'onglet {policiesLink} .",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Politiques",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Pages de la plateforme",
   "app.containers.AdminPage.PagesEdition.faq": "Foire aux questions (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.PagesEdition.information": "La page à propos",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Les paramètres ont été mis à jour avec succès.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Zones géographiques",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Accueil et style",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Pages",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politiques",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Inscription",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Général",
@@ -1435,7 +1431,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Votre barre de navigation peut afficher jusqu'à cinq pages en plus des pages d'accueil et des projets. Vous pouvez renommer les éléments du menu, les réorganiser et ajouter de nouvelles pages avec votre propre contenu.",
-  "app.modules.navbar.admin.containers.pageTitle": "Barre de navigation et pages de la plate-forme",
   "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès",
   "components.admin.ServerError.genericServerError": "Une erreur est survenue lors du chargement de ce contenu, veuillez réessayer plus tard."
 }
