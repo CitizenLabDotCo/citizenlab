@@ -6,11 +6,11 @@ import {
   isAdmin,
   isModerator,
   isProjectModerator,
+  isProjectFolderModerator,
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
-import { userHasRole } from 'services/permissions/roles';
 
 export const MODERATOR_ROUTES = [
   '/admin/projects',
@@ -24,7 +24,9 @@ export const MODERATOR_ROUTES = [
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {
-  return MODERATOR_ROUTES.includes(item.path);
+  return MODERATOR_ROUTES.some((moderatorRoute) => {
+    return item.path.includes(moderatorRoute);
+  });
 };
 
 export const isModeratedProjectRoute = (
@@ -63,14 +65,17 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (isModerator(user) && isModeratorRoute(item)) {
+    if (
+      (isModerator(user) || isProjectFolderModerator(user)) &&
+      isModeratorRoute(item)
+    ) {
       return true;
     }
 
     if (
       item.path.includes('folders') &&
       user &&
-      userHasRole(user, 'project_folder_moderator')
+      isProjectFolderModerator(user)
     ) {
       return true;
     }

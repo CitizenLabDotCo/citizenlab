@@ -8,10 +8,6 @@ import messages from './messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import CountBadge from 'components/UI/CountBadge';
 import HasPermission from 'components/HasPermission';
-import { IUserData, IRole } from 'services/users';
-import useAuthUser from 'hooks/useAuthUser';
-import { isProjectModerator } from 'services/permissions/roles';
-import { isNilOrError } from 'utils/helperUtils';
 import useFeatureFlags from 'hooks/useFeatureFlags';
 
 const Text = styled.div`
@@ -124,18 +120,10 @@ type Props = {
 };
 
 const MenuItem = ({ navItem }: Props) => {
-  const authUser = useAuthUser();
-  const isModerator =
-    !isNilOrError(authUser) &&
-    (isProjectModerator({ data: authUser }) ||
-      isProjectFolderModerator(authUser));
   const renderNavItem = useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
-
-  // temporarily hiding while we deal with router infinite looping
-  if (isModerator && navItem.link === '/admin/messaging') return null;
 
   return renderNavItem ? (
     <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
@@ -153,18 +141,4 @@ const MenuItem = ({ navItem }: Props) => {
   ) : null;
 };
 
-// copied from front/app/modules/commercial/project_folders/permissions/roles.ts
-// can't import from modules
-function isProjectFolderModerator(user: IUserData, projectFolderId?: string) {
-  return !!user.attributes?.roles?.find((role: IRole) => {
-    if (projectFolderId) {
-      return (
-        role.type === 'project_folder_moderator' &&
-        role.project_folder_id === projectFolderId
-      );
-    } else {
-      return role.type === 'project_folder_moderator';
-    }
-  });
-}
 export default MenuItem;
