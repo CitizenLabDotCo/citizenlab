@@ -57,7 +57,6 @@ export const canAccessRoute = (
   user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
-  debugger;
   if (isAdminRoute(item.path)) {
     if (isSuperAdmin(user)) {
       return true;
