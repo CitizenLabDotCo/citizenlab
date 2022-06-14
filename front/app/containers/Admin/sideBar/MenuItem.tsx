@@ -12,6 +12,7 @@ import { IUserData, IRole } from 'services/users';
 import useAuthUser from 'hooks/useAuthUser';
 import { isProjectModerator } from 'services/permissions/roles';
 import { isNilOrError } from 'utils/helperUtils';
+import useFeatureFlags from 'hooks/useFeatureFlags';
 
 const Text = styled.div`
   flex: 1;
@@ -119,10 +120,10 @@ const IconWrapper = styled.div`
 `;
 
 type Props = {
-  route: NavItem;
+  navItem: NavItem;
 };
 
-export default ({ route }: Props) => {
+const MenuItem = ({ navItem }: Props) => {
   const authUser = useAuthUser();
   const isModerator =
     !isNilOrError(authUser) &&
@@ -130,22 +131,25 @@ export default ({ route }: Props) => {
       isProjectFolderModerator(authUser));
 
   // temporarily hiding while we deal with router infinite looping
-  if (isModerator && route.link === '/admin/messaging') return null;
+  if (isModerator && navItem.link === '/admin/messaging') return null;
 
-  return (
-    <HasPermission action="access" item={{ type: 'route', path: route.link }}>
-      <MenuItemLink to={route.link}>
-        <IconWrapper className={route.iconName}>
-          <Icon name={route.iconName} />
+  return useFeatureFlags({
+    names: navItem.featureNames ?? [],
+    onlyCheckAllowed: navItem.onlyCheckAllowed,
+  }) ? (
+    <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
+      <MenuItemLink to={navItem.link}>
+        <IconWrapper className={navItem.iconName}>
+          <Icon name={navItem.iconName} />
         </IconWrapper>
         <Text>
-          <FormattedMessage {...messages[route.message]} />
-          {!!route.count && <CountBadge count={route.count} />}
+          <FormattedMessage {...messages[navItem.message]} />
+          {!!navItem.count && <CountBadge count={navItem.count} />}
         </Text>
         <ArrowIcon name="arrowLeft" />
       </MenuItemLink>
     </HasPermission>
-  );
+  ) : null;
 };
 
 // copied from front/app/modules/commercial/project_folders/permissions/roles.ts
@@ -162,3 +166,4 @@ function isProjectFolderModerator(user: IUserData, projectFolderId?: string) {
     }
   });
 }
+export default MenuItem;
