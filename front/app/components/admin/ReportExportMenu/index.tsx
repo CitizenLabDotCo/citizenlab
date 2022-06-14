@@ -43,9 +43,7 @@ interface ReportExportMenuProps {
   currentTopicFilterLabel?: string | undefined;
 }
 
-const ReportExportMenu: React.SFC<
-  ReportExportMenuProps & InjectedIntlProps
-> = ({
+const ReportExportMenu = ({
   svgNode,
   className,
   xlsxEndpoint,
@@ -60,7 +58,7 @@ const ReportExportMenu: React.SFC<
   currentTopicFilterLabel,
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
-}) => {
+}: ReportExportMenuProps & InjectedIntlProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
 
