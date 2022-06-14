@@ -15,7 +15,7 @@ interface Props extends FieldInfoProps {
   title: string;
   columns: string[];
   data: RepresentativenessData;
-  projectFilter: string | undefined;
+  projectFilter?: string;
   xlsxEndpoint: string;
   onClose: () => void;
 }

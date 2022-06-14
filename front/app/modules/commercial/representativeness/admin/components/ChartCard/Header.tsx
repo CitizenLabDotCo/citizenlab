@@ -32,7 +32,7 @@ interface Props {
   title: string;
   svgNode: React.RefObject<SVGElement | undefined>;
   // representativenessScore: number;
-  projectFilter: string | undefined;
+  projectFilter?: string;
   xlsxEndpoint: string;
   viewState: ViewState;
   onChangeViewState: (newViewState: ViewState) => void;
@@ -109,10 +109,8 @@ const Header = ({
       <Box mr="12px">
         <ReportExportMenu
           name={title}
-          currentProjectFilter={
-            viewState === 'table' ? projectFilter : undefined
-          }
-          xlsxEndpoint={xlsxEndpoint}
+          currentProjectFilter={projectFilter}
+          xlsxEndpoint={viewState === 'table' ? xlsxEndpoint : undefined}
           svgNode={viewState === 'chart' ? svgNode : undefined}
         />
       </Box>
