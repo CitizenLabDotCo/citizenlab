@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- Fixed issue where users were unable to moderate projects and project folders correctly
+
 ## 2022-06-14
 
 ### Added
