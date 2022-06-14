@@ -22,7 +22,7 @@ describe('ContentBulderMobileView', () => {
     const { container } = render(<ContentBuilderMobileView projectId="id" />);
     expect(container.querySelector('iframe')).toHaveAttribute(
       'src',
-      '/en/projects/test'
+      '/en/admin/content-builder/projects/id/mobile-preview'
     );
   });
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // hooks
 import useContentBuilderLayout from '../../../../hooks/useContentBuilder';
@@ -17,7 +17,6 @@ import { PROJECT_DESCRIPTION_CODE } from '../../../../services/contentBuilder';
 
 // types
 import { Multiloc } from 'typings';
-import { SerializedNodes } from '@craftjs/core';
 
 type PreviewProps = {
   projectId: string;
@@ -25,7 +24,6 @@ type PreviewProps = {
 };
 
 const Preview = ({ projectId, projectTitle }: PreviewProps) => {
-  const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const locale = useLocale();
   const localize = useLocalize();
 
@@ -34,40 +32,23 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
     code: PROJECT_DESCRIPTION_CODE,
   });
 
-  useEffect(() => {
-    window.addEventListener(
-      'message',
-      (e) => {
-        // Make sure there is a root node in the draft data
-        if (e.origin === window.location.origin && e.data.ROOT) {
-          setDraftData(e.data);
-        }
-      },
-      false
-    );
-  }, []);
+  const isLoadingContentBuilderLayout = contentBuilderLayout === undefined;
 
-  const loadingContentBuilderLayout = contentBuilderLayout === undefined;
-
-  const contentBuilderSavedContent =
+  const contentBuilderContent =
     !isNilOrError(contentBuilderLayout) &&
     !isNilOrError(locale) &&
     contentBuilderLayout.data.attributes.enabled &&
     contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale];
 
-  const contentBuilderContent = draftData || contentBuilderSavedContent;
-
-  const savedEditorData =
+  const editorData =
     !isNilOrError(contentBuilderLayout) && !isNilOrError(locale)
       ? contentBuilderLayout.data.attributes.craftjs_jsonmultiloc[locale]
       : undefined;
 
-  const editorData = draftData || savedEditorData;
-
   return (
     <Box data-testid="contentBuilderPreview">
-      {loadingContentBuilderLayout && <Spinner />}
-      {!loadingContentBuilderLayout && contentBuilderContent && (
+      {isLoadingContentBuilderLayout && <Spinner />}
+      {!isLoadingContentBuilderLayout && contentBuilderContent && (
         <Box data-testid="contentBuilderPreviewContent">
           <Title color="colorText" variant="h1">
             {localize(projectTitle)}
@@ -77,7 +58,7 @@ const Preview = ({ projectId, projectTitle }: PreviewProps) => {
           </Editor>
         </Box>
       )}
-      {!loadingContentBuilderLayout && !contentBuilderContent && (
+      {!isLoadingContentBuilderLayout && !contentBuilderContent && (
         <Box data-testid="contentBuilderProjectDescription">
           <ProjectInfo projectId={projectId} />
         </Box>

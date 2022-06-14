@@ -134,6 +134,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     const { colorMain, animationDuration, animationBegin } =
       this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       intl: { formatMessage },
       currentGroupFilter,
@@ -155,6 +157,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                 xlsxEndpoint={usersByGenderXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>
