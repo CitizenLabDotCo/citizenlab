@@ -8,6 +8,10 @@ import messages from './messages';
 import { Icon } from '@citizenlab/cl2-component-library';
 import CountBadge from 'components/UI/CountBadge';
 import HasPermission from 'components/HasPermission';
+import { IUserData, IRole } from 'services/users';
+import useAuthUser from 'hooks/useAuthUser';
+import { isProjectModerator } from 'services/permissions/roles';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Text = styled.div`
   flex: 1;
@@ -119,6 +123,15 @@ type Props = {
 };
 
 export default ({ route }: Props) => {
+  const authUser = useAuthUser();
+  const isModerator =
+    !isNilOrError(authUser) &&
+    (isProjectModerator({ data: authUser }) ||
+      isProjectFolderModerator(authUser));
+
+  // temporarily hiding while we deal with router infinite looping
+  if (isModerator && route.link === '/admin/messaging') return null;
+
   return (
     <HasPermission action="access" item={{ type: 'route', path: route.link }}>
       <MenuItemLink to={route.link}>
@@ -134,3 +147,18 @@ export default ({ route }: Props) => {
     </HasPermission>
   );
 };
+
+// copied from front/app/modules/commercial/project_folders/permissions/roles.ts
+// can't import from modules
+function isProjectFolderModerator(user: IUserData, projectFolderId?: string) {
+  return !!user.attributes?.roles?.find((role: IRole) => {
+    if (projectFolderId) {
+      return (
+        role.type === 'project_folder_moderator' &&
+        role.project_folder_id === projectFolderId
+      );
+    } else {
+      return role.type === 'project_folder_moderator';
+    }
+  });
+}
