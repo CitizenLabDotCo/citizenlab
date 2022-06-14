@@ -1350,6 +1350,8 @@
   "app.containers.admin.ContentBuilder.accordionTitleLabel": "Tytuł",
   "app.containers.admin.ContentBuilder.accordionTitleValue": "Tytuł akordeonu",
   "app.containers.admin.ContentBuilder.delete": "Usuń",
+  "app.containers.admin.ContentBuilder.error": "błąd",
+  "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Wysokość",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Wysokość okna iframe.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "np. 120px",
