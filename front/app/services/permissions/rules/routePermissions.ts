@@ -10,6 +10,7 @@ import {
 } from '../roles';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { userHasRole } from 'services/permissions/roles';
 
 export const MODERATOR_ROUTES = [
   '/admin/projects',
@@ -66,7 +67,11 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (item.path.includes('folder')) {
+    if (
+      item.path.includes('folders') &&
+      user &&
+      userHasRole(user, 'project_folder_moderator')
+    ) {
       return true;
     }
 
