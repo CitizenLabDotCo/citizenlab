@@ -29,6 +29,7 @@
 #  cta_signed_out_url                       :string
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
+#  header_bg                                :string
 #
 class HomePage < ApplicationRecord
   before_validation :sanitize_top_info_section_multiloc, if: :top_info_section_enabled
@@ -69,6 +70,8 @@ class HomePage < ApplicationRecord
     validates :cta_signed_out_text_multiloc, presence: true, multiloc: { presence: true }
     validates :cta_signed_out_url, presence: true, url: true
   end
+
+  mount_base64_uploader :header_bg, HeaderBgUploader
 
   private
 
