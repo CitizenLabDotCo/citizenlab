@@ -1350,6 +1350,8 @@
   "app.containers.admin.ContentBuilder.accordionTitleLabel": "Naziv",
   "app.containers.admin.ContentBuilder.accordionTitleValue": "Naslov harmonike",
   "app.containers.admin.ContentBuilder.delete": "Izbriši",
+  "app.containers.admin.ContentBuilder.error": "greška",
+  "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Visina",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Visina iframe prozora.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "na primer, 120px",

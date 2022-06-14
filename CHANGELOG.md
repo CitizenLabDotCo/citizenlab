@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-06-14
+
 ### Added
 
 - [CL-767] Add data from backend to representative dashboard
@@ -11,6 +13,7 @@
 - [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
 - [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
 - [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+- [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
 
 ## 2022-06-13
 
