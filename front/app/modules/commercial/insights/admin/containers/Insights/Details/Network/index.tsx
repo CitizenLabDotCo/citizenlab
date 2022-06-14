@@ -189,10 +189,8 @@ const Network = ({
         ctx.fillText(label, node.x, nodeVerticalOffset);
 
         if (node == hoverNode) {
-          // Draw hide icon
           drawHideIcon(ctx, node);
 
-          // Change tooltip text on icon hover
           const [offsetX, offsetY] = pointerPosition;
           const rect = drawHideIconClickBox(node);
 
@@ -206,8 +204,31 @@ const Network = ({
     }
   };
 
+  const getKeywords = (node: Node, isHiding: boolean) => {
+    const { keywords } = query;
+    let newKeywords = keywords;
+
+    if (typeof keywords === 'string') {
+      newKeywords = [keywords];
+    }
+
+    if (newKeywords) {
+      if (newKeywords.includes(node.id)) {
+        newKeywords = newKeywords.filter(
+          (keyword: string) => keyword !== node.id
+        );
+      } else if (!isHiding) {
+        newKeywords = [newKeywords, node.id];
+      }
+    } else if (!isHiding) {
+      newKeywords = node.id;
+    }
+
+    return newKeywords;
+  };
+
   const handleNodeClick = (node: Node, event) => {
-    let removedNode = false;
+    let isHiding = false;
     if (node.x && node.y) {
       const { target, offsetX, offsetY } = event;
       const ctx = target.getContext('2d');
@@ -216,33 +237,24 @@ const Network = ({
 
       if (ctx.isPointInPath(rect, offsetX, offsetY)) {
         setHiddenNodes([...hiddenNodes, node]);
-        removedNode = true;
+        isHiding = true;
       }
     }
 
-    const keywords =
-      query.keywords && typeof query.keywords === 'string'
-        ? [query.keywords]
-        : query.keywords;
+    const keywords = getKeywords(node, isHiding);
 
-    if (!removedNode || (keywords && keywords.includes(node.id))) {
-      clHistory.replace({
-        pathname,
-        search: stringify(
-          // Toggle selected keywords in url
-          {
-            ...query,
-            keywords: keywords
-              ? !keywords.includes(node.id)
-                ? [keywords, node.id]
-                : keywords.filter((keyword: string) => keyword !== node.id)
-              : node.id,
-          },
-          { addQueryPrefix: true, indices: false }
-        ),
-      });
-      trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
-    }
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        // Toggle selected keywords in url
+        {
+          ...query,
+          keywords: keywords,
+        },
+        { addQueryPrefix: true, indices: false }
+      ),
+    });
+    trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
   };
 
   const handleShowHiddenNodesClick = () => setHiddenNodes([]);
