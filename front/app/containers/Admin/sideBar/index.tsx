@@ -147,15 +147,11 @@ export type NavItem = {
   onlyCheckAllowed?: boolean;
 };
 
-type Tracks = {
-  trackFakeDoor: () => void;
-};
-
 class Sidebar extends PureComponent<
-  Props & InjectedIntlProps & WithRouterProps & Tracks,
+  Props & InjectedIntlProps & WithRouterProps,
   State
 > {
-  constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
+  constructor(props: Props & InjectedIntlProps & WithRouterProps) {
     super(props);
 
     this.state = {
