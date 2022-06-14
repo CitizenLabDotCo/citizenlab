@@ -2,7 +2,6 @@ import React, {
   MouseEvent,
   KeyboardEvent,
   FunctionComponent,
-  ReactNode,
   ReactElement,
 } from 'react';
 
@@ -133,10 +132,6 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.projects.all.container': {
     onRender: (hasRendered: boolean) => void;
-  };
-  'app.containers.Admin.contentBuilderLayout': {
-    onMount: (isVisible: boolean) => void;
-    childrenToRender: ReactNode;
   };
   'app.containers.Admin.projects.edit.description.contentBuilder': {
     onMount: () => void;

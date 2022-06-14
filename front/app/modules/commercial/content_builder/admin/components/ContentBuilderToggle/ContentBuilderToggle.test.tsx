@@ -32,6 +32,16 @@ jest.mock('utils/cl-router/Link', () => () => (
   <a href="www.google.com">LinkText</a>
 ));
 
+jest.mock('utils/cl-router/withRouter', () => {
+  return {
+    withRouter: (Component) => {
+      return (props) => {
+        return <Component {...props} params={{ projectId: 'projectId' }} />;
+      };
+    },
+  };
+});
+
 const dummyFunction = jest.fn();
 const multiloc = 'en' as Multiloc;
 
