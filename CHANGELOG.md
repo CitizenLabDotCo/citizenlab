@@ -4,6 +4,10 @@
 
 ## 2022-06-14
 
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
 ### Fixed
 
 - [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
