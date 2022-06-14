@@ -105,3 +105,9 @@ RSpec/BeforeAfterAll:
 Rails/UnknownEnv:
   # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
   Environments: [development, test, production, staging]
+
+Rails/UniqueValidationWithoutIndex:
+  # This Cop does not fail when running in citizenlab-ee/engines/ee/multi_tenancy locally,
+  # because db/schema.rb does not exist, but it fails on CI.
+  Exclude:
+    - 'app/models/tenant.rb'
