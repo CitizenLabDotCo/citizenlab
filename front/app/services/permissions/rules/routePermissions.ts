@@ -25,11 +25,6 @@ export const MODERATOR_ROUTES = [
 
 export const isModeratorRoute = (item: IRouteItem) => {
   return MODERATOR_ROUTES.some((moderatorRoute) => {
-    console.log([
-      item.path,
-      moderatorRoute,
-      item.path.includes(moderatorRoute),
-    ]);
     return item.path.includes(moderatorRoute);
   });
 };

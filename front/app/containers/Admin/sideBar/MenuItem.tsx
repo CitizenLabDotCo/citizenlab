@@ -141,18 +141,4 @@ const MenuItem = ({ navItem }: Props) => {
   ) : null;
 };
 
-// // copied from front/app/modules/commercial/project_folders/permissions/roles.ts
-// // can't import from modules
-// function isProjectFolderModerator(user: IUserData, projectFolderId?: string) {
-//   return !!user.attributes?.roles?.find((role: IRole) => {
-//     if (projectFolderId) {
-//       return (
-//         role.type === 'project_folder_moderator' &&
-//         role.project_folder_id === projectFolderId
-//       );
-//     } else {
-//       return role.type === 'project_folder_moderator';
-//     }
-//   });
-// }
 export default MenuItem;
