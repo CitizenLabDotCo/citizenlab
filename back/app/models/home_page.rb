@@ -45,6 +45,8 @@ class HomePage < ApplicationRecord
   validates :events_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
 
+  validates :projects_header_multiloc, multloc: true
+
   validates :banner_avatars_enabled, inclusion: [true, false]
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
