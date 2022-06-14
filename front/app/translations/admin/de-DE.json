@@ -64,7 +64,7 @@
   "app.components.admin.PostManager.PostPreview.voteCounts": "Stimmenauszählung:",
   "app.components.admin.PostManager.allPhases": "Alle Phasen",
   "app.components.admin.PostManager.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
-  "app.components.admin.PostManager.allStatuses": "Alle Status",
+  "app.components.admin.PostManager.allStatuses": "Alle Stati",
   "app.components.admin.PostManager.allTopics": "Alle Themen",
   "app.components.admin.PostManager.anyAssignment": "Alle Admins",
   "app.components.admin.PostManager.assignedTo": "Zugewiesen an {assigneeName}",
