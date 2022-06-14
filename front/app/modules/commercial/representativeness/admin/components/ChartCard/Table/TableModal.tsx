@@ -8,14 +8,15 @@ import FieldInfo, { Props as FieldInfoProps } from '../FieldInfo';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 // typings
-import { RepresentativenessData } from '..';
+import { RepresentativenessData } from '../../../hooks/useReferenceData';
 
 interface Props extends FieldInfoProps {
   open: boolean;
   title: string;
   columns: string[];
   data: RepresentativenessData;
-  svgNode: React.RefObject<SVGElement | undefined>;
+  projectFilter?: string;
+  xlsxEndpoint: string;
   onClose: () => void;
 }
 
@@ -26,7 +27,8 @@ const TableModal = ({
   data,
   includedUserPercentage,
   fieldIsRequired,
-  svgNode,
+  projectFilter,
+  xlsxEndpoint,
   onClose,
 }: Props) => (
   <Modal
@@ -50,7 +52,11 @@ const TableModal = ({
               fieldIsRequired={fieldIsRequired}
             />
           </Box>
-          <ReportExportMenu name={title} svgNode={svgNode} />
+          <ReportExportMenu
+            name={title}
+            currentProjectFilter={projectFilter}
+            xlsxEndpoint={xlsxEndpoint}
+          />
         </Box>
       </Box>
     }

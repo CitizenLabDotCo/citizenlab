@@ -1350,6 +1350,8 @@
   "app.containers.admin.ContentBuilder.accordionTitleLabel": "العنوان",
   "app.containers.admin.ContentBuilder.accordionTitleValue": "عنوان أكورديون",
   "app.containers.admin.ContentBuilder.delete": "حذف",
+  "app.containers.admin.ContentBuilder.error": "خطأ",
+  "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "الارتفاع",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "ارتفاع نافذة iframe.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "مثال: 120 بكسل",

@@ -31,7 +31,7 @@ import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 // services
 import {
   usersByGenderStream,
-  IUsersByGender,
+  IUsersByRegistrationField,
   usersByGenderXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
@@ -117,7 +117,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  convertToGraphFormat = (data: IUsersByGender) => {
+  convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const res = Object.keys(labelColors).map((gender) => ({
       value: data.series.users[gender] || 0,
       name: this.props.intl.formatMessage(messages[gender]),
