@@ -175,7 +175,7 @@ jobs:
       image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
     working_directory: /cl2_back/engines/ee/multi_tenancy
     environment:
-      RAILS_ENV: test
+      RAILS_ENV: development
       CITIZENLAB_EE: true
     steps:
       - pending_citizenlab_github_status
