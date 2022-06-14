@@ -147,7 +147,7 @@ const ContentBuilderTopBar = ({
             </>
           )}
         </Box>
-        {!isNilOrError(locales) && selectedLocale && locales.length > 1 && (
+        {selectedLocale && locales.length > 1 && (
           <Box
             borderLeft={`1px solid ${colors.separation}`}
             borderRight={`1px solid ${colors.separation}`}
