@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-import { useEditor } from '@craftjs/core';
-import useLocale from 'hooks/useLocale';
+import { useEditor, SerializedNodes } from '@craftjs/core';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -19,6 +19,7 @@ import {
   Text,
   Title,
   Toggle,
+  LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -37,79 +38,77 @@ import {
   addContentBuilderLayout,
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
-import eventEmitter from 'utils/eventEmitter';
+
+// types
+import { Locale } from 'typings';
 
 type ContentBuilderTopBarProps = {
+  localesWithError: Locale[];
   mobilePreviewEnabled: boolean;
   setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedLocale: Locale | undefined;
+  draftEditorData?: Record<string, SerializedNodes>;
+  onSelectLocale: (args: {
+    locale: Locale;
+    editorData: SerializedNodes;
+  }) => void;
 } & WithRouterProps;
 
 const ContentBuilderTopBar = ({
   params: { projectId },
   mobilePreviewEnabled,
   setMobilePreviewEnabled,
+  selectedLocale,
+  onSelectLocale,
+  draftEditorData,
+  localesWithError,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
-  const locale = useLocale();
   const project = useProject({ projectId });
+  const locales = useAppConfigurationLocales();
 
-  const [contentBuilderErrors, setContentBuilderErrors] = useState<
-    Record<string, boolean>
-  >({});
+  if (isNilOrError(locales)) {
+    return null;
+  }
 
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('contentBuilderError')
-      .subscribe(({ eventValue }) => {
-        setContentBuilderErrors((contentBuilderErrors) => ({
-          ...contentBuilderErrors,
-          ...(eventValue as Record<string, boolean>),
-        }));
-      });
-    return () => {
-      subscription.unsubscribe();
+  const disableSave = localesWithError.length > 0;
+
+  const localesValues = locales.reduce((acc, locale) => {
+    return {
+      ...acc,
+      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
     };
-  }, []);
-
-  useEffect(() => {
-    const subscription = eventEmitter
-      .observeEvent('deleteContentBuilderElement')
-      .subscribe(({ eventValue }) => {
-        setContentBuilderErrors((contentBuilderErrors) => {
-          const deletedElementId = eventValue as string;
-          const { [deletedElementId]: _deletedElementId, ...rest } =
-            contentBuilderErrors;
-          return rest;
-        });
-      });
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  const disableSave = Object.values(contentBuilderErrors).some(
-    (value: boolean) => value === true
-  );
+  }, {});
 
   const goBack = () => {
     clHistory.push(`/admin/projects/${projectId}/description`);
   };
 
   const handleSave = async () => {
-    if (!isNilOrError(locale)) {
+    if (selectedLocale) {
       try {
         setLoading(true);
         await addContentBuilderLayout(
           { projectId, code: PROJECT_DESCRIPTION_CODE },
-          { craftjs_jsonmultiloc: { [locale]: JSON.parse(query.serialize()) } }
+          {
+            craftjs_jsonmultiloc: {
+              ...draftEditorData,
+              [selectedLocale]: query.getSerializedNodes(),
+            },
+          }
         );
       } catch {
         // Do nothing
       }
       setLoading(false);
     }
+  };
+
+  const handleSelectLocale = (locale: Locale) => {
+    const editorData = query.getSerializedNodes();
+    onSelectLocale({ locale, editorData });
   };
 
   return (
@@ -148,6 +147,23 @@ const ContentBuilderTopBar = ({
             </>
           )}
         </Box>
+        {selectedLocale && locales.length > 1 && (
+          <Box
+            borderLeft={`1px solid ${colors.separation}`}
+            borderRight={`1px solid ${colors.separation}`}
+            h="100%"
+            p="24px"
+          >
+            <LocaleSwitcher
+              data-testid="contentBuilderLocaleSwitcher"
+              locales={locales}
+              selectedLocale={selectedLocale}
+              onSelectedLocaleChange={handleSelectLocale}
+              values={{ localesValues }}
+            />
+          </Box>
+        )}
+        <Box ml="24px" />
         <Toggle
           id="e2e-mobile-preview-toggle"
           label={<FormattedMessage {...messages.mobilePreview} />}

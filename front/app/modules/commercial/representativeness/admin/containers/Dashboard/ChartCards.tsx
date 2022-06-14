@@ -13,58 +13,38 @@ import { isNilOrError } from 'utils/helperUtils';
 // typings
 import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
-// fake data
-import fakeData from './fakeData';
+interface Props {
+  projectFilter?: string;
+}
 
-// TODO remove this later, generalize for all select fields
-const onlyGender = ({ attributes: { code } }: IUserCustomFieldData) =>
-  code === 'gender';
+const isSupported = ({ attributes }: IUserCustomFieldData) =>
+  attributes.code !== 'domicile';
 
-const onlyDomicile = ({ attributes: { code } }: IUserCustomFieldData) =>
-  code === 'domicile';
-
-const ChartCards = () => {
+const ChartCards = ({ projectFilter }: Props) => {
   const customFields = useUserCustomFields({ inputTypes: ['select'] });
   if (isNilOrError(customFields)) return null;
 
   return (
     <>
-      {customFields.filter(onlyGender).map((customField) => (
-        <ChartCard
-          customField={customField}
-          key={customField.id}
-          data={fakeData.gender.data}
-          includedUserPercentage={fakeData.gender.includedUsersPercentage}
-          demographicDataDate={fakeData.gender.demographicDataDate}
-        />
-      ))}
+      {customFields.map((customField) => {
+        if (isSupported(customField)) {
+          return (
+            <ChartCard
+              customField={customField}
+              key={customField.id}
+              projectFilter={projectFilter}
+            />
+          );
+        }
 
-      {customFields.filter(onlyDomicile).map((customField) => (
-        <ChartCard
-          customField={customField}
-          key={customField.id}
-          data={fakeData.domicile.data}
-          includedUserPercentage={fakeData.domicile.includedUsersPercentage}
-          demographicDataDate={fakeData.domicile.demographicDataDate}
-        />
-      ))}
-
-      {customFields.filter(onlyDomicile).map((customField) => (
-        <ChartCard
-          customField={customField}
-          key={customField.id}
-          data={fakeData.domicileLong.data}
-          includedUserPercentage={fakeData.domicile.includedUsersPercentage}
-          demographicDataDate={fakeData.domicile.demographicDataDate}
-        />
-      ))}
-
-      <EmptyCard
-        titleMultiloc={{ en: 'Favorite ice cream flavor' }}
-        isComingSoon={false}
-      />
-
-      <EmptyCard titleMultiloc={{ en: 'Age group' }} isComingSoon />
+        return (
+          <EmptyCard
+            titleMultiloc={customField.attributes.title_multiloc}
+            key={customField.id}
+            isComingSoon
+          />
+        );
+      })}
     </>
   );
 };
