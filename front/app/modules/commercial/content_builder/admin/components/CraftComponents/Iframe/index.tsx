@@ -13,10 +13,10 @@ import { useNode } from '@craftjs/core';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
+import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
 
 // types
 import { Locale } from 'typings';
-
 interface Props {
   url: string;
   height: number;
@@ -61,7 +61,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     setProp((props) => (props.url = value));
     setProp((props) => (props.errorType = validation[1]));
     setProp((props) => (props.hasError = !validation[0]));
-    eventEmitter.emit('contentBuilderError', {
+    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
       [id]: { hasError: !validation[0], selectedLocale },
     });
   };

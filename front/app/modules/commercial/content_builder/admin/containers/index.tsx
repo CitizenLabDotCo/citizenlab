@@ -51,6 +51,10 @@ type ContentBuilderErrors = Record<
   { hasError: boolean; selectedLocale: Locale }
 >;
 
+export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
+export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
+  'deleteContentBuilderElement';
+
 export const ContentBuilderPage = () => {
   const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
@@ -79,7 +83,7 @@ export const ContentBuilderPage = () => {
 
   useEffect(() => {
     const subscription = eventEmitter
-      .observeEvent('contentBuilderError')
+      .observeEvent(CONTENT_BUILDER_ERROR_EVENT)
       .subscribe(({ eventValue }) => {
         setContentBuilderErrors((contentBuilderErrors) => ({
           ...contentBuilderErrors,
@@ -93,7 +97,7 @@ export const ContentBuilderPage = () => {
 
   useEffect(() => {
     const subscription = eventEmitter
-      .observeEvent('deleteContentBuilderElement')
+      .observeEvent(CONTENT_BUILDER_DELETE_ELEMENT_EVENT)
       .subscribe(({ eventValue }) => {
         setContentBuilderErrors((contentBuilderErrors) => {
           const deletedElementId = eventValue as string;

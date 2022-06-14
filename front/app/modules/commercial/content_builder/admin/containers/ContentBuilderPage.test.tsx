@@ -1,7 +1,11 @@
 import React from 'react';
 import { screen, render, act } from 'utils/testUtils/rtl';
 
-import { ContentBuilderPage } from './';
+import {
+  ContentBuilderPage,
+  CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
+  CONTENT_BUILDER_ERROR_EVENT,
+} from './';
 
 import { IContentBuilderLayoutData } from '../../services/contentBuilder';
 import eventEmitter from 'utils/eventEmitter';
@@ -82,10 +86,10 @@ describe('ContentBuilderPage', () => {
   it('should display error message when there is an error', async () => {
     render(<ContentBuilderPage />);
     await act(async () => {
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: true, selectedLocale: 'en' },
       });
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someOtherId: { hasError: true, selectedLocale: 'fr-FR' },
       });
     });
@@ -97,10 +101,10 @@ describe('ContentBuilderPage', () => {
   it('should display error message when there is an error and clear it when the error is gone', async () => {
     render(<ContentBuilderPage />);
     await act(async () => {
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: true, selectedLocale: 'en' },
       });
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someOtherId: { hasError: true, selectedLocale: 'fr-FR' },
       });
     });
@@ -110,7 +114,7 @@ describe('ContentBuilderPage', () => {
     expect(screen.getByText('fr-FR').firstChild).toHaveClass('empty');
 
     await act(async () => {
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: false, selectedLocale: 'en' },
       });
     });
@@ -120,7 +124,7 @@ describe('ContentBuilderPage', () => {
     expect(screen.getByText('fr-FR').firstChild).toHaveClass('empty');
 
     await act(async () => {
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someOtherId: { hasError: false, selectedLocale: 'fr-FR' },
       });
     });
@@ -133,7 +137,7 @@ describe('ContentBuilderPage', () => {
   it('should clear error message when element is deleted', async () => {
     render(<ContentBuilderPage />);
     await act(async () => {
-      eventEmitter.emit('contentBuilderError', {
+      eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
         someId: { hasError: true, selectedLocale: 'en' },
       });
     });
@@ -142,7 +146,7 @@ describe('ContentBuilderPage', () => {
     expect(screen.getByText('en').firstChild).toHaveClass('empty');
 
     await act(async () => {
-      eventEmitter.emit('deleteContentBuilderElement', 'someId');
+      eventEmitter.emit(CONTENT_BUILDER_DELETE_ELEMENT_EVENT, 'someId');
     });
 
     expect(screen.queryByTestId('error-message')).not.toBeInTheDocument();
