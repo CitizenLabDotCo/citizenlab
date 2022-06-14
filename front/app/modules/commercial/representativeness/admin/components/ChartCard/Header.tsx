@@ -32,7 +32,7 @@ interface Props {
   title: string;
   svgNode: React.RefObject<SVGElement | undefined>;
   // representativenessScore: number;
-  projectFilter: string | undefined;
+  projectFilter?: string;
   xlsxEndpoint: string;
   viewState: ViewState;
   onChangeViewState: (newViewState: ViewState) => void;

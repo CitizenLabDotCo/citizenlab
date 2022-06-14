@@ -21,7 +21,7 @@ import { Props as FieldInfoProps } from '../FieldInfo';
 interface Props extends FieldInfoProps {
   title: string;
   data: RepresentativenessData;
-  projectFilter: string | undefined;
+  projectFilter?: string;
   legendLabels: string[];
   xlsxEndpoint: string;
 }
