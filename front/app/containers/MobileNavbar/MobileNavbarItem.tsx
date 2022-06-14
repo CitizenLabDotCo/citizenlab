@@ -118,7 +118,7 @@ const MobileNavbarItem = ({
     <NavigationItem>
       <StyledLink
         to={linkTo}
-        activeClassName={!isFullMenuOpened ? 'active' : ''}
+        className={isFullMenuOpened ? 'active' : undefined}
         onlyActiveOnIndex={onlyActiveOnIndex}
         onClick={onClick}
       >

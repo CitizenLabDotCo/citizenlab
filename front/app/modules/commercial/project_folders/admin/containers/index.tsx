@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // Services
 import { isAdmin } from 'services/permissions/roles';
@@ -14,6 +14,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
 import Button from 'components/UI/Button';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
@@ -59,7 +60,6 @@ const AdminProjectFolderEdition = memo<
     params: { projectFolderId },
     intl: { formatMessage },
     projectFolder,
-    children,
   }) => {
     const localize = useLocalize();
     const goBack = () => {
@@ -75,8 +75,8 @@ const AdminProjectFolderEdition = memo<
       tabs: [
         {
           label: formatMessage(messages.projectFolderProjectsTab),
-          url: `/admin/projects/folders/${projectFolderId}`,
-          name: 'index',
+          url: `/admin/projects/folders/${projectFolderId}/projects`,
+          name: 'projects',
         },
         {
           label: formatMessage(messages.projectFolderSettingsTab),
@@ -112,7 +112,9 @@ const AdminProjectFolderEdition = memo<
             </Button>
           )}
         </TopContainer>
-        <TabbedResource {...tabbedProps}>{children}</TabbedResource>
+        <TabbedResource {...tabbedProps}>
+          <RouterOutlet />
+        </TabbedResource>
       </>
     );
   }
@@ -129,10 +131,10 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
+export default withRouter((props: WithRouterProps) => (
+  <Data {...props}>
     {(dataProps) => (
-      <AdminProjectFolderEditionWithHoCs {...inputProps} {...dataProps} />
+      <AdminProjectFolderEditionWithHoCs {...props} {...dataProps} />
     )}
   </Data>
 ));

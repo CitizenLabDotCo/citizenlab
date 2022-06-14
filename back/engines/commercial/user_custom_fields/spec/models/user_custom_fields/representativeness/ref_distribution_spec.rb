@@ -30,4 +30,24 @@ describe UserCustomFields::Representativeness::RefDistribution do
     expect(ref_distribution.errors.messages[:distribution])
       .to include('options must be a subset of the options of the associated custom field.')
   end
+
+  describe '#probabilities_and_counts' do
+    subject(:probabilities_and_counts) { ref_distribution.probabilities_and_counts }
+
+    let(:probabilities) { probabilities_and_counts.values.pluck(:probability) }
+    let(:counts) { probabilities_and_counts.values.pluck(:count) }
+
+    it 'includes original counts' do
+      expect(counts).to eq(ref_distribution.distribution.values)
+    end
+
+    it 'returns correct probabilities', :aggregate_failures do
+      total_population = ref_distribution.distribution.values.sum
+      expected_probabilities = counts.map { |count| count.to_f / total_population }
+      differences = probabilities.zip(expected_probabilities).map { |prob1, prob2| (prob1 - prob2).abs }
+
+      expect(differences).to all(be <= 1e-6)
+      expect(probabilities.sum).to be_within(1e-6).of(1)
+    end
+  end
 end

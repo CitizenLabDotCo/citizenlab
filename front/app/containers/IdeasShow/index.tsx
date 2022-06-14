@@ -12,7 +12,7 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import IdeaSharingButton from './Buttons/IdeaSharingButton';
@@ -73,6 +73,10 @@ import { getInputTermMessage } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
+
+// utils
+import clHistory from 'utils/cl-router/history';
+import { parse } from 'qs';
 
 // style
 import styled from 'styled-components';
@@ -249,16 +253,17 @@ export class IdeasShow extends PureComponent<
   }
 
   componentDidMount() {
-    const newIdeaId = this.props.location.query?.['new_idea_id'];
-
+    const queryParams = parse(clHistory.location.search, {
+      ignoreQueryPrefix: true,
+    });
+    const newIdeaId = queryParams.new_idea_id;
     this.setLoaded();
-
     if (isString(newIdeaId)) {
       setTimeout(() => {
         this.setState({ ideaIdForSocialSharing: newIdeaId });
       }, 1500);
 
-      window.history.replaceState(null, '', window.location.pathname);
+      clHistory.replace(window.location.pathname);
     }
   }
 
@@ -548,7 +553,7 @@ export class IdeasShow extends PureComponent<
 }
 
 const IdeasShowWithHOCs = injectLocalize<Props>(
-  injectIntl(withRouter(IdeasShow))
+  withRouter(injectIntl(IdeasShow))
 );
 
 const Data = adopt<DataProps, InputProps>({

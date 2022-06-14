@@ -35,10 +35,8 @@ import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
-import GetProjects, {
-  GetProjectsChildProps,
-  PublicationStatus,
-} from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import {
   usersByTimeCumulativeStream,
