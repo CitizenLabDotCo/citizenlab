@@ -24,7 +24,14 @@ export const MODERATOR_ROUTES = [
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {
-  return MODERATOR_ROUTES.includes(item.path);
+  return MODERATOR_ROUTES.some((moderatorRoute) => {
+    console.log([
+      item.path,
+      moderatorRoute,
+      item.path.includes(moderatorRoute),
+    ]);
+    return item.path.includes(moderatorRoute);
+  });
 };
 
 export const isModeratedProjectRoute = (
@@ -50,6 +57,7 @@ export const canAccessRoute = (
   user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
+  debugger;
   if (isAdminRoute(item.path)) {
     if (isSuperAdmin(user)) {
       return true;
