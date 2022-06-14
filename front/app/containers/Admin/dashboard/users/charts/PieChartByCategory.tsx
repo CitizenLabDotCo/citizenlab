@@ -77,6 +77,8 @@ class PieChartByCategory extends React.PureComponent<
     const { colorMain, animationBegin, animationDuration } =
       this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       graphTitleString,
       serie,
@@ -97,6 +99,8 @@ class PieChartByCategory extends React.PureComponent<
                 xlsxEndpoint={xlsxEndpoint}
                 currentGroupFilter={currentGroupFilter}
                 currentGroupFilterLabel={currentGroupFilterLabel}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>

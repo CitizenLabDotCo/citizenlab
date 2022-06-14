@@ -15,7 +15,7 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
           link: '/admin/moderation',
           iconName: 'moderation',
           message: 'moderation',
-          featureName: 'moderation',
+          featureNames: ['moderation'],
         },
         insertAfterName: 'dashboard',
       }),
