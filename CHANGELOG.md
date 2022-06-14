@@ -4,8 +4,6 @@
 
 ### Fixed
 
-- Fixed issue where users were unable to moderate projects and project folders correctly
-
 ## 2022-06-14
 
 ### Added
@@ -18,6 +16,7 @@
 - [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
 - [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
 - [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
+- Fixed issue where users were unable to moderate projects and project folders correctly
 
 ## 2022-06-13
 
