@@ -2,6 +2,18 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+-
+
+## 2022-06-13
+
+### Changed
+
+- [TEC-11] Upgraded react-router frontend dependency
+
 ## 2022-06-08_2
 
 ### Fixed

@@ -1,19 +1,18 @@
 import React from 'react';
 
-// Craft
+// craft
 import { useEditor, Element } from '@craftjs/core';
 
 // Router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
-// Intl
+// intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// Components
+// components
 import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
@@ -25,21 +24,30 @@ import WhiteSpace from '../CraftComponents/WhiteSpace';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
-// Intl
+// intl
 import messages from '../../messages';
 
-// Styles
+// styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// types
+import { Locale } from 'typings';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
+type ContentBuilderToolboxProps = {
+  selectedLocale: Locale;
+} & WithRouterProps &
+  InjectedIntlProps;
+
 const ContentBuilderToolbox = ({
+  selectedLocale,
   intl: { formatMessage },
   params: { projectId },
-}: InjectedIntlProps & WithRouterProps) => {
+}: ContentBuilderToolboxProps) => {
   const {
     connectors,
     actions: { selectNode },
@@ -107,21 +115,6 @@ const ContentBuilderToolbox = ({
           LAYOUT
         </Title>
         <DraggableElement
-          id="e2e-draggable-single-column"
-          ref={(ref) =>
-            ref &&
-            connectors.create(
-              ref,
-              <Element canvas is={Container} id="container" />
-            )
-          }
-        >
-          <ToolboxItem
-            icon="column1"
-            label={formatMessage(messages.oneColumn)}
-          />
-        </DraggableElement>
-        <DraggableElement
           id="e2e-draggable-two-column"
           ref={(ref) =>
             ref &&
@@ -132,7 +125,12 @@ const ContentBuilderToolbox = ({
                 is={TwoColumn}
                 columnLayout="1-1"
                 id="twoColumn"
-              />
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
@@ -147,7 +145,12 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element canvas is={ThreeColumn} id="threeColumn" />
+              <Element canvas is={ThreeColumn} id="threeColumn" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
@@ -229,6 +232,7 @@ const ContentBuilderToolbox = ({
                 url=""
                 height={500}
                 hasError={false}
+                selectedLocale={selectedLocale}
               />,
               {
                 onCreate: (node) => {
@@ -246,7 +250,12 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element is={AboutBox} id="AboutBox" projectId={projectId} />
+              <Element is={AboutBox} id="AboutBox" projectId={projectId} />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >

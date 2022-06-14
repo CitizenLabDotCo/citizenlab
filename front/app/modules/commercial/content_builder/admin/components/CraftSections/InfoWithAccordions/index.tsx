@@ -14,21 +14,12 @@ const InfoWithAccordions: UserComponent = ({
   accordionTitle,
   accordionText,
 }) => {
-  // const TextComponent = () => <Element id="text" is={Text} text={textPlaceholder} />
-  // const AboutBoxComponent = () => <Element id="aboutBox" is={AboutBox} projectId={projectId} />
-
   return (
     <Element canvas is={Container} id="container">
-      <Element
-        canvas
-        is={TwoColumn}
-        id="twoColumn"
-        columnLayout="2-1"
-        firstColumnChildren={React.createElement(Text, {
-          text: textPlaceholder,
-        })}
-        secondColumnChildren={React.createElement(AboutBox, { projectId })}
-      />
+      <Element canvas is={TwoColumn} id="twoColumn" columnLayout="2-1">
+        <Element id="text" is={Text} text={textPlaceholder} />
+        <Element id="aboutBox" is={AboutBox} projectId={projectId} />
+      </Element>
       <Element
         id="accordion"
         is={Accordion}

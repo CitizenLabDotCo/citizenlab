@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { moderatesFolder } from '../../../permissions/roles';
 
@@ -31,7 +31,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 const Container = styled.main`
   flex: 1 0 auto;

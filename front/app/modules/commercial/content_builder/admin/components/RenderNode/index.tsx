@@ -136,10 +136,10 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
+  const nodeLabelIsVisible = isActive && id !== ROOT_NODE && isDeletable;
   const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
 
-  const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
+  const solidBorderIsVisible = nodeLabelIsVisible || nodeIsHovered || hasError;
 
   return (
     <StyledBox
@@ -163,7 +163,7 @@ const RenderNode = ({ render }) => {
       m="4px"
       isRoot={id === ROOT_NODE}
     >
-      {nodeIsSelected && (
+      {nodeLabelIsVisible && (
         <Box
           id="e2e-node-label"
           p="4px"
@@ -174,6 +174,12 @@ const RenderNode = ({ render }) => {
           left="-1px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />
+          {hasError && (
+            <>
+              <span> - </span>
+              <FormattedMessage {...messages.error} />
+            </>
+          )}
         </Box>
       )}
       <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 
 // components
@@ -20,9 +20,10 @@ import ImageTextCards from '../CraftSections/ImageTextCards';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 type EditorProps = {
+  children?: React.ReactNode;
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
-};
+} & WithRouterProps;
 
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
