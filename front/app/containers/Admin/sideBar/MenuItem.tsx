@@ -129,14 +129,15 @@ const MenuItem = ({ navItem }: Props) => {
     !isNilOrError(authUser) &&
     (isProjectModerator({ data: authUser }) ||
       isProjectFolderModerator(authUser));
+  const renderNavItem = useFeatureFlags({
+    names: navItem.featureNames ?? [],
+    onlyCheckAllowed: navItem.onlyCheckAllowed,
+  });
 
   // temporarily hiding while we deal with router infinite looping
   if (isModerator && navItem.link === '/admin/messaging') return null;
 
-  return useFeatureFlags({
-    names: navItem.featureNames ?? [],
-    onlyCheckAllowed: navItem.onlyCheckAllowed,
-  }) ? (
+  return renderNavItem ? (
     <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
       <MenuItemLink to={navItem.link}>
         <IconWrapper className={navItem.iconName}>
