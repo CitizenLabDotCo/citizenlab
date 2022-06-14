@@ -14,7 +14,7 @@ const testDateStr = '2020-06-15T01:00:00Z';
 // since Santiago is -0400 hour offset from UTC time
 describe('in America/Santiago time zone', () => {
   beforeAll(() => {
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
     jest.setSystemTime(new Date(testDateStr));
     moment.tz.setDefault('America/Santiago');
   });
@@ -102,7 +102,7 @@ describe('in America/Santiago time zone', () => {
 // since Tokyo is +0900 hour offset from UTC time
 describe('in Asia/Tokyo time zone', () => {
   beforeAll(() => {
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
     jest.setSystemTime(new Date(testDateStr));
     moment.tz.setDefault('Asia/Tokyo');
   });
