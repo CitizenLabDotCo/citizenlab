@@ -10,6 +10,11 @@ import Image from '../Image';
 import AboutBox from '../AboutBox';
 import Iframe from '../Iframe';
 import Accordion from '../Accordion';
+import TwoColumn from '../TwoColumn';
+import ThreeColumn from '../ThreeColumn';
+import WhiteSpace from '../WhiteSpace';
+import ImageTextCards from '../../CraftSections/ImageTextCards';
+import InfoWithAccordions from '../../CraftSections/InfoWithAccordions';
 
 const Container: UserComponent = ({ children }) => {
   return (
@@ -28,7 +33,13 @@ Container.craft = {
           node.data.type === Image ||
           node.data.type === Iframe ||
           node.data.type === Accordion ||
-          node.data.type === AboutBox
+          node.data.type === Container ||
+          node.data.type === AboutBox ||
+          node.data.type === TwoColumn ||
+          node.data.type === ThreeColumn ||
+          node.data.type === WhiteSpace ||
+          node.data.type === ImageTextCards ||
+          node.data.type === InfoWithAccordions
       );
     },
   },

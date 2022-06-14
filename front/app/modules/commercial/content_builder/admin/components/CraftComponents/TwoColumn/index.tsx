@@ -20,7 +20,11 @@ import Container from '../Container';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
-const TwoColumn: UserComponent = ({ columnLayout }) => {
+const TwoColumn: UserComponent = ({
+  columnLayout,
+  firstColumnChildren,
+  secondColumnChildren,
+}) => {
   const isLargeTablet = useBreakpoint('largeTablet');
 
   return (
@@ -33,10 +37,14 @@ const TwoColumn: UserComponent = ({ columnLayout }) => {
       gap="16px"
     >
       <Box flex={columnLayout === '2-1' ? '2' : '1'}>
-        <Element id="column1" is={Container} canvas />
+        <Element id="column1" is={Container} canvas>
+          {firstColumnChildren}
+        </Element>
       </Box>
       <Box flex={columnLayout === '1-2' ? '2' : '1'}>
-        <Element id="column2" is={Container} canvas />
+        <Element id="column2" is={Container} canvas>
+          {secondColumnChildren}
+        </Element>
       </Box>
     </Box>
   );

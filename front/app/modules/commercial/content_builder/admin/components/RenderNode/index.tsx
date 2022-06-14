@@ -23,6 +23,8 @@ const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
 const ACCORDION = 'Accordion';
 const WHITE_SPACE = 'WhiteSpace';
+const IMAGE_TEXT_CARDS = 'ImageTextCards';
+const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -33,7 +35,9 @@ type ComponentNamesType =
   | typeof IFRAME
   | typeof ABOUT_BOX
   | typeof ACCORDION
-  | typeof WHITE_SPACE;
+  | typeof WHITE_SPACE
+  | typeof IMAGE_TEXT_CARDS
+  | typeof INFO_WITH_ACCORDIONS;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -55,6 +59,12 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.accordion;
     case WHITE_SPACE:
       return messages.whiteSpace;
+    case IMAGE_TEXT_CARDS:
+      return messages.imageTextCards;
+    case INFO_WITH_ACCORDIONS:
+      return messages.infoWithAccordions;
+    default:
+      return messages.oneColumn;
   }
 };
 
@@ -62,11 +72,11 @@ const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
       ? `cursor: auto;
-          padding: 4px;
-          width: 100%;
-          max-width: 1000px;
-          background-color: #fff;
-          min-height: 160px;`
+padding: 4px;
+width: 100%;
+max-width: 1000px;
+background-color: #fff;
+min-height: 160px;`
       : `cursor:move;`}
 `;
 
@@ -122,15 +132,12 @@ const RenderNode = ({ render }) => {
     if (isActive && name === CONTAINER && parentNode) {
       parentNodeName === TWO_COLUMNS && selectNode(parentId);
       parentNodeName === THREE_COLUMNS && selectNode(parentId);
+      parentNodeName === INFO_WITH_ACCORDIONS && selectNode(parentId);
     }
   });
 
   const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
-  const nodeIsHovered =
-    isHover &&
-    id !== ROOT_NODE &&
-    parentNodeName !== TWO_COLUMNS &&
-    parentNodeName !== THREE_COLUMNS;
+  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
 
   const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
 

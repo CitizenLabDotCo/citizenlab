@@ -22,6 +22,8 @@ import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
+import ImageTextCards from '../CraftSections/ImageTextCards';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 
 // Intl
 import messages from '../../messages';
@@ -57,7 +59,51 @@ const ContentBuilderToolbox = ({
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
-        <Title ml="5px" variant="h5" as="h1">
+        <Title mt="24px" ml="5px" variant="h6" as="h1" color="label">
+          SECTIONS
+        </Title>
+        <DraggableElement
+          id="e2e-draggable-image-text-cards"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element
+                is={ImageTextCards}
+                id="imageTextCards"
+                defaultText={formatMessage(messages.textValue)}
+              />
+            )
+          }
+        >
+          <ToolboxItem
+            icon="column1"
+            label={formatMessage(messages.imageTextCards)}
+          />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-info-accordions"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Element
+                is={InfoWithAccordions}
+                projectId={projectId}
+                id="infoWithAccordions"
+                accordionTitle={formatMessage(messages.accordionTitleValue)}
+                accordionText={formatMessage(messages.accordionTextValue)}
+                textPlaceholder={formatMessage(messages.loremIpsum)}
+              />
+            )
+          }
+        >
+          <ToolboxItem
+            icon="column1"
+            label={formatMessage(messages.infoWithAccordions)}
+          />
+        </DraggableElement>
+        <Title mt="32px" ml="5px" variant="h6" as="h1" color="label">
           LAYOUT
         </Title>
         <DraggableElement
@@ -130,7 +176,7 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
-        <Title ml="5px" variant="h5" as="h1">
+        <Title mt="32px" ml="4px" variant="h6" as="h1" color="label">
           CONTENT
         </Title>
         <DraggableElement

@@ -7,6 +7,7 @@ import {
   Input,
   IconTooltip,
   colors,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 
 // image upload
@@ -21,7 +22,6 @@ import messages from '../../../messages';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
-import { Icon } from 'semantic-ui-react';
 
 const Image = ({
   imageUrl,
@@ -40,9 +40,15 @@ const Image = ({
           alignItems="center"
           flexDirection="column"
           justifyContent="center"
-          padding="20px"
+          padding="24px"
         >
-          <Icon size="huge" name="image" color="grey" />
+          <Icon
+            marginRight="16px"
+            width="60px"
+            height="60px"
+            fill={colors.clIconSecondary}
+            name="image"
+          />
         </Box>
       )}
       {imageUrl && (
