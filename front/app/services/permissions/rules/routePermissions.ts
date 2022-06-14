@@ -30,7 +30,7 @@ export const isModeratedProjectRoute = (
   item: IRouteItem,
   user: IUser | null
 ) => {
-  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
+  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
   return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
@@ -63,6 +63,10 @@ export const canAccessRoute = (
     }
 
     if (isModerator(user) && isModeratorRoute(item)) {
+      return true;
+    }
+
+    if (item.path.includes('folder')) {
       return true;
     }
 
