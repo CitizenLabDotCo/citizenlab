@@ -10,7 +10,7 @@ import { colors } from 'utils/styleUtils';
 import { formatPercentage, formatThousands } from './utils';
 
 // typings
-import { RepresentativenessRow } from '.';
+import { RepresentativenessRow } from '../../hooks/useReferenceData';
 
 interface CustomTooltipProps {
   label?: string;

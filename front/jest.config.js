@@ -46,4 +46,5 @@ module.exports = {
   globals: {
     CL_CONFIG: clConfig,
   },
+  resolver: `${__dirname}/internals/jest/resolver.js`,
 };

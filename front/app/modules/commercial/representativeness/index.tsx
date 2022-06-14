@@ -6,20 +6,24 @@ import Tab from './admin/components/Tab';
 // typings
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
+const DashboardContainer = React.lazy(
+  () => import('./admin/containers/Dashboard')
+);
+
+const ReferenceDataInterface = React.lazy(
+  () => import('./admin/containers/ReferenceDataInterface')
+);
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
         path: 'representativeness',
-        container: () => import('./admin/containers'),
-        indexRoute: {
-          container: () => import('./admin/containers/Dashboard'),
-        },
-        childRoutes: [
+        element: <DashboardContainer />,
+        children: [
           {
             path: 'edit-base-data',
-            container: () =>
-              import('./admin/containers/ReferenceDataInterface'),
+            element: <ReferenceDataInterface />,
           },
         ],
       },

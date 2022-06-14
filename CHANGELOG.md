@@ -1,8 +1,42 @@
 # Changelog
 
+## Next release
+
+## 2022-06-14
+
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
+### Fixed
+
+- [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+- [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
+
+## 2022-06-13
+
+### Changed
+
+- [TEC-11] Upgraded react-router frontend dependency
+
+## 2022-06-08_2
+
+### Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-06-08
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
+
 ### Added
 
 - [CL-774] Add new option when adding areas to a project: "No areas"
+- [CL-906] Added support for Snap Survey
 
 ## 2022-05-31
 

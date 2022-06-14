@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { PreviousPathnameContext } from 'context';
 
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isError, isNilOrError } from 'utils/helperUtils';

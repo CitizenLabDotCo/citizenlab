@@ -15,14 +15,15 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // typings
-import { RepresentativenessData } from '..';
+import { RepresentativenessData } from '../../../hooks/useReferenceData';
 import { Props as FieldInfoProps } from '../FieldInfo';
 
 interface Props extends FieldInfoProps {
   title: string;
   data: RepresentativenessData;
-  svgNode: React.RefObject<SVGElement | undefined>;
+  projectFilter?: string;
   legendLabels: string[];
+  xlsxEndpoint: string;
 }
 
 const TableWrapper = ({
@@ -31,7 +32,8 @@ const TableWrapper = ({
   legendLabels,
   includedUserPercentage,
   fieldIsRequired,
-  svgNode,
+  projectFilter,
+  xlsxEndpoint,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -77,7 +79,8 @@ const TableWrapper = ({
         data={data}
         includedUserPercentage={includedUserPercentage}
         fieldIsRequired={fieldIsRequired}
-        svgNode={svgNode}
+        projectFilter={projectFilter}
+        xlsxEndpoint={xlsxEndpoint}
         onClose={closeModal}
       />
     </>

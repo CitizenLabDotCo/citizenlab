@@ -128,7 +128,7 @@ class Phase < ApplicationRecord
       next unless start_at.present? && end_at.present? && ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
-                 message: 'has other phases which overlap in start and end date')
+        message: 'has other phases which overlap in start and end date')
     end
   end
 

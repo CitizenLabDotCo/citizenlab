@@ -959,6 +959,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Dela information",
   "app.containers.AdminPage.ProjectEdit.shareInformationDescription": "Ge information till deltagare.",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
+  "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Projektstatus",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Konfigurera och anpassa ditt projekt.",
   "app.containers.AdminPage.ProjectEdit.surveyEmbedUrl": "Bädda in webbadress",

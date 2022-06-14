@@ -30,8 +30,8 @@ RSpec.describe CustomField, type: :model do
   describe 'description sanitizer' do
     it 'sanitizes script tags in the description' do
       custom_field = create(:custom_field, description_multiloc: {
-                              'en' => '<p>Test</p><script>This should be removed!</script><p>But this should stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
-                            })
+        'en' => '<p>Test</p><script>This should be removed!</script><p>But this should stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
+      })
       expect(custom_field.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<p>But this should stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>' })
     end
 

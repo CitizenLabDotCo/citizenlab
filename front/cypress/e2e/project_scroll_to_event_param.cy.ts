@@ -1,6 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('?scrollEventId parameter on project page', () => {
+describe('?scrollToEventId parameter on project page', () => {
   const firstName = randomString();
   const lastName = randomString();
   const email = randomEmail();
