@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe TimelineService do
-  let(:service) { TimelineService.new }
+  let(:service) { described_class.new }
 
   before do
     settings = AppConfiguration.instance.settings
@@ -75,17 +75,17 @@ describe TimelineService do
     end
   end
 
-  describe 'is_in_active_phase?' do
+  describe 'in_active_phase?' do
     it 'returns truthy when the given idea is in the active phase' do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [service.current_phase(project)])
-      expect(service.is_in_active_phase?(idea)).to be_truthy
+      expect(service.in_active_phase?(idea)).to be true
     end
 
     it 'returns falsy when the given idea is not in the active phase' do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [project.phases.find { |p| p != service.current_phase(project) }])
-      expect(service.is_in_active_phase?(idea)).to be_falsy
+      expect(service).not_to be_in_active_phase(idea)
     end
   end
 

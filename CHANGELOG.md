@@ -4,6 +4,8 @@
 
 ### Fixed
 
+- [CL-667] Next batch of RuboCop fixes
+
 ## 2022-06-14
 
 ### Added

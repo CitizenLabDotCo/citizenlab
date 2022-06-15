@@ -7,7 +7,7 @@ describe Surveys::TypeformApiParser do
   # let(:tf_api) { Surveys::Typeform::Api.new('2mB2YtaeoD7PcNMUE2VLLeScS4abSphUMJM125jujxAs') }
 
   let(:tf_api) { instance_double(Surveys::Typeform::Api) }
-  let(:service) { Surveys::TypeformApiParser.new(tf_api) }
+  let(:service) { described_class.new(tf_api) }
   let(:form_id) { 'USLYB6' }
 
   let(:form_response_return_value) do

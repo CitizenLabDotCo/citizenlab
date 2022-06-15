@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SmartGroups::RulesService do
-  let(:service) { SmartGroups::RulesService.new }
+  let(:service) { described_class.new }
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
 
   let(:cf1) { create(:custom_field) }
