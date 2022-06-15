@@ -89,7 +89,7 @@ const Tab = styled.div`
   }
 `;
 
-export const ChildWrapper = styled.div`
+const ChildWrapper = styled.div`
   margin-bottom: 60px;
   padding: 42px;
   border: 1px solid ${colors.separation};

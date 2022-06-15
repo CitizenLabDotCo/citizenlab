@@ -27,7 +27,6 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useRemoteFiles from 'hooks/useRemoteFiles';
 import usePage from 'hooks/usePage';
 import usePageSlugs from 'hooks/usePageSlugs';
-import { ChildWrapper } from 'components/admin/TabbedResource';
 
 const Title = styled.h1`
   font-size: ${fontSizes.xxxl}px;
@@ -98,26 +97,24 @@ const EditPageFormNavbar = ({ params: { pageId } }: WithRouterProps) => {
   };
 
   return (
-    <ChildWrapper>
-      <div>
-        <GoBackButton onClick={goBack} />
-        <Title>
-          <T value={page.attributes.title_multiloc} />
-        </Title>
-        <Formik
-          initialValues={getInitialFormValues(page, remotePageFiles)}
-          onSubmit={handleSubmit}
-          render={renderFn}
-          validate={validatePageForm(
-            appConfigurationLocales,
-            pageSlugs,
-            page.attributes.slug
-          )}
-          validateOnChange={false}
-          validateOnBlur={false}
-        />
-      </div>
-    </ChildWrapper>
+    <div>
+      <GoBackButton onClick={goBack} />
+      <Title>
+        <T value={page.attributes.title_multiloc} />
+      </Title>
+      <Formik
+        initialValues={getInitialFormValues(page, remotePageFiles)}
+        onSubmit={handleSubmit}
+        render={renderFn}
+        validate={validatePageForm(
+          appConfigurationLocales,
+          pageSlugs,
+          page.attributes.slug
+        )}
+        validateOnChange={false}
+        validateOnBlur={false}
+      />
+    </div>
   );
 };
 
