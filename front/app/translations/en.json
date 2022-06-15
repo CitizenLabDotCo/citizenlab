@@ -694,6 +694,7 @@
   "app.containers.IdeaCards.showXResults": "Show {ideasCount, plural, one {# result} other {# results}}",
   "app.containers.IdeaCards.sortTitle": "Sorting",
   "app.containers.IdeaCards.statusTitle": "Status",
+  "app.containers.IdeaCards.testString": "Test, do not translate",
   "app.containers.IdeaCards.topics": "Tags",
   "app.containers.IdeaCards.topicsTitle": "Tags",
   "app.containers.IdeaCards.trending": "Trending",
