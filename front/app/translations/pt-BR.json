@@ -1138,8 +1138,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "A realização desta pesquisa requer a verificação so seu usuário. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "A pesquisa não está mais disponível, devido que o projeto não está mais ativo.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifique o seu usuário agora",
-  "app.containers.SearchInput.a11y_searchTerm": "Termo de pesquisa: {searchTerm}",
-  "app.containers.SearchInput.a11y_searchTermBlank": "Termo de pesquisa: em branco",
   "app.containers.SearchInput.removeSearchTerm": "Remover termo de pesquisa",
   "app.containers.SearchInput.searchAriaLabel": "Salvar",
   "app.containers.SearchInput.searchLabel": "Salvar",

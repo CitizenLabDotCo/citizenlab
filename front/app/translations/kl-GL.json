@@ -1138,8 +1138,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Uuminnga misissuiniaruit kontut uppernarsaqqaartariaqarpat.\n{verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Suliniut una unissimammat misissuisoqaqqissinnaanngilaq.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Kontut uppernarsaruk.",
-  "app.containers.SearchInput.a11y_searchTerm": "Misissuinermut taaguut: {searchTerm}",
-  "app.containers.SearchInput.a11y_searchTermBlank": "Misissuinermut taaguut: allassimasoqanngilaq",
   "app.containers.SearchInput.removeSearchTerm": "Misissuinermut taaguut peeruk",
   "app.containers.SearchInput.searchAriaLabel": "Ujaruk",
   "app.containers.SearchInput.searchLabel": "Ujaruk",
