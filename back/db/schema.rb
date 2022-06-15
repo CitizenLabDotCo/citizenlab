@@ -334,9 +334,9 @@ ActiveRecord::Schema.define(version: 2022_06_10_072149) do
   end
 
   create_table "home_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.boolean "top_info_section_enabled", default: true, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
-    t.boolean "bottom_info_section_enabled", default: true, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.boolean "events_enabled", default: false, null: false
     t.boolean "projects_enabled", default: true, null: false

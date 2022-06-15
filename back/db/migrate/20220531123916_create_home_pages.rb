@@ -3,10 +3,10 @@
 class CreateHomePages < ActiveRecord::Migration[6.1]
   def change
     create_table :home_pages, id: :uuid do |t|
-      t.boolean :top_info_section_enabled, default: true, null: false
+      t.boolean :top_info_section_enabled, default: false, null: false
       t.jsonb :top_info_section_multiloc, default: {}, null: false
 
-      t.boolean :bottom_info_section_enabled, default: true, null: false
+      t.boolean :bottom_info_section_enabled, default: false, null: false
       t.jsonb :bottom_info_section_multiloc, default: {}, null: false
 
       t.boolean :events_enabled, default: false, null: false

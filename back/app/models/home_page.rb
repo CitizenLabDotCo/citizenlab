@@ -6,9 +6,9 @@
 # Table name: home_pages
 #
 #  id                                       :uuid             not null, primary key
-#  top_info_section_enabled                 :boolean          default(TRUE), not null
+#  top_info_section_enabled                 :boolean          default(FALSE), not null
 #  top_info_section_multiloc                :jsonb            not null
-#  bottom_info_section_enabled              :boolean          default(TRUE), not null
+#  bottom_info_section_enabled              :boolean          default(FALSE), not null
 #  bottom_info_section_multiloc             :jsonb            not null
 #  events_enabled                           :boolean          default(FALSE), not null
 #  projects_enabled                         :boolean          default(TRUE), not null
@@ -46,13 +46,15 @@ class HomePage < ApplicationRecord
   validates :events_enabled, inclusion: [true, false]
   validates :projects_enabled, inclusion: [true, false]
 
+  validates :projects_header_multiloc, multiloc: true
+
   validates :banner_avatars_enabled, inclusion: [true, false]
   validates :banner_enabled, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
-  validates :banner_signed_in_header_multiloc, presence: true, multiloc: true
+  validates :banner_signed_in_header_multiloc, multiloc: true
 
-  validates :banner_signed_out_header_multiloc, presence: true, multiloc: true
-  validates :banner_signed_out_subheader_multiloc, presence: true, multiloc: true
+  validates :banner_signed_out_header_multiloc, multiloc: true
+  validates :banner_signed_out_subheader_multiloc, multiloc: true
   validates :banner_signed_out_header_overlay_color, css_color: true
   validates :banner_signed_out_header_overlay_opacity, numericality: { only_integer: true,
                                                                        in: [0..100],
