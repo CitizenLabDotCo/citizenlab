@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-06-15
+
 ### Fixed
 
 - [CL-967] Fixed issue with map displaying off screen on Android
