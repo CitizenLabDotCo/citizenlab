@@ -132,7 +132,6 @@ const RenderNode = ({ render }) => {
     if (isActive && name === CONTAINER && parentNode) {
       parentNodeName === TWO_COLUMNS && selectNode(parentId);
       parentNodeName === THREE_COLUMNS && selectNode(parentId);
-      parentNodeName === INFO_WITH_ACCORDIONS && selectNode(parentId);
     }
   });
 

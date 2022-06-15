@@ -1,52 +1,38 @@
 import React from 'react';
 
 // craft
-import { UserComponent, Element } from '@craftjs/core';
-import Container from '../../CraftComponents/Container';
-import Image from '../../CraftComponents/Image';
+import { UserComponent } from '@craftjs/core';
 import Text from '../../CraftComponents/Text';
 import TwoColumn from '../../CraftComponents/TwoColumn';
-import { Box } from '@citizenlab/cl2-component-library';
+import Image from '../../CraftComponents/Image';
 
+// These components must use different id's, as the Element used in the TwoColumn component requires this.
 const ImageTextCards: UserComponent = ({ defaultText }) => {
   return (
-    <Element canvas id="container" is={Container}>
-      <Element
-        canvas
-        id="twoColumn"
-        is={TwoColumn}
-        columnLayout={'1-2'}
-        firstColumnChildren={React.createElement(Image)}
-        secondColumnChildren={React.createElement(Text, { text: defaultText })}
+    <div>
+      <TwoColumn
+        columnLayout="1-2"
+        rightChildren={<Text text={defaultText} />}
+        leftChildren={<Image alt="" />}
+        rightId="firstRight"
+        leftId="firstLeft"
       />
-      <Element
-        canvas
-        id="twoColumn"
-        is={TwoColumn}
-        columnLayout={'1-2'}
-        firstColumnChildren={React.createElement(Image)}
-        secondColumnChildren={React.createElement(Text, { text: defaultText })}
+      <TwoColumn
+        columnLayout="1-2"
+        rightChildren={<Text text={defaultText} />}
+        leftChildren={<Image alt="" />}
+        rightId="secondRight"
+        leftId="secondLeft"
       />
-      <Element
-        canvas
-        id="twoColumn"
-        is={TwoColumn}
-        columnLayout={'1-2'}
-        firstColumnChildren={React.createElement(Image)}
-        secondColumnChildren={React.createElement(Text, { text: defaultText })}
+      <TwoColumn
+        columnLayout="1-2"
+        rightChildren={<Text text={defaultText} />}
+        leftChildren={<Image alt="" />}
+        rightId="thirdRight"
+        leftId="thirdLeft"
       />
-    </Element>
+    </div>
   );
-};
-
-const ImageTextCardsSettings = () => {
-  return <Box />;
-};
-
-ImageTextCards.craft = {
-  related: {
-    settings: ImageTextCardsSettings,
-  },
 };
 
 export default ImageTextCards;

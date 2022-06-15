@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { useEditor, Element } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
 
 // Router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -76,11 +76,7 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={ImageTextCards}
-                id="imageTextCards"
-                defaultText={formatMessage(messages.textValue)}
-              />
+              <ImageTextCards defaultText={formatMessage(messages.textValue)} />
             )
           }
         >
@@ -95,10 +91,8 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={InfoWithAccordions}
+              <InfoWithAccordions
                 projectId={projectId}
-                id="infoWithAccordions"
                 accordionTitle={formatMessage(messages.accordionTitleValue)}
                 accordionText={formatMessage(messages.accordionTextValue)}
                 textPlaceholder={formatMessage(messages.loremIpsum)}
@@ -120,12 +114,7 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                canvas
-                is={TwoColumn}
-                columnLayout="1-1"
-                id="twoColumn"
-              />,
+              <TwoColumn columnLayout="1-1" id="twoColumn" />,
               {
                 onCreate: (node) => {
                   selectNode(node.rootNodeId);
@@ -143,15 +132,11 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-three-column"
           ref={(ref) =>
             ref &&
-            connectors.create(
-              ref,
-              <Element canvas is={ThreeColumn} id="threeColumn" />,
-              {
-                onCreate: (node) => {
-                  selectNode(node.rootNodeId);
-                },
-              }
-            )
+            connectors.create(ref, <ThreeColumn />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
           }
         >
           <ToolboxItem
@@ -163,15 +148,11 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-white-space"
           ref={(ref) =>
             ref &&
-            connectors.create(
-              ref,
-              <Element is={WhiteSpace} size="small" id="WhiteSpace" />,
-              {
-                onCreate: (node) => {
-                  selectNode(node.rootNodeId);
-                },
-              }
-            )
+            connectors.create(ref, <WhiteSpace size="small" />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
           }
         >
           <ToolboxItem
@@ -188,11 +169,7 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={Text}
-                id="text"
-                text={formatMessage(messages.textValue)}
-              />,
+              <Text text={formatMessage(messages.textValue)} />,
               {
                 onCreate: (node) => {
                   selectNode(node.rootNodeId);
@@ -207,15 +184,11 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-image"
           ref={(ref) => {
             ref &&
-              connectors.create(
-                ref,
-                <Element is={Image} imageUrl="" id="image" alt="" />,
-                {
-                  onCreate: (node) => {
-                    selectNode(node.rootNodeId);
-                  },
-                }
-              );
+              connectors.create(ref, <Image imageUrl="" alt="" />, {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              });
           }}
         >
           <ToolboxItem icon="image" label={formatMessage(messages.image)} />
@@ -226,9 +199,7 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={Iframe}
-                id="Iframe"
+              <Iframe
                 url=""
                 height={500}
                 hasError={false}
@@ -248,15 +219,11 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-about-box"
           ref={(ref) =>
             ref &&
-            connectors.create(
-              ref,
-              <Element is={AboutBox} id="AboutBox" projectId={projectId} />,
-              {
-                onCreate: (node) => {
-                  selectNode(node.rootNodeId);
-                },
-              }
-            )
+            connectors.create(ref, <AboutBox projectId={projectId} />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
           }
         >
           <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
@@ -267,12 +234,10 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={Accordion}
+              <Accordion
                 title={formatMessage(messages.accordionTitleValue)}
                 text={formatMessage(messages.accordionTextValue)}
                 openByDefault={false}
-                id="Accordion"
               />,
               {
                 onCreate: (node) => {

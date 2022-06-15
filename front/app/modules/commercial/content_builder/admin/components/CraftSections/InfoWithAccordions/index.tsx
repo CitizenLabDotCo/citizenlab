@@ -1,12 +1,14 @@
 import React from 'react';
 
+// components
+import { Box } from '@citizenlab/cl2-component-library';
+
 // craft
-import { UserComponent, Element } from '@craftjs/core';
+import { UserComponent } from '@craftjs/core';
 import Accordion from '../../CraftComponents/Accordion';
 import TwoColumn from '../../CraftComponents/TwoColumn';
 import Text from '../../CraftComponents/Text';
 import AboutBox from '../../CraftComponents/AboutBox';
-import Container from '../../CraftComponents/Container';
 
 const InfoWithAccordions: UserComponent = ({
   projectId,
@@ -14,43 +16,33 @@ const InfoWithAccordions: UserComponent = ({
   accordionTitle,
   accordionText,
 }) => {
-  const leftChildren = <Element is={Text} id="text" text={textPlaceholder} />;
-  const rightChildren = (
-    <Element is={AboutBox} id="aboutBox" projectId={projectId} />
-  );
-
   return (
-    <Element canvas is={Container} id="container">
-      <Element
-        canvas
-        is={TwoColumn}
-        id="twoColumn"
+    <>
+      <TwoColumn
         columnLayout="2-1"
-        rightChildren={rightChildren}
-        leftChildren={leftChildren}
+        rightChildren={<AboutBox projectId={projectId} />}
+        leftChildren={
+          <Box>
+            <Text text={textPlaceholder} />
+            <Accordion
+              title={accordionTitle}
+              text={accordionText}
+              openByDefault={false}
+            />
+            <Accordion
+              title={accordionTitle}
+              text={accordionText}
+              openByDefault={false}
+            />
+            <Accordion
+              title={accordionTitle}
+              text={accordionText}
+              openByDefault={false}
+            />
+          </Box>
+        }
       />
-      <Element
-        id="accordion"
-        is={Accordion}
-        title={accordionTitle}
-        text={accordionText}
-        openByDefault={false}
-      />
-      <Element
-        id="accordion2"
-        is={Accordion}
-        title={accordionTitle}
-        text={accordionText}
-        openByDefault={false}
-      />
-      <Element
-        id="accordion3"
-        is={Accordion}
-        title={accordionTitle}
-        text={accordionText}
-        openByDefault={false}
-      />
-    </Element>
+    </>
   );
 };
 

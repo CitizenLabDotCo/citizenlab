@@ -24,6 +24,8 @@ const TwoColumn: UserComponent = ({
   columnLayout,
   rightChildren,
   leftChildren,
+  rightId,
+  leftId,
 }) => {
   const isLargeTablet = useBreakpoint('largeTablet');
 
@@ -37,12 +39,12 @@ const TwoColumn: UserComponent = ({
       gap="16px"
     >
       <Box flex={columnLayout === '2-1' ? '2' : '1'}>
-        <Element id="column1" is={Container} canvas>
+        <Element id={leftId ? leftId : 'leftColumn'} is={Container} canvas>
           {leftChildren}
         </Element>
       </Box>
       <Box flex={columnLayout === '1-2' ? '2' : '1'}>
-        <Element id="column2" is={Container} canvas>
+        <Element id={rightId ? rightId : 'rightColumn'} is={Container} canvas>
           {rightChildren}
         </Element>
       </Box>
