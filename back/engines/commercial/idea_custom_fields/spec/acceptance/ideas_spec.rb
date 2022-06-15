@@ -13,6 +13,7 @@ resource 'Ideas' do
     token = Knock::AuthToken.new(payload: user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
 
+    SettingsService.new.activate_feature! 'idea_custom_fields'
     SettingsService.new.activate_feature! 'dynamic_idea_form'
   end
 
