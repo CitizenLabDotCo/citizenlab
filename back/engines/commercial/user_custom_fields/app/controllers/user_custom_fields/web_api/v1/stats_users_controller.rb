@@ -126,20 +126,8 @@ module UserCustomFields
 
         def find_users
           users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
-            .where(registration_completed_at: @start_at..@end_at)
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ParticipantsService.new.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          users
+          finder_params = params.permit(:group, :project).merge(registration_date_range: @start_at..@end_at)
+          UsersFinder.new(users, finder_params).execute
         end
 
         def expected_user_counts
