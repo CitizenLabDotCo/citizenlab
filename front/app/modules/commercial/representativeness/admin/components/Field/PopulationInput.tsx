@@ -39,8 +39,8 @@ interface Props {
   optionId: string;
 }
 
-const PopulationInputFormik = ({ optionId }: Props) => (
-  <Field name={optionId} component={PopulationInput} />
+const PopulationInputFormikWrapper = ({ optionId }: Props) => (
+  <Field name={`${optionId}.value`} component={PopulationInput} />
 );
 
-export default PopulationInputFormik;
+export default PopulationInputFormikWrapper;

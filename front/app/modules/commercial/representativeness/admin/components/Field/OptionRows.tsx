@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, FormikProps, FormikActions, FormikErrors } from 'formik';
+import { Formik, FormikActions, FormikErrors } from 'formik';
 
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
