@@ -2,6 +2,7 @@
 
 module IdeaCustomFields
   class WebApi::V1::Admin::IdeaCustomFieldsController < ApplicationController
+    before_action :verify_feature_flag
     before_action :set_custom_field, only: %i[show update]
     before_action :set_custom_form, only: %i[index]
     skip_after_action :verify_policy_scoped
@@ -85,6 +86,12 @@ module IdeaCustomFields
     def set_custom_field
       @custom_field = CustomField.find(params[:id])
       authorize @custom_field, policy_class: IdeaCustomFieldPolicy
+    end
+
+    def verify_feature_flag
+      return if AppConfiguration.instance.feature_activated? 'idea_custom_fields'
+
+      render json: { errors: { base: [{ error: '"idea_custom_fields" feature is not activated' }] } }, status: :unauthorized
     end
   end
 end

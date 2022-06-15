@@ -7,6 +7,7 @@ resource 'Idea Custom Fields' do
   explanation 'Fields in idea forms which are customized by the city, scoped on the project level.'
   before do
     header 'Content-Type', 'application/json'
+    SettingsService.new.activate_feature! 'idea_custom_fields'
   end
 
   context 'when authenticated as admin' do
@@ -59,6 +60,7 @@ resource 'Idea Custom Fields' do
         parameter :description_multiloc, 'An optional description of the field, as shown to users, in multiple locales', required: false
       end
 
+      let(:project) { create(:project) }
       let(:project_id) { project.id }
       let(:code) { 'location_description' }
       let(:required) { true }
@@ -66,12 +68,10 @@ resource 'Idea Custom Fields' do
       let(:description_multiloc) { { 'en' => 'New description' } }
 
       context "when the custom_form doesn't exist yet" do
-        let(:project) { create(:project) }
-
         example 'Update a built-in custom field', document: false do
           do_request
           assert_status 200
-          json_response = json_parse(response_body)
+          json_response = json_parse response_body
           expect(json_response.dig(:data, :attributes, :code)).to eq code
           expect(json_response.dig(:data, :attributes, :required)).to eq required
           expect(json_response.dig(:data, :attributes, :enabled)).to eq enabled
@@ -119,6 +119,16 @@ resource 'Idea Custom Fields' do
             expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end
+        end
+      end
+
+      context 'when the idea_custom_fields feature is deactivated' do
+        before { SettingsService.new.deactivate_feature! 'idea_custom_fields' }
+
+        example_request '[error] Updating is not authorized' do
+          assert_status 401
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:base, '"idea_custom_fields" feature is not activated')
         end
       end
     end
