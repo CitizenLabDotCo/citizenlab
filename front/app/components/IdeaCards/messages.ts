@@ -97,4 +97,8 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.a11y_totalItems',
     defaultMessage: 'Total items: {ideasCount}',
   },
+  testString: {
+    id: 'app.containers.IdeaCards.testString',
+    defaultMessage: 'Test, do not translate',
+  },
 });
