@@ -3,7 +3,7 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 const isTestBuild = process.env.TEST_BUILD === 'true';
-const buildSourceMap = !isDev && !isTestBuild;
+const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI ;
 
 const webpack = require('webpack');
 
@@ -17,11 +17,12 @@ const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var dotenv = require('dotenv').config({
   path: path.join(process.cwd(), '../.env-front'),
 });
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 const argv = require('yargs').argv;
 const appLocalesMomentPairs = require(path.join(
   process.cwd(),
@@ -158,6 +159,7 @@ const config = {
         INTERCOM_APP_ID: JSON.stringify(process.env.INTERCOM_APP_ID),
         SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
         SENTRY_ENV: JSON.stringify(process.env.SENTRY_ENV),
+        SENTRY_AUTH_TOKEN: JSON.stringify(process.env.SENTRY_AUTH_TOKEN),
         CI: JSON.stringify(process.env.CI),
         CIRCLECI: JSON.stringify(process.env.CIRCLECI),
         CIRCLE_BUILD_NUM: JSON.stringify(process.env.CIRCLE_BUILD_NUM),
@@ -213,8 +215,7 @@ const config = {
         chunkFilename: '[name].[contenthash].chunk.css',
       }),
 
-    process.env.CI &&
-      buildSourceMap &&
+    sourceMapToSentry &&
       new SentryCliPlugin({
         include: path.join(process.cwd(), 'build'),
         release: process.env.CIRCLE_BUILD_NUM,
