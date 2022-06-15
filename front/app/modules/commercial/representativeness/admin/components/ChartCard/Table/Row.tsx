@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { formatPercentage, formatThousands } from '../utils';
+import { formatPercentage } from '../utils';
 
 // typings
 import { RepresentativenessRow } from '../../../hooks/useReferenceData';
@@ -28,11 +28,11 @@ const Row = ({ row }: Props) => {
       <Table.Cell>{row.name}</Table.Cell>
       <Table.Cell>
         {formatPercentage(row.actualPercentage)}
-        <AbsoluteValue>({formatThousands(row.actualNumber)})</AbsoluteValue>
+        <AbsoluteValue>({row.actualNumber.toLocaleString()})</AbsoluteValue>
       </Table.Cell>
       <Table.Cell>
         {formatPercentage(row.referencePercentage)}
-        <AbsoluteValue>({formatThousands(row.referenceNumber)})</AbsoluteValue>
+        <AbsoluteValue>({row.referenceNumber.toLocaleString()})</AbsoluteValue>
       </Table.Cell>
     </Table.Row>
   );

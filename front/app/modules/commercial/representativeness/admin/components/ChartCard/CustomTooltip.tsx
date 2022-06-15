@@ -7,7 +7,7 @@ import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { formatPercentage, formatThousands } from './utils';
+import { formatPercentage } from './utils';
 
 // typings
 import { RepresentativenessRow } from '../../hooks/useReferenceData';
@@ -36,7 +36,7 @@ const Row = ({ name, percentage, number, colorName }: RowProps) => (
       {name}: {formatPercentage(percentage)}
     </Text>
     <Text ml="4px" color="secondaryText" fontSize="s">
-      ({formatThousands(number)})
+      ({number.toLocaleString()})
     </Text>
   </Box>
 );

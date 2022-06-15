@@ -6,20 +6,26 @@ import { Text, Input } from '@citizenlab/cl2-component-library';
 // utils
 import { parsePopulationValue } from './utils';
 
-const PopulationInput = () => {
-  const [value, setValue] = useState('');
+interface Props {
+  value?: number;
+}
+
+const PopulationInput = ({ value }: Props) => {
+  const [formattedValue, setFormattedValue] = useState(
+    value === undefined ? '' : 'TODO'
+  );
 
   const handleChange = (value: string) => {
-    const { formattedValue } = parsePopulationValue(value);
+    const { formattedValue: newFormattedValue } = parsePopulationValue(value);
 
-    if (formattedValue !== null) {
-      setValue(formattedValue);
+    if (newFormattedValue !== null) {
+      setFormattedValue(formattedValue);
     }
   };
 
   return (
     <>
-      <Input type="text" value={value} onChange={handleChange} />
+      <Input type="text" value={formattedValue} onChange={handleChange} />
       <Text ml="16px" mr="24px" color="adminTextColor">
         50%
       </Text>

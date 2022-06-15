@@ -1,5 +1,3 @@
-import { formatThousands } from '../ChartCard/utils';
-
 export const parsePopulationValue = (value: string) => {
   if (value === '') {
     return { formattedValue: '', numericValue: null };
@@ -10,7 +8,7 @@ export const parsePopulationValue = (value: string) => {
   }
 
   const numericValue = asNumber(value);
-  const formattedValue: string = formatThousands(numericValue);
+  const formattedValue = numericValue.toLocaleString();
 
   return { numericValue, formattedValue };
 };

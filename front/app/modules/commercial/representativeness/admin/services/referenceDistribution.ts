@@ -29,7 +29,7 @@ export interface IReferenceDistribution {
   data: IReferenceDistributionData;
 }
 
-type TUploadDistribution = Record<string, number>;
+export type TUploadDistribution = Record<string, number>;
 
 export function referenceDistributionStream(customFieldId: string) {
   return streams.get<IReferenceDistribution>({
