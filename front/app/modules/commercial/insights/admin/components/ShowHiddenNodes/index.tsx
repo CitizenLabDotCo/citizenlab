@@ -2,19 +2,31 @@ import React from 'react';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { colors } from 'utils/styleUtils';
+
+// styles
+import styled from 'styled-components';
 
 // components
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { TooltipContentList } from 'modules/commercial/insights/admin/components/StyledTextComponents';
+import Tippy from '@tippyjs/react';
 
 // typings
 import { IInsightsNetworkNodeMeta } from 'modules/commercial/insights/admin/containers/Insights/Details/Network';
 import { NodeObject } from 'react-force-graph-2d';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+
+import { FormattedMessage } from 'react-intl';
 import messages from '../../containers/Insights/messages';
+
+const TooltipIcon = styled(Icon)`
+  width: 17px;
+  height: 17px;
+  fill: ${colors.label};
+  margin: 0 5px 3px 0;
+`;
 
 type Node = NodeObject & IInsightsNetworkNodeMeta;
 type ShowHiddenNodesProps = {
@@ -25,8 +37,7 @@ type ShowHiddenNodesProps = {
 const ShowHiddenNodes = ({
   hiddenNodes,
   handleShowHiddenNodesClick,
-  intl: { formatMessage },
-}: ShowHiddenNodesProps & InjectedIntlProps) => {
+}: ShowHiddenNodesProps) => {
   if (isNilOrError(hiddenNodes) || hiddenNodes.length === 0) {
     return null;
   }
@@ -41,11 +52,7 @@ const ShowHiddenNodes = ({
       onClick={handleShowHiddenNodesClick}
       data-testid="insightsShowHiddenNodes"
     >
-      <IconTooltip
-        mr="5px"
-        icon="eye"
-        placement="bottom"
-        data-testid="insightsShowHiddenNodesIcon"
+      <Tippy
         content={
           <TooltipContentList>
             {(hiddenNodes.length > 10
@@ -56,11 +63,21 @@ const ShowHiddenNodes = ({
             ))}
           </TooltipContentList>
         }
-      />
-      {formatMessage(messages.networkShowHiddenNodes) +
-        ` (${hiddenNodes.length})`}
+        placement="bottom"
+        trigger="mouseenter"
+      >
+        <Box data-testid="insightsShowHiddenNodesContent">
+          <TooltipIcon name="eye" />
+          <FormattedMessage
+            {...messages.networkShowHiddenNodes}
+            values={{
+              count: hiddenNodes.length,
+            }}
+          />
+        </Box>
+      </Tippy>
     </Box>
   );
 };
 
-export default injectIntl(ShowHiddenNodes);
+export default ShowHiddenNodes;

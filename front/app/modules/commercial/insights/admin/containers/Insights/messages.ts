@@ -403,7 +403,7 @@ export default defineMessages({
   },
   networkShowHiddenNodes: {
     id: 'app.containers.Admin.Insights.Details.networkShowHiddenNodes',
-    defaultMessage: 'Show hidden',
+    defaultMessage: 'Show hidden ({ count })',
   },
   networkTitleTooltip: {
     id: 'app.containers.Admin.Insights.Details.networkTitleTooltip',

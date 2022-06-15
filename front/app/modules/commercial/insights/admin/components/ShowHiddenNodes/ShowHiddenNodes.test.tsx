@@ -1,10 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
-jest.mock('utils/cl-intl');
-// const Intl = require('utils/cl-intl/__mocks__/');
-// const { intl: formatMessage } = Intl;
-
 import ShowHiddenNodes from './';
 
 const defaultNode = {
@@ -66,7 +62,7 @@ describe('Show hidden keyword network nodes', () => {
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
-    fireEvent.mouseEnter(screen.getByTestId('insightsShowHiddenNodesIcon'));
+    fireEvent.mouseEnter(screen.getByTestId('insightsShowHiddenNodesContent'));
     expect(screen.getByText('name-0')).toBeInTheDocument();
     expect(screen.getByText('name-1')).toBeInTheDocument();
     expect(screen.getByText('name-2')).toBeInTheDocument();
@@ -82,7 +78,7 @@ describe('Show hidden keyword network nodes', () => {
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
-    fireEvent.mouseEnter(screen.getByTestId('insightsShowHiddenNodesIcon'));
+    fireEvent.mouseEnter(screen.getByTestId('insightsShowHiddenNodesContent'));
     expect(screen.getByText('...')).toBeInTheDocument();
   });
 });
