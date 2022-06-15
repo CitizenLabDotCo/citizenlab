@@ -1138,8 +1138,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "La partecipazione a questo sondaggio richiede la verifica della tua identità. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Il sondaggio non è più disponibile, poiché questo progetto non è più attivo.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifica la tua identità ora.",
-  "app.containers.SearchInput.a11y_searchTerm": "Termine di ricerca: {searchTerm}",
-  "app.containers.SearchInput.a11y_searchTermBlank": "Termine di ricerca: blank",
   "app.containers.SearchInput.removeSearchTerm": "Rimuovi il termine di ricerca",
   "app.containers.SearchInput.searchAriaLabel": "Cerca",
   "app.containers.SearchInput.searchLabel": "Cerca",

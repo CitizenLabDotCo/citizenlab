@@ -1138,8 +1138,6 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Wzięcie udziału w tej ankiecie wymaga weryfikacji tożsamości. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Ankieta nie jest już dostępna, ponieważ ten projekt nie jest już aktywny.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Zweryfikuj swoją tożsamość.",
-  "app.containers.SearchInput.a11y_searchTerm": "Znajdź termin: {searchTerm}",
-  "app.containers.SearchInput.a11y_searchTermBlank": "Znajdź termin: puste",
   "app.containers.SearchInput.removeSearchTerm": "Usuń szukany termin",
   "app.containers.SearchInput.searchAriaLabel": "Szukaj",
   "app.containers.SearchInput.searchLabel": "Szukaj",
