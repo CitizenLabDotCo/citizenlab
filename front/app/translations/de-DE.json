@@ -35,7 +35,7 @@
   "app.components.Comments.yourComment": "Ihr Kommentar",
   "app.components.ConfirmationModal.anExampleCodeHasBeenSent": "Es wurde eine E-Mail mit einem Bestätigungscode an {userEmail} gesendet.",
   "app.components.ConfirmationModal.cancel": "Abbrechen",
-  "app.components.ConfirmationModal.changeYourEmail": "Ändern Sie Ihre E-Mail.",
+  "app.components.ConfirmationModal.changeYourEmail": "Ändern Sie Ihre E-Mail-Adresse.",
   "app.components.ConfirmationModal.close": "Schließen",
   "app.components.ConfirmationModal.codeInput": "Code",
   "app.components.ConfirmationModal.confirmYourAccount": "Bestätigen Sie Ihre E-Mail-Adresse",
