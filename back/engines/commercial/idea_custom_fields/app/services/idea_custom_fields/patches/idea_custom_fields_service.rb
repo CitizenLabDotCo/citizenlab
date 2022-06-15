@@ -28,7 +28,7 @@ module IdeaCustomFields
           *default_fields.map do |default_field|
             persisted_fields.find { |c| default_field.code == c.code } || default_field
           end,
-          *persisted_fields.reject(&:built_in?)
+          *persisted_fields.reject(&:built_in?).sort_by(&:ordering)
         ]
       end
     end

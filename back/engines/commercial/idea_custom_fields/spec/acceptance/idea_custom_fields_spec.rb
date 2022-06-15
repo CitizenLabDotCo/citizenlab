@@ -20,8 +20,9 @@ resource 'Idea Custom Fields' do
     get 'web_api/v1/admin/projects/:project_id/custom_fields' do
       let(:project) { create(:project) }
       let(:project_id) { project.id }
+      let(:form) { create(:custom_form, project: project) }
       let!(:custom_field) do
-        create :custom_field, :for_custom_form, resource: create(:custom_form, project: project), enabled: false
+        create :custom_field, resource: form, key: 'extra_field1'
       end
 
       example_request 'List all allowed custom fields for a project' do
@@ -31,6 +32,18 @@ resource 'Idea Custom Fields' do
         expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to match_array [
           'title_multiloc', 'body_multiloc', 'proposed_budget', 'topic_ids',
           'location_description', 'idea_images_attributes', 'idea_files_attributes', custom_field.key
+        ]
+      end
+
+      example 'List custom fields in the correct order', document: false do
+        create :custom_field, resource: form, code: 'title_multiloc', key: 'title_multiloc'
+        create :custom_field, resource: form, key: 'extra_field2'
+        do_request
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq %w[
+          title_multiloc body_multiloc proposed_budget topic_ids location_description
+          idea_images_attributes idea_files_attributes extra_field1 extra_field2
         ]
       end
     end

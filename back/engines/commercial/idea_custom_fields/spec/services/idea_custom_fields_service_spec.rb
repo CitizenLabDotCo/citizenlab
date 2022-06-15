@@ -80,11 +80,13 @@ describe IdeaCustomFieldsService do
       expect(service.all_fields).to all(be_valid)
     end
 
-    it 'takes the order of the built-in fields' do
-      cf1 = create(:custom_field, resource: custom_form, code: 'location_description')
+    it 'returns the fields in the correct order' do
+      create :custom_field, resource: custom_form, key: 'extra_field1'
+      create :custom_field, resource: custom_form, code: 'location_description', key: 'location_description', required: true
+      create :custom_field, resource: custom_form, key: 'extra_field2'
+      create :custom_field, resource: custom_form, code: 'proposed_budget', key: 'proposed_budget', required: true
       output = service.all_fields
-      expect(output).to include cf1
-      expect(output.map(&:code)).to eq %w[
+      expect(output.map(&:key)).to eq %w[
         title_multiloc
         body_multiloc
         proposed_budget
@@ -92,6 +94,8 @@ describe IdeaCustomFieldsService do
         location_description
         idea_images_attributes
         idea_files_attributes
+        extra_field1
+        extra_field2
       ]
     end
   end
