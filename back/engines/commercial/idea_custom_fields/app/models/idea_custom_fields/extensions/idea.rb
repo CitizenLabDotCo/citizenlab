@@ -6,12 +6,12 @@ module IdeaCustomFields
       def self.included(base)
         base.class_eval do
           validates :custom_field_values, json: {
-            schema: -> { idea_fields_schema },
+            schema: -> { extra_idea_fields_schema },
             message: ->(errors) { errors }
           }, on: :publication, if: :validate_extra_fields_on_publication?
 
           validates :custom_field_values, json: {
-            schema: -> { idea_fields_schema },
+            schema: -> { extra_idea_fields_schema },
             message: ->(errors) { errors }
           }, if: :validate_extra_fields_on_update?
         end
@@ -32,7 +32,7 @@ module IdeaCustomFields
           AppConfiguration.instance.feature_activated?('dynamic_idea_form')
       end
 
-      def idea_fields_schema
+      def extra_idea_fields_schema
         extra_fields = IdeaCustomFieldsService.new(project.custom_form).extra_visible_fields
         CustomFieldService.new.fields_to_json_schema extra_fields
       end
