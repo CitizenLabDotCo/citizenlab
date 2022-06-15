@@ -68,27 +68,21 @@ namespace :fix_existing_tenants do
               home_page.banner_layout = banner['layout'] if banner['layout']
               home_page.cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
-              # rubocop:disable Metrics/BlockNesting
-              if home_page.cta_signed_in_type == 'customized_button'
-                if banner['cta_signed_in_customized_button']['text']
-                  home_page.cta_signed_in_text_multiloc = banner['cta_signed_in_customized_button']['text']
-                end
-                if banner['cta_signed_in_customized_button']['url']
-                  home_page.cta_signed_in_url = banner['cta_signed_in_customized_button']['url']
-                end
+              if home_page.cta_signed_in_type == 'customized_button' &&
+                 banner['cta_signed_in_customized_button']['text'] &&
+                 banner['cta_signed_in_customized_button']['url']
+                home_page.cta_signed_in_text_multiloc = banner['cta_signed_in_customized_button']['text']
+                home_page.cta_signed_in_url = banner['cta_signed_in_customized_button']['url']
               end
 
               home_page.cta_signed_out_type = banner['cta_signed_out_type'] if banner['cta_signed_out_type']
 
-              if home_page.cta_signed_out_type == 'customized_button'
-                if banner['cta_signed_out_customized_button']['text']
-                  home_page.cta_signed_out_text_multiloc = banner['cta_signed_out_customized_button']['text']
-                end
-                if banner['cta_signed_out_customized_button']['url']
-                  home_page.cta_signed_out_url = banner['cta_signed_out_customized_button']['url']
-                end
+              if home_page.cta_signed_out_type == 'customized_button' &&
+                 banner['cta_signed_out_customized_button']['text'] &&
+                 banner['cta_signed_out_customized_button']['url']
+                home_page.cta_signed_out_text_multiloc = banner['cta_signed_out_customized_button']['text']
+                home_page.cta_signed_out_url = banner['cta_signed_out_customized_button']['url']
               end
-              # rubocop:enable Metrics/BlockNesting
 
               home_page.header_bg = config.header_bg if config.header_bg
 
