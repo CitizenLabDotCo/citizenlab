@@ -47,7 +47,7 @@ const SearchInputWrapper = ({
         debounce={debounce}
         className={className}
         onChange={handleOnChange}
-        a11y_RemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
+        a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
         size={size}
       />
       <ScreenReaderOnly aria-live="assertive">
