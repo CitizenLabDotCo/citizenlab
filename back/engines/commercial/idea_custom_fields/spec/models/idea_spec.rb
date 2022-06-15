@@ -4,7 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Idea, type: :model do
   context 'with custom fields' do
-    before { SettingsService.new.activate_feature! 'dynamic_idea_form' }
+    before do
+      SettingsService.new.activate_feature! 'idea_custom_fields'
+      SettingsService.new.activate_feature! 'dynamic_idea_form'
+    end
 
     let(:project) { create :project }
     let(:form) { create :custom_form, project: project }

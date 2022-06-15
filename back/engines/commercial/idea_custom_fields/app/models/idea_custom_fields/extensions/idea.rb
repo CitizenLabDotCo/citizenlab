@@ -8,22 +8,31 @@ module IdeaCustomFields
           validates :custom_field_values, json: {
             schema: -> { idea_fields_schema },
             message: ->(errors) { errors }
-          }, on: :publication, if: :dynamic_form_activated?
+          }, on: :publication, if: :validate_extra_fields_on_publication?
 
           validates :custom_field_values, json: {
             schema: -> { idea_fields_schema },
             message: ->(errors) { errors }
-          }, if: %i[custom_field_values_changed? persisted? dynamic_form_activated?]
+          }, if: :validate_extra_fields_on_update?
         end
       end
 
+      private
+
+      def validate_extra_fields_on_publication?
+        dynamic_form_activated? && project.custom_form
+      end
+
+      def validate_extra_fields_on_update?
+        custom_field_values_changed? && persisted? && dynamic_form_activated? && project.custom_form
+      end
+
       def dynamic_form_activated?
-        AppConfiguration.instance.feature_activated? 'dynamic_idea_form'
+        AppConfiguration.instance.feature_activated?('idea_custom_fields') &&
+          AppConfiguration.instance.feature_activated?('dynamic_idea_form')
       end
 
       def idea_fields_schema
-        return {} unless project.custom_form # The empty object schema accepts anything
-
         extra_fields = IdeaCustomFieldsService.new(project.custom_form).extra_visible_fields
         CustomFieldService.new.fields_to_json_schema extra_fields
       end
