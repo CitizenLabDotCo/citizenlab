@@ -3,7 +3,7 @@ const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
 const isTestBuild = process.env.TEST_BUILD === 'true';
-const sourceMapToSentry = !isDev && !isTestBuild;
+const sourceMapToSentry = !isDev && !isTestBuild && process.env.CI ;
 
 const webpack = require('webpack');
 
