@@ -26,7 +26,7 @@
 #  assignee_id              :uuid
 #  assigned_at              :datetime
 #  proposed_budget          :integer
-#  custom_field_values      :jsonb
+#  custom_field_values      :jsonb            not null
 #
 # Indexes
 #
