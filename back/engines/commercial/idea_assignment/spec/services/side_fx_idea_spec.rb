@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxIdeaService do
-  let(:service) { SideFxIdeaService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
 
   describe 'before create' do

@@ -13,7 +13,7 @@ module ProjectFolders
       end
 
       def can_moderate_project?(project, user)
-        super || (project.has_folder? && user.project_folder_moderator?(project.folder_id))
+        super || (project.folder? && user.project_folder_moderator?(project.folder_id))
       end
 
       def moderators_for(object, scope = ::User)

@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
       it 'returns true when the platform is active' do
         app_configuration.settings['core']['lifecycle_stage'] = 'active'
         app_configuration.save!
-        expect(campaign.run_before_send_hooks).to be_truthy
+        expect(campaign.run_before_send_hooks).to be true
       end
 
       it 'returns false when the platform is churned' do
@@ -40,7 +40,7 @@ RSpec.describe EmailCampaigns::LifecycleStageRestrictable, type: :model do
       it 'returns true when the platform is active' do
         app_configuration.settings['core']['lifecycle_stage'] = 'active'
         app_configuration.save!
-        expect(campaign.run_before_send_hooks).to be_truthy
+        expect(campaign.run_before_send_hooks).to be true
       end
 
       it 'returns false when the platform is demo' do

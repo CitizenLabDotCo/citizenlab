@@ -17,7 +17,7 @@ RSpec.describe EmailCampaigns::ActivityTriggerable, type: :model do
         'Idea' => { 'published' => true },
         'Comment' => { 'created' => true }
       }
-      expect(campaign.run_before_send_hooks(activity: activity)).to be_truthy
+      expect(campaign.run_before_send_hooks(activity: activity)).to be true
     end
 
     it 'returns false when the activity is not part of the returned activity_triggers' do

@@ -38,12 +38,13 @@ import messages from '../messages';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 const StyledRightColumn = styled(RightColumn)`
-  min-height: calc(100vh - ${stylingConsts.menuHeight}px);
+  height: calc(100vh - ${stylingConsts.menuHeight}px);
   z-index: 2;
   margin: 0;
   max-width: 100%;
   align-items: center;
   padding-bottom: 100px;
+  overflow-y: auto;
 `;
 
 type ContentBuilderErrors = Record<

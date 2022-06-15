@@ -11,7 +11,7 @@ RSpec.describe Area, type: :model do
 
   describe 'default_scope' do
     it 'defaults to sorting areas by ordering' do
-      expect(Area.pluck(:id)).to eq Area.order(ordering: :asc).pluck(:id)
+      expect(described_class.pluck(:id)).to eq described_class.order(ordering: :asc).pluck(:id)
     end
   end
 
@@ -47,7 +47,7 @@ RSpec.describe Area, type: :model do
       subject { create(:area) }
 
       it 'defaults to the end of the list' do
-        last_area = Area.last
+        last_area = described_class.last
         expect(subject.ordering).to eq(last_area.ordering.to_i + 1)
       end
     end
@@ -55,7 +55,7 @@ RSpec.describe Area, type: :model do
     context 'when an ordering is given' do
       subject { create(:area, ordering: ordering) }
 
-      let(:ordering) { Area.last.ordering + 1 }
+      let(:ordering) { described_class.last.ordering + 1 }
 
       it 'should stay as given' do
         expect(subject.ordering).to eq(ordering)

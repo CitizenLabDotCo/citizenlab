@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ImportIdeasService do
-  let(:service) { ImportIdeasService.new }
+  let(:service) { described_class.new }
   let(:project_with_phases) { create(:project_with_phases) }
   let(:project_without_phases) { create(:project) }
 

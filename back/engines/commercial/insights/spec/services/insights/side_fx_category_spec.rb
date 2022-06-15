@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Insights::SideFxCategoryService do
-  let(:service) { Insights::SideFxCategoryService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:category) { create(:category) }
 
