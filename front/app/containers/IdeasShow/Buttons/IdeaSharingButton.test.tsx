@@ -62,6 +62,5 @@ describe('IdeaSharingButton', () => {
       'href',
       'https://api.whatsapp.com/send?phone=&text=Support%20this%20idea%3A%20Test%20Idea https://demo.stg.citizenlab.co/ideas/undefined?utm_source=share_idea&utm_campaign=share_content&utm_medium=whatsapp&utm_content=522ae8cc-a5ed-4d31-9aa0-470904934ec6'
     );
-    screen.debug();
   });
 });
