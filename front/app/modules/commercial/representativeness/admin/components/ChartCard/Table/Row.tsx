@@ -11,7 +11,7 @@ import { colors } from 'utils/styleUtils';
 import { formatPercentage, formatThousands } from '../utils';
 
 // typings
-import { RepresentativenessRow } from '..';
+import { RepresentativenessRow } from '../../../hooks/useReferenceData';
 
 const AbsoluteValue = styled.span`
   color: ${colors.secondaryText};
