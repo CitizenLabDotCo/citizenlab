@@ -27,7 +27,7 @@ const ShowHiddenNodes = ({
   handleShowHiddenNodesClick,
   intl: { formatMessage },
 }: ShowHiddenNodesProps & InjectedIntlProps) => {
-  if (isNilOrError(hiddenNodes) || hiddenNodes.length <= 0) {
+  if (isNilOrError(hiddenNodes) || hiddenNodes.length === 0) {
     return null;
   }
 
@@ -39,15 +39,17 @@ const ShowHiddenNodes = ({
         width: 'fit-content',
       }}
       onClick={handleShowHiddenNodesClick}
+      data-testid="insightsShowHiddenNodes"
     >
       <IconTooltip
         mr="5px"
         icon="eye"
         placement="bottom"
+        data-testid="insightsShowHiddenNodesIcon"
         content={
           <TooltipContentList>
             {(hiddenNodes.length > 10
-              ? [...hiddenNodes.slice(0, 9), '...']
+              ? [...hiddenNodes.slice(0, 10), { id: '', name: '...' }]
               : hiddenNodes
             ).map((node: Node) => (
               <li key={node.id}>{node.name}</li>
