@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AdminPublicationPolicy do
-  subject { AdminPublicationPolicy.new(user, admin_publication) }
+  subject { described_class.new(user, admin_publication) }
 
   let(:scope) { AdminPublicationPolicy::Scope.new(user, AdminPublication) }
 

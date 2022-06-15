@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe 'rake email_campaigns' do
+describe Rake::Task do
   before(:context) do
     Rails.application.load_tasks
   end
 
-  let(:task) { Rake::Task[task_name] }
+  let(:task) { described_class[task_name] }
 
   describe ':schedule_email_campaigns' do
     let(:task_name) { 'email_campaigns:schedule_email_campaigns' }
@@ -28,7 +28,7 @@ describe 'rake email_campaigns' do
 
     it 'creates the missing campaign records' do
       expect { task.execute }
-        .to change { EmailCampaigns::Campaign.count }
+        .to change(EmailCampaigns::Campaign, :count)
         .by(EmailCampaigns::DeliveryService.new.campaign_types.size - 1)
     end
   end

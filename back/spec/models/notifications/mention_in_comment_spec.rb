@@ -9,7 +9,7 @@ RSpec.describe Notifications::MentionInComment, type: :model do
       user = create(:user)
       activity = create(:activity, item: comment, action: 'mentioned', payload: { mentioned_user: user.id })
 
-      notifications = Notifications::MentionInComment.make_notifications_on activity
+      notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
         recipient_id: user.id,
         initiating_user_id: comment.author_id,

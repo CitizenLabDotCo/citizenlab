@@ -104,19 +104,7 @@ RSpec/SharedContext:
   Exclude:
   - '**/spec/acceptance/**/*'
 
-Gemspec/RequireMFA:
-# Discussion needed
-  Enabled: false
-
-Style/FetchEnvVar:
-# Discussion needed
-  Enabled: false
-
 Style/IfUnlessModifier:
-  Enabled: false
-
-Rails/I18nLocaleTexts:
-# Discussion needed
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:
@@ -127,6 +115,12 @@ Layout/MultilineMethodCallIndentation:
 RSpec/DescribeClass:
   IgnoredMetadata:
     type: ['request']
+
+RSpec/EmptyExampleGroup:
+  # `context` and `describe` are found as empty example groups when
+  # `example_request`, `post`, etc are used, so exclude acceptance tests.
+  Exclude:
+    - '**/spec/acceptance/**/*'
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']

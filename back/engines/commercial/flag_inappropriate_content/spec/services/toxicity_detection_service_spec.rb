@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe FlagInappropriateContent::ToxicityDetectionService do
-  let(:service) { FlagInappropriateContent::ToxicityDetectionService.new }
+  let(:service) { described_class.new }
 
   describe 'flag_toxicity!' do
     before do

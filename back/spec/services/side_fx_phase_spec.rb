@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SideFxPhaseService do
   let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
-  let(:service) { SideFxPhaseService.new(sfx_pc) }
+  let(:service) { described_class.new(sfx_pc) }
   let(:user) { create(:user) }
   let(:phase) { create(:phase) }
 

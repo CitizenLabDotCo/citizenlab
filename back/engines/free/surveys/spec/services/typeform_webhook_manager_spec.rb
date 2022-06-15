@@ -17,7 +17,7 @@ end
 describe Surveys::TypeformWebhookManager do
   let(:api_response) { instance_double(HTTParty::Response, success?: true) }
   let(:tf_api) { instance_double(Surveys::Typeform::Api, create_or_update_webhook: api_response) }
-  let(:service) { Surveys::TypeformWebhookManager.new(tf_api, 'dummy_secret_token') }
+  let(:service) { described_class.new(tf_api, 'dummy_secret_token') }
 
   describe 'participation_context_changed' do
     let(:from) { build(:continuous_survey_project) }
