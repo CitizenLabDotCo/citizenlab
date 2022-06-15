@@ -1,3 +1,4 @@
 [defaults]
 project=cl2-front
 org=citizenlab
+url=https://sentry.hq.citizenlab.co/
