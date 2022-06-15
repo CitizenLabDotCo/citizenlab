@@ -13,7 +13,6 @@ export interface Props {
   placeholder?: string;
   ariaLabel?: string;
   debounce?: number;
-  setClearButtonRef?: (arg: HTMLButtonElement) => void;
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
@@ -26,7 +25,6 @@ const SearchInputWrapper = ({
   placeholder,
   ariaLabel,
   debounce,
-  setClearButtonRef,
   onChange,
   className,
   size,
@@ -35,10 +33,6 @@ const SearchInputWrapper = ({
 }: Props & InjectedIntlProps) => {
   const handleOnChange = (searchTerm: string | null) => {
     onChange(searchTerm);
-  };
-
-  const handleClearButtonRef = (element: HTMLButtonElement) => {
-    setClearButtonRef?.(element);
   };
 
   return (
@@ -52,7 +46,6 @@ const SearchInputWrapper = ({
         ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
         debounce={debounce}
         className={className}
-        setClearButtonRef={handleClearButtonRef}
         onChange={handleOnChange}
         a11y_RemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
         size={size}

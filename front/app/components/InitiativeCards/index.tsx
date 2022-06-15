@@ -384,14 +384,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedView });
   };
 
-  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.desktopSearchInputClearButton = element;
-  };
-
-  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.mobileSearchInputClearButton = element;
-  };
-
   filterMessage = (<FormattedMessage {...messages.filter} />);
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
@@ -443,7 +435,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         <DesktopSearchInput
           placeholder={this.searchPlaceholder}
           ariaLabel={this.searchAriaLabel}
-          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
           a11y_numberOfSearchResults={list?.length || 0}
         />
@@ -534,7 +525,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <MobileSearchInput
                   placeholder={this.searchPlaceholder}
                   ariaLabel={this.searchAriaLabel}
-                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
                   a11y_numberOfSearchResults={list?.length || 0}
                 />
