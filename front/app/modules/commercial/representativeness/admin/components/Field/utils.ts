@@ -1,16 +1,19 @@
+/*
+ * Takes a thousand-formatted locale string in the US format (e.g. 1,000,000)
+ * Returns undefined is value is empty string, which is equivalent to the field being empty
+ * Returns null if the value is invalid
+ * Returns numeric value if the value is valid
+ */
 export const parsePopulationValue = (value: string) => {
   if (value === '') {
-    return { formattedValue: '', numericValue: null };
+    return undefined;
   }
 
   if (isInvalid(value)) {
-    return { formattedValue: null, numericValue: null };
+    return null;
   }
 
-  const numericValue = asNumber(value);
-  const formattedValue = numericValue.toLocaleString();
-
-  return { numericValue, formattedValue };
+  return asNumber(value);
 };
 
 const validValueRegex = /^\d[\d\,]*$/;

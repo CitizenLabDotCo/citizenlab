@@ -28,11 +28,15 @@ const Row = ({ row }: Props) => {
       <Table.Cell>{row.name}</Table.Cell>
       <Table.Cell>
         {formatPercentage(row.actualPercentage)}
-        <AbsoluteValue>({row.actualNumber.toLocaleString()})</AbsoluteValue>
+        <AbsoluteValue>
+          ({row.actualNumber.toLocaleString('en-US')})
+        </AbsoluteValue>
       </Table.Cell>
       <Table.Cell>
         {formatPercentage(row.referencePercentage)}
-        <AbsoluteValue>({row.referenceNumber.toLocaleString()})</AbsoluteValue>
+        <AbsoluteValue>
+          ({row.referenceNumber.toLocaleString('en-US')})
+        </AbsoluteValue>
       </Table.Cell>
     </Table.Row>
   );

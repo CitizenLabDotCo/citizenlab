@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 // components
 import { Text, Input } from '@citizenlab/cl2-component-library';
@@ -8,20 +8,20 @@ import { parsePopulationValue } from './utils';
 
 interface Props {
   value?: number;
+  onChange: (value?: number) => void;
 }
 
-const PopulationInput = ({ value }: Props) => {
-  const [formattedValue, setFormattedValue] = useState(
-    value === undefined ? '' : 'TODO'
-  );
+const PopulationInput = ({ value, onChange }: Props) => {
+  const handleChange = (stringValue: string) => {
+    const newValue = parsePopulationValue(stringValue);
 
-  const handleChange = (value: string) => {
-    const { formattedValue: newFormattedValue } = parsePopulationValue(value);
-
-    if (newFormattedValue !== null) {
-      setFormattedValue(formattedValue);
+    if (newValue !== null) {
+      onChange(newValue);
     }
   };
+
+  const formattedValue =
+    value === undefined ? '' : value.toLocaleString('en-US');
 
   return (
     <>
