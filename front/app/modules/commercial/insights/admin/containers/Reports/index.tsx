@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
-import GetProjects, {
-  PublicationStatus,
-  GetProjectsChildProps,
-} from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';

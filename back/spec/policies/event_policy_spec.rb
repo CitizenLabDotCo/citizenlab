@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe EventPolicy do
-  subject { EventPolicy.new(user, event) }
+  subject { described_class.new(user, event) }
 
   let(:scope) { EventPolicy::Scope.new(user, project.events) }
 

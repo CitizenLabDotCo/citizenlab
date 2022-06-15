@@ -5,6 +5,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IProjectData } from 'services/projects';
 import { IPhaseData } from 'services/phases';
 
+const AdminProjectIdeaEditFormComponent = React.lazy(
+  () => import('./admin/containers/projects/edit/ideaform')
+);
+
 type RenderOnHideTabConditionProps = {
   project: IProjectData;
   phases: IPhaseData[] | null;
@@ -37,11 +41,10 @@ const RenderOnHideTabCondition = (props: RenderOnHideTabConditionProps) => {
 
 const configuration: ModuleConfiguration = {
   routes: {
-    'admin.projects': [
+    'admin.projects.project': [
       {
-        path: '/:locale/admin/projects/:projectId/ideaform',
-        name: 'ideaform',
-        container: () => import('./admin/containers/projects/edit/ideaform'),
+        path: 'ideaform',
+        element: <AdminProjectIdeaEditFormComponent />,
       },
     ],
   },

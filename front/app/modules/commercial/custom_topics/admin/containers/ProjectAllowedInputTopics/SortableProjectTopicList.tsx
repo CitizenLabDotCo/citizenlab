@@ -1,6 +1,6 @@
 import React, { memo, FormEvent, useState, useMemo } from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError, byId } from 'utils/helperUtils';

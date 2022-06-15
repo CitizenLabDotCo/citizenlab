@@ -60,7 +60,7 @@ resource 'Users' do
       example_request 'Reset password using token' do
         expect(status).to eq 200
         expect(@user.reload.reset_password_token).to be_nil
-        expect(@user.authenticate(password)).to be_truthy
+        expect(@user.authenticate(password)).to be @user
       end
 
       example '[error] Reset password using invalid token' do

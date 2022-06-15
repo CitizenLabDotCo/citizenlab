@@ -1,7 +1,10 @@
 import React from 'react';
 import { render, screen } from 'utils/testUtils/rtl';
 import TabbedResource from '.';
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
+
+jest.mock('services/appConfiguration');
+jest.mock('utils/cl-router/Link');
 
 const getRouterProps = (tabId, tabName?: string) =>
   ({

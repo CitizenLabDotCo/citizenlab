@@ -15,7 +15,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
         'value' => options.first.id
       }
     end
-    let(:valid_rule) { SmartGroups::Rules::CustomFieldSelect.from_json(valid_json_rule) }
+    let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
     it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
@@ -77,32 +77,32 @@ describe SmartGroups::Rules::CustomFieldSelect do
       end
 
       it "correctly filters on 'has_value' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'has_value', options[0].id)
+        rule = described_class.new(custom_field.id, 'has_value', options[0].id)
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'not_has_value' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_has_value', options[1].id)
+        rule = described_class.new(custom_field.id, 'not_has_value', options[1].id)
         expect(rule.filter(User).count).to eq User.count - 1
       end
 
       it "correctly filters on 'is_one_of' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'is_one_of', [options[0].id, options[2].id])
+        rule = described_class.new(custom_field.id, 'is_one_of', [options[0].id, options[2].id])
         expect(rule.filter(User).count).to eq 3
       end
 
       it "correctly filters on 'not_is_one_of' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_is_one_of', [options[0].id])
+        rule = described_class.new(custom_field.id, 'not_is_one_of', [options[0].id])
         expect(rule.filter(User).count).to eq User.count - 2
       end
 
       it "correctly filters on 'is_empty' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'is_empty')
+        rule = described_class.new(custom_field.id, 'is_empty')
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'not_is_empty' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_is_empty')
+        rule = described_class.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
     end
@@ -122,32 +122,32 @@ describe SmartGroups::Rules::CustomFieldSelect do
       end
 
       it "correctly filters on 'has_value' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'has_value', options[1].id)
+        rule = described_class.new(custom_field.id, 'has_value', options[1].id)
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'not_has_value' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_has_value', options[1].id)
+        rule = described_class.new(custom_field.id, 'not_has_value', options[1].id)
         expect(rule.filter(User).count).to eq 3
       end
 
       it "correctly filters on 'is_one_of' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'is_one_of', [options[0].id, options[2].id])
+        rule = described_class.new(custom_field.id, 'is_one_of', [options[0].id, options[2].id])
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'not_is_one_of' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_is_one_of', [options[1].id])
+        rule = described_class.new(custom_field.id, 'not_is_one_of', [options[1].id])
         expect(rule.filter(User).count).to eq User.count - 2
       end
 
       it "correctly filters on 'is_empty' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'is_empty')
+        rule = described_class.new(custom_field.id, 'is_empty')
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'not_is_empty' predicate" do
-        rule = SmartGroups::Rules::CustomFieldSelect.new(custom_field.id, 'not_is_empty')
+        rule = described_class.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq 3
       end
     end
@@ -177,7 +177,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
     end
 
     let(:custom_field_select_has_value_rule) do
-      SmartGroups::Rules::CustomFieldSelect.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_select',
         'predicate' => 'has_value',
         'customFieldId' => custom_field.id,
@@ -185,7 +185,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
       })
     end
     let(:custom_field_select_not_has_value_rule) do
-      SmartGroups::Rules::CustomFieldSelect.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_select',
         'predicate' => 'not_has_value',
         'customFieldId' => custom_field.id,
@@ -193,7 +193,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
       })
     end
     let(:custom_field_select_is_one_of_rule) do
-      SmartGroups::Rules::CustomFieldSelect.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_select',
         'predicate' => 'is_one_of',
         'customFieldId' => custom_field.id,
@@ -201,7 +201,7 @@ describe SmartGroups::Rules::CustomFieldSelect do
       })
     end
     let(:custom_field_select_not_is_one_of_rule) do
-      SmartGroups::Rules::CustomFieldSelect.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_select',
         'predicate' => 'not_is_one_of',
         'customFieldId' => custom_field.id,
@@ -209,14 +209,14 @@ describe SmartGroups::Rules::CustomFieldSelect do
       })
     end
     let(:custom_field_select_is_empty_rule) do
-      SmartGroups::Rules::CustomFieldSelect.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_select',
         'predicate' => 'is_empty',
         'customFieldId' => custom_field.id
       })
     end
     let(:custom_field_select_not_is_empty_rule) do
-      SmartGroups::Rules::CustomFieldSelect.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_select',
         'predicate' => 'not_is_empty',
         'customFieldId' => custom_field.id

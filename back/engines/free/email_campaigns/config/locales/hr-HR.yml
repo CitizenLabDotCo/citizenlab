@@ -1,7 +1,7 @@
 hr:
   email_campaigns:
     campaign_type_description:
-      "manual": Zvanične poruke
+      "manual": Službene poruke
       "admin_rights_received": Dodela administratorskih prava
       "comment_deleted_by_admin": Brisanje mog komentara
       "comment_marked_as_spam": Izveštaj o spam komentaru
@@ -30,7 +30,7 @@ hr:
       "official_feedback_on_voted_initiative": Nove informacije o predlogu za koji glasam
       "official_feedback_on_your_idea": Nove informacije o mojoj ideji
       "official_feedback_on_your_initiative": Nove informacije o mome predlogu
-      "password_reset": Resetovanje lozinke
+      "password_reset": Ponovno postavljanje lozinke
       "project_moderation_rights_received": Dodela prava za moderaciju projekta
       "project_folder_moderation_rights_received": Stečena su prava menadžera projekta
       "project_phase_started": Nova faza projekta
@@ -101,7 +101,7 @@ hr:
       "link_privacy_policy": "Politika privatnosti"
       "link_terms_conditions": "Uslovi korišćenja"
       "link_unsubscribe": "Odjavi se"
-      "powered_by": "Powered by"
+      "powered_by": "Omogućava"
       "statement": "Ovaj email vam je poslao CitizenLab u ime %{organizationName}, jer ste registrovani korisnik %{organizationLink}. Možete da %{unsubscribeLink} ako ubuduće ne želite da primate ove e-poruke."
       "unsubscribe_text": "odjavitе se"
     comment_deleted_by_admin:
@@ -177,7 +177,7 @@ hr:
       today_by_author: 'Danas od autora %{author}'
       x_days_ago_by_author: 'pre %{x} dana od %{author}'
       idea_section: Ideje
-      initiative_section: Predlozi
+      initiative_section: Prijedlozi
       title_initiatives_past_week: 'Dodeljeni su vam novi predlozi'
       title_successful_initiatives_past_week: 'Dodeljeni predlozi koji su dostigli potreban broj glasova'
     idea_marked_as_spam:

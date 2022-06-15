@@ -14,7 +14,7 @@ describe SmartGroups::Rules::CustomFieldDate do
         'value' => (Date.today - 1.day)
       }
     end
-    let(:valid_rule) { SmartGroups::Rules::CustomFieldDate.from_json(valid_json_rule) }
+    let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
     it 'successfully validates a valid rule' do
       expect(valid_rule).to be_valid
@@ -37,27 +37,27 @@ describe SmartGroups::Rules::CustomFieldDate do
       end
 
       it "correctly filters on 'is_before' predicate" do
-        rule = SmartGroups::Rules::CustomFieldDate.new(custom_field.id, 'is_before', Date.today)
+        rule = described_class.new(custom_field.id, 'is_before', Date.today)
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'is_after' predicate" do
-        rule = SmartGroups::Rules::CustomFieldDate.new(custom_field.id, 'is_after', Date.today)
+        rule = described_class.new(custom_field.id, 'is_after', Date.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_exactly' predicate" do
-        rule = SmartGroups::Rules::CustomFieldDate.new(custom_field.id, 'is_exactly', Date.today)
+        rule = described_class.new(custom_field.id, 'is_exactly', Date.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_empty' predicate" do
-        rule = SmartGroups::Rules::CustomFieldDate.new(custom_field.id, 'is_empty')
+        rule = described_class.new(custom_field.id, 'is_empty')
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'not_is_empty' predicate" do
-        rule = SmartGroups::Rules::CustomFieldDate.new(custom_field.id, 'not_is_empty')
+        rule = described_class.new(custom_field.id, 'not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
     end
@@ -73,7 +73,7 @@ describe SmartGroups::Rules::CustomFieldDate do
     end
 
     let(:custom_field_date_is_before_rule) do
-      SmartGroups::Rules::CustomFieldDate.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_date',
         'predicate' => 'is_before',
         'customFieldId' => date_picker.id,
@@ -81,7 +81,7 @@ describe SmartGroups::Rules::CustomFieldDate do
       })
     end
     let(:custom_field_date_is_after_rule) do
-      SmartGroups::Rules::CustomFieldDate.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_date',
         'predicate' => 'is_after',
         'customFieldId' => date_picker.id,
@@ -89,7 +89,7 @@ describe SmartGroups::Rules::CustomFieldDate do
       })
     end
     let(:custom_field_date_is_exactly_rule) do
-      SmartGroups::Rules::CustomFieldDate.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_date',
         'predicate' => 'is_exactly',
         'customFieldId' => date_picker.id,
@@ -97,14 +97,14 @@ describe SmartGroups::Rules::CustomFieldDate do
       })
     end
     let(:custom_field_date_is_empty_rule) do
-      SmartGroups::Rules::CustomFieldDate.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_date',
         'predicate' => 'is_empty',
         'customFieldId' => date_picker.id
       })
     end
     let(:custom_field_date_not_is_empty_rule) do
-      SmartGroups::Rules::CustomFieldDate.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_date',
         'predicate' => 'not_is_empty',
         'customFieldId' => date_picker.id

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Surveys::TypeformWebhookParser do
-  let(:service) { Surveys::TypeformWebhookParser.new }
+  let(:service) { described_class.new }
   let(:body) do
     {
       event_id: 'LtWXD3crgy',

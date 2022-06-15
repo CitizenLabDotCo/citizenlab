@@ -10,7 +10,7 @@ import { Radio } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 import { IPermissionData } from 'services/actionPermissions';
 
 const StyledFieldset = styled.fieldset`
