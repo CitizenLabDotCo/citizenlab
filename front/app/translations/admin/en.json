@@ -1349,6 +1349,7 @@
   "app.containers.admin.ContentBuilder.accordionTextValue": "This is expandable accordion content. You can edit and format it by using the editor in the panel on the right.",
   "app.containers.admin.ContentBuilder.accordionTitleLabel": "Title",
   "app.containers.admin.ContentBuilder.accordionTitleValue": "Accordion title",
+  "app.containers.admin.ContentBuilder.default": "default",
   "app.containers.admin.ContentBuilder.delete": "Delete",
   "app.containers.admin.ContentBuilder.error": "error",
   "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
