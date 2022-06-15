@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module UserCustomFields
+  # This module can be used to count the number of times each custom field option
+  # has been selected by a user (within a group of users).
   module FieldValueCounter
     def self.counts_by_field_option(users, custom_field)
       field_values = select_field_values(users, custom_field)
