@@ -12,7 +12,7 @@ type TDistribution = Record<
   }
 >;
 
-interface IReferenceDistributionData {
+export interface IReferenceDistributionData {
   id: string;
   type: 'reference_distribution';
   attributes: {
@@ -25,7 +25,7 @@ interface IReferenceDistributionData {
   };
 }
 
-interface IReferenceDistribution {
+export interface IReferenceDistribution {
   data: IReferenceDistributionData;
 }
 
