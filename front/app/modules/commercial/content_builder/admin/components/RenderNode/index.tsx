@@ -41,8 +41,6 @@ type ComponentNamesType =
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
-    case CONTAINER:
-      return messages.oneColumn;
     case TWO_COLUMNS:
       return messages.twoColumn;
     case THREE_COLUMNS:
@@ -64,7 +62,7 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
     case INFO_WITH_ACCORDIONS:
       return messages.infoWithAccordions;
     default:
-      return messages.oneColumn;
+      return messages.default;
   }
 };
 
@@ -135,10 +133,12 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeLabelIsVisible = isActive && id !== ROOT_NODE && isDeletable;
-  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
-
-  const solidBorderIsVisible = nodeLabelIsVisible || nodeIsHovered || hasError;
+  const isSelectable = getComponentNameMessage(name) !== messages.default;
+  const nodeLabelIsVisible =
+    isActive && isSelectable && id !== ROOT_NODE && isDeletable;
+  const nodeIsHovered = isHover && id !== ROOT_NODE;
+  const solidBorderIsVisible =
+    isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
   return (
     <StyledBox

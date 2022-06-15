@@ -20,7 +20,7 @@ import Container from '../Container';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
-const TwoColumn: UserComponent = ({
+export const TwoColumn: UserComponent = ({
   columnLayout,
   rightChildren,
   leftChildren,
@@ -52,7 +52,7 @@ const TwoColumn: UserComponent = ({
   );
 };
 
-const TwoColumnSettings = () => {
+export const TwoColumnSettings = () => {
   const {
     actions: { setProp },
     columnLayout,
@@ -138,5 +138,3 @@ TwoColumn.craft = {
   },
   rules: { canMoveIn: () => true },
 };
-
-export default TwoColumn;

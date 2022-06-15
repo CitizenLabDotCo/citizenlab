@@ -6,7 +6,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // craft
 import { UserComponent } from '@craftjs/core';
 import Accordion from '../../CraftComponents/Accordion';
-import TwoColumn from '../../CraftComponents/TwoColumn';
+import { TwoColumn } from '../../CraftComponents/TwoColumn';
 import Text from '../../CraftComponents/Text';
 import AboutBox from '../../CraftComponents/AboutBox';
 

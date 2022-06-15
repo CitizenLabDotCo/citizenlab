@@ -154,6 +154,10 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.delete',
     defaultMessage: 'Delete',
   },
+  default: {
+    id: 'app.containers.admin.ContentBuilder.default',
+    defaultMessage: 'default',
+  },
   toggleLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.toggleLabel',
     defaultMessage: 'Use page builder for description',
