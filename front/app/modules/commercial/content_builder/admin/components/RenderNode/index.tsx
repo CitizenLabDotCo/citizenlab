@@ -113,8 +113,10 @@ const RenderNode = ({ render }) => {
     const parentNodeElement = document.getElementById(parentId);
 
     if (
-      (parentNodeName === TWO_COLUMNS && isHover) ||
-      (parentNodeName === THREE_COLUMNS && isHover)
+      isHover &&
+      (parentNodeName === TWO_COLUMNS ||
+        parentNodeName === THREE_COLUMNS ||
+        parentNodeName === INFO_WITH_ACCORDIONS)
     ) {
       parentNodeElement?.setAttribute(
         'style',
@@ -128,8 +130,13 @@ const RenderNode = ({ render }) => {
   // Handle selected state
   useEffect(() => {
     if (isActive && name === CONTAINER && parentNode) {
-      parentNodeName === TWO_COLUMNS && selectNode(parentId);
-      parentNodeName === THREE_COLUMNS && selectNode(parentId);
+      if (
+        parentNodeName === TWO_COLUMNS ||
+        parentNodeName === THREE_COLUMNS ||
+        parentNodeName === INFO_WITH_ACCORDIONS
+      ) {
+        selectNode(parentId);
+      }
     }
   });
 
@@ -155,7 +162,9 @@ const RenderNode = ({ render }) => {
           ? colors.clRedError
           : solidBorderIsVisible
           ? colors.adminTextColor
-          : name !== TWO_COLUMNS && name !== THREE_COLUMNS
+          : name !== TWO_COLUMNS &&
+            name !== THREE_COLUMNS &&
+            name !== INFO_WITH_ACCORDIONS
           ? colors.separation
           : 'transparent'
       }
