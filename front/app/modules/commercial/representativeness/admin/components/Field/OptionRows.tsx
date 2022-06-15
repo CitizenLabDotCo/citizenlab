@@ -55,7 +55,7 @@ const OptionRows = ({ fieldId }: Props) => {
         <>
           {itemsList.map(
             ({ id, attributes }: IUserCustomFieldOptionData, index: number) => {
-              const { enabled, value }: OptionValues = props[id];
+              const { enabled }: OptionValues = props[id];
 
               return (
                 <SortableRow
@@ -80,7 +80,7 @@ const OptionRows = ({ fieldId }: Props) => {
                     alignItems="center"
                     width="50%"
                   >
-                    <PopulationInput value={value} />
+                    <PopulationInput optionId={id} />
                   </Box>
                 </SortableRow>
               );

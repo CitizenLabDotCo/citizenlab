@@ -1,4 +1,5 @@
 import React from 'react';
+import { Field, FieldProps } from 'formik';
 
 // components
 import { Text, Input } from '@citizenlab/cl2-component-library';
@@ -6,17 +7,18 @@ import { Text, Input } from '@citizenlab/cl2-component-library';
 // utils
 import { parsePopulationValue } from './utils';
 
-interface Props {
-  value?: number;
-  onChange: (value?: number) => void;
-}
-
-const PopulationInput = ({ value, onChange }: Props) => {
+const PopulationInput = ({
+  form: { setFieldValue, setStatus, setFieldTouched, setFieldError },
+  field: { name, value },
+}: FieldProps) => {
   const handleChange = (stringValue: string) => {
     const newValue = parsePopulationValue(stringValue);
 
     if (newValue !== null) {
-      onChange(newValue);
+      setFieldValue(name, newValue);
+      setStatus('enabled');
+      setFieldTouched(name, true);
+      setFieldError(name, '');
     }
   };
 
@@ -33,4 +35,12 @@ const PopulationInput = ({ value, onChange }: Props) => {
   );
 };
 
-export default PopulationInput;
+interface Props {
+  optionId: string;
+}
+
+const PopulationInputFormik = ({ optionId }: Props) => (
+  <Field name={optionId} component={PopulationInput} />
+);
+
+export default PopulationInputFormik;
