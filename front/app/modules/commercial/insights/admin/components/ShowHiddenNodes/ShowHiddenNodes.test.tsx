@@ -9,7 +9,7 @@ const getHiddenNodes = (n) =>
     name: `name-${i}`,
   }));
 
-const getMockData = (n) => {
+const getMockData = (n: number): [NodeName[], string[]] => {
   const nodesNames = getHiddenNodes(n);
   const hiddenNodes = nodesNames.map(({ id }) => id);
   return [nodesNames, hiddenNodes];
@@ -22,8 +22,8 @@ describe('Show hidden keyword network nodes', () => {
   it('should render ShowHiddenNodes', () => {
     render(
       <ShowHiddenNodes
-        nodesNames={nodesNames as NodeName[]}
-        hiddenNodes={hiddenNodes as string[]}
+        nodesNames={nodesNames}
+        hiddenNodes={hiddenNodes}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -34,7 +34,7 @@ describe('Show hidden keyword network nodes', () => {
     render(
       <ShowHiddenNodes
         hiddenNodes={[]}
-        nodesNames={nodesNames as NodeName[]}
+        nodesNames={nodesNames}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -46,8 +46,8 @@ describe('Show hidden keyword network nodes', () => {
   it('should show a correct node count', () => {
     render(
       <ShowHiddenNodes
-        nodesNames={nodesNames as NodeName[]}
-        hiddenNodes={hiddenNodes as string[]}
+        nodesNames={nodesNames}
+        hiddenNodes={hiddenNodes}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -57,8 +57,8 @@ describe('Show hidden keyword network nodes', () => {
   it('should show tooltip with hidden node names', () => {
     render(
       <ShowHiddenNodes
-        nodesNames={nodesNames as NodeName[]}
-        hiddenNodes={hiddenNodes as string[]}
+        nodesNames={nodesNames}
+        hiddenNodes={hiddenNodes}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -74,8 +74,8 @@ describe('Show hidden keyword network nodes', () => {
     const [nodesNames, hiddenNodes] = getMockData(11);
     render(
       <ShowHiddenNodes
-        nodesNames={nodesNames as NodeName[]}
-        hiddenNodes={hiddenNodes as string[]}
+        nodesNames={nodesNames}
+        hiddenNodes={hiddenNodes}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
