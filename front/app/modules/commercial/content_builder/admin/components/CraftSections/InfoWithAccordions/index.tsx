@@ -14,12 +14,21 @@ const InfoWithAccordions: UserComponent = ({
   accordionTitle,
   accordionText,
 }) => {
+  const leftChildren = <Element is={Text} id="text" text={textPlaceholder} />;
+  const rightChildren = (
+    <Element is={AboutBox} id="aboutBox" projectId={projectId} />
+  );
+
   return (
     <Element canvas is={Container} id="container">
-      <Element canvas is={TwoColumn} id="twoColumn" columnLayout="2-1">
-        <Element id="text" is={Text} text={textPlaceholder} />
-        <Element id="aboutBox" is={AboutBox} projectId={projectId} />
-      </Element>
+      <Element
+        canvas
+        is={TwoColumn}
+        id="twoColumn"
+        columnLayout="2-1"
+        rightChildren={rightChildren}
+        leftChildren={leftChildren}
+      />
       <Element
         id="accordion"
         is={Accordion}
