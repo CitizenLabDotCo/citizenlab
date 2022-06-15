@@ -1,32 +1,29 @@
 import React from 'react';
 import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
-import ShowHiddenNodes from './';
+import ShowHiddenNodes, { NodeName } from './';
 
-const defaultNode = {
-  val: 0,
-  color: '',
-  color_index: 0,
-  cluster_id: '',
-  nodeVerticalOffset: 0,
-  textWidth: 0,
-  globalScale: 0,
-  nodeFontSize: 0,
-};
 const getHiddenNodes = (n) =>
   [...Array(n)].map((_, i) => ({
-    ...defaultNode,
     id: `${i}`,
     name: `name-${i}`,
   }));
-const hiddenNodes = getHiddenNodes(5);
+
+const getMockData = (n) => {
+  const nodesNames = getHiddenNodes(n);
+  const hiddenNodes = nodesNames.map(({ id }) => id);
+  return [nodesNames, hiddenNodes];
+};
+let [nodesNames, hiddenNodes] = getMockData(5);
+
 const handleShowHiddenNodesClick = () => {};
 
 describe('Show hidden keyword network nodes', () => {
   it('should render ShowHiddenNodes', () => {
     render(
       <ShowHiddenNodes
-        hiddenNodes={hiddenNodes}
+        nodesNames={nodesNames as NodeName[]}
+        hiddenNodes={hiddenNodes as string[]}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -37,6 +34,7 @@ describe('Show hidden keyword network nodes', () => {
     render(
       <ShowHiddenNodes
         hiddenNodes={[]}
+        nodesNames={nodesNames as NodeName[]}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -48,7 +46,8 @@ describe('Show hidden keyword network nodes', () => {
   it('should show a correct node count', () => {
     render(
       <ShowHiddenNodes
-        hiddenNodes={hiddenNodes}
+        nodesNames={nodesNames as NodeName[]}
+        hiddenNodes={hiddenNodes as string[]}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -58,7 +57,8 @@ describe('Show hidden keyword network nodes', () => {
   it('should show tooltip with hidden node names', () => {
     render(
       <ShowHiddenNodes
-        hiddenNodes={hiddenNodes}
+        nodesNames={nodesNames as NodeName[]}
+        hiddenNodes={hiddenNodes as string[]}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
@@ -71,10 +71,11 @@ describe('Show hidden keyword network nodes', () => {
   });
 
   it('should show ellipsis in tooltip if more than 10 nodes', () => {
-    const hiddenNodes11 = getHiddenNodes(11);
+    const [nodesNames, hiddenNodes] = getMockData(11);
     render(
       <ShowHiddenNodes
-        hiddenNodes={hiddenNodes11}
+        nodesNames={nodesNames as NodeName[]}
+        hiddenNodes={hiddenNodes as string[]}
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );

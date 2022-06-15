@@ -101,27 +101,42 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
   const [hoverNode, setHoverNode] = useState<Node | undefined>();
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
-  const [hiddenNodes, setHiddenNodes] = useState<Array<Node>>([]);
+  const [hiddenNodes, setHiddenNodes] = useState<string[]>([]);
+  const [graphInitialized, setGraphInitialized] = useState<boolean>(false);
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
   const tooltipRef = document.getElementsByClassName('graph-tooltip')[0];
-  const canvasRef = useRef<HTMLCanvasElement | undefined>();
+
+  const setPointerEvent = (e) => setPointerPosition([e.offsetX, e.offsetY]);
 
   useEffect(() => {
-    if (canvasRef.current) return;
-    canvasRef.current = document.getElementsByTagName('canvas')[0];
-  });
+    const { hidden_keywords } = query;
+    if (graphInitialized) {
+      if (!isNilOrError(network) && hidden_keywords) {
+        const {
+          data: {
+            attributes: { nodes },
+          },
+        } = network;
+        setHiddenNodes(
+          nodes
+            .map(({ id }: Node) => id)
+            .filter((nodeId) => hidden_keywords.includes(nodeId))
+        );
+      }
 
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    const setPointerEvent = (e) => setPointerPosition([e.offsetX, e.offsetY]);
-    canvasRef.current.addEventListener('pointermove', setPointerEvent);
-    return () =>
-      canvasRef.current &&
-      canvasRef.current.removeEventListener('pointermove', setPointerEvent);
-  }, [canvasRef.current]);
+      const canvasElement = document.getElementsByTagName('canvas')[0];
+      if (canvasElement) {
+        canvasElement.addEventListener('pointermove', setPointerEvent);
+        return () =>
+          canvasElement &&
+          canvasElement.removeEventListener('pointermove', setPointerEvent);
+      }
+    }
+    return;
+  }, [graphInitialized]);
 
   useEffect(() => {
     if (networkRef.current) {
@@ -229,6 +244,7 @@ const Network = ({
 
   const handleNodeClick = (node: Node, event) => {
     let isHiding = false;
+    let hidden_keywords = hiddenNodes;
     if (node.x && node.y) {
       const { target, offsetX, offsetY } = event;
       const ctx = target.getContext('2d');
@@ -236,7 +252,8 @@ const Network = ({
       const rect = drawHideIconClickBox(node);
 
       if (ctx.isPointInPath(rect, offsetX, offsetY)) {
-        setHiddenNodes([...hiddenNodes, node]);
+        setHiddenNodes([...hiddenNodes, node.id]);
+        hidden_keywords.push(node.id);
         isHiding = true;
       }
     }
@@ -250,6 +267,7 @@ const Network = ({
         {
           ...query,
           keywords: keywords,
+          hidden_keywords: hidden_keywords,
         },
         { addQueryPrefix: true, indices: false }
       ),
@@ -259,6 +277,16 @@ const Network = ({
 
   const handleShowHiddenNodesClick = () => {
     setHiddenNodes([]);
+    clHistory.replace({
+      pathname,
+      search: stringify(
+        {
+          ...query,
+          hidden_keywords: null,
+        },
+        { addQueryPrefix: true, indices: false }
+      ),
+    });
   };
 
   const nodePointerAreaPaint = (node, color, ctx) => {
@@ -294,10 +322,10 @@ const Network = ({
   const nodeColor = (node: Node) =>
     nodeColors[node.color_index % nodeColors.length];
 
-  const nodeVisibility = (node: Node) => !hiddenNodes.includes(node);
+  const nodeVisibility = (node: Node) => !hiddenNodes.includes(node.id);
   const linkVisibility = ({ source, target }) => {
     return hiddenNodes.every(
-      (n: Node) => ![source.id, target.id].includes(n.id)
+      (nodeId) => ![source.id, target.id].includes(nodeId)
     );
   };
 
@@ -328,6 +356,8 @@ const Network = ({
       });
     }
   };
+
+  const onEngineTick = () => !graphInitialized && setGraphInitialized(true);
 
   if (loading) {
     return (
@@ -399,6 +429,10 @@ const Network = ({
         </SectionTitle>
         <ShowHiddenNodes
           hiddenNodes={hiddenNodes}
+          nodesNames={
+            !isNilOrError(network) &&
+            network.data.attributes.nodes.map(({ id, name }) => ({ id, name }))
+          }
           handleShowHiddenNodesClick={handleShowHiddenNodesClick}
         />
       </Box>
@@ -421,6 +455,7 @@ const Network = ({
           nodeCanvasObjectMode={nodeCanvasObjectMode}
           nodeCanvasObject={nodeCanvasObject}
           nodeColor={nodeColor}
+          onEngineTick={onEngineTick}
         />
       )}
       <Box

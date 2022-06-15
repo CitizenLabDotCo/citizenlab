@@ -12,10 +12,6 @@ import { Box, Icon } from '@citizenlab/cl2-component-library';
 import { TooltipContentList } from 'modules/commercial/insights/admin/components/StyledTextComponents';
 import Tippy from '@tippyjs/react';
 
-// typings
-import { IInsightsNetworkNodeMeta } from 'modules/commercial/insights/admin/containers/Insights/Details/Network';
-import { NodeObject } from 'react-force-graph-2d';
-
 // intl
 
 import { FormattedMessage } from 'react-intl';
@@ -28,20 +24,29 @@ const TooltipIcon = styled(Icon)`
   margin: 0 5px 3px 0;
 `;
 
-type Node = NodeObject & IInsightsNetworkNodeMeta;
+export type NodeName = {
+  id: string;
+  name: string;
+};
+
 type ShowHiddenNodesProps = {
-  hiddenNodes: Node[];
+  hiddenNodes: string[];
+  nodesNames: NodeName[] | false;
   handleShowHiddenNodesClick: () => void;
 };
 
 const ShowHiddenNodes = ({
   hiddenNodes,
+  nodesNames,
   handleShowHiddenNodesClick,
 }: ShowHiddenNodesProps) => {
-  if (isNilOrError(hiddenNodes) || hiddenNodes.length === 0) {
+  if (isNilOrError(hiddenNodes) || hiddenNodes.length === 0 || !nodesNames) {
     return null;
   }
-
+  const hiddenNodesNames = hiddenNodes.map((nodeId) =>
+    nodesNames.find((node: NodeName) => node.id === nodeId)
+  );
+  const hiddenNodesCount = hiddenNodes.length;
   return (
     <Box
       mt="12px"
@@ -55,11 +60,11 @@ const ShowHiddenNodes = ({
       <Tippy
         content={
           <TooltipContentList>
-            {(hiddenNodes.length > 10
-              ? [...hiddenNodes.slice(0, 10), { id: '', name: '...' }]
-              : hiddenNodes
-            ).map((node: Node) => (
-              <li key={node.id}>{node.name}</li>
+            {(hiddenNodesCount > 10
+              ? [...hiddenNodesNames.slice(0, 10), { id: '', name: '...' }]
+              : hiddenNodesNames
+            ).map(({ id, name }: NodeName) => (
+              <li key={id}>{name}</li>
             ))}
           </TooltipContentList>
         }
@@ -71,7 +76,7 @@ const ShowHiddenNodes = ({
           <FormattedMessage
             {...messages.networkShowHiddenNodes}
             values={{
-              count: hiddenNodes.length,
+              count: hiddenNodesCount,
             }}
           />
         </Box>
