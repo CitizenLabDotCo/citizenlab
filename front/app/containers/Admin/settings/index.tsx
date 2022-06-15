@@ -2,6 +2,7 @@ import React from 'react';
 
 // router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -15,8 +16,6 @@ import { injectIntl } from 'utils/cl-intl';
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { insertConfiguration } from 'utils/moduleUtils';
 import Outlet from 'components/Outlet';
-
-import Breadcrumbs from 'components/UI/Breadcrumbs';
 
 export interface InputProps {}
 
@@ -79,13 +78,6 @@ class SettingsPage extends React.PureComponent<
   render() {
     const { formatMessage } = this.props.intl;
 
-    const testBreadcrumbs = [
-      { label: 'First Breadcrumb', linkTo: '/admin/settings/general' },
-      { label: 'Second Breadcrumb', linkTo: '/admin/settings/general' },
-      // { label: 'Third Breadcrumb', linkTo: '/admin/settings/general' },
-      // { label: 'Last Breadcrumb' },
-    ];
-
     const resource = {
       title: formatMessage(messages.pageTitle),
     };
@@ -102,8 +94,7 @@ class SettingsPage extends React.PureComponent<
             description={messages.helmetDescription}
           />
           <div id="e2e-settings-container">
-            <Breadcrumbs breadcrumbs={testBreadcrumbs} />
-            {/* <RouterOutlet /> */}
+            <RouterOutlet />
           </div>
         </TabbedResource>
       </>

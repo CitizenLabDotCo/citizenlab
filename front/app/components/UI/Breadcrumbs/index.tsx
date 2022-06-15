@@ -1,70 +1,72 @@
 import React from 'react';
+import { colors } from 'utils/styleUtils';
+
+// components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
-interface SingleBreadcrumbProps {
+// types
+type SingleBreadcrumbProps = {
   label: string;
   linkTo?: string;
   isCurrentPage?: boolean;
-}
+};
 
-interface BreadcrumbsProps {
+type BreadcrumbsProps = {
   breadcrumbs: SingleBreadcrumbProps[];
-}
+};
 
 const SingleBreadcrumb = ({
   label,
   linkTo,
   isCurrentPage,
 }: SingleBreadcrumbProps) => {
-  const Divider = () => {
+  const SingleBreadcrumbWrapper = ({ children }) => {
     return (
-      <Box display="inline" mr="16px" ml="16px">
-        /
+      <Box display="inline">
+        <Text color="adminSecondaryTextColor" as="span" fontSize="m">
+          {children}
+        </Text>
       </Box>
     );
   };
 
-  if (isCurrentPage) {
+  const Divider = () => {
     return (
-      <Box display="inline">
-        <Text color="adminTextColor" as="span" fontSize="m">
-          {label}
+      <Box display="inline" mr="16px" ml="16px">
+        <Text color="adminSecondaryTextColor" as="span" fontSize="m">
+          /
         </Text>
       </Box>
     );
-  }
+  };
 
   if (linkTo) {
     return (
-      <Box display="inline">
-        <Box display="inline-block" pb="4px" borderBottom="1px solid gray">
-          <Text color="adminTextColor" as="span" fontSize="m">
-            <Link color="adminTextColor" to={linkTo}>
-              {label}
-            </Link>
-          </Text>
+      <SingleBreadcrumbWrapper>
+        <Box
+          display="inline-block"
+          borderBottom={`2px solid ${colors.adminSecondaryTextColor}`}
+        >
+          <Link
+            style={{
+              color: colors.adminSecondaryTextColor,
+            }}
+            to={linkTo}
+          >
+            {label}
+          </Link>
         </Box>
         <Divider />
-      </Box>
+      </SingleBreadcrumbWrapper>
     );
   }
 
   return (
-    <Box display="inline">
-      <Text color="adminTextColor" as="span" fontSize="m">
-        {label}
-      </Text>
+    <SingleBreadcrumbWrapper>
+      {label}
       {!isCurrentPage && <Divider />}
-    </Box>
-  );
-};
-
-const BreadcrumbsContainer = ({ children }) => {
-  return (
-    <Box display="flex" flexDirection="row">
-      {children}
-    </Box>
+    </SingleBreadcrumbWrapper>
   );
 };
 
@@ -74,11 +76,11 @@ const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
   }
 
   if (breadcrumbs.length === 1) {
-    const [onlyBreadcrumb] = breadcrumbs;
+    const [firstBreadcrumb] = breadcrumbs;
     return (
-      <BreadcrumbsContainer>
-        <SingleBreadcrumb label={onlyBreadcrumb.label} isCurrentPage={true} />
-      </BreadcrumbsContainer>
+      <>
+        <SingleBreadcrumb label={firstBreadcrumb.label} isCurrentPage />
+      </>
     );
   }
 
@@ -87,7 +89,7 @@ const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
       {breadcrumbs.map(({ label, linkTo }, index) => {
         return (
           <SingleBreadcrumb
-            key={index}
+            key={label}
             label={label}
             linkTo={linkTo}
             isCurrentPage={index === breadcrumbs.length - 1}
