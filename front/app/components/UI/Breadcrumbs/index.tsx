@@ -75,15 +75,6 @@ const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
     return null;
   }
 
-  if (breadcrumbs.length === 1) {
-    const [firstBreadcrumb] = breadcrumbs;
-    return (
-      <>
-        <SingleBreadcrumb label={firstBreadcrumb.label} isCurrentPage />
-      </>
-    );
-  }
-
   return (
     <>
       {breadcrumbs.map(({ label, linkTo }, index) => {
