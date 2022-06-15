@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- [CL-967] Fixed issue with map displaying off screen on Android
 - [CL-667] Next batch of RuboCop fixes
 
 ## 2022-06-14
