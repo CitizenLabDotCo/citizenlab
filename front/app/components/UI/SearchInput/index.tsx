@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   SearchInput,
   SearchInputProps,
@@ -33,10 +33,7 @@ const SearchInputWrapper = ({
   intl: { formatMessage },
   a11y_numberOfSearchResults,
 }: Props & InjectedIntlProps) => {
-  const [searchTerm, setSearchTerm] = useState<string | null>(null);
-
   const handleOnChange = (searchTerm: string | null) => {
-    setSearchTerm(searchTerm);
     onChange(searchTerm);
   };
 
@@ -46,11 +43,6 @@ const SearchInputWrapper = ({
 
   return (
     <>
-      <ScreenReaderOnly aria-live="assertive">
-        {formatMessage(messages.a11y_searchResultsHaveChanged, {
-          numberOfSearchResults: a11y_numberOfSearchResults,
-        })}
-      </ScreenReaderOnly>
       <Label htmlFor="search-input" hidden>
         {formatMessage(messages.searchLabel)}
       </Label>
@@ -62,15 +54,14 @@ const SearchInputWrapper = ({
         className={className}
         setClearButtonRef={handleClearButtonRef}
         onChange={handleOnChange}
-        i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
-        i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
-          searchTerm,
-        })}
-        i18nSearchTermBlankMessage={formatMessage(
-          messages.a11y_searchTermBlank
-        )}
+        a11y_RemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
         size={size}
       />
+      <ScreenReaderOnly aria-live="assertive">
+        {formatMessage(messages.a11y_searchResultsHaveChanged, {
+          numberOfSearchResults: a11y_numberOfSearchResults,
+        })}
+      </ScreenReaderOnly>
     </>
   );
 };
