@@ -21,18 +21,14 @@ const Fields = () => {
   const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
   if (isNilOrError(userCustomFields)) return null;
 
-  const noop = () => {};
-
   return (
     <Box mt="32px">
       {userCustomFields.filter(noDomicile).map(({ id, attributes }) => (
         <Field
           fieldId={id}
-          enabled={true}
           isDefault={attributes.code !== null}
           titleMultiloc={attributes.title_multiloc}
           key={id}
-          onToggleEnabled={noop}
         />
       ))}
     </Box>
