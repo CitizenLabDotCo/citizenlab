@@ -108,16 +108,16 @@ const RenderNode = ({ render }) => {
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
 
+  const isChildOfComplexComponent =
+    parentNodeName === TWO_COLUMNS ||
+    parentNodeName === THREE_COLUMNS ||
+    parentNodeName === INFO_WITH_ACCORDIONS;
+
   // Handle multi-column hover state
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
-    if (
-      isHover &&
-      (parentNodeName === TWO_COLUMNS ||
-        parentNodeName === THREE_COLUMNS ||
-        parentNodeName === INFO_WITH_ACCORDIONS)
-    ) {
+    if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
         `border: 1px solid ${colors.adminTextColor} `
@@ -125,20 +125,26 @@ const RenderNode = ({ render }) => {
     } else {
       parentNodeElement?.removeAttribute('style');
     }
-  }, [isHover, id, parentNodeName, parentId]);
+  }, [isHover, id, isChildOfComplexComponent, parentId]);
 
   // Handle selected state
   useEffect(() => {
-    if (isActive && name === CONTAINER && parentNode) {
-      if (
-        parentNodeName === TWO_COLUMNS ||
-        parentNodeName === THREE_COLUMNS ||
-        parentNodeName === INFO_WITH_ACCORDIONS
-      ) {
-        selectNode(parentId);
-      }
+    if (
+      isActive &&
+      name === CONTAINER &&
+      parentNode &&
+      isChildOfComplexComponent
+    ) {
+      selectNode(parentId);
     }
-  });
+  }, [
+    isActive,
+    name,
+    parentNode,
+    parentId,
+    isChildOfComplexComponent,
+    selectNode,
+  ]);
 
   const isSelectable = getComponentNameMessage(name) !== messages.default;
   const nodeLabelIsVisible =
