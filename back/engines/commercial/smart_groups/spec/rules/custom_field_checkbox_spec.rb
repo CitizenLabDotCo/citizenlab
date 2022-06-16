@@ -13,7 +13,7 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
         'predicate' => 'is_checked'
       }
     end
-    let(:valid_rule) { SmartGroups::Rules::CustomFieldCheckbox.from_json(valid_json_rule) }
+    let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
     it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
@@ -36,12 +36,12 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
       end
 
       it "correctly filters on 'is_checked' predicate" do
-        rule = SmartGroups::Rules::CustomFieldCheckbox.new(custom_field.id, 'is_checked')
+        rule = described_class.new(custom_field.id, 'is_checked')
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'not_is_checked' predicate" do
-        rule = SmartGroups::Rules::CustomFieldCheckbox.new(custom_field.id, 'not_is_checked')
+        rule = described_class.new(custom_field.id, 'not_is_checked')
         expect(rule.filter(User).count).to eq 3
       end
     end
@@ -50,35 +50,35 @@ describe SmartGroups::Rules::CustomFieldCheckbox do
   describe 'description_multiloc' do
     let(:checkbox) do
       create(:custom_field_checkbox, title_multiloc: {
-        'en'    => 'I agree to share my cookies',
+        'en' => 'I agree to share my cookies',
         'fr-FR' => 'J\'accepte de partager mes biscuits',
         'nl-NL' => 'Ik ga akkoord om mijn koekjes te delen'
       })
     end
 
     let(:custom_field_checkbox_is_checked_rule) do
-      SmartGroups::Rules::CustomFieldCheckbox.from_json({
-        'ruleType'      => 'custom_field_checkbox',
-        'predicate'     => 'is_checked',
+      described_class.from_json({
+        'ruleType' => 'custom_field_checkbox',
+        'predicate' => 'is_checked',
         'customFieldId' => checkbox.id
       })
     end
     let(:custom_field_checkbox_not_is_checked_rule) do
-      SmartGroups::Rules::CustomFieldCheckbox.from_json({
-        'ruleType'      => 'custom_field_checkbox',
-        'predicate'     => 'not_is_checked',
+      described_class.from_json({
+        'ruleType' => 'custom_field_checkbox',
+        'predicate' => 'not_is_checked',
         'customFieldId' => checkbox.id
       })
     end
 
     it 'successfully translates different combinations of rules' do
       expect(custom_field_checkbox_is_checked_rule.description_multiloc).to eq({
-        'en'    => 'Checked I agree to share my cookies',
+        'en' => 'Checked I agree to share my cookies',
         'fr-FR' => 'A coché J\'accepte de partager mes biscuits',
         'nl-NL' => 'Heeft Ik ga akkoord om mijn koekjes te delen aangevinkt'
       })
       expect(custom_field_checkbox_not_is_checked_rule.description_multiloc).to eq({
-        'en'    => 'Didn\'t check I agree to share my cookies',
+        'en' => 'Didn\'t check I agree to share my cookies',
         'fr-FR' => 'N\'as pas coché J\'accepte de partager mes biscuits',
         'nl-NL' => 'Heeft Ik ga akkoord om mijn koekjes te delen niet aangevinkt'
       })

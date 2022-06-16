@@ -12,11 +12,11 @@ RSpec.describe EmailCampaigns::Trackable, type: :model do
   describe 'sent?' do
     it 'returns true when there are deliveries' do
       create_list(:delivery, 3, campaign: campaign)
-      expect(campaign.sent?).to be_truthy
+      expect(campaign.sent?).to be true
     end
 
     it 'returns false when there are no deliveries' do
-      expect(campaign.sent?).to be_falsey
+      expect(campaign.sent?).to be false
     end
   end
 

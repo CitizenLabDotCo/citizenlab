@@ -37,6 +37,15 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.url',
     defaultMessage: 'Embed',
   },
+  error: {
+    id: 'app.containers.admin.ContentBuilder.error',
+    defaultMessage: 'error',
+  },
+  errorMessage: {
+    id: 'app.containers.admin.ContentBuilder.errorMessage',
+    defaultMessage:
+      'There is an error on { locale } content, please fix the issue to be able to save your changes',
+  },
   iframeUrlLabel: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
     defaultMessage: 'Website address',
@@ -75,6 +84,11 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
     defaultMessage:
       'Enter a valid web address, for example https://example.com',
+  },
+  iframeDescription: {
+    id: 'app.containers.admin.ContentBuilder.iframeDescription',
+    defaultMessage:
+      'Display content from an external website on your page in an HTML iFrame.',
   },
   iframeWhitelistUrlErrorMessage: {
     id: 'app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage',
@@ -153,6 +167,30 @@ export default defineMessages({
   columnLayoutRadioLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
     defaultMessage: 'Column layout',
+  },
+  whiteSpace: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
+    defaultMessage: 'White space',
+  },
+  whiteSpaceRadioLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceRadioLabel',
+    defaultMessage: 'Vertical height',
+  },
+  whiteSpaceRadioSmall: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceRadioSmall',
+    defaultMessage: 'Small',
+  },
+  whiteSpaceRadioMedium: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceRadioMedium',
+    defaultMessage: 'Medium',
+  },
+  whiteSpaceRadioLarge: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceRadioLarge',
+    defaultMessage: 'Large',
+  },
+  whiteSpaceDividerLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.whiteSpaceDividerLabel',
+    defaultMessage: 'Include border',
   },
   a11y_closeSettingsPanel: {
     id: 'app.containers.AdminPage.ProjectDescription.a11y_closeSettingsPanel',

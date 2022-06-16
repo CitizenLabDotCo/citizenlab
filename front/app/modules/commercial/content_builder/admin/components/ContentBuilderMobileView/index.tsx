@@ -8,9 +8,6 @@ import { stylingConsts } from 'utils/styleUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
-import useProject from 'hooks/useProject';
-
-// intl
 
 type ContentBuilderMobileViewProps = {
   projectId: string;
@@ -21,7 +18,6 @@ const ContentBuilderMobileView = React.forwardRef<
   ContentBuilderMobileViewProps
 >(({ projectId }, ref) => {
   const locale = useLocale();
-  const project = useProject({ projectId });
 
   return (
     <Box
@@ -44,7 +40,7 @@ const ContentBuilderMobileView = React.forwardRef<
           <Box
             as="iframe"
             ref={ref}
-            src={`/${locale}/projects/${project?.attributes.slug}`}
+            src={`/${locale}/admin/content-builder/projects/${projectId}/mobile-preview`}
             height="560px"
             width="320px"
             border="none"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 
 // components
@@ -15,11 +15,13 @@ import RenderNode from '../RenderNode';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
 
 type EditorProps = {
+  children?: React.ReactNode;
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
-};
+} & WithRouterProps;
 
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,
@@ -38,6 +40,7 @@ const Editor: React.FC<EditorProps> = ({
         Iframe,
         AboutBox,
         Accordion,
+        WhiteSpace,
       }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}

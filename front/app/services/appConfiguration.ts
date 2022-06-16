@@ -151,6 +151,7 @@ export interface IAppConfigurationSettings {
   smart_survey_surveys?: AppConfigurationFeature;
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
+  snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;

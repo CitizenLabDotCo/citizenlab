@@ -30,7 +30,7 @@ import { isAdmin } from 'services/permissions/roles';
 import { moderatesFolder } from '../../../permissions/roles';
 
 // typings
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;

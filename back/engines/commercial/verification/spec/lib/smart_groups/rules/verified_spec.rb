@@ -9,7 +9,7 @@ describe Verification::SmartGroups::Rules::Verified do
       'predicate' => 'is_verified'
     }
   end
-  let(:valid_rule) { Verification::SmartGroups::Rules::Verified.from_json(valid_json_rule) }
+  let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
   describe 'from_json' do
     it 'successfully parses a valid json' do
@@ -33,12 +33,12 @@ describe Verification::SmartGroups::Rules::Verified do
     end
 
     it "correctly filters on 'is_verified' predicate" do
-      rule = Verification::SmartGroups::Rules::Verified.new('is_verified')
+      rule = described_class.new('is_verified')
       expect(rule.filter(User).count).to eq 2
     end
 
     it "correctly filters on 'not_is_verified' predicate" do
-      rule = Verification::SmartGroups::Rules::Verified.new('not_is_verified')
+      rule = described_class.new('not_is_verified')
       expect(rule.filter(User).count).to eq User.count - 2
     end
   end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe MakeNotificationsForClassJob, type: :job do
-  subject(:job) { MakeNotificationsForClassJob.new }
+  subject(:job) { described_class.new }
 
   describe '#perform' do
     it 'persists notifications when all are valid' do

@@ -596,13 +596,13 @@ resource 'Users' do
         before do
           if CitizenLab.ee?
             old_timers = create(:smart_group, rules: [
-                                  {
-                                    ruleType: 'custom_field_number',
-                                    customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
-                                    predicate: 'is_smaller_than_or_equal',
-                                    value: 1988
-                                  }
-                                ])
+              {
+                ruleType: 'custom_field_number',
+                customFieldId: create(:custom_field_number, title_multiloc: { 'en' => 'Birthyear?' }, key: 'birthyear', code: 'birthyear').id,
+                predicate: 'is_smaller_than_or_equal',
+                value: 1988
+              }
+            ])
 
             project.permissions.find_by(action: 'posting_idea')
               .update!(permitted_by: 'groups', groups: [old_timers])

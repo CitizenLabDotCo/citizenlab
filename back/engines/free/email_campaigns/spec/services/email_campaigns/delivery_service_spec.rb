@@ -31,7 +31,7 @@ class ConsentableDisableableCampaignBForTest < EmailCampaigns::Campaign
 end
 
 describe EmailCampaigns::DeliveryService do
-  let(:service) { EmailCampaigns::DeliveryService.new }
+  let(:service) { described_class.new }
 
   describe 'campaign_types' do
     it 'returns all campaign types' do

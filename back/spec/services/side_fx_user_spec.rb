@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxUserService do
-  let(:service) { SideFxUserService.new }
+  let(:service) { described_class.new }
   let(:current_user) { create(:user) }
   let(:user) { create(:user) }
 

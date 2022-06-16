@@ -87,11 +87,11 @@ class WebApi::V1::ImagesController < ApplicationController
   # @return [void]
   def self.register_container(container_type, container_class, image_class, policy_scope_class, image_relationship, container_id)
     CONSTANTIZER[container_type] = {
-        container_class: container_class,
-        image_class: image_class,
-        policy_scope_class: policy_scope_class,
-        image_relationship: image_relationship,
-        container_id: container_id
+      container_class: container_class,
+      image_class: image_class,
+      policy_scope_class: policy_scope_class,
+      image_relationship: image_relationship,
+      container_id: container_id
     }
   end
 

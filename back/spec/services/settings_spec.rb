@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SettingsService do
-  let(:ss) { SettingsService.new }
+  let(:ss) { described_class.new }
   let(:schema1) do
     {
       'properties' => {
@@ -150,17 +150,17 @@ describe SettingsService do
   describe 'remove_additional_settings' do
     let(:schema) do
       {
-      'type' => 'object',
-      'properties' => {
-        'a' => {
-          'type' => 'object',
-          'properties' => {
-            'setting1' => { 'type' => 'boolean' },
-            'setting2' => { 'type' => 'string' }
+        'type' => 'object',
+        'properties' => {
+          'a' => {
+            'type' => 'object',
+            'properties' => {
+              'setting1' => { 'type' => 'boolean' },
+              'setting2' => { 'type' => 'string' }
+            }
           }
         }
       }
-    }
     end
 
     it 'leaves schema settings alone' do
