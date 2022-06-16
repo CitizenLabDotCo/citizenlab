@@ -694,6 +694,7 @@
   "app.containers.IdeaCards.showXResults": "اعرض {ideasCount, plural, no {# results} واحدة # result} أخرى {# results}}",
   "app.containers.IdeaCards.sortTitle": "فرز",
   "app.containers.IdeaCards.statusTitle": "الحالة",
+  "app.containers.IdeaCards.testString": "Test, do not translate. Changing the source.",
   "app.containers.IdeaCards.topics": "الموضوعات",
   "app.containers.IdeaCards.topicsTitle": "الموضوعات",
   "app.containers.IdeaCards.trending": "الرائج",
