@@ -14,10 +14,50 @@ import { IAreaData } from 'services/areas';
 import { useParams } from 'react-router-dom';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
 
+// styles
+import styled from 'styled-components';
+import { fontSizes, colors } from 'utils/styleUtils';
+
 interface Props {
   areaIds: string[] | undefined;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
+
+const LabelText = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: -2px;
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .header {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 3px;
+    font-weight: 600;
+    font-size: ${fontSizes.base}px;
+  }
+
+  .description {
+    color: ${colors.adminSecondaryTextColor};
+  }
+`;
+
+const LabelHeaderDescription = ({
+  header,
+  description,
+}: {
+  header: JSX.Element;
+  description: JSX.Element;
+}) => (
+  <LabelText>
+    <span className="header">{header}</span>
+    <span className="description">{description}</span>
+  </LabelText>
+);
 
 type TProjectAreaType = 'none' | 'all' | 'selection';
 
@@ -130,7 +170,14 @@ const GeographicAreaInputs = ({
           value="none"
           name="areas"
           id="areas-none"
-          label={<FormattedMessage {...messages.areasNoneLabel} />}
+          label={
+            <LabelHeaderDescription
+              header={<FormattedMessage {...messages.areasNoneLabel} />}
+              description={
+                <FormattedMessage {...messages.areasNoneLabelDescription} />
+              }
+            />
+          }
         />
         <Radio
           onChange={handleAreaTypeOnChange}
@@ -138,7 +185,14 @@ const GeographicAreaInputs = ({
           value="all"
           name="areas"
           id="areas-all"
-          label={<FormattedMessage {...messages.areasAllLabel} />}
+          label={
+            <LabelHeaderDescription
+              header={<FormattedMessage {...messages.areasAllLabel} />}
+              description={
+                <FormattedMessage {...messages.areasAllLabelDescription} />
+              }
+            />
+          }
         />
         <Radio
           onChange={handleAreaTypeOnChange}
@@ -147,7 +201,16 @@ const GeographicAreaInputs = ({
           name="areas"
           id="areas-selection"
           className="e2e-areas-selection"
-          label={<FormattedMessage {...messages.areasSelectionLabel} />}
+          label={
+            <LabelHeaderDescription
+              header={<FormattedMessage {...messages.areasSelectionLabel} />}
+              description={
+                <FormattedMessage
+                  {...messages.areasSelectionLabelDescription}
+                />
+              }
+            />
+          }
         />
 
         {areaType === 'selection' && (
