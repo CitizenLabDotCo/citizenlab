@@ -41,6 +41,8 @@ type ComponentNamesType =
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
+    case CONTAINER:
+      return messages.oneColumn;
     case TWO_COLUMNS:
       return messages.twoColumn;
     case THREE_COLUMNS:
@@ -109,9 +111,7 @@ const RenderNode = ({ render }) => {
   const parentNodeName = parentNode && parentNode.data.name;
 
   const isChildOfComplexComponent =
-    parentNodeName === TWO_COLUMNS ||
-    parentNodeName === THREE_COLUMNS ||
-    parentNodeName === INFO_WITH_ACCORDIONS;
+    parentNodeName === TWO_COLUMNS || parentNodeName === THREE_COLUMNS;
 
   // Handle multi-column hover state
   useEffect(() => {
@@ -168,9 +168,7 @@ const RenderNode = ({ render }) => {
           ? colors.clRedError
           : solidBorderIsVisible
           ? colors.adminTextColor
-          : name !== TWO_COLUMNS &&
-            name !== THREE_COLUMNS &&
-            name !== INFO_WITH_ACCORDIONS
+          : name !== TWO_COLUMNS && name !== THREE_COLUMNS && isSelectable
           ? colors.separation
           : 'transparent'
       }

@@ -136,5 +136,4 @@ TwoColumn.craft = {
   related: {
     settings: TwoColumnSettings,
   },
-  rules: { canMoveIn: () => true },
 };

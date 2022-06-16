@@ -91,12 +91,32 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <InfoWithAccordions
-                projectId={projectId}
-                accordionTitle={formatMessage(messages.accordionTitleValue)}
-                accordionText={formatMessage(messages.accordionTextValue)}
-                textPlaceholder={formatMessage(messages.loremIpsum)}
-              />
+              <InfoWithAccordions>
+                <TwoColumn
+                  columnLayout="2-1"
+                  rightChildren={<AboutBox projectId={projectId} />}
+                  leftChildren={
+                    <div>
+                      <Text text={formatMessage(messages.loremIpsum)} />
+                      <Accordion
+                        title={formatMessage(messages.accordionTitleValue)}
+                        text={formatMessage(messages.accordionTextValue)}
+                        openByDefault={false}
+                      />
+                      <Accordion
+                        title={formatMessage(messages.accordionTitleValue)}
+                        text={formatMessage(messages.accordionTextValue)}
+                        openByDefault={false}
+                      />
+                      <Accordion
+                        title={formatMessage(messages.accordionTitleValue)}
+                        text={formatMessage(messages.accordionTextValue)}
+                        openByDefault={false}
+                      />
+                    </div>
+                  }
+                />
+              </InfoWithAccordions>
             )
           }
         >
