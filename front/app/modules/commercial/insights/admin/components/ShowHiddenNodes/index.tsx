@@ -17,11 +17,11 @@ import Tippy from '@tippyjs/react';
 import { FormattedMessage } from 'react-intl';
 import messages from '../../containers/Insights/messages';
 
-const TooltipIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
-  fill: ${colors.label};
-  margin: 0 5px 3px 0;
+const Button = styled.button`
+  cursor: pointer;
+  width: fit-content;
+  margin-top: 12px;
+  padding: 0;
 `;
 
 export type NodeName = {
@@ -48,12 +48,7 @@ const ShowHiddenNodes = ({
   );
   const hiddenNodesCount = hiddenNodes.length;
   return (
-    <Box
-      mt="12px"
-      style={{
-        cursor: 'pointer',
-        width: 'fit-content',
-      }}
+    <Button
       onClick={handleShowHiddenNodesClick}
       data-testid="insightsShowHiddenNodes"
     >
@@ -72,7 +67,13 @@ const ShowHiddenNodes = ({
         trigger="mouseenter"
       >
         <Box data-testid="insightsShowHiddenNodesContent">
-          <TooltipIcon name="eye" />
+          <Icon
+            width="17px"
+            height="17px"
+            fill={colors.label}
+            margin=" 0 5px 3px 0"
+            name="eye"
+          />
           <FormattedMessage
             {...messages.networkShowHiddenNodes}
             values={{
@@ -81,7 +82,7 @@ const ShowHiddenNodes = ({
           />
         </Box>
       </Tippy>
-    </Box>
+    </Button>
   );
 };
 
