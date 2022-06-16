@@ -1,8 +1,9 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-const getInsightsTextNetworkAnalysisTasksEndpoint = (viewId: string) =>
-  `insights/views/${viewId}/tasks/text_network_analysis`;
+const getInsightsTextNetworkAnalysisTasksEndpoint = (
+  viewId: string | undefined
+) => `insights/views/${viewId}/tasks/text_network_analysis`;
 
 export interface IInsightsTextNetworkAnalysisTasksData {
   id: string;
@@ -17,7 +18,7 @@ export interface IInsightsTextNetworkAnalysisTasks {
 }
 
 export function insightsTextNetworkAnalysisTasksStream(
-  insightsViewId: string,
+  insightsViewId: string | undefined,
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IInsightsTextNetworkAnalysisTasks>({

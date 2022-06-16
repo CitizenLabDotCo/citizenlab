@@ -14,7 +14,7 @@ import { insightsTextNetworkAnalysisTasksStream } from 'modules/commercial/insig
 const pollingStream = interval(3000);
 export const queryParameters = { max_nb_nodes: 100, max_density: 0.06 };
 
-const useInsightsNetwork = (viewId: string) => {
+const useInsightsNetwork = (viewId: string | undefined) => {
   const [loading, setLoading] = useState(true);
   const [insightsNetwork, setInsightsNetwork] = useState<
     IInsightsNetwork | undefined | null | Error

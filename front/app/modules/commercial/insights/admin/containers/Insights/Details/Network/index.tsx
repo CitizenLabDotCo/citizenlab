@@ -1,4 +1,3 @@
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import React, {
   useEffect,
   useRef,
@@ -6,6 +5,8 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
+
 // graph
 import ForceGraph2D, {
   ForceGraphMethods,
@@ -24,8 +25,6 @@ import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insig
 import { isNilOrError, isError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 import {
   drawHideIcon,
@@ -91,10 +90,8 @@ const StyledMessage = styled.h4`
 `;
 
 const Network = ({
-  params: { viewId },
   intl: { formatMessage, formatDate },
-  location: { query, pathname },
-}: WithRouterProps & InjectedIntlProps) => {
+}: InjectedIntlProps) => {
   const [initialRender, setInitialRender] = useState(true);
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
@@ -103,6 +100,8 @@ const Network = ({
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
   const [hiddenNodes, setHiddenNodes] = useState<string[]>([]);
   const [graphInitialized, setGraphInitialized] = useState<boolean>(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { viewId } = useParams();
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
@@ -110,9 +109,14 @@ const Network = ({
   const tooltipRef = document.getElementsByClassName('graph-tooltip')[0];
 
   const setPointerEvent = (e) => setPointerPosition([e.offsetX, e.offsetY]);
+  const appendSearchParams = (params) =>
+    setSearchParams({
+      ...Object.fromEntries(searchParams.entries()),
+      ...params,
+    });
 
   useEffect(() => {
-    const { hidden_keywords } = query;
+    const hidden_keywords = searchParams.get('hidden_keywords');
     if (graphInitialized) {
       if (!isNilOrError(network) && hidden_keywords) {
         const {
@@ -220,11 +224,13 @@ const Network = ({
   };
 
   const getKeywords = (node: Node, isHiding: boolean) => {
-    const { keywords } = query;
-    let newKeywords = keywords;
+    const keywords = searchParams.get('keywords');
+    let newKeywords;
 
     if (typeof keywords === 'string') {
       newKeywords = [keywords];
+    } else {
+      newKeywords = keywords;
     }
 
     if (newKeywords) {
@@ -255,38 +261,23 @@ const Network = ({
         setHiddenNodes([...hiddenNodes, node.id]);
         hidden_keywords.push(node.id);
         isHiding = true;
+        appendSearchParams({ hidden_keywords });
       }
     }
 
     const keywords = getKeywords(node, isHiding);
+    if (keywords) appendSearchParams({ keywords, hidden_keywords });
 
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        // Toggle selected keywords in url
-        {
-          ...query,
-          keywords: keywords,
-          hidden_keywords: hidden_keywords,
-        },
-        { addQueryPrefix: true, indices: false }
-      ),
-    });
     trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
   };
 
   const handleShowHiddenNodesClick = () => {
     setHiddenNodes([]);
-    clHistory.replace({
-      pathname,
-      search: stringify(
-        {
-          ...query,
-          hidden_keywords: null,
-        },
-        { addQueryPrefix: true, indices: false }
-      ),
-    });
+    const { hidden_keywords, ...params } = Object.fromEntries(
+      searchParams.entries()
+    );
+
+    setSearchParams(params);
   };
 
   const nodePointerAreaPaint = (node, color, ctx) => {
@@ -499,4 +490,4 @@ const Network = ({
   );
 };
 
-export default withRouter(injectIntl(Network));
+export default injectIntl(Network);
