@@ -211,7 +211,12 @@ const MapIdeasList = memo<Props>(({ projectId, phaseId, className }) => {
           )}
         </DropdownFilters>
 
-        <StyledSearchInput onChange={handleSearchOnChange} />
+        <StyledSearchInput
+          onChange={handleSearchOnChange}
+          a11y_numberOfSearchResults={
+            ideaMarkers && ideaMarkers.length > 0 ? ideaMarkers.length : 0
+          }
+        />
       </Header>
 
       <IdeaMapCards>

@@ -174,7 +174,11 @@ export const ContentBuilderPage = () => {
       data-testid="contentBuilderPage"
     >
       <FocusOn>
-        <Editor isPreview={false} onNodesChange={handleEditorChange}>
+        <Editor
+          isPreview={false}
+          onNodesChange={handleEditorChange}
+          key={selectedLocale}
+        >
           <ContentBuilderTopBar
             localesWithError={localesWithError}
             mobilePreviewEnabled={mobilePreviewEnabled}
@@ -204,21 +208,18 @@ export const ContentBuilderPage = () => {
                     }
                   />
                 )}
-                <ContentBuilderFrame
-                  key={selectedLocale}
-                  editorData={getEditorData()}
-                />
+                <ContentBuilderFrame editorData={getEditorData()} />
               </Box>
             </StyledRightColumn>
             <ContentBuilderSettings />
           </Box>
-          <Box
-            justifyContent="center"
-            display={mobilePreviewEnabled ? 'flex' : 'none'}
-          >
-            <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
-          </Box>
         </Editor>
+        <Box
+          justifyContent="center"
+          display={mobilePreviewEnabled ? 'flex' : 'none'}
+        >
+          <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
+        </Box>
       </FocusOn>
     </Box>
   );
