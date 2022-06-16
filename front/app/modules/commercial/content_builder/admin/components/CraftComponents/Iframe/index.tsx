@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // intl
@@ -68,6 +73,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
 
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
+      <Text variant="bodyM">{formatMessage(messages.iframeDescription)}</Text>
       <Box flex="0 0 100%">
         <Input
           id="e2e-content-builder-iframe-url-input"
@@ -110,7 +116,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             </span>
           }
           placeholder={formatMessage(messages.iframeHeightPlaceholder)}
-          type="text"
+          type="number"
           value={height}
           onChange={(value) => {
             setProp((props) => (props.height = value));
