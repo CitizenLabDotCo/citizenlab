@@ -21,12 +21,12 @@ interface Props {
   fieldId: string;
 }
 
-interface OptionValues {
+export interface OptionValue {
   enabled: boolean;
-  value?: number;
+  population?: number;
 }
 
-type FormValues = Record<string, OptionValues>;
+type FormValues = Record<string, OptionValue>;
 
 const validateForm = (values: FormValues): FormikErrors<FormValues> => {
   console.log(values);

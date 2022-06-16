@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field } from 'formik';
 
 // components
 import { Text, Input } from '@citizenlab/cl2-component-library';
@@ -7,27 +7,45 @@ import { Text, Input } from '@citizenlab/cl2-component-library';
 // utils
 import { parsePopulationValue } from '../utils';
 
+// typings
+import { OptionValue } from '.';
+
+interface FieldProps {
+  form: {
+    setFieldValue: (field: string, value: OptionValue) => void;
+    setStatus: (status: any) => void;
+    setFieldTouched: (field: string, isTouched?: boolean) => void;
+    setFieldError: (field: string, message: string) => void;
+  };
+  field: {
+    name: string;
+    value: OptionValue;
+  };
+}
+
 const OptionInput = ({
   form: { setFieldValue, setStatus, setFieldTouched, setFieldError },
   field: { name, value },
 }: FieldProps) => {
   const handleChange = (stringValue: string) => {
-    const newValue = parsePopulationValue(stringValue);
+    const population = parsePopulationValue(stringValue);
 
-    if (newValue !== null) {
-      setFieldValue(name, newValue);
+    if (population !== null) {
+      setFieldValue(name, { ...value, population });
       setStatus('enabled');
       setFieldTouched(name, true);
       setFieldError(name, '');
     }
   };
 
-  const formattedValue =
-    value === undefined ? '' : value.toLocaleString('en-US');
+  const { population } = value;
+
+  const formattedPopulation =
+    population === undefined ? '' : population.toLocaleString('en-US');
 
   return (
     <>
-      <Input type="text" value={formattedValue} onChange={handleChange} />
+      <Input type="text" value={formattedPopulation} onChange={handleChange} />
       <Text ml="16px" mr="24px" color="adminTextColor">
         50%
       </Text>
@@ -40,7 +58,7 @@ interface Props {
 }
 
 const OptionInputFormikWrapper = ({ optionId }: Props) => (
-  <Field name={`${optionId}.value`} component={OptionInput} />
+  <Field name={`${optionId}`} component={OptionInput} />
 );
 
 export default OptionInputFormikWrapper;
