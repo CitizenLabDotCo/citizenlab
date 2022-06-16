@@ -1,7 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
-const getInsightsNetworkEndpoint = (viewId: string | undefined) =>
+const getInsightsNetworkEndpoint = (viewId: string) =>
   `insights/views/${viewId}/network`;
 
 export interface IInsightsNetwork {
@@ -33,7 +33,7 @@ export type IInsightsNetworkData = {
 };
 
 export function insightsNetworkStream(
-  insightsViewId: string | undefined,
+  insightsViewId: string,
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IInsightsNetwork>({

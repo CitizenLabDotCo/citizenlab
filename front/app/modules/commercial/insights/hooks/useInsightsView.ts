@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { insightsViewStream, IInsightsView } from '../services/insightsViews';
 
-const useInsightsView = (id: string | undefined) => {
+const useInsightsView = (id: string) => {
   const [insightsView, setInsightsView] = useState<
     IInsightsView | undefined | null | Error
   >(undefined);

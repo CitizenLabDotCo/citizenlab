@@ -39,7 +39,7 @@ export function insightsViewsStream(streamParams: IStreamParams | null = null) {
 }
 
 export function insightsViewStream(
-  insightsViewId: string | undefined,
+  insightsViewId: string,
   streamParams: IStreamParams | null = null
 ) {
   return streams.get<IInsightsView>({

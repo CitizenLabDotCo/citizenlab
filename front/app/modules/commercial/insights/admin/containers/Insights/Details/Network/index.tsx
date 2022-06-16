@@ -100,7 +100,7 @@ const Network = ({
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
   const [graphInitialized, setGraphInitialized] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const { viewId } = useParams();
+  const { viewId } = useParams() as { viewId: string };
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
