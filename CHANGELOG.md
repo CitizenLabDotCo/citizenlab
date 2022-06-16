@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+
 ## 2022-06-15
 
 ### Fixed
