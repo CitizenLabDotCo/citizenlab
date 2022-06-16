@@ -8,8 +8,8 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import PopulationToggle from './PopulationToggle';
-import PopulationInput from './PopulationInput';
+import OptionToggle from './OptionToggle';
+import OptionInput from './OptionInput';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,7 +44,7 @@ const handleSubmit = (
   // TODO
 };
 
-const OptionRows = ({ fieldId }: Props) => {
+const Options = ({ fieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(fieldId);
   const localize = useLocalize();
 
@@ -65,7 +65,7 @@ const OptionRows = ({ fieldId }: Props) => {
                 noStyling
               >
                 <Box pl="8px" display="flex" alignItems="center" width="50%">
-                  <PopulationToggle optionId={id} />
+                  <OptionToggle optionId={id} />
 
                   <Text ml="12px" variant="bodyM" color="adminTextColor">
                     {localize(attributes.title_multiloc)}
@@ -73,7 +73,7 @@ const OptionRows = ({ fieldId }: Props) => {
                 </Box>
 
                 <Box ml="-20px" display="flex" alignItems="center" width="50%">
-                  <PopulationInput optionId={id} />
+                  <OptionInput optionId={id} />
                 </Box>
               </SortableRow>
             )
@@ -95,4 +95,4 @@ const OptionRows = ({ fieldId }: Props) => {
   );
 };
 
-export default OptionRows;
+export default Options;

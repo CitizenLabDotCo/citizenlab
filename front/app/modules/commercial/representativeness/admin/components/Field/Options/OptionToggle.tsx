@@ -8,8 +8,8 @@ interface Props {
   optionId: string;
 }
 
-const PopulationToggle = ({ optionId }: Props) => (
+const OptionToggle = ({ optionId }: Props) => (
   <Field name={`${optionId}.enabled`} component={FormikToggle} />
 );
 
-export default PopulationToggle;
+export default OptionToggle;

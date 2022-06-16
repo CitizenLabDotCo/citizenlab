@@ -5,9 +5,9 @@ import { Field, FieldProps } from 'formik';
 import { Text, Input } from '@citizenlab/cl2-component-library';
 
 // utils
-import { parsePopulationValue } from './utils';
+import { parsePopulationValue } from '../utils';
 
-const PopulationInput = ({
+const OptionInput = ({
   form: { setFieldValue, setStatus, setFieldTouched, setFieldError },
   field: { name, value },
 }: FieldProps) => {
@@ -39,8 +39,8 @@ interface Props {
   optionId: string;
 }
 
-const PopulationInputFormikWrapper = ({ optionId }: Props) => (
-  <Field name={`${optionId}.value`} component={PopulationInput} />
+const OptionInputFormikWrapper = ({ optionId }: Props) => (
+  <Field name={`${optionId}.value`} component={OptionInput} />
 );
 
-export default PopulationInputFormikWrapper;
+export default OptionInputFormikWrapper;

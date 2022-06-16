@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import OptionRows from './OptionRows';
+import Options from './Options';
 import BaseMonthInput from './BaseMonthInput';
 
 // styling
@@ -54,7 +54,7 @@ const FieldContent = ({
         </Box>
       </Box>
 
-      <OptionRows fieldId={fieldId} />
+      <Options fieldId={fieldId} />
     </Box>
 
     <BaseMonthInput />
