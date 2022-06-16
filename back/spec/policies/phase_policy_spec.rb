@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe PhasePolicy do
-  subject { PhasePolicy.new(user, phase) }
+  subject { described_class.new(user, phase) }
 
   let(:scope) { PhasePolicy::Scope.new(user, project.phases) }
 

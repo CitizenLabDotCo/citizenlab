@@ -288,6 +288,7 @@ const IdeasWithoutFiltersSidebar = ({
               <StyledSearchInput
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
+                a11y_numberOfSearchResults={list.length}
               />
             )}
           </LeftFilterArea>
@@ -327,7 +328,6 @@ const IdeasWithoutFiltersSidebar = ({
           </RightFilterArea>
         </FiltersArea>
         <IdeasView
-          aria-live="polite"
           list={list}
           querying={querying}
           onLoadMore={ideas.onLoadMore}

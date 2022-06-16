@@ -22,6 +22,7 @@ const IMAGE = 'Image';
 const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
 const ACCORDION = 'Accordion';
+const WHITE_SPACE = 'WhiteSpace';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -31,7 +32,8 @@ type ComponentNamesType =
   | typeof IMAGE
   | typeof IFRAME
   | typeof ABOUT_BOX
-  | typeof ACCORDION;
+  | typeof ACCORDION
+  | typeof WHITE_SPACE;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -51,6 +53,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.aboutBox;
     case ACCORDION:
       return messages.accordion;
+    case WHITE_SPACE:
+      return messages.whiteSpace;
   }
 };
 
@@ -121,14 +125,16 @@ const RenderNode = ({ render }) => {
     }
   });
 
-  const nodeIsSelected = isActive && id !== ROOT_NODE && isDeletable;
+  const nodeLabelIsVisible =
+    (isActive || hasError) && id !== ROOT_NODE && isDeletable;
+
   const nodeIsHovered =
     isHover &&
     id !== ROOT_NODE &&
     parentNodeName !== TWO_COLUMNS &&
     parentNodeName !== THREE_COLUMNS;
 
-  const solidBorderIsVisible = nodeIsSelected || nodeIsHovered;
+  const solidBorderIsVisible = nodeLabelIsVisible || nodeIsHovered;
 
   return (
     <StyledBox
@@ -152,7 +158,7 @@ const RenderNode = ({ render }) => {
       m="4px"
       isRoot={id === ROOT_NODE}
     >
-      {nodeIsSelected && (
+      {nodeLabelIsVisible && (
         <Box
           id="e2e-node-label"
           p="4px"
@@ -163,6 +169,12 @@ const RenderNode = ({ render }) => {
           left="-1px"
         >
           <FormattedMessage {...getComponentNameMessage(name)} />
+          {hasError && (
+            <>
+              <span> - </span>
+              <FormattedMessage {...messages.error} />
+            </>
+          )}
         </Box>
       )}
       <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>

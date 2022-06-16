@@ -6,12 +6,16 @@ import Tab from './admin/components/Tab';
 // typings
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
+const DashboardContainer = React.lazy(
+  () => import('./admin/containers/Dashboard')
+);
+
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
         path: 'representativeness',
-        container: () => import('./admin/containers/Dashboard'),
+        element: <DashboardContainer />,
       },
     ],
   },

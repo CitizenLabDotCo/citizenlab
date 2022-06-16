@@ -113,6 +113,7 @@ class ProjectPolicy < ApplicationPolicy
       :poll_anonymous,
       :ideas_order,
       :input_term,
+      :include_all_areas,
       {
         admin_publication_attributes: [:publication_status],
         title_multiloc: CL2_SUPPORTED_LOCALES,

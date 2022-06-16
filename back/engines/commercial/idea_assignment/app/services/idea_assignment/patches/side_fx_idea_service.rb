@@ -16,7 +16,7 @@ module IdeaAssignment
 
         initiating_user = @automatic_assignment ? nil : user
         LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i,
-                                     payload: { change: idea.assignee_id_previous_change })
+          payload: { change: idea.assignee_id_previous_change })
       end
 
       def before_publish(idea, user)

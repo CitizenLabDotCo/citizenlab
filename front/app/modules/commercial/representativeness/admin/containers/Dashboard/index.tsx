@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
+
+// typings
+import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -10,13 +14,22 @@ import ChartFilters from '../../components/ChartFilters';
 import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const SHOW_EMPTY = false;
+const hasAnyReferenceData = (customFields: IUserCustomFieldData[]) =>
+  customFields.some(
+    ({ relationships }) =>
+      relationships && !!relationships.current_ref_distribution.data
+  );
 
 const RepresentativenessDashboard = () => {
+  const customFields = useUserCustomFields({ inputTypes: ['select'] });
+
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 
   const onProjectFilter = ({ value }) => {
@@ -26,6 +39,12 @@ const RepresentativenessDashboard = () => {
     setCurrentProjectFilter(value);
   };
 
+  if (isNilOrError(customFields)) {
+    return null;
+  }
+
+  const anyReferenceData = hasAnyReferenceData(customFields);
+
   return (
     <>
       <Box width="100%" mb="36px">
@@ -33,11 +52,17 @@ const RepresentativenessDashboard = () => {
         <ChartFilters
           currentProjectFilter={currentProjectFilter}
           onProjectFilter={onProjectFilter}
-          noData={SHOW_EMPTY}
+          noData={!anyReferenceData}
         />
       </Box>
 
-      <Box>{SHOW_EMPTY ? <EmptyState /> : <ChartCards />}</Box>
+      <Box>
+        {anyReferenceData ? (
+          <ChartCards projectFilter={currentProjectFilter} />
+        ) : (
+          <EmptyState />
+        )}
+      </Box>
     </>
   );
 };

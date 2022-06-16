@@ -1,5 +1,61 @@
 # Changelog
 
+## 2022-06-16
+
+### Added
+
+- [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
+
+### Fixed
+
+- [CL-966] Fixed issue with tabs stretching off the screen
+- [CL-908] Fix sheet names in excel exports.
+
+## 2022-06-15
+
+### Fixed
+
+- [CL-967] Fixed issue with map displaying off screen on Android
+- [CL-667] Next batch of RuboCop fixes
+
+## 2022-06-14
+
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
+### Fixed
+
+- [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+- [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
+- Fixed issue where users were unable to moderate projects and project folders correctly
+
+## 2022-06-13
+
+### Changed
+
+- [TEC-11] Upgraded react-router frontend dependency
+
+## 2022-06-08_2
+
+### Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-06-08
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
+
+### Added
+
+- [CL-774] Add new option when adding areas to a project: "No areas"
+- [CL-906] Added support for Snap Survey
+
 ## 2022-05-31
 
 ### Changed

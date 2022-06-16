@@ -20,7 +20,7 @@ module ProjectFolders
         admin_publication&.parent&.publication_id
       end
 
-      def has_folder?
+      def folder?
         !!folder_id
       end
 

@@ -147,6 +147,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              a11y_numberOfSearchResults={templates.edges.length}
             />
           </Right>
         </Filters>

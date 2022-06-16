@@ -4,7 +4,13 @@ require 'rails_helper'
 require 'rubyXL'
 
 describe XlsxService do
-  let(:service) { XlsxService.new }
+  let(:service) { described_class.new }
+
+  def xlsx_to_array(xlsx, sheet_index: 0)
+    workbook = RubyXL::Parser.parse_buffer(xlsx)
+    worksheet = workbook[sheet_index]
+    worksheet.map { |row| row.cells.map(&:value) }
+  end
 
   describe 'escape_formula' do
     it 'retains normal text' do
@@ -225,11 +231,79 @@ describe XlsxService do
     end
   end
 
-  describe 'sanitize_sheetname' do
-    let(:sheetname) { 'With illegal characters \/*?:[]' }
+  describe '#xlsx_from_rows' do
+    let(:rows) do
+      [
+        %w[col1 col2],
+        ['a', 1],
+        ['b', 0]
+      ]
+    end
 
-    it 'removes illegal characters' do
-      expect(service.send(:sanitize_sheetname, sheetname)).to eq('With illegal characters ')
+    it 'converts a list of rows to an xlsx stream' do
+      xlsx = service.xlsx_from_rows(rows)
+      parsed_rows = xlsx_to_array(xlsx)
+      expect(rows).to eq(parsed_rows)
+    end
+  end
+
+  describe '#xlsx_from_columns' do
+    let(:columns) do
+      {
+        col1: %w[a b],
+        col2: [1, 0]
+      }
+    end
+
+    let(:expected_rows) do
+      [
+        %w[col1 col2],
+        ['a', 1],
+        ['b', 0]
+      ]
+    end
+
+    it 'converts a list of columns to an xlsx stream' do
+      xlsx = service.xlsx_from_columns(columns)
+      parsed_rows = xlsx_to_array(xlsx)
+      expect(expected_rows).to eq(parsed_rows)
+    end
+  end
+
+  describe '#sanitize_sheetname' do
+    describe 'when the sheetname can be sanitized' do
+      using RSpec::Parameterized::TableSyntax
+
+      where(:sheetname, :expected_sanitized_sheetname) do
+        # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands
+        'sheet name'                          | 'sheet name'
+        'sheet_name'                          | 'sheet_name'
+        'sheet-name'                          | 'sheet-name'
+        # rubocop:enable Lint/BinaryOperatorWithIdenticalOperands
+        'sheet:name'                          | 'sheetname'
+        "''leading-quotes"                    | 'leading-quotes'
+        "trailing-quotes''"                   | 'trailing-quotes'
+        'too_long......................|....' | 'too_long......................|'
+        'With illegal characters \/*?:[]'     | 'With illegal characters '
+      end
+
+      with_them do
+        specify do
+          sanitized_sheetname = service.send(:sanitize_sheetname, sheetname)
+          expect(sanitized_sheetname).to eq(expected_sanitized_sheetname)
+        end
+      end
+    end
+
+    describe 'when the sheetname cannot be sanitized' do
+      where(sheetname: ['History', "'History'", '[History]', '', '\/*?:[]'])
+
+      with_them do
+        specify do
+          expect { service.send(:sanitize_sheetname, sheetname) }
+            .to raise_error(XlsxService::InvalidSheetnameError)
+        end
+      end
     end
   end
 end

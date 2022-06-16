@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ProjectImagePolicy do
-  subject { ProjectImagePolicy.new(user, image) }
+  subject { described_class.new(user, image) }
 
   let(:scope) { ProjectImagePolicy::Scope.new(user, project.project_images) }
 

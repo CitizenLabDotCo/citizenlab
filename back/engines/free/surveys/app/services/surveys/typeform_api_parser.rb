@@ -56,11 +56,11 @@ module Surveys
 
     def parse_root(tf_response, form_id)
       {
-          survey_service: 'typeform',
-          external_survey_id: form_id,
-          external_response_id: tf_response['token'],
-          started_at: Time.parse(tf_response['landed_at']),
-          submitted_at: Time.parse(tf_response['submitted_at'])
+        survey_service: 'typeform',
+        external_survey_id: form_id,
+        external_response_id: tf_response['token'],
+        started_at: Time.parse(tf_response['landed_at']),
+        submitted_at: Time.parse(tf_response['submitted_at'])
       }
     end
 
@@ -68,9 +68,9 @@ module Surveys
       (tf_answers || []).map do |answer|
         question_id = answer.dig('field', 'id')
         {
-            question_id: question_id,
-            question_text: field_id_to_title[question_id],
-            value: extract_value_from_answer(answer.with_indifferent_access)
+          question_id: question_id,
+          question_text: field_id_to_title[question_id],
+          value: extract_value_from_answer(answer.with_indifferent_access)
         }
       end
     end

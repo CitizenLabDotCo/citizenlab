@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AvatarsService do
-  let(:service) { AvatarsService.new }
+  let(:service) { described_class.new }
 
   describe 'avatars_for_project' do
     it 'returns the idea authors in a project' do

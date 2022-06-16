@@ -9,7 +9,7 @@ describe UserRoleService do
     let(:project) { create :project }
 
     it 'permits project moderators' do
-      expect(service.can_moderate_project?(project, create(:project_moderator, projects: [project]))).to be_truthy
+      expect(service.can_moderate_project?(project, create(:project_moderator, projects: [project]))).to be true
     end
 
     it 'denies other project moderators' do
@@ -95,7 +95,7 @@ describe UserRoleService do
 
   describe 'moderates_something?' do
     it 'permits project moderators' do
-      expect(service.moderates_something?(create(:project_moderator))).to be_truthy
+      expect(service.moderates_something?(create(:project_moderator))).to be true
     end
   end
 end

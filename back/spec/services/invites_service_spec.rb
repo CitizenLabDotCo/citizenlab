@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe InvitesService do
-  let(:service) { InvitesService.new }
+  let(:service) { described_class.new }
 
   before do
     settings = AppConfiguration.instance.settings
@@ -131,11 +131,11 @@ describe InvitesService do
     context 'with custom field that has the wrong type' do
       before do
         create(:custom_field,
-               key: 'checkbox_field',
-               input_type: 'checkbox')
+          key: 'checkbox_field',
+          input_type: 'checkbox')
         create(:custom_field,
-               key: 'number_field',
-               input_type: 'number')
+          key: 'number_field',
+          input_type: 'number')
       end
 
       let(:hash_array) do

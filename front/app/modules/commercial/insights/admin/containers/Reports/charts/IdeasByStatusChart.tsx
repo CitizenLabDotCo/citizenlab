@@ -60,6 +60,8 @@ export class IdeasByStatusChart extends React.PureComponent<
   render() {
     const { chartFill, barSize } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       className,
@@ -89,6 +91,8 @@ export class IdeasByStatusChart extends React.PureComponent<
                 xlsxEndpoint={ideasByStatusXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>

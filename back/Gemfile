@@ -100,7 +100,7 @@ gem 'activerecord-postgis-adapter', '~> 7.0.0'
 # We need `config.download_retry_count`.
 # It should be available in the version next to 2.2.2
 gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git',
-                   ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
+  ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.12'
 
@@ -133,14 +133,14 @@ gem 'simple_segment', '~>1.2'
 # This fork was made to update the version of jws which is
 # required for the google omniauth gem.
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
-gem 'omniauth_openid_connect', '~> 0.3.3'
-# Forked to support a userinfo response in JWT form
-# Can go back to vanilla when this PR is merged and released:
-# https://github.com/nov/openid_connect/pull/48
+gem 'omniauth_openid_connect', '~> 0.4.0'
 gem 'acts_as_list', '~> 1.0'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
+# Forked to support a userinfo response in JWT form
+# Can go back to vanilla when this PR is merged and released:
+# https://github.com/nov/openid_connect/pull/48
 gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem 'scenic'
 
