@@ -6,6 +6,10 @@
 
 - [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
 
+### Fixed
+
+- [CL-966] Fixed issue with tabs stretching off the screen
+
 ## 2022-06-15
 
 ### Fixed
