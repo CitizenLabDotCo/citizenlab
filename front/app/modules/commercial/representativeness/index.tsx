@@ -20,12 +20,10 @@ const configuration: ModuleConfiguration = {
       {
         path: 'representativeness',
         element: <DashboardContainer />,
-        children: [
-          {
-            path: 'edit-base-data',
-            element: <ReferenceDataInterface />,
-          },
-        ],
+      },
+      {
+        path: 'representativeness/edit-base-data',
+        element: <ReferenceDataInterface />,
       },
     ],
   },
