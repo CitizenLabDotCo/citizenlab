@@ -380,7 +380,7 @@ class JsonFormsService
     }
   end
 
-  def point_to_ui_schema_field(_field, _locale)
+  def point_to_ui_schema_field(_field, _locale, _previous_scope)
     nil
   end
 

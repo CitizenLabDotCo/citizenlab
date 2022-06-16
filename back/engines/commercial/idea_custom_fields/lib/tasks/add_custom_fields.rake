@@ -1,29 +1,20 @@
 # frozen_string_literal: true
 
-namespace :setup_and_support do
-  desc 'Add text field to project'
-  task :add_custom_fields, %i[host project_slug yml_url] => [:environment] do |_t, args|
-    file = File.open(args[:yml_url]) { |yaml_file| YAML.safe_load(yaml_file) }
-
-    # uncomment for easy local use
-    # file = YAML.load_file('engines/commercial/idea_custom_fields/lib/tasks/custom_fields_examples.yml')
-
+namespace :cl2back do
+  desc 'Add an extra idea form field'
+  task :add_extra_field, %i[host project title description input_type required] => [:environment] do |_t, args|
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by!(slug: args[:project_slug])
-      custom_form = project.custom_form || CustomForm.create(project: @project)
-      file['custom_fields'].each do |cf|
-        CustomField.create(**cf, resource: custom_form)
-      end
-    end
-  end
-
-  task :disable_all_extra, %i[host project_slug] => [:environment] do |_t, args|
-    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      project = Project.find_by!(slug: args[:project_slug])
-      custom_form = project.custom_form || CustomForm.create(project: @project)
-      if custom_form
-        custom_fields.where(code: nil).update(enabled: false)
-      end
+      locale = AppConfiguration.instance.settings.dig('core', 'locales').first
+      project = Project.find args[:project]
+      custom_form = project.custom_form || CustomForm.create!(project: project)
+      CustomField.create!(
+        resource: custom_form,
+        title_multiloc: { locale => args[:title] },
+        description_multiloc: { locale => args[:description] },
+        input_type: args[:input_type],
+        required: ActiveModel::Type::Boolean.new.cast(args[:required]),
+        enabled: true
+      )
     end
   end
 end
