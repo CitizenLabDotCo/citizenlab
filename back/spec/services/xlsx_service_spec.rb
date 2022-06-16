@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rubyXL'
 
 describe XlsxService do
-  let(:service) { XlsxService.new }
+  let(:service) { described_class.new }
 
   def xlsx_to_array(xlsx, sheet_index: 0)
     workbook = RubyXL::Parser.parse_buffer(xlsx)

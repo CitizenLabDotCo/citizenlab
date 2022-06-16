@@ -66,6 +66,8 @@ export class BarChartByCategory extends React.PureComponent<
   }
   render() {
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       xlsxEndpoint,
@@ -93,6 +95,8 @@ export class BarChartByCategory extends React.PureComponent<
                 xlsxEndpoint={xlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>

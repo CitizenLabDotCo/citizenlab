@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Verification::VerificationService do
   let(:sfxv_service) { instance_double(Verification::SideFxVerificationService) }
-  let(:service) { Verification::VerificationService.new sfxv_service }
+  let(:service) { described_class.new sfxv_service }
 
   before do
     configuration = AppConfiguration.instance

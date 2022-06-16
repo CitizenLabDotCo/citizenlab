@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxAreaService do
-  let(:service) { SideFxAreaService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:area) { create(:area) }
 

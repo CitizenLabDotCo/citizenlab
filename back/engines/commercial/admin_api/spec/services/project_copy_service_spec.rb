@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AdminApi::ProjectCopyService do
-  let(:service) { AdminApi::ProjectCopyService.new }
+  let(:service) { described_class.new }
 
   describe 'project copy', slow_test: true do
     it 'works' do

@@ -112,6 +112,7 @@ type Props = {
     subtitle?: string;
   };
   tabs?: ITab[];
+  children?: React.ReactNode;
 };
 
 interface State {}

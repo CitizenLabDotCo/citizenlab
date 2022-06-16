@@ -15,13 +15,13 @@ de:
     rejected: abgelehnt
     rejected_description: Diese Idee wurde abgelehnt
   initiative_statuses:
-    proposed: vorgeschlagen
+    proposed: Offen
     proposed_description: vorgeschlagen
-    expired: abgelaufen
+    expired: Grenzwert nicht erreicht
     expired_description: abgelaufen
     threshold_reached: Schwelle erreicht
     threshold_reached_description: Schwelle erreicht
-    answered: beantwortet
+    answered: Grenzwert erreicht und beantwortet
     answered_description: beantwortet
     ineligible: untauglich
     ineligible_description: untauglich

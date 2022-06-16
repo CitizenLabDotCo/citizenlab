@@ -10,7 +10,7 @@ import Row from './Row';
 import { colors } from 'utils/styleUtils';
 
 // typings
-import { RepresentativenessData } from '..';
+import { RepresentativenessData } from '../../../hooks/useReferenceData';
 
 const TABLE_HEADER_BG_COLOR = '#f9fafb';
 

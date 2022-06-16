@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe InvitesService do
-  let(:service) { InvitesService.new }
+  let(:service) { described_class.new }
 
   before do
     settings = AppConfiguration.instance.settings

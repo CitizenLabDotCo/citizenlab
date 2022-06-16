@@ -40,7 +40,7 @@ module EmailCampaigns
     recipient_filter :user_filter_admin_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :is_content_worth_sending?
+    before_send :content_worth_sending?
 
     N_TOP_IDEAS = ENV.fetch('N_ADMIN_WEEKLY_REPORT_IDEAS', 12).to_i
 
@@ -98,7 +98,7 @@ module EmailCampaigns
       users_scope.active
     end
 
-    def is_content_worth_sending?(_)
+    def content_worth_sending?(_)
       [
         statistics.dig(:activities, :new_ideas, :increase),
         statistics.dig(:activities, :new_initiatives, :increase),

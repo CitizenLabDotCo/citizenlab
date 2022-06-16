@@ -10,7 +10,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
       'value' => create_list(:topic, 2).map(&:id)
     }
   end
-  let(:valid_rule) { SmartGroups::Rules::ParticipatedInTopic.from_json(valid_json_rule) }
+  let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
   describe 'from_json' do
     it 'successfully parses a valid json' do
@@ -38,7 +38,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
         r['predicate'] = 'not_in'
         r['value'] = Topic.first.id
       end
-      expect(SmartGroups::Rules::ParticipatedInTopic.from_json(rule)).to be_valid
+      expect(described_class.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
@@ -64,61 +64,61 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     end
 
     it "correctly filters on 'in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('in', [@topic1.id])
+      rule = described_class.new('in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array([@user1.id, @user2.id, @user3.id])
     end
 
     it "correctly filters on 'not_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('not_in', @topic2.id)
+      rule = described_class.new('not_in', @topic2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('posted_in', [@topic1.id, @topic2.id])
+      rule = described_class.new('posted_in', [@topic1.id, @topic2.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('not_posted_in', @topic1.id)
+      rule = described_class.new('not_posted_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id, @user3.id, @user4.id]
     end
 
     it "correctly filters on 'commented_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('commented_in', [@topic1.id])
+      rule = described_class.new('commented_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user3.id]
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('not_commented_in', @topic1.id)
+      rule = described_class.new('not_commented_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
     it "correctly filters on 'voted_idea_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('voted_idea_in', [@topic1.id])
+      rule = described_class.new('voted_idea_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
     it "correctly filters on 'not_voted_idea_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('not_voted_idea_in', @topic1.id)
+      rule = described_class.new('not_voted_idea_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('voted_comment_in', [@topic1.id])
+      rule = described_class.new('voted_comment_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id]
     end
 
     it "correctly filters on 'not_voted_comment_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInTopic.new('not_voted_comment_in', @topic1.id)
+      rule = described_class.new('not_voted_comment_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id, @user4.id]
     end
@@ -141,70 +141,70 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     end
 
     let(:participated_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'in',
         'value' => [topic1.id, topic2.id]
       })
     end
     let(:participated_not_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'not_in',
         'value' => topic1.id
       })
     end
     let(:participated_posted_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'posted_in',
         'value' => [topic1.id]
       })
     end
     let(:participated_not_posted_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'not_posted_in',
         'value' => topic1.id
       })
     end
     let(:participated_commented_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'commented_in',
         'value' => [topic1.id, topic2.id]
       })
     end
     let(:participated_not_commented_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'not_commented_in',
         'value' => topic1.id
       })
     end
     let(:participated_voted_idea_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'voted_idea_in',
         'value' => [topic1.id]
       })
     end
     let(:participated_not_voted_idea_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'not_voted_idea_in',
         'value' => topic1.id
       })
     end
     let(:participated_voted_comment_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'voted_comment_in',
         'value' => [topic1.id, topic2.id]
       })
     end
     let(:participated_not_voted_comment_in_topic_in_rule) do
-      SmartGroups::Rules::ParticipatedInTopic.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_topic',
         'predicate' => 'not_voted_comment_in',
         'value' => topic1.id

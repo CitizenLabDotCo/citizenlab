@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe CustomFieldService do
-  let(:service) { CustomFieldService.new }
+  let(:service) { described_class.new }
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:locale) { 'en' }
 

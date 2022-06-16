@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'utils/cl-router/withRouter';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Editor as CraftEditor, SerializedNodes } from '@craftjs/core';
 
 // components
@@ -18,9 +18,10 @@ import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
 
 type EditorProps = {
+  children?: React.ReactNode;
   isPreview: boolean;
   onNodesChange?: (nodes: SerializedNodes) => void;
-};
+} & WithRouterProps;
 
 const Editor: React.FC<EditorProps> = ({
   onNodesChange,

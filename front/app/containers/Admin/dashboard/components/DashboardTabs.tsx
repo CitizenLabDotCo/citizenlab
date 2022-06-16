@@ -17,6 +17,7 @@ import NavigationTabs, {
 import { matchPathToUrl } from 'utils/helperUtils';
 
 interface Props {
+  children?: React.ReactNode;
   resource: {
     title: string;
     subtitle?: string;
