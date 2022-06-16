@@ -25,6 +25,10 @@ class Pin < ApplicationRecord
   belongs_to :admin_publication, inverse_of: :pins
   belongs_to :page, polymorphic: true, inverse_of: :pins
 
+  # rubocop:disable Rails/UniqueValidationWithoutIndex
+  # There is a unique composite index on page_id, admin_publication_id which covers this column
+  # See https://github.com/rubocop/rubocop-rails/issues/231
   validates :admin_publication, presence: true, uniqueness: { scope: :page }
+  # rubocop:enable Rails/UniqueValidationWithoutIndex
   validates :page, presence: true
 end
