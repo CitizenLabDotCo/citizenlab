@@ -24,4 +24,7 @@
 class Pin < ApplicationRecord
   belongs_to :admin_publication, inverse_of: :pins
   belongs_to :page, polymorphic: true, inverse_of: :pins
+
+  validates :admin_publication, presence: true, uniqueness: { scope: :page }
+  validates :page, presence: true
 end
