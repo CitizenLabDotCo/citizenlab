@@ -40,46 +40,80 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
             </PageTitle>
             <PageDescription>
               <QuillEditedContent>
-                <p>{formatMessage(messages.intro)}</p>
+                <p>
+                  <FormattedMessage
+                    {...messages.intro2022}
+                    values={{
+                      citizenLabLink: (
+                        <a
+                          href="https://www.citizenlab.co/"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          CitizenLab
+                        </a>
+                      ),
+                    }}
+                  />
+                </p>
+                <p>
+                  <FormattedMessage
+                    {...messages.applicability}
+                    values={{
+                      demoPlatformLink: (
+                        <a
+                          href="https://accessibility-audit.citizenlab.co/en/"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {formatMessage(messages.demoPlatformLinkText)}
+                        </a>
+                      ),
+                    }}
+                  />
+                </p>
                 <h2>{formatMessage(messages.conformanceStatus)}</h2>
-                <h3>{formatMessage(messages.currentStandard)}</h3>
                 <p>WCAG 2.1 AA</p>
-                <h3>{formatMessage(messages.contentConformanceTitle)}</h3>
-                <p>{formatMessage(messages.contentConformanceInfo)}</p>
+                <h2>{formatMessage(messages.conformanceExceptions)}</h2>
                 <p>{formatMessage(messages.contentConformanceExceptions)}</p>
-                <ul>
-                  <li>{formatMessage(messages.exception_1)}</li>
-                  <li>{formatMessage(messages.exception2)}</li>
-                </ul>
-                <h2>{formatMessage(messages.compatibilityTitle)}</h2>
-                <p>{formatMessage(messages.compatibilityInfo)}</p>
+                <h3>{formatMessage(messages.surveyTools)}</h3>
+                <p>{formatMessage(messages.surveyToolsException)}</p>
+                <h3>{formatMessage(messages.mapviewIdeas)}</h3>
+                <p>{formatMessage(messages.mapviewIdeasException)}</p>
+                <h3>{formatMessage(messages.userGeneratedContent)}</h3>
+                <p>{formatMessage(messages.exception_1)}</p>
+                <h3>{formatMessage(messages.workshops)}</h3>
+                <p>{formatMessage(messages.exception2)}</p>
+                <h3>{formatMessage(messages.compatibilityTitle)}</h3>
                 <p>{formatMessage(messages.screenReaderBugWarning)}</p>
-                <h2>{formatMessage(messages.technologiesTitle)}</h2>
-                <p>{formatMessage(messages.technologiesIntro)}</p>
-                <ul>
-                  <li>HTML</li>
-                  <li>CSS</li>
-                  <li>JavaScript</li>
-                </ul>
                 <h2>{formatMessage(messages.assesmentMethodsTitle)}</h2>
                 <p>
                   <FormattedMessage
-                    {...messages.assesmentText}
+                    {...messages.assesmentText2022}
                     values={{
                       statusPageLink: (
                         <a
-                          href="http://label.anysurfer.be/index.php?id=689&l=en"
+                          href="#link_to_be_added"
                           target="_blank"
                           rel="noreferrer"
                         >
                           {formatMessage(messages.statusPageText)}
                         </a>
                       ),
+                      demoPlatformLink: (
+                        <a
+                          href="https://accessibility-audit.citizenlab.co/en/"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {formatMessage(messages.demoPlatformLinkText)}
+                        </a>
+                      ),
                     }}
                   />
                 </p>
-                <h2>{formatMessage(messages.publishDate)}</h2>
-                <p>{formatMessage(messages.publishDateIntro)}</p>
+                <h2>{formatMessage(messages.publicationDate)}</h2>
+                <p>{formatMessage(messages.publicationDateIntro)}</p>
                 <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                 <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                 <ul>
