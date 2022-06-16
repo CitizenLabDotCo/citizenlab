@@ -98,7 +98,6 @@ const Network = ({
   const [zoomLevel, setZoomLevel] = useState(0);
   const [hoverNode, setHoverNode] = useState<Node | undefined>();
   const [pointerPosition, setPointerPosition] = useState([0, 0]);
-  const [hiddenNodes, setHiddenNodes] = useState<string[]>([]);
   const [graphInitialized, setGraphInitialized] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { viewId } = useParams();
@@ -116,30 +115,15 @@ const Network = ({
     });
 
   useEffect(() => {
-    const hidden_keywords = searchParams.get('hidden_keywords');
     if (graphInitialized) {
-      if (!isNilOrError(network) && hidden_keywords) {
-        const {
-          data: {
-            attributes: { nodes },
-          },
-        } = network;
-        setHiddenNodes(
-          nodes
-            .map(({ id }: Node) => id)
-            .filter((nodeId) => hidden_keywords.includes(nodeId))
-        );
-      }
-
       const canvasElement = document.getElementsByTagName('canvas')[0];
-      if (canvasElement) {
-        canvasElement.addEventListener('pointermove', setPointerEvent);
-        return () =>
-          canvasElement &&
-          canvasElement.removeEventListener('pointermove', setPointerEvent);
-      }
+      canvasElement.addEventListener('pointermove', setPointerEvent);
+      return () =>
+        canvasElement &&
+        canvasElement.removeEventListener('pointermove', setPointerEvent);
+    } else {
+      return;
     }
-    return;
   }, [graphInitialized]);
 
   useEffect(() => {
@@ -223,56 +207,43 @@ const Network = ({
     }
   };
 
-  const getKeywords = (node: Node, isHiding: boolean) => {
-    const keywords = searchParams.get('keywords');
-    let newKeywords;
+  const getURLArrayParam = (key: string) => {
+    const value = searchParams.getAll(key);
+    return typeof value === 'string' ? [value] : value ? value : [];
+  };
 
-    if (typeof keywords === 'string') {
-      newKeywords = [keywords];
-    } else {
-      newKeywords = keywords;
-    }
+  const getKeywords = ({ id }: Node, isHiding: boolean) => {
+    let keywords = getURLArrayParam('keywords');
 
-    if (newKeywords) {
-      if (newKeywords.includes(node.id)) {
-        newKeywords = newKeywords.filter(
-          (keyword: string) => keyword !== node.id
-        );
-      } else if (!isHiding) {
-        newKeywords = [newKeywords, node.id];
-      }
+    if (keywords.includes(id)) {
+      keywords = keywords.filter((keyword: string) => keyword !== id);
     } else if (!isHiding) {
-      newKeywords = node.id;
+      keywords.push(id);
     }
-
-    return newKeywords;
+    return keywords;
   };
 
   const handleNodeClick = (node: Node, event) => {
     let isHiding = false;
-    let hidden_keywords = hiddenNodes;
+    const hidden_keywords = getURLArrayParam('hidden_keywords');
     if (node.x && node.y) {
       const { target, offsetX, offsetY } = event;
       const ctx = target.getContext('2d');
-
       const rect = drawHideIconClickBox(node);
 
       if (ctx.isPointInPath(rect, offsetX, offsetY)) {
-        setHiddenNodes([...hiddenNodes, node.id]);
         hidden_keywords.push(node.id);
         isHiding = true;
-        appendSearchParams({ hidden_keywords });
       }
     }
 
     const keywords = getKeywords(node, isHiding);
-    if (keywords) appendSearchParams({ keywords, hidden_keywords });
+    appendSearchParams({ keywords, hidden_keywords });
 
     trackEventByName(tracks.clickOnKeyword, { keywordName: node.name });
   };
 
   const handleShowHiddenNodesClick = () => {
-    setHiddenNodes([]);
     const { hidden_keywords, ...params } = Object.fromEntries(
       searchParams.entries()
     );
@@ -313,9 +284,10 @@ const Network = ({
   const nodeColor = (node: Node) =>
     nodeColors[node.color_index % nodeColors.length];
 
-  const nodeVisibility = (node: Node) => !hiddenNodes.includes(node.id);
+  const nodeVisibility = ({ id }: Node) =>
+    !getURLArrayParam('hidden_keywords').includes(id);
   const linkVisibility = ({ source, target }) => {
-    return hiddenNodes.every(
+    return getURLArrayParam('hidden_keywords').every(
       (nodeId) => ![source.id, target.id].includes(nodeId)
     );
   };
@@ -419,7 +391,7 @@ const Network = ({
           />
         </SectionTitle>
         <ShowHiddenNodes
-          hiddenNodes={hiddenNodes}
+          hiddenNodes={getURLArrayParam('hidden_keywords')}
           nodesNames={
             !isNilOrError(network) &&
             network.data.attributes.nodes.map(({ id, name }) => ({ id, name }))
