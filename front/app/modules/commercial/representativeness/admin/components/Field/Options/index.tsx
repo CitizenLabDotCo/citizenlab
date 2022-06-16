@@ -44,12 +44,13 @@ const handleSubmit = (
 
 const Options = ({ fieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(fieldId);
-  const referenceDistribution = useReferenceDistribution(fieldId);
+  const { referenceDistribution, referenceDataUploaded } =
+    useReferenceDistribution(fieldId);
   const localize = useLocalize();
 
   if (
     isNilOrError(userCustomFieldOptions) ||
-    isNilOrError(referenceDistribution)
+    referenceDataUploaded === undefined
   ) {
     return null;
   }
