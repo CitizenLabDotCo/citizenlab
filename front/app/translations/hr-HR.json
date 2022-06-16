@@ -694,6 +694,7 @@
   "app.containers.IdeaCards.showXResults": "Prikaži {ideasCount, plural, one {# rezultat} other {# rezultata}}",
   "app.containers.IdeaCards.sortTitle": "Sortiranje",
   "app.containers.IdeaCards.statusTitle": "Status",
+  "app.containers.IdeaCards.testString": "Test, do not translate. Changing the source.",
   "app.containers.IdeaCards.topics": "Oznake",
   "app.containers.IdeaCards.topicsTitle": "Oznake",
   "app.containers.IdeaCards.trending": "U trendu",
