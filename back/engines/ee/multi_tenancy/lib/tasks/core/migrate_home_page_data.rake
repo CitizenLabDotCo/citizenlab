@@ -101,7 +101,7 @@ namespace :fix_existing_tenants do
             errors << { index: i, host: host, message: 'has no home_page record.' }
             break
           end
-        rescue Exception => e
+        rescue StandardError => e
           failed += 1
           puts " Error! could not save HomePage record  - #{e}."
           errors << { index: i, host: host, message: "could not save HomePage record - #{e}." }
@@ -115,7 +115,7 @@ namespace :fix_existing_tenants do
       puts "\nFailed to migrate data for #{failed} tenants, with the following errors:"
 
       errors.each do |error|
-        puts "#{error[:index] + 1}). #{error[:host]} #{error[:message]}"
+        puts "#{error[:index] + 1}). #{error[:host]}: #{error[:message]}"
       end
     end
 
