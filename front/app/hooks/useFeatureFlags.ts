@@ -6,12 +6,13 @@ import {
 } from 'services/appConfiguration';
 
 type Parameters = {
-  name: TAppConfigurationSetting;
+  names: TAppConfigurationSetting[];
   onlyCheckAllowed?: boolean;
 };
 
-export default function useFeatureFlag({
-  name,
+// copied and modified from front/app/hooks/useFeatureFlag.ts
+export default function useFeatureFlags({
+  names,
   onlyCheckAllowed = false,
 }: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
@@ -30,8 +31,9 @@ export default function useFeatureFlag({
     return subscription.unsubscribe();
   }, []);
 
-  return (
-    tenantSettings?.[name]?.allowed &&
-    (onlyCheckAllowed || tenantSettings?.[name]?.enabled)
-  );
+  const isFeatureActive = (featureName: TAppConfigurationSetting) =>
+    tenantSettings?.[featureName]?.allowed &&
+    (onlyCheckAllowed || tenantSettings?.[featureName]?.enabled);
+
+  return names.length === 0 || names.some(isFeatureActive);
 }

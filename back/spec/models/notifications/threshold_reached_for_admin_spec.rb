@@ -10,7 +10,7 @@ RSpec.describe Notifications::ThresholdReachedForAdmin, type: :model do
       activity = create(:activity, item: initiative, action: 'reached_threshold')
       recipient = create(:admin)
 
-      notifications = Notifications::ThresholdReachedForAdmin.make_notifications_on activity
+      notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
         recipient_id: recipient.id,
         post_id: initiative.id,

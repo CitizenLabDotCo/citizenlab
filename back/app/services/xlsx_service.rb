@@ -328,15 +328,36 @@ class XlsxService
     convert_to_text(html).tr("\n", ' ')
   end
 
-  # Sheet names, derived from Cause titles for example, can only be 31 characters long,
-  # and cannot contain the characters \ , / , * , ? , : , [ , ].
-  # We are being strict and removing any character that is not alphanumeric or a space.
+  # Sanitize sheet names to comply with Excel naming restrictions.
+  # See: https://support.microsoft.com/en-us/office/rename-a-worksheet-3f1f7148-ee83-404d-8ef0-9ff99fbad1f9
   def sanitize_sheetname(sheetname)
-    sheetname.gsub(/[^A-Za-z0-9 ]/, '')[0..30]
+    invalid_chars = '?*:[]/\\'
+    sanitized_name = sheetname.tr(invalid_chars, '')
+    sanitized_name = strip_char(sanitized_name, "'")
+    sanitized_name = sanitized_name[0..30]
+
+    if sanitized_name.empty? || sanitized_name == 'History'
+      raise InvalidSheetnameError.new(sheetname, sanitized_name)
+    end
+
+    sanitized_name
+  end
+
+  # Return a copy of the string with the leading and trailing +char+ removed.
+  # @param [String] string
+  # @param [String] char a single character
+  def strip_char(string, char)
+    string.gsub(/^#{char}+|#{char}+$/, '')
   end
 
   def namespace(field_id, option_key)
     "#{field_id}/#{option_key}"
+  end
+
+  class InvalidSheetnameError < StandardError
+    def initialize(sheetname, sanitized_sheetname)
+      super("sheet name '#{sheetname}' (sanitized as '#{sanitized_sheetname}') is invalid")
+    end
   end
 end
 

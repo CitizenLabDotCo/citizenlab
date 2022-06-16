@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe IdIdCardLookup::LoadIdCardsJob, type: :job do
-  subject(:job) { IdIdCardLookup::LoadIdCardsJob.new }
+  subject(:job) { described_class.new }
 
   describe '#perform' do
     let(:card_ids) do

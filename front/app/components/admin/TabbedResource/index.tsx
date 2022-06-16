@@ -50,6 +50,7 @@ const TabbedNav = styled.nav`
     padding-left: auto;
     justify-content: flex-end;
  `}
+  flex-wrap: wrap;
 `;
 
 const Tab = styled.div`

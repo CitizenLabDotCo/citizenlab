@@ -11,7 +11,7 @@ describe WebApi::V1::UserSerializer do
     let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
 
     it 'should abbreviate the user name' do
-      last_name = WebApi::V1::UserSerializer
+      last_name = described_class
         .new(jane, params: { current_user: john })
         .serializable_hash
         .dig(:data, :attributes, :last_name)
@@ -19,13 +19,13 @@ describe WebApi::V1::UserSerializer do
     end
 
     it 'should not abbreviate user names for admins' do
-      last_name = WebApi::V1::UserSerializer
+      last_name = described_class
         .new(jane, params: { current_user: admin })
         .serializable_hash
         .dig(:data, :attributes, :last_name)
       expect(last_name).to eq 'Doe'
 
-      last_name = WebApi::V1::UserSerializer
+      last_name = described_class
         .new(admin, params: { current_user: jane })
         .serializable_hash
         .dig(:data, :attributes, :last_name)
