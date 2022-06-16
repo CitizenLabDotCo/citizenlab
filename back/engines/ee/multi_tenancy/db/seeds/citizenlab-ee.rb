@@ -336,6 +336,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      snap_survey_surveys: {
+        enabled: true,
+        allowed: true
+      },
       events_widget: {
         enabled: true,
         allowed: true
@@ -445,10 +449,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true,
         from_number: '+12345678912',
         monthly_sms_segments_limit: 100_000
-      },
-      representativeness: {
-        enabled: true,
-        allowed: true
       }
     }
   ))
