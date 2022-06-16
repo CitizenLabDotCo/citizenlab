@@ -1138,6 +1138,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "At gennemføre denne undersøgelse kræver bekræftelse af din konto. \n{verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Undersøgelsen er ikke længere tilgængelig, da dette projekt ikke længere er aktivt.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Bekræft din konto nu.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
   "app.containers.SearchInput.removeSearchTerm": "Fjern søgeterm\n",
   "app.containers.SearchInput.searchAriaLabel": "Søg",
   "app.containers.SearchInput.searchLabel": "Søg",
