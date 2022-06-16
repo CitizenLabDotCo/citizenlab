@@ -172,7 +172,13 @@ const Inputs = ({
         </SectionTitle>
         {inputs.length > 0 && <Export />}
       </Box>
-      <StyledSearch onChange={onSearch} size="small" />
+      <StyledSearch
+        onChange={onSearch}
+        size="small"
+        a11y_numberOfSearchResults={
+          !isNilOrError(inputsCount) ? inputsCount.count : 0
+        }
+      />
       {selectedCategories.length > 0 && (
         <Box mb="8px">
           <Box mr="4px" as="span">
