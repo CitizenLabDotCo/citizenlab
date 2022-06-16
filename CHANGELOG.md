@@ -1,10 +1,11 @@
 # Changelog
 
-## Next release
+## 2022-06-16
 
 ### Added
 
 - [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
 
 ### Fixed
 
