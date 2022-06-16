@@ -18,9 +18,9 @@ RSpec.describe Notification, type: :model do
   it 'deleting a folder also deletes notifications referencing to it' do
     folder = create(:project_folder)
     create(:project_folder_moderation_rights_received, project_folder: folder)
-    count = Notification.count
+    count = described_class.count
     folder.destroy!
 
-    expect(Notification.count).to eq(count - 1)
+    expect(described_class.count).to eq(count - 1)
   end
 end

@@ -10,7 +10,7 @@ RSpec.describe Notifications::CommentOnYourComment, type: :model do
       child_comment = create(:comment, parent: parent_comment, post: idea)
       activity = create(:activity, item: child_comment, action: 'created')
 
-      notifications = Notifications::CommentOnYourComment.make_notifications_on activity
+      notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
         recipient_id: parent_comment.author_id,
         initiating_user_id: child_comment.author_id,

@@ -10,7 +10,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
       'value' => create_list(:idea_status, 2).map(&:id)
     }
   end
-  let(:valid_rule) { SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(valid_json_rule) }
+  let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
   describe 'from_json' do
     it 'successfully parses a valid json' do
@@ -38,7 +38,7 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
         r['predicate'] = 'not_in'
         r['value'] = IdeaStatus.first.id
       end
-      expect(SmartGroups::Rules::ParticipatedInIdeaStatus.from_json(rule)).to be_valid
+      expect(described_class.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
     end
 
@@ -63,61 +63,61 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     it "correctly filters on 'in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('in', [@idea_status1.id])
+      rule = described_class.new('in', [@idea_status1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id]
     end
 
     it "correctly filters on 'not_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_in', @idea_status2.id)
+      rule = described_class.new('not_in', @idea_status2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('posted_in', [@idea_status1.id, @idea_status2.id])
+      rule = described_class.new('posted_in', [@idea_status1.id, @idea_status2.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id]
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_posted_in', @idea_status1.id)
+      rule = described_class.new('not_posted_in', @idea_status1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id, @user3.id, @user4.id]
     end
 
     it "correctly filters on 'commented_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('commented_in', [@idea_status1.id])
+      rule = described_class.new('commented_in', [@idea_status1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user3.id]
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_commented_in', @idea_status1.id)
+      rule = described_class.new('not_commented_in', @idea_status1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
     end
 
     it "correctly filters on 'voted_idea_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_idea_in', [@idea_status1.id])
+      rule = described_class.new('voted_idea_in', [@idea_status1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user2.id]
     end
 
     it "correctly filters on 'not_voted_idea_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_voted_idea_in', @idea_status1.id)
+      rule = described_class.new('not_voted_idea_in', @idea_status1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user3.id, @user4.id]
     end
 
     it "correctly filters on 'voted_comment_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('voted_comment_in', [@idea_status1.id])
+      rule = described_class.new('voted_comment_in', [@idea_status1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array []
     end
 
     it "correctly filters on 'not_voted_comment_in' predicate" do
-      rule = SmartGroups::Rules::ParticipatedInIdeaStatus.new('not_voted_comment_in', @idea_status2.id)
+      rule = described_class.new('not_voted_comment_in', @idea_status2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
     end
@@ -140,70 +140,70 @@ describe SmartGroups::Rules::ParticipatedInIdeaStatus do
     end
 
     let(:participated_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'in',
         'value' => [garbage_status.id, delayed_status.id]
       })
     end
     let(:participated_not_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'not_in',
         'value' => garbage_status.id
       })
     end
     let(:participated_posted_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'posted_in',
         'value' => [garbage_status.id]
       })
     end
     let(:participated_not_posted_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'not_posted_in',
         'value' => garbage_status.id
       })
     end
     let(:participated_commented_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'commented_in',
         'value' => [garbage_status.id, delayed_status.id]
       })
     end
     let(:participated_not_commented_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'not_commented_in',
         'value' => garbage_status.id
       })
     end
     let(:participated_voted_idea_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'voted_idea_in',
         'value' => [garbage_status.id]
       })
     end
     let(:participated_not_voted_idea_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'not_voted_idea_in',
         'value' => garbage_status.id
       })
     end
     let(:participated_voted_comment_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'voted_comment_in',
         'value' => [garbage_status.id, delayed_status.id]
       })
     end
     let(:participated_not_voted_comment_in_idea_status_in_rule) do
-      SmartGroups::Rules::ParticipatedInIdeaStatus.from_json({
+      described_class.from_json({
         'ruleType' => 'participated_in_idea_status',
         'predicate' => 'not_voted_comment_in',
         'value' => garbage_status.id

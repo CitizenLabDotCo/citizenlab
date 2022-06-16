@@ -52,8 +52,8 @@ RSpec.describe Group, type: :model do
     end
 
     it 'returns exactly the rules groups that reference the given custom field' do
-      expect(Group.using_custom_field(cf1).all).to match [group1]
-      expect(Group.using_custom_field(cf2).all).to match [group3]
+      expect(described_class.using_custom_field(cf1).all).to match [group1]
+      expect(described_class.using_custom_field(cf2).all).to match [group3]
     end
   end
 
@@ -78,12 +78,12 @@ RSpec.describe Group, type: :model do
     end
 
     it 'returns exactly the rules groups that reference the given custom field option' do
-      expect(Group.using_custom_field_option(cfo1[0]).all).to match [group1]
-      expect(Group.using_custom_field_option(cfo1[1]).all).to match []
-      expect(Group.using_custom_field_option(cfo1[2]).all).to match []
-      expect(Group.using_custom_field_option(cfo2[0]).all).to match []
-      expect(Group.using_custom_field_option(cfo2[1]).all).to match [group3]
-      expect(Group.using_custom_field_option(cfo2[2]).all).to match []
+      expect(described_class.using_custom_field_option(cfo1[0]).all).to match [group1]
+      expect(described_class.using_custom_field_option(cfo1[1]).all).to match []
+      expect(described_class.using_custom_field_option(cfo1[2]).all).to match []
+      expect(described_class.using_custom_field_option(cfo2[0]).all).to match []
+      expect(described_class.using_custom_field_option(cfo2[1]).all).to match [group3]
+      expect(described_class.using_custom_field_option(cfo2[2]).all).to match []
     end
   end
 

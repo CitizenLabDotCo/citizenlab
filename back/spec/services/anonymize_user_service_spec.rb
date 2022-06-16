@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AnonymizeUserService do
-  let(:service) { AnonymizeUserService.new }
+  let(:service) { described_class.new }
 
   describe '#anonymized_attributes' do
     before do

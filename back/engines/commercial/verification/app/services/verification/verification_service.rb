@@ -44,7 +44,7 @@ module Verification
 
     # @param [AppConfiguration] configuration
     # @return [Boolean]
-    def is_active?(configuration, method_name)
+    def active?(configuration, method_name)
       active_methods(configuration).include? method_by_name(method_name)
     end
 

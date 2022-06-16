@@ -10,7 +10,7 @@ module IdAuth0
 
     # @param [AppConfiguration] configuration
     def omniauth_setup(configuration, env)
-      return unless Verification::VerificationService.new.is_active?(configuration, name)
+      return unless Verification::VerificationService.new.active?(configuration, name)
 
       options = env['omniauth.strategy'].options
       options[:client_id] = config[:client_id]

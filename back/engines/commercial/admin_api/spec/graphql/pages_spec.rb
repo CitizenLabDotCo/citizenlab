@@ -2,11 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Graphql pages' do
+RSpec.describe AdminApi::Schema do
   let(:context) { {} }
   let(:variables) { {} }
   let(:result) do
-    res = AdminApi::Schema.execute(
+    res = described_class.execute(
       query_string,
       context: context,
       variables: variables
