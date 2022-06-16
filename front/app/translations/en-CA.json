@@ -1138,6 +1138,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Taking this survey requires verification of your identity. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "The survey is no longer available, since this project is no longer active.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verify your identity now.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
   "app.containers.SearchInput.removeSearchTerm": "Remove search term",
   "app.containers.SearchInput.searchAriaLabel": "Search",
   "app.containers.SearchInput.searchLabel": "Search",

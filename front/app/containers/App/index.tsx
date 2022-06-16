@@ -34,7 +34,6 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
 import Outlet from 'components/Outlet';
-import { LiveAnnouncer } from 'react-aria-live';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
@@ -479,80 +478,78 @@ class App extends PureComponent<Props, State> {
             <ThemeProvider
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
-              <LiveAnnouncer>
-                <GlobalStyle />
+              <GlobalStyle />
 
-                <Container>
-                  <Meta />
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <PostPageFullscreenModal
-                        type={modalType}
-                        postId={modalId}
-                        slug={modalSlug}
-                        close={this.closePostPageModal}
-                        navbarRef={navbarRef}
-                        mobileNavbarRef={mobileNavbarRef}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <UserDeletedModal
-                        modalOpened={userDeletedSuccessfullyModalOpened}
-                        closeUserDeletedModal={this.closeUserDeletedModal}
-                        userSuccessfullyDeleted={userSuccessfullyDeleted}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <SignUpInModal
-                      onMounted={this.handleSignUpInModalMounted}
-                      onDeclineInvitation={this.handleDeclineInvitation}
+              <Container>
+                <Meta />
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <PostPageFullscreenModal
+                      type={modalType}
+                      postId={modalId}
+                      slug={modalSlug}
+                      close={this.closePostPageModal}
+                      navbarRef={navbarRef}
+                      mobileNavbarRef={mobileNavbarRef}
                     />
-                  </ErrorBoundary>
-                  <Outlet
-                    id="app.containers.App.modals"
-                    onMounted={this.handleModalMounted}
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <UserDeletedModal
+                      modalOpened={userDeletedSuccessfullyModalOpened}
+                      closeUserDeletedModal={this.closeUserDeletedModal}
+                      userSuccessfullyDeleted={userSuccessfullyDeleted}
+                    />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <SignUpInModal
+                    onMounted={this.handleSignUpInModalMounted}
+                    onDeclineInvitation={this.handleDeclineInvitation}
                   />
-                  <ErrorBoundary>
-                    <div id="modal-portal" />
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <div id="topbar-portal" />
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <ConsentManager />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <MainHeader setRef={this.setNavbarRef} />
-                  </ErrorBoundary>
-                  <InnerContainer>
-                    <HasPermission
-                      item={{ type: 'route', path: location.pathname }}
-                      action="access"
-                    >
-                      <ErrorBoundary>{children}</ErrorBoundary>
-                      <HasPermission.No>
-                        <ForbiddenRoute />
-                      </HasPermission.No>
-                    </HasPermission>
-                  </InnerContainer>
-                  {showFooter && (
-                    <Suspense fallback={null}>
-                      <PlatformFooter />
-                    </Suspense>
-                  )}
-                  {showMobileNav && (
-                    <MobileNavbar setRef={this.setMobileNavigationRef} />
-                  )}
-                  <ErrorBoundary>
-                    <div id="mobile-nav-portal" />
-                  </ErrorBoundary>
-                </Container>
-              </LiveAnnouncer>
+                </ErrorBoundary>
+                <Outlet
+                  id="app.containers.App.modals"
+                  onMounted={this.handleModalMounted}
+                />
+                <ErrorBoundary>
+                  <div id="modal-portal" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <div id="topbar-portal" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <ConsentManager />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <MainHeader setRef={this.setNavbarRef} />
+                </ErrorBoundary>
+                <InnerContainer>
+                  <HasPermission
+                    item={{ type: 'route', path: location.pathname }}
+                    action="access"
+                  >
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                    <HasPermission.No>
+                      <ForbiddenRoute />
+                    </HasPermission.No>
+                  </HasPermission>
+                </InnerContainer>
+                {showFooter && (
+                  <Suspense fallback={null}>
+                    <PlatformFooter />
+                  </Suspense>
+                )}
+                {showMobileNav && (
+                  <MobileNavbar setRef={this.setMobileNavigationRef} />
+                )}
+                <ErrorBoundary>
+                  <div id="mobile-nav-portal" />
+                </ErrorBoundary>
+              </Container>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}
