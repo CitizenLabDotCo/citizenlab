@@ -86,7 +86,7 @@ const Options = ({ fieldId }: Props) => {
 
           {userCustomFieldOptions.map(({ id, attributes }) => (
             <Box key={id} display="flex">
-              <Box pl="8px" display="flex" alignItems="center" width="50%">
+              <Box display="flex" alignItems="center" width="50%">
                 <OptionToggle optionId={id} />
 
                 <Text ml="12px" variant="bodyM" color="adminTextColor">
@@ -94,7 +94,7 @@ const Options = ({ fieldId }: Props) => {
                 </Text>
               </Box>
 
-              <Box ml="-20px" display="flex" alignItems="center" width="50%">
+              <Box display="flex" alignItems="center" width="50%">
                 <OptionInput optionId={id} />
               </Box>
             </Box>
