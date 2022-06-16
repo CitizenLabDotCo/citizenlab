@@ -5,7 +5,7 @@ import { Field } from 'formik';
 import { Text, Input } from '@citizenlab/cl2-component-library';
 
 // utils
-import { parsePopulationValue } from '../utils';
+import { parsePopulationValue } from './utils';
 
 // typings
 import { OptionValue } from '.';

@@ -8,13 +8,22 @@ import useLocalize from 'hooks/useLocalize';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
+import Header from './Header';
 import OptionToggle from './OptionToggle';
 import OptionInput from './OptionInput';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getInitialValues } from './utils';
+
+const StyledForm = styled.form`
+  width: 100%;
+`;
 
 interface Props {
   fieldId: string;
@@ -62,29 +71,45 @@ const Options = ({ fieldId }: Props) => {
     status,
     handleSubmit,
   }: FormikProps<FormValues>) => (
-    <form onSubmit={handleSubmit}>
-      {userCustomFieldOptions.map(({ id, attributes }) => (
-        <>
-          <Box pl="8px" display="flex" alignItems="center" width="50%">
-            <OptionToggle optionId={id} />
+    <StyledForm onSubmit={handleSubmit}>
+      <Box>
+        <Box
+          background="#FCFCFC"
+          width="100%"
+          height="100%"
+          border={`1px ${colors.separation} solid`}
+          pt="20px"
+          pb="12px"
+          px="16px"
+        >
+          <Header />
 
-            <Text ml="12px" variant="bodyM" color="adminTextColor">
-              {localize(attributes.title_multiloc)}
-            </Text>
-          </Box>
+          {userCustomFieldOptions.map(({ id, attributes }) => (
+            <Box key={id} display="flex">
+              <Box pl="8px" display="flex" alignItems="center" width="50%">
+                <OptionToggle optionId={id} />
 
-          <Box ml="-20px" display="flex" alignItems="center" width="50%">
-            <OptionInput optionId={id} />
-          </Box>
-        </>
-      ))}
+                <Text ml="12px" variant="bodyM" color="adminTextColor">
+                  {localize(attributes.title_multiloc)}
+                </Text>
+              </Box>
 
-      <FormikSubmitWrapper
-        isSubmitting={isSubmitting}
-        status={status}
-        touched={touched}
-      />
-    </form>
+              <Box ml="-20px" display="flex" alignItems="center" width="50%">
+                <OptionInput optionId={id} />
+              </Box>
+            </Box>
+          ))}
+        </Box>
+
+        <Box mt="20px">
+          <FormikSubmitWrapper
+            isSubmitting={isSubmitting}
+            status={status}
+            touched={touched}
+          />
+        </Box>
+      </Box>
+    </StyledForm>
   );
 
   return (
