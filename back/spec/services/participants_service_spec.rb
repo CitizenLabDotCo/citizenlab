@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ParticipantsService do
-  let(:service) { ParticipantsService.new }
+  let(:service) { described_class.new }
 
   describe 'participants' do
     it 'returns participants across the whole platform at any time' do

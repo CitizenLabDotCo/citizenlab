@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -26,14 +26,12 @@ const CancelButton = styled(Button)``;
 // Typings
 import { Multiloc } from 'typings';
 
-export interface Props {}
-
 export interface FormValues {
   title_multiloc: Multiloc;
 }
 
 class RegistrationCustomFieldOptionsForm extends React.Component<
-  InjectedFormikProps<Props & InjectedIntlProps & WithRouterProps, FormValues>
+  InjectedFormikProps<InjectedIntlProps & WithRouterProps, FormValues>
 > {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};

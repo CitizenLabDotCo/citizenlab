@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxCommentService do
-  let(:service) { SideFxCommentService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:comment) { create(:comment) }
 

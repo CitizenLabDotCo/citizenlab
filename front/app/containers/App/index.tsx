@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { uniq, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import moment from 'moment';
 import 'moment-timezone';
@@ -26,17 +26,14 @@ import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableModal from 'components/Loadable/Modal';
-import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
-
 import Outlet from 'components/Outlet';
-
 import { LiveAnnouncer } from 'react-aria-live';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
@@ -171,7 +168,7 @@ class App extends PureComponent<Props, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
 
-    this.unlisten = clHistory.listenBefore((newLocation) => {
+    this.unlisten = clHistory.listen(({ location }) => {
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
         'sign-up',
@@ -188,7 +185,7 @@ class App extends PureComponent<Props, State> {
       if (redirectsEnabled) {
         this.handleCustomRedirect();
       }
-      trackPage(newLocation.pathname);
+      trackPage(location.pathname);
     });
 
     trackPage(location.pathname);
@@ -500,14 +497,13 @@ class App extends PureComponent<Props, State> {
                     </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
-                    <LoadableModal
-                      opened={userDeletedSuccessfullyModalOpened}
-                      close={this.closeUserDeletedModal}
-                    >
-                      <LoadableUserDeleted
+                    <Suspense fallback={null}>
+                      <UserDeletedModal
+                        modalOpened={userDeletedSuccessfullyModalOpened}
+                        closeUserDeletedModal={this.closeUserDeletedModal}
                         userSuccessfullyDeleted={userSuccessfullyDeleted}
                       />
-                    </LoadableModal>
+                    </Suspense>
                   </ErrorBoundary>
                   <ErrorBoundary>
                     <SignUpInModal

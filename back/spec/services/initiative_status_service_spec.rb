@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe InitiativeStatusService do
-  let(:service) { InitiativeStatusService.new }
+  let(:service) { described_class.new }
 
   describe '#automated_transitions!' do
     before do

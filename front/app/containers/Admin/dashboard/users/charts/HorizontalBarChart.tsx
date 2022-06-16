@@ -72,6 +72,8 @@ export class HorizontalBarChart extends React.PureComponent<
   render() {
     const { barSize } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       graphTitleString,
       serie,
@@ -97,6 +99,8 @@ export class HorizontalBarChart extends React.PureComponent<
                 svgNode={this.currentChart}
                 xlsxEndpoint={xlsxEndpoint}
                 name={graphTitleString}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>

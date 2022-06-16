@@ -122,7 +122,10 @@ class InvitesTable extends React.PureComponent<Props, State> {
       return (
         <Container className={this.props['className']}>
           <HeaderContainer>
-            <SearchInput onChange={this.handleChangeSearchTerm} />
+            <SearchInput
+              onChange={this.handleChangeSearchTerm}
+              a11y_numberOfSearchResults={invitesList.length}
+            />
             <Button
               buttonStyle="cl-blue"
               icon="download"
