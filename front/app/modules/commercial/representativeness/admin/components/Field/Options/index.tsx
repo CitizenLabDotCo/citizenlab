@@ -14,6 +14,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { getInitialValues } from './utils';
 
 interface Props {
   fieldId: string;
@@ -88,7 +89,11 @@ const Options = ({ fieldId }: Props) => {
 
   return (
     <Formik
-      initialValues={{}}
+      initialValues={getInitialValues(
+        userCustomFieldOptions,
+        referenceDataUploaded,
+        referenceDistribution
+      )}
       render={renderFn}
       validate={validateForm}
       validateOnChange={false}
