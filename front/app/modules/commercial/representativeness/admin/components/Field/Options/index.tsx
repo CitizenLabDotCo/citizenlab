@@ -3,6 +3,7 @@ import { Formik, FormikProps, FormikActions, FormikErrors } from 'formik';
 
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
+import useReferenceDistribution from '../../../hooks/useReferenceDistribution';
 import useLocalize from 'hooks/useLocalize';
 
 // components
@@ -23,7 +24,7 @@ export interface OptionValue {
   population?: number;
 }
 
-type FormValues = Record<string, OptionValue>;
+export type FormValues = Record<string, OptionValue>;
 
 const validateForm = (values: FormValues): FormikErrors<FormValues> => {
   console.log(values);
@@ -43,9 +44,15 @@ const handleSubmit = (
 
 const Options = ({ fieldId }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(fieldId);
+  const referenceDistribution = useReferenceDistribution(fieldId);
   const localize = useLocalize();
 
-  if (isNilOrError(userCustomFieldOptions)) return null;
+  if (
+    isNilOrError(userCustomFieldOptions) ||
+    isNilOrError(referenceDistribution)
+  ) {
+    return null;
+  }
 
   const renderFn = ({
     isSubmitting,
