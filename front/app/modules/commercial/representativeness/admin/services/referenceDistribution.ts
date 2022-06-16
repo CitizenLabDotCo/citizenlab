@@ -1,8 +1,8 @@
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
-const getReferenceDistributionEndpoint = (customFieldId: string) =>
-  `${API_PATH}/users/custom_fields/${customFieldId}/reference_distribution`;
+const getReferenceDistributionEndpoint = (userCustomFieldId: string) =>
+  `${API_PATH}/users/custom_fields/${userCustomFieldId}/reference_distribution`;
 
 type TDistribution = Record<
   string,
@@ -31,36 +31,36 @@ export interface IReferenceDistribution {
 
 export type TUploadDistribution = Record<string, number>;
 
-export function referenceDistributionStream(customFieldId: string) {
+export function referenceDistributionStream(userCustomFieldId: string) {
   return streams.get<IReferenceDistribution>({
-    apiEndpoint: getReferenceDistributionEndpoint(customFieldId),
+    apiEndpoint: getReferenceDistributionEndpoint(userCustomFieldId),
   });
 }
 
 export function createReferenceDistribution(
-  customFieldId: string,
+  userCustomFieldId: string,
   distribution: TUploadDistribution
 ) {
   return streams.add<IReferenceDistribution>(
-    getReferenceDistributionEndpoint(customFieldId),
+    getReferenceDistributionEndpoint(userCustomFieldId),
     { distribution }
   );
 }
 
 export function replaceReferenceDistribution(
-  customFieldId: string,
+  userCustomFieldId: string,
   distribution: TUploadDistribution
 ) {
   return streams.update<IReferenceDistribution>(
-    getReferenceDistributionEndpoint(customFieldId),
-    customFieldId,
+    getReferenceDistributionEndpoint(userCustomFieldId),
+    userCustomFieldId,
     { distribution }
   );
 }
 
-export function deleteReferenceDistribution(customFieldId: string) {
+export function deleteReferenceDistribution(userCustomFieldId: string) {
   return streams.delete(
-    getReferenceDistributionEndpoint(customFieldId),
-    customFieldId
+    getReferenceDistributionEndpoint(userCustomFieldId),
+    userCustomFieldId
   );
 }

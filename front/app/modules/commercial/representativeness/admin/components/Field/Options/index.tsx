@@ -26,7 +26,7 @@ const StyledForm = styled.form`
 `;
 
 interface Props {
-  fieldId: string;
+  userCustomFieldId: string;
 }
 
 export interface OptionValue {
@@ -52,10 +52,10 @@ const handleSubmit = (
   // TODO
 };
 
-const Options = ({ fieldId }: Props) => {
-  const userCustomFieldOptions = useUserCustomFieldOptions(fieldId);
+const Options = ({ userCustomFieldId }: Props) => {
+  const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded } =
-    useReferenceDistribution(fieldId);
+    useReferenceDistribution(userCustomFieldId);
   const localize = useLocalize();
 
   if (

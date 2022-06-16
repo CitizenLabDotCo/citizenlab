@@ -30,7 +30,7 @@ const isInvalid = (value: string) =>
 const asNumber = (value: string) => parseInt(value.replace(/\,/g, ''));
 
 export function getInitialValues(
-  customFieldOptions: IUserCustomFieldOptionData[],
+  userCustomFieldOptions: IUserCustomFieldOptionData[],
   referenceDataUploaded: boolean,
   referenceDistribution: IReferenceDistributionData | NilOrError
 ): FormValues | null {
@@ -38,21 +38,21 @@ export function getInitialValues(
     if (isNilOrError(referenceDistribution)) return null;
 
     return getInitialValuesFromDistribution(
-      customFieldOptions,
+      userCustomFieldOptions,
       referenceDistribution
     );
   }
 
-  return getEmptyInitialValues(customFieldOptions);
+  return getEmptyInitialValues(userCustomFieldOptions);
 }
 
 function getInitialValuesFromDistribution(
-  customFieldOptions: IUserCustomFieldOptionData[],
+  userCustomFieldOptions: IUserCustomFieldOptionData[],
   referenceDistribution: IReferenceDistributionData
 ): FormValues {
   const { distribution } = referenceDistribution.attributes;
 
-  return customFieldOptions.reduce((acc, { id }) => {
+  return userCustomFieldOptions.reduce((acc, { id }) => {
     const referenceDistributionValue = distribution[id];
 
     return {
@@ -65,9 +65,9 @@ function getInitialValuesFromDistribution(
 }
 
 function getEmptyInitialValues(
-  customFieldOptions: IUserCustomFieldOptionData[]
+  userCustomFieldOptions: IUserCustomFieldOptionData[]
 ): FormValues {
-  return customFieldOptions.reduce(
+  return userCustomFieldOptions.reduce(
     (acc, { id }) => ({
       ...acc,
       [id]: { enabled: true, population: undefined },

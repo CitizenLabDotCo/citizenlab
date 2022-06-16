@@ -25,7 +25,7 @@ const Fields = () => {
     <Box mt="32px">
       {userCustomFields.filter(noDomicile).map(({ id, attributes }) => (
         <Field
-          fieldId={id}
+          userCustomFieldId={id}
           isDefault={attributes.code !== null}
           titleMultiloc={attributes.title_multiloc}
           key={id}

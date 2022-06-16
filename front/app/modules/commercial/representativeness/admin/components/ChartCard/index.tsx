@@ -40,13 +40,13 @@ import { isNilOrError } from 'utils/helperUtils';
 export type ViewState = 'chart' | 'table';
 
 interface Props {
-  customField: IUserCustomFieldData;
+  userCustomField: IUserCustomFieldData;
   projectFilter?: string;
 }
 
 const getXlsxEndpoint = (
   code: TCustomFieldCode | null,
-  customFieldId: string
+  userCustomFieldId: string
 ): string => {
   switch (code) {
     case 'gender':
@@ -54,17 +54,17 @@ const getXlsxEndpoint = (
     case 'domicile':
       return usersByDomicileXlsxEndpoint;
     default:
-      return usersByRegFieldXlsxEndpoint(customFieldId);
+      return usersByRegFieldXlsxEndpoint(userCustomFieldId);
   }
 };
 
 const ChartCard = ({
-  customField,
+  userCustomField,
   projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const { referenceData, includedUserPercentage, referenceDataUploaded } =
-    useReferenceData(customField, projectFilter);
+    useReferenceData(userCustomField, projectFilter);
 
   const currentChartRef = useRef<SVGElement>();
   const [viewState, setViewState] = useState<ViewState | undefined>(
@@ -87,7 +87,7 @@ const ChartCard = ({
   if (referenceDataUploaded === false) {
     return (
       <EmptyCard
-        titleMultiloc={customField.attributes.title_multiloc}
+        titleMultiloc={userCustomField.attributes.title_multiloc}
         isComingSoon={false}
       />
     );
@@ -116,11 +116,11 @@ const ChartCard = ({
 
   const legendLabels = getLegendLabels(barNames);
 
-  const title = localize(customField.attributes.title_multiloc);
-  const fieldIsRequired = customField.attributes.required;
+  const title = localize(userCustomField.attributes.title_multiloc);
+  const fieldIsRequired = userCustomField.attributes.required;
   const xlsxEndpoint = getXlsxEndpoint(
-    customField.attributes.code,
-    customField.id
+    userCustomField.attributes.code,
+    userCustomField.id
   );
   const data = referenceData.map(
     (opt: RepresentativenessRowMultiloc): RepresentativenessRow => {

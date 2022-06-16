@@ -37,14 +37,14 @@ export type RepresentativenessData = RepresentativenessRow[];
 
 const getSubscription = (
   code: TCustomFieldCode | null,
-  fieldId: string,
+  userCustomFieldId: string,
   projectId: string | undefined,
   handleStreamResponse: (usersByField: TStreamResponse) => void
 ) => {
   if (code === null) {
     const observable = usersByRegFieldStream(
       { queryParameters: { project: projectId } },
-      fieldId
+      userCustomFieldId
     ).observable;
 
     const subscription = observable.subscribe(handleStreamResponse);
@@ -72,7 +72,10 @@ const getSubscription = (
   return;
 };
 
-function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
+function useReferenceData(
+  userCustomField: IUserCustomFieldData,
+  projectId?: string
+) {
   const [referenceData, setReferenceData] = useState<
     RepresentativenessRowMultiloc[] | NilOrError
   >();
@@ -83,8 +86,8 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
     boolean | undefined
   >();
 
-  const code = field.attributes.code;
-  const fieldId = field.id;
+  const code = userCustomField.attributes.code;
+  const userCustomFieldId = userCustomField.id;
 
   useEffect(() => {
     const handleStreamResponse = (usersByField: TStreamResponse) => {
@@ -108,7 +111,7 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
 
     const subscription = getSubscription(
       code,
-      fieldId,
+      userCustomFieldId,
       projectId,
       handleStreamResponse
     );
@@ -118,7 +121,7 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
     }
 
     return;
-  }, [code, fieldId, projectId]);
+  }, [code, userCustomFieldId, projectId]);
 
   return {
     referenceData,

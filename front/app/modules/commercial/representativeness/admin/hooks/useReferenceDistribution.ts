@@ -14,7 +14,7 @@ import {
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
-function useReferenceDistribution(customFieldId: string) {
+function useReferenceDistribution(userCustomFieldId: string) {
   const [referenceDistribution, setReferenceDistribution] = useState<
     IReferenceDistributionData | NilOrError
   >();
@@ -23,7 +23,7 @@ function useReferenceDistribution(customFieldId: string) {
   >();
 
   useEffect(() => {
-    const observable = userCustomFieldStream(customFieldId).observable;
+    const observable = userCustomFieldStream(userCustomFieldId).observable;
 
     const subscription = observable.subscribe(
       (userCustomField: IUserCustomField | NilOrError) => {
@@ -39,7 +39,7 @@ function useReferenceDistribution(customFieldId: string) {
     );
 
     return () => subscription.unsubscribe();
-  }, [customFieldId]);
+  }, [userCustomFieldId]);
 
   useEffect(() => {
     if (!referenceDataUploaded) {
@@ -47,7 +47,8 @@ function useReferenceDistribution(customFieldId: string) {
       return;
     }
 
-    const observable = referenceDistributionStream(customFieldId).observable;
+    const observable =
+      referenceDistributionStream(userCustomFieldId).observable;
     const subscription = observable.subscribe(
       (referenceDistribution: IReferenceDistribution | NilOrError) => {
         isNilOrError(referenceDistribution)
@@ -57,7 +58,7 @@ function useReferenceDistribution(customFieldId: string) {
     );
 
     return () => subscription.unsubscribe();
-  }, [customFieldId, referenceDataUploaded]);
+  }, [userCustomFieldId, referenceDataUploaded]);
 
   return { referenceDistribution, referenceDataUploaded };
 }

@@ -21,17 +21,17 @@ const isSupported = ({ attributes }: IUserCustomFieldData) =>
   attributes.code !== 'domicile';
 
 const ChartCards = ({ projectFilter }: Props) => {
-  const customFields = useUserCustomFields({ inputTypes: ['select'] });
-  if (isNilOrError(customFields)) return null;
+  const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
+  if (isNilOrError(userCustomFields)) return null;
 
   return (
     <>
-      {customFields.map((customField) => {
-        if (isSupported(customField)) {
+      {userCustomFields.map((userCustomField) => {
+        if (isSupported(userCustomField)) {
           return (
             <ChartCard
-              customField={customField}
-              key={customField.id}
+              userCustomField={userCustomField}
+              key={userCustomField.id}
               projectFilter={projectFilter}
             />
           );
@@ -39,8 +39,8 @@ const ChartCards = ({ projectFilter }: Props) => {
 
         return (
           <EmptyCard
-            titleMultiloc={customField.attributes.title_multiloc}
-            key={customField.id}
+            titleMultiloc={userCustomField.attributes.title_multiloc}
+            key={userCustomField.id}
             isComingSoon
           />
         );
