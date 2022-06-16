@@ -121,7 +121,7 @@ resource 'Stats - Users' do
       let(:group) { @group.id }
 
       include_examples('xlsx export', 'gender') do
-        let(:expected_worksheet_name) { 'usersbygender' }
+        let(:expected_worksheet_name) { 'users_by_gender' }
         let(:expected_worksheet_values) do
           [
             %w[option option_id users],
@@ -203,7 +203,7 @@ resource 'Stats - Users' do
       let(:group) { @group.id }
 
       include_examples('xlsx export', 'birthyear') do
-        let(:expected_worksheet_name) { 'usersbybirthyear' }
+        let(:expected_worksheet_name) { 'users_by_birthyear' }
         let(:expected_worksheet_values) do
           [
             %w[option users],
@@ -250,7 +250,7 @@ resource 'Stats - Users' do
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       include_examples('xlsx export', 'domicile') do
-        let(:expected_worksheet_name) { 'usersbyarea' }
+        let(:expected_worksheet_name) { 'users_by_area' }
         let(:expected_worksheet_values) do
           [
             %w[area area_id users],
@@ -297,7 +297,7 @@ resource 'Stats - Users' do
       parameter :project, 'Project ID. Only return users that have participated in the given project.', required: false
 
       include_examples('xlsx export', 'education') do
-        let(:expected_worksheet_name) { 'usersbyeducation' }
+        let(:expected_worksheet_name) { 'users_by_education' }
         let(:expected_worksheet_values) do
           [
             %w[option option_id users],
@@ -506,7 +506,7 @@ resource 'Stats - Users' do
 
         describe 'when the custom field has no reference distribution' do
           include_examples('xlsx export', 'custom field (select)') do
-            let(:expected_worksheet_name) { 'usersbyselectfield' }
+            let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
                 %w[option option_id users],
@@ -523,7 +523,7 @@ resource 'Stats - Users' do
           before { create(:ref_distribution, custom_field: @custom_field) }
 
           include_examples('xlsx export', 'custom field (select) including expected nb of users') do
-            let(:expected_worksheet_name) { 'usersbyselectfield' }
+            let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
                 %w[option option_id users expected_users],
@@ -562,7 +562,7 @@ resource 'Stats - Users' do
         let(:custom_field_id) { @custom_field.id }
 
         include_examples('xlsx export', 'custom field (multiselect)') do
-          let(:expected_worksheet_name) { 'usersbymultiselectfield' }
+          let(:expected_worksheet_name) { 'users_by_multiselect_field' }
           let(:expected_worksheet_values) do
             [
               %w[option option_id users],
@@ -598,7 +598,7 @@ resource 'Stats - Users' do
         let(:custom_field_id) { @custom_field.id }
 
         include_examples('xlsx export', 'custom field (checkbox)') do
-          let(:expected_worksheet_name) { 'usersbycheckboxfield' }
+          let(:expected_worksheet_name) { 'users_by_checkbox_field' }
           let(:expected_worksheet_values) do
             [
               %w[option users],
