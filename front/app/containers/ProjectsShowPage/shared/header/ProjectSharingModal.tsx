@@ -55,6 +55,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
     }, [close]);
 
     if (!isNilOrError(project)) {
+      const url = location.href;
       return (
         <Modal
           width={550}
@@ -84,8 +85,18 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                             projectName: title,
                           }
                         )}
+                        emailSubject={formatMessage(
+                          messages.emailSharingSubject,
+                          {
+                            projectName: title,
+                          }
+                        )}
+                        emailBody={formatMessage(messages.emailSharingBody, {
+                          url,
+                          title,
+                        })}
                         utmParams={utmParams}
-                        layout="columnLayout"
+                        layout="rowLayout"
                       />
                     );
                   }}

@@ -250,6 +250,7 @@ class SharingModalContent extends PureComponent<
           <Description>{subtitle}</Description>
           <SharingWrapper>
             <SharingButtons
+              layout="rowLayout"
               context={postType}
               isInModal
               url={postUrl}

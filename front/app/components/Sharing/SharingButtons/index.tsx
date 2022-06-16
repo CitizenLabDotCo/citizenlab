@@ -296,9 +296,7 @@ const SharingButtons = memo(
       <Twitter
         twitterMessage={twitterMessage}
         url={getUrl('twitter')}
-        className={`sharingButton twitter ${
-          !emailSubject || !emailBody ? 'last' : ''
-        } ${layoutClassName}`}
+        className={`sharingButton twitter ${layoutClassName}`}
         onClick={trackClick('twitter')}
       >
         <>
@@ -312,23 +310,10 @@ const SharingButtons = memo(
       </Twitter>
     );
 
-    const copylink = (
-      <CopyLink className={`sharingButton last copylink ${layoutClassName}`}>
-        <>
-          <StyledIcon ariaHidden name="link" />
-          {layout === 'columnLayout' && (
-            <ButtonText aria-hidden>
-              {formatMessage(messages.shareOnTwitter)}
-            </ButtonText>
-          )}
-        </>
-      </CopyLink>
-    );
-
     const email =
       emailSubject && emailBody ? (
         <Email
-          className={`sharingButton last email ${layoutClassName}`}
+          className={`sharingButton email ${layoutClassName}`}
           onClick={trackClick('email')}
           emailSubject={emailSubject}
           emailBody={emailBody}
@@ -343,6 +328,22 @@ const SharingButtons = memo(
           </>
         </Email>
       ) : null;
+
+    const copylink = (
+      <CopyLink
+        copyLink={url}
+        className={`sharingButton last copylink ${layoutClassName}`}
+      >
+        <>
+          <StyledIcon ariaHidden name="link" />
+          {layout === 'columnLayout' && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareOnTwitter)}
+            </ButtonText>
+          )}
+        </>
+      </CopyLink>
+    );
 
     const titleMessage = {
       idea: <FormattedMessage {...messages.share} />,

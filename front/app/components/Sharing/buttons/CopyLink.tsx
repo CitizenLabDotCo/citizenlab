@@ -8,15 +8,17 @@ import messages from '../messages';
 interface Props {
   className?: string;
   children: JSX.Element | JSX.Element[];
+  copyLink: string;
 }
 
 const CopyLink = ({
   children,
   className,
+  copyLink,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const handleClick = () => () => {
-    navigator.clipboard.writeText('Copied Text');
+    navigator.clipboard.writeText(copyLink);
   };
 
   return (

@@ -399,4 +399,13 @@ export default defineMessages({
     id: 'app.containers.Projects.a11y_phase',
     defaultMessage: 'Phase {phaseNumber}: {phaseTitle}',
   },
+  emailSharingSubject: {
+    id: 'app.containers.Projects.emailSharingSubject',
+    defaultMessage: 'Support my initiative: {initiativeTitle}.',
+  },
+  emailSharingBody: {
+    id: 'app.containers.Projects.emailSharingBody',
+    defaultMessage:
+      'What do you think of this initiative? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!',
+  },
 });
