@@ -37,9 +37,20 @@ export interface OptionValue {
 export type FormValues = Record<string, OptionValue>;
 
 const validateForm = (values: FormValues): FormikErrors<FormValues> => {
-  console.log(values);
-  // TODO
-  return {};
+  return Object.keys(values).reduce((acc, userCustomFieldId) => {
+    const value = values[userCustomFieldId];
+
+    if (value.enabled && value.population !== undefined) {
+      return acc;
+    }
+
+    return {
+      ...acc,
+      [userCustomFieldId]: {
+        population: '',
+      },
+    };
+  }, {});
 };
 
 const handleSubmit = (
