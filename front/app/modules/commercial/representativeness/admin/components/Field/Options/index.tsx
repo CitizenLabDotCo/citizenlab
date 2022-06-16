@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, FormikActions, FormikErrors } from 'formik';
+import { Formik, FormikProps, FormikActions, FormikErrors } from 'formik';
 
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
@@ -46,8 +46,8 @@ const Options = ({ fieldId }: Props) => {
 
   if (isNilOrError(userCustomFieldOptions)) return null;
 
-  const renderFn = () => (
-    <>
+  const renderFn = ({ handleSubmit }: FormikProps<FormValues>) => (
+    <form onSubmit={handleSubmit}>
       {userCustomFieldOptions.map(({ id, attributes }) => (
         <>
           <Box pl="8px" display="flex" alignItems="center" width="50%">
@@ -63,7 +63,7 @@ const Options = ({ fieldId }: Props) => {
           </Box>
         </>
       ))}
-    </>
+    </form>
   );
 
   return (
