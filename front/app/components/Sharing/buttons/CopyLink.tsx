@@ -1,0 +1,33 @@
+import React from 'react';
+
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
+
+interface Props {
+  className?: string;
+  children: JSX.Element | JSX.Element[];
+}
+
+const CopyLink = ({
+  children,
+  className,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const handleClick = () => () => {
+    navigator.clipboard.writeText('Copied Text');
+  };
+
+  return (
+    <button
+      className={className}
+      onClick={handleClick()}
+      aria-label={formatMessage(messages.shareByLink)}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default injectIntl(CopyLink);

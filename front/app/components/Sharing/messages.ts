@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.Sharing.shareByEmail',
     defaultMessage: 'Share by email',
   },
+  shareByLink: {
+    id: 'app.components.Sharing.shareByLink',
+    defaultMessage: 'Copy link',
+  },
   shareThisInitiative: {
     id: 'app.components.Sharing.shareThisInitiative',
     defaultMessage: 'Share this initiative',

@@ -7,6 +7,7 @@ import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';
 import WhatsApp from '../buttons/WhatsApp';
 import Email from '../buttons/Email';
+import CopyLink from '../buttons/CopyLink';
 
 // i18n
 import messages from '../messages';
@@ -158,6 +159,19 @@ const Buttons = styled.div`
         background: ${(props: any) => darken(0.1, props.theme.colorMain)};
       }
     }
+
+    &.copylink {
+      color: #fff;
+      background: ${(props: any) => props.theme.colorMain};
+
+      ${StyledIcon} {
+        fill: #fff;
+      }
+
+      &:hover {
+        background: ${(props: any) => darken(0.1, props.theme.colorMain)};
+      }
+    }
   }
 `;
 
@@ -298,6 +312,19 @@ const SharingButtons = memo(
       </Twitter>
     );
 
+    const copylink = (
+      <CopyLink className={`sharingButton last copylink ${layoutClassName}`}>
+        <>
+          <StyledIcon ariaHidden name="link" />
+          {layout === 'columnLayout' && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.shareOnTwitter)}
+            </ButtonText>
+          )}
+        </>
+      </CopyLink>
+    );
+
     const email =
       emailSubject && emailBody ? (
         <Email
@@ -335,6 +362,7 @@ const SharingButtons = memo(
           {whatsapp}
           {twitter}
           {email}
+          {copylink}
         </Buttons>
       </Container>
     );
