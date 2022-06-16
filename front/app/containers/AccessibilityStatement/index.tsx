@@ -78,6 +78,8 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                     }}
                   />
                 </p>
+                <h2>{formatMessage(messages.publishDate)}</h2>
+                <p>{formatMessage(messages.publishDateIntro)}</p>
                 <h2>{formatMessage(messages.feedbackProcessTitle)}</h2>
                 <p>{formatMessage(messages.feedbackProcessIntro)}</p>
                 <ul>
@@ -90,7 +92,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   <li>
                     {formatMessage(messages.postalAddress)}{' '}
                     <address>
-                      {formatMessage(messages.citizenLabAddress)}
+                      {formatMessage(messages.citizenLabAddress2022)}
                     </address>
                   </li>
                 </ul>

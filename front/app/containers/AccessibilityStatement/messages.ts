@@ -108,12 +108,21 @@ export default defineMessages({
     id: 'app.containers.AccessibilityStatement.postalAddress',
     defaultMessage: 'Postal address:',
   },
-  citizenLabAddress: {
-    id: 'app.containers.AccessibilityStatement.citizenLabAddress',
-    defaultMessage: 'Boulevard Anspach 65, 1000 Brussels, Belgium',
+  citizenLabAddress2022: {
+    id: 'app.containers.AccessibilityStatement.citizenLabAddress2022',
+    defaultMessage: 'Boulevard Pachéco 34, 1000 Brussels, Belgium',
   },
   responsiveness: {
     id: 'app.containers.AccessibilityStatement.responsiveness',
     defaultMessage: 'We aim to respond to feedback within 1-2 business days.',
+  },
+  publishDate: {
+    id: 'app.containers.AccessibilityStatement.publishDate',
+    defaultMessage: 'Publish date',
+  },
+  publishDateIntro: {
+    id: 'app.containers.AccessibilityStatement.publishDateIntro',
+    defaultMessage:
+      'This accessibility statement was published on June 30, 2022.',
   },
 });
