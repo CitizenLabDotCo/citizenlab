@@ -334,9 +334,9 @@ ActiveRecord::Schema.define(version: 2022_06_14_135644) do
   end
 
   create_table "home_pages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.boolean "top_info_section_enabled", default: true, null: false
+    t.boolean "top_info_section_enabled", default: false, null: false
     t.jsonb "top_info_section_multiloc", default: {}, null: false
-    t.boolean "bottom_info_section_enabled", default: true, null: false
+    t.boolean "bottom_info_section_enabled", default: false, null: false
     t.jsonb "bottom_info_section_multiloc", default: {}, null: false
     t.boolean "events_enabled", default: false, null: false
     t.boolean "projects_enabled", default: true, null: false
@@ -357,6 +357,7 @@ ActiveRecord::Schema.define(version: 2022_06_14_135644) do
     t.string "cta_signed_out_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "header_bg"
   end
 
   create_table "id_id_card_lookup_id_cards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
