@@ -1352,6 +1352,7 @@
   "app.containers.admin.ContentBuilder.delete": "Izbriši",
   "app.containers.admin.ContentBuilder.error": "greška",
   "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
+  "app.containers.admin.ContentBuilder.iframeDescription": "Display content from an external website on your page in an HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Visina",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Visina iframe prozora.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "npr. 120 piksela",
