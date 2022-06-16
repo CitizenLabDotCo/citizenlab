@@ -8,6 +8,7 @@
 
 ### Fixed
 
+- [CL-966] Fixed issue with tabs stretching off the screen
 - [CL-908] Fix sheet names in excel exports.
 
 ## 2022-06-15
