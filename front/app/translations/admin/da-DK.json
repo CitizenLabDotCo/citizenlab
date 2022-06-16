@@ -1352,6 +1352,7 @@
   "app.containers.admin.ContentBuilder.delete": "Slet",
   "app.containers.admin.ContentBuilder.error": "fejl",
   "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
+  "app.containers.admin.ContentBuilder.iframeDescription": "Display content from an external website on your page in an HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Højde",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Højden af iframe-vinduet.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "f.eks. 120px",
