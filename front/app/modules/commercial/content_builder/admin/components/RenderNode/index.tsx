@@ -149,7 +149,7 @@ const RenderNode = ({ render }) => {
   const isSelectable = getComponentNameMessage(name) !== messages.default;
   const nodeLabelIsVisible =
     isActive && isSelectable && id !== ROOT_NODE && isDeletable;
-  const nodeIsHovered = isHover && id !== ROOT_NODE;
+  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
