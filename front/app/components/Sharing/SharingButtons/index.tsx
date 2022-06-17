@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
 // components
 import { Icon } from '@citizenlab/cl2-component-library';
@@ -48,6 +48,10 @@ const StyledIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: #fff;
+
+  &.Rotate45 {
+    transform: rotateY(0deg) rotate(-45deg);
+  }
 `;
 
 const Buttons = styled.div`
@@ -162,14 +166,14 @@ const Buttons = styled.div`
 
     &.copylink {
       color: #fff;
-      background: ${(props: any) => props.theme.colorMain};
+      background: ${colors.backgroundLightGrey};
 
       ${StyledIcon} {
-        fill: #fff;
+        fill: ${colors.grey};
       }
 
       &:hover {
-        background: ${(props: any) => darken(0.1, props.theme.colorMain)};
+        background: ${darken(0.1, colors.backgroundLightGrey)};
       }
     }
   }
@@ -180,6 +184,7 @@ const ButtonText = styled.span`
   font-weight: 400;
   line-height: normal;
   margin-left: 10px;
+  color: ${colors.grey};
 `;
 
 interface Props {
@@ -219,6 +224,8 @@ const SharingButtons = memo(
     utmParams,
     layout,
   }: Props & InjectedIntlProps) => {
+    const [linkIsCopied, setLinkCopied] = useState(false);
+
     const getUrl = (medium: Medium) => {
       return getUrlWithUtm(medium, url, utmParams);
     };
@@ -331,14 +338,20 @@ const SharingButtons = memo(
 
     const copylink = (
       <CopyLink
+        setLinkCopied={setLinkCopied}
         copyLink={url}
         className={`sharingButton last copylink ${layoutClassName}`}
       >
         <>
-          <StyledIcon ariaHidden name="link" />
-          {layout === 'columnLayout' && (
+          <StyledIcon className="Rotate45" ariaHidden name="link" />
+          {!linkIsCopied && (
             <ButtonText aria-hidden>
-              {formatMessage(messages.shareOnTwitter)}
+              {formatMessage(messages.shareByLink)}
+            </ButtonText>
+          )}
+          {linkIsCopied && (
+            <ButtonText aria-hidden>
+              {formatMessage(messages.linkCopied)}
             </ButtonText>
           )}
         </>
@@ -347,7 +360,7 @@ const SharingButtons = memo(
 
     const titleMessage = {
       idea: <FormattedMessage {...messages.share} />,
-      project: <FormattedMessage {...messages.share} />,
+      project: <FormattedMessage {...messages.shareThisProject} />,
       initiative: <FormattedMessage {...messages.shareThisInitiative} />,
       folder: <FormattedMessage {...messages.shareThisFolder} />,
     }[context];

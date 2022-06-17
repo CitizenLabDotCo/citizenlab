@@ -105,7 +105,7 @@ const Description = styled.p`
 const SharingWrapper = styled.div`
   flex-shrink: 0;
   width: 100%;
-  max-width: 300px;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
 `;

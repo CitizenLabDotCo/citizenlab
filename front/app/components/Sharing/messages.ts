@@ -41,4 +41,8 @@ export default defineMessages({
     id: 'app.components.Sharing.share',
     defaultMessage: 'Share',
   },
+  linkCopied: {
+    id: 'app.components.Sharing.linkCopied',
+    defaultMessage: 'Link copied',
+  },
 });

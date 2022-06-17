@@ -60,7 +60,6 @@ import GetAppConfiguration, {
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
 import clHistory from 'utils/cl-router/history';
-import { parse } from 'qs';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -357,10 +356,9 @@ export class InitiativesShow extends PureComponent<
   }
 
   componentDidMount() {
-    const queryParams = parse(clHistory.location.search, {
-      ignoreQueryPrefix: true,
-    });
-    const newInitiativeId = queryParams.new_initiative_id;
+    const queryParams = new URLSearchParams(window.location.search);
+    const newInitiativeId = queryParams.get('new_initiative_id');
+
     this.setLoaded();
     if (isString(newInitiativeId)) {
       setTimeout(() => {
@@ -703,7 +701,6 @@ export class InitiativesShow extends PureComponent<
         </>
       );
     }
-
     return (
       <>
         {!loaded && (

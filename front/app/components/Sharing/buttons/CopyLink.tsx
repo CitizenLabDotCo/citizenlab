@@ -9,9 +9,11 @@ interface Props {
   className?: string;
   children: JSX.Element | JSX.Element[];
   copyLink: string;
+  setLinkCopied: (bool: boolean) => void;
 }
 
 const CopyLink = ({
+  setLinkCopied,
   children,
   className,
   copyLink,
@@ -19,6 +21,7 @@ const CopyLink = ({
 }: Props & InjectedIntlProps) => {
   const handleClick = () => () => {
     navigator.clipboard.writeText(copyLink);
+    setLinkCopied(true);
   };
 
   return (
