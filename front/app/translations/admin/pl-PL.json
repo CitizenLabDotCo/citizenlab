@@ -592,6 +592,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "rok",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Miesiąc bazowy (opcjonalnie)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "Pole domyślne",
+  "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Please fill out all enabled options, or disable the options you want to omit from the graph.",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Liczba mieszkańców ogółem",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Opcje",
   "app.containers.AdminPage.DashboardPage.components.editBaseData": "Edycja danych podstawowych",
