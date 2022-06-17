@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::HomePagesController < ApplicationController
-  before_action :set_homepage
+  before_action :set_home_page
   skip_before_action :authenticate_user, only: %i[index show]
 
   def show

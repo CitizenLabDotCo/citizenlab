@@ -169,7 +169,7 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      resource :homepage, only: %i[show update]
+      resource :home_page, only: %i[show update]
 
       scope 'stats' do
         route_params = { controller: 'stats_users' }
