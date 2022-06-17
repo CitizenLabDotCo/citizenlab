@@ -37,6 +37,6 @@ class Pin < ApplicationRecord
   private
 
   def max_three_pins_per_page
-    errors.add(:admin_publication, :length, message: 'Maximum three pins per per page allowed') if Pin.where(page: page).count >= 3
+    errors.add(:admin_publication, message: 'Maximum three pins per per page allowed') if Pin.where(page: page).count >= 3
   end
 end
