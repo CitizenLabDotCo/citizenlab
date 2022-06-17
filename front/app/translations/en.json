@@ -559,6 +559,8 @@
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "We welcome your feedback on the accessibility of this site. Please contact us via one of the following methods:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedback process",
   "app.containers.AccessibilityStatement.intro2022": "{citizenLabLink} is committed to ensuring digital accessibility for people with disabilities. Current and relevant accessibility standards are applied in our on-going efforts to improve the user experience for all who visit and use our platforms.",
+  "app.containers.AccessibilityStatement.mapviewIdeas": "Map view of inputs",
+  "app.containers.AccessibilityStatement.mapviewIdeasException": "Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.",
   "app.containers.AccessibilityStatement.pageDescription": "A statement on the accessibility of this website",
   "app.containers.AccessibilityStatement.postalAddress": "Postal address:",
   "app.containers.AccessibilityStatement.publicationDate": "Publication date",
