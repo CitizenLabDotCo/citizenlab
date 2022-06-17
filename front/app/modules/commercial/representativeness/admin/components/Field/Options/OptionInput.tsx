@@ -1,5 +1,4 @@
 import React from 'react';
-import { Field } from 'formik';
 
 // components
 import { Text, Input } from '@citizenlab/cl2-component-library';
@@ -7,41 +6,22 @@ import { Text, Input } from '@citizenlab/cl2-component-library';
 // utils
 import { parsePopulationValue } from './utils';
 
-// typings
-import { OptionValue } from '.';
-
-interface FieldProps {
-  form: {
-    setFieldValue: (field: string, value: OptionValue) => void;
-    setStatus: (status: any) => void;
-    setFieldTouched: (field: string, isTouched?: boolean) => void;
-    setFieldError: (field: string, message: string) => void;
-  };
-  field: {
-    name: string;
-    value: OptionValue;
-  };
+interface Props {
+  value?: number;
+  onChange: (value?: number) => void;
 }
 
-const OptionInput = ({
-  form: { setFieldValue, setStatus, setFieldTouched, setFieldError },
-  field: { name, value },
-}: FieldProps) => {
+const OptionInput = ({ value, onChange }: Props) => {
   const handleChange = (stringValue: string) => {
-    const population = parsePopulationValue(stringValue);
+    const newValue = parsePopulationValue(stringValue);
 
-    if (population !== null) {
-      setFieldValue(name, { ...value, population });
-      setStatus('enabled');
-      setFieldTouched(name, true);
-      setFieldError(name, '');
+    if (newValue !== null) {
+      onChange(newValue);
     }
   };
 
-  const { population } = value;
-
   const formattedPopulation =
-    population === undefined ? '' : population.toLocaleString('en-US');
+    value === undefined ? '' : value.toLocaleString('en-US');
 
   return (
     <>
@@ -53,12 +33,4 @@ const OptionInput = ({
   );
 };
 
-interface Props {
-  optionId: string;
-}
-
-const OptionInputFormikWrapper = ({ optionId }: Props) => (
-  <Field name={`${optionId}`} component={OptionInput} />
-);
-
-export default OptionInputFormikWrapper;
+export default OptionInput;

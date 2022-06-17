@@ -9,4 +9,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.baseMonth',
     defaultMessage: 'Base month (optional)',
   },
+  options: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.options',
+    defaultMessage: 'Options',
+  },
+  numberOfTotalResidents: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents',
+    defaultMessage: 'Number of total residents',
+  },
 });
