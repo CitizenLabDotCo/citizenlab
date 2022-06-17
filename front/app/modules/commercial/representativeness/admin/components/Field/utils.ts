@@ -12,11 +12,11 @@ interface OptionValues {
 
 export type FormValues = Record<string, OptionValues>;
 
-export function getInitialValues(
+export const getInitialValues = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
   referenceDataUploaded: boolean,
   referenceDistribution: IReferenceDistributionData | NilOrError
-): FormValues | null {
+): FormValues | null => {
   if (referenceDataUploaded) {
     if (isNilOrError(referenceDistribution)) return null;
 
@@ -27,12 +27,12 @@ export function getInitialValues(
   }
 
   return getEmptyInitialValues(userCustomFieldOptions);
-}
+};
 
-function getInitialValuesFromDistribution(
+const getInitialValuesFromDistribution = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
   referenceDistribution: IReferenceDistributionData
-): FormValues {
+): FormValues => {
   const { distribution } = referenceDistribution.attributes;
 
   return userCustomFieldOptions.reduce((acc, { id }) => {
@@ -45,11 +45,11 @@ function getInitialValuesFromDistribution(
         : { enabled: false, population: undefined },
     };
   }, {});
-}
+};
 
-function getEmptyInitialValues(
+const getEmptyInitialValues = (
   userCustomFieldOptions: IUserCustomFieldOptionData[]
-): FormValues {
+): FormValues => {
   return userCustomFieldOptions.reduce(
     (acc, { id }) => ({
       ...acc,
@@ -57,13 +57,56 @@ function getEmptyInitialValues(
     }),
     {}
   );
-}
+};
 
-export function isSubmittingAllowed(formValues: FormValues) {
+export const isSubmittingAllowed = (formValues: FormValues) => {
   const anyOptionInvalid = Object.keys(formValues).some((optionId) => {
     const { enabled, population } = formValues[optionId];
     return enabled && population === undefined;
   });
 
   return !anyOptionInvalid;
-}
+};
+
+export const getSubmitAction = (
+  formValues: FormValues,
+  referenceDistribution: IReferenceDistributionData | NilOrError
+) => {
+  if (isNilOrError(referenceDistribution)) {
+    return 'create';
+  }
+
+  if (noChanges(formValues, referenceDistribution)) {
+    return null;
+  }
+
+  if (isEmpty(formValues)) {
+    return 'delete';
+  }
+
+  return 'replace';
+};
+
+const noChanges = (
+  formValues: FormValues,
+  referenceDistribution: IReferenceDistributionData
+) => {
+  const { distribution } = referenceDistribution.attributes;
+
+  const anyChanges = Object.keys(formValues).some((optionId) => {
+    const { population } = formValues[optionId];
+    const savedPopulation = distribution[optionId]?.count;
+
+    return savedPopulation !== population;
+  });
+
+  return !anyChanges;
+};
+
+const isEmpty = (formValues: FormValues) => {
+  const anyNotEmpty = Object.keys(formValues).some((optionId) => {
+    return formValues[optionId].population === undefined;
+  });
+
+  return !anyNotEmpty;
+};

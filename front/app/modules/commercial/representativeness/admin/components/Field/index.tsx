@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
 
+// services
+import {
+  createReferenceDistribution,
+  replaceReferenceDistribution,
+  deleteReferenceDistribution,
+} from '../../services/referenceDistribution';
+
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
 import useReferenceDistribution from '../../hooks/useReferenceDistribution';
@@ -68,6 +75,8 @@ const Field = ({
     });
   };
 
+  const onSubmit = () => {};
+
   return (
     <Accordion
       title={<FieldTitle titleMultiloc={titleMultiloc} isDefault={isDefault} />}
@@ -76,6 +85,7 @@ const Field = ({
         userCustomFieldId={userCustomFieldId}
         formValues={formValues}
         updateOption={updateOption}
+        onSubmit={onSubmit}
       />
     </Accordion>
   );

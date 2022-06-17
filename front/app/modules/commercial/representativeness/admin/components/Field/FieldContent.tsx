@@ -25,12 +25,14 @@ interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
   updateOption: UpdateOption;
+  onSubmit: () => void;
 }
 
 const FieldContent = ({
   userCustomFieldId,
   formValues,
   updateOption,
+  onSubmit,
 }: Props) => {
   const allowSubmit = isSubmittingAllowed(formValues);
 
@@ -65,7 +67,13 @@ const FieldContent = ({
         theme="dark"
       >
         <div>
-          <Button disabled={!allowSubmit} text="Save" mt="20px" width="auto" />
+          <Button
+            disabled={!allowSubmit}
+            text="Save"
+            mt="20px"
+            width="auto"
+            onClick={onSubmit}
+          />
         </div>
       </Tippy>
     </Box>
