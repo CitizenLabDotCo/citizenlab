@@ -9,9 +9,11 @@ import {
   canAccessRoute,
   isAdminRoute,
   MODERATOR_ROUTES,
+  isModeratorRoute,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
@@ -20,6 +22,13 @@ const canUserAccessAdminFolderRoute = (
 ) => {
   return (
     canAccessRoute(item, user, tenant) ||
+    (!isNilOrError(user) &&
+      isProjectFolderModerator(user.data) &&
+      isModeratorRoute(item)) ||
+    (!isNilOrError(user) &&
+      item.path.includes('folders') &&
+      user &&
+      isProjectFolderModerator(user.data)) ||
     (isAdminRoute(item.path) &&
       (user ? isProjectFolderModerator(user.data) : false) &&
       MODERATOR_ROUTES.includes(item.path))

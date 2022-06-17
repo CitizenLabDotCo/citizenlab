@@ -6,7 +6,6 @@ import {
   isAdmin,
   isModerator,
   isProjectModerator,
-  isProjectFolderModerator,
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
@@ -65,18 +64,7 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (
-      (isModerator(user) || isProjectFolderModerator(user)) &&
-      isModeratorRoute(item)
-    ) {
-      return true;
-    }
-
-    if (
-      item.path.includes('folders') &&
-      user &&
-      isProjectFolderModerator(user)
-    ) {
+    if (isModerator(user) && isModeratorRoute(item)) {
       return true;
     }
 
