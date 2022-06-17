@@ -1,6 +1,6 @@
 import { isNilOrError } from 'utils/helperUtils';
 import { IUserData, IRole } from 'services/users';
-import { isAdmin, userHasRole } from 'services/permissions/roles';
+import { isAdmin } from 'services/permissions/roles';
 
 declare module 'services/users' {
   type IProjectFolderModeratorRole = {
@@ -33,7 +33,7 @@ export function isProjectFolderModerator(
         role.project_folder_id === projectFolderId
       );
     } else {
-      return userHasRole({ data: user }, 'project_folder_moderator');
+      return role.type === 'project_folder_moderator';
     }
   });
 }
