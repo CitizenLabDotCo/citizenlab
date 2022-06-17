@@ -592,6 +592,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "Joer",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Basismount (optional)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "Default field",
+  "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Please fill out all enabled options, or disable the options you want to omit from the graph.",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Gesamtzuel vun Awunner",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Optiounen",
   "app.containers.AdminPage.DashboardPage.components.editBaseData": "Datesaz editéieren",
