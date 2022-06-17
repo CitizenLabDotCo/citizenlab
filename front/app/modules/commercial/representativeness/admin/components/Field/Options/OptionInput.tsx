@@ -9,10 +9,11 @@ import { parsePopulationValue } from './utils';
 interface Props {
   value?: number;
   percentage?: string;
+  disabled: boolean;
   onChange: (value?: number) => void;
 }
 
-const OptionInput = ({ value, percentage, onChange }: Props) => {
+const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
   const handleChange = (stringValue: string) => {
     const newValue = parsePopulationValue(stringValue);
 
@@ -31,6 +32,7 @@ const OptionInput = ({ value, percentage, onChange }: Props) => {
           type="text"
           value={formattedPopulation}
           onChange={handleChange}
+          disabled={disabled}
         />
       </Box>
       <Text width="30%" color="adminTextColor">

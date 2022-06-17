@@ -32,7 +32,11 @@ const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
 
   const onToggle = (optionId: string) => () => {
     const currentlyEnabled = formValues[optionId].enabled;
-    updateOption(optionId, { enabled: !currentlyEnabled });
+
+    updateOption(optionId, {
+      enabled: !currentlyEnabled,
+      population: undefined,
+    });
   };
 
   const onInput = (optionId: string) => (newPopulation: number) => {
@@ -57,7 +61,10 @@ const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
             <Box display="flex" alignItems="center" width="40%">
               <OptionInput
                 value={population}
-                percentage={parsePercentage(population, formValues)}
+                percentage={
+                  enabled ? parsePercentage(population, formValues) : undefined
+                }
+                disabled={!enabled}
                 onChange={onInput(id)}
               />
             </Box>
