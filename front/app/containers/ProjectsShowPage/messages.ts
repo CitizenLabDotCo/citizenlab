@@ -401,11 +401,11 @@ export default defineMessages({
   },
   emailSharingSubject: {
     id: 'app.containers.Projects.emailSharingSubject',
-    defaultMessage: 'Support my initiative: {initiativeTitle}.',
+    defaultMessage: 'Join the project: {projectName}.',
   },
   emailSharingBody: {
     id: 'app.containers.Projects.emailSharingBody',
     defaultMessage:
-      'What do you think of this initiative? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!',
+      'What do you think of this project? Join the discussion at {projectUrl} to make your voice heard!',
   },
 });
