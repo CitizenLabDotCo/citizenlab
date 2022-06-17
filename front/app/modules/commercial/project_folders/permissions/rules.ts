@@ -7,9 +7,9 @@ import { isProjectFolderModerator, moderatesFolder } from './roles';
 import { isAdmin } from 'services/permissions/roles';
 import {
   canAccessRoute,
+  isModeratorRoute,
   isAdminRoute,
   MODERATOR_ROUTES,
-  isModeratorRoute,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
@@ -20,15 +20,21 @@ const canUserAccessAdminFolderRoute = (
   user: IUser | null,
   tenant: IAppConfigurationData
 ) => {
+  const hasAdminFolderRouteAccess =
+    !isNilOrError(user) &&
+    isProjectFolderModerator(user.data) &&
+    // folder mods have the same
+    // access rights as project mods
+    // besides their respective folders/projects
+    (isModeratorRoute(item) || item.path.includes('folders'));
+
   return (
     canAccessRoute(item, user, tenant) ||
-    (!isNilOrError(user) &&
-      isProjectFolderModerator(user.data) &&
-      isModeratorRoute(item)) ||
-    (!isNilOrError(user) &&
-      item.path.includes('folders') &&
-      user &&
-      isProjectFolderModerator(user.data)) ||
+    hasAdminFolderRouteAccess ||
+    // To be refactored.
+    // Removing this at the moment, redirects
+    // a folder mod to the home page on refreshing a page
+    // the mod has access too.
     (isAdminRoute(item.path) &&
       (user ? isProjectFolderModerator(user.data) : false) &&
       MODERATOR_ROUTES.includes(item.path))
