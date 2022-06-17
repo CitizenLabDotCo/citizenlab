@@ -24,16 +24,15 @@ RSpec.describe Pin, type: :model do
   end
 
   it 'allows up to 3 pins per page' do
-    projects = create_list(:project, 4)
+    *first_three_projects, project_four = create_list(:project, 4)
 
-    pins = projects.map do |project|
-      described_class.new(page: home_page, admin_publication: project.admin_publication)
+    first_three_projects.each do |project|
+      described_class.create!(page: home_page, admin_publication: project.admin_publication)
     end
 
-    pins.take(3).each(&:save!)
+    pin_four = described_class.new(page: home_page, admin_publication: project_four.admin_publication)
 
-    pin_four = pins.last
     expect(pin_four).to be_invalid
-    expect(pin_two.errors[:admin_publication]).to eq(['Maximum three pins per per page allowed'])
+    expect(pin_four.errors[:admin_publication]).to eq(['Maximum three pins per per page allowed'])
   end
 end
