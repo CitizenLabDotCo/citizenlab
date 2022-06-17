@@ -19,7 +19,7 @@ type BreadcrumbsProps = {
 const SingleBreadcrumb = ({
   label,
   linkTo,
-  isCurrentPage,
+  isCurrentPage = false,
 }: SingleBreadcrumbProps) => {
   const SingleBreadcrumbWrapper = ({ children }) => {
     return (
