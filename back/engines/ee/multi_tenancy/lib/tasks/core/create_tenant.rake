@@ -53,6 +53,10 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
+        initiativeflow_social_sharing: {
+          enabled: true,
+          allowed: true
+        },
         idea_custom_fields: {
           enabled: true,
           allowed: true

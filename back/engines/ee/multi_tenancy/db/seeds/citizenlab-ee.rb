@@ -238,6 +238,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      initiativeflow_social_sharing: {
+        enabled: true,
+        allowed: true
+      },
       manual_emailing: {
         enabled: true,
         allowed: true
