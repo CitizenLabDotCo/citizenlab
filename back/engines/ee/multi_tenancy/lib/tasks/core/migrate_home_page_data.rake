@@ -32,7 +32,7 @@ namespace :fix_existing_tenants do
         style = config.style
 
         begin
-          if HomePage.all.count.positive?
+          if HomePage.first
             home_page = HomePage.first!
 
             if settings['events_widget'] && settings['events_widget']['enabled']
@@ -98,7 +98,6 @@ namespace :fix_existing_tenants do
               end
             end
 
-            
             if dry_run == true
               home_page.validate!
               puts "Validated HomePage: #{home_page.inspect}"
