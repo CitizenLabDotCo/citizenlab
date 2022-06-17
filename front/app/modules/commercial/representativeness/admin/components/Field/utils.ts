@@ -115,7 +115,7 @@ const noChanges = (
 
 const formIsEmpty = (formValues: FormValues) => {
   const anyNotEmpty = Object.keys(formValues).some((optionId) => {
-    return formValues[optionId].population === undefined;
+    return formValues[optionId].population !== undefined;
   });
 
   return !anyNotEmpty;
