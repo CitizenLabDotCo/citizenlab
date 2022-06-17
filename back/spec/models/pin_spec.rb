@@ -19,7 +19,21 @@ RSpec.describe Pin, type: :model do
     _pin_one = described_class.create!(page: home_page, admin_publication: project.admin_publication)
     pin_two = described_class.new(page: home_page, admin_publication: project.admin_publication)
 
-    expect(pin_two).not_to be_valid
+    expect(pin_two).to be_invalid
     expect(pin_two.errors[:admin_publication]).to eq(['has already been taken'])
+  end
+
+  it 'allows up to 3 pins per page' do
+    projects = create_list(:project, 4)
+
+    pins = projects.map do |project|
+      described_class.new(page: home_page, admin_publication: project.admin_publication)
+    end
+
+    pins.take(3).each(&:save!)
+
+    pin_four = pins.last
+    expect(pin_four).to be_invalid
+    expect(pin_two.errors[:admin_publication]).to eq(['Maximum three pins per per page allowed'])
   end
 end
