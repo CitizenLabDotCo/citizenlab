@@ -4,10 +4,15 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
 import Options from './Options';
+import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
 
 // styling
 import { colors } from 'utils/styleUtils';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   userCustomFieldId: string;
@@ -15,11 +20,16 @@ interface Props {
 }
 
 const FieldContent = ({ userCustomFieldId, allowSubmit }: Props) => (
-  <Box>
+  <Box
+    width="100%"
+    height="100%"
+    display="flex"
+    flexDirection="column"
+    alignItems="flex-start"
+  >
     <Box
-      background="#FCFCFC"
       width="100%"
-      height="100%"
+      background="#FCFCFC"
       border={`1px ${colors.separation} solid`}
       pt="20px"
       pb="12px"
@@ -29,7 +39,16 @@ const FieldContent = ({ userCustomFieldId, allowSubmit }: Props) => (
       <Options userCustomFieldId={userCustomFieldId} />
     </Box>
 
-    <Button disabled={!allowSubmit} />
+    <Tippy
+      content={<FormattedMessage {...messages.disallowSaveMessage} />}
+      disabled={allowSubmit}
+      placement="top"
+      theme="dark"
+    >
+      <div>
+        <Button disabled={!allowSubmit} text="Save" mt="20px" width="auto" />
+      </div>
+    </Tippy>
   </Box>
 );
 

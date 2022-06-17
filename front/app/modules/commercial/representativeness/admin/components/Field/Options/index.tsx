@@ -26,7 +26,7 @@ const Options = ({ userCustomFieldId }: Props) => {
   const noop = () => {};
 
   return (
-    <>
+    <Box>
       {userCustomFieldOptions.map(({ id, attributes }) => (
         <Box key={id} display="flex">
           <Box display="flex" alignItems="center" width="50%">
@@ -42,7 +42,7 @@ const Options = ({ userCustomFieldId }: Props) => {
           </Box>
         </Box>
       ))}
-    </>
+    </Box>
   );
 };
 
