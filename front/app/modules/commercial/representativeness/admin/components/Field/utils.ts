@@ -62,7 +62,14 @@ const getEmptyInitialValues = (
   );
 };
 
-export const isSubmittingAllowed = (formValues: FormValues) => {
+export const isSubmittingAllowed = (
+  formValues: FormValues,
+  referenceDistribution: IReferenceDistributionData | NilOrError
+) => {
+  if (formIsEmpty(formValues) && !isNilOrError(referenceDistribution)) {
+    return true;
+  }
+
   const anyOptionInvalid = Object.keys(formValues).some((optionId) => {
     const { enabled, population } = formValues[optionId];
     return enabled && population === undefined;
@@ -83,7 +90,7 @@ export const getSubmitAction = (
     return null;
   }
 
-  if (isEmpty(formValues)) {
+  if (formIsEmpty(formValues)) {
     return 'delete';
   }
 
@@ -106,7 +113,7 @@ const noChanges = (
   return !anyChanges;
 };
 
-const isEmpty = (formValues: FormValues) => {
+const formIsEmpty = (formValues: FormValues) => {
   const anyNotEmpty = Object.keys(formValues).some((optionId) => {
     return formValues[optionId].population === undefined;
   });
