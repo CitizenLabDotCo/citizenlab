@@ -11,9 +11,10 @@ import { colors } from 'utils/styleUtils';
 
 interface Props {
   userCustomFieldId: string;
+  allowSubmit: boolean;
 }
 
-const FieldContent = ({ userCustomFieldId }: Props) => (
+const FieldContent = ({ userCustomFieldId, allowSubmit }: Props) => (
   <Box>
     <Box
       background="#FCFCFC"
@@ -28,7 +29,7 @@ const FieldContent = ({ userCustomFieldId }: Props) => (
       <Options userCustomFieldId={userCustomFieldId} />
     </Box>
 
-    <Button />
+    <Button disabled={!allowSubmit} />
   </Box>
 );
 

@@ -58,3 +58,12 @@ function getEmptyInitialValues(
     {}
   );
 }
+
+export function allowSubmit(formValues: FormValues) {
+  const anyOptionInvalid = Object.keys(formValues).some((optionId) => {
+    const { enabled, population } = formValues[optionId];
+    return enabled && population === undefined;
+  });
+
+  return !anyOptionInvalid;
+}
