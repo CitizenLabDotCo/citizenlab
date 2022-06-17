@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import tracks from '../tracks';
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
@@ -14,6 +14,12 @@ import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';
 import WhatsApp from '../buttons/WhatsApp';
 import Email from '../buttons/Email';
+import CopyLink from '../buttons/CopyLink';
+
+// i18n
+import messages from '../messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -80,6 +86,14 @@ const EmailIcon = styled(Icon)`
   fill: ${colors.secondaryText};
 `;
 
+const CopyLinkIcon = styled(Icon)`
+  margin-right: 10px;
+  width: 22px;
+  height: 17px;
+  fill: ${colors.grey};
+  transform: rotateY(0deg) rotate(-45deg);
+`;
+
 interface Props {
   className?: string;
   url: string;
@@ -100,7 +114,10 @@ const SharingDropdownContent = ({
   emailSubject,
   twitterMessage,
   whatsAppMessage,
-}: Props) => {
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
+  const [linkIsCopied, setLinkCopied] = useState(false);
+
   const getUrl = (medium: Medium) => {
     return getUrlWithUtm(medium, url, utmParams);
   };
@@ -173,6 +190,24 @@ const SharingDropdownContent = ({
     </Email>
   );
 
+  const copylink = (
+    <CopyLink
+      setLinkCopied={setLinkCopied}
+      copyLink={url}
+      className={`sharingButton copylink`}
+    >
+      <>
+        <CopyLinkIcon ariaHidden name="link" />
+        {!linkIsCopied && (
+          <span aria-hidden>{formatMessage(messages.shareByLink)}</span>
+        )}
+        {linkIsCopied && (
+          <span aria-hidden>{formatMessage(messages.linkCopied)}</span>
+        )}
+      </>
+    </CopyLink>
+  );
+
   return (
     <Container id={id} className={className || ''}>
       {facebook}
@@ -180,8 +215,9 @@ const SharingDropdownContent = ({
       {whatsapp}
       {twitter}
       {email}
+      {copylink}
     </Container>
   );
 };
 
-export default SharingDropdownContent;
+export default injectIntl(SharingDropdownContent);
