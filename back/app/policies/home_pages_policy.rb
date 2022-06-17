@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HomePagePolicy < ApplicationPolicy
+class HomePagesPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 

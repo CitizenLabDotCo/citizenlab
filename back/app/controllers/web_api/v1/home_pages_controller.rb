@@ -21,18 +21,6 @@ class WebApi::V1::HomePagesController < ApplicationController
     end
   end
 
-#   assuming we don't need destroy since there's just one, it should only ever be updated
-#   def destroy
-#     @side_fx_service.before_destroy(@area, current_user)
-#     area = @area.destroy
-#     if area.destroyed?
-#       @side_fx_service.after_destroy(area, current_user)
-#       head :ok
-#     else
-#       head :internal_server_error
-#     end
-#   end
-
   private
 
   def set_home_page
@@ -41,10 +29,8 @@ class WebApi::V1::HomePagesController < ApplicationController
   end
 
   def home_page_params
-    # params.require(:homepage).permit(
-    #   :ordering,
-    #   title_multiloc: CL2_SUPPORTED_LOCALES,
-    #   description_multiloc: CL2_SUPPORTED_LOCALES
-    # )
+    params.require(:home_page).permit(
+      :top_info_section_enabled, :top_info_section_multiloc, :bottom_info_section_enabled, :bottom_info_section_multiloc, :events_enabled, :projects_enabled, :projects_header_multiloc, :banner_avatars_enabled, :banner_enabled, :banner_layout, :banner_signed_in_header_multiloc, :cta_signed_in_text_multiloc, :cta_signed_in_type, :cta_signed_in_url, :banner_signed_out_header_multiloc, :banner_signed_out_subheader_multiloc, :banner_signed_out_header_overlay_color, :banner_signed_out_header_overlay_opacity, :cta_signed_out_text_multiloc, :cta_signed_out_type, :cta_signed_out_url, :header_bg
+    )
   end
 end
