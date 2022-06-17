@@ -80,6 +80,16 @@ const ProjectFolderSharingModal = memo<
                       whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                         projectFolderName,
                       })}
+                      emailSubject={formatMessage(
+                        messages.emailSharingSubject,
+                        {
+                          projectFolderName: projectFolderName.toString(),
+                        }
+                      )}
+                      emailBody={formatMessage(messages.emailSharingBody, {
+                        folderUrl,
+                        projectFolderName,
+                      })}
                       utmParams={utmParams}
                       layout="columnLayout"
                     />
