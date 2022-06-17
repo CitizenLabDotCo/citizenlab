@@ -592,6 +592,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "jaar",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Basismaand (optioneel)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "Standaard",
+  "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Please fill out all enabled options, or disable the options you want to omit from the graph.",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Aantal totale inwoners",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Opties",
   "app.containers.AdminPage.DashboardPage.components.editBaseData": "Wijzig basisdataset",
