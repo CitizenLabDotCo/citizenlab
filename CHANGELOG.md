@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Changed
+
+- [CL-975] Social sharing options are now consistent across the platform, and a general "Copy link" option has been added.
+
 ## 2022-06-15
 
 ### Fixed
