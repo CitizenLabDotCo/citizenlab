@@ -592,6 +592,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "année",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Mois de base (facultatif)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "Champ par défaut",
+  "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Please fill out all enabled options, or disable the options you want to omit from the graph.",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Nombre total de résidents",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Options",
   "app.containers.AdminPage.DashboardPage.components.editBaseData": "Modifier les données de base",
