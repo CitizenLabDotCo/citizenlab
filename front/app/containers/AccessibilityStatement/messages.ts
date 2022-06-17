@@ -139,11 +139,11 @@ export default defineMessages({
   },
   mapviewIdeas: {
     id: 'app.containers.AccessibilityStatement.mapviewIdeas',
-    defaultMessage: 'Map view of ideas',
+    defaultMessage: 'Map view of inputs',
   },
   mapviewIdeasException: {
     id: 'app.containers.AccessibilityStatement.mapviewIdeasException',
     defaultMessage:
-      'Projects have the option to display ideas in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.',
+      'Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.',
   },
 });
