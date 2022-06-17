@@ -130,7 +130,7 @@ jobs:
     steps:
       # See https://github.com/presidentbeef/brakeman
       - run: bundle exec brakeman -A --no-exit-on-warn --no-exit-on-error -o brakeman_repport.html
-      - store_test_results:
+      - store_artifacts:
           path: brakeman_repport.html
 
   back-test:
