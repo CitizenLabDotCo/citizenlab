@@ -3,19 +3,25 @@
 # rubocop:disable Metrics/BlockLength
 namespace :fix_existing_tenants do
   desc 'Migrate the existing related data to home_pages record, and set related values as needed'
-  task migrate_home_page_data: [:environment] do
+  # Usage:
+  # Dry run (no changes): rake fix_existing_tenants:migrate_home_page_data
+  # Execute (changes): rake fix_existing_tenants:migrate_home_page_data['execute']
+  task :migrate_home_page_data, [:execute] => [:environment] do |_t, args|
+    args.with_defaults(execute: false)
+
     # Temporary way to kill logging when developing (to more closely match the production environment)
-    dev_null = Logger.new('/dev/null')
-    Rails.logger = dev_null
-    ActiveRecord::Base.logger = dev_null
+    # dev_null = Logger.new('/dev/null')
+    # Rails.logger = dev_null
+    # ActiveRecord::Base.logger = dev_null
+
+    dry_run = true unless args[:execute] == 'execute'
 
     n = Tenant.all.count
     successful = 0
     failed = 0
     errors = []
-    puts "\n" # Dev only
 
-    puts "Processing #{n} tenants..."
+    puts "\nProcessing #{n} tenants..."
     Tenant.all.each_with_index do |tenant, i|
       print "#{i + 1}). Processing tenant #{tenant.host}..."
 
@@ -92,9 +98,16 @@ namespace :fix_existing_tenants do
               end
             end
 
-            home_page.save!
+            
+            if dry_run == true
+              home_page.validate!
+              puts "Validated HomePage: #{home_page.inspect}"
+            else
+              home_page.save!
+              puts ' Success.'
+            end
+
             successful += 1
-            puts ' Success.'
           else
             failed += 1
             puts ' Error! no home_page record found.'
@@ -118,8 +131,6 @@ namespace :fix_existing_tenants do
         puts "#{error[:index] + 1}). #{error[:host]}: #{error[:message]}"
       end
     end
-
-    puts "\n" # Dev only
   end
 end
 
