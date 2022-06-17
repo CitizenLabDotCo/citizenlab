@@ -32,7 +32,7 @@ namespace :fix_existing_tenants do
         style = config.style
 
         begin
-          if HomePage.first
+          if HomePage.any?
             home_page = HomePage.first!
 
             if settings['events_widget'] && settings['events_widget']['enabled']
