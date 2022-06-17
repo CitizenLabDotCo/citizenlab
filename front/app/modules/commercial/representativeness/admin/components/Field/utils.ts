@@ -3,7 +3,10 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 // typings
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
-import { IReferenceDistributionData } from '../../services/referenceDistribution';
+import {
+  IReferenceDistributionData,
+  TUploadDistribution,
+} from '../../services/referenceDistribution';
 
 interface OptionValues {
   enabled: boolean;
@@ -109,4 +112,18 @@ const isEmpty = (formValues: FormValues) => {
   });
 
   return !anyNotEmpty;
+};
+
+export const parseFormValues = (
+  formValues: FormValues
+): TUploadDistribution => {
+  return Object.keys(formValues).reduce((acc, optionId) => {
+    const { population } = formValues[optionId];
+    if (population === undefined) return acc;
+
+    return {
+      ...acc,
+      [optionId]: population,
+    };
+  }, {});
 };

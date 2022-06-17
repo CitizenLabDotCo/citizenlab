@@ -18,7 +18,7 @@ import FieldContent from './FieldContent';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { getInitialValues } from './utils';
+import { getInitialValues, getSubmitAction, parseFormValues } from './utils';
 
 // typings
 import { Multiloc } from 'typings';
@@ -75,7 +75,21 @@ const Field = ({
     });
   };
 
-  const onSubmit = () => {};
+  const onSubmit = async () => {
+    const submitAction = getSubmitAction(formValues, referenceDistribution);
+    if (submitAction === null) return;
+
+    const newDistribution = parseFormValues(formValues);
+
+    switch (submitAction) {
+      case 'create':
+        await createReferenceDistribution(userCustomFieldId, newDistribution);
+      case 'replace':
+        await replaceReferenceDistribution(userCustomFieldId, newDistribution);
+      case 'delete':
+        await deleteReferenceDistribution(userCustomFieldId);
+    }
+  };
 
   return (
     <Accordion
