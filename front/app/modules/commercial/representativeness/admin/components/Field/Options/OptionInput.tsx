@@ -1,17 +1,18 @@
 import React from 'react';
 
 // components
-import { Text, Input } from '@citizenlab/cl2-component-library';
+import { Box, Text, Input } from '@citizenlab/cl2-component-library';
 
 // utils
 import { parsePopulationValue } from './utils';
 
 interface Props {
   value?: number;
+  percentage?: string;
   onChange: (value?: number) => void;
 }
 
-const OptionInput = ({ value, onChange }: Props) => {
+const OptionInput = ({ value, percentage, onChange }: Props) => {
   const handleChange = (stringValue: string) => {
     const newValue = parsePopulationValue(stringValue);
 
@@ -25,9 +26,15 @@ const OptionInput = ({ value, onChange }: Props) => {
 
   return (
     <>
-      <Input type="text" value={formattedPopulation} onChange={handleChange} />
-      <Text ml="16px" mr="24px" color="adminTextColor">
-        50%
+      <Box width="70%">
+        <Input
+          type="text"
+          value={formattedPopulation}
+          onChange={handleChange}
+        />
+      </Box>
+      <Text width="30%" color="adminTextColor">
+        <Box pl="20px">{percentage ?? ''}</Box>
       </Text>
     </>
   );

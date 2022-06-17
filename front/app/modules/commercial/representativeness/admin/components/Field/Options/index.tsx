@@ -10,6 +10,7 @@ import OptionInput from './OptionInput';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { parsePercentage } from './utils';
 
 // typings
 import { FormValues } from '../utils';
@@ -39,13 +40,13 @@ const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
   };
 
   return (
-    <Box>
+    <>
       {userCustomFieldOptions.map(({ id, attributes }) => {
         const { enabled, population } = formValues[id];
 
         return (
-          <Box key={id} display="flex">
-            <Box display="flex" alignItems="center" width="50%">
+          <Box key={id} display="flex" width="100%">
+            <Box display="flex" alignItems="center" width="60%">
               <Toggle checked={enabled} onChange={onToggle(id)} />
 
               <Text ml="12px" variant="bodyM" color="adminTextColor">
@@ -53,13 +54,17 @@ const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
               </Text>
             </Box>
 
-            <Box display="flex" alignItems="center" width="50%">
-              <OptionInput value={population} onChange={onInput(id)} />
+            <Box display="flex" alignItems="center" width="40%">
+              <OptionInput
+                value={population}
+                percentage={parsePercentage(population, formValues)}
+                onChange={onInput(id)}
+              />
             </Box>
           </Box>
         );
       })}
-    </Box>
+    </>
   );
 };
 

@@ -10,6 +10,7 @@ import {
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { sum, percentage } from 'utils/math';
 
 // typings
 import {
@@ -131,10 +132,6 @@ function useReferenceData(
 }
 
 export default useReferenceData;
-
-const sum = (values: number[]) => values.reduce((acc, v) => v + acc, 0);
-const percentage = (num: number, denom: number) =>
-  Math.round((num / denom) * 100);
 
 const toReferenceData = (
   usersByField: TStreamResponse

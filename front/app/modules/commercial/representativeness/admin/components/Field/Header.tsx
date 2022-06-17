@@ -10,22 +10,23 @@ import { InjectedIntlProps } from 'react-intl';
 
 const Header = ({ intl: { formatMessage } }: InjectedIntlProps) => (
   <Box display="flex">
-    <Box width="50%">
+    <Box width="60%">
       <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
         {formatMessage(messages.options).toUpperCase()}
       </Title>
     </Box>
-    <Box width="50%" display="flex" justifyContent="space-between">
-      <Title variant="h6" as="h4" mt="0px" mb="8px" color="label">
+    <Box width="40%" display="flex">
+      <Title width="70%" variant="h6" as="h4" mt="0px" mb="0px" color="label">
         {formatMessage(messages.numberOfTotalResidents).toUpperCase()}
       </Title>
       <Text
-        mr="44px"
+        width="30%"
         color="label"
         mt="0px"
         mb="0px"
         variant="bodyS"
         fontWeight="bold"
+        pl="20px"
       >
         %
       </Text>
