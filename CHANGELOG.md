@@ -1,5 +1,13 @@
 # Changelog
 
+## Next release
+
+### Added
+
+- Added brakeman and bundle-audit to CI.
+- Added Pry command aliases.
+- Added Rails console methods to switch tenants.
+
 ## 2022-06-16
 
 ### Added
