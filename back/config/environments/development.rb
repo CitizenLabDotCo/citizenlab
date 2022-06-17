@@ -113,8 +113,8 @@ Rails.application.configure do
     Object.include ConsoleMethods
     puts
     puts 'Available methods:'
-    puts '  `switch(tenant_name)` to switch to given tenant.'
-    puts '  `localhost` to switch to localhost tenant.'
+    puts '  `switch(tenant_name)`: switch to given tenant.'
+    puts '  `localhost`: switch to localhost.'
     puts
   end
   # rubocop:enable Rails/Output
