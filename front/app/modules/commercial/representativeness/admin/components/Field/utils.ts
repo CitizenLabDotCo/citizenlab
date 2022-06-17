@@ -10,7 +10,7 @@ interface OptionValues {
   population?: number;
 }
 
-type FormValues = Record<string, OptionValues>;
+export type FormValues = Record<string, OptionValues>;
 
 export function getInitialValues(
   userCustomFieldOptions: IUserCustomFieldOptionData[],
@@ -59,7 +59,7 @@ function getEmptyInitialValues(
   );
 }
 
-export function allowSubmit(formValues: FormValues) {
+export function isSubmittingAllowed(formValues: FormValues) {
   const anyOptionInvalid = Object.keys(formValues).some((optionId) => {
     const { enabled, population } = formValues[optionId];
     return enabled && population === undefined;

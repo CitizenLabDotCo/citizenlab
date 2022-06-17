@@ -14,42 +14,62 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// utils
+import { isSubmittingAllowed } from './utils';
+
+// typings
+import { FormValues } from './utils';
+import { UpdateOption } from '.';
+
 interface Props {
   userCustomFieldId: string;
-  allowSubmit: boolean;
+  formValues: FormValues;
+  updateOption: UpdateOption;
 }
 
-const FieldContent = ({ userCustomFieldId, allowSubmit }: Props) => (
-  <Box
-    width="100%"
-    height="100%"
-    display="flex"
-    flexDirection="column"
-    alignItems="flex-start"
-  >
+const FieldContent = ({
+  userCustomFieldId,
+  formValues,
+  updateOption,
+}: Props) => {
+  const allowSubmit = isSubmittingAllowed(formValues);
+
+  return (
     <Box
       width="100%"
-      background="#FCFCFC"
-      border={`1px ${colors.separation} solid`}
-      pt="20px"
-      pb="12px"
-      px="16px"
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="flex-start"
     >
-      <Header />
-      <Options userCustomFieldId={userCustomFieldId} />
-    </Box>
+      <Box
+        width="100%"
+        background="#FCFCFC"
+        border={`1px ${colors.separation} solid`}
+        pt="20px"
+        pb="12px"
+        px="16px"
+      >
+        <Header />
+        <Options
+          userCustomFieldId={userCustomFieldId}
+          formValues={formValues}
+          updateOption={updateOption}
+        />
+      </Box>
 
-    <Tippy
-      content={<FormattedMessage {...messages.disallowSaveMessage} />}
-      disabled={allowSubmit}
-      placement="top"
-      theme="dark"
-    >
-      <div>
-        <Button disabled={!allowSubmit} text="Save" mt="20px" width="auto" />
-      </div>
-    </Tippy>
-  </Box>
-);
+      <Tippy
+        content={<FormattedMessage {...messages.disallowSaveMessage} />}
+        disabled={allowSubmit}
+        placement="top"
+        theme="dark"
+      >
+        <div>
+          <Button disabled={!allowSubmit} text="Save" mt="20px" width="auto" />
+        </div>
+      </Tippy>
+    </Box>
+  );
+};
 
 export default FieldContent;

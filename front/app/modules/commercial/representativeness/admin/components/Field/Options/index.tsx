@@ -11,11 +11,17 @@ import OptionInput from './OptionInput';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// typings
+import { FormValues } from '../utils';
+import { UpdateOption } from '..';
+
 interface Props {
   userCustomFieldId: string;
+  formValues: FormValues;
+  updateOption: UpdateOption;
 }
 
-const Options = ({ userCustomFieldId }: Props) => {
+const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const localize = useLocalize();
 
@@ -23,25 +29,36 @@ const Options = ({ userCustomFieldId }: Props) => {
     return null;
   }
 
-  const noop = () => {};
+  const onToggle = (optionId: string) => () => {
+    const currentlyEnabled = formValues[optionId].enabled;
+    updateOption(optionId, { enabled: !currentlyEnabled });
+  };
+
+  const onInput = (optionId: string) => (newPopulation: number) => {
+    updateOption(optionId, { population: newPopulation });
+  };
 
   return (
     <Box>
-      {userCustomFieldOptions.map(({ id, attributes }) => (
-        <Box key={id} display="flex">
-          <Box display="flex" alignItems="center" width="50%">
-            <Toggle checked onChange={noop} />
+      {userCustomFieldOptions.map(({ id, attributes }) => {
+        const { enabled, population } = formValues[id];
 
-            <Text ml="12px" variant="bodyM" color="adminTextColor">
-              {localize(attributes.title_multiloc)}
-            </Text>
-          </Box>
+        return (
+          <Box key={id} display="flex">
+            <Box display="flex" alignItems="center" width="50%">
+              <Toggle checked={enabled} onChange={onToggle(id)} />
 
-          <Box display="flex" alignItems="center" width="50%">
-            <OptionInput onChange={noop} />
+              <Text ml="12px" variant="bodyM" color="adminTextColor">
+                {localize(attributes.title_multiloc)}
+              </Text>
+            </Box>
+
+            <Box display="flex" alignItems="center" width="50%">
+              <OptionInput value={population} onChange={onInput(id)} />
+            </Box>
           </Box>
-        </Box>
-      ))}
+        );
+      })}
     </Box>
   );
 };

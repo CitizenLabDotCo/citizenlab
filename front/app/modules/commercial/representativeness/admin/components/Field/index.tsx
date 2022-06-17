@@ -11,7 +11,7 @@ import FieldContent from './FieldContent';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { getInitialValues, allowSubmit } from './utils';
+import { getInitialValues } from './utils';
 
 // typings
 import { Multiloc } from 'typings';
@@ -29,6 +29,16 @@ interface InnerProps extends Props {
   referenceDistribution: IReferenceDistributionData | NilOrError;
   referenceDataUploaded: boolean;
 }
+
+interface IPartialOptionValues {
+  enabled?: boolean;
+  population?: number;
+}
+
+export type UpdateOption = (
+  optionId: string,
+  optionValues: IPartialOptionValues
+) => void;
 
 const Field = ({
   userCustomFieldId,
@@ -48,7 +58,15 @@ const Field = ({
 
   if (formValues === null) return null;
 
-  setFormValues;
+  const updateOption: UpdateOption = (optionId, optionValues) => {
+    setFormValues({
+      ...formValues,
+      [optionId]: {
+        ...formValues[optionId],
+        ...optionValues,
+      },
+    });
+  };
 
   return (
     <Accordion
@@ -56,7 +74,8 @@ const Field = ({
     >
       <FieldContent
         userCustomFieldId={userCustomFieldId}
-        allowSubmit={allowSubmit(formValues)}
+        formValues={formValues}
+        updateOption={updateOption}
       />
     </Accordion>
   );
