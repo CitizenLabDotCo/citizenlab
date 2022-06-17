@@ -112,7 +112,6 @@ namespace :fix_existing_tenants do
             failed += 1
             puts ' Error! no home_page record found.'
             errors << { index: i, host: host, message: 'has no home_page record.' }
-            break
           end
         rescue StandardError => e
           failed += 1
