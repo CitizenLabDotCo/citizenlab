@@ -3,7 +3,7 @@
 module ConsoleMethods
   def switch(tenant_name)
     Apartment::Tenant.switch! tenant_name
-    "Switched to tenant '#{Apartment::Tenant.current}'"
+    "Switched to tenant #{Apartment::Tenant.current}"
   end
 
   def localhost
