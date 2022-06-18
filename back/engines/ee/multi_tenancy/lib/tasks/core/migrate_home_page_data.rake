@@ -32,8 +32,7 @@ namespace :fix_existing_tenants do
         style = config.style
 
         begin
-          HomePage.create! if HomePage.none?
-          home_page = HomePage.first!
+          home_page = HomePage.first || HomePage.new
 
           if settings['events_widget'] && settings['events_widget']['enabled']
             home_page.events_enabled = settings['events_widget']['enabled']
@@ -74,8 +73,8 @@ namespace :fix_existing_tenants do
             home_page.cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
             if home_page.cta_signed_in_type == 'customized_button' &&
-                banner['cta_signed_in_customized_button']['text'] &&
-                banner['cta_signed_in_customized_button']['url']
+               banner['cta_signed_in_customized_button']['text'] &&
+               banner['cta_signed_in_customized_button']['url']
               home_page.cta_signed_in_text_multiloc = banner['cta_signed_in_customized_button']['text']
               home_page.cta_signed_in_url = banner['cta_signed_in_customized_button']['url']
             end
@@ -83,8 +82,8 @@ namespace :fix_existing_tenants do
             home_page.cta_signed_out_type = banner['cta_signed_out_type'] if banner['cta_signed_out_type']
 
             if home_page.cta_signed_out_type == 'customized_button' &&
-                banner['cta_signed_out_customized_button']['text'] &&
-                banner['cta_signed_out_customized_button']['url']
+               banner['cta_signed_out_customized_button']['text'] &&
+               banner['cta_signed_out_customized_button']['url']
               home_page.cta_signed_out_text_multiloc = banner['cta_signed_out_customized_button']['text']
               home_page.cta_signed_out_url = banner['cta_signed_out_customized_button']['url']
             end
