@@ -96,7 +96,7 @@ namespace :fix_existing_tenants do
             end
           end
 
-          if dry_run == true
+          if dry_run
             home_page.validate!
             puts "Validated HomePage: #{home_page.inspect}"
           else
