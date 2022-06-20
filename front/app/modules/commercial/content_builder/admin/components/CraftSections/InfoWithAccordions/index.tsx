@@ -1,6 +1,5 @@
 import React from 'react';
 
-// craft
 import { UserComponent } from '@craftjs/core';
 
 const InfoWithAccordions: UserComponent = ({ children }) => {

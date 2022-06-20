@@ -76,7 +76,35 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <ImageTextCards defaultText={formatMessage(messages.textValue)} />
+              <ImageTextCards>
+                <TwoColumn
+                  columnLayout="1-2"
+                  rightChildren={
+                    <Text text={formatMessage(messages.textValue)} />
+                  }
+                  leftChildren={<Image alt="" />}
+                  rightId="firstRight"
+                  leftId="firstLeft"
+                />
+                <TwoColumn
+                  columnLayout="1-2"
+                  rightChildren={
+                    <Text text={formatMessage(messages.textValue)} />
+                  }
+                  leftChildren={<Image alt="" />}
+                  rightId="secondRight"
+                  leftId="secondLeft"
+                />
+                <TwoColumn
+                  columnLayout="1-2"
+                  rightChildren={
+                    <Text text={formatMessage(messages.textValue)} />
+                  }
+                  leftChildren={<Image alt="" />}
+                  rightId="thirdRight"
+                  leftId="thirdLeft"
+                />
+              </ImageTextCards>
             )
           }
         >
