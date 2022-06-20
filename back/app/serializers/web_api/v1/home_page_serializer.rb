@@ -23,4 +23,6 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :cta_signed_out_type,
     :cta_signed_out_url,
     :header_bg
+
+  has_many :pinned_admin_publications
 end

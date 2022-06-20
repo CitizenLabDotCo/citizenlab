@@ -6,21 +6,17 @@ require 'rspec_api_documentation/dsl'
 resource 'Home Page' do
   explanation 'Test for home pages.'
 
+  let!(:home_page) { create(:home_page) }
+
   before do
     header 'Content-Type', 'application/json'
-    @homepage = create(:home_page, {
-      banner_signed_in_header_multiloc: {
-        en: 'testing',
-        'nl-BE': 'test title multiloc'
-      }
-    })
   end
 
   get 'web_api/v1/home_page' do
     example_request 'retrieve the single homepage for the tenant' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :banner_signed_in_header_multiloc, :'nl-BE')).to eq 'test title multiloc'
+      expect(json_response.dig(:data, :attributes, :banner_signed_in_header_multiloc, :'nl-BE')).to eq 'Welkom!'
     end
   end
 
@@ -55,10 +51,10 @@ resource 'Home Page' do
         parameter :events_enabled, 'if the events are enabled'
         # parameter :projects_enabled, 'if the banner is enabled'
         # parameter :projects_header_multiloc, 'if the banner is enabled'
+        parameter :pins_attributes, 'the pins to add'
       end
       ValidationErrorHelper.new.error_fields(self, HomePage)
 
-      let(:home_page) { create(:home_page) }
       let(:banner_enabled) { true }
       let(:events_enabled) { true }
 
@@ -66,6 +62,34 @@ resource 'Home Page' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :banner_enabled)).to be true
+      end
+
+      describe do
+        let(:admin_project_one) { create(:project) }
+        let(:admin_project_two) { create(:project) }
+        let(:pinned_admin_publications_attributes) do
+          [
+            {
+              admin_publication_id: admin_project_one.admin_publication.id,
+            },
+            {
+              admin_publication_id: admin_project_two.admin_publication.id,
+            },
+            {
+              id: admin_project_one.admin_publication.id,
+            },
+            {
+              id: admin_project_two.admin_publication.id,
+            }
+          ]
+        end
+
+        example_request 'Update pins to a page' do
+          json_response = json_parse(response_body)
+          puts json_response
+          expect(response_status).to eq 200
+          expect(json_response.dig(:data, :relationships, :pins, :data).length).to be 2
+        end
       end
     end
   end
