@@ -342,7 +342,7 @@ ActiveRecord::Schema.define(version: 2022_06_14_135644) do
     t.boolean "projects_enabled", default: true, null: false
     t.jsonb "projects_header_multiloc", default: {}, null: false
     t.boolean "banner_avatars_enabled", default: true, null: false
-    t.boolean "banner_enabled", default: true, null: false
+    t.boolean "customizable_homepage_banner", default: true, null: false
     t.string "banner_layout", default: "full_width_banner_layout", null: false
     t.jsonb "banner_signed_in_header_multiloc", default: {}, null: false
     t.jsonb "cta_signed_in_text_multiloc", default: {}, null: false

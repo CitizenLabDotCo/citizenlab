@@ -14,7 +14,7 @@
 #  projects_enabled                         :boolean          default(TRUE), not null
 #  projects_header_multiloc                 :jsonb            not null
 #  banner_avatars_enabled                   :boolean          default(TRUE), not null
-#  banner_enabled                           :boolean          default(TRUE), not null
+#  customizable_homepage_banner                           :boolean          default(TRUE), not null
 #  banner_layout                            :string           default("full_width_banner_layout"), not null
 #  banner_signed_in_header_multiloc         :jsonb            not null
 #  cta_signed_in_text_multiloc              :jsonb            not null
@@ -54,7 +54,7 @@ class HomePage < ApplicationRecord
   validates :projects_header_multiloc, multiloc: true
 
   validates :banner_avatars_enabled, inclusion: [true, false]
-  validates :banner_enabled, inclusion: [true, false]
+  validates :customizable_homepage_banner, inclusion: [true, false]
   validates :banner_layout, inclusion: %w[full_width_banner_layout two_column_layout two_row_layout]
   validates :banner_signed_in_header_multiloc, multiloc: true
 
