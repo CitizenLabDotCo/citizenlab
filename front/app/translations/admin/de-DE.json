@@ -590,7 +590,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.october": "Oktober",
   "app.containers.AdminPage.DashboardPage.components.DateSelects.september": "September",
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "Jahr",
-  "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "This item will not be calculated.",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "Dieser Posten wird nicht berechnet.",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Ausgangsmonat (optional)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "Standardfeld",
   "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Bitte füllen Sie alle aktivierten Optionen aus oder deaktivieren Sie die Optionen, die Sie nicht in der Grafik anzeigen lassen möchten.",
