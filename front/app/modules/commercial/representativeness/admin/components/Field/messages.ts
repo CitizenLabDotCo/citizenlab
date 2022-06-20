@@ -22,4 +22,16 @@ export default defineMessages({
     defaultMessage:
       'Please fill out all enabled options, or disable the options you want to omit from the graph.',
   },
+  saved: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.saved',
+    defaultMessage: 'Saved',
+  },
+  complete: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.complete',
+    defaultMessage: 'Complete',
+  },
+  incomplete: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.incomplete',
+    defaultMessage: 'Incomplete',
+  },
 });

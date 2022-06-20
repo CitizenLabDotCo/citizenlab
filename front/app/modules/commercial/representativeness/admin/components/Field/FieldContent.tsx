@@ -15,7 +15,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isFormCompleted } from './utils';
+import { isFormValid } from './utils';
 
 // typings
 import { FormValues } from './utils';
@@ -38,7 +38,7 @@ const FieldContent = ({
   updateOption,
   onSubmit,
 }: Props) => {
-  const allowSubmit = touched && isFormCompleted(formValues);
+  const allowSubmit = touched && isFormValid(formValues);
 
   return (
     <Box

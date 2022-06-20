@@ -62,8 +62,8 @@ const getEmptyInitialValues = (
   );
 };
 
-export const isFormCompleted = (formValues: FormValues) => {
-  if (formIsEmpty(formValues)) {
+export const isFormValid = (formValues: FormValues) => {
+  if (isFormEmpty(formValues)) {
     return true;
   }
 
@@ -95,7 +95,7 @@ export const getSubmitAction = (
     return null;
   }
 
-  if (formIsEmpty(formValues)) {
+  if (isFormEmpty(formValues)) {
     return 'delete';
   }
 
@@ -118,7 +118,7 @@ const noChanges = (
   return !anyChanges;
 };
 
-const formIsEmpty = (formValues: FormValues) => {
+const isFormEmpty = (formValues: FormValues) => {
   const anyNotEmpty = Object.keys(formValues).some((optionId) => {
     return formValues[optionId].population !== undefined;
   });
@@ -138,4 +138,48 @@ export const parseFormValues = (
       [optionId]: population,
     };
   }, {});
+};
+
+export type Status = 'saved' | 'complete' | 'incomplete';
+
+export const getStatus = (
+  formValues: FormValues,
+  referenceDistribution: IReferenceDistributionData | NilOrError,
+  touched: boolean
+): Status | null => {
+  if (isSaved(formValues, referenceDistribution, touched)) {
+    return 'saved';
+  }
+
+  if (isComplete(formValues, touched)) {
+    return 'complete';
+  }
+
+  if (isIncomplete(formValues, touched)) {
+    return 'incomplete';
+  }
+
+  return null;
+};
+
+const isSaved = (
+  formValues: FormValues,
+  referenceDistribution: IReferenceDistributionData | NilOrError,
+  touched: boolean
+) => {
+  if (touched) return false;
+
+  if (isNilOrError(referenceDistribution)) {
+    return false;
+  }
+
+  return noChanges(formValues, referenceDistribution);
+};
+
+const isComplete = (formValues: FormValues, touched: boolean) => {
+  return touched && !isFormEmpty(formValues) && isFormValid(formValues);
+};
+
+const isIncomplete = (formValues: FormValues, touched: boolean) => {
+  return touched && !isFormEmpty(formValues) && !isFormValid(formValues);
 };

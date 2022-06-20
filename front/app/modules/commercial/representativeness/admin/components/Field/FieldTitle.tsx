@@ -19,7 +19,8 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
-import { Multiloc } from 'typings';
+import { Multiloc, MessageDescriptor } from 'typings';
+import { Status } from './utils';
 
 const StyledStatusLabel = styled(StatusLabel)`
   color: ${colors.clGreyOnGreyBackground};
@@ -30,9 +31,24 @@ const StyledStatusLabel = styled(StatusLabel)`
 interface Props {
   titleMultiloc: Multiloc;
   isDefault: boolean;
+  status: Status | null;
 }
 
-const FieldTitle = ({ titleMultiloc, isDefault }: Props) => {
+const STATUS_MESSAGES: Record<Status, MessageDescriptor> = {
+  saved: messages.saved,
+  complete: messages.complete,
+  incomplete: messages.incomplete,
+};
+
+type StatusColor = 'clGreenSuccess' | 'label';
+
+const STATUS_COLORS: Record<Status, StatusColor> = {
+  saved: 'clGreenSuccess',
+  complete: 'clGreenSuccess',
+  incomplete: 'label',
+};
+
+const FieldTitle = ({ titleMultiloc, isDefault, status }: Props) => {
   const localize = useLocalize();
 
   return (
@@ -56,7 +72,11 @@ const FieldTitle = ({ titleMultiloc, isDefault }: Props) => {
         )}
       </Box>
 
-      <Text mt="0px" mb="0px" variant="bodyS" color="adminTextColor"></Text>
+      {status && (
+        <Text mt="0px" mb="0px" variant="bodyS" color={STATUS_COLORS[status]}>
+          <FormattedMessage {...STATUS_MESSAGES[status]} />
+        </Text>
+      )}
     </Box>
   );
 };

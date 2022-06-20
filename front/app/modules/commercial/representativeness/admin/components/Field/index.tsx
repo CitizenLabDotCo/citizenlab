@@ -18,7 +18,12 @@ import FieldContent from './FieldContent';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { getInitialValues, getSubmitAction, parseFormValues } from './utils';
+import {
+  getInitialValues,
+  getSubmitAction,
+  parseFormValues,
+  getStatus,
+} from './utils';
 
 // typings
 import { Multiloc } from 'typings';
@@ -101,9 +106,17 @@ const Field = ({
     setSubmitting(false);
   };
 
+  const status = getStatus(formValues, referenceDistribution, touched);
+
   return (
     <Accordion
-      title={<FieldTitle titleMultiloc={titleMultiloc} isDefault={isDefault} />}
+      title={
+        <FieldTitle
+          titleMultiloc={titleMultiloc}
+          isDefault={isDefault}
+          status={status}
+        />
+      }
     >
       <FieldContent
         userCustomFieldId={userCustomFieldId}

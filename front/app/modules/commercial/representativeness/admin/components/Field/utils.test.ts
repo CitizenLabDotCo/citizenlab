@@ -1,13 +1,19 @@
-import { isFormCompleted, getSubmitAction } from './utils';
+import { isFormValid, getSubmitAction, getStatus } from './utils';
 
-describe('isFormCompleted', () => {
+describe('isFormValid', () => {
   it('TODO', () => {
-    console.log(isFormCompleted);
+    console.log(isFormValid);
   });
 });
 
 describe('getSubmitAction', () => {
   it('TODO', () => {
     console.log(getSubmitAction);
+  });
+});
+
+describe('getStatus', () => {
+  it('TODO', () => {
+    console.log(getStatus);
   });
 });
