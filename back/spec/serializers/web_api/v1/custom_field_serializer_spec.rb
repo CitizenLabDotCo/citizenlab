@@ -23,7 +23,7 @@ describe WebApi::V1::CustomFieldSerializer do
     end
 
     it "should not contain the attribute 'enabled'" do
-      serialized_field = WebApi::V1::CustomFieldSerializer.new(field).serializable_hash
+      serialized_field = described_class.new(field).serializable_hash
       expect(serialized_field.dig(:data, :attributes)).to include(:enabled)
     end
   end
