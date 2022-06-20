@@ -1138,6 +1138,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Попуњавање овог упитника захтева верификацију вашег идентитета. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Упитник више није доступан, јер овај пројекат више није активан.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Потврдите свој идентитет.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
   "app.containers.SearchInput.removeSearchTerm": "Уклоните термин претраге",
   "app.containers.SearchInput.searchAriaLabel": "Претрага",
   "app.containers.SearchInput.searchLabel": "Претрага",
