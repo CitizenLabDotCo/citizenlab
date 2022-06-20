@@ -56,6 +56,7 @@ const Field = ({
   referenceDataUploaded,
 }: InnerProps) => {
   const [submitting, setSubmitting] = useState(false);
+  const [touched, setTouched] = useState(false);
   const [formValues, setFormValues] = useState(
     getInitialValues(
       userCustomFieldOptions,
@@ -74,9 +75,13 @@ const Field = ({
         ...optionValues,
       },
     });
+
+    setTouched(true);
   };
 
   const onSubmit = async () => {
+    setTouched(false);
+
     const submitAction = getSubmitAction(formValues, referenceDistribution);
     if (submitAction === null) return;
 
@@ -104,6 +109,7 @@ const Field = ({
         userCustomFieldId={userCustomFieldId}
         formValues={formValues}
         submitting={submitting}
+        touched={touched}
         updateOption={updateOption}
         onSubmit={onSubmit}
       />

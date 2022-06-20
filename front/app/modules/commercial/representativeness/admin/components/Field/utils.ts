@@ -62,7 +62,7 @@ const getEmptyInitialValues = (
   );
 };
 
-export const isSubmittingAllowed = (
+export const isFormCompleted = (
   formValues: FormValues,
   referenceDistribution: IReferenceDistributionData | NilOrError
 ) => {

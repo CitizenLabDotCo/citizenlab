@@ -18,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isSubmittingAllowed } from './utils';
+import { isFormCompleted } from './utils';
 
 // typings
 import { FormValues } from './utils';
@@ -28,6 +28,7 @@ interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
   submitting: boolean;
+  touched: boolean;
   updateOption: UpdateOption;
   onSubmit: () => void;
 }
@@ -36,11 +37,13 @@ const FieldContent = ({
   userCustomFieldId,
   formValues,
   submitting,
+  touched,
   updateOption,
   onSubmit,
 }: Props) => {
   const { referenceDistribution } = useReferenceDistribution(userCustomFieldId);
-  const allowSubmit = isSubmittingAllowed(formValues, referenceDistribution);
+  const allowSubmit =
+    touched && isFormCompleted(formValues, referenceDistribution);
 
   return (
     <Box
