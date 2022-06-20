@@ -1,8 +1,11 @@
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
+const getCustomFieldEndpoint = (userCustomFieldId: string) =>
+  `${API_PATH}/users/custom_fields/${userCustomFieldId}`;
+
 const getReferenceDistributionEndpoint = (userCustomFieldId: string) =>
-  `${API_PATH}/users/custom_fields/${userCustomFieldId}/reference_distribution`;
+  `${getCustomFieldEndpoint(userCustomFieldId)}/reference_distribution`;
 
 type TDistribution = Record<
   string,
@@ -37,14 +40,20 @@ export function referenceDistributionStream(userCustomFieldId: string) {
   });
 }
 
-export function createReferenceDistribution(
+export async function createReferenceDistribution(
   userCustomFieldId: string,
   distribution: TUploadDistribution
 ) {
-  return streams.add<IReferenceDistribution>(
+  const response = await streams.add<IReferenceDistribution>(
     getReferenceDistributionEndpoint(userCustomFieldId),
     { distribution }
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [getCustomFieldEndpoint(userCustomFieldId)],
+  });
+
+  return response;
 }
 
 export function replaceReferenceDistribution(
@@ -58,9 +67,15 @@ export function replaceReferenceDistribution(
   );
 }
 
-export function deleteReferenceDistribution(userCustomFieldId: string) {
-  return streams.delete(
+export async function deleteReferenceDistribution(userCustomFieldId: string) {
+  const response = await streams.delete(
     getReferenceDistributionEndpoint(userCustomFieldId),
     userCustomFieldId
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [getCustomFieldEndpoint(userCustomFieldId)],
+  });
+
+  return response;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // services
 import {
@@ -69,6 +69,23 @@ const Field = ({
       referenceDistribution
     )
   );
+
+  useEffect(() => {
+    if (formValues === null) {
+      setFormValues(
+        getInitialValues(
+          userCustomFieldOptions,
+          referenceDataUploaded,
+          referenceDistribution
+        )
+      );
+    }
+  }, [
+    formValues,
+    userCustomFieldOptions,
+    referenceDataUploaded,
+    referenceDistribution,
+  ]);
 
   if (formValues === null) return null;
 
