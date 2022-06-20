@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Tenant, type: :model do
-
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:tenant)).to be_valid
@@ -14,7 +13,7 @@ RSpec.describe Tenant, type: :model do
     it 'switches successfully into the tenant' do
       tenant = create(:tenant, host: 'unused.hostname.com')
       tenant.switch!
-      expect(Tenant.current).to eq(tenant)
+      expect(described_class.current).to eq(tenant)
     end
 
     it 'fails when the tenant is not persisted' do
@@ -26,36 +25,36 @@ RSpec.describe Tenant, type: :model do
   describe '#switch' do
     it 'runs the block in the tenant context' do
       tenant = create(:tenant, host: 'unused.hostname.com')
-      current_tenant = tenant.switch { Tenant.current }
+      current_tenant = tenant.switch { described_class.current }
       expect(current_tenant).to eq(tenant)
     end
 
     it 'fails if the tenant is not persisted' do
       tenant = build(:tenant, host: 'unused.hostname.com')
       expect do
-        tenant.switch { User.first}
+        tenant.switch { User.first }
       end.to raise_error(Apartment::TenantNotFound)
     end
   end
 
   describe '#current' do
     it 'works for tenants marked as deleted' do
-      Tenant.current.update(deleted_at: Time.now)
-      expect { Tenant.current }.not_to raise_error(ActiveRecord::RecordNotFound)
+      described_class.current.update(deleted_at: Time.zone.now)
+      expect { described_class.current }.not_to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
   describe 'deleted scope' do
     it 'returns deleted tenants' do
-      expect { Tenant.current.update(deleted_at: Time.now) }
-        .to change { Tenant.deleted.count }.by(1)
+      expect { described_class.current.update(deleted_at: Time.zone.now) }
+        .to change { described_class.deleted.count }.by(1)
     end
   end
 
   describe 'not_deleted scope' do
     it 'returns tenants that are not marked as deleted' do
-      expect { Tenant.current.update(deleted_at: Time.now) }
-        .to change { Tenant.not_deleted.count }.by(-1)
+      expect { described_class.current.update(deleted_at: Time.zone.now) }
+        .to change { described_class.not_deleted.count }.by(-1)
     end
   end
 
@@ -65,57 +64,57 @@ RSpec.describe Tenant, type: :model do
       create(:tenant, lifecycle: 'churned')
     end
 
-    specify { expect(Tenant.with_lifecycle('active').count).to eq(2) }
-    specify { expect(Tenant.churned.count).to eq(1) }
+    specify { expect(described_class.with_lifecycle('active').count).to eq(2) }
+    specify { expect(described_class.churned.count).to eq(1) }
   end
 
   describe 'Apartment tenant' do
     it 'is created on create' do
       host = 'something-else.com' # a different host than the default test tenant
       tenant = create(:tenant, host: host)
-      expect { Apartment::Tenant.switch!(tenant.schema_name) }.to_not raise_error(Apartment::TenantNotFound)
+      expect { Apartment::Tenant.switch!(tenant.schema_name) }.not_to raise_error(Apartment::TenantNotFound)
     end
 
     it 'is deleted on destroy' do
       t = create(:tenant, host: 'something.else-than-the-default-test-tenant')
-      expect(Apartment::Tenant).to receive(:drop).with(t.host.gsub(/\./, '_'))
+      expect(Apartment::Tenant).to receive(:drop).with(t.host.tr('.', '_'))
       t.destroy
     end
 
     it 'fails on a duplicate hostname' do
       create(:tenant)
-      expect(build(:tenant, host: Tenant.current.host)).to be_invalid
+      expect(build(:tenant, host: described_class.current.host)).to be_invalid
     end
   end
 
   describe 'The settings JSON schema' do
     it 'is a valid JSON schema' do
       metaschema = JSON::Validator.validator_for_name('draft4').metaschema
-      schema = Tenant.settings_json_schema
+      schema = described_class.settings_json_schema
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
   end
 
   describe 'Getting the current tenant' do
     it 'succeeds with the correct tenant' do
-      tenant = Tenant.find_by(host: 'example.org')
-      expect(Tenant.current).to match(tenant)
+      tenant = described_class.find_by(host: 'example.org')
+      expect(described_class.current).to match(tenant)
     end
   end
 
   describe 'Getting the settings of the current tenant' do
     it 'succeeds when the setting is available' do
-      expect(Tenant.settings('core', 'timezone')).to eq('Brussels')
+      expect(described_class.settings('core', 'timezone')).to eq('Brussels')
     end
 
     it 'raise an error when there is no current tenant' do
       Apartment::Tenant.switch('public') do
-        expect { Tenant.settings 'core', 'timezone' }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { described_class.settings 'core', 'timezone' }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     it 'returns nil when the setting does not exist' do
-      expect(Tenant.settings('core', 'gibberish')).to be_nil
+      expect(described_class.settings('core', 'gibberish')).to be_nil
     end
   end
 
@@ -147,7 +146,7 @@ RSpec.describe Tenant, type: :model do
 
     # An OmniAuth response (following SSO with, for example, Google) often includes a
     # 2 character locale code, which we try to match against our longer codes.
-    it "returns the first tenant locale containing a matching 2 character substring" do
+    it 'returns the first tenant locale containing a matching 2 character substring' do
       tenant.settings['core']['locales'] = %w[en nl-BE]
       expect(tenant.closest_locale_to('nl')).to eq 'nl-BE'
     end

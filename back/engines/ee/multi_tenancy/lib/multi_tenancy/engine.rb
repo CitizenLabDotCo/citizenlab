@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
-# rubocop:disable Lint/SuppressedException
 begin
   require 'factory_bot_rails'
 rescue LoadError
   # Ignoring
 end
-# rubocop:enable Lint/SuppressedException
-
 module MultiTenancy
   class Engine < ::Rails::Engine
     config.generators.api_only = true
@@ -24,6 +21,8 @@ module MultiTenancy
       end
     end
 
-    config.to_prepare(&method(:reload_extensions))
+    config.to_prepare do
+      MultiTenancy::Engine.reload_extensions
+    end
   end
 end

@@ -13,8 +13,9 @@ RSpec.describe MultiTenancy::Tenants::DeleteJob do
       end
 
       it 'runs after_destroy side effects' do
-        expect_any_instance_of(MultiTenancy::SideFxTenantService)
-          .to receive(:after_destroy).with(tenant)
+        service = instance_double(MultiTenancy::SideFxTenantService)
+        allow(MultiTenancy::SideFxTenantService).to receive(:new).and_return(service)
+        expect(service).to receive(:after_destroy).with(tenant)
         described_class.perform_now(tenant)
       end
     end

@@ -20,7 +20,7 @@ module MultiTenancy
             # What we want here is to jump directly to the grandparent class (CarrierWave::Uploader::Base)
             # Inspired from: https://stackoverflow.com/a/4557614/6668254
             unbound_meth = CarrierWave::Uploader::Base.instance_method(:asset_host)
-            unbound_meth.bind(self).call
+            unbound_meth.bind_call(self)
           end
         end
       end

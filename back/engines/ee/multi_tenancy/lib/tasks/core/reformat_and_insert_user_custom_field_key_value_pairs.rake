@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 require 'open-uri'
 
@@ -24,24 +26,24 @@ require 'open-uri'
 #   {} => {"postcode": "1234ab"}
 #   {"gender": "unspecified","birthyear": 1976} => {"gender": "unspecified","postcode": "1234ab","birthyear": 1976}
 
-# Note: This task will only succeed if all reformatted values match current options for the custom_field values.
+# NOTE: This task will only succeed if all reformatted values match current options for the custom_field values.
 # Also, it may be necessary to (temporarily) set custom registration fields to 'not required'
 # to succesfully run this task.
 # Remember to set them back to 'required' (especially on an active platform) after running this task.
 
 namespace :cl2_back do
-  desc "Reformat and insert key-value pairs to user custom_field_values hashes."
-  task :reformat_and_insert_user_custom_field_key_value_pairs, [:url, :host, :key] => [:environment] do |t, args|
+  desc 'Reformat and insert key-value pairs to user custom_field_values hashes.'
+  task :reformat_and_insert_user_custom_field_key_value_pairs, %i[url host key] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     count = 0
 
-    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       data.each do |d|
         user = User.find_by id: d['id']
         if user
           cfv = user.custom_field_values
-          cfv[args[:key]] = d['value'].gsub(' ', '').downcase
+          cfv[args[:key]] = d['value'].delete(' ').downcase
           user.update!(custom_field_values: cfv)
           count += 1
           puts "#{count}: custom_field_value inserted for user.id #{user.id}."
@@ -51,11 +53,11 @@ namespace :cl2_back do
         end
       end
 
-      unless errors.empty?
-        puts "Some errors occured!"
-        errors.each{|l| puts l}
-      else
+      if errors.empty?
         puts "Success! #{count} user #{args[:key]} custom_field_values inserted."
+      else
+        puts 'Some errors occured!'
+        errors.each { |l| puts l }
       end
     end
   end

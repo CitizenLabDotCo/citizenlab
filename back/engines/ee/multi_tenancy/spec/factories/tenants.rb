@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'faker'
 
 FactoryBot.define do
@@ -12,7 +14,7 @@ FactoryBot.define do
     settings { SettingsService.new.minimal_required_settings(locales: locales, lifecycle_stage: lifecycle) }
   end
 
-  factory :test_tenant, class: Tenant do
+  factory :test_tenant, class: 'Tenant' do
     name { 'test-tenant' }
     host { 'example.org' }
     settings do

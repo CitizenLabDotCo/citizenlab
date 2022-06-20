@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Updates authors of ideas OR comments. For use in setting up a demo platform.
-# 
+#
 # Expects url to refer to a CSV with a header row 'id,email' and the following values in the body rows:
 # <id of comment or idea>, <email of author to be assigned to comment>
 #
@@ -8,19 +10,20 @@
 #
 # Example: $ rake demos:update_authors_of_comments_or_ideas['idea','/ideas_new_authors.csv','superdemo-en.demo.citizenlab.co']
 namespace :demos do
-  desc "Update authors of comments or ideas"
-  task :update_authors_of_comments_or_ideas, [:type, :url, :host, :locale] => [:environment] do |t, args|
+  desc 'Update authors of comments or ideas'
+  task :update_authors_of_comments_or_ideas, %i[type url host locale] => [:environment] do |_t, args|
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     count = 0
 
-    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+    Apartment::Tenant.switch(args[:host].tr('.', '_')) do
       errors = []
       record = nil
 
       data.each do |d|
-        if args[:type] == 'idea'
+        case args[:type]
+        when 'idea'
           record = Idea.find_by id: d['id']
-        elsif args[:type] == 'comment'
+        when 'comment'
           record = Comment.find_by id: d['id']
         else
           errors += ["Unknown type #{args[:type]}"]
@@ -30,7 +33,7 @@ namespace :demos do
         if record
           if d['email'].present?
             author = User.find_by(email: d['email'])
-            
+
             if author
               if author.registration_completed_at.present?
                 record.author_id = author.id
@@ -56,8 +59,8 @@ namespace :demos do
         end
 
         unless errors.empty?
-          puts "Some errors occured!"
-          errors.each{ |e| puts e }
+          puts 'Some errors occured!'
+          errors.each { |e| puts e }
         end
 
         puts "#{count} records' authors updated."

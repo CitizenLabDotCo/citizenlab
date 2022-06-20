@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :fix_existing_tenants do
   desc 'Migrates finalized_at.'
   task :migrate_creation_finalized_at, [] => [:environment] do
@@ -8,7 +10,7 @@ namespace :fix_existing_tenants do
         tenant.save!
       end
     end
-    Tenant.not_deleted.where('created_at < ?', Time.parse('01-01-2021')).each do |tenant|
+    Tenant.not_deleted.where('created_at < ?', Time.zone.parse('01-01-2021')).each do |tenant|
       tenant.creation_finalized_at ||= tenant.created_at
       tenant.save!
     end

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 namespace :cl2back do
-  desc "Adds the initiatives page to all platforms"
-  task :add_initiatives_page => :environment do
+  desc 'Adds the initiatives page to all platforms'
+  task add_initiatives_page: :environment do
     multiloc_service = MultilocService.new
 
     Tenant.all.each do |tenant|
@@ -9,14 +11,14 @@ namespace :cl2back do
         StaticPage.create!(
           slug: 'initiatives',
           title_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_title'),
-          body_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_body'),
+          body_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_body')
         )
       end
     end
   end
 
-  desc "Updates the initiatives page on all platforms"
-  task :update_initiatives_page => :environment do
+  desc 'Updates the initiatives page on all platforms'
+  task update_initiatives_page: :environment do
     multiloc_service = MultilocService.new
 
     Tenant.all.each do |tenant|
@@ -26,14 +28,14 @@ namespace :cl2back do
         if page
           page.update!(
             title_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_title'),
-            body_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_body'),
+            body_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_body')
           )
         else
           puts "No initiatives page found for tenant #{tenant.name}, creating it instead"
           StaticPage.create!(
             slug: 'initiatives',
             title_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_title'),
-            body_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_body'),
+            body_multiloc: multiloc_service.i18n_to_multiloc('static_pages.initiatives_body')
           )
         end
       end

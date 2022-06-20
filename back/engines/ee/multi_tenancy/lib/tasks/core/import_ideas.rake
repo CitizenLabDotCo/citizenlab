@@ -30,9 +30,10 @@ namespace :cl2_back do
       next unless key.include? '_'
 
       field, locale = key.split '_'
-      if field == 'Title'
+      case field
+      when 'Title'
         title_multiloc[locale] = value
-      elsif field == 'Body'
+      when 'Body'
         body_multiloc[locale] = value
       end
     end

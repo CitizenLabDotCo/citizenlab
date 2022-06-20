@@ -10,7 +10,7 @@ module MultiTenancy
       def activity_traits(activity)
         tenant_tracker = TrackingTenantService.new
         super.merge(tenant_tracker.environment_properties)
-             .merge(tenant_tracker.tenant_properties)
+          .merge(tenant_tracker.tenant_properties)
       end
 
       def tenant_traits(tenant)
