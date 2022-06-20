@@ -111,13 +111,16 @@ const Field = ({
 
     const newDistribution = parseFormValues(formValues);
 
-    switch (submitAction) {
-      case 'create':
-        await createReferenceDistribution(userCustomFieldId, newDistribution);
-      case 'replace':
-        await replaceReferenceDistribution(userCustomFieldId, newDistribution);
-      case 'delete':
-        await deleteReferenceDistribution(userCustomFieldId);
+    if (submitAction === 'create') {
+      await createReferenceDistribution(userCustomFieldId, newDistribution);
+    }
+
+    if (submitAction === 'replace') {
+      await replaceReferenceDistribution(userCustomFieldId, newDistribution);
+    }
+
+    if (submitAction === 'delete') {
+      await deleteReferenceDistribution(userCustomFieldId);
     }
 
     setSubmitting(false);
