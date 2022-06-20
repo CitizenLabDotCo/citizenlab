@@ -401,7 +401,7 @@ export default defineMessages({
   },
   emailSharingSubject: {
     id: 'app.containers.Projects.emailSharingSubject',
-    defaultMessage: 'Join the project: {projectName}.',
+    defaultMessage: '{projectName}: join the discussion',
   },
   emailSharingBody: {
     id: 'app.containers.Projects.emailSharingBody',
