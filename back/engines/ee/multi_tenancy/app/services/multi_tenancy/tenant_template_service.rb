@@ -302,6 +302,7 @@ module MultiTenancy
     def resolve_template(template_name, external_subfolder: 'release')
       if template_name.is_a? String
         raise 'Unknown template' unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
+
         internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
         if File.exist? internal_path
           YAML.load open(internal_path).read
