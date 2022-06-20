@@ -45,7 +45,9 @@ const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
         )}
       </Box>
       <Text width="30%" color="adminTextColor">
-        <Box pl="20px">{percentage ?? ''}</Box>
+        <Box as="span" pl="20px">
+          {percentage ?? ''}
+        </Box>
       </Text>
     </>
   );
