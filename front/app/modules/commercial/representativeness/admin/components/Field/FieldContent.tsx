@@ -27,6 +27,7 @@ import { UpdateOption } from '.';
 interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
+  submitting: boolean;
   updateOption: UpdateOption;
   onSubmit: () => void;
 }
@@ -34,6 +35,7 @@ interface Props {
 const FieldContent = ({
   userCustomFieldId,
   formValues,
+  submitting,
   updateOption,
   onSubmit,
 }: Props) => {
@@ -73,6 +75,7 @@ const FieldContent = ({
         <div>
           <Button
             disabled={!allowSubmit}
+            processing={submitting}
             text="Save"
             mt="20px"
             width="auto"

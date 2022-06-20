@@ -55,6 +55,7 @@ const Field = ({
   referenceDistribution,
   referenceDataUploaded,
 }: InnerProps) => {
+  const [submitting, setSubmitting] = useState(false);
   const [formValues, setFormValues] = useState(
     getInitialValues(
       userCustomFieldOptions,
@@ -79,6 +80,8 @@ const Field = ({
     const submitAction = getSubmitAction(formValues, referenceDistribution);
     if (submitAction === null) return;
 
+    setSubmitting(true);
+
     const newDistribution = parseFormValues(formValues);
 
     switch (submitAction) {
@@ -89,6 +92,8 @@ const Field = ({
       case 'delete':
         await deleteReferenceDistribution(userCustomFieldId);
     }
+
+    setSubmitting(false);
   };
 
   return (
@@ -98,6 +103,7 @@ const Field = ({
       <FieldContent
         userCustomFieldId={userCustomFieldId}
         formValues={formValues}
+        submitting={submitting}
         updateOption={updateOption}
         onSubmit={onSubmit}
       />
