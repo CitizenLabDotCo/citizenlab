@@ -62,11 +62,8 @@ const getEmptyInitialValues = (
   );
 };
 
-export const isFormCompleted = (
-  formValues: FormValues,
-  referenceDistribution: IReferenceDistributionData | NilOrError
-) => {
-  if (formIsEmpty(formValues) && !isNilOrError(referenceDistribution)) {
+export const isFormCompleted = (formValues: FormValues) => {
+  if (formIsEmpty(formValues)) {
     return true;
   }
 
@@ -75,7 +72,15 @@ export const isFormCompleted = (
     return enabled && population === undefined;
   });
 
-  return !anyOptionInvalid;
+  const allOptionsValid = !anyOptionInvalid;
+
+  const numberOfOptionsFilledOut = Object.keys(formValues)
+    .map((optionId) => formValues[optionId])
+    .filter(
+      ({ population, enabled }) => enabled && population !== undefined
+    ).length;
+
+  return allOptionsValid && numberOfOptionsFilledOut > 1;
 };
 
 export const getSubmitAction = (
