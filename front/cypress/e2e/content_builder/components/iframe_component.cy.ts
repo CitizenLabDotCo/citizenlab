@@ -23,14 +23,12 @@ describe('Content builder Iframe component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -44,7 +42,6 @@ describe('Content builder Iframe component', () => {
       'saveContentBuilder'
     );
     // Add iframe with valid url
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });

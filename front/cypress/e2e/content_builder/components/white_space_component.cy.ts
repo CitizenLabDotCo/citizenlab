@@ -23,10 +23,9 @@ describe('Content builder White space component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
@@ -42,7 +41,7 @@ describe('Content builder White space component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+
     cy.get('#e2e-draggable-white-space').dragAndDrop(
       '#e2e-content-builder-frame',
       {

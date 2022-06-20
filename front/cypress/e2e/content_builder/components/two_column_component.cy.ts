@@ -23,14 +23,12 @@ describe('Content builder Two Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -43,7 +41,6 @@ describe('Content builder Two Column component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-two-column').dragAndDrop(
       '#e2e-content-builder-frame',
       {
