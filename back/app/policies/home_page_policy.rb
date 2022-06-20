@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HomePagesPolicy < ApplicationPolicy
+class HomePagePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -19,18 +19,18 @@ class HomePagesPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && user&.admin? && user&.super_admin?
+    user&.active? && user&.admin?
   end
 
-#   def destroy?
-    # update?
-#   end
+  #   def destroy?
+  # update?
+  #   end
 
-#   def reorder?
-    # update?
-#   end
+  #   def reorder?
+  # update?
+  #   end
 
-#   def permitted_attributes_for_reorder
-    # [:ordering]
-#   end
+  #   def permitted_attributes_for_reorder
+  # [:ordering]
+  #   end
 end
