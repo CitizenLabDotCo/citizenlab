@@ -7,7 +7,7 @@ const getCustomFieldEndpoint = (userCustomFieldId: string) =>
 const getReferenceDistributionEndpoint = (userCustomFieldId: string) =>
   `${getCustomFieldEndpoint(userCustomFieldId)}/reference_distribution`;
 
-type TDistribution = Record<
+export type TDistribution = Record<
   string,
   {
     count: number;

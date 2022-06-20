@@ -88,7 +88,8 @@ export const getSubmitAction = (
   referenceDistribution: IReferenceDistributionData | NilOrError
 ) => {
   if (isNilOrError(referenceDistribution)) {
-    return 'create';
+    if (!isFormEmpty(formValues)) return 'create';
+    return null;
   }
 
   if (noChanges(formValues, referenceDistribution)) {
