@@ -590,6 +590,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.october": "oktober",
   "app.containers.AdminPage.DashboardPage.components.DateSelects.september": "september",
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "år",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "This item will not be calculated.",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Grundmåned (valgfri)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "Standardfelt",
   "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Please fill out all enabled options, or disable the options you want to omit from the graph.",
