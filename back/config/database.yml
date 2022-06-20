@@ -96,3 +96,9 @@ production:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_production') %>
 
+# Analytics
+#development_analytics:
+#  <<: *default
+#  host: cl-postgres-analytics
+#  database: <%= ENV.fetch("POSTGRES_DB_ANALYTICS", 'cl2_analytics') %>
+#  schema_search_path: public,shared_extensions
