@@ -52,11 +52,7 @@ class WebApi::V1::HomePagesController < ApplicationController
       :cta_signed_out_type,
       :cta_signed_out_url,
       :header_bg,
-      pinned_admin_publications_attributes: [
-        :id,
-        :admin_publication_id,
-        :_destroy
-      ]
+      pinned_admin_publication_ids: []
     )
   end
 end

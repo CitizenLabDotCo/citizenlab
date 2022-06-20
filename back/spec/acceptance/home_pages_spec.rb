@@ -51,7 +51,7 @@ resource 'Home Page' do
         parameter :events_enabled, 'if the events are enabled'
         # parameter :projects_enabled, 'if the banner is enabled'
         # parameter :projects_header_multiloc, 'if the banner is enabled'
-        parameter :pins_attributes, 'the pins to add'
+        parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end
       ValidationErrorHelper.new.error_fields(self, HomePage)
 
@@ -65,30 +65,17 @@ resource 'Home Page' do
       end
 
       describe do
-        let(:admin_project_one) { create(:project) }
-        let(:admin_project_two) { create(:project) }
-        let(:pinned_admin_publications_attributes) do
-          [
-            {
-              admin_publication_id: admin_project_one.admin_publication.id,
-            },
-            {
-              admin_publication_id: admin_project_two.admin_publication.id,
-            },
-            {
-              id: admin_project_one.admin_publication.id,
-            },
-            {
-              id: admin_project_two.admin_publication.id,
-            }
-          ]
+        let(:project_one) { create(:project) }
+        let(:project_two) { create(:project) }
+        let(:pinned_admin_publication_ids) do
+          [project_one.admin_publication.id, project_two.admin_publication.id]
         end
 
         example_request 'Update pins to a page' do
           json_response = json_parse(response_body)
           puts json_response
           expect(response_status).to eq 200
-          expect(json_response.dig(:data, :relationships, :pins, :data).length).to be 2
+          expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
         end
       end
     end

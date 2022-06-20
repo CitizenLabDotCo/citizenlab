@@ -22,7 +22,8 @@ class WebApi::V1::HomePageSerializer < WebApi::V1::BaseSerializer
     :cta_signed_out_text_multiloc,
     :cta_signed_out_type,
     :cta_signed_out_url,
-    :header_bg
+    :header_bg,
+    :pinned_admin_publication_ids
 
   has_many :pinned_admin_publications
 end
