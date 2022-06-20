@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
 namespace :fix_existing_tenants do
   desc 'Migrate the existing related data to home_pages record, and set related values as needed'
   # Usage:
@@ -26,7 +25,7 @@ namespace :fix_existing_tenants do
       print "#{i + 1}). Processing tenant #{tenant.host}..."
 
       Apartment::Tenant.switch(tenant.schema_name) do
-        host = tenant.schema_name.gsub('_', '.')
+        host = tenant.schema_name.tr('_', '.')
         config = AppConfiguration.first
         settings = config.settings
         style = config.style
@@ -124,5 +123,3 @@ namespace :fix_existing_tenants do
     end
   end
 end
-
-# rubocop:enable Metrics/BlockLength
