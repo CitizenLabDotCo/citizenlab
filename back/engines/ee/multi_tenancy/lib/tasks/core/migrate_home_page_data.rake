@@ -35,7 +35,7 @@ namespace :fix_existing_tenants do
           home_page = HomePage.first || HomePage.new
 
           if settings['events_widget'] && settings['events_widget']['enabled']
-            home_page.events_enabled = settings['events_widget']['enabled']
+            home_page.events_widget = settings['events_widget']['enabled']
           end
 
           if settings['core']['currently_working_on_text']
@@ -68,7 +68,7 @@ namespace :fix_existing_tenants do
 
           if settings['customizable_homepage_banner']
             banner = settings['customizable_homepage_banner']
-            home_page.banner_enabled = banner['enabled'] if banner['enabled']
+            home_page.customizable_homepage_banner = banner['enabled'] if banner['enabled']
             home_page.banner_layout = banner['layout'] if banner['layout']
             home_page.cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
