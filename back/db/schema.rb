@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_10_072149) do
+ActiveRecord::Schema.define(version: 2022_06_14_135644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -833,6 +833,16 @@ ActiveRecord::Schema.define(version: 2022_06_10_072149) do
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
+  create_table "pins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "admin_publication_id", null: false
+    t.string "page_type", null: false
+    t.uuid "page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["admin_publication_id"], name: "index_pins_on_admin_publication_id"
+    t.index ["page_id", "admin_publication_id"], name: "index_pins_on_page_id_and_admin_publication_id", unique: true
+  end
+
   create_table "polls_options", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "question_id"
     t.jsonb "title_multiloc", default: {}, null: false
@@ -1265,6 +1275,7 @@ ActiveRecord::Schema.define(version: 2022_06_10_072149) do
   add_foreign_key "official_feedbacks", "users"
   add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
+  add_foreign_key "pins", "admin_publications"
   add_foreign_key "polls_options", "polls_questions", column: "question_id"
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
