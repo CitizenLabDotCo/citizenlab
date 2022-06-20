@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe 'JsonFormsService user overrides' do
-  let(:service) { JsonFormsService.new }
+describe JsonFormsService do
+  let(:service) { described_class.new }
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:locale) { 'en' }
   let(:user) { create(:user) }

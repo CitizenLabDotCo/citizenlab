@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxEventService do
-  let(:service) { SideFxEventService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:event) { create(:event) }
 

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SettingsService do
-  let(:ss) { SettingsService.new }
+  let(:ss) { described_class.new }
   let(:schema1) do
     {
       'properties' => {

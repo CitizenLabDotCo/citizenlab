@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ProjectFilePolicy do
-  subject { ProjectFilePolicy.new(user, file) }
+  subject { described_class.new(user, file) }
 
   let(:scope) { ProjectFilePolicy::Scope.new(user, project.project_files) }
 

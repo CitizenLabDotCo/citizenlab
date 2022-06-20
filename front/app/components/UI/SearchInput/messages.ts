@@ -13,14 +13,6 @@ export default defineMessages({
     id: 'app.containers.SearchInput.removeSearchTerm',
     defaultMessage: 'Remove search term',
   },
-  a11y_searchTerm: {
-    id: 'app.containers.SearchInput.a11y_searchTerm',
-    defaultMessage: 'Search term: {searchTerm}',
-  },
-  a11y_searchTermBlank: {
-    id: 'app.containers.SearchInput.a11y_searchTermBlank',
-    defaultMessage: 'Search term: blank',
-  },
   searchTerm: {
     id: 'app.containers.SearchInput.searchTerm',
     defaultMessage: 'Search term: {searchTerm}',
@@ -28,5 +20,10 @@ export default defineMessages({
   searchLabel: {
     id: 'app.containers.SearchInput.searchLabel',
     defaultMessage: 'Search',
+  },
+  a11y_searchResultsHaveChanged: {
+    id: 'app.containers.SearchInput.a11y_searchResultsHaveChanged',
+    defaultMessage:
+      '{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.',
   },
 });

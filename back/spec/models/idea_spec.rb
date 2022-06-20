@@ -83,7 +83,7 @@ RSpec.describe Idea, type: :model do
       ]
       create(:official_feedback, post: ideas[0])
 
-      expect(Idea.feedback_needed.ids).to match_array [ideas[2].id]
+      expect(described_class.feedback_needed.ids).to match_array [ideas[2].id]
     end
   end
 
@@ -141,17 +141,17 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'sorts from new to old by default' do
-      time_serie = Idea.order_new.pluck(:published_at)
+      time_serie = described_class.order_new.pluck(:published_at)
       expect(time_serie).to eq time_serie.sort.reverse
     end
 
     it 'sorts from new to old when asking desc' do
-      time_serie = Idea.order_new(:desc).pluck(:published_at)
+      time_serie = described_class.order_new(:desc).pluck(:published_at)
       expect(time_serie).to eq time_serie.sort.reverse
     end
 
     it 'sorts from old to new when asking asc' do
-      time_serie = Idea.order_new(:asc).pluck(:published_at)
+      time_serie = described_class.order_new(:asc).pluck(:published_at)
       expect(time_serie).to eq time_serie.sort
     end
   end
@@ -165,32 +165,32 @@ RSpec.describe Idea, type: :model do
     end
 
     it 'sorts from popular to unpopular by default' do
-      score_serie = Idea.order_popular.map(&:score)
+      score_serie = described_class.order_popular.map(&:score)
       expect(score_serie).to eq score_serie.sort.reverse
     end
 
     it 'sorts from popular to unpopular when asking desc' do
-      score_serie = Idea.order_popular(:desc).map(&:score)
+      score_serie = described_class.order_popular(:desc).map(&:score)
       expect(score_serie).to eq score_serie.sort.reverse
     end
 
     it 'sorts from unpopular to popular when asking asc' do
-      score_serie = Idea.order_popular(:asc).map(&:score)
+      score_serie = described_class.order_popular(:asc).map(&:score)
       expect(score_serie).to eq score_serie.sort
     end
   end
 
   describe 'order_status' do
     it 'sorts from high status to low status when asked desc' do
-      status_sorted = Idea.order_status(:desc).map(&:id)
-      expect(status_sorted).to eq Idea.all.sort_by { |idea| idea.idea_status.ordering }.map(&:id).reverse
+      status_sorted = described_class.order_status(:desc).map(&:id)
+      expect(status_sorted).to eq described_class.all.sort_by { |idea| idea.idea_status.ordering }.map(&:id).reverse
     end
   end
 
   describe 'idea search' do
     it 'should return results with exact prefixes' do
       create(:idea, title_multiloc: { 'nl-BE' => 'Bomen in het park' })
-      srx_results = Idea.all.search_by_all 'Bomen'
+      srx_results = described_class.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
   end

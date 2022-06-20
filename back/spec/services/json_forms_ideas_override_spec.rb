@@ -2,8 +2,13 @@
 
 require 'rails_helper'
 
-describe 'JsonFormsService ideas overrides' do
-  let(:service) { JsonFormsService.new }
+# The following specs are WIP and not implemented, and currently just serve as
+# documentation for the expected behavior of the API output. It's not sure that
+# this behavior should be implemented as a part of the JsonFormsService, it
+# could also be done outside, so they're likely to turn into acceptance tests
+
+describe JsonFormsService do
+  let(:service) { described_class.new }
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:locale) { 'en' }
   let(:project) { create(:project) }

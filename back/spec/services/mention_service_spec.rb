@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe MentionService do
-  let(:service) { MentionService.new }
+  let(:service) { described_class.new }
 
   describe 'extract_mentions' do
     it "return an empty array when there's no mention" do
