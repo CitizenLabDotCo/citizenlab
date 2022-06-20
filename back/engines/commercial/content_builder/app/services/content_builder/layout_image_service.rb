@@ -6,7 +6,7 @@ module ContentBuilder
 
     def image_elements(content)
       content.select do |key, elt|
-        key != 'ROOT' && elt.dig('type', 'resolvedName') == 'Image'
+        key != 'ROOT' && elt.is_a?(Hash) && elt['type'].is_a?(Hash) && elt.dig('type', 'resolvedName') == 'Image'
       end.values.pluck('props')
     end
 
