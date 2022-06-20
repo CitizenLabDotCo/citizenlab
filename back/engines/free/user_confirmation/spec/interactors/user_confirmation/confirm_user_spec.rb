@@ -13,13 +13,6 @@ RSpec.describe UserConfirmation::ConfirmUser do
     UserConfirmation::SendConfirmationCode.call(user: user)
   end
 
-  context 'when the email confirmation code is correct' do
-    before do
-      context[:user] = user
-      context[:code] = context[:user].email_confirmation_code
-    end
-  end
-
   context 'when the user is nil' do
     before do
       context[:code] = '1234'

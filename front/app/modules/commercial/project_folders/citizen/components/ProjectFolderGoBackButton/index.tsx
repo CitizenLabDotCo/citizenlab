@@ -31,6 +31,7 @@ const GoBackButton = memo(({ projectFolderId, className }: Props) => {
         buttonStyle="text"
         iconSize="26px"
         padding="0"
+        whiteSpace="wrap"
         textDecorationHover="underline"
       >
         {localize(projectFolder.attributes.title_multiloc)}

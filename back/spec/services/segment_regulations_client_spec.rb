@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe SegmentRegulationsClient do
-  subject(:service) { SegmentRegulationsClient.new(authorization_token: token) }
+  subject(:service) { described_class.new(authorization_token: token) }
 
   let(:token) { 'dummy-authorization-token' }
 

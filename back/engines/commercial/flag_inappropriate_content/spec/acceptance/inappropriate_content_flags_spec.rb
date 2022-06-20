@@ -27,10 +27,10 @@ resource 'Inappropriate content flags' do
     let(:id) { flag.id }
 
     example 'Mark a flag as deleted' do
-      expect(flag.deleted?).to be_falsey
+      expect(flag.deleted?).to be false
       do_request
       expect(status).to be 200
-      expect(flag.reload.deleted?).to be_truthy
+      expect(flag.reload.deleted?).to be true
     end
   end
 
@@ -39,10 +39,10 @@ resource 'Inappropriate content flags' do
     let(:id) { flag.id }
 
     example 'Re-introduce a deleted flag' do
-      expect(flag.deleted?).to be_truthy
+      expect(flag.deleted?).to be true
       do_request
       expect(status).to be 200
-      expect(flag.reload.deleted?).to be_falsey
+      expect(flag.reload.deleted?).to be false
     end
   end
 end

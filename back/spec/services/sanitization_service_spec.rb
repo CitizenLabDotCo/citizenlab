@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SanitizationService do
-  let(:service) { SanitizationService.new }
+  let(:service) { described_class.new }
 
   describe 'sanitize' do
     it 'always allows paragraphs and breaks to pass through' do

@@ -394,7 +394,10 @@ const InputsTable = ({
   return (
     <Inputs data-testid="insightsInputsTable">
       <SearchContainer>
-        <SearchInput onChange={onSearch} />
+        <SearchInput
+          onChange={onSearch}
+          a11y_numberOfSearchResults={inputs.length}
+        />
         <Box display="flex" alignItems="center">
           {inputs.length > 0 && nlpFeatureFlag && status === 'isIdle' && (
             <Box alignItems="center" mr="16px">

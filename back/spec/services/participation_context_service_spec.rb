@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ParticipationContextService do
-  let(:service) { ParticipationContextService.new }
+  let(:service) { described_class.new }
 
   describe 'participation_possible_for_context?' do
     let(:no_participation_attributes) do
