@@ -60,7 +60,7 @@ describe TrackSegmentService do
       expect(SEGMENT_CLIENT).to receive(:track) do |event|
         expect(event[:properties]).to match(hash_including(
           cl2_cluster: 'local',
-          **expected_tenant_props,
+          **expected_tenant_props
         ))
       end
 

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 
 namespace :checks do
-  desc "Check if there are any invalid instances and print a report"
-  task :invalid_data => :environment do
+  desc 'Check if there are any invalid instances and print a report'
+  task invalid_data: :environment do
     issues = {}
     summary = { durations: {}, issues: {} }
 
@@ -18,15 +19,18 @@ namespace :checks do
       end
     end
 
-    Tenant.select do |tenant|
-      tenant.settings.dig('core', 'lifecycle_stage') == 'active' || tenant.host.ends_with?(ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost'))
-    end.each do |tenant|
+    active_tenants = Tenant.select do |tenant|
+      tenant.settings.dig('core',
+        'lifecycle_stage') == 'active' || tenant.host.ends_with?(ENV.fetch('TEMPLATE_URL_SUFFIX', '.localhost'))
+    end
+    active_tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Processing #{tenant.host}..."
-        Cl2DataListingService.new.cl2_schema_leaf_models.select do |claz|
-          !skip_class_for_inconsistent_data_checking? claz
-        end.each do |claz|
-          t1 = Time.now
+        schema_leaf_models = Cl2DataListingService.new.cl2_schema_leaf_models.reject do |claz|
+          skip_class_for_inconsistent_data_checking? claz
+        end
+        schema_leaf_models.each do |claz|
+          t1 = Time.zone.now
           claz.all.find_each do |object|
             errors = validation_errors object
             if errors
@@ -37,14 +41,13 @@ namespace :checks do
               claz_issues[object.id] = errors
             end
           end
-          t2 = Time.now
+          t2 = Time.zone.now
           summary[:durations][claz.name] ||= 0
           summary[:durations][claz.name] += (t2 - t1)
         end
       end
     end
 
-    
     issues.each do |host, host_issues|
       host_issues.each do |classname, classissues|
         classissues.each do |id, attributeerrors|
@@ -52,7 +55,7 @@ namespace :checks do
             errors.each do |error|
               msg = error[:error]
               error_type = "#{classname}_#{attribute}_#{msg}"
-              summary[:issues][error_type] ||= {count: 0, hosts: {}}
+              summary[:issues][error_type] ||= { count: 0, hosts: {} }
               summary[:issues][error_type][:count] += 1
               summary[:issues][error_type][:hosts] ||= {}
               summary[:issues][error_type][:hosts][host] ||= []
@@ -65,26 +68,29 @@ namespace :checks do
 
     if issues.present?
       puts JSON.pretty_generate summary
-      fail 'Some data is invalid.'
+      raise 'Some data is invalid.'
     else
       puts 'Success!'
     end
   end
 
-  def validation_errors object
-    return object.errors.details if !object.valid?
-    if object.class.name == 'User' && !object.custom_field_values.values.select{|v| v.class == Array ? v.include?(nil) : v.nil?}.empty?
-      return { custom_field_values: [{ error: "Contains null values", value: object.custom_field_values }] }
+  def validation_errors(object)
+    return object.errors.details unless object.valid?
+
+    if object.instance_of?(User) && !object.custom_field_values.values.select do |v|
+         v.instance_of?(Array) ? v.include?(nil) : v.nil?
+       end.empty?
+      { custom_field_values: [{ error: 'Contains null values', value: object.custom_field_values }] }
     end
   end
 
-  def skip_class_for_inconsistent_data_checking? claz
+  def skip_class_for_inconsistent_data_checking?(claz)
     # Skip checking for less crucial classes that require
     # a lot of processing.
     return true if claz.name == 'EmailCampaigns::Delivery'
     return true if claz.name.starts_with? 'Notifications::'
     return true if claz.name == 'CommonPassword'
+
     false
   end
-
 end

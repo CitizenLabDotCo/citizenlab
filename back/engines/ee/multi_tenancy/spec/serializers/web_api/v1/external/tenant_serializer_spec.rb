@@ -4,7 +4,6 @@ require 'rails_helper'
 
 # Regression tests
 describe 'WebApi::V1::External::TenantSerializer' do
-
   let(:serialized_tenant) do
     { id: Tenant.current.id,
       name: 'test-tenant',
@@ -31,7 +30,7 @@ describe 'WebApi::V1::External::TenantSerializer' do
             'days_limit' => 90,
             'voting_threshold' => 300,
             'eligibility_criteria' => { 'en' => 'Eligibility criteria' },
-            'threshold_reached_message' => { 'en' => 'Threshold reached' } },
+            'threshold_reached_message' => { 'en' => 'Threshold reached' } }
       },
       style: {},
       logo: { 'small' => nil, 'medium' => nil, 'large' => nil },

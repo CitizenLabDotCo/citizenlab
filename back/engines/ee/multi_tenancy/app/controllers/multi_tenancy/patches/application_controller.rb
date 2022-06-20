@@ -23,7 +23,7 @@ module MultiTenancy
       end
 
       def tenant_not_found
-        head 404
+        head :not_found
       end
     end
   end

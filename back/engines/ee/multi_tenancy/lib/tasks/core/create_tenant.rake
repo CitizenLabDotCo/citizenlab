@@ -319,7 +319,7 @@ namespace :cl2_back do
     Apartment::Tenant.switch tenant.schema_name do
       side_fx_tenant.around_apply_template(tenant, tenant_template) do
         MultiTenancy::TenantTemplateService.new.resolve_and_apply_template tenant_template,
-                                                                           external_subfolder: 'release'
+          external_subfolder: 'release'
       end
       User.create!(
         roles: [{ type: 'admin' }],
@@ -328,7 +328,7 @@ namespace :cl2_back do
         email: 'hello@citizenlab.co',
         password: 'democrazy',
         locale: tenant.settings.dig('core', 'locales')&.first || 'en',
-        registration_completed_at: Time.now
+        registration_completed_at: Time.zone.now
       )
     end
 

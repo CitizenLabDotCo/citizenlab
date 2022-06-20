@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module MultiTenancy
   class ApplyTenantTemplateJob < ApplicationJob
     queue_as :default
     perform_retries false
 
-    def run template, tenant
+    def run(template, tenant)
       side_fx_tenant = MultiTenancy::SideFxTenantService.new
 
       side_fx_tenant.before_apply_template tenant, template

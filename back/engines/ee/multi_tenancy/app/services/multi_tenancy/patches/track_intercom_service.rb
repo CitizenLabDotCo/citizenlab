@@ -21,7 +21,7 @@ module MultiTenancy
       def activity_attributes(activity)
         tracking_service = TrackingTenantService.new
         super.merge(tracking_service.tenant_properties)
-             .merge(tracking_service.environment_properties)
+          .merge(tracking_service.environment_properties)
       end
 
       def tenant_attributes(tenant)

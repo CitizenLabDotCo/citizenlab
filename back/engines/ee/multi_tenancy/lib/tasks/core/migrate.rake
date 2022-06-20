@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :migrate do
   desc 'Define the default confirmation required value for existing users'
   task confirmation_required: %i[environment] do |_t, _args|

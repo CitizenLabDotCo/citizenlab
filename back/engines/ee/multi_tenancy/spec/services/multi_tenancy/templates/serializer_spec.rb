@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe MultiTenancy::Templates::Serializer do
@@ -37,7 +39,7 @@ describe MultiTenancy::Templates::Serializer do
       template = serializer.run
 
       admin_publication_attributes = template.dig('models',
-                                                  'project_folders/folder').first['admin_publication_attributes']
+        'project_folders/folder').first['admin_publication_attributes']
       expect(admin_publication_attributes).to be_present
       template.dig('models', 'project').each do |pj|
         expect(pj.dig('admin_publication_attributes', 'parent_ref')).to eq admin_publication_attributes

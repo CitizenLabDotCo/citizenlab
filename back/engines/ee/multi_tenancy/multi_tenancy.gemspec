@@ -9,6 +9,7 @@ require 'multi_tenancy/version'
 Gem::Specification.new do |spec|
   spec.name        = 'multi_tenancy'
   spec.version     = MultiTenancy::VERSION
+  spec.required_ruby_version = '>= 2.7.5'
   spec.authors     = ['Adrien Dessy']
   spec.licenses    = ['CitizenLab Commercial License V1']
   spec.email       = ['adrien@citizenlab.co']
@@ -19,4 +20,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'actionpack-cloudfront', '~> 1.2.0'
   spec.add_dependency 'rails', '~> 6.1'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
+
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'rubocop-performance'
+  spec.add_development_dependency 'rubocop-rails'
+  spec.add_development_dependency 'rubocop-rspec'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end

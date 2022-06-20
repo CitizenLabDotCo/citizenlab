@@ -45,18 +45,15 @@ class Tenant < ApplicationRecord
     end
   end
 
+  after_initialize :custom_initialization
+  before_validation :validate_missing_feature_dependencies
+  before_validation :ensure_style
   after_create :create_apartment_tenant
   after_create :create_app_configuration, if: :auto_config
 
-  after_destroy :delete_apartment_tenant
-
   after_update :update_tenant_schema, if: :saved_change_to_host?
   after_update :update_app_configuration, if: :config_sync_enabled
-
-  after_initialize :custom_initialization
-
-  before_validation :validate_missing_feature_dependencies
-  before_validation :ensure_style
+  after_destroy :delete_apartment_tenant
 
   scope :deleted, -> { where.not(deleted_at: nil) }
   scope :not_deleted, -> { where(deleted_at: nil) }
@@ -146,14 +143,9 @@ class Tenant < ApplicationRecord
     configuration.cleanup_settings
   end
 
-  def feature_activated?(f)
+  def feature_activated?(feature)
     ActiveSupport::Deprecation.warn('Tenant#feature_activated is deprecated. Use AppConfiguration#feature_activated? instead.')
-    configuration.feature_activated?(f)
-  end
-
-  def has_feature?(f)
-    ActiveSupport::Deprecation.warn('Tenant#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
-    configuration.feature_activated?(f)
+    configuration.feature_activated?(feature)
   end
 
   def closest_locale_to(locale)
@@ -223,9 +215,9 @@ class Tenant < ApplicationRecord
     find_by!(host: host_name).switch!
   end
 
-  def self.switch_each(&blk)
+  def self.switch_each
     find_each do |tenant|
-      tenant.switch { blk.call(tenant) }
+      tenant.switch { yield(tenant) }
     end
   end
 
@@ -289,12 +281,12 @@ class Tenant < ApplicationRecord
     carrierwave_attrs = %w[logo favicon header_bg]
     common_attrs = (old_attributes.keys & new_attributes.keys) - carrierwave_attrs
     new_attributes
-        .slice(*common_attrs)
-        .select { |k,v| v != old_attributes[k] }
-        .tap do |attrs|
-          attrs[:logo]      = new_obj.logo      if new_obj.logo_previously_changed?
-          attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
-          attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
+      .slice(*common_attrs)
+      .reject { |k, v| v == old_attributes[k] }
+      .tap do |attrs|
+      attrs[:logo] = new_obj.logo if new_obj.logo_previously_changed?
+      attrs[:favicon]   = new_obj.favicon   if new_obj.favicon_previously_changed?
+      attrs[:header_bg] = new_obj.header_bg if new_obj.header_bg_previously_changed?
     end
   end
 
@@ -317,21 +309,20 @@ class Tenant < ApplicationRecord
   def validate_missing_feature_dependencies
     ss = SettingsService.new
     missing_dependencies = ss.missing_dependencies(settings, AppConfiguration::Settings.json_schema)
-    unless missing_dependencies.empty?
-      errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
-    end
+    return if missing_dependencies.empty?
+
+    errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
   end
 
   def valid_host_format
     return if host == 'localhost'
+    return unless host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
 
-    if host.exclude?('.') || host.include?(' ') || host.include?('_') || (host =~ /[A-Z]/)
-      errors.add(
-        :host,
-        :invalid_format,
-        message: 'The chosen host does not have a valid format'
-      )
-    end
+    errors.add(
+      :host,
+      :invalid_format,
+      message: 'The chosen host does not have a valid format'
+    )
   end
 
   def ensure_style
