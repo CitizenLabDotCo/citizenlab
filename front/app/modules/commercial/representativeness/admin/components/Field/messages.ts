@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  defaultField: {
-    id: 'app.containers.AdminPage.DashboardPage.components.Field.defaultField',
-    defaultMessage: 'Default field',
+  default: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.default',
+    defaultMessage: 'Default',
   },
   baseMonth: {
     id: 'app.containers.AdminPage.DashboardPage.components.Field.baseMonth',

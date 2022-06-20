@@ -3,7 +3,16 @@ import React from 'react';
 import useLocalize from 'hooks/useLocalize';
 
 // components
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Text,
+  StatusLabel,
+} from '@citizenlab/cl2-component-library';
+
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -11,6 +20,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { Multiloc } from 'typings';
+
+const StyledStatusLabel = styled(StatusLabel)`
+  color: ${colors.clGreyOnGreyBackground};
+  font-weight: 700;
+  margin-left: 8px;
+`;
 
 interface Props {
   titleMultiloc: Multiloc;
@@ -32,13 +47,16 @@ const FieldTitle = ({ titleMultiloc, isDefault }: Props) => {
         <Title variant="h4" as="h3" mt="0px" mb="0px" ml="12px">
           {localize(titleMultiloc)}
         </Title>
+        {isDefault && (
+          <StyledStatusLabel
+            text={<FormattedMessage {...messages.default} />}
+            variant="default"
+            backgroundColor={colors.background}
+          />
+        )}
       </Box>
 
-      {isDefault && (
-        <Text mt="0px" mb="0px" variant="bodyS" color="adminTextColor">
-          <FormattedMessage {...messages.defaultField} />
-        </Text>
-      )}
+      <Text mt="0px" mb="0px" variant="bodyS" color="adminTextColor"></Text>
     </Box>
   );
 };
