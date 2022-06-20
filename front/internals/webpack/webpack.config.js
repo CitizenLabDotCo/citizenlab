@@ -9,7 +9,6 @@ const webpack = require('webpack');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
@@ -92,13 +91,7 @@ const config = {
         chunks: 'all',
       },
       moduleIds: 'deterministic',
-      minimizer: [
-        new TerserPlugin({
-          parallel: false,
-          terserOptions: { sourceMap: true },
-        }),
-        new CssMinimizerPlugin(),
-      ],
+      minimizer: [new CssMinimizerPlugin()],
     },
   }),
 
@@ -194,8 +187,6 @@ const config = {
     }),
 
     // new BundleAnalyzerPlugin(),
-
-    // new webpack.ProgressPlugin(),
 
     // remove all moment locales except 'en' and the ones defined in appLocalesMomentPairs
     !isDev &&
