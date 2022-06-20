@@ -92,7 +92,7 @@ export default defineMessages({
   },
   areasNoneLabelDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.areasNoneLabelDescription',
-    defaultMessage: 'Project will not show when filtering by area',
+    defaultMessage: 'Project will not show when filtering by area.',
   },
   areasAllLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabel',
@@ -100,7 +100,7 @@ export default defineMessages({
   },
   areasAllLabelDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabelDescription',
-    defaultMessage: 'Project will show on every area filter',
+    defaultMessage: 'The project will show on every area filter.',
   },
   areasSelectionLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasSelectionLabel',
@@ -108,7 +108,7 @@ export default defineMessages({
   },
   areasSelectionLabelDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription',
-    defaultMessage: 'Project will show on selected area filter(s)',
+    defaultMessage: 'The project will show on selected area filter(s).',
   },
   headerImageLabelText: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelText',

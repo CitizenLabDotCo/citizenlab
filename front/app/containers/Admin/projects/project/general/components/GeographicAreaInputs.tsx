@@ -59,6 +59,10 @@ const LabelHeaderDescription = ({
   </LabelText>
 );
 
+const RadioWithMargin = styled(Radio)`
+  margin-bottom: 25px;
+`;
+
 type TProjectAreaType = 'none' | 'all' | 'selection';
 
 const GeographicAreaInputs = ({
@@ -164,7 +168,7 @@ const GeographicAreaInputs = ({
             }
           />
         </SubSectionTitle>
-        <Radio
+        <RadioWithMargin
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="none"
@@ -179,7 +183,7 @@ const GeographicAreaInputs = ({
             />
           }
         />
-        <Radio
+        <RadioWithMargin
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="all"
@@ -194,7 +198,7 @@ const GeographicAreaInputs = ({
             />
           }
         />
-        <Radio
+        <RadioWithMargin
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="selection"
