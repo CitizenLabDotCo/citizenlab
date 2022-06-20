@@ -16,7 +16,7 @@ describe MultiTenancy::SideFxTenantService do
   end
 
   describe 'around_apply_template' do
-    it 'logs a created_failed activity if loading of the templates throws an error' do
+    it 'logs a created_failed activity if loading of the templates raises an error' do
       tenant = Tenant.current
       expect do
         service.around_apply_template(tenant, 'base') do
