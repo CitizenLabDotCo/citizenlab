@@ -60,9 +60,8 @@ export function replaceReferenceDistribution(
   userCustomFieldId: string,
   distribution: TUploadDistribution
 ) {
-  return streams.update<IReferenceDistribution>(
+  return streams.add<IReferenceDistribution>(
     getReferenceDistributionEndpoint(userCustomFieldId),
-    userCustomFieldId,
     { distribution }
   );
 }
