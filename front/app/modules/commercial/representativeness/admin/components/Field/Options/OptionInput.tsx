@@ -3,6 +3,10 @@ import React from 'react';
 // components
 import { Box, Text, Input } from '@citizenlab/cl2-component-library';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // utils
 import { parsePopulationValue } from './utils';
 
@@ -28,12 +32,17 @@ const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
   return (
     <>
       <Box width="70%">
-        <Input
-          type="text"
-          value={formattedPopulation}
-          onChange={handleChange}
-          disabled={disabled}
-        />
+        {disabled ? (
+          <Text color="secondaryText" variant="bodyS">
+            <FormattedMessage {...messages.itemNotCalculated} />
+          </Text>
+        ) : (
+          <Input
+            type="text"
+            value={formattedPopulation}
+            onChange={handleChange}
+          />
+        )}
       </Box>
       <Text width="30%" color="adminTextColor">
         <Box pl="20px">{percentage ?? ''}</Box>

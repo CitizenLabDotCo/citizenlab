@@ -1,8 +1,8 @@
-import { isSubmittingAllowed, getSubmitAction } from './utils';
+import { isFormCompleted, getSubmitAction } from './utils';
 
-describe('isSubmittingAllowed', () => {
+describe('isFormCompleted', () => {
   it('TODO', () => {
-    console.log(isSubmittingAllowed);
+    console.log(isFormCompleted);
   });
 });
 

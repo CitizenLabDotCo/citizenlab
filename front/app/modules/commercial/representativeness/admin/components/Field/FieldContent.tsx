@@ -1,8 +1,5 @@
 import React from 'react';
 
-// hooks
-import useReferenceDistribution from '../../hooks/useReferenceDistribution';
-
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
@@ -41,9 +38,7 @@ const FieldContent = ({
   updateOption,
   onSubmit,
 }: Props) => {
-  const { referenceDistribution } = useReferenceDistribution(userCustomFieldId);
-  const allowSubmit =
-    touched && isFormCompleted(formValues, referenceDistribution);
+  const allowSubmit = touched && isFormCompleted(formValues);
 
   return (
     <Box
