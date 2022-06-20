@@ -590,6 +590,7 @@
   "app.containers.AdminPage.DashboardPage.components.DateSelects.october": "أكتوبر",
   "app.containers.AdminPage.DashboardPage.components.DateSelects.september": "سبتمبر",
   "app.containers.AdminPage.DashboardPage.components.DateSelects.year": "السنة",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "This item will not be calculated.",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "الشهر الأساسي (اختياري)",
   "app.containers.AdminPage.DashboardPage.components.Field.defaultField": "الحقل الافتراضي",
   "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage": "Please fill out all enabled options, or disable the options you want to omit from the graph.",
