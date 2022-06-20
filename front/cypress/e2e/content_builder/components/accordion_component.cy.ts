@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder Accordion component', () => {
+describe('Content builder Accordion component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -40,6 +40,9 @@ describe.skip('Content builder Accordion component', () => {
   });
 
   it('displays Accordion component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-accordion').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -49,12 +52,16 @@ describe.skip('Content builder Accordion component', () => {
     );
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Accordion title').should('be.visible');
   });
 
   it('handles Accordion open by deafult correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 
     cy.get('#e2e-accordion').click();
@@ -63,17 +70,22 @@ describe.skip('Content builder Accordion component', () => {
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('be.visible');
   });
 
   it('deletes Accordion component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 
     cy.get('#e2e-accordion').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('not.exist');

@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder About component', () => {
+describe('Content builder About component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -40,13 +40,10 @@ describe.skip('Content builder About component', () => {
   });
 
   it('handles About component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-draggable-single-column').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
     );
+    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-about-box').dragAndDrop(
       '#e2e-content-builder-frame',
       {
@@ -55,20 +52,23 @@ describe.skip('Content builder About component', () => {
     );
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-about-box').should('exist');
   });
 
   it('deletes About component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-single-column').should('be.visible');
 
     cy.get('#e2e-about-box').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-single-column').should('be.visible');
     cy.get('#e2e-about-box').should('not.exist');
   });
 });

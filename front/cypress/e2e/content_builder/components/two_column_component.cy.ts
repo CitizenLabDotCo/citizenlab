@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder Two Column component', () => {
+describe('Content builder Two Column component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -40,6 +40,9 @@ describe.skip('Content builder Two Column component', () => {
   });
 
   it('handles Two Column component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-two-column').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -50,9 +53,6 @@ describe.skip('Content builder Two Column component', () => {
 
     /* Check container rules */
     // Non-permitted components
-    cy.get('#e2e-draggable-single-column').dragAndDrop('#e2e-two-column', {
-      position: 'inside',
-    });
     cy.get('#e2e-draggable-two-column').dragAndDrop('#e2e-two-column', {
       position: 'inside',
     });
@@ -76,6 +76,7 @@ describe.skip('Content builder Two Column component', () => {
     cy.get('div#e2e-about-box').should('have.length', 2);
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-two-column').should('exist');
@@ -84,12 +85,16 @@ describe.skip('Content builder Two Column component', () => {
   });
 
   it('deletes Two Column component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-two-column').should('be.visible');
 
     cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-two-column').should('not.exist');
