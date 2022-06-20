@@ -2,6 +2,8 @@
 
 ## Next release
 
+## 2022-06-20
+
 ## Fixed
 
 - [CL-903] Fix admin input manager crash on Safari
