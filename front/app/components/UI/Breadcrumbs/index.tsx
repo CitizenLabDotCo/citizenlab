@@ -34,6 +34,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
 
         return (
           <Box
+            key={label}
             display="flex"
             alignItems="center"
             color="adminSecondaryTextColor"
