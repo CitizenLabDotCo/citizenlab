@@ -577,6 +577,8 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.totalPopulation": "Ludność ogółem",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.users": "Użytkownicy",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "This item will not be calculated.",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Zobacz mniej",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "See {numberOfHiddenItems} more...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Miesiąc bazowy (opcjonalnie)",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Complete",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Default",
