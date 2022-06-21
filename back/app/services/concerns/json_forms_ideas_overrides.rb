@@ -45,47 +45,27 @@ module JsonFormsIdeasOverrides
           type: 'Category',
           options: { id: 'extra' },
           label: I18n.t('custom_forms.categories.extra.title', locale: locale),
-          elements: fields.reject(&:built_in?).map { |field| yield field, '#/properties/custom_field_values/properties/' }
+          elements: fields.reject(&:built_in?).map { |field| yield field, '#/properties/' }
         }
       ].compact)
     }
   end
 
   def custom_form_to_json_schema(fields, locale = 'en')
-    built_in_fields = fields.select(&:built_in?)
     {
       type: 'object',
       additionalProperties: false,
-      properties: built_in_fields.inject({}) do |memo, built_in_field|
+      properties: fields.each_with_object({}) do |built_in_field, accu|
         override_method = "#{built_in_field.resource_type.underscore}_#{built_in_field.code}_to_json_schema_field"
-        memo[built_in_field.key] =
+        accu[built_in_field.key] =
           if built_in_field.code && respond_to?(override_method, true)
             send(override_method, built_in_field, locale)
           else
             send("#{built_in_field.input_type}_to_json_schema_field", built_in_field, locale)
           end
-        memo.tap do |properties|
-          extra_fields = fields.reject(&:built_in?)
-          custom_fields_schema = {
-            type: 'object',
-            additionalProperties: false,
-            properties: extra_fields.each_with_object({}) do |field, accu|
-              override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
-              accu[field.key] =
-                if field.code && respond_to?(override_method, true)
-                  send(override_method, field, locale)
-                else
-                  send("#{field.input_type}_to_json_schema_field", field, locale)
-                end
-            end
-          }
-          required = extra_fields.select(&:enabled).select(&:required).map(&:key)
-          custom_fields_schema[:required] = required if required.any?
-          properties['custom_field_values'] = custom_fields_schema
-        end
       end
     }.tap do |output|
-      required = built_in_fields.select(&:enabled).select(&:required).map(&:key)
+      required = fields.select(&:enabled).select(&:required).map(&:key)
       output[:required] = required if required.any?
     end
   end

@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rubyXL'
 
 describe XlsxService do
-  let(:service) { XlsxService.new }
+  let(:service) { described_class.new }
 
   describe 'generate_ideas_xlsx' do
     before do

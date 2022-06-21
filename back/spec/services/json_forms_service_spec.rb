@@ -258,20 +258,13 @@ describe JsonFormsService do
                     minItems: 1,
                     items: { type: 'string' }
                   },
-                  'custom_field_values' => {
-                    type: 'object',
-                    additionalProperties: false,
-                    properties: {
-                      required_field.key => { type: 'number' },
-                      optional_field.key => {
-                        type: 'string',
-                        oneOf: [
-                          { const: 'option1', title: 'Rabbit' },
-                          { const: 'option2', title: 'Bear' }
-                        ]
-                      }
-                    },
-                    required: [required_field.key]
+                  required_field.key => { type: 'number' },
+                  optional_field.key => {
+                    type: 'string',
+                    oneOf: [
+                      { const: 'option1', title: 'Rabbit' },
+                      { const: 'option2', title: 'Bear' }
+                    ]
                   },
                   'idea_files_attributes' => {
                     type: 'array',
@@ -280,7 +273,7 @@ describe JsonFormsService do
                     items: { type: 'string' }
                   }
                 },
-                required: ['topic_ids']
+                required: match_array(['topic_ids', required_field.key])
               }
             },
             ui_schema_multiloc: {
@@ -325,7 +318,7 @@ describe JsonFormsService do
                     elements: [
                       {
                         type: 'Control',
-                        scope: "#/properties/custom_field_values/properties/#{required_field.key}",
+                        scope: "#/properties/#{required_field.key}",
                         label: required_field.title_multiloc['en'],
                         options: {
                           description: required_field.description_multiloc['en']
@@ -333,7 +326,7 @@ describe JsonFormsService do
                       },
                       {
                         type: 'Control',
-                        scope: "#/properties/custom_field_values/properties/#{optional_field.key}",
+                        scope: "#/properties/#{optional_field.key}",
                         label: optional_field.title_multiloc['en'],
                         options: {
                           description: optional_field.description_multiloc['en']
