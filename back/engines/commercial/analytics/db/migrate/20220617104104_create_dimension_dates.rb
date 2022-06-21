@@ -3,7 +3,7 @@
 class CreateDimensionDates < ActiveRecord::Migration[6.1]
   def up
 
-    create_table :analytics_dimension_dates do |t|
+    create_table :analytics_dimension_dates, id: :uuid do |t|
       t.date :date
       t.string :year
       t.string :month
