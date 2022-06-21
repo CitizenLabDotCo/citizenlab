@@ -33,7 +33,7 @@ resource 'Home Page' do
         parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
         parameter :banner_avatars_enabled, 'if avatar display in the banner is enabled'
         parameter :banner_signed_in_header_multiloc, 'multiloc content for the banner header for signed in users'
-        parameter :banner_signed_out_header_multiloc,  'multiloc content for the banner header for signed out users'
+        parameter :banner_signed_out_header_multiloc, 'multiloc content for the banner header for signed out users'
         parameter :banner_signed_out_subheader_multiloc, 'multiloc content for the banner subheader for signed out users'
         parameter :banner_signed_out_header_overlay_color, 'color for the header banner overlay for signed out users'
         parameter :banner_signed_out_header_overlay_opacity, 'color for the header banner overlay for signed out users, 0-100'
