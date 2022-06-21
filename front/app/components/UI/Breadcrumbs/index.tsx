@@ -1,93 +1,64 @@
 import React from 'react';
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
 
 // components
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
-// types
-type SingleBreadcrumbProps = {
-  label: string;
-  linkTo?: string;
-  isCurrentPage?: boolean;
-};
-
-type BreadcrumbsProps = {
-  breadcrumbs: SingleBreadcrumbProps[];
-};
-
-const SingleBreadcrumb = ({
-  label,
-  linkTo,
-  isCurrentPage = false,
-}: SingleBreadcrumbProps) => {
-  const SingleBreadcrumbWrapper = ({ children }) => {
-    return (
-      <Box display="inline">
-        <Text color="adminSecondaryTextColor" as="span" fontSize="m">
-          {children}
-        </Text>
-      </Box>
-    );
-  };
-
-  const Divider = () => {
-    return (
-      <Box display="inline" mr="16px" ml="16px">
-        <Text color="adminSecondaryTextColor" as="span" fontSize="m">
-          /
-        </Text>
-      </Box>
-    );
-  };
-
-  if (linkTo) {
-    return (
-      <SingleBreadcrumbWrapper>
-        <Box
-          display="inline-block"
-          borderBottom={`2px solid ${colors.adminSecondaryTextColor}`}
-        >
-          <Link
-            style={{
-              color: colors.adminSecondaryTextColor,
-            }}
-            to={linkTo}
-          >
-            {label}
-          </Link>
-        </Box>
-        <Divider />
-      </SingleBreadcrumbWrapper>
-    );
+const StyledLink = styled(Link)`
+  color: ${colors.adminSecondaryTextColor};
+  &:hover {
+    border-bottom: 2px solid ${colors.adminSecondaryTextColor};
+    color: inherit;
+    margin-bottom: -2px;
   }
+`;
 
-  return (
-    <SingleBreadcrumbWrapper>
-      {label}
-      {!isCurrentPage && <Divider />}
-    </SingleBreadcrumbWrapper>
-  );
-};
+interface Props {
+  breadcrumbs: {
+    label: string;
+    linkTo?: string;
+  }[];
+}
 
-const Breadcrumbs = ({ breadcrumbs }: BreadcrumbsProps) => {
+const Breadcrumbs = ({ breadcrumbs }: Props) => {
   if (!breadcrumbs || breadcrumbs.length === 0) {
     return null;
   }
 
   return (
-    <>
+    <Box display="flex">
       {breadcrumbs.map(({ label, linkTo }, index) => {
+        const isLastBreadcrumb = index === breadcrumbs.length - 1;
+
         return (
-          <SingleBreadcrumb
-            key={label}
-            label={label}
-            linkTo={linkTo}
-            isCurrentPage={index === breadcrumbs.length - 1}
-          />
+          <Box
+            display="flex"
+            alignItems="center"
+            color="adminSecondaryTextColor"
+          >
+            {linkTo && (
+              <StyledLink to={linkTo}>
+                <Text fontSize="m" as="span">
+                  {label}
+                </Text>
+              </StyledLink>
+            )}
+            {!linkTo && (
+              <Text fontSize="m" as="span">
+                {label}
+              </Text>
+            )}
+            {!isLastBreadcrumb && (
+              <Text ml="16px" mr="16px" fontSize="m">
+                /
+              </Text>
+            )}
+          </Box>
         );
       })}
-    </>
+    </Box>
   );
 };
 
