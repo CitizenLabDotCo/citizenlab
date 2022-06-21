@@ -578,7 +578,7 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.users": "BenutzerInnen",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "Dieser Posten wird nicht berechnet.",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Weniger sehen",
-  "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "See {numberOfHiddenItems} more...",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "Siehe {numberOfHiddenItems} mehr...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Ausgangsmonat (optional)",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Abgeschlossen",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Standard",
