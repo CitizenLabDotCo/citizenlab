@@ -88,7 +88,29 @@ resource 'Home Page' do
             do_request
             json_response = json_parse(response_body)
             expect(response_status).to eq 200
-            expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
+            returned_ids = json_response.dig(:data, :relationships, :pinned_admin_publications, :data).pluck(:id)
+            expect(returned_ids).to eq([project_one.admin_publication.id, project_two.admin_publication.id])
+          end
+        end
+      end
+
+      describe 'destroying pins' do
+        let(:pinned_admin_publication_ids) do
+          []
+        end
+
+        context 'when the page has pins already' do
+          before do
+            projects = create_list(:project, 3)
+            home_page.pinned_admin_publications = projects.map(&:admin_publication)
+            home_page.save!
+          end
+
+          example 'Removing existing pins from a page', document: false do
+            do_request
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 200
+            expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(0)
           end
         end
       end
