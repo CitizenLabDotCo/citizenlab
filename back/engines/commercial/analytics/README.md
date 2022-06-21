@@ -1,8 +1,7 @@
 # Analytics
 New analytics engine
 
-## Usage
-How to use Analytics.
+## How to run the docker containers
 
 To run docker with analytics enabled
 
@@ -16,22 +15,45 @@ Run this when you first install the application:
 
 `docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql -h localhost -U postgres cl2_analytics -c 'CREATE DATABASE cl2_analytics;'"`
 
+## Installation
+
+Add the following to citizenlab.config.ee.json:
+
+`"commercial/analytics": true`
+
+## Database
+
+There is a secondary database connection set up to cl_back_analytics - however it currently is ignoring appartment and 
+only using at the default (public) schema.
+
 ## Running migrations:
-Run this before each migration (have to delete migration if already moved):
 
-`rake analytics:install:migrations`
+Migrations are stored within the engine and database.yml is configured to look inside the engine for analytics migrations.
 
-`rails db:migrate`
+`rails db:migrate:analytics`
 
-`rails db:rollback`
+`rails db:rollback:analytics`
 
-## Notes:
+## Creating a view migration
 
-TODO:
+Views/tables should be named as follows:
 
-Secondary database working - http://www.blrice.net/blog/2016/04/09/one-rails-app-with-many-databases/
-Views created via Scenic gem - https://pganalyze.com/blog/materialized-views-ruby-rails
+analytics_dimension_*
+analytics_fact_*
 
-You do not have to move migrations here as they are independent of the main database
+Note: Currently scenic doesn't support creating migrations & views inside the engine.
+Views can be run by migrations only from /db/views in the main app. 
+There is an open pull request for this: https://github.com/scenic-views/scenic/pull/357
 
-Can we move the DB config to the engine?
+`rails g scenic:view analytics_dimension_*`
+
+`rails g scenic:view analytics_fact_*`
+
+## TODO:
+
+* Create a view model with relations
+* Fix multi-tenancy
+* Temp script to copy the db to 'public' in the analytics schema
+* Set up a refresh job
+
+

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 class CreateDimensionDates < ActiveRecord::Migration[6.1]
   def up
-    #ActiveRecord::Base.establish_connection("development_analytics")
 
-    create_table :dimension_dates do |t|
+    create_table :analytics_dimension_dates do |t|
       t.date :date
       t.string :year
       t.string :month
@@ -11,7 +12,7 @@ class CreateDimensionDates < ActiveRecord::Migration[6.1]
 
     # Insert a series of dates
     execute("
-      INSERT INTO dimension_dates (date, year, month, day)
+      INSERT INTO analytics_dimension_dates (date, year, month, day)
       SELECT
         date,
         TO_CHAR(date, 'yyyy') AS year,
@@ -26,11 +27,10 @@ class CreateDimensionDates < ActiveRecord::Migration[6.1]
       ) a;
     ");
 
-    #ActiveRecord::Base.establish_connection(Rails.env)
   end
 
   def down
-    drop_table :dimension_dates
+    drop_table :analytics_dimension_dates
   end
 
 end

@@ -28,9 +28,17 @@ default: &default
   host: <%= ENV.fetch("POSTGRES_HOST") %>
 
 development:
-  <<: *default
-  database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_development') %>
-  schema_search_path: public,shared_extensions
+  primary:
+    <<: *default
+    database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_development') %>
+    schema_search_path: public,shared_extensions
+  analytics:
+    <<: *default
+    host: cl-postgres-analytics
+    database: <%= ENV.fetch("POSTGRES_DB_ANALYTICS", 'cl2_analytics') %>
+    schema_search_path: public,shared_extensions
+    migrations_paths: engines/commercial/analytics/db/migrate
+
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -96,9 +104,3 @@ production:
   <<: *default
   database: <%= ENV.fetch("POSTGRES_DB", 'cl2_back_production') %>
 
-# Analytics
-#development_analytics:
-#  <<: *default
-#  host: cl-postgres-analytics
-#  database: <%= ENV.fetch("POSTGRES_DB_ANALYTICS", 'cl2_analytics') %>
-#  schema_search_path: public,shared_extensions

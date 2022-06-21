@@ -8,8 +8,8 @@ module Analytics
 
       # GET /dates
       def index
-        # dates = DimensionDate.find('all')
-        render json: { data: ['test'] }
+        dates = DimensionDate.where(year: '2022', month: '05')
+        render json: dates
       end
 
     end
