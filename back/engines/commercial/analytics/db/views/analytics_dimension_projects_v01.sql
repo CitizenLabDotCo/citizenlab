@@ -1,2 +1,2 @@
--- Analytics view for projects dimension
+-- Analytics materialized view for projects dimension
 SELECT id, title_multiloc FROM projects;
