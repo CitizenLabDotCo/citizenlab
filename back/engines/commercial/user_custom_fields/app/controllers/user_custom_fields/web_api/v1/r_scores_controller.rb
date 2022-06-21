@@ -5,7 +5,7 @@ module UserCustomFields
     module V1
       class RScoresController < ::ApplicationController
         def show
-          authorize [:user_custom_fields ,:representativeness, :r_score]
+          authorize %i[user_custom_fields representativeness r_score]
 
           if (ref_distribution = user_custom_field.current_ref_distribution).present?
             user_counts = FieldValueCounter.counts_by_field_option(User.active, user_custom_field, by_option_id: true)
