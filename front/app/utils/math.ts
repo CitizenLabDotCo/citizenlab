@@ -4,21 +4,23 @@ export const percentage = (num: number, denom: number) =>
   Math.round((num / denom) * 100);
 
 // See https://stackoverflow.com/a/13483710
-export const roundPercentages = (values: number[]) => {
+export const roundPercentages = (values: number[], decimals = 0) => {
   const total = sum(values);
 
   if (total === 0) {
     return Array(values.length).fill(0);
   }
 
-  const unrounded = values.map((value) => (value / total) * 100);
+  const multiplier = 10 ** decimals;
+  const factor = 100 * multiplier;
+  const unrounded = values.map((value) => (value / total) * factor);
   const floored = unrounded.map(Math.floor);
   const sumFloored = sum(floored);
 
-  const difference = 100 - sumFloored;
+  const difference = factor - sumFloored;
 
   if (difference === 0) {
-    return floored;
+    return floored.map((value) => value / multiplier);
   }
 
   const remainders = unrounded.map((value, i) => value - floored[i]);
@@ -31,5 +33,5 @@ export const roundPercentages = (values: number[]) => {
     floored[sortedIndices[i]]++;
   }
 
-  return floored;
+  return floored.map((value) => value / multiplier);
 };

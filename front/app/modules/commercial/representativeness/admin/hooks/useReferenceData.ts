@@ -141,8 +141,11 @@ const toReferenceData = (
   const options =
     'options' in usersByField ? usersByField.options : usersByField.areas;
 
-  const actualPercentages = roundPercentages(Object.values(users));
-  const referencePercentages = roundPercentages(Object.values(expectedUsers));
+  const actualPercentages = roundPercentages(Object.values(users), 1);
+  const referencePercentages = roundPercentages(
+    Object.values(expectedUsers),
+    1
+  );
 
   const data = Object.keys(users).map((optionId, i) => ({
     title_multiloc: options[optionId].title_multiloc,

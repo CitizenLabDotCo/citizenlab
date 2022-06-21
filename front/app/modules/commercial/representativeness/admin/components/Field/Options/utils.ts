@@ -45,7 +45,8 @@ export const getPercentages = (
   });
 
   const percentages = roundPercentages(
-    nonEmptyEntries.map(([_, value]) => value) as number[]
+    nonEmptyEntries.map(([_, value]) => value) as number[],
+    1
   );
 
   const percentagesObject = nonEmptyEntries.reduce(
