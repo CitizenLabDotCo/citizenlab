@@ -52,12 +52,7 @@ const Messenger = ({
 
     if (messengerHref) {
       return (
-        <Box
-          mr={isDropdownStyle ? '0px' : '5px'}
-          flex="1 1 1"
-          display="flex"
-          style={{ cursor: 'pointer' }}
-        >
+        <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
           <Button
             onClick={handleClick(messengerHref)}
             aria-label={formatMessage(messages.shareViaWhatsApp)}

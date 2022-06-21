@@ -71,6 +71,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                   {(title) => {
                     return (
                       <SharingButtons
+                        isInModal={true}
                         context="project"
                         url={projectUrl}
                         whatsAppMessage={formatMessage(
@@ -95,11 +96,14 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                           messages.emailSharingSubject,
                           {
                             projectName: title,
+                            initiativeTitle: title,
+                            initiativeUrl: url,
                           }
                         )}
                         emailBody={formatMessage(messages.emailSharingBody, {
-                          url,
-                          title,
+                          projectUrl: url,
+                          projectName: title,
+                          initiativeUrl: url,
                         })}
                         utmParams={utmParams}
                       />

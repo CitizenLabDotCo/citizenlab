@@ -64,7 +64,6 @@ const Rocket = styled.img`
 
 const Title = styled.h1`
   flex-shrink: 0;
-  width: 100%;
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
@@ -251,7 +250,7 @@ class SharingModalContent extends PureComponent<
           <SharingWrapper>
             <SharingButtons
               context={postType}
-              isInModal
+              isInModal={true}
               url={postUrl}
               facebookMessage={formatMessage(messages.twitterMessage, {
                 postTitle,

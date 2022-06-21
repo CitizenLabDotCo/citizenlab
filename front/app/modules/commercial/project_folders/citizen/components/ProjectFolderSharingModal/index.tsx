@@ -25,6 +25,8 @@ const Container = styled.div`
   padding: 40px 25px;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
+  width: 100%;
 `;
 
 interface Props {
@@ -72,6 +74,7 @@ const ProjectFolderSharingModal = memo<
                 {(projectFolderName) => {
                   return (
                     <SharingButtons
+                      isInModal={true}
                       context="folder"
                       url={folderUrl}
                       facebookMessage={formatMessage(messages.facebookMessage, {

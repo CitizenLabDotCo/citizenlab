@@ -49,7 +49,6 @@ const SharingButtons = memo(
     utmParams,
   }: Props & InjectedIntlProps) => {
     const maxTabletOrSmaller = useBreakpoint('largeTablet');
-    const isMobileDevice = useBreakpoint('phone');
     const theme: any = useTheme();
 
     const getUrl = (medium: Medium) => {
@@ -61,12 +60,14 @@ const SharingButtons = memo(
       initiative: <FormattedMessage {...messages.shareThisInitiative} />,
       folder: <FormattedMessage {...messages.shareThisFolder} />,
     }[context];
+
     return (
       <Box
         display="flex"
         flexDirection="column"
         id={id}
         className={className || ''}
+        alignItems={maxTabletOrSmaller || isInModal ? 'center' : 'flex-start'}
       >
         <Title
           mb="12px"
@@ -79,9 +80,10 @@ const SharingButtons = memo(
           {titleMessage}
         </Title>
         <Box
+          justifyContent={maxTabletOrSmaller ? 'center' : 'flex-start'}
           display="flex"
           gap="5px"
-          flexWrap={isMobileDevice ? 'wrap' : 'nowrap'}
+          flexWrap={maxTabletOrSmaller ? 'wrap' : 'nowrap'}
         >
           <Facebook
             facebookMessage={facebookMessage}

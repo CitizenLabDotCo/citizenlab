@@ -46,7 +46,6 @@ const Email = ({
 
   return (
     <Box
-      mr={isDropdownStyle ? '0px' : '5px'}
       onClick={trackClick('email')}
       flex="1 1 1"
       display="flex"
