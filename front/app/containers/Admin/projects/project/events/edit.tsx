@@ -54,10 +54,7 @@ interface DataProps {
 }
 
 interface Props extends DataProps {
-  params: {
-    id: string | null;
-    projectId: string | null;
-  };
+  params: Record<string, string>;
 }
 
 interface State {

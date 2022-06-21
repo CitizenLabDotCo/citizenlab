@@ -7,6 +7,7 @@ import { colors } from 'utils/styleUtils';
 // components
 import { Title, Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
 // craft
 import { useEditor } from '@craftjs/core';
@@ -19,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import CloseIconButton from 'components/UI/CloseIconButton';
+import { CONTENT_BUILDER_DELETE_ELEMENT_EVENT } from '../../containers';
 
 const StyledBox = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
@@ -59,7 +60,7 @@ const ContentBuilderSettings = () => {
     <StyledBox
       position="fixed"
       right="0"
-      top={`${stylingConsts.menuHeight * 2}px`}
+      top={`${stylingConsts.menuHeight}px`}
       zIndex="99999"
       p="20px"
       w="400px"
@@ -88,7 +89,10 @@ const ContentBuilderSettings = () => {
             iconColor={colors.clRed}
             onClick={() => {
               actions.delete(selected.id);
-              eventEmitter.emit('deleteContentBuilderElement', selected.id);
+              eventEmitter.emit(
+                CONTENT_BUILDER_DELETE_ELEMENT_EVENT,
+                selected.id
+              );
             }}
           >
             <FormattedMessage {...messages.delete} />

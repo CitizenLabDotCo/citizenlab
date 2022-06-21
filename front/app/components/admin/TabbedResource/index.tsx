@@ -50,6 +50,7 @@ const TabbedNav = styled.nav`
     padding-left: auto;
     justify-content: flex-end;
  `}
+  flex-wrap: wrap;
 `;
 
 const Tab = styled.div`
@@ -112,6 +113,7 @@ type Props = {
     subtitle?: string;
   };
   tabs?: ITab[];
+  children?: React.ReactNode;
 };
 
 interface State {}

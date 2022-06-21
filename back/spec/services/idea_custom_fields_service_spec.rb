@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaCustomFieldsService do
-  let(:service) { IdeaCustomFieldsService.new }
+  let(:service) { described_class.new }
 
   describe 'all_fields' do
     it 'outputs valid custom fields' do

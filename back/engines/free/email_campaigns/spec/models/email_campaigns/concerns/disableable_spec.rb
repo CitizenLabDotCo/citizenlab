@@ -12,7 +12,7 @@ RSpec.describe EmailCampaigns::Disableable, type: :model do
   describe 'run_before_send_hooks' do
     it 'returns true when the campaign is enabled' do
       campaign.update!(enabled: true)
-      expect(campaign.run_before_send_hooks).to be_truthy
+      expect(campaign.run_before_send_hooks).to be true
     end
 
     it 'returns false when the campaign is disabled' do

@@ -38,7 +38,7 @@ module EmailCampaigns
     recipient_filter :user_filter_moderator_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :is_content_worth_sending?
+    before_send :content_worth_sending?
 
     N_TOP_IDEAS = ENV.fetch('N_MODERATOR_DIGEST_IDEAS', 12).to_i
 
@@ -69,7 +69,7 @@ module EmailCampaigns
         next unless project
 
         statistics = statistics project
-        next unless has_nonzero_statistics statistics
+        next unless nonzero_statistics? statistics
 
         top_ideas = top_ideas project, name_service
         idea_ids = top_ideas.pluck(:id)
@@ -96,7 +96,7 @@ module EmailCampaigns
       users_scope.active
     end
 
-    def is_content_worth_sending?(_)
+    def content_worth_sending?(_)
       # TODO: figure out which moderator and project we're talking about
       true
     end
@@ -134,7 +134,7 @@ module EmailCampaigns
       }
     end
 
-    def has_nonzero_statistics(statistics)
+    def nonzero_statistics?(statistics)
       !((statistics.dig(:activities, :new_ideas, :increase) == 0) &&
          (statistics.dig(:activities, :new_comments, :increase) == 0) &&
          (statistics.dig(:users, :new_visitors, :increase) == 0) &&

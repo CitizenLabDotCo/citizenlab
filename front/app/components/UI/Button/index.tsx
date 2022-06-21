@@ -18,10 +18,19 @@ interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {
   'data-testid'?: string;
 }
 
-const ButtonWrapper = ({ linkTo, openLinkInNewTab, ...rest }: Props) => {
+const ButtonWrapper = ({
+  linkTo,
+  openLinkInNewTab,
+  disabled,
+  ...rest
+}: Props) => {
   const locale = useLocale();
   const isExternalLink =
     linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
+
+  if (disabled) {
+    return <Button disabled {...rest} />;
+  }
 
   const link = linkTo
     ? isExternalLink

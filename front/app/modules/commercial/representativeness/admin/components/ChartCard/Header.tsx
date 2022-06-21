@@ -32,6 +32,8 @@ interface Props {
   title: string;
   svgNode: React.RefObject<SVGElement | undefined>;
   // representativenessScore: number;
+  projectFilter?: string;
+  xlsxEndpoint: string;
   viewState: ViewState;
   onChangeViewState: (newViewState: ViewState) => void;
 }
@@ -45,6 +47,8 @@ const Header = ({
   title,
   svgNode,
   // representativenessScore,
+  projectFilter,
+  xlsxEndpoint,
   viewState,
   onChangeViewState,
 }: Props) => (
@@ -105,6 +109,8 @@ const Header = ({
       <Box mr="12px">
         <ReportExportMenu
           name={title}
+          currentProjectFilter={projectFilter}
+          xlsxEndpoint={viewState === 'table' ? xlsxEndpoint : undefined}
           svgNode={viewState === 'chart' ? svgNode : undefined}
         />
       </Box>
