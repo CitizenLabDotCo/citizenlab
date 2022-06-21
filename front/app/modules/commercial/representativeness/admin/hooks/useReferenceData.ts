@@ -10,7 +10,7 @@ import {
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { sum, percentage } from 'utils/math';
+import { sum, percentage, roundPercentages } from 'utils/math';
 
 // typings
 import {
@@ -141,16 +141,13 @@ const toReferenceData = (
   const options =
     'options' in usersByField ? usersByField.options : usersByField.areas;
 
-  const totalActualUsers = sum(Object.values(users));
-  const totalReferenceUsers = sum(Object.values(expectedUsers));
+  const actualPercentages = roundPercentages(Object.values(users));
+  const referencePercentages = roundPercentages(Object.values(expectedUsers));
 
-  const data = Object.keys(users).map((optionId) => ({
+  const data = Object.keys(users).map((optionId, i) => ({
     title_multiloc: options[optionId].title_multiloc,
-    actualPercentage: percentage(users[optionId], totalActualUsers),
-    referencePercentage: percentage(
-      expectedUsers[optionId],
-      totalReferenceUsers
-    ),
+    actualPercentage: actualPercentages[i],
+    referencePercentage: referencePercentages[i],
     actualNumber: users[optionId],
     referenceNumber: expectedUsers[optionId],
   }));

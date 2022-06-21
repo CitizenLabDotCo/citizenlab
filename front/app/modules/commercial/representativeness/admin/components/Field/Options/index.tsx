@@ -15,7 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import { parsePercentage } from './utils';
+import { getPercentages } from './utils';
 
 // typings
 import { FormValues } from '../utils';
@@ -58,6 +58,7 @@ const Options = ({
   };
 
   const toggleSeeMore = () => setSeeMore(!seeMore);
+  const percentages = getPercentages(formValues);
 
   return (
     <>
@@ -78,9 +79,7 @@ const Options = ({
             <Box display="flex" alignItems="center" width="40%">
               <OptionInput
                 value={population === undefined ? null : population}
-                percentage={
-                  enabled ? parsePercentage(population, formValues) : undefined
-                }
+                percentage={percentages[id]}
                 disabled={!enabled}
                 onChange={onInput(id)}
               />

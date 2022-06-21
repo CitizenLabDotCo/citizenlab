@@ -1,5 +1,5 @@
 // utils
-import { sum, percentage } from 'utils/math';
+import { roundPercentages } from 'utils/math';
 
 // typings
 import { FormValues } from '../utils';
@@ -27,20 +27,46 @@ const isInvalid = (value: string) =>
   !validValueRegex.test(value) || value.length > 11;
 const asNumber = (value: string) => parseInt(value.replace(/\,/g, ''));
 
-export const parsePercentage = (
-  value: number | null,
+export const getPercentages = (
   formValues: FormValues
-) => {
-  const enteredPopulationValues = Object.keys(formValues)
-    .map((optionId) => formValues[optionId])
-    .filter((population) => population !== null) as number[];
+): Record<string, string> => {
+  if (areAllOptionsEmpty(formValues)) {
+    return Object.keys(formValues).reduce(
+      (acc, optionId) => ({
+        ...acc,
+        [optionId]: 'xx%',
+      }),
+      {}
+    );
+  }
 
-  if (enteredPopulationValues.length === 0) return 'xx%';
+  const nonEmptyEntries = Object.entries(formValues).filter(([_, value]) => {
+    return value !== null;
+  });
 
-  if (value === null) return undefined;
-  if (value === 0) return '0%';
+  const percentages = roundPercentages(
+    nonEmptyEntries.map(([_, value]) => value) as number[]
+  );
 
-  const totalEnteredPopulation = sum(enteredPopulationValues);
+  const percentagesObject = nonEmptyEntries.reduce(
+    (acc, [optionId], i) => ({
+      ...acc,
+      [optionId]: percentages[i],
+    }),
+    {}
+  );
 
-  return `${percentage(value, totalEnteredPopulation)}%`;
+  return Object.keys(formValues).reduce((acc, optionId) => {
+    return {
+      ...acc,
+      [optionId]:
+        optionId in percentagesObject
+          ? `${percentagesObject[optionId]}%`
+          : undefined,
+    };
+  }, {});
+};
+
+const areAllOptionsEmpty = (formValues: FormValues) => {
+  return Object.values(formValues).every((formValue) => formValue === null);
 };
