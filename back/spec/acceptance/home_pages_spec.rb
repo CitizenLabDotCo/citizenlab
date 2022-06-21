@@ -58,7 +58,7 @@ resource 'Home Page' do
       let(:banner_enabled) { true }
       let(:events_enabled) { true }
 
-      example_request 'Update the home page' do
+      example_request 'Update the current home page' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :banner_enabled)).to be true
