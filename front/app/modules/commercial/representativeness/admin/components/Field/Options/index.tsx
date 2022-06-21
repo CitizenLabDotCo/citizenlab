@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // hooks
 import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hooks/useUserCustomFieldOptions';
@@ -7,6 +7,7 @@ import useLocalize from 'hooks/useLocalize';
 // components
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import OptionInput from './OptionInput';
+import Button from 'components/UI/Button';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,12 +29,20 @@ const Options = ({
   onUpdateEnabled,
   onUpdatePopulation,
 }: Props) => {
+  const [seeMore, setSeeMore] = useState(false);
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const localize = useLocalize();
 
   if (isNilOrError(userCustomFieldOptions)) {
     return null;
   }
+
+  const visibleUserCustomFieldOptions = userCustomFieldOptions.slice(
+    0,
+    seeMore ? userCustomFieldOptions.length : 12
+  );
+
+  const showSeeMoreButton = userCustomFieldOptions.length > 12;
 
   const onToggle = (optionId: string) => () => {
     const currentlyEnabled = optionId in formValues;
@@ -44,9 +53,11 @@ const Options = ({
     onUpdatePopulation(optionId, newPopulation);
   };
 
+  const toggleSeeMore = () => setSeeMore(!seeMore);
+
   return (
     <>
-      {userCustomFieldOptions.map(({ id, attributes }) => {
+      {visibleUserCustomFieldOptions.map(({ id, attributes }) => {
         const enabled = id in formValues;
         const population = formValues[id];
 
@@ -73,6 +84,21 @@ const Options = ({
           </Box>
         );
       })}
+
+      {showSeeMoreButton && (
+        <Box width="100%" display="flex" mt="16px" mb="12px">
+          <Button
+            buttonStyle="secondary"
+            onClick={toggleSeeMore}
+            text={
+              seeMore
+                ? 'See less'
+                : `See ${userCustomFieldOptions.length - 12} more...`
+            }
+            width="auto"
+          />
+        </Box>
+      )}
     </>
   );
 };
