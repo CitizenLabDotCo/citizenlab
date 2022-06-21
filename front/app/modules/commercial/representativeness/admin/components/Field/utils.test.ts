@@ -16,13 +16,40 @@ const createReferenceDistribution = (
 });
 
 describe('isFormValid', () => {
-  it('TODO', () => {
-    console.log(isFormValid);
+  it('returns true if form is empty', () => {
+    expect(isFormValid({})).toBe(true);
+  });
+
+  it('returns true if all enabled options are filled out', () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1000,
+    };
+
+    expect(isFormValid(formValues)).toBe(true);
+  });
+
+  it('returns false if not all enabled options are filled out', () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1000,
+      id789: null,
+    };
+
+    expect(isFormValid(formValues)).toBe(false);
+  });
+
+  it('returns false if only one option is enabled and filled out', () => {
+    const formValues: FormValues = {
+      id123: 1000,
+    };
+
+    expect(isFormValid(formValues)).toBe(false);
   });
 });
 
-describe.only('getSubmitAction', () => {
-  it('returns null if local and remote data is identical', () => {
+describe('getSubmitAction', () => {
+  it('returns null if local and remote data are identical', () => {
     const formValues: FormValues = {
       id123: 1000,
       id456: 1000,
@@ -50,7 +77,7 @@ describe.only('getSubmitAction', () => {
     expect(getSubmitAction(formValues, referenceDistribution)).toBeNull();
   });
 
-  it("returns 'create' if local data not empty and remote data empty", () => {
+  it("returns 'create' if local data not empty and remote data are empty", () => {
     const formValues: FormValues = {
       id123: 1000,
       id456: 1000,
@@ -78,13 +105,146 @@ describe.only('getSubmitAction', () => {
     expect(getSubmitAction(formValues, referenceDistribution)).toBe('delete');
   });
 
-  // it("returns 'replace' if local data differs from remote data", () => {
-  //   const formValues = {}
-  // })
+  it("returns 'replace' if local data differs from remote data", () => {
+    const formValues = {
+      id123: 1200,
+      id456: 1000,
+    };
+
+    const referenceDistribution = createReferenceDistribution({
+      id123: {
+        count: 1000,
+        probability: 0.5,
+      },
+      id456: {
+        count: 1000,
+        probability: 0.5,
+      },
+    });
+
+    expect(getSubmitAction(formValues, referenceDistribution)).toBe('replace');
+  });
 });
 
 describe('getStatus', () => {
-  it('TODO', () => {
-    console.log(getStatus);
+  it("returns 'saved' if local and remote data are identical (untouched)", () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1000,
+    };
+
+    const referenceDistribution = createReferenceDistribution({
+      id123: {
+        count: 1000,
+        probability: 0.5,
+      },
+      id456: {
+        count: 1000,
+        probability: 0.5,
+      },
+    });
+
+    const touched = false;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe('saved');
+  });
+
+  it("returns 'complete' if local and remote data are identical (touched)", () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1000,
+    };
+
+    const referenceDistribution = createReferenceDistribution({
+      id123: {
+        count: 1000,
+        probability: 0.5,
+      },
+      id456: {
+        count: 1000,
+        probability: 0.5,
+      },
+    });
+
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe(
+      'complete'
+    );
+  });
+
+  it("returns 'incomplete' if not all enabled options are filled out", () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1000,
+      id789: null,
+    };
+
+    const referenceDistribution = createReferenceDistribution({
+      id123: {
+        count: 1000,
+        probability: 0.5,
+      },
+      id456: {
+        count: 1000,
+        probability: 0.5,
+      },
+    });
+
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe(
+      'incomplete'
+    );
+  });
+
+  it("returns 'incomplete' if if only one option is enabled and filled out", () => {
+    const formValues: FormValues = {
+      id123: 1000,
+    };
+
+    const referenceDistribution = createReferenceDistribution({
+      id123: {
+        count: 1000,
+        probability: 0.5,
+      },
+      id456: {
+        count: 1000,
+        probability: 0.5,
+      },
+    });
+
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe(
+      'incomplete'
+    );
+  });
+
+  it('returns null if local and remote data are both empty', () => {
+    const formValues = {};
+    const referenceDistribution = null;
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBeNull();
+  });
+
+  it('returns null if local data is empty but remote is not', () => {
+    const formValues = {};
+
+    const referenceDistribution = createReferenceDistribution({
+      id123: {
+        count: 1000,
+        probability: 0.5,
+      },
+      id456: {
+        count: 1000,
+        probability: 0.5,
+      },
+    });
+
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBeNull();
   });
 });
