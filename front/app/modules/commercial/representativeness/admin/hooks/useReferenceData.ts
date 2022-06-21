@@ -42,16 +42,6 @@ const getSubscription = (
   projectId: string | undefined,
   handleStreamResponse: (usersByField: TStreamResponse) => void
 ) => {
-  if (code === null) {
-    const observable = usersByRegFieldStream(
-      { queryParameters: { project: projectId } },
-      userCustomFieldId
-    ).observable;
-
-    const subscription = observable.subscribe(handleStreamResponse);
-    return subscription;
-  }
-
   if (code === 'gender') {
     const observable = usersByGenderStream({
       queryParameters: { project: projectId },
@@ -70,7 +60,13 @@ const getSubscription = (
     return subscription;
   }
 
-  return;
+  const observable = usersByRegFieldStream(
+    { queryParameters: { project: projectId } },
+    userCustomFieldId
+  ).observable;
+
+  const subscription = observable.subscribe(handleStreamResponse);
+  return subscription;
 };
 
 function useReferenceData(
@@ -89,6 +85,10 @@ function useReferenceData(
 
   const code = userCustomField.attributes.code;
   const userCustomFieldId = userCustomField.id;
+
+  if (userCustomField.attributes.key === 'education') {
+    console.log(userCustomField.attributes);
+  }
 
   useEffect(() => {
     const handleStreamResponse = (usersByField: TStreamResponse) => {
