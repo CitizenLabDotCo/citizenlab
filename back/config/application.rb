@@ -40,6 +40,11 @@ module Cl2Back
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
+
     config.active_job.queue_adapter = ENV.fetch('ACTIVE_JOB_QUEUE_ADAPTER', 'que').to_sym
     config.action_mailer.deliver_later_queue_name = 'default'
     config.i18n.fallbacks = [I18n.default_locale, { 'nb-NO': %i[nb no] }]
