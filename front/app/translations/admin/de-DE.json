@@ -580,7 +580,7 @@
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Ausgangsmonat (optional)",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Abgeschlossen",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Standard",
-  "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage2": "Please fill out all enabled options, or disable the options you want to omit from the graph. At least one option must be filled out.",
+  "app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage2": "Bitte füllen Sie alle aktivierten Optionen aus, oder deaktivieren Sie die Optionen, die Sie in der Grafik auslassen möchten. Mindestens eine Option muss ausgefüllt werden.",
   "app.containers.AdminPage.DashboardPage.components.Field.incomplete": "Unvollständig",
   "app.containers.AdminPage.DashboardPage.components.Field.numberOfTotalResidents": "Zahl der Einwohner:innen insgesamt",
   "app.containers.AdminPage.DashboardPage.components.Field.options": "Optionen",
