@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Toqqoruk",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Toqqoqqapput",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookiet pillugit politik",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Nittartakkanni iserfissanik allannguineq, ukuninnga Una pillugu aamma Apeqqutit akulikitsumik apeqqutigineqartartut. Quppernerit allat, tassunga ilanngullugu atugassarititaasut fane-mi {policiesLink} allanngortinneqarsinnaapput.",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Politikkit",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Nittartakkami quppernerit",
   "app.containers.AdminPage.PagesEdition.faq": "(FAQ) Apeqqutit akulikitsumik apeqqutigineqartartut",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Kakkiussinerit (annerpaamik 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Paasissutissat",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geographic areas",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Customize",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Quppernerit",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politikkit",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Nalinginnaasumik",
@@ -1435,7 +1431,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq. Peernissaanut piareersimanngikkuit qupperneq navigationslinjemiit peersinnaavat.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Ilumut qupperneq una peerniarpiuk? Uterteqqissinnaanavianngilaq.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Iserfigisinnaasannik toqqaavissartalik Angerlarit aamma Suliniutit saniatigut tallimat tikillugit saqqummertinneqarsinnaapput. Toqqagassani taaguutit allanngortissinnaavatit nuussinnaallugillu aamma nammineq imaritikkusutannik quppernernik ikkussisinnaavutit.",
-  "app.modules.navbar.admin.containers.pageTitle": "Iserfiusinnaasut nittartakkamilu quppernerit",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later."
 }

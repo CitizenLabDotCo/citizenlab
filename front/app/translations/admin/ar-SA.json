@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "حفظ",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "تم الحفظ",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "سياسة ملفات تعريف الارتباط",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "عدِّل الصفحتين \"نبذة\" و\"أسئلة مكررة\" في منصتك. يمكن تعديل صفحات أخرى، بما فيها الشروط والأحكام وسياسة الخصوصية، في علامة التبويب {policiesLink}.",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "السياسات",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "صفحات المنصة",
   "app.containers.AdminPage.PagesEdition.faq": "أسئلة مكررة",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "المُرفقات (بحجم أقصى 50 ميغابايت)",
   "app.containers.AdminPage.PagesEdition.information": "صفحة النبذة",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "تم تحديث الإعدادات بنجاح.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "المناطق الجغرافية",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "الصفحة الرئيسية والنمط",
-  "app.containers.AdminPage.SettingsPage.tabPages": "الصفحات",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "السياسات",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "التسجيل",
   "app.containers.AdminPage.SettingsPage.tabSettings": "عام",
@@ -1438,7 +1434,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء. يمكنك أيضًا إزالة الصفحة من شريط التنقل إذا لم تكن قد حذفتها حتى الآن.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء.",
   "app.modules.navbar.admin.containers.pageSubtitle": "باستطاعة شريط التنقل عرض ما يصل إلى خمس صفحات إضافة إلى الصفحة الرئيسية وصفحات المشاريع. يمكنك إعادة تسمية عناصر قائمة وإعادة ترتيب صفحات جديدة تتضمن المحتوى التابع لك وإضافتها.",
-  "app.modules.navbar.admin.containers.pageTitle": "شريط التنقل وصفحات المنصة",
   "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول",
   "components.admin.ServerError.genericServerError": "حدثت مشكلة أثناء تحميل هذا المحتوى، يُرجى المحاولة مجددًا في وقت لاحق."
 }

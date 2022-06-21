@@ -32,10 +32,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
   },
-  tabPages: {
-    id: 'app.containers.AdminPage.SettingsPage.tabPages',
-    defaultMessage: 'Pages',
-  },
   tabPolicies: {
     id: 'app.containers.AdminPage.SettingsPage.tabPolicies',
     defaultMessage: 'Policies',
