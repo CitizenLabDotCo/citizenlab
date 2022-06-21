@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { omit } from 'lodash-es';
 
 // services
 import {
@@ -21,8 +22,8 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
   getInitialValues,
   getSubmitAction,
-  parseFormValues,
   getStatus,
+  parseFormValues,
 } from './utils';
 
 // typings
@@ -41,16 +42,6 @@ interface InnerProps extends Props {
   referenceDistribution: IReferenceDistributionData | NilOrError;
   referenceDataUploaded: boolean;
 }
-
-interface IPartialOptionValues {
-  enabled?: boolean;
-  population?: number;
-}
-
-export type UpdateOption = (
-  optionId: string,
-  optionValues: IPartialOptionValues
-) => void;
 
 const Field = ({
   userCustomFieldId,
@@ -89,16 +80,22 @@ const Field = ({
 
   if (formValues === null) return null;
 
-  const updateOption: UpdateOption = (optionId, optionValues) => {
+  const onUpdateEnabled = (optionId: string, enabled: boolean) => {
+    if (enabled) {
+      setFormValues({
+        ...formValues,
+        [optionId]: null,
+      });
+    } else {
+      setFormValues(omit(formValues, optionId));
+    }
+  };
+
+  const onUpdatePopulation = (optionId: string, population: number | null) => {
     setFormValues({
       ...formValues,
-      [optionId]: {
-        ...formValues[optionId],
-        ...optionValues,
-      },
+      [optionId]: population,
     });
-
-    setTouched(true);
   };
 
   const onSubmit = async () => {
@@ -107,9 +104,10 @@ const Field = ({
     const submitAction = getSubmitAction(formValues, referenceDistribution);
     if (submitAction === null) return;
 
-    setSubmitting(true);
-
     const newDistribution = parseFormValues(formValues);
+    if (newDistribution === null) return;
+
+    setSubmitting(true);
 
     if (submitAction === 'create') {
       await createReferenceDistribution(userCustomFieldId, newDistribution);
@@ -143,7 +141,8 @@ const Field = ({
         formValues={formValues}
         submitting={submitting}
         touched={touched}
-        updateOption={updateOption}
+        onUpdateEnabled={onUpdateEnabled}
+        onUpdatePopulation={onUpdatePopulation}
         onSubmit={onSubmit}
       />
     </Accordion>

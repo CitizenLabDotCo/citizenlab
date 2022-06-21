@@ -1,26 +1,26 @@
 import { parsePopulationValue } from './utils';
 
 describe('parsePopulationValue', () => {
-  it('returns undefined if value is empty string', () => {
-    expect(parsePopulationValue('')).toBeUndefined();
+  it('returns null if value is empty string', () => {
+    expect(parsePopulationValue('')).toBeNull();
   });
 
-  it('returns null if value contains anything other than numbers or commas', () => {
-    expect(parsePopulationValue('a')).toBeNull();
-    expect(parsePopulationValue('1a')).toBeNull();
-    expect(parsePopulationValue('1,a')).toBeNull();
-    expect(parsePopulationValue('-1,000')).toBeNull();
-    expect(parsePopulationValue('%,000')).toBeNull();
+  it('returns undefined if value contains anything other than numbers or commas', () => {
+    expect(parsePopulationValue('a')).toBeUndefined();
+    expect(parsePopulationValue('1a')).toBeUndefined();
+    expect(parsePopulationValue('1,a')).toBeUndefined();
+    expect(parsePopulationValue('-1,000')).toBeUndefined();
+    expect(parsePopulationValue('%,000')).toBeUndefined();
   });
 
-  it('returns null if value starts with comma', () => {
-    expect(parsePopulationValue(',1')).toBeNull();
-    expect(parsePopulationValue(',111')).toBeNull();
+  it('returns undefined if value starts with comma', () => {
+    expect(parsePopulationValue(',1')).toBeUndefined();
+    expect(parsePopulationValue(',111')).toBeUndefined();
   });
 
-  it('returns null if value contains only commas', () => {
-    expect(parsePopulationValue(',')).toBeNull();
-    expect(parsePopulationValue(',,,')).toBeNull();
+  it('returns undefined if value contains only commas', () => {
+    expect(parsePopulationValue(',')).toBeUndefined();
+    expect(parsePopulationValue(',,,')).toBeUndefined();
   });
 
   it('returns correct value if value contains only numbers', () => {
@@ -41,7 +41,7 @@ describe('parsePopulationValue', () => {
     expect(parsePopulationValue('1,000,0000')).toBe(10000000);
   });
 
-  it('returns null if value is longer than 11 characters (e.g. 100,000,0000)', () => {
-    expect(parsePopulationValue('100,000,0000')).toBeNull();
+  it('returns undefined if value is longer than 11 characters (e.g. 100,000,0000)', () => {
+    expect(parsePopulationValue('100,000,0000')).toBeUndefined();
   });
 });

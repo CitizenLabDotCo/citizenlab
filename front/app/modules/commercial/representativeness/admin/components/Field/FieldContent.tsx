@@ -19,14 +19,14 @@ import { isFormValid } from './utils';
 
 // typings
 import { FormValues } from './utils';
-import { UpdateOption } from '.';
 
 interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
   submitting: boolean;
   touched: boolean;
-  updateOption: UpdateOption;
+  onUpdateEnabled: (optionId: string, enabled: boolean) => void;
+  onUpdatePopulation: (optionId: string, population: number | null) => void;
   onSubmit: () => void;
 }
 
@@ -35,7 +35,8 @@ const FieldContent = ({
   formValues,
   submitting,
   touched,
-  updateOption,
+  onUpdateEnabled,
+  onUpdatePopulation,
   onSubmit,
 }: Props) => {
   const allowSubmit = touched && isFormValid(formValues);
@@ -60,7 +61,8 @@ const FieldContent = ({
         <Options
           userCustomFieldId={userCustomFieldId}
           formValues={formValues}
-          updateOption={updateOption}
+          onUpdateEnabled={onUpdateEnabled}
+          onUpdatePopulation={onUpdatePopulation}
         />
       </Box>
 

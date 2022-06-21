@@ -11,23 +11,23 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { parsePopulationValue } from './utils';
 
 interface Props {
-  value?: number;
+  value: number | null;
   percentage?: string;
   disabled: boolean;
-  onChange: (value?: number) => void;
+  onChange: (value: number | null) => void;
 }
 
 const OptionInput = ({ value, percentage, disabled, onChange }: Props) => {
   const handleChange = (stringValue: string) => {
     const newValue = parsePopulationValue(stringValue);
 
-    if (newValue !== null) {
+    if (newValue !== undefined) {
       onChange(newValue);
     }
   };
 
   const formattedPopulation =
-    value === undefined ? '' : value.toLocaleString('en-US');
+    value === null ? '' : value.toLocaleString('en-US');
 
   return (
     <>

@@ -5,15 +5,12 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
 import {
   IReferenceDistributionData,
+  TDistribution,
   TUploadDistribution,
 } from '../../services/referenceDistribution';
 
-interface OptionValues {
-  enabled: boolean;
-  population?: number;
-}
-
-export type FormValues = Record<string, OptionValues>;
+// EXPORTS
+export type FormValues = Record<string, number | null>;
 
 export const getInitialValues = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
@@ -21,6 +18,9 @@ export const getInitialValues = (
   referenceDistribution: IReferenceDistributionData | NilOrError
 ): FormValues | null => {
   if (referenceDataUploaded) {
+    // If reference data has been uploaded, but the distribution
+    // is nil or error, we are still waiting for the data to sync
+    // Hence we return null instead of an empty object
     if (isNilOrError(referenceDistribution)) return null;
 
     return getInitialValuesFromDistribution(
@@ -29,58 +29,21 @@ export const getInitialValues = (
     );
   }
 
-  return getEmptyInitialValues(userCustomFieldOptions);
-};
-
-const getInitialValuesFromDistribution = (
-  userCustomFieldOptions: IUserCustomFieldOptionData[],
-  referenceDistribution: IReferenceDistributionData
-): FormValues => {
-  const { distribution } = referenceDistribution.attributes;
-
-  return userCustomFieldOptions.reduce((acc, { id }) => {
-    const referenceDistributionValue = distribution[id];
-
-    return {
-      ...acc,
-      [id]: referenceDistributionValue
-        ? { enabled: true, population: referenceDistributionValue.count }
-        : { enabled: false, population: undefined },
-    };
-  }, {});
-};
-
-const getEmptyInitialValues = (
-  userCustomFieldOptions: IUserCustomFieldOptionData[]
-): FormValues => {
-  return userCustomFieldOptions.reduce(
-    (acc, { id }) => ({
-      ...acc,
-      [id]: { enabled: true, population: undefined },
-    }),
-    {}
-  );
+  return getInitialEmptyValues(userCustomFieldOptions);
 };
 
 export const isFormValid = (formValues: FormValues) => {
-  if (isFormEmpty(formValues)) {
+  if (areAllOptionsDisabled(formValues)) {
     return true;
   }
 
-  const anyOptionInvalid = Object.keys(formValues).some((optionId) => {
-    const { enabled, population } = formValues[optionId];
-    return enabled && population === undefined;
-  });
+  const allOptionsFilledOut = areAllOptionsFilledOut(formValues);
 
-  const allOptionsValid = !anyOptionInvalid;
+  const numberOfOptionsFilledOut = Object.values(formValues).filter(
+    (formValue) => formValue !== null
+  ).length;
 
-  const numberOfOptionsFilledOut = Object.keys(formValues)
-    .map((optionId) => formValues[optionId])
-    .filter(
-      ({ population, enabled }) => enabled && population !== undefined
-    ).length;
-
-  return allOptionsValid && numberOfOptionsFilledOut > 1;
+  return allOptionsFilledOut && numberOfOptionsFilledOut > 1;
 };
 
 export const getSubmitAction = (
@@ -88,57 +51,19 @@ export const getSubmitAction = (
   referenceDistribution: IReferenceDistributionData | NilOrError
 ) => {
   if (isNilOrError(referenceDistribution)) {
-    if (!isFormEmpty(formValues)) return 'create';
+    if (!areAllOptionsDisabled(formValues)) return 'create';
     return null;
   }
 
-  if (noChanges(formValues, referenceDistribution)) {
+  if (hasNoChanges(formValues, referenceDistribution)) {
     return null;
   }
 
-  if (isFormEmpty(formValues)) {
+  if (areAllOptionsDisabled(formValues)) {
     return 'delete';
   }
 
   return 'replace';
-};
-
-const noChanges = (
-  formValues: FormValues,
-  referenceDistribution: IReferenceDistributionData
-) => {
-  const { distribution } = referenceDistribution.attributes;
-
-  const anyChanges = Object.keys(formValues).some((optionId) => {
-    const { population } = formValues[optionId];
-    const savedPopulation = distribution[optionId]?.count;
-
-    return savedPopulation !== population;
-  });
-
-  return !anyChanges;
-};
-
-const isFormEmpty = (formValues: FormValues) => {
-  const anyNotEmpty = Object.keys(formValues).some((optionId) => {
-    return formValues[optionId].population !== undefined;
-  });
-
-  return !anyNotEmpty;
-};
-
-export const parseFormValues = (
-  formValues: FormValues
-): TUploadDistribution => {
-  return Object.keys(formValues).reduce((acc, optionId) => {
-    const { population } = formValues[optionId];
-    if (population === undefined) return acc;
-
-    return {
-      ...acc,
-      [optionId]: population,
-    };
-  }, {});
 };
 
 export type Status = 'saved' | 'complete' | 'incomplete';
@@ -163,6 +88,70 @@ export const getStatus = (
   return null;
 };
 
+export const parseFormValues = (formValues: FormValues) => {
+  if (!isFormValid(formValues)) return null;
+  return formValues as TUploadDistribution;
+};
+
+// HELPERS
+const getInitialValuesFromDistribution = (
+  userCustomFieldOptions: IUserCustomFieldOptionData[],
+  referenceDistribution: IReferenceDistributionData
+): FormValues => {
+  const { distribution } = referenceDistribution.attributes;
+
+  return userCustomFieldOptions.reduce((acc, { id }) => {
+    const referenceDistributionValue = distribution[id];
+    if (!referenceDistributionValue) return acc;
+
+    return {
+      ...acc,
+      [id]: referenceDistributionValue.count,
+    };
+  }, {});
+};
+
+const getInitialEmptyValues = (
+  userCustomFieldOptions: IUserCustomFieldOptionData[]
+): FormValues => {
+  return userCustomFieldOptions.reduce((acc, { id }) => {
+    return {
+      ...acc,
+      [id]: null,
+    };
+  }, {});
+};
+
+const areAllOptionsFilledOut = (formValues: FormValues) => {
+  return Object.values(formValues).every((formValue) => {
+    return formValue !== null;
+  });
+};
+
+const areAllOptionsDisabled = (formValues: FormValues) => {
+  return Object.keys(formValues).length === 0;
+};
+
+const hasNoChanges = (
+  formValues: FormValues,
+  referenceDistribution: IReferenceDistributionData
+) => {
+  const { distribution } = referenceDistribution.attributes;
+
+  if (!sameNumberOfKeys(formValues, distribution)) {
+    return false;
+  }
+
+  const noChanges = Object.keys(formValues).every((optionId) => {
+    const population = formValues[optionId];
+    const savedPopulation = distribution[optionId]?.count;
+
+    return savedPopulation === population;
+  });
+
+  return noChanges;
+};
+
 const isSaved = (
   formValues: FormValues,
   referenceDistribution: IReferenceDistributionData | NilOrError,
@@ -174,13 +163,24 @@ const isSaved = (
     return false;
   }
 
-  return noChanges(formValues, referenceDistribution);
+  return hasNoChanges(formValues, referenceDistribution);
 };
 
 const isComplete = (formValues: FormValues, touched: boolean) => {
-  return touched && !isFormEmpty(formValues) && isFormValid(formValues);
+  return (
+    touched && !areAllOptionsDisabled(formValues) && isFormValid(formValues)
+  );
 };
 
 const isIncomplete = (formValues: FormValues, touched: boolean) => {
-  return touched && !isFormEmpty(formValues) && !isFormValid(formValues);
+  return (
+    touched && !areAllOptionsDisabled(formValues) && !isFormValid(formValues)
+  );
+};
+
+const sameNumberOfKeys = (
+  formValues: FormValues,
+  distribution: TDistribution
+) => {
+  return Object.keys(distribution).length === Object.keys(formValues).length;
 };

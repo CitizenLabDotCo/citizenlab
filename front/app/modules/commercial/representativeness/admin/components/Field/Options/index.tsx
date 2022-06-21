@@ -14,15 +14,20 @@ import { parsePercentage } from './utils';
 
 // typings
 import { FormValues } from '../utils';
-import { UpdateOption } from '..';
 
 interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
-  updateOption: UpdateOption;
+  onUpdateEnabled: (optionId: string, enabled: boolean) => void;
+  onUpdatePopulation: (optionId: string, population: number | null) => void;
 }
 
-const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
+const Options = ({
+  userCustomFieldId,
+  formValues,
+  onUpdateEnabled,
+  onUpdatePopulation,
+}: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const localize = useLocalize();
 
@@ -31,22 +36,19 @@ const Options = ({ userCustomFieldId, formValues, updateOption }: Props) => {
   }
 
   const onToggle = (optionId: string) => () => {
-    const currentlyEnabled = formValues[optionId].enabled;
-
-    updateOption(optionId, {
-      enabled: !currentlyEnabled,
-      population: undefined,
-    });
+    const currentlyEnabled = optionId in formValues;
+    onUpdateEnabled(optionId, !currentlyEnabled);
   };
 
-  const onInput = (optionId: string) => (newPopulation: number) => {
-    updateOption(optionId, { population: newPopulation });
+  const onInput = (optionId: string) => (newPopulation: number | null) => {
+    onUpdatePopulation(optionId, newPopulation);
   };
 
   return (
     <>
       {userCustomFieldOptions.map(({ id, attributes }) => {
-        const { enabled, population } = formValues[id];
+        const enabled = id in formValues;
+        const population = formValues[id];
 
         return (
           <Box key={id} display="flex" width="100%">

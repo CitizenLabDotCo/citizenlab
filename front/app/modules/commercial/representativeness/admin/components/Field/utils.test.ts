@@ -24,18 +24,8 @@ describe('isFormValid', () => {
 describe.only('getSubmitAction', () => {
   it('returns null if local and remote data is identical', () => {
     const formValues: FormValues = {
-      id123: {
-        population: 1000,
-        enabled: true,
-      },
-      id456: {
-        population: 1000,
-        enabled: true,
-      },
-      id789: {
-        population: undefined,
-        enabled: false,
-      },
+      id123: 1000,
+      id456: 1000,
     };
 
     const referenceDistribution = createReferenceDistribution({
@@ -53,16 +43,7 @@ describe.only('getSubmitAction', () => {
   });
 
   it('returns null if local and remote data are empty', () => {
-    const formValues: FormValues = {
-      id123: {
-        population: undefined,
-        enabled: true,
-      },
-      id456: {
-        population: undefined,
-        enabled: true,
-      },
-    };
+    const formValues: FormValues = {};
 
     const referenceDistribution = null;
 
@@ -71,18 +52,8 @@ describe.only('getSubmitAction', () => {
 
   it("returns 'create' if local data not empty and remote data empty", () => {
     const formValues: FormValues = {
-      id123: {
-        population: 1000,
-        enabled: true,
-      },
-      id456: {
-        population: 1000,
-        enabled: true,
-      },
-      id789: {
-        population: undefined,
-        enabled: false,
-      },
+      id123: 1000,
+      id456: 1000,
     };
 
     const referenceDistribution = null;
@@ -91,27 +62,7 @@ describe.only('getSubmitAction', () => {
   });
 
   it("returns 'delete' if local data empty and remote data not empty", () => {
-    const formValues1: FormValues = {
-      id123: {
-        population: undefined,
-        enabled: false,
-      },
-    };
-
-    const formValues2: FormValues = {
-      id123: {
-        population: undefined,
-        enabled: false,
-      },
-      id456: {
-        population: undefined,
-        enabled: false,
-      },
-      id789: {
-        population: undefined,
-        enabled: false,
-      },
-    };
+    const formValues: FormValues = {};
 
     const referenceDistribution = createReferenceDistribution({
       id123: {
@@ -124,9 +75,12 @@ describe.only('getSubmitAction', () => {
       },
     });
 
-    expect(getSubmitAction(formValues1, referenceDistribution)).toBe('delete');
-    expect(getSubmitAction(formValues2, referenceDistribution)).toBe('delete');
+    expect(getSubmitAction(formValues, referenceDistribution)).toBe('delete');
   });
+
+  // it("returns 'replace' if local data differs from remote data", () => {
+  //   const formValues = {}
+  // })
 });
 
 describe('getStatus', () => {
