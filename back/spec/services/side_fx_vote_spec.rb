@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxVoteService do
-  let(:service) { SideFxVoteService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
 
   describe 'after_create' do

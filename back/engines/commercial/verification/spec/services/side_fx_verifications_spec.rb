@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Verification::SideFxVerificationService do
-  let(:service) { Verification::SideFxVerificationService.new }
+  let(:service) { described_class.new }
   let(:verification) { create(:verification) }
   let(:user) { verification.user }
 

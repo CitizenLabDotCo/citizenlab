@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Surveys::Typeform::Api do
   # let(:token) { 'DHsJNboURuCdUpi5oLeLGFr1D9wpuu1xyaWTX5H55v2p' }
   let(:token) { '2mB2YtaeoD7PcNMUE2VLLeScS4abSphUMJM125jujxAs' }
-  let(:api) { Surveys::Typeform::Api.new(token) }
+  let(:api) { described_class.new(token) }
   let(:form_id) { 'USLYB6' }
   let(:webhook_url) { 'http://some.fake.url/hooks/typeform' }
 

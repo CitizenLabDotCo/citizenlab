@@ -368,14 +368,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   };
 
-  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.desktopSearchInputClearButton = element;
-  };
-
-  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.mobileSearchInputClearButton = element;
-  };
-
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
@@ -421,9 +413,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         </ScreenReaderOnly>
 
         <DesktopSearchInput
-          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
           debounce={1500}
+          a11y_numberOfSearchResults={list ? list.length : 0}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
@@ -503,8 +495,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 </FullscreenModal>
 
                 <MobileSearchInput
-                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list.length}
                 />
 
                 <MobileFilterButton
