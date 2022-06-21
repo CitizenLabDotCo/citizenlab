@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe UserCustomFields::Representativeness::RefDistribution do
+RSpec.describe UserCustomFields::Representativeness::RefDistribution do
   subject(:ref_distribution) { build(:ref_distribution) }
 
   describe 'factory' do
