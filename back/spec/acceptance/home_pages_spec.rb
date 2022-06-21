@@ -73,7 +73,6 @@ resource 'Home Page' do
 
         example_request 'Update pins to a page' do
           json_response = json_parse(response_body)
-          puts json_response
           expect(response_status).to eq 200
           expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
         end
