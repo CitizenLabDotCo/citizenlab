@@ -28,7 +28,7 @@ resource 'Representativeness scores' do
           expected_counts = custom_field.custom_field_options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 1)
 
           expect(status).to eq(200)
-          expect(json_response_body).to include(data: {
+          expect(response_data).to include(
             id: /\A#{ref_distribution.id}_\d+_rscore\z/,
             type: 'representativeness_score',
             attributes: {
@@ -38,7 +38,11 @@ resource 'Representativeness scores' do
             relationships: {
               reference_distribution: { data: { id: anything, type: 'reference_distribution' } }
             }
-          })
+          )
+
+          expect(json_response_body[:included]).to include(
+            hash_including(id: ref_distribution.id, type: 'reference_distribution')
+          )
         end
       end
 
