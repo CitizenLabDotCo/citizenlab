@@ -18,9 +18,9 @@ export default defineMessages({
     defaultMessage: 'Number of total residents',
   },
   disallowSaveMessage: {
-    id: 'app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage',
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.disallowSaveMessage2',
     defaultMessage:
-      'Please fill out all enabled options, or disable the options you want to omit from the graph.',
+      'Please fill out all enabled options, or disable the options you want to omit from the graph. At least one option must be filled out.',
   },
   saved: {
     id: 'app.containers.AdminPage.DashboardPage.components.Field.saved',
