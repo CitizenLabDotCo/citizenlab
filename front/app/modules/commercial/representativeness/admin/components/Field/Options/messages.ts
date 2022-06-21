@@ -5,4 +5,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated',
     defaultMessage: 'This item will not be calculated.',
   },
+  seeMore: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore',
+    defaultMessage: 'See {numberOfHiddenItems} more...',
+  },
+  seeLess: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess',
+    defaultMessage: 'See less',
+  },
 });

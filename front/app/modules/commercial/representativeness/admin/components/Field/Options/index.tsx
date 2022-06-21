@@ -9,6 +9,10 @@ import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import OptionInput from './OptionInput';
 import Button from 'components/UI/Button';
 
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { parsePercentage } from './utils';
@@ -91,9 +95,16 @@ const Options = ({
             buttonStyle="secondary"
             onClick={toggleSeeMore}
             text={
-              seeMore
-                ? 'See less'
-                : `See ${userCustomFieldOptions.length - 12} more...`
+              seeMore ? (
+                <FormattedMessage {...messages.seeLess} />
+              ) : (
+                <FormattedMessage
+                  {...messages.seeMore}
+                  values={{
+                    numberOfHiddenItems: userCustomFieldOptions.length - 12,
+                  }}
+                />
+              )
             }
             width="auto"
           />
