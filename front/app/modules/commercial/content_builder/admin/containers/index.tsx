@@ -38,12 +38,13 @@ import messages from '../messages';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 const StyledRightColumn = styled(RightColumn)`
-  min-height: calc(100vh - ${stylingConsts.menuHeight}px);
+  height: calc(100vh - ${stylingConsts.menuHeight}px);
   z-index: 2;
   margin: 0;
   max-width: 100%;
   align-items: center;
   padding-bottom: 100px;
+  overflow-y: auto;
 `;
 
 type ContentBuilderErrors = Record<
@@ -173,7 +174,11 @@ export const ContentBuilderPage = () => {
       data-testid="contentBuilderPage"
     >
       <FocusOn>
-        <Editor isPreview={false} onNodesChange={handleEditorChange}>
+        <Editor
+          isPreview={false}
+          onNodesChange={handleEditorChange}
+          key={selectedLocale}
+        >
           <ContentBuilderTopBar
             localesWithError={localesWithError}
             mobilePreviewEnabled={mobilePreviewEnabled}
@@ -203,21 +208,18 @@ export const ContentBuilderPage = () => {
                     }
                   />
                 )}
-                <ContentBuilderFrame
-                  key={selectedLocale}
-                  editorData={getEditorData()}
-                />
+                <ContentBuilderFrame editorData={getEditorData()} />
               </Box>
             </StyledRightColumn>
             <ContentBuilderSettings />
           </Box>
-          <Box
-            justifyContent="center"
-            display={mobilePreviewEnabled ? 'flex' : 'none'}
-          >
-            <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
-          </Box>
         </Editor>
+        <Box
+          justifyContent="center"
+          display={mobilePreviewEnabled ? 'flex' : 'none'}
+        >
+          <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
+        </Box>
       </FocusOn>
     </Box>
   );
