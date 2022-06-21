@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder Iframe component', () => {
+describe('Content builder Iframe component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -23,14 +23,12 @@ describe.skip('Content builder Iframe component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -40,8 +38,10 @@ describe.skip('Content builder Iframe component', () => {
   });
 
   it('handles Iframe component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     // Add iframe with valid url
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-iframe').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
@@ -52,11 +52,15 @@ describe.skip('Content builder Iframe component', () => {
 
     // Confirms that iframe displays correctly on live page
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-content-builder-iframe-component').should('exist');
   });
 
   it('handles Iframe errors correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-content-builder-iframe-component').click('center', {
       force: true,
@@ -101,11 +105,15 @@ describe.skip('Content builder Iframe component', () => {
   });
 
   it('deletes Iframe component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.get('#e2e-content-builder-iframe-component').should('exist');
 
     cy.get('#e2e-content-builder-frame').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-content-builder-iframe-component').should('not.exist');
