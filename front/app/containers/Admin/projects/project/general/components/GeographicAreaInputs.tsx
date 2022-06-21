@@ -13,53 +13,17 @@ import useLocalize from 'hooks/useLocalize';
 import { IAreaData } from 'services/areas';
 import { useParams } from 'react-router-dom';
 import { TOnProjectAttributesDiffChangeFunction } from '..';
+import { LabelHeaderDescription } from '../../participationContext/components/labels';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
 
 interface Props {
   areaIds: string[] | undefined;
   onProjectAttributesDiffChange: TOnProjectAttributesDiffChangeFunction;
 }
 
-const LabelText = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: -2px;
-
-  &.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  .header {
-    padding: 0;
-    margin: 0;
-    margin-bottom: 3px;
-    font-weight: 600;
-    font-size: ${fontSizes.base}px;
-  }
-
-  .description {
-    color: ${colors.adminSecondaryTextColor};
-  }
-`;
-
-const LabelHeaderDescription = ({
-  header,
-  description,
-}: {
-  header: JSX.Element;
-  description: JSX.Element;
-}) => (
-  <LabelText>
-    <span className="header">{header}</span>
-    <span className="description">{description}</span>
-  </LabelText>
-);
-
-const RadioWithMargin = styled(Radio)`
+const AreaRadio = styled(Radio)`
   margin-bottom: 25px;
 `;
 
@@ -168,7 +132,7 @@ const GeographicAreaInputs = ({
             }
           />
         </SubSectionTitle>
-        <RadioWithMargin
+        <AreaRadio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="none"
@@ -183,7 +147,7 @@ const GeographicAreaInputs = ({
             />
           }
         />
-        <RadioWithMargin
+        <AreaRadio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="all"
@@ -198,7 +162,7 @@ const GeographicAreaInputs = ({
             />
           }
         />
-        <RadioWithMargin
+        <AreaRadio
           onChange={handleAreaTypeOnChange}
           currentValue={areaType}
           value="selection"

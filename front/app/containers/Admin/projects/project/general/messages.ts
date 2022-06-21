@@ -92,7 +92,7 @@ export default defineMessages({
   },
   areasNoneLabelDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.areasNoneLabelDescription',
-    defaultMessage: 'Project will not show when filtering by area.',
+    defaultMessage: 'The project will not show when filtering by area.',
   },
   areasAllLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabel',
