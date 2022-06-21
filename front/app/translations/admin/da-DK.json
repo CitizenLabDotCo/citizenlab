@@ -577,6 +577,8 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.totalPopulation": "Samlet befolkning",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.users": "Brugere",
   "app.containers.AdminPage.DashboardPage.components.Field.Options.itemNotCalculated": "This item will not be calculated.",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.seeLess": "Se mindre",
+  "app.containers.AdminPage.DashboardPage.components.Field.Options.seeMore": "See {numberOfHiddenItems} more...",
   "app.containers.AdminPage.DashboardPage.components.Field.baseMonth": "Grundmåned (valgfri)",
   "app.containers.AdminPage.DashboardPage.components.Field.complete": "Complete",
   "app.containers.AdminPage.DashboardPage.components.Field.default": "Default",
