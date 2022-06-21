@@ -2,7 +2,7 @@
 #
 # Table name: analytics_dimension_dates
 #
-#  id    :bigint           not null, primary key
+#  id    :uuid             not null, primary key
 #  date  :date
 #  year  :string
 #  month :string

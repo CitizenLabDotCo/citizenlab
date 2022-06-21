@@ -9,11 +9,24 @@ To run docker with analytics enabled
 
 To sync data from your main DB to the analytics DB run the following command
 
-`docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "pg_dump --clean -h postgres -U postgres cl2_back_development | psql -h localhost -U postgres cl2_analytics"`
+```
+docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "pg_dump --clean -h postgres -U postgres cl2_back_development | psql -h localhost -U postgres cl2_analytics"
+```
 
 Run this when you first install the application:
 
-`docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql -h localhost -U postgres cl2_analytics -c 'CREATE DATABASE cl2_analytics;'"`
+```
+docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql -h localhost -U postgres cl2_analytics -c 'CREATE DATABASE cl2_analytics;'"
+```
+
+Temp step: Sync data to 'public' schema whilst multi-tenancy is not working. Run the following on cl-postgres-analytics:
+```
+pg_dump --clean -U postgres cl2_analytics --schema=localhost > dump.sql
+
+sed -i 's/ localhost./ public./g' dump.sql
+
+psql -h localhost -U postgres cl2_analytics < dump.sql
+```
 
 ## Installation
 
@@ -38,8 +51,8 @@ Migrations are stored within the engine and database.yml is configured to look i
 
 Views/tables should be named as follows:
 
-analytics_dimension_*
-analytics_fact_*
+* analytics_dimension_*
+* analytics_fact_*
 
 Note: Currently scenic doesn't support creating migrations & views inside the engine.
 Views can be run by migrations only from /db/views in the main app. 
@@ -48,6 +61,9 @@ There is an open pull request for this: https://github.com/scenic-views/scenic/p
 `rails g scenic:view analytics_dimension_*`
 
 `rails g scenic:view analytics_fact_*`
+
+`rails generate migration CreateFactPosts --database analytics`
+
 
 ## TODO:
 
