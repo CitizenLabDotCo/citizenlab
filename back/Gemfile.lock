@@ -1142,7 +1142,7 @@ GEM
     with_env (1.1.0)
     xml-simple (1.1.9)
       rexml
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.0)
 
 PLATFORMS
   ruby
