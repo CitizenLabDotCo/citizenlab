@@ -25,7 +25,7 @@ class UserCustomFields::Representativeness::RScore
       population_counts = ref_distribution.distribution
       check_user_counts_options!(user_counts, ref_distribution)
 
-      score_value = min_max_p_ratio(user_counts, population_counts)
+      score_value = compute_scores(user_counts, population_counts)[:min_max_p_ratio]
       new(score_value, user_counts, ref_distribution)
     end
 
@@ -66,6 +66,21 @@ class UserCustomFields::Representativeness::RScore
     end
 
     private
+
+    def compute_scores(user_counts, population_counts)
+      scores = {
+        min_max_p_ratio: min_max_p_ratio(user_counts, population_counts),
+        min_mean_p_ratio: min_mean_p_ratio(user_counts, population_counts),
+        proportional_similarity: proportional_similarity(user_counts, population_counts)
+      }
+
+      Rails.logger.info(
+        'Computing R-score',
+        scores: scores, user_counts: user_counts, population_counts: population_counts
+      )
+
+      scores
+    end
 
     def normalize(counts)
       total = counts.values.sum
