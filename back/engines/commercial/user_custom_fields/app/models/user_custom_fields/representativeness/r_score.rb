@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class UserCustomFields::Representativeness::RScore
-  attr_reader :value, :ref_distribution
+  attr_reader :value, :user_counts, :ref_distribution
 
   # @param [Numeric] value
   # @param [UserCustomFields::Representativeness::RefDistribution] ref_distribution
-  def initialize(value, ref_distribution)
+  def initialize(value, user_counts, ref_distribution)
     @value = value
+    @user_counts = user_counts
     @ref_distribution = ref_distribution
     @timestamp = Time.zone.now
   end
@@ -25,7 +26,7 @@ class UserCustomFields::Representativeness::RScore
       check_user_counts_options!(user_counts, ref_distribution)
 
       score_value = min_max_p_ratio(user_counts, population_counts)
-      new(score_value, ref_distribution)
+      new(score_value, user_counts, ref_distribution)
     end
 
     # Compute the ratio between the minimum and maximum participation rates.
@@ -72,7 +73,8 @@ class UserCustomFields::Representativeness::RScore
     end
 
     def check_user_counts_options!(user_counts, ref_distribution)
-      unknown_options = user_counts.keys - ref_distribution.distribution.keys
+      known_options = ref_distribution.distribution.keys + [UserCustomFields::FieldValueCounter::UNKNOWN_VALUE_LABEL]
+      unknown_options = user_counts.keys - known_options
       return if unknown_options.blank?
 
       raise ArgumentError, <<~MSG.squish
