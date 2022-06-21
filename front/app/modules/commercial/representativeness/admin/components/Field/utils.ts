@@ -20,7 +20,8 @@ export const getInitialValues = (
   if (referenceDataUploaded) {
     // If reference data has been uploaded, but the distribution
     // is nil or error, we are still waiting for the data to sync
-    // Hence we return null instead of an empty object
+    // Hence we return null and don't render anything until
+    // the data has been synced
     if (isNilOrError(referenceDistribution)) return null;
 
     return getInitialValuesFromDistribution(
