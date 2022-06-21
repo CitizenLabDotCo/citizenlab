@@ -64,17 +64,32 @@ resource 'Home Page' do
         expect(json_response.dig(:data, :attributes, :banner_enabled)).to be true
       end
 
-      describe do
+      describe 'updating pins' do
         let(:project_one) { create(:project) }
         let(:project_two) { create(:project) }
         let(:pinned_admin_publication_ids) do
           [project_one.admin_publication.id, project_two.admin_publication.id]
         end
 
-        example_request 'Update pins to a page' do
+        example_request 'set pins to a page' do
           json_response = json_parse(response_body)
           expect(response_status).to eq 200
           expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
+        end
+
+        context 'when the page has pins already' do
+          before do
+            projects = create_list(:project, 3)
+            home_page.pinned_admin_publications = projects.map(&:admin_publication)
+            home_page.save!
+          end
+
+          example 'Update existing pins to a page', document: false do
+            do_request
+            json_response = json_parse(response_body)
+            expect(response_status).to eq 200
+            expect(json_response.dig(:data, :relationships, :pinned_admin_publications, :data).length).to eq(2)
+          end
         end
       end
     end
