@@ -93,7 +93,7 @@ const VisibleNavbarItemList = ({
                 <NavbarItemRow
                   title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
-                  showEditButton={navbarItem.attributes.code !== 'home'}
+                  showEditButton
                   viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
                 />
