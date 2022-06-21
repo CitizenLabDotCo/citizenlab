@@ -173,7 +173,7 @@ describe('getStatus', () => {
     );
   });
 
-  it("returns 'incomplete' if not all enabled options are filled out", () => {
+  it("returns 'incomplete' if not all enabled options are filled out (remote data)", () => {
     const formValues: FormValues = {
       id123: 1000,
       id456: 1000,
@@ -198,7 +198,7 @@ describe('getStatus', () => {
     );
   });
 
-  it("returns 'incomplete' if if only one option is enabled and filled out", () => {
+  it("returns 'incomplete' if if only one option is enabled and filled out (remote data)", () => {
     const formValues: FormValues = {
       id123: 1000,
     };
@@ -220,6 +220,39 @@ describe('getStatus', () => {
       'incomplete'
     );
   });
+
+  // TODO START
+  it("returns 'incomplete' if not all enabled options are filled out (no remote data)", () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1000,
+      id789: null,
+    };
+
+    const referenceDistribution = null;
+
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe(
+      'incomplete'
+    );
+  });
+
+  it("returns 'incomplete' if if only one option is enabled and filled out (remote data)", () => {
+    const formValues: FormValues = {
+      id123: 1000,
+    };
+
+    const referenceDistribution = null;
+
+    const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe(
+      'incomplete'
+    );
+  });
+
+  // TODO END
 
   it('returns null if local and remote data are both empty', () => {
     const formValues = {};

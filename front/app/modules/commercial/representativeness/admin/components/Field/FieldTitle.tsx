@@ -50,6 +50,7 @@ const STATUS_COLORS: Record<Status, StatusColor> = {
 
 const FieldTitle = ({ titleMultiloc, isDefault, status }: Props) => {
   const localize = useLocalize();
+  console.log(status);
 
   return (
     <Box
