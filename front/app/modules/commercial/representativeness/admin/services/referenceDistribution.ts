@@ -61,6 +61,7 @@ export async function createReferenceDistribution(
     apiEndpoint: [
       getCustomFieldEndpoint(userCustomFieldId),
       ...getStatsEndpoints(userCustomFieldId),
+      `${API_PATH}/users/custom_fields`,
     ],
   });
 
@@ -93,6 +94,7 @@ export async function deleteReferenceDistribution(userCustomFieldId: string) {
     apiEndpoint: [
       getCustomFieldEndpoint(userCustomFieldId),
       ...getStatsEndpoints(userCustomFieldId),
+      `${API_PATH}/users/custom_fields`,
     ],
   });
 
