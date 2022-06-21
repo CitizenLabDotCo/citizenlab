@@ -9,7 +9,10 @@ module UserCustomFields
         attribute :score, &:value
         attribute :counts, &:user_counts
 
-        has_one(:reference_distribution) { |rscore, _params| rscore.ref_distribution }
+        has_one(
+          :reference_distribution,
+          serializer: UserCustomFields::WebApi::V1::RefDistributionSerializer
+        ) { |rscore, _params| rscore.ref_distribution }
       end
     end
   end
