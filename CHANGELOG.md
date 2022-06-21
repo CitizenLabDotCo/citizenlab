@@ -2,7 +2,15 @@
 
 ## Next release
 
-## Fixed
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
 
 - [CL-903] Fix admin input manager crash on Safari
 
