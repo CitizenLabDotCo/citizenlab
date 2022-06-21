@@ -1,22 +1,21 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import SidebarNavItem from './admin/components/SidebarNavItem';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
 
-const CustomNavbarContainer = React.lazy(() => import('./admin/containers'));
-const CustomNavbarSettingsComponent = React.lazy(
+const CustomNavbarContainer = lazy(() => import('./admin/containers'));
+const CustomNavbarSettingsComponent = lazy(
   () => import('./admin/containers/NavigationSettings')
 );
-const NewPageFormComponent = React.lazy(
+const NewPageFormComponent = lazy(
   () => import('./admin/containers/NewPageForm')
 );
-const EditPageComponent = React.lazy(
-  () => import('./admin/containers/EditPageForm')
-);
-const EditNavbarItemComponent = React.lazy(
+const EditPageComponent = lazy(() => import('./admin/containers/EditPageForm'));
+const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
 );
+const EditHomepage = lazy(() => import('./admin/containers/EditHomepage'));
 
 const configuration: ModuleConfiguration = {
   routes: {
@@ -43,6 +42,10 @@ const configuration: ModuleConfiguration = {
           {
             path: 'navbar-items/edit/:navbarItemId',
             element: <EditNavbarItemComponent />,
+          },
+          {
+            path: 'navbar-items/edit/home-page',
+            element: <EditHomepage />,
           },
         ],
       },

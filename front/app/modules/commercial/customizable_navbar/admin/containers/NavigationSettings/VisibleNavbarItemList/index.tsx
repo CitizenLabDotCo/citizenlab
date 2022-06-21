@@ -4,9 +4,10 @@ import React from 'react';
 import {
   reorderNavbarItem,
   removeNavbarItem,
-} from '../../../../services/navbar';
+} from 'modules/commercial/customizable_navbar/services/navbar';
 import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
+import { adminPagesMenuPagesEditHomePath } from 'modules/commercial/customizable_navbar/services/pathUtils';
 
 // components
 import {
@@ -44,9 +45,15 @@ const VisibleNavbarItemList = ({
   const handleClickEdit = (navbarItem: INavbarItem) => () => {
     const pageData = navbarItem.relationships.static_page.data;
 
-    pageData
-      ? clHistory.push(`${NAVIGATION_PATH}/pages/edit/${pageData.id}`)
-      : clHistory.push(`${NAVIGATION_PATH}/navbar-items/edit/${navbarItem.id}`);
+    if (navbarItem.attributes.code === 'home') {
+      clHistory.push(adminPagesMenuPagesEditHomePath());
+    } else {
+      pageData
+        ? clHistory.push(`${NAVIGATION_PATH}/pages/edit/${pageData.id}`)
+        : clHistory.push(
+            `${NAVIGATION_PATH}/navbar-items/edit/${navbarItem.id}`
+          );
+    }
   };
 
   const getViewButtonLink = (navbarItem: INavbarItem) => {
