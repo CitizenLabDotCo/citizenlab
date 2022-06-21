@@ -250,10 +250,12 @@ class SharingModalContent extends PureComponent<
           <Description>{subtitle}</Description>
           <SharingWrapper>
             <SharingButtons
-              layout="rowLayout"
               context={postType}
               isInModal
               url={postUrl}
+              facebookMessage={formatMessage(messages.twitterMessage, {
+                postTitle,
+              })}
               twitterMessage={formatMessage(messages.twitterMessage, {
                 postTitle,
               })}

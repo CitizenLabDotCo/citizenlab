@@ -160,6 +160,11 @@ export default defineMessages({
     defaultMessage:
       '{projectName} | from the participation platform of {orgName}',
   },
+  facebookMessage: {
+    id: 'app.containers.Projects.facebookMessage',
+    defaultMessage:
+      '{projectName} | from the participation platform of {orgName}',
+  },
   about: {
     id: 'app.containers.Projects.about',
     defaultMessage: 'About',

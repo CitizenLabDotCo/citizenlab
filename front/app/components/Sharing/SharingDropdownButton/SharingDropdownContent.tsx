@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import tracks from '../tracks';
+import React from 'react';
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 // style
@@ -8,7 +7,6 @@ import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // components
-import { Icon } from '@citizenlab/cl2-component-library';
 import Facebook from '../buttons/Facebook';
 import Twitter from '../buttons/Twitter';
 import Messenger from '../buttons/Messenger';
@@ -17,12 +15,9 @@ import Email from '../buttons/Email';
 import CopyLink from '../buttons/CopyLink';
 
 // i18n
-import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
+import { useBreakpoint } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   display: flex;
@@ -51,54 +46,12 @@ const Container = styled.div`
   }
 `;
 
-const FacebookIcon = styled(Icon)`
-  width: 22px;
-  height: 18px;
-  margin-right: 10px;
-  fill: #3c5a99;
-`;
-
-const MessengerIcon = styled(Icon)`
-  width: 22px;
-  height: 18px;
-  margin-right: 10px;
-  fill: rgba(0, 120, 255, 1);
-`;
-
-const WhatsAppIcon = styled(Icon)`
-  width: 22px;
-  height: 22px;
-  fill: #23b43a;
-  margin-right: 10px;
-`;
-
-const TwitterIcon = styled(Icon)`
-  width: 22px;
-  height: 17px;
-  fill: #1da1f2;
-  margin-right: 10px;
-`;
-
-const EmailIcon = styled(Icon)`
-  margin-right: 10px;
-  width: 22px;
-  height: 17px;
-  fill: ${colors.secondaryText};
-`;
-
-const CopyLinkIcon = styled(Icon)`
-  margin-right: 10px;
-  width: 22px;
-  height: 17px;
-  fill: ${colors.grey};
-  transform: rotateY(0deg) rotate(-45deg);
-`;
-
 interface Props {
   className?: string;
   url: string;
   twitterMessage: string;
   whatsAppMessage: string;
+  facebookMessage: string;
   emailSubject: string;
   emailBody: string;
   utmParams: UtmParams;
@@ -114,108 +67,47 @@ const SharingDropdownContent = ({
   emailSubject,
   twitterMessage,
   whatsAppMessage,
-  intl: { formatMessage },
+  facebookMessage,
 }: Props & InjectedIntlProps) => {
-  const [linkIsCopied, setLinkCopied] = useState(false);
-
+  const maxTabletOrSmaller = useBreakpoint('largeTablet');
   const getUrl = (medium: Medium) => {
     return getUrlWithUtm(medium, url, utmParams);
   };
 
-  const handleClick = (medium: Medium) => () => {
-    trackEventByName(tracks.shareButtonClicked.name, { network: medium });
-  };
-
-  const facebook = (
-    <Facebook
-      url={getUrl('facebook')}
-      className="sharingButton facebook"
-      onClick={handleClick('facebook')}
-    >
-      {/*
-        For all sharing components, both children are aria-hidden.
-        The reasons are that (1) there's an aria-label for the text in all the components themselves
-        so we don't need to rely on the person who uses the component to think of adding text.
-        and (2) the icon needs to be hidden by default.
-      */}
-      <FacebookIcon ariaHidden name="facebook" />
-      <span aria-hidden>{'Facebook'}</span>
-    </Facebook>
-  );
-
-  const messenger = (
-    <Messenger
-      className="sharingButton messenger"
-      onClick={handleClick('messenger')}
-      url={getUrl('messenger')}
-    >
-      <MessengerIcon ariaHidden name="messenger" />
-      <span aria-hidden>{'Messenger'}</span>
-    </Messenger>
-  );
-
-  const whatsapp = (
-    <WhatsApp
-      className="sharingButton whatsapp"
-      onClick={handleClick('whatsapp')}
-      url={getUrl('whatsapp')}
-      whatsAppMessage={whatsAppMessage}
-    >
-      <WhatsAppIcon ariaHidden name="whatsapp" />
-      <span aria-hidden>{'WhatsApp'}</span>
-    </WhatsApp>
-  );
-
-  const twitter = (
-    <Twitter
-      twitterMessage={twitterMessage}
-      url={getUrl('twitter')}
-      className={'sharingButton twitter'}
-      onClick={handleClick('twitter')}
-    >
-      <TwitterIcon ariaHidden name="twitter" />
-      <span aria-hidden>{'Twitter'}</span>
-    </Twitter>
-  );
-
-  const email = (
-    <Email
-      className="sharingButton email"
-      onClick={handleClick('email')}
-      emailBody={emailBody}
-      emailSubject={emailSubject}
-    >
-      <EmailIcon ariaHidden name="email" />
-      <span aria-hidden>{'Email'}</span>
-    </Email>
-  );
-
-  const copylink = (
-    <CopyLink
-      setLinkCopied={setLinkCopied}
-      copyLink={url}
-      className={`sharingButton copylink`}
-    >
-      <>
-        <CopyLinkIcon ariaHidden name="link" />
-        {!linkIsCopied && (
-          <span aria-hidden>{formatMessage(messages.shareByLink)}</span>
-        )}
-        {linkIsCopied && (
-          <span aria-hidden>{formatMessage(messages.linkCopied)}</span>
-        )}
-      </>
-    </CopyLink>
-  );
-
   return (
     <Container id={id} className={className || ''}>
-      {facebook}
-      {messenger}
-      {whatsapp}
-      {twitter}
-      {email}
-      {copylink}
+      <Facebook
+        facebookMessage={facebookMessage}
+        url={getUrl('facebook')}
+        isInModal={false}
+        isDropdownStyle={true}
+      />
+      {maxTabletOrSmaller && (
+        <Messenger
+          isDropdownStyle={true}
+          isInModal={false}
+          url={getUrl('messenger')}
+        />
+      )}
+      <WhatsApp
+        url={getUrl('whatsapp')}
+        whatsAppMessage={whatsAppMessage}
+        isInModal={false}
+        isDropdownStyle={true}
+      />
+      <Twitter
+        isInModal={false}
+        twitterMessage={twitterMessage}
+        url={getUrl('twitter')}
+        isDropdownStyle={true}
+      />
+      <Email
+        emailBody={emailBody}
+        emailSubject={emailSubject}
+        isDropdownStyle={true}
+        isInModal={false}
+      />
+      <CopyLink isDropdownStyle={true} copyLink={url} />
     </Container>
   );
 };

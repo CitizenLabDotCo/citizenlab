@@ -1,31 +1,51 @@
 import React from 'react';
+import { clickSocialSharingLink, Medium } from '../utils';
+
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
 import { FacebookButton } from 'react-social';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import { Box, Button } from '@citizenlab/cl2-component-library';
+
+// style
+import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../tracks';
 
 interface Props {
-  className?: string;
-  onClick: () => void;
-  children: JSX.Element | JSX.Element[];
+  isDropdownStyle: boolean;
   url: string;
+  isInModal: boolean | undefined;
+  facebookMessage: string;
 }
 
 const Facebook = ({
-  children,
-  onClick,
-  className,
+  facebookMessage,
+  isInModal,
+  isDropdownStyle,
   url,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const tenant = useAppConfiguration();
 
-  const handleClick = () => {
-    onClick();
+  const handleClick = (href: string) => {
+    clickSocialSharingLink(href);
+    trackClick('facebook');
+  };
+
+  const trackClick = (medium: Medium) => () => {
+    const properties = isInModal
+      ? { modal: 'true', network: medium }
+      : { network: medium };
+
+    trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 
   if (!isNilOrError(tenant)) {
@@ -34,14 +54,38 @@ const Facebook = ({
     if (facebookConfig?.allowed && facebookConfig?.app_id) {
       return (
         <FacebookButton
+          message={facebookMessage}
           appId={facebookConfig.app_id}
           url={url}
-          className={className}
           onClick={handleClick}
           sharer={true}
           aria-label={formatMessage(messages.shareOnFacebook)}
+          style={{ padding: '0px', margin: '0px' }}
         >
-          {children}
+          <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
+            <Button
+              aria-label={formatMessage(messages.shareOnFacebook)}
+              bgColor={isDropdownStyle ? '#fff' : colors.facebook}
+              width="100%"
+              icon="facebook"
+              iconColor={isDropdownStyle ? colors.facebook : '#fff'}
+              iconSize="20px"
+              text={
+                isDropdownStyle ? (
+                  <FormattedMessage {...messages.facebook} />
+                ) : undefined
+              }
+              textColor={colors.grey}
+              textHoverColor={isDropdownStyle ? colors.grey : '#fff'}
+              iconHoverColor={isDropdownStyle ? colors.facebook : '#fff'}
+              justify={isDropdownStyle ? 'left' : 'center'}
+              bgHoverColor={
+                isDropdownStyle
+                  ? darken(0.06, '#fff')
+                  : darken(0.06, colors.facebook)
+              }
+            />
+          </Box>
         </FacebookButton>
       );
     }

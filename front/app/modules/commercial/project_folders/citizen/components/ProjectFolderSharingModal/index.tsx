@@ -74,6 +74,9 @@ const ProjectFolderSharingModal = memo<
                     <SharingButtons
                       context="folder"
                       url={folderUrl}
+                      facebookMessage={formatMessage(messages.facebookMessage, {
+                        projectFolderName,
+                      })}
                       twitterMessage={formatMessage(messages.twitterMessage, {
                         projectFolderName,
                       })}
@@ -91,7 +94,6 @@ const ProjectFolderSharingModal = memo<
                         projectFolderName,
                       })}
                       utmParams={utmParams}
-                      layout="columnLayout"
                     />
                   );
                 }}

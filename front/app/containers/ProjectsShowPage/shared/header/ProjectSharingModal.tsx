@@ -79,6 +79,12 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                             projectName: title,
                           }
                         )}
+                        facebookMessage={formatMessage(
+                          messages.facebookMessage,
+                          {
+                            projectName: title,
+                          }
+                        )}
                         twitterMessage={formatMessage(
                           messages.projectTwitterMessage,
                           {
@@ -96,7 +102,6 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                           title,
                         })}
                         utmParams={utmParams}
-                        layout="rowLayout"
                       />
                     );
                   }}

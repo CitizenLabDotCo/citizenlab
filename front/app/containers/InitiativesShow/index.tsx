@@ -635,6 +635,9 @@ export class InitiativesShow extends PureComponent<
                     twitterMessage={formatMessage(messages.twitterMessage, {
                       initiativeTitle,
                     })}
+                    facebookMessage={formatMessage(messages.facebookMessage, {
+                      initiativeTitle,
+                    })}
                     whatsAppMessage={formatMessage(messages.whatsAppMessage, {
                       initiativeTitle,
                     })}
@@ -671,6 +674,12 @@ export class InitiativesShow extends PureComponent<
                         id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
+                        facebookMessage={formatMessage(
+                          messages.facebookMessage,
+                          {
+                            initiativeTitle,
+                          }
+                        )}
                         twitterMessage={formatMessage(messages.twitterMessage, {
                           initiativeTitle,
                         })}

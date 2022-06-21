@@ -7,6 +7,7 @@ interface Props {
   className?: string;
   twitterMessage: string;
   whatsAppMessage: string;
+  facebookMessage: string;
   emailSubject: string;
   emailBody: string;
   utmParams: UtmParams;
@@ -19,6 +20,7 @@ const SharingDropdownButton = ({
   url,
   twitterMessage,
   whatsAppMessage,
+  facebookMessage,
   emailSubject,
   emailBody,
   utmParams,
@@ -32,6 +34,7 @@ const SharingDropdownButton = ({
         <SharingDropdownContent
           url={url}
           twitterMessage={twitterMessage}
+          facebookMessage={facebookMessage}
           whatsAppMessage={whatsAppMessage}
           emailSubject={emailSubject}
           emailBody={emailBody}
