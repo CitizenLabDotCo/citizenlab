@@ -221,7 +221,6 @@ describe('getStatus', () => {
     );
   });
 
-  // TODO START
   it("returns 'incomplete' if not all enabled options are filled out (no remote data)", () => {
     const formValues: FormValues = {
       id123: 1000,
@@ -251,8 +250,6 @@ describe('getStatus', () => {
       'incomplete'
     );
   });
-
-  // TODO END
 
   it('returns null if local and remote data are both empty', () => {
     const formValues = {};

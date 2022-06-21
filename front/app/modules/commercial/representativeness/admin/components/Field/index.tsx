@@ -89,6 +89,8 @@ const Field = ({
     } else {
       setFormValues(omit(formValues, optionId));
     }
+
+    setTouched(true);
   };
 
   const onUpdatePopulation = (optionId: string, population: number | null) => {
@@ -96,6 +98,8 @@ const Field = ({
       ...formValues,
       [optionId]: population,
     });
+
+    setTouched(true);
   };
 
   const onSubmit = async () => {

@@ -62,7 +62,7 @@ const Options = ({
 
             <Box display="flex" alignItems="center" width="40%">
               <OptionInput
-                value={population}
+                value={population === undefined ? null : population}
                 percentage={
                   enabled ? parsePercentage(population, formValues) : undefined
                 }
