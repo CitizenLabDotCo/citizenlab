@@ -4,7 +4,18 @@ module UserCustomFields
   # This module can be used to count the number of times each custom field option
   # has been selected by a user (within a group of users).
   module FieldValueCounter
-    def self.counts_by_field_option(users, custom_field)
+    UNKNOWN_VALUE_LABEL = '_blank'
+
+    # Counts the number of users by custom field option. The counts are indexed by
+    # the option key by default. The resulting hash also includes a special entry for users
+    # who do not have a value for the custom field. The key of this entry is equal to
+    # +UNKNOWN_VALUE_LABEL+.
+    #
+    # @param [ActiveRecord::Relation] users
+    # @param [UserCustomField] user_custom_field
+    # @param [Boolean] by_option_id index the counts by the option id instead of the option key
+    # @return [ActiveSupport::HashWithIndifferentAccess]
+    def self.counts_by_field_option(users, custom_field, by_option_id: false)
       field_values = select_field_values(users, custom_field)
 
       # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
@@ -16,8 +27,9 @@ module UserCustomFields
         .select('COUNT(*) as count')
         .to_a.pluck(:field_value, :count).to_h
 
-      counts['_blank'] = counts.delete(nil) || 0
-      counts
+      counts[UNKNOWN_VALUE_LABEL] = counts.delete(nil) || 0
+      convert_keys_to_option_ids!(counts, custom_field) if by_option_id
+      counts.with_indifferent_access
     end
 
     # Returns an ActiveRecord::Relation of all the custom field values for the given users.
@@ -44,6 +56,15 @@ module UserCustomFields
         SQL
       else
         raise NotSupportedFieldTypeError
+      end
+    end
+
+    private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)
+      key_to_id = custom_field.custom_field_options.to_h { |option| [option.key, option.id] }
+      counts.transform_keys! do |option_key|
+        next option_key if option_key == UNKNOWN_VALUE_LABEL
+
+        key_to_id.fetch(option_key)
       end
     end
   end

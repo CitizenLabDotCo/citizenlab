@@ -7,7 +7,13 @@ RSpec.describe UserCustomFields::Representativeness::RScore do
     subject(:r_score) { described_class.compute(user_counts, ref_distribution) }
 
     let(:ref_distribution) { create(:ref_distribution, population_counts: [100, 200]) }
-    let(:user_counts) { ref_distribution.custom_field.custom_field_option_ids.index_with(100) }
+    let(:user_counts) do
+      # The number of missing values (UNKNOWN_VALUE_LABEL) does not matter as it does
+      # not affect the scores.
+      ref_distribution
+        .custom_field.custom_field_option_ids.index_with(100)
+        .merge(UserCustomFields::FieldValueCounter::UNKNOWN_VALUE_LABEL => 123)
+    end
 
     it 'creates an RScore with the correct value' do
       expect(r_score.value).to eq(0.5)
