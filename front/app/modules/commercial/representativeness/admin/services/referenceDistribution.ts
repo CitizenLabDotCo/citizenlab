@@ -1,5 +1,13 @@
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import { apiEndpoint as statsEndpoint } from 'services/stats';
+
+const getStatsEndpoints = (userCustomFieldId: string) => [
+  `${statsEndpoint}/users_by_gender`,
+  // `${statsEndpoint}/users_by_domicile`
+  // `${statsEndpoint}/users_by_birthyear`,
+  `${statsEndpoint}/users_by_custom_field/${userCustomFieldId}`,
+];
 
 const getCustomFieldEndpoint = (userCustomFieldId: string) =>
   `${API_PATH}/users/custom_fields/${userCustomFieldId}`;
@@ -50,20 +58,29 @@ export async function createReferenceDistribution(
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [getCustomFieldEndpoint(userCustomFieldId)],
+    apiEndpoint: [
+      getCustomFieldEndpoint(userCustomFieldId),
+      ...getStatsEndpoints(userCustomFieldId),
+    ],
   });
 
   return response;
 }
 
-export function replaceReferenceDistribution(
+export async function replaceReferenceDistribution(
   userCustomFieldId: string,
   distribution: TUploadDistribution
 ) {
-  return streams.add<IReferenceDistribution>(
+  const response = await streams.add<IReferenceDistribution>(
     getReferenceDistributionEndpoint(userCustomFieldId),
     { distribution }
   );
+
+  await streams.fetchAllWith({
+    apiEndpoint: getStatsEndpoints(userCustomFieldId),
+  });
+
+  return response;
 }
 
 export async function deleteReferenceDistribution(userCustomFieldId: string) {
@@ -73,7 +90,10 @@ export async function deleteReferenceDistribution(userCustomFieldId: string) {
   );
 
   await streams.fetchAllWith({
-    apiEndpoint: [getCustomFieldEndpoint(userCustomFieldId)],
+    apiEndpoint: [
+      getCustomFieldEndpoint(userCustomFieldId),
+      ...getStatsEndpoints(userCustomFieldId),
+    ],
   });
 
   return response;
