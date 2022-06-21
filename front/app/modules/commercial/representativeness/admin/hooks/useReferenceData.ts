@@ -136,29 +136,46 @@ export default useReferenceData;
 const toReferenceData = (
   usersByField: TStreamResponse
 ): RepresentativenessRowMultiloc[] => {
-  const { users, expected_users } = usersByField.series;
+  const { users, expectedUsers } = includeOnlyExpectedUsers(usersByField);
+
   const options =
     'options' in usersByField ? usersByField.options : usersByField.areas;
+
   const totalActualUsers = sum(Object.values(users));
-  const totalReferenceUsers = sum(Object.values(expected_users));
-  const data = Object.keys(users)
-    .filter((opt) => opt !== '_blank')
-    .map((opt) => ({
-      title_multiloc: options[opt].title_multiloc,
-      actualPercentage: percentage(users[opt], totalReferenceUsers),
-      referencePercentage: percentage(expected_users[opt], totalActualUsers),
-      actualNumber: users[opt],
-      referenceNumber: expected_users[opt],
-    }));
+  const totalReferenceUsers = sum(Object.values(expectedUsers));
+
+  const data = Object.keys(users).map((optionId) => ({
+    title_multiloc: options[optionId].title_multiloc,
+    actualPercentage: percentage(users[optionId], totalActualUsers),
+    referencePercentage: percentage(
+      expectedUsers[optionId],
+      totalReferenceUsers
+    ),
+    actualNumber: users[optionId],
+    referenceNumber: expectedUsers[optionId],
+  }));
 
   return data;
 };
 
+const includeOnlyExpectedUsers = ({ series }: TStreamResponse) => {
+  const users = {};
+  const expectedUsers = series.expected_users;
+
+  for (const optionId in expectedUsers) {
+    users[optionId] = series.users[optionId];
+  }
+
+  return { users, expectedUsers };
+};
+
 const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
-  const { users } = usersByField.series;
+  const { users, expected_users } = usersByField.series;
+
   const known = Object.keys(users)
-    .filter((opt) => opt !== '_blank')
+    .filter((optionId) => optionId in expected_users)
     .reduce((acc, v) => users[v] + acc, 0);
+
   const total = sum(Object.values(users));
   return percentage(known, total);
 };
