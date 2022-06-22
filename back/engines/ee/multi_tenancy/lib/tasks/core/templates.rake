@@ -43,9 +43,10 @@ namespace :templates do
     templates = MultiTenancy::TenantTemplateService.new.available_templates(
       external_subfolder: 'test'
     )[:external]
+    max_time = 3.hours / templates.size unless templates.empty?
     templates.in_groups_of(pool_size).map(&:compact).map do |pool_templates|
       futures = pool_templates.index_with do |template|
-        Concurrent::Future.execute { verify_template template }
+        Concurrent::Future.execute { verify_template template, max_time }
       end
       sleep 1 until futures.values.all?(&:complete?)
 
@@ -93,7 +94,7 @@ namespace :templates do
     File.write("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", template.to_yaml)
   end
 
-  def verify_template(template)
+  def verify_template(template, max_time)
     service = MultiTenancy::TenantTemplateService.new
     locales = service.required_locales(template, external_subfolder: 'test')
     locales = ['en'] if locales.blank?
@@ -110,7 +111,7 @@ namespace :templates do
 
     Apartment::Tenant.switch(tn.schema_name) do
       puts "Verifying #{template}"
-      service.resolve_and_apply_template template, external_subfolder: 'test', max_time: 45.minutes
+      service.resolve_and_apply_template template, external_subfolder: 'test', max_time: max_time
     end
 
     tn.destroy!
