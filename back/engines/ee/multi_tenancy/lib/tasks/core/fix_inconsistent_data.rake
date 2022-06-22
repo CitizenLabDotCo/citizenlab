@@ -111,15 +111,15 @@ namespace :inconsistent_data do
         deleted_keys = {}
         CustomField.with_resource_type('User').where(input_type: 'multiselect').pluck(:key).each do |key|
           used_keys = User.select("custom_field_values->'#{key}' as user_options").map(&:user_options).compact.flatten.uniq
-          deleted_keys[key] = used_keys - CustomField.with_resource_type('User').find_by(key: key).custom_field_options.pluck(:key)
+          deleted_keys[key] = used_keys - CustomField.with_resource_type('User').find_by(key: key).options.pluck(:key)
         end
         CustomField.with_resource_type('User').where(input_type: 'select').pluck(:key).each do |key|
           used_keys = User.select("custom_field_values->'#{key}' as user_option").map(&:user_option).compact.uniq
-          deleted_keys[key] = used_keys - (CustomField.with_resource_type('User').find_by(key: key).custom_field_options.pluck(:key) + ['outside'])
+          deleted_keys[key] = used_keys - (CustomField.with_resource_type('User').find_by(key: key).options.pluck(:key) + ['outside'])
         end
         deleted_keys.each do |field_key, option_keys|
           field = CustomField.with_resource_type('User').find_by key: field_key
-          if field.custom_field_options.where(key: option_keys).exists?
+          if field.options.where(key: option_keys).exists?
             raise 'Trying to delete existing option'
           else
             option_keys.each do |option_key|
