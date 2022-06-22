@@ -1,5 +1,5 @@
 import React from 'react';
-import { clickSocialSharingLink, Medium } from '../utils';
+import { Medium } from '../utils';
 
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -36,8 +36,7 @@ const Facebook = ({
 }: Props & InjectedIntlProps) => {
   const tenant = useAppConfiguration();
 
-  const handleClick = (href: string) => {
-    clickSocialSharingLink(href);
+  const handleClick = () => {
     trackClick('facebook');
   };
 
@@ -78,17 +77,25 @@ const Facebook = ({
   if (!isNilOrError(tenant)) {
     const facebookConfig = tenant.data.attributes.settings?.facebook_login;
 
-    if (facebookConfig?.allowed && facebookConfig?.app_id) {
+    if (
+      facebookConfig?.allowed &&
+      facebookConfig?.enabled &&
+      facebookConfig?.app_id
+    ) {
       return (
         <StyledFacebookButton
           message={facebookMessage}
           appId={facebookConfig.app_id}
           url={url}
-          onClick={handleClick}
           sharer={true}
           aria-label={formatMessage(messages.shareOnFacebook)}
         >
-          <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
+          <Box
+            onClick={handleClick}
+            flex="1 1 1"
+            display="flex"
+            style={{ cursor: 'pointer' }}
+          >
             <Text color="grey">
               <StyledIcon
                 ml={isDropdownStyle ? '12px' : '0px'}
