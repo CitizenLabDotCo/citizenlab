@@ -2,16 +2,17 @@
 #
 # Table name: analytics_fact_activities
 #
-#  id                   :uuid
-#  user_id              :uuid
-#  project_id           :uuid
-#  created_date_id      :uuid
-#  activity_type        :text
-#  feedback_recieved_at :text
-#  time_to_feedback     :integer
-#  votes_count          :integer
-#  upvotes_count        :integer
-#  downvotes_count      :integer
+#  id                        :uuid
+#  user_id                   :uuid
+#  project_id                :uuid
+#  created_date_id           :uuid
+#  activity_type             :text
+#  feedback_recieved_date_id :uuid
+#  time_to_feedback          :interval
+#  votes_count               :integer
+#  upvotes_count             :integer
+#  downvotes_count           :integer
+#  participants              :integer
 #
 # Indexes
 #
@@ -24,5 +25,10 @@ module Analytics
     def readonly?
       true
     end
+
+    def self.refresh
+      Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: true)
+    end
+
   end
 end
