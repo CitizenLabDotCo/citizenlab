@@ -13,6 +13,7 @@
 ### Fixed
 
 - [CL-903] Fix admin input manager crash on Safari
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
 
 ## 2022-06-16
 
