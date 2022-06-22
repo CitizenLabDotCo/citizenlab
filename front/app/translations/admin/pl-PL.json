@@ -1352,6 +1352,7 @@
   "app.containers.admin.ContentBuilder.delete": "Usuń",
   "app.containers.admin.ContentBuilder.error": "błąd",
   "app.containers.admin.ContentBuilder.errorMessage": "Wystąpił błąd w treści {locale}, proszę naprawić ten błąd, aby móc zapisać zmiany",
+  "app.containers.admin.ContentBuilder.iframeDescription": "Display content from an external website on your page in an HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Wysokość",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Wysokość okna iframe.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "np. 120px",
