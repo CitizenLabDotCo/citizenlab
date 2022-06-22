@@ -86,10 +86,6 @@ function useReferenceData(
   const code = userCustomField.attributes.code;
   const userCustomFieldId = userCustomField.id;
 
-  if (userCustomField.attributes.key === 'education') {
-    console.log(userCustomField.attributes);
-  }
-
   useEffect(() => {
     const handleStreamResponse = (usersByField: TStreamResponse) => {
       if (isNilOrError(usersByField)) {

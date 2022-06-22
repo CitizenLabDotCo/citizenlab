@@ -25,7 +25,7 @@ export const roundPercentages = (values: number[], decimals = 0) => {
 
   const remainders = unrounded.map((value, i) => value - floored[i]);
 
-  let sortedIndices = [...Array(remainders.length)]
+  const sortedIndices = [...Array(remainders.length)]
     .map((_, i) => i)
     .sort((a, b) => remainders[b] - remainders[a]);
 

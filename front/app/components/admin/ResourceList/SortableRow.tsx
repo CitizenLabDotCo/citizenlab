@@ -41,8 +41,6 @@ class SortableRow extends React.Component<Props, State> {
     } = this.props;
     const opacity = isDragging ? 0 : 1;
 
-    console.log(noStyling);
-
     if (!children) {
       return null;
     }

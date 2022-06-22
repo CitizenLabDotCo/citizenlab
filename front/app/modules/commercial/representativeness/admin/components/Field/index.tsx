@@ -6,6 +6,7 @@ import {
   createReferenceDistribution,
   replaceReferenceDistribution,
   deleteReferenceDistribution,
+  IReferenceDistributionData,
 } from '../../services/referenceDistribution';
 
 // hooks
@@ -29,7 +30,6 @@ import {
 // typings
 import { Multiloc } from 'typings';
 import { IUserCustomFieldOptionData } from 'modules/commercial/user_custom_fields/services/userCustomFieldOptions';
-import { IReferenceDistributionData } from '../../services/referenceDistribution';
 
 interface Props {
   userCustomFieldId: string;

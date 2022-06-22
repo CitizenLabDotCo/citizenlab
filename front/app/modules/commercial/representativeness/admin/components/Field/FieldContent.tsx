@@ -18,10 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isSubmittingAllowed } from './utils';
-
-// typings
-import { FormValues } from './utils';
+import { isSubmittingAllowed, FormValues } from './utils';
 
 interface Props {
   userCustomFieldId: string;
