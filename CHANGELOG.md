@@ -2,9 +2,25 @@
 
 ## Next release
 
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
+
+- [CL-903] Fix admin input manager crash on Safari
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+## 2022-06-16
+
 ### Added
 
 - [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
 
 ### Fixed
 
