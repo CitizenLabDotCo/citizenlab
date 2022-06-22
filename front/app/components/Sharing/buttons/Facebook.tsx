@@ -9,11 +9,12 @@ import { FacebookButton } from 'react-social';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Text, Icon } from '@citizenlab/cl2-component-library';
 
 // style
 import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
+import styled from 'styled-components';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -48,45 +49,58 @@ const Facebook = ({
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 
+  const StyledFacebookButton = styled(FacebookButton)`
+    display: flex;
+    flex-basis: 1;
+    justify-content: space-between;
+    background-color: ${isDropdownStyle ? '#fff' : colors.facebook};
+    border-radius: 3px;
+    height: 40px;
+    width: ${isDropdownStyle ? '100%' : '56px'};
+    align-items: center;
+    justify-content: ${isDropdownStyle ? 'left' : 'center'};
+
+    &:hover {
+      background-color: ${isDropdownStyle
+        ? darken(0.06, '#fff')
+        : darken(0.06, colors.facebook)};
+    }
+  `;
+
+  const StyledIcon = styled(Icon)`
+    fill: ${isDropdownStyle ? colors.twitter : '#fff'};
+
+    &:hover {
+      fill: white;
+    }
+  `;
+
   if (!isNilOrError(tenant)) {
     const facebookConfig = tenant.data.attributes.settings?.facebook_login;
 
     if (facebookConfig?.allowed && facebookConfig?.app_id) {
       return (
-        <FacebookButton
+        <StyledFacebookButton
           message={facebookMessage}
           appId={facebookConfig.app_id}
           url={url}
           onClick={handleClick}
           sharer={true}
           aria-label={formatMessage(messages.shareOnFacebook)}
-          style={{ padding: '0px', margin: '0px' }}
         >
           <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
-            <Button
-              aria-label={formatMessage(messages.shareOnFacebook)}
-              bgColor={isDropdownStyle ? '#fff' : colors.facebook}
-              width="100%"
-              icon="facebook"
-              iconColor={isDropdownStyle ? colors.facebook : '#fff'}
-              iconSize="20px"
-              text={
-                isDropdownStyle ? (
-                  <FormattedMessage {...messages.facebook} />
-                ) : undefined
-              }
-              textColor={colors.grey}
-              textHoverColor={isDropdownStyle ? colors.grey : '#fff'}
-              iconHoverColor={isDropdownStyle ? colors.facebook : '#fff'}
-              justify={isDropdownStyle ? 'left' : 'center'}
-              bgHoverColor={
-                isDropdownStyle
-                  ? darken(0.06, '#fff')
-                  : darken(0.06, colors.facebook)
-              }
-            />
+            <Text color="grey">
+              <StyledIcon
+                ml={isDropdownStyle ? '12px' : '0px'}
+                mr={isDropdownStyle ? '12px' : '0px'}
+                fill="white"
+                name="facebook"
+                width="20px"
+              />
+              {isDropdownStyle && <FormattedMessage {...messages.facebook} />}
+            </Text>
           </Box>
-        </FacebookButton>
+        </StyledFacebookButton>
       );
     }
   }

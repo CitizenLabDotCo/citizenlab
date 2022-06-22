@@ -8,7 +8,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -53,12 +53,14 @@ const Twitter = ({
     background-color: ${isDropdownStyle ? '#fff' : colors.twitter};
     border-radius: 3px;
     height: 40px;
-    width: 56px;
+    width: ${isDropdownStyle ? '100%' : '56px'};
     align-items: center;
-    justify-content: center;
+    justify-content: ${isDropdownStyle ? 'left' : 'center'};
 
     &:hover {
-      background-color: ${darken(0.06, colors.twitter)};
+      background-color: ${isDropdownStyle
+        ? darken(0.06, '#fff')
+        : darken(0.06, colors.twitter)};
     }
   `;
 
@@ -80,8 +82,16 @@ const Twitter = ({
       style={{ padding: '0px', margin: '0px', cursor: 'pointer' }}
     >
       <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
-        <StyledIcon fill="white" name="twitter" width="20px" />
-        {isDropdownStyle && <FormattedMessage {...messages.twitter} />}
+        <Text color="grey">
+          <StyledIcon
+            ml={isDropdownStyle ? '16px' : '0px'}
+            mr={isDropdownStyle ? '12px' : '0px'}
+            fill="white"
+            name="twitter"
+            width="20px"
+          />
+          {isDropdownStyle && <FormattedMessage {...messages.twitter} />}
+        </Text>
       </Box>
     </StyledTwitterButton>
   );
