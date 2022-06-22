@@ -1,4 +1,10 @@
-import { isFormValid, getSubmitAction, getStatus, FormValues } from './utils';
+import {
+  isFormValid,
+  getSubmitAction,
+  getStatus,
+  isSubmittingAllowed,
+  FormValues,
+} from './utils';
 import {
   IReferenceDistributionData,
   TDistribution,
@@ -252,7 +258,7 @@ describe('getStatus', () => {
   });
 
   it('returns null if local and remote data are both empty', () => {
-    const formValues = {};
+    const formValues: FormValues = {};
     const referenceDistribution = null;
     const touched = true;
 
@@ -260,7 +266,7 @@ describe('getStatus', () => {
   });
 
   it('returns null if local data is empty but remote is not', () => {
-    const formValues = {};
+    const formValues: FormValues = {};
 
     const referenceDistribution = createReferenceDistribution({
       id123: {
@@ -276,5 +282,35 @@ describe('getStatus', () => {
     const touched = true;
 
     expect(getStatus(formValues, referenceDistribution, touched)).toBeNull();
+  });
+});
+
+describe('isSubmittingAllowed', () => {
+  it('returns false if all fields disabled + no remote data', () => {
+    expect(isSubmittingAllowed({}, true, false)).toBe(false);
+  });
+
+  it('returns true if all fields disabled + remote data', () => {
+    expect(isSubmittingAllowed({}, true, true)).toBe(true);
+  });
+
+  it('returns false if not all enabled fields filled out', () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1200,
+      id789: null,
+    };
+
+    expect(isSubmittingAllowed(formValues, true, false)).toBe(false);
+  });
+
+  it('returns true if all enabled fields filled out', () => {
+    const formValues: FormValues = {
+      id123: 1000,
+      id456: 1200,
+      id789: 1100,
+    };
+
+    expect(isSubmittingAllowed(formValues, true, false)).toBe(true);
   });
 });
