@@ -10,6 +10,8 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 import styled from 'styled-components';
 import { rightColumnWidthDesktop } from '../styleConstants';
 import { colors } from 'utils/styleUtils';
+import IdeaSharingButton from '../Buttons/IdeaSharingButton';
+import SharingButtonComponent from '../Buttons/SharingButtonComponent';
 
 const Container = styled.div<{ insideModal: boolean }>`
   flex: 0 0 ${rightColumnWidthDesktop}px;
@@ -28,7 +30,7 @@ const Box = styled.div`
   padding: 20px;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.backgroundLightGrey};
-  margin-bottom: 30px;
+  margin-bottom: 12px;
 `;
 
 const StyledVoteControl = styled(VoteControl)`
@@ -74,6 +76,18 @@ const RightColumnDesktop = ({
             projectId={projectId}
           />
           <Buttons ideaId={ideaId} />
+        </Box>
+        <Box
+          style={{
+            backgroundColor: 'white',
+            padding: '0px',
+            marginBottom: '16px',
+          }}
+        >
+          <IdeaSharingButton
+            ideaId={ideaId}
+            buttonComponent={<SharingButtonComponent />}
+          />
         </Box>
         <StyledMetaInformation
           ideaId={ideaId}

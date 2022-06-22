@@ -23,7 +23,6 @@ import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder';
   isInModal?: boolean;
-  className?: string;
   url: string;
   twitterMessage: string;
   facebookMessage: string;
@@ -42,7 +41,6 @@ const SharingButtons = memo(
     facebookMessage,
     emailSubject,
     emailBody,
-    className,
     isInModal,
     id,
     url,
@@ -62,24 +60,12 @@ const SharingButtons = memo(
     }[context];
 
     return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        id={id}
-        className={className || ''}
-        alignItems={maxTabletOrSmaller || isInModal ? 'center' : 'flex-start'}
-      >
-        <Title
-          mb="12px"
-          display="flex"
-          textAlign="center"
-          color={theme.colorText}
-          variant="h3"
-          as="h1"
-        >
+      <>
+        <Title mb="12px" color={theme.colorText} variant="h3" as="h1">
           {titleMessage}
         </Title>
         <Box
+          id={id}
           justifyContent={maxTabletOrSmaller ? 'center' : 'flex-start'}
           display="flex"
           gap="5px"
@@ -118,7 +104,7 @@ const SharingButtons = memo(
           />
           <CopyLink isDropdownStyle={false} copyLink={url} />
         </Box>
-      </Box>
+      </>
     );
   }
 );

@@ -8,14 +8,12 @@ import { Button, Box } from '@citizenlab/cl2-component-library';
 
 // style
 import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 interface Props {
   isDropdownStyle: boolean;
   copyLink: string;
 }
 
 const CopyLink = ({
-  isDropdownStyle,
   copyLink,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -31,8 +29,7 @@ const CopyLink = ({
       <Button
         onClick={handleClick()}
         aria-label={formatMessage(messages.shareByLink)}
-        bgColor={isDropdownStyle ? '#fff' : colors.backgroundLightGrey}
-        width="100%"
+        bgColor={colors.backgroundLightGrey}
         icon="link"
         iconColor={colors.grey}
         iconSize="20px"
@@ -46,12 +43,6 @@ const CopyLink = ({
         textColor={colors.grey}
         textHoverColor={colors.grey}
         iconHoverColor={colors.grey}
-        justify={isDropdownStyle ? 'left' : 'center'}
-        bgHoverColor={
-          isDropdownStyle
-            ? darken(0.06, '#fff')
-            : darken(0.06, colors.backgroundLightGrey)
-        }
       />
     </Box>
   );

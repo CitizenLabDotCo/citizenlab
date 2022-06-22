@@ -56,7 +56,7 @@ describe('IdeaSharingButton', () => {
         ]
       )
       .click();
-
+    screen.debug();
     screen.getByText('WhatsApp').click();
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',

@@ -3,12 +3,12 @@ import { TwitterButton } from 'react-social';
 import { clickSocialSharingLink, Medium } from '../utils';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // components
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Icon } from '@citizenlab/cl2-component-library';
 
 // style
 import { colors } from 'utils/styleUtils';
@@ -27,7 +27,6 @@ interface Props {
 }
 
 const Twitter = ({
-  isDropdownStyle,
   url,
   twitterMessage,
   isInModal,
@@ -48,27 +47,15 @@ const Twitter = ({
 
   const StyledTwitterButton = styled(TwitterButton)`
     display: flex;
-    flex-basis: 1;
-    justify-content: space-between;
-    background-color: ${isDropdownStyle ? '#fff' : colors.twitter};
+    background-color: ${colors.twitter};
     border-radius: 3px;
     height: 40px;
-    width: ${isDropdownStyle ? '100%' : '56px'};
+    width: 48px;
     align-items: center;
-    justify-content: ${isDropdownStyle ? 'left' : 'center'};
+    justify-content: center;
 
     &:hover {
-      background-color: ${isDropdownStyle
-        ? darken(0.06, '#fff')
-        : darken(0.06, colors.twitter)};
-    }
-  `;
-
-  const StyledIcon = styled(Icon)`
-    fill: ${isDropdownStyle ? colors.twitter : '#fff'};
-
-    &:hover {
-      fill: white;
+      background-color: ${darken(0.1, colors.twitter)};
     }
   `;
 
@@ -79,20 +66,9 @@ const Twitter = ({
       onClick={handleClick}
       sharer={true}
       aria-label={formatMessage(messages.shareOnTwitter)}
-      style={{ padding: '0px', margin: '0px', cursor: 'pointer' }}
+      style={{ cursor: 'pointer' }}
     >
-      <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
-        <Text color="grey">
-          <StyledIcon
-            ml={isDropdownStyle ? '16px' : '0px'}
-            mr={isDropdownStyle ? '12px' : '0px'}
-            fill="white"
-            name="twitter"
-            width="20px"
-          />
-          {isDropdownStyle && <FormattedMessage {...messages.twitter} />}
-        </Text>
-      </Box>
+      <Icon fill="white" name="twitter" width="20px" />
     </StyledTwitterButton>
   );
 };

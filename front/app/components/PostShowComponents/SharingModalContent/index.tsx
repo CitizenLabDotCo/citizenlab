@@ -5,7 +5,13 @@ import { getInputTerm } from 'services/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
-import { Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  Box,
+  Text,
+  Title,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -33,81 +39,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
-import { fontSizes, media } from 'utils/styleUtils';
+
 import rocket from './rocket.png';
-
-const Loading = styled.div`
-  width: 100%;
-  height: 460px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Rocket = styled.img`
-  width: 40px;
-  height: 40px;
-
-  ${media.smallerThanMaxTablet`
-    width: 35px;
-    height: 35px;
-  `}
-`;
-
-const Title = styled.h1`
-  flex-shrink: 0;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    max-width: auto;
-    font-size: ${fontSizes.xxxl}px;
-    line-height: 36px;
-  `}
-`;
-
-const Description = styled.p`
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 500px;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.l}px;
-  line-height: 25px;
-  font-weight: 300;
-  text-align: center;
-  margin: 0;
-  margin-top: 10px;
-  margin-bottom: 50px;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.base}px;
-    line-height: 21px;
-  `}
-`;
-
-const SharingWrapper = styled.div`
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 320px;
-  display: flex;
-  flex-direction: column;
-`;
 
 interface InputProps {
   postType: PostType;
@@ -143,6 +76,7 @@ class SharingModalContent extends PureComponent<
       postType,
     });
   }
+  maxTabletOrSmaller = useBreakpoint('largeTablet');
 
   getPostValues = () => {
     const { postType, idea, initiative, localize, locale } = this.props;
@@ -241,13 +175,52 @@ class SharingModalContent extends PureComponent<
       whatsAppMessage
     ) {
       return (
-        <Container className={className}>
-          <Rocket src={rocket} alt="" />
-          <Title className={`e2e-${postType}-social-sharing-modal-title`}>
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          className={className}
+        >
+          <img
+            width={this.maxTabletOrSmaller ? '36px' : '40px'}
+            height={this.maxTabletOrSmaller ? '36px' : '40px'}
+            src={rocket}
+            alt=""
+          />
+          <Title
+            color="text"
+            fontSize="xxxxl"
+            textAlign="center"
+            m="0"
+            mt="20px"
+            mb="12px"
+            p="0"
+            style={{ lineHeight: this.maxTabletOrSmaller ? '36px' : '40px' }}
+            className={`e2e-${postType}-social-sharing-modal-title`}
+          >
             {title}
           </Title>
-          <Description>{subtitle}</Description>
-          <SharingWrapper>
+          <Text
+            width="100%"
+            maxWidth="500px"
+            color="text"
+            margin="0"
+            mt="12px"
+            mb="52px"
+            p="0"
+            fontSize={this.maxTabletOrSmaller ? 'base' : 'l'}
+            textAlign="center"
+            style={{ lineHeight: this.maxTabletOrSmaller ? '20px' : '25px' }}
+          >
+            {subtitle}
+          </Text>
+          <Box
+            flexShrink={0}
+            width="100%"
+            display="flex"
+            flexDirection="column"
+          >
             <SharingButtons
               context={postType}
               isInModal={true}
@@ -272,15 +245,21 @@ class SharingModalContent extends PureComponent<
                 content: authUser.id,
               }}
             />
-          </SharingWrapper>
-        </Container>
+          </Box>
+        </Box>
       );
     }
 
     return (
-      <Loading>
+      <Box
+        width="100%"
+        height="460px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Spinner />
-      </Loading>
+      </Box>
     );
   }
 }

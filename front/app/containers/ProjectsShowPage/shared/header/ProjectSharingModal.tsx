@@ -16,15 +16,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 400px;
-  padding: 40px 25px;
-  margin-left: auto;
-  margin-right: auto;
-`;
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   projectId: string;
@@ -64,14 +56,22 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
           closeOnClickOutside={true}
           header={<T value={project.attributes.title_multiloc} />}
         >
-          <Container className={className}>
+          <Box
+            width="100%"
+            maxWidth="400px"
+            padding="40px 25px"
+            ml="auto"
+            mr="auto"
+            style={{ textAlign: 'center' }}
+            className={className}
+          >
             {opened && (
               <>
                 <T value={project.attributes.title_multiloc} maxLength={50}>
                   {(title) => {
                     return (
                       <SharingButtons
-                        isInModal={true}
+                        isInModal={false}
                         context="project"
                         url={projectUrl}
                         whatsAppMessage={formatMessage(
@@ -112,7 +112,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                 </T>
               </>
             )}
-          </Container>
+          </Box>
         </Modal>
       );
     }
