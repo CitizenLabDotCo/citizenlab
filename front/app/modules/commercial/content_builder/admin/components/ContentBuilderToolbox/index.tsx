@@ -7,7 +7,7 @@ import { useEditor } from '@craftjs/core';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // components
@@ -68,7 +68,7 @@ const ContentBuilderToolbox = ({
     >
       <Box w="100%" display="inline">
         <Title mt="24px" ml="5px" variant="h6" as="h1" color="label">
-          SECTIONS
+          <FormattedMessage {...messages.sections} />
         </Title>
         <DraggableElement
           id="e2e-draggable-image-text-cards"
@@ -154,7 +154,7 @@ const ContentBuilderToolbox = ({
           />
         </DraggableElement>
         <Title mt="32px" ml="5px" variant="h6" as="h1" color="label">
-          LAYOUT
+          <FormattedMessage {...messages.layout} />
         </Title>
         <DraggableElement
           id="e2e-draggable-two-column"
@@ -209,7 +209,7 @@ const ContentBuilderToolbox = ({
           />
         </DraggableElement>
         <Title mt="32px" ml="4px" variant="h6" as="h1" color="label">
-          CONTENT
+          <FormattedMessage {...messages.content} />
         </Title>
         <DraggableElement
           id="e2e-draggable-text"

@@ -1,6 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  sections: {
+    id: 'app.containers.admin.ContentBuilder.sections',
+    defaultMessage: 'SECTIONS',
+  },
+  content: {
+    id: 'app.containers.admin.ContentBuilder.content',
+    defaultMessage: 'CONTENT',
+  },
+  layout: {
+    id: 'app.containers.admin.ContentBuilder.layout',
+    defaultMessage: 'LAYOUT',
+  },
   projectDescription: {
     id: 'app.containers.admin.ContentBuilder.projectDescription',
     defaultMessage: 'Project description',
