@@ -87,13 +87,13 @@ namespace :fix_existing_tenants do
               home_page.cta_signed_out_url = banner['cta_signed_out_customized_button']['url']
             end
 
-            home_page.header_bg = config.header_bg if config.header_bg
-
             if config.homepage_info_multiloc
               home_page.bottom_info_section_enabled = true # Must be set to true if we want to set section multiloc
               home_page.bottom_info_section_multiloc = config.homepage_info_multiloc
             end
           end
+
+          home_page.header_bg = config.header_bg if config.header_bg
 
           if dry_run
             home_page.validate!
