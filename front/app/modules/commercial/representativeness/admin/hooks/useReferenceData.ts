@@ -129,7 +129,7 @@ function useReferenceData(
 
 export default useReferenceData;
 
-const toReferenceData = (
+export const toReferenceData = (
   usersByField: TStreamResponse
 ): RepresentativenessRowMultiloc[] => {
   const { users, expectedUsers } = includeOnlyExpectedUsers(usersByField);
@@ -165,7 +165,9 @@ const includeOnlyExpectedUsers = ({ series }: TStreamResponse) => {
   return { users, expectedUsers };
 };
 
-const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
+export const getIncludedUserPercentage = (
+  usersByField: TStreamResponse
+): number => {
   const { users, expected_users } = usersByField.series;
 
   const known = Object.keys(users)
