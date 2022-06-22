@@ -44,4 +44,9 @@ describe('parsePopulationValue', () => {
   it('returns undefined if value is longer than 11 characters (e.g. 100,000,0000)', () => {
     expect(parsePopulationValue('100,000,0000')).toBeUndefined();
   });
+
+  it('returns undefined if value evaluates to 0', () => {
+    expect(parsePopulationValue('0')).toBeUndefined();
+    expect(parsePopulationValue('0,')).toBeUndefined();
+  });
 });

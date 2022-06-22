@@ -19,7 +19,13 @@ export const parsePopulationValue = (value: string) => {
     return undefined;
   }
 
-  return asNumber(value);
+  const numericValue = asNumber(value);
+
+  if (numericValue === 0) {
+    return undefined;
+  }
+
+  return numericValue;
 };
 
 const validValueRegex = /^\d[\d,]*$/;
