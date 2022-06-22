@@ -3,7 +3,7 @@ import { Medium } from '../utils';
 
 import { isNilOrError } from 'utils/helperUtils';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { FacebookButton } from 'react-social';
+import { FacebookShareButton } from 'react-share';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -47,7 +47,7 @@ const Facebook = ({
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 
-  const StyledFacebookButton = styled(FacebookButton)`
+  const StyledBox = styled(Box)`
     display: flex;
     background-color: ${colors.facebook};
     border-radius: 3px;
@@ -55,6 +55,7 @@ const Facebook = ({
     width: 48px;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     &:hover {
       background-color: ${darken(0.1, colors.facebook)};
@@ -63,25 +64,19 @@ const Facebook = ({
 
   if (!isNilOrError(tenant)) {
     const facebookConfig = tenant.data.attributes.settings?.facebook_login;
-
-    if (
-      facebookConfig?.allowed &&
-      facebookConfig?.enabled &&
-      facebookConfig?.app_id
-    ) {
+    if (facebookConfig?.allowed && facebookConfig?.enabled) {
       return (
-        <StyledFacebookButton
-          message={facebookMessage}
-          appId={facebookConfig.app_id}
-          url={url}
-          sharer={true}
-          aria-label={formatMessage(messages.shareOnFacebook)}
-          style={{ cursor: 'pointer' }}
-        >
-          <Box onClick={handleClick}>
-            <Icon name="facebook" width="20px" fill="white" />
-          </Box>
-        </StyledFacebookButton>
+        <StyledBox>
+          <FacebookShareButton
+            quote={facebookMessage}
+            url={url}
+            aria-label={formatMessage(messages.shareOnFacebook)}
+          >
+            <Box onClick={handleClick}>
+              <Icon name="facebook" width="20px" fill="white" />
+            </Box>
+          </FacebookShareButton>
+        </StyledBox>
       );
     }
   }
