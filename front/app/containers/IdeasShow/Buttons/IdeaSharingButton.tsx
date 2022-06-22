@@ -15,7 +15,6 @@ import useAuthUser from 'hooks/useAuthUser';
 import useProject from 'hooks/useProject';
 import usePhases from 'hooks/usePhases';
 import SharingButtons from 'components/Sharing/SharingButtons';
-import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   className?: string;
@@ -58,79 +57,77 @@ const Component = ({
         };
 
     return (
-      <Box display="flex" flexWrap="wrap">
-        <SharingButtons
-          url={postUrl}
-          facebookMessage={formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.ideaFacebookMessage,
-              option: messages.optionFacebookMessage,
-              project: messages.projectFacebookMessage,
-              question: messages.questionFacebookMessage,
-              issue: messages.issueFacebookMessage,
-              contribution: messages.contributionFacebookMessage,
-            }),
-            {
-              postTitle,
-            }
-          )}
-          whatsAppMessage={formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.ideaWhatsAppMessage,
-              option: messages.optionWhatsAppMessage,
-              project: messages.projectWhatsAppMessage,
-              question: messages.questionWhatsAppMessage,
-              issue: messages.issueWhatsAppMessage,
-              contribution: messages.contributionWhatsAppMessage,
-            }),
-            {
-              postTitle,
-            }
-          )}
-          twitterMessage={formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.ideaTwitterMessage,
-              option: messages.optionTwitterMessage,
-              project: messages.projectTwitterMessage,
-              question: messages.questionTwitterMessage,
-              issue: messages.issueTwitterMessage,
-              contribution: messages.contributionTwitterMessage,
-            }),
-            {
-              postTitle,
-            }
-          )}
-          emailSubject={formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.ideaEmailSharingSubject,
-              option: messages.optionEmailSharingSubject,
-              project: messages.projectEmailSharingSubject,
-              question: messages.questionEmailSharingSubject,
-              issue: messages.issueEmailSharingSubject,
-              contribution: messages.contributionEmailSharingSubject,
-            }),
-            {
-              ideaTitle: postTitle,
-            }
-          )}
-          emailBody={formatMessage(
-            getInputTermMessage(inputTerm, {
-              idea: messages.ideaEmailSharingBody,
-              option: messages.optionEmailSharingBody,
-              project: messages.projectEmailSharingBody,
-              question: messages.questionEmailSharingBody,
-              issue: messages.issueEmailSharingBody,
-              contribution: messages.contributionEmailSharingBody,
-            }),
-            {
-              ideaUrl: postUrl,
-              ideaTitle: postTitle,
-            }
-          )}
-          utmParams={utmParams}
-          context={'idea'}
-        />
-      </Box>
+      <SharingButtons
+        url={postUrl}
+        facebookMessage={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaFacebookMessage,
+            option: messages.optionFacebookMessage,
+            project: messages.projectFacebookMessage,
+            question: messages.questionFacebookMessage,
+            issue: messages.issueFacebookMessage,
+            contribution: messages.contributionFacebookMessage,
+          }),
+          {
+            postTitle,
+          }
+        )}
+        whatsAppMessage={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaWhatsAppMessage,
+            option: messages.optionWhatsAppMessage,
+            project: messages.projectWhatsAppMessage,
+            question: messages.questionWhatsAppMessage,
+            issue: messages.issueWhatsAppMessage,
+            contribution: messages.contributionWhatsAppMessage,
+          }),
+          {
+            postTitle,
+          }
+        )}
+        twitterMessage={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaTwitterMessage,
+            option: messages.optionTwitterMessage,
+            project: messages.projectTwitterMessage,
+            question: messages.questionTwitterMessage,
+            issue: messages.issueTwitterMessage,
+            contribution: messages.contributionTwitterMessage,
+          }),
+          {
+            postTitle,
+          }
+        )}
+        emailSubject={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaEmailSharingSubject,
+            option: messages.optionEmailSharingSubject,
+            project: messages.projectEmailSharingSubject,
+            question: messages.questionEmailSharingSubject,
+            issue: messages.issueEmailSharingSubject,
+            contribution: messages.contributionEmailSharingSubject,
+          }),
+          {
+            ideaTitle: postTitle,
+          }
+        )}
+        emailBody={formatMessage(
+          getInputTermMessage(inputTerm, {
+            idea: messages.ideaEmailSharingBody,
+            option: messages.optionEmailSharingBody,
+            project: messages.projectEmailSharingBody,
+            question: messages.questionEmailSharingBody,
+            issue: messages.issueEmailSharingBody,
+            contribution: messages.contributionEmailSharingBody,
+          }),
+          {
+            ideaUrl: postUrl,
+            ideaTitle: postTitle,
+          }
+        )}
+        utmParams={utmParams}
+        context={'idea'}
+      />
     );
   }
 
