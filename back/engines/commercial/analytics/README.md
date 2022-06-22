@@ -1,7 +1,7 @@
 # Analytics
 New analytics engine
 
-## How to run the docker containers
+## How to run the additional required docker container
 
 To run docker with analytics enabled
 
@@ -29,6 +29,8 @@ sed -i 's/ localhost./ public./g' dump.sql
 
 psql -h localhost -U postgres cl2_analytics < dump.sql
 ```
+
+TODO: TRUNCATE schema_migrations table
 
 4. Add the following to citizenlab.config.ee.json:
 
