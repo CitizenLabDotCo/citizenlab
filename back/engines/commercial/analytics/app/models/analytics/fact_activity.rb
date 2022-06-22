@@ -5,8 +5,8 @@
 #  id                        :uuid
 #  user_id                   :uuid
 #  project_id                :uuid
+#  type_id                   :uuid
 #  created_date_id           :uuid
-#  activity_type             :text
 #  feedback_recieved_date_id :uuid
 #  time_to_feedback          :interval
 #  votes_count               :integer
@@ -22,6 +22,9 @@
 #
 module Analytics
   class FactActivity < Analytics::ApplicationRecord
+
+    attribute :time_to_feedback, :interval # Future proofing for Rails 7
+
     def readonly?
       true
     end
