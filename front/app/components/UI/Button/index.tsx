@@ -28,10 +28,6 @@ const ButtonWrapper = ({
   const isExternalLink =
     linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
 
-  if (disabled) {
-    return <Button disabled {...rest} />;
-  }
-
   const link = linkTo
     ? isExternalLink
       ? ({
@@ -64,7 +60,7 @@ const ButtonWrapper = ({
     : undefined;
 
   if (!isNilOrError(locale)) {
-    return <Button {...rest} as={link} />;
+    return <Button as={link} disabled={disabled} {...rest} />;
   }
 
   return null;
