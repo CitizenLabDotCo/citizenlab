@@ -11,6 +11,7 @@ import messages from './messages';
 import GetPermission from 'resources/GetPermission';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import { BreadcrumbsContext } from '../index';
 
 type Props = {
   canManageAutomatedCampaigns: boolean | null;
@@ -26,6 +27,23 @@ class MessagingDashboard extends React.PureComponent<
   Props & InjectedIntlProps & WithRouterProps,
   State
 > {
+  static contextType = BreadcrumbsContext;
+
+  componentDidMount = () => {
+    const { setBreadcrumbs } = this.context;
+
+    setBreadcrumbs([
+      {
+        label: 'admin',
+        linkTo: 'whatever',
+      },
+      {
+        label: 'messaging',
+        linkTo: 'whatever',
+      },
+    ]);
+  };
+
   tabs = () => {
     const {
       intl: { formatMessage },
@@ -70,8 +88,8 @@ class MessagingDashboard extends React.PureComponent<
     const {
       intl: { formatMessage },
     } = this.props;
-    const tabs = this.tabs();
 
+    const tabs = this.tabs();
     return (
       <>
         <TabbedResource

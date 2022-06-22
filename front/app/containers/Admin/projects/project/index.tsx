@@ -34,6 +34,9 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 
+import { BreadcrumbsContext } from '../../index';
+//
+
 // typings
 import { InsertConfigurationOptions, ITab } from 'typings';
 import { getInputTerm } from 'services/participationContexts';
@@ -86,6 +89,8 @@ export class AdminProjectsProjectIndex extends PureComponent<
   Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
   State
 > {
+  static contextType = BreadcrumbsContext;
+
   constructor(props) {
     super(props);
     const {
@@ -244,6 +249,28 @@ export class AdminProjectsProjectIndex extends PureComponent<
     this.setState({
       goBackUrl: this.props.previousPathName,
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { project, localize } = this.props;
+    const { setBreadcrumbs } = this.context;
+
+    if (isNilOrError(prevProps.project) && !isNilOrError(project)) {
+      setBreadcrumbs([
+        {
+          label: 'Admin',
+          linkTo: '/admin',
+        },
+        {
+          label: 'Projects',
+          linkTo: '/admin/projects',
+        },
+        {
+          label: localize(project.attributes.title_multiloc),
+          // linkTo: 'whatever'
+        },
+      ]);
+    }
   }
 
   getTabs = (projectId: string, project: IProjectData) => {

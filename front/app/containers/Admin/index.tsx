@@ -1,7 +1,9 @@
+// @ts-nocheck
 import React, { memo, useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { globalState } from 'services/globalState';
 import { Outlet as RouterOutlet } from 'react-router-dom';
+import Breadcrumbs from 'components/UI/Breadcrumbs';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
@@ -20,6 +22,11 @@ import { endsWith } from 'utils/helperUtils';
 // stlying
 import 'assets/semantic/semantic.min.css';
 import { rgba } from 'polished';
+
+export const BreadcrumbsContext = React.createContext({
+  breadcrumbs: [],
+  setBreadcrumbs: (breadcrumbs: any) => {},
+});
 
 const Container = styled.div`
   display: flex;
@@ -116,6 +123,7 @@ const AdminPage = memo<Props & WithRouterProps>(
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
+    const [contextBreadcrumbs, setContextBreadcrumbs] = useState([]);
 
     useEffect(() => {
       const subscriptions = [
@@ -150,6 +158,30 @@ const AdminPage = memo<Props & WithRouterProps>(
       return null;
     }
 
+    // programatically from the URL
+
+    // split pathname
+    const breadcrumbsRaw = pathname.split('/');
+    // remove beginning slash and locale
+    const breadcrumbsWithoutLocale = breadcrumbsRaw.slice(2);
+    const formattedBreadcrumbs = breadcrumbsWithoutLocale.map(
+      (breadcrumb, index) => {
+        if (index === 0) {
+          return { label: breadcrumb, linkTo: `/${breadcrumb}` };
+        }
+        if (index === 1) {
+          return {
+            label: breadcrumb,
+            linkTo: `/${breadcrumbsWithoutLocale[0]}/${breadcrumb}`,
+          };
+        }
+        return {
+          label: breadcrumb,
+          linkTo: `/${breadcrumbsWithoutLocale[0]}/${breadcrumbsWithoutLocale[1]}/${breadcrumb}`,
+        };
+      }
+    );
+
     const noPadding =
       adminNoPadding ||
       pathname.includes('admin/dashboard') ||
@@ -169,16 +201,27 @@ const AdminPage = memo<Props & WithRouterProps>(
         action="access"
       >
         <ThemeProvider theme={chartTheme}>
-          <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            <Sidebar />
-            <RightColumn
-              className={`${fullWidth && 'fullWidth'} ${
-                noPadding && 'noPadding'
-              }`}
-            >
-              <RouterOutlet />
-            </RightColumn>
-          </Container>
+          <BreadcrumbsContext.Provider
+            value={{
+              breadcrumbs: contextBreadcrumbs,
+              setBreadcrumbs: setContextBreadcrumbs,
+            }}
+          >
+            <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
+              <Sidebar />
+              <RightColumn
+                className={`${fullWidth && 'fullWidth'} ${
+                  noPadding && 'noPadding'
+                }`}
+              >
+                programatic from the urL:
+                <Breadcrumbs breadcrumbs={formattedBreadcrumbs} />
+                set manually via context:
+                <Breadcrumbs breadcrumbs={contextBreadcrumbs} />
+                <RouterOutlet />
+              </RightColumn>
+            </Container>
+          </BreadcrumbsContext.Provider>
         </ThemeProvider>
       </HasPermission>
     );
