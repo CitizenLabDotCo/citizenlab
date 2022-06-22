@@ -1,4 +1,4 @@
-import React, { memo, Suspense, useState } from 'react';
+import React, { memo, Suspense, useState, lazy } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
@@ -19,10 +19,8 @@ import HasPermission from 'components/HasPermission';
 import { Spinner } from '@citizenlab/cl2-component-library';
 import Outlet from 'components/Outlet';
 
-const ModeratorProjectList = React.lazy(
-  () => import('./Lists/ModeratorProjectList')
-);
-const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
+const ModeratorProjectList = lazy(() => import('./Lists/ModeratorProjectList'));
+const AdminProjectList = lazy(() => import('./Lists/AdminProjectList'));
 
 // style
 import styled from 'styled-components';
