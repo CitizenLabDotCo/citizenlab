@@ -17,16 +17,25 @@ interface Props {
   projectFilter?: string;
 }
 
-const isSupported = ({ attributes }: IUserCustomFieldData) =>
-  attributes.code !== 'domicile';
+const isShown = ({
+  attributes: { input_type, code },
+}: IUserCustomFieldData) => {
+  return input_type === 'select' || code === 'birthyear';
+};
+
+const isSupported = ({
+  attributes: { input_type, code },
+}: IUserCustomFieldData) => input_type === 'select' && code !== 'domicile';
 
 const ChartCards = ({ projectFilter }: Props) => {
-  const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
+  const userCustomFields = useUserCustomFields({
+    inputTypes: ['select', 'number'],
+  });
   if (isNilOrError(userCustomFields)) return null;
 
   return (
     <>
-      {userCustomFields.map((userCustomField) => {
+      {userCustomFields.filter(isShown).map((userCustomField) => {
         if (isSupported(userCustomField)) {
           return (
             <ChartCard
