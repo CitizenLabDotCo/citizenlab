@@ -322,6 +322,7 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "Neem deel aan de discussie over deze vraag '{postTitle}' op {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Neem deel aan de discussie: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Neem deel aan de discussie: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Stem voor {postTitle} op",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Ik heb net een voorstel gepost voor {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link naar de homepagina",
