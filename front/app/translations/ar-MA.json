@@ -322,6 +322,7 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "انضم إلى مناقشة هذا السؤال '{postTitle}' على {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "انضم إلى المناقشة: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "انضم إلى المناقشة: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "صوّت لـ {postTitle} على",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "لقد نشرت للتو اقتراحاً لـ {اسم المنظمة}: {عنوان آخر}",
   "app.components.PostComponents.linkToHomePage": "اربط بالصفحة الرئيسية",
