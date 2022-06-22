@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
 // components
-import BreadCrumbs from 'components/PostShowComponents/Breadcrumbs';
+import PostBreadCrumbs from 'components/PostShowComponents/PostBreadcrumbs';
 import ActionBarLayout from 'components/PostShowComponents/ActionBar';
 import InitiativeMoreActions from './InitiativeMoreActions';
 
@@ -40,7 +40,7 @@ const ActionBar = memo<Props>(
     return (
       <ActionBarLayout
         leftContent={
-          <BreadCrumbs
+          <PostBreadCrumbs
             postType="initiative"
             links={[
               {
