@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
+
 ## Fixed
 
 - [CL-903] Fix admin input manager crash on Safari
