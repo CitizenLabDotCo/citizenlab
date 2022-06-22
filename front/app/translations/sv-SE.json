@@ -322,6 +322,7 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "Gå med i diskussionen om den här frågan {postTitle} på {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Gå med i diskussionen: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Gå med i diskussionen: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Rösta på {postTitle} på",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jag publicerade just ett förslag för {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Länk till startsida",
