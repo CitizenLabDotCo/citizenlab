@@ -44,7 +44,7 @@ const configuration: ModuleConfiguration = {
             element: <EditNavbarItemComponent />,
           },
           {
-            path: 'navbar-items/edit/home-page',
+            path: 'pages/edit/home-page',
             element: <EditHomepage />,
           },
         ],
