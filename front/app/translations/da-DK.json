@@ -322,6 +322,7 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "Deltag i diskussionen om dette spørgsmål '{postTitle}' på {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Deltag i diskussionen: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Deltag i diskussionen: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "{tenantName, select, DeloitteDK {Giv dit input {postTitle}} other {Stem på {postTitle} på}}",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Jeg har lige sendt et borgerforslag til {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link til hjemmeside",
