@@ -322,6 +322,7 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "Pridružite se diskusiji '{postTitle}' na {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Pridružite se diskusiji: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Pridružite se diskusiji: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Glasajte za {postTitle} na",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Upravo sam objavio/la predlog za {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link do početne stranice",
