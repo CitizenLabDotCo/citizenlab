@@ -1,5 +1,8 @@
 import React from 'react';
 
+// hooks
+import useReferenceDistribution from '../../hooks/useReferenceDistribution';
+
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 import Header from './Header';
@@ -15,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { isFormValid } from './utils';
+import { isSubmittingAllowed } from './utils';
 
 // typings
 import { FormValues } from './utils';
@@ -39,7 +42,14 @@ const FieldContent = ({
   onUpdatePopulation,
   onSubmit,
 }: Props) => {
-  const allowSubmit = touched && isFormValid(formValues);
+  const { referenceDataUploaded } = useReferenceDistribution(userCustomFieldId);
+  if (referenceDataUploaded === undefined) return null;
+
+  const allowSubmit = isSubmittingAllowed(
+    formValues,
+    touched,
+    referenceDataUploaded
+  );
 
   return (
     <Box

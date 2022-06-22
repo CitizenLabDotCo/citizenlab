@@ -94,6 +94,18 @@ export const parseFormValues = (formValues: FormValues) => {
   return formValues as TUploadDistribution;
 };
 
+export const isSubmittingAllowed = (
+  formValues: FormValues,
+  touched: boolean,
+  referenceDataUploaded: boolean
+) => {
+  if (!referenceDataUploaded && areAllOptionsDisabled(formValues)) {
+    return false;
+  }
+
+  return touched && isFormValid(formValues);
+};
+
 // HELPERS
 const getInitialValuesFromDistribution = (
   userCustomFieldOptions: IUserCustomFieldOptionData[],
