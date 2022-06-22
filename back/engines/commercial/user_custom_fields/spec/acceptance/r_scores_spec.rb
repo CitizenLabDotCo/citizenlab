@@ -7,6 +7,10 @@ resource 'Representativeness scores' do
   header 'Content-Type', 'application/json'
 
   get 'web_api/v1/users/custom_fields/:custom_field_id/representativeness' do
+    parameter :project, <<-DESC, required: false
+          Project ID. Only participants of this project will be considered to compute the score.
+    DESC
+
     let(:ref_distribution) { create(:ref_distribution) }
     let(:custom_field) { ref_distribution.custom_field }
     let(:custom_field_id) { custom_field.id }
@@ -24,25 +28,45 @@ resource 'Representativeness scores' do
       end
 
       context 'when a reference distribution is associated to the custom field' do
-        example_request 'returns the representativeness score' do
-          expected_counts = custom_field.custom_field_options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 1)
+        context 'without filters' do
+          example_request 'returns the representativeness score' do
+            expect(status).to eq(200)
 
-          expect(status).to eq(200)
-          expect(response_data).to include(
-            id: /\A#{ref_distribution.id}_\d+_rscore\z/,
-            type: 'representativeness_score',
-            attributes: {
+            expected_counts = custom_field.custom_field_options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 1)
+            expect(response_data).to include(
+              id: /\A#{ref_distribution.id}_\d+_rscore\z/,
+              type: 'representativeness_score',
+              attributes: {
+                score: be_between(0, 1),
+                counts: expected_counts
+              },
+              relationships: {
+                reference_distribution: { data: { id: ref_distribution.id, type: 'reference_distribution' } }
+              }
+            )
+
+            expect(json_response_body[:included]).to include(
+              hash_including(id: ref_distribution.id, type: 'reference_distribution')
+            )
+          end
+        end
+
+        context 'with project filter' do
+          let(:option) { custom_field.custom_field_options.first }
+
+          let!(:project) do
+            # project with only 1 participant
+            participant = User.where(custom_field_values: { custom_field.key => option.key }).first
+            create(:idea, author: participant).project_id
+          end
+
+          example_request 'returns the representativeness score (filtered by project)' do
+            expect(status).to eq(200)
+            expect(response_data[:attributes]).to match(
               score: be_between(0, 1),
-              counts: expected_counts
-            },
-            relationships: {
-              reference_distribution: { data: { id: anything, type: 'reference_distribution' } }
-            }
-          )
-
-          expect(json_response_body[:included]).to include(
-            hash_including(id: ref_distribution.id, type: 'reference_distribution')
-          )
+              counts: { option.id.to_sym => 1, _blank: 0 }
+            )
+          end
         end
       end
 
