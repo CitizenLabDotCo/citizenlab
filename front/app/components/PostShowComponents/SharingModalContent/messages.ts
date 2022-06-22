@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  rocketAltValue: {
+    id: 'app.components.PostComponents.SharingModalContent.rocketAltValue',
+    defaultMessage: 'Icon of a rocket',
+  },
   twitterMessage: {
     id: 'app.components.PostComponents.SharingModalContent.twitterMessage',
     defaultMessage: 'Vote for {postTitle} on',

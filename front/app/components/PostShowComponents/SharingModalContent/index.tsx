@@ -5,13 +5,7 @@ import { getInputTerm } from 'services/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
-import {
-  Spinner,
-  Box,
-  Text,
-  Title,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Spinner, Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -76,7 +70,6 @@ class SharingModalContent extends PureComponent<
       postType,
     });
   }
-  maxTabletOrSmaller = useBreakpoint('largeTablet');
 
   getPostValues = () => {
     const { postType, idea, initiative, localize, locale } = this.props;
@@ -180,13 +173,14 @@ class SharingModalContent extends PureComponent<
           display="flex"
           flexDirection="column"
           alignItems="center"
+          justifyContent="center"
           className={className}
         >
           <img
-            width={this.maxTabletOrSmaller ? '36px' : '40px'}
-            height={this.maxTabletOrSmaller ? '36px' : '40px'}
+            width="40px"
+            height="40px"
             src={rocket}
-            alt=""
+            alt={messages.rocketAltValue.toString()}
           />
           <Title
             fontSize="xxxxl"
@@ -195,7 +189,7 @@ class SharingModalContent extends PureComponent<
             mt="20px"
             mb="12px"
             p="0"
-            style={{ lineHeight: this.maxTabletOrSmaller ? '36px' : '40px' }}
+            style={{ lineHeight: '40px' }}
             className={`e2e-${postType}-social-sharing-modal-title`}
           >
             {title}
@@ -208,43 +202,36 @@ class SharingModalContent extends PureComponent<
             mt="12px"
             mb="52px"
             p="0"
-            fontSize={this.maxTabletOrSmaller ? 'base' : 'l'}
+            fontSize={'m'}
             textAlign="center"
-            style={{ lineHeight: this.maxTabletOrSmaller ? '20px' : '25px' }}
+            style={{ lineHeight: '25px' }}
           >
             {subtitle}
           </Text>
-          <Box
-            flexShrink={0}
-            width="100%"
-            display="flex"
-            flexDirection="column"
-          >
-            <SharingButtons
-              context={postType}
-              isInModal={true}
-              url={postUrl}
-              facebookMessage={formatMessage(messages.twitterMessage, {
-                postTitle,
-              })}
-              twitterMessage={formatMessage(messages.twitterMessage, {
-                postTitle,
-              })}
-              whatsAppMessage={formatMessage(whatsAppMessage, {
-                postTitle,
-              })}
-              emailSubject={formatMessage(emailSharingSubject, { postTitle })}
-              emailBody={formatMessage(emailSharingBody, {
-                postTitle,
-                postUrl,
-              })}
-              utmParams={{
-                source: `share_${postType}`,
-                campaign: `${postType}flow`,
-                content: authUser.id,
-              }}
-            />
-          </Box>
+          <SharingButtons
+            context={postType}
+            isInModal={true}
+            url={postUrl}
+            facebookMessage={formatMessage(messages.twitterMessage, {
+              postTitle,
+            })}
+            twitterMessage={formatMessage(messages.twitterMessage, {
+              postTitle,
+            })}
+            whatsAppMessage={formatMessage(whatsAppMessage, {
+              postTitle,
+            })}
+            emailSubject={formatMessage(emailSharingSubject, { postTitle })}
+            emailBody={formatMessage(emailSharingBody, {
+              postTitle,
+              postUrl,
+            })}
+            utmParams={{
+              source: `share_${postType}`,
+              campaign: `${postType}flow`,
+              content: authUser.id,
+            }}
+          />
         </Box>
       );
     }
