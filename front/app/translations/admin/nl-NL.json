@@ -1352,6 +1352,7 @@
   "app.containers.admin.ContentBuilder.delete": "Verwijder",
   "app.containers.admin.ContentBuilder.error": "fout",
   "app.containers.admin.ContentBuilder.errorMessage": "There is an error on {locale} content, please fix the issue to be able to save your changes",
+  "app.containers.admin.ContentBuilder.iframeDescription": "Display content from an external website on your page in an HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightLabel": "Hoogte",
   "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Hoogte van het iframe window.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "B.v. 120px",
