@@ -2,7 +2,6 @@
 
 # Helper class for generating documentation output that describes which
 # validation errors can occur on models.
-
 class ValidationErrorHelper
   ERROR_DETAILS = {
     ActiveModel::Validations::AcceptanceValidator => [:accepted],
