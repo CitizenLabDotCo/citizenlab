@@ -85,6 +85,11 @@ export default defineMessages({
     defaultMessage:
       'Enter a valid web address, for example https://example.com',
   },
+  iframeDescription: {
+    id: 'app.containers.admin.ContentBuilder.iframeDescription',
+    defaultMessage:
+      'Display content from an external website on your page in an HTML iFrame.',
+  },
   iframeWhitelistUrlErrorMessage: {
     id: 'app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage',
     defaultMessage:

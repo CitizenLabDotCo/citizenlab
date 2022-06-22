@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder Text component', () => {
+describe('Content builder Text component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -23,10 +23,9 @@ describe.skip('Content builder Text component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
@@ -40,12 +39,8 @@ describe.skip('Content builder Text component', () => {
   });
 
   it('handles Text component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-draggable-single-column').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
     );
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
@@ -56,21 +51,24 @@ describe.skip('Content builder Text component', () => {
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('Edited text.').should('be.visible');
   });
 
   it('deletes Text component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-single-column').should('be.visible');
 
     cy.get('#e2e-text-box').click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-single-column').should('be.visible');
     cy.contains('Edited text.').should('not.exist');
   });
 });

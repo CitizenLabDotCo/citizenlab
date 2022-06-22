@@ -109,7 +109,7 @@ interface Props {
     pageInfo: {
       hasNextPage: boolean;
     };
-  };
+  } | null;
 }
 
 const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
@@ -147,6 +147,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              a11y_numberOfSearchResults={templates?.edges.length || 0}
             />
           </Right>
         </Filters>
