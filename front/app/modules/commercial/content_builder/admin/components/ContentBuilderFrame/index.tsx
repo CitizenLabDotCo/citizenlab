@@ -14,8 +14,6 @@ const ContentBuilderFrame = memo(({ editorData }: ContentBuilderFrame) => {
     }
   }, [editorData, actions]);
 
-  console.log(editorData);
-
   return (
     <Frame>
       <Element id="e2e-content-builder-frame" is="div" canvas />
