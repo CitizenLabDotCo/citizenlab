@@ -9,6 +9,7 @@ import {
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
+import { pick } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { sum, percentage, roundPercentages } from 'utils/math';
 
@@ -132,38 +133,48 @@ export default useReferenceData;
 export const toReferenceData = (
   usersByField: TStreamResponse
 ): RepresentativenessRowMultiloc[] => {
-  const { users, expectedUsers } = includeOnlyExpectedUsers(usersByField);
+  const { users, expected_users } = usersByField.series;
 
   const options =
     'options' in usersByField ? usersByField.options : usersByField.areas;
 
-  const actualPercentages = roundPercentages(Object.values(users), 1);
+  const optionIds = Object.keys(expected_users);
+
+  const actualPercentages = roundPercentages(
+    Object.values(pick(users, optionIds)),
+    1
+  );
   const referencePercentages = roundPercentages(
-    Object.values(expectedUsers),
+    Object.values(expected_users),
     1
   );
 
-  const data = Object.keys(users).map((optionId, i) => ({
+  const actualPercentagesObj = zip(optionIds, actualPercentages);
+  const referencePercentagesObj = zip(optionIds, referencePercentages);
+
+  const sortedOptionIds = [...optionIds].sort(
+    (a, b) => options[a].ordering - options[b].ordering
+  );
+
+  const data = sortedOptionIds.map((optionId) => ({
     title_multiloc: options[optionId].title_multiloc,
-    actualPercentage: actualPercentages[i],
-    referencePercentage: referencePercentages[i],
+    actualPercentage: actualPercentagesObj[optionId],
+    referencePercentage: referencePercentagesObj[optionId],
     actualNumber: users[optionId],
-    referenceNumber: expectedUsers[optionId],
+    referenceNumber: expected_users[optionId],
   }));
 
   return data;
 };
 
-const includeOnlyExpectedUsers = ({ series }: TStreamResponse) => {
-  const users = {};
-  const expectedUsers = series.expected_users;
-
-  for (const optionId in expectedUsers) {
-    users[optionId] = series.users[optionId];
-  }
-
-  return { users, expectedUsers };
-};
+const zip = (keys: string[], values: number[]) =>
+  keys.reduce(
+    (acc, key, i) => ({
+      ...acc,
+      [key]: values[i],
+    }),
+    {}
+  );
 
 export const getIncludedUserPercentage = (
   usersByField: TStreamResponse

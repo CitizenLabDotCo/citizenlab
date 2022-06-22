@@ -33,6 +33,7 @@ export interface IUsersByDomicile {
   areas: {
     [key: string]: {
       title_multiloc: Multiloc;
+      ordering: number;
     };
   };
 }
