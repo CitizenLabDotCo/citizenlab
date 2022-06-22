@@ -645,9 +645,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Save",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Saved",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookie Policy",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Editéiert d’Iwwer- a FAQ-Säite vun Ärer Plattform. Aner Säiten, inklusiv den allgemenge Geschäftsbedéngungen an der Dateschutzrichtlinn, kënnen op der {policiesLink}-Registerkaart editéiert ginn.",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Richtlinnen",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Plattformsäiten",
   "app.containers.AdminPage.PagesEdition.faq": "Oft gestallte Froen",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Add files to the About page",
   "app.containers.AdminPage.PagesEdition.information": "Information",
@@ -1094,7 +1091,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Settings updated successfully.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geographic areas",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Customize",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Pages",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Richtlinnen",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registration",
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
@@ -1313,7 +1309,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn. Dir kënnt d’Säit och vun der Navigatiounsleescht ewechhuelen, wann Dir net prett sidd, se ze läschen.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Sidd Dir sécher, datt Dir dës Säit läsche wëllt? Dëst kann net réckgängeg gemaach ginn.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Är Navigatiounsleescht kann zousätzlech zu den Homepagen a Projetssäiten bis zu fënnef Säiten uweisen. Dir kënnt Menüpunkten ëmbenennen, nei uerdnen an nei Säite mat Ärem eegenen Inhalt dobäifügen.",
-  "app.modules.navbar.admin.containers.pageTitle": "Navigatiounsleescht a Plattformsäiten",
   "app.modules.project_management.admin.components.permissionsTab": "Access rights",
   "components.admin.ServerError.genericServerError": "There was an issue loading this content, please try again later."
 }
