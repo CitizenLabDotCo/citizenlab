@@ -14,13 +14,11 @@ interface Props {
   emailSubject: string | undefined;
   emailBody: string | undefined;
   isDropdownStyle: boolean;
-  isInModal: boolean | undefined;
 }
 
 const Email = ({
   emailSubject,
   emailBody,
-  isInModal,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
@@ -30,9 +28,7 @@ const Email = ({
     trackClick('email');
   };
   const trackClick = (medium: Medium) => () => {
-    const properties = isInModal
-      ? { modal: 'true', network: medium }
-      : { network: medium };
+    const properties = { network: medium };
 
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };

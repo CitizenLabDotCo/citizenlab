@@ -22,7 +22,6 @@ import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
 interface Props {
   context: 'idea' | 'project' | 'initiative' | 'folder';
-  isInModal?: boolean;
   url: string;
   twitterMessage: string;
   facebookMessage: string;
@@ -41,7 +40,6 @@ const SharingButtons = memo(
     facebookMessage,
     emailSubject,
     emailBody,
-    isInModal,
     id,
     url,
     utmParams,
@@ -74,35 +72,19 @@ const SharingButtons = memo(
           <Facebook
             facebookMessage={facebookMessage}
             url={getUrl('facebook')}
-            isDropdownStyle={false}
-            isInModal={isInModal}
           />
-          {maxTabletOrSmaller && (
-            <Messenger
-              isInModal={isInModal}
-              isDropdownStyle={false}
-              url={getUrl('messenger')}
-            />
-          )}
+          {maxTabletOrSmaller && <Messenger url={getUrl('messenger')} />}
           <WhatsApp
             whatsAppMessage={whatsAppMessage}
             url={getUrl('whatsapp')}
-            isInModal={isInModal}
-            isDropdownStyle={false}
           />
-          <Twitter
-            twitterMessage={twitterMessage}
-            url={getUrl('twitter')}
-            isDropdownStyle={false}
-            isInModal={isInModal}
-          />
+          <Twitter twitterMessage={twitterMessage} url={getUrl('twitter')} />
           <Email
-            isInModal={isInModal}
             emailSubject={emailSubject}
             emailBody={emailBody}
             isDropdownStyle={false}
           />
-          <CopyLink isDropdownStyle={false} copyLink={url} />
+          <CopyLink copyLink={url} />
         </Box>
       </>
     );

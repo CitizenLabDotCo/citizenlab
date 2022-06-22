@@ -210,7 +210,6 @@ class SharingModalContent extends PureComponent<
           </Text>
           <SharingButtons
             context={postType}
-            isInModal={true}
             url={postUrl}
             facebookMessage={formatMessage(messages.twitterMessage, {
               postTitle,

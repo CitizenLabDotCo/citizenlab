@@ -9,7 +9,6 @@ import { Button, Box } from '@citizenlab/cl2-component-library';
 // style
 import { colors } from 'utils/styleUtils';
 interface Props {
-  isDropdownStyle: boolean;
   copyLink: string;
 }
 

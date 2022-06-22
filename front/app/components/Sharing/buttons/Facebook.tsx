@@ -21,9 +21,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../tracks';
 
 interface Props {
-  isDropdownStyle: boolean;
   url: string;
-  isInModal: boolean | undefined;
   facebookMessage: string;
 }
 
@@ -44,7 +42,6 @@ const StyledBox = styled(Box)`
 
 const Facebook = ({
   facebookMessage,
-  isInModal,
   url,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
@@ -55,10 +52,7 @@ const Facebook = ({
   };
 
   const trackClick = (medium: Medium) => () => {
-    const properties = isInModal
-      ? { modal: 'true', network: medium }
-      : { network: medium };
-
+    const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 

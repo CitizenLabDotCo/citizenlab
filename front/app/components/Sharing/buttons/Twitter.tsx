@@ -22,8 +22,6 @@ import tracks from '../tracks';
 interface Props {
   url: string;
   twitterMessage: string;
-  isDropdownStyle: boolean;
-  isInModal: boolean | undefined;
 }
 
 const StyledBox = styled(Box)`
@@ -44,14 +42,10 @@ const StyledBox = styled(Box)`
 const Twitter = ({
   url,
   twitterMessage,
-  isInModal,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const trackClick = (medium: Medium) => () => {
-    const properties = isInModal
-      ? { modal: 'true', network: medium }
-      : { network: medium };
-
+    const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
 

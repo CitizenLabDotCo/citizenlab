@@ -17,8 +17,6 @@ import tracks from '../tracks';
 interface Props {
   whatsAppMessage: string;
   url: string;
-  isDropdownStyle: boolean;
-  isInModal: boolean | undefined;
 }
 
 const WhatsApp = ({

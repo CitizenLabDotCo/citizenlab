@@ -20,8 +20,6 @@ import tracks from '../tracks';
 interface Props {
   className?: string;
   url: string;
-  isDropdownStyle: boolean;
-  isInModal: boolean | undefined;
 }
 const Messenger = ({
   url,

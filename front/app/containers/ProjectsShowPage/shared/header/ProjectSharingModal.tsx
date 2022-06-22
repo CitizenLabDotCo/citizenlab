@@ -71,7 +71,6 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
                   {(title) => {
                     return (
                       <SharingButtons
-                        isInModal={false}
                         context="project"
                         url={projectUrl}
                         whatsAppMessage={formatMessage(

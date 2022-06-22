@@ -74,7 +74,6 @@ const ProjectFolderSharingModal = memo<
                 {(projectFolderName) => {
                   return (
                     <SharingButtons
-                      isInModal={true}
                       context="folder"
                       url={folderUrl}
                       facebookMessage={formatMessage(messages.facebookMessage, {
