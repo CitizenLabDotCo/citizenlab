@@ -13,8 +13,8 @@ module UserCustomFields
             expected_users: expected_user_counts
           } }
 
-          if custom_field.custom_field_options.present?
-            json_response[:options] = custom_field.custom_field_options.to_h do |o|
+          if custom_field.options.present?
+            json_response[:options] = custom_field.options.to_h do |o|
               [o.key, o.attributes.slice('title_multiloc', 'ordering')]
             end
           end
@@ -94,14 +94,14 @@ module UserCustomFields
               nb_users_with_response = user_counts.values.sum - user_counts['_blank']
               expected_counts = ref_distribution.expected_counts(nb_users_with_response)
 
-              option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
+              option_id_to_key = custom_field.options.to_h { |option| [option.id, option.key] }
               expected_counts.transform_keys { |option_id| option_id_to_key[option_id] }
             end
         end
 
         def users_by_custom_field_xlsx
           xlsx_columns =
-            if (options = custom_field.custom_field_options).present?
+            if (options = custom_field.options).present?
               {
                 option: localized_option_titles(options) << '_blank',
                 option_id: options.pluck(:key) << '_blank'

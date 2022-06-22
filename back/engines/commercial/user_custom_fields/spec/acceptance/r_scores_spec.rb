@@ -22,7 +22,7 @@ resource 'Representativeness scores' do
       end
 
       def create_one_user_for_each_option(custom_field)
-        custom_field.custom_field_options.map do |option|
+        custom_field.options.map do |option|
           create(:user, custom_field_values: { custom_field.key => option.key })
         end
       end
@@ -32,7 +32,7 @@ resource 'Representativeness scores' do
           example_request 'returns the representativeness score' do
             expect(status).to eq(200)
 
-            expected_counts = custom_field.custom_field_options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 1)
+            expected_counts = custom_field.options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 1)
             expect(response_data).to include(
               id: /\A#{ref_distribution.id}_\d+_rscore\z/,
               type: 'representativeness_score',
@@ -52,7 +52,7 @@ resource 'Representativeness scores' do
         end
 
         context 'with project filter' do
-          let(:option) { custom_field.custom_field_options.first }
+          let(:option) { custom_field.options.first }
 
           let!(:project) do
             # project with only 1 participant

@@ -18,7 +18,7 @@ FactoryBot.define do
     end
 
     distribution do
-      custom_field.custom_field_option_ids.zip(population_counts.cycle).to_h
+      custom_field.option_ids.zip(population_counts.cycle).to_h
     end
   end
 end

@@ -11,7 +11,7 @@ RSpec.describe UserCustomFields::Representativeness::RScore do
       # The number of missing values (UNKNOWN_VALUE_LABEL) does not matter as it does
       # not affect the scores.
       ref_distribution
-        .custom_field.custom_field_option_ids.index_with(100)
+        .custom_field.option_ids.index_with(100)
         .merge(UserCustomFields::FieldValueCounter::UNKNOWN_VALUE_LABEL => 123)
     end
 

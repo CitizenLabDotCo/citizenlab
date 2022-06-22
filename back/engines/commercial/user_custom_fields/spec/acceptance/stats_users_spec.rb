@@ -379,7 +379,7 @@ resource 'Stats - Users' do
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
             expect(json_response_body).to include(series: hash_including(
-              expected_users: @custom_field.custom_field_options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
+              expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
             ))
           end
         end

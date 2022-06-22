@@ -60,7 +60,7 @@ module UserCustomFields
     end
 
     private_class_method def self.convert_keys_to_option_ids!(counts, custom_field)
-      key_to_id = custom_field.custom_field_options.to_h { |option| [option.key, option.id] }
+      key_to_id = custom_field.options.to_h { |option| [option.key, option.id] }
       counts.transform_keys! do |option_key|
         next option_key if option_key == UNKNOWN_VALUE_LABEL
 

@@ -20,7 +20,7 @@
 #
 class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   belongs_to :custom_field
-  has_many :values, through: :custom_field, source: :custom_field_options
+  has_many :values, through: :custom_field, source: :options
 
   validates :custom_field_id, uniqueness: true
   validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
