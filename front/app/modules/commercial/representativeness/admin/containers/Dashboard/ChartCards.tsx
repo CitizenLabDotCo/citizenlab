@@ -9,33 +9,26 @@ import EmptyCard from '../../components/ChartCard/EmptyCard';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { isShown, isSupported, sortUserCustomFields } from './utils';
 
 interface Props {
   projectFilter?: string;
 }
 
-const isShown = ({
-  attributes: { input_type, code },
-}: IUserCustomFieldData) => {
-  return input_type === 'select' || code === 'birthyear';
-};
-
-const isSupported = ({
-  attributes: { input_type, code },
-}: IUserCustomFieldData) => input_type === 'select' && code !== 'domicile';
-
 const ChartCards = ({ projectFilter }: Props) => {
   const userCustomFields = useUserCustomFields({
     inputTypes: ['select', 'number'],
   });
+
   if (isNilOrError(userCustomFields)) return null;
+
+  const sortedUserCustomFields = sortUserCustomFields(
+    userCustomFields.filter(isShown)
+  );
 
   return (
     <>
-      {userCustomFields.filter(isShown).map((userCustomField) => {
+      {sortedUserCustomFields.map((userCustomField) => {
         if (isSupported(userCustomField)) {
           return (
             <ChartCard

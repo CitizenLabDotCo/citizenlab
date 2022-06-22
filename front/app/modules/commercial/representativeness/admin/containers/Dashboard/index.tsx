@@ -16,16 +16,14 @@ import ChartCards from './ChartCards';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { hasReferenceData } from './utils';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
-  userCustomFields.some(
-    ({ relationships }) =>
-      relationships && !!relationships.current_ref_distribution.data
-  );
+  userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
   const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
