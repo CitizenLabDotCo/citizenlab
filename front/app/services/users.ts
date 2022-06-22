@@ -14,10 +14,7 @@ type IAdminRole = {
   type: 'admin';
 };
 
-export type IRole =
-  | IAdminRole
-  | IProjectModeratorRole
-  | IProjectFolderModeratorRole;
+export type IRole = IAdminRole | IProjectModeratorRole;
 
 export interface IUserAttributes {
   first_name: string;
