@@ -1,5 +1,6 @@
 import {
   toReferenceData,
+  getIncludedUserPercentage,
   RepresentativenessRowMultiloc,
 } from './useReferenceData';
 import { TStreamResponse } from 'modules/commercial/user_custom_fields/services/stats';
@@ -197,5 +198,82 @@ describe('toReferenceData', () => {
     ];
 
     expect(toReferenceData(usersByField)).toEqual(expectedOutput);
+  });
+});
+
+describe('getIncludedUserPercentage', () => {
+  it('works', () => {
+    const usersByField: any = {
+      series: {
+        users: {
+          id123: 100,
+          id456: 300,
+          _blank: 400,
+        },
+        expected_users: {
+          id123: 2000,
+          id456: 3000,
+        },
+      },
+    };
+
+    expect(getIncludedUserPercentage(usersByField)).toBe(50);
+  });
+
+  it('works if not all keys in users are in expected_users', () => {
+    const usersByField: any = {
+      series: {
+        users: {
+          id123: 100,
+          id456: 300,
+          id789: 200,
+          _blank: 400,
+        },
+        expected_users: {
+          id123: 2000,
+          id456: 3000,
+        },
+      },
+    };
+
+    expect(getIncludedUserPercentage(usersByField)).toBe(50);
+  });
+
+  it('returns 0 if all relevant keys are 0', () => {
+    const usersByField: any = {
+      series: {
+        users: {
+          id123: 0,
+          id456: 0,
+          id789: 200,
+          _blank: 400,
+        },
+        expected_users: {
+          id123: 2000,
+          id456: 3000,
+        },
+      },
+    };
+
+    expect(getIncludedUserPercentage(usersByField)).toBe(0);
+  });
+
+  it('returns 0 if all relevant keys (including _blank) are 0', () => {
+    const usersByField: any = {
+      series: {
+        users: {
+          id123: 0,
+          id456: 0,
+          id789: 200,
+          _blank: 0,
+        },
+        expected_users: {
+          id123: 2000,
+          id456: 3000,
+        },
+      },
+    };
+
+    expect(getIncludedUserPercentage(usersByField)).toBe(0);
   });
 });

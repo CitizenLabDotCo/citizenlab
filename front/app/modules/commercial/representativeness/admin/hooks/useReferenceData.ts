@@ -180,11 +180,15 @@ export const getIncludedUserPercentage = (
   usersByField: TStreamResponse
 ): number => {
   const { users, expected_users } = usersByField.series;
+  const includedUsers = pick(users, [...Object.keys(expected_users), '_blank']);
 
-  const known = Object.keys(users)
-    .filter((optionId) => optionId in expected_users)
+  const known = Object.keys(includedUsers)
+    .filter((optionId) => optionId !== '_blank')
     .reduce((acc, v) => users[v] + acc, 0);
 
-  const total = sum(Object.values(users));
+  const total = sum(Object.values(includedUsers));
+
+  if (total === 0) return 0;
+
   return percentage(known, total);
 };
