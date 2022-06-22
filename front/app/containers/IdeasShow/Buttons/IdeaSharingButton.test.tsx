@@ -31,6 +31,22 @@ const mockIdeaData = {
 
 const ideaId = '5';
 
+// Added to handle the useBreakpoint hook
+// https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // Deprecated
+    removeListener: jest.fn(), // Deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
 jest.mock('services/projects');
 jest.mock('services/auth');
 jest.mock('services/appConfiguration');
@@ -57,7 +73,7 @@ describe('IdeaSharingButton', () => {
       )
       .click();
     screen.debug();
-    screen.getByText('WhatsApp').click();
+    screen.getByLabelText('Share via WhatsApp').click();
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',
       'https://api.whatsapp.com/send?phone=&text=Support%20this%20idea%3A%20Test%20Idea https://demo.stg.citizenlab.co/ideas/undefined?utm_source=share_idea&utm_campaign=share_content&utm_medium=whatsapp&utm_content=522ae8cc-a5ed-4d31-9aa0-470904934ec6'

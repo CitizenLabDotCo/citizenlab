@@ -27,6 +27,21 @@ interface Props {
   facebookMessage: string;
 }
 
+const StyledBox = styled(Box)`
+  display: flex;
+  background-color: ${colors.facebook};
+  border-radius: 3px;
+  height: 40px;
+  width: 48px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${darken(0.1, colors.facebook)};
+  }
+`;
+
 const Facebook = ({
   facebookMessage,
   isInModal,
@@ -46,21 +61,6 @@ const Facebook = ({
 
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
-
-  const StyledBox = styled(Box)`
-    display: flex;
-    background-color: ${colors.facebook};
-    border-radius: 3px;
-    height: 40px;
-    width: 48px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-
-    &:hover {
-      background-color: ${darken(0.1, colors.facebook)};
-    }
-  `;
 
   if (!isNilOrError(tenant)) {
     const facebookConfig = tenant.data.attributes.settings?.facebook_login;

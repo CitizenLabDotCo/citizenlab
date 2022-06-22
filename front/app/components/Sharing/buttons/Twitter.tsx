@@ -26,6 +26,21 @@ interface Props {
   isInModal: boolean | undefined;
 }
 
+const StyledBox = styled(Box)`
+  display: flex;
+  background-color: ${colors.twitter};
+  border-radius: 3px;
+  height: 40px;
+  width: 48px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${darken(0.1, colors.twitter)};
+  }
+`;
+
 const Twitter = ({
   url,
   twitterMessage,
@@ -39,21 +54,6 @@ const Twitter = ({
 
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
-
-  const StyledBox = styled(Box)`
-    display: flex;
-    background-color: ${colors.twitter};
-    border-radius: 3px;
-    height: 40px;
-    width: 48px;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-
-    &:hover {
-      background-color: ${darken(0.1, colors.twitter)};
-    }
-  `;
 
   return (
     <StyledBox>
