@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   pageTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageTitle2',
-    defaultMessage: 'Representativeness dashboard',
+    id: 'app.containers.AdminPage.DashboardPage.representativeness.pageTitle3',
+    defaultMessage: 'Community representation',
   },
   pageDescription: {
     id: 'app.containers.AdminPage.DashboardPage.representativeness.pageDescription3',

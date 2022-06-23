@@ -14,7 +14,7 @@ const ReferenceDataInterface = () => (
   <>
     <Box display="flex" justifyContent="flex-start" mb="32px">
       <Button
-        linkTo="/admin/dashboard/representativeness"
+        linkTo="/admin/dashboard/representation"
         buttonStyle="text"
         icon="arrow-back"
         size="2"

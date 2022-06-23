@@ -18,11 +18,11 @@ const configuration: ModuleConfiguration = {
   routes: {
     'admin.dashboards': [
       {
-        path: 'representativeness',
+        path: 'representation',
         element: <DashboardContainer />,
       },
       {
-        path: 'representativeness/edit-base-data',
+        path: 'representation/edit-base-data',
         element: <ReferenceDataInterface />,
       },
     ],

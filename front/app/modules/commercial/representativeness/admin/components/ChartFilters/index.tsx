@@ -33,7 +33,7 @@ const ChartFilters = ({
     />
     {!noData && (
       <Button
-        linkTo="/admin/dashboard/representativeness/edit-base-data"
+        linkTo="/admin/dashboard/representation/edit-base-data"
         text={<FormattedMessage {...messages.editBaseData} />}
         bgColor={colors.clBlueDark}
       />
