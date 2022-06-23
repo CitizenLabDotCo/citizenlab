@@ -60,15 +60,13 @@ const Facebook = ({
     const facebookConfig = tenant.data.attributes.settings?.facebook_login;
     if (facebookConfig?.allowed && facebookConfig?.enabled) {
       return (
-        <StyledBox>
+        <StyledBox onClick={handleClick}>
           <FacebookShareButton
             quote={facebookMessage}
             url={url}
             aria-label={formatMessage(messages.shareOnFacebook)}
           >
-            <Box onClick={handleClick}>
-              <Icon name="facebook" width="20px" fill="white" />
-            </Box>
+            <Icon name="facebook" width="20px" fill="white" />
           </FacebookShareButton>
         </StyledBox>
       );

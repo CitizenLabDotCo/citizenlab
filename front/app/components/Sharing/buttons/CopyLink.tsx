@@ -24,7 +24,7 @@ const CopyLink = ({
   };
 
   return (
-    <Box flex="1 1 1" display="flex" style={{ cursor: 'pointer' }}>
+    <Box flex="1 1 1" display="flex">
       <Button
         onClick={handleClick()}
         aria-label={formatMessage(messages.shareByLink)}

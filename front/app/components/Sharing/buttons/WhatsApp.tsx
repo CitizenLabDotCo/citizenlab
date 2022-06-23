@@ -49,7 +49,6 @@ const WhatsApp = ({
       icon="whatsapp"
       iconSize="20px"
       justify="center"
-      style={{ cursor: 'pointer' }}
     />
   );
 };
