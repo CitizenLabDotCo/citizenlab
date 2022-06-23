@@ -38,7 +38,7 @@ import {
   GraphCardFigureContainer,
   GraphCardFigure,
   GraphCardFigureChange,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 // i18n

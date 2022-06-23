@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class AdminDigestMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -39,7 +41,6 @@ module EmailCampaigns
           initiative_ids: []
         }
       }
-
 
       campaign.mailer_class.with(campaign: campaign, command: command).campaign_mail
     end

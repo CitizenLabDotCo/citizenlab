@@ -18,19 +18,19 @@ module Onboarding
     def _current_campaign(user, dismissals)
       if profile_incomplete?(user) && dismissals.exclude?('complete_profile')
         :complete_profile
-      elsif has_custom_onboarding_message? && dismissals.exclude?('custom_cta')
+      elsif custom_onboarding_message? && dismissals.exclude?('custom_cta')
         :custom_cta
       else
         :default
       end
     end
 
-    def has_custom_onboarding_message?
-      !MultilocService.new.is_empty?(AppConfiguration.instance.settings('core', 'custom_onboarding_message'))
+    def custom_onboarding_message?
+      !MultilocService.new.empty?(AppConfiguration.instance.settings('core', 'custom_onboarding_message'))
     end
 
     def profile_incomplete?(user)
-      MultilocService.new.is_empty?(user.bio_multiloc) ||
+      MultilocService.new.empty?(user.bio_multiloc) ||
         user.avatar.blank? ||
         CustomField.with_resource_type('User').enabled.any? do |cf|
           user.custom_field_values[cf.key].nil?

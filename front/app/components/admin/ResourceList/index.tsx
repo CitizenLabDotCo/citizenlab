@@ -21,7 +21,7 @@ const StyledList = styled.div`
 const timeout = 200;
 
 const Container = styled.div`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 300;
   justify-content: space-between !important;
   line-height: 20px;
@@ -43,7 +43,7 @@ const Container = styled.div`
     margin-bottom: ${remCalc(10)};
   }
   h1 {
-    font-size: ${fontSizes.large}px;
+    font-size: ${fontSizes.l}px;
   }
   h2 {
     font-size: ${fontSizes.base}px;
@@ -92,7 +92,7 @@ const Container = styled.div`
   &.e2e-admin-list-head-row {
     border-top: 0;
     color: ${colors.label};
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     font-weight: 500;
   }
 `;

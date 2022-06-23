@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePhaseFiles < ActiveRecord::Migration[5.1]
   def change
     create_table :phase_files, id: :uuid do |t|

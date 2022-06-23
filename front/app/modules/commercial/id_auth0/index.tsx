@@ -1,14 +1,38 @@
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import './services/verificationMethods';
+import {
+  IDAuth0Method,
+  TVerificationMethodName,
+} from 'services/verificationMethods';
 import Auth0Button from './components/Auth0Button';
-import { IDAuth0Method } from 'services/verificationMethods';
+import { isLastVerificationMethod } from 'modules/commercial/verification';
 
+const verificationMethodName: TVerificationMethodName = 'auth0';
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.VerificationModal.button': (props) => {
-      if (props.method.attributes.name !== 'auth0') return null;
-      return <Auth0Button {...props} method={props.method as IDAuth0Method} />;
+    'app.components.VerificationModal.buttons': ({
+      verificationMethods,
+      ...props
+    }) => {
+      const method = verificationMethods.find(
+        (vm) => vm.attributes.name === verificationMethodName
+      );
+
+      if (method) {
+        const last = isLastVerificationMethod(
+          verificationMethodName,
+          verificationMethods
+        );
+        return (
+          <Auth0Button
+            verificationMethod={method as IDAuth0Method}
+            last={last}
+            {...props}
+          />
+        );
+      }
+
+      return null;
     },
   },
 };

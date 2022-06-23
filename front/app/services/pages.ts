@@ -1,6 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { apiEndpoint as navbarEndpoint } from 'services/navbar';
 
 export const apiEndpoint = `${API_PATH}/static_pages`;
 
@@ -73,14 +74,27 @@ export interface IPageData {
   };
 }
 
+interface IPageCreate {
+  title_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  slug?: string;
+}
+
 export interface IPageUpdate {
   title_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   slug?: string;
+  nav_bar_item_attributes?: {
+    title_multiloc?: Multiloc;
+  };
 }
 
 export interface IPage {
   data: IPageData;
+}
+
+export interface IPages {
+  data: IPageData[];
 }
 
 export function listPages(streamParams: IStreamParams | null = null) {
@@ -100,8 +114,28 @@ export function pageBySlugStream(
   });
 }
 
-export function updatePage(pageId: string, pageData: IPageUpdate) {
-  return streams.update<IPage>(`${apiEndpoint}/${pageId}`, pageId, pageData);
+export function createPage(pageData: IPageCreate) {
+  return streams.add<IPage>(`${apiEndpoint}`, pageData);
+}
+
+export async function updatePage(pageId: string, pageData: IPageUpdate) {
+  const response = await streams.update<IPage>(
+    `${apiEndpoint}/${pageId}`,
+    pageId,
+    pageData
+  );
+
+  await streams.fetchAllWith({
+    apiEndpoint: [navbarEndpoint],
+  });
+
+  return response;
+}
+export async function deletePage(pageId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${pageId}`, pageId);
+  await streams.fetchAllWith({ apiEndpoint: [navbarEndpoint] });
+
+  return response;
 }
 
 export function pageByIdStream(

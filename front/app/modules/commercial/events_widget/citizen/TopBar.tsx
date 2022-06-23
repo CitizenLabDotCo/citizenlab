@@ -51,7 +51,7 @@ const EventPageLink = styled(Link)`
 
 export default injectIntl<InjectedIntlProps>(({ intl }) => (
   <Header>
-    <Title>{intl.formatMessage(messages.eventsWidgetTitle)}</Title>
+    <Title>{intl.formatMessage(messages.upcomingEventsWidgetTitle)}</Title>
     <EventPageLink to="/events">
       {intl.formatMessage(messages.viewAllEventsText)}
     </EventPageLink>

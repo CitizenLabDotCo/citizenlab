@@ -106,3 +106,7 @@ export function getProject(
     },
   } as IProjectData;
 }
+
+export const getProjectInputTerm = () => {
+  return 'idea';
+};

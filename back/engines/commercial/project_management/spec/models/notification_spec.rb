@@ -14,13 +14,13 @@ RSpec.describe Notification, type: :model do
       project = create(:project)
       moderator = create(:project_moderator, projects: [project])
       activity = create(:activity, item: moderator, action: 'project_moderation_rights_given',
-                                   payload: { project_id: project.id })
+        payload: { project_id: project.id })
 
       notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
       expect(notifications).to be_present
     end
 
-    context "when the project is visible only to some groups" do
+    context 'when the project is visible only to some groups' do
       let(:phase) { create(:active_phase) }
       let!(:project) do
         phase.project.tap do |project|
@@ -33,13 +33,13 @@ RSpec.describe Notification, type: :model do
         Notifications::ProjectPhaseStarted.make_notifications_on(activity)
       end
 
-      context "and the user moderates the project" do
+      context 'and the user moderates the project' do
         before { create(:project_moderator, projects: [project], manual_groups: [project.groups.first]) }
 
         it { expect(notifications.map(&:recipient_id)).to eq [] }
       end
 
-      context "and the user moderates another project" do
+      context 'and the user moderates another project' do
         let!(:user) { create(:project_moderator, manual_groups: [project.groups.first]) }
 
         it { expect(notifications.map(&:recipient_id)).to eq [user.id] }

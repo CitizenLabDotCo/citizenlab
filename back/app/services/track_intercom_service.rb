@@ -97,7 +97,7 @@ class TrackIntercomService
   def search_contact(user)
     user_id = user.respond_to?(:id) ? user.id : user
     contact_query = { field: 'external_id', operator: '=', value: user_id }.stringify_keys
-    search_results = @intercom.contacts.search("query": contact_query)
+    search_results = @intercom.contacts.search(query: contact_query)
     search_results[0] if search_results.count.positive?
   end
 

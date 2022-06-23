@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Insights
-  # This service provides utils to interact with the nlp service for category 
+  # This service provides utils to interact with the nlp service for category
   # suggestions.
   #
   # It can be used to trigger requests to the nlp service for category
@@ -27,9 +27,9 @@ module Insights
       def save_predictions(predictions)
         assignment_service = CategoryAssignmentsService.new
 
-        new_assignments = predictions.group_by(&:document_id).flat_map do |document_id, predictions|
+        new_assignments = predictions.group_by(&:document_id).flat_map do |document_id, document_predictions|
           input = ::Idea.find(document_id)
-          categories = Category.where(id: predictions.map(&:label_id))
+          categories = Category.where(id: document_predictions.map(&:label_id))
           assignment_service.add_suggestions(input, categories)
         rescue ActiveRecord::RecordNotFound
           # Ignore: don't save anything if the input cannot be found.
@@ -125,4 +125,3 @@ module Insights
     end
   end
 end
-

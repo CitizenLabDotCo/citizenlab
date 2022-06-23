@@ -44,7 +44,6 @@ import { toggleEvents, toggleAllInput } from 'services/navbar';
 import { UploadFile, Locale, Multiloc, CLErrors } from 'typings';
 
 interface Props {
-  lang: string;
   theme: any;
 }
 

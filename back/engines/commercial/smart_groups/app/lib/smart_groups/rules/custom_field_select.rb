@@ -1,81 +1,82 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class CustomFieldSelect
-
-    PREDICATE_VALUES = %w(has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
-    MULTIVALUE_PREDICATES = %w(is_one_of not_is_one_of)
+    PREDICATE_VALUES = %w[has_value not_has_value is_one_of not_is_one_of is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
+    MULTIVALUE_PREDICATES = %w[is_one_of not_is_one_of]
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: ['select', 'multiselect']).map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: %w[select multiselect]).map(&:id) } }
     validate :validate_value_inclusion
 
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          type: 'object',
+          'required' => %w[ruleType customFieldId predicate value],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
-              "enum": PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES),
+            'predicate' => {
+              type: 'string',
+              enum: PREDICATE_VALUES - (VALUELESS_PREDICATES + MULTIVALUE_PREDICATES)
             },
-            "value" => {
-              "description" => "The id of one of the options of the custom field",
-              "$ref": "#/definitions/customFieldOptionId"
+            'value' => {
+              'description' => 'The id of one of the options of the custom field',
+              '$ref': '#/definitions/customFieldOptionId'
             }
-          },
+          }
         },
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          type: 'object',
+          'required' => %w[ruleType customFieldId predicate value],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
-              "enum": MULTIVALUE_PREDICATES,
+            'predicate' => {
+              type: 'string',
+              enum: MULTIVALUE_PREDICATES
             },
-            "value" => {
-              "description" => "The ids of some of the options of the custom field",
-              "type" => "array",
-              "items" => {
-                "$ref": "#/definitions/customFieldOptionId"
+            'value' => {
+              'description' => 'The ids of some of the options of the custom field',
+              'type' => 'array',
+              'items' => {
+                '$ref': '#/definitions/customFieldOptionId'
               },
-              "uniqueItems" => true,
-              "minItems" => 1
+              'uniqueItems' => true,
+              'minItems' => 1
             }
-          },
+          }
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => %w[ruleType customFieldId predicate],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }
@@ -86,16 +87,17 @@ module SmartGroups::Rules
       'custom_field_select'
     end
 
-    def initialize custom_field_id, predicate, value=nil
+    def initialize(custom_field_id, predicate, value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
-      if custom_field.input_type == 'select'
+      case custom_field.input_type
+      when 'select'
         case predicate
         when 'has_value'
           option_key = CustomFieldOption.find(value).key
@@ -116,7 +118,7 @@ module SmartGroups::Rules
         else
           raise "Unsupported predicate #{predicate}"
         end
-      elsif custom_field.input_type == 'multiselect'
+      when 'multiselect'
         case predicate
         when 'has_value'
           option_key = CustomFieldOption.find(value).key
@@ -140,8 +142,8 @@ module SmartGroups::Rules
       end
     end
 
-    def description_value locale
-      if self.value.is_a? Array
+    def description_value(locale)
+      if value.is_a? Array
         value.map do |v|
           CustomFieldOption.find(v).title_multiloc[locale]
         end.join ', '
@@ -153,26 +155,25 @@ module SmartGroups::Rules
     private
 
     def needs_value?
-      !VALUELESS_PREDICATES.include?(predicate)
+      VALUELESS_PREDICATES.exclude?(predicate)
     end
 
     def validate_value_inclusion
-      if needs_value?
-        custom_field_ids = CustomFieldOption.where(custom_field_id: self.custom_field_id).map(&:id)
-        is_included = if self.value.is_a? Array
-          (self.value - custom_field_ids).blank?
-        else
-          custom_field_ids.include? self.value
-        end
-        if !is_included
-          self.errors.add(
-            :value,
-            :inclusion,
-            message: 'All values must be existing custom field option IDs'
-          )
-        end
-      end
-    end
+      return unless needs_value?
 
+      custom_field_ids = CustomFieldOption.where(custom_field_id: custom_field_id).map(&:id)
+      is_included = if value.is_a? Array
+        (value - custom_field_ids).blank?
+      else
+        custom_field_ids.include? value
+      end
+      return if is_included
+
+      errors.add(
+        :value,
+        :inclusion,
+        message: 'All values must be existing custom field option IDs'
+      )
+    end
   end
 end

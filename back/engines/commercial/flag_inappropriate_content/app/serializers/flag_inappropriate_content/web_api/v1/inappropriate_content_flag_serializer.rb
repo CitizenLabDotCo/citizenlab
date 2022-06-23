@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   class WebApi::V1::InappropriateContentFlagSerializer < ::WebApi::V1::BaseSerializer
     attributes :toxicity_label, :deleted_at

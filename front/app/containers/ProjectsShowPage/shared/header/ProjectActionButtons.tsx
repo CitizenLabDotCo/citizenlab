@@ -121,7 +121,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
         currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
         setTimeout(() => {
-          scrollToElement({ id });
+          scrollToElement({ id, shouldFocus: true });
         }, 100);
       },
     [currentPhase]

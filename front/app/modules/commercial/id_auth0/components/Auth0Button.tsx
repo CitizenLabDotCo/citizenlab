@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
-
-// typings
-import { IDAuth0Method } from 'services/verificationMethods';
-
+import {
+  TVerificationMethod,
+  IDAuth0Method,
+} from 'services/verificationMethods';
 // components
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
 
@@ -13,26 +13,27 @@ import VerificationMethodButton from 'modules/commercial/verification/citizen/co
 import T from 'components/T';
 
 interface Props {
-  method: IDAuth0Method;
+  onClick: (method: TVerificationMethod) => void;
+  verificationMethod: IDAuth0Method;
   last: boolean;
 }
 
-const Auth0Button = ({ method, last }: Props) => {
-  const handleOnClick = useCallback(() => {
+const Auth0Button = ({ onClick, verificationMethod, last }: Props) => {
+  const handleOnClick = () => {
+    onClick(verificationMethod);
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/auth0?token=${jwt}&pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
-  }, []);
+  };
 
   return (
     <VerificationMethodButton
-      key={method.id}
-      id={`e2e-${method.attributes.name}-button`}
-      className={last ? 'last' : ''}
+      id="e2e-auth0-button"
       onClick={handleOnClick}
+      last={last}
     >
-      <T value={method.attributes.method_name_multiloc} />
+      <T value={verificationMethod.attributes.method_name_multiloc} />
     </VerificationMethodButton>
   );
 };

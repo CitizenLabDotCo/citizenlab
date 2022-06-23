@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
   before_action :set_projects_allowed_input_topic, only: %i[show reorder destroy]
   skip_before_action :authenticate_user
 
   def index
     @projects_allowed_input_topics = policy_scope(ProjectsAllowedInputTopic)
-    @projects_allowed_input_topics = @projects_allowed_input_topics.where(project_id: params[:project_id]) if params[:project_id].present?
+    @projects_allowed_input_topics = @projects_allowed_input_topics.where(project_id: params[:project_id])
 
     @projects_allowed_input_topics = paginate @projects_allowed_input_topics.order(:ordering)
 
@@ -46,7 +48,7 @@ class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
       SideFxProjectsAllowedInputTopicService.new.after_destroy projects_allowed_input_topic, current_user
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

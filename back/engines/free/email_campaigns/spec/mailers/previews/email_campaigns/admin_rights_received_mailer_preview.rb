@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class AdminRightsReceivedMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -5,7 +7,7 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          
+
         }
       }
       campaign = EmailCampaigns::Campaigns::AdminRightsReceived.first

@@ -29,7 +29,7 @@ import { get } from 'lodash-es';
 const Container = styled.div``;
 
 const StatusBadge = styled.div<{ color: string }>`
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: 18px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 8px 12px;
@@ -86,7 +86,7 @@ const VoteCounter = styled.div`
 
 const VoteText = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
 
   b {
     font-weight: 600;
@@ -109,7 +109,7 @@ const VoteIcon = styled(Icon)`
 const ExpiredText = styled.div`
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   text-transform: capitalize;
   padding-bottom: 5px;
   color: ${colors.label};

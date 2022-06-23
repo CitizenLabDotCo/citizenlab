@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdGentRrn
   class WijkBudgetApi
     include HTTParty
@@ -6,15 +8,15 @@ module IdGentRrn
     def initialize(api_key:, environment:)
       @api_key = api_key
       @domain = case environment
-                when 'dv'
-                  'apidgdv.gent.be'
-                when 'qa'
-                  'apidgqa.gent.be'
-                when 'production'
-                  'apidg.gent.be'
-                else
-                  raise "Unsupported environment #{environment} for IdGentRrn::WijkBudgetApi.new"
-                end
+      when 'dv'
+        'apidgdv.gent.be'
+      when 'qa'
+        'apidgqa.gent.be'
+      when 'production'
+        'apidg.gent.be'
+      else
+        raise "Unsupported environment #{environment} for IdGentRrn::WijkBudgetApi.new"
+      end
     end
 
     def verificatie(rrn)

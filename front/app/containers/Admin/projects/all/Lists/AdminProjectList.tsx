@@ -70,7 +70,7 @@ const AdminProjectList = memo<Props>((_props) => {
           items={rootLevelAdminPublications}
           onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
-          id="e2e-admin-published-projects-list"
+          id="e2e-admin-projects-list-unsortable"
           key={rootLevelAdminPublications.length}
         >
           {({ itemsList, handleDragRow, handleDropRow }) => {

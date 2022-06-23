@@ -1,5 +1,6 @@
-class StatCommentPolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class StatCommentPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -24,10 +25,6 @@ class StatCommentPolicy < ApplicationPolicy
   end
 
   def ideas_by_topic?
-    show_stats?
-  end
-
-  def ideas_by_area?
     show_stats?
   end
 

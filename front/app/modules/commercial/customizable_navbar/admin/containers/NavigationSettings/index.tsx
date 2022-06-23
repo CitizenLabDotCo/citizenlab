@@ -11,7 +11,7 @@ import VisibleNavbarItemList from './VisibleNavbarItemList';
 import HiddenNavbarItemList from './HiddenNavbarItemList';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const NavigationSettings = () => (
@@ -32,4 +32,4 @@ const NavigationSettings = () => (
   </Section>
 );
 
-export default injectIntl(NavigationSettings);
+export default NavigationSettings;

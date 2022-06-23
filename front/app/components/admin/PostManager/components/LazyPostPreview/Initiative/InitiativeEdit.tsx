@@ -142,7 +142,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  topics: <GetTopics exclude_code={'custom'} />,
+  topics: <GetTopics excludeCode={'custom'} />,
   tenantLocales: <GetAppConfigurationLocales />,
   initiative: ({ initiativeId, render }) => (
     <GetInitiative id={initiativeId}>{render}</GetInitiative>

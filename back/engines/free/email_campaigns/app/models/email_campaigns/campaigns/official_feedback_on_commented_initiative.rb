@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -32,7 +34,7 @@ module EmailCampaigns
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_notification_recipient
 
@@ -41,10 +43,10 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Notifications::OfficialFeedbackOnCommentedInitiative' => {'created' => true}}
+      { 'Notifications::OfficialFeedbackOnCommentedInitiative' => { 'created' => true } }
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
+    def filter_notification_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.recipient.id)
     end
 
@@ -52,7 +54,7 @@ module EmailCampaigns
       'commented'
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       notification = activity.item
       name_service = UserDisplayNameService.new(AppConfiguration.instance, recipient)
       [{

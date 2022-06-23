@@ -7,7 +7,7 @@ RSpec.describe Notification, type: :model do
     it 'makes inappropriate_content_flagged notifications on inappropriate_content_flag created' do
       flag = create(:inappropriate_content_flag)
       admin = create(:admin)
-      user = create(:user)
+      create(:user)
       activity = create(:activity, item: flag, action: 'created')
 
       notifications = FlagInappropriateContent::Notifications::InappropriateContentFlagged.make_notifications_on activity
@@ -18,9 +18,9 @@ RSpec.describe Notification, type: :model do
   it 'deleting a flag also deletes inapporpriate content flagged notifications referencing to it' do
     flag = create(:inappropriate_content_flag)
     create(:inappropriate_content_flagged, inappropriate_content_flag: flag)
-    count = Notification.count
+    count = described_class.count
     flag.destroy!
 
-    expect(Notification.count).to eq (count - 1)
+    expect(described_class.count).to eq(count - 1)
   end
 end

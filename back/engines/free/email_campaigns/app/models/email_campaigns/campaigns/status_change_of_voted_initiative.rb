@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -32,7 +34,7 @@ module EmailCampaigns
     include Disableable
     include Trackable
     include LifecycleStageRestrictable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
@@ -41,10 +43,10 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Initiative' => {'changed_status' => true}}
+      { 'Initiative' => { 'changed_status' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope
         .where(id: activity.item.votes.pluck(:user_id))
         .where.not(id: activity.item.author_id)
@@ -55,7 +57,7 @@ module EmailCampaigns
       'voted'
     end
 
-    def generate_commands recipient:, activity:
+    def generate_commands(recipient:, activity:)
       initiative = activity.item
       status = initiative.initiative_status
       [{
@@ -64,12 +66,12 @@ module EmailCampaigns
           post_title_multiloc: initiative.title_multiloc,
           post_body_multiloc: initiative.body_multiloc,
           post_url: Frontend::UrlService.new.model_to_url(initiative, locale: recipient.locale),
-          post_images: initiative.initiative_images.map{ |image|
+          post_images: initiative.initiative_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
-          },
+          end,
           initiative_status_id: status.id,
           initiative_status_title_multiloc: status.title_multiloc,
           initiative_status_code: status.code,
@@ -79,8 +81,7 @@ module EmailCampaigns
     end
 
     def set_enabled
-      self.enabled = false if self.enabled.nil?
+      self.enabled = false if enabled.nil?
     end
-
   end
 end

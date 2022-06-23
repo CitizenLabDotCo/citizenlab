@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: phases
@@ -49,20 +51,19 @@ class Phase < ApplicationRecord
   accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
 
+  before_validation :sanitize_description_multiloc
+  before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false }
+  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, :end_at, presence: true
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
   validate :validate_no_other_budgeting_phases
-
-  before_validation :sanitize_description_multiloc
-  before_validation :strip_title
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
@@ -92,7 +93,7 @@ class Phase < ApplicationRecord
   def ends_before?(date)
     end_at.iso8601 < date.to_date.iso8601
   end
-  
+
   def permission_scope
     self
   end
@@ -127,7 +128,7 @@ class Phase < ApplicationRecord
       next unless start_at.present? && end_at.present? && ts.overlaps?(self, other_phase)
 
       errors.add(:base, :has_other_overlapping_phases,
-                 message: 'has other phases which overlap in start and end date')
+        message: 'has other phases which overlap in start and end date')
     end
   end
 
@@ -148,7 +149,7 @@ class Phase < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update phase: nil
+      unless notification.update phase: nil
         notification.destroy!
       end
     end

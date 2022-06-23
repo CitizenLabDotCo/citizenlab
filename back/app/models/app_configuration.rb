@@ -41,7 +41,7 @@ class AppConfiguration < ApplicationRecord
 
   validates :host, presence: true
   validate :validate_host_format
-  validates :homepage_info_multiloc, multiloc: { presence: false }
+  validates :homepage_info_multiloc, multiloc: { presence: false, html: true }
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
   validate :validate_customizable_homepage_banner
@@ -128,11 +128,6 @@ class AppConfiguration < ApplicationRecord
 
   def feature_activated?(setting_name)
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
-  end
-
-  def has_feature?(f)
-    ActiveSupport::Deprecation.warn('AppConfiguration#has_feature? is deprecated. Use AppConfiguration#feature_activated? instead.')
-    feature_activated?(f)
   end
 
   def closest_locale_to(locale)

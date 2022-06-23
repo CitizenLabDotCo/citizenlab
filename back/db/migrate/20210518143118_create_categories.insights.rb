@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from insights (originally 20210518132209)
 
 class CreateCategories < ActiveRecord::Migration[6.0]

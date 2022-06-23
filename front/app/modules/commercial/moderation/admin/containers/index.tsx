@@ -174,7 +174,7 @@ const EmptyIcon = styled(Icon)`
 const EmptyMessage = styled.div`
   max-width: 350px;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 500;
   text-align: center;
@@ -442,7 +442,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   if (!isNilOrError(moderations)) {
     return (
-      <Container className={className}>
+      <Container className={className} id="e2e-moderation-container">
         <PageTitleWrapper>
           <StyledPageTitle>
             <FormattedMessage {...messages.pageTitle} />
@@ -516,7 +516,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
               </Buttons>
             )}
-            <StyledSearchInput onChange={handleSearchTermChange} />
+            <StyledSearchInput
+              onChange={handleSearchTermChange}
+              a11y_numberOfSearchResults={moderations.length}
+            />
           </ActionBarTop>
           <ActionBarBottom>
             <Error text={actionBarErrorMessage} />

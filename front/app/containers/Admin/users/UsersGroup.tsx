@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik } from 'formik';
 import { isEmpty, isString } from 'lodash-es';
 
@@ -235,11 +235,9 @@ export class UsersGroup extends React.PureComponent<
   }
 }
 
-const UsersGroupWithHoCs = withRouter(
-  injectTracks<Props>({
-    trackEditGroup: tracks.editGroup,
-  })(injectIntl<Props>(UsersGroup))
-);
+const UsersGroupWithHoCs = injectTracks<Props>({
+  trackEditGroup: tracks.editGroup,
+})(injectIntl(UsersGroup));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   group: ({ params, render }) => (
@@ -248,8 +246,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   isVerificationEnabled: <GetFeatureFlag name="verification" />,
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {(dataProps) => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
   </Data>
-);
+));

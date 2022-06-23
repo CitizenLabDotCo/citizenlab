@@ -22,7 +22,7 @@ const Count = styled.div`
   height: 30px;
   border-radius: 5px;
   background-color: ${colors.lightGreyishBlue};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 500;
   color: ${(props) => props.theme.colorText};
 `;
@@ -33,7 +33,7 @@ const Unit = styled.div`
   justify-content: center;
   margin: 5px 0 0 0;
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
 `;
 
 interface Props {

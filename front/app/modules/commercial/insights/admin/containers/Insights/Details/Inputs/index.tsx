@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import clHistory from 'utils/cl-router/history';
@@ -57,7 +57,7 @@ const StyledSearch = styled(Search)`
 
 const StyledInputCount = styled.span`
   font-weight: normal;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   margin-left: 8px;
 `;
 
@@ -172,7 +172,13 @@ const Inputs = ({
         </SectionTitle>
         {inputs.length > 0 && <Export />}
       </Box>
-      <StyledSearch onChange={onSearch} size="small" />
+      <StyledSearch
+        onChange={onSearch}
+        size="small"
+        a11y_numberOfSearchResults={
+          !isNilOrError(inputsCount) ? inputsCount.count : 0
+        }
+      />
       {selectedCategories.length > 0 && (
         <Box mb="8px">
           <Box mr="4px" as="span">

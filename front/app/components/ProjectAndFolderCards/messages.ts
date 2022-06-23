@@ -17,12 +17,12 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderCards.allProjects',
     defaultMessage: 'All projects',
   },
-  currentlyWorkingOn: {
-    id: 'app.containers.ProjectFolderCards.currentlyWorkingOn',
-    defaultMessage: '{orgName} is currently working on',
+  noProjectsAvailable: {
+    id: 'app.components.ProjectFolderCards.noProjectsAvailable',
+    defaultMessage: 'No projects available',
   },
-  areasTitle: {
-    id: 'app.containers.ProjectCards.areasTitle',
-    defaultMessage: 'Areas',
+  tryChangingFilters: {
+    id: 'app.components.ProjectFolderCards.tryChangingFilters',
+    defaultMessage: 'Try changing selected filters.',
   },
 });

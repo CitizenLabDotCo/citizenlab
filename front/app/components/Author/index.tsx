@@ -87,7 +87,7 @@ const AuthorNameContainer = styled.div`
 
 const TimeAgo = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: 16px;
   margin-top: 3px;
 

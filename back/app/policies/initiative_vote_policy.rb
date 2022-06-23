@@ -1,5 +1,6 @@
-class InitiativeVotePolicy < ApplicationPolicy
+# frozen_string_literal: true
 
+class InitiativeVotePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -44,8 +45,8 @@ class InitiativeVotePolicy < ApplicationPolicy
 
   private
 
-  def voting_denied_reason user
-    :not_signed_in if !user
+  def voting_denied_reason(user)
+    :not_signed_in unless user
   end
 end
 

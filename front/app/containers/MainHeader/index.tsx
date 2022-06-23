@@ -9,7 +9,7 @@ import NotificationMenu from './NotificationMenu';
 import DesktopNavbar from './DesktopNavbar';
 import UserMenu from './UserMenu';
 import TenantLogo from './TenantLogo';
-import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
+import LanguageSelector from 'containers/MainHeader/LanguageSelector';
 import Fragment from 'components/Fragment';
 
 // analytics
@@ -141,7 +141,7 @@ const Right = styled.div`
     `}
 `;
 
-const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
+const StyledLanguageSelector = styled(LanguageSelector)`
   padding-left: 20px;
 
   ${media.smallerThanMinTablet`
@@ -308,10 +308,6 @@ const MainHeader = ({ setRef }: Props) => {
     trackEventByName(tracks.clickSignUpLink.name);
   };
 
-  const preloadLanguageSelector = () => {
-    LoadableLanguageSelector.preload();
-  };
-
   const signIn = () => {
     openSignUpInModal({ flow: 'signin' });
   };
@@ -386,11 +382,8 @@ const MainHeader = ({ setRef }: Props) => {
             )}
 
             {tenantLocales.length > 1 && locale && (
-              <RightItem
-                onMouseOver={preloadLanguageSelector}
-                className="noLeftMargin"
-              >
-                <StyledLoadableLanguageSelector />
+              <RightItem className="noLeftMargin">
+                <StyledLanguageSelector />
               </RightItem>
             )}
           </Right>

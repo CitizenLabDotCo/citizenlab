@@ -10,9 +10,8 @@ module Insights
   # must implement a +handle+ method which will be invoked to process the result
   # of the analysis when it is available.
   class TextNetworkAnalysisService
-
     # @param [NLP::TextNetworkAnalysisService] nlp_tna_service
-    def initialize(nlp_tna_service=nil)
+    def initialize(nlp_tna_service = nil)
       @nlp_tna_service = nlp_tna_service
     end
 
@@ -47,8 +46,8 @@ module Insights
 
       # Remove existing networks for languages that are no longer present in the inputs.
       Insights::TextNetwork.where(view: view)
-                           .where.not(language: task_by_language.keys)
-                           .destroy_all
+        .where.not(language: task_by_language.keys)
+        .destroy_all
 
       task_by_language.map do |language, tna_task|
         Insights::TextNetworkAnalysisTaskView.create(view: view, task: tna_task, language: language)

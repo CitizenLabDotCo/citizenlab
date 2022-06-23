@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :topic do
     transient do
@@ -11,7 +13,7 @@ FactoryBot.define do
       Topic::DEFAULT_CODES[(n - 1) % nb_codes] # Looping over the codes.
     end
 
-    icon { "medical" }
+    icon { 'medical' }
 
     factory :topic_nature do
       title_multiloc { { 'en' => 'Nature' } }

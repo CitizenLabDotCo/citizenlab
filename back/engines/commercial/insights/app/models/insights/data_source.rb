@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: insights_data_sources
@@ -27,9 +29,9 @@ module Insights
     belongs_to :view, class_name: 'Insights::View'
     # We use an explicit +before_destroy+ callback because
     #   dependent: :destroy
-    # (which is equivalent to an :after_destroy callback) makes the deletion of 
+    # (which is equivalent to an :after_destroy callback) makes the deletion of
     # views or data sources fail with:
-    #   ActiveRecord::RecordNotDestroyed: 
+    #   ActiveRecord::RecordNotDestroyed:
     #   Failed to destroy the record
     # I don't have a clear explanation why this happens.
     before_destroy { view.destroy }

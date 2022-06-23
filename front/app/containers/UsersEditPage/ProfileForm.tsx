@@ -330,6 +330,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer>
               <Input
                 type="text"
+                autocomplete="given-name"
                 name="first_name"
                 id="firstName"
                 value={values.first_name}
@@ -352,6 +353,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
+                autocomplete="family-name"
                 name="last_name"
                 id="lastName"
                 value={values.last_name}
@@ -374,6 +376,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <InputContainer>
               <Input
                 type="email"
+                autocomplete="email"
                 name="email"
                 id="email"
                 value={values.email}

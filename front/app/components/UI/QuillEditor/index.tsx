@@ -27,11 +27,13 @@ import {
   media,
   fontSizes,
   defaultStyles,
+  isRtl,
 } from 'utils/styleUtils';
 
 import {
   ImageBlot,
   AltTextToImagesModule,
+  KeepHTML,
   attributes,
 } from './altTextToImagesModule';
 // typings
@@ -52,7 +54,7 @@ const DropdownListItem = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   width: auto !important;
@@ -77,6 +79,8 @@ const Container = styled.div<{
   save: string;
   edit: string;
   remove: string;
+  maxHeight?: string;
+  minHeight?: string;
 }>`
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -224,8 +228,6 @@ const Container = styled.div<{
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
-    max-height: ${({ theme: { menuHeight } }) =>
-      `calc(80vh - ${menuHeight}px)`};
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius}
       ${({ theme }) => theme.borderRadius};
@@ -235,7 +237,16 @@ const Container = styled.div<{
     ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {
-      min-height: 300px;
+      min-height: ${(props) => (props.minHeight ? props.minHeight : '300px')};
+    }
+      max-height: ${(props) =>
+        props.maxHeight
+          ? props.maxHeight
+          : ({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
+      ${isRtl`
+	direction: rtl;
+	text-align: right;
+    `}
     }
 
     ${media.smallerThanMaxTablet`
@@ -259,6 +270,8 @@ export interface Props {
   limitedTextFormatting?: boolean;
   hasError?: boolean;
   className?: string;
+  maxHeight?: string;
+  minHeight?: string;
   onChange?: (html: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
@@ -363,6 +376,8 @@ Quill.register(
   true
 );
 
+Quill.register(KeepHTML);
+
 const QuillEditor = memo<Props & InjectedIntlProps>(
   ({
     id,
@@ -376,6 +391,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
     noImages,
     noVideos,
     limitedTextFormatting,
+    maxHeight,
+    minHeight,
     hasError,
     className,
     setRef,
@@ -665,6 +682,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(
 
     return (
       <Container
+        maxHeight={maxHeight}
+        minHeight={minHeight}
         className={classNames}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}

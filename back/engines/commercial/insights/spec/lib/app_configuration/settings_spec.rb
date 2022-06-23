@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe AppConfiguration::Settings do
-  let(:insights_manual_flow_feature_name) {}
+  let(:insights_manual_flow_feature_name) { nil }
 
   it 'have insights manual-flow feature' do
     feature_name = Insights::FeatureSpecifications::ManualFlow.feature_name

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module AdminApi
   class Types::TenantType < GraphQL::Schema::Object
-    description "A CitizenLab platform"
+    description 'A CitizenLab platform'
 
     class TenantLogo < GraphQL::Schema::Object
       field :small_url, String, null: false
@@ -57,42 +59,42 @@ module AdminApi
 
       field :core_organization_name, Types::MultilocType, null: false
       def core_organization_name
-        object.dig('core','organization_name')
+        object.dig('core', 'organization_name')
       end
 
       field :core_color_main, String, null: false
       def core_color_main
-        object.dig('core','color_main')
+        object.dig('core', 'color_main')
       end
 
       field :initiatives_allowed, Boolean, null: false
       def initiatives_allowed
-        object.dig('initiatives','allowed')
+        object.dig('initiatives', 'allowed')
       end
 
       field :initiatives_enabled, Boolean, null: false
       def initiatives_enabled
-        object.dig('initiatives','enabled')
+        object.dig('initiatives', 'enabled')
       end
 
       field :ideas_overview_allowed, Boolean, null: false
       def ideas_overview_allowed
-        object.dig('ideas_overview','allowed')
+        object.dig('ideas_overview', 'allowed')
       end
 
       field :ideas_overview_enabled, Boolean, null: false
       def ideas_overview_enabled
-        object.dig('ideas_overview','enabled')
+        object.dig('ideas_overview', 'enabled')
       end
 
       field :project_folders_allowed, Boolean, null: false
       def project_folders_allowed
-        object.dig('project_folders','allowed')
+        object.dig('project_folders', 'allowed')
       end
 
       field :project_folders_enabled, Boolean, null: false
       def project_folders_enabled
-        object.dig('project_folders','enabled')
+        object.dig('project_folders', 'enabled')
       end
     end
 
@@ -101,6 +103,5 @@ module AdminApi
     field :host, String, null: false
     field :logo, TenantLogo, null: true
     field :settings, TenantSettingsSchema, null: false
-
   end
 end

@@ -8,7 +8,7 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -59,6 +59,8 @@ import GetAppConfiguration, {
 
 // utils
 import { getAddressOrFallbackDMS } from 'utils/map';
+import clHistory from 'utils/cl-router/history';
+import { parse } from 'qs';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -355,16 +357,17 @@ export class InitiativesShow extends PureComponent<
   }
 
   componentDidMount() {
-    const newInitiativeId = this.props.location.query?.['new_initiative_id'];
-
+    const queryParams = parse(clHistory.location.search, {
+      ignoreQueryPrefix: true,
+    });
+    const newInitiativeId = queryParams.new_initiative_id;
     this.setLoaded();
-
     if (isString(newInitiativeId)) {
       setTimeout(() => {
         this.setState({ initiativeIdForSocialSharing: newInitiativeId });
       }, 1500);
 
-      window.history.replaceState(null, '', window.location.pathname);
+      clHistory.replace(window.location.pathname);
     }
   }
 
@@ -750,7 +753,7 @@ export class InitiativesShow extends PureComponent<
 }
 
 const InitiativesShowWithHOCs = injectLocalize<Props>(
-  injectIntl(withRouter(InitiativesShow))
+  withRouter(injectIntl(InitiativesShow))
 );
 
 const Data = adopt<DataProps, InputProps>({

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 // components
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -14,7 +15,6 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
-import LoadableModal from 'components/Loadable/Modal';
 import DeletionDialog from './DeletionDialog';
 
 const Row = styled.div`
@@ -71,9 +71,9 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
             </Button>
           </Row>
         </FormSection>
-        <LoadableModal opened={dialogOpened} close={this.onCloseDialog}>
+        <Modal opened={dialogOpened} close={this.onCloseDialog}>
           <DeletionDialog closeDialog={this.onCloseDialog} />
-        </LoadableModal>
+        </Modal>
       </>
     );
   }

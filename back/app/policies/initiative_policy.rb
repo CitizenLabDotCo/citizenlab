@@ -69,10 +69,10 @@ class InitiativePolicy < ApplicationPolicy
 
   private
 
-  def posting_denied_reason user
-    'not_signed_in' if !user
+  def posting_denied_reason(user)
+    'not_signed_in' unless user
   end
-  
+
   def owner?
     user && record.author_id == user.id
   end

@@ -15,6 +15,7 @@ import { Icon } from '@citizenlab/cl2-component-library';
 
 const Container = styled.div`
   margin-bottom: 10px;
+  position: relative;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -33,7 +34,7 @@ const Input = styled.input`
   opacity: 0;
   width: 1px;
   height: 1px;
-
+  position: absolute;
   &:focus + label {
     color: #000;
     border-color: #000;

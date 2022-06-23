@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Seo
   class ScrapeFacebookJob < ApplicationJob
     def run(url)

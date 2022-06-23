@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 module SmartGroups::Rules
   class CustomFieldText
-
-    PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty)
-    VALUELESS_PREDICATES = %w(is_empty not_is_empty)
+    PREDICATE_VALUES = %w[is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on is_empty not_is_empty]
+    VALUELESS_PREDICATES = %w[is_empty not_is_empty]
 
     include CustomFieldRule
 
@@ -11,41 +12,41 @@ module SmartGroups::Rules
     def self.to_json_schema
       [
         {
-          "type": "object",
-          "required" => ["ruleType", "customFieldId", "predicate", "value"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          type: 'object',
+          'required' => %w[ruleType customFieldId predicate value],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type": "string",
-              "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
+            'predicate' => {
+              type: 'string',
+              enum: PREDICATE_VALUES - VALUELESS_PREDICATES
             },
-            "value" => {
-              "type" => "string"
+            'value' => {
+              'type' => 'string'
             }
-          },
+          }
         },
         {
-          "type" => "object",
-          "required" => ["ruleType", "customFieldId", "predicate"],
-          "additionalProperties" => false,
-          "properties" => {
-            "ruleType" => {
-              "type" => "string",
-              "enum" => [rule_type],
+          'type' => 'object',
+          'required' => %w[ruleType customFieldId predicate],
+          'additionalProperties' => false,
+          'properties' => {
+            'ruleType' => {
+              'type' => 'string',
+              'enum' => [rule_type]
             },
-            "customFieldId" => {
-              "$ref": "#/definitions/customFieldId"
+            'customFieldId' => {
+              '$ref': '#/definitions/customFieldId'
             },
-            "predicate" => {
-              "type" => "string",
-              "enum" => VALUELESS_PREDICATES
+            'predicate' => {
+              'type' => 'string',
+              'enum' => VALUELESS_PREDICATES
             }
           }
         }
@@ -56,13 +57,13 @@ module SmartGroups::Rules
       'custom_field_text'
     end
 
-    def initialize custom_field_id, predicate, value=nil
+    def initialize(custom_field_id, predicate, value = nil)
       self.custom_field_id = custom_field_id
       self.predicate = predicate
       self.value = value
     end
 
-    def filter users_scope
+    def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
       key = custom_field.key
       case predicate
@@ -94,8 +95,7 @@ module SmartGroups::Rules
     private
 
     def needs_value?
-      !VALUELESS_PREDICATES.include?(predicate)
+      VALUELESS_PREDICATES.exclude?(predicate)
     end
-
   end
 end

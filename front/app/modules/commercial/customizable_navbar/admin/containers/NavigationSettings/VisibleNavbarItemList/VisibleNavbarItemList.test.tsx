@@ -5,7 +5,7 @@ import {
   reorderNavbarItem,
   removeNavbarItem,
 } from '../../../../services/navbar';
-import { deletePage } from '../../../../services/pages';
+import { deletePage } from 'services/pages';
 import { NAVIGATION_PATH } from '../..';
 import navbarItems from 'hooks/fixtures/navbarItems';
 import clHistory from 'utils/cl-router/history';
@@ -21,13 +21,11 @@ jest.mock('../../../../services/navbar', () => ({
   removeNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../../services/pages', () => ({
+jest.mock('services/pages', () => ({
   deletePage: jest.fn(),
 }));
 
 jest.mock('utils/cl-router/history');
-
-window.open = jest.fn();
 
 describe('<VisibleNavbarItemList />', () => {
   it('renders', () => {
@@ -94,22 +92,11 @@ describe('<VisibleNavbarItemList />', () => {
     );
   });
 
-  it('calls window.open on click view button with correct slug', () => {
+  it('has view buttons', () => {
     render(<VisibleNavbarItemList />);
 
     const viewButtons = screen.getAllByText('View');
-
-    fireEvent.click(viewButtons[2]);
-    expect(window.open).toHaveBeenCalledWith(
-      'https://demo.stg.citizenlab.co/en/ideas',
-      '_blank'
-    );
-
-    fireEvent.click(viewButtons[6]);
-    expect(window.open).toHaveBeenCalledWith(
-      'https://demo.stg.citizenlab.co/en/pages/faq',
-      '_blank'
-    );
+    expect(viewButtons).toHaveLength(7);
   });
 
   it('calls deletePage on click delete button with correct page id', () => {

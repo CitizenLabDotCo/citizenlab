@@ -15,7 +15,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   text-decoration: underline;
   transition: all 100ms ease-out;

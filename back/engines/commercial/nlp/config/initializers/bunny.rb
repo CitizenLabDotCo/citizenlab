@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-return if Rails.const_defined? 'Console'
+return if Rails.const_defined? :Console
 
 require 'citizen_lab/bunny'
 require 'nlp/text_network_analysis_service'
@@ -17,10 +17,9 @@ channel = BUNNY_CON.create_channel
 exchange = channel.topic('cl2nlp', durable: true)
 
 queue = channel.queue(QUEUE_NAME, durable: true)
-               .bind(exchange, routing_key: ROUTING_KEY)
+  .bind(exchange, routing_key: ROUTING_KEY)
 
 queue.subscribe do |_delivery_info, _properties, payload|
-
   payload = JSON.parse(payload)
 
   puts({

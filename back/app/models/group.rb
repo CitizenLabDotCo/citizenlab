@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: groups
@@ -83,8 +85,7 @@ class Group < ApplicationRecord
   private
 
   def generate_slug
-    slug_service = SlugService.new
-    self.slug ||= slug_service.generate_slug self, title_multiloc.values.first
+    self.slug ||= SlugService.new.generate_slug self, title_multiloc.values.first
   end
 
   def set_membership_type

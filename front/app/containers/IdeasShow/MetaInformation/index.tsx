@@ -49,12 +49,12 @@ const MetaInformation = ({
       locale
     );
     const locationEnabled = isFieldEnabled(
-      'location',
+      'location_description',
       ideaCustomFieldsSchemas,
       locale
     );
     const attachmentsEnabled = isFieldEnabled(
-      'attachments',
+      'idea_files_attributes',
       ideaCustomFieldsSchemas,
       locale
     );

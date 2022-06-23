@@ -23,7 +23,7 @@ const StyledTable = styled.table`
       th {
         fill: ${colors.text};
         color: ${colors.adminTextColor};
-        font-size: ${fontSizes.small}px;
+        font-size: ${fontSizes.s}px;
         font-weight: 600;
         text-align: left;
         text-transform: uppercase;
@@ -47,7 +47,7 @@ const StyledTable = styled.table`
 
       td {
         color: ${colors.adminTextColor};
-        font-size: ${fontSizes.small}px;
+        font-size: ${fontSizes.s}px;
         font-weight: 400;
         line-height: normal;
         text-align: left;

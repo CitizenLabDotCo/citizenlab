@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from public_api (originally 20171109172144)
 class CreatePublicApiApiClients < ActiveRecord::Migration[5.1]
   def change

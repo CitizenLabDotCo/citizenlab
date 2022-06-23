@@ -61,8 +61,6 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
       ? windowSize?.windowWidth <= viewportWidths.smallTablet
       : false;
     const isPBProject = project.attributes.participation_method === 'budgeting';
-    const projectId = project.id;
-    const projectIds = [projectId];
 
     return (
       <Container
@@ -93,7 +91,7 @@ const IdeasContainer = memo<Props>(({ projectId, className }) => {
 
             <IdeaCards
               type="load-more"
-              projectIds={projectIds}
+              projectId={projectId}
               participationMethod={project.attributes.participation_method}
               participationContextId={projectId}
               participationContextType="project"

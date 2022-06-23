@@ -24,9 +24,7 @@ module Frontend
       when User
         subroute = 'profile'
         slug = model_instance.slug
-      when Comment ### comments do not have a path yet, we return the post path for now
-        return model_to_path(model_instance.post)
-      when OfficialFeedback ### official feedbacks do not have a path yet, we return the post path for now
+      when Comment, OfficialFeedback ### comments and official feedbacks do not have a path yet, we return the post path for now
         return model_to_path(model_instance.post)
       else
         subroute = nil
@@ -148,11 +146,15 @@ module Frontend
     def config_from_options(options)
       tenant = options[:tenant]
       if tenant # Show a deprecation message is tenant options is used
-        ActiveSupport::Deprecation.warn(":tenant options is deprecated, use :app_configuration instead.") # MT_TODO to be removed
+        ActiveSupport::Deprecation.warn(':tenant options is deprecated, use :app_configuration instead.') # MT_TODO to be removed
       end
-      options[:app_configuration] || tenant&.configuration || AppConfiguration.instance # TODO OS remove: tenant&.configuration
+      options[:app_configuration] || tenant&.configuration || app_config_instance # TODO: OS remove: tenant&.configuration
     end
 
+    # Memoized database query
+    def app_config_instance
+      @app_config_instance ||= AppConfiguration.instance
+    end
   end
 end
 

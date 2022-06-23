@@ -4,16 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
 import Volunteering from '../shared/volunteering';
-import { ScreenReaderOnly } from 'utils/a11y';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 import SectionContainer from 'components/SectionContainer';
 
 // hooks
 import useProject from 'hooks/useProject';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/ProjectsShowPage/messages';
 
 // styling
 import styled from 'styled-components';
@@ -45,9 +40,6 @@ const VolunteeringContainer = memo<Props>(({ projectId, className }) => {
       >
         <StyledContentContainer maxWidth={maxPageWidth}>
           <SectionContainer>
-            <ScreenReaderOnly>
-              <FormattedMessage tagName="h2" {...messages.invisibleTitlePoll} />
-            </ScreenReaderOnly>
             <Volunteering
               type="project"
               projectId={project.id}

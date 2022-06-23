@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ const StyledEmptyState = styled.div`
   }
   p {
     font-weight: normal;
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
   }
 `;
 

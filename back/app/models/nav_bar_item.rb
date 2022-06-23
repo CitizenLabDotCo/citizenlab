@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: nav_bar_items
@@ -20,7 +22,7 @@
 #
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
-class NavBarItem < ActiveRecord::Base
+class NavBarItem < ApplicationRecord
   # The codes must be listed in the correct default ordering
   CODES = %w[home projects proposals events all_input custom].freeze
 
@@ -39,8 +41,8 @@ class NavBarItem < ActiveRecord::Base
     code == 'custom'
   end
 
-  def title_multiloc
-    super.presence || fallback_title_multiloc
+  def title_multiloc_with_fallback
+    fallback_title_multiloc.merge(title_multiloc || {})
   end
 
   private

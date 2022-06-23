@@ -109,7 +109,7 @@ const StyledBody = styled(Body)`
 `;
 
 const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.medium}px;
+  font-size: ${(props) => props.theme.fontSizes.m}px;
   font-weight: 400;
   line-height: 28px;
 `;
@@ -149,7 +149,7 @@ const BudgetBox = styled.div`
   border-radius: 5px;
   background: ${colors.background};
   border: solid 1px ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 500;
 `;
 

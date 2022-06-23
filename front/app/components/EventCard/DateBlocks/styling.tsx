@@ -43,7 +43,7 @@ export const EventDate = styled.div`
 
 export const EventMonth = styled.div`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 500;
   text-transform: uppercase;
@@ -51,7 +51,7 @@ export const EventMonth = styled.div`
 
 export const EventDay = styled.div`
   color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   line-height: normal;
   font-weight: 400;
 
@@ -75,6 +75,6 @@ export const EventYear = styled.div`
   background: ${({ theme }) => theme.colorMain};
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
   `}
 `;

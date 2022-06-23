@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateVerifications < ActiveRecord::Migration[5.2]
   def change
     create_table :verification_verifications, id: :uuid do |t|

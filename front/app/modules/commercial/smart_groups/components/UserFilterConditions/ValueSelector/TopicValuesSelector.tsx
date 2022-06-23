@@ -14,19 +14,14 @@ export interface Props {
 const TopicValuesSelector = memo(({ value, onChange }: Props) => {
   const topics = useTopics({});
   const localize = useLocalize();
+
   const generateOptions = (): IOption[] => {
-    if (!isNilOrError(topics)) {
-      return topics
-        .filter((topic) => !isNilOrError(topic))
-        .map((topic: ITopicData) => {
-          return {
-            value: topic.id,
-            label: localize(topic.attributes.title_multiloc),
-          };
-        });
-    } else {
-      return [];
-    }
+    return isNilOrError(topics)
+      ? []
+      : topics.map((topic: ITopicData) => ({
+          value: topic.id,
+          label: localize(topic.attributes.title_multiloc),
+        }));
   };
 
   const handleOnChange = (options: IOption[]) => {

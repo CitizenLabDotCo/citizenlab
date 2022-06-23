@@ -10,7 +10,11 @@ import {
 } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
-import { projectsStream, IProjectData } from 'services/projects';
+import {
+  projectsStream,
+  IProjectData,
+  PublicationStatus,
+} from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 import { reportError } from 'utils/loggingUtils';
@@ -23,7 +27,6 @@ export type Sort =
   | 'popular'
   | '-popular';
 
-export type PublicationStatus = 'draft' | 'published' | 'archived';
 export type SelectedPublicationStatus = 'all' | 'published' | 'archived';
 
 export interface InputProps {
@@ -31,7 +34,6 @@ export interface InputProps {
   pageSize?: number;
   sort?: Sort;
   areas?: string[];
-  topics?: string[];
   publicationStatuses: PublicationStatus[];
   filterCanModerate?: boolean;
   filteredProjectIds?: string[];
@@ -42,7 +44,6 @@ interface IQueryParameters {
   'page[size]'?: number;
   sort?: Sort;
   areas?: string[];
-  topics?: string[];
   publication_statuses: PublicationStatus[];
   filter_can_moderate?: boolean;
   filter_ids?: string[];
@@ -64,7 +65,6 @@ export type GetProjectsChildProps = State & {
   onLoadMore: () => void;
   onChangeSorting: (sort: Sort) => void;
   onChangeAreas: (areas: string[]) => void;
-  onChangeTopics: (topics: string[]) => void;
   onChangePublicationStatus: (
     publicationStatus: SelectedPublicationStatus
   ) => void;
@@ -91,7 +91,6 @@ export default class GetProjects extends Component<Props, State> {
         'page[size]': props.pageSize || 250,
         sort: props.sort,
         areas: props.areas,
-        topics: props.topics,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
         filter_ids: props.filteredProjectIds,
@@ -213,7 +212,6 @@ export default class GetProjects extends Component<Props, State> {
           'page[size]': props.pageSize,
           sort: props.sort,
           areas: props.areas,
-          topics: props.topics,
           publication_statuses: props.publicationStatuses,
           filter_can_moderate: props.filterCanModerate,
           filter_ids: props.filteredProjectIds,
@@ -248,14 +246,6 @@ export default class GetProjects extends Component<Props, State> {
     });
   };
 
-  handleTopicsOnChange = (topics: string[]) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      topics,
-      'page[number]': 1,
-    });
-  };
-
   handlePublicationStatusOnChange = (
     publicationStatus: SelectedPublicationStatus
   ) => {
@@ -276,7 +266,6 @@ export default class GetProjects extends Component<Props, State> {
       onLoadMore: this.loadMore,
       onChangeSorting: this.handleSortOnChange,
       onChangeAreas: this.handleAreasOnChange,
-      onChangeTopics: this.handleTopicsOnChange,
       onChangePublicationStatus: this.handlePublicationStatusOnChange,
     });
   }

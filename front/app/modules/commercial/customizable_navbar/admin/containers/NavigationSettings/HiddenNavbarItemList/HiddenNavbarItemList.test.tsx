@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../../services/navbar';
-import { deletePage } from '../../../../services/pages';
+import { deletePage } from 'services/pages';
 import { NAVIGATION_PATH } from '../..';
 import clHistory from 'utils/cl-router/history';
 
@@ -26,8 +26,8 @@ jest.mock('../../../../services/navbar', () => ({
   addNavbarItem: jest.fn(),
 }));
 
-jest.mock('../../../../services/pages', () => {
-  const original = jest.requireActual('../../../../services/pages');
+jest.mock('services/pages', () => {
+  const original = jest.requireActual('services/pages');
 
   return {
     ...original,
@@ -36,8 +36,6 @@ jest.mock('../../../../services/pages', () => {
 });
 
 jest.mock('utils/cl-router/history');
-
-window.open = jest.fn();
 
 describe('<HiddenNavbarItemList />', () => {
   it('renders', () => {
@@ -119,21 +117,10 @@ describe('<HiddenNavbarItemList />', () => {
     );
   });
 
-  it('calls window.open on click view button with correct slug', () => {
+  it('has view buttons', () => {
     render(<HiddenNavbarItemList />);
 
     const viewButtons = screen.getAllByText('View');
-
-    fireEvent.click(viewButtons[0]);
-    expect(window.open).toHaveBeenCalledWith(
-      'https://demo.stg.citizenlab.co/en/pages/faq',
-      '_blank'
-    );
-
-    fireEvent.click(viewButtons[1]);
-    expect(window.open).toHaveBeenCalledWith(
-      'https://demo.stg.citizenlab.co/en/pages/about',
-      '_blank'
-    );
+    expect(viewButtons).toHaveLength(4);
   });
 });

@@ -16,7 +16,7 @@ import ProjectGroupsList from '../components/ProjectGroupsList';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import permissionsMessages from 'containers/Admin/projects/edit/permissions/messages';
+import permissionsMessages from 'containers/Admin/projects/project/permissions/messages';
 
 // services
 import { updateProject } from 'services/projects';

@@ -20,7 +20,7 @@ const canUserAccessAdminFolderRoute = (
 ) => {
   return (
     canAccessRoute(item, user, tenant) ||
-    (isAdminRoute(item) &&
+    (isAdminRoute(item.path) &&
       (user ? isProjectFolderModerator(user.data) : false) &&
       MODERATOR_ROUTES.includes(item.path))
   );

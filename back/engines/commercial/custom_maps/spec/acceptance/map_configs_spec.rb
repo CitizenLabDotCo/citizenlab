@@ -19,11 +19,11 @@ resource 'Map Configs' do
     get 'web_api/v1/projects/:project_id/map_config' do
       let!(:map_config) do
         create(:map_config,
-               :with_positioning,
-               :with_tile_provider,
-               :with_layers,
-               :with_legend,
-               project: project)
+          :with_positioning,
+          :with_tile_provider,
+          :with_layers,
+          :with_legend,
+          project: project)
       end
 
       example_request 'Get the map config of a project' do
@@ -120,11 +120,11 @@ resource 'Map Configs' do
       context 'when the project already has a map config' do
         before do
           create(:map_config,
-                 :with_positioning,
-                 :with_tile_provider,
-                 :with_layers,
-                 :with_legend,
-                 project: project)
+            :with_positioning,
+            :with_tile_provider,
+            :with_layers,
+            :with_legend,
+            project: project)
         end
 
         example_request 'Updates a map config successfully' do
@@ -146,11 +146,11 @@ resource 'Map Configs' do
       context 'when the project already has a map config' do
         before do
           create(:map_config,
-                 :with_positioning,
-                 :with_tile_provider,
-                 :with_layers,
-                 :with_legend,
-                 project: project)
+            :with_positioning,
+            :with_tile_provider,
+            :with_layers,
+            :with_legend,
+            project: project)
         end
 
         example_request 'Deletes a map config successfully' do

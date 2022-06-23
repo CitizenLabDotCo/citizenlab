@@ -33,7 +33,6 @@ export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
   metaData: ISignUpInMetaData;
-  windowHeight: number;
   customHeader?: JSX.Element;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
@@ -41,14 +40,7 @@ export interface Props {
 }
 
 const SignIn = memo<Props>(
-  ({
-    metaData,
-    windowHeight,
-    customHeader,
-    onSignInCompleted,
-    onGoToSignUp,
-    className,
-  }) => {
+  ({ metaData, customHeader, onSignInCompleted, onGoToSignUp, className }) => {
     const [activeStep, setActiveStep] =
       useState<TSignInSteps>('auth-providers');
 
@@ -60,17 +52,16 @@ const SignIn = memo<Props>(
       };
     }, []);
 
-    const handleOnAuthProviderSelected = useCallback(
-      (selectedMethod: AuthProvider) => {
-        if (selectedMethod === 'email') {
-          setActiveStep('password-signin');
-        } else {
-          handleOnSSOClick(selectedMethod, metaData);
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
+    const handleOnAuthProviderSelected = (
+      selectedMethod: AuthProvider,
+      setHrefFromModule?: () => void
+    ) => {
+      if (selectedMethod === 'email') {
+        setActiveStep('password-signin');
+      } else {
+        handleOnSSOClick(selectedMethod, metaData, setHrefFromModule);
+      }
+    };
 
     const handleGoToSignUpFlow = useCallback(() => {
       onGoToSignUp();
@@ -105,7 +96,6 @@ const SignIn = memo<Props>(
 
         <StyledModalContentContainer
           inModal={!!metaData.inModal}
-          windowHeight={`${windowHeight}px`}
           headerHeight="68px"
           className="signupincontentcontainer"
         >

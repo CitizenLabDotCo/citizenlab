@@ -2,10 +2,12 @@ import React from 'react';
 import styled, { useTheme } from 'styled-components';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import { colors, media, fontSizes } from 'utils/styleUtils';
 import Outlet from 'components/Outlet';
+import useAuthUser from 'hooks/useAuthUser';
 
 const UserNameContainer = styled.div`
   display: flex;
@@ -27,15 +29,23 @@ const StyledUserName = styled(UserName)`
   `}
 `;
 
-const StyledAvatar = styled(Avatar)``;
-
 interface Props {
   userId: string;
-  isVerified: boolean;
 }
 
-const User = ({ userId, isVerified }: Props) => {
+const User = ({ userId }: Props) => {
   const theme: any = useTheme();
+  const authUser = useAuthUser();
+
+  if (isNilOrError(authUser)) {
+    return null;
+  }
+
+  const isVerified =
+    typeof authUser.attributes.verified === 'boolean'
+      ? authUser.attributes.verified
+      : false;
+
   return (
     <>
       <UserNameContainer>
@@ -50,7 +60,7 @@ const User = ({ userId, isVerified }: Props) => {
         />
       </UserNameContainer>
 
-      <StyledAvatar
+      <Avatar
         userId={userId}
         size={30}
         fillColor={theme?.navbarTextColor || colors.label}

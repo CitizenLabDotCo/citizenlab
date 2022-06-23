@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import { Formik } from 'formik';
 import { CLErrorsJSON } from 'typings';
@@ -18,13 +18,9 @@ import RegistrationCustomFieldOptionsForm, {
   FormValues,
 } from './RegistrationCustomFieldOptionsForm';
 
-export interface Props {
-  userCustomFieldId: string;
-}
-
 const RegistrationCustomFieldOptionsNew = ({
   params: { userCustomFieldId },
-}: Props & WithRouterProps) => {
+}: WithRouterProps) => {
   const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }

@@ -7,6 +7,8 @@ import {
   TSurveyService,
   IdeaDefaultSortMethod,
   InputTerm,
+  VotingMethod,
+  PresentationMode,
 } from './participationContexts';
 import { isNilOrError } from 'utils/helperUtils';
 import { first, last, sortBy } from 'lodash-es';
@@ -42,12 +44,12 @@ export interface IPhaseAttributes {
   posting_enabled: boolean;
   commenting_enabled: boolean;
   voting_enabled: boolean;
-  upvoting_method: 'limited' | 'unlimited';
+  upvoting_method: VotingMethod;
   upvoting_limited_max: number;
-  downvoting_method: 'limited' | 'unlimited';
+  downvoting_method: VotingMethod;
   downvoting_enabled: boolean;
   downvoting_limited_max: number;
-  presentation_mode: 'card' | 'map';
+  presentation_mode: PresentationMode;
   min_budget?: number;
   max_budget?: number;
   survey_service?: TSurveyService;

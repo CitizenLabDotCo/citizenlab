@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe SideFxIdeaService do
-  let(:service) { SideFxIdeaService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
 
   describe 'before create' do
@@ -66,7 +68,7 @@ describe SideFxIdeaService do
       project = create(:project, default_assignee: default_assignee)
       idea = create(:idea, project: project, publication_status: 'draft', assignee: create(:admin))
       idea.publication_status = 'published'
-      expect { service.before_update(idea, user) }.not_to change { idea.assignee }
+      expect { service.before_update(idea, user) }.not_to(change { idea.assignee })
     end
   end
 
@@ -80,7 +82,7 @@ describe SideFxIdeaService do
       idea.save!
       expect { service.after_update(idea, user) }
         .to have_enqueued_job(LogActivityJob).with(idea, 'changed_assignee', user, idea.updated_at.to_i,
-                                                   payload: { change: [old_assignee.id, new_assignee.id] }).exactly(1).times
+          payload: { change: [old_assignee.id, new_assignee.id] }).exactly(1).times
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AvatarsController < ApplicationController
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped
@@ -7,7 +9,7 @@ class WebApi::V1::AvatarsController < ApplicationController
     avatars_service = AvatarsService.new
 
     limit = [params[:limit]&.to_i || 5, 10].min
-    users = policy_scope(User).active
+    users = User.active
 
     avatars = case params[:context_type]
     when 'project'

@@ -1,4 +1,4 @@
-import React, { PureComponent, lazy, Suspense } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,9 +17,7 @@ import TopBar from 'components/FiltersModal/TopBar';
 import BottomBar from 'components/FiltersModal/BottomBar';
 import FullscreenModal from 'components/UI/FullscreenModal';
 import Button from 'components/UI/Button';
-import ViewButtons from 'components/PostCardsComponents/ViewButtons';
-const IdeasMap = lazy(() => import('components/IdeasMap'));
-import IdeasList from './IdeasList';
+import IdeasView from './IdeasView';
 
 // resources
 import GetIdeas, {
@@ -127,10 +125,6 @@ const AboveContentRight = styled.div`
   margin-left: auto;
 `;
 
-const StyledViewButtons = styled(ViewButtons)`
-  margin-right: 20px;
-`;
-
 const IdeasCount = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -215,9 +209,7 @@ const StyledIdeasTopicsFilter = styled(TopicFilterBox)`
 `;
 
 interface InputProps extends GetIdeasInputProps {
-  showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaDefaultSortMethod;
-  defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: IParticipationContextType | null;
@@ -235,7 +227,6 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  selectedView: 'card' | 'map';
   filtersModalOpened: boolean;
   selectedIdeaFilters: Partial<IQueryParameters>;
   previouslySelectedIdeaFilters: Partial<IQueryParameters> | null;
@@ -245,14 +236,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   desktopSearchInputClearButton: HTMLButtonElement | null = null;
   mobileSearchInputClearButton: HTMLButtonElement | null = null;
 
-  static defaultProps = {
-    showViewToggle: false,
-  };
-
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: props.defaultView || 'card',
       filtersModalOpened: false,
       selectedIdeaFilters: get(props.ideas, 'queryParameters', {}),
       previouslySelectedIdeaFilters: null,
@@ -268,10 +254,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         selectedIdeaFilters: get(this.props.ideas, 'queryParameters', {}),
       });
     }
-
-    if (this.props.phaseId !== prevProps.phaseId) {
-      this.setState({ selectedView: this.props.defaultView || 'card' });
-    }
   }
 
   openFiltersModal = () => {
@@ -279,14 +261,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       filtersModalOpened: true,
       previouslySelectedIdeaFilters: state.selectedIdeaFilters,
     }));
-  };
-
-  loadMore = () => {
-    this.props.ideas.onLoadMore();
-  };
-
-  handleProjectsOnChange = (projects: string[]) => {
-    this.props.ideas.onChangeProjects(projects);
   };
 
   handleSortOnChange = (sort: Sort) => {
@@ -344,7 +318,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       const selectedIdeaFilters = {
         ...state.selectedIdeaFilters,
         idea_status: null,
-        areas: null,
         topics: null,
       };
 
@@ -358,7 +331,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         ...state.selectedIdeaFilters,
         search: null,
         idea_status: null,
-        areas: null,
         topics: null,
       };
 
@@ -396,43 +368,22 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   };
 
-  selectView = (selectedView: 'card' | 'map') => {
-    this.setState({ selectedView });
-  };
-
-  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.desktopSearchInputClearButton = element;
-  };
-
-  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.mobileSearchInputClearButton = element;
-  };
-
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
-    const { selectedView, selectedIdeaFilters, filtersModalOpened } =
-      this.state;
+    const { selectedIdeaFilters, filtersModalOpened } = this.state;
     const {
-      participationMethod,
-      participationContextId,
-      participationContextType,
       defaultSortingMethod,
       ideas,
       ideasFilterCounts,
       windowWidth,
       className,
-      showViewToggle,
     } = this.props;
-    const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
-    const hasIdeas = !isNilOrError(list) && list.length > 0;
-    const showListView = selectedView === 'card';
-    const showMapView = selectedView === 'map';
+    const { list, hasMore, querying, onLoadMore } = ideas;
     const filterColumnWidth = windowWidth && windowWidth < 1400 ? 340 : 352;
     const filtersActive =
       selectedIdeaFilters.search ||
       selectedIdeaFilters.idea_status ||
-      selectedIdeaFilters.areas ||
       selectedIdeaFilters.topics;
     const biggerThanLargeTablet = !!(
       windowWidth && windowWidth >= viewportWidths.largeTablet
@@ -462,9 +413,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         </ScreenReaderOnly>
 
         <DesktopSearchInput
-          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
           debounce={1500}
+          a11y_numberOfSearchResults={list ? list.length : 0}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
@@ -494,7 +445,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           </InitialLoading>
         )}
 
-        {list !== undefined && (
+        {list && (
           <>
             {!biggerThanLargeTablet && (
               <>
@@ -544,8 +495,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 </FullscreenModal>
 
                 <MobileSearchInput
-                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list.length}
                 />
 
                 <MobileFilterButton
@@ -563,21 +514,13 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 needed to be like this for a11y (tab order).
                */}
               <AboveContentRight>
-                {!showMapView && (
-                  <SortFilterDropdown
-                    defaultSortingMethod={defaultSortingMethod || null}
-                    onChange={this.handleSortOnChange}
-                    alignment="right"
-                  />
-                )}
+                <SortFilterDropdown
+                  defaultSortingMethod={defaultSortingMethod || null}
+                  onChange={this.handleSortOnChange}
+                  alignment="right"
+                />
               </AboveContentRight>
               <AboveContentLeft>
-                {showViewToggle && (
-                  <StyledViewButtons
-                    selectedView={selectedView}
-                    onClick={this.selectView}
-                  />
-                )}
                 {!isNilOrError(ideasFilterCounts) && (
                   <IdeasCount>
                     <FormattedMessage
@@ -591,39 +534,21 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
-                {showListView && (
-                  <IdeasList
-                    ariaLabelledBy={'view-tab-1'}
-                    id={'view-panel-1'}
-                    querying={querying}
-                    onLoadMore={this.props.ideas.onLoadMore}
-                    hasMore={hasMore}
-                    hasIdeas={hasIdeas}
-                    loadingMore={loadingMore}
-                    list={list}
-                    participationMethod={participationMethod}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                    tabIndex={0}
-                    hideImage={biggerThanLargeTablet && smallerThan1440px}
-                    hideImagePlaceholder={smallerThan1440px}
-                    hideIdeaStatus={
-                      (biggerThanLargeTablet && smallerThan1440px) ||
-                      smallerThanPhone
-                    }
-                  />
-                )}
-                {showMapView && (
-                  <Suspense fallback={false}>
-                    <IdeasMap
-                      ariaLabelledBy={'view-tab-2'}
-                      id={'view-panel-2'}
-                      projectIds={queryParameters.projects}
-                      phaseId={queryParameters.phase}
-                      tabIndex={0}
-                    />
-                  </Suspense>
-                )}
+                <IdeasView
+                  list={list}
+                  querying={querying}
+                  onLoadMore={onLoadMore}
+                  hasMore={hasMore}
+                  loadingMore={querying}
+                  hideImage={biggerThanLargeTablet && smallerThan1440px}
+                  hideImagePlaceholder={smallerThan1440px}
+                  hideIdeaStatus={
+                    (biggerThanLargeTablet && smallerThan1440px) ||
+                    smallerThanPhone
+                  }
+                  showListView={true}
+                  showMapView={false}
+                />
               </ContentLeft>
 
               {biggerThanLargeTablet && (
@@ -666,7 +591,7 @@ const WithFiltersSidebarWithHoCs = withTheme(injectIntl(IdeaCards));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => (
+    {(dataProps: DataProps) => (
       <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
     )}
   </Data>

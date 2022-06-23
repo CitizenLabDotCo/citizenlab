@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_unsubscription_tokens
@@ -13,7 +15,6 @@
 #
 module EmailCampaigns
   class UnsubscriptionToken < ApplicationRecord
-
     belongs_to :user
 
     validates :token, presence: true

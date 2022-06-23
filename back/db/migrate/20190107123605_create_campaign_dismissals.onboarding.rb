@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from onboarding (originally 20190107130853)
 class CreateCampaignDismissals < ActiveRecord::Migration[5.2]
   def change

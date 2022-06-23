@@ -16,7 +16,7 @@ export const Header = styled.div`
 
 export const Title = styled.div`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 600;
   text-transform: uppercase;
   margin-right: 15px;

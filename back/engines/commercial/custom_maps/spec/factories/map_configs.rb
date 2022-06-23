@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   sequence :tile_provider do |n|
     "https://some.map.service/maps/basic/{z}/{x}/{y}/#{n}.png?key=abcdefg"

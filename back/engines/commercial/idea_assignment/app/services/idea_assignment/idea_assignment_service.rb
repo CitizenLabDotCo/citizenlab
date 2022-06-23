@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdeaAssignment
   class IdeaAssignmentService
     # Requirements:
@@ -16,9 +18,9 @@ module IdeaAssignment
 
     def clean_assignees_for_project!(project)
       project.ideas
-             .where.not(assignee: nil)
-             .where.not(assignee: UserRoleService.new.moderators_for_project(project))
-             .update_all(assignee_id: nil)
+        .where.not(assignee: nil)
+        .where.not(assignee: UserRoleService.new.moderators_for_project(project))
+        .update_all(assignee_id: nil)
     end
 
     def automatically_assigned_idea_assignee(idea)

@@ -39,7 +39,7 @@ jest.mock('modules/commercial/insights/hooks/useInsightsCategories', () => {
 
 jest.mock('hooks/useLocale');
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
@@ -52,12 +52,10 @@ jest.mock('react-router', () => {
         );
       };
     },
-    Link: () => 'Link',
   };
 });
-
+jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');
-
 jest.mock('utils/cl-intl');
 
 jest.mock('hooks/useIdea', () => {

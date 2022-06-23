@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::NavBarItemsController < ApplicationController
   include AddRemoveNavBarItems
 
@@ -12,11 +14,12 @@ class WebApi::V1::NavBarItemsController < ApplicationController
   def removed_default_items
     authorize NavBarItem
     used_codes = NavBarItem.distinct.pluck(:code)
+    rejected_codes = (used_codes + NavBarItemPolicy.feature_disabled_codes).uniq
     @items = NavBarItemService.new.default_items.reject do |item|
       # Not using set difference to have an
       # explicit guarantee of preserving the
       # ordering.
-      used_codes.include? item.code
+      rejected_codes.include? item.code
     end
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
   end
@@ -33,13 +36,11 @@ class WebApi::V1::NavBarItemsController < ApplicationController
         @item = NavBarItem.new code: code
         add_nav_bar_item
       end
-    else
+    elsif @item
       # Disable
-      if @item
-        remove_nav_bar_item
-      else
-        render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
-      end
+      remove_nav_bar_item
+    else
+      render json: { errors: { base: [{ error: 'already_disabled' }] } }, status: :unprocessable_entity
     end
   end
 end

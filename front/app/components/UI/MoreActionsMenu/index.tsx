@@ -25,7 +25,7 @@ const MoreOptionsIcon = styled(Icon)<{ color?: string }>`
 
 const MoreOptionsLabel = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   line-height: normal;
   font-weight: 400;
   white-space: nowrap;
@@ -75,7 +75,7 @@ const ListItem = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;

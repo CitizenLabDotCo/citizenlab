@@ -33,14 +33,14 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // images
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
   inModal: boolean;
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   className?: string;
 }
 

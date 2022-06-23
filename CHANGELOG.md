@@ -1,11 +1,435 @@
 # Changelog
 
+## 2022-06-22
+
+### Fixed
+
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
+
+- [CL-903] Fix admin input manager crash on Safari
+
+## 2022-06-16
+
+### Added
+
+- [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
+
+### Fixed
+
+- [CL-966] Fixed issue with tabs stretching off the screen
+- [CL-908] Fix sheet names in excel exports.
+
+## 2022-06-15
+
+### Fixed
+
+- [CL-967] Fixed issue with map displaying off screen on Android
+- [CL-667] Next batch of RuboCop fixes
+
+## 2022-06-14
+
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
+### Fixed
+
+- [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+- [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
+- Fixed issue where users were unable to moderate projects and project folders correctly
+
+## 2022-06-13
+
+### Changed
+
+- [TEC-11] Upgraded react-router frontend dependency
+
+## 2022-06-08_2
+
+### Fixed
+
+- [CL-717] Ongoing events now shown along with Upcoming events in the Home Page Events Widget and on the Events Page.
+
+## 2022-06-08
+
+### Changed
+
+- [CL-667] Fixed several RuboCop offences
+
+### Added
+
+- [CL-774] Add new option when adding areas to a project: "No areas"
+- [CL-906] Added support for Snap Survey
+
+## 2022-05-31
+
+### Changed
+
+- [CL-667] Fixed many RuboCop offences
+
+### Fixed
+
+- [CL-845] Fixed an issue with the Sign Up modal where it was impossible to scroll down on smaller screens, which made registration on certain Android devices impossible
+
+## 2022-05-30
+
+### Changed
+
+- [CL-830] 'Accept' button now before 'Manage' button on cookie banner, and both buttons now the same style.
+
+### Fixed
+
+- [CL-835] Roll back CL-99 ("Add slight blur to logged-in header image")
+- [CL-790] Events date picker now has the correct date format for US-based tenants
+- [CL-832] Remove enable/disable toggle from title and description fields in the idea form
+- [CL-833] Fix creating a new registration field in FR and AR-MA
+
+### Added
+
+- [CL-729] Do not show proposals navbar item if corresponding feature is disabled
+
+## 2022-05-26_2
+
+### Fixed
+
+- [CL-758] Fix custom field option ordering for dashboard charts
+
+## 2022-05-26
+
+### Fixed
+
+- [CL-788] Fixed issue with different URL when sharing idea from map vs list view
+
+## 2022-05-20
+
+### Fixed
+
+- [CL-836] Repaired the /invite URL, which should now open a signup modal with a spot for the user to enter the invite code they received via email
+
+## 2022-05-17
+
+### Added
+
+- [CL-292] Log an activity when an insights category is created, updated or deleted
+
+## 17-05-22
+
+### Fixed
+
+- [CL-776] Button in weekly moderator digest email now links to correct page
+
+## 2022-05-16_2
+
+### Changed
+
+- [CL-667] Fixed RuboCop Style/FrozenStringLiteralComment offences
+
+### Fixed
+
+- [CL-775] Use correct link to conditions page
+- [CL-776] Button in weekly moderator digest email now links to correct page
+- [CL-814] Faster user XLSX export.
+
+## 2022-05-16
+
+### Fixed
+
+- Using the rich text editor in a right-to-left language no longer mislaligns puctuation
+- Fixed right-to-left alignment and margin issues for avatars, checkboxes, event, page headers, project card and form labels
+
+## 2022-05-13
+
+### Added
+
+- [CL-750] Add feature to remove CL branding
+
+## 2022-05-11
+
+### Fixed
+
+- [CL-711] Title text looking weird on insights start page
+
+## 2022-05-10_3
+
+### Fixed
+
+- [CL-764] Empty navbar item titles in backoffice.
+
+## 2022-05-10_2
+
+### Changed
+
+- Added RuboCop on CI and corrected many offences
+
+## 2022-05-10
+
+### Changed
+
+- [CL-716] The new phase started emails/notifications are also sent out for information phases or when it's possible to take a poll.
+
+### Fixed
+
+- [CL-387] The folder show page is better readable on narrow screens now
+
+## 2022-05-06_3
+
+### Changed
+
+- When a navbar item's title is customized for one locale, the other locales remain up to date with the latest translations.
+
+### Fixed
+
+- Titles of navbar items of demo platforms created with external templates, remain up to date with the latest translations.
+- [CL-730] Changed confirmation email DOM to make lives of spam bots a bit harder
+
+### Fixed
+
+- [CL-181] Prevent forms from trying to save on clicking label
+- The "send" button on the email campaign send page is now disabled after a single click, to prevent users from clicking it multiple times and potentially sending a campaign more than once
+
+## 2022-05-06
+
+### Added
+
+- Pages can now be translated 'live' via Weglot
+- It's now possible to escape the sign-up flow at any point. If a user account has already been created but not completed (due to e.g. missing email confirmation, verification, ...), the user will be signed out and can continue on signing in.
+
+## 2022-05-05
+
+### Fixed
+
+- Fix timeline for Arabic languages ('right-to-left')
+- Fix language selector cropping for Arabic languages ('right-to-left')
+
+## 2022-05-04_3
+
+### Changed
+
+- Changed language-picker label text for Moroccan Arabic
+
+## 2022-05-04_2
+
+### Changed
+
+- Security update: Rails 6.1.5.1
+
+## 2022-05-04
+
+### Changed
+
+- City logo now in higher resolution.
+
+### Fixed
+
+- Fixed issue with budget field not showing in input form
+
+### Fixed
+
+- Make it possible to add a new language to the platform with configured banner custom button.
+
+### Fixed
+
+- Fixed accessibility issue with idea card filtering
+
+## 2022-05-02
+
+### Added
+
+- Added more autocompletion to the password reset and profile settings form which assist in filling out information faster.
+- Validation of content builder layouts: whitelist of URLs for video iframes.
+- Sanitization of content builder layouts: HTML of text elements.
+
+### Fixed
+
+- Updated registration custom field copies to the latest values from Crowdin for all the tenants and templates.
+
+## 2022-04-28
+
+### Added
+
+- Added support for the Moroccan Arabic language to the platform
+
+### Fixed
+
+- Start and end times for project phases now account for the user's local timezone, making sure users can still access and engage with projects when the start/end dates are valid for them locally. The default used UTC, so it was not a big issue in Europe (where we're mostly very close to UTC time), but could be a bigger issue in e.g. North and South America, where UTC offset could be 4 or 5 hours and this could cause projects to display as ended even if they should have been valid on the user's current local date.
+- Fixed breakpoint issues in `admin/insights` and `admin/users`, where content would disappear under the sidebar for certain screen sizes.
+- Added primary and secondary aria-labels to header and footer navigation elements to more clearly differentiate them to screen readers and other accessability tools
+
+## 2022-04-25
+
+### Changed
+
+- 'Summary' dashboard: the 'Participation per project' and 'Participation per tag' work a little bit different. Now, if a project filter is active, the former will stay the same but highlight the selected project instead of showing the differences with other projects which were hard to interpret (analogous for 'Participation per tag').
+
+## 2022-04-20
+
+### Changed
+
+- Changed titles on the admin messaging page to accomodate both SMS and email campaigns
+
+### Fixed
+
+- Added dynamic functionality to prevent a user from using the tab key to select images/videos/buttons that are currently hidden behind "show more" buttons. Those elements can now be tabbed to only when the text is expanded and they are visible visually
+- Fixed accessibility issue regarding element order for screen readers in volunteer card
+- Removed unnecessary additional alt text describing city logos in header, navbar, and delete account modal. The remaining alt tags are now more concise for users who use screen readers
+- Properly disable SMS create/edit button if the message is empty
+- In the verification step of the sign-up flow, the form inputs are now connected to the correct labels, which makes it easier to select the input fields (also possible by clicking the input labels now)
+- Fixed a bug in the password signup flow where a user could skip accepting terms and conditions and privacy policy
+
+## 2022-04-11
+
+### Added
+
+- Added support for the Croatian language to the platform
+
+### Fixed
+
+- Added additional areas of focus and outline to scroll-to links and buttons in editing Comments, Ideas display, and Events display for a11y compatability
+- Added a tabIndex so the cookie consent banner will have a visual outline around it when focused, for a11y compatibility
+- Fixed accessibility issue in modal window used to report a proposal as spam
+- Fixed accessibility contrast issue for social media buttons
+- Fixed accessibility issue regarding missing screen reader labels on text boxes
+- Fixed bug in idea form for missing Proposed Budget field even when enabled
+- Fixed accessibility issue in map ideas search
+- The widget no longer links to ideas with the wrong domain
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
+
+## 2022-04-01
+
+### Fixed
+
+- Fixed bug in Ideas Map view that caused an infinite loop of requests when Idea sort order was changed
+
+## 2022-04-04
+
+### Fixed
+
+- Fixed SurveyMonkey container height so survey questions are visible
+
+## 2022-03-29
+
+### Changed
+
+- Vienna Saml button is temporarily disactivated
+
+## 2022-03-24
+
+### Added
+
+- When phone sign in/up is enabled, email/phone field in the sign in/up forms now have validation of the email address/phone number and provides an error message when this validation fails.
+
+### Fixed
+
+- When you need to verify to comment on proposals, an error message with link to the sign in form is now shown again.
+- Status labels are visible again in manual email campaigns list (Admin : Messaging : Custom)
+- Custom email campaigns list properly accomodates longer translations in labels and buttons.
+
+## 2022-03-23
+
+### Added
+
+- Add new topic/tag filter on homepage.
+
+## 2022-03-22
+
+### Fixed
+
+- 'View' button sometimes freezing page in Navigation settings: should be fixed now.
+- Bulk invites of invitees using only emails (no names specified) now succeeds again.
+
+## 2022-03-21
+
+### Added
+
+- Put back secret pages-page
+
+### Changed
+
+- Project and folder moderators are allowed to list users (for the projects they moderate). This means that project and folder moderators are now also able to assignee assignees to ideas.
+- 'Emails' tab in the admin sidebar renamed to 'Messaging' in anticipation of new SMS/texting functionality
+- Removed 'most active users' graph
+- When the locale of the current user is not present in a multiloc, fall back to the value for a locale of the same language (for example es-CL as picked language and a multiloc with es-ES).
+
+### Fixed
+
+- Insights with multiple projects: projects in topbar are now displayed in dropdown if there is more than one (before they were just displayed next to each other).
+- HTML is fixed when machine translating HTML content returns bad HTML.
+
+## 2022-03-15 (2)
+
+### Fixed
+
+- Idea forms and other things not rendering on various platforms
+
+## 2022-03-15 (1)
+
+### Fixed
+
+- Fixed spacing issue between field name and 'optional' in input form
+
+## 2022-03-14
+
+### Fixed
+
+- Rich text editor now works correctly with custom emails - the image description box no longer appears on the preview and image alignment works as expected.
+- Fixed a performance issue that causes the users export to time out when there are lots of users registered on the platform
+
+## 2022-03-11
+
+### Fixed
+
+- When viewing an idea in map view, "Go back" now returns to the map idea list instead of back to the project main page
+- User profile page slug now anonymized when bulk inviting and Abbreviated User Names feature enabled.
+- Rich text editor copy/paste issues should be resolved
+
+## 2022-03-10
+
+### Fixed
+
+- Added informative message and sign in/sign up links to Idea Not Found page
+- Added slight blur to logged-in header image. The logged-in header image is reused from the logged-out banner, and blur was added to make smaller banner images from the two-column layout look nice when fully stretched on the logged-in banner
+
+## 2022-03-08
+
+### Added
+
+- Filter projects by topics
+
+### Fixed
+
+- FranceConnect test login
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+
+### Changed
+
+- Fixed issue with folder page responsiveness where right hand side gets cropped.
+- Use only user name in FranceConnect instead of full profile scope
+
+## 2022-03-04
+
 ### Fixed
 
 - Can now re-use tenant host URL immediately the tenant is deleted.
-- Error message now shown in AdminHQ when tenant creation fails due to host URL already being in use.
+- Relevant error(s) now returned when tenant creation fails, for example due to host URL already being in use.
 - Added temporary fix for the project page without permissions error where it doesn't recover after sign in.
-
 
 ## 2022-02-28
 

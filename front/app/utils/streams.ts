@@ -540,7 +540,6 @@ class Streams {
               // destroy the stream
               this.deleteStream(streamId, apiEndpoint);
               reportError(error);
-              throw error;
             } else if (streamId === authApiEndpoint) {
               this.streams[streamId].observer.next(null);
             }

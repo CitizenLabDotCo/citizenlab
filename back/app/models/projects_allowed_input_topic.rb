@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: projects_allowed_input_topics
@@ -26,5 +28,4 @@ class ProjectsAllowedInputTopic < ApplicationRecord
   belongs_to :topic
 
   validates :project, :topic, presence: true
-
 end

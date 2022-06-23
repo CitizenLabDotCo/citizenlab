@@ -25,10 +25,10 @@ class IdeaVotePolicy < ApplicationPolicy
   end
 
   def create?
-    return false if !could_modify?
+    return false unless could_modify?
 
     reason = participation_context_service.idea_voting_disabled_reason_for record, user
-      
+
     reason ? raise_not_authorized(reason) : true
   end
 
@@ -36,12 +36,12 @@ class IdeaVotePolicy < ApplicationPolicy
     upsert_vote? 'up'
   end
 
-  def down? 
+  def down?
     upsert_vote? 'down'
   end
 
   def destroy?
-    return false if !could_modify?
+    return false unless could_modify?
 
     reason = participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user
 
@@ -54,8 +54,8 @@ class IdeaVotePolicy < ApplicationPolicy
     active? && owner? && record.votable.present?
   end
 
-  def upsert_vote? mode
-    return false if !could_modify?
+  def upsert_vote?(mode)
+    return false unless could_modify?
 
     reason = participation_context_service.idea_voting_disabled_reason_for record, user, mode: mode
     reason ||= participation_context_service.cancelling_votes_disabled_reason_for_idea record.votable, user

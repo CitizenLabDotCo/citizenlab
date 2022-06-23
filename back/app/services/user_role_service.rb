@@ -1,14 +1,22 @@
+# frozen_string_literal: true
+
 class UserRoleService
   def can_moderate?(object, user)
+    return true if user.admin?
+
     case object.class.name
     when 'Idea'
       can_moderate? object.project, user
     when 'Initiative'
       can_moderate_initiatives? user
-    when 'Comment'
+    when 'Comment', 'OfficialFeedback'
       can_moderate? object.post, user
+    when 'Vote'
+      can_moderate? object.votable, user
     when 'Project'
       can_moderate_project? object, user
+    when 'Phase'
+      can_moderate_project? object.project, user
     end
   end
 
@@ -43,6 +51,10 @@ class UserRoleService
     else
       scope.none
     end
+  end
+
+  def moderates_something?(user)
+    user.admin?
   end
 end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImageAssignmentJob < ApplicationJob
   self.priority = 80
 

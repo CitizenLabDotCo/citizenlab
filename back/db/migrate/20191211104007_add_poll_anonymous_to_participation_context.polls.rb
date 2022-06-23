@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from polls (originally 201912111093417)
 class AddPollAnonymousToParticipationContext < ActiveRecord::Migration[5.1]
   def change

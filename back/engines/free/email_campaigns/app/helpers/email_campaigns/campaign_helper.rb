@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   module CampaignHelper
     def format_message(key, component: nil, escape_html: true, values: {})

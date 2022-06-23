@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NavBarItemService
   def auto_reposition!(item)
     if !item.custom? && (position = candidate_position(item))
@@ -47,7 +49,7 @@ class NavBarItemService
     # default item.
     code_sequence = NavBarItem.order(:ordering).pluck(:code) - [item.code]
     pos = code_sequence.index 'custom'
-    if code_sequence[pos..-1].all? 'custom'
+    if code_sequence[pos..].all? 'custom'
       pos
     else
       false

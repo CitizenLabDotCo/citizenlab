@@ -1,21 +1,17 @@
+# frozen_string_literal: true
+
 module Surveys
   class TypeformApiParser
     include TypeformParser
 
     class AuthorizationError < StandardError
-      def initialize(options={})
+      def initialize(options = {})
         super
         @error_key = options.fetch(:error_key, 'INVALID_AUTHORIZATION')
         @description = options.fetch(:description, 'Invalid authorization header "Bearer"')
       end
 
-      def error_key
-        @error_key
-      end
-
-      def description
-        @description
-      end
+      attr_reader :error_key, :description
     end
 
     def initialize(tf_api = nil)
@@ -24,12 +20,12 @@ module Surveys
 
     def get_responses(form_id)
       response = @tf_api.form(form_id: form_id)
-      if !response.success?
+      unless response.success?
         if [401, 403].include? response.code
           raise AuthorizationError.new(error_key: response.parsed_response['code'], description: response.parsed_response['description'])
-        else
-          raise "Unhandled Typeform API error: #{response.parsed_response}"
         end
+
+        raise "Unhandled Typeform API error: #{response.parsed_response}"
       end
       tf_form = response.parsed_response
       field_id_to_title = extract_field_titles(tf_form)
@@ -40,7 +36,7 @@ module Surveys
     private
 
     def extract_field_titles(tf_form)
-      tf_form['fields'].map do |f|
+      tf_form['fields'].flat_map do |f|
         if f['properties'] && f['properties']['fields']
           f['properties']['fields'].map do |subf|
             [subf['id'], subf['title']]
@@ -48,23 +44,23 @@ module Surveys
         else
           [[f['id'], f['title']]]
         end
-      end.flatten(1).to_h
+      end.to_h
     end
 
     def response_to_surveys_response(tf_response, field_id_to_title, form_id)
       Response.new(
-          **parse_root(tf_response, form_id),
-          answers: parse_answers(tf_response['answers'], field_id_to_title)
+        **parse_root(tf_response, form_id),
+        answers: parse_answers(tf_response['answers'], field_id_to_title)
       )
     end
 
     def parse_root(tf_response, form_id)
       {
-          survey_service: 'typeform',
-          external_survey_id: form_id,
-          external_response_id: tf_response['token'],
-          started_at: Time.parse(tf_response['landed_at']),
-          submitted_at: Time.parse(tf_response['submitted_at'])
+        survey_service: 'typeform',
+        external_survey_id: form_id,
+        external_response_id: tf_response['token'],
+        started_at: Time.parse(tf_response['landed_at']),
+        submitted_at: Time.parse(tf_response['submitted_at'])
       }
     end
 
@@ -72,9 +68,9 @@ module Surveys
       (tf_answers || []).map do |answer|
         question_id = answer.dig('field', 'id')
         {
-            question_id: question_id,
-            question_text: field_id_to_title[question_id],
-            value: extract_value_from_answer(answer.with_indifferent_access)
+          question_id: question_id,
+          question_text: field_id_to_title[question_id],
+          value: extract_value_from_answer(answer.with_indifferent_access)
         }
       end
     end

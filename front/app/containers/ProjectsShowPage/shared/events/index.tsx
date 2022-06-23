@@ -87,7 +87,7 @@ const EventsContainer = memo<Props>(
       // scrolled into view, but then pushed out of view again as other
       // components load.
       // There is an integration test to make sure this doesn't break
-      // (see front/cypress/integration/project_scroll_to_event_param)
+      // (see front/cypress/e2e/project_scroll_to_event_param)
       if (
         scrollToEventId === null ||
         !ideasLoaded ||
@@ -97,7 +97,7 @@ const EventsContainer = memo<Props>(
       }
 
       setTimeout(() => {
-        scrollToElement({ id: scrollToEventId });
+        scrollToElement({ id: scrollToEventId, shouldFocus: true });
       }, 100);
 
       setScrollToEventId(null);

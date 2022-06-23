@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UserConfirmation::SendConfirmationCode do
@@ -15,10 +17,6 @@ RSpec.describe UserConfirmation::SendConfirmationCode do
       context[:user] = create(:user_with_confirmation, email: '398234234234')
     end
 
-    it 'is a failure' do
-      expect(result).to be_a_failure
-    end
-
     it 'returns a registration_method error, since phones are not confirmable' do
       expect(result.errors[:registration_method]).to be_present
     end
@@ -27,10 +25,6 @@ RSpec.describe UserConfirmation::SendConfirmationCode do
   context 'when the user signs up with an email' do
     before do
       context[:user] = create(:user_with_confirmation, email: 'some_email@email.com')
-    end
-
-    it 'is successful' do
-      expect(result).to be_a_success
     end
 
     it 'changes the email confirmation code delivery timestamp' do

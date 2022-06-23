@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
-  describe "Manual Campaign default factory" do
-    it "is valid" do
+  describe 'Manual Campaign default factory' do
+    it 'is valid' do
       expect(build(:manual_campaign)).to be_valid
     end
   end
 
   describe '#generate_commands' do
-
     let(:campaign) { create(:manual_campaign) }
     let(:recipient) { create(:user) }
-    it "generates a command with the desired payload" do
+
+    it 'generates a command with the desired payload' do
       expect(campaign.generate_commands(recipient: recipient)&.first).to match({
         author: campaign.author,
         event_payload: {},
@@ -23,10 +25,10 @@ RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
     end
   end
 
-  describe "apply_recipient_filters" do
+  describe 'apply_recipient_filters' do
     let(:campaign) { build(:manual_campaign) }
 
-    it "filters out invitees" do
+    it 'filters out invitees' do
       user = create(:user)
       invitee = create(:invited_user)
 
@@ -35,13 +37,12 @@ RSpec.describe EmailCampaigns::Campaigns::Manual, type: :model do
     end
   end
 
-  describe "author" do
+  describe 'author' do
     let(:campaign) { create(:manual_campaign, author: create(:admin)) }
 
-    it "leaves campaign in a valid state after destroy" do
+    it 'leaves campaign in a valid state after destroy' do
       campaign.author.destroy!
       expect(campaign.reload).to be_valid
     end
   end
-
 end

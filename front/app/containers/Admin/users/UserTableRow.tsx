@@ -81,7 +81,7 @@ const DropdownListButton = styled.button`
   align-items: center;
   justify-content: space-between;
   color: ${colors.adminLightText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: groups_projects
@@ -25,5 +27,5 @@ class GroupsProject < ApplicationRecord
 
   validates :group, :project, presence: true
 
-  scope :order_new, -> (direction=:desc) {order(created_at: direction)}
+  scope :order_new, ->(direction = :desc) { order(created_at: direction) }
 end

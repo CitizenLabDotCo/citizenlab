@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::Notifications::ProjectModerationRightsReceivedSerializer < WebApi::V1::Notifications::NotificationSerializer
   attribute :project_id
 

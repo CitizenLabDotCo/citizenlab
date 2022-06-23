@@ -4,14 +4,16 @@ import {
   IAppConfiguration,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
-import { get } from 'lodash-es';
 
 type Parameters = {
   name: TAppConfigurationSetting;
   onlyCheckAllowed?: boolean;
 };
 
-export default function useFeatureFlag({ name, onlyCheckAllowed }: Parameters) {
+export default function useFeatureFlag({
+  name,
+  onlyCheckAllowed = false,
+}: Parameters) {
   const [tenantSettings, setTenantSettings] = useState<
     | IAppConfiguration['data']['attributes']['settings']
     | undefined
@@ -29,7 +31,7 @@ export default function useFeatureFlag({ name, onlyCheckAllowed }: Parameters) {
   }, []);
 
   return (
-    get(tenantSettings, `${name}.allowed`) === true &&
-    (onlyCheckAllowed || get(tenantSettings, `${name}.enabled`) === true)
+    tenantSettings?.[name]?.allowed &&
+    (onlyCheckAllowed || tenantSettings?.[name]?.enabled)
   );
 }

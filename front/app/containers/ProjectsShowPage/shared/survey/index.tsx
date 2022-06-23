@@ -10,6 +10,7 @@ import EnalyzerSurvey from './EnalyzerSurvey';
 import QualtricsSurvey from './QualtricsSurvey';
 import SmartSurvey from './SmartSurvey';
 import MicrosoftFormsSurvey from './MicrosoftFormsSurvey';
+import SnapSurvey from './SnapSurvey';
 import Warning from 'components/UI/Warning';
 import SignUpIn from 'components/SignUpIn';
 import { ProjectPageSectionTitle } from 'containers/ProjectsShowPage/styles';
@@ -201,12 +202,6 @@ class Survey extends PureComponent<Props, State> {
       ) {
         return (
           <Container className={className || ''}>
-            {/*
-            <ProjectPageSectionTitle>
-              <FormattedMessage {...messages.survey} />
-            </ProjectPageSectionTitle>
-            */}
-
             <SignUpInWrapper>
               <StyledSignUpIn
                 metaData={{
@@ -286,6 +281,10 @@ class Survey extends PureComponent<Props, State> {
 
             {surveyService === 'survey_xact' && (
               <SurveyXact surveyXactUrl={surveyEmbedUrl} />
+            )}
+
+            {surveyService === 'snap_survey' && (
+              <SnapSurvey snapSurveyUrl={surveyEmbedUrl} />
             )}
           </Container>
         );

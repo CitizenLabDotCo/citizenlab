@@ -25,14 +25,14 @@ import {
 import { ISavedDestinations } from 'components/ConsentManager/consent';
 import { authUserStream } from 'services/auth';
 
-export interface IEvent {
+interface IEvent {
   name: string;
   properties?: {
     [key: string]: any;
   };
 }
 
-export interface IPageChange {
+interface IPageChange {
   path: string;
   properties?: {
     [key: string]: any;

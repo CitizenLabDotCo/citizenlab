@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.closeMobileNavMenu',
     defaultMessage: 'Close mobile navigation menu',
   },
-  mobileNavLogoAltText: {
-    id: 'app.containers.app.navbar.mobileNavLogoImgAltText',
-    defaultMessage: 'Logo of {orgName}',
-  },
   fullMobileNavigation: {
     id: 'app.containers.app.navbar.fullMobileNavigation',
     defaultMessage: 'Full mobile',

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ideas_topics
@@ -22,5 +24,5 @@ class IdeasTopic < ApplicationRecord
   belongs_to :topic
 
   validates :idea, :topic, presence: true
-  validates :topic_id, uniqueness: {scope: :idea_id}
+  validates :topic_id, uniqueness: { scope: :idea_id }
 end

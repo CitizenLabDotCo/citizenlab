@@ -24,8 +24,9 @@ class TrackingService
     serializer = begin
       "WebApi::V1::External::#{activity.item_type}Serializer".constantize
     rescue NameError
-      return {}
+      nil
     end
+    return unless serializer
 
     if activity.item.respond_to? :event_bus_item_content
       activity.item.event_bus_item_content

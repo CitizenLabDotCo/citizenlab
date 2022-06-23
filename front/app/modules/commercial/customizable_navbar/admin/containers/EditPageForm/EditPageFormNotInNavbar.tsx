@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik, FormikProps } from 'formik';
 
 // components
@@ -15,7 +15,7 @@ import clHistory from 'utils/cl-router/history';
 import { NAVIGATION_PATH } from '..';
 
 // services
-import { updatePage } from '../../../services/pages';
+import { updatePage } from 'services/pages';
 import { handleAddPageFiles, handleRemovePageFiles } from 'services/pageFiles';
 
 // hooks

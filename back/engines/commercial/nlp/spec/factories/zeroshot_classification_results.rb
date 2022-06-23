@@ -8,9 +8,9 @@ FactoryBot.define do
   factory :zsc_result, class: 'NLP::ZeroshotClassificationResult' do
     sequence :task_id
 
-    transient {
+    transient do
       predictions_nb { 1 }
-    }
+    end
 
     tenant_id { AppConfiguration.instance.id }
     is_success { true }
@@ -23,10 +23,10 @@ FactoryBot.define do
   end
 
   factory :zsc_prediction, class: 'NLP::ZeroshotClassificationResult::Prediction' do
-    transient {
+    transient do
       input { nil }
       category { nil }
-    }
+    end
 
     document_id { (input || create(:idea)).id }
     label_id { (category || create(:category)).id }

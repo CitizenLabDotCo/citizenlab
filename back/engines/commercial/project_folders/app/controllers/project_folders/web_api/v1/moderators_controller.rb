@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   class WebApi::V1::ModeratorsController < ApplicationController
     before_action :do_authorize
-    before_action :set_moderator, only: [:show, :destroy]
+    before_action :set_moderator, only: %i[show destroy]
 
     skip_after_action :verify_authorized, only: [:users_search]
     skip_after_action :verify_policy_scoped, only: [:index]
@@ -14,8 +16,8 @@ module ProjectFolders
 
     def index
       @moderators = User.project_folder_moderator(params[:project_folder_id])
-                        .page(params.dig(:page, :number))
-                        .per(params.dig(:page, :size))
+        .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
 
       render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: fastjson_params)
     end
@@ -48,7 +50,7 @@ module ProjectFolders
         SideFxModeratorService.new.after_destroy(@moderator, @folder, current_user)
         head :ok
       else
-        head 500
+        head :internal_server_error
       end
     end
 

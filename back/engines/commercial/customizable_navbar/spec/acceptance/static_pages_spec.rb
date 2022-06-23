@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -61,7 +63,7 @@ resource 'StaticPages' do
         item = create :nav_bar_item, static_page: page
 
         do_request(static_page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
-        expect(response_status).to eq 200
+        assert_status 200
         expect(item.reload.title_multiloc).to match title_multiloc
       end
 
@@ -69,7 +71,7 @@ resource 'StaticPages' do
         title_multiloc = { 'en' => 'Awesome item' }
         page.nav_bar_item&.destroy!
         do_request(static_page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
-        expect(response_status).to eq 200
+        assert_status 200
       end
 
       example '[error] Update an invalid NavBarItem title of a static page' do
@@ -77,7 +79,7 @@ resource 'StaticPages' do
         create :nav_bar_item, static_page: page
 
         do_request(static_page: { nav_bar_item_attributes: { title_multiloc: title_multiloc } })
-        expect(response_status).to eq 422
+        assert_status 422
       end
     end
   end

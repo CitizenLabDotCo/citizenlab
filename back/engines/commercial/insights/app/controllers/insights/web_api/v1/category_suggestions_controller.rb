@@ -11,7 +11,7 @@ module Insights
 
       def destroy
         suggestion = assignment_service.suggested_assignments(input, view)
-                                       .find_by!(category_id: params.require(:id))
+          .find_by!(category_id: params.require(:id))
         status = suggestion.destroy.destroyed? ? :ok : 500
         head status
       end
@@ -38,15 +38,15 @@ module Insights
 
       def input
         @input ||= Insights::InputsFinder.new(view).execute
-                                         .find(params.require(:input_id))
+          .find(params.require(:input_id))
       end
 
       # @return [Hash]
       def serialize_suggestions(input)
         options = { include: %i[suggested_categories], params: fastjson_params({ view: view }) }
         InputSerializer.new(input, options)
-                       .serializable_hash
-                       .dig(:data, :relationships, :suggested_categories)
+          .serializable_hash
+          .dig(:data, :relationships, :suggested_categories)
       end
     end
   end

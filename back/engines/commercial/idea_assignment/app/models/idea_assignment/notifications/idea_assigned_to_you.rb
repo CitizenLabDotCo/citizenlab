@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notifications
@@ -58,7 +60,7 @@ module IdeaAssignment
       validates :post_type, inclusion: { in: ['Idea'] }
 
       ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_assignee' => true } }.freeze
-      EVENT_NAME = 'Idea assigned to you'.freeze
+      EVENT_NAME = 'Idea assigned to you'
 
       def self.make_notifications_on(activity)
         idea = activity.item

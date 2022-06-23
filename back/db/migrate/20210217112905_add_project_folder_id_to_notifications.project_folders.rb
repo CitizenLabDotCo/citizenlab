@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from project_folders (originally 20210217120000)
 class AddProjectFolderIdToNotifications < ActiveRecord::Migration[6.0]
   def change

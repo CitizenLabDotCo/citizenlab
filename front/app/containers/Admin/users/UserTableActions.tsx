@@ -11,7 +11,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 
 // Services
-import { IGroupData } from 'services/groups';
+import { IGroupData, MembershipType } from 'services/groups';
 import {
   addGroupMembership,
   IGroupMembership,
@@ -31,10 +31,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // Resources
-import GetGroups, {
-  GetGroupsChildProps,
-  MembershipType,
-} from 'resources/GetGroups';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -59,7 +56,7 @@ const TableOptions = styled.div`
 
 const UserCount = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   white-space: nowrap;
   margin-left: 5px;

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -41,62 +43,62 @@ resource 'Projects' do
 
     get 'web_api/v1/projects' do
       with_options scope: :page do
-        parameter :number, "Page number"
-        parameter :size, "Number of projects per page"
+        parameter :number, 'Page number'
+        parameter :size, 'Number of projects per page'
       end
 
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
-      parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
-      parameter :folder, "Filter by folder (project folder id)", required: false
-      parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
+      parameter :publication_statuses, 'Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default', required: false
+      parameter :filter_can_moderate, 'Filter out the projects the user is allowed to moderate. False by default', required: false
+      parameter :folder, 'Filter by folder (project folder id)', required: false
+      parameter :filter_ids, 'Filter out only projects with the given list of IDs', required: false
 
       example_request 'Lists projects that belong to a folder the user moderates' do
         expect(status).to eq(200)
 
         json_response = json_parse(response_body)
-        ids = json_response[:data].map { |project| project[:id] }
+        ids = json_response[:data].pluck(:id)
         projects = Project.includes(:admin_publication)
-                          .where(admin_publications: { publication_status: %w[published archived] })
-                          .where(projects: { visible_to: 'public' })
-                          .or(projects_within_folder)
+          .where(admin_publications: { publication_status: %w[published archived] })
+          .where(projects: { visible_to: 'public' })
+          .or(projects_within_folder)
 
         expect(ids).to match_array projects.pluck(:id)
       end
     end
 
-    post "web_api/v1/projects" do
+    post 'web_api/v1/projects' do
       with_options scope: :project do
-        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
-        parameter :title_multiloc, "The title of the project, as a multiloc string", required: true
-        parameter :description_multiloc, "The description of the project, as a multiloc HTML string", required: true
-        parameter :description_preview_multiloc, "The description preview of the project, as a multiloc string"
-        parameter :slug, "The unique slug of the project. If not given, it will be auto generated"
-        parameter :header_bg, "Base64 encoded header image"
-        parameter :area_ids, "Array of ids of the associated areas"
-        parameter :topic_ids, "Array of ids of the associated topics"
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
-        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
-        parameter :posting_enabled, "Only for continuous projects. Can citizens post ideas in this project? Defaults to true", required: false
-        parameter :commenting_enabled, "Only for continuous projects. Can citizens post comment in this project? Defaults to true", required: false
-        parameter :voting_enabled, "Only for continuous projects. Can citizens vote in this project? Defaults to true", required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :upvoting_limited_max, "Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :downvoting_enabled, "Only for continuous projects. Can citizens downvote in this project? Defaults to true", required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :downvoting_limited_max, "Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10", required: false
-        parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
-        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(',')}. Defaults to timeline"
+        parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
+        parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
+        parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
+        parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
+        parameter :header_bg, 'Base64 encoded header image'
+        parameter :area_ids, 'Array of ids of the associated areas'
+        parameter :topic_ids, 'Array of ids of the associated topics'
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
+        parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
+        parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
+        parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :upvoting_limited_max, 'Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
+        parameter :downvoting_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
+        parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
+        parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
-        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
+        parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
         parameter :ideas_order, 'The default order of ideas.'
       end
 
-      with_options scope: [:project, :admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      with_options scope: %i[project admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -106,7 +108,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64("header.jpg")}
+        let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
@@ -182,7 +184,7 @@ resource 'Projects' do
 
     patch 'web_api/v1/projects/:id' do
       with_options scope: :project do
-        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(",")}. Defaults to timeline"
+        parameter :process_type, "The type of process used in this project. Can't be changed after. One of #{Project::PROCESS_TYPES.join(',')}. Defaults to timeline"
         parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
         parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
@@ -190,27 +192,27 @@ resource 'Projects' do
         parameter :header_bg, 'Base64 encoded header image'
         parameter :area_ids, 'Array of ids of the associated areas'
         parameter :topic_ids, 'Array of ids of the associated topics'
-        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
-        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+        parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
+        parameter :participation_method, "Only for continuous projects. Either #{ParticipationContext::PARTICIPATION_METHODS.join(',')}. Defaults to ideation.", required: false
         parameter :posting_enabled, 'Only for continuous projects. Can citizens post ideas in this project? Defaults to true', required: false
         parameter :commenting_enabled, 'Only for continuous projects. Can citizens post comment in this project? Defaults to true', required: false
         parameter :voting_enabled, 'Only for continuous projects. Can citizens vote in this project? Defaults to true', required: false
-        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :upvoting_method, "Only for continuous projects with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :upvoting_limited_max, 'Only for continuous projects with limited voting. Number of upvotes a citizen can perform in this project. Defaults to 10', required: false
         parameter :downvoting_enabled, 'Only for continuous projects. Can citizens downvote in this project? Defaults to true', required: false
-        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
+        parameter :downvoting_method, "Only for continuous projects with downvoting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(',')}. Defaults to unlimited", required: false
         parameter :downvoting_limited_max, 'Only for continuous projects with limited voting. Number of downvotes a citizen can perform in this project. Defaults to 10', required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
-        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(',')}", required: false
         parameter :max_budget, 'The maximal budget amount each citizen can spend during participatory budgeting.', required: false
-        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
+        parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(',')}. Defaults to card.", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
         parameter :ideas_order, 'The default order of ideas.'
       end
 
       with_options scope: %i[project admin_publication_attributes] do
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(',')}. Defaults to published.", required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Project)
@@ -223,7 +225,7 @@ resource 'Projects' do
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
-        let(:header_bg) { encode_image_as_base64('header.jpg')}
+        let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
@@ -273,8 +275,4 @@ resource 'Projects' do
       end
     end
   end
-end
-
-def encode_image_as_base64(filename)
-  "data:image/png;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
 end

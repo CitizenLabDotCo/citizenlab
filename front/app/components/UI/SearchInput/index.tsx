@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React from 'react';
 import {
   SearchInput,
   SearchInputProps,
@@ -7,72 +7,56 @@ import {
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 export interface Props {
   placeholder?: string;
   ariaLabel?: string;
   debounce?: number;
-  setClearButtonRef?: (arg: HTMLButtonElement) => void;
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
+  // This prop will ensure that screen readers
+  // get notified when the number of results have changed.
+  a11y_numberOfSearchResults: number;
 }
 
-const SearchInputWrapper = memo<Props & InjectedIntlProps>(
-  ({
-    placeholder,
-    ariaLabel,
-    debounce,
-    setClearButtonRef,
-    onChange,
-    className,
-    size,
-    intl: { formatMessage },
-  }) => {
-    const [searchTerm, setSearchTerm] = useState<string | null>(null);
+const SearchInputWrapper = ({
+  placeholder,
+  ariaLabel,
+  debounce,
+  onChange,
+  className,
+  size,
+  intl: { formatMessage },
+  a11y_numberOfSearchResults,
+}: Props & InjectedIntlProps) => {
+  const handleOnChange = (searchTerm: string | null) => {
+    onChange(searchTerm);
+  };
 
-    const handleOnChange = useCallback(
-      (searchTerm: string | null) => {
-        setSearchTerm(searchTerm);
-        onChange(searchTerm);
-      },
-      [onChange]
-    );
+  return (
+    <>
+      <Label htmlFor="search-input" hidden>
+        {formatMessage(messages.searchLabel)}
+      </Label>
+      <SearchInput
+        id="search-input"
+        placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
+        ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
+        debounce={debounce}
+        className={className}
+        onChange={handleOnChange}
+        a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
+        size={size}
+      />
+      <ScreenReaderOnly aria-live="assertive">
+        {formatMessage(messages.a11y_searchResultsHaveChanged, {
+          numberOfSearchResults: a11y_numberOfSearchResults,
+        })}
+      </ScreenReaderOnly>
+    </>
+  );
+};
 
-    const handleClearButtonRef = useCallback(
-      (element: HTMLButtonElement) => {
-        setClearButtonRef?.(element);
-      },
-      [setClearButtonRef]
-    );
-
-    return (
-      <>
-        <Label htmlFor="search-input" hidden>
-          {formatMessage(messages.searchLabel)}
-        </Label>
-        <SearchInput
-          id="search-input"
-          placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
-          ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
-          debounce={debounce}
-          className={className}
-          setClearButtonRef={handleClearButtonRef}
-          onChange={handleOnChange}
-          i18nRemoveSearchTermMessage={formatMessage(messages.removeSearchTerm)}
-          i18nSearchTermMessage={formatMessage(messages.a11y_searchTerm, {
-            searchTerm,
-          })}
-          i18nSearchTermBlankMessage={formatMessage(
-            messages.a11y_searchTermBlank
-          )}
-          size={size}
-        />
-      </>
-    );
-  }
-);
-
-const SearchInputWrapperWithHoC = injectIntl(SearchInputWrapper);
-
-export default SearchInputWrapperWithHoC;
+export default injectIntl(SearchInputWrapper);

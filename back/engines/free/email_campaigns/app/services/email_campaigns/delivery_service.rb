@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class DeliveryService
-
     CAMPAIGN_CLASSES = [
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
@@ -48,7 +49,6 @@ module EmailCampaigns
       Campaigns::Welcome,
       Campaigns::YourProposedInitiativesDigest
     ].freeze
-
 
     def campaign_types
       campaign_classes.map(&:name)
@@ -129,8 +129,8 @@ module EmailCampaigns
     def assign_campaigns_command(campaigns_with_recipients, options)
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         campaign.generate_commands(recipient: recipient, **options)
-                .map { |command| command.merge(recipient: recipient) }
-                .zip([campaign].cycle)
+          .map { |command| command.merge(recipient: recipient) }
+          .zip([campaign].cycle)
       end
     end
 
@@ -157,9 +157,9 @@ module EmailCampaigns
     # out through the interal Rails mailing stack
     def send_command_internal(campaign, command)
       campaign.mailer_class
-              .with(campaign: campaign, command: command)
-              .campaign_mail
-              .deliver_later(wait: command[:delay] || 0)
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_later(wait: command[:delay] || 0)
     end
   end
 end

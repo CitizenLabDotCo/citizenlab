@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class ConfirmationsMailer < ApplicationMailer
     def send_confirmation_code

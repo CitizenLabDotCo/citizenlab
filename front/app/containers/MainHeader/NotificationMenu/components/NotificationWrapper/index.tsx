@@ -80,7 +80,7 @@ const Message = styled.div<{ isRead: boolean }>`
 const Timing = styled.span`
   width: 100%;
   color: ${colors.label};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   text-align: left;
 `;
 

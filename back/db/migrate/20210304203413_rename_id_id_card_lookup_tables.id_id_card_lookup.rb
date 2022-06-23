@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from id_id_card_lookup (originally 20210304202400)
 class RenameIdIdCardLookupTables < ActiveRecord::Migration[6.0]
   def change

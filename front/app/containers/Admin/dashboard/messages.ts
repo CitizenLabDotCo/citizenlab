@@ -64,31 +64,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.noData',
     defaultMessage: 'No data available with the current filters.',
   },
-  // Filter Controls
-  allGroups: {
-    id: 'app.containers.AdminPage.DashboardPage.allGroups',
-    defaultMessage: 'All Groups',
-  },
-  hiddenLabelGroupFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter',
-    defaultMessage: 'Pick group filter',
-  },
-  allProjects: {
-    id: 'app.containers.AdminPage.DashboardPage.allProjects',
-    defaultMessage: 'All Projects',
-  },
-  hiddenLabelProjectFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelProjectFilter',
-    defaultMessage: 'Pick project filter',
-  },
-  allTopics: {
-    id: 'app.containers.AdminPage.DashboardPage.allTopics',
-    defaultMessage: 'All Topics',
-  },
-  hiddenLabelTopicFilter: {
-    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelTopicFilter',
-    defaultMessage: 'Pick topic filter',
-  },
   // Time and Resolution Controls
   customDateRange: {
     id: 'app.containers.AdminPage.DashboardPage.customDateRange',
@@ -192,15 +167,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
   },
-  totalCount: {
-    id: 'app.containers.AdminPage.DashboardPage.totalCount',
-    defaultMessage:
-      '{selectedResourceName} total in {selectedName} : {selectedCount}',
-  },
-  resourceByDifference: {
-    id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
-    defaultMessage: '{selectedResourceName} difference with {selectedName}',
-  },
   // Users Charts
   usersByAgeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
@@ -246,14 +212,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsersRankingDescription',
     defaultMessage:
       'The ranking is based on the number of inputs (5 points per input), comments (3 points per comment) and votes (1 point per vote) submitted by each participant.',
-  },
-  mostActiveUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
-    defaultMessage: 'Most active users',
-  },
-  deletedUser: {
-    id: 'app.containers.AdminPage.DashboardPage.deletedUser',
-    defaultMessage: 'Deleted user',
   },
   subtitleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',

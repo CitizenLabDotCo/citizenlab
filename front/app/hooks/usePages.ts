@@ -2,14 +2,20 @@ import { useState, useEffect } from 'react';
 import { isEqual } from 'lodash-es';
 import { BehaviorSubject, of, combineLatest } from 'rxjs';
 import { map, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { IPageData, listPages, pageByIdStream } from 'services/pages';
-import { isNilOrError } from 'utils/helperUtils';
+import {
+  IPageData,
+  IPage,
+  IPages,
+  listPages,
+  pageByIdStream,
+} from 'services/pages';
+import { isNilOrError, NilOrError, reduceErrors } from 'utils/helperUtils';
 
 interface IParams {
   ids?: string[];
 }
 
-export type TPagesState = IPageData[] | undefined | null | Error;
+export type TPagesState = IPageData[] | NilOrError;
 
 export default function usePages({ ids }: IParams = {}) {
   const [pages, setPages] = useState<TPagesState>(undefined);
@@ -30,7 +36,9 @@ export default function usePages({ ids }: IParams = {}) {
   return pages;
 }
 
-function createSubscription(inputProps$, setPages) {
+type SetPages = (pages: IPageData[] | NilOrError) => void;
+
+function createSubscription(inputProps$, setPages: SetPages) {
   return inputProps$
     .pipe(
       distinctUntilChanged((prev, next) => isEqual(prev, next)),
@@ -41,7 +49,7 @@ function createSubscription(inputProps$, setPages) {
           return combineLatest(
             ids.map((id) =>
               pageByIdStream(id).observable.pipe(
-                map((response) => {
+                map((response: IPage | NilOrError) => {
                   return isNilOrError(response) ? response : response.data;
                 })
               )
@@ -50,21 +58,11 @@ function createSubscription(inputProps$, setPages) {
         }
 
         return listPages().observable.pipe(
-          map((response) => {
+          map((response: IPages | NilOrError) => {
             return isNilOrError(response) ? response : response.data;
           })
         );
       })
     )
-    .subscribe((pages) => {
-      if (isNilOrError(pages)) {
-        setPages(pages);
-        return;
-      }
-
-      const nilOrErrorPages = pages.filter(isNilOrError);
-      nilOrErrorPages.length > 0
-        ? setPages(nilOrErrorPages[0])
-        : setPages(pages);
-    });
+    .subscribe(reduceErrors<IPageData>(setPages));
 }

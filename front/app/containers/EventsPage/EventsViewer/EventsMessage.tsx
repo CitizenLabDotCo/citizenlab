@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled(VerticalCenterer)`
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 

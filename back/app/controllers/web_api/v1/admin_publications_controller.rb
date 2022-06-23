@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::AdminPublicationsController < ::ApplicationController
   skip_before_action :authenticate_user
   before_action :set_admin_publication, only: %i[reorder show]
@@ -8,7 +10,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     publications = publication_filterer.filter(publications, params)
 
     @publications = publications.includes(:publication, :children)
-                                .order(:ordering)
+      .order(:ordering)
     @publications = paginate @publications
 
     render json: linked_json(
@@ -34,7 +36,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
 
   def status_counts
     authorize :admin_publication, :status_counts
-    
+
     publication_filterer = AdminPublicationsFilteringService.new
     publications = policy_scope(AdminPublication.includes(:parent))
     publications = publication_filterer.filter(publications, params)

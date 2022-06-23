@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
 
@@ -30,7 +30,6 @@ import {
   currentAppConfigurationStream,
   IAppConfiguration,
 } from 'services/appConfiguration';
-import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
@@ -38,14 +37,16 @@ import {
   IIdeaFormSchemas,
   CustomFieldCodes,
 } from 'services/ideaCustomFieldsSchemas';
+import { getTopicIds } from 'services/projectAllowedInputTopics';
 
 // resources
 import GetFeatureFlag, {
   GetFeatureFlagChildProps,
 } from 'resources/GetFeatureFlag';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProjectAllowedInputTopics from 'resources/GetProjectAllowedInputTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -130,7 +131,7 @@ interface InputProps {
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
   ideaAuthorChangeEnabled: GetFeatureFlagChildProps;
-  topics: GetTopicsChildProps;
+  allowedTopics: GetTopicsChildProps;
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
@@ -403,7 +404,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const locationRequired = this.isFieldRequired(
-        'location',
+        'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -421,7 +422,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const imagesRequired = this.isFieldRequired(
-        'images',
+        'idea_images_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -439,7 +440,7 @@ class IdeaForm extends PureComponent<
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
       const attachmentsRequired = this.isFieldRequired(
-        'attachments',
+        'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -649,7 +650,7 @@ class IdeaForm extends PureComponent<
     const {
       projectId,
       pbEnabled,
-      topics,
+      allowedTopics,
       project,
       phases,
       hasTitleProfanityError,
@@ -690,7 +691,7 @@ class IdeaForm extends PureComponent<
     if (
       !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale) &&
-      !isNilOrError(topics) &&
+      !isNilOrError(allowedTopics) &&
       !isNilOrError(project)
     ) {
       const topicsEnabled = this.isFieldEnabled(
@@ -699,12 +700,12 @@ class IdeaForm extends PureComponent<
         locale
       );
       const locationEnabled = this.isFieldEnabled(
-        'location',
+        'location_description',
         ideaCustomFieldsSchemas,
         locale
       );
       const attachmentsEnabled = this.isFieldEnabled(
-        'attachments',
+        'idea_files_attributes',
         ideaCustomFieldsSchemas,
         locale
       );
@@ -714,12 +715,10 @@ class IdeaForm extends PureComponent<
         locale
       );
       const showPBBudget = pbContext && pbEnabled;
-      const showTopics = topicsEnabled && topics && topics.length > 0;
+      const showTopics =
+        topicsEnabled && allowedTopics && allowedTopics.length > 0;
       const showLocation = locationEnabled;
-      const showproposedBudget = proposedBudgetEnabled;
-      const filteredTopics = topics.filter(
-        (topic) => !isNilOrError(topic)
-      ) as ITopicData[];
+      const showProposedBudget = proposedBudgetEnabled;
       const inputTerm = getInputTerm(
         project.attributes.process_type,
         project,
@@ -745,14 +744,14 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.title}
                 optional={
                   !this.isFieldRequired(
-                    'title',
+                    'title_multiloc',
                     ideaCustomFieldsSchemas,
                     locale
                   )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.title?.description
+                    ?.properties?.title_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -807,11 +806,15 @@ class IdeaForm extends PureComponent<
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
                 optional={
-                  !this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)
+                  !this.isFieldRequired(
+                    'body_multiloc',
+                    ideaCustomFieldsSchemas,
+                    locale
+                  )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.body?.description
+                    ?.properties?.body_multiloc?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -843,7 +846,10 @@ class IdeaForm extends PureComponent<
             </FormElement>
           </StyledFormSection>
 
-          {(showPBBudget || showTopics || showLocation) && (
+          {(showPBBudget ||
+            showTopics ||
+            showLocation ||
+            showProposedBudget) && (
             <StyledFormSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />
               {showPBBudget && (
@@ -873,7 +879,7 @@ class IdeaForm extends PureComponent<
                 </HasPermission>
               )}
 
-              {showproposedBudget && (
+              {showProposedBudget && (
                 <FormElement>
                   <FormLabel
                     htmlFor="estimated-budget"
@@ -909,7 +915,7 @@ class IdeaForm extends PureComponent<
               )}
 
               {showTopics && (
-                <FormElement>
+                <FormElement id="e2e-idea-topics-input">
                   <FormLabel
                     htmlFor="topics"
                     labelMessage={messages.topicsTitle}
@@ -930,10 +936,10 @@ class IdeaForm extends PureComponent<
                   <TopicsPicker
                     selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
-                    availableTopics={filteredTopics}
+                    availableTopics={allowedTopics}
                   />
                   {topicsError && (
-                    <Error id="e2e-new-idea-topics-error" text={topicsError} />
+                    <Error className="e2e-error-message" text={topicsError} />
                   )}
                 </FormElement>
               )}
@@ -944,7 +950,7 @@ class IdeaForm extends PureComponent<
                     labelMessage={messages.locationTitle}
                     optional={
                       !this.isFieldRequired(
-                        'location',
+                        'location_description',
                         ideaCustomFieldsSchemas,
                         locale
                       )
@@ -952,7 +958,7 @@ class IdeaForm extends PureComponent<
                     subtextValue={
                       ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                         locale || ''
-                      ]?.properties?.location?.description
+                      ]?.properties?.location_description?.description
                     }
                     subtextSupportsHtml={true}
                     htmlFor="idea-form-location-input-field"
@@ -979,14 +985,14 @@ class IdeaForm extends PureComponent<
                 labelMessage={messages.imageUploadTitle}
                 optional={
                   !this.isFieldRequired(
-                    'images',
+                    'idea_images_attributes',
                     ideaCustomFieldsSchemas,
                     locale
                   )
                 }
                 subtextValue={
                   ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']
-                    ?.properties?.images?.description
+                    ?.properties?.idea_images_attributes?.description
                 }
                 subtextSupportsHtml={true}
               />
@@ -1007,7 +1013,7 @@ class IdeaForm extends PureComponent<
                   labelMessage={messages.otherFilesTitle}
                   optional={
                     !this.isFieldRequired(
-                      'attachments',
+                      'idea_files_attributes',
                       ideaCustomFieldsSchemas,
                       locale
                     )
@@ -1015,7 +1021,7 @@ class IdeaForm extends PureComponent<
                   subtextValue={
                     ideaCustomFieldsSchemas?.json_schema_multiloc?.[
                       locale || ''
-                    ]?.properties?.attachments?.description
+                    ]?.properties?.idea_files_attributes?.description
                   }
                   subtextSupportsHtml={true}
                   htmlFor="idea-form-file-uploader"
@@ -1048,15 +1054,23 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => (
     <GetPhases projectId={projectId}>{render}</GetPhases>
   ),
-  topics: ({ projectId, render }) => {
-    return <GetTopics projectId={projectId}>{render}</GetTopics>;
+  allowedTopics: ({ projectId, render }) => {
+    return (
+      <GetProjectAllowedInputTopics projectId={projectId}>
+        {(projectAllowedInputTopics) => {
+          const topicIds = getTopicIds(projectAllowedInputTopics);
+
+          return <GetTopics topicIds={topicIds}>{render}</GetTopics>;
+        }}
+      </GetProjectAllowedInputTopics>
+    );
   },
   authUser: ({ render }) => {
     return <GetAuthUser>{render}</GetAuthUser>;
   },
 });
 
-const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
+const IdeaFormWitHOCs = injectIntl(withRouter(IdeaForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

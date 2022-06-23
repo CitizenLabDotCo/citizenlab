@@ -108,16 +108,6 @@ body {
   margin: 0;
 }
 
-/**
-  * Correct the font sizes and margins on `h1` elements within
-  * `section` and `article` contexts in Chrome, Firefox, and Safari.
-  */
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-
 /* Grouping content (https://www.w3.org/TR/html5/grouping-content.html)
     ========================================================================== */
 

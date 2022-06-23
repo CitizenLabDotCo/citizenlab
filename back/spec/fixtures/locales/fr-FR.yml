@@ -1,3 +1,6 @@
 fr:
   symbols:
     outside: quelque part d'autre
+  nav_bar_items:
+    home:
+      title: Accueil

@@ -1,11 +1,22 @@
 import React from 'react';
-import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
-import { getGroups, IGroups, IGroupData } from 'services/groups';
+
+// services
+import {
+  getGroups,
+  IGroups,
+  IGroupData,
+  MembershipType,
+  GetGroupsQueryParameters,
+} from 'services/groups';
+
+// utils
+import { isEqual, get, isString, omitBy, isNil, isError } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
-export type MembershipType = 'manual' | 'rules';
+// typings
+import { NilOrError } from 'utils/helperUtils';
 
 export interface InputProps {
   pageNumber?: number;
@@ -13,15 +24,11 @@ export interface InputProps {
   membershipType?: MembershipType;
 }
 
-interface IQueryParameters {
-  'page[number]'?: number;
-  'page[size]'?: number;
-  membership_type?: MembershipType;
-}
+export type GroupsListState = IGroupData[] | NilOrError;
 
 interface IAccumulator {
-  groupsList: IGroupData[] | undefined | null | Error;
-  queryParameters: IQueryParameters;
+  groupsList: GroupsListState;
+  queryParameters: GetGroupsQueryParameters;
   hasMore: boolean;
 }
 
@@ -37,15 +44,15 @@ export type GetGroupsChildProps = State & {
 };
 
 interface State {
-  queryParameters: IQueryParameters;
-  groupsList: IGroupData[] | undefined | null | Error;
+  queryParameters: GetGroupsQueryParameters;
+  groupsList: GroupsListState;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
 }
 
 export default class GetGroups extends React.Component<Props, State> {
-  private queryParameters$: BehaviorSubject<IQueryParameters>;
+  private queryParameters$: BehaviorSubject<GetGroupsQueryParameters>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -80,51 +87,54 @@ export default class GetGroups extends React.Component<Props, State> {
       this.queryParameters$
         .pipe(
           distinctUntilChanged((x, y) => shallowCompare(x, y)),
-          mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-            const isLoadingMore =
-              acc.queryParameters['page[number]'] !==
-              queryParameters['page[number]'];
-            queryParameters['page[number]'] = isLoadingMore
-              ? queryParameters['page[number]']
-              : 1;
+          mergeScan<GetGroupsQueryParameters, IAccumulator>(
+            (acc, queryParameters) => {
+              const isLoadingMore =
+                acc.queryParameters['page[number]'] !==
+                queryParameters['page[number]'];
+              queryParameters['page[number]'] = isLoadingMore
+                ? queryParameters['page[number]']
+                : 1;
 
-            this.setState({
-              querying: !isLoadingMore,
-              loadingMore: isLoadingMore,
-            });
+              this.setState({
+                querying: !isLoadingMore,
+                loadingMore: isLoadingMore,
+              });
 
-            return getGroups({
-              queryParameters,
-            }).observable.pipe(
-              map((groups: IGroups | Error) => {
-                const selfLink = get(groups, 'links.self');
-                const lastLink = get(groups, 'links.last');
-                const hasMore =
-                  isString(selfLink) &&
-                  isString(lastLink) &&
-                  selfLink !== lastLink;
-                const accumulatedGroupsList = acc.groupsList;
-                let groupsList: IGroupData[] | undefined | null | Error =
-                  undefined;
+              return getGroups({
+                queryParameters,
+              }).observable.pipe(
+                map((groups: IGroups | Error) => {
+                  const selfLink = get(groups, 'links.self');
+                  const lastLink = get(groups, 'links.last');
+                  const hasMore =
+                    isString(selfLink) &&
+                    isString(lastLink) &&
+                    selfLink !== lastLink;
 
-                if (isError(groups)) {
-                  groupsList = groups;
-                } else if (isError(accumulatedGroupsList)) {
-                  groupsList = accumulatedGroupsList;
-                } else if (isLoadingMore && !isNil(accumulatedGroupsList)) {
-                  groupsList = [...accumulatedGroupsList, ...groups.data];
-                } else {
-                  groupsList = groups.data;
-                }
+                  const accumulatedGroupsList = acc.groupsList;
+                  let groupsList: GroupsListState = undefined;
 
-                return {
-                  queryParameters,
-                  hasMore,
-                  groupsList,
-                };
-              })
-            );
-          }, startAccumulatorValue)
+                  if (isError(groups)) {
+                    groupsList = groups;
+                  } else if (isError(accumulatedGroupsList)) {
+                    groupsList = accumulatedGroupsList;
+                  } else if (isLoadingMore && !isNil(accumulatedGroupsList)) {
+                    groupsList = [...accumulatedGroupsList, ...groups.data];
+                  } else {
+                    groupsList = groups.data;
+                  }
+
+                  return {
+                    queryParameters,
+                    hasMore,
+                    groupsList,
+                  };
+                })
+              );
+            },
+            startAccumulatorValue
+          )
         )
         .subscribe(({ groupsList, queryParameters, hasMore }) => {
           this.setState({

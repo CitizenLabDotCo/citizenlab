@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateClusterings < ActiveRecord::Migration[5.1]
   def change
     return if table_exists?(:clusterings)

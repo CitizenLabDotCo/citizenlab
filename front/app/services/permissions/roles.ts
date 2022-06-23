@@ -35,6 +35,10 @@ export const isModerator = (user?: IUser | null) => {
   return !!user && userHasRole(user, 'project_moderator');
 };
 
+export const isProjectFolderModerator = (user?: IUser | null) => {
+  return !!user && userHasRole(user, 'project_folder_moderator');
+};
+
 export const isProjectModerator = (user?: IUser | null, projectId?: string) => {
   return (
     isModerator(user) &&

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: official_feedbacks
@@ -27,33 +29,28 @@ class OfficialFeedback < ApplicationRecord
 
   belongs_to :user, optional: true
 
+  before_validation :sanitize_body_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-  has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify
+  has_many :notifications, dependent: :nullify
 
   has_many :initiative_status_changes, dependent: :nullify
 
-  validates :body_multiloc, presence: true, multiloc: {presence: true}
-  validates :author_multiloc, presence: true, multiloc: {presence: true}
+  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+  validates :author_multiloc, presence: true, multiloc: { presence: true }
   validates :post, presence: true
-
-  before_validation :sanitize_body_multiloc
-
 
   private
 
   def sanitize_body_multiloc
     service = SanitizationService.new
-    self.body_multiloc = service.sanitize_multiloc(
-      self.body_multiloc,
-      %i{mention}
-    )
-    self.body_multiloc = service.remove_multiloc_empty_trailing_tags(self.body_multiloc)
-    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+    self.body_multiloc = service.sanitize_multiloc body_multiloc, %i[mention]
+    self.body_multiloc = service.remove_multiloc_empty_trailing_tags body_multiloc
+    self.body_multiloc = service.linkify_multiloc body_multiloc
   end
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update official_feedback: nil
+      unless notification.update official_feedback: nil
         notification.destroy!
       end
     end

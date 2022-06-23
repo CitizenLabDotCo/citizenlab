@@ -30,7 +30,7 @@ resource 'Votes' do
     let(:initiative_id) { @initiative.id }
 
     example_request 'List all votes of an initiative' do
-      expect(status).to eq(200)
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
@@ -40,7 +40,7 @@ resource 'Votes' do
     let(:id) { @votes.first.id }
 
     example_request 'Get one vote on an initiative by id' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
     end
@@ -61,7 +61,7 @@ resource 'Votes' do
     let(:mode) { 'up' }
 
     example_request 'Create a vote to an initiative' do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :relationships, :user, :data, :id)).to be_nil
       expect(json_response.dig(:data, :attributes, :mode)).to eq 'up'
@@ -74,7 +74,7 @@ resource 'Votes' do
       AppConfiguration.instance.update! settings: settings
 
       do_request
-      expect(response_status).to eq 201
+      assert_status 201
       expect(@initiative.reload.initiative_status).to eq @status_threshold_reached
     end
   end
@@ -85,11 +85,11 @@ resource 'Votes' do
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
     disabled_reasons += Permission.denied_reasons.values if CitizenLab.ee?
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
-    
+
     let(:initiative_id) { @initiative.id }
 
     example_request "Upvote an initiative that doesn't have your vote yet" do
-      expect(status).to eq 201
+      assert_status 201
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
     end
@@ -97,7 +97,7 @@ resource 'Votes' do
     example 'Upvote an initiative that you downvoted before' do
       @initiative.votes.create(user: @user, mode: 'down')
       do_request
-      expect(status).to eq 201
+      assert_status 201
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
     end
@@ -105,9 +105,9 @@ resource 'Votes' do
     example '[error] Upvote an initiative that you upvoted before' do
       @initiative.votes.create(user: @user, mode: 'up')
       do_request
-      expect(status).to eq 422
-      json_response = json_parse(response_body)
-      expect(json_response[:errors][:base][0][:error]).to eq 'already_upvoted'
+      assert_status 422
+      json_response = json_parse response_body
+      expect(json_response).to include_response_error(:base, 'already_upvoted')
       expect(@initiative.reload.upvotes_count).to eq 3
       expect(@initiative.reload.downvotes_count).to eq 0
     end
@@ -119,11 +119,11 @@ resource 'Votes' do
     disabled_reasons = ParticipationContextService::VOTING_DISABLED_REASONS.values
     disabled_reasons += Permission.denied_reasons.values if CitizenLab.ee?
     response_field :base, "Array containing objects with signature { error: #{disabled_reasons.join(' | ')} }", scope: :errors
-    
+
     let(:initiative_id) { @initiative.id }
 
     example_request "[error] Downvote an initiative that doesn't have your vote yet" do
-      expect(status).to eq 401
+      assert_status 401
       json_response = json_parse(response_body)
       expect(json_response.dig(:errors, :base)).to include({ error: 'downvoting_not_supported' })
       expect(@initiative.reload.upvotes_count).to eq 2
@@ -136,7 +136,7 @@ resource 'Votes' do
     let(:id) { vote.id }
 
     example_request 'Delete a vote from an initiative' do
-      expect(response_status).to eq 200
+      assert_status 200
       expect { Vote.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end

@@ -44,7 +44,7 @@ const Body = memo<Props>(
       <Container id={`e2e-${postType}-description`} className={className}>
         <QuillEditedContent
           textColor={color || theme.colorText}
-          fontSize={smallerThanSmallTablet ? 'base' : 'large'}
+          fontSize={smallerThanSmallTablet ? 'base' : 'l'}
           fontWeight={400}
         >
           <div aria-live="polite">

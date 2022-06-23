@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -14,6 +14,7 @@ import {
 import Modal from 'components/UI/Modal';
 import RenameInsightsView from './RenameInsightsView';
 import ProjectButton from './ProjectButton';
+import ProjectsDropdown from './ProjectsDropdown';
 
 // intl
 import { InjectedIntlProps } from 'react-intl';
@@ -29,7 +30,6 @@ import { deleteInsightsView } from '../../../services/insightsViews';
 
 // hooks
 import useInsightsView from '../../../hooks/useInsightsView';
-import useLocale from 'hooks/useLocale';
 
 export const topBarHeight = 60;
 
@@ -74,7 +74,6 @@ const TopBar = ({
 }: WithRouterProps & InjectedIntlProps) => {
   const [renameModalOpened, setRenameModalOpened] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const locale = useLocale();
   const viewId = params.viewId;
   const view = useInsightsView(viewId);
 
@@ -84,7 +83,7 @@ const TopBar = ({
     }
   }, [view]);
 
-  if (isNilOrError(view) || isNilOrError(locale)) {
+  if (isNilOrError(view)) {
     return null;
   }
 
@@ -115,16 +114,21 @@ const TopBar = ({
     <Container data-testid="insightsTopBar">
       <TitleContainer>
         <h1>{view?.data.attributes.name}</h1>
-        {projectIds &&
-          projectIds.length > 0 &&
-          projectIds.map((projectId) => (
-            <ProjectButton key={projectId} projectId={projectId} />
-          ))}
+        {projectIds && projectIds.length > 0 && (
+          <>
+            {projectIds.length === 1 && (
+              <ProjectButton projectId={projectIds[0]} />
+            )}
+
+            {projectIds.length > 1 && (
+              <ProjectsDropdown projectIds={projectIds} />
+            )}
+          </>
+        )}
       </TitleContainer>
       <DropdownWrapper>
         {formatMessage(messages.options)}
         <Button
-          locale={locale}
           icon="more-options"
           iconColor={colors.label}
           iconHoverColor={colors.label}

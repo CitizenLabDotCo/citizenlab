@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UserConfirmation::ResetUserEmail do
@@ -13,10 +15,6 @@ RSpec.describe UserConfirmation::ResetUserEmail do
     before do
       context[:user] = create(:user_with_confirmation)
       context[:new_email] = 'new@email.com'
-    end
-
-    it 'is successful' do
-      expect(result).to be_a_success
     end
 
     it 'changes the user email' do
@@ -42,10 +40,6 @@ RSpec.describe UserConfirmation::ResetUserEmail do
     before do
       context[:user] = create(:user_with_confirmation)
       context[:new_email] = 'new@email-com'
-    end
-
-    it 'is a failure' do
-      expect(result).to be_a_failure
     end
 
     it 'does not change the user email' do

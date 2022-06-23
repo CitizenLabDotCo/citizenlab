@@ -92,7 +92,7 @@ const Processing = styled.div`
 
 const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 15px;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: bold;
 `;
 
@@ -746,7 +746,7 @@ class Invitations extends React.PureComponent<
             {selectedView === 'text' && (
               <>
                 <SectionField>
-                  <Label>
+                  <Label htmlFor="e2e-emails">
                     <FormattedMessage {...messages.emailListLabel} />
                   </Label>
                   <TextArea

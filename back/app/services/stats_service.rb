@@ -1,23 +1,24 @@
-class StatsService
+# frozen_string_literal: true
 
-  def group_by_time resource, field, start_at, end_at, interval
-    resource.send("group_by_#{interval}",
-      field, 
+class StatsService
+  def group_by_time(resource, field, start_at, end_at, interval)
+    resource.send(
+      "group_by_#{interval}",
+      field,
       range: start_at..end_at,
-      time_zone: AppConfiguration.instance.settings('core','timezone')
+      time_zone: AppConfiguration.instance.settings('core', 'timezone')
     ).count
   end
 
-  def group_by_time_cumulative resource, field, start_at, end_at, interval
+  def group_by_time_cumulative(resource, field, start_at, end_at, interval)
     serie = group_by_time(resource, field, start_at, end_at, interval)
     count_at_start_at = resource.where("#{field} < ?", start_at).count
     # When the given resource scope is a GROUP BY query
-    if count_at_start_at.kind_of? Hash
-      serie.inject(count_at_start_at) do |totals, (group, count)|
+    if count_at_start_at.is_a? Hash
+      serie.each_with_object(count_at_start_at) do |(group, count), totals|
         totals[group.first] = 0 unless totals[group.first]
         totals[group.first] += count
         serie[group] = totals[group.first]
-        totals
       end
     else # When the given reource scope is a normal query
       serie.inject(count_at_start_at) do |total, (date, count)|
@@ -27,10 +28,10 @@ class StatsService
     serie
   end
 
-  def filter_users_by_topic users_scope, topic_id
+  def filter_users_by_topic(users_scope, topic_id)
     ideas = Idea
       .joins(:ideas_topics)
-      .where(ideas_topics: {topic_id: topic_id})
+      .where(ideas_topics: { topic_id: topic_id })
 
     idea_authors = ideas.pluck(:author_id)
     comment_authors = Comment.where(post_id: ideas).pluck(:author_id)

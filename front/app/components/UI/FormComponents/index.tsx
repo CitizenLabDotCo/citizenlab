@@ -9,9 +9,9 @@ import {
   isRtl,
 } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
-// tslint:disable-next-line:no-vanilla-formatted-messages
 import {
   Messages,
+  // eslint-disable-next-line no-restricted-imports
   FormattedMessage as OriginalFormattedMessage,
 } from 'react-intl';
 import messages from './messages';
@@ -66,6 +66,10 @@ const FormSectionDescriptionStyled = styled.p`
   line-height: normal;
 `;
 
+const StyledSpan = styled.span`
+  margin-right: 3px;
+`;
+
 interface FormSectionTitleProps extends IMessageInfo {
   subtitleMessage?: Messages['key'];
 }
@@ -103,7 +107,7 @@ export const FormLabelStyled = styled(Box)`
 
 export const FormSubtextStyled = styled.div`
   width: 100%;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   color: ${colors.label};
   font-weight: 300;
   line-height: normal;
@@ -123,6 +127,9 @@ const OptionalText = styled.span`
 const LabelContainer = styled.div`
   display: flex;
   align-items: center;
+  ${isRtl`
+    flex-direction: row-reverse;
+  `}
 `;
 
 const StyledIcon = styled(Icon)`
@@ -218,17 +225,19 @@ export const FormLabel = memo<
       ])}
     >
       <LabelContainer>
-        {propsHasValues(props) ? (
-          props.labelValue
-        ) : (
-          <FormattedMessage
-            {...props.labelMessage}
-            values={props.labelMessageValues}
-          />
-        )}
+        <StyledSpan>
+          {propsHasValues(props) ? (
+            props.labelValue
+          ) : (
+            <FormattedMessage
+              {...props.labelMessage}
+              values={props.labelMessageValues}
+            />
+          )}
+        </StyledSpan>
         {optional && (
           <OptionalText>
-            {' ('}
+            &nbsp;{'('}
             <FormattedMessage {...messages.optional} />
             {')'}
           </OptionalText>

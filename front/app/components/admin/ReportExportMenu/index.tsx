@@ -43,9 +43,7 @@ interface ReportExportMenuProps {
   currentTopicFilterLabel?: string | undefined;
 }
 
-const ReportExportMenu: React.SFC<
-  ReportExportMenuProps & InjectedIntlProps
-> = ({
+const ReportExportMenu = ({
   svgNode,
   className,
   xlsxEndpoint,
@@ -60,7 +58,7 @@ const ReportExportMenu: React.SFC<
   currentTopicFilterLabel,
   currentProjectFilterLabel,
   intl: { formatMessage, formatDate },
-}) => {
+}: ReportExportMenuProps & InjectedIntlProps) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [exportingXls, setExportingXls] = useState(false);
 
@@ -166,7 +164,7 @@ const ReportExportMenu: React.SFC<
                 onClick={handleDownloadSvg}
                 buttonStyle="text"
                 padding="0"
-                fontSize={`${fontSizes.small}px`}
+                fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadAsImage} />
               </Button>
@@ -177,7 +175,7 @@ const ReportExportMenu: React.SFC<
                 buttonStyle="text"
                 processing={exportingXls}
                 padding="0"
-                fontSize={`${fontSizes.small}px`}
+                fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadXlsx} />
               </Button>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CustomMaps
   class ApplicationController < ::ApplicationController
     before_action :set_project

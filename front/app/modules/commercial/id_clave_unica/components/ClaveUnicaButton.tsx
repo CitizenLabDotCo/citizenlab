@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { AUTH_PATH } from 'containers/App/constants';
 import { removeUrlLocale } from 'services/locale';
 import { getJwt } from 'utils/auth/jwt';
@@ -8,17 +8,14 @@ import styled from 'styled-components';
 import icon from './clave-unica-icon.svg';
 
 // typings
-import { IVerificationMethod } from 'services/verificationMethods';
+import { TVerificationMethod } from 'services/verificationMethods';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-const Container = styled.div`
-  margin-bottom: 15px;
-  .last {
-    margin-bottom: 0px;
-  }
+const Container = styled.div<{ last: boolean }>`
+  margin-bottom: ${({ last }) => (last ? '0px' : '15px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,24 +67,23 @@ const HelperText = styled.div`
 `;
 
 interface Props {
-  method: IVerificationMethod;
+  method: TVerificationMethod;
   last: boolean;
+  onClick: (method: TVerificationMethod) => void;
 }
 
-const BosaFasButton = ({ method, last }: Props) => {
-  const handleOnClick = useCallback(() => {
+const BosaFasButton = ({ method, last, onClick }: Props) => {
+  const handleOnClick = () => {
+    onClick(method);
     const jwt = getJwt();
     window.location.href = `${AUTH_PATH}/clave_unica?token=${jwt}&pathname=${removeUrlLocale(
       window.location.pathname
     )}`;
-  }, []);
+  };
 
   return (
-    <Container key={method.id} className={last ? 'last' : ''}>
-      <ButtonWrapper
-        onClick={handleOnClick}
-        id={`e2e-${method.attributes.name}-button`}
-      >
+    <Container last={last}>
+      <ButtonWrapper onClick={handleOnClick} id="e2e-clave_unica-button">
         <ButtonIcon />
         <ButtonLabel>Iniciar sesión</ButtonLabel>
       </ButtonWrapper>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IdViennaSaml
   # Provides a SAML Omniauth configuration for Vienna's StandardPortal.
   class IdViennaSamlOmniauth

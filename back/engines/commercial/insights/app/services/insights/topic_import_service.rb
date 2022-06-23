@@ -12,11 +12,11 @@ module Insights
       topics(view).flat_map do |topic|
         category = Category.new(name: category_name(topic, locale), view: view)
         if category.save
-          ideas = IdeasFinder.find(
+          ideas = IdeasFinder.new(
             { project: view.scope, topics: [topic] },
             current_user: current_user,
             paginate: false
-          ).records
+          ).find_records
           assignment_service.add_assignments_batch(ideas, [category])
         end
       end

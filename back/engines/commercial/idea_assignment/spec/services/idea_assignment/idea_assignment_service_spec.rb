@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe IdeaAssignment::IdeaAssignmentService do
@@ -17,10 +19,12 @@ describe IdeaAssignment::IdeaAssignmentService do
       idea3 = create :idea, project: project3, assignee: assignee
       idea4 = create :idea, project: project4, assignee: assignee
       idea5 = create :idea, assignee: create(:admin)
-      assignee.update!(roles: [
-        { 'type' => 'project_folder_moderator', 'project_folder_id' => folder1.id },
-        { 'type' => 'project_moderator', 'project_id' => project2.id }
-      ])
+      assignee.update!(
+        roles: [
+          { 'type' => 'project_folder_moderator', 'project_folder_id' => folder1.id },
+          { 'type' => 'project_moderator', 'project_id' => project2.id }
+        ]
+      )
 
       service.clean_idea_assignees_for_user! assignee
 

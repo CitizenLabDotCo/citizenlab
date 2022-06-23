@@ -1,3 +1,6 @@
 nl:
   symbols:
     outside: ergens anders
+  nav_bar_items:
+    home:
+      title: Home

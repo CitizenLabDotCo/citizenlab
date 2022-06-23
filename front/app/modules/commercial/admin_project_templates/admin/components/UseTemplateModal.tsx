@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { get, isEmpty, transform } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
@@ -73,7 +73,7 @@ const SuccessIcon = styled(Icon)`
 
 const SuccessText = styled.div`
   color: ${colors.clGreenSuccess};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.m}px;
   font-weight: 400;
   text-align: center;
   display: flex;
@@ -379,4 +379,4 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(
   }
 );
 
-export default withRouter<Props>(injectIntl(UseTemplateModal));
+export default injectIntl(withRouter(UseTemplateModal));

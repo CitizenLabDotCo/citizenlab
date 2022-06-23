@@ -98,13 +98,18 @@ const ButtonWrapper = styled.div`
 
 const ContinueButton = styled(Button)``;
 
+export type TOnContinueFunction = (
+  authProvider: AuthProvider,
+  setHrefFromModule?: () => void
+) => void;
+
 export interface Props {
   id?: string;
   icon?: IconNames;
   flow: TSignUpInFlow;
   authProvider: AuthProvider;
   className?: string;
-  onContinue: (authProvider: AuthProvider) => void;
+  onContinue: TOnContinueFunction;
   children: React.ReactNode;
 }
 

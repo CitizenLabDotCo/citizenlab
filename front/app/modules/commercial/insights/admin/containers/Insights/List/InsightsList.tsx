@@ -1,15 +1,13 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
-import useLocale from 'hooks/useLocale';
 
 // components
 import PageTitle from 'components/admin/PageTitle';
-import { Button } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import Divider from 'components/admin/Divider';
 
 // styles
@@ -98,8 +96,6 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
   data,
   openCreateModal,
 }) => {
-  const locale = useLocale();
-
   const handleDeleteClick = (viewId: string) => () => {
     const deleteMessage = formatMessage(messages.listDeleteConfirmation);
 
@@ -121,33 +117,27 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
       >
         {formatMessage(messages.link)}
       </StyledLink>
-      {!isNilOrError(locale) && (
-        <InsightsContainer>
-          <InsightsContainerHeader>
-            <div>
-              <InsightsContainerTitle>
-                {formatMessage(messages.listTitle)}
-              </InsightsContainerTitle>
-              <p>{formatMessage(messages.listDescription)}</p>
-            </div>
-            <Button
-              locale={locale}
-              bgColor={colors.adminTextColor}
-              onClick={openCreateModal}
-            >
-              {formatMessage(messages.listCreate)}
-            </Button>
-          </InsightsContainerHeader>
-          {data.map((view) => (
-            <div key={view.id} data-testid="insightsListItem">
-              <InsightsListItem>
-                <div>
-                  <h3> {view.attributes.name}</h3>
-                  <p>{formatDate(view.attributes.updated_at)}</p>
-                </div>
-                <div className="buttons">
-                  {/* <Button
-                    locale={locale}
+      <InsightsContainer>
+        <InsightsContainerHeader>
+          <div>
+            <InsightsContainerTitle>
+              {formatMessage(messages.listTitle)}
+            </InsightsContainerTitle>
+            <p>{formatMessage(messages.listDescription)}</p>
+          </div>
+          <Button bgColor={colors.adminTextColor} onClick={openCreateModal}>
+            {formatMessage(messages.listCreate)}
+          </Button>
+        </InsightsContainerHeader>
+        {data.map((view) => (
+          <div key={view.id} data-testid="insightsListItem">
+            <InsightsListItem>
+              <div>
+                <h3> {view.attributes.name}</h3>
+                <p>{formatDate(view.attributes.updated_at)}</p>
+              </div>
+              <div className="buttons">
+                {/* <Button
                     buttonStyle="white"
                     icon="copy"
                     textColor={colors.adminTextColor}
@@ -155,31 +145,28 @@ const InsightsList: React.FC<InsightsList & InjectedIntlProps> = ({
                   >
                     {formatMessage(messages.listDuplicate)}
                   </Button> */}
-                  <Button
-                    locale={locale}
-                    buttonStyle="white"
-                    icon="delete"
-                    textColor={colors.adminTextColor}
-                    boxShadow="none"
-                    onClick={handleDeleteClick(view.id)}
-                  >
-                    {formatMessage(messages.listDelete)}
-                  </Button>
-                  <Button
-                    locale={locale}
-                    buttonStyle="secondary"
-                    icon="edit"
-                    linkTo={`/admin/insights/${view.id}`}
-                  >
-                    {formatMessage(messages.listManage)}
-                  </Button>
-                </div>
-              </InsightsListItem>
-              <Divider />
-            </div>
-          ))}
-        </InsightsContainer>
-      )}
+                <Button
+                  buttonStyle="white"
+                  icon="delete"
+                  textColor={colors.adminTextColor}
+                  boxShadow="none"
+                  onClick={handleDeleteClick(view.id)}
+                >
+                  {formatMessage(messages.listDelete)}
+                </Button>
+                <Button
+                  buttonStyle="secondary"
+                  icon="edit"
+                  linkTo={`/admin/insights/${view.id}`}
+                >
+                  {formatMessage(messages.listManage)}
+                </Button>
+              </div>
+            </InsightsListItem>
+            <Divider />
+          </div>
+        ))}
+      </InsightsContainer>
     </div>
   );
 };

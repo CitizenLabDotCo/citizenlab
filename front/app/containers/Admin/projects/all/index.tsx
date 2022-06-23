@@ -79,7 +79,7 @@ const AdminProjectsList = memo(({ className }: Props) => {
 
         <SectionDescription>
           <HasPermission
-            item={{ type: 'route', path: '/admin/projects/new' }}
+            item={{ type: 'route', path: '/admin/projects' }}
             action="access"
           >
             <FormattedMessage {...messages.overviewPageSubtitle} />

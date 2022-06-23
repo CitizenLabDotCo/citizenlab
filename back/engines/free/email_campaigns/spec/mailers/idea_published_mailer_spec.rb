@@ -18,7 +18,7 @@ RSpec.describe EmailCampaigns::IdeaPublishedMailer, type: :mailer do
           post_images: idea.idea_images.map do |image|
             {
               ordering: image.ordering,
-              versions: image.image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+              versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
             }
           end
         }

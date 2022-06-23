@@ -80,7 +80,7 @@ class ExportInitiativesButton extends React.PureComponent<
         onClick={this.handleExportInitiatives}
         processing={exporting}
         padding="0"
-        fontSize={`${fontSizes.small}px`}
+        fontSize={`${fontSizes.s}px`}
       >
         {exportType === 'all' && (
           <FormattedMessage {...messages.exportInitiatives} />

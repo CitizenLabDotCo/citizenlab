@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 # rubocop:disable Lint/SuppressedException
 begin
   require 'factory_bot_rails'
 rescue LoadError
 end
 # rubocop:enable Lint/SuppressedException
-
 
 module SmartGroups
   class Engine < ::Rails::Engine

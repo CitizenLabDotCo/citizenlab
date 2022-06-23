@@ -1,13 +1,14 @@
 import React, { memo } from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { adopt } from 'react-adopt';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
 import Button from 'components/UI/Button';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
+import Link from 'utils/cl-router/Link';
 
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -31,7 +32,7 @@ const IdeaNotFoundWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 4rem;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 
@@ -70,6 +71,10 @@ const StyledIdeasShow = styled(IdeasShow)`
   `}
 `;
 
+const StyledSignInButton = styled(Button)`
+  margin-bottom: 20px;
+`;
+
 interface InputProps {}
 
 interface DataProps {
@@ -77,8 +82,6 @@ interface DataProps {
 }
 
 interface Props extends InputProps, DataProps {}
-
-const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
 const IdeasShowPage = memo<Props>(({ idea }) => {
   const { windowWidth } = useWindowSize();
@@ -88,9 +91,15 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
     return (
       <IdeaNotFoundWrapper>
         <p>
-          <FormattedMessage {...messages.noResultsFound} />
+          <FormattedMessage {...messages.sorryNoAccess} />
         </p>
-        <Button linkTo="/ideas" text={goBackToListMessage} icon="arrow-back" />
+        <StyledSignInButton
+          linkTo="/sign-up"
+          text={<FormattedMessage {...messages.signUp} />}
+        />
+        <Link to="/sign-in">
+          <FormattedMessage {...messages.signIn} />
+        </Link>
       </IdeaNotFoundWrapper>
     );
   }
@@ -123,10 +132,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   ),
 });
 
-export default withRouter<InputProps>(
-  (inputProps: InputProps & WithRouterProps) => (
-    <Data {...inputProps}>
-      {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
-    </Data>
-  )
-);
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
+  </Data>
+));

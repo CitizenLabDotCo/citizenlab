@@ -8,7 +8,6 @@ import {
   Multiloc,
   ImageSizes,
   UploadFile,
-  IOption,
   CLError,
 } from 'typings';
 import { IAreaData } from './areas';
@@ -22,7 +21,7 @@ import {
   InputTerm,
 } from './participationContexts';
 
-const apiEndpoint = `${API_PATH}/projects`;
+export const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
 export type ProcessType = 'continuous' | 'timeline';
@@ -122,6 +121,7 @@ export interface IProjectAttributes {
   poll_anonymous?: boolean;
   ideas_order?: IdeaDefaultSortMethod;
   input_term: InputTerm;
+  include_all_areas: boolean;
   action_descriptor: {
     posting_idea: {
       enabled: boolean;
@@ -170,6 +170,9 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
+    topics: {
+      data: IRelationship[];
+    };
     current_phase?: {
       data: IRelationship | null;
     };
@@ -182,14 +185,19 @@ export interface IProjectData {
     admin_publication: {
       data: IRelationship | null;
     };
-    topics: {
-      data: IRelationship[] | null;
-    };
   };
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string; medium: string; large: string } | null;
+  // header_bg is only a string or null when it's
+  // in IUpdatedProjectProperties. The ImageSizes needed
+  // to be added because we go from string here to ImageSizes
+  // in IProjectAttributes (also in this file) when we save an image
+  // selected for upload. ImageSizes needs to be here, because
+  // Otherwise TS will complain about this mismatch in
+  // front/app/containers/Admin/projects/general/index.tsx
+  // This oddity needs to be dealt with
+  header_bg?: string | ImageSizes | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -219,6 +227,8 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaDefaultSortMethod;
   input_term?: InputTerm;
   slug?: string;
+  topic_ids?: string[];
+  include_all_areas?: boolean;
 }
 
 export interface IProjectFormState {
@@ -237,10 +247,8 @@ export interface IProjectFormState {
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
   areas: IAreaData[];
-  areaType: 'all' | 'selection';
   locale: Locale;
   currentTenant: IAppConfiguration | null;
-  areasOptions: IOption[];
   submitState: ISubmitState;
   slug: string | null;
   showSlugErrorMessage: boolean;
@@ -303,6 +311,8 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
       `${API_PATH}/projects`,
       `${API_PATH}/admin_publications`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
   return response;
@@ -325,6 +335,8 @@ export async function updateProject(
       `${API_PATH}/admin_publications`,
       `${API_PATH}/admin_publications/status_counts`,
       `${API_PATH}/users/me`,
+      `${API_PATH}/topics`,
+      `${API_PATH}/areas`,
     ],
   });
 

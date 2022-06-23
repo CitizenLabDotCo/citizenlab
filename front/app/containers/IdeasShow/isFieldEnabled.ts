@@ -10,7 +10,7 @@ export default function isFieldEnabled(
   locale: Locale
 ) {
   return (
-    ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
+    ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]?.[
       'ui:widget'
     ] !== 'hidden'
   );

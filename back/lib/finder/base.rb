@@ -1,21 +1,15 @@
 # frozen_string_literal: true
 
-require 'callable'
 require 'finder/error'
 require 'finder/helpers'
 require 'finder/inflectors'
 require 'finder/sortable'
 
 module Finder
-  ## Finder::Base
   class Base
-    include Callable
     include Finder::Helpers
     include Finder::Inflectors
     include Finder::Sortable
-
-    ## You can now use #find instead of call.
-    callable_with :find, error_class: Finder::Error, default_error: 'Something went wrong'
 
     def initialize(params, scope: nil, includes: [], current_user: nil, paginate: true)
       @params            = params.respond_to?(:permit!) ? params.permit! : params
@@ -23,6 +17,11 @@ module Finder
       @base_scope        = scope || _base_scope
       @records           = @base_scope.includes(includes)
       @paginate          = paginate
+    end
+
+    def find_records
+      find
+      records
     end
 
     protected
@@ -35,18 +34,12 @@ module Finder
     private
 
     def find
-      do_find
-      result.records = records
-    rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
-      raise Finder::Error, e
-    end
-
-    def do_find
       _abort_if_records_class_invalid
       _filter_records
       _sort_records
-      _count_records
       _paginate_records
+    rescue ActiveRecord::StatementInvalid, PG::InFailedSqlTransaction, PG::UndefinedTable => e
+      raise Finder::Error, e
     end
 
     def _abort_if_records_class_invalid
@@ -63,10 +56,6 @@ module Finder
 
         @records = new_records if new_records
       end
-    end
-
-    def _count_records
-      result.count = records.length
     end
 
     def _paginate_records

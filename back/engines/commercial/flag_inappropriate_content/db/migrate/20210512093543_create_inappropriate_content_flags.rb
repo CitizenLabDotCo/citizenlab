@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateInappropriateContentFlags < ActiveRecord::Migration[6.0]
   def change
     create_table :flag_inappropriate_content_inappropriate_content_flags, id: :uuid do |t|
@@ -9,6 +11,6 @@ class CreateInappropriateContentFlags < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :flag_inappropriate_content_inappropriate_content_flags, [:flaggable_id, :flaggable_type], name: :inappropriate_content_flags_flaggable
+    add_index :flag_inappropriate_content_inappropriate_content_flags, %i[flaggable_id flaggable_type], name: :inappropriate_content_flags_flaggable
   end
 end

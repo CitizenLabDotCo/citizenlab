@@ -50,7 +50,7 @@ const DeletedComment = styled.div`
   color: ${colors.label};
   display: flex;
   align-items: center;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.s}px;
   font-weight: 400;
   font-style: italic;
 `;

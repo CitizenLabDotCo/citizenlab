@@ -60,7 +60,7 @@ module Notifications
 
     ACTIVITY_TRIGGERS = { 'SpamReport' => { 'created' => true } }.freeze
 
-    def self.recipient_ids(initiating_user_id = nil, project_id = nil)
+    def self.recipient_ids(initiating_user_id = nil, _project_id = nil)
       admin_ids = User.admin.ids
       admin_ids.delete(initiating_user_id) if initiating_user_id
       admin_ids

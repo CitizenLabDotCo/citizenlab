@@ -17,6 +17,7 @@ export type IAppConfigurationSettingsCore = {
   allowed: boolean;
   enabled: boolean;
   locales: Locale[];
+  weglot_api_key: string | null;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -49,6 +50,8 @@ export type IAppConfigurationSettingsCore = {
   segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
+  topics_term?: Multiloc;
+  topic_term?: Multiloc;
 };
 
 export interface IAppConfigurationSettings {
@@ -148,6 +151,7 @@ export interface IAppConfigurationSettings {
   smart_survey_surveys?: AppConfigurationFeature;
   microsoft_forms_surveys?: AppConfigurationFeature;
   survey_xact_surveys?: AppConfigurationFeature;
+  snap_survey_surveys?: AppConfigurationFeature;
   project_folders?: AppConfigurationFeature;
   geographic_dashboard?: AppConfigurationFeature;
   widgets?: AppConfigurationFeature;
@@ -199,6 +203,10 @@ export interface IAppConfigurationSettings {
     widget_title?: Multiloc;
   };
   customizable_navbar?: AppConfigurationFeature;
+  texting?: AppConfigurationFeature;
+  content_builder?: AppConfigurationFeature;
+  representativeness?: AppConfigurationFeature;
+  remove_vendor_branding?: AppConfigurationFeature;
 }
 
 interface AppConfigurationMapSettings extends AppConfigurationFeature {
@@ -311,6 +319,9 @@ export async function updateAppConfiguration(
   await currentAppConfigurationStream().fetch();
   return tenant;
 }
+
+export const coreSettings = (appConfiguration: IAppConfiguration) =>
+  appConfiguration.data.attributes.settings.core;
 
 type TCurrency = TCustomCurrency | TCountryCurrency;
 type TCustomCurrency =

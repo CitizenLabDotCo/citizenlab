@@ -24,6 +24,7 @@ import intercomConfiguration from './commercial/intercom';
 import satismeterConfiguration from './commercial/satismeter';
 import segmentConfiguration from './commercial/segment';
 import matomoConfiguration from './commercial/matomo';
+import contentBuilderConfiguration from './commercial/content_builder';
 import customIdeaStatusesConfiguration from './commercial/custom_idea_statuses';
 import verificationConfiguration from './commercial/verification';
 import customTopicsConfiguration from './commercial/custom_topics';
@@ -46,6 +47,7 @@ import customizableNavbarConfiguration from './commercial/customizable_navbar';
 import userConfirmationConfiguration from './free/user_confirmation';
 
 import idViennaSamlConfiguration from './commercial/id_vienna_saml';
+import representativenessConfiguration from './commercial/representativeness';
 
 // eslint-disable-next-line no-var
 declare var CL_CONFIG: any;
@@ -114,6 +116,10 @@ export default loadModules([
   {
     configuration: ideaAssignmentConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/idea_assignment'],
+  },
+  {
+    configuration: contentBuilderConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/content_builder'],
   },
   {
     configuration: customIdeaStatusesConfiguration,
@@ -206,5 +212,9 @@ export default loadModules([
   {
     configuration: idViennaSamlConfiguration,
     isEnabled: CL_CONFIG['modules']['commercial/id_vienna_saml'],
+  },
+  {
+    configuration: representativenessConfiguration,
+    isEnabled: CL_CONFIG['modules']['commercial/representativeness'],
   },
 ]);

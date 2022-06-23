@@ -4,16 +4,13 @@ import React, { ReactNode } from 'react';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 
-const MethodButton = styled(Button)`
-  margin-bottom: 15px;
-
-  &.last {
-    margin-bottom: 0px;
-  }
+const MethodButton = styled(Button)<{ last: boolean }>`
+  margin-bottom: ${({ last }) => (last ? '0px' : '15px')};
 `;
 
 interface Props extends Partial<ButtonProps> {
   children: ReactNode;
+  last: boolean;
 }
 
 const VerificationMethodButton = (props: Props) => {

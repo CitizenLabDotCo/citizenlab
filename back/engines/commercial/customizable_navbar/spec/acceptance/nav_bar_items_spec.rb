@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -42,7 +44,7 @@ resource 'NavBarItems' do
           expect(json_response.dig(:data, :attributes, :ordering)).to eq 0
           expect(
             json_response.dig(:data, :attributes, :title_multiloc).stringify_keys
-          ).to match MultilocService.new.i18n_to_multiloc('nav_bar_items.home.title')
+          ).to match({ 'en' => 'Home', 'fr-FR' => 'Accueil', 'nl-NL' => 'Home' })
         end
       end
 
@@ -85,7 +87,8 @@ resource 'NavBarItems' do
       end
       ValidationErrorHelper.new.error_fields self, NavBarItem
 
-      let(:item) { create :nav_bar_item }
+      let(:page) { create :static_page, title_multiloc: { 'nl-NL' => 'Hoe deelnemen' } }
+      let(:item) { create :nav_bar_item, static_page: page }
       let(:id) { item.id }
       let(:title_multiloc) { { 'en' => 'How to participate' } }
 
@@ -93,7 +96,8 @@ resource 'NavBarItems' do
         expect(response_status).to eq 200
         json_response = json_parse response_body
 
-        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
+        expected_title = { 'en' => 'How to participate', 'nl-NL' => 'Hoe deelnemen' }
+        expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match expected_title
       end
     end
 
@@ -122,7 +126,7 @@ resource 'NavBarItems' do
         do_request
         expect(response_status).to eq 200
         expect { NavBarItem.find id }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(NavBarItem.count).to eq (old_count - 1)
+        expect(NavBarItem.count).to eq(old_count - 1)
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StaticPagePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope

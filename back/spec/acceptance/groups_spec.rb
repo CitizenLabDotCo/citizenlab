@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -23,7 +25,7 @@ resource 'Groups' do
         parameter :size, 'Number of groups per page'
       end
       parameter :membership_type,
-                "If set, only return groups of given membership_type. Either #{Group.membership_types.join(' or ')}", required: false
+        "If set, only return groups of given membership_type. Either #{Group.membership_types.join(' or ')}", required: false
 
       example 'List all groups' do
         g1 = create(:group)
@@ -62,10 +64,10 @@ resource 'Groups' do
       with_options scope: :group do
         parameter :title_multiloc, 'The title of the group in multiple locales', required: true
         parameter :membership_type,
-                  "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}. Defaults to 'manual'"
+          "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}. Defaults to 'manual'"
         if CitizenLab.ee?
           parameter :rules,
-                    "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
+            "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
         end
       end
       ValidationErrorHelper.new.error_fields(self, Group)
@@ -101,8 +103,8 @@ resource 'Groups' do
 
         describe do
           before do
-            member = create(:user, email: 'k@k.com', registration_completed_at: Time.now)
-            not_really_member = create(:user, email: 'kk@kk.com', registration_completed_at: nil)
+            create(:user, email: 'k@k.com', registration_completed_at: Time.now)
+            create(:user, email: 'kk@kk.com', registration_completed_at: nil)
           end
 
           let(:title_multiloc) { build(:group).title_multiloc }
@@ -123,10 +125,10 @@ resource 'Groups' do
       with_options scope: :group do
         parameter :title_multiloc, 'The title of the group in multiple locales'
         parameter :membership_type,
-                  "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
+          "Whether members are manually or automatically added. Either #{Group.membership_types.join(', ')}"
         if CitizenLab.ee?
           parameter :rules,
-                    "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
+            "In case of 'rules' membership type, the user criteria to be a member. Conforms to this json schema: #{JSON.pretty_generate(SmartGroups::RulesService.new.generate_rules_json_schema)}"
         end
       end
       ValidationErrorHelper.new.error_fields(self, Group)

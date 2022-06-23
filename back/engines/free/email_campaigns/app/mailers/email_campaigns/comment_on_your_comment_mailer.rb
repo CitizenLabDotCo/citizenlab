@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class CommentOnYourCommentMailer < ApplicationMailer
     protected
 
     def subject
-      format_message('subject', values: {organizationName: organization_name})
+      format_message('subject', values: { organizationName: organization_name })
     end
 
     def header_title
-      format_message('main_header', values: {authorName: event.comment_author_name})
+      format_message('main_header', values: { authorName: event.comment_author_name })
     end
 
     def header_message

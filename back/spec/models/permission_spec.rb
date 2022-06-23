@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Permission, type: :model do
-  describe "#for_user" do
+  describe '#for_user' do
     before(:all) do
-      # rubocop:disable RSpec/BeforeAfterAll
       @scope_types = PermissionsService.instance_variable_get(:@scope_spec_hash)
 
       # rubocop:disable Style/SingleLineMethods Layout/EmptyLineBetweenDefs
@@ -23,7 +24,7 @@ RSpec.describe Permission, type: :model do
       PermissionsService.instance_variable_set(:@scope_spec_hash, @scope_types)
     end
 
-    before(:each) { described_class.destroy_all }
+    before { described_class.destroy_all }
 
     # +let!(permissions)+ must be run after +before(:each)+ which deletes all permission records
     let!(:permissions) do
@@ -36,13 +37,13 @@ RSpec.describe Permission, type: :model do
     end
     let(:manual_grp) { create(:group) }
 
-    context "when user is admin" do
+    context 'when user is admin' do
       let(:admin) { build(:admin) }
 
       it { expect(described_class.for_user(admin)).to match_array permissions }
     end
 
-    context "when not logged in" do
+    context 'when not logged in' do
       it { expect(described_class.for_user(nil)).to match_array [permissions[0]] }
     end
 
@@ -54,6 +55,7 @@ RSpec.describe Permission, type: :model do
 
     context 'when user belongs to the authorized manual group' do
       let(:user) { create(:user) }
+
       before { manual_grp.add_member(user).save! }
 
       it {
@@ -70,7 +72,7 @@ RSpec.describe Permission, type: :model do
     context 'when not signed in' do
       let(:user) { nil }
 
-      it { expect(everyone_permission.denied_reason(user)).to be_falsey }
+      it { expect(everyone_permission.denied_reason(user)).to be_nil }
       it { expect(users_permission.denied_reason(user)).to eq('not_signed_in') }
       it { expect(admins_mods_permission.denied_reason(user)).to eq('not_permitted') }
     end
@@ -78,16 +80,16 @@ RSpec.describe Permission, type: :model do
     context 'when user is admin' do
       let(:admin) { build(:admin) }
 
-      it { expect(everyone_permission.denied_reason(admin)).to be_falsey }
-      it { expect(users_permission.denied_reason(admin)).to be_falsey }
-      it { expect(admins_mods_permission.denied_reason(admin)).to be_falsey }
+      it { expect(everyone_permission.denied_reason(admin)).to be_nil }
+      it { expect(users_permission.denied_reason(admin)).to be_nil }
+      it { expect(admins_mods_permission.denied_reason(admin)).to be_nil }
     end
 
     context 'when signed in' do
       let(:user) { build(:user) }
 
-      it { expect(everyone_permission.denied_reason(user)).to be_falsey }
-      it { expect(users_permission.denied_reason(user)).to be_falsey }
+      it { expect(everyone_permission.denied_reason(user)).to be_nil }
+      it { expect(users_permission.denied_reason(user)).to be_nil }
       it { expect(admins_mods_permission.denied_reason(user)).to eq 'not_permitted' }
     end
   end

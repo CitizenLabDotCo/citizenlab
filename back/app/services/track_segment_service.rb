@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class TrackSegmentService
-
   def initialize(segment_client = SEGMENT_CLIENT)
     @tracking_service = TrackingService.new
     @segment_client = segment_client
@@ -75,7 +74,7 @@ class TrackSegmentService
       isSuperAdmin: user.super_admin?,
       isAdmin: user.admin?,
       highestRole: user.highest_role,
-      timezone: AppConfiguration.instance.settings('core', 'timezone'),
+      timezone: AppConfiguration.instance.settings('core', 'timezone')
     }
   end
 
@@ -89,7 +88,7 @@ class TrackSegmentService
     }
   end
 
-  # @return [{Symbol=>Anything}] 
+  # @return [{Symbol=>Anything}]
   def tenant_traits(tenant)
     raise NotImplementedError
   end

@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import AuthProviderButton from './AuthProviderButton';
+import AuthProviderButton, { TOnContinueFunction } from './AuthProviderButton';
 import Or from 'components/UI/Or';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Outlet from 'components/Outlet';
@@ -42,7 +42,7 @@ export const StyledAuthProviderButton = styled(AuthProviderButton)`
 interface InputProps {
   metaData: ISignUpInMetaData;
   className?: string;
-  onAuthProviderSelected: (selectedMethod: AuthProvider) => void;
+  onAuthProviderSelected: TOnContinueFunction;
   goToOtherFlow: () => void;
 }
 
@@ -112,13 +112,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
       onAuthProviderSelected,
     ]);
 
-    const handleOnAuthProviderSelected = useCallback(
-      (authProvider: AuthProvider) => {
-        onAuthProviderSelected(authProvider);
-      },
-      [onAuthProviderSelected]
-    );
-
     const handleOnFranceConnectSelected = useCallback(
       (event: React.FormEvent) => {
         event.preventDefault();
@@ -165,7 +158,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             flow={flow}
             icon="email"
             authProvider="email"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
             id="e2e-login-with-email"
           >
             {flow === 'signup' ? (
@@ -189,7 +182,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             flow={flow}
             icon="google"
             authProvider="google"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithGoogle} />
           </StyledAuthProviderButton>
@@ -200,7 +193,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             icon="facebook"
             flow={flow}
             authProvider="facebook"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithFacebook} />
           </StyledAuthProviderButton>
@@ -211,7 +204,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
             icon="azureactivedirectory"
             flow={flow}
             authProvider="azureactivedirectory"
-            onContinue={handleOnAuthProviderSelected}
+            onContinue={onAuthProviderSelected}
           >
             <FormattedMessage
               {...messages.continueWithAzure}
@@ -222,7 +215,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(
         <Outlet
           id="app.components.SignUpIn.AuthProviders.ContainerEnd"
           flow={flow}
-          onContinue={handleOnAuthProviderSelected}
+          onContinue={onAuthProviderSelected}
         />
 
         <Options>
@@ -262,6 +255,8 @@ const Data = adopt<DataProps>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {(dataProps) => <AuthProvidersWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps: DataProps) => (
+      <AuthProvidersWithHoC {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

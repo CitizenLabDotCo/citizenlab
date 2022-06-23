@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IdeaOfficialFeedbackPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -12,8 +14,8 @@ class IdeaOfficialFeedbackPolicy < ApplicationPolicy
     end
   end
 
-  def create? 
-    user&.active_admin_or_moderator?(record.post.project.id)
+  def create?
+    user&.active? && UserRoleService.new.can_moderate?(record, user)
   end
 
   def show?
@@ -27,5 +29,4 @@ class IdeaOfficialFeedbackPolicy < ApplicationPolicy
   def destroy?
     create?
   end
-
 end

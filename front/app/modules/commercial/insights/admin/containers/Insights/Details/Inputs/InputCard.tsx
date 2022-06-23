@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // styles
 import styled from 'styled-components';
@@ -38,7 +38,7 @@ const InputBody = styled.div`
   span,
   strong,
   em {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     font-style: normal;
     font-weight: 500;
   }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UserConfirmation
   class DeliverConfirmationCode < ApplicationInteractor
     delegate :user, to: :context

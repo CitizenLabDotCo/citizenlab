@@ -32,7 +32,7 @@ const Container = styled.div`
 
 const Title = styled.h3<{ isInModal?: boolean }>`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -116,11 +116,11 @@ const Buttons = styled.div`
 
     &.whatsapp {
       color: #fff;
-      background: #23b43a;
+      background: ${colors.whatsapp};
 
       &:hover {
         color: #fff;
-        background: ${darken(0.12, '#23B43A')};
+        background: ${darken(0.12, colors.whatsapp)};
       }
     }
 

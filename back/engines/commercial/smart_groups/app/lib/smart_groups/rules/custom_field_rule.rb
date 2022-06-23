@@ -1,5 +1,6 @@
-module SmartGroups::Rules
+# frozen_string_literal: true
 
+module SmartGroups::Rules
   module CustomFieldRule
     extend ActiveSupport::Concern
 
@@ -18,14 +19,14 @@ module SmartGroups::Rules
       # Must be defined here in order to be able
       # to overwrite the same method in
       # DescribableRule.
-      def description_property locale
+      def description_property(locale)
         CustomField.find(custom_field_id).title_multiloc[locale]
       end
     end
 
     class_methods do
-      def from_json json
-        self.new(json['customFieldId'], json['predicate'], json['value'])
+      def from_json(json)
+        new(json['customFieldId'], json['predicate'], json['value'])
       end
     end
 
@@ -33,7 +34,7 @@ module SmartGroups::Rules
       json = {
         'ruleType' => rule_type,
         'customFieldId' => custom_field_id,
-        'predicate' => predicate,
+        'predicate' => predicate
       }
       json['value'] = value if needs_value?
       json
@@ -42,7 +43,5 @@ module SmartGroups::Rules
     def rule_type
       self.class.rule_type
     end
-
   end
-
 end

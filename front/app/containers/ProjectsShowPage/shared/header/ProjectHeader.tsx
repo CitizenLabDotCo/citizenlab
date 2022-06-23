@@ -1,17 +1,16 @@
-import React, { memo } from 'react';
+import React, { useState, memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { canModerateProject } from 'services/permissions/rules/projectPermissions';
-
+import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
-import { Button } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 import Image from 'components/UI/Image';
 import Outlet from 'components/Outlet';
 
 // hooks
-import useLocale from 'hooks/useLocale';
 import useProject from 'hooks/useProject';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -89,22 +88,29 @@ interface Props {
 
 const ProjectHeader = memo<Props & InjectedIntlProps>(
   ({ projectId, className, intl: { formatMessage } }) => {
-    const locale = useLocale();
+    const [moduleActive, setModuleActive] = useState(false);
+
     const project = useProject({ projectId });
     const authUser = useAuthUser();
     const projectFolderId = project?.attributes.folder_id;
 
-    if (!isNilOrError(locale) && !isNilOrError(project)) {
+    if (!isNilOrError(project)) {
       const projectHeaderImageLargeUrl = project?.attributes?.header_bg?.large;
       const userCanEditProject =
         !isNilOrError(authUser) &&
         canModerateProject(project.id, { data: authUser });
+
+      const setModuleToActive = () => setModuleActive(true);
 
       return (
         <Container className={className || ''}>
           <ContentContainer maxWidth={maxPageWidth}>
             {(projectFolderId || userCanEditProject) && (
               <TopBar>
+                {/*
+                  Needs to change: Outlet should always render.
+                  Condition needs to be inside the Outlet.
+                */}
                 {projectFolderId && (
                   <Outlet
                     id="app.containers.ProjectsShowPage.shared.header.ProjectHeader.GoBackButton"
@@ -115,8 +121,7 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
                 {userCanEditProject && (
                   <EditButton
                     icon="edit"
-                    locale={locale}
-                    linkTo={`/admin/projects/${project.id}/edit`}
+                    linkTo={adminProjectsProjectPath(project.id)}
                     buttonStyle="secondary"
                     padding="5px 8px"
                   >
@@ -140,7 +145,11 @@ const ProjectHeader = memo<Props & InjectedIntlProps>(
               projectId={projectId}
               hasHeaderImage={!!projectHeaderImageLargeUrl}
             />
-            <ProjectInfo projectId={projectId} />
+            {!moduleActive && <ProjectInfo projectId={projectId} />}
+            <Outlet
+              id="app.ProjectsShowPage.shared.header.ProjectInfo.contentBuilder"
+              onMount={setModuleToActive}
+            />
           </ContentContainer>
         </Container>
       );

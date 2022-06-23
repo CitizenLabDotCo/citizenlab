@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: verification_verifications
@@ -16,16 +18,16 @@
 #  index_verification_verifications_on_user_id     (user_id)
 #
 module Verification
-	class Verification < ApplicationRecord
+  class Verification < ApplicationRecord
     belongs_to :user
 
     validates :method_name, :hashed_uid, presence: true
-    validates :active, inclusion: {in: [true, false]}
+    validates :active, inclusion: { in: [true, false] }
 
-    scope :active, -> {where(active: true)}
+    scope :active, -> { where(active: true) }
 
     def event_bus_item_name
       "Verification by #{method_name}"
     end
-	end
+  end
 end

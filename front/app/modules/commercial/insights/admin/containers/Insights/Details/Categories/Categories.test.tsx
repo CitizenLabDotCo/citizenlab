@@ -19,7 +19,7 @@ const viewId = '1';
 
 const mockLocationData = { pathname: '', query: {} };
 
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
@@ -35,6 +35,7 @@ jest.mock('react-router', () => {
     Link: () => <>Link</>,
   };
 });
+jest.mock('utils/cl-router/Link');
 
 describe('Insights Details Categories', () => {
   it('renders Categories', () => {

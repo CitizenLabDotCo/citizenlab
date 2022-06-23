@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateConsents < ActiveRecord::Migration[5.1]
   def change
     create_table :email_campaigns_consents, id: :uuid do |t|
@@ -6,8 +8,7 @@ class CreateConsents < ActiveRecord::Migration[5.1]
       t.boolean :consented, null: false
       t.timestamps
 
-      t.index [:campaign_type, :user_id], unique: true
+      t.index %i[campaign_type user_id], unique: true
     end
-
   end
 end

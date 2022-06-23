@@ -1,9 +1,10 @@
-class RefactorDemograpicFields < ActiveRecord::Migration[5.1]
+# frozen_string_literal: true
 
-  def stringify_values obj
-    obj.map do |k,v|
-      [k, v && v.to_s]
-    end.to_h
+class RefactorDemograpicFields < ActiveRecord::Migration[5.1]
+  def stringify_values(obj)
+    obj.transform_values do |v|
+      v&.to_s
+    end
   end
 
   def change

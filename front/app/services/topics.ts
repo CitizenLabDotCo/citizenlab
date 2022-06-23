@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-const apiEndpoint = `${API_PATH}/topics`;
+export const apiEndpoint = `${API_PATH}/topics`;
 
 type DefaultTopicCodes =
   | 'nature'
@@ -43,26 +43,21 @@ export interface ITopics {
   data: ITopicData[];
 }
 
+export interface ITopicsQueryParams {
+  code?: Code;
+  exclude_code?: Code;
+  sort?: 'new' | 'custom';
+  for_homepage_filter?: boolean;
+}
+
+interface ITopicsStreamParams extends IStreamParams {
+  queryParameters: ITopicsQueryParams;
+}
+
 export function topicByIdStream(topicId: string) {
   return streams.get<ITopic>({ apiEndpoint: `${apiEndpoint}/${topicId}` });
 }
 
-export function topicsStream(streamParams: IStreamParams | null = null) {
+export function topicsStream(streamParams: ITopicsStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
-}
-
-export async function addTopic(object) {
-  const response = await streams.add<ITopic>(apiEndpoint, { topic: object });
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
-  return response;
-}
-
-export function updateTopic(topicId: string, object) {
-  return streams.update<ITopic>(`${apiEndpoint}/${topicId}`, topicId, {
-    topic: object,
-  });
-}
-
-export function deleteTopic(topicId: string) {
-  return streams.delete(`${apiEndpoint}/${topicId}`, topicId);
 }

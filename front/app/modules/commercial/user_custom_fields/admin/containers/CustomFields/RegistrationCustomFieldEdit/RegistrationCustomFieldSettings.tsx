@@ -2,28 +2,30 @@ import React from 'react';
 import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 import {
-  IUserCustomFieldData,
   updateCustomFieldForUsers,
   isBuiltInField,
 } from '../../../../services/userCustomFields';
+import useUserCustomField from '../../../../hooks/useUserCustomField';
 
 import RegistrationCustomFieldForm, {
   FormValues,
 } from '../RegistrationCustomFieldForm';
+
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-type Props = {
-  customField: IUserCustomFieldData;
-};
+const RegistrationCustomFieldSettings = ({
+  params: { userCustomFieldId },
+}: WithRouterProps) => {
+  const customField = useUserCustomField(userCustomFieldId);
 
-interface State {}
+  if (isNilOrError(customField)) return null;
 
-class RegistrationCustomFieldSettings extends React.Component<Props, State> {
-  initialValues = () => {
-    const { customField } = this.props;
+  const initialValues = () => {
     return (
       customField && {
         input_type: customField.attributes.input_type,
@@ -35,22 +37,21 @@ class RegistrationCustomFieldSettings extends React.Component<Props, State> {
     );
   };
 
-  changedValues = (initialValues, newValues) => {
+  const changedValues = (initialValues, newValues) => {
     const changedKeys = keys(newValues).filter(
       (key) => !isEqual(initialValues[key], newValues[key])
     );
     return pick(newValues, changedKeys);
   };
 
-  handleSubmit = (
+  const handleSubmit = (
     values: FormValues,
     { setErrors, setSubmitting, setStatus }
   ) => {
-    const { customField } = this.props;
     if (!customField) return;
 
     updateCustomFieldForUsers(customField.id, {
-      ...this.changedValues(this.initialValues(), values),
+      ...changedValues(initialValues(), values),
     })
       .then(() => {
         clHistory.push('/admin/settings/registration');
@@ -66,30 +67,27 @@ class RegistrationCustomFieldSettings extends React.Component<Props, State> {
       });
   };
 
-  renderFn = (props) =>
-    this.props.customField && (
-      <RegistrationCustomFieldForm
-        {...props}
-        mode="edit"
-        customFieldId={this.props.customField.id}
-        builtInField={isBuiltInField(this.props.customField)}
-      />
-    );
-
-  render() {
-    const { customField } = this.props;
-
+  const renderFn = (props) => {
     return (
       customField && (
-        <Formik
-          initialValues={this.initialValues()}
-          onSubmit={this.handleSubmit}
-          render={this.renderFn}
-          validate={RegistrationCustomFieldForm['validate']}
+        <RegistrationCustomFieldForm
+          {...props}
+          mode="edit"
+          customFieldId={customField.id}
+          builtInField={isBuiltInField(customField)}
         />
       )
     );
-  }
-}
+  };
 
-export default RegistrationCustomFieldSettings;
+  return (
+    <Formik
+      initialValues={initialValues()}
+      onSubmit={handleSubmit}
+      render={renderFn}
+      validate={RegistrationCustomFieldForm['validate']}
+    />
+  );
+};
+
+export default withRouter(RegistrationCustomFieldSettings);

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::OfficialFeedbackController < ApplicationController
   before_action :set_post_type_id_and_policy, only: %i[index create]
   before_action :set_feedback, only: %i[show update destroy]
@@ -29,9 +31,9 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
     if @feedback.save
       SideFxOfficialFeedbackService.new.after_create @feedback, current_user
       render json: WebApi::V1::OfficialFeedbackSerializer.new(
-        @feedback, 
+        @feedback,
         params: fastjson_params
-        ).serialized_json, status: :created
+      ).serialized_json, status: :created
     else
       render json: { errors: @feedback.errors.details }, status: :unprocessable_entity
     end
@@ -60,7 +62,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       SideFxOfficialFeedbackService.new.after_destroy(feedback, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -81,11 +83,11 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
 
   def set_policy_class
     @policy_class = case @post_type
-      when 'Idea' then IdeaOfficialFeedbackPolicy
-      when 'Initiative' then InitiativeOfficialFeedbackPolicy
-      else raise "#{@post_type} has no official feedback policy defined"
+    when 'Idea' then IdeaOfficialFeedbackPolicy
+    when 'Initiative' then InitiativeOfficialFeedbackPolicy
+    else raise "#{@post_type} has no official feedback policy defined"
     end
-    raise RuntimeError, "must not be blank" if @post_type.blank?
+    raise 'must not be blank' if @post_type.blank?
   end
 
   def official_feedback_params

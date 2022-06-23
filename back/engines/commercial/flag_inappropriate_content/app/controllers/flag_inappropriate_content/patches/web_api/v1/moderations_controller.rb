@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module FlagInappropriateContent
   module Patches
     module WebApi
@@ -14,13 +16,13 @@ module FlagInappropriateContent
 
           def index_filter
             super
-            if params.include? :is_flagged
-              @moderations = if ActiveModel::Type::Boolean.new.cast params[:is_flagged]
-                @moderations.where(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
-              else
-                @moderations.where.not(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where('deleted_at IS NULL'))
-              end
-            end 
+            return unless params.include? :is_flagged
+
+            @moderations = if ActiveModel::Type::Boolean.new.cast params[:is_flagged]
+              @moderations.where(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where(deleted_at: nil))
+            else
+              @moderations.where.not(inappropriate_content_flag: FlagInappropriateContent::InappropriateContentFlag.where(deleted_at: nil))
+            end
           end
         end
       end

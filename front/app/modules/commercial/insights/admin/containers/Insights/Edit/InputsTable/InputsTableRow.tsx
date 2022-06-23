@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -40,7 +40,7 @@ const StyledTableRow = styled.tr`
   }
 
   .inputTitle {
-    font-size: ${fontSizes.small}px;
+    font-size: ${fontSizes.s}px;
     color: ${colors.label};
   }
 

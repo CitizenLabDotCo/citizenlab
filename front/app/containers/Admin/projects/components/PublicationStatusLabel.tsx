@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // types
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 interface Props {
   publicationStatus: PublicationStatus;

@@ -1,14 +1,15 @@
 import { createContext } from 'react';
-import { CLErrors, Message } from 'typings';
+import { CLErrors } from 'typings';
+import { ApiErrorGetter } from '.';
 
 export const APIErrorsContext = createContext<CLErrors | undefined>(undefined);
 
-export type ApiErrorGetter = (
-  errorKey: string,
-  fieldName: string
-) => Message | undefined;
-
 export const FormContext = createContext<{
   showAllErrors: boolean;
+  inputId: string | undefined;
   getApiErrorMessage: ApiErrorGetter;
-}>({ showAllErrors: false, getApiErrorMessage: () => undefined });
+}>({
+  showAllErrors: false,
+  getApiErrorMessage: () => undefined,
+  inputId: undefined,
+});

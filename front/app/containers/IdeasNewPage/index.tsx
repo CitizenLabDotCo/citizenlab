@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
 // libraries
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -258,18 +258,13 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         }
 
         const { fileOrImageError } = await this.globalState.get();
+        const newUrl = `/ideas/${idea.data.attributes.slug}?new_idea_id=${ideaId}`;
         if (fileOrImageError) {
           setTimeout(() => {
-            clHistory.push({
-              pathname: `/ideas/${idea.data.attributes.slug}`,
-              search: `?new_idea_id=${ideaId}`,
-            });
+            clHistory.push(newUrl);
           }, 4000);
         } else {
-          clHistory.push({
-            pathname: `/ideas/${idea.data.attributes.slug}`,
-            search: `?new_idea_id=${ideaId}`,
-          });
+          clHistory.push(newUrl);
         }
       } catch (error) {
         // eslint-disable-next-line no-console

@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource 'Comments' do
-
   before do
     header 'Content-Type', 'application/json'
     @user = create(:user)
@@ -15,7 +15,7 @@ resource 'Comments' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @idea =  create(:idea)
+      @idea = create(:idea)
     end
 
     with_options scope: :comment do
@@ -27,9 +27,9 @@ resource 'Comments' do
     let(:body_multiloc) { comment.body_multiloc }
 
     example 'Toxicity detection job is enqueued when creating a comment', document: false do
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob)
+      end.to have_enqueued_job(ToxicityDetectionJob)
     end
   end
 
@@ -37,22 +37,21 @@ resource 'Comments' do
     before do
       SettingsService.new.activate_feature! 'moderation'
       SettingsService.new.activate_feature! 'flag_inappropriate_content'
-      @initiative =  create(:initiative)
+      @initiative = create(:initiative)
       @comment = create(:comment, author: @user, post: @initiative)
     end
 
     with_options scope: :comment do
       parameter :body_multiloc
     end
-    
+
     let(:id) { @comment.id }
-    let(:body_multiloc) { {'en' => 'Changed body'} }
+    let(:body_multiloc) { { 'en' => 'Changed body' } }
 
     example 'Toxicity detection job is enqueued when updating an comment\'s body', document: false do
-      expect {
+      expect do
         do_request
-      }.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
+      end.to have_enqueued_job(ToxicityDetectionJob).with(@comment, attributes: [:body_multiloc])
     end
-  end 
-
+  end
 end

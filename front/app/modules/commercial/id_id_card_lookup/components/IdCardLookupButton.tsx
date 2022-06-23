@@ -1,7 +1,10 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 // typings
-import { IDLookupMethod } from 'services/verificationMethods';
+import {
+  IDLookupMethod,
+  TVerificationMethod,
+} from 'services/verificationMethods';
 
 // components
 import VerificationMethodButton from 'modules/commercial/verification/citizen/components/VerificationMethodButton';
@@ -11,22 +14,20 @@ import T from 'components/T';
 
 interface Props {
   method: IDLookupMethod;
-  onMethodSelected: () => void;
+  onClick: (method: TVerificationMethod) => void;
   last: boolean;
 }
 
-const IdCardLookupButton = ({ method, last, onMethodSelected }: Props) => {
-  const handleOnClick = useCallback(() => {
-    onMethodSelected();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const IdCardLookupButton = ({ method, last, onClick }: Props) => {
+  const handleOnClick = () => {
+    onClick(method);
+  };
 
   return (
     <VerificationMethodButton
-      key={method.id}
-      id={`e2e-${method.attributes.name}-button`}
-      className={last ? 'last' : ''}
+      id="e2e-id_card_lookup-button"
       onClick={handleOnClick}
+      last={last}
     >
       <T value={method.attributes.method_name_multiloc} />
     </VerificationMethodButton>

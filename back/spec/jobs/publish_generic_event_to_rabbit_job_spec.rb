@@ -8,7 +8,7 @@ RSpec.describe PublishGenericEventToRabbitJob, type: :job do
   describe '#perform' do
     let(:bunny) { instance_double(Bunny::Session) }
     let(:routing_key) { 'routing_key' }
-    let(:generic_event) { { field_1: 'value1', field_2: 'value2' } }
+    let(:generic_event) { { field1: 'value1', field2: 'value2' } }
 
     it 'actually publishes the event to RabbitMQ' do
       expect(job).to receive(:publish_to_rabbitmq) do |_bunny, event, actual_routing_key|

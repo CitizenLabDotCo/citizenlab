@@ -40,7 +40,6 @@ interface State {}
 class IdeasContainer extends PureComponent<Props, State> {
   render() {
     const { projectId, phaseId, phase, className } = this.props;
-    const projectIds = [projectId];
 
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
@@ -70,7 +69,7 @@ class IdeasContainer extends PureComponent<Props, State> {
             <IdeaCards
               className={participationMethod}
               type="load-more"
-              projectIds={projectIds}
+              projectId={projectId}
               phaseId={phaseId}
               showViewToggle={true}
               defaultSortingMethod={phase.attributes.ideas_order || null}

@@ -40,7 +40,7 @@ module EmailCampaigns
     recipient_filter :user_filter_admin_only
     recipient_filter :user_filter_no_invitees
 
-    before_send :is_content_worth_sending?
+    before_send :content_worth_sending?
 
     N_TOP_IDEAS = ENV.fetch('N_ADMIN_WEEKLY_REPORT_IDEAS', 12).to_i
 
@@ -48,8 +48,8 @@ module EmailCampaigns
       config_timezone = Time.find_zone(AppConfiguration.instance.settings('core', 'timezone'))
 
       IceCube::Schedule.new(config_timezone.local(2019)) do |schedule|
-        every_monday_at_10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
-        schedule.add_recurrence_rule(every_monday_at_10_am)
+        every_monday_at10_am = IceCube::Rule.weekly(1).day(:monday).hour_of_day(10)
+        schedule.add_recurrence_rule(every_monday_at10_am)
       end
     end
 
@@ -83,11 +83,11 @@ module EmailCampaigns
     private
 
     def initiative_ids(time:)
-      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).map { |d| d[:id] }.compact
+      @initiative_ids ||= (new_initiatives(time: time) + successful_initiatives(time: time)).pluck(:id).compact
     end
 
     def idea_ids(time:)
-      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].map { |idea_h| idea_h[:id] } }
+      @idea_ids ||= top_project_ideas.flat_map { |tpi| tpi[:top_ideas].pluck(:id) }
     end
 
     def user_filter_admin_only(users_scope, _options = {})
@@ -98,7 +98,7 @@ module EmailCampaigns
       users_scope.active
     end
 
-    def is_content_worth_sending?(_)
+    def content_worth_sending?(_)
       [
         statistics.dig(:activities, :new_ideas, :increase),
         statistics.dig(:activities, :new_initiatives, :increase),
@@ -129,9 +129,9 @@ module EmailCampaigns
     end
 
     def days_ago
-      t_1, t_2 = ic_schedule.first 2
-      t_2 ||= t_1 + 7.days
-      ((t_2 - t_1) / 1.day).days
+      t1, t2 = ic_schedule.first 2
+      t2 ||= t1 + 7.days
+      ((t2 - t1) / 1.day).days
     end
 
     def stat_increase(stats = [])
@@ -149,14 +149,14 @@ module EmailCampaigns
         {
           project: serialize_project(project),
           current_phase: phase ? serialize_phase(phase) : nil,
-          top_ideas: top_ideas_grouped_by_project[project.id].map(&method(:serialize_idea))
+          top_ideas: top_ideas_grouped_by_project[project.id].map { |idea| serialize_idea(idea) }
         }
       end
     end
 
     def top_project_ids
       project_ideas_total_activity_sum = lambda { |project_id|
-        top_ideas_grouped_by_project[project_id].sum(&method(:total_idea_activity))
+        top_ideas_grouped_by_project[project_id].sum { |idea| total_idea_activity(idea) }
       }
 
       @top_project_ids ||= top_ideas_grouped_by_project.keys.sort_by(&project_ideas_total_activity_sum).reverse
@@ -171,17 +171,17 @@ module EmailCampaigns
     end
 
     def active_ideas
-      @active_ideas ||= published_ideas.yield_self do |ideas|
+      @active_ideas ||= published_ideas.then do |ideas|
         ideas.select { |idea| total_idea_activity(idea).positive? }
-             .sort_by(&method(:total_idea_activity))
-             .last(N_TOP_IDEAS)
+          .sort_by { |idea| total_idea_activity(idea) }
+          .last(N_TOP_IDEAS)
       end
     end
 
     def new_ideas
       @new_ideas ||= published_ideas.where('published_at > ?', Time.now - days_ago)
-                                    .sort_by(&method(:total_idea_activity))
-                                    .last(N_TOP_IDEAS)
+        .sort_by { |idea| total_idea_activity(idea) }
+        .last(N_TOP_IDEAS)
     end
 
     def published_ideas
@@ -202,20 +202,20 @@ module EmailCampaigns
 
     def new_initiatives(time: Time.zone.today)
       @new_initiatives ||= Initiative.published.where('published_at > ?', (time - 1.week))
-                                     .order(published_at: :desc)
-                                     .includes(:initiative_images)
-                                     .map(&method(:serialize_initiative))
+        .order(published_at: :desc)
+        .includes(:initiative_images)
+        .map { |initiative| serialize_initiative(initiative) }
     end
 
     def successful_initiatives(time: Time.zone.today)
       @successful_initiatives ||= Initiative
-                                 .published
-                                 .joins(initiative_status_changes: :initiative_status)
-                                 .includes(:initiative_images)
-                                 .where(initiative_statuses: { code: 'threshold_reached' })
-                                 .where('initiative_status_changes.created_at > ?', time - 1.week)
-                                 .feedback_needed
-                                 .map(&method(:serialize_initiative))
+        .published
+        .joins(initiative_status_changes: :initiative_status)
+        .includes(:initiative_images)
+        .where(initiative_statuses: { code: 'threshold_reached' })
+        .where('initiative_status_changes.created_at > ?', time - 1.week)
+        .feedback_needed
+        .map { |initiative| serialize_initiative(initiative) }
     end
 
     def ideas_activity_counts(ideas)
@@ -280,7 +280,7 @@ module EmailCampaigns
         upvotes_count: initiative.upvotes_count,
         comments_count: initiative.comments_count,
         threshold_reached_at: initiative.threshold_reached_at&.iso8601,
-        images: initiative.initiative_images.map(&method(:serialize_image)),
+        images: initiative.initiative_images.map { |image| serialize_image(image) },
         header_bg: { versions: version_urls(initiative.header_bg) }
       }
     end
@@ -293,7 +293,7 @@ module EmailCampaigns
     end
 
     def version_urls(image)
-      image.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      image.versions.to_h { |k, v| [k.to_s, v.url] }
     end
   end
 end

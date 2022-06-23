@@ -52,7 +52,7 @@ export const QuestionNumber = styled.span`
 `;
 
 export const QuestionText = styled.span`
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   font-weight: 600;
 `;
 

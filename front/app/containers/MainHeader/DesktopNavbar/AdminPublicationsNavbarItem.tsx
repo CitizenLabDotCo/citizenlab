@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import { Icon, Dropdown } from '@citizenlab/cl2-component-library';
@@ -203,7 +203,7 @@ const AdminPublicationsNavbarItem = ({
           opened={projectsDropdownOpened}
           onClickOutside={toggleProjectsDropdown}
           content={
-            <ProjectsList>
+            <ProjectsList id="e2e-projects-dropdown-content">
               {adminPublications.map((item: IAdminPublicationContent) => (
                 <React.Fragment key={item.publicationId}>
                   {item.publicationType === 'project' && (
@@ -225,7 +225,7 @@ const AdminPublicationsNavbarItem = ({
           footer={
             <>
               {totalProjectsListLength > 9 && (
-                <ProjectsListFooter to={linkTo}>
+                <ProjectsListFooter to={linkTo} id="e2e-all-projects-link">
                   <FormattedMessage {...messages.allProjects} />
                 </ProjectsListFooter>
               )}

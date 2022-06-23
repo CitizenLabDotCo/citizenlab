@@ -5,7 +5,7 @@ import {
   reorderNavbarItem,
   removeNavbarItem,
 } from '../../../../services/navbar';
-import { deletePage } from '../../../../services/pages';
+import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
 
 // components
@@ -19,7 +19,6 @@ import NavbarItemRow from '../../../components/NavbarItemRow';
 
 // hooks
 import useNavbarItems from 'hooks/useNavbarItems';
-import useLocale from 'hooks/useLocale';
 import usePageSlugById from 'hooks/usePageSlugById';
 
 // i18n
@@ -36,14 +35,9 @@ const VisibleNavbarItemList = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
   const navbarItems = useNavbarItems();
-  const locale = useLocale();
   const pageSlugById = usePageSlugById();
 
-  if (
-    isNilOrError(navbarItems) ||
-    isNilOrError(pageSlugById) ||
-    isNilOrError(locale)
-  ) {
+  if (isNilOrError(navbarItems) || isNilOrError(pageSlugById)) {
     return null;
   }
 
@@ -55,16 +49,14 @@ const VisibleNavbarItemList = ({
       : clHistory.push(`${NAVIGATION_PATH}/navbar-items/edit/${navbarItem.id}`);
   };
 
-  const handleClickView = (navbarItem: INavbarItem) => () => {
-    const originWithLocale = `${window.location.origin}/${locale}`;
-    const slug =
+  const getViewButtonLink = (navbarItem: INavbarItem) => {
+    return (
       getNavbarItemSlug(
         navbarItem.attributes.code,
         pageSlugById,
         navbarItem.relationships.static_page.data?.id
-      ) || '/';
-
-    window.open(originWithLocale + slug, '_blank');
+      ) || '/'
+    );
   };
 
   const handleClickRemove = (navbarItemId: string) => () => {
@@ -102,8 +94,8 @@ const VisibleNavbarItemList = ({
                   title={navbarItem.attributes.title_multiloc}
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   showEditButton={navbarItem.attributes.code !== 'home'}
+                  viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
-                  onClickViewButton={handleClickView(navbarItem)}
                 />
               </LockedRow>
             ))}
@@ -122,12 +114,12 @@ const VisibleNavbarItemList = ({
                   isDefaultPage={navbarItem.attributes.code !== 'custom'}
                   showEditButton
                   showRemoveButton
+                  viewButtonLink={getViewButtonLink(navbarItem)}
                   onClickEditButton={handleClickEdit(navbarItem)}
                   onClickRemoveButton={handleClickRemove(navbarItem.id)}
                   onClickDeleteButton={handleClickDelete(
                     navbarItem.relationships.static_page.data?.id
                   )}
-                  onClickViewButton={handleClickView(navbarItem)}
                 />
               </SortableRow>
             ))}

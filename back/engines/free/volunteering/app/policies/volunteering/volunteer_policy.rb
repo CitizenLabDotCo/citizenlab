@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Volunteering
   class VolunteerPolicy < ApplicationPolicy
     class Scope
@@ -9,25 +11,26 @@ module Volunteering
       end
 
       def resolve
-        return scope.none if !user
+        return scope.none unless user
+
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         joined_scope = scope.joins(:cause)
         joined_scope
-          .where(volunteering_causes: {participation_context_id: moderatable_projects})
-          .or(joined_scope.where(volunteering_causes: {participation_context_id: moderatable_phases}))
+          .where(volunteering_causes: { participation_context_id: moderatable_projects })
+          .or(joined_scope.where(volunteering_causes: { participation_context_id: moderatable_phases }))
       end
     end
 
     def index_xlsx?
-      # TODO also allow folder moderators
-      user&.active? && (user.admin? || user.project_moderator?)
+      # TODO: also allow folder moderators
+      user&.active? && (user&.admin? || user&.project_moderator?)
     end
 
     def create?
-      user&.active? && 
-      (record.user_id == user.id) &&
-      ProjectPolicy.new(user, record.cause.participation_context.project).show?
+      user&.active? &&
+        (record.user_id == user.id) &&
+        ProjectPolicy.new(user, record.cause.participation_context.project).show?
     end
 
     def destroy?

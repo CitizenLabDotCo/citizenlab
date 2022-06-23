@@ -60,7 +60,7 @@ const TopicFilterBox = memo<Props>(
 );
 
 const Data = adopt<DataProps, InputProps>({
-  topics: <GetTopics exclude_code="custom" />,
+  topics: <GetTopics excludeCode="custom" />,
 });
 
 export default (inputProps: InputProps) => (

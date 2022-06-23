@@ -78,13 +78,12 @@ class User < ApplicationRecord
       where('lower(email) = lower(?)', email).first
     end
 
-
     # Returns the user record from the database which matches the specified
     # email address (case-insensitive) or raises `ActiveRecord::RecordNotFound`.
     # @param email [String] The email of the user
     # @return [User] The user record
     def find_by_cimail!(email)
-      find_by_cimail(email) || fail(ActiveRecord::RecordNotFound)
+      find_by_cimail(email) || raise(ActiveRecord::RecordNotFound)
     end
 
     # This method is used by knock to get the user.
@@ -105,16 +104,16 @@ class User < ApplicationRecord
   mount_base64_uploader :avatar, AvatarUploader
 
   pg_search_scope :search_by_all,
-                  against: %i[first_name last_name email],
-                  using: { tsearch: { prefix: true } }
+    against: %i[first_name last_name email],
+    using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_full_name,
-                  against: %i[first_name last_name],
-                  using: { tsearch: { prefix: true } }
+    against: %i[first_name last_name],
+    using: { tsearch: { prefix: true } }
 
   pg_search_scope :by_first_name,
-                  against: [:first_name],
-                  using: { tsearch: { prefix: true } }
+    against: [:first_name],
+    using: { tsearch: { prefix: true } }
 
   scope :by_username, lambda { |username|
     AppConfiguration.instance.feature_activated?('abbreviated_user_names') ? by_first_name(username) : by_full_name(username)
@@ -127,6 +126,10 @@ class User < ApplicationRecord
   has_many :official_feedbacks, dependent: :nullify
   has_many :votes, dependent: :nullify
 
+  before_validation :set_cl1_migrated, on: :create
+  before_validation :generate_slug
+  before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  before_validation :assign_email_or_phone, if: :email_changed?
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
@@ -151,7 +154,7 @@ class User < ApplicationRecord
   validates :slug, uniqueness: true, presence: true, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc { AppConfiguration.instance.settings('core', 'locales') } }
-  validates :bio_multiloc, multiloc: { presence: false }
+  validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
   validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
@@ -172,8 +175,8 @@ class User < ApplicationRecord
   validate :validate_password_not_common
 
   validate do |record|
-    record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
-    record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
+    record.errors.add(:last_name, :blank) unless record.last_name.present? || record.cl1_migrated || record.invite_pending?
+    record.errors.add(:password, :blank) unless record.password_digest.present? || record.identities.any? || record.invite_pending?
     if record.email && (duplicate_user = User.find_by_cimail(record.email)).present? && duplicate_user.id != id
       if duplicate_user.invite_pending?
         ErrorsService.new.remove record.errors, :email, :taken, value: record.email
@@ -191,11 +194,6 @@ class User < ApplicationRecord
   validate :validate_email_domain_blacklist
 
   validates :roles, json: { schema: -> { User.roles_json_schema }, message: ->(errors) { errors } }
-
-  before_validation :set_cl1_migrated, on: :create
-  before_validation :generate_slug
-  before_validation :sanitize_bio_multiloc, if: :bio_multiloc
-  before_validation :assign_email_or_phone, if: :email_changed?
 
   scope :admin, -> { where("roles @> '[{\"type\":\"admin\"}]'") }
   scope :not_admin, -> { where.not("roles @> '[{\"type\":\"admin\"}]'") }
@@ -299,20 +297,13 @@ class User < ApplicationRecord
     false
   end
 
-  def admin_or_moderator?(project_id)
-    admin? || (project_id && project_moderator?(project_id))
+  def normal_user?
+    !admin?
   end
 
-  def active_admin_or_moderator?(project_id)
-    active? && admin_or_moderator?(project_id)
-  end
-
-  def moderatable_project_ids # TODO include folders?
+  # TODO: include folders?
+  def moderatable_project_ids
     []
-  end
-
-  def moderatable_projects
-    Project.none
   end
 
   def add_role(type, options = {})
@@ -362,11 +353,7 @@ class User < ApplicationRecord
   def generate_slug
     return if slug.present?
 
-    if AppConfiguration.instance.feature_activated?('abbreviated_user_names')
-      self.slug = SecureRandom.uuid
-    elsif first_name.present?
-      self.slug = SlugService.new.generate_slug self, full_name
-    end
+    self.slug = UserSlugService.new.generate_slug(self, full_name) if first_name.present?
   end
 
   def sanitize_bio_multiloc
@@ -392,12 +379,12 @@ class User < ApplicationRecord
   end
 
   def validate_email_domain_blacklist
-    return unless email.present?
+    return if email.blank?
 
     domain = email.split('@')&.last
-    if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
-      errors.add(:email, :domain_blacklisted, value: domain)
-    end
+    return unless domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
+
+    errors.add(:email, :domain_blacklisted, value: domain)
   end
 
   def validate_minimum_password_length
@@ -427,7 +414,7 @@ class User < ApplicationRecord
 
   def remove_initiated_notifications
     initiator_notifications.each do |notification|
-      if !notification.update initiating_user: nil
+      unless notification.update initiating_user: nil
         notification.destroy!
       end
     end
@@ -439,6 +426,7 @@ User.include_if_ee('Verification::Patches::User')
 
 User.include(UserConfirmation::Extensions::User)
 User.prepend_if_ee('MultiTenancy::Patches::User')
+User.prepend_if_ee('MultiTenancy::Patches::UserConfirmation::User')
 User.prepend_if_ee('ProjectFolders::Patches::User')
 User.prepend_if_ee('ProjectManagement::Patches::User')
 User.prepend_if_ee('SmartGroups::Patches::User')

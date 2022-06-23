@@ -1,19 +1,13 @@
+# frozen_string_literal: true
+
 module ClErrors
   class TransactionError < StandardError
-
-    def initialize(options={})
+    def initialize(options = {})
       super
-  	  @error_key = options.fetch(:error_key, nil)
-  	  @code = options.fetch(:code, 422)
-  	end
+      @error_key = options.fetch(:error_key, nil)
+      @code = options.fetch(:code, 422)
+    end
 
-  	def error_key
-  	  @error_key
-  	end
-
-  	def code
-  	  @code
-  	end
-
+    attr_reader :error_key, :code
   end
 end

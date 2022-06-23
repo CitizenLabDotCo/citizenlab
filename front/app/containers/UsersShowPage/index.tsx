@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { PreviousPathnameContext } from 'context';
 import { isNilOrError } from 'utils/helperUtils';
 import { isError } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // components
 import IdeaCards from 'components/IdeaCards';
@@ -34,7 +34,7 @@ const NotFoundContainer = styled.main`
   flex-direction: column;
   align-items: center;
   padding-top: 4rem;
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.l}px;
   color: ${colors.label};
 `;
 

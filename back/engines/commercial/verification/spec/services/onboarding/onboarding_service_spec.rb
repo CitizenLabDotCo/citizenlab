@@ -43,7 +43,6 @@ describe Onboarding::OnboardingService do
           expect(service.current_campaign(not_verified)).not_to eq :verification
         end
       end
-
     end
   end
 end
