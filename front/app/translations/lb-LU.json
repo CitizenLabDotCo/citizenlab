@@ -322,7 +322,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "Diskutéiert mat iwwer d’Fro '{postTitle}' ënner {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Diskutéiert mat: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Diskutéiert mat: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Stëmmt fir {postTitle} ënner",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Ech hu grad eng Propositioun gepost op {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link op d'Haaptsäit",
