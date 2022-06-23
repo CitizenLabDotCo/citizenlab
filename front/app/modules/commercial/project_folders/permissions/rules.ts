@@ -8,8 +8,6 @@ import { isAdmin } from 'services/permissions/roles';
 import {
   canAccessRoute,
   isModeratorRoute,
-  isAdminRoute,
-  MODERATOR_ROUTES,
 } from 'services/permissions/rules/routePermissions';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
@@ -28,17 +26,7 @@ const canUserAccessAdminFolderRoute = (
     // besides their respective folders/projects
     (isModeratorRoute(item) || item.path.includes('folders'));
 
-  return (
-    canAccessRoute(item, user, tenant) ||
-    hasAdminFolderRouteAccess ||
-    // To be refactored.
-    // Removing this at the moment, redirects
-    // a folder mod to the home page on refreshing a page
-    // the mod has access too.
-    (isAdminRoute(item.path) &&
-      (user ? isProjectFolderModerator(user.data) : false) &&
-      MODERATOR_ROUTES.includes(item.path))
-  );
+  return canAccessRoute(item, user, tenant) || hasAdminFolderRouteAccess;
 };
 
 definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
