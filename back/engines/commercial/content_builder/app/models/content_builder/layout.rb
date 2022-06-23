@@ -38,7 +38,7 @@ module ContentBuilder
 
       craftjs_jsonmultiloc.each do |locale, json|
         json.each do |key, elt|
-          next if key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Iframe'
+          next if elt.is_a?(Hash) && elt['type'].is_a?(Hash) && (key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Iframe')
 
           url = elt.dig 'props', 'url'
           if url && !url_validation_service.whitelisted?(url)
