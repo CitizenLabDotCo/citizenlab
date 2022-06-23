@@ -735,6 +735,80 @@ workflows:
                 mentions: ':boom: FAILURE: Some tests failed.'
                 template: basic_fail_1
 
+  manual-templates:
+    when: << pipeline.parameters.templates >>
+    jobs:
+      - back-build-ee-docker-image:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+      - back-generate-tenant-templates:
+          name: 'Benelux'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.57.74.84'
+          env_file: '.env-production-benelux'
+      - back-generate-tenant-templates:
+          name: 'South America'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.67.181.38'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'Canada'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.183.23.116'
+          env_file: '.env-production-canada'
+      - back-generate-tenant-templates:
+          name: 'US West'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.13.59.174'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'UK'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.179.69.215'
+          env_file: '.env-web'
+      - back-test-tenant-templates:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          requires:
+            - back-build-ee-docker-image
+            - 'Benelux'
+            - 'South America'
+            - 'Canada'
+            - 'US West'
+            - 'UK'
+      - back-release-tenant-templates:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          requires:
+            - back-test-tenant-templates
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ':boom: FAILURE: Some templates are invalid and could not be released.'
+                template: basic_fail_1
   nightly-templates:
     triggers:
       - schedule:
@@ -743,7 +817,6 @@ workflows:
             branches:
               only:
                 - production
-    when: << pipeline.parameters.templates >>
     jobs:
       - back-build-ee-docker-image:
           context:
