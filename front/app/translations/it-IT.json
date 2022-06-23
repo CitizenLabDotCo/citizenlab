@@ -322,7 +322,6 @@
   "app.components.PostComponents.SharingModalContent.questionEmailSharingModalContentBody": "Partecipa alla discussione su questa domanda '{postTitle}' a {postUrl}!",
   "app.components.PostComponents.SharingModalContent.questionEmailSharingSubject": "Partecipa alla discussione: {postTitle}.",
   "app.components.PostComponents.SharingModalContent.questionWhatsAppMessage": "Partecipa alla discussione: {postTitle}.",
-  "app.components.PostComponents.SharingModalContent.rocketAltValue": "Icon of a rocket",
   "app.components.PostComponents.SharingModalContent.twitterMessage": "Vota per {postTitle} su",
   "app.components.PostComponents.SharingModalContent.whatsAppMessageProposal": "Ho appena postato una proposta per {orgName}: {postTitle}",
   "app.components.PostComponents.linkToHomePage": "Link alla home page",
