@@ -1,8 +1,5 @@
 import React from 'react';
 import { Medium } from '../utils';
-
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfiguration from 'hooks/useAppConfiguration';
 import { FacebookShareButton } from 'react-share';
 
 // i18n
@@ -45,8 +42,6 @@ const Facebook = ({
   url,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const tenant = useAppConfiguration();
-
   const handleClick = () => {
     trackClick('facebook');
   };
@@ -55,23 +50,17 @@ const Facebook = ({
     const properties = { network: medium };
     trackEventByName(tracks.shareButtonClicked.name, properties);
   };
-
-  if (!isNilOrError(tenant)) {
-    const facebookConfig = tenant.data.attributes.settings?.facebook_login;
-    if (facebookConfig?.allowed && facebookConfig?.enabled) {
-      return (
-        <StyledBox onClick={handleClick}>
-          <FacebookShareButton
-            quote={facebookMessage}
-            url={url}
-            aria-label={formatMessage(messages.shareOnFacebook)}
-          >
-            <Icon name="facebook" width="20px" fill="white" />
-          </FacebookShareButton>
-        </StyledBox>
-      );
-    }
-  }
+  return (
+    <StyledBox onClick={handleClick}>
+      <FacebookShareButton
+        quote={facebookMessage}
+        url={url}
+        aria-label={formatMessage(messages.shareOnFacebook)}
+      >
+        <Icon name="facebook" width="20px" fill="white" />
+      </FacebookShareButton>
+    </StyledBox>
+  );
   return null;
 };
 

@@ -55,7 +55,13 @@ const SharingButtons = memo(
 
     return (
       <>
-        <Title mb="12px" color="text" variant="h3" as="h1">
+        <Title
+          textAlign={maxTabletOrSmaller ? 'center' : 'left'}
+          mb="12px"
+          color="text"
+          variant="h3"
+          as="h1"
+        >
           {titleMessage}
         </Title>
         <Box

@@ -17,17 +17,7 @@ import { InjectedIntlProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // style
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 400px;
-  padding: 40px 25px;
-  margin-left: auto;
-  margin-right: auto;
-  justify-content: center;
-  width: 100%;
-`;
+import { Box } from '@citizenlab/cl2-component-library';
 
 interface Props {
   projectFolderId: string;
@@ -67,7 +57,15 @@ const ProjectFolderSharingModal = memo<
         closeOnClickOutside={true}
         header={<T value={projectFolder.attributes.title_multiloc} />}
       >
-        <Container className={className || ''}>
+        <Box
+          width="100%"
+          maxWidth="400px"
+          padding="40px 25px"
+          ml="auto"
+          mr="auto"
+          style={{ textAlign: 'center' }}
+          className={className}
+        >
           {opened && (
             <>
               <T value={projectFolder.attributes.title_multiloc} maxLength={50}>
@@ -102,7 +100,7 @@ const ProjectFolderSharingModal = memo<
               </T>
             </>
           )}
-        </Container>
+        </Box>
       </Modal>
     );
   }
