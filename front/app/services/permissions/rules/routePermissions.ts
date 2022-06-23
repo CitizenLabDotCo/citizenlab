@@ -12,6 +12,7 @@ import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 export const MODERATOR_ROUTES = [
+  '/admin', // currently redirects to /admin/dashboard
   '/admin/projects',
   '/admin/messaging',
   '/admin/ideas',
