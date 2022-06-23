@@ -5,7 +5,13 @@ import { getInputTerm } from 'services/participationContexts';
 
 // components
 import SharingButtons from 'components/Sharing/SharingButtons';
-import { Spinner, Box, Text, Title } from '@citizenlab/cl2-component-library';
+import {
+  Spinner,
+  Box,
+  Text,
+  Title,
+  Image,
+} from '@citizenlab/cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -176,35 +182,20 @@ class SharingModalContent extends PureComponent<
           justifyContent="center"
           className={className}
         >
-          <img
-            width="40px"
-            height="40px"
-            src={rocket}
-            alt={messages.rocketAltValue.toString()}
-          />
+          <Image width="80px" height="80px" src={rocket} alt="" />
           <Title
-            fontSize="xxxxl"
+            variant="h2"
             textAlign="center"
-            m="0"
-            mt="20px"
-            mb="12px"
-            p="0"
-            style={{ lineHeight: '40px' }}
             className={`e2e-${postType}-social-sharing-modal-title`}
           >
             {title}
           </Title>
           <Text
-            width="100%"
-            maxWidth="500px"
             color="text"
-            margin="0"
             mt="12px"
-            mb="52px"
-            p="0"
+            mb="36px"
             fontSize={'m'}
             textAlign="center"
-            style={{ lineHeight: '25px' }}
           >
             {subtitle}
           </Text>

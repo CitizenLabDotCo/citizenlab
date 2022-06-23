@@ -14,9 +14,6 @@ import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
-// style
-import { useTheme } from 'styled-components';
-
 // utils
 import { getUrlWithUtm, UtmParams, Medium } from '../utils';
 
@@ -45,7 +42,6 @@ const SharingButtons = memo(
     utmParams,
   }: Props & InjectedIntlProps) => {
     const maxTabletOrSmaller = useBreakpoint('largeTablet');
-    const theme: any = useTheme();
 
     const getUrl = (medium: Medium) => {
       return getUrlWithUtm(medium, url, utmParams);
@@ -59,7 +55,7 @@ const SharingButtons = memo(
 
     return (
       <>
-        <Title mb="12px" color={theme.colorText} variant="h3" as="h1">
+        <Title mb="12px" color="text" variant="h3" as="h1">
           {titleMessage}
         </Title>
         <Box

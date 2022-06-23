@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import { Button, Box } from '@citizenlab/cl2-component-library';
@@ -33,11 +33,9 @@ const CopyLink = ({
         iconColor={colors.grey}
         iconSize="20px"
         text={
-          linkIsCopied ? (
-            <FormattedMessage {...messages.linkCopied} />
-          ) : (
-            <FormattedMessage {...messages.shareByLink} />
-          )
+          linkIsCopied
+            ? formatMessage(messages.linkCopied)
+            : formatMessage(messages.shareByLink)
         }
         textColor={colors.grey}
         textHoverColor={colors.grey}
