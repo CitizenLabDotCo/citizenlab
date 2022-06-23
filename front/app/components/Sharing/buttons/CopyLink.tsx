@@ -24,8 +24,9 @@ const CopyLink = ({
   };
 
   return (
-    <Box flex="1 1 1" display="flex">
+    <Box display="flex">
       <Button
+        minWidth="154px"
         onClick={handleClick()}
         aria-label={formatMessage(messages.shareByLink)}
         bgColor={colors.backgroundLightGrey}

@@ -59,7 +59,7 @@ const ProjectFolderSharingModal = memo<
       >
         <Box
           width="100%"
-          maxWidth="400px"
+          maxWidth="420px"
           padding="40px 25px"
           ml="auto"
           mr="auto"
