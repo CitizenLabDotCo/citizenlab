@@ -78,14 +78,15 @@ resource 'Stats - Users' do
           expect(json_response_body).to include(
             series: {
               users: { female: 2, unspecified: 1, _blank: 0 },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
           )
         end
       end
 
       context "when 'gender' custom field has a reference distribution" do
-        before do
+        let!(:ref_distribution) do
           create(:ref_distribution, custom_field: CustomField.find_by(key: 'gender'))
         end
 
@@ -98,7 +99,8 @@ resource 'Stats - Users' do
                 male: kind_of(Numeric),
                 female: kind_of(Numeric),
                 unspecified: kind_of(Numeric)
-              }
+              },
+              reference_population: ref_distribution.distribution_by_option_id.symbolize_keys
             }
           )
         end
@@ -157,7 +159,8 @@ resource 'Stats - Users' do
           expect(json_response_body).to match({
             series: {
               users: { '1980': 2, '1976': 1, _blank: 0 },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
           })
         end
@@ -285,7 +288,8 @@ resource 'Stats - Users' do
         expect(json_response_body).to include(
           series: {
             users: { '3': 2, '5': 1, _blank: 0 },
-            expected_users: nil
+            expected_users: nil,
+            reference_population: nil
           }
         )
       end
@@ -367,7 +371,8 @@ resource 'Stats - Users' do
                   @option2.key.to_sym => 1,
                   _blank: 1
                 },
-                expected_users: nil
+                expected_users: nil,
+                reference_population: nil
               }
             })
           end
@@ -423,7 +428,8 @@ resource 'Stats - Users' do
                 @option2.key.to_sym => 1,
                 _blank: 1
               },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
           })
         end
@@ -462,7 +468,8 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 1
               },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
           })
         end
@@ -520,17 +527,21 @@ resource 'Stats - Users' do
         end
 
         describe 'when the custom field has a reference distribution' do
-          before { create(:ref_distribution, custom_field: @custom_field) }
+          before do
+            create(:ref_distribution, custom_field: @custom_field, distribution: {
+              @option1.id => 30, @option2.id => 20, @option3.id => 50
+            })
+          end
 
           include_examples('xlsx export', 'custom field (select) including expected nb of users') do
             let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
-                %w[option option_id users expected_users],
-                ['youth council', @option1.key, 1, kind_of(Numeric)],
-                ['youth council', @option2.key, 1, kind_of(Numeric)],
-                ['youth council', @option3.key, 0, kind_of(Numeric)],
-                ['_blank', '_blank', 1, 0]
+                %w[option option_id users expected_users reference_population],
+                ['youth council', @option1.key, 1, 0.6, 30],
+                ['youth council', @option2.key, 1, 0.4, 20],
+                ['youth council', @option3.key, 0, 1.0, 50],
+                ['_blank', '_blank', 1, '', '']
               ]
             end
           end

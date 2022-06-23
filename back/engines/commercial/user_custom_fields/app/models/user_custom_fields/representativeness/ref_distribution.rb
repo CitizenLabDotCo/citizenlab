@@ -33,6 +33,12 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
     end
   end
 
+  def distribution_by_option_id
+    @distribution_by_option_id ||= distribution.transform_keys do |option_id|
+      option_id_to_key.fetch(option_id)
+    end
+  end
+
   # Returns the expected count distribution for a given (total) number of users.
   def expected_counts(nb_users)
     probabilities.transform_values { |probability| (probability * nb_users).round(1) }
@@ -57,6 +63,10 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   end
 
   private
+
+  def option_id_to_key
+    @option_id_to_key ||= custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
+  end
 
   def total_population
     @total_population ||= distribution.values.sum
