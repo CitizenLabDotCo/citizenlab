@@ -10,7 +10,8 @@ module UserCustomFields
         def users_by_custom_field
           json_response = { series: {
             users: user_counts,
-            expected_users: expected_user_counts
+            expected_users: expected_user_counts,
+            reference_population: reference_population,
           } }
 
           if custom_field.custom_field_options.present?
@@ -145,12 +146,18 @@ module UserCustomFields
         def expected_user_counts
           @expected_user_counts ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
-
               nb_users_with_response = user_counts.values.sum - user_counts['_blank']
               expected_counts = ref_distribution.expected_counts(nb_users_with_response)
 
               option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
-              expected_counts.transform_keys { |option_id| option_id_to_key[option_id] }
+              expected_counts.transform_keys { |option_id| option_id_to_key.fetch(option_id) }
+            end
+        end
+
+        def reference_population
+          @reference_population ||=
+            if (ref_distribution = custom_field.current_ref_distribution).present?
+              ref_distribution.distribution_by_option_id
             end
         end
 
@@ -161,10 +168,10 @@ module UserCustomFields
                 option: localized_option_titles(options) << '_blank',
                 option_id: options.pluck(:key) << '_blank'
               }.tap do |cols|
-                cols[:users] = user_counts.fetch_values(*cols[:option_id]) { 0 }
-                if expected_user_counts.present?
-                  cols[:expected_users] = expected_user_counts.fetch_values(*cols[:option_id]) { 0 }
-                end
+                option_ids = cols[:option_id]
+                cols[:users] = user_counts.fetch_values(*option_ids) { 0 }
+                cols[:expected_users] = expected_user_counts.fetch_values(*option_ids) { nil } if expected_user_counts.present?
+                cols[:reference_population] = reference_population.fetch_values(*option_ids) { nil } if reference_population.present?
               end
             else
               {
