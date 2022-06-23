@@ -60,7 +60,6 @@ const SharingButtons = memo(
           mb="12px"
           color="text"
           variant="h3"
-          as="h1"
         >
           {titleMessage}
         </Title>
