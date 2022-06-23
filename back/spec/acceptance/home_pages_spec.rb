@@ -29,7 +29,7 @@ resource 'Home Page' do
 
     patch 'web_api/v1/home_page' do
       with_options scope: :home_page do
-        parameter :banner_enabled, 'if the banner is enabled'
+        parameter :customizable_homepage_banner, 'if the custom homepage banner is enabled'
         parameter :banner_layout, 'the specific layout for the banner, one of: full_width_banner_layout two_column_layout two_row_layout'
         parameter :banner_avatars_enabled, 'if avatar display in the banner is enabled'
         parameter :banner_signed_in_header_multiloc, 'multiloc content for the banner header for signed in users'
@@ -48,20 +48,20 @@ resource 'Home Page' do
         parameter :header_bg, 'image for the header background'
         parameter :top_info_section_enabled, 'if the top info section is enabled'
         parameter :top_info_section_multiloc, 'multiloc content for the top info section'
-        parameter :events_enabled, 'if events are enabled'
+        parameter :events_widget, 'if events are enabled'
         parameter :projects_enabled, 'if projects are enabled'
         parameter :projects_header_multiloc, 'multiloc content for the projects header'
         parameter :pinned_admin_publication_ids, 'the IDs of admin publications that are pinned to the page', type: :array
       end
       ValidationErrorHelper.new.error_fields(self, HomePage)
 
-      let(:banner_enabled) { true }
-      let(:events_enabled) { true }
+      let(:customizable_homepage_banner) { true }
+      let(:events_widget) { true }
 
       example_request 'Update the current home page' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :banner_enabled)).to be true
+        expect(json_response.dig(:data, :attributes, :customizable_homepage_banner)).to be true
       end
 
       describe 'updating pins' do
