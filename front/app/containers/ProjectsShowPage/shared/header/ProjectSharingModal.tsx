@@ -47,7 +47,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
     }, [close]);
 
     if (!isNilOrError(project)) {
-      const url = location.href;
+      const url = window.location.href;
       return (
         <Modal
           width={550}
@@ -60,8 +60,7 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
             width="100%"
             maxWidth="400px"
             padding="40px 25px"
-            ml="auto"
-            mr="auto"
+            my="auto"
             style={{ textAlign: 'center' }}
             className={className}
           >
