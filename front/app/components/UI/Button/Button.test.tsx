@@ -29,4 +29,15 @@ describe('Button', () => {
     expect(screen.getByRole('link')).toHaveTextContent('Test');
     expect(screen.getByRole('link')).toHaveAttribute('href', '/en/test');
   });
+
+  it('should not render a link when disabled', () => {
+    render(
+      <Button linkTo="/test" disabled>
+        Test
+      </Button>
+    );
+    expect(screen.getByText('Test')).toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
 });
