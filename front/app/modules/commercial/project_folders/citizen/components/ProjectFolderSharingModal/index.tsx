@@ -61,8 +61,7 @@ const ProjectFolderSharingModal = memo<
           width="100%"
           maxWidth="420px"
           padding="40px 25px"
-          ml="auto"
-          mr="auto"
+          mx="auto"
           style={{ textAlign: 'center' }}
           className={className}
         >
