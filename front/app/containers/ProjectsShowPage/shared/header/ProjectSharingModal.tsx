@@ -60,7 +60,8 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
             width="100%"
             maxWidth="400px"
             padding="40px 25px"
-            my="auto"
+            ml="auto"
+            mr="auto"
             style={{ textAlign: 'center' }}
             className={className}
           >
