@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 const StickyContainer = styled.div`
   background-color: #fcfcfc;
