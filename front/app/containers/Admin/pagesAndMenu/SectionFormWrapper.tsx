@@ -1,16 +1,32 @@
 import React from 'react';
+
+// components
+import StickyContainer from './StickyContainer';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import PageTitle from 'components/admin/PageTitle';
-import { Box } from '@citizenlab/cl2-component-library';
+import PageWrapper from 'components/admin/PageWrapper';
 
+// test props for development purposes
 const testBreadcrumbs = [
-  { label: 'Pages & Menu', linkTo: 'test' },
-  { label: 'Home', linkTo: 'test' },
-  { label: 'Hero Banner', linkTo: 'test' },
+  { label: 'Pages & Menu', linkTo: '/test' },
+  { label: 'Home', linkTo: '/test' },
+  { label: 'Hero banner', linkTo: '/test' },
 ];
-
+const TestBox = () => (
+  <Box height="100px" mb="10px" border="1px solid black">
+    Test Box
+  </Box>
+);
 const testTitle = 'Hero Banner';
-const testChildren = <div>hello</div>;
+const testChildren = (
+  <div>
+    <TestBox /> <TestBox /> <TestBox /> <TestBox /> <TestBox />
+    <TestBox />
+    <TestBox />
+    <TestBox />
+  </div>
+);
 
 const SectionFormWrapper = ({
   breadcrumbs = testBreadcrumbs,
@@ -22,8 +38,17 @@ const SectionFormWrapper = ({
       <Box mb="16px">
         <Breadcrumbs breadcrumbs={breadcrumbs} />
       </Box>
-      <PageTitle>{title}</PageTitle>
-      {children}
+      <Box mb="20px">
+        <PageTitle>{title}</PageTitle>
+      </Box>
+      <Box>
+        <PageWrapper>
+          {children}
+          <StickyContainer>
+            <Button>Save Hero Banner</Button>
+          </StickyContainer>
+        </PageWrapper>
+      </Box>
     </div>
   );
 };
