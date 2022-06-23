@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { findDOMNode } from 'react-dom';
 import { trackEventByName } from 'utils/analytics';
+import { Canvg } from 'canvg';
 
 // styling
 import styled from 'styled-components';
@@ -107,6 +108,34 @@ const ReportExportMenu = ({
     trackEventByName('Clicked export svg', { extra: { graph: name } });
   };
 
+  const handleDownloadPng = async () => {
+    // eslint-disable-next-line react/no-find-dom-node
+    const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
+    if (node) {
+      const svgContent = new XMLSerializer().serializeToString(node);
+      const canvas = document.createElement('canvas');
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const v = await Canvg.fromString(ctx, svgContent);
+
+      // Start SVG rendering with animations and mouse handling.
+      v.start();
+
+      // Convert the Canvas to an image
+      const link = document.createElement('a');
+      link.setAttribute('download', `${fileName}.png`);
+      link.setAttribute(
+        'href',
+        canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream')
+      );
+      link.click();
+    }
+
+    // trackEventByName('Clicked export svg', { extra: { graph: name } });
+  };
+
   const toggleDropdown = (value?: boolean) => () => {
     setDropdownOpened(value || !dropdownOpened);
   };
@@ -167,6 +196,16 @@ const ReportExportMenu = ({
                 fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadAsImage} />
+              </Button>
+            )}
+            {svgNode && (
+              <Button
+                onClick={handleDownloadPng}
+                buttonStyle="text"
+                padding="0"
+                fontSize={`${fontSizes.s}px`}
+              >
+                Download as PNG
               </Button>
             )}
             {xlsxEndpoint && (
