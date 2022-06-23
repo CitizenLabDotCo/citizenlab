@@ -27,6 +27,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -79,7 +80,9 @@ export class BarChartByCategory extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages[graphUnit]);
 
