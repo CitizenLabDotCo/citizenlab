@@ -7,32 +7,13 @@ import Breadcrumbs from 'components/UI/Breadcrumbs';
 import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
 
-// test props for development purposes
-const testBreadcrumbs = [
-  { label: 'Pages & Menu', linkTo: '/test' },
-  { label: 'Home', linkTo: '/test' },
-  { label: 'Hero banner', linkTo: '/test' },
-];
-const TestBox = () => (
-  <Box height="100px" mb="10px" border="1px solid black">
-    Test Box
-  </Box>
-);
-const testTitle = 'Hero Banner';
-const testChildren = (
-  <div>
-    <TestBox /> <TestBox /> <TestBox /> <TestBox /> <TestBox />
-    <TestBox />
-    <TestBox />
-    <TestBox />
-  </div>
-);
+interface Props {
+  breadcrumbs: { label: string; linkTo?: string }[];
+  title: string;
+  children: JSX.Element;
+}
 
-const SectionFormWrapper = ({
-  breadcrumbs = testBreadcrumbs,
-  title = testTitle,
-  children = testChildren,
-}) => {
+const SectionFormWrapper = ({ breadcrumbs, title, children }: Props) => {
   return (
     <div>
       <Box mb="16px">
