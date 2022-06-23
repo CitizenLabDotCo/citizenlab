@@ -2,7 +2,7 @@
  
 # Getting started
 
-First you have the latest docker and docker-compose installed.
+First, you need the latest docker and docker-compose installed.
 
 Build the docker compose images 
 ```
