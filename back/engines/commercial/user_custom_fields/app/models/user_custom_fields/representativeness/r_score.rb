@@ -57,6 +57,8 @@ class UserCustomFields::Representativeness::RScore
 
     def proportional_similarity(user_counts, population_counts)
       user_counts = user_counts.slice(*population_counts.keys)
+      return Float::NAN if user_counts.values.sum.zero?
+
       user_distribution = normalize(user_counts)
       population_distribution = normalize(population_counts)
 
