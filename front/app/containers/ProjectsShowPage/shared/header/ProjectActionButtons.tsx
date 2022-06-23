@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useState,
+  useRef,
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -56,7 +57,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const phases = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const divId = clHistory.location.hash;
-  let timer: NodeJS.Timeout;
+  const timeIdRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -69,8 +70,14 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
+  const clearSetTimeout = () => {
+    if (timeIdRef.current) {
+      clearTimeout(timeIdRef.current);
+    }
+  };
+
   useEffect(() => {
-    return () => clearTimeout(timer);
+    return () => clearSetTimeout();
   }, []);
 
   const scrollTo = useCallback(
@@ -86,7 +93,8 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
           if (isOnProjectPage) {
-            timer = setTimeout(() => {
+            clearSetTimeout();
+            timeIdRef.current = setTimeout(() => {
               scrollToElement({ id, shouldFocus: true });
             }, 100);
           } else {
