@@ -11,7 +11,7 @@ module UserCustomFields
           json_response = { series: {
             users: user_counts,
             expected_users: expected_user_counts,
-            reference_population: reference_population,
+            reference_population: reference_population
           } }
 
           if custom_field.custom_field_options.present?
