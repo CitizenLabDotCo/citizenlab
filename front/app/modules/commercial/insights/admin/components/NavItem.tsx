@@ -17,9 +17,9 @@ const NavItemComponent: FC<Props> = ({ onData }) => {
         link: `/admin/insights${insightsManualFlow ? '' : '/reports'}`,
         iconName: 'processing',
         message: 'insights',
-        featureName: insightsManualFlow
-          ? 'insights_manual_flow'
-          : 'project_reports',
+        featureNames: insightsManualFlow
+          ? ['insights_manual_flow']
+          : ['project_reports'],
       },
       insertAfterName: 'projects',
     });

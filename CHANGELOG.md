@@ -1,6 +1,55 @@
 # Changelog
 
-## Next release
+## 2022-06-22
+
+### Fixed
+
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
+
+- [CL-903] Fix admin input manager crash on Safari
+
+## 2022-06-16
+
+### Added
+
+- [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
+
+### Fixed
+
+- [CL-966] Fixed issue with tabs stretching off the screen
+- [CL-908] Fix sheet names in excel exports.
+
+## 2022-06-15
+
+### Fixed
+
+- [CL-967] Fixed issue with map displaying off screen on Android
+- [CL-667] Next batch of RuboCop fixes
+
+## 2022-06-14
+
+### Added
+
+- [CL-767] Add data from backend to representative dashboard
+
+### Fixed
+
+- [CL-915] Show "Messaging" menu item only if any of 3 messaging features enabled
+- [CL-940] Graph excel export was not always giving the same numbers as the graph itself if a time period was selected. This is fixed now.
+- [CL-888] Fixed issue with folders page layout. Project cards are now displayed in two columns (instead of one) on large screens.
+- [CL-953] Fixed issue with expanding and collapsing custom idea fields after initial save.
+- Fixed issue where users were unable to moderate projects and project folders correctly
 
 ## 2022-06-13
 

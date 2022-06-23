@@ -2,7 +2,7 @@
 
 class BaseUploader < CarrierWave::Uploader::Base
   def self.use_fog_engine?
-    return if Rails.env.test? || Rails.env.development?
+    return false if Rails.env.test? || Rails.env.development?
 
     fog_credentials.present? && fog_directory
   end

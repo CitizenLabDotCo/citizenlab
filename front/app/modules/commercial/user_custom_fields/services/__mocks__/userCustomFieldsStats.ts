@@ -8,6 +8,11 @@ export const mockUsersByRegFields = {
       retired_politician: 2,
       _blank: 11,
     },
+    expected_users: {
+      active_politician: 10,
+      retired_politician: 5,
+      no: 100,
+    },
   },
   options: {
     active_politician: {

@@ -51,12 +51,6 @@ describe('Content builder mobile preview', () => {
   it('shows saved description if there is no draft content', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.wait(10000);
-    cy.get('#e2e-draggable-single-column').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
-    );
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });

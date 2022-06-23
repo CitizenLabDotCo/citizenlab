@@ -6,6 +6,7 @@ import {
   isAdmin,
   isModerator,
   isProjectModerator,
+  isProjectFolderModerator,
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
@@ -20,17 +21,20 @@ export const MODERATOR_ROUTES = [
   '/admin/dashboard',
   '/admin/moderation',
   '/admin/insights',
+  '/admin/content-builder',
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {
-  return MODERATOR_ROUTES.includes(item.path);
+  return MODERATOR_ROUTES.some((moderatorRoute) => {
+    return item.path.includes(moderatorRoute);
+  });
 };
 
 export const isModeratedProjectRoute = (
   item: IRouteItem,
   user: IUser | null
 ) => {
-  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
+  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
   return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;
@@ -62,7 +66,18 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (isModerator(user) && isModeratorRoute(item)) {
+    if (
+      (isModerator(user) || isProjectFolderModerator(user)) &&
+      isModeratorRoute(item)
+    ) {
+      return true;
+    }
+
+    if (
+      item.path.includes('folders') &&
+      user &&
+      isProjectFolderModerator(user)
+    ) {
       return true;
     }
 
