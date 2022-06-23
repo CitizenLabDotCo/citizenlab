@@ -402,6 +402,10 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ titleMultiloc, titleProfanityError: false });
   };
 
+  onImageFileChange = (imageFile: UploadFile[]) => {
+    this.setState({ imageFile });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
     const descriptionMultiloc = {
@@ -480,6 +484,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 }
                 hasTitleProfanityError={titleProfanityError}
                 hasDescriptionProfanityError={descriptionProfanityError}
+                onImageFileChange={this.onImageFileChange}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
               />

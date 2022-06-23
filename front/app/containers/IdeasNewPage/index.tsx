@@ -47,6 +47,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { UploadFile } from 'typings';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -330,6 +331,12 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     });
   };
 
+  onImageFileChange = (imageFile: UploadFile[]) => {
+    this.globalState.set({
+      imageFile,
+    });
+  };
+
   onDescriptionChange = (description: string) => {
     this.globalState.set({
       description,
@@ -350,6 +357,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               projectId={project.id}
               onTitleChange={this.onTitleChange}
               onDescriptionChange={this.onDescriptionChange}
+              onImageFileChange={this.onImageFileChange}
             />
           </PageContainer>
           <ButtonBarContainer>

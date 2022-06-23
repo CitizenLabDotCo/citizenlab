@@ -125,6 +125,7 @@ interface InputProps {
   hasDescriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
+  onImageFileChange: (imageFile: UploadFile[]) => void;
   authorId: string | null;
 }
 
@@ -331,6 +332,7 @@ class IdeaForm extends PureComponent<
     this.setState({
       imageFile: [imageFile[0]],
     });
+    this.props.onImageFileChange(imageFile);
   };
 
   handleUploadOnRemove = () => {
