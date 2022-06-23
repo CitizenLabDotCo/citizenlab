@@ -28,36 +28,37 @@ const ButtonWrapper = ({
   const isExternalLink =
     linkTo && (linkTo.startsWith('http') || linkTo.startsWith('www'));
 
-  const link = linkTo
-    ? isExternalLink
-      ? ({
-          children,
-          ...rest
-        }: ButtonProps & React.HTMLAttributes<HTMLAnchorElement>) => (
-          <a
-            href={linkTo}
-            target={openLinkInNewTab ? '_blank' : undefined}
-            rel="noreferrer"
-            {...rest}
-          >
-            {children}
-          </a>
-        )
-      : ({
-          children,
-          ...rest
-        }: Omit<ButtonProps, 'as' | 'size'> &
-          React.HTMLAttributes<HTMLAnchorElement>) => (
-          <Link
-            to={linkTo}
-            target={openLinkInNewTab ? '_blank' : undefined}
-            rel="noreferrer"
-            {...rest}
-          >
-            {children}
-          </Link>
-        )
-    : undefined;
+  const link =
+    linkTo && !disabled
+      ? isExternalLink
+        ? ({
+            children,
+            ...rest
+          }: ButtonProps & React.HTMLAttributes<HTMLAnchorElement>) => (
+            <a
+              href={linkTo}
+              target={openLinkInNewTab ? '_blank' : undefined}
+              rel="noreferrer"
+              {...rest}
+            >
+              {children}
+            </a>
+          )
+        : ({
+            children,
+            ...rest
+          }: Omit<ButtonProps, 'as' | 'size'> &
+            React.HTMLAttributes<HTMLAnchorElement>) => (
+            <Link
+              to={linkTo}
+              target={openLinkInNewTab ? '_blank' : undefined}
+              rel="noreferrer"
+              {...rest}
+            >
+              {children}
+            </Link>
+          )
+      : undefined;
 
   if (!isNilOrError(locale)) {
     return <Button as={link} disabled={disabled} {...rest} />;
