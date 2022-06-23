@@ -47,6 +47,10 @@ parameters:
     type: boolean
     default: false
 
+  templates:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -739,6 +743,7 @@ workflows:
             branches:
               only:
                 - production
+    when: << pipeline.parameters.templates >>
     jobs:
       - back-build-ee-docker-image:
           context:
