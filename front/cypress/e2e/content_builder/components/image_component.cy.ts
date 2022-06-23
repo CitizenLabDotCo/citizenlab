@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder Image component', () => {
+describe('Content builder Image component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -23,14 +23,12 @@ describe.skip('Content builder Image component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -40,12 +38,8 @@ describe.skip('Content builder Image component', () => {
   });
 
   it('handles Image component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-draggable-single-column').dragAndDrop(
-      '#e2e-content-builder-frame',
-      {
-        position: 'inside',
-      }
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
     );
     cy.get('#e2e-draggable-image').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
@@ -57,21 +51,24 @@ describe.skip('Content builder Image component', () => {
 
     cy.get('[alt="Image alt text."]').should('exist');
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('[alt="Image alt text."]').should('exist');
   });
 
   it('deletes Image component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-single-column').should('be.visible');
 
     cy.get('#e2e-image').parent().click();
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-single-column').should('be.visible');
     cy.get('[alt="Image alt text."]').should('not.exist');
   });
 });
