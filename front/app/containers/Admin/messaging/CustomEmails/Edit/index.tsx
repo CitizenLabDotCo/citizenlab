@@ -12,18 +12,16 @@ import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-interface InputProps {}
 
 interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps, WithRouterProps {}
+interface Props extends DataProps {}
 
 class Edit extends React.Component<Props> {
   handleSubmit = (
@@ -87,14 +85,10 @@ class Edit extends React.Component<Props> {
   }
 }
 
-const EditWithHOCs = withRouter(Edit);
-
-export default (inputProps: InputProps & WithRouterProps) => (
-  <GetCampaign id={inputProps.params.campaignId}>
+export default withRouter((withRouterProps: WithRouterProps) => (
+  <GetCampaign id={withRouterProps.params.campaignId}>
     {(campaign) =>
-      isNilOrError(campaign) ? null : (
-        <EditWithHOCs {...inputProps} campaign={campaign} />
-      )
+      isNilOrError(campaign) ? null : <Edit campaign={campaign} />
     }
   </GetCampaign>
-);
+));

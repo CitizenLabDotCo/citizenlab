@@ -7,6 +7,9 @@ import {
   IAppConfigurationData,
 } from 'services/appConfiguration';
 import { map } from 'rxjs/operators';
+import useAuthUser from 'hooks/useAuthUser';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface IRouteItem {
   type: 'route';
@@ -94,4 +97,34 @@ const hasPermission = ({
   );
 };
 
-export { definePermissionRule, hasPermission };
+const usePermission = ({
+  item,
+  action,
+  context,
+}: {
+  item: TPermissionItem | null;
+  action: string;
+  context?: any;
+}) => {
+  const user = useAuthUser();
+  const tenant = useAppConfiguration();
+
+  if (!item) {
+    return false;
+  }
+
+  const resourceType = isResource(item) ? item.type : item;
+  const rule = getPermissionRule(resourceType, action);
+
+  if (rule) {
+    return (
+      !isNilOrError(user) &&
+      !isNilOrError(tenant) &&
+      rule(item, { data: user }, tenant.data, context)
+    );
+  } else {
+    throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
+  }
+};
+
+export { definePermissionRule, hasPermission, usePermission };

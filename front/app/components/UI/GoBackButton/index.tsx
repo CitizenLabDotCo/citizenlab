@@ -22,6 +22,7 @@ export default class GoBackButton extends PureComponent<Props, State> {
     return (
       <Container className={className || ''}>
         <Button
+          id="e2e-go-back-button"
           onClick={onClick}
           buttonStyle="text"
           icon="arrow-back"

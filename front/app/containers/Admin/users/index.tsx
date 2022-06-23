@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { Formik, FormikActions } from 'formik';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // Resources
 import GetFeatureFlag, {
@@ -34,7 +35,7 @@ const Wrapper = styled.div`
   top: ${(props) => props.theme.menuHeight}px;
   left: 210px;
   bottom: 0;
-  ${media.smallerThan1280px`
+  ${media.smallerThan1200px`
     left: 80px;
   `}
 `;
@@ -43,7 +44,7 @@ const LeftPanel = styled(GroupsListPanel)`
   width: 300px;
   flex: 0 0 300px;
 
-  ${media.smallerThan1280px`
+  ${media.smallerThan1200px`
     width: 260px;
     flex: 0 0 260px;
   `}
@@ -164,7 +165,9 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
             className="e2e-left-panel"
             onCreateGroup={this.openGroupCreationModal}
           />
-          <ChildWrapper>{this.props.children}</ChildWrapper>
+          <ChildWrapper id="e2e-users-container">
+            <RouterOutlet />
+          </ChildWrapper>
         </Wrapper>
 
         <Modal
@@ -202,7 +205,7 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const UsersPageWithHocs = withRouter<Props>(UsersPage);
+const UsersPageWithHocs = withRouter(UsersPage);
 
 export default (props) => (
   <GetFeatureFlag name="verification">

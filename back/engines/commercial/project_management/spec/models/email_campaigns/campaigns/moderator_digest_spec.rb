@@ -15,8 +15,8 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
     let(:campaign) { create(:moderator_digest_campaign) }
     let!(:project) { create(:project) }
     let!(:moderator) { create(:project_moderator, projects: [project]) }
-    let!(:old_ideas) { create_list(:idea, 2, project: project, published_at: Time.zone.now - 20.days) }
-    let!(:new_ideas) { create_list(:idea, 3, project: project, published_at: Time.zone.now - 1.day) }
+    let!(:old_ideas) { create_list(:idea, 2, project: project, published_at: 20.days.ago) }
+    let!(:new_ideas) { create_list(:idea, 3, project: project, published_at: 1.day.ago) }
     let!(:vote) { create(:vote, mode: 'up', votable: new_ideas.first) }
     let!(:other_idea) { create(:idea, project: create(:project)) }
     let!(:draft) { create(:idea, project: project, publication_status: 'draft') }
@@ -53,6 +53,13 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
         command.dig(:event_payload, :top_ideas, 0, :author_name)
       ).to eq(expected_author_name)
     end
+
+    # added to reproduce the bug and test the fix
+    it 'gracefully handles absent projects' do
+      Project.find(moderator.roles[0]['project_id']).destroy!
+      commands = campaign.reload.generate_commands(recipient: moderator.reload).first
+      expect(commands).to be_blank
+    end
   end
 
   describe 'apply_recipient_filters' do
@@ -60,15 +67,15 @@ RSpec.describe 'EmailCampaigns::Campaigns::ModeratorDigest', type: :model, skip:
 
     it 'filters out invitees' do
       moderator = create(:project_moderator)
-      invitee = create(:invited_user, roles: [{ type: 'project_moderator', project_id: create(:project).id }])
+      create(:invited_user, roles: [{ type: 'project_moderator', project_id: create(:project).id }])
 
       expect(campaign.apply_recipient_filters).to match([moderator])
     end
 
     it 'filters out moderators and normal users' do
-      admin = create(:admin)
+      create(:admin)
       moderator = create(:project_moderator)
-      user = create(:user)
+      create(:user)
 
       expect(campaign.apply_recipient_filters).to match([moderator])
     end

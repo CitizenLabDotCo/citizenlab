@@ -1,19 +1,20 @@
 import React from 'react';
-import Text from '../Text';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
 
 // craft
-import { useNode, UserComponent } from '@craftjs/core';
+import { UserComponent } from '@craftjs/core';
+import Text from '../Text';
+import Image from '../Image';
+import AboutBox from '../AboutBox';
+import Iframe from '../Iframe';
+import WhiteSpace from '../WhiteSpace';
+import Accordion from '../Accordion';
 
 const Container: UserComponent = ({ children }) => {
-  const {
-    connectors: { drag, connect },
-  } = useNode();
-
   return (
-    <Box ref={(ref) => ref && connect(drag(ref))} minHeight="100px" w="100%">
+    <Box id="e2e-single-column" minHeight="40px" w="100%">
       {children}
     </Box>
   );
@@ -21,7 +22,17 @@ const Container: UserComponent = ({ children }) => {
 
 Container.craft = {
   rules: {
-    canMoveIn: (nodes) => nodes.every((node) => node.data.type === Text),
+    canMoveIn: (nodes) => {
+      return nodes.every(
+        (node) =>
+          node.data.type === Text ||
+          node.data.type === Image ||
+          node.data.type === Iframe ||
+          node.data.type === Accordion ||
+          node.data.type === WhiteSpace ||
+          node.data.type === AboutBox
+      );
+    },
   },
 };
 

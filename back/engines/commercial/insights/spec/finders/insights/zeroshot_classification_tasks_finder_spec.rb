@@ -4,7 +4,6 @@ require 'rails_helper'
 
 describe Insights::ZeroshotClassificationTasksFinder do
   describe '#execute' do
-
     before_all do
       view = create(:view)
       @c1, @c2 = create_list(:category, 2, view: view)

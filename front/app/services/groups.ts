@@ -34,7 +34,17 @@ export interface IGroup {
   data: IGroupData;
 }
 
-export function getGroups(streamParams: IStreamParams | null = null) {
+interface GetGroupsStreamParams extends IStreamParams {
+  queryParameters?: GetGroupsQueryParameters;
+}
+
+export interface GetGroupsQueryParameters {
+  'page[number]'?: number;
+  'page[size]'?: number;
+  membership_type?: MembershipType;
+}
+
+export function getGroups(streamParams: GetGroupsStreamParams | null = null) {
   return streams.get<IGroups>({
     apiEndpoint: `${API_PATH}/groups`,
     ...streamParams,

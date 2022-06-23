@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -26,7 +28,6 @@
 #
 module EmailCampaigns
   class Campaign < ApplicationRecord
-
     belongs_to :author, class_name: 'User', optional: true
 
     # accepts_nested_attributes_for does not work for concerns
@@ -39,7 +40,7 @@ module EmailCampaigns
 
     before_validation :set_enabled, on: :create
 
-    def self.before_send action_symbol
+    def self.before_send(action_symbol)
       @before_send_hooks ||= []
       @before_send_hooks << action_symbol
     end
@@ -48,7 +49,7 @@ module EmailCampaigns
       @before_send_hooks || []
     end
 
-    def self.after_send action_symbol
+    def self.after_send(action_symbol)
       @after_send_hooks ||= []
       @after_send_hooks << action_symbol
     end
@@ -57,7 +58,7 @@ module EmailCampaigns
       @after_send_hooks || []
     end
 
-    def self.recipient_filter action_symbol
+    def self.recipient_filter(action_symbol)
       @recipient_filters ||= []
       @recipient_filters << action_symbol
     end
@@ -67,42 +68,42 @@ module EmailCampaigns
     end
 
     def self.campaign_name
-      self.name.split('::').last.underscore
+      name.split('::').last.underscore
     end
 
-    def self.from_campaign_name name
+    def self.from_campaign_name(name)
       "EmailCampaigns::Campaigns::#{name.camelize}"
     end
 
-    def apply_recipient_filters activity: nil, time: nil
+    def apply_recipient_filters(activity: nil, time: nil)
       self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
-        self.send(action_symbol, users_scope, {activity: activity, time: time})
+        send(action_symbol, users_scope, { activity: activity, time: time })
       end
     end
 
-    def run_before_send_hooks activity: nil, time: nil
+    def run_before_send_hooks(activity: nil, time: nil)
       self.class.before_send_hooks.all? do |action_symbol|
-        self.send(action_symbol, {activity: activity, time: time})
+        send(action_symbol, { activity: activity, time: time })
       end
     end
 
-    def run_after_send_hooks command
+    def run_after_send_hooks(command)
       self.class.after_send_hooks.each do |action_symbol|
-        self.send(action_symbol, command)
+        send(action_symbol, command)
       end
     end
 
     def self.campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.campaign_type_description.#{self.campaign_name}"
+        "email_campaigns.campaign_type_description.#{campaign_name}"
       )
     end
 
     def self.admin_campaign_description_multiloc
       @multiloc_service ||= MultilocService.new
       @multiloc_service.i18n_to_multiloc(
-        "email_campaigns.admin_campaign_type_description.#{self.campaign_name}"
+        "email_campaigns.admin_campaign_type_description.#{campaign_name}"
       )
     end
 
@@ -110,14 +111,13 @@ module EmailCampaigns
       CampaignPolicy
     end
 
-
     protected
 
     def set_enabled
-      self.enabled = true if self.enabled.nil?
+      self.enabled = true if enabled.nil?
     end
 
-    def serialize_campaign item
+    def serialize_campaign(item)
       serializer = "#{self.class.name}Serializer".constantize
       ActiveModelSerializers::SerializableResource.new(item, {
         serializer: serializer,

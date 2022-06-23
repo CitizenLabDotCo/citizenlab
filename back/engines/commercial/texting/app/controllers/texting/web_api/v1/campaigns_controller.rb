@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Texting
   class WebApi::V1::CampaignsController < ApplicationController
     before_action :set_campaign, only: %i[show destroy update do_send]
@@ -70,8 +72,9 @@ module Texting
     # SMS provider calls it
     def mark_as_sent
       campaign = Campaign.find(params[:id])
-      if Texting::Sms.provider.request_valid?(request)
-        campaign.update!(status: Texting::Campaign.statuses.fetch(:sent), sent_at: Time.zone.now)
+      url = Texting::WebhookUrlGenerator.new.mark_campaign_as_sent(campaign)
+      if Texting::Sms.provider.request_valid?(url, request)
+        campaign.update!(status: Texting::Campaign.statuses.fetch(:sent), sent_at: Time.zone.now) if campaign.sending?
         head :ok
       else
         head :unauthorized

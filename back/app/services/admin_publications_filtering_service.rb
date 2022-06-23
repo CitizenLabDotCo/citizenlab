@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdminPublicationsFilteringService
   include Filterer
 
@@ -25,8 +27,8 @@ class AdminPublicationsFilteringService
     non_parents                   = visible_publications.where(children_allowed: false)
 
     parents_with_visible_children.or(parents_without_any_children)
-                                 .or(non_parents)
-                                 .or(public_project_publications)
+      .or(non_parents)
+      .or(public_project_publications)
   end
 
   add_filter('by_publication_status') do |scope, options|

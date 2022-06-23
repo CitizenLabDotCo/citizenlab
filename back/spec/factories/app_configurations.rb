@@ -38,10 +38,10 @@ FactoryBot.define do
           'days_limit' => 90,
           'threshold_reached_message' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
-                                                 locales: %i[en nl-BE fr-FR]),
+              locales: %i[en nl-BE fr-FR]),
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
-                                                 locales: %i[en nl-BE fr-FR])
+              locales: %i[en nl-BE fr-FR])
 
         }
       }
@@ -63,7 +63,7 @@ FactoryBot.define do
             'nl-NL' => 'Luik',
             'fr-FR' => 'Liege'
           },
-          "lifecycle_stage": 'active',
+          lifecycle_stage: 'active',
           'locales' => %w[en fr-FR nl-NL],
           'timezone' => 'Brussels',
           'currency' => 'EUR',
@@ -86,10 +86,10 @@ FactoryBot.define do
           'days_limit' => 90,
           'threshold_reached_message' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_threshold_reached_message',
-                                                 locales: %i[en nl-BE fr-FR]),
+              locales: %i[en nl-BE fr-FR]),
           'eligibility_criteria' =>
             MultilocService.new.i18n_to_multiloc('initiatives.default_eligibility_criteria',
-                                                 locales: %i[en nl-BE fr-FR])
+              locales: %i[en nl-BE fr-FR])
         }
       }
     end

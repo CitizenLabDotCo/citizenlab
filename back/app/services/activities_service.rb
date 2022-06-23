@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivitiesService
   def create_periodic_activities(now: Time.zone.now, since: 1.hour)
     now = Time.zone.at(now)
@@ -39,7 +41,7 @@ class ActivitiesService
 
   def create_invite_not_accepted_since_3_days_activities(now, last_time)
     Invite.where(accepted_at: nil)
-          .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
+      .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
       LogActivityJob.perform_later(invite, 'not_accepted_since_3_days', nil, now.to_i)
     end
   end

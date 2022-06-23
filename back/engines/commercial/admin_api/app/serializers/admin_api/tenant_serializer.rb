@@ -4,7 +4,7 @@ module AdminApi
   # This serializer re-creates legacy serialized tenants. Attributes that are
   # no longer part of the Tenant model are obtained from the AppConfiguration
   # singleton.
-  # 
+  #
   # If you already have the companion AppConfiguration object, you can save
   # one DB query using:
   #   AdminApi::TenantSerializer.new(tenant, app_configuration: config)
@@ -13,15 +13,15 @@ module AdminApi
     delegate :host, :settings, :style, to: :configuration
 
     def logo
-      configuration.logo && configuration.logo.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      configuration.logo && configuration.logo.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     def header_bg
-      configuration.header_bg && configuration.header_bg.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      configuration.header_bg && configuration.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     def favicon
-      configuration.favicon && configuration.favicon.versions.map { |k, v| [k.to_s, v.url] }.to_h
+      configuration.favicon && configuration.favicon.versions.to_h { |k, v| [k.to_s, v.url] }
     end
 
     def configuration

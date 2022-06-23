@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Polls
   class ResponsePolicy < ApplicationPolicy
     class Scope
@@ -9,7 +11,8 @@ module Polls
       end
 
       def resolve
-        return scope.none if !user
+        return scope.none unless user
+
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         scope
@@ -37,7 +40,7 @@ module Polls
 
     private
 
-    def check_responding_allowed response, user
+    def check_responding_allowed(response, user)
       pcs = ParticipationContextService.new
       !pcs.taking_poll_disabled_reason_for_context response.participation_context, user
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Seo::Engine.routes.draw do
   get 'sitemap', to: 'application#sitemap', defaults: { format: :xml }
   get 'robots', to: 'application#robots', defaults: { format: :txt }

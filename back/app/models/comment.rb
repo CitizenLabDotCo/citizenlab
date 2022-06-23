@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: comments
@@ -38,47 +40,52 @@ class Comment < ApplicationRecord
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :post, polymorphic: true
   has_many :votes, as: :votable, dependent: :destroy
-  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
-  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
-  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
+  has_many :upvotes, -> { where(mode: 'up') }, as: :votable, class_name: 'Vote'
+  has_many :downvotes, -> { where(mode: 'down') }, as: :votable, class_name: 'Vote'
+  has_one :user_vote, ->(user_id) { where(user_id: user_id) }, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-
-  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
-  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
-
-  counter_culture :post,
-    column_name: proc {|model| model.published? ? 'comments_count' : nil },
-    column_names: {
-      ["comments.publication_status = ?", "published"] => "comments_count"
-    },
-    touch: true
-  counter_culture [:idea, :project],
-    column_name: proc {|model| model.published? ? 'comments_count' : nil },
-    column_names: {
-      ["comments.publication_status = ?", "published"] => "comments_count"
-    },
-    touch: true
-
-  # This code allows us to do something like comments.include(:idea)
-  # After https://stackoverflow.com/a/16124295/3585671
-  belongs_to :idea, -> { joins(:comments).where(comments: {post_type: 'Idea'}) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
-  def idea
-    return unless post_type == 'Idea'
-    super
-  end
-  belongs_to :initiative, -> { joins(:comments).where(comments: {post_type: 'Initiative'}) }, foreign_key: 'post_id', optional: true, class_name: 'Initiative'
-  def initiative
-    return unless post_type == 'Initiative'
-    super
-  end
-
-  PUBLICATION_STATUSES = %w(published deleted)
-
-  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
-  validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   before_validation :set_publication_status, on: :create
   before_validation :sanitize_body_multiloc
+  before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
+  has_many :notifications, dependent: :nullify
+
+  counter_culture(
+    :post,
+    column_name: proc { |model| model.published? ? 'comments_count' : nil },
+    column_names: {
+      ['comments.publication_status = ?', 'published'] => 'comments_count'
+    },
+    touch: true
+  )
+  counter_culture(
+    %i[idea project],
+    column_name: proc { |model| model.published? ? 'comments_count' : nil },
+    column_names: {
+      ['comments.publication_status = ?', 'published'] => 'comments_count'
+    },
+    touch: true
+  )
+
+  # This code allows us to do something like comments.include(:idea)
+  # After https://stackoverflow.com/a/16124295/3585671
+  belongs_to :idea, -> { joins(:comments).where(comments: { post_type: 'Idea' }) }, foreign_key: 'post_id', optional: true, class_name: 'Idea'
+  def idea
+    return unless post_type == 'Idea'
+
+    super
+  end
+  belongs_to :initiative, -> { joins(:comments).where(comments: { post_type: 'Initiative' }) }, foreign_key: 'post_id', optional: true, class_name: 'Initiative'
+  def initiative
+    return unless post_type == 'Initiative'
+
+    super
+  end
+
+  PUBLICATION_STATUSES = %w[published deleted]
+
+  validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
+  validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   scope :published, -> { where publication_status: 'published' }
 
@@ -105,7 +112,7 @@ class Comment < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update comment: nil
+      unless notification.update comment: nil
         notification.destroy!
       end
     end

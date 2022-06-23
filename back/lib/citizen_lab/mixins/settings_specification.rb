@@ -14,5 +14,3 @@ module CitizenLab
     end
   end
 end
-
-

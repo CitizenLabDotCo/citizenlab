@@ -43,7 +43,7 @@ resource 'Category suggestions for view inputs' do
 
       example_request 'assigns categories to an input and sets processed flag' do
         expect(status).to eq(200)
-        expect(idea.processed(view)).to eq(true)
+        expect(idea.processed(view)).to be(true)
         expect(response_data).to match_array(data)
 
         assignments = assignment_service.approved_assignments(idea, view)
@@ -56,7 +56,7 @@ resource 'Category suggestions for view inputs' do
         aggregate_failures 'check response' do
           expect(status).to eq(200)
           expect(response_data).to match_array(data)
-          expect(idea.processed(view)).to eq(true)
+          expect(idea.processed(view)).to be(true)
         end
       end
 
@@ -75,7 +75,7 @@ resource 'Category suggestions for view inputs' do
             expect(status).to eq(200)
             expect(approved_category_ids).to match_array(categories.pluck(:id))
             expect(assignment_service.suggested_assignments(idea, view).count).to eq(0)
-            expect(idea.processed(view)).to eq(true)
+            expect(idea.processed(view)).to be(true)
           end
         end
       end
@@ -113,11 +113,11 @@ resource 'Category suggestions for view inputs' do
 
       example 'deletes all category assignments but doesn\'t change the flag' do
         assignment_service.add_assignments(idea, categories, false)
-        expect(idea.processed(view)).to eq(false)
+        expect(idea.processed(view)).to be(false)
         expect { do_request }
           .to change { assignment_service.approved_assignments(idea, view).count }.from(2).to(0)
         expect(status).to eq(200)
-        expect(idea.processed(view)).to eq(false)
+        expect(idea.processed(view)).to be(false)
       end
 
       example 'does not delete suggestions', document: false do
@@ -131,7 +131,6 @@ resource 'Category suggestions for view inputs' do
   end
 
   delete 'web_api/v1/insights/views/:view_id/inputs/:input_id/categories/:category_id' do
-
     context 'when admin' do
       before { admin_header_token }
 

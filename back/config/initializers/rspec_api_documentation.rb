@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Monkey patching RspecApiDocumentation to fix API Documentation generation (CL2-5264).
 # See more details here: https://github.com/zipmark/rspec_api_documentation/issues/456#issuecomment-597671587
 # And more specifically here (the solution): https://github.com/zipmark/rspec_api_documentation/issues/456#issuecomment-597671587
@@ -14,7 +16,7 @@ require 'rspec_api_documentation'
 module RspecApiDocumentation
   class RackTestClient < ClientBase
     def response_body
-      last_response.body.encode("utf-8")
+      last_response.body.encode('utf-8')
     end
   end
 end

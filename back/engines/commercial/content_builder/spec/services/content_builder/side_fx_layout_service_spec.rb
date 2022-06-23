@@ -5,12 +5,20 @@ require 'rails_helper'
 describe ContentBuilder::SideFxLayoutService do
   subject(:service) { described_class.new }
 
-  let(:user) { build(:user) }
+  let(:user) { create(:user) }
   let(:layout) { create(:layout) }
 
   describe 'before_create' do
     it 'does not log activity' do
       expect(LogActivityJob).not_to receive(:perform_later)
+      service.before_create(layout, user)
+    end
+
+    it 'swaps data images' do
+      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(
+        layout,
+        :craftjs_jsonmultiloc
+      )
       service.before_create(layout, user)
     end
   end
@@ -20,11 +28,24 @@ describe ContentBuilder::SideFxLayoutService do
       expect(LogActivityJob).not_to receive(:perform_later)
       service.before_update(layout, user)
     end
+
+    it 'swaps data images' do
+      expect_any_instance_of(ContentBuilder::LayoutImageService).to receive(:swap_data_images).with(
+        layout,
+        :craftjs_jsonmultiloc
+      )
+      service.before_update(layout, user)
+    end
   end
 
   describe 'before_destroy' do
     it 'does not log activity' do
       expect(LogActivityJob).not_to receive(:perform_later)
+      service.before_destroy(layout, user)
+    end
+
+    it 'does not swap data images' do
+      expect_any_instance_of(ContentBuilder::LayoutImageService).not_to receive(:swap_data_images)
       service.before_destroy(layout, user)
     end
   end
@@ -39,6 +60,11 @@ describe ContentBuilder::SideFxLayoutService do
       )
       service.after_create(layout, user)
     end
+
+    it 'does not swap data images' do
+      expect_any_instance_of(ContentBuilder::LayoutImageService).not_to receive(:swap_data_images)
+      service.after_create(layout, user)
+    end
   end
 
   describe 'after_update' do
@@ -49,6 +75,11 @@ describe ContentBuilder::SideFxLayoutService do
         user,
         layout.updated_at.to_i
       )
+      service.after_update(layout, user)
+    end
+
+    it 'does not swap data images' do
+      expect_any_instance_of(ContentBuilder::LayoutImageService).not_to receive(:swap_data_images)
       service.after_update(layout, user)
     end
   end
@@ -73,6 +104,11 @@ describe ContentBuilder::SideFxLayoutService do
           )
         )
       )
+      service.after_destroy(layout, user)
+    end
+
+    it 'does not swap data images' do
+      expect_any_instance_of(ContentBuilder::LayoutImageService).not_to receive(:swap_data_images)
       service.after_destroy(layout, user)
     end
   end

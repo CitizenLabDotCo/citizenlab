@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-
-    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :deliveries, :stats, :destroy]
+    before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
     rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     def index
@@ -9,12 +10,12 @@ module EmailCampaigns
         .order(created_at: :desc)
 
       if params[:campaign_names]
-        campaign_types = params[:campaign_names].map{|name| Campaign.from_campaign_name(name) }
+        campaign_types = params[:campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where(type: campaign_types)
       end
 
       if params[:without_campaign_names]
-        campaign_types = params[:without_campaign_names].map{|name| Campaign.from_campaign_name(name) }
+        campaign_types = params[:without_campaign_names].map { |name| Campaign.from_campaign_name(name) }
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
@@ -29,9 +30,9 @@ module EmailCampaigns
     end
 
     def create
-      @campaign = EmailCampaigns::DeliveryService.new.campaign_classes.select do |claz|
+      @campaign = EmailCampaigns::DeliveryService.new.campaign_classes.find do |claz|
         claz.campaign_name == params[:campaign][:campaign_name]
-      end.first.new(campaign_params)
+      end.new(campaign_params)
       @campaign.author ||= current_user
 
       authorize @campaign
@@ -41,14 +42,14 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
           params: fastjson_params
-          ).serialized_json, status: :created
+        ).serialized_json, status: :created
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
     end
 
     def update
-      params[:campaign][:group_ids] ||= [] if params[:campaign].has_key?(:group_ids)
+      params[:campaign][:group_ids] ||= [] if params[:campaign].key?(:group_ids)
 
       saved = nil
       ActiveRecord::Base.transaction do
@@ -65,7 +66,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign,
           params: fastjson_params
-          ).serialized_json, status: :ok
+        ).serialized_json, status: :ok
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -78,7 +79,7 @@ module EmailCampaigns
         SideFxCampaignService.new.after_destroy(campaign, current_user)
         head :ok
       else
-        head 500
+        head :internal_server_error
       end
     end
 
@@ -90,7 +91,7 @@ module EmailCampaigns
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
           params: fastjson_params
-          ).serialized_json
+        ).serialized_json
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -103,7 +104,7 @@ module EmailCampaigns
 
     def preview
       html = EmailCampaigns::DeliveryService.new.preview_html(@campaign, current_user)
-      render json: {html: html}
+      render json: { html: html }
     end
 
     def deliveries
@@ -117,7 +118,7 @@ module EmailCampaigns
         WebApi::V1::DeliverySerializer,
         params: fastjson_params,
         include: [:user]
-        )
+      )
     end
 
     def stats
@@ -138,17 +139,17 @@ module EmailCampaigns
         :reply_to,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
-        body_multiloc: I18n.available_locales,
+        body_multiloc: I18n.available_locales
       )
     end
 
-    def user_not_authorized exception
-      if %w(create? update? destroy? do_send? send_preview? deliveries? stats?).include? exception.query
-        if !current_user.admin? && current_user.project_moderator?
-          render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
-        else
-          render json: { errors: { base: [{ error: 'unauthorized' }] } }, status: :unauthorized
-        end
+    def user_not_authorized(exception)
+      return unless %w[create? update? destroy? do_send? send_preview? deliveries? stats?].include? exception.query
+
+      if !current_user.admin? && current_user.project_moderator?
+        render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
+      else
+        render json: { errors: { base: [{ error: 'unauthorized' }] } }, status: :unauthorized
       end
     end
   end

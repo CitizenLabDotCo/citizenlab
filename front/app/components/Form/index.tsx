@@ -1,16 +1,44 @@
-import React, { memo, ReactElement, useCallback, useState } from 'react';
+import React, {
+  memo,
+  ReactElement,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 import { JsonForms } from '@jsonforms/react';
 
-import CLCategoryLayout, { clCategoryTester } from './CLCategoryLayout';
-import InputControl, { inputControlTester } from './InputControl';
-import TextAreaControl, { textAreaControlTester } from './TextAreaControl';
-import WYSIWYGControl, { WYSIWYGControlTester } from './WYSIWYGControl';
-import TopicsControl, { topicsControlTester } from './TopicsControl';
-import ImageControl, { imageControlTester } from './ImageControl';
+import CLCategoryLayout, {
+  clCategoryTester,
+} from './Components/Layouts/CLCategoryLayout';
+import OrderedLayout, {
+  orderedLayoutTester,
+} from './Components/Layouts/OrderedLayout';
+
+import InputControl, {
+  inputControlTester,
+} from './Components/Controls/InputControl';
+import TextAreaControl, {
+  textAreaControlTester,
+} from './Components/Controls/TextAreaControl';
+import WYSIWYGControl, {
+  WYSIWYGControlTester,
+} from './Components/Controls/WYSIWYGControl';
+import TopicsControl, {
+  topicsControlTester,
+} from './Components/Controls/TopicsControl';
+import ImageControl, {
+  imageControlTester,
+} from './Components/Controls/ImageControl';
 
 import AttachmentsControl, {
   attachmentsControlTester,
-} from './AttachmentsControl';
+} from './Components/Controls/AttachmentsControl';
+import DescriptionControl, {
+  descriptionControlTester,
+} from './Components/Controls/DescriptionControl';
+import TitleControl, {
+  titleControlTester,
+} from './Components/Controls/TitleControl';
 
 import {
   createAjv,
@@ -22,17 +50,25 @@ import {
 import styled from 'styled-components';
 import SingleSelectControl, {
   singleSelectControlTester,
-} from './SingleSelectControl';
+} from './Components/Controls/SingleSelectControl';
 import MultiSelectControl, {
   multiSelectControlTester,
-} from './MultiSelectControl';
+} from './Components/Controls/MultiSelectControl';
 import UserPickerControl, {
   userPickerControlTester,
-} from './UserPickerControl';
-import OrderedLayout, { orderedLayoutTester } from './OrderedLayout';
-import CheckboxControl, { checkboxControlTester } from './CheckboxControl';
-import LocationControl, { locationControlTester } from './LocationControl';
-import DateControl, { dateControlTester } from './DateControl';
+} from './Components/Controls/UserPickerControl';
+import CheckboxControl, {
+  checkboxControlTester,
+} from './Components/Controls/CheckboxControl';
+import LocationControl, {
+  locationControlTester,
+} from './Components/Controls/LocationControl';
+import DateControl, {
+  dateControlTester,
+} from './Components/Controls/DateControl';
+import MultilocInputLayout, {
+  multilocInputTester,
+} from './Components/Controls/MultilocInputLayout';
 
 import {
   Box,
@@ -41,20 +77,19 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import Button from 'components/UI/Button';
-import ButtonBar from './ButtonBar';
+import ButtonBar from './Components/ButtonBar';
 
 import useObserveEvent from 'hooks/useObserveEvent';
 
 import { CLErrors, Message } from 'typings';
-import MultilocInputLayout, {
-  multilocInputTester,
-} from './MultilocInputLayout';
 import { getDefaultAjvErrorMessage } from 'utils/errorUtils';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { ErrorObject } from 'ajv';
 import { forOwn } from 'lodash-es';
-import { ApiErrorGetter, APIErrorsContext, FormContext } from './contexts';
+import { APIErrorsContext, FormContext } from './contexts';
+import useLocale from 'hooks/useLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 // hopefully we can standardize this someday
 const Title = styled.h1`
@@ -87,6 +122,11 @@ export type AjvErrorGetter = (
   uischema?: UISchemaElement
 ) => Message | undefined;
 
+export type ApiErrorGetter = (
+  errorKey: string,
+  fieldName: string
+) => Message | undefined;
+
 interface Props {
   schema: JsonSchema7;
   uiSchema: UISchemaElement;
@@ -103,6 +143,10 @@ interface Props {
    * If you use this as a controlled form, you'll lose some extra validation and transformations as defined in the handleSubmit.
    */
   onChange?: (formData: FormData) => void;
+  /**
+   * Idea id for update form, used to load and udpate image and files.
+   */
+  inputId?: string;
 }
 const renderers = [
   { tester: inputControlTester, renderer: InputControl },
@@ -111,7 +155,9 @@ const renderers = [
   { tester: singleSelectControlTester, renderer: SingleSelectControl },
   { tester: multiSelectControlTester, renderer: MultiSelectControl },
   { tester: WYSIWYGControlTester, renderer: WYSIWYGControl },
+  { tester: descriptionControlTester, renderer: DescriptionControl },
   { tester: topicsControlTester, renderer: TopicsControl },
+  { tester: titleControlTester, renderer: TitleControl },
   { tester: imageControlTester, renderer: ImageControl },
   { tester: attachmentsControlTester, renderer: AttachmentsControl },
   { tester: clCategoryTester, renderer: CLCategoryLayout },
@@ -131,6 +177,7 @@ const Form = memo(
     initialFormData,
     onSubmit,
     title,
+    inputId,
     submitOnEvent,
     onChange,
     getAjvErrorMessage,
@@ -145,6 +192,49 @@ const Form = memo(
       () => (getApiErrorMessage ? getApiErrorMessage : () => undefined),
       [getApiErrorMessage]
     );
+
+    // To handle multilocs we had the two options of adding one control for each multiloc thing : InputMultiloc, WYSIWYGMultiloc, or have the top-level multiloc object be a custom layout that shows the appropriate field and render the controls inside normally. I went for the second option.
+    // Both options limited somehow the validation power, and with this solution, it means that the errors on the layout level are not available (IE this field is required, or this field should have at least one property). So this is a hacky thing to make the current locale required, but we will have to find something better would we want to make all locales required like in the admin side or simply is we would want to have a cleaner form component.
+    const [processingInitialMultiloc, setProcessingInitialMultiloc] =
+      useState(true);
+    const [fixedSchema, setSchema] = useState(schema);
+
+    const locale = useLocale();
+
+    // Hacky way of handling required multiloc fields
+    useEffect(() => {
+      if (
+        !isNilOrError(locale) &&
+        !isNilOrError(schema) &&
+        processingInitialMultiloc
+      ) {
+        const requiredMultilocFields = schema?.required?.filter((req) =>
+          req.endsWith('_multiloc')
+        );
+        // requiredMultilocFields can only have elements if schema.required's has, can cast type
+        if (requiredMultilocFields && requiredMultilocFields.length > 0) {
+          setSchema((schema) => {
+            const requiredFieldsObject = Object.fromEntries(
+              requiredMultilocFields.map((req) => [
+                req,
+                { ...schema?.properties?.[req], required: [locale] },
+              ])
+            );
+            return {
+              ...schema,
+              properties: { ...schema.properties, ...requiredFieldsObject },
+            };
+          });
+          setData((data) => ({
+            ...Object.fromEntries(
+              requiredMultilocFields.map((req) => [req, { [locale]: '' }])
+            ),
+            ...data,
+          }));
+        }
+        setProcessingInitialMultiloc(false);
+      }
+    }, [locale, processingInitialMultiloc, schema]);
 
     const handleSubmit = async () => {
       const sanitizedFormData = {};
@@ -185,7 +275,6 @@ const Form = memo(
       },
       [formatMessage, getAjvErrorMessage]
     );
-
     const layoutTpye = isCategorization(uiSchema) ? 'fullpage' : 'inline';
     return (
       <Box
@@ -206,11 +295,12 @@ const Form = memo(
             <FormContext.Provider
               value={{
                 showAllErrors,
+                inputId,
                 getApiErrorMessage: safeApiErrorMessages(),
               }}
             >
               <JsonForms
-                schema={schema}
+                schema={fixedSchema}
                 uischema={uiSchema}
                 data={data}
                 renderers={renderers}
@@ -234,7 +324,6 @@ const Form = memo(
               apiErrors?.values?.length && apiErrors?.values?.length > 0
             )}
             processing={loading}
-            valid={!customAjv.errors || customAjv.errors?.length === 0}
           />
         ) : submitOnEvent ? (
           <InvisibleSubmitButton onClick={handleSubmit} />

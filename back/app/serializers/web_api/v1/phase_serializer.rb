@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
@@ -9,21 +11,17 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :project
 
-  has_one :user_basket, if: Proc.new { |object, params|
+  has_one :user_basket, if: proc { |object, params|
     signed_in? object, params
   } do |object, params|
     user_basket object, params
   end
-  
-  def self.user_basket object, params
+
+  def self.user_basket(object, params)
     preloaded_user_basket = params.dig(:user_baskets, object.id)&.first
-    if preloaded_user_basket
-      preloaded_user_basket
-    else
-      current_user(params)&.baskets&.select{ |basket|
-        (basket.participation_context_id == object.id) && (basket.participation_context_type == 'Phase')
-      }&.first
-    end
+    preloaded_user_basket || current_user(params)&.baskets&.select do |basket|
+      (basket.participation_context_id == object.id) && (basket.participation_context_type == 'Phase')
+    end&.first
   end
 end
 

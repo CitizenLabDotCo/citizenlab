@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module NLP
   module WebApi
     module V1
@@ -11,13 +13,13 @@ module NLP
           @ideas = @ideas.where(project_id: params[:projects]) if params[:projects].present?
           @ideas = @ideas.where(id: params[:idea_ids]) if params[:idea_ids].present?
 
-          @tag_suggestions = TagSuggestionService.new.suggest(@ideas, locale)&.map { |e|
+          @tag_suggestions = TagSuggestionService.new.suggest(@ideas, locale)&.map do |e|
             {
               title_multiloc: {
-                locale => e["text"]
+                locale => e['text']
               }
             }
-          }
+          end
 
           render json: { data: @tag_suggestions }.to_json
         end

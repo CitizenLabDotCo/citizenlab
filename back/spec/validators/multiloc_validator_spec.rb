@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 class Validatable
@@ -18,30 +20,36 @@ class Validatable3
   attr_accessor :multiloc_field
 end
 
+class Validatable4
+  include ActiveModel::Validations
+  validates :multiloc_field, multiloc: { value_type: Hash }
+  attr_accessor :multiloc_field
+end
+
 describe MultilocValidator do
   let(:presence_subject) { Validatable.new }
   let(:nonpresence_subject) { Validatable2.new }
 
   context 'without nil values' do
     it 'is valid' do
-      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'nl-BE' => ''}
+      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'nl-BE' => '' }
       expect(nonpresence_subject).to be_valid
     end
   end
 
   context 'with nil values for some locales' do
     it 'is invalid' do
-      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => nil}
+      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'fr-FR' => nil }
       expect(nonpresence_subject).to be_invalid
 
-      nonpresence_subject.multiloc_field = {'en' => 'somevalue', 'fr-FR' => false, "nl-BE" => ''}
+      nonpresence_subject.multiloc_field = { 'en' => 'somevalue', 'fr-FR' => false, 'nl-BE' => '' }
       expect(nonpresence_subject).to be_invalid
     end
   end
 
   context 'with one locale value' do
     it 'is valid' do
-      presence_subject.multiloc_field = {"en" => 'somevalue'}
+      presence_subject.multiloc_field = { 'en' => 'somevalue' }
       expect(presence_subject).to be_valid
     end
   end
@@ -72,6 +80,42 @@ describe MultilocValidator do
     it 'is invalid' do
       presence_subject.multiloc_field = { 'smalltalk' => 'Hey how are you?' }
       expect(presence_subject).to be_invalid
+    end
+  end
+
+  context 'with string values' do
+    it 'is invalid when some values are not strings' do
+      nonpresence_subject.multiloc_field = { 'en' => 'My value', 'nl-BE' => false }
+      expect(nonpresence_subject).to be_invalid
+    end
+
+    it 'is invalid when some values are nil' do
+      nonpresence_subject.multiloc_field = { 'en' => 'My value', 'nl-BE' => nil }
+      expect(nonpresence_subject).to be_invalid
+    end
+
+    it 'is valid when all values are strings' do
+      nonpresence_subject.multiloc_field = { 'en' => 'My value', 'nl-BE' => '' }
+      expect(nonpresence_subject).to be_valid
+    end
+  end
+
+  context 'with hash values' do
+    let(:hashed_multiloc_subject) { Validatable4.new }
+
+    it 'is invalid when some values are not hashes' do
+      hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'nl-BE' => 'test' }
+      expect(hashed_multiloc_subject).to be_invalid
+    end
+
+    it 'is invalid when some values are nil' do
+      hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'fr-BE' => nil }
+      expect(hashed_multiloc_subject).to be_invalid
+    end
+
+    it 'is valid when all values are strings' do
+      hashed_multiloc_subject.multiloc_field = { 'en' => { my_value: 53 }, 'de-DE' => {} }
+      expect(hashed_multiloc_subject).to be_valid
     end
   end
 

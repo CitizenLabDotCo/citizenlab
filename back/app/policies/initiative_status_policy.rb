@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeStatusPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -15,5 +17,4 @@ class InitiativeStatusPolicy < ApplicationPolicy
   def show?
     true
   end
-
 end

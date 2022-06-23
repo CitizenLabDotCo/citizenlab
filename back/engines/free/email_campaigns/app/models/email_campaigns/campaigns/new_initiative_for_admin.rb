@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -32,7 +34,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages only: ['trial','active']
+    allow_lifecycle_stages only: %w[trial active]
 
     recipient_filter :filter_recipient
 
@@ -45,16 +47,16 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Initiative' => {'published' => true}}
+      { 'Initiative' => { 'published' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       initiative = activity.item
       initiator = initiative.author
 
       recipient_ids = if initiator && !initiator.admin?
-        User.admin.ids.select do |recipient_id|
-          recipient_id != initiative&.assignee_id
+        User.admin.ids.reject do |recipient_id|
+          recipient_id == initiative&.assignee_id
         end
       else
         []
@@ -67,7 +69,7 @@ module EmailCampaigns
       'admin'
     end
 
-    def generate_commands recipient:, activity:, time: nil
+    def generate_commands(recipient:, activity:, time: nil)
       initiative = activity.item
       [{
         event_payload: {
@@ -84,7 +86,7 @@ module EmailCampaigns
     protected
 
     def set_enabled
-      self.enabled = false if self.enabled.nil?
+      self.enabled = false if enabled.nil?
     end
   end
 end

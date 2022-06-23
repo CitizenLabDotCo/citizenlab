@@ -5,8 +5,8 @@ require 'json'
 module NLP
   # Data class for zeroshot-classification results.
   class ZeroshotClassificationResult
-    attr_reader :task_id, :tenant_id, :predictions
-    attr_reader :json_message # is only initialized if the instance is created with +.from_json+
+    # json_message is only initialized if the instance is created with +.from_json+
+    attr_reader :task_id, :tenant_id, :predictions, :json_message
 
     # @param [String] task_id
     # @param [String, nil] tenant_id
@@ -27,7 +27,7 @@ module NLP
       @json_message = json_message.is_a?(String) ? JSON.parse(json_message) : json_message
 
       predictions = @json_message.dig('result', 'data', 'final_predictions').to_a
-                                 .flat_map { |json_pred| Prediction.from_json(json_pred) }
+        .flat_map { |json_pred| Prediction.from_json(json_pred) }
 
       new(
         @json_message.fetch('task_id'), # raises an exception if the key is missing

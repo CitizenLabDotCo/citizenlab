@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ContentBuilder::Engine.routes.draw do
   namespace :web_api do
     namespace :v1 do
@@ -6,6 +8,7 @@ ContentBuilder::Engine.routes.draw do
           post :upsert, on: :member
         end
       end
+      resources :content_builder_layout_images, only: :create, controller: :layout_images
     end
   end
 end

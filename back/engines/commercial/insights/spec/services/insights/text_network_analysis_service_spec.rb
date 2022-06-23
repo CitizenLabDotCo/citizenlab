@@ -63,7 +63,7 @@ describe Insights::TextNetworkAnalysisService do
       tasks = create_list(:tna_task, 2, handler_class: described_class)
       languages = %w[en nl-BE]
 
-      allow(nlp_tna_service).to receive(:analyse).and_return(Hash[languages.zip(tasks)])
+      allow(nlp_tna_service).to receive(:analyse).and_return(languages.zip(tasks).to_h)
 
       task_views = nil
       expect { task_views = service.analyse(view) }.to change { Insights::TextNetworkAnalysisTaskView.count }.by(2)
@@ -75,7 +75,7 @@ describe Insights::TextNetworkAnalysisService do
 
     it 'deletes existing networks for languages that are no longer in use' do
       text_network = create(:insights_text_network, language: 'nl-BE', view: view)
-      allow(nlp_tna_service).to receive(:analyse).and_return({ 'en': create(:tna_task) })
+      allow(nlp_tna_service).to receive(:analyse).and_return({ en: create(:tna_task) })
 
       service.analyse(view)
 

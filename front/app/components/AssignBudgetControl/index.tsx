@@ -295,7 +295,6 @@ const AssignBudgetControl = memo(
           return (
             <IdeaCardContainer
               className={`e2e-assign-budget ${className || ''}`}
-              aria-live="polite"
             >
               {addRemoveButton}
             </IdeaCardContainer>
@@ -308,7 +307,6 @@ const AssignBudgetControl = memo(
               className={`pbAssignBudgetControlContainer e2e-assign-budget ${
                 className || ''
               }`}
-              aria-live="polite"
             >
               <BudgetWithButtonWrapper>
                 <Budget>

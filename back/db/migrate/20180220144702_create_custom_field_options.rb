@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCustomFieldOptions < ActiveRecord::Migration[5.1]
   def change
     create_table :custom_field_options, id: :uuid do |t|
@@ -9,6 +11,6 @@ class CreateCustomFieldOptions < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    add_index :custom_field_options, [:custom_field_id, :key], unique: true
+    add_index :custom_field_options, %i[custom_field_id key], unique: true
   end
 end

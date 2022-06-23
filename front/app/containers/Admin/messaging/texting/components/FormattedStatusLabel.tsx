@@ -4,7 +4,7 @@ import React from 'react';
 import messages from '../../messages';
 
 // typings
-import { ITextingCampaignStatuses } from 'services/textingCampaigns';
+import { TTextingCampaignStatus } from 'services/textingCampaigns';
 
 // components
 import { StatusLabel } from '@citizenlab/cl2-component-library';
@@ -17,7 +17,7 @@ import { colors } from 'utils/styleUtils';
 
 interface FormattedStatusLabelProps {
   width?: string;
-  campaignStatus: ITextingCampaignStatuses;
+  campaignStatus: TTextingCampaignStatus;
 }
 
 const FormattedStatusLabel = (

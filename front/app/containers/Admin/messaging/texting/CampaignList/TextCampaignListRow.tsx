@@ -59,7 +59,7 @@ const TextingCampaignRow = ({ campaign }: Props) => {
   };
 
   return (
-    <Row onClick={handleEvent}>
+    <Row tabIndex={0} onClick={handleEvent}>
       <MessageCell>{truncate(message, 60)}</MessageCell>
 
       {status === 'sent' && (

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AdminApi
   class GraphqlController < AdminApiController
     def execute
@@ -11,9 +13,9 @@ module AdminApi
       result = Schema.execute(query, variables: variables, context: context, operation_name: operation_name)
       render json: result
     end
-  
+
     private
-  
+
     # Handle form data, JSON body, or a blank value
     def ensure_hash(ambiguous_param)
       case ambiguous_param

@@ -1,17 +1,18 @@
+# frozen_string_literal: true
+
 module Surveys
   module WebApi
     module V1
       class ResponsesController < SurveysController
-
         skip_after_action :verify_authorized, only: [:index_xlsx]
         before_action :set_participation_context
         rescue_from TypeformApiParser::AuthorizationError, with: :typeform_authorization_error
 
         def index_xlsx
           if @participation_context
-            authorize Project.find_by!(id: @participation_context.project.id), :index_xlsx?
+            authorize Project.find(@participation_context.project.id), :index_xlsx?
           else
-            authorize [:surveys, :response], :index_xlsx?
+            authorize %i[surveys response], :index_xlsx?
           end
 
           # If the real-time API request ever gets problematic, this uses the saved webhook responses instead
@@ -31,8 +32,8 @@ module Surveys
           @participation_context = params[:pc_class].find(params[:participation_context_id])
         end
 
-        def typeform_authorization_error exception
-          render json: { errors: { base: [{ error: exception.error_key, message: exception.description }] } }, status: 403
+        def typeform_authorization_error(exception)
+          render json: { errors: { base: [{ error: exception.error_key, message: exception.description }] } }, status: :forbidden
         end
       end
     end

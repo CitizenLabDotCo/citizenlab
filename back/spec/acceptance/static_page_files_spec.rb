@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -17,7 +19,7 @@ resource 'StaticPageFile' do
     let(:page_id) { @page.id }
 
     example_request 'List all file attachments of a static page' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse response_body
       expect(json_response[:data].size).to eq 2
     end
@@ -28,7 +30,7 @@ resource 'StaticPageFile' do
     let(:file_id) { StaticPageFile.first.id }
 
     example_request 'Get one file of a static page' do
-      expect(status).to eq 200
+      assert_status 200
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :file)).to be_present
     end
@@ -44,10 +46,10 @@ resource 'StaticPageFile' do
     let(:page_id) { @page.id }
     let(:ordering) { 1 }
     let(:name) { 'afvalkalender.pdf' }
-    let(:file) { encode_pdf_file_as_base64 name }
+    let(:file) { file_as_base64 name, 'application/pdf' }
 
     example_request 'Add a file attachment to a page' do
-      expect(response_status).to eq 201
+      assert_status 201
       json_response = json_parse response_body
       expect(json_response.dig(:data, :attributes, :file)).to be_present
       expect(json_response.dig(:data, :attributes, :ordering)).to eq 1
@@ -56,13 +58,13 @@ resource 'StaticPageFile' do
     end
 
     describe do
-      let(:file) { encode_exe_file_as_base64('keylogger.exe') }
       let(:name) { 'keylogger.exe' }
+      let(:file) { file_as_base64 name, 'application/octet-stream' }
 
       example_request '[error] Add an unsupported file extension as attachment to a page' do
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
-        expect(json_response.dig(:errors, :file)).to include({ :error=>'extension_whitelist_error' })
+        expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
       end
     end
 
@@ -72,9 +74,9 @@ resource 'StaticPageFile' do
         expect_any_instance_of(StaticPageFileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
-        expect(response_status).to eq 422
+        assert_status 422
         json_response = json_parse response_body
-        expect(json_response.dig(:errors, :file)).to include({ error: 'max_size_error' })
+        expect(json_response).to include_response_error(:file, 'max_size_error')
       end
     end
   end
@@ -87,15 +89,5 @@ resource 'StaticPageFile' do
       expect(response_status).to eq 200
       expect { StaticPageFile.find file_id }.to raise_error(ActiveRecord::RecordNotFound)
     end
-  end
-
-  private
-
-  def encode_pdf_file_as_base64(filename)
-    "data:application/pdf;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
-  end
-
-  def encode_exe_file_as_base64(filename)
-    "data:application/octet-stream;base64,#{Base64.encode64(File.read(Rails.root.join('spec', 'fixtures', filename)))}"
   end
 end

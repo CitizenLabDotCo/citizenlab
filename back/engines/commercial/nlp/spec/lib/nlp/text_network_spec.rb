@@ -30,7 +30,6 @@ describe NLP::TextNetwork do
   describe '#prune_communities' do
     let(:network) { build(:nlp_text_network, nb_nodes: 3, nb_communities: 3) }
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'keeps only n communities' do
       removed_communities = network.prune_communities(2)
       expect(network.communities.count).to eq(2)
@@ -43,7 +42,6 @@ describe NLP::TextNetwork do
       expect(pruned_community.children & network.nodes).to be_empty
       expect(network.nodes).to match_array(network.communities.flat_map(&:children))
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'keeps only the most important communities' do
       max_importance = network.communities.map(&:importance_score).max
@@ -68,7 +66,7 @@ describe NLP::TextNetwork do
       network = build(:nlp_text_network, nb_nodes: 6, nb_communities: 2)
       network.shrink_communities(2)
 
-      child_counts = network.communities.map {|c| c.children.count }
+      child_counts = network.communities.map { |c| c.children.count }
       expect(child_counts).to all(be <= 2)
     end
 

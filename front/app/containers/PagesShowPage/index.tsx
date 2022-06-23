@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -32,7 +32,13 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultCardStyle,
+  isRtl,
+} from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 export const Container = styled.div`
@@ -86,6 +92,10 @@ export const PageTitle = styled.h1`
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxxl};
+  `}
+  ${isRtl`
+    text-align: right;
+    direction: rtl;
   `}
 `;
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   module Patches
     module SideFxProjectService
@@ -8,9 +10,9 @@ module ProjectFolders
 
       def after_update(project, current_user)
         super
-        if @folder_id_was != project.folder_id
-          after_folder_changed project, current_user
-        end
+        return if @folder_id_was == project.folder_id
+
+        after_folder_changed project, current_user
       end
     end
   end

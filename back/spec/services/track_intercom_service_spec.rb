@@ -26,7 +26,7 @@ describe TrackIntercomService do
       expect(contacts_api).to receive(:search)
         .and_return(OpenStruct.new({ count: 0 }))
 
-      _contact = double.as_null_object
+      contact = double.as_null_object
       expect(contacts_api).to receive(:create).with({
         role: 'user',
         external_id: user.id,
@@ -41,7 +41,7 @@ describe TrackIntercomService do
           lastName: user.last_name,
           locale: user.locale
         )
-      }).and_return(_contact)
+      }).and_return(contact)
 
       service.identify_user(user)
     end
@@ -59,14 +59,18 @@ describe TrackIntercomService do
       expect(contact).to receive(:email=).with(user.email)
       expect(contact).to receive(:name=).with("#{user.first_name} #{user.last_name}")
       expect(contact).to receive(:signed_up_at=).with(user.registration_completed_at)
-      expect(contact).to receive(:custom_attributes=).with(hash_including(
-        isAdmin: true,
-        isSuperAdmin: false,
-        highestRole: 'admin',
-        firstName: user.first_name,
-        lastName: user.last_name,
-        locale: user.locale
-      ))
+      expect(contact).to receive(
+        :custom_attributes=
+      ).with(
+        hash_including(
+          isAdmin: true,
+          isSuperAdmin: false,
+          highestRole: 'admin',
+          firstName: user.first_name,
+          lastName: user.last_name,
+          locale: user.locale
+        )
+      )
 
       expect(contacts_api).to receive(:save).with(contact).and_return(contact)
 
@@ -91,14 +95,14 @@ describe TrackIntercomService do
       expect(intercom).to receive(:events).and_return(events_api)
 
       expect(events_api).to receive(:create).with({
-        event_name: "Idea published",
+        event_name: 'Idea published',
         created_at: activity.acted_at,
         user_id: admin.id,
         metadata: hash_including(
           source: 'cl2-back',
           item_id: activity.item_id,
           item_type: activity.item_type,
-          action: 'published',
+          action: 'published'
         )
       })
 

@@ -246,7 +246,7 @@ const IdeasWithoutFiltersSidebar = ({
     queryParameters: { phase: phaseId },
   } = ideas;
 
-  const locationEnabled = isFieldEnabled('location');
+  const locationEnabled = isFieldEnabled('location_description');
   const topicsEnabled = isFieldEnabled('topic_ids');
   const showViewButtons = !!(locationEnabled && showViewToggle);
   const showListView =
@@ -284,11 +284,11 @@ const IdeasWithoutFiltersSidebar = ({
                 onClick={selectView}
               />
             )}
-
             {!showMapView && (
               <StyledSearchInput
                 className="e2e-search-ideas-input"
                 onChange={handleSearchOnChange}
+                a11y_numberOfSearchResults={list.length}
               />
             )}
           </LeftFilterArea>

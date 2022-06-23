@@ -6,8 +6,6 @@ require 'rspec_api_documentation/dsl'
 resource 'ContentBuilderLayouts' do
   explanation 'Content builder layouts for projects.'
 
-  let(:time_regex) { /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/ }
-
   before do
     header 'Content-Type', 'application/json'
   end
@@ -19,8 +17,23 @@ resource 'ContentBuilderLayouts' do
     let(:code) { layout.code }
 
     get 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
-      example_request 'Try to get one layout by project_id and code without authorization' do
-        expect(status).to eq 401
+      example_request 'Get one layout by project_id and code' do
+        expect(status).to eq 200
+
+        json_response = json_parse(response_body)
+        expect(json_response).to include(
+          {
+            data: {
+              id: layout.id,
+              type: 'content_builder_layout',
+              attributes: hash_including(
+                code: code,
+                created_at: match(time_regex),
+                updated_at: match(time_regex)
+              )
+            }
+          }
+        )
       end
     end
 
@@ -30,7 +43,7 @@ resource 'ContentBuilderLayouts' do
       let(:code) { 'unknown' }
 
       post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
-        example_request 'Try to create a layout for a project without authorization' do
+        example_request '[error] Try to create a layout for a project without authorization' do
           expect(status).to eq 401
         end
       end
@@ -42,13 +55,13 @@ resource 'ContentBuilderLayouts' do
       let(:code) { layout.code }
 
       post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
-        example_request 'Try to update a layout of a project without authorization' do
+        example_request '[error] Try to update a layout of a project without authorization' do
           expect(status).to eq 401
         end
       end
 
       delete 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
-        example_request 'Try to delete a layout of a project without authorization' do
+        example_request '[error] Try to delete a layout of a project without authorization' do
           expect(status).to eq 401
         end
       end
@@ -82,7 +95,7 @@ resource 'ContentBuilderLayouts' do
         let(:code) { layout.code }
 
         get 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
-          example_request 'Try to get a layout of a project when the project does not exist' do
+          example_request '[error] Try to get a layout of a project when the project does not exist' do
             expect(status).to eq 404
           end
         end
@@ -94,7 +107,7 @@ resource 'ContentBuilderLayouts' do
         let(:code) { 'unknown' }
 
         get 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
-          example_request 'Try to get a layout of a project when the code is unknown' do
+          example_request '[error] Try to get a layout of a project when the code is unknown' do
             expect(status).to eq 404
           end
         end
@@ -113,7 +126,7 @@ resource 'ContentBuilderLayouts' do
         let(:code) { layout.code }
 
         post 'web_api/v1/projects/:project_id/content_builder_layouts/:code/upsert' do
-          example_request 'Try to upsert a layout for a project that does not exist' do
+          example_request '[error] Try to upsert a layout for a project that does not exist' do
             expect(status).to eq 404
           end
         end
@@ -384,7 +397,7 @@ resource 'ContentBuilderLayouts' do
         let(:code) { layout.code }
 
         delete 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
-          example_request 'Try to delete a layout of a project when the project does not exist' do
+          example_request '[error] Try to delete a layout of a project when the project does not exist' do
             expect(status).to eq 404
           end
         end
@@ -396,7 +409,7 @@ resource 'ContentBuilderLayouts' do
         let(:code) { 'unknown' }
 
         delete 'web_api/v1/projects/:project_id/content_builder_layouts/:code' do
-          example_request 'Try to delete a layout of a project when the code is unknown' do
+          example_request '[error] Try to delete a layout of a project when the code is unknown' do
             expect(status).to eq 404
           end
         end

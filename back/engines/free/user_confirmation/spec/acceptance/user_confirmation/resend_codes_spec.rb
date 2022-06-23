@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
@@ -32,7 +34,7 @@ resource 'Code Resends' do
         end
 
         example 'returns an ok status when passing a valid email' do
-          expect(status).to eq 200
+          assert_status 200
         end
 
         example 'delivers an email to the user' do
@@ -54,18 +56,20 @@ resource 'Code Resends' do
         end
 
         example 'returns an unprocessable entity status' do
-          expect(status).to eq 422
+          assert_status 422
         end
 
         example 'returns an code.blank error code when no code is passed' do
-          expect(response_errors_for(:email, :invalid)).to be_present
+          assert_status 422
+          json_response = json_parse response_body
+          expect(json_response).to include_response_error(:email, 'invalid')
         end
       end
 
       context 'for a normal request without params' do
         example 'returns an ok status when performing the request without params' do
           do_request
-          expect(status).to eq 200
+          assert_status 200
         end
 
         example 'delivers an email to the user' do

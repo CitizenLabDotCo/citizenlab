@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Insights::CategoryImporter do
-
   before_all do
     projects = create_list(:project_with_allowed_input_topics, 3, allowed_input_topics_count: 2)
 
@@ -46,4 +45,3 @@ RSpec.describe Insights::CategoryImporter do
     end
   end
 end
-

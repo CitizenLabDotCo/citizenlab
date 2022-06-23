@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 // hooks
 import useProject from 'hooks/useProject';
 import useLocalize from 'hooks/useLocalize';
-import { useEditor } from '@craftjs/core';
-import useLocale from 'hooks/useLocale';
+import { useEditor, SerializedNodes } from '@craftjs/core';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 // components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -18,6 +18,8 @@ import {
   Spinner,
   Text,
   Title,
+  Toggle,
+  LocaleSwitcher,
 } from '@citizenlab/cl2-component-library';
 
 // utils
@@ -29,7 +31,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // routing
 import clHistory from 'utils/cl-router/history';
-import { withRouter } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 
 // services
 import {
@@ -37,25 +39,65 @@ import {
   PROJECT_DESCRIPTION_CODE,
 } from '../../../services/contentBuilder';
 
-const ContentBuilderPage = ({ params: { projectId } }) => {
-  const [loading, setLoading] = useState(false);
+// types
+import { Locale } from 'typings';
 
+type ContentBuilderTopBarProps = {
+  localesWithError: Locale[];
+  mobilePreviewEnabled: boolean;
+  setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedLocale: Locale | undefined;
+  draftEditorData?: Record<string, SerializedNodes>;
+  onSelectLocale: (args: {
+    locale: Locale;
+    editorData: SerializedNodes;
+  }) => void;
+} & WithRouterProps;
+
+const ContentBuilderTopBar = ({
+  params: { projectId },
+  mobilePreviewEnabled,
+  setMobilePreviewEnabled,
+  selectedLocale,
+  onSelectLocale,
+  draftEditorData,
+  localesWithError,
+}: ContentBuilderTopBarProps) => {
+  const [loading, setLoading] = useState(false);
   const { query } = useEditor();
   const localize = useLocalize();
-  const locale = useLocale();
   const project = useProject({ projectId });
+  const locales = useAppConfigurationLocales();
+
+  if (isNilOrError(locales)) {
+    return null;
+  }
+
+  const disableSave = localesWithError.length > 0;
+
+  const localesValues = locales.reduce((acc, locale) => {
+    return {
+      ...acc,
+      [locale]: localesWithError.includes(locale) ? '' : 'NON-EMPTY-VALUE',
+    };
+  }, {});
 
   const goBack = () => {
-    clHistory.goBack();
+    clHistory.push(`/admin/projects/${projectId}/description`);
   };
 
   const handleSave = async () => {
-    if (!isNilOrError(locale)) {
+    if (selectedLocale) {
       try {
         setLoading(true);
         await addContentBuilderLayout(
           { projectId, code: PROJECT_DESCRIPTION_CODE },
-          { craftjs_jsonmultiloc: { [locale]: JSON.parse(query.serialize()) } }
+          {
+            craftjs_jsonmultiloc: {
+              ...draftEditorData,
+              [selectedLocale]: query.getSerializedNodes(),
+            },
+          }
         );
       } catch {
         // Do nothing
@@ -64,8 +106,15 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
     }
   };
 
+  const handleSelectLocale = (locale: Locale) => {
+    const editorData = query.getSerializedNodes();
+    onSelectLocale({ locale, editorData });
+  };
+
   return (
     <Box
+      position="fixed"
+      zIndex="3"
       alignItems="center"
       w="100%"
       h={`${stylingConsts.menuHeight}px`}
@@ -98,11 +147,37 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
             </>
           )}
         </Box>
+        {selectedLocale && locales.length > 1 && (
+          <Box
+            borderLeft={`1px solid ${colors.separation}`}
+            borderRight={`1px solid ${colors.separation}`}
+            h="100%"
+            p="24px"
+          >
+            <LocaleSwitcher
+              data-testid="contentBuilderLocaleSwitcher"
+              locales={locales}
+              selectedLocale={selectedLocale}
+              onSelectedLocaleChange={handleSelectLocale}
+              values={{ localesValues }}
+            />
+          </Box>
+        )}
+        <Box ml="24px" />
+        <Toggle
+          id="e2e-mobile-preview-toggle"
+          label={<FormattedMessage {...messages.mobilePreview} />}
+          checked={mobilePreviewEnabled}
+          onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
+        />
         <Button
+          disabled={disableSave}
+          id="e2e-content-builder-topbar-save"
           buttonStyle="primary"
           processing={loading}
           onClick={handleSave}
           data-testid="contentBuilderTopBarSaveButton"
+          ml="24px"
         >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
@@ -111,4 +186,4 @@ const ContentBuilderPage = ({ params: { projectId } }) => {
   );
 };
 
-export default withRouter(ContentBuilderPage);
+export default withRouter(ContentBuilderTopBar);

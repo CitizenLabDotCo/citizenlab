@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PhaseFilePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -28,5 +30,4 @@ class PhaseFilePolicy < ApplicationPolicy
   def destroy?
     PhasePolicy.new(user, record.phase).update?
   end
-
 end

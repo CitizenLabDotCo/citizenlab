@@ -1,8 +1,9 @@
-class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
+# frozen_string_literal: true
 
-  before_action :render_no_data, only: [
-    :initiatives_by_time,
-    :initiatives_by_time_cumulative,
+class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
+  before_action :render_no_data, only: %i[
+    initiatives_by_time
+    initiatives_by_time_cumulative
   ]
 
   def initiatives_count
@@ -22,12 +23,12 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     serie = initiatives
       .where(published_at: @start_at..@end_at)
       .joins(:initiatives_topics)
-      .group("initiatives_topics.topic_id")
-      .order("initiatives_topics.topic_id")
+      .group('initiatives_topics.topic_id')
+      .order('initiatives_topics.topic_id')
       .count
 
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {initiatives: serie}, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+    render json: { series: { initiatives: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } }
   end
 
   def initiatives_by_area
@@ -40,11 +41,11 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     serie = initiatives
       .where(published_at: @start_at..@end_at)
       .joins(:areas_initiatives)
-      .group("areas_initiatives.area_id")
-      .order("areas_initiatives.area_id")
+      .group('areas_initiatives.area_id')
+      .order('areas_initiatives.area_id')
       .count
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
-    render json: {series: {initiatives: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
+    render json: { series: { initiatives: serie }, areas: areas.to_h { |a| [a.id, a.attributes.except('id')] } }
   end
 
   def initiatives_by_time
@@ -61,7 +62,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    render json: {series: {initiatives: serie}}
+    render json: { series: { initiatives: serie } }
   end
 
   def initiatives_by_time_cumulative
@@ -78,13 +79,12 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
       @end_at,
       params[:interval]
     )
-    render json: {series: {initiatives: serie}}
+    render json: { series: { initiatives: serie } }
   end
-
 
   private
 
-  def apply_group_filter initiatives
+  def apply_group_filter(initiatives)
     if params[:group]
       group = Group.find(params[:group])
       initiatives.joins(:author).where(author: group.members)
@@ -93,7 +93,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_topic_filter initiatives
+  def apply_topic_filter(initiatives)
     if params[:topic]
       initiatives.with_some_topics([params[:topic]])
     else
@@ -101,7 +101,7 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
     end
   end
 
-  def apply_feedback_needed_filter initiatives
+  def apply_feedback_needed_filter(initiatives)
     if params[:feedback_needed].present?
       initiatives.feedback_needed
     else
@@ -110,9 +110,9 @@ class WebApi::V1::StatsInitiativesController < WebApi::V1::StatsController
   end
 
   def render_no_data
-    if @no_data
-      render json: {series: {initiatives: {}}}
-    end
+    return unless @no_data
+
+    render json: { series: { initiatives: {} } }
   end
 
   def do_authorize

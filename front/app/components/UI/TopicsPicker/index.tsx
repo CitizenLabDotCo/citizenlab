@@ -80,7 +80,7 @@ export interface InputProps {
   id?: string;
   className?: string;
   setRef?: (element: HTMLButtonElement) => void;
-  availableTopics: ITopicData[];
+  availableTopics: ITopicData[] | { const: string; title: string }[];
 }
 
 interface Props extends InputProps {}
@@ -134,12 +134,18 @@ const TopicsPicker = memo(
             className={`${className} e2e-topics-picker`}
           >
             {availableTopics.map((topic, index) => {
-              const isSelected = selectedTopicIds.includes(topic.id);
+              const topicId = topic.id || topic.const;
+              const topicTitle = topic?.attributes?.title_multiloc ? (
+                <T value={topic.attributes.title_multiloc} />
+              ) : (
+                topic.title
+              );
+              const isSelected = selectedTopicIds.includes(topicId);
 
               return (
                 <TopicSwitch
-                  key={topic.id}
-                  onClick={handleOnChange(topic.id)}
+                  key={topicId}
+                  onClick={handleOnChange(topicId)}
                   className={[
                     'e2e-topics-picker-item',
                     isSelected ? 'selected' : null,
@@ -150,7 +156,7 @@ const TopicsPicker = memo(
                   ref={index === 0 ? setRef : undefined}
                   disabled={false}
                 >
-                  <T value={topic.attributes.title_multiloc} />
+                  {topicTitle}
                 </TopicSwitch>
               );
             })}

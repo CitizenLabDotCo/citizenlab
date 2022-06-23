@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: custom_fields
@@ -21,6 +23,11 @@
 #
 #  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
 #
+
+# support table :
+# Jsonforms (under dynamic_idea_form and jsonforms_custom_fields) supports all INPUT_TYPES
+# The older react json form version works only with text number multiline_text select multiselect checkbox date
+# The other types will fail for user custom fields and render a shallow schema for idea custom fields with only the required, hidden, title and description.
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
@@ -28,12 +35,12 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
-  INPUT_TYPES = %w[text number multiline_text select multiselect checkbox date files].freeze
-  CODES = %w[gender birthyear domicile education title body topic_ids location proposed_budget images attachments].freeze
+  INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point].freeze
+  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description location_point_geojson proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
-    message: 'only letters, numbers and underscore' }
+                                                                                                  message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -46,7 +53,7 @@ class CustomField < ApplicationRecord
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
 
-  scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
+  scope :with_resource_type, ->(resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
   scope :disabled, -> { where(enabled: false) }
   scope :not_hidden, -> { where(hidden: false) }
@@ -69,10 +76,10 @@ class CustomField < ApplicationRecord
   end
 
   def generate_key
-    if !key
-      self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
-        self.class.find_by(key: key_proposal, resource_type: resource_type)
-      end
+    return if key
+
+    self.key = CustomFieldService.new.generate_key(self, title_multiloc.values.first) do |key_proposal|
+      self.class.find_by(key: key_proposal, resource_type: resource_type)
     end
   end
 
@@ -85,3 +92,4 @@ class CustomField < ApplicationRecord
 end
 
 CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
+CustomField.include_if_ee('UserCustomFields::Patches::CustomField')

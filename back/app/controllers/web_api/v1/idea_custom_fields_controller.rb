@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
-  before_action :set_custom_form, only: [:schema, :json_forms_schema]
+  before_action :set_custom_form, only: %i[schema json_forms_schema]
   skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user
@@ -11,7 +13,7 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
 
   def json_forms_schema
     @idea_form_fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
-    render json: JsonFormsService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields)
+    render json: JsonFormsService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields, current_user)
   end
 
   private

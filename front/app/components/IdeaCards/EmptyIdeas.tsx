@@ -49,18 +49,6 @@ const EmptyMessageMainLine = styled.div`
   margin-top: 15px;
 `;
 
-// could be reused if we come up with better copy
-// https://citizenlab.atlassian.net/browse/EN-1859
-
-// const EmptyMessageSubLine = styled.div`
-//   color: ${colors.label};
-//   font-size: ${fontSizes.base}px;
-//   font-weight: 300;
-//   line-height: normal;
-//   text-align: center;
-//   margin-top: 10px;
-// `;
-
 const EmptyIdeas = () => {
   return (
     <EmptyContainer>

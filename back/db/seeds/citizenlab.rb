@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def create_for_current_locales
   translations = {}
   AppConfiguration.instance.settings.dig('core', 'locales').each { |locale| translations[locale] = yield }
@@ -30,7 +32,9 @@ AppConfiguration.create!(
     },
     password_login: {
       enabled: true,
-      allowed: true
+      allowed: true,
+      phone: false,
+      minimum_length: 8
     },
     facebook_login: {
       enabled: ENV.fetch('CL_SETTINGS_FACEBOOK_LOGIN_ENABLED', 'false') == 'true',
@@ -81,7 +85,7 @@ AppConfiguration.create!(
     },
     typeform_surveys: {
       enabled: true,
-      allowed: true,
+      allowed: true
     },
     google_forms_surveys: {
       enabled: true,
@@ -96,6 +100,10 @@ AppConfiguration.create!(
       allowed: true
     },
     qualtrics_surveys: {
+      enabled: true,
+      allowed: true
+    },
+    snap_survey_surveys: {
       enabled: true,
       allowed: true
     },
@@ -149,7 +157,7 @@ AppConfiguration.create!(
     },
     redirects: {
       enabled: false,
-      allowed: true,
+      allowed: true
     },
     idea_custom_copy: {
       enabled: false,
@@ -167,8 +175,8 @@ AppConfiguration.create!(
       enabled: true,
       allowed: true
     }
-  }
-))
+  })
+)
 
 # Creates a default admin account.
 User.create!(

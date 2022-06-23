@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::SpamReportsController < ApplicationController
   before_action :set_spam_report, only: %i[show update destroy]
   before_action :set_spam_reportable_type_and_id, only: %i[index create]
@@ -7,7 +9,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       .where(spam_reportable_type: @spam_reportable_type, spam_reportable_id: @spam_reportable_id)
       .includes(:user)
     @spam_reports = paginate @spam_reports
-      
+
     render json: linked_json(@spam_reports, WebApi::V1::SpamReportSerializer, params: fastjson_params, include: [:user])
   end
 
@@ -62,7 +64,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
       SideFxSpamReportService.new.after_destroy(spam_report, current_user)
       head :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -71,7 +73,7 @@ class WebApi::V1::SpamReportsController < ApplicationController
   def set_spam_reportable_type_and_id
     @spam_reportable_type = params[:spam_reportable]
     @spam_reportable_id = params[:"#{@spam_reportable_type.underscore}_id"]
-    raise RuntimeError, "must not be blank" if @spam_reportable_type.blank? or @spam_reportable_id.blank?
+    raise 'must not be blank' if @spam_reportable_type.blank? || @spam_reportable_id.blank?
   end
 
   def set_spam_report

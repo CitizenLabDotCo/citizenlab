@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EventFilePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -28,5 +30,4 @@ class EventFilePolicy < ApplicationPolicy
   def destroy?
     EventPolicy.new(user, record.event).update?
   end
-
 end

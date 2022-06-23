@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: custom_forms
@@ -7,8 +9,6 @@
 #  updated_at :datetime         not null
 #
 class CustomForm < ApplicationRecord
-
   has_one :project
   has_many :custom_fields, as: :resource, dependent: :destroy
-
 end

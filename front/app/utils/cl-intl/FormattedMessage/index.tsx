@@ -1,11 +1,13 @@
 import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
-// tslint:disable-next-line:no-vanilla-formatted-messages
+// eslint-disable-next-line no-restricted-imports
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { currentAppConfigurationStream } from 'services/appConfiguration';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import { isRtl } from 'utils/styleUtils';
 
 type State = {
   tenantName: string | null;
@@ -15,6 +17,12 @@ type State = {
 };
 
 type Props = OriginalFormattedMessage.Props;
+
+const RtlBox = styled.span`
+  ${isRtl`
+      direction: rtl;
+  `}
+`;
 
 export default class FormattedMessage extends React.PureComponent<
   Props,
@@ -75,7 +83,11 @@ export default class FormattedMessage extends React.PureComponent<
         values.orgName = orgName;
       }
 
-      return <OriginalFormattedMessage {...this.props} values={values} />;
+      return (
+        <RtlBox>
+          <OriginalFormattedMessage {...this.props} values={values} />
+        </RtlBox>
+      );
     }
 
     return null;

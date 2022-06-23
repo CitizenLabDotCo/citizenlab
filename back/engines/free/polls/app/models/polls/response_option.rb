@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: polls_response_options
@@ -19,29 +21,25 @@
 #  fk_rails_...  (response_id => polls_responses.id)
 #
 module Polls
-	class ResponseOption < ApplicationRecord
-
+  class ResponseOption < ApplicationRecord
     belongs_to :response, class_name: 'Polls::Response'
     belongs_to :option, class_name: 'Polls::Option'
 
-		validates :response, :option, presence: true
-		validates :option, uniqueness: {scope: [:response]}
+    validates :response, :option, presence: true
+    validates :option, uniqueness: { scope: [:response] }
 
-		validate :validate_same_participation_context
+    validate :validate_same_participation_context
 
-		private
+    private
 
-		def validate_same_participation_context
-			if response && option
-				if response.participation_context != option.question.participation_context
-		      self.errors.add(
-		        :option_id,
-		        :option_and_response_not_in_same_poll,
-		        message: 'The selected option is not associated with the same participation context than the response'
-		      )
-				end
-			end
-		end
+    def validate_same_participation_context
+      return unless response && option && (response.participation_context != option.question.participation_context)
 
-	end
+      errors.add(
+        :option_id,
+        :option_and_response_not_in_same_poll,
+        message: 'The selected option is not associated with the same participation context than the response'
+      )
+    end
+  end
 end

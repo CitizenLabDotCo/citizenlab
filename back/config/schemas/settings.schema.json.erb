@@ -66,6 +66,11 @@
             "minItems": 1,
             "default": ["en"]
           },
+          "weglot_api_key": {
+            "title": "Weglot API key",
+            "description": "Set the API key of Weglot to enable automatic page translations.",
+            "type": "string"
+          },
           "color_main": {
             "title": "Main Colour",
             "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
@@ -647,6 +652,18 @@
         }
       },
 
+      "snap_survey_surveys": {
+        "type": "object",
+        "title": "Snap Survey Surveys",
+        "description":  "Allow the embedding of Snap Survey surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "qualtrics_surveys": {
         "type": "object",
         "title": "Qualtrics Surveys",
@@ -1000,6 +1017,18 @@
             }
           }
         }
+      },
+
+      "representativeness": {
+        "type": "object",
+        "title": "Representativeness (experimental)",
+        "description":  "Enables the representativeness dashboard. Don't turn this on unless you know what you're doing.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
@@ -1009,6 +1038,7 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
 

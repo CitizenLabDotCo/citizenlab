@@ -1,14 +1,20 @@
+# frozen_string_literal: true
+
 module ContentBuilder
   class SideFxLayoutService
     include SideFxHelper
 
-    def before_create(layout, user); end
+    def before_create(layout, _user)
+      layout.craftjs_jsonmultiloc = LayoutImageService.new.swap_data_images layout, :craftjs_jsonmultiloc
+    end
 
     def after_create(layout, user)
       LogActivityJob.perform_later(layout, 'created', user, layout.created_at.to_i)
     end
 
-    def before_update(layout, user); end
+    def before_update(layout, _user)
+      layout.craftjs_jsonmultiloc = LayoutImageService.new.swap_data_images layout, :craftjs_jsonmultiloc
+    end
 
     def after_update(layout, user)
       LogActivityJob.perform_later(layout, 'changed', user, layout.updated_at.to_i)

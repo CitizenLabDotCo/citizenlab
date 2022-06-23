@@ -441,7 +441,7 @@ export class PostManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  posts: ({ type, projectId, projects, render }) => {
+  posts: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return (
         <GetInitiatives type="paginated" pageSize={10} sort="new">
@@ -464,16 +464,12 @@ const Data = adopt<DataProps, InputProps>({
     }
 
     if (type === 'AllIdeas') {
-      const projectIds =
-        projects && projects.length > 0
-          ? projects.map((project) => project.id)
-          : undefined;
       return (
         <GetIdeas
           type="paginated"
           pageSize={10}
           sort="new"
-          projectIds={projectIds}
+          filterCanModerate={true}
         >
           {render}
         </GetIdeas>

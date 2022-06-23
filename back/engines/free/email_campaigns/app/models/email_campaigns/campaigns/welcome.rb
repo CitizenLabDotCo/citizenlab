@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: email_campaigns_campaigns
@@ -40,14 +42,14 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'User' => {'completed_registration' => true}}
+      { 'User' => { 'completed_registration' => true } }
     end
 
-    def filter_recipient users_scope, activity:, time: nil
+    def filter_recipient(users_scope, activity:, time: nil)
       users_scope.where(id: activity.item.id)
     end
 
-    def generate_commands options={}
+    def generate_commands(_options = {})
       # All required information is acquired from the
       # identified user so no payload is required.
       [{

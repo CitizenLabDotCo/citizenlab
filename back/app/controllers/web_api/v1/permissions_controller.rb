@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class WebApi::V1::PermissionsController < ApplicationController
   before_action :set_permission, only: %i[show update participation_conditions]
   skip_before_action :authenticate_user
 
   def index
     @permissions = policy_scope(Permission)
-                   .includes(:permission_scope)
-                   .where(permission_scope_id: permission_scope_id)
-                   .order(created_at: :desc)
+      .includes(:permission_scope)
+      .where(permission_scope_id: permission_scope_id)
+      .order(created_at: :desc)
     @permissions = paginate @permissions
 
     render json: linked_json(@permissions, WebApi::V1::PermissionSerializer, params: fastjson_params)

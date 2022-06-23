@@ -2,12 +2,12 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 
 export type CustomFieldCodes =
-  | 'title'
-  | 'body'
+  | 'title_multiloc'
+  | 'body_multiloc'
   | 'topic_ids'
-  | 'location'
-  | 'images'
-  | 'attachments'
+  | 'location_description'
+  | 'idea_images_attributes'
+  | 'idea_files_attributes'
   | 'proposed_budget';
 
 export interface JSONSchemaObject {
@@ -32,26 +32,26 @@ export interface IIdeaFormSchemas {
       type: 'object';
       additionalProperties: boolean;
       properties: {
-        title: JSONSchemaObject;
-        body: JSONSchemaObject;
+        title_multiloc: JSONSchemaObject;
+        body_multiloc: JSONSchemaObject;
         topic_ids: JSONSchemaObject;
         proposed_budget: JSONSchemaObject;
-        location: JSONSchemaObject;
-        images: JSONSchemaObject;
-        attachments: JSONSchemaObject;
+        location_description: JSONSchemaObject;
+        idea_images_attributes: JSONSchemaObject;
+        idea_files_attributes: JSONSchemaObject;
       };
       required: string[];
     };
   };
   ui_schema_multiloc: {
     [locale: string]: {
-      title: UISchemaObject;
-      body: UISchemaObject;
+      title_multiloc: UISchemaObject;
+      body_multiloc: UISchemaObject;
       topic_ids: UISchemaObject;
       proposed_budget: UISchemaObject;
-      location: UISchemaObject;
-      images: UISchemaObject;
-      attachments: UISchemaObject;
+      location_description: UISchemaObject;
+      idea_images_attributes: UISchemaObject;
+      idea_files_attributes: UISchemaObject;
       'ui:order': string[];
     };
   };

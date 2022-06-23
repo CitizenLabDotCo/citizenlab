@@ -2,9 +2,8 @@
 import React, { memo } from 'react';
 
 // intl
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
 
 // styling
 import styled, { useTheme } from 'styled-components';
@@ -14,20 +13,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  LabelList,
-} from 'recharts';
-import {
   IGraphUnit,
-  NoDataContainer,
   GraphCardHeader,
   GraphCardTitle,
   GraphCardInner,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
+import BarChart from 'components/admin/Graphs/BarChart';
+import { LabelList } from 'recharts';
 
 // types
 import { IGraphPoint } from 'typings';
@@ -41,7 +33,7 @@ interface Props {
   customId?: string;
 }
 
-const StyledResponsiveContainer = styled(ResponsiveContainer)`
+const StyledBarChart = styled(BarChart)`
   .recharts-wrapper {
     @media print {
       margin: 0 auto;
@@ -57,18 +49,8 @@ const StyledGraphCardInner = styled(GraphCardInner)`
 
 export const ResponseGraph = memo(
   ({ graphTitleString, serie }: Props & InjectedIntlProps) => {
-    const theme: any = useTheme();
-
+    const { chartCategorySize, chartLabelColor }: any = useTheme();
     const currentChart: React.RefObject<any> = React.createRef();
-
-    const {
-      chartLabelSize,
-      chartCategorySize,
-      chartLabelColor,
-      animationBegin,
-      animationDuration,
-      newBarFill,
-    } = theme;
 
     const NameLabel = (props) => {
       const { x, y, value } = props;
@@ -117,60 +99,31 @@ export const ResponseGraph = memo(
             <ReportExportMenu svgNode={currentChart} name={graphTitleString} />
           )}
         </GraphCardHeader>
-        {isNilOrError(serie) ? (
-          <NoDataContainer>
-            <FormattedMessage {...messages.noData} />
-          </NoDataContainer>
-        ) : (
-          <StyledResponsiveContainer
-            height={serie?.length > 1 ? serie.length * 50 : 100}
-          >
-            <BarChart
-              data={serie}
-              layout="vertical"
-              ref={currentChart}
-              margin={{ right: 20, top: 10 }}
-            >
-              <Bar
-                name="Count"
-                dataKey="value"
-                fill={newBarFill}
-                barSize={5}
-                animationDuration={animationDuration}
-                animationBegin={animationBegin}
-              >
-                <LabelList
-                  dataKey="name"
-                  position="top"
-                  content={<NameLabel />}
-                />
-                <LabelList
-                  dataKey="value"
-                  position="insideTopRight"
-                  offset={-20}
-                  content={<ValueLabel />}
-                />
-              </Bar>
-
-              <YAxis
+        <StyledBarChart
+          height={serie && serie?.length > 1 ? serie.length * 50 : 100}
+          data={serie}
+          layout="horizontal"
+          innerRef={currentChart}
+          margin={{ right: 20, top: 10 }}
+          bars={{ name: 'Count', size: 5 }}
+          xaxis={{ hide: true }}
+          yaxis={{ width: 150, tickLine: false, hide: true }}
+          renderLabels={() => (
+            <>
+              <LabelList
                 dataKey="name"
-                type="category"
-                width={150}
-                stroke={chartLabelColor}
-                fontSize={chartLabelSize}
-                tickLine={false}
-                hide={true}
+                position="top"
+                content={<NameLabel />}
               />
-              <XAxis
-                stroke={chartLabelColor}
-                fontSize={chartLabelSize}
-                type="number"
-                tick={{ transform: 'translate(0, 7)' }}
-                hide={true}
+              <LabelList
+                dataKey="value"
+                position="insideTopRight"
+                offset={-20}
+                content={<ValueLabel />}
               />
-            </BarChart>
-          </StyledResponsiveContainer>
-        )}
+            </>
+          )}
+        />
       </StyledGraphCardInner>
     );
   }

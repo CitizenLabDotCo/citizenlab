@@ -318,7 +318,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
       const selectedIdeaFilters = {
         ...state.selectedIdeaFilters,
         idea_status: null,
-        areas: null,
         topics: null,
       };
 
@@ -332,7 +331,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         ...state.selectedIdeaFilters,
         search: null,
         idea_status: null,
-        areas: null,
         topics: null,
       };
 
@@ -370,14 +368,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     });
   };
 
-  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.desktopSearchInputClearButton = element;
-  };
-
-  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
-    this.mobileSearchInputClearButton = element;
-  };
-
   filterMessage = (<FormattedMessage {...messages.filter} />);
 
   render() {
@@ -394,7 +384,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const filtersActive =
       selectedIdeaFilters.search ||
       selectedIdeaFilters.idea_status ||
-      selectedIdeaFilters.areas ||
       selectedIdeaFilters.topics;
     const biggerThanLargeTablet = !!(
       windowWidth && windowWidth >= viewportWidths.largeTablet
@@ -424,9 +413,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         </ScreenReaderOnly>
 
         <DesktopSearchInput
-          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
           debounce={1500}
+          a11y_numberOfSearchResults={list ? list.length : 0}
         />
         <StyledIdeasStatusFilter
           selectedStatusId={selectedIdeaFilters.idea_status}
@@ -506,8 +495,8 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 </FullscreenModal>
 
                 <MobileSearchInput
-                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
+                  a11y_numberOfSearchResults={list.length}
                 />
 
                 <MobileFilterButton

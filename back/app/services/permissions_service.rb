@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class PermissionsService
-
   class << self
     def register_scope_type(scope_spec)
       scope_spec_hash[scope_spec.scope_type] = scope_spec
@@ -57,7 +56,7 @@ class PermissionsService
     Permission.select(&:invalid?).each(&:destroy!)
   end
 
-  def denied_reason user, action, resource=nil
+  def denied_reason(user, action, resource = nil)
     scope = resource&.permission_scope
     permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
 
@@ -76,8 +75,8 @@ class PermissionsService
   def remove_extras_actions(scope, actions = nil)
     actions ||= self.class.actions(scope)
     Permission.where(permission_scope: scope)
-              .where.not(action: actions)
-              .destroy_all
+      .where.not(action: actions)
+      .destroy_all
   end
 
   def add_missing_actions(scope, actions = nil)

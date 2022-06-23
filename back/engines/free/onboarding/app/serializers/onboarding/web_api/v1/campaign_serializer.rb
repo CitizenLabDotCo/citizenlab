@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Onboarding
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
     set_type 'onboarding_campaign'

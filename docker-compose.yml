@@ -48,7 +48,7 @@ services:
 
   rabbitmq:
     container_name: cl-back-rabbit
-    image: "rabbitmq:3.7-management"
+    image: "rabbitmq:3.8-management"
     ports:
       - "8088:15672"
     volumes:

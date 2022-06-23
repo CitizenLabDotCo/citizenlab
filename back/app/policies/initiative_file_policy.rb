@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeFilePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -27,5 +29,4 @@ class InitiativeFilePolicy < ApplicationPolicy
   def destroy?
     InitiativePolicy.new(user, record.initiative).update?
   end
-
 end

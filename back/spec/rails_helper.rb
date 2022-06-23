@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 
 require 'spec_helper'
 require 'rspec/rails'
 require 'shoulda/matchers'
-require "test_prof/recipes/rspec/let_it_be"
+require 'test_prof/recipes/rspec/let_it_be'
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -68,12 +70,12 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include GeneralHelper
   config.include ApiHelper
   config.include ApiAuthenticationHelper
+  config.include Base64Helper
   config.include TenantHelper
-  config.include AcceptanceHelper
   config.include AppConfigurationHelper
-  config.include GeneralHelper
 end
 
 ActiveJob::Base.queue_adapter = :test

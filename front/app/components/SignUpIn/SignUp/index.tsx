@@ -1,5 +1,4 @@
-import React, { FC, memo, useEffect, useRef, useState } from 'react';
-
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 // services
 import { handleOnSSOClick } from 'services/singleSignOn';
 import { completeRegistration } from 'services/users';
@@ -45,7 +44,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'components/SignUpIn/tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -104,113 +103,83 @@ export type TDataLoadedPerOutlet = {
   [key in TSignUpStep]?: boolean;
 };
 
-export interface InputProps {
+export interface Props {
   metaData: ISignUpInMetaData;
-  windowHeight: number;
   customHeader?: JSX.Element;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
 }
 
-interface Props extends InputProps {
-  theme: any;
-}
+const SignUp = ({
+  intl: { formatMessage },
+  metaData,
+  onSignUpCompleted,
+  onGoToSignIn,
+  className,
+}: Props & InjectedIntlProps) => {
+  const authUser = useAuthUser();
+  const tenant = useAppConfiguration();
+  const theme: any = useTheme();
 
-const SignUp: FC<Props & InjectedIntlProps> = memo(
-  ({
-    intl: { formatMessage },
-    metaData,
-    onSignUpCompleted,
-    onGoToSignIn,
-    className,
-    theme,
-    windowHeight,
-  }) => {
-    const authUser = useAuthUser();
-    const tenant = useAppConfiguration();
+  const modalContentRef = useRef<HTMLDivElement>(null);
 
-    const modalContentRef = useRef<HTMLDivElement>(null);
+  // state
+  const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
+    getDefaultSteps()
+  );
+  const [outletsRendered, setOutletsRendered] = useState(false);
+  const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
+    useState<TDataLoadedPerOutlet>({});
+  const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
+  const [accountCreated, setAccountCreated] = useState(false);
+  const confirmOutletsRendered = () => setOutletsRendered(true);
+  const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
+    metaData.isInvitation ? 'password-signup' : 'auth-providers'
+  );
+  const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
+    getEnabledSteps(configuration, authUser, metaData, {
+      emailSignUpSelected,
+      accountCreated,
+    })
+  );
+  const [error, setError] = useState<string>();
+  const [headerHeight, setHeaderHeight] = useState<string>('100px');
 
-    const [configuration, setConfiguration] = useState<TSignUpConfiguration>(
-      getDefaultSteps()
-    );
+  // this transitions the current step to the next step
+  useEffect(() => {
+    if (!outletsRendered) return;
+    if (!allDataLoaded(dataLoadedPerOutlet)) return;
 
-    const [outletsRendered, setOutletsRendered] = useState(false);
-    const [dataLoadedPerOutlet, setDataLoadedPerOutlet] =
-      useState<TDataLoadedPerOutlet>({});
-    const [emailSignUpSelected, setEmailSignUpSelected] = useState(false);
-    const [accountCreated, setAccountCreated] = useState(false);
+    const nextActiveStep = getActiveStep(configuration, authUser, metaData, {
+      emailSignUpSelected,
+      accountCreated,
+    });
 
-    const confirmOutletsRendered = () => setOutletsRendered(true);
+    if (nextActiveStep === activeStep || !nextActiveStep) return;
 
-    const [activeStep, setActiveStep] = useState<TSignUpStep | null>(
-      metaData.isInvitation ? 'password-signup' : 'auth-providers'
-    );
+    setActiveStep(nextActiveStep);
 
-    const [enabledSteps, setEnabledSteps] = useState<TSignUpStep[]>(
+    setEnabledSteps(
       getEnabledSteps(configuration, authUser, metaData, {
         emailSignUpSelected,
         accountCreated,
       })
     );
+  }, [
+    configuration,
+    authUser,
+    metaData,
+    emailSignUpSelected,
+    accountCreated,
+    outletsRendered,
+    dataLoadedPerOutlet,
+    activeStep,
+  ]);
 
-    const totalStepsCount = getNumberOfSteps(enabledSteps);
-    const activeStepNumber = activeStep
-      ? getActiveStepNumber(activeStep, enabledSteps)
-      : null;
-
-    const [error, setError] = useState<string>();
-    const [headerHeight, setHeaderHeight] = useState<string>('100px');
-
-    const activeStepConfiguration = activeStep
-      ? configuration[activeStep]
-      : null;
-
-    // this transitions the current step to the next step
-    useEffect(() => {
-      if (!outletsRendered) return;
-      if (!allDataLoaded(dataLoadedPerOutlet)) return;
-
-      const nextActiveStep = getActiveStep(configuration, authUser, metaData, {
-        emailSignUpSelected,
-        accountCreated,
-      });
-
-      if (nextActiveStep === activeStep || !nextActiveStep) return;
-
-      setActiveStep(nextActiveStep);
-
-      setEnabledSteps(
-        getEnabledSteps(configuration, authUser, metaData, {
-          emailSignUpSelected,
-          accountCreated,
-        })
-      );
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-      configuration,
-      authUser,
-      metaData,
-      emailSignUpSelected,
-      accountCreated,
-      outletsRendered,
-      dataLoadedPerOutlet,
-    ]);
-
-    // this automatically completes the 'account-created' step (see stepUtils)
-    useEffect(() => {
-      if (activeStep === 'account-created') {
-        onCompleteActiveStep();
-        setAccountCreated(true);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeStep]);
-
-    // called when a step is completed
-    const onCompleteActiveStep = async (
-      registrationData?: Record<string, any>
-    ) => {
+  // called when a step is completed
+  const onCompleteActiveStep = useCallback(
+    async (registrationData?: Record<string, any>) => {
       if (modalContentRef?.current) {
         modalContentRef.current.scrollTop = 0;
       }
@@ -227,167 +196,180 @@ const SignUp: FC<Props & InjectedIntlProps> = memo(
       ) {
         await completeRegistration(registrationData);
       }
-    };
+    },
+    [
+      accountCreated,
+      activeStep,
+      authUser,
+      configuration,
+      emailSignUpSelected,
+      metaData,
+    ]
+  );
 
-    // this makes sure that if registration is completed,
-    // but we're not in a modal, handleFlowCompleted is
-    // still called even without closing the Success window
-    useEffect(() => {
-      if (
-        !isNilOrError(authUser) &&
-        !!authUser.attributes.registration_completed_at &&
-        !metaData.inModal
-      ) {
-        handleFlowCompleted();
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authUser, metaData]);
+  // this automatically completes the 'account-created' step (see stepUtils)
+  useEffect(() => {
+    if (activeStep === 'account-created') {
+      onCompleteActiveStep();
+      setAccountCreated(true);
+    }
+  }, [activeStep, onCompleteActiveStep]);
 
-    const onResize = (_width, height) => {
-      setHeaderHeight(`${Math.round(height) + 2}px`);
-    };
+  const handleFlowCompleted = useCallback(() => {
+    trackEventByName(tracks.signUpFlowCompleted);
+    onSignUpCompleted();
+  }, [onSignUpCompleted]);
 
-    const handleSelectAuthProvider = (
-      selectedAuthProvider: AuthProvider,
-      setHrefFromModule?: () => void
-    ) => {
-      if (selectedAuthProvider === 'email') {
-        setEmailSignUpSelected(true);
-      } else {
-        handleOnSSOClick(selectedAuthProvider, metaData, setHrefFromModule);
-      }
-    };
+  // this makes sure that if registration is completed,
+  // but we're not in a modal, handleFlowCompleted is
+  // still called even without closing the Success window
+  useEffect(() => {
+    if (
+      !isNilOrError(authUser) &&
+      !!authUser.attributes.registration_completed_at &&
+      !metaData.inModal
+    ) {
+      handleFlowCompleted();
+    }
+  }, [authUser, metaData, handleFlowCompleted]);
 
-    const handleStepError = (errorMessage?: string) => {
-      errorMessage
-        ? setError(errorMessage)
-        : setError(formatMessage(messages.somethingWentWrongText));
-    };
+  // emit event whenever activeStep changes
+  useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
 
-    const handleFlowCompleted = () => {
-      trackEventByName(tracks.signUpFlowCompleted);
-      onSignUpCompleted();
-    };
+  useEffect(() => {
+    if (metaData?.error) {
+      setError(formatMessage(messages.somethingWentWrongText));
+    }
+  }, [metaData?.error, formatMessage]);
 
-    const handleOnOutletData = (
-      configuration: TSignUpStepConfigurationObject
-    ) => {
-      setConfiguration((oldConfiguration) => ({
-        ...oldConfiguration,
-        [configuration.key]: configuration,
-      }));
-    };
+  const onResize = (_width, height) => {
+    setHeaderHeight(`${Math.round(height) + 2}px`);
+  };
 
-    const handleOnOutletDataLoaded = (step: TSignUpStep, loaded: boolean) => {
-      setDataLoadedPerOutlet((oldDataLoadedPerOutlet) => ({
-        ...oldDataLoadedPerOutlet,
-        [step]: loaded,
-      }));
-    };
+  const handleSelectAuthProvider = (
+    selectedAuthProvider: AuthProvider,
+    setHrefFromModule?: () => void
+  ) => {
+    if (selectedAuthProvider === 'email') {
+      setEmailSignUpSelected(true);
+    } else {
+      handleOnSSOClick(selectedAuthProvider, metaData, setHrefFromModule);
+    }
+  };
 
-    const handleGoBack = () => {
-      setEmailSignUpSelected(false);
-    };
+  const handleStepError = (errorMessage?: string) => {
+    errorMessage
+      ? setError(errorMessage)
+      : setError(formatMessage(messages.somethingWentWrongText));
+  };
 
-    // emit event whenever activeStep changes
-    useEffect(() => signUpActiveStepChange(activeStep), [activeStep]);
+  const handleOnOutletData = (
+    configuration: TSignUpStepConfigurationObject
+  ) => {
+    setConfiguration((oldConfiguration) => ({
+      ...oldConfiguration,
+      [configuration.key]: configuration,
+    }));
+  };
 
-    useEffect(() => {
-      if (metaData?.error) {
-        setError(formatMessage(messages.somethingWentWrongText));
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [metaData?.error]);
+  const handleOnOutletDataLoaded = (step: TSignUpStep, loaded: boolean) => {
+    setDataLoadedPerOutlet((oldDataLoadedPerOutlet) => ({
+      ...oldDataLoadedPerOutlet,
+      [step]: loaded,
+    }));
+  };
 
-    const helpText = activeStepConfiguration?.helperText?.(
-      !isNilOrError(tenant) ? tenant.data : undefined
-    );
+  const handleGoBack = () => {
+    setEmailSignUpSelected(false);
+  };
 
-    const stepDescription = activeStepConfiguration?.stepDescriptionMessage
-      ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
-      : '';
+  // variables
+  const totalStepsCount = getNumberOfSteps(enabledSteps);
+  const activeStepNumber = activeStep
+    ? getActiveStepNumber(activeStep, enabledSteps)
+    : null;
+  const activeStepConfiguration = activeStep ? configuration[activeStep] : null;
+  const helpText = activeStepConfiguration?.helperText?.(
+    !isNilOrError(tenant) ? tenant.data : undefined
+  );
+  const stepDescription = activeStepConfiguration?.stepDescriptionMessage
+    ? formatMessage(activeStepConfiguration.stepDescriptionMessage)
+    : '';
 
-    return (
-      <Container id="e2e-sign-up-container" className={className ?? ''}>
-        {activeStep !== 'success' && (
-          <Header
-            inModal={metaData.inModal}
-            onResize={onResize}
-            activeStepNumber={activeStepNumber}
-            totalStepsCount={totalStepsCount}
-            error={error}
-            stepName={stepDescription}
-          />
-        )}
+  return (
+    <Container id="e2e-sign-up-container" className={className ?? ''}>
+      {activeStep !== 'success' && (
+        <Header
+          inModal={metaData.inModal}
+          onResize={onResize}
+          activeStepNumber={activeStepNumber}
+          totalStepsCount={totalStepsCount}
+          error={error}
+          stepName={stepDescription}
+        />
+      )}
 
-        <StyledModalContentContainer
-          inModal={!!metaData.inModal}
-          windowHeight={`${windowHeight}px`}
-          headerHeight={headerHeight}
-          ref={modalContentRef}
-        >
-          {error ? (
-            <Error text={error} animate={false} marginBottom="30px" />
-          ) : (
-            <>
-              {helpText && (
-                <SignUpHelperText
-                  textColor={theme.colorText}
-                  fontSize="base"
-                  fontWeight={300}
-                >
-                  <T value={helpText} supportHtml />
-                </SignUpHelperText>
-              )}
+      <StyledModalContentContainer
+        inModal={!!metaData.inModal}
+        headerHeight={headerHeight}
+        ref={modalContentRef}
+      >
+        {error ? (
+          <Error text={error} animate={false} marginBottom="30px" />
+        ) : (
+          <>
+            {helpText && (
+              <SignUpHelperText
+                textColor={theme.colorText}
+                fontSize="base"
+                fontWeight={300}
+              >
+                <T value={helpText} supportHtml />
+              </SignUpHelperText>
+            )}
 
-              {activeStep === 'auth-providers' && (
-                <AuthProviders
-                  metaData={metaData}
-                  onAuthProviderSelected={handleSelectAuthProvider}
-                  goToOtherFlow={onGoToSignIn}
-                />
-              )}
-
-              {activeStep === 'password-signup' && (
-                <PasswordSignup
-                  metaData={metaData}
-                  loading={activeStepNumber === null}
-                  hasNextStep={
-                    activeStepNumber
-                      ? activeStepNumber < totalStepsCount
-                      : false
-                  }
-                  onGoToSignIn={onGoToSignIn}
-                  onGoBack={handleGoBack}
-                  onError={handleStepError}
-                  onCompleted={onCompleteActiveStep}
-                />
-              )}
-
-              <Outlet
-                id="app.components.SignUpIn.SignUp.step"
-                step={activeStep}
+            {activeStep === 'auth-providers' && (
+              <AuthProviders
                 metaData={metaData}
-                onData={handleOnOutletData}
-                onDataLoaded={handleOnOutletDataLoaded}
+                onAuthProviderSelected={handleSelectAuthProvider}
+                goToOtherFlow={onGoToSignIn}
+              />
+            )}
+
+            {activeStep === 'password-signup' && (
+              <PasswordSignup
+                metaData={metaData}
+                loading={activeStepNumber === null}
+                hasNextStep={
+                  activeStepNumber ? activeStepNumber < totalStepsCount : false
+                }
+                onGoToSignIn={onGoToSignIn}
+                onGoBack={handleGoBack}
                 onError={handleStepError}
-                onSkipped={onCompleteActiveStep}
                 onCompleted={onCompleteActiveStep}
               />
+            )}
 
-              <Mounter onMount={confirmOutletsRendered} />
+            <Outlet
+              id="app.components.SignUpIn.SignUp.step"
+              step={activeStep}
+              metaData={metaData}
+              onData={handleOnOutletData}
+              onDataLoaded={handleOnOutletDataLoaded}
+              onError={handleStepError}
+              onSkipped={onCompleteActiveStep}
+              onCompleted={onCompleteActiveStep}
+            />
 
-              {activeStep === 'success' && (
-                <Success onClose={handleFlowCompleted} />
-              )}
-            </>
-          )}
-        </StyledModalContentContainer>
-      </Container>
-    );
-  }
-);
+            <Mounter onMount={confirmOutletsRendered} />
 
-const SignUpWithHoC = injectIntl(withTheme(SignUp));
-
-export default SignUpWithHoC;
+            {activeStep === 'success' && (
+              <Success onClose={handleFlowCompleted} />
+            )}
+          </>
+        )}
+      </StyledModalContentContainer>
+    </Container>
+  );
+};
+export default injectIntl(SignUp);

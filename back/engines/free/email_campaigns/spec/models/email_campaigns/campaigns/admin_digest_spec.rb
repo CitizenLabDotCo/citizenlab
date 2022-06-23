@@ -10,8 +10,8 @@ RSpec.describe EmailCampaigns::Campaigns::AdminDigest, type: :model do
   describe '#generate_commands' do
     let(:campaign) { create(:admin_digest_campaign) }
     let!(:admin) { create(:admin) }
-    let!(:old_ideas) { create_list(:idea, 2, published_at: Time.zone.now - 20.days) }
-    let!(:new_ideas) { create_list(:idea, 3, published_at: Time.zone.now - 1.day) }
+    let!(:old_ideas) { create_list(:idea, 2, published_at: 20.days.ago) }
+    let!(:new_ideas) { create_list(:idea, 3, published_at: 1.day.ago) }
     let!(:vote) { create(:vote, mode: 'up', votable: new_ideas.first) }
     let!(:draft) { create(:idea, publication_status: 'draft') }
 

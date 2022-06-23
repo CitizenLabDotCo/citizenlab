@@ -24,14 +24,14 @@ import {
   GraphCard,
   GraphCardInner,
   PieChartStyleFixesDiv,
-} from 'components/admin/Chart';
+} from 'components/admin/GraphWrappers';
 
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
 import {
   usersByGenderStream,
-  IUsersByGender,
+  IUsersByRegistrationField,
   usersByGenderXlsxEndpoint,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
@@ -117,7 +117,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  convertToGraphFormat = (data: IUsersByGender) => {
+  convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const res = Object.keys(labelColors).map((gender) => ({
       value: data.series.users[gender] || 0,
       name: this.props.intl.formatMessage(messages[gender]),
@@ -134,6 +134,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     const { colorMain, animationDuration, animationBegin } =
       this.props['theme'];
     const {
+      startAt,
+      endAt,
       className,
       intl: { formatMessage },
       currentGroupFilter,
@@ -155,6 +157,8 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                 xlsxEndpoint={usersByGenderXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>

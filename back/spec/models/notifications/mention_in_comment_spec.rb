@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Notifications::MentionInComment, type: :model do
-
-  describe "make_notifications_on" do
-    it "makes a notification on mentioned comment activity" do
+  describe 'make_notifications_on' do
+    it 'makes a notification on mentioned comment activity' do
       comment = create(:comment)
       user = create(:user)
-      activity = create(:activity, item: comment, action: 'mentioned', payload: {mentioned_user: user.id})
+      activity = create(:activity, item: comment, action: 'mentioned', payload: { mentioned_user: user.id })
 
-      notifications = Notifications::MentionInComment.make_notifications_on activity
+      notifications = described_class.make_notifications_on activity
       expect(notifications.first).to have_attributes(
         recipient_id: user.id,
         initiating_user_id: comment.author_id,

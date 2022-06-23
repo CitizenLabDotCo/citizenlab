@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: admin_publications
@@ -25,7 +27,7 @@
 #  index_admin_publications_on_rgt        (rgt)
 #
 class AdminPublication < ApplicationRecord
-  PUBLICATION_STATUSES = %w(draft published archived)
+  PUBLICATION_STATUSES = %w[draft published archived]
 
   acts_as_nested_set dependent: :destroy, order_column: :ordering, counter_cache: :children_count
   acts_as_list column: :ordering, top_of_list: 0, scope: [:parent_id], add_new_at: :top
@@ -33,7 +35,7 @@ class AdminPublication < ApplicationRecord
   belongs_to :publication, polymorphic: true, touch: true
 
   validates :publication, presence: true
-  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
+  validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
   validate :parent_allowed_to_have_children
 
   before_validation :set_publication_status, on: :create

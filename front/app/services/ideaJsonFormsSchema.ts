@@ -2,15 +2,7 @@ import { Layout } from '@jsonforms/core';
 import { API_PATH } from 'containers/App/constants';
 import { Locale } from 'typings';
 import streams, { IStreamParams } from 'utils/streams';
-
-export type CustomFieldCodes =
-  | 'title'
-  | 'body'
-  | 'topic_ids'
-  | 'location'
-  | 'images'
-  | 'attachments'
-  | 'proposed_budget';
+import { CustomFieldCodes } from './ideaCustomFieldsSchemas';
 
 export interface JSONSFormsSchemaObject {
   title: string;
@@ -45,7 +37,7 @@ export function ideaJsonFormsSchemaStream(
   streamParams: IStreamParams | null = null
 ) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/json_forms_schema`;
-  return streams.get<IIdeaJsonFormSchemas>({
+  return streams.get<IIdeaJsonFormSchemas | Error>({
     apiEndpoint,
     ...streamParams,
   });

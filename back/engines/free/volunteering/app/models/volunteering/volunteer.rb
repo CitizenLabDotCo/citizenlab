@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: volunteering_volunteers
@@ -24,6 +26,6 @@ module Volunteering
 
     counter_culture :cause, column_name: 'volunteers_count'
 
-    validates :cause, uniqueness: {scope: [:user]}
+    validates :cause, uniqueness: { scope: [:user] }
   end
 end

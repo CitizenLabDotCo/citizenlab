@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectFolders
   module EmailCampaigns
     class ProjectFolderModerationRightsReceivedMailerPreview < ActionMailer::Preview

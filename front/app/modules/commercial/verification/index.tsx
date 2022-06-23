@@ -7,7 +7,7 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import VerificationBadge from './citizen/components/VerificationBadge';
 import VerificationModal from './citizen/components/VerificationModal';
 import VerificationOnboardingStep from './citizen/components/VerificationOnboardingStep';
-import VerificationSignUpSteps from './citizen/components/VerificationSignUpSteps';
+import VerificationSignUpStep from './citizen/components/VerificationSignUpStep';
 import VerificationStatus from './citizen/components/VerificationStatus';
 
 export function isLastVerificationMethod(
@@ -25,7 +25,7 @@ export function isLastVerificationMethod(
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.components.SignUpIn.SignUp.step': (props) => (
-      <VerificationSignUpSteps {...props} />
+      <VerificationSignUpStep {...props} />
     ),
     'app.containers.UserEditPage.content': () => <VerificationStatus />,
     'app.containers.Navbar.UserMenu.UserNameContainer': (props) => (

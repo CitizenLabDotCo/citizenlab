@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateInitiativeStatusChanges < ActiveRecord::Migration[5.2]
   def change
     create_table :initiative_status_changes, id: :uuid do |t|
@@ -17,7 +19,7 @@ class CreateInitiativeStatusChanges < ActiveRecord::Migration[5.2]
   def migrate_initiative_status_changes
     bulk_creations = Initiative.published
       .pluck(:id, :initiative_status_id).map do |initiative_id, status_id|
-        {initiative_id: initiative_id, initiative_status_id: status_id}
+        { initiative_id: initiative_id, initiative_status_id: status_id }
       end
     InitiativeStatusChange.create! bulk_creations
   end

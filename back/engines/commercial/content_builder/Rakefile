@@ -1,7 +1,9 @@
-require "bundler/setup"
+# frozen_string_literal: true
 
-load "rails/tasks/engine.rake"
+require 'bundler/setup'
 
-load "rails/tasks/statistics.rake"
+load 'rails/tasks/engine.rake'
 
-require "bundler/gem_tasks"
+load 'rails/tasks/statistics.rake'
+
+require 'bundler/gem_tasks'

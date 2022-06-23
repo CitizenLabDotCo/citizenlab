@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EmailCampaigns
   class YourProposedInitiativesDigestMailerPreview < ActionMailer::Preview
     def campaign_mail
@@ -6,9 +8,9 @@ module EmailCampaigns
       command = {
         recipient: recipient,
         event_payload: {
-          initiatives: initiatives.map{ |initiative|
+          initiatives: initiatives.map do |initiative|
             {
-              title_multiloc: initiative.title_multiloc,       
+              title_multiloc: initiative.title_multiloc,
               body_multiloc: initiative.body_multiloc,
               url: Frontend::UrlService.new.model_to_url(initiative),
               published_at: initiative.published_at&.iso8601,
@@ -18,17 +20,17 @@ module EmailCampaigns
               comments_count: initiative.comments_count,
               expires_at: initiative.expires_at&.iso8601,
               status_code: initiative.initiative_status.code,
-              images: initiative.initiative_images.map{ |image|
+              images: initiative.initiative_images.map do |image|
                 {
                   ordering: image.ordering,
-                  versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                  versions: image.image.versions.to_h { |k, v| [k.to_s, v.url] }
                 }
-              },
+              end,
               header_bg: {
-                versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+                versions: initiative.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
               }
             }
-          }
+          end
         }
       }
       campaign = EmailCampaigns::Campaigns::YourProposedInitiativesDigest.first

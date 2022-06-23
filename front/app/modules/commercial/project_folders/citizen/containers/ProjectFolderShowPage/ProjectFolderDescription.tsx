@@ -161,17 +161,13 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                   textColor={theme.colorText}
                   fontSize="m"
                   className="e2e-folder-description"
+                  disableTabbing={!expanded}
                 >
                   <T
                     value={projectFolder.attributes.description_multiloc}
                     supportHtml={true}
                   />
                 </QuillEditedContent>
-                {!isNilOrError(projectFolderFiles) &&
-                  projectFolderFiles &&
-                  projectFolderFiles.data.length > 0 && (
-                    <FileAttachments files={projectFolderFiles.data} />
-                  )}
               </div>
             </ReactResizeDetector>
             {descriptionHeight &&
@@ -196,6 +192,7 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                   </ReadMoreInnerWrapper>
                 </ReadMoreOuterWrapper>
               )}
+
             {descriptionHeight &&
               descriptionHeight > collapsedDescriptionMaxHeight &&
               expanded && (
@@ -217,6 +214,11 @@ const ProjectFolderDescription = memo<Props & InjectedIntlProps>(
                 </CollapseButtonWrapper>
               )}
           </Description>
+          {!isNilOrError(projectFolderFiles) &&
+            projectFolderFiles &&
+            projectFolderFiles.data.length > 0 && (
+              <FileAttachments files={projectFolderFiles.data} />
+            )}
         </Container>
       );
     }

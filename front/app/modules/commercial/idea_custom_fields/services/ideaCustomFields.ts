@@ -4,14 +4,26 @@ import { Multiloc } from 'typings';
 import { CustomFieldCodes } from 'services/ideaCustomFieldsSchemas';
 
 export type Visibility = 'admins' | 'public';
-type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
   id: string;
   type: 'custom_field';
   attributes: {
-    key: CustomFieldKeys;
-    input_type: 'text' | 'multiselect' | 'custom';
+    key: string;
+    input_type:
+      | 'text'
+      | 'number'
+      | 'multiline_text'
+      | 'html'
+      | 'text_multiloc'
+      | 'multiline_text_multiloc'
+      | 'html_multiloc'
+      | 'select'
+      | 'multiselect'
+      | 'checkbox'
+      | 'date'
+      | 'files'
+      | 'image_files';
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     required: boolean;

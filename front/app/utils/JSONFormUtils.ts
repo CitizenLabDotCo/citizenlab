@@ -3,7 +3,10 @@
 import { isString } from 'lodash-es';
 
 export function getFieldNameFromPath(val: string) {
-  const pathChuncks = val.split('.');
+  let pathChuncks = val.split('.');
+  if (pathChuncks.length === 1) {
+    pathChuncks = val.split('/');
+  }
   if (pathChuncks.length <= 1) {
     return val;
   } else {

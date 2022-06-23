@@ -13,6 +13,7 @@ module Matomo
     rescue KeyError => e
       raise MissingBaseUriError if e.key == 'MATOMO_HOST'
       raise MissingAuthorizationTokenError if e.key == 'MATOMO_AUTHORIZATION_TOKEN'
+
       raise
     end
 
@@ -33,6 +34,7 @@ module Matomo
         delete_response = delete_data_subjects(visits_response.parsed_response)
         raise_if_error(delete_response)
         deletes_summary.merge!(delete_response.parsed_response) { |_key, v1, v2| v1 + v2 }
+        sleep(0.5)
         break if delete_response.parsed_response.values.sum.zero? # nb data points that were deleted
       end
 
@@ -107,7 +109,7 @@ module Matomo
     end
 
     # We had to come up with our own encoding method because the HTTParty
-    # serializer produces: 
+    # serializer produces:
     #   `visits[][idsite]=value&visits[][idvisit]=value&...`
     # but the Matomo API expects an index:
     #   `visits[0][idsite]=value&visits[0][idvisit]=value&...`

@@ -63,7 +63,6 @@ const ProjectFolderSharingModal = memo<
         opened={opened}
         close={onClose}
         closeOnClickOutside={true}
-        noClose={false}
         header={<T value={projectFolder.attributes.title_multiloc} />}
       >
         <Container className={className || ''}>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Area, type: :model do
@@ -9,7 +11,7 @@ RSpec.describe Area, type: :model do
 
   describe 'default_scope' do
     it 'defaults to sorting areas by ordering' do
-      expect(Area.pluck(:id)).to eq Area.order(ordering: :asc).pluck(:id)
+      expect(described_class.pluck(:id)).to eq described_class.order(ordering: :asc).pluck(:id)
     end
   end
 
@@ -18,7 +20,7 @@ RSpec.describe Area, type: :model do
       area = create(:area, description_multiloc: {
         'en' => '<p>Test</p><script>This should be removed!</script>'
       })
-      expect(area.description_multiloc).to eq({'en' => '<p>Test</p>This should be removed!'})
+      expect(area.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!' })
     end
   end
 
@@ -26,14 +28,6 @@ RSpec.describe Area, type: :model do
     it 'with invalid locales marks the model as invalid' do
       area = build :area, description_multiloc: { 'se-BI' => 'awesome area' }
       expect(area).to be_invalid
-    end
-  end
-
-  describe 'delete an area' do
-    it 'with an ideas assocated to it should succeed' do
-      area = create :area
-      create :idea, areas: [area]
-      expect { area.destroy }.not_to raise_error
     end
   end
 
@@ -53,14 +47,15 @@ RSpec.describe Area, type: :model do
       subject { create(:area) }
 
       it 'defaults to the end of the list' do
-        last_area = Area.last
+        last_area = described_class.last
         expect(subject.ordering).to eq(last_area.ordering.to_i + 1)
       end
     end
 
     context 'when an ordering is given' do
-      let(:ordering) { Area.last.ordering + 1 }
       subject { create(:area, ordering: ordering) }
+
+      let(:ordering) { described_class.last.ordering + 1 }
 
       it 'should stay as given' do
         expect(subject.ordering).to eq(ordering)

@@ -86,9 +86,8 @@ export const MoreInfoLink = styled.a`
 export const Step2Button = styled(Button)``;
 
 // Typings
-import { IGroupData } from 'services/groups';
+import { IGroupData, MembershipType } from 'services/groups';
 import Outlet from 'components/Outlet';
-import { MembershipType } from 'resources/GetGroups';
 
 export interface Props {
   onOpenStep2: (groupType: IGroupData['attributes']['membership_type']) => void;

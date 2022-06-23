@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class InitiativeStatusChangePolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
@@ -9,7 +11,7 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
 
     def resolve
       # Disabled
-      if user&.active? && user.admin?
+      if user&.active? && user&.admin?
         scope.all
       else
         scope.none
@@ -17,12 +19,11 @@ class InitiativeStatusChangePolicy < ApplicationPolicy
     end
   end
 
-  def create? 
-    user&.active? && user.admin?
+  def create?
+    user&.active? && user&.admin?
   end
 
   def show?
-    user&.active? && user.admin?
+    user&.active? && user&.admin?
   end
-
 end

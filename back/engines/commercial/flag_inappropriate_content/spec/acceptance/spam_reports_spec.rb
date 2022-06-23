@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
-
 
 resource 'Spam Reports' do
   before do
@@ -20,9 +21,9 @@ resource 'Spam Reports' do
     let(:idea) { create(:idea) }
     let(:idea_id) { idea.id }
     let(:reason_code) { 'wrong_content' }
-  
+
     describe do
-      before{ idea.inappropriate_content_flag&.destroy! }
+      before { idea.inappropriate_content_flag&.destroy! }
 
       example_request 'A new flag is created when spam is reported', document: false do
         expect(response_status).to eq 201
@@ -31,7 +32,7 @@ resource 'Spam Reports' do
     end
 
     describe do
-      before{ create(:inappropriate_content_flag, flaggable: idea) }
+      before { create(:inappropriate_content_flag, flaggable: idea) }
 
       example 'The exisiting flag is reused when spam is reported', document: false do
         count = FlagInappropriateContent::InappropriateContentFlag.count
@@ -46,7 +47,7 @@ resource 'Spam Reports' do
     let(:idea) { create(:idea) }
     let(:spam_report) { create(:spam_report, user: @user, spam_reportable: idea) }
     let(:id) { spam_report.id }
-    
+
     example 'Deleting a spam report also deletes the flag', document: false do
       create(:inappropriate_content_flag, flaggable: idea, toxicity_label: nil)
       do_request

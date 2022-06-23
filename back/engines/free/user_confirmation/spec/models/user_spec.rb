@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
   subject(:user) { build(:user_with_confirmation) }
 
-  after(:each) do
+  after do
     user.clear_changes_information
   end
 
@@ -117,7 +119,7 @@ RSpec.describe User, type: :model do
     it 'sets the email_confirmed_at field' do
       user.save!
       user.confirm
-      expect(user.confirmed?).to eq true
+      expect(user.confirmed?).to be true
     end
 
     it 'does not perform a commit to the db' do
@@ -178,6 +180,7 @@ RSpec.describe User, type: :model do
   describe '#reset_confirmation_code' do
     it 'changes the code' do
       expect { user.reset_confirmation_code }.to change(user, :email_confirmation_code)
+      expect(user.email_confirmation_code).to match(USER_CONFIRMATION_CODE_PATTERN)
     end
 
     it 'should not save a change to the email confirmation code' do

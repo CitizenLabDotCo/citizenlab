@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WebApi::V1::NotificationsController < ApplicationController
   before_action :set_notification, only: %i[show mark_read]
   before_action do
@@ -36,7 +38,7 @@ class WebApi::V1::NotificationsController < ApplicationController
         serializers: NotificationService.new.serializers
       ).serialized_json
     else
-      head 500
+      head :internal_server_error
     end
   end
 
@@ -56,7 +58,7 @@ class WebApi::V1::NotificationsController < ApplicationController
         serializers: NotificationService.new.serializers
       ).serialized_json, status: :ok
     else
-      head 500
+      head :internal_server_error
     end
   end
 

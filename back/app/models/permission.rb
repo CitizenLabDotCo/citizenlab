@@ -53,22 +53,22 @@ class Permission < ApplicationRecord
     DENIED_REASONS
   end
 
-  def granted_to? user
+  def granted_to?(user)
     !denied_reason user
   end
 
-  def denied_reason user
+  def denied_reason(user)
     return if permitted_by == 'everyone'
     return if user&.admin?
     return if moderator? user
 
     reason = case permitted_by
-             when 'users' then :not_signed_in unless user
-             when 'admins_moderators' then :not_permitted
-             when 'groups' then denied_when_permitted_by_groups?(user)
-             else
-               raise "Unsupported permitted_by: '#{permitted_by}'."
-             end
+    when 'users' then :not_signed_in unless user
+    when 'admins_moderators' then :not_permitted
+    when 'groups' then denied_when_permitted_by_groups?(user)
+    else
+      raise "Unsupported permitted_by: '#{permitted_by}'."
+    end
 
     Permission.denied_reasons[reason]
   end

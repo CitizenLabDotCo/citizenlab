@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddTextReferenceToTextImage < ActiveRecord::Migration[6.0]
   def change
     add_column :text_images, :text_reference, :string, null: true, index: true

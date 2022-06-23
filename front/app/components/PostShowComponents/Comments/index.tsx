@@ -25,6 +25,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media, isRtl } from 'utils/styleUtils';
+import { Title } from '@citizenlab/cl2-component-library';
 
 // typings
 import { CommentsSort } from 'services/comments';
@@ -49,24 +50,6 @@ const Header = styled.div`
 
   ${isRtl`
     flex-direction: row-reverse;
-  `}
-`;
-
-const Title = styled.h1`
-  color: ${(props: any) => props.theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 500;
-  line-height: normal;
-  margin: 0;
-  padding: 0;
-  display: flex;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxl}px;
   `}
 `;
 
@@ -174,7 +157,7 @@ const CommentsSection = memo<Props>(
       return (
         <Container className={className || ''}>
           <Header>
-            <Title id="comments-main-title">
+            <Title color="colorText" variant="h2" id="comments-main-title">
               <FormattedMessage {...messages.invisibleTitleComments} />
               {commentCount > 0 && (
                 <CommentCount>({commentCount})</CommentCount>

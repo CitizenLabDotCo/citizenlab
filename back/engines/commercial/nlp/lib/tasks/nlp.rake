@@ -5,9 +5,9 @@ require 'json'
 namespace :nlp do
   desc 'Creates a json dump for NLP town, givent the tenant host as parameter.'
   task :json_dump, [:host] => [:environment] do |_t, args|
-    tenant = Tenant.find_by_host args[:host]
+    tenant = Tenant.find_by host: args[:host]
     data = NLP::TenantDumpService.new.dump tenant
-    File.open("tmp/#{data[:name]}_dump_#{Time.now.getutc}.json", 'w') { |f| f.write data.to_json }
+    File.write("tmp/#{data[:name]}_dump_#{Time.now.getutc}.json", data.to_json)
   end
 
   task :dump_all_tenants_to_nlp_now, [] => [:environment] do |_t, _args|
@@ -39,7 +39,7 @@ namespace :nlp do
     Tenant.not_deleted.pluck(:host).reject do |host|
       host.include? 'localhost'
     end.each do |host|
-      tenant = Tenant.find_by_host host
+      tenant = Tenant.find_by host: host
       Apartment::Tenant.switch(tenant.schema_name) do
         logs += [host]
         3.times do

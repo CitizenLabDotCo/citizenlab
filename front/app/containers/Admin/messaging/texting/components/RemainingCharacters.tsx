@@ -9,9 +9,20 @@ interface Props {
 const RemainingCharacters = ({ remainingChars, overCharacterLimit }: Props) => {
   const getText = () => {
     if (overCharacterLimit) {
-      return <>{remainingChars * -1} over the character limit</>;
+      // remainingChars is <=0 if overCharacterLimit is true
+      return (
+        <>
+          {remainingChars * -1}{' '}
+          {remainingChars === -1 ? 'character' : 'characters'} over the limit
+        </>
+      );
     } else {
-      return <>{remainingChars} characters remaining</>;
+      return (
+        <>
+          {remainingChars} {remainingChars === 1 ? 'character' : 'characters'}{' '}
+          remaining
+        </>
+      );
     }
   };
   return (

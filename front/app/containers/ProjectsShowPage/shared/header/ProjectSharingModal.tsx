@@ -61,7 +61,6 @@ const ProjectSharingModal = memo<Props & InjectedIntlProps>(
           opened={opened}
           close={onClose}
           closeOnClickOutside={true}
-          noClose={false}
           header={<T value={project.attributes.title_multiloc} />}
         >
           <Container className={className}>

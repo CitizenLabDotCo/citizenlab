@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeographicDashboard
   module WebApi
     module V1
@@ -6,9 +8,9 @@ module GeographicDashboard
 
         def index
           @ideas = policy_scope(Idea)
-                   .page(params.dig(:page, :number))
-                   .per(params.dig(:page, :size))
-                   .where(location_point: nil)
+            .page(params.dig(:page, :number))
+            .per(params.dig(:page, :size))
+            .where(location_point: nil)
 
           render json: serialized_geotagged_ideas, status: :ok
         end
@@ -24,7 +26,7 @@ module GeographicDashboard
         end
 
         def idea_geotags
-          @ideas.map { |idea| [idea.id, geotag(Tenant.current.id, idea, geocoder: 'google')] }.to_h
+          @ideas.to_h { |idea| [idea.id, geotag(Tenant.current.id, idea, geocoder: 'google')] }
         end
 
         def geotag_service

@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'app.utils.errors.default.ajv_error_invalid',
     defaultMessage: 'Is invalid',
   },
+  ajv_error_type: {
+    id: 'app.utils.errors.default.ajv_error_type',
+    defaultMessage: "Can't be blank",
+  },
 });

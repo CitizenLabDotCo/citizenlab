@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ContentBuilder::Layout, type: :model do
@@ -26,8 +28,21 @@ RSpec.describe ContentBuilder::Layout, type: :model do
       expect(layout.errors.details).to eq({ code: [{ error: :blank }] })
     end
 
+    it 'returns false for an iframe with a non-whitelisted url' do
+      url = 'http://malicious.com/my-video'
+      craftjs_jsonmultiloc = { 'en' => craftjson_with_iframe_url(url) }
+      layout = build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc)
+      expect(layout).to be_invalid
+      expect(layout.errors.details).to eq({ craftjs_jsonmultiloc: [{
+        error: :iframe_url_not_whitelisted,
+        locale: 'en',
+        url: url
+      }] })
+    end
+
     it 'returns true otherwise' do
-      expect(build(:layout)).to be_valid
+      craftjs_jsonmultiloc = { 'en' => craftjson_with_iframe_url('https://www.youtube.com/embed/gdfWFDcXut4') }
+      expect(build(:layout, craftjs_jsonmultiloc: craftjs_jsonmultiloc)).to be_valid
     end
   end
 
@@ -68,5 +83,46 @@ RSpec.describe ContentBuilder::Layout, type: :model do
         expect { layout.content_buildable }.to raise_error NameError
       end
     end
+  end
+
+  def craftjson_with_iframe_url(url)
+    {
+      'ROOT' => {
+        'type' => 'div',
+        'isCanvas' => true,
+        'props' => {
+          'style' => {
+            'padding' => '4px',
+            'minHeight' => '160px',
+            'backgroundColor' => '#fff'
+          }
+        },
+        'displayName' => 'div',
+        'custom' => {},
+        'hidden' => false,
+        'nodes' => [
+          'sLvtGHTAha'
+        ],
+        'linkedNodes' => {}
+      },
+      'sLvtGHTAha' => {
+        'type' => {
+          'resolvedName' => 'Iframe'
+        },
+        'isCanvas' => false,
+        'props' => {
+          'url' => url,
+          'height' => '400',
+          'id' => 'Iframe',
+          'hasError' => false
+        },
+        'displayName' => 'CraftIframe',
+        'custom' => {},
+        'parent' => 'ROOT',
+        'hidden' => false,
+        'nodes' => [],
+        'linkedNodes' => {}
+      }
+    }
   end
 end

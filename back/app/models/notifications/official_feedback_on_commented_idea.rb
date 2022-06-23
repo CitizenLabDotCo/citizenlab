@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: notifications
@@ -53,28 +55,25 @@
 #
 module Notifications
   class OfficialFeedbackOnCommentedIdea < Notification
-
     validates :initiating_user, :official_feedback, :post, :project, presence: true
     validates :post_type, inclusion: { in: ['Idea'] }
 
-
-    ACTIVITY_TRIGGERS = {'OfficialFeedback' => {'created' => true}}
+    ACTIVITY_TRIGGERS = { 'OfficialFeedback' => { 'created' => true } }
     EVENT_NAME = 'Official feedback on commented idea'
-    
 
-    def self.make_notifications_on activity
+    def self.make_notifications_on(activity)
       official_feedback = activity.item
       initiator_id = official_feedback.user_id
 
       if official_feedback.post_type == 'Idea' && initiator_id
         User.active
           .joins(:comments).merge(Comment.published)
-          .where(comments: {post: official_feedback.post})
+          .where(comments: { post: official_feedback.post })
           .distinct
           .ids
-          .select{|recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id}
+          .select { |recipient_id| recipient_id != initiator_id && recipient_id != official_feedback.post.author_id }
           .map do |recipient_id|
-            self.new(
+            new(
               recipient_id: recipient_id,
               initiating_user_id: initiator_id,
               post: official_feedback.post,
@@ -86,6 +85,5 @@ module Notifications
         []
       end.compact
     end
-
   end
 end

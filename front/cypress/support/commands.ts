@@ -1,6 +1,8 @@
 import 'cypress-file-upload';
+import './dnd';
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
@@ -42,13 +44,14 @@ declare global {
       apiAddPoll: typeof apiAddPoll;
       apiVerifyBogus: typeof apiVerifyBogus;
       apiCreateEvent: typeof apiCreateEvent;
+      apiEnableContentBuilder: typeof apiEnableContentBuilder;
       intersectsViewport: typeof intersectsViewport;
       notIntersectsViewport: typeof notIntersectsViewport;
     }
   }
 }
 
-export function randomString(length: number = 15) {
+export function randomString(length = 15) {
   let text = '';
   const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -1046,6 +1049,26 @@ export function apiCreateEvent({
   });
 }
 
+export function apiEnableContentBuilder({ projectId }: { projectId: string }) {
+  return cy.apiLogin('admin@citizenlab.co', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/content_builder_layouts/project_description/upsert`,
+      body: {
+        content_builder_layout: {
+          enabled: true,
+        },
+      },
+    });
+  });
+}
+
 // https://stackoverflow.com/a/16012490
 interface Bbox {
   left: number;
@@ -1138,6 +1161,7 @@ Cypress.Commands.add('setAdminLoginCookie', setAdminLoginCookie);
 Cypress.Commands.add('setLoginCookie', setLoginCookie);
 Cypress.Commands.add('apiVerifyBogus', apiVerifyBogus);
 Cypress.Commands.add('apiCreateEvent', apiCreateEvent);
+Cypress.Commands.add('apiEnableContentBuilder', apiEnableContentBuilder);
 Cypress.Commands.add(
   'intersectsViewport',
   { prevSubject: true },

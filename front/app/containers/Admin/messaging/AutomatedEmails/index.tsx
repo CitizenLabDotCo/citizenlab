@@ -63,9 +63,6 @@ class AutomatedCampaigns extends React.PureComponent<
                   }
                 />
               </TextCell>
-              {/* <div>
-                <T value={campaign.attributes.schedule_multiloc} />
-              </div> */}
             </Row>
           ))}
         </AutomatedEmailsList>
@@ -76,10 +73,8 @@ class AutomatedCampaigns extends React.PureComponent<
 
 const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
 
-export default (inputProps: Props) => (
+export default () => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {(campaigns) => (
-      <AutomatedCampaignsWithIntl {...inputProps} {...campaigns} />
-    )}
+    {(campaigns) => <AutomatedCampaignsWithIntl {...campaigns} />}
   </GetCampaigns>
 );

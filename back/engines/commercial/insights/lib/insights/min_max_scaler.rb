@@ -12,7 +12,7 @@ module Insights
     def transform(value)
       value = value.to_f
       value = (value - @actual_min) / (@actual_max - @actual_min) # scales to [0, 1]
-      value * (@max - @min) + @min # scales to [@min, @max]
+      (value * (@max - @min)) + @min # scales to [@min, @max]
     end
   end
 end

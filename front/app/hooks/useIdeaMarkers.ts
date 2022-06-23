@@ -23,6 +23,10 @@ export default function useIdeaMarkers({
     IIdeaMarkerData[] | undefined | null
   >(undefined);
 
+  // Stringifying the project IDs and topics to make useEffect dependency array happy
+  const stringifiedProjectIds = JSON.stringify(projectIds);
+  const stringifiedTopics = JSON.stringify(topics);
+
   useEffect(() => {
     setIdeaMarkers(undefined);
 
@@ -30,18 +34,18 @@ export default function useIdeaMarkers({
       queryParameters: {
         'page[size]': 2000,
         location_required: true,
-        projects: projectIds,
+        projects: JSON.parse(stringifiedProjectIds),
         phase: phaseId,
         sort: sort || ideaDefaultSortMethodFallback,
         search: search || undefined,
-        topics: topics || undefined,
+        topics: JSON.parse(stringifiedTopics) || undefined,
       },
     }).observable.subscribe((response) => {
       setIdeaMarkers(!isNilOrError(response) ? response.data : null);
     });
 
     return () => subscription.unsubscribe();
-  }, [phaseId, projectIds, sort, search, topics]);
+  }, [phaseId, stringifiedProjectIds, sort, search, stringifiedTopics]);
 
   return ideaMarkers;
 }

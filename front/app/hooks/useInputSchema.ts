@@ -11,6 +11,7 @@ import useLocale from './useLocale';
 export default (projectId: string | undefined) => {
   const [schema, setSchema] = useState<JsonFormsSchema | null>(null);
   const [uiSchema, setUiSchema] = useState<Layout | null>(null);
+  const [isError, setIsError] = useState(false);
   const locale = useLocale();
   const locales = useAppConfigurationLocales();
 
@@ -20,23 +21,31 @@ export default (projectId: string | undefined) => {
     const observable = ideaJsonFormsSchemaStream(projectId).observable;
 
     const subscription = observable.subscribe((response) => {
-      setSchema(
-        (!isNilOrError(locale) && response.json_schema_multiloc[locale]) ||
-          (!isNilOrError(locales) &&
-            response.json_schema_multiloc[locales[0]]) ||
-          null
-      );
-      setUiSchema(
-        (!isNilOrError(locale) && response.ui_schema_multiloc[locale]) ||
-          (!isNilOrError(locales) && response.ui_schema_multiloc[locales[0]]) ||
-          null
-      );
+      if (isNilOrError(response)) {
+        setSchema(null);
+        setUiSchema(null);
+        setIsError(true);
+      } else {
+        setIsError(false);
+        setSchema(
+          (!isNilOrError(locale) && response.json_schema_multiloc[locale]) ||
+            (!isNilOrError(locales) &&
+              response.json_schema_multiloc[locales[0]]) ||
+            null
+        );
+        setUiSchema(
+          (!isNilOrError(locale) && response.ui_schema_multiloc[locale]) ||
+            (!isNilOrError(locales) &&
+              response.ui_schema_multiloc[locales[0]]) ||
+            null
+        );
+      }
     });
 
     return () => subscription.unsubscribe();
   }, [projectId, locale, locales]);
 
-  return { schema, uiSchema };
+  return { schema, uiSchema, inputSchemaError: isError };
 };
 //
 //   if (isNilOrError(authUser)) {

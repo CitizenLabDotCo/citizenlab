@@ -1,29 +1,31 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe WebApi::V1::Notifications::NotificationSerializer do
-  def expect_serializer_to_hide_name(user_1, user_2, admin, notification_factory_name, serializer_class)
-    notification = build(notification_factory_name, initiating_user: user_1)
+  def expect_serializer_to_hide_name(user1, user2, admin, notification_factory_name, serializer_class)
+    notification = build(notification_factory_name, initiating_user: user1)
     notification_from_admin = build(notification_factory_name, initiating_user: admin)
 
-    hash = serializer_class.new(notification, params: { current_user: user_2 })
+    hash = serializer_class.new(notification, params: { current_user: user2 })
     last_name = hash.serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     slug = hash.serializable_hash.dig(:data, :attributes, :initiating_user_slug)
-    expect(last_name).to eq "#{user_1.last_name[0]}."
-    expect(slug.downcase).not_to include(user_1.last_name.downcase)
+    expect(last_name).to eq "#{user1.last_name[0]}."
+    expect(slug.downcase).not_to include(user1.last_name.downcase)
 
     last_name = serializer_class
-                .new(notification, params: { current_user: user_1 })
-                .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
-    expect(last_name).to eq user_1.last_name
+      .new(notification, params: { current_user: user1 })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+    expect(last_name).to eq user1.last_name
 
     last_name = serializer_class
-                .new(notification, params: { current_user: admin })
-                .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
-    expect(last_name).to eq user_1.last_name
+      .new(notification, params: { current_user: admin })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+    expect(last_name).to eq user1.last_name
 
     last_name = serializer_class
-                .new(notification_from_admin, params: { current_user: user_2 })
-                .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
+      .new(notification_from_admin, params: { current_user: user2 })
+      .serializable_hash.dig(:data, :attributes, :initiating_user_last_name)
     expect(last_name).to eq admin.last_name
   end
 

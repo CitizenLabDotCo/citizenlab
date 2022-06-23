@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Surveys
   class ResponsePolicy < ApplicationPolicy
     class Scope
@@ -9,7 +11,8 @@ module Surveys
       end
 
       def resolve
-        return scope.none if !user
+        return scope.none unless user
+
         moderatable_projects = ::UserRoleService.new.moderatable_projects user
         moderatable_phases = Phase.where(project: moderatable_projects)
         scope
@@ -18,9 +21,7 @@ module Surveys
     end
 
     def index_xlsx?
-      user&.active? && user.admin?
+      user&.active? && user&.admin?
     end
-
-
   end
 end

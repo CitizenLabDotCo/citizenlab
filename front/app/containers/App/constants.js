@@ -59,9 +59,11 @@ exports.locales = [
   'ro-RO',
   'pt-BR',
   'ar-SA',
+  'ar-MA',
   'mi',
   'sr-Latn',
   'sr-SP',
+  'hr-HR',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -85,9 +87,11 @@ exports.appLocalePairs = {
   'ro-RO': 'Română',
   'pt-BR': 'Português (Brasil)',
   'ar-SA': 'عربى',
+  'ar-MA': 'عربي',
   mi: 'Māori',
   'sr-Latn': 'Srpski (Latinica)',
   'sr-SP': 'Српски (Ћирилица)',
+  'hr-HR': 'Hrvatski',
 };
 exports.appGraphqlLocalePairs = {
   en: 'en',
@@ -116,9 +120,11 @@ exports.appGraphqlLocalePairs = {
   roRo: 'ro-RO',
   ptBr: 'pt-BR',
   arSa: 'ar',
+  arMa: 'ar-MA',
   mi: 'mi',
   srLatn: 'sr-Latn',
   srSp: 'sr-SP',
+  hrHr: 'hr-HR',
 };
 exports.shortenedAppLocalePairs = {
   en: 'English',
@@ -141,9 +147,11 @@ exports.shortenedAppLocalePairs = {
   'ro-RO': 'Română',
   'pt-BR': 'Português',
   'ar-SA': 'عربى',
+  'ar-MA': 'عربي',
   mi: 'Māori',
   'sr-Latn': 'Srpski',
   'sr-SP': 'Српски',
+  'hr-HR': 'Hrvatski',
 };
 // see https://www.ge.com/digital/documentation/predix-services/c_custom_locale_support.html
 exports.appLocalesMomentPairs = {
@@ -166,7 +174,9 @@ exports.appLocalesMomentPairs = {
   'ro-RO': 'ro',
   'pt-BR': 'pt',
   'ar-SA': 'ar',
+  'ar-MA': 'ar-ma',
   mi: 'mi',
   'sr-Latn': 'sr',
   'sr-SP': 'sr',
+  'hr-HR': 'hr',
 };

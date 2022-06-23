@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ####### Important information ####################
 # This file is used to setup a shared extensions #
 # within a dedicated schema. This gives us the   #
@@ -10,7 +12,7 @@
 
 namespace :db do
   desc 'Also create shared_extensions Schema'
-  task :extensions => :environment  do
+  task extensions: :environment do
     # Create Schema
     ActiveRecord::Base.connection.execute 'CREATE SCHEMA IF NOT EXISTS shared_extensions;'
     # Enable UUID-OSSP
@@ -19,8 +21,8 @@ namespace :db do
     ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "postgis" SCHEMA shared_extensions;'
   end
 
-  desc "Erase all tables"
-  task :clear => :environment do
+  desc 'Erase all tables'
+  task clear: :environment do
     conn = ActiveRecord::Base.connection
     tables = conn.tables
     tables.each do |table|
@@ -30,10 +32,10 @@ namespace :db do
   end
 end
 
-Rake::Task["db:create"].enhance do
-  Rake::Task["db:extensions"].invoke
+Rake::Task['db:create'].enhance do
+  Rake::Task['db:extensions'].invoke
 end
 
-Rake::Task["db:test:purge"].enhance do
-  Rake::Task["db:extensions"].invoke
+Rake::Task['db:test:purge'].enhance do
+  Rake::Task['db:extensions'].invoke
 end
