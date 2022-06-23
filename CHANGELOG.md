@@ -1,12 +1,24 @@
 # Changelog
 
-## Next release
+## 2022-06-22
 
 ### Added
 
 - [CL-851] Create interface to add representativeness reference data (feature flagged for now).
 
-## Fixed
+### Fixed
+
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
 
 - [CL-903] Fix admin input manager crash on Safari
 
