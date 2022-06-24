@@ -22,8 +22,10 @@
 #
 module Analytics
   class FactActivity < Analytics::ApplicationRecord
-
-    attribute :time_to_feedback, :interval # Future proofing for Rails 7
+    self.primary_key = :id
+    belongs_to :type, class_name: "DimensionType"
+    belongs_to :created_date, class_name: "DimensionDate"
+    belongs_to :project, class_name: "DimensionProject"
 
     def readonly?
       true

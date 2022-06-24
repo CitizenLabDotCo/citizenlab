@@ -10,6 +10,6 @@
 #
 module Analytics
   class DimensionDate < Analytics::ApplicationRecord
-
+    has_many :fact_activity, class_name: "FactActivity"
   end
 end

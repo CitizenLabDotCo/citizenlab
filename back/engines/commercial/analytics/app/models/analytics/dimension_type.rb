@@ -8,6 +8,6 @@
 #
 module Analytics
   class DimensionType < Analytics::ApplicationRecord
-
+    has_many :fact_activity, class_name: "FactActivity"
   end
 end
