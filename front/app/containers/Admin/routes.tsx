@@ -18,6 +18,9 @@ import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
+const BottomInfoForm = lazy(
+  () => import('containers/Admin/pagesAndMenu/BottomInfoForm')
+);
 
 // hooks
 import { usePermission } from 'services/permissions';
@@ -137,6 +140,14 @@ const createAdminRoutes = () => {
         ),
       },
       ...moduleConfiguration.routes.admin,
+      {
+        path: 'pages-and-menu/bottom-info-section',
+        element: (
+          <PageLoading>
+            <BottomInfoForm />
+          </PageLoading>
+        ),
+      },
     ],
   };
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import StickyContainer from './StickyContainer';
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
@@ -11,9 +11,15 @@ interface Props {
   breadcrumbs: { label: string; linkTo?: string }[];
   title: string;
   children: JSX.Element;
+  stickyMenuContents: JSX.Element;
 }
 
-const SectionFormWrapper = ({ breadcrumbs, title, children }: Props) => {
+const SectionFormWrapper = ({
+  breadcrumbs,
+  title,
+  children,
+  stickyMenuContents,
+}: Props) => {
   return (
     <div>
       <Box mb="16px">
@@ -25,9 +31,7 @@ const SectionFormWrapper = ({ breadcrumbs, title, children }: Props) => {
       <Box>
         <PageWrapper>
           {children}
-          <StickyContainer>
-            <Button>Save Hero Banner</Button>
-          </StickyContainer>
+          <StickyContainer>{stickyMenuContents}</StickyContainer>
         </PageWrapper>
       </Box>
     </div>
