@@ -8,7 +8,13 @@ module Analytics
 
       # GET /posts
       def index
-        posts = FactActivity.where(activity_type: ['idea','initiative'])
+
+        posts = Rails.configuration.database_configuration
+
+        # TODO: Try and set the schema search path in db config as a better local dev option
+        # Hasn't seemed to work
+        # posts = ActiveRecord::Base.connection.current_database
+        posts = FactPost.where(feedback_none: 0)
         render json: posts
       end
 

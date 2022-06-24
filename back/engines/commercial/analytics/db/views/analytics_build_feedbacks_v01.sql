@@ -1,30 +1,31 @@
 -- Calculate the first feedback date
 -- TODO: Need an index on activities.action
+
 SELECT
     post_id,
-    post_type,
-    feedback_type,
-    min(first_feedback_date) AS first_feedback_date
+    MIN(feedback_first_date) AS feedback_first_date,
+    MAX(feedback_official) AS feedback_official,
+    MAX(feedback_status_change) AS feedback_status_change
 FROM (
     SELECT
         item_id AS post_id,
-        item_type AS post_type,
-        'changed_status' AS feedback_type,
-        MIN(created_at) AS first_feedback_date
+        MIN(created_at) AS feedback_first_date,
+        0 AS feedback_official,
+        1 AS feedback_status_change
     FROM activities
     WHERE
         action = 'changed_status' AND
-        item_type = 'Initiative'
-    GROUP BY item_id, item_type
+        item_type IN ('Idea','Initiative')
+    GROUP BY item_id
 
     UNION ALL
 
     SELECT
         post_id,
-        post_type,
-        'official_feedback' AS feedback_type,
-        MIN(created_at) AS first_feedback_date
+        MIN(created_at) AS feedback_first_date,
+        1 AS feedback_official,
+        0 AS feedback_status_change
     FROM official_feedbacks
-    GROUP BY post_id, post_type
+    GROUP BY post_id
      ) AS a
-GROUP BY post_id, post_type, feedback_type;
+GROUP BY post_id;

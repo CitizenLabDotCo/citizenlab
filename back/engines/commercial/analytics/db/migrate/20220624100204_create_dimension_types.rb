@@ -14,8 +14,8 @@ class CreateDimensionTypes < ActiveRecord::Migration[6.1]
       VALUES
         ('idea', 'post'),
         ('initiative', 'post'),
-        ('comment', 'post'),
-        ('vote', 'post');
+        ('comment', null),
+        ('vote', null);
     ")
 
   end
