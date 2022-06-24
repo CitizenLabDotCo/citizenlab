@@ -49,7 +49,23 @@ module MultiTenancy
           {
             participation_context: volunteering_project,
             title_multiloc: { en: 'Going to the post office' },
-            description_multiloc: { en: '<p>Many people should stay inside. They are at home and cannot go to the post office to post a letter or to pick up a parcel. Can you help them?</p><h4>Necessary material</h4><ul><li>sport to go to the post office.</li></ul><p>We provide you with the contact details of this person. Arrange by phone or mail what you have to post or pick up. Don’t go inside the house of this person but pick up the mail or drop it at the door.</p><p>Always observe the hygienic precautions.</p><h4>Profile of the volunteer</h4><ul><li>You’re between 16 and 60 years old.</li><li>You’re healthy and show no symptoms.</li><li>You haven’t been in a risk area recently.</li><li>You’ve had no contact with people who have been in a risk area recently.</li></ul>' },
+            description_multiloc: { en: <<~DESC
+              <p>Many people should stay inside. They are at home and cannot go to the post office to post a letter or to pick up a parcel. Can you help them?</p>
+              <h4>Necessary material</h4>
+              <ul>
+                <li>sport to go to the post office.</li>
+              </ul>
+              <p>We provide you with the contact details of this person. Arrange by phone or mail what you have to post or pick up. Don’t go inside the house of this person but pick up the mail or drop it at the door.</p>
+              <p>Always observe the hygienic precautions.</p>
+              <h4>Profile of the volunteer</h4>
+              <ul>
+                <li>You’re between 16 and 60 years old.</li>
+                <li>You’re healthy and show no symptoms.</li>
+                <li>You haven’t been in a risk area recently.</li>
+                <li>You’ve had no contact with people who have been in a risk area recently.</li>
+              </ul>'
+            DESC
+ },
             image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
           },
           {
