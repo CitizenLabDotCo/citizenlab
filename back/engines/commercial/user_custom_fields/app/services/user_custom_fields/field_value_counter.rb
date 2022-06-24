@@ -28,6 +28,7 @@ module UserCustomFields
         .to_a.pluck(:field_value, :count).to_h
 
       counts[UNKNOWN_VALUE_LABEL] = counts.delete(nil) || 0
+      counts = add_missing_options(counts, custom_field)
       convert_keys_to_option_ids!(counts, custom_field) if by_option_id
       counts.with_indifferent_access
     end
@@ -66,6 +67,20 @@ module UserCustomFields
 
         key_to_id.fetch(option_key)
       end
+    end
+
+    # Adds zero counts for missing options to the counts hash.
+    # Hash keys are the option keys (not the option ids).
+    private_class_method def self.add_missing_options(counts, custom_field)
+      option_keys = custom_field.options.pluck(:key)
+
+      unknown_option_keys = counts.keys - option_keys - [UNKNOWN_VALUE_LABEL]
+      raise ArgumentError, <<~MSG.squish if unknown_option_keys.present?
+        The `counts` hash keys are inconsistent with the custom field options
+        (unknown option keys: #{unknown_option_keys.join(', ')}).
+      MSG
+
+      option_keys.index_with { 0 }.merge(counts)
     end
   end
 end

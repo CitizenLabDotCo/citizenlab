@@ -77,7 +77,7 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to include(
             series: {
-              users: { female: 2, unspecified: 1, _blank: 0 },
+              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: nil,
               reference_population: nil
             }
@@ -94,7 +94,7 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to include(
             series: {
-              users: { female: 2, unspecified: 1, _blank: 0 },
+              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: {
                 male: kind_of(Numeric),
                 female: kind_of(Numeric),
@@ -285,9 +285,15 @@ resource 'Stats - Users' do
 
       example_request 'Users by education' do
         expect(response_status).to eq 200
+
+        expected_users = CustomField.find_by(key: 'education')
+          .options.to_h { |option| [option.key, 0] }
+          .merge('3': 2, '5': 1, _blank: 0)
+          .symbolize_keys
+
         expect(json_response_body).to include(
           series: {
-            users: { '3': 2, '5': 1, _blank: 0 },
+            users: expected_users,
             expected_users: nil,
             reference_population: nil
           }
@@ -361,20 +367,21 @@ resource 'Stats - Users' do
             expect(response_status).to eq 200
             expect(json_response_body).to match({
               options: {
-                @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-                @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-                @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
+                @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+                @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
+                @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
               },
               series: {
                 users: {
-                  @option1.key.to_sym => 1,
-                  @option2.key.to_sym => 1,
+                  @option1.key => 1,
+                  @option2.key => 1,
+                  @option3.key => 0,
                   _blank: 1
                 },
                 expected_users: nil,
                 reference_population: nil
               }
-            })
+            }.deep_symbolize_keys)
           end
         end
 
@@ -418,20 +425,21 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to match({
             options: {
-              @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-              @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-              @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
+              @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+              @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
+              @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
             },
             series: {
               users: {
-                @option1.key.to_sym => 2,
-                @option2.key.to_sym => 1,
+                @option1.key => 2,
+                @option2.key => 1,
+                @option3.key => 0,
                 _blank: 1
               },
               expected_users: nil,
               reference_population: nil
             }
-          })
+          }.deep_symbolize_keys)
         end
       end
 

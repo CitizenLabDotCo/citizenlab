@@ -62,9 +62,15 @@ resource 'Representativeness scores' do
 
           example_request 'returns the representativeness score (filtered by project)' do
             expect(status).to eq(200)
+
+            expected_counts = custom_field
+              .options.to_h { |option| [option.id, 0] }
+              .merge(option.id => 1, _blank: 0)
+              .symbolize_keys
+
             expect(response_data[:attributes]).to match(
               score: be_between(0, 1),
-              counts: { option.id.to_sym => 1, _blank: 0 }
+              counts: expected_counts
             )
           end
         end
