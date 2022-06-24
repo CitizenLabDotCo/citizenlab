@@ -69,11 +69,16 @@ module UserCustomFields
       end
     end
 
-    # Adds zero counts for missing options to the counts hash.
-    # Hash keys are the option keys (not the option ids).
+    # Adds zero counts for missing options to the counts hash. Hash keys are the option
+    # keys (not the option ids).
+    #
+    # It only adds missing options when they are explicitly defined (as
+    # +CustomFieldOption+ records). This is not the case for number and checkbox
+    # custom fields whose options are implicitly defined.
     private_class_method def self.add_missing_options(counts, custom_field)
-      option_keys = custom_field.options.pluck(:key)
+      return counts if custom_field.options.empty?
 
+      option_keys = custom_field.options.pluck(:key)
       unknown_option_keys = counts.keys - option_keys - [UNKNOWN_VALUE_LABEL]
       raise ArgumentError, <<~MSG.squish if unknown_option_keys.present?
         The `counts` hash keys are inconsistent with the custom field options
