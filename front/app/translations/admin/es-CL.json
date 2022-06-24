@@ -1353,8 +1353,6 @@
   "app.containers.admin.ContentBuilder.error": "error",
   "app.containers.admin.ContentBuilder.errorMessage": "Hay un error en el contenido de {locale}, arregle el problema para poder guardar sus cambios",
   "app.containers.admin.ContentBuilder.iframeDescription": "Mostrar contenido de un sitio web externo en su página en un iFrame HTML.",
-  "app.containers.admin.ContentBuilder.iframeHeightLabel": "Altura",
-  "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Altura de la ventana del iframe.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "Ej. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Debe proporcionar una URL válida.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",

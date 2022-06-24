@@ -1353,8 +1353,6 @@
   "app.containers.admin.ContentBuilder.error": "greška",
   "app.containers.admin.ContentBuilder.errorMessage": "Pojavila se pogreška na {locale} sadržaju, ispravite problem kako biste mogli spremiti promjene.",
   "app.containers.admin.ContentBuilder.iframeDescription": "Prikazuje sadržaj s vanjskog web-mjesta na vašoj stranici u HTML iFrameu.",
-  "app.containers.admin.ContentBuilder.iframeHeightLabel": "Visina",
-  "app.containers.admin.ContentBuilder.iframeHeightLabelTooltip": "Visina iframe prozora.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "npr. 120 piksela",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Potrebno je navesti valjani URL.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
