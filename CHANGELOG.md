@@ -5,7 +5,6 @@
 ### Changed
 
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
-- [CL-1024] Changes keys used in the embed component
 
 ## 2022-06-22
 

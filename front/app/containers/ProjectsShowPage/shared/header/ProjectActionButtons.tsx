@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useEffect,
   useState,
-  useRef,
   FormEvent,
 } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
@@ -36,12 +35,9 @@ import { selectPhase } from 'containers/ProjectsShowPage/timeline/events';
 
 // router
 import clHistory from 'utils/cl-router/history';
+import { useLocation } from 'react-router-dom';
 
 const Container = styled.div``;
-
-// const AllocateBudgetButton = styled(Button)`
-//   margin-bottom: 10px;
-// `;
 
 const SeeIdeasButton = styled(Button)`
   margin-bottom: 10px;
@@ -57,7 +53,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const phases = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
   const divId = clHistory.location.hash;
-  const timeIdRef = useRef<NodeJS.Timeout>();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
@@ -70,33 +66,20 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
     }
   }, [divId]);
 
-  const clearSetTimeout = () => {
-    if (timeIdRef.current) {
-      clearTimeout(timeIdRef.current);
-    }
-  };
-
-  useEffect(() => {
-    return () => clearSetTimeout();
-  }, []);
-
   const scrollTo = useCallback(
     (id: string, shouldSelectCurrentPhase = true) =>
       (event: FormEvent) => {
         event.preventDefault();
 
         if (!isNilOrError(project)) {
-          const isOnProjectPage = window.location.pathname.endsWith(
+          const isOnProjectPage = pathname.endsWith(
             `/projects/${project.attributes.slug}`
           );
 
           currentPhase && shouldSelectCurrentPhase && selectPhase(currentPhase);
 
           if (isOnProjectPage) {
-            clearSetTimeout();
-            timeIdRef.current = setTimeout(() => {
-              scrollToElement({ id, shouldFocus: true });
-            }, 100);
+            scrollToElement({ id, shouldFocus: true });
           } else {
             clHistory.push(`/projects/${project.attributes.slug}#${id}`);
           }
@@ -129,22 +112,6 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
 
   return (
     <Container className={className || ''}>
-      {/* {ideasPresentOutsideViewport &&
-        ((process_type === 'continuous' &&
-          participation_method === 'budgeting') ||
-          currentPhase?.attributes.participation_method === 'budgeting') &&
-        !hasProjectEnded &&
-        isNumber(ideas_count) &&
-        ideas_count > 0 && (
-          <AllocateBudgetButton
-            id="e2e-project-allocate-budget-button"
-            buttonStyle="primary"
-            onClick={scrollTo('project-ideas')}
-            fontWeight="500"
-          >
-            <FormattedMessage {...messages.allocateBudget} />
-          </AllocateBudgetButton>
-        )} */}
       {((process_type === 'continuous' &&
         participation_method === 'ideation') ||
         currentPhase?.attributes.participation_method === 'ideation') &&
