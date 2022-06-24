@@ -20,6 +20,7 @@ require_relative 'projects'
 require_relative 'static_pages'
 require_relative 'tenants'
 require_relative 'topics'
+require_relative 'unsubscription_tokens'
 require_relative 'users'
 require_relative 'volunteering_causes'
 require_relative 'volunteers'
@@ -79,12 +80,10 @@ module MultiTenancy
         seed_empty_localhost_tenant
         seed_localhost_tenant
 
-        unless Apartment::Tenant.current == 'public'
-          User.find_each do |some_user|
-            EmailCampaigns::UnsubscriptionToken.create!(user_id: some_user.id)
-          end
-          MultiTenancy::TenantService.new.finalize_creation(Tenant.current)
-        end
+        return if Apartment::Tenant.current == 'public'
+
+        MultiTenancy::Seeds::UnsubscriptionTokens.new(runner: self).run
+        MultiTenancy::TenantService.new.finalize_creation(Tenant.current)
       end
 
       # Seeds an empty localhost tenant. It contains only the absolute minimum of records
