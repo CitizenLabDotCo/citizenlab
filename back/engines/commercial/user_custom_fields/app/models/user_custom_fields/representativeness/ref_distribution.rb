@@ -65,7 +65,7 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   private
 
   def option_id_to_key
-    @option_id_to_key ||= custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
+    @option_id_to_key ||= custom_field.options.to_h { |option| [option.id, option.key] }
   end
 
   def total_population
