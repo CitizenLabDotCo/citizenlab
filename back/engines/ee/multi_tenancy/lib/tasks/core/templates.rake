@@ -72,12 +72,29 @@ namespace :templates do
 
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
-    bucket.objects(prefix: 'release').each(&:delete)
-    bucket.objects(prefix: 'test').each do |template|
+    # The release folder itself is also returned as an object, but should not be deleted.
+    bucket.objects(prefix: 'release').reject { |obj| obj.key == 'release/' }.each(&:delete)
+
+    # This code no longer works due to a bug in AWS S3: the folder part of the keys has disappeared.
+    # bucket.objects(prefix: 'test') # .reject { |obj| obj.key == 'test/' }
+    #   .each do |template|
+    #   template_name = template.key.to_s
+    #   template_name.slice! 'test/'
+    #   if template_name.present? && failed_templates.exclude?(template_name.split('.').first)
+    #     template.copy_to(bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'), key: "release/#{template_name}")
+    #   end
+    # end
+
+    bucket.objects(prefix: 'test').reject { |obj| obj.key == 'test/' }.each do |template|
+      # Download
       template_name = template.key.to_s
       template_name.slice! 'test/'
-      if template_name.present? && failed_templates.exclude?(template_name.split('.').first)
-        template.copy_to(bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'), key: "release/#{template_name}")
+      template_object = bucket.object("test/#{template_name}")
+      template_content = template_object.get.body.read
+
+      # Upload
+      bucket.object("release/#{template_name}").upload_stream do |stream|
+        stream << template_content
       end
     end
 
