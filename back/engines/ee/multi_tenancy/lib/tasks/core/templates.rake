@@ -73,7 +73,7 @@ namespace :templates do
     s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
     bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
     # The release folder itself is also returned as an object, but should not be deleted.
-    # bucket.objects(prefix: 'release').reject { |obj| obj.key == 'release/' }.each(&:delete)
+    bucket.objects(prefix: 'release').reject { |obj| obj.key == 'release/' }.each(&:delete)
 
     # This code no longer works due to a bug in AWS S3: the folder part of the keys has disappeared.
     # bucket.objects(prefix: 'test') # .reject { |obj| obj.key == 'test/' }
