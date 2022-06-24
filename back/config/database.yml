@@ -36,7 +36,7 @@ development:
     <<: *default
     host: cl-postgres-analytics
     database: <%= ENV.fetch("POSTGRES_DB_ANALYTICS", 'cl2_analytics') %>
-    schema_search_path: public,shared_extensions
+    schema_search_path: localhost,public,shared_extensions # temp search for localhost whilst multi-tenancy not working
     migrations_paths: engines/commercial/analytics/db/migrate
 
 

@@ -21,16 +21,7 @@ docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "psql 
 docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "pg_dump --clean -h postgres -U postgres cl2_back_development | psql -h localhost -U postgres cl2_analytics"
 ```
 
-3. Temp step: Sync data to 'public' schema whilst multi-tenancy is not working. Run the following on cl-postgres-analytics:
-```
-pg_dump --clean -U postgres cl2_analytics --schema=localhost > dump.sql
-
-sed -i 's/ localhost./ public./g' dump.sql
-
-psql -h localhost -U postgres cl2_analytics < dump.sql
-```
-
-TODO: TRUNCATE schema_migrations table
+3. TRUNCATE the localhost.schema_migrations table in your analytics DB
 
 4. Add the following to citizenlab.config.ee.json:
 
@@ -41,20 +32,19 @@ TODO: TRUNCATE schema_migrations table
 ## Database
 
 There is a secondary database connection set up to cl_back_analytics - however it currently is ignoring appartment and 
-only using at the default (public) schema.
+only using a single schema. There is currently a setting in the DB config to make it use 'localhost' so we can develop
+on our default localhost tenant.
 
 ## Running migrations:
 
 ### Important
 
-Views can't currently be run from the engine folder.
-Run the following command on cl-back-web before migrating:
+Views can't currently be read from the engine folder, but the migrations are configured to run from here.
+Run the following command on cl-back-web to ensure views are copied to the main migrations folder before running:
 
-`cp -r /cl2_back/engines/commercial/analytics/db/views/*.sql /cl2_back/db/views`
+`cp -r /cl2_back/engines/commercial/analytics/db/views/*.sql /cl2_back/db/views && rails db:migrate:analytics`
 
-Migrations are stored within the engine and database.yml is configured to look inside the engine for analytics migrations.
-
-`rails db:migrate:analytics`
+To rollback:
 
 `rails db:rollback:analytics`
 
@@ -65,20 +55,14 @@ Views/tables should be named as follows:
 * analytics_dimension_*
 * analytics_fact_*
 
-Note: Currently scenic doesn't support creating migrations & views inside the engine.
-Views can be run by migrations only from /db/views in the main app. 
-There is an open pull request for this: https://github.com/scenic-views/scenic/pull/357
-
-`rails g scenic:view analytics_dimension_*`
-
-`rails g scenic:view analytics_fact_*`
-
-`rails generate migration CreateFactPosts --database analytics`
-
 ## TODO:
 
 * Create a view model with relations
 * Fix multi-tenancy
 * Set up a refresh job - rake file to trigger views in order?
+
+Note: Currently scenic doesn't support creating migrations & views inside the engine.
+Views can be run by migrations only from /db/views in the main app.
+There is an open pull request for this: https://github.com/scenic-views/scenic/pull/357
 
 
