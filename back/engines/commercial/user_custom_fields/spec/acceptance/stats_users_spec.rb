@@ -537,7 +537,7 @@ resource 'Stats - Users' do
         describe 'when the custom field has a reference distribution' do
           before do
             create(:ref_distribution, custom_field: @custom_field, distribution: {
-              @option1.id => 30, @option2.id => 20, @option3.id => 50
+              @option1.id => 80, @option3.id => 20
             })
           end
 
@@ -546,9 +546,9 @@ resource 'Stats - Users' do
             let(:expected_worksheet_values) do
               [
                 %w[option option_id users expected_users reference_population],
-                ['youth council', @option1.key, 1, 0.6, 30],
-                ['youth council', @option2.key, 1, 0.4, 20],
-                ['youth council', @option3.key, 0, 1.0, 50],
+                ['youth council', @option1.key, 1, 0.8, 80],
+                ['youth council', @option2.key, 1, '', ''],
+                ['youth council', @option3.key, 0, 0.2, 20],
                 ['_blank', '_blank', 1, '', '']
               ]
             end

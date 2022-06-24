@@ -91,8 +91,10 @@ module UserCustomFields
         def expected_user_counts
           @expected_user_counts ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
-              nb_users_with_response = user_counts.values.sum - user_counts['_blank']
-              expected_counts = ref_distribution.expected_counts(nb_users_with_response)
+              # user counts for toggled off options are not used to calculate expected user counts
+              toggled_on_option_keys = ref_distribution.distribution_by_option_id.keys
+              nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
+              expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
 
               option_id_to_key = custom_field.options.to_h { |option| [option.id, option.key] }
               expected_counts.transform_keys { |option_id| option_id_to_key.fetch(option_id) }
