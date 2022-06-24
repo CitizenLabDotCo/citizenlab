@@ -85,7 +85,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
           }
         }
       },
-    [currentPhase, project]
+    [currentPhase, project, pathname]
   );
 
   if (isNilOrError(project)) {
