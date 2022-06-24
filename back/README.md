@@ -2,9 +2,9 @@
  
 # Getting started
 
-First you have the latest docker and docker-compose installed.
+First, you need the latest docker and docker-compose installed.
 
-Build the docker compose images
+Build the docker compose images 
 ```
 docker-compose up --build -d
 ```
