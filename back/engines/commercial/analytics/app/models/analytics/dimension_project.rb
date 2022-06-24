@@ -7,6 +7,7 @@
 #
 module Analytics
   class DimensionProject < Analytics::ApplicationRecord
-
+    self.primary_key = :id
+    has_many :fact_activity, class_name: "FactActivity"
   end
 end
