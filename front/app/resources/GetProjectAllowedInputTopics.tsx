@@ -1,12 +1,6 @@
 import React from 'react';
-
-// hooks
-import {
-  createSubscription,
-  IProjectAllowedInputTopicsState,
-} from 'hooks/useProjectAllowedInputTopics';
-
-// typings
+import { IProjectAllowedInputTopicsState } from 'hooks/useProjectAllowedInputTopics';
+import { listProjectAllowedInputTopics } from 'services/projectAllowedInputTopics';
 import { Subscription } from 'rxjs';
 
 interface State {
@@ -42,10 +36,13 @@ export default class GetProjectAllowedInputTopics extends React.Component<
   }
 
   setSubscription() {
-    this.subscription = createSubscription(
-      this.props.projectId,
-      this.setProjectAllowedInputTopics.bind(this)
-    );
+    this.subscription = listProjectAllowedInputTopics(
+      this.props.projectId
+    ).observable.subscribe((projectAllowedInputTopicsResponse) => {
+      this.setState({
+        projectAllowedInputTopics: projectAllowedInputTopicsResponse.data,
+      });
+    });
   }
 
   componentDidMount() {

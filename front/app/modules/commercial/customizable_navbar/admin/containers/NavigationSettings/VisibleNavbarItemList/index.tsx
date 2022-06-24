@@ -84,21 +84,23 @@ const VisibleNavbarItemList = ({
       >
         {({ lockedItemsList, itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {lockedItemsList.map((navbarItem: INavbarItem, i: number) => (
-              <LockedRow
-                key={navbarItem.id}
-                isLastItem={i === itemsList.length - 1}
-                data-testid="locked-row"
-              >
-                <NavbarItemRow
-                  title={navbarItem.attributes.title_multiloc}
-                  isDefaultPage={navbarItem.attributes.code !== 'custom'}
-                  showEditButton={navbarItem.attributes.code !== 'home'}
-                  viewButtonLink={getViewButtonLink(navbarItem)}
-                  onClickEditButton={handleClickEdit(navbarItem)}
-                />
-              </LockedRow>
-            ))}
+            {lockedItemsList
+              ? lockedItemsList.map((navbarItem: INavbarItem, i: number) => (
+                  <LockedRow
+                    key={navbarItem.id}
+                    isLastItem={i === itemsList.length - 1}
+                    data-testid="locked-row"
+                  >
+                    <NavbarItemRow
+                      title={navbarItem.attributes.title_multiloc}
+                      isDefaultPage={navbarItem.attributes.code !== 'custom'}
+                      showEditButton={navbarItem.attributes.code !== 'home'}
+                      viewButtonLink={getViewButtonLink(navbarItem)}
+                      onClickEditButton={handleClickEdit(navbarItem)}
+                    />
+                  </LockedRow>
+                ))
+              : null}
 
             {itemsList.map((navbarItem: INavbarItem, i: number) => (
               <SortableRow
