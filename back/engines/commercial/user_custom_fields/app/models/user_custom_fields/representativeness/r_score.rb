@@ -23,8 +23,6 @@ class UserCustomFields::Representativeness::RScore
     # @return [UserCustomFields::Representativeness::RScore]
     def compute(user_counts, ref_distribution)
       population_counts = ref_distribution.distribution
-      check_user_counts_options!(user_counts, ref_distribution)
-
       score_value = compute_scores(user_counts, population_counts)[:min_max_p_ratio]
       new(score_value, user_counts, ref_distribution)
     end
@@ -87,17 +85,6 @@ class UserCustomFields::Representativeness::RScore
     def normalize(counts)
       total = counts.values.sum
       counts.transform_values { |count| count.to_f / total }
-    end
-
-    def check_user_counts_options!(user_counts, ref_distribution)
-      known_options = ref_distribution.distribution.keys + [UserCustomFields::FieldValueCounter::UNKNOWN_VALUE_LABEL]
-      unknown_options = user_counts.keys - known_options
-      return if unknown_options.blank?
-
-      raise ArgumentError, <<~MSG.squish
-        'user_counts' contains unknown options that are not specified in 'ref_distribution'.
-        Unknown options: #{unknown_options.map(&:inspect).join(', ')}.
-      MSG
     end
   end
 end

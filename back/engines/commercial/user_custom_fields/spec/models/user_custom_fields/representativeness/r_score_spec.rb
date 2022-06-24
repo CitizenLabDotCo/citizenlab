@@ -26,12 +26,6 @@ RSpec.describe UserCustomFields::Representativeness::RScore do
     it 'creates an RScore that holds a reference to the user counts' do
       expect(r_score.user_counts).to eq(user_counts)
     end
-
-    context 'when user counts options are not a subset of the population counts options' do
-      let(:user_counts) { ref_distribution.distribution.merge(unknown_option: 123) }
-
-      it { expect { r_score }.to raise_error(ArgumentError) }
-    end
   end
 
   describe 'scoring methods' do
