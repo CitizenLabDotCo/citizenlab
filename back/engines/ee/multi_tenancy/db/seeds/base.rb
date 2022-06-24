@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MultiTenancy
   module Seeds
     # Base class for seeding classes that seed specific records.
