@@ -2,7 +2,7 @@ Analytics::Engine.routes.draw do
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
       scope '/analytics' do
-        resources :dates, :posts, :activities
+        resources :posts, :participations
       end
     end
   end

@@ -8,14 +8,17 @@ module Analytics
 
       # GET /posts
       def index
-
-        posts = Rails.configuration.database_configuration
-
-        # TODO: Try and set the schema search path in db config as a better local dev option
-        # Hasn't seemed to work
-        # posts = ActiveRecord::Base.connection.current_database
-        posts = FactPost.where(feedback_none: 0)
-        render json: posts
+        posts = FactPost.includes(:type, :project, :created_date)
+        posts = posts.where(:type => {name: params[:type]}) if params[:type].present?
+        posts = posts.where(:project => {id: params[:project]}) if params[:project].present?
+        if params[:date].present?
+          dates = params[:date].split(':')
+          from = Date.parse(dates[0])
+          to = Date.parse(dates[1])
+          posts = posts.where(:created_date => {date: from..to})
+        end
+        
+        render json: posts, include: [:type, :project, :created_date]
       end
 
     end

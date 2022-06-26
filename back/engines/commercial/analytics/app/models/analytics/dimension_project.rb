@@ -8,6 +8,7 @@
 module Analytics
   class DimensionProject < Analytics::ApplicationRecord
     self.primary_key = :id
-    has_many :fact_activity, class_name: "FactActivity"
+    has_many :posts, class_name: "PostActivity"
+    has_many :participations, class_name: "ParticipationActivity"
   end
 end
