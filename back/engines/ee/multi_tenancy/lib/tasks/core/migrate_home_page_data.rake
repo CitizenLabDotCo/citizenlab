@@ -33,7 +33,8 @@ namespace :fix_existing_tenants do
         begin
           home_page = HomePage.first || HomePage.new
 
-          if settings['events_widget'] && settings['events_widget']['enabled']
+          # We need to check for not nil, as present? will return true if value is false
+          if settings['events_widget'] && !settings['events_widget']['enabled'].nil?
             home_page.events_widget = settings['events_widget']['enabled']
           end
 
@@ -41,7 +42,8 @@ namespace :fix_existing_tenants do
             home_page.projects_header_multiloc = settings['core']['currently_working_on_text']
           end
 
-          if settings['core']['display_header_avatars']
+          # We need to check for not nil, as present? will return true if value is false
+          unless settings['core']['display_header_avatars'].nil?
             home_page.banner_avatars_enabled = settings['core']['display_header_avatars']
           end
 
@@ -67,7 +69,8 @@ namespace :fix_existing_tenants do
 
           if settings['customizable_homepage_banner']
             banner = settings['customizable_homepage_banner']
-            home_page.customizable_homepage_banner = banner['enabled'] if banner['enabled']
+            # We need to check for not nil, as present? will return true if value is false
+            home_page.customizable_homepage_banner = banner['enabled'] unless banner['enabled'].nil?
             home_page.banner_layout = banner['layout'] if banner['layout']
             home_page.cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
