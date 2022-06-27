@@ -155,6 +155,14 @@ describe('getStatus', () => {
     expect(getStatus(formValues, referenceDistribution, touched)).toBe('saved');
   });
 
+  it("returns 'saved' if user just deleted data", () => {
+    const formValues = {};
+    const referenceDistribution = null;
+    const touched = false;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBe('saved');
+  });
+
   it("returns 'complete' if local and remote data are identical (touched)", () => {
     const formValues: FormValues = {
       id123: 1000,
@@ -280,6 +288,14 @@ describe('getStatus', () => {
     });
 
     const touched = true;
+
+    expect(getStatus(formValues, referenceDistribution, touched)).toBeNull();
+  });
+
+  it('returns null if remote data is empty but locally not all values are disabled', () => {
+    const formValues: FormValues = { id1: null };
+    const referenceDistribution = null;
+    const touched = false;
 
     expect(getStatus(formValues, referenceDistribution, touched)).toBeNull();
   });

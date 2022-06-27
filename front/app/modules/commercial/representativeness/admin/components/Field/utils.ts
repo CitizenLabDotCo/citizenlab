@@ -173,6 +173,7 @@ const isSaved = (
   if (touched) return false;
 
   if (isNilOrError(referenceDistribution)) {
+    if (areAllOptionsDisabled(formValues)) return true;
     return false;
   }
 
