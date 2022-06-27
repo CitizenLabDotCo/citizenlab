@@ -110,7 +110,8 @@ Rails.application.configure do
 
   # rubocop:disable Rails/Output
   console do
-    Object.include ConsoleMethods
+    # We use Pry as our Rails console (see https://github.com/pry/pry-rails), so:
+    TOPLEVEL_BINDING.eval('self').extend(ConsoleMethods)
     puts
     puts 'Available methods:'
     puts '  `switch(tenant_name)`: switch to given tenant.'
