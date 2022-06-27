@@ -114,7 +114,7 @@ export const appGraphqlLocalePairs = {
   roRo: 'ro-RO',
   srLatn: 'sr-Latn',
   srSp: 'sr-SP',
-  svSE: 'svSE',
+  svSE: 'sv-SE',
 };
 
 export const shortenedAppLocalePairs = {
