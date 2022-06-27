@@ -10,4 +10,19 @@ export default defineMessages({
     defaultMessage:
       '{projectFolderName} | from the participation platform of {orgName}',
   },
+  facebookMessage: {
+    id: 'app.modules.project_folder.citizen.components.ProjectFolderSharingModal.facebookMessage',
+    defaultMessage:
+      '{projectFolderName} | from the participation platform of {orgName}',
+  },
+  emailSharingSubject: {
+    id: 'app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingSubject',
+    defaultMessage:
+      '{projectFolderName} | from the participation platform of {orgName}',
+  },
+  emailSharingBody: {
+    id: 'app.modules.project_folder.citizen.components.ProjectFolderSharingModal.emailSharingBody',
+    defaultMessage:
+      'View the projects at {folderUrl} to make your voice heard!',
+  },
 });
