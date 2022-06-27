@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import {
   usersByRegFieldStream,
   usersByGenderStream,
-  usersByDomicileStream,
+  // usersByDomicileStream,
   TStreamResponse,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
@@ -59,14 +59,14 @@ const getSubscription = (
     return subscription;
   }
 
-  if (code === 'domicile') {
-    const observable = usersByDomicileStream({
-      queryParameters: { project: projectId },
-    }).observable;
+  // if (code === 'domicile') {
+  //   const observable = usersByDomicileStream({
+  //     queryParameters: { project: projectId },
+  //   }).observable;
 
-    const subscription = observable.subscribe(handleStreamResponse);
-    return subscription;
-  }
+  //   const subscription = observable.subscribe(handleStreamResponse);
+  //   return subscription;
+  // }
 
   const observable = usersByRegFieldStream(
     { queryParameters: { project: projectId } },
@@ -142,8 +142,9 @@ export const toReferenceData = (
 ): RepresentativenessRowMultiloc[] => {
   const { users, expected_users } = usersByField.series;
 
-  const options =
-    'options' in usersByField ? usersByField.options : usersByField.areas;
+  // const options =
+  //   'options' in usersByField ? usersByField.options : usersByField.areas;
+  const options = usersByField.options;
 
   const optionIds = Object.keys(expected_users);
 
