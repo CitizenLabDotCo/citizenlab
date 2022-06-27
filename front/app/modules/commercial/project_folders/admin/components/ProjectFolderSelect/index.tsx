@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
 
@@ -12,12 +12,16 @@ import { IUpdatedProjectProperties } from 'services/projects';
 import { userModeratesFolder } from 'modules/commercial/project_folders/permissions/roles';
 
 // components
-import { Radio, Select, IconTooltip } from '@citizenlab/cl2-component-library';
+import {
+  Radio,
+  Select,
+  IconTooltip,
+  Error,
+} from '@citizenlab/cl2-component-library';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isNil } from 'utils/helperUtils';
 
 // typings
 import { IOption } from 'typings';
@@ -53,7 +57,7 @@ const ProjectFolderSelect = ({
 
   const authUser = useAuthUser();
 
-  const userIsProjectFolderModeratorNotAdmin = usePermission({
+  const userCanCreateProjectInFolderOnly = usePermission({
     item: {
       type: 'project_folder',
       context: { folder: 'folder', user: authUser },
@@ -62,28 +66,42 @@ const ProjectFolderSelect = ({
   });
 
   const localize = useLocalize();
-  const [radioFolderSelect, setRadioFolderSelect] = useState(
-    getInitialRadioFolderSelect(userIsProjectFolderModeratorNotAdmin, folder_id)
+  const [radioFolderSelect, setRadioFolderSelect] = useState<boolean | null>(
+    null
   );
-
-  function getInitialRadioFolderSelect(
-    userIsProjectFolderModeratorNotAdmin: boolean,
-    folder_id?: string
-  ) {
-    if (userIsProjectFolderModeratorNotAdmin) {
-      // folder moderators always need to pick a folder
-      // when they create a project
-      return true;
-    } else if (folder_id) {
-      // when we already have a folder_id for our project,
-      // the project folder select should be turned on
-      // so we can see our selected folder.
-      return true;
-    } else {
-      return false;
-    }
-  }
   const [folderSelected, setFolderSelected] = useState(false);
+
+  useEffect(() => {
+    function getInitialRadioFolderSelect(
+      userCanCreateProjectInFolderOnly: boolean,
+      folder_id?: string
+    ) {
+      if (userCanCreateProjectInFolderOnly) {
+        // folder moderators always need to pick a folder
+        // when they create a project
+        return true;
+      } else if (folder_id) {
+        // when we already have a folder_id for our project,
+        // the project folder select should be turned on
+        // so we can see our selected folder.
+        return true;
+      } else {
+        return false;
+      }
+    }
+    if (isNil(radioFolderSelect) && !isNilOrError(authUser)) {
+      setRadioFolderSelect(
+        getInitialRadioFolderSelect(userCanCreateProjectInFolderOnly, folder_id)
+      );
+    }
+  }, [
+    radioFolderSelect,
+    userCanCreateProjectInFolderOnly,
+    folder_id,
+    authUser,
+  ]);
+
+  console.log(radioFolderSelect);
 
   if (isNilOrError(authUser)) {
     return null;
@@ -105,8 +123,6 @@ const ProjectFolderSelect = ({
           }),
       ]
     : [];
-
-  console.log(folderOptions);
 
   const handleSelectFolderChange = ({ value: folderId }) => {
     if (typeof folderId === 'string') {
@@ -150,7 +166,7 @@ const ProjectFolderSelect = ({
           <IconTooltip
             content={
               <FormattedMessage
-                {...(userIsProjectFolderModeratorNotAdmin
+                {...(userCanCreateProjectInFolderOnly
                   ? messages.folderAdminProjectFolderSelectTooltip
                   : messages.adminProjectFolderSelectTooltip)}
               />
@@ -164,7 +180,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-no"
           label={<FormattedMessage {...messages.optionNo} />}
-          disabled={userIsProjectFolderModeratorNotAdmin}
+          disabled={userCanCreateProjectInFolderOnly}
         />
         <Radio
           onChange={onRadioFolderSelectChange}
@@ -173,7 +189,7 @@ const ProjectFolderSelect = ({
           name="folderSelect"
           id="folderSelect-yes"
           label={<FormattedMessage {...messages.optionYes} />}
-          disabled={userIsProjectFolderModeratorNotAdmin}
+          disabled={userCanCreateProjectInFolderOnly}
         />
         {radioFolderSelect && (
           <Select
