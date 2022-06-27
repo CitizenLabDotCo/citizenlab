@@ -39,13 +39,13 @@ RSpec.describe HomePage, type: :model do
     end
   end
 
-  describe 'image uploads' do
-    subject(:home_page) { build(:home_page) }
+  # describe 'image uploads' do
+  #   subject(:home_page) { build(:home_page) }
 
-    it 'stores a header background image' do
-      home_page.header_bg = File.open(Rails.root.join('spec/fixtures/header.jpg'))
-      home_page.save!
-      expect(home_page.header_bg.url).to be_present
-    end
-  end
+  #   it 'stores a header background image' do
+  #     home_page.header_bg = File.open(Rails.root.join('spec/fixtures/header.jpg'))
+  #     home_page.save!
+  #     expect(home_page.header_bg.url).to be_present
+  #   end
+  # end
 end
