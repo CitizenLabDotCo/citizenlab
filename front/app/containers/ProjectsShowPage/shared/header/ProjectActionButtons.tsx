@@ -52,8 +52,7 @@ const ProjectActionButtons = memo<Props>(({ projectId, className }) => {
   const project = useProject({ projectId });
   const phases = usePhases(projectId);
   const [currentPhase, setCurrentPhase] = useState<IPhaseData | null>(null);
-  const divId = clHistory.location.hash;
-  const { pathname } = useLocation();
+  const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
     setCurrentPhase(getCurrentPhase(phases) || getLastPhase(phases));
