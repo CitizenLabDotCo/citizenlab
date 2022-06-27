@@ -11,7 +11,7 @@ import {
 // utils
 import { pick, zipObject } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
-import { sum, percentage, roundPercentages } from 'utils/math';
+import { sum, roundPercentage, roundPercentages } from 'utils/math';
 
 // typings
 import {
@@ -26,6 +26,7 @@ interface RepresentativenessRowBase {
   actualNumber: number;
   referenceNumber: number;
 }
+
 export interface RepresentativenessRow extends RepresentativenessRowBase {
   name: string;
 }
@@ -36,6 +37,12 @@ export interface RepresentativenessRowMultiloc
 }
 
 export type RepresentativenessData = RepresentativenessRow[];
+
+export interface IncludedUsers {
+  known: number;
+  total: number;
+  percentage: number;
+}
 
 const getSubscription = (
   code: TCustomFieldCode | null,
@@ -77,8 +84,8 @@ function useReferenceData(
   const [referenceData, setReferenceData] = useState<
     RepresentativenessRowMultiloc[] | NilOrError
   >();
-  const [includedUserPercentage, setIncludedUserPercentage] = useState<
-    number | NilOrError
+  const [includedUsers, setIncludedUsers] = useState<
+    IncludedUsers | NilOrError
   >();
   const [referenceDataUploaded, setReferenceDataUploaded] = useState<
     boolean | undefined
@@ -91,7 +98,7 @@ function useReferenceData(
     const handleStreamResponse = (usersByField: TStreamResponse) => {
       if (isNilOrError(usersByField)) {
         setReferenceData(usersByField);
-        setIncludedUserPercentage(usersByField);
+        setIncludedUsers(usersByField);
         return;
       }
 
@@ -101,9 +108,9 @@ function useReferenceData(
       }
 
       const referenceData = toReferenceData(usersByField);
-      const includedUsersPercentage = getIncludedUserPercentage(usersByField);
+      const includedUsers = getIncludedUsers(usersByField);
       setReferenceData(referenceData);
-      setIncludedUserPercentage(includedUsersPercentage);
+      setIncludedUsers(includedUsers);
       setReferenceDataUploaded(true);
     };
 
@@ -123,7 +130,7 @@ function useReferenceData(
 
   return {
     referenceData,
-    includedUserPercentage,
+    includedUsers,
     referenceDataUploaded,
   };
 }
@@ -167,9 +174,9 @@ export const toReferenceData = (
   return data;
 };
 
-export const getIncludedUserPercentage = (
+export const getIncludedUsers = (
   usersByField: TStreamResponse
-): number => {
+): IncludedUsers => {
   const { users, expected_users } = usersByField.series;
   const includedUsers = pick(users, [...Object.keys(expected_users), '_blank']);
 
@@ -178,8 +185,11 @@ export const getIncludedUserPercentage = (
     .reduce((acc, v) => users[v] + acc, 0);
 
   const total = sum(Object.values(includedUsers));
+  const percentage = total === 0 ? 0 : roundPercentage(known, total);
 
-  if (total === 0) return 0;
-
-  return percentage(known, total);
+  return {
+    known,
+    total,
+    percentage,
+  };
 };

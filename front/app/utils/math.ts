@@ -1,6 +1,6 @@
 export const sum = (values: number[]) => values.reduce((acc, v) => v + acc, 0);
 
-export const percentage = (num: number, denom: number) =>
+export const roundPercentage = (num: number, denom: number) =>
   Math.round((num / denom) * 100);
 
 // See https://stackoverflow.com/a/13483710

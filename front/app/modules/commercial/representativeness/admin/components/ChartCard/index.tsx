@@ -63,7 +63,7 @@ const ChartCard = ({
   projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const { referenceData, includedUserPercentage, referenceDataUploaded } =
+  const { referenceData, includedUsers, referenceDataUploaded } =
     useReferenceData(userCustomField, projectFilter);
 
   const currentChartRef = useRef<SVGElement>();
@@ -95,7 +95,7 @@ const ChartCard = ({
 
   if (
     isNilOrError(referenceData) ||
-    isNilOrError(includedUserPercentage) ||
+    isNilOrError(includedUsers) ||
     referenceDataUploaded === undefined ||
     viewState === undefined
   ) {
@@ -152,7 +152,7 @@ const ChartCard = ({
           title={title}
           data={data}
           legendLabels={legendLabels}
-          includedUserPercentage={includedUserPercentage}
+          includedUsers={includedUsers}
           fieldIsRequired={fieldIsRequired}
           projectFilter={projectFilter}
           xlsxEndpoint={xlsxEndpoint}
@@ -160,7 +160,7 @@ const ChartCard = ({
       )}
       <Footer
         fieldIsRequired={fieldIsRequired}
-        includedUserPercentage={includedUserPercentage}
+        includedUsers={includedUsers}
         hideTicks={hideTicks}
         dataIsTooLong={dataIsTooLong}
         numberOfHiddenItems={numberOfHiddenItems}

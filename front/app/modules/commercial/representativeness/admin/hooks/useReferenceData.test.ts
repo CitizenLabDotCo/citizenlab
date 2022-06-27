@@ -1,6 +1,6 @@
 import {
   toReferenceData,
-  getIncludedUserPercentage,
+  getIncludedUsers,
   RepresentativenessRowMultiloc,
 } from './useReferenceData';
 import { TStreamResponse } from 'modules/commercial/user_custom_fields/services/stats';
@@ -201,7 +201,7 @@ describe('toReferenceData', () => {
   });
 });
 
-describe('getIncludedUserPercentage', () => {
+describe('getIncludedUsers', () => {
   it('works', () => {
     const usersByField: any = {
       series: {
@@ -217,7 +217,13 @@ describe('getIncludedUserPercentage', () => {
       },
     };
 
-    expect(getIncludedUserPercentage(usersByField)).toBe(50);
+    const expectedOutput = {
+      known: 400,
+      total: 800,
+      percentage: 50,
+    };
+
+    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
   it('works if not all keys in users are in expected_users', () => {
@@ -236,7 +242,13 @@ describe('getIncludedUserPercentage', () => {
       },
     };
 
-    expect(getIncludedUserPercentage(usersByField)).toBe(50);
+    const expectedOutput = {
+      known: 400,
+      total: 800,
+      percentage: 50,
+    };
+
+    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
   it('returns 0 if all relevant keys are 0', () => {
@@ -255,7 +267,13 @@ describe('getIncludedUserPercentage', () => {
       },
     };
 
-    expect(getIncludedUserPercentage(usersByField)).toBe(0);
+    const expectedOutput = {
+      known: 0,
+      total: 400,
+      percentage: 0,
+    };
+
+    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
   it('returns 0 if all relevant keys (including _blank) are 0', () => {
@@ -274,6 +292,12 @@ describe('getIncludedUserPercentage', () => {
       },
     };
 
-    expect(getIncludedUserPercentage(usersByField)).toBe(0);
+    const expectedOutput = {
+      known: 0,
+      total: 0,
+      percentage: 0,
+    };
+
+    expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 });
