@@ -8,7 +8,9 @@ describe AppConfiguration, slow_test: true do
       described_class.first.destroy!
 
       load Rails.root.join('db', 'seeds.rb')
+
       expect(described_class.count).to be(1)
+      expect(HomePage.count).to be(1)
 
       expect(User.admin.count).to be > 0
       expect(StaticPage.count).to be > 3

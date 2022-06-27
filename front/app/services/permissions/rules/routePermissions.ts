@@ -21,6 +21,7 @@ export const MODERATOR_ROUTES = [
   '/admin/dashboard',
   '/admin/moderation',
   '/admin/insights',
+  '/admin/content-builder',
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {

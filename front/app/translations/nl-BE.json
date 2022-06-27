@@ -1130,7 +1130,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Om te kunnen deelnemen aan deze enquête moet je je identiteit verifiëren. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "De enquête is niet langer beschikbaar, omdat het project niet langer actief is.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Verifieer nu je identiteit.",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# zoekresultaten zijn geladen} one {# zoekresultaat is geladen} other {# zoekresultaten zijn geladen}}.",
   "app.containers.SearchInput.removeSearchTerm": "Zoekterm verwijderen",
   "app.containers.SearchInput.searchAriaLabel": "Zoeken",
   "app.containers.SearchInput.searchLabel": "Zoeken",
