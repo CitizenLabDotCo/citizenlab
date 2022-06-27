@@ -234,16 +234,4 @@ describe ContentBuilder::LayoutImageService do
       expect(output).to eq({ 'fr-BE' => expected_json })
     end
   end
-
-  describe 'image_elements' do
-    it 'can deal with different combinations of hash structures' do
-      content = {
-        'elt1' => 'string element',
-        'elt2' => { 'type' => 'div', 'props' => 'elt2-props' },
-        'elt3' => { 'type' => { 'resolvedName' => 'Image' }, 'props' => 'elt3-props' }
-      }
-      images = service.send :image_elements, content
-      expect(images).to eq ['elt3-props']
-    end
-  end
 end
