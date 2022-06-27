@@ -406,6 +406,10 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ imageFile });
   };
 
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
     const descriptionMultiloc = {
@@ -487,6 +491,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 onImageFileChange={this.onImageFileChange}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onTagsChange={this.onTagsChange}
               />
 
               <ButtonBarContainer>

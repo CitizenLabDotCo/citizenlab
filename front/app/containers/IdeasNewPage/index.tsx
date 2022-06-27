@@ -331,6 +331,10 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     });
   };
 
+  onTagsChange = (selectedTopics: string[]) => {
+    this.globalState.set({ selectedTopics });
+  };
+
   onImageFileChange = (imageFile: UploadFile[]) => {
     this.globalState.set({
       imageFile,
@@ -358,6 +362,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               onTitleChange={this.onTitleChange}
               onDescriptionChange={this.onDescriptionChange}
               onImageFileChange={this.onImageFileChange}
+              onTagsChange={this.onTagsChange}
             />
           </PageContainer>
           <ButtonBarContainer>

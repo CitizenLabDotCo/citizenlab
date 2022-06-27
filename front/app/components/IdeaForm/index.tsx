@@ -126,6 +126,7 @@ interface InputProps {
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
   onImageFileChange: (imageFile: UploadFile[]) => void;
+  onTagsChange: (selectedTopics: string[]) => void;
   authorId: string | null;
 }
 
@@ -322,6 +323,7 @@ class IdeaForm extends PureComponent<
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
     this.setState({ selectedTopics });
+    this.props.onTagsChange(selectedTopics);
   };
 
   handleLocationOnChange = (address: string) => {

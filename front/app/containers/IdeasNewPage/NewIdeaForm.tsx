@@ -72,6 +72,7 @@ interface InputProps {
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
   onImageFileChange: (imageFile: UploadFile[]) => void;
+  onTagsChange: (selectedTopics: string[]) => void;
 }
 
 interface DataProps {
@@ -218,6 +219,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       onTitleChange,
       onDescriptionChange,
       onImageFileChange,
+      onTagsChange,
     } = this.props;
 
     if (!isNilOrError(project)) {
@@ -258,6 +260,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             onTitleChange={onTitleChange}
             onDescriptionChange={onDescriptionChange}
             onImageFileChange={onImageFileChange}
+            onTagsChange={onTagsChange}
           />
         </Container>
       );
