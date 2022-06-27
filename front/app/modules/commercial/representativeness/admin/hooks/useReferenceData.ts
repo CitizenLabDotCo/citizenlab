@@ -9,7 +9,7 @@ import {
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
-import { pick } from 'lodash-es';
+import { pick, zipObject } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { sum, percentage, roundPercentages } from 'utils/math';
 
@@ -149,8 +149,8 @@ export const toReferenceData = (
     1
   );
 
-  const actualPercentagesObj = zip(optionIds, actualPercentages);
-  const referencePercentagesObj = zip(optionIds, referencePercentages);
+  const actualPercentagesObj = zipObject(optionIds, actualPercentages);
+  const referencePercentagesObj = zipObject(optionIds, referencePercentages);
 
   const sortedOptionIds = [...optionIds].sort(
     (a, b) => options[a].ordering - options[b].ordering
@@ -166,15 +166,6 @@ export const toReferenceData = (
 
   return data;
 };
-
-const zip = (keys: string[], values: number[]) =>
-  keys.reduce(
-    (acc, key, i) => ({
-      ...acc,
-      [key]: values[i],
-    }),
-    {}
-  );
 
 export const getIncludedUserPercentage = (
   usersByField: TStreamResponse
