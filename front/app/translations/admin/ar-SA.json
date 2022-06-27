@@ -566,7 +566,6 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} لتسجيل المستخدمين",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "إظهار {numberOfHiddenItems} أخرى",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "اختياري",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{percentage} مستخدمين مضافين",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "يرجى توفير مجموعة بيانات أساسية.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "مجموع درجات الطابع التمثيلي:",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "يعكس مجموع الدرجات هذا إلى أي مدى من الدقة تشير بيانات مستخدمي المنصة إلى إجمالي المجتمع الإحصائي. اعرف المزيد عن {representativenessArticleLink}.",

@@ -566,7 +566,6 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} for user registration",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "Show {numberOfHiddenItems} more",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Optional",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{percentage} of users included",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "Please provide a base dataset.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Representativeness score:",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "This score reflects how accurately platform user data reflects the total population. Learn more about {representativenessArticleLink}.",

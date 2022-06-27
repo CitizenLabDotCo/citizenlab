@@ -566,7 +566,6 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} for brugerregistrering",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "Vis {numberOfHiddenItems} mere",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Valgfrit",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{Procentdel} af brugere inkluderet",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "Angiv venligst et basisdatasæt.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Repræsentativitetsscore:",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "Denne score afspejler, hvor nøjagtigt platformens brugerdata afspejler den samlede befolkning. Få mere at vide om {repræsentativitetArtikelLink}.",

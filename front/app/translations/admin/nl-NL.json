@@ -566,7 +566,6 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} voor gebruikerregistratie",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "Toon {numberOfHiddenItems} meer",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Optioneel",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{percentage} van gebruikers inbegrepen",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "Geef een basisdataset op.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Representativiteitsscore:",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "Deze score geeft weer hoe nauwkeurig de gebruikersgegevens van het platform de totale populatie weerspiegelen. Meer informatie over {representativenessArticleLink}.",

@@ -566,7 +566,6 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} za registraciju korisnika",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "Prikaži još {numberOfHiddenItems}",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Opcionalno",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{percentage} obuhvaćenih korisnika",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "Navedite osnovni skup podataka.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Rezultat reprezentativnosti:",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "Ovaj rezultat prikazuje koliko tačno podaci o korisnicima na platformi odražavaju ukupnu populaciju. Saznajte više o tome na {representativenessArticleLink}.",

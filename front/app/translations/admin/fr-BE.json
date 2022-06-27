@@ -566,7 +566,6 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} pour l'enregistrement de l'utilisateur",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "Afficher {numberOfHiddenItems} plus",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Optionnel",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded": "{percentage} des utilisateurs inclus",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "Veuillez fournir un ensemble de données de base.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreText": "Score de représentativité :",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.representativenessScoreTooltipText3": "Ce score reflète la précision avec laquelle les données des utilisateurs de la plateforme reflètent la population totale. En savoir plus sur {representativenessArticleLink}.",
