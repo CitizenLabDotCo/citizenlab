@@ -149,12 +149,10 @@ describe('toReferenceData', () => {
     expect(toReferenceData(usersByField)).toEqual(expectedOutput);
   });
 
-  it('actual numbers fall back to zero if all relevant user data entries are zero', () => {
+  it('actual numbers fall back to zero if all relevant user data entries are zero (i.e. missing)', () => {
     const usersByField: TStreamResponse = {
       series: {
         users: {
-          id123: 0,
-          id456: 0,
           id789: 200,
           id000: 300,
         },

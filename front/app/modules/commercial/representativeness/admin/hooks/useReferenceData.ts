@@ -9,7 +9,7 @@ import {
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
-import { pick, zipObject } from 'lodash-es';
+import { zipObject } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import { sum, roundPercentage, roundPercentages } from 'utils/math';
 
@@ -142,16 +142,14 @@ export const toReferenceData = (
 ): RepresentativenessRowMultiloc[] => {
   const { users, reference_population } = usersByField.series;
 
+  const optionIds = Object.keys(reference_population);
+  const includedUsers = syncKeys(users, optionIds);
+
   // const options =
   //   'options' in usersByField ? usersByField.options : usersByField.areas;
   const options = usersByField.options;
 
-  const optionIds = Object.keys(reference_population);
-
-  const actualPercentages = roundPercentages(
-    Object.values(pick(users, optionIds)),
-    1
-  );
+  const actualPercentages = roundPercentages(Object.values(includedUsers), 1);
   const referencePercentages = roundPercentages(
     Object.values(reference_population),
     1
@@ -168,18 +166,29 @@ export const toReferenceData = (
     title_multiloc: options[optionId].title_multiloc,
     actualPercentage: actualPercentagesObj[optionId],
     referencePercentage: referencePercentagesObj[optionId],
-    actualNumber: users[optionId],
+    actualNumber: includedUsers[optionId],
     referenceNumber: reference_population[optionId],
   }));
 
   return data;
 };
 
+// Makes sure that users has the same keys as reference_population
+const syncKeys = (users: Record<string, number>, keys: string[]) => {
+  const fixedUsers = {};
+
+  keys.forEach((key) => {
+    fixedUsers[key] = users[key] ?? 0;
+  });
+
+  return fixedUsers;
+};
+
 export const getIncludedUsers = (
   usersByField: TStreamResponse
 ): IncludedUsers => {
   const { users, reference_population } = usersByField.series;
-  const includedUsers = pick(users, [
+  const includedUsers = syncKeys(users, [
     ...Object.keys(reference_population),
     '_blank',
   ]);
