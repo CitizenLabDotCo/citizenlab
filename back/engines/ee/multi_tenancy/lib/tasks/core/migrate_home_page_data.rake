@@ -33,19 +33,13 @@ namespace :fix_existing_tenants do
         begin
           home_page = HomePage.first || HomePage.new
 
-          # We need to check for not nil, as present? will return false if value is present but false
-          if settings['events_widget'] && !settings['events_widget']['enabled'].nil?
-            home_page.events_widget = settings['events_widget']['enabled']
-          end
+          home_page.events_widget = settings['events_widget']['enabled']
 
           if settings['core']['currently_working_on_text']
             home_page.projects_header_multiloc = settings['core']['currently_working_on_text']
           end
 
-          # We need to check for not nil, as present? will return false if value is present but false
-          unless settings['core']['display_header_avatars'].nil?
-            home_page.banner_avatars_enabled = settings['core']['display_header_avatars']
-          end
+          home_page.banner_avatars_enabled = settings['core']['display_header_avatars']
 
           if settings['core']['custom_onboarding_fallback_message']
             home_page.banner_signed_in_header_multiloc = settings['core']['custom_onboarding_fallback_message']
@@ -69,8 +63,7 @@ namespace :fix_existing_tenants do
 
           if settings['customizable_homepage_banner']
             banner = settings['customizable_homepage_banner']
-            # We need to check for not nil, as present? will return false if value is present but false
-            home_page.customizable_homepage_banner = banner['enabled'] unless banner['enabled'].nil?
+            home_page.customizable_homepage_banner = banner['enabled']
             home_page.banner_layout = banner['layout'] if banner['layout']
             home_page.cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
