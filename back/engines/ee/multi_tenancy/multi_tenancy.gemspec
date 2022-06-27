@@ -9,7 +9,7 @@ require 'multi_tenancy/version'
 Gem::Specification.new do |spec|
   spec.name        = 'multi_tenancy'
   spec.version     = MultiTenancy::VERSION
-  spec.required_ruby_version = '>= 2.7.5'
+  spec.required_ruby_version = '>= 2.7.6'
   spec.authors     = ['Adrien Dessy']
   spec.licenses    = ['CitizenLab Commercial License V1']
   spec.email       = ['adrien@citizenlab.co']
