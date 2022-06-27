@@ -3,10 +3,10 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Representativeness scores' do
+resource 'R-scores (Representativeness scores)' do
   header 'Content-Type', 'application/json'
 
-  get 'web_api/v1/users/custom_fields/:custom_field_id/representativeness' do
+  get 'web_api/v1/users/custom_fields/:custom_field_id/rscore' do
     parameter :project, <<-DESC, required: false
           Project ID. Only participants of this project will be considered to compute the score.
     DESC
