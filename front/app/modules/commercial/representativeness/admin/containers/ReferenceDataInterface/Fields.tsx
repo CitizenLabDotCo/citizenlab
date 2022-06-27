@@ -9,28 +9,29 @@ import Field from '../../components/Field';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
-
-// TODO remove this when implemented
-const noDomicile = (userCustomField: IUserCustomFieldData) =>
-  userCustomField.attributes.code !== 'domicile';
+import { isShown, isSupported } from '../Dashboard/utils';
 
 const Fields = () => {
-  const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
+  const userCustomFields = useUserCustomFields({
+    inputTypes: ['select', 'number'],
+  });
   if (isNilOrError(userCustomFields)) return null;
 
   return (
     <Box mt="32px">
-      {userCustomFields.filter(noDomicile).map(({ id, attributes }) => (
-        <Field
-          userCustomFieldId={id}
-          isDefault={attributes.code !== null}
-          titleMultiloc={attributes.title_multiloc}
-          key={id}
-        />
-      ))}
+      {userCustomFields.filter(isShown).map((userCustomField) => {
+        const { id, attributes } = userCustomField;
+
+        return (
+          <Field
+            userCustomFieldId={id}
+            isDefault={attributes.code !== null}
+            isComingSoon={!isSupported(userCustomField)}
+            titleMultiloc={attributes.title_multiloc}
+            key={id}
+          />
+        );
+      })}
     </Box>
   );
 };

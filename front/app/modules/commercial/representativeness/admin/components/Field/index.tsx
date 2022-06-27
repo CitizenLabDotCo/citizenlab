@@ -18,6 +18,10 @@ import { Accordion } from '@citizenlab/cl2-component-library';
 import FieldTitle from './FieldTitle';
 import FieldContent from './FieldContent';
 
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 import {
@@ -35,6 +39,7 @@ interface Props {
   userCustomFieldId: string;
   titleMultiloc: Multiloc;
   isDefault: boolean;
+  isComingSoon: boolean;
 }
 
 interface InnerProps extends Props {
@@ -43,10 +48,20 @@ interface InnerProps extends Props {
   referenceDataUploaded: boolean;
 }
 
+const StyledFieldTitle = styled(FieldTitle)`
+  border-top: 1px solid ${colors.separation};
+  border-bottom: 1px solid ${colors.separation};
+
+  & + & {
+    border-top: none;
+  }
+`;
+
 const Field = ({
   userCustomFieldId,
   titleMultiloc,
   isDefault,
+  isComingSoon,
   userCustomFieldOptions,
   referenceDistribution,
   referenceDataUploaded,
@@ -130,12 +145,24 @@ const Field = ({
 
   const status = getStatus(formValues, referenceDistribution, touched);
 
+  if (isComingSoon) {
+    return (
+      <StyledFieldTitle
+        titleMultiloc={titleMultiloc}
+        status={null}
+        isDefault={false}
+        isComingSoon
+      />
+    );
+  }
+
   return (
     <Accordion
       title={
         <FieldTitle
           titleMultiloc={titleMultiloc}
           isDefault={isDefault}
+          isComingSoon={false}
           status={status}
         />
       }
@@ -153,11 +180,7 @@ const Field = ({
   );
 };
 
-const FieldWrapper = ({
-  userCustomFieldId,
-  titleMultiloc,
-  isDefault,
-}: Props) => {
+const FieldWrapper = ({ userCustomFieldId, ...otherProps }: Props) => {
   const userCustomFieldOptions = useUserCustomFieldOptions(userCustomFieldId);
   const { referenceDistribution, referenceDataUploaded } =
     useReferenceDistribution(userCustomFieldId);
@@ -172,8 +195,7 @@ const FieldWrapper = ({
   return (
     <Field
       userCustomFieldId={userCustomFieldId}
-      titleMultiloc={titleMultiloc}
-      isDefault={isDefault}
+      {...otherProps}
       userCustomFieldOptions={userCustomFieldOptions}
       referenceDistribution={referenceDistribution}
       referenceDataUploaded={referenceDataUploaded}
