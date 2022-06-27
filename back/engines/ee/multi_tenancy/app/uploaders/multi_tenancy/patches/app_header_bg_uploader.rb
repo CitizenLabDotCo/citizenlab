@@ -2,11 +2,12 @@
 
 module MultiTenancy
   module Patches
-    # @deprecated Use {HeaderBgUploader} in the main app, which uses {AppConfiguration} instead of the deprecated {Tenant} model
-    # and therefore doesn't need this patch anymore.
+    # Used specifically for homepage header background image uploader, which uses the historical
+    # AWS s3 bucket locations for the header background image.
     module AppHeaderBgUploader
       def store_dir
-        "uploads/#{model.tenant.id}/header-background/#{model.id}"
+        app_config_id = AppConfiguration.first.id
+        "uploads/#{app_config_id}/header-background/#{app_config_id}"
       end
     end
   end
