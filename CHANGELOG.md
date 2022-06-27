@@ -1,12 +1,22 @@
 # Changelog
 
-## Next release
+## 2022-06-22
 
-### Added
+### Fixed
 
-- Added brakeman and bundle-audit to CI.
-- Added Pry command aliases.
-- Added Rails console methods to switch tenants.
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
+
+- [CL-903] Fix admin input manager crash on Safari
 
 ## 2022-06-16
 
