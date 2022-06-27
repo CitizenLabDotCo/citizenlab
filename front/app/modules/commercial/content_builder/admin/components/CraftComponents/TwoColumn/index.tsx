@@ -22,10 +22,10 @@ import messages from '../../../messages';
 
 export const TwoColumn: UserComponent = ({
   columnLayout,
-  rightChildren,
-  leftChildren,
-  rightId,
-  leftId,
+  children,
+}: {
+  columnLayout: '1-1' | '2-1' | '1-2';
+  children?: React.ReactNode;
 }) => {
   const isLargeTablet = useBreakpoint('largeTablet');
 
@@ -37,17 +37,22 @@ export const TwoColumn: UserComponent = ({
       display="flex"
       w="100%"
       gap="16px"
+      style={{
+        display: 'grid',
+        gridTemplateColumns:
+          columnLayout === '1-1'
+            ? '1fr 1fr'
+            : columnLayout === '1-2'
+            ? '1fr 2fr'
+            : '2fr 1fr',
+      }}
     >
-      <Box flex={columnLayout === '2-1' ? '2' : '1'}>
-        <Element id={leftId ? leftId : 'leftColumn'} is={Container} canvas>
-          {leftChildren}
-        </Element>
-      </Box>
-      <Box flex={columnLayout === '1-2' ? '2' : '1'}>
-        <Element id={rightId ? rightId : 'rightColumn'} is={Container} canvas>
-          {rightChildren}
-        </Element>
-      </Box>
+      {children || (
+        <>
+          <Element id={'left'} is={Container} canvas />
+          <Element id={'right'} is={Container} canvas />
+        </>
+      )}
     </Box>
   );
 };

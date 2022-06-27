@@ -23,8 +23,6 @@ const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
 const ACCORDION = 'Accordion';
 const WHITE_SPACE = 'WhiteSpace';
-const IMAGE_TEXT_CARDS = 'ImageTextCards';
-const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -35,9 +33,7 @@ type ComponentNamesType =
   | typeof IFRAME
   | typeof ABOUT_BOX
   | typeof ACCORDION
-  | typeof WHITE_SPACE
-  | typeof IMAGE_TEXT_CARDS
-  | typeof INFO_WITH_ACCORDIONS;
+  | typeof WHITE_SPACE;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -59,10 +55,6 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.accordion;
     case WHITE_SPACE:
       return messages.whiteSpace;
-    case IMAGE_TEXT_CARDS:
-      return messages.imageTextCards;
-    case INFO_WITH_ACCORDIONS:
-      return messages.infoWithAccordions;
     default:
       return messages.default;
   }

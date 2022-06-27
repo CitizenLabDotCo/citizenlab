@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { useEditor } from '@craftjs/core';
+import { useEditor, Element } from '@craftjs/core';
 
 // Router
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
@@ -21,8 +21,7 @@ import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
-import ImageTextCards from '../CraftSections/ImageTextCards';
-import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import Container from '../CraftComponents/Container';
 
 // intl
 import messages from '../../messages';
@@ -76,35 +75,32 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <ImageTextCards>
-                <TwoColumn
-                  columnLayout="1-2"
-                  rightChildren={
+              <div>
+                <TwoColumn columnLayout="1-2">
+                  <Element id="left" is={Container} canvas>
+                    <Image alt="" />
+                  </Element>
+                  <Element id="right" is={Container} canvas>
                     <Text text={formatMessage(messages.textValue)} />
-                  }
-                  leftChildren={<Image alt="" />}
-                  rightId="firstRight"
-                  leftId="firstLeft"
-                />
-                <TwoColumn
-                  columnLayout="1-2"
-                  rightChildren={
+                  </Element>
+                </TwoColumn>
+                <TwoColumn columnLayout="1-2">
+                  <Element id="left" is={Container} canvas>
+                    <Image alt="" />
+                  </Element>
+                  <Element id="right" is={Container} canvas>
                     <Text text={formatMessage(messages.textValue)} />
-                  }
-                  leftChildren={<Image alt="" />}
-                  rightId="secondRight"
-                  leftId="secondLeft"
-                />
-                <TwoColumn
-                  columnLayout="1-2"
-                  rightChildren={
+                  </Element>
+                </TwoColumn>
+                <TwoColumn columnLayout="1-2">
+                  <Element id="left" is={Container} canvas>
+                    <Image alt="" />
+                  </Element>
+                  <Element id="right" is={Container} canvas>
                     <Text text={formatMessage(messages.textValue)} />
-                  }
-                  leftChildren={<Image alt="" />}
-                  rightId="thirdRight"
-                  leftId="thirdLeft"
-                />
-              </ImageTextCards>
+                  </Element>
+                </TwoColumn>
+              </div>
             )
           }
         >
@@ -119,32 +115,31 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <InfoWithAccordions>
-                <TwoColumn
-                  columnLayout="2-1"
-                  rightChildren={<AboutBox projectId={projectId} />}
-                  leftChildren={
-                    <div>
-                      <Text text={formatMessage(messages.loremIpsum)} />
-                      <Accordion
-                        title={formatMessage(messages.accordionTitleValue)}
-                        text={formatMessage(messages.accordionTextValue)}
-                        openByDefault={false}
-                      />
-                      <Accordion
-                        title={formatMessage(messages.accordionTitleValue)}
-                        text={formatMessage(messages.accordionTextValue)}
-                        openByDefault={false}
-                      />
-                      <Accordion
-                        title={formatMessage(messages.accordionTitleValue)}
-                        text={formatMessage(messages.accordionTextValue)}
-                        openByDefault={false}
-                      />
-                    </div>
-                  }
-                />
-              </InfoWithAccordions>
+              <TwoColumn columnLayout="2-1">
+                <Element id="left" is={Container} canvas>
+                  <div>
+                    <Text text={formatMessage(messages.loremIpsum)} />
+                    <Accordion
+                      title={formatMessage(messages.accordionTitleValue)}
+                      text={formatMessage(messages.accordionTextValue)}
+                      openByDefault={false}
+                    />
+                    <Accordion
+                      title={formatMessage(messages.accordionTitleValue)}
+                      text={formatMessage(messages.accordionTextValue)}
+                      openByDefault={false}
+                    />
+                    <Accordion
+                      title={formatMessage(messages.accordionTitleValue)}
+                      text={formatMessage(messages.accordionTextValue)}
+                      openByDefault={false}
+                    />
+                  </div>
+                </Element>
+                <Element id="right" is={Container} canvas>
+                  <AboutBox projectId={projectId} />
+                </Element>
+              </TwoColumn>
             )
           }
         >
