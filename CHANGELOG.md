@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- [CL-1028] Add Swedish locale
+
 ## 2022-06-22
 
 ### Fixed
