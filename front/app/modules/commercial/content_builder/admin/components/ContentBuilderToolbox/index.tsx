@@ -117,24 +117,22 @@ const ContentBuilderToolbox = ({
               ref,
               <TwoColumn columnLayout="2-1">
                 <Element id="left" is={Container} canvas>
-                  <div>
-                    <Text text={formatMessage(messages.loremIpsum)} />
-                    <Accordion
-                      title={formatMessage(messages.accordionTitleValue)}
-                      text={formatMessage(messages.accordionTextValue)}
-                      openByDefault={false}
-                    />
-                    <Accordion
-                      title={formatMessage(messages.accordionTitleValue)}
-                      text={formatMessage(messages.accordionTextValue)}
-                      openByDefault={false}
-                    />
-                    <Accordion
-                      title={formatMessage(messages.accordionTitleValue)}
-                      text={formatMessage(messages.accordionTextValue)}
-                      openByDefault={false}
-                    />
-                  </div>
+                  <Text text={formatMessage(messages.loremIpsum)} />
+                  <Accordion
+                    title={formatMessage(messages.accordionTitleValue)}
+                    text={formatMessage(messages.accordionTextValue)}
+                    openByDefault={false}
+                  />
+                  <Accordion
+                    title={formatMessage(messages.accordionTitleValue)}
+                    text={formatMessage(messages.accordionTextValue)}
+                    openByDefault={false}
+                  />
+                  <Accordion
+                    title={formatMessage(messages.accordionTitleValue)}
+                    text={formatMessage(messages.accordionTextValue)}
+                    openByDefault={false}
+                  />
                 </Element>
                 <Element id="right" is={Container} canvas>
                   <AboutBox projectId={projectId} />
