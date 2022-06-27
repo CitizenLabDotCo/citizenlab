@@ -122,10 +122,11 @@ const ChartCard = ({
     userCustomField.attributes.code,
     userCustomField.id
   );
+
   const data = referenceData.map(
-    (opt: RepresentativenessRowMultiloc): RepresentativenessRow => {
-      const { title_multiloc, ..._opt } = opt;
-      return { ..._opt, name: localize(title_multiloc) };
+    (row: RepresentativenessRowMultiloc): RepresentativenessRow => {
+      const { title_multiloc, ...rest } = row;
+      return { ...rest, name: localize(title_multiloc) };
     }
   );
 

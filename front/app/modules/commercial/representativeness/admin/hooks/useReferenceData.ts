@@ -102,7 +102,7 @@ function useReferenceData(
         return;
       }
 
-      if (!usersByField.series.expected_users) {
+      if (!usersByField.series.reference_population) {
         setReferenceDataUploaded(false);
         return;
       }
@@ -140,20 +140,20 @@ export default useReferenceData;
 export const toReferenceData = (
   usersByField: TStreamResponse
 ): RepresentativenessRowMultiloc[] => {
-  const { users, expected_users } = usersByField.series;
+  const { users, reference_population } = usersByField.series;
 
   // const options =
   //   'options' in usersByField ? usersByField.options : usersByField.areas;
   const options = usersByField.options;
 
-  const optionIds = Object.keys(expected_users);
+  const optionIds = Object.keys(reference_population);
 
   const actualPercentages = roundPercentages(
     Object.values(pick(users, optionIds)),
     1
   );
   const referencePercentages = roundPercentages(
-    Object.values(expected_users),
+    Object.values(reference_population),
     1
   );
 
@@ -169,7 +169,7 @@ export const toReferenceData = (
     actualPercentage: actualPercentagesObj[optionId],
     referencePercentage: referencePercentagesObj[optionId],
     actualNumber: users[optionId],
-    referenceNumber: expected_users[optionId],
+    referenceNumber: reference_population[optionId],
   }));
 
   return data;
@@ -178,8 +178,11 @@ export const toReferenceData = (
 export const getIncludedUsers = (
   usersByField: TStreamResponse
 ): IncludedUsers => {
-  const { users, expected_users } = usersByField.series;
-  const includedUsers = pick(users, [...Object.keys(expected_users), '_blank']);
+  const { users, reference_population } = usersByField.series;
+  const includedUsers = pick(users, [
+    ...Object.keys(reference_population),
+    '_blank',
+  ]);
 
   const known = Object.keys(includedUsers)
     .filter((optionId) => optionId !== '_blank')

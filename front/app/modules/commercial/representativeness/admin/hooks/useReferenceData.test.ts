@@ -9,14 +9,15 @@ jest.mock('services/appConfiguration');
 jest.mock('services/auth');
 
 describe('toReferenceData', () => {
-  it('works if users and expectedUsers have same keys', () => {
+  it('works if users and reference_population have same keys', () => {
     const usersByField: TStreamResponse = {
       series: {
         users: {
           id123: 100,
           id456: 300,
         },
-        expected_users: {
+        expected_users: {},
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -53,14 +54,15 @@ describe('toReferenceData', () => {
     expect(toReferenceData(usersByField)).toEqual(expectedOutput);
   });
 
-  it('works if users and expectedUsers have same keys, weird ordering', () => {
+  it('works if users and reference_population have same keys, weird ordering', () => {
     const usersByField: TStreamResponse = {
       series: {
         users: {
           id123: 100,
           id456: 300,
         },
-        expected_users: {
+        expected_users: {},
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -105,7 +107,8 @@ describe('toReferenceData', () => {
           id456: 300,
           id789: 200,
         },
-        expected_users: {
+        expected_users: {},
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -155,7 +158,8 @@ describe('toReferenceData', () => {
           id789: 200,
           id000: 300,
         },
-        expected_users: {
+        expected_users: {},
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -210,7 +214,7 @@ describe('getIncludedUsers', () => {
           id456: 300,
           _blank: 400,
         },
-        expected_users: {
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -226,7 +230,7 @@ describe('getIncludedUsers', () => {
     expect(getIncludedUsers(usersByField)).toEqual(expectedOutput);
   });
 
-  it('works if not all keys in users are in expected_users', () => {
+  it('works if not all keys in users are in reference_population', () => {
     const usersByField: any = {
       series: {
         users: {
@@ -235,7 +239,7 @@ describe('getIncludedUsers', () => {
           id789: 200,
           _blank: 400,
         },
-        expected_users: {
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -260,7 +264,7 @@ describe('getIncludedUsers', () => {
           id789: 200,
           _blank: 400,
         },
-        expected_users: {
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },
@@ -285,7 +289,7 @@ describe('getIncludedUsers', () => {
           id789: 200,
           _blank: 0,
         },
-        expected_users: {
+        reference_population: {
           id123: 2000,
           id456: 3000,
         },

@@ -27,7 +27,11 @@ let mockData = generateData(4);
 
 jest.mock('../../hooks/useReferenceData', () => () => ({
   referenceData: mockData,
-  includedUserPercentage: 85,
+  includedUsers: {
+    known: 85,
+    total: 100,
+    percentage: 85,
+  },
   referenceDataUploaded: true,
 }));
 
