@@ -4,7 +4,7 @@ module MultiTenancy
   module Seeds
     # Base class for seeding classes that seed specific records.
     # The {#runner} has access to seeding helper methods, defaults and other config.
-    # Child classes should overwrite the {#run} method, where the actual seeding then place.
+    # Child classes should overwrite the {#run} method, where the actual seeding takes place.
     class Base
       attr_reader :runner
 
