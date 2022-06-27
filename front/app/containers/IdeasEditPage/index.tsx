@@ -489,9 +489,9 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 hasTitleProfanityError={titleProfanityError}
                 hasDescriptionProfanityError={descriptionProfanityError}
                 onImageFileChange={this.onImageFileChange}
+                onTagsChange={this.onTagsChange}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
-                onTagsChange={this.onTagsChange}
               />
 
               <ButtonBarContainer>

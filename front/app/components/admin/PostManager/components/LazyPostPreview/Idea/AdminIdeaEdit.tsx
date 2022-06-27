@@ -357,6 +357,14 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     }
   };
 
+  onImageFileChange = (imageFile: UploadFile[]) => {
+    this.setState({ imageFile });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
 
@@ -427,6 +435,8 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onImageFileChange={this.onImageFileChange}
+                onTagsChange={this.onTagsChange}
               />
 
               <ButtonWrapper>
