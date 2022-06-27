@@ -1138,7 +1138,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "La participation à cette enquête nécessite une vérification de votre identité. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L'enquête n'est pas disponible étant donné que ce projet n'est pas actif.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Vérifiez votre identité maintenant.",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# résultats de recherche chargés} one {# résultat de recherche chargé} other {# résultats de recherche chargés}}.",
   "app.containers.SearchInput.removeSearchTerm": "Supprimer le terme de recherche",
   "app.containers.SearchInput.searchAriaLabel": "Chercher",
   "app.containers.SearchInput.searchLabel": "Chercher",
