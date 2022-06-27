@@ -35,7 +35,7 @@ resource 'R-scores (Representativeness scores)' do
             expected_counts = custom_field.options.to_h { |option| [option.id.to_sym, 1] }.merge(_blank: 1)
             expect(response_data).to include(
               id: /\A#{ref_distribution.id}_\d+_rscore\z/,
-              type: 'representativeness_score',
+              type: 'rscore',
               attributes: {
                 score: be_between(0, 1),
                 counts: expected_counts

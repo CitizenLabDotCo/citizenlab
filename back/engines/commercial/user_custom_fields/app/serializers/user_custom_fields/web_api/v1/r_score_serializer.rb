@@ -4,7 +4,7 @@ module UserCustomFields
   module WebApi
     module V1
       class RScoreSerializer < ::WebApi::V1::BaseSerializer
-        set_type :representativeness_score
+        set_type :rscore
 
         attribute :score, &:value
         attribute :counts, &:user_counts
