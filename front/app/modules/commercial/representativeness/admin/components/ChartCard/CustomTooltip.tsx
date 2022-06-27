@@ -35,7 +35,7 @@ const Row = ({ name, percentage, number, colorName }: RowProps) => (
     <Text color={colorName} fontSize="s" display="inline">
       {name}: {formatPercentage(percentage)}
     </Text>
-    <Text ml="4px" color="secondaryText" fontSize="s">
+    <Text ml="4px" color="secondaryText" fontSize="s" display="inline">
       ({number.toLocaleString('en-US')})
     </Text>
   </Box>
