@@ -13,6 +13,7 @@ UserCustomFields::Engine.routes.draw do
           end
 
           resource :reference_distribution, controller: 'ref_distributions', only: %i[show create destroy]
+          resource :rscore, controller: 'r_scores', only: %i[show]
         end
       end
 

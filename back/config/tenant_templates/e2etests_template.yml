@@ -1,5 +1,7 @@
 ---
 models:
+  home_page:
+    - {}
   idea_status:
     -
       title_multiloc: idea_statuses.proposed

@@ -37,9 +37,7 @@ module ContentBuilder
       url_validation_service = ::UrlValidationService.new
 
       craftjs_jsonmultiloc.each do |locale, json|
-        json.each do |key, elt|
-          next if key == 'ROOT' || elt.dig('type', 'resolvedName') != 'Iframe'
-
+        LayoutService.new.select_craftjs_elements_for_type(json, 'Iframe').each do |elt|
           url = elt.dig 'props', 'url'
           if url && !url_validation_service.whitelisted?(url)
             errors.add :craftjs_jsonmultiloc, :iframe_url_not_whitelisted, locale: locale, url: url

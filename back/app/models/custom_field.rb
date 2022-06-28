@@ -31,7 +31,7 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
-  has_many :custom_field_options, dependent: :destroy
+  has_many :options, dependent: :destroy, class_name: 'CustomFieldOption'
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
