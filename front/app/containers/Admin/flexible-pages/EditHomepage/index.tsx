@@ -4,8 +4,25 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { THomepageSection } from 'services/homePages';
+import { isNilOrError } from 'utils/helperUtils';
+import Outlet from 'components/Outlet';
+
 const EditHomepage = () => {
-  const handleOnChangeToggle = () => {};
+  const homepageSettings = useHomepageSettings();
+
+  const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
+    handleUpdateHomepageSettings(sectionName);
+  };
+
+  const handleUpdateHomepageSettings = async (
+    sectionName: THomepageSection
+  ) => {
+    try {
+    } catch (error) {}
+  };
+
   const handleOnClick = () => {};
   return (
     <>
@@ -36,27 +53,35 @@ const EditHomepage = () => {
           </Warning>
         </Box>
         <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle}
+          onChangeSectionToggle={handleOnChangeToggle(
+            'customizable_homepage_banner'
+          )}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.heroBanner}
         />
         <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle}
+          onChangeSectionToggle={handleOnChangeToggle(
+            'top_info_section_enabled'
+          )}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.topInfoSection}
         />
         <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle}
+          onChangeSectionToggle={handleOnChangeToggle('projects_enabled')}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.projectsList}
         />
+        <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.index" />
+        {/* TO DO: move this toggle to module */}
         <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle}
+          onChangeSectionToggle={handleOnChangeToggle('events_widget')}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.events}
         />
         <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle}
+          onChangeSectionToggle={handleOnChangeToggle(
+            'bottom_info_section_enabled'
+          )}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.bottomInfoSection}
         />
