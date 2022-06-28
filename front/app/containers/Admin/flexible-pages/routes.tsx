@@ -26,7 +26,7 @@ export default () => ({
       element: <CustomNavbarSettingsComponent />,
     },
     {
-      path: 'edit/home-page',
+      path: 'home-page',
       element: <EditHomepage />,
     },
     ...moduleConfiguration.routes['admin.pages-menu'],
