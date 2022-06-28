@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -78,8 +78,10 @@ const RenderNode = ({ render }) => {
     name,
     isHover,
     hasError,
+    props,
     connectors: { connect, drag },
   } = useNode((node) => ({
+    props: node.data.props,
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
     hasError: node.data.props.hasError,
@@ -187,6 +189,23 @@ const RenderNode = ({ render }) => {
         </Box>
       )}
       <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>
+        {name === IMAGE && !props.imageUrl && (
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            justifyContent="center"
+            padding="24px"
+          >
+            <Icon
+              marginRight="16px"
+              width="60px"
+              height="60px"
+              fill={colors.clIconSecondary}
+              name="image"
+            />
+          </Box>
+        )}
         {render}
       </div>
     </StyledBox>

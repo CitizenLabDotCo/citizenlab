@@ -34,23 +34,6 @@ const Image = ({
 }) => {
   return (
     <Box id="e2e-image" style={{ pointerEvents: 'none' }} minHeight="26px">
-      {!imageUrl && (
-        <Box
-          display="flex"
-          alignItems="center"
-          flexDirection="column"
-          justifyContent="center"
-          padding="24px"
-        >
-          <Icon
-            marginRight="16px"
-            width="60px"
-            height="60px"
-            fill={colors.clIconSecondary}
-            name="image"
-          />
-        </Box>
-      )}
       {imageUrl && (
         <ImageComponent
           width="100%"
