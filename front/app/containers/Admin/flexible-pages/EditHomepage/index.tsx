@@ -1,5 +1,5 @@
 import React from 'react';
-import HomepageSectionToggle from './HomepageSectionToggle';
+import SectionToggle from '../SectionToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
@@ -35,27 +35,27 @@ const EditHomepage = () => {
             turn them on/off and edit them as required.
           </Warning>
         </Box>
-        <HomepageSectionToggle
+        <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.heroBanner}
         />
-        <HomepageSectionToggle
+        <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.topInfoSection}
         />
-        <HomepageSectionToggle
+        <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.projectsList}
         />
-        <HomepageSectionToggle
+        <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.events}
         />
-        <HomepageSectionToggle
+        <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.bottomInfoSection}

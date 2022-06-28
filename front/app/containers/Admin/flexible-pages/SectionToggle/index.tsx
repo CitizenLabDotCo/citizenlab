@@ -22,7 +22,7 @@ interface Props {
   titleMessageDescriptor: MessageDescriptor;
 }
 
-const HomepageSectionToggle = ({
+const SectionToggle = ({
   onChangeSectionToggle,
   onClickEditButton,
   titleMessageDescriptor,
@@ -45,4 +45,4 @@ const HomepageSectionToggle = ({
   );
 };
 
-export default HomepageSectionToggle;
+export default SectionToggle;
