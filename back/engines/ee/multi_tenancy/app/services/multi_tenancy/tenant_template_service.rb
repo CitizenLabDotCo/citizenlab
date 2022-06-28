@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MultiTenancy
   class TenantTemplateService
     IMAGE_BACKGROUND_ASSIGNMENT_WHITELIST = {
@@ -7,40 +9,45 @@ module MultiTenancy
       'ProjectFolders::Folder' => %w[remote_header_bg_url]
     }.freeze
 
-    def available_templates external_subfolder: 'release'
+    def available_templates(external_subfolder: 'release')
       template_names = {}
-      template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
-        File.basename(file, ".yml")
+      template_names[:internal] = Dir[Rails.root.join('config/tenant_templates/*.yml')].map do |file|
+        File.basename(file, '.yml')
       end
       if external_subfolder
-        template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+        template_names[:external] =
+          available_external_templates(external_subfolder: external_subfolder).select(&:present?)
       end
       template_names
     end
 
-    def resolve_and_apply_template template_name, external_subfolder: 'release', validate: true, max_time: nil
-      apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate, max_time: max_time
+    def resolve_and_apply_template(template_name, external_subfolder: 'release', validate: true, max_time: nil)
+      apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate,
+        max_time: max_time
     end
 
-    def apply_template template, validate: true, max_time: nil
-      t1 = Time.now
+    def apply_template(template, validate: true, max_time: nil)
+      t1 = Time.zone.now
       obj_to_id_and_class = {}
       template['models'].each do |model_name, fields|
-        LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: { 
+        LogActivityJob.perform_later(Tenant.current, 'loading_template', nil, Time.now.to_i, payload: {
           model_name: model_name,
           model_name_pluralized: model_name.pluralize
         })
         model_class = get_model_class(model_name)
+
         fields.each do |attributes|
-          minutes_spent = Time.now - t1
+          attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
+          minutes_spent = Time.zone.now - t1
           if max_time && (minutes_spent > max_time)
             raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
           end
+
           model = model_class.new
           image_assignments = {}
           restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
           restored_attributes.each do |field_name, field_value|
-            if field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
+            if field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
               image_assignments[field_name] = field_value
             else
               model.send("#{field_name}=", field_value)
@@ -50,12 +57,12 @@ module MultiTenancy
             if validate
               model.save!
             else
-              model.save  # Might fail but runs before_validations
+              model.save # Might fail but runs before_validations
               model.save(validate: false)
             end
             attributes.each do |field_name, field_value| # taking original attributes to get correct object ID
               if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
-                submodel = model.send(field_name.chomp '_attributes')
+                submodel = model.send(field_name.chomp('_attributes'))
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
               end
             end
@@ -89,19 +96,19 @@ module MultiTenancy
       nil
     end
 
-    def restore_template_attributes attributes, obj_to_id_and_class
-      @start_of_day ||= Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
+    def restore_template_attributes(attributes, obj_to_id_and_class)
+      @start_of_day ||= Time.now.in_time_zone(Tenant.settings('core', 'timezone')).beginning_of_day
       new_attributes = {}
       attributes.each do |field_name, field_value|
         if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
-          multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
+          multiloc_value = CL2_SUPPORTED_LOCALES.to_h do |locale|
             translation = I18n.with_locale(locale) { I18n.t!(field_value) }
             [locale, translation]
-          end.to_h
+          end
           new_attributes[field_name] = multiloc_value
         elsif field_name.end_with?('_attributes') && field_value.is_a?(Hash)
           new_attributes[field_name] = restore_template_attributes field_value, obj_to_id_and_class
-        elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?{|v| v.is_a? Hash}
+        elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?(Hash)
           new_attributes[field_name] = field_value.map do |v|
             restore_template_attributes v, obj_to_id_and_class
           end
@@ -112,7 +119,7 @@ module MultiTenancy
             new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
           end
         elsif field_name.end_with?('_timediff')
-          if field_value && field_value.kind_of?(Numeric)
+          if field_value.is_a?(Numeric)
             time = @start_of_day + field_value.hours
             new_attributes[field_name.chomp('_timediff')] = time
           end
@@ -123,9 +130,10 @@ module MultiTenancy
 
       # Required to make templates tests work in which case file storage is used
       if Rails.env.test?
-        new_attributes.keys.select do |key|
+        keys = new_attributes.keys.select do |key|
           key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
-        end.each do |key|
+        end
+        keys.each do |key|
           new_key = key.gsub('remote_', '').gsub('_url', '')
           new_attributes[new_key] = File.open "public#{new_attributes[key]}"
           new_attributes.delete key
@@ -135,15 +143,15 @@ module MultiTenancy
       new_attributes
     end
 
-    def template_locales template
+    def template_locales(template)
       locales = Set.new
       template['models'].each do |_, instances|
         instances.each do |attributes|
           attributes.each do |field_name, multiloc|
-            if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash)
-              multiloc.keys.each do |locale|
-                locales.add locale
-              end
+            next unless (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash)
+
+            multiloc.each_key do |locale|
+              locales.add locale
             end
           end
         end
@@ -154,16 +162,16 @@ module MultiTenancy
       locales.to_a
     end
 
-    def change_locales template, locale_from, locale_to
+    def change_locales(template, locale_from, locale_to)
       template['models'].each do |_, instances|
         instances.each do |attributes|
           attributes.each do |field_name, multiloc|
-            if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
-              if locale_from.blank?
-                multiloc[locale_to] = multiloc.values.first
-              else
-                multiloc[locale_to] = multiloc[locale_from]
-              end
+            next unless (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
+
+            multiloc[locale_to] = if locale_from.blank?
+              multiloc.values.first
+            else
+              multiloc[locale_from]
             end
           end
         end
@@ -174,7 +182,7 @@ module MultiTenancy
       template
     end
 
-    def required_locales template_name, external_subfolder: 'release'
+    def required_locales(template_name, external_subfolder: 'release')
       template = resolve_template template_name, external_subfolder: external_subfolder
       locales = Set.new
       template['models']['user']&.each do |attributes|
@@ -190,9 +198,9 @@ module MultiTenancy
 
       locales_from = required_locales template
       # Change unsupported user locales to first target tenant locale.
-      if !Set.new(locales_from).subset? Set.new(locales_to)
+      unless Set.new(locales_from).subset? Set.new(locales_to)
         template['models']['user']&.each do |attributes|
-          if !locales_to.include? attributes['locale']
+          unless locales_to.include? attributes['locale']
             attributes['locale'] = locales_to.first
           end
         end
@@ -202,20 +210,21 @@ module MultiTenancy
       translate_to = locales_to.include?(translate_from) ? nil : locales_to.first
       # Change multiloc fields, applying translation and removing
       # unsupported locales.
-      template['models'].each do |model_name, fields|
+      template['models'].each do |_model_name, fields|
         fields.each do |attributes|
           attributes.each do |field_name, field_value|
             if (field_name =~ /_multiloc$/) && field_value.is_a?(Hash)
-              if (field_value.keys & locales_to).blank? && !field_value.keys.include?(translate_from) && field_value.present?
+              if (field_value.keys & locales_to).blank? && !field_value.key?(translate_from) && field_value.present?
                 other_translate_from = field_value.keys.first
                 other_translate_to = translate_to || locales_to.first
-                translation = translator.translate field_value[other_translate_from], other_translate_from, other_translate_to, retries: 10
+                translation = translator.translate field_value[other_translate_from], other_translate_from,
+                  other_translate_to, retries: 10
                 attributes[field_name] = { translate_to => translation }
               else
                 field_value.each_key do |locale|
                   if locale == translate_from && translate_to
                     field_value[locale] = translator.translate field_value[locale], locale, translate_to, retries: 10
-                  elsif !locales_to.include? locale
+                  elsif locales_to.exclude?(locale)
                     field_value.delete locale
                   end
                 end
@@ -271,17 +280,17 @@ module MultiTenancy
 
     def get_model_class(model_name)
       legacy_class_names = {
-          "ProjectFolder" => ProjectFolders::Folder,
-          "ProjectFolderFile" => ProjectFolders::File,
-          "ProjectFolderImage" => ProjectFolders::Image,
-          "Verification::IdCard" => IdIdCardLookup::IdCard
+        'ProjectFolder' => ProjectFolders::Folder,
+        'ProjectFolderFile' => ProjectFolders::File,
+        'ProjectFolderImage' => ProjectFolders::Image,
+        'Verification::IdCard' => IdIdCardLookup::IdCard
       }
 
       class_name = model_name.classify
       legacy_class_names[class_name] || class_name.constantize
     end
 
-    def available_external_templates external_subfolder: 'release'
+    def available_external_templates(external_subfolder: 'release')
       s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
       bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
       bucket.objects(prefix: external_subfolder).map(&:key).map do |template_name|
@@ -290,24 +299,25 @@ module MultiTenancy
       end
     end
 
-    def resolve_template template_name, external_subfolder: 'release'
-      if template_name.kind_of? String
-        throw "Unknown template" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
+    def resolve_template(template_name, external_subfolder: 'release')
+      if template_name.is_a? String
+        raise 'Unknown template' unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
+
         internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
-        if File.exists? internal_path
+        if File.exist? internal_path
           YAML.load open(internal_path).read
         else
-          s3 = Aws::S3::Resource.new client:  Aws::S3::Client.new(region: 'eu-central-1')
+          s3 = Aws::S3::Resource.new client: Aws::S3::Client.new(region: 'eu-central-1')
           bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
           object = bucket.object("#{external_subfolder}/#{template_name}.yml")
           YAML.load object.get.body.read
         end
-      elsif template_name.kind_of? Hash
+      elsif template_name.is_a? Hash
         template_name
       elsif template_name.nil?
-        YAML.load open(Rails.root.join('config', 'tenant_templates', "base.yml")).read
+        YAML.load open(Rails.root.join('config/tenant_templates/base.yml')).read
       else
-        throw "Could not resolve template"
+        raise 'Could not resolve template'
       end
     end
   end

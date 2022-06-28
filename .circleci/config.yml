@@ -47,6 +47,10 @@ parameters:
     type: boolean
     default: false
 
+  templates:
+    type: boolean
+    default: false
+
 executors:
   cl2-back:
     parameters:
@@ -166,6 +170,21 @@ jobs:
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
           docker push citizenlabdotco/back-ee:<< pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+      - final_citizenlab_github_status
+
+  back-lint:
+    resource_class: small
+    executor:
+      name: cl2-back
+      image-tag: << pipeline.parameters.citizenlab_sha >>-$CIRCLE_SHA1
+    working_directory: /cl2_back/engines/ee/multi_tenancy
+    environment:
+      RAILS_ENV: development
+      CITIZENLAB_EE: true
+    steps:
+      - pending_citizenlab_github_status
+      - run: bundle
+      - run: bundle exec rubocop -c .rubocop.yml --format simple
       - final_citizenlab_github_status
 
   back-test:
@@ -433,7 +452,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
-          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING npm run build
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_STAGING npm run build
           no_output_timeout: '30m'
       - run:
           command: cd citizenlab/front && rm build/*.map
@@ -462,13 +481,14 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "citizenlab/front/package.json" }}
       - run:
-          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION npm run build
+          command: cd citizenlab/front && SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN SENTRY_DSN=$SENTRY_DSN SENTRY_ENV=$SENTRY_ENV_PRODUCTION npm run build
           no_output_timeout: '30m'
       - run:
           command: cd citizenlab/front && rm build/*.map
       - deploy :
           name: Deploy production version
           command: |
+            cd ~/citizenlab/front
             aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read --exclude "index.html"
             aws s3 cp build/index.html s3://cl2-front-production-benelux/index.html --acl public-read --cache-control no-cache
       - deploy:
@@ -537,6 +557,10 @@ workflows:
     jobs:
       - back-build-ee-docker-image:
           context: docker-hub-access
+      - back-lint:
+          context: docker-hub-access
+          requires:
+            - back-build-ee-docker-image
       - back-test:
           context: docker-hub-access
           requires:
@@ -711,6 +735,80 @@ workflows:
                 mentions: ':boom: FAILURE: Some tests failed.'
                 template: basic_fail_1
 
+  manual-templates:
+    when: << pipeline.parameters.templates >>
+    jobs:
+      - back-build-ee-docker-image:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+      - back-generate-tenant-templates:
+          name: 'Benelux'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.57.74.84'
+          env_file: '.env-production-benelux'
+      - back-generate-tenant-templates:
+          name: 'South America'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.67.181.38'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'Canada'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.183.23.116'
+          env_file: '.env-production-canada'
+      - back-generate-tenant-templates:
+          name: 'US West'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '52.13.59.174'
+          env_file: '.env-web'
+      - back-generate-tenant-templates:
+          name: 'UK'
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: '35.179.69.215'
+          env_file: '.env-web'
+      - back-test-tenant-templates:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          requires:
+            - back-build-ee-docker-image
+            - 'Benelux'
+            - 'South America'
+            - 'Canada'
+            - 'US West'
+            - 'UK'
+      - back-release-tenant-templates:
+          context:
+            - docker-hub-access
+            - slack-dev-notifications-tenant-templates
+          requires:
+            - back-test-tenant-templates
+          post-steps:
+            - slack/notify:
+                event: pass
+                template: basic_success_1
+            - slack/notify:
+                event: fail
+                mentions: ':boom: FAILURE: Some templates are invalid and could not be released.'
+                template: basic_fail_1
   nightly-templates:
     triggers:
       - schedule:

@@ -4,12 +4,12 @@ require 'rails_helper'
 
 RSpec.describe MultiTenancy::TenantService do
   subject(:service) { described_class.new(tenant_side_fx: tenant_side_fx) }
+
   let(:tenant_side_fx) { MultiTenancy::SideFxTenantService.new }
 
   describe '#delete' do
     let(:tenant) { Tenant.current }
 
-    # rubocop:disable Layout/MultilineMethodCallIndentation
     it "enqueues DeleteUserJob's, Tenant::DeleteJob and changed_host job" do
       nb_users = 3
       create_list(:user, nb_users)
@@ -19,9 +19,8 @@ RSpec.describe MultiTenancy::TenantService do
         .and have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
         .and have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', any_args)
     end
-    # rubocop:enable Layout/MultilineMethodCallIndentation
-
     # We expect this, since we update tenant host before deleting it.
+
     it 'runs after_update side effects' do
       expect(tenant_side_fx).to receive(:after_update).with(tenant)
       service.delete(tenant)

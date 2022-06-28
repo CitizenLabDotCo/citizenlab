@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # You can have Apartment route to the appropriate Tenant by adding some Rack middleware.
 # Apartment can support many different "Elevators" that can take care of this routing to your data.
 # Require whichever Elevator you're using below or none if you have a custom one.
@@ -11,11 +13,10 @@ require 'apartment/elevators/generic'
 # Apartment Configuration
 #
 Apartment.configure do |config|
-
   # Add any models that you do not want to be multi-tenanted, but remain in the global (public) namespace.
   # A typical example would be a Customer or Tenant model that stores each Tenant's information.
-  #df
-  config.excluded_models += ["Tenant"]
+  # df
+  config.excluded_models += ['Tenant']
 
   # In order to migrate all of your Tenants you need to provide a list of Tenant names to Apartment.
   # You can make this dynamic by providing a Proc object to be called on migrations.
@@ -47,7 +48,7 @@ Apartment.configure do |config|
   #   end
   # end
   #
-  config.tenant_names = lambda { Tenant.not_deleted.pluck(:host).map{|h| h.gsub(/\./, "_") } }
+  config.tenant_names = -> { Tenant.not_deleted.pluck(:host).map { |h| h.tr('.', '_') } }
 
   #
   # ==> PostgreSQL only options
@@ -81,7 +82,6 @@ Apartment.configure do |config|
   # config.prepend_environment = !Rails.env.production?
 end
 
-
 class RescuedApartmentMiddleware < Apartment::Elevators::Generic
   def call(env)
     request = Rack::Request.new(env)
@@ -98,15 +98,15 @@ class RescuedApartmentMiddleware < Apartment::Elevators::Generic
     @app.call(env)
   end
 
-  def parse_tenant_name request
-    if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events"
+  def parse_tenant_name(request)
+    if request.path =~ %r{^/admin_api/.*} || request.path =~ %r{^/okcomputer.*} || request.path == '/hooks/mailgun_events'
       nil
     else
       host = if Rails.env.development? || Rails.env.staging?
-               ENV.fetch('OVERRIDE_HOST', request.host)
-             else
-               request.host
-             end
+        ENV.fetch('OVERRIDE_HOST', request.host)
+      else
+        request.host
+      end
       Tenant.host_to_schema_name(host)
     end
   end

@@ -42,7 +42,7 @@ RSpec.describe AppConfiguration, type: :model do
 
   describe 'Lifecycle stage' do
     it 'cannot be changed from demo to something else' do
-      config = AppConfiguration.instance
+      config = described_class.instance
       config.settings['core']['lifecycle_stage'] = 'demo'
       config.update_column :settings, config.settings
       config.settings['core']['lifecycle_stage'] = 'active'
@@ -50,7 +50,7 @@ RSpec.describe AppConfiguration, type: :model do
     end
 
     it 'cannot be changed from something else to demo' do
-      config = AppConfiguration.instance
+      config = described_class.instance
       config.settings['core']['lifecycle_stage'] = 'churned'
       config.update_column :settings, config.settings
       config.settings['core']['lifecycle_stage'] = 'demo'
@@ -58,7 +58,7 @@ RSpec.describe AppConfiguration, type: :model do
     end
 
     it 'can be changed from something else to something else' do
-      config = AppConfiguration.instance
+      config = described_class.instance
       config.settings['core']['lifecycle_stage'] = 'active'
       config.update_column :settings, config.settings
       config.settings['core']['lifecycle_stage'] = 'churned'
@@ -66,7 +66,7 @@ RSpec.describe AppConfiguration, type: :model do
     end
 
     it 'can remain demo' do
-      config = AppConfiguration.instance
+      config = described_class.instance
       config.settings['core']['lifecycle_stage'] = 'demo'
       config.settings['core']['currency'] = 'EUR'
       config.update_column :settings, config.settings
