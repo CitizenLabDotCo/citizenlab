@@ -12,7 +12,7 @@ interface Props {
 
 const AdminViewButton = ({ linkTo, buttonTextMessageDescriptor }: Props) => {
   return (
-    <Button buttonStyle="cl-blue" icon="eye" id="to-project" linkTo={linkTo}>
+    <Button buttonStyle="admin-dark" icon="eye" id="to-project" linkTo={linkTo}>
       <FormattedMessage {...buttonTextMessageDescriptor} />
     </Button>
   );
