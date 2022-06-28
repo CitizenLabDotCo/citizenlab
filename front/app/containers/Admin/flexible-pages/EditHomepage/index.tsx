@@ -58,6 +58,7 @@ const EditHomepage = () => {
           )}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.heroBanner}
+          tooltipMessageDescriptor={messages.heroBannerTooltip}
         />
         <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle(
@@ -65,18 +66,21 @@ const EditHomepage = () => {
           )}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.topInfoSection}
+          tooltipMessageDescriptor={messages.topInfoSectionTooltip}
         />
         <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle('projects_enabled')}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.projectsList}
+          tooltipMessageDescriptor={messages.projectsListTooltip}
         />
         {/* TO DO: move this toggle to module */}
         {/* <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.index" /> */}
         <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle('events_widget')}
           onClickEditButton={handleOnClick}
-          titleMessageDescriptor={messages.events}
+          titleMessageDescriptor={messages.eventsWidget}
+          tooltipMessageDescriptor={messages.eventsWidgetTooltip}
         />
         <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle(
@@ -84,6 +88,7 @@ const EditHomepage = () => {
           )}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.bottomInfoSection}
+          tooltipMessageDescriptor={messages.bottomInfoSectionTooltip}
         />
       </div>
     </>

@@ -20,12 +20,14 @@ export interface Props {
   onChangeSectionToggle: () => void;
   onClickEditButton: () => void;
   titleMessageDescriptor: MessageDescriptor;
+  tooltipMessageDescriptor: MessageDescriptor;
 }
 
 const SectionToggle = ({
   onChangeSectionToggle,
   onClickEditButton,
   titleMessageDescriptor,
+  tooltipMessageDescriptor,
 }: Props) => {
   return (
     <Row>
@@ -38,7 +40,9 @@ const SectionToggle = ({
         <Title variant="h3" mr="10px">
           <FormattedMessage {...titleMessageDescriptor} />
         </Title>
-        <IconTooltip content="" />
+        <IconTooltip
+          content={<FormattedMessage {...tooltipMessageDescriptor} />}
+        />
       </Box>
       <AdminEditButton onClick={onClickEditButton} />
     </Row>
