@@ -1138,7 +1138,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "تتطلب المشاركة في الاستبيان التحقق من هويتك. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "لم يعُد هذا الاستبيان متاحًا لأن هذا المشروع لم يعُد نشطًا بعد الآن.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "تحقق من هويتك الآن.",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {#تم تحميل نتيجة/نتائج بحث} one {# تم تحميل نتيجة بحث} other {#تم تحميل نتيجة/نتائج بحث}}.",
   "app.containers.SearchInput.removeSearchTerm": "إزالة مصطلح البحث",
   "app.containers.SearchInput.searchAriaLabel": "بحث",
   "app.containers.SearchInput.searchLabel": "بحث",

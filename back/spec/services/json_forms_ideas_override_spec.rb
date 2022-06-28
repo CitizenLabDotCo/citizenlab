@@ -68,11 +68,6 @@ describe JsonFormsService do
                   name: { type: 'string' }
                 }
               }
-            },
-            'custom_field_values' => {
-              type: 'object',
-              additionalProperties: false,
-              properties: {}
             }
           },
           required: %w[title_multiloc body_multiloc]
@@ -86,7 +81,7 @@ describe JsonFormsService do
       if CitizenLab.ee?
         it 'returns the JSON schema for all enabled non-hidden default fields, and the extra field' do
           schema = service.custom_form_to_json_schema(fields)
-          expect(schema).to eq({
+          expect(schema).to match({
             type: 'object',
             additionalProperties: false,
             properties: {
@@ -135,14 +130,9 @@ describe JsonFormsService do
                   }
                 }
               },
-              'custom_field_values' => {
-                type: 'object',
-                additionalProperties: false,
-                properties: { custom_field.key => { type: 'number' } },
-                required: [custom_field.key]
-              }
+              custom_field.key => { type: 'number' }
             },
-            required: %w[title_multiloc body_multiloc]
+            required: match_array(['title_multiloc', 'body_multiloc', custom_field.key])
           })
         end
       else
@@ -196,11 +186,6 @@ describe JsonFormsService do
                     name: { type: 'string' }
                   }
                 }
-              },
-              'custom_field_values' => {
-                type: 'object',
-                additionalProperties: false,
-                properties: {}
               }
             },
             required: %w[title_multiloc body_multiloc]
@@ -286,7 +271,7 @@ describe JsonFormsService do
       fields.push(create(:custom_field_extra_custom_form, resource: custom_form))
       ui_schema = service.ui_and_json_multiloc_schemas(fields, user)[:ui_schema_multiloc][locale]
       expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].size).to eq 1
-      expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/custom_field_values/properties/extra_field'
+      expect(ui_schema[:elements].find { |e| e[:options][:id] == 'extra' }[:elements].first[:scope]).to eq '#/properties/extra_field'
     end
   end
 end

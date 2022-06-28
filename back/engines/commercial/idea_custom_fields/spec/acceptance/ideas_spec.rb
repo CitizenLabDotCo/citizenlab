@@ -29,7 +29,7 @@ resource 'Ideas' do
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
       parameter :topic_ids, 'Array of ids of the associated topics'
       parameter :area_ids, 'Array of ids of the associated areas'
-      parameter :custom_field_values, 'a json representing custom fields'
+      parameter :custom_field_name1, 'A value for one custom field'
     end
 
     let(:idea) { build(:idea) }
@@ -40,41 +40,47 @@ resource 'Ideas' do
     let(:body_multiloc) { idea.body_multiloc }
     let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
+    let(:extra_field_name) { 'custom_field_name1' }
 
     context 'when the extra field is required' do
       let(:form) { create(:custom_form, project: project) }
-      let!(:text_field) { create(:custom_field_extra_custom_form, required: true, resource: form) }
+      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name, required: true, resource: form) }
 
       context 'when the field value is given' do
-        let(:custom_field_values) { { text_field.key => 'test value' } }
+        let(:custom_field_name1) { 'test value' }
 
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an extra field' do
             assert_status 201
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name => 'test value'
+            })
           end
         end
       end
 
-      context 'when the field value is not given' do
-        let(:custom_field_values) { { text_field.key => nil } }
+      context 'when the field value is not given', skip: 'Cannot be implemented yet' do
+        let(:custom_field_name1) { nil }
 
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an extra field' do
             assert_status 422
             json_response = json_parse(response_body)
-            errors = json_response.dig(:errors, :custom_field_values)
+            errors = json_response.dig(:errors, extra_field_name.to_sym)
             expect(errors.size).to eq 1
-            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+            expect(errors.first[:error]).to eq(
+              "The property '#/#{extra_field_name}' of type null did not match the following type: string"
+            )
           end
         end
       end
 
-      context 'when the field value is not valid' do
-        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
-        let(:custom_field_values) { { text_field.key => 'test value', select_field.key => 'unknown_option' } }
+      context 'when the field value is not valid', skip: 'Cannot be implemented yet' do
+        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, key: 'custom_field_name2', resource: form, required: false }
+        let(:custom_field_name1) { 'test value' }
+        let(:custom_field_name2) { 'unknown_option' }
 
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an invalid value for an extra field' do
@@ -90,25 +96,25 @@ resource 'Ideas' do
 
     context 'when the extra field is optional' do
       before do
-        create(:custom_field_extra_custom_form, required: false, resource: create(:custom_form, project: project))
+        create(:custom_field_extra_custom_form, key: extra_field_name, required: false, resource: create(:custom_form, project: project))
       end
 
       context 'when the field value is given' do
-        let(:custom_field_values) { { 'extra_field' => 'test value' } }
+        let(:custom_field_name1) { 'test value' }
 
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an extra field' do
             assert_status 201
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name => 'test value'
+            })
           end
         end
       end
 
       context 'when the field value is not given' do
-        let(:custom_field_values) { { 'extra_field' => nil } }
-
         post 'web_api/v1/ideas' do
           example_request 'Create an idea with an extra field' do
             assert_status 201
@@ -124,90 +130,97 @@ resource 'Ideas' do
   describe 'Update' do
     let(:project) { create(:continuous_project) }
     let(:form) { create(:custom_form, project: project) }
-    let(:idea) { create(:idea, author: user, project: project, custom_field_values: { 'extra_field' => 'test value' }) }
+    let(:idea) { create(:idea, author: user, project: project, custom_field_values: { extra_field_name1 => 'test value' }) }
     let(:id) { idea.id }
+    let(:extra_field_name1) { 'custom_field_name1' }
+    let(:extra_field_name2) { 'custom_field_name2' }
 
     with_options scope: :idea do
-      parameter :custom_field_values, 'a json representing custom fields'
+      parameter :custom_field_name1, 'A value for one custom field'
+      parameter :custom_field_name2, 'A value for another custom field'
     end
 
     context 'when the extra field is required' do
-      let!(:text_field) { create(:custom_field_extra_custom_form, required: true, resource: form) }
+      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name1, required: true, resource: form) }
+      let(:custom_field_name1) { 'Changed Value' }
 
       context 'when the field value is given' do
-        let(:custom_field_values) { { text_field.key => 'Changed Value' } }
-
         patch 'web_api/v1/ideas/:id' do
           example_request 'Update an idea with a required extra field' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name1 => 'Changed Value'
+            })
           end
         end
       end
 
-      context 'when the field value is cleared' do
-        let(:custom_field_values) { { text_field.key => '' } }
+      context 'when the field value is cleared', skip: 'Cannot be implemented yet' do
+        let(:custom_field_values) { { extra_field_name1 => '' } }
 
         patch 'web_api/v1/ideas/:id' do
           example_request 'Clear a required extra field of an idea' do
             assert_status 422
             json_response = json_parse(response_body)
-            errors = json_response.dig(:errors, :custom_field_values)
+            errors = json_response.dig(:errors, extra_field_name.to_sym)
             expect(errors.size).to eq 1
-            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of '#{extra_field_name}' in schema .+}
           end
         end
       end
 
       context 'when the field value is given and another field value is added' do
-        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, resource: form, required: false }
-        let(:custom_field_values) { { text_field.key => 'Changed Value', select_field.key => 'option1' } }
+        let!(:select_field) { create :custom_field_select, :with_options, :for_custom_form, key: extra_field_name2, resource: form, required: false }
+        let(:custom_field_name2) { 'option1' }
 
         patch 'web_api/v1/ideas/:id' do
           example_request 'Update an idea with a required extra field and add an extra field' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name1 => 'Changed Value',
+              extra_field_name2 => 'option1'
+            })
           end
         end
       end
 
-      context 'when the field value is not given' do
-        let(:custom_field_values) { { text_field.key => nil } }
-
+      context 'when the field value is not given', skip: 'Cannot be implemented yet' do
         patch 'web_api/v1/ideas/:id' do
           example_request 'Update an idea with a required extra field' do
             assert_status 422
             json_response = json_parse(response_body)
-            errors = json_response.dig(:errors, :custom_field_values)
+            errors = json_response.dig(:errors, extra_field_name.to_sym)
             expect(errors.size).to eq 1
-            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of 'extra_field' in schema .+}
+            expect(errors.first[:error]).to match %r{The property '#/' did not contain a required property of '#{extra_field_name}' in schema .+}
           end
         end
       end
     end
 
     context 'when the extra field is optional' do
-      let!(:text_field) { create(:custom_field_extra_custom_form, required: false, resource: form) }
+      let!(:text_field) { create(:custom_field_extra_custom_form, key: extra_field_name1, required: false, resource: form) }
 
       context 'when the field value is given' do
-        let(:custom_field_values) { { text_field.key => 'Changed Value' } }
+        let(:custom_field_name1) { 'Changed Value' }
 
         patch 'web_api/v1/ideas/:id' do
           example_request 'Update an idea with an optional extra field' do
             assert_status 200
             json_response = json_parse(response_body)
             idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.custom_field_values.to_h).to match custom_field_values
+            expect(idea_from_db.custom_field_values.to_h).to eq({
+              extra_field_name1 => 'Changed Value'
+            })
           end
         end
       end
 
       context 'when the field value is cleared' do
-        let(:custom_field_values) { { text_field.key => '' } }
+        let(:custom_field_name1) { '' }
 
         patch 'web_api/v1/ideas/:id' do
           example_request 'Clear an optional extra field of an idea' do

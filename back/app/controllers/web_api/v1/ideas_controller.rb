@@ -108,11 +108,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # insert
   def create
-    service = SideFxIdeaService.new
-
-    if params[:idea][:custom_field_values]
-      CustomFieldService.new.cleanup_custom_field_values! params[:idea][:custom_field_values]
-    end
+    extract_custom_field_values_from_params!
 
     @idea = Idea.new idea_params
     @idea.author ||= current_user
@@ -139,11 +135,9 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # patch
   def update
-    service = SideFxIdeaService.new
-
+    extract_custom_field_values_from_params!
     params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
-
     mark_custom_field_values_to_clear!
 
     update_params = idea_params.to_h
@@ -174,8 +168,6 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # delete
   def destroy
-    service = SideFxIdeaService.new
-
     service.before_destroy(@idea, current_user)
     idea = @idea.destroy
     if idea.destroyed?
@@ -187,6 +179,27 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   private
+
+  def extract_custom_field_values_from_params!
+    project = @idea&.project || Project.find(params.dig(:idea, :project_id))
+    custom_form = project.custom_form || CustomForm.new(project: project)
+    all_fields = IdeaCustomFieldsService.new(custom_form).all_fields
+    extra_field_values = all_fields.each_with_object({}) do |field, accu|
+      next if field.built_in?
+
+      given_value = params[:idea].delete field.key
+      next unless given_value && field.enabled?
+
+      accu[field.key] = given_value
+    end
+    return if extra_field_values.empty?
+
+    params[:idea][:custom_field_values] = extra_field_values
+  end
+
+  def service
+    @service ||= SideFxIdeaService.new
+  end
 
   def set_idea
     @idea = Idea.find params[:id]
