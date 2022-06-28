@@ -103,7 +103,6 @@ const HiddenNavbarItemList = ({
               isDefaultPage={item.type === 'default_item'}
               showEditButton={item.type !== 'default_item'}
               showAddButton
-              showDeleteButton
               viewButtonLink={getViewButtonLink(item)}
               onClickEditButton={handleClickEditButton(item)}
               onClickAddButton={handleClickAdd(item)}

@@ -4,7 +4,7 @@ import VisibleNavbarItemList from '.';
 import {
   reorderNavbarItem,
   removeNavbarItem,
-} from 'modules/commercial/customizable_navbar/services/navbar';
+} from '../../../../services/navbar';
 import { deletePage } from 'services/pages';
 import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
 import navbarItems from 'hooks/fixtures/navbarItems';

@@ -3,7 +3,7 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
-import PagesMenu from './admin/containers/PagesMenu';
+import PagesMenu from './admin/containers';
 
 const NewPageFormComponent = React.lazy(
   () => import('./admin/containers/NewPageForm')
@@ -13,6 +13,10 @@ const EditPageComponent = React.lazy(
 );
 const EditNavbarItemComponent = React.lazy(
   () => import('./admin/containers/EditNavbarItemForm')
+);
+
+const NavigationSettings = React.lazy(
+  () => import('./admin/containers/NavigationSettings')
 );
 
 const configuration: ModuleConfiguration = {
@@ -51,6 +55,11 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.pages-menu.index': () => (
       <FeatureFlag name="customizable_navbar">
         <PagesMenu />
+      </FeatureFlag>
+    ),
+    'app.containers.Admin.pages-menu.navigation-settings': () => (
+      <FeatureFlag name="customizable_navbar">
+        <NavigationSettings />
       </FeatureFlag>
     ),
   },
