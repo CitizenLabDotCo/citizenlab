@@ -104,7 +104,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="column1"
+            icon="imageCardSection"
             label={formatMessage(messages.imageTextCards)}
           />
         </DraggableElement>
@@ -141,7 +141,7 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem
-            icon="column1"
+            icon="infoAccordionSection"
             label={formatMessage(messages.infoWithAccordions)}
           />
         </DraggableElement>
