@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionToggle from '../SectionToggle';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
@@ -6,11 +6,41 @@ import AdminViewButton from './AdminViewButton';
 import messages from './messages';
 import useHomepageSettings from 'hooks/useHomepageSettings';
 import { THomepageSection } from 'services/homepages';
-import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
+import { MessageDescriptor } from 'utils/cl-intl';
+
+type TSectionToggleData = {
+  titleMessageDescriptor: MessageDescriptor;
+  tooltipMessageDescriptor: MessageDescriptor;
+  sectionEnabledSettingName: THomepageSection;
+};
 
 const EditHomepage = () => {
   const homepageSettings = useHomepageSettings();
+  const [sectionTogglesData, setSectionTogglesData] = useState<
+    TSectionToggleData[]
+  >([
+    {
+      sectionEnabledSettingName: 'customizable_homepage_banner',
+      titleMessageDescriptor: messages.heroBanner,
+      tooltipMessageDescriptor: messages.heroBannerTooltip,
+    },
+    {
+      sectionEnabledSettingName: 'top_info_section_enabled',
+      titleMessageDescriptor: messages.topInfoSection,
+      tooltipMessageDescriptor: messages.topInfoSectionTooltip,
+    },
+    {
+      sectionEnabledSettingName: 'projects_enabled',
+      titleMessageDescriptor: messages.projectsList,
+      tooltipMessageDescriptor: messages.projectsListTooltip,
+    },
+    {
+      sectionEnabledSettingName: 'bottom_info_section_enabled',
+      titleMessageDescriptor: messages.bottomInfoSection,
+      tooltipMessageDescriptor: messages.bottomInfoSectionTooltip,
+    },
+  ]);
 
   const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
     handleUpdateHomepageSettings(sectionName);
@@ -52,44 +82,29 @@ const EditHomepage = () => {
             turn them on/off and edit them as required.
           </Warning>
         </Box>
-        <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle(
-            'customizable_homepage_banner'
-          )}
-          onClickEditButton={handleOnClick}
-          titleMessageDescriptor={messages.heroBanner}
-          tooltipMessageDescriptor={messages.heroBannerTooltip}
-        />
-        <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle(
-            'top_info_section_enabled'
-          )}
-          onClickEditButton={handleOnClick}
-          titleMessageDescriptor={messages.topInfoSection}
-          tooltipMessageDescriptor={messages.topInfoSectionTooltip}
-        />
-        <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle('projects_enabled')}
-          onClickEditButton={handleOnClick}
-          titleMessageDescriptor={messages.projectsList}
-          tooltipMessageDescriptor={messages.projectsListTooltip}
-        />
+        {sectionTogglesData.map((sectionToggleData) => {
+          return (
+            <SectionToggle
+              onChangeSectionToggle={handleOnChangeToggle(
+                sectionToggleData.sectionEnabledSettingName
+              )}
+              onClickEditButton={handleOnClick}
+              titleMessageDescriptor={sectionToggleData.titleMessageDescriptor}
+              tooltipMessageDescriptor={
+                sectionToggleData.tooltipMessageDescriptor
+              }
+            />
+          );
+        })}
+
         {/* TO DO: move this toggle to module */}
-        {/* <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.index" /> */}
         <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle('events_widget')}
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.eventsWidget}
           tooltipMessageDescriptor={messages.eventsWidgetTooltip}
         />
-        <SectionToggle
-          onChangeSectionToggle={handleOnChangeToggle(
-            'bottom_info_section_enabled'
-          )}
-          onClickEditButton={handleOnClick}
-          titleMessageDescriptor={messages.bottomInfoSection}
-          tooltipMessageDescriptor={messages.bottomInfoSectionTooltip}
-        />
+        <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles" />
       </div>
     </>
   );
