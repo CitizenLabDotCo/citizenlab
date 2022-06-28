@@ -7,11 +7,14 @@ module Analytics
       after_action :verify_authorized, only: [:created]
 
       def create
-        @analytics_query = QueryBuilderService.new(FactPost, params[:query])
-        validation = @analytics_query.validate
+        query = QueryBuilderService.new(FactPost, params[:query])
+        validation = query.validate
         
         if validation["error"]
           render json: {"messages" => validation["messages"]}, status: validation["status"]
+        else
+          results = query.run
+          render json: results
         end
       end
     end

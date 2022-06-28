@@ -17,8 +17,8 @@ module Analytics
                   "type" => ["string", "array", "object"],
                   "minLength" => 1,
                   "properties" => {
-                    "from" => {"type": "string"},
-                    "to" => {"type": "string"}
+                    "from" => {"type": ["integer","string"]},
+                    "to" => {"type": ["integer","string"]}
                   },
                   "required" => ["from", "to"],
                   "additionalProperties": false
@@ -125,7 +125,26 @@ module Analytics
     end
     
     def run()
-      results = @model.eager_load()
+      results = @model.includes(@query[:dimensions].keys)
+
+      @query[:dimensions].each do |dimension, columns|
+        columns.each do |column, value|
+          if [Array, String].include? value.class
+            results = results.where(dimension => {column => value})
+          else
+            if column == "date"
+              from = Date.parse(value["from"])
+              to = Date.parse(value["to"])
+            else
+              from = value["from"].to_i
+              to = value["to"].to_i
+            end
+            results = results.where(dimension => {column => from..to})
+          end
+        end
+      end
+      
+      results
     end
   end
 end
