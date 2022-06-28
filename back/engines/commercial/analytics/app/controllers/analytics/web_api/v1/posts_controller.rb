@@ -3,24 +3,17 @@
 module Analytics
   module WebApi::V1
     class PostsController < ::ApplicationController
+      skip_after_action :verify_policy_scoped, only: [:created]
+      after_action :verify_authorized, only: [:created]
 
-      skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
-
-      # GET /posts
-      def index
-        posts = FactPost.includes(:type, :project, :created_date)
-        posts = posts.where(:type => {name: params[:type]}) if params[:type].present?
-        posts = posts.where(:project => {id: params[:project]}) if params[:project].present?
-        if params[:date].present?
-          dates = params[:date].split(':')
-          from = Date.parse(dates[0])
-          to = Date.parse(dates[1])
-          posts = posts.where(:created_date => {date: from..to})
-        end
+      def create
+        @analytics_query = QueryBuilderService.new(FactPost, params[:query])
+        validation = @analytics_query.validate
         
-        render json: posts, include: [:type, :project, :created_date]
+        if validation["error"]
+          render json: {"messages" => validation["messages"]}, status: validation["status"]
+        end
       end
-
     end
   end
 end

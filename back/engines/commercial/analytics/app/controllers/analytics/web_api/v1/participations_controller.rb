@@ -3,24 +3,17 @@
 module Analytics
   module WebApi::V1
     class ParticipationsController < ::ApplicationController
+      skip_after_action :verify_policy_scoped, only: [:created]
+      # after_action :verify_authorized, only: [:created]
 
-      skip_after_action :verify_policy_scoped, only: :index # The view is authorized instead.
-
-      # GET /participations
-      def index
-        activities = FactParticipation.includes(:type, :project, :created_date)
-        activities = activities.where(:type => {name: params[:type]}) if params[:type].present?
-        activities = activities.where(:project => {id: params[:project]}) if params[:project].present?
-        if params[:date].present?
-          dates = params[:date].split(':')
-          from = Date.parse(dates[0])
-          to = Date.parse(dates[1])
-          activities = activities.where(:created_date => {date: from..to})
-        end
+      def create
+        @analytics_query = QueryBuilderService.new(FactParticipation, params[:query])
+        validation = @analytics_query.validate
         
-        render json: activities, include: [:type, :project, :created_date]
+        if validation["error"]
+          render json: {"messages" => validation["messages"]}, status: validation["status"]
+        end
       end
-
     end
   end
 end
