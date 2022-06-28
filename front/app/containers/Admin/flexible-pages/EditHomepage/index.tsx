@@ -5,7 +5,7 @@ import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import { THomepageSection } from 'services/homePages';
+import { THomepageSection } from 'services/homepages';
 import { isNilOrError } from 'utils/helperUtils';
 import Outlet from 'components/Outlet';
 
@@ -71,8 +71,8 @@ const EditHomepage = () => {
           onClickEditButton={handleOnClick}
           titleMessageDescriptor={messages.projectsList}
         />
-        <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.index" />
         {/* TO DO: move this toggle to module */}
+        {/* <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.index" /> */}
         <SectionToggle
           onChangeSectionToggle={handleOnChangeToggle('events_widget')}
           onClickEditButton={handleOnClick}

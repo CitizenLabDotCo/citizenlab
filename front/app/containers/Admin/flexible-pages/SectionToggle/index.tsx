@@ -16,7 +16,7 @@ const StyledToggle = styled(Toggle)`
   margin-right: 20px;
 `;
 
-interface Props {
+export interface Props {
   onChangeSectionToggle: () => void;
   onClickEditButton: () => void;
   titleMessageDescriptor: MessageDescriptor;
