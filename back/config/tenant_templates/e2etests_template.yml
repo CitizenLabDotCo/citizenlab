@@ -295,6 +295,16 @@ models:
       en: How many benches do you want?
     required: true
     enabled: true
+  - &custom_idea_text_field
+    resource_ref: *custom_idea_fields_custom_form
+    key: park_name
+    input_type: text
+    title_multiloc:
+      en: Name for the new park
+    description_multiloc:
+      en: Propose a name for the new park
+    required: false
+    enabled: true
   custom_field_option:
   - custom_field_ref: *5
     key: male
