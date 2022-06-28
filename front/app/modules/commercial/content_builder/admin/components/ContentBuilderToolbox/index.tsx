@@ -4,7 +4,7 @@ import React from 'react';
 import { useEditor, Element } from '@craftjs/core';
 
 // Router
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'react-router-dom';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -39,14 +39,13 @@ const DraggableElement = styled.div`
 
 type ContentBuilderToolboxProps = {
   selectedLocale: Locale;
-} & WithRouterProps &
-  InjectedIntlProps;
+} & InjectedIntlProps;
 
 const ContentBuilderToolbox = ({
   selectedLocale,
   intl: { formatMessage },
-  params: { projectId },
 }: ContentBuilderToolboxProps) => {
+  const { projectId } = useParams() as { projectId: string };
   const {
     connectors,
     actions: { selectNode },
@@ -298,4 +297,4 @@ const ContentBuilderToolbox = ({
   );
 };
 
-export default withRouter(injectIntl(ContentBuilderToolbox));
+export default injectIntl(ContentBuilderToolbox);

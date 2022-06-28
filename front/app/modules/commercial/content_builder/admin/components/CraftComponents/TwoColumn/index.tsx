@@ -35,6 +35,7 @@ export const TwoColumn: UserComponent = ({
       minHeight="40px"
       w="100%"
       gap="16px"
+      // Change this to a styled component
       style={{
         display: 'grid',
         gridTemplateColumns: isLargeTablet
