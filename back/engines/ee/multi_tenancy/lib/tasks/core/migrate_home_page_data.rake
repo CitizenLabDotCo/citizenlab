@@ -89,7 +89,7 @@ namespace :fix_existing_tenants do
             home_page.bottom_info_section_multiloc = config.homepage_info_multiloc
           end
 
-          home_page.header_bg = config.header_bg if config.header_bg
+          home_page.write_attribute(:header_bg, config.header_bg)
 
           if dry_run
             home_page.validate!
