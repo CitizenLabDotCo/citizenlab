@@ -75,7 +75,7 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <div>
+              <Element id="image-text-cards" is={Box} canvas>
                 <TwoColumn columnLayout="1-2">
                   <Element id="left" is={Container} canvas>
                     <Image alt="" />
@@ -100,7 +100,7 @@ const ContentBuilderToolbox = ({
                     <Text text={formatMessage(messages.textValue)} />
                   </Element>
                 </TwoColumn>
-              </div>
+              </Element>
             )
           }
         >

@@ -32,19 +32,18 @@ export const TwoColumn: UserComponent = ({
   return (
     <Box
       id="e2e-two-column"
-      flexDirection={isLargeTablet ? 'column' : 'row'}
       minHeight="40px"
-      display="flex"
       w="100%"
       gap="16px"
       style={{
         display: 'grid',
-        gridTemplateColumns:
-          columnLayout === '1-1'
-            ? '1fr 1fr'
-            : columnLayout === '1-2'
-            ? '1fr 2fr'
-            : '2fr 1fr',
+        gridTemplateColumns: isLargeTablet
+          ? '1fr'
+          : columnLayout === '1-1'
+          ? '1fr 1fr'
+          : columnLayout === '1-2'
+          ? '1fr 2fr'
+          : '2fr 1fr',
       }}
     >
       {children || (

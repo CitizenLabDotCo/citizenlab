@@ -14,6 +14,4 @@ const Container: UserComponent = ({ children }) => {
   );
 };
 
-Container.craft = { rules: { canMoveIn: () => true } };
-
 export default Container;
