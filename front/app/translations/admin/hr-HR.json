@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Spremi",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Spremljeno",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Pravila o kolačićima",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Uredite stranice O nama i Česta pitanja vaše platforme. Druge stranice, poput odredbi i uvjeta te pravila o privatnosti, mogu biti uređene u kartici {policiesLink}.",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Pravila",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Stranice platforme",
   "app.containers.AdminPage.PagesEdition.faq": "Česta pitanja",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Dodajte datoteke na O stranici",
   "app.containers.AdminPage.PagesEdition.information": "Informacije",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Postavke su uspješno ažurirane.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geografske oblasti",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Prilagodi",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Stranice",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Pravila",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registracija",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Općenito",
@@ -1432,7 +1428,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Jeste li sigurni da želite izbrisati ovu stranicu? Ova radnja ne može se poništiti. Također možete ukloniti stranicu iz navigacijske trake ako je još uvijek niste spremni izbrisati.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Jeste li sigurni da želite izbrisati ovu stranicu? Ovu radnju ne možete poništiti.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Na vašoj navigacijskoj traci može biti prikazano do pet stranica, pored Početne i projektnih stranica. Možete preimenovati stavke izbornika, preurediti i dodati nove stranice s vlastitim sadržajem.",
-  "app.modules.navbar.admin.containers.pageTitle": "Navigacijska traka i stranice platforme",
   "app.modules.project_management.admin.components.permissionsTab": "Prava pristupa",
   "components.admin.ServerError.genericServerError": "Došlo je do pogreške prilikom brisanja sadržaja, pokušajte ponovno kasnije."
 }

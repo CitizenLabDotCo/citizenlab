@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Zapisz",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Zapisane",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Polityka ciasteczek",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Edytuj strony \"O programie\" i \"FAQ\". Inne strony, w tym \"Regulamin\" i \"Polityka prywatności\", mogą być edytowane w zakładce {policiesLink} .",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Polityka",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Strony platformy",
   "app.containers.AdminPage.PagesEdition.faq": "Często zadawane pytania (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Załączniki (maks. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "O nas",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Ustawienia zostały pomyślnie zaktualizowane.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Obszary geograficzne",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Styl strony głównej",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Strony",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Polityka",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Rejestracja",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Ogólne",
@@ -1432,7 +1428,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Czy na pewno chcesz usunąć tę stronę? Nie można tego cofnąć. Możesz również usunąć stronę z paska nawigacyjnego, jeśli nie jesteś jeszcze gotowy, aby ją usunąć.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Czy na pewno chcesz usunąć ten projekt? Tej operacji nie da się cofnąć.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Twój pasek nawigacyjny może wyświetlać do pięciu stron oprócz strony głównej i stron projektów. Możesz zmieniać nazwy pozycji menu, zmieniać kolejność i dodawać nowe strony z własną zawartością.",
-  "app.modules.navbar.admin.containers.pageTitle": "Pasek nawigacyjny i strony platformy",
   "app.modules.project_management.admin.components.permissionsTab": "Uprawnienia",
   "components.admin.ServerError.genericServerError": "Wystąpił problem z załadowaniem tej zawartości, proszę spróbuj ponownie później."
 }
