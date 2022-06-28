@@ -166,7 +166,6 @@ const renderers = [
   { tester: dateControlTester, renderer: DateControl },
   { tester: userPickerControlTester, renderer: UserPickerControl },
   { tester: multilocInputTester, renderer: MultilocInputLayout },
-  { tester: clCategoryTester, renderer: CLCategoryLayout },
   { tester: orderedLayoutTester, renderer: OrderedLayout },
 ];
 
