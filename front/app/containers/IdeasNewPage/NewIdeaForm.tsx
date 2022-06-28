@@ -74,7 +74,7 @@ interface InputProps {
   onImageFileChange: (imageFile: UploadFile[]) => void;
   onTagsChange: (selectedTopics: string[]) => void;
   onAddressChange: (address: string) => void;
-  onAttachmentChange: (attachment: UploadFile[]) => void;
+  onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
 }
 
 interface DataProps {
@@ -92,6 +92,7 @@ interface GlobalState {
   proposedBudget: number | null;
   position: string;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   submitError: boolean;
   processing: boolean;
   fileOrImageError: boolean;
@@ -117,6 +118,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget: null,
       position: '',
       imageFile: [],
+      ideaFiles: [],
       submitError: false,
       processing: false,
       fileOrImageError: false,
@@ -140,6 +142,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
           proposedBudget,
           position,
           imageFile,
+          ideaFiles,
           submitError,
           processing,
           fileOrImageError,
@@ -155,6 +158,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget,
             position,
             imageFile,
+            ideaFiles,
             submitError,
             processing,
             fileOrImageError,
@@ -209,6 +213,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       proposedBudget,
       position,
       imageFile,
+      ideaFiles,
       titleProfanityError,
       descriptionProfanityError,
       authorId,
@@ -222,7 +227,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       onImageFileChange,
       onTagsChange,
       onAddressChange,
-      onAttachmentChange,
+      onIdeaFilesChange,
     } = this.props;
 
     if (!isNilOrError(project)) {
@@ -257,6 +262,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             proposedBudget={proposedBudget}
             address={position}
             imageFile={imageFile}
+            ideaFiles={ideaFiles}
             hasTitleProfanityError={titleProfanityError}
             hasDescriptionProfanityError={descriptionProfanityError}
             onSubmit={this.handleIdeaFormOutput}
@@ -265,7 +271,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             onImageFileChange={onImageFileChange}
             onTagsChange={onTagsChange}
             onAddressChange={onAddressChange}
-            onAttachmentChange={onAttachmentChange}
+            onIdeaFilesChange={onIdeaFilesChange}
           />
         </Container>
       );

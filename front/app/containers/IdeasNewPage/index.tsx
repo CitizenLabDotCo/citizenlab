@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -102,7 +102,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
+class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
   constructor(props) {
@@ -352,6 +352,12 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     });
   };
 
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.globalState.set({
+      ideaFiles,
+    });
+  };
+
   render() {
     const { project } = this.props;
 
@@ -368,6 +374,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               onImageFileChange={this.onImageFileChange}
               onTagsChange={this.onTagsChange}
               onAddressChange={this.onAddressChange}
+              onIdeaFilesChange={this.onIdeaFilesChange}
             />
           </PageContainer>
           <ButtonBarContainer>

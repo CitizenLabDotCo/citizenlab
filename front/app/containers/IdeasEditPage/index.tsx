@@ -135,6 +135,7 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   imageId: string | null;
   loaded: boolean;
   submitError: boolean;
@@ -160,6 +161,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      ideaFiles: [],
       imageId: null,
       loaded: false,
       submitError: false,
@@ -424,6 +426,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ descriptionMultiloc, descriptionProfanityError: false });
   };
 
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.setState({
+      ideaFiles,
+    });
+  };
+
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, project, idea, phases } = this.props;
@@ -434,6 +442,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         selectedTopics,
         address,
         imageFile,
+        ideaFiles,
         budget,
         proposedBudget,
         titleProfanityError,
@@ -486,6 +495,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
+                ideaFiles={ideaFiles}
                 onSubmit={this.handleIdeaFormOutput}
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
@@ -497,6 +507,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
                 onAddressChange={this.onAddressChange}
+                onIdeaFilesChange={this.onIdeaFilesChange}
               />
 
               <ButtonBarContainer>
