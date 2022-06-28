@@ -1,16 +1,13 @@
 import React from 'react';
 
 // components
-import {
-  Box,
-  Radio,
-  Title,
-  useBreakpoint,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Box, Radio, Title, Icon } from '@citizenlab/cl2-component-library';
+
+// styles
+import styled from 'styled-components';
 
 // utils
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 // craft
 import { useNode, UserComponent, Element } from '@craftjs/core';
@@ -20,6 +17,31 @@ import Container from '../Container';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
+const StyledBox = styled(Box)`
+  min-height: 40px;
+  width: 100%;
+  gap: 16px;
+  display: grid;
+
+  ${media.smallerThanMaxTablet`
+    grid-template-columns: 1fr;
+  `}
+
+  ${media.biggerThanMaxTablet`
+  &.LayoutEven {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &.LayoutOneTwo {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  &.LayoutTwoOne {
+    grid-template-columns: 2fr 1fr;
+  }
+  `}
+`;
+
 export const TwoColumn: UserComponent = ({
   columnLayout,
   children,
@@ -27,25 +49,16 @@ export const TwoColumn: UserComponent = ({
   columnLayout: '1-1' | '2-1' | '1-2';
   children?: React.ReactNode;
 }) => {
-  const isLargeTablet = useBreakpoint('largeTablet');
-
   return (
-    <Box
+    <StyledBox
       id="e2e-two-column"
-      minHeight="40px"
-      w="100%"
-      gap="16px"
-      // Change this to a styled component
-      style={{
-        display: 'grid',
-        gridTemplateColumns: isLargeTablet
-          ? '1fr'
-          : columnLayout === '1-1'
-          ? '1fr 1fr'
+      className={
+        columnLayout === '1-1'
+          ? 'LayoutEven'
           : columnLayout === '1-2'
-          ? '1fr 2fr'
-          : '2fr 1fr',
-      }}
+          ? 'LayoutOneTwo'
+          : 'LayoutTwoOne'
+      }
     >
       {children || (
         <>
@@ -53,7 +66,7 @@ export const TwoColumn: UserComponent = ({
           <Element id={'right'} is={Container} canvas />
         </>
       )}
-    </Box>
+    </StyledBox>
   );
 };
 
