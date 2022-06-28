@@ -12,7 +12,7 @@ import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
-import { NAVIGATION_PATH } from '..';
+import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
 
 // services
 import { updatePage } from 'services/pages';

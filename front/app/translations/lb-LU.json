@@ -1138,7 +1138,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotVerified": "Fir un dëser Ëmfro deelzehuelen, muss Äre Kont iwwerpréiwt ginn. {verificationLink}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Dës Ëmfro ass net méi verfügbar, well de Projet net méi aktiv ass.",
   "app.containers.ProjectsShowPage.process.survey.verificationLinkText": "Iwwerpréift Äre Kont",
-  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.",
+  "app.containers.SearchInput.a11y_searchResultsHaveChanged": "{numberOfSearchResults, plural, zero {# Sichresultater goufe gelueden} one {# Sichresultater goufe gelueden} other {# Sichresultater goufe gelueden}}.",
   "app.containers.SearchInput.removeSearchTerm": "Sichgbegrëff ewechmaachen",
   "app.containers.SearchInput.searchAriaLabel": "Sichen",
   "app.containers.SearchInput.searchLabel": "Sichen",

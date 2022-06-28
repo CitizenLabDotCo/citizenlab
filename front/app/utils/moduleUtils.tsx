@@ -447,6 +447,7 @@ interface Routes {
   'admin.projects.project': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
+  'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
@@ -551,6 +552,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
       ),
       'admin.ideas': parseModuleRoutes(
         mergedRoutes?.['admin.ideas'],
+        RouteTypes.ADMIN
+      ),
+      'admin.pages-menu': parseModuleRoutes(
+        mergedRoutes?.['admin.pages-menu'],
         RouteTypes.ADMIN
       ),
       'admin.dashboards': parseModuleRoutes(
