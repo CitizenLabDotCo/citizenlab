@@ -128,6 +128,7 @@ interface InputProps {
   onImageFileChange: (imageFile: UploadFile[]) => void;
   onTagsChange: (selectedTopics: string[]) => void;
   onAddressChange: (address: string) => void;
+  onAttachmentChange: (attachment: UploadFile[]) => void;
   authorId: string | null;
 }
 
@@ -567,9 +568,12 @@ class IdeaForm extends PureComponent<
   };
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
-    this.setState(({ ideaFiles }) => ({
-      ideaFiles: [...ideaFiles, ideaFileToAdd],
-    }));
+    let files: UploadFile[] = [];
+    this.setState(({ ideaFiles }) => {
+      files = [...ideaFiles, ideaFileToAdd];
+      return { ideaFiles: files };
+    });
+    this.props.onIdeaFileAdd(files);
   };
 
   handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {

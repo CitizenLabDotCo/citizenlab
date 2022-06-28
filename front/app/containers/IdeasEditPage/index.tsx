@@ -410,6 +410,10 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ selectedTopics });
   };
 
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
     const descriptionMultiloc = {
@@ -492,6 +496,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 onTagsChange={this.onTagsChange}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onAddressChange={this.onAddressChange}
               />
 
               <ButtonBarContainer>

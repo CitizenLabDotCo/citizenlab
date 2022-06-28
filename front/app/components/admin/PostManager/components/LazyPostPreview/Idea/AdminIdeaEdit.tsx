@@ -97,6 +97,7 @@ interface State {
   loaded: boolean;
   processing: boolean;
   authorId: string | null;
+  attachments: UploadFile[];
 }
 
 class AdminIdeaEdit extends PureComponent<Props, State> {
@@ -121,6 +122,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       descriptionProfanityError: false,
       loaded: false,
       processing: false,
+      attachments: [],
     };
     this.subscriptions = [];
   }
@@ -365,6 +367,14 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     this.setState({ selectedTopics });
   };
 
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
+  onAttachmentChange = (attachment: UploadFile[]) => {
+    this.setState();
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
 
@@ -437,6 +447,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 onDescriptionChange={this.onDescriptionChange}
                 onImageFileChange={this.onImageFileChange}
                 onTagsChange={this.onTagsChange}
+                onAddressChange={this.onAddressChange}
               />
 
               <ButtonWrapper>
