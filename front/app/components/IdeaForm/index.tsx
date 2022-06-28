@@ -6,7 +6,6 @@ import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
 
 // libraries
-import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
@@ -119,12 +118,17 @@ interface InputProps {
   proposedBudget: number | null;
   address: string;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
   hasTitleProfanityError: boolean;
   hasDescriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
+  onImageFileChange: (imageFile: UploadFile[]) => void;
+  onTagsChange: (selectedTopics: string[]) => void;
+  onAddressChange: (address: string) => void;
+  onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
   authorId: string | null;
 }
 
@@ -161,6 +165,7 @@ interface State {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
+  ideaFilesChanged: boolean;
   ideaCustomFieldsSchemas: IIdeaFormSchemas | null;
   authorId: string | null;
 }
@@ -194,6 +199,7 @@ class IdeaForm extends PureComponent<
       proposedBudgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
+      ideaFilesChanged: false,
       ideaCustomFieldsSchemas: null,
       locationError: null,
       imageError: null,
@@ -283,8 +289,14 @@ class IdeaForm extends PureComponent<
       remoteIdeaFiles,
       authUser,
       authorId,
+      ideaFiles: newIdeaFiles,
     } = this.props;
-    const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
+
+    const ideaFiles = this.state.ideaFilesChanged
+      ? newIdeaFiles
+      : Array.isArray(remoteIdeaFiles)
+      ? remoteIdeaFiles
+      : [];
 
     this.setState({
       selectedTopics,
@@ -321,16 +333,19 @@ class IdeaForm extends PureComponent<
 
   handleTopicsOnChange = (selectedTopics: string[]) => {
     this.setState({ selectedTopics });
+    this.props.onTagsChange(selectedTopics);
   };
 
   handleLocationOnChange = (address: string) => {
     this.setState({ address });
+    this.props.onAddressChange(address);
   };
 
   handleUploadOnAdd = (imageFile: UploadFile[]) => {
     this.setState({
       imageFile: [imageFile[0]],
     });
+    this.props.onImageFileChange(imageFile);
   };
 
   handleUploadOnRemove = () => {
@@ -524,29 +539,6 @@ class IdeaForm extends PureComponent<
       attachmentsError,
     });
 
-    // scroll to erroneous title/description fields
-    if (titleError && this.titleInputElement) {
-      scrollToComponent(this.titleInputElement, {
-        align: 'top',
-        offset: -240,
-        duration: 300,
-      });
-      setTimeout(
-        () => this.titleInputElement && this.titleInputElement.focus(),
-        300
-      );
-    } else if (descriptionError && this.descriptionElement) {
-      scrollToComponent(this.descriptionElement, {
-        align: 'top',
-        offset: -200,
-        duration: 300,
-      });
-      setTimeout(
-        () => this.descriptionElement && this.descriptionElement.focus(),
-        300
-      );
-    }
-
     const hasError =
       !titleError &&
       !descriptionError &&
@@ -561,18 +553,25 @@ class IdeaForm extends PureComponent<
   };
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
-    this.setState(({ ideaFiles }) => ({
-      ideaFiles: [...ideaFiles, ideaFileToAdd],
-    }));
+    const ideaFiles = [...this.state.ideaFiles, ideaFileToAdd];
+    this.setState({ ideaFiles, ideaFilesChanged: true });
+    this.props.onIdeaFilesChange(ideaFiles);
   };
 
   handleIdeaFileOnRemove = (ideaFileToRemove: UploadFile) => {
-    this.setState(({ ideaFiles, ideaFilesToRemove }) => ({
-      ideaFiles: ideaFiles.filter(
-        (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
-      ),
-      ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
-    }));
+    const ideaFiles = this.state.ideaFiles.filter(
+      (ideaFile) => ideaFile.base64 !== ideaFileToRemove.base64
+    );
+
+    this.setState(({ ideaFilesToRemove }) => {
+      return {
+        ideaFiles,
+        ideaFilesToRemove: [...ideaFilesToRemove, ideaFileToRemove],
+        ideaFilesChanged: true,
+      };
+    });
+
+    this.props.onIdeaFilesChange(ideaFiles);
   };
 
   handleOnSubmit = () => {

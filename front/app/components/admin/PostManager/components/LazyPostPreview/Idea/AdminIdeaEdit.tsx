@@ -90,6 +90,7 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  ideaFiles: UploadFile[];
   imageId: string | null;
   submitError: boolean;
   titleProfanityError: boolean;
@@ -97,6 +98,7 @@ interface State {
   loaded: boolean;
   processing: boolean;
   authorId: string | null;
+  attachments: UploadFile[];
 }
 
 class AdminIdeaEdit extends PureComponent<Props, State> {
@@ -115,12 +117,14 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      ideaFiles: [],
       imageId: null,
       submitError: false,
       titleProfanityError: false,
       descriptionProfanityError: false,
       loaded: false,
       processing: false,
+      attachments: [],
     };
     this.subscriptions = [];
   }
@@ -357,6 +361,18 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     }
   };
 
+  onImageFileChange = (imageFile: UploadFile[]) => {
+    this.setState({ imageFile });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
 
@@ -366,6 +382,11 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       this.setState({ descriptionMultiloc, descriptionProfanityError: false });
     }
   };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.setState({ ideaFiles });
+  };
+
   render() {
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles, goBack } = this.props;
@@ -377,6 +398,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
         selectedTopics,
         address,
         imageFile,
+        ideaFiles,
         submitError,
         processing,
         budget,
@@ -419,6 +441,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
+                ideaFiles={ideaFiles}
                 onSubmit={this.handleIdeaFormOutput}
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
@@ -427,6 +450,10 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onImageFileChange={this.onImageFileChange}
+                onTagsChange={this.onTagsChange}
+                onAddressChange={this.onAddressChange}
+                onIdeaFilesChange={this.onIdeaFilesChange}
               />
 
               <ButtonWrapper>
