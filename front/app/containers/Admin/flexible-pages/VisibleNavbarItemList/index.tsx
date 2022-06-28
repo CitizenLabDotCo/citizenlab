@@ -7,7 +7,7 @@ import {
 } from 'modules/commercial/customizable_navbar/services/navbar';
 import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
-import { adminPagesMenuPagesEditHomePath } from 'modules/commercial/customizable_navbar/services/pathUtils';
+import { adminPagesMenuHomepagePath } from '../pathUtil';
 
 // components
 import {
@@ -50,7 +50,7 @@ const VisibleNavbarItemList = ({
     const pageData = navbarItem.relationships.static_page.data;
 
     if (navbarItem.attributes.code === 'home') {
-      clHistory.push(adminPagesMenuPagesEditHomePath());
+      clHistory.push(adminPagesMenuHomepagePath());
     } else {
       pageData
         ? clHistory.push(`${NAVIGATION_PATH}/pages/edit/${pageData.id}`)

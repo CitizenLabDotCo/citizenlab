@@ -4,10 +4,10 @@ function navigationPath(restOfPath: string) {
   return `${NAVIGATION_PATH}${restOfPath}`;
 }
 
-function adminPagesMenuPagesEditHomePath() {
+function adminPagesMenuHomepagePath() {
   // could use type checking, I initially edited it to /pages/edit...,
   // which resulted in a 404
-  return navigationPath('/edit/home-page');
+  return navigationPath('/home-page');
 }
 
-export { adminPagesMenuPagesEditHomePath };
+export { adminPagesMenuHomepagePath };
