@@ -984,7 +984,7 @@
   "app.containers.AdminPage.ProjectEdit.upvotingMethodTitle": "Anzahl der Stimmen pro Teilnehmendem",
   "app.containers.AdminPage.ProjectEdit.useTemplate": "Vorlage verwenden",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Projekt ansehen",
-  "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Freiwilligenarbeit",
+  "app.containers.AdminPage.ProjectEdit.volunteeringTab": "Teilnahme",
   "app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess": "{groupCount, plural, one {# Gruppe kann sehen} other {# Gruppen können anzeigen}}",
   "app.containers.AdminPage.ProjectEvents.addEventButton": "Veranstaltung hinzufügen",
   "app.containers.AdminPage.ProjectEvents.dateStartLabel": "Start",
