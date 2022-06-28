@@ -1,10 +1,20 @@
 # Changelog
 
+## Next release
+
+### Changed
+
+- [CL-1024] Shows respective CTA buttons in the About component of the content builder
+
 ## 2022-06-22
 
 ### Fixed
 
 - [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+### Changed
+
+- [CL-975] Social sharing options are now consistent across the platform, and a general "Copy link" option has been added.
 
 ## 2022-06-21
 

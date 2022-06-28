@@ -5,9 +5,7 @@ module ContentBuilder
     protected
 
     def image_elements(content)
-      content.select do |key, elt|
-        key != 'ROOT' && image_element?(elt)
-      end.values.pluck('props')
+      LayoutService.new.select_craftjs_elements_for_type(content, 'Image').pluck('props')
     end
 
     def content_image_class
@@ -24,12 +22,6 @@ module ContentBuilder
 
     def code_attribute_for_element
       'dataCode'
-    end
-
-    private
-
-    def image_element?(element)
-      element.is_a?(Hash) && element['type'].is_a?(Hash) && element.dig('type', 'resolvedName') == 'Image'
     end
   end
 end
