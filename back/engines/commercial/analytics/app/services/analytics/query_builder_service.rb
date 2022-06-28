@@ -79,6 +79,7 @@ module Analytics
     def initialize(model, query)
       @model = model
       @query = query
+      @validation
     end
 
     def get_dimensions_keys
@@ -89,39 +90,66 @@ module Analytics
         }.to_h
     end
     
-    def set_user_error(validation)
-      validation["error"] = true
-      unless validation["status"] == 400
-        validation["status"] = 422
+    def set_user_error
+      @validation["error"] = true
+      unless @validation["status"] == 400
+        @validation["status"] = 422
       end
     end
 
-    def validate()
-      validation = {"messages" => [], "error" => false, "status" => 200}
-      
+    def validate_json
       json_errors = JSON::Validator.fully_validate(SCHEMA, @query.to_unsafe_hash)
       if json_errors.length > 0
-        validation["error"] = true
-        validation["messages"] = json_errors
-        validation["status"] = 400
+        @validation["error"] = true
+        @validation["messages"] = json_errors
+        @validation["status"] = 400
       end
-      
+    end
+
+    def validate_dimensions
       available_dimensions =  self.get_dimensions_keys
       @query[:dimensions].each do |dimension, columns|
         if available_dimensions.key?(dimension)
           columns.each do |column, value|
             unless available_dimensions[dimension].include?(column)
-              validation["messages"].push("Column #{column} does not exist in dimension #{dimension}.")
-              set_user_error(validation)
+              @validation["messages"].push("Column #{column} does not exist in dimension #{dimension}.")
+              set_user_error
             end
           end
         else
-          validation["messages"].push("Dimension #{dimension} does not exist.")
-          set_user_error(validation)
+          @validation["messages"].push("Dimension #{dimension} does not exist.")
+          set_user_error
         end
       end
+    end
 
-      validation
+    def validate_dates
+      @query[:dimensions].each do |dimension, columns|
+        columns.each do |column, value|
+          unless [Array, String].include? value.class
+            if column == "date"
+              ["from", "to"].each do |date|
+                begin
+                  Date.parse(value[date])
+                rescue ArgumentError
+                  @validation["messages"].push("Invalid '#{date}' date in #{dimension} dimension.")
+                  set_user_error
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+
+    def validate
+      @validation = {"messages" => [], "error" => false, "status" => 200}
+      
+      validate_json
+      validate_dimensions
+      validate_dates
+
+      @validation
     end
     
     def run()
