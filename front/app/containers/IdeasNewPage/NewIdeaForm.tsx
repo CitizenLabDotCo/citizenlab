@@ -73,6 +73,7 @@ interface InputProps {
   onDescriptionChange: (description: string) => void;
   onImageFileChange: (imageFile: UploadFile[]) => void;
   onTagsChange: (selectedTopics: string[]) => void;
+  onAddressChange: (address: string) => void;
 }
 
 interface DataProps {
@@ -160,7 +161,6 @@ class NewIdeaForm extends PureComponent<Props, State> {
             descriptionProfanityError,
             authorId,
           };
-
           this.setState(newState);
         }
       ),
@@ -212,6 +212,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       descriptionProfanityError,
       authorId,
     } = this.state;
+    console.log(position);
     const {
       projectId,
       project,
@@ -220,6 +221,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
       onDescriptionChange,
       onImageFileChange,
       onTagsChange,
+      onAddressChange,
     } = this.props;
 
     if (!isNilOrError(project)) {
@@ -261,6 +263,7 @@ class NewIdeaForm extends PureComponent<Props, State> {
             onDescriptionChange={onDescriptionChange}
             onImageFileChange={onImageFileChange}
             onTagsChange={onTagsChange}
+            onAddressChange={onAddressChange}
           />
         </Container>
       );
