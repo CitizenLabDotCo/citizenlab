@@ -565,7 +565,7 @@
   "app.containers.AdminPage.DashboardPage.components.ChartCard.comingSoonDescription": "Wir arbeiten derzeit an dem {fieldName} Dashboard. Es wird bald verfügbar sein.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.dataHiddenWarning": "{numberOfHiddenItems, plural, one {# Element ist} other {# Elemente sind}} versteckt in diesem Graph. Wechseln Sie zu {tableViewLink}, um alle Daten anzuzeigen.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} für die BenutzerInnenregistrierung",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.includedUsersMessage2": "{known} von {total} Benutzer:innen eingeschlossen ({percentage})",
+  "app.containers.AdminPage.DashboardPage.components.ChartCard.includedUsersMessage2": "{known} von Nutzern {total} eingeschlossen ({percentage})",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.openTableModalButtonText": "{numberOfHiddenItems} mehr anzeigen",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.optional": "Optional",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.provideBaseDataset": "Bitte stellen Sie einen Basisdatensatz zur Verfügung.",
