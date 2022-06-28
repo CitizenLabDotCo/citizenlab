@@ -128,7 +128,7 @@ const MenuItem = ({ navItem }: Props) => {
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
   });
-  const show = navItem.checkFeaturesDisabled
+  const show = navItem.showOnlyIfFeaturesDisabled
     ? !featuresEnabled
     : featuresEnabled;
   return show ? (

@@ -47,7 +47,6 @@ interface Props {
   showAddButton?: boolean;
   addButtonDisabled?: boolean;
   showRemoveButton?: boolean;
-  showDeleteButton?: boolean;
   showViewButton?: boolean;
   viewButtonLink?: string;
   onClickEditButton?: () => void;
@@ -63,7 +62,6 @@ export default ({
   showAddButton,
   addButtonDisabled,
   showRemoveButton,
-  showDeleteButton,
   viewButtonLink,
   onClickEditButton,
   onClickAddButton,
@@ -122,7 +120,7 @@ export default ({
           </Link>
         )}
 
-        {!isDefaultPage && showDeleteButton && (
+        {!isDefaultPage && onClickDeleteButton && (
           <Button
             buttonStyle="secondary"
             icon="delete"

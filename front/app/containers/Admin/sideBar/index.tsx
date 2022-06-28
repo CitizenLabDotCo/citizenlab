@@ -141,7 +141,7 @@ export type NavItem = {
   iconName: IconNames;
   message: string;
   featureNames?: TAppConfigurationSetting[];
-  checkFeaturesDisabled?: boolean;
+  showOnlyIfFeaturesDisabled?: boolean;
   count?: number;
   onlyCheckAllowed?: boolean;
 };
@@ -223,7 +223,7 @@ class Sidebar extends PureComponent<
           link: '/admin/pages-menu',
           iconName: 'blankPage',
           message: 'pages',
-          checkFeaturesDisabled: true,
+          showOnlyIfFeaturesDisabled: true,
           featureNames: ['customizable_navbar'],
         },
         {

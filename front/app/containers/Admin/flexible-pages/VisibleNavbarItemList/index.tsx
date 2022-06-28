@@ -20,7 +20,7 @@ export default function VisibleNavbarItemList() {
     <List>
       {!isNilOrError(navbarItems) &&
         navbarItems.map((navbarItem: INavbarItem, i: number) => (
-          <Row isLastItem={i === navbarItems.length - 1}>
+          <Row key={navbarItem.id} isLastItem={i === navbarItems.length - 1}>
             <NavbarItemRow
               title={navbarItem.attributes.title_multiloc}
               showEditButton={navbarItem.attributes.code !== 'home'}
