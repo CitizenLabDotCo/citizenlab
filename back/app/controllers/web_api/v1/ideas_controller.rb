@@ -194,7 +194,6 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     return if extra_field_values.empty?
 
-    CustomFieldService.new.cleanup_custom_field_values! extra_field_values
     params[:idea][:custom_field_values] = extra_field_values
   end
 
