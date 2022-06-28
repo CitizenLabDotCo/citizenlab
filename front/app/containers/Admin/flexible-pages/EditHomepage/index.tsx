@@ -38,26 +38,27 @@ const EditHomepage = () => {
         <HomepageSectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
+          titleMessageDescriptor={messages.heroBanner}
         />
         <HomepageSectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
+          titleMessageDescriptor={messages.topInfoSection}
         />
         <HomepageSectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
+          titleMessageDescriptor={messages.projectsList}
         />
         <HomepageSectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
+          titleMessageDescriptor={messages.events}
         />
         <HomepageSectionToggle
           onChangeSectionToggle={handleOnChangeToggle}
           onClickEditButton={handleOnClick}
-        />
-        <HomepageSectionToggle
-          onChangeSectionToggle={handleOnChangeToggle}
-          onClickEditButton={handleOnClick}
+          titleMessageDescriptor={messages.bottomInfoSection}
         />
       </div>
     </>

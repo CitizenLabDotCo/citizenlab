@@ -9,6 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
+import { FormattedMessage } from 'react-intl';
+import { MessageDescriptor } from 'utils/cl-intl';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 20px;
@@ -17,11 +19,13 @@ const StyledToggle = styled(Toggle)`
 interface Props {
   onChangeSectionToggle: () => void;
   onClickEditButton: () => void;
+  titleMessageDescriptor: MessageDescriptor;
 }
 
 const HomepageSectionToggle = ({
   onChangeSectionToggle,
   onClickEditButton,
+  titleMessageDescriptor,
 }: Props) => {
   return (
     <Row>
@@ -32,7 +36,7 @@ const HomepageSectionToggle = ({
       Also, the margin-top is more than margin-bottom (for an h3).
       */}
         <Title variant="h3" mr="10px">
-          Hero banner
+          <FormattedMessage {...titleMessageDescriptor} />
         </Title>
         <IconTooltip content="" />
       </Box>
