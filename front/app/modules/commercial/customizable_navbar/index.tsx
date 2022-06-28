@@ -1,7 +1,9 @@
+import FeatureFlag from 'components/FeatureFlag';
 import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
+import PagesMenu from './admin/containers/PagesMenu';
 
 const NewPageFormComponent = React.lazy(
   () => import('./admin/containers/NewPageForm')
@@ -45,6 +47,11 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.Admin.settings.policies.subTitle': () => (
       <PoliciesSubtitle />
+    ),
+    'app.containers.Admin.pages-menu.index': () => (
+      <FeatureFlag name="customizable_navbar">
+        <PagesMenu />
+      </FeatureFlag>
     ),
   },
 };
