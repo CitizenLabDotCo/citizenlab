@@ -7,7 +7,7 @@ import {
 } from 'modules/commercial/customizable_navbar/services/navbar';
 import { deletePage } from 'services/pages';
 import { INavbarItem, getNavbarItemSlug } from 'services/navbar';
-import { adminPagesMenuHomepagePath } from '../pathUtil';
+import { adminPagesMenuHomepagePath } from '../routes';
 
 // components
 import {
