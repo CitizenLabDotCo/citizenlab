@@ -6,6 +6,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { adopt } from 'react-adopt';
 
 // libraries
+import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
@@ -538,6 +539,29 @@ class IdeaForm extends PureComponent<
       imageError,
       attachmentsError,
     });
+
+    // scroll to erroneous title/description fields
+    if (titleError && this.titleInputElement) {
+      scrollToComponent(this.titleInputElement, {
+        align: 'top',
+        offset: -240,
+        duration: 300,
+      });
+      setTimeout(
+        () => this.titleInputElement && this.titleInputElement.focus(),
+        300
+      );
+    } else if (descriptionError && this.descriptionElement) {
+      scrollToComponent(this.descriptionElement, {
+        align: 'top',
+        offset: -200,
+        duration: 300,
+      });
+      setTimeout(
+        () => this.descriptionElement && this.descriptionElement.focus(),
+        300
+      );
+    }
 
     const hasError =
       !titleError &&
