@@ -219,13 +219,12 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       titleMultiloc,
       descriptionMultiloc,
       imageId,
-      imageFile,
       authorId,
-      address: savedAddress,
       projectId,
     } = this.state;
     const {
       title,
+      imageFile,
       description,
       selectedTopics,
       address: ideaFormAddress,
@@ -236,17 +235,13 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       authorId: newAuthorId,
     } = ideaFormOutput;
     const oldImageId = imageId;
-    const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
-    const oldImageBase64 = oldImage ? oldImage.base64 : null;
-    const newImage =
-      ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0
-        ? ideaFormOutput.imageFile[0]
-        : null;
+    const newImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
+
     const newImageBase64 = newImage ? newImage.base64 : null;
-    const imageToAddPromise =
-      newImageBase64 && oldImageBase64 !== newImageBase64
-        ? addIdeaImage(ideaId, newImageBase64, 0)
-        : Promise.resolve(null);
+    const imageToAddPromise = newImageBase64
+      ? addIdeaImage(ideaId, newImageBase64, 0)
+      : Promise.resolve(null);
+
     const filesToAddPromises = ideaFiles
       .filter((file) => !file.remote)
       .map((file) => addIdeaFile(ideaId, file.base64, file.name));
@@ -257,15 +252,12 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     const finalAuthorId = newAuthorId || authorId;
     const addressDiff: ILocationInfo = {} as any;
 
-    if (ideaFormAddress !== savedAddress) {
-      const locationPoint = await geocode(ideaFormAddress);
-      addressDiff.location_description = ideaFormAddress;
+    const locationPoint = await geocode(ideaFormAddress);
+    addressDiff.location_description = ideaFormAddress;
 
-      if (locationPoint) {
-        addressDiff.location_point_geojson = locationPoint;
-      }
+    if (locationPoint) {
+      addressDiff.location_point_geojson = locationPoint;
     }
-
     const updateIdeaPromise = updateIdea(ideaId, {
       budget,
       proposed_budget: proposedBudget,
@@ -283,9 +275,8 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     });
 
     this.setState({ processing: true, submitError: false });
-
     try {
-      if (oldImageId && oldImageBase64 !== newImageBase64) {
+      if (oldImageId) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -361,8 +352,12 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     }
   };
 
-  onImageFileChange = (imageFile: UploadFile[]) => {
-    this.setState({ imageFile });
+  onImageFileAdd = (newImageFile: UploadFile[]) => {
+    this.setState({ imageFile: [newImageFile[0]] });
+  };
+
+  onImageFileRemove = () => {
+    this.setState({ imageFile: [] });
   };
 
   onTagsChange = (selectedTopics: string[]) => {
@@ -450,7 +445,8 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
                 hasDescriptionProfanityError={descriptionProfanityError}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
-                onImageFileChange={this.onImageFileChange}
+                onImageFileAdd={this.onImageFileAdd}
+                onImageFileRemove={this.onImageFileRemove}
                 onTagsChange={this.onTagsChange}
                 onAddressChange={this.onAddressChange}
                 onIdeaFilesChange={this.onIdeaFilesChange}

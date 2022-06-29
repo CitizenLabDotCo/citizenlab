@@ -339,9 +339,15 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
     this.globalState.set({ position: address });
   };
 
-  onImageFileChange = (imageFile: UploadFile[]) => {
+  onImageFileAdd = (imageFile: UploadFile[]) => {
     this.globalState.set({
-      imageFile,
+      imageFile: [imageFile[0]],
+    });
+  };
+
+  onImageFileRemove = () => {
+    this.globalState.set({
+      imageFile: [],
     });
   };
 
@@ -371,7 +377,8 @@ class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
               projectId={project.id}
               onTitleChange={this.onTitleChange}
               onDescriptionChange={this.onDescriptionChange}
-              onImageFileChange={this.onImageFileChange}
+              onImageFileAdd={this.onImageFileAdd}
+              onImageFileRemove={this.onImageFileRemove}
               onTagsChange={this.onTagsChange}
               onAddressChange={this.onAddressChange}
               onIdeaFilesChange={this.onIdeaFilesChange}

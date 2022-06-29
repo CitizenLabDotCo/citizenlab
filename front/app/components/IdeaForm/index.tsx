@@ -126,7 +126,8 @@ interface InputProps {
   hasDescriptionProfanityError: boolean;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
-  onImageFileChange: (imageFile: UploadFile[]) => void;
+  onImageFileAdd: (imageFile: UploadFile[]) => void;
+  onImageFileRemove: () => void;
   onTagsChange: (selectedTopics: string[]) => void;
   onAddressChange: (address: string) => void;
   onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
@@ -346,13 +347,14 @@ class IdeaForm extends PureComponent<
     this.setState({
       imageFile: [imageFile[0]],
     });
-    this.props.onImageFileChange(imageFile);
+    this.props.onImageFileAdd(imageFile);
   };
 
   handleUploadOnRemove = () => {
     this.setState({
       imageFile: [],
     });
+    this.props.onImageFileRemove();
   };
 
   handleBudgetOnChange = (budget: string) => {
@@ -621,7 +623,6 @@ class IdeaForm extends PureComponent<
       imageFile,
       ideaFiles
     );
-
     if (formClientSideIsValid) {
       const output: IIdeaFormOutput = {
         title,

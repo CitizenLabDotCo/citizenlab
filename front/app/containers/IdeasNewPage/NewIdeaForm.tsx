@@ -71,7 +71,8 @@ interface InputProps {
   projectId: string;
   onTitleChange: (title: string) => void;
   onDescriptionChange: (description: string) => void;
-  onImageFileChange: (imageFile: UploadFile[]) => void;
+  onImageFileAdd: (imageFile: UploadFile[]) => void;
+  onImageFileRemove: () => void;
   onTagsChange: (selectedTopics: string[]) => void;
   onAddressChange: (address: string) => void;
   onIdeaFilesChange: (ideaFiles: UploadFile[]) => void;
@@ -224,7 +225,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
       phases,
       onTitleChange,
       onDescriptionChange,
-      onImageFileChange,
+      onImageFileAdd,
+      onImageFileRemove,
       onTagsChange,
       onAddressChange,
       onIdeaFilesChange,
@@ -268,7 +270,8 @@ class NewIdeaForm extends PureComponent<Props, State> {
             onSubmit={this.handleIdeaFormOutput}
             onTitleChange={onTitleChange}
             onDescriptionChange={onDescriptionChange}
-            onImageFileChange={onImageFileChange}
+            onImageFileAdd={onImageFileAdd}
+            onImageFileRemove={onImageFileRemove}
             onTagsChange={onTagsChange}
             onAddressChange={onAddressChange}
             onIdeaFilesChange={onIdeaFilesChange}
