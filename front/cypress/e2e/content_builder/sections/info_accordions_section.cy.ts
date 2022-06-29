@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Three Column component', () => {
+describe('Content builder Info & Accordions section', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -29,7 +29,6 @@ describe('Content builder Three Column component', () => {
       });
     });
   });
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
   });
@@ -38,51 +37,51 @@ describe('Content builder Three Column component', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles Three Column component correctly', () => {
+  it('handles Info & Accordions section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
-    cy.get('#e2e-draggable-three-column').dragAndDrop(
+    cy.get('#e2e-draggable-info-accordions').dragAndDrop(
       '#e2e-content-builder-frame',
       {
         position: 'inside',
       }
     );
 
-    // Components added to all columns
-    cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-text').dragAndDrop('div#e2e-single-column', {
-      position: 'inside',
-    });
+    // Edit text component
+    cy.get('#e2e-text-box').click();
+    cy.get('#quill-editor').click();
+    cy.get('#quill-editor').type('Edited text.', { force: true });
 
-    cy.get('div#e2e-text-box').should('have.length', 3);
-    cy.get('div#e2e-about-box').should('have.length', 3);
+    // Edit an accordion component
+    cy.get('#e2e-accordion').click({ force: true });
+    cy.get('#default-open-toggle').find('input').click({ force: true });
+    cy.get('#quill-editor').click({ force: true });
+    cy.get('#quill-editor').type('Accordion text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');
 
-    // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-three-column').should('exist');
-    cy.get('div#e2e-text-box').should('have.length', 3);
-    cy.get('div#e2e-about-box').should('have.length', 3);
+    cy.contains('Edited text.').should('be.visible');
+    cy.contains('Accordion text.').should('be.visible');
+    cy.contains('About').should('be.visible');
   });
 
-  it('deletes Three Column component correctly', () => {
+  it('deletes Info & Accordions section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.get('#e2e-three-column').should('be.visible');
 
-    cy.get('#e2e-three-column').click('top');
+    cy.get('#e2e-two-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
-    cy.get('#e2e-three-column').should('not.exist');
+    cy.contains('Edited text.').should('not.exist');
+    cy.contains('Accordion text.').should('not.exist');
+    cy.contains('About').should('not.exist');
   });
 });
