@@ -56,7 +56,10 @@ const ContentBuilderSettings = () => {
     actions.selectNode();
   };
 
-  return selected && isEnabled && selected.id !== ROOT_NODE ? (
+  return selected &&
+    isEnabled &&
+    selected.id !== ROOT_NODE &&
+    selected.name !== 'Box' ? (
     <StyledBox
       position="fixed"
       right="0"

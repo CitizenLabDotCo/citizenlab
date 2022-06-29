@@ -23,6 +23,8 @@ const IFRAME = 'Iframe';
 const ABOUT_BOX = 'AboutBox';
 const ACCORDION = 'Accordion';
 const WHITE_SPACE = 'WhiteSpace';
+const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
+const IMAGE_TEXT_CARDS = 'ImageTextCards';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -33,7 +35,9 @@ type ComponentNamesType =
   | typeof IFRAME
   | typeof ABOUT_BOX
   | typeof ACCORDION
-  | typeof WHITE_SPACE;
+  | typeof WHITE_SPACE
+  | typeof INFO_WITH_ACCORDIONS
+  | typeof IMAGE_TEXT_CARDS;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -55,6 +59,10 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.accordion;
     case WHITE_SPACE:
       return messages.whiteSpace;
+    case INFO_WITH_ACCORDIONS:
+      return messages.infoWithAccordions;
+    case IMAGE_TEXT_CARDS:
+      return messages.imageTextCards;
     default:
       return messages.default;
   }
@@ -142,7 +150,11 @@ const RenderNode = ({ render }) => {
 
   const isSelectable = getComponentNameMessage(name) !== messages.default;
   const nodeLabelIsVisible =
-    isActive && isSelectable && id !== ROOT_NODE && isDeletable;
+    isActive &&
+    isSelectable &&
+    id !== ROOT_NODE &&
+    isDeletable &&
+    name !== CONTAINER;
   const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
   const solidBorderIsVisible =
     isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
@@ -162,7 +174,7 @@ const RenderNode = ({ render }) => {
           ? colors.clRedError
           : solidBorderIsVisible
           ? colors.adminTextColor
-          : name !== TWO_COLUMNS && name !== THREE_COLUMNS && isSelectable
+          : isSelectable
           ? colors.separation
           : 'transparent'
       }

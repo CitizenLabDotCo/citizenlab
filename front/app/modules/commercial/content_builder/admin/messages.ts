@@ -117,7 +117,7 @@ export default defineMessages({
   },
   imageTextCards: {
     id: 'app.containers.admin.ContentBuilder.imageTextCards',
-    defaultMessage: 'Image & Text Cards',
+    defaultMessage: 'Image & text cards',
   },
   infoWithAccordions: {
     id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
