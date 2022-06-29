@@ -48,7 +48,7 @@ describe('Content builder Two Column component', () => {
       }
     );
 
-    // Add some components added to both columns
+    // Components added to all columns
     cy.get('#e2e-draggable-text').dragAndDrop('div#e2e-single-column', {
       position: 'inside',
     });

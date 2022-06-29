@@ -49,7 +49,7 @@ describe('Content builder Three Column component', () => {
       }
     );
 
-    // Add some components added to all columns
+    // Components added to all columns
     cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
       position: 'inside',
     });
