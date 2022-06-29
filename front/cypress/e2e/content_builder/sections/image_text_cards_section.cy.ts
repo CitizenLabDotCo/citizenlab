@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe('Content builder Info Text Cards section', () => {
+describe('Content builder Image Text Cards section', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -37,7 +37,7 @@ describe('Content builder Info Text Cards section', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it('handles Info Text Cards section correctly', () => {
+  it('handles Image Text Cards section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
@@ -77,7 +77,7 @@ describe('Content builder Info Text Cards section', () => {
     cy.get('[alt="Image alt text."]').should('exist');
   });
 
-  it('deletes Info Text Cards section correctly', () => {
+  it('deletes Image Text Cards section correctly', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
