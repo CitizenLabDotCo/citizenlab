@@ -1201,7 +1201,7 @@
   "app.containers.AdminPage.SideBar.insights": "Berichte",
   "app.containers.AdminPage.SideBar.invitations": "Einladungen",
   "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.menu": "Pages & menu",
+  "app.containers.AdminPage.SideBar.menu": "Seiten & Menü",
   "app.containers.AdminPage.SideBar.messaging": "Nachrichten",
   "app.containers.AdminPage.SideBar.moderation": "Aktivität",
   "app.containers.AdminPage.SideBar.pages": "Seiten / Navigation",
@@ -1436,7 +1436,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "Seite hinzufügen",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden. Wenn Sie diese Seite noch nicht löschen möchten, können Sie die Seite auch von Navigationsleiste entfernen.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Sind Sie sicher, dass Sie diese Seite löschen möchten? Dies kann nicht rückgängig gemacht werden.",
-  "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
+  "app.modules.navbar.admin.containers.pageHeader": "Seiten & Menü",
   "app.modules.navbar.admin.containers.pageSubtitle": "In Ihrer Navigationsleiste können bis zu fünf Seiten zusätzlich zu Startseite und den Projektseiten angezeigt werden. Sie können Menü-Elemente umbenennen, neu anordnen und neue Seiten mit Ihrem eigenen Inhalt hinzufügen.",
   "app.modules.project_management.admin.components.permissionsTab": "Zugriffsrechte",
   "components.admin.ServerError.genericServerError": "Es gab ein Problem beim Laden dieses Inhalts, bitte versuchen Sie es später noch einmal."
