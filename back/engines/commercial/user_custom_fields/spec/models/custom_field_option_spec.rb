@@ -10,7 +10,7 @@ RSpec.describe CustomFieldOption do
 
   describe 'after_destroy callbacks' do
     # The ref_distribution is defined in nested examples.
-    let(:option) { ref_distribution.values.first }
+    let(:option) { ref_distribution.options.first }
 
     context 'when there are at least 2 remaining options' do
       let(:ref_distribution) { create_ref_distribution(nb_options: 3) }

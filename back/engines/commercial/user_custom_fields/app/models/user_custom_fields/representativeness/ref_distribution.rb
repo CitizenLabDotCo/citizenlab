@@ -22,7 +22,7 @@ module UserCustomFields
   module Representativeness
     class RefDistribution < ApplicationRecord
       belongs_to :custom_field
-      has_many :values, through: :custom_field, source: :options
+      has_many :options, through: :custom_field
 
       validates :custom_field_id, uniqueness: true
       validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
@@ -48,7 +48,7 @@ module UserCustomFields
 
       def validate_distribution_options
         return if custom_field.blank? || distribution.blank?
-        return if distribution.keys.to_set <= value_ids.to_set
+        return if distribution.keys.to_set <= option_ids.to_set
 
         errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
       end
@@ -67,7 +67,7 @@ module UserCustomFields
       # Removes options that no longer exist from the distribution description. If it
       # results in a distribution with less than 2 options, the distribution is destroyed.
       def sync_with_options!
-        update!(distribution: distribution.slice(*value_ids))
+        update!(distribution: distribution.slice(*option_ids))
       rescue ActiveRecord::RecordInvalid => e
         raise unless e.message == 'Validation failed: Distribution must have at least 2 options.'
 
