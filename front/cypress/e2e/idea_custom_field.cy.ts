@@ -36,9 +36,7 @@ describe('Idea custom field', () => {
 
     cy.get('#e2e-idea-title-input input').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
-    cy.get('#propertiescustom_field_valuespropertiesnumber_of_benches').as(
-      'customFieldInput'
-    );
+    cy.get('#propertiesnumber_of_benches').as('customFieldInput');
     cy.get('.e2e-submit-idea-form').as('submitForm');
 
     // Check that custom input field exists on the page
@@ -79,5 +77,87 @@ describe('Idea custom field', () => {
 
     // Check that custom field contains the same edited value
     cy.get('@customFieldInput').should('contain.value', editedNumberOfBenches);
+  });
+
+  it('shows an error when the user leaves it empty during idea creation', () => {
+    cy.visit(`projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+
+    cy.get('#e2e-idea-title-input input').as('titleInput');
+    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+    cy.get('#propertiesnumber_of_benches').as('customFieldInput');
+    cy.get('.e2e-submit-idea-form').as('submitForm');
+
+    // Check that custom input field exists on the page
+    cy.get('@customFieldInput').should('exist');
+
+    // Type test data into the fields
+    cy.get('@titleInput').clear().type(ideaTitle);
+    cy.get('@descriptionInput').clear().type(ideaContent);
+    cy.get('@customFieldInput').clear();
+
+    // Save the form
+    cy.get('@submitForm').click();
+    cy.wait(500);
+
+    cy.get('.e2e-error-message').should(
+      'contain.text',
+      'This field is required'
+    );
+  });
+
+  /* TODO: Change test to verify custom value on idea show page
+   * This test navigates to the edit page again to verify that the custom idea field is there.
+   * This should be changed once we show the custom idea field in the idea show page.
+   */
+  it('of type string can be created on an idea and values edited', () => {
+    const parkName = 'Recreation park';
+
+    cy.visit(`projects/${projectSlug}/ideas/new`);
+    cy.acceptCookies();
+
+    cy.get('#e2e-idea-title-input input').as('titleInput');
+    cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
+    cy.get('#propertiesnumber_of_benches').as('customFieldInput');
+    cy.get('#propertiespark_name').as('customStringFieldInput');
+    cy.get('.e2e-submit-idea-form').as('submitForm');
+
+    // Check that custom input field exists on the page
+    cy.get('@customStringFieldInput').should('exist');
+
+    // Type test data into the fields
+    cy.get('@titleInput').clear().type(ideaTitle);
+    cy.get('@descriptionInput').clear().type(ideaContent);
+    cy.get('@customFieldInput').type(initialNumberOfBenches);
+    cy.get('@customStringFieldInput').type(parkName);
+
+    // Save the form
+    cy.get('@submitForm').click();
+    cy.wait(500);
+
+    cy.get('#e2e-idea-more-actions').as('moreActions');
+    cy.get('@moreActions').click();
+
+    cy.get('.e2e-more-actions-list button').as('editButton');
+    cy.get('@editButton').eq(1).contains('Edit').click();
+    cy.wait(500);
+
+    // Check that custom field contains the initial value
+    cy.get('@customStringFieldInput').should('contain.value', parkName);
+
+    // Change custom field
+    cy.get('@customStringFieldInput').clear();
+
+    // Save the form again
+    cy.get('@submitForm').click();
+    cy.wait(500);
+
+    // Navigate to the edit page
+    cy.get('@moreActions').click();
+    cy.get('@editButton').eq(1).contains('Edit').click();
+    cy.wait(500);
+
+    // Check that custom field contains the same edited value
+    cy.get('@customFieldInput').should('contain.value', '');
   });
 });
