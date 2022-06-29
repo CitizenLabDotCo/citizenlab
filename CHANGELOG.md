@@ -2,6 +2,44 @@
 
 ## Next release
 
+### Changed
+
+- [CL-1024] Shows respective CTA buttons in the About component of the content builder
+
+## 2022-06-22
+
+### Fixed
+
+- [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
+
+### Changed
+
+- [CL-975] Social sharing options are now consistent across the platform, and a general "Copy link" option has been added.
+
+## 2022-06-21
+
+### Fixed
+
+- [CL-1026] Fix moderator access to conent builder
+
+## 2022-06-20
+
+### Fixed
+
+- [CL-903] Fix admin input manager crash on Safari
+
+## 2022-06-16
+
+### Added
+
+- [CL-979] Add description to embed component in content builder and restricts height to only take in numbers
+- [CL-951] The search field used in several places now notifies screen readers when new search results have loaded.
+
+### Fixed
+
+- [CL-966] Fixed issue with tabs stretching off the screen
+- [CL-908] Fix sheet names in excel exports.
+
 ## 2022-06-15
 
 ### Fixed

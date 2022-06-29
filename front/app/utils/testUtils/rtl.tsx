@@ -6,7 +6,6 @@ import { getTheme } from 'utils/styleUtils';
 import GlobalStyle from 'global-styles';
 import { IntlProvider } from 'react-intl';
 import messages from 'i18n/en';
-import { LiveAnnouncer } from 'react-aria-live';
 import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import history from 'utils/browserHistory';
 
@@ -18,17 +17,29 @@ Element.prototype.scrollIntoView = jest.fn();
 const AllTheProviders = ({ children }) => {
   return (
     <HistoryRouter history={history}>
-      <LiveAnnouncer>
-        <ThemeProvider theme={getTheme(null)}>
-          <GlobalStyle />
-          <IntlProvider locale="en" messages={messages}>
-            <div id="modal-portal">{children}</div>
-          </IntlProvider>
-        </ThemeProvider>
-      </LiveAnnouncer>
+      <ThemeProvider theme={getTheme(null)}>
+        <GlobalStyle />
+        <IntlProvider locale="en" messages={messages}>
+          <div id="modal-portal">{children}</div>
+        </IntlProvider>
+      </ThemeProvider>
     </HistoryRouter>
   );
 };
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // Deprecated
+    removeListener: jest.fn(), // Deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
 
 const customRender: any = (ui: React.ReactElement, options?: RenderOptions) =>
   render(ui, { wrapper: AllTheProviders, ...options });

@@ -1,7 +1,12 @@
 import React from 'react';
 
 // components
-import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // intl
@@ -68,15 +73,16 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
 
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
+      <Text variant="bodyM">{formatMessage(messages.iframeDescription)}</Text>
       <Box flex="0 0 100%">
         <Input
           id="e2e-content-builder-iframe-url-input"
           label={
             <span>
-              {formatMessage(messages.iframeUrlLabel)}{' '}
+              {formatMessage(messages.embedIframeUrlLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeUrlLabelTooltip)}
+                content={formatMessage(messages.embedIframeUrlLabelTooltip)}
               />
             </span>
           }
@@ -102,15 +108,15 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         <Input
           label={
             <span>
-              {formatMessage(messages.iframeHeightLabel)}{' '}
+              {formatMessage(messages.embedIframeHeightLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeHeightLabelTooltip)}
+                content={formatMessage(messages.embedIframeHeightLabelTooltip)}
               />
             </span>
           }
           placeholder={formatMessage(messages.iframeHeightPlaceholder)}
-          type="text"
+          type="number"
           value={height}
           onChange={(value) => {
             setProp((props) => (props.height = value));
@@ -127,10 +133,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           value={title}
           label={
             <span>
-              {formatMessage(messages.iframeTitleLabel)}{' '}
+              {formatMessage(messages.embedIframeTitleLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeTitleTooltip)}
+                content={formatMessage(messages.embedIframeTitleTooltip)}
               />
             </span>
           }

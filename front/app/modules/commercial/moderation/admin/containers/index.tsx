@@ -516,7 +516,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
               </Buttons>
             )}
-            <StyledSearchInput onChange={handleSearchTermChange} />
+            <StyledSearchInput
+              onChange={handleSearchTermChange}
+              a11y_numberOfSearchResults={moderations.length}
+            />
           </ActionBarTop>
           <ActionBarBottom>
             <Error text={actionBarErrorMessage} />
