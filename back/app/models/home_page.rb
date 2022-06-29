@@ -78,7 +78,7 @@ class HomePage < ApplicationRecord
     validates :cta_signed_out_url, presence: true, url: true
   end
 
-  mount_base64_uploader :header_bg, HeaderBgUploader
+  mount_base64_uploader :header_bg, AppHeaderBgUploader
 
   private
 
