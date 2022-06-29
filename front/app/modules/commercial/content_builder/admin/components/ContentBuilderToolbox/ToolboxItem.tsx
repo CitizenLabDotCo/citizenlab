@@ -20,7 +20,6 @@ const StyledBox = styled(Box)`
 const ToolboxItem = ({ icon, label }: Props) => {
   return (
     <StyledBox
-      height="48px"
       width="100%"
       display="flex"
       paddingLeft="10px"
