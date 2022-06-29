@@ -79,10 +79,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="e2e-content-builder-iframe-url-input"
           label={
             <span>
-              {formatMessage(messages.iframeUrlLabel)}{' '}
+              {formatMessage(messages.embedIframeUrlLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeUrlLabelTooltip)}
+                content={formatMessage(messages.embedIframeUrlLabelTooltip)}
               />
             </span>
           }
@@ -108,10 +108,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         <Input
           label={
             <span>
-              {formatMessage(messages.iframeHeightLabel)}{' '}
+              {formatMessage(messages.embedIframeHeightLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeHeightLabelTooltip)}
+                content={formatMessage(messages.embedIframeHeightLabelTooltip)}
               />
             </span>
           }
@@ -133,10 +133,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           value={title}
           label={
             <span>
-              {formatMessage(messages.iframeTitleLabel)}{' '}
+              {formatMessage(messages.embedIframeTitleLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeTitleTooltip)}
+                content={formatMessage(messages.embedIframeTitleTooltip)}
               />
             </span>
           }
