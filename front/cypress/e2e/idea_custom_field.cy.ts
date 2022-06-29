@@ -30,7 +30,7 @@ describe('Idea custom field', () => {
    * This test navigates to the edit page again to verify that the custom idea field is there.
    * This should be changed once we show the custom idea field in the idea show page.
    */
-  it('can be created on an idea and values edited', () => {
+  it('of type number can be created on an idea and values edited', () => {
     cy.visit(`projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
 
@@ -49,7 +49,6 @@ describe('Idea custom field', () => {
 
     // Save the form
     cy.get('@submitForm').click();
-    cy.wait(500);
 
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
 
@@ -58,7 +57,6 @@ describe('Idea custom field', () => {
 
     cy.get('.e2e-more-actions-list button').as('editButton');
     cy.get('@editButton').eq(1).contains('Edit').click();
-    cy.wait(500);
 
     // Check that custom field contains the initial value
     cy.get('@customFieldInput').should('contain.value', initialNumberOfBenches);
@@ -68,18 +66,16 @@ describe('Idea custom field', () => {
 
     // Save the form again
     cy.get('@submitForm').click();
-    cy.wait(500);
 
     // Navigate to the edit page
     cy.get('@moreActions').click();
     cy.get('@editButton').eq(1).contains('Edit').click();
-    cy.wait(500);
 
     // Check that custom field contains the same edited value
     cy.get('@customFieldInput').should('contain.value', editedNumberOfBenches);
   });
 
-  it('shows an error when the user leaves it empty during idea creation', () => {
+  it.skip('shows an error when the user leaves it empty during idea creation', () => {
     cy.visit(`projects/${projectSlug}/ideas/new`);
     cy.acceptCookies();
 
@@ -98,7 +94,6 @@ describe('Idea custom field', () => {
 
     // Save the form
     cy.get('@submitForm').click();
-    cy.wait(500);
 
     cy.get('.e2e-error-message').should(
       'contain.text',
@@ -133,14 +128,12 @@ describe('Idea custom field', () => {
 
     // Save the form
     cy.get('@submitForm').click();
-    cy.wait(500);
 
     cy.get('#e2e-idea-more-actions').as('moreActions');
     cy.get('@moreActions').click();
 
     cy.get('.e2e-more-actions-list button').as('editButton');
     cy.get('@editButton').eq(1).contains('Edit').click();
-    cy.wait(500);
 
     // Check that custom field contains the initial value
     cy.get('@customStringFieldInput').should('contain.value', parkName);
@@ -150,12 +143,10 @@ describe('Idea custom field', () => {
 
     // Save the form again
     cy.get('@submitForm').click();
-    cy.wait(500);
 
     // Navigate to the edit page
     cy.get('@moreActions').click();
     cy.get('@editButton').eq(1).contains('Edit').click();
-    cy.wait(500);
 
     // Check that custom field contains the same edited value
     cy.get('@customFieldInput').should('contain.value', '');
