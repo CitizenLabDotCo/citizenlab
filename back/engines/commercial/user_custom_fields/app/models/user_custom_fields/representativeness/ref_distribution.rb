@@ -46,6 +46,18 @@ module UserCustomFields
         probabilities.transform_values { |probability| (probability * nb_users).round(1) }
       end
 
+      # Removes options that no longer exist from the distribution description. If it
+      # results in a distribution with less than 2 options, the distribution is destroyed.
+      def sync_with_options!
+        update!(distribution: distribution.slice(*option_ids))
+      rescue ActiveRecord::RecordInvalid => e
+        raise unless e.message == 'Validation failed: Distribution must have at least 2 options.'
+
+        destroy!
+      end
+
+      private
+
       def validate_distribution_options
         return if custom_field.blank? || distribution.blank?
         return if distribution.keys.to_set <= option_ids.to_set
@@ -63,18 +75,6 @@ module UserCustomFields
         errors.add(:distribution, 'population counts must be strictly positive.') unless counts.all?(&:positive?)
         errors.add(:distribution, 'population counts must be integers.') unless counts.all?(&:integer?)
       end
-
-      # Removes options that no longer exist from the distribution description. If it
-      # results in a distribution with less than 2 options, the distribution is destroyed.
-      def sync_with_options!
-        update!(distribution: distribution.slice(*option_ids))
-      rescue ActiveRecord::RecordInvalid => e
-        raise unless e.message == 'Validation failed: Distribution must have at least 2 options.'
-
-        destroy!
-      end
-
-      private
 
       def option_id_to_key
         @option_id_to_key ||= custom_field.options.to_h { |option| [option.id, option.key] }
