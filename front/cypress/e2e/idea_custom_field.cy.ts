@@ -9,18 +9,19 @@ describe('Idea custom field', () => {
   let projectId: string;
   let projectSlug: string;
 
-  beforeEach(() => {
+  before(() => {
     cy.getProjectBySlug('custom-idea-fields-project').then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
     });
+  });
 
+  beforeEach(() => {
     cy.setAdminLoginCookie();
   });
 
   it('exists on the Input form page', () => {
     cy.visit(`admin/projects/${projectId}/ideaform`);
-    cy.acceptCookies();
 
     // Check to see that custom field exists on input form
     cy.get('.e2e-number_of_benches-setting-collapsed').should('exist');
@@ -32,7 +33,6 @@ describe('Idea custom field', () => {
    */
   it('of type number can be created on an idea and values edited', () => {
     cy.visit(`projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-title-input input').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
@@ -75,9 +75,8 @@ describe('Idea custom field', () => {
     cy.get('@customFieldInput').should('contain.value', editedNumberOfBenches);
   });
 
-  it.skip('shows an error when the user leaves it empty during idea creation', () => {
+  it('shows an error when the user leaves it empty during idea creation', () => {
     cy.visit(`projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-title-input input').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
@@ -109,7 +108,6 @@ describe('Idea custom field', () => {
     const parkName = 'Recreation park';
 
     cy.visit(`projects/${projectSlug}/ideas/new`);
-    cy.acceptCookies();
 
     cy.get('#e2e-idea-title-input input').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
