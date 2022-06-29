@@ -1,14 +1,16 @@
 # Changelog
 
+## 2022-06-29_2
+
+### Added
+
+- [CL-949] Adds explanation of the implications for project filtering when selecting all areas / no areas / a selection of areas in the Admin project creation / editing form.
+
 ## 2022-06-29
 
 ### Added
 
 - [CL-1028] Add Swedish locale
-
-### Added
-
-- [CL-949] Adds explanation of the implications for project filtering when selecting all areas / no areas / a selection of areas in the Admin project creation / editing form.
 
 ### Changed
 
