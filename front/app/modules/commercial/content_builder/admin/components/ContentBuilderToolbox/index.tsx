@@ -114,29 +114,36 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <TwoColumn columnLayout="2-1">
-                <Element id="left" is={Container} canvas>
-                  <Text text={formatMessage(messages.loremIpsum)} />
-                  <Accordion
-                    title={formatMessage(messages.accordionTitleValue)}
-                    text={formatMessage(messages.accordionTextValue)}
-                    openByDefault={false}
-                  />
-                  <Accordion
-                    title={formatMessage(messages.accordionTitleValue)}
-                    text={formatMessage(messages.accordionTextValue)}
-                    openByDefault={false}
-                  />
-                  <Accordion
-                    title={formatMessage(messages.accordionTitleValue)}
-                    text={formatMessage(messages.accordionTextValue)}
-                    openByDefault={false}
-                  />
-                </Element>
-                <Element id="right" is={Container} canvas>
-                  <AboutBox projectId={projectId} />
-                </Element>
-              </TwoColumn>
+              <Element id="image-text-cards" is={Box} canvas>
+                <TwoColumn columnLayout="2-1">
+                  <Element id="left" is={Container} canvas>
+                    <Text text={formatMessage(messages.textValue)} />
+                  </Element>
+                  <Element id="right" is={Container} canvas>
+                    <AboutBox projectId={projectId} />
+                  </Element>
+                </TwoColumn>
+                <WhiteSpace size="small" />
+                <TwoColumn columnLayout="2-1">
+                  <Element id="left" is={Container} canvas>
+                    <Accordion
+                      title={formatMessage(messages.accordionTitleValue)}
+                      text={formatMessage(messages.accordionTextValue)}
+                      openByDefault={false}
+                    />
+                    <Accordion
+                      title={formatMessage(messages.accordionTitleValue)}
+                      text={formatMessage(messages.accordionTextValue)}
+                      openByDefault={false}
+                    />
+                    <Accordion
+                      title={formatMessage(messages.accordionTitleValue)}
+                      text={formatMessage(messages.accordionTextValue)}
+                      openByDefault={false}
+                    />
+                  </Element>
+                </TwoColumn>
+              </Element>
             )
           }
         >

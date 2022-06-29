@@ -127,11 +127,6 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.image',
     defaultMessage: 'Image',
   },
-  loremIpsum: {
-    id: 'app.containers.admin.ContentBuilder.loremIpsum',
-    defaultMessage:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nibh magna, mollis ac mauris eget, consectetur euismod sapien. Vestibulum ut lacus ipsum. Phasellus facilisis ultrices erat, pharetra facilisis erat tempor vel. In hac habitasse platea dictumst. Phasellus et tortor eget nisl commodo ullamcorper. Sed lobortis volutpat ligula, ac condimentum ante imperdiet ac. In vel ultrices purus. Sed sit amet suscipit nunc. Sed dictum urna tellus, eu porttitor urna egestas a. Ut fringilla, nisl sit amet vehicula tempus, felis sapien tempor magna, id finibus diam nunc a felis. Nulla posuere urna ac nibh sagittis bibendum. Duis tristique eu ante a facilisis. Suspendisse non est sit amet lectus fermentum ultrices eget sit amet dui.',
-  },
   imageAltTextLabel: {
     id: 'app.containers.admin.ContentBuilder.imageAltTextLabel',
     defaultMessage: 'Short description of the image',

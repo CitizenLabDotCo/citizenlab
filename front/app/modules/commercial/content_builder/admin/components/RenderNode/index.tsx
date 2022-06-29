@@ -188,23 +188,22 @@ const RenderNode = ({ render }) => {
           )}
         </Box>
       )}
-      <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>
+      <div
+        style={{
+          pointerEvents: name === IFRAME ? 'none' : 'auto',
+          display: name === IMAGE ? 'flex' : 'auto',
+          width: '100%',
+        }}
+      >
         {name === IMAGE && !props.imageUrl && (
-          <Box
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-            justifyContent="center"
+          <Icon
+            margin="auto"
             padding="24px"
-          >
-            <Icon
-              marginRight="16px"
-              width="60px"
-              height="60px"
-              fill={colors.clIconSecondary}
-              name="image"
-            />
-          </Box>
+            width="100px"
+            height="100px"
+            fill={colors.clIconSecondary}
+            name="image"
+          />
         )}
         {render}
       </div>
