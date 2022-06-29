@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -55,6 +55,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.accordion;
     case WHITE_SPACE:
       return messages.whiteSpace;
+    default:
+      return messages.default;
   }
 };
 
@@ -62,11 +64,11 @@ const StyledBox = styled(Box)`
   ${({ isRoot }: { isRoot: boolean }) =>
     isRoot
       ? `cursor: auto;
-          padding: 4px;
-          width: 100%;
-          max-width: 1000px;
-          background-color: #fff;
-          min-height: 160px;`
+padding: 4px;
+width: 100%;
+max-width: 1000px;
+background-color: #fff;
+min-height: 160px;`
       : `cursor:move;`}
 `;
 
@@ -76,8 +78,10 @@ const RenderNode = ({ render }) => {
     name,
     isHover,
     hasError,
+    props,
     connectors: { connect, drag },
   } = useNode((node) => ({
+    props: node.data.props,
     isHover: node.events.hovered,
     name: node.data.name as ComponentNamesType,
     hasError: node.data.props.hasError,
@@ -100,14 +104,14 @@ const RenderNode = ({ render }) => {
   const parentNode = parentId && node(parentId).get();
   const parentNodeName = parentNode && parentNode.data.name;
 
+  const isChildOfComplexComponent =
+    parentNodeName === TWO_COLUMNS || parentNodeName === THREE_COLUMNS;
+
   // Handle multi-column hover state
   useEffect(() => {
     const parentNodeElement = document.getElementById(parentId);
 
-    if (
-      (parentNodeName === TWO_COLUMNS && isHover) ||
-      (parentNodeName === THREE_COLUMNS && isHover)
-    ) {
+    if (isHover && isChildOfComplexComponent) {
       parentNodeElement?.setAttribute(
         'style',
         `border: 1px solid ${colors.adminTextColor} `
@@ -115,26 +119,33 @@ const RenderNode = ({ render }) => {
     } else {
       parentNodeElement?.removeAttribute('style');
     }
-  }, [isHover, id, parentNodeName, parentId]);
+  }, [isHover, id, isChildOfComplexComponent, parentId]);
 
   // Handle selected state
   useEffect(() => {
-    if (isActive && name === CONTAINER && parentNode) {
-      parentNodeName === TWO_COLUMNS && selectNode(parentId);
-      parentNodeName === THREE_COLUMNS && selectNode(parentId);
+    if (
+      isActive &&
+      name === CONTAINER &&
+      parentNode &&
+      isChildOfComplexComponent
+    ) {
+      selectNode(parentId);
     }
-  });
+  }, [
+    isActive,
+    name,
+    parentNode,
+    parentId,
+    isChildOfComplexComponent,
+    selectNode,
+  ]);
 
+  const isSelectable = getComponentNameMessage(name) !== messages.default;
   const nodeLabelIsVisible =
-    (isActive || hasError) && id !== ROOT_NODE && isDeletable;
-
-  const nodeIsHovered =
-    isHover &&
-    id !== ROOT_NODE &&
-    parentNodeName !== TWO_COLUMNS &&
-    parentNodeName !== THREE_COLUMNS;
-
-  const solidBorderIsVisible = nodeLabelIsVisible || nodeIsHovered;
+    isActive && isSelectable && id !== ROOT_NODE && isDeletable;
+  const nodeIsHovered = isHover && id !== ROOT_NODE && name !== CONTAINER;
+  const solidBorderIsVisible =
+    isSelectable && (nodeLabelIsVisible || nodeIsHovered || hasError);
 
   return (
     <StyledBox
@@ -151,7 +162,7 @@ const RenderNode = ({ render }) => {
           ? colors.clRedError
           : solidBorderIsVisible
           ? colors.adminTextColor
-          : name !== TWO_COLUMNS && name !== THREE_COLUMNS
+          : name !== TWO_COLUMNS && name !== THREE_COLUMNS && isSelectable
           ? colors.separation
           : 'transparent'
       }
@@ -177,7 +188,23 @@ const RenderNode = ({ render }) => {
           )}
         </Box>
       )}
-      <div style={{ pointerEvents: name === IFRAME ? 'none' : 'auto' }}>
+      <div
+        style={{
+          pointerEvents: name === IFRAME ? 'none' : 'auto',
+          display: name === IMAGE ? 'flex' : 'auto',
+          width: '100%',
+        }}
+      >
+        {name === IMAGE && !props.imageUrl && (
+          <Icon
+            margin="auto"
+            padding="24px"
+            width="100px"
+            height="100px"
+            fill={colors.clIconSecondary}
+            name="image"
+          />
+        )}
         {render}
       </div>
     </StyledBox>

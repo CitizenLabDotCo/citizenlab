@@ -13,16 +13,12 @@ export const LabelHeaderDescription = ({
   header,
   description,
 }: {
-  header: string;
-  description: string;
+  header: JSX.Element;
+  description: JSX.Element;
 }) => (
   <LabelText>
-    <span className="header">
-      <FormattedMessage {...messages[header]} />
-    </span>
-    <span className="description">
-      <FormattedMessage {...messages[description]} />
-    </span>
+    <span className="header">{header}</span>
+    <span className="description">{description}</span>
   </LabelText>
 );
 
