@@ -14,7 +14,7 @@ import { InjectedIntlProps } from 'react-intl';
 import ToolboxItem from './ToolboxItem';
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import Text from '../CraftComponents/Text';
-import { TwoColumn } from '../CraftComponents/TwoColumn';
+import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import Iframe from '../CraftComponents/Iframe';

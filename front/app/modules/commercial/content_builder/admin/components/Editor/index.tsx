@@ -8,7 +8,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 // craft
 import Container from '../CraftComponents/Container';
 import Text from '../CraftComponents/Text';
-import { TwoColumn } from '../CraftComponents/TwoColumn';
+import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
 import Image from '../CraftComponents/Image';
 import RenderNode from '../RenderNode';

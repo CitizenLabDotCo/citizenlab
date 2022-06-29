@@ -17,49 +17,35 @@ import Container from '../Container';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
+type TwoColumnProps = {
+  columnLayout: string;
+  children: React.ReactNode;
+};
+
 const StyledBox = styled(Box)`
   min-height: 40px;
   width: 100%;
-  gap: 16px;
+  gap: 24px;
   display: grid;
 
   ${media.smallerThanMaxTablet`
     grid-template-columns: 1fr;
   `}
 
-  ${media.biggerThanMaxTablet`
-  &.LayoutEven {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  &.LayoutOneTwo {
-    grid-template-columns: 1fr 2fr;
-  }
-
-  &.LayoutTwoOne {
-    grid-template-columns: 2fr 1fr;
-  }
-  `}
+  grid-template-columns: ${(props: TwoColumnProps) =>
+    props.columnLayout === '1-1'
+      ? '1fr 1fr'
+      : props.columnLayout === '2-1'
+      ? '2fr 1fr'
+      : '1fr 2fr'};
 `;
 
 export const TwoColumn: UserComponent = ({
   columnLayout,
   children,
-}: {
-  columnLayout: '1-1' | '2-1' | '1-2';
-  children?: React.ReactNode;
-}) => {
+}: TwoColumnProps) => {
   return (
-    <StyledBox
-      id="e2e-two-column"
-      className={
-        columnLayout === '1-1'
-          ? 'LayoutEven'
-          : columnLayout === '1-2'
-          ? 'LayoutOneTwo'
-          : 'LayoutTwoOne'
-      }
-    >
+    <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
       {children || (
         <>
           <Element id={'left'} is={Container} canvas />
@@ -70,7 +56,7 @@ export const TwoColumn: UserComponent = ({
   );
 };
 
-export const TwoColumnSettings = () => {
+const TwoColumnSettings = () => {
   const {
     actions: { setProp },
     columnLayout,
@@ -155,3 +141,5 @@ TwoColumn.craft = {
     settings: TwoColumnSettings,
   },
 };
+
+export default TwoColumn;
