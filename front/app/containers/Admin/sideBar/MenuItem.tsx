@@ -124,14 +124,10 @@ type Props = {
 };
 
 const MenuItem = ({ navItem }: Props) => {
-  const featuresEnabled = useFeatureFlags({
+  return useFeatureFlags({
     names: navItem.featureNames ?? [],
     onlyCheckAllowed: navItem.onlyCheckAllowed,
-  });
-  const show = navItem.showOnlyIfFeaturesDisabled
-    ? !featuresEnabled
-    : featuresEnabled;
-  return show ? (
+  }) ? (
     <HasPermission action="access" item={{ type: 'route', path: navItem.link }}>
       <MenuItemLink to={navItem.link}>
         <IconWrapper className={navItem.iconName}>

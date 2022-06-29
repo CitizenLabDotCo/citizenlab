@@ -57,7 +57,7 @@ const configuration: ModuleConfiguration = {
         <PagesMenu />
       </FeatureFlag>
     ),
-    'app.containers.Admin.pages-menu.navigation-settings': () => (
+    'app.containers.Admin.pages-menu.NavigationSettings': () => (
       <FeatureFlag name="customizable_navbar">
         <NavigationSettings />
       </FeatureFlag>

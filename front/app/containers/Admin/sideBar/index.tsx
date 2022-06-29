@@ -27,6 +27,9 @@ import GetIdeasCount, {
 import GetInitiativesCount, {
   GetInitiativesCountChildProps,
 } from 'resources/GetInitiativesCount';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import Outlet from 'components/Outlet';
 import { InsertConfigurationOptions } from 'typings';
@@ -128,6 +131,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   ideasCount: GetIdeasCountChildProps;
   initiativesCount: GetInitiativesCountChildProps;
+  customizableNavbarFeatureFlag: GetFeatureFlagChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -141,7 +145,6 @@ export type NavItem = {
   iconName: IconNames;
   message: string;
   featureNames?: TAppConfigurationSetting[];
-  showOnlyIfFeaturesDisabled?: boolean;
   count?: number;
   onlyCheckAllowed?: boolean;
 };
@@ -215,16 +218,7 @@ class Sidebar extends PureComponent<
           name: 'menu',
           link: '/admin/pages-menu',
           iconName: 'blankPage',
-          message: 'menu',
-          featureNames: ['customizable_navbar'],
-        },
-        {
-          name: 'menu',
-          link: '/admin/pages-menu',
-          iconName: 'blankPage',
-          message: 'pages',
-          showOnlyIfFeaturesDisabled: true,
-          featureNames: ['customizable_navbar'],
+          message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
         },
         {
           name: 'settings',
@@ -309,6 +303,7 @@ class Sidebar extends PureComponent<
 }
 
 const Data = adopt<DataProps, InputProps>({
+  customizableNavbarFeatureFlag: <GetFeatureFlag name="customizable_navbar" />,
   authUser: <GetAuthUser />,
   ideasCount: ({ authUser, render }) => (
     <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>

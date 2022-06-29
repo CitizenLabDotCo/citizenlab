@@ -393,7 +393,7 @@ export type OutletsPropertyMap = {
     errors: CLErrors;
   };
   'app.containers.Admin.pages-menu.index': Record<string, any>;
-  'app.containers.Admin.pages-menu.navigation-settings': Record<string, any>;
+  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
     ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;

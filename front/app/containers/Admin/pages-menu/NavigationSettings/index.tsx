@@ -8,7 +8,7 @@ import Outlet from 'components/Outlet';
 
 const NavigationSettings = () => (
   <>
-    <Outlet id="app.containers.Admin.pages-menu.navigation-settings" />
+    <Outlet id="app.containers.Admin.pages-menu.NavigationSettings" />
     {useFeatureFlag({ name: 'customizable_navbar' }) || (
       <Box mb="44px">
         <VisibleNavbarItemList />
