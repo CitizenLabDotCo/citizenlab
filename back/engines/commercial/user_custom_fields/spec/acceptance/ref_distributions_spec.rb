@@ -82,7 +82,7 @@ resource 'Representativeness reference distributions' do
     end
 
     let(:distribution) do
-      custom_field.custom_field_option_ids.index_with { rand(100) }
+      custom_field.option_ids.index_with { rand(100) }
     end
 
     context 'when admin' do
