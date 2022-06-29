@@ -101,8 +101,6 @@ const ProjectFolderSelect = ({
     authUser,
   ]);
 
-  console.log(radioFolderSelect);
-
   if (isNilOrError(authUser)) {
     return null;
   }
