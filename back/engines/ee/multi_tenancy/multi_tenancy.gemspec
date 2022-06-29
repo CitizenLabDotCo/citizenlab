@@ -21,9 +21,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rails', '~> 6.1'
   spec.add_dependency 'ros-apartment', '>=2.9.0'
 
-  spec.add_development_dependency 'rubocop'
-  spec.add_development_dependency 'rubocop-performance'
-  spec.add_development_dependency 'rubocop-rails'
-  spec.add_development_dependency 'rubocop-rspec'
+  spec.add_development_dependency 'rubocop', '1.31.1'
+  spec.add_development_dependency 'rubocop-performance', '1.14.2'
+  spec.add_development_dependency 'rubocop-rails', '2.15.1'
+  spec.add_development_dependency 'rubocop-rspec', '2.11.1'
   spec.metadata['rubygems_mfa_required'] = 'true'
 end
