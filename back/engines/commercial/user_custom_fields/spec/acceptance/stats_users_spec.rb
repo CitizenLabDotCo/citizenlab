@@ -77,7 +77,7 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to include(
             series: {
-              users: { female: 2, unspecified: 1, _blank: 0 },
+              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: nil,
               reference_population: nil
             }
@@ -94,7 +94,7 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to include(
             series: {
-              users: { female: 2, unspecified: 1, _blank: 0 },
+              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: {
                 male: kind_of(Numeric),
                 female: kind_of(Numeric),
@@ -285,9 +285,15 @@ resource 'Stats - Users' do
 
       example_request 'Users by education' do
         expect(response_status).to eq 200
+
+        expected_users = CustomField.find_by(key: 'education')
+          .options.to_h { |option| [option.key, 0] }
+          .merge('3': 2, '5': 1, _blank: 0)
+          .symbolize_keys
+
         expect(json_response_body).to include(
           series: {
-            users: { '3': 2, '5': 1, _blank: 0 },
+            users: expected_users,
             expected_users: nil,
             reference_population: nil
           }
@@ -361,20 +367,21 @@ resource 'Stats - Users' do
             expect(response_status).to eq 200
             expect(json_response_body).to match({
               options: {
-                @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-                @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-                @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
+                @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+                @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
+                @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
               },
               series: {
                 users: {
-                  @option1.key.to_sym => 1,
-                  @option2.key.to_sym => 1,
+                  @option1.key => 1,
+                  @option2.key => 1,
+                  @option3.key => 0,
                   _blank: 1
                 },
                 expected_users: nil,
                 reference_population: nil
               }
-            })
+            }.deep_symbolize_keys)
           end
         end
 
@@ -384,7 +391,7 @@ resource 'Stats - Users' do
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
             expect(json_response_body).to include(series: hash_including(
-              expected_users: @custom_field.custom_field_options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
+              expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
             ))
           end
         end
@@ -418,20 +425,21 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to match({
             options: {
-              @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-              @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-              @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
+              @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+              @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
+              @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
             },
             series: {
               users: {
-                @option1.key.to_sym => 2,
-                @option2.key.to_sym => 1,
+                @option1.key => 2,
+                @option2.key => 1,
+                @option3.key => 0,
                 _blank: 1
               },
               expected_users: nil,
               reference_population: nil
             }
-          })
+          }.deep_symbolize_keys)
         end
       end
 
@@ -529,7 +537,7 @@ resource 'Stats - Users' do
         describe 'when the custom field has a reference distribution' do
           before do
             create(:ref_distribution, custom_field: @custom_field, distribution: {
-              @option1.id => 30, @option2.id => 20, @option3.id => 50
+              @option1.id => 80, @option3.id => 20
             })
           end
 
@@ -538,9 +546,9 @@ resource 'Stats - Users' do
             let(:expected_worksheet_values) do
               [
                 %w[option option_id users expected_users reference_population],
-                ['youth council', @option1.key, 1, 0.6, 30],
-                ['youth council', @option2.key, 1, 0.4, 20],
-                ['youth council', @option3.key, 0, 1.0, 50],
+                ['youth council', @option1.key, 1, 0.8, 80],
+                ['youth council', @option2.key, 1, '', ''],
+                ['youth council', @option3.key, 0, 0.2, 20],
                 ['_blank', '_blank', 1, '', '']
               ]
             end
