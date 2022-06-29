@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Opslaan",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Opgeslagen",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookiebeleid",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Bewerk de Over- en Veelgestelde Vragen-pagina's van je platform. Andere pagina's, waaronder de Gebruiksvoorwaarden en het Privacybeleid, kun je bewerken in het {policiesLink} tabblad.",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Beleid",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Platformpagina's",
   "app.containers.AdminPage.PagesEdition.faq": "Veelgestelde vragen",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Bijlagen (max. 50MB)",
   "app.containers.AdminPage.PagesEdition.information": "Over-pagina",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Instellingen succesvol bijgewerkt.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geografische gebieden",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Startpagina en stijl",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Pagina's",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Beleidspagina's",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registratiegegevens",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Algemeen",
@@ -1438,7 +1434,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Je kunt de pagina ook uit de navigatiebalk verwijderen als je nog niet klaar bent om deze te verwijderen.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Weet je zeker dat je deze pagina wilt verwijderen? Dit kan niet ongedaan gemaakt worden.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Je navigatiebalk kan maximaal vijf pagina's weergeven naast de startpagina en de projectenpagina's. Je kunt menu-items hernoemen, opnieuw ordenen en nieuwe pagina's toevoegen met uw eigen inhoud.",
-  "app.modules.navbar.admin.containers.pageTitle": "Navigatiebalk en platformpagina's",
   "app.modules.project_management.admin.components.permissionsTab": "Toegangsrechten",
   "components.admin.ServerError.genericServerError": "Er ging iets fout bij het laden van deze pagina, probeer het later opnieuw."
 }

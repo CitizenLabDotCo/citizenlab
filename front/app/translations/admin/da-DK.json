@@ -697,9 +697,6 @@
   "app.containers.AdminPage.PagesEdition.buttonSave": "Gem",
   "app.containers.AdminPage.PagesEdition.buttonSuccess": "Gemte",
   "app.containers.AdminPage.PagesEdition.cookie-policy": "Cookiepolitik",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitle": "Rediger din platforms sider om og FAQ. Andre sider, herunder vilkår og betingelser og fortrolighedspolitik, kan redigeres under fanen {policiesLink}.",
-  "app.containers.AdminPage.PagesEdition.defaultPagesSubtitleLink": "Politikker",
-  "app.containers.AdminPage.PagesEdition.defaultPagesTitle": "Platformssider",
   "app.containers.AdminPage.PagesEdition.faq": "Ofte stillede spørgsmål (FAQ)",
   "app.containers.AdminPage.PagesEdition.fileUploadLabel": "Tilføj filer til siden Om",
   "app.containers.AdminPage.PagesEdition.information": "information",
@@ -1181,7 +1178,6 @@
   "app.containers.AdminPage.SettingsPage.successfulUpdateSettings": "Indstillinger er opdateret med succes.",
   "app.containers.AdminPage.SettingsPage.tabAreas": "Geografiske områder",
   "app.containers.AdminPage.SettingsPage.tabCustomize": "Tilpas",
-  "app.containers.AdminPage.SettingsPage.tabPages": "Sider",
   "app.containers.AdminPage.SettingsPage.tabPolicies": "Politikker",
   "app.containers.AdminPage.SettingsPage.tabRegistration": "Registrerings",
   "app.containers.AdminPage.SettingsPage.tabSettings": "Generelt",
@@ -1438,7 +1434,6 @@
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på, at du ønsker at slette denne side? Dette kan ikke fortrydes. Du kan også fjerne siden fra navigationslinjen, hvis du ikke er klar til at slette den endnu.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Er du sikker på, at du vil slette denne side? Dette kan ikke fortrydes.",
   "app.modules.navbar.admin.containers.pageSubtitle": "Din navigationslinje kan vise op til fem sider ud over siderne Startside og Projekter. Du kan omdøbe menupunkter, omarrangere og tilføje nye sider med dit eget indhold.",
-  "app.modules.navbar.admin.containers.pageTitle": "Navigationslinjen og platformssider",
   "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder",
   "components.admin.ServerError.genericServerError": "Der var et problem med at indlæse dette indhold, prøv venligst igen senere."
 }
