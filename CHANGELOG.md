@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- [CL-949] Adds explanation of the implications for project filtering when selecting all areas / no areas / a selection of areas in the Admin project creation / editing form.
+
 ### Changed
 
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
