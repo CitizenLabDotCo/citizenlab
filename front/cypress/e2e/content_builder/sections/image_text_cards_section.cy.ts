@@ -54,7 +54,17 @@ describe('Content builder Info Text Cards section', () => {
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
     // Edit image components
-    cy.get('div#e2e-image').parent().click({ multiple: true });
+    cy.get('div#e2e-image').eq(0).parent().click();
+    cy.get('input[type="file"]').attachFile('icon.png');
+    cy.get('#imageAltTextInput').click().type('Image alt text.');
+    cy.get('[alt="Image alt text."]').should('exist');
+
+    cy.get('div#e2e-image').eq(1).parent().click();
+    cy.get('input[type="file"]').attachFile('icon.png');
+    cy.get('#imageAltTextInput').click().type('Image alt text.');
+    cy.get('[alt="Image alt text."]').should('exist');
+
+    cy.get('div#e2e-image').eq(2).parent().click();
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#imageAltTextInput').click().type('Image alt text.');
     cy.get('[alt="Image alt text."]').should('exist');
@@ -67,5 +77,23 @@ describe('Content builder Info Text Cards section', () => {
     cy.get('[alt="Image alt text."]').should('exist');
   });
 
-  it('deletes Info Text Cards section correctly', () => {});
+  it('deletes Info Text Cards section correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
+    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+
+    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-two-column').click('top');
+    cy.get('#e2e-delete-button').click();
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
+
+    cy.visit(`/projects/${projectSlug}`);
+    cy.contains('Edited text.').should('not.exist');
+    cy.get('[alt="Image alt text."]').should('not.exist');
+  });
 });

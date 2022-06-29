@@ -6,8 +6,6 @@ import {
   Image as ImageComponent,
   Input,
   IconTooltip,
-  colors,
-  Icon,
 } from '@citizenlab/cl2-component-library';
 
 // image upload
