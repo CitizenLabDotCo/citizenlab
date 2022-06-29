@@ -62,92 +62,92 @@ module MultiTenancy
           end
         end
       end
-    end
 
-    private
+      private
 
-    def configure_timeline_for(project)
-      return unless project.timeline?
+      def configure_timeline_for(project)
+        return unless project.timeline?
 
-      start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
-      has_budgeting = false
-      rand(8).times do
-        start_at += 1.day
-        phase = project.phases.new({
-          title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
-          description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
-          start_at: start_at,
-          end_at: (start_at += rand(150).days),
-          participation_method: %w[ideation budgeting poll information ideation ideation][rand(6)]
-        })
-        if phase.budgeting?
-          if has_budgeting
-            phase.participation_method = 'ideation'
-          else
-            has_budgeting = true
-          end
-        end
-        if phase.ideation?
-          phase.assign_attributes({
-            posting_enabled: rand(4) != 0,
-            voting_enabled: rand(4) != 0,
-            downvoting_enabled: rand(3) != 0,
-            commenting_enabled: rand(4) != 0,
-            upvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
-            upvoting_limited_max: rand(1..15),
-            downvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
-            downvoting_limited_max: rand(1..15)
+        start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
+        has_budgeting = false
+        rand(8).times do
+          start_at += 1.day
+          phase = project.phases.new({
+            title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
+            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            start_at: start_at,
+            end_at: (start_at += rand(150).days),
+            participation_method: %w[ideation budgeting poll information ideation ideation][rand(6)]
           })
-        end
-        if phase.budgeting?
-          phase.assign_attributes({
-            max_budget: (rand(100..1_000_099)).round(-2)
-          })
-        end
-        phase.save!
-        if rand(5) == 0
-          rand(1..3).times do
-            phase.phase_files.create!(runner.generate_file_attributes)
+          if phase.budgeting?
+            if has_budgeting
+              phase.participation_method = 'ideation'
+            else
+              has_budgeting = true
+            end
           end
-        end
-        next unless phase.poll?
+          if phase.ideation?
+            phase.assign_attributes({
+              posting_enabled: rand(4) != 0,
+              voting_enabled: rand(4) != 0,
+              downvoting_enabled: rand(3) != 0,
+              commenting_enabled: rand(4) != 0,
+              upvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
+              upvoting_limited_max: rand(1..15),
+              downvoting_method: %w[unlimited unlimited unlimited limited][rand(4)],
+              downvoting_limited_max: rand(1..15)
+            })
+          end
+          if phase.budgeting?
+            phase.assign_attributes({
+              max_budget: (rand(100..1_000_099)).round(-2)
+            })
+          end
+          phase.save!
+          if rand(5) == 0
+            rand(1..3).times do
+              phase.phase_files.create!(runner.generate_file_attributes)
+            end
+          end
+          next unless phase.poll?
 
-        questions = Array.new((rand(1..5))) do
-          question = Polls::Question.create!(
-            title_multiloc: runner.create_for_some_locales { Faker::Lorem.question },
-            participation_context: phase
-          )
-          rand(1..5).times do
-            Polls::Option.create!(
-              question: question,
-              title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence }
+          questions = Array.new((rand(1..5))) do
+            question = Polls::Question.create!(
+              title_multiloc: runner.create_for_some_locales { Faker::Lorem.question },
+              participation_context: phase
             )
+            rand(1..5).times do
+              Polls::Option.create!(
+                question: question,
+                title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence }
+              )
+            end
+            question
           end
-          question
-        end
-        User.order('RANDOM()').take(rand(1..5)).each do |some_user|
-          response = Polls::Response.create!(user: some_user, participation_context: phase)
-          questions.each do |q|
-            response.response_options.create!(option: runner.rand_instance(q.options))
+          User.order('RANDOM()').take(rand(1..5)).each do |some_user|
+            response = Polls::Response.create!(user: some_user, participation_context: phase)
+            questions.each do |q|
+              response.response_options.create!(option: runner.rand_instance(q.options))
+            end
           end
         end
       end
-    end
 
-    def configure_events_for(project)
-      rand(5).times do
-        start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
-        event = project.events.create!({
-          title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence },
-          description_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
-          location_multiloc: runner.create_for_some_locales { Faker::Address.street_address },
-          start_at: start_at,
-          end_at: start_at + rand(12).hours
-        })
-        next unless rand(5) == 0
+      def configure_events_for(project)
+        rand(5).times do
+          start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
+          event = project.events.create!({
+            title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence },
+            description_multiloc: runner.create_for_some_locales { Faker::Lorem.paragraphs.map { |p| "<p>#{p}</p>" }.join },
+            location_multiloc: runner.create_for_some_locales { Faker::Address.street_address },
+            start_at: start_at,
+            end_at: start_at + rand(12).hours
+          })
+          next unless rand(5) == 0
 
-        rand(1..3).times do
-          event.event_files.create!(runner.generate_file_attributes)
+          rand(1..3).times do
+            event.event_files.create!(runner.generate_file_attributes)
+          end
         end
       end
     end
