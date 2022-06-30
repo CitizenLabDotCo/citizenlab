@@ -1,9 +1,7 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
-const CustomNavbarContainer = lazy(
-  () => import('containers/Admin/flexible-pages')
-);
+const CustomNavbarContainer = lazy(() => import('containers/Admin/pages-menu'));
 const CustomNavbarSettingsComponent = lazy(
   () => import('./NavigationSettings')
 );
