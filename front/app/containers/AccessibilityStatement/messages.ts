@@ -146,4 +146,13 @@ export default defineMessages({
     defaultMessage:
       'Projects have the option to display their inputs in a map view, which is not accessible. There is, however, always an alternative list view available, which is accessible.',
   },
+  screenReaderSearchResults: {
+    id: 'app.containers.AccessibilityStatement.screenReaderSearchResults',
+    defaultMessage: 'Search function',
+  },
+  screenReaderSearchResultsException: {
+    id: 'app.containers.AccessibilityStatement.screenReaderSearchResultsException',
+    defaultMessage:
+      'Users may experience difficulties when using the search function. The number of search results may not be consistenly reported.',
+  },
 });
