@@ -45,7 +45,13 @@ module MultiTenancy
 
           model = model_class.new
           image_assignments = {}
-          restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
+
+          restored_attributes = restore_template_attributes(
+            attributes,
+            obj_to_id_and_class,
+            AppConfiguration.instance.settings
+          )
+
           restored_attributes.each do |field_name, field_value|
             if field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
               image_assignments[field_name] = field_value
@@ -96,33 +102,38 @@ module MultiTenancy
       nil
     end
 
-    def restore_template_attributes(attributes, obj_to_id_and_class)
-      @start_of_day ||= Time.now.in_time_zone(Tenant.settings('core', 'timezone')).beginning_of_day
+    def restore_template_attributes(attributes, obj_to_id_and_class, app_settings)
+
+      start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
+      locales = app_settings.dig('core', 'locales')
+
       new_attributes = {}
       attributes.each do |field_name, field_value|
-        if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
-          multiloc_value = CL2_SUPPORTED_LOCALES.to_h do |locale|
-            translation = I18n.with_locale(locale) { I18n.t!(field_value) }
-            [locale, translation]
-          end
-          new_attributes[field_name] = multiloc_value
+
+        if multiloc?(field_name)
+          new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
+
         elsif field_name.end_with?('_attributes') && field_value.is_a?(Hash)
-          new_attributes[field_name] = restore_template_attributes field_value, obj_to_id_and_class
+          new_attributes[field_name] = restore_template_attributes(field_value, obj_to_id_and_class, app_settings)
+
         elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?(Hash)
-          new_attributes[field_name] = field_value.map do |v|
-            restore_template_attributes v, obj_to_id_and_class
+          new_attributes[field_name] = field_value.map do |value|
+            restore_template_attributes(value, obj_to_id_and_class, app_settings)
           end
+
         elsif field_name.end_with?('_ref')
           ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
           if field_value
             id, ref_class = obj_to_id_and_class[field_value.object_id]
             new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
           end
+
         elsif field_name.end_with?('_timediff')
           if field_value.is_a?(Numeric)
-            time = @start_of_day + field_value.hours
+            time = start_of_day + field_value.hours
             new_attributes[field_name.chomp('_timediff')] = time
           end
+
         else
           new_attributes[field_name] = field_value
         end
@@ -251,6 +262,21 @@ module MultiTenancy
     end
 
     private
+
+    def restore_multiloc_attribute(field_value, locales)
+      if field_value.is_a? String
+        locales.to_h do |locale|
+          translation = I18n.with_locale(locale) { I18n.t!(field_value) }
+          [locale, translation]
+        end
+      else
+        field_value.slice(*locales)
+      end
+    end
+
+    def multiloc?(field_name)
+      /_multiloc$/.match?(field_name)
+    end
 
     def assign_images(model, image_assignments)
       # EDIT: Disabling for now to see if using futures offer a
