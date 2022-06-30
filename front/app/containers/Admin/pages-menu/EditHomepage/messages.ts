@@ -36,7 +36,7 @@ export default defineMessages({
   },
   eventsWidgetTooltip: {
     id: 'app.containers.Admin.pages-menu.EditHomepage.eventsWidgetTooltip',
-    defaultMessage: 'Display a preview of upcoming events on the homepage',
+    defaultMessage: 'Display a preview of upcoming events on the homepage.',
   },
   bottomInfoSection: {
     id: 'app.containers.Admin.pages-menu.EditHomepage.bottomInfoSection',
