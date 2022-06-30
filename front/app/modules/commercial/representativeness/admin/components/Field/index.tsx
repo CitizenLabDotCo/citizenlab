@@ -14,13 +14,9 @@ import useUserCustomFieldOptions from 'modules/commercial/user_custom_fields/hoo
 import useReferenceDistribution from '../../hooks/useReferenceDistribution';
 
 // components
-import { Accordion } from '@citizenlab/cl2-component-library';
+import { Accordion, ListItem } from '@citizenlab/cl2-component-library';
 import FieldTitle from './FieldTitle';
 import FieldContent from './FieldContent';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // utils
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
@@ -47,15 +43,6 @@ interface InnerProps extends Props {
   referenceDistribution: IReferenceDistributionData | NilOrError;
   referenceDataUploaded: boolean;
 }
-
-const StyledFieldTitle = styled(FieldTitle)`
-  border-top: 1px solid ${colors.separation};
-  border-bottom: 1px solid ${colors.separation};
-
-  & + & {
-    border-top: none;
-  }
-`;
 
 const Field = ({
   userCustomFieldId,
@@ -147,12 +134,14 @@ const Field = ({
 
   if (isComingSoon) {
     return (
-      <StyledFieldTitle
-        titleMultiloc={titleMultiloc}
-        status={null}
-        isDefault={false}
-        isComingSoon
-      />
+      <ListItem>
+        <FieldTitle
+          titleMultiloc={titleMultiloc}
+          status={null}
+          isDefault={false}
+          isComingSoon
+        />
+      </ListItem>
     );
   }
 
