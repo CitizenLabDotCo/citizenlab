@@ -63,14 +63,16 @@ describe IdeaCustomFieldsService do
       expect(output).to include cf2
       expect(output).to include disabled_field
       expect(output).to include topic_field
-      expect(output.map(&:code)).to match_array [
+      expect(output.map(&:code)).to eq [
         'title_multiloc',
         'body_multiloc',
-        'location_description',
+        'author_id',
+        'budget',
         'proposed_budget',
+        'topic_ids',
+        'location_description',
         'idea_images_attributes',
         'idea_files_attributes',
-        'topic_ids',
         nil,
         nil
       ]
@@ -89,6 +91,8 @@ describe IdeaCustomFieldsService do
       expect(output.map(&:key)).to eq %w[
         title_multiloc
         body_multiloc
+        author_id
+        budget
         proposed_budget
         topic_ids
         location_description
@@ -126,9 +130,11 @@ describe IdeaCustomFieldsService do
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
       expect(output).not_to include topic_field
-      expect(output.map(&:code)).to match_array [
+      expect(output.map(&:code)).to eq [
         'title_multiloc',
         'body_multiloc',
+        'author_id',
+        'budget',
         'location_description',
         'idea_images_attributes',
         'idea_files_attributes',
@@ -148,9 +154,11 @@ describe IdeaCustomFieldsService do
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
       expect(output).not_to include topic_field
-      expect(output.map(&:code)).to match_array [
+      expect(output.map(&:code)).to eq [
         'title_multiloc',
         'body_multiloc',
+        'author_id',
+        'budget',
         'location_description',
         'idea_images_attributes',
         'idea_files_attributes',
@@ -170,7 +178,7 @@ describe IdeaCustomFieldsService do
       expect(output).to include extra_field
       expect(output).not_to include disabled_field
       expect(output).not_to include topic_field
-      expect(output.map(&:code)).to match_array [nil]
+      expect(output.map(&:code)).to eq [nil]
     end
   end
 end

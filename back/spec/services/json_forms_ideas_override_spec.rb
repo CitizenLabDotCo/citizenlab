@@ -18,12 +18,14 @@ describe JsonFormsService do
 
   describe '#custom_form_to_json_schema' do
     context 'when there are default fields only' do
-      it 'returns the JSON schema for all enabled non-hidden default fields' do
+      it 'returns the JSON schema for all enabled built-in fields' do
         schema = service.custom_form_to_json_schema(fields)
         expect(schema).to eq({
           type: 'object',
           additionalProperties: false,
           properties: {
+            'author_id' => { type: 'string' },
+            'budget' => { type: 'number' },
             'title_multiloc' => {
               type: 'object',
               minProperties: 1,
@@ -79,12 +81,14 @@ describe JsonFormsService do
       let!(:custom_field) { create(:custom_field_number, required: true, resource: custom_form) }
 
       if CitizenLab.ee?
-        it 'returns the JSON schema for all enabled non-hidden default fields, and the extra field' do
+        it 'returns the JSON schema for all enabled built-in fields, and the extra field' do
           schema = service.custom_form_to_json_schema(fields)
           expect(schema).to match({
             type: 'object',
             additionalProperties: false,
             properties: {
+              'author_id' => { type: 'string' },
+              'budget' => { type: 'number' },
               'title_multiloc' => {
                 type: 'object',
                 minProperties: 1,
