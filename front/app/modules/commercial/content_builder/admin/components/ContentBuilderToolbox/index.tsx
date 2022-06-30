@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { useEditor, Element } from '@craftjs/core';
+import { useEditor } from '@craftjs/core';
 
 // Router
 import { useParams } from 'react-router-dom';
@@ -21,7 +21,8 @@ import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
-import Container from '../CraftComponents/Container';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import ImageTextCards from '../CraftSections/ImageTextCards';
 
 // intl
 import messages from '../../messages';
@@ -62,45 +63,30 @@ const ContentBuilderToolbox = ({
       flexDirection="column"
       alignItems="center"
       bgColor="#ffffff"
+      overflowY="auto"
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
-        <Title mt="24px" ml="5px" variant="h6" as="h1" color="label">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
           <FormattedMessage {...messages.sections} />
         </Title>
         <DraggableElement
           id="e2e-draggable-image-text-cards"
           ref={(ref) =>
             ref &&
-            connectors.create(
-              ref,
-              <Element id="image-text-cards" is={Box} canvas>
-                <TwoColumn columnLayout="1-2">
-                  <Element id="left" is={Container} canvas>
-                    <Image alt="" />
-                  </Element>
-                  <Element id="right" is={Container} canvas>
-                    <Text text={formatMessage(messages.textValue)} />
-                  </Element>
-                </TwoColumn>
-                <TwoColumn columnLayout="1-2">
-                  <Element id="left" is={Container} canvas>
-                    <Image alt="" />
-                  </Element>
-                  <Element id="right" is={Container} canvas>
-                    <Text text={formatMessage(messages.textValue)} />
-                  </Element>
-                </TwoColumn>
-                <TwoColumn columnLayout="1-2">
-                  <Element id="left" is={Container} canvas>
-                    <Image alt="" />
-                  </Element>
-                  <Element id="right" is={Container} canvas>
-                    <Text text={formatMessage(messages.textValue)} />
-                  </Element>
-                </TwoColumn>
-              </Element>
-            )
+            connectors.create(ref, <ImageTextCards />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
           }
         >
           <ToolboxItem
@@ -114,36 +100,12 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element id="image-text-cards" is={Box} canvas>
-                <TwoColumn columnLayout="2-1">
-                  <Element id="left" is={Container} canvas>
-                    <Text text={formatMessage(messages.textValue)} />
-                  </Element>
-                  <Element id="right" is={Container} canvas>
-                    <AboutBox projectId={projectId} />
-                  </Element>
-                </TwoColumn>
-                <WhiteSpace size="small" />
-                <TwoColumn columnLayout="2-1">
-                  <Element id="left" is={Container} canvas>
-                    <Accordion
-                      title={formatMessage(messages.accordionTitleValue)}
-                      text={formatMessage(messages.accordionTextValue)}
-                      openByDefault={false}
-                    />
-                    <Accordion
-                      title={formatMessage(messages.accordionTitleValue)}
-                      text={formatMessage(messages.accordionTextValue)}
-                      openByDefault={false}
-                    />
-                    <Accordion
-                      title={formatMessage(messages.accordionTitleValue)}
-                      text={formatMessage(messages.accordionTextValue)}
-                      openByDefault={false}
-                    />
-                  </Element>
-                </TwoColumn>
-              </Element>
+              <InfoWithAccordions projectId={projectId} />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
@@ -152,7 +114,15 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.infoWithAccordions)}
           />
         </DraggableElement>
-        <Title mt="32px" ml="5px" variant="h6" as="h1" color="label">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
           <FormattedMessage {...messages.layout} />
         </Title>
         <DraggableElement
@@ -207,7 +177,15 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
-        <Title mt="32px" ml="4px" variant="h6" as="h1" color="label">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
           <FormattedMessage {...messages.content} />
         </Title>
         <DraggableElement
@@ -231,7 +209,7 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-image"
           ref={(ref) => {
             ref &&
-              connectors.create(ref, <Image imageUrl="" alt="" />, {
+              connectors.create(ref, <Image alt="" />, {
                 onCreate: (node) => {
                   selectNode(node.rootNodeId);
                 },
