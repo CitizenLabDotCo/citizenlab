@@ -1371,7 +1371,7 @@
   "app.containers.admin.ContentBuilder.image": "Bild",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kort beskrivning av bilden",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Att lägga till alt-text för bilder är viktigt för att göra din plattform tillgänglig för användare som använder skärmläsare.",
-  "app.containers.admin.ContentBuilder.imageTextCards": "Image & text cards",
+  "app.containers.admin.ContentBuilder.imageTextCards": "Image & Text Cards",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumn",
