@@ -1371,7 +1371,7 @@
   "app.containers.admin.ContentBuilder.image": "Afbeelding",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Korte beschrijving van de afbeelding",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Het toevoegen van \"alt-tekst\" voor afbeeldingen is belangrijk om uw platform toegankelijk te maken voor gebruikers die schermlezers gebruiken.",
-  "app.containers.admin.ContentBuilder.imageTextCards": "Image & text cards",
+  "app.containers.admin.ContentBuilder.imageTextCards": "Image & Text Cards",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolom",
