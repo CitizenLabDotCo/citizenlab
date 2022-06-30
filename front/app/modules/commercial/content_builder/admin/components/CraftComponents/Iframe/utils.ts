@@ -1,6 +1,5 @@
 const urlWhiteList = [
   /^(https?):\/\/(.+\.)typeform\.com\/to\//,
-  /^(https?):\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true/,
   /^(https?):\/\/surveys.enalyzer.com\/?\?pid=.*/,
   /^(https?):\/\/(www\.)?survey-xact\.dk\/LinkCollector\?key=.*/i,
   /^(https?):\/\/(.+\.)qualtrics\.com\/jfe\/form\//,
