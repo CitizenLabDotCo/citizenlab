@@ -202,7 +202,8 @@ const RenderNode = ({ render }) => {
       )}
       <div
         style={{
-          pointerEvents: name === IFRAME ? 'none' : 'auto',
+          pointerEvents:
+            name === IFRAME || name === ABOUT_BOX ? 'none' : 'auto',
           display: name === IMAGE ? 'flex' : 'auto',
           width: '100%',
         }}
