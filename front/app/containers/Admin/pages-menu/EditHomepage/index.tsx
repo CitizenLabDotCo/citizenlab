@@ -82,20 +82,24 @@ const EditHomepage = () => {
             turn them on/off and edit them as required.
           </Warning>
         </Box>
-        {sectionTogglesData.map((sectionToggleData) => {
-          return (
-            <SectionToggle
-              onChangeSectionToggle={handleOnChangeToggle(
-                sectionToggleData.sectionEnabledSettingName
-              )}
-              onClickEditButton={handleOnClick}
-              titleMessageDescriptor={sectionToggleData.titleMessageDescriptor}
-              tooltipMessageDescriptor={
-                sectionToggleData.tooltipMessageDescriptor
-              }
-            />
-          );
-        })}
+        {sectionTogglesData.map(
+          ({
+            sectionEnabledSettingName,
+            titleMessageDescriptor,
+            tooltipMessageDescriptor,
+          }) => {
+            return (
+              <SectionToggle
+                onChangeSectionToggle={handleOnChangeToggle(
+                  sectionEnabledSettingName
+                )}
+                onClickEditButton={handleOnClick}
+                titleMessageDescriptor={titleMessageDescriptor}
+                tooltipMessageDescriptor={tooltipMessageDescriptor}
+              />
+            );
+          }
+        )}
 
         {/* TO DO: move this toggle to module */}
         <SectionToggle
