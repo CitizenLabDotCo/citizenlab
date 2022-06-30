@@ -502,7 +502,6 @@ if Apartment::Tenant.current == 'localhost'
     secret: 'Hx7C27lxV7Qszw-zCg9UT-GFRQuxJNffllTpeU262CGabllbyTYwOmpizCygtPIZSwg'
   )
 
-  custom_field = nil
   if SEED_SIZE != 'empty'
     custom_field = CustomField.create!(
       resource_type: 'User',
