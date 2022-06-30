@@ -82,7 +82,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 
   const handleOnRemove = () => {
     setProp((props) => {
-      props.imageUrl = undefined;
+      props.imageUrl = '';
       props.dataCode = undefined;
       props.alt = '';
     });
@@ -127,9 +127,6 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 });
 
 Image.craft = {
-  props: {
-    imageUrl: '',
-  },
   related: {
     settings: ImageSettings,
   },

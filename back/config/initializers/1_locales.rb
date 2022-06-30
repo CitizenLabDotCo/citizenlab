@@ -3,31 +3,32 @@
 require 'i18n/backend/fallbacks'
 
 CL2_SUPPORTED_LOCALES = %i[
-  en
   ar-MA
   ar-SA
-  en-GB
+  da-DK
+  de-DE
+  en
   en-CA
-  nl-BE
-  nl-NL
+  en-GB
+  es-CL
+  es-ES
   fr-BE
   fr-FR
-  de-DE
-  it-IT
-  da-DK
-  nb-NO
-  es-ES
-  es-CL
-  pl-PL
+  hr-HR
   hu-HU
+  it-IT
   kl-GL
   lb-LU
-  ro-RO
-  pt-BR
   mi
+  nb-NO
+  nl-BE
+  nl-NL
+  pl-PL
+  pt-BR
+  ro-RO
   sr-Latn
   sr-SP
-  hr-HR
+  sv-SE
 ].freeze
 
 fallback_locales =
