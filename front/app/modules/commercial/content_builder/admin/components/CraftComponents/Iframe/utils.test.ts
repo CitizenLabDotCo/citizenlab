@@ -1,6 +1,6 @@
 import { isValidUrl } from './utils';
 
-const validUrlObject = [
+const validPlatformLinks = [
   {
     platform: 'Tableau',
     urls: [
@@ -67,10 +67,10 @@ const validUrlObject = [
 
 describe('isValidUrl', () => {
   // I'm using this structure to make it easy to identify which platform has a failing test
-  it.each(validUrlObject)(
+  it.each(validPlatformLinks)(
     'should return true for valid url %s',
-    (urlObject) => {
-      urlObject.urls.forEach((url) => {
+    (validPlatformData) => {
+      validPlatformData.urls.forEach((url) => {
         expect(isValidUrl(url)).toStrictEqual([true, 'whitelist']);
       });
     }
