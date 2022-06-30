@@ -27,16 +27,18 @@ describe('<VisibleNavbarItemList />', () => {
     const navbarItemRows = await screen.findAllByTestId('navbar-item-row');
     const itemWithPage = mockNavbarItems.find(
       (item) => item.relationships.static_page.data
-    )!;
+    );
+    expect(itemWithPage).toBeTruthy();
+    if (!itemWithPage) {
+      return;
+    }
     fireEvent.click(
       within(navbarItemRows[itemWithPage.attributes.ordering]).getByTestId(
         'edit-button'
       )
     );
     expect(clHistory.push).toHaveBeenCalledWith(
-      `/admin/pages-menu/pages/edit/${
-        itemWithPage.relationships.static_page.data!.id
-      }`
+      `/admin/pages-menu/pages/edit/${itemWithPage.relationships.static_page.data?.id}`
     );
   });
 
@@ -47,7 +49,11 @@ describe('<VisibleNavbarItemList />', () => {
     const itemWithPage = mockNavbarItems.find(
       (item) =>
         !item.relationships.static_page.data && item.attributes.code !== 'home'
-    )!;
+    );
+    expect(itemWithPage).toBeTruthy();
+    if (!itemWithPage) {
+      return;
+    }
     fireEvent.click(
       within(navbarItemRows[itemWithPage.attributes.ordering]).getByTestId(
         'edit-button'
