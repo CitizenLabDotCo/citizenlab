@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# We don't use the 'banner_' prefix for customizable_homepage_banner_enabled to maintain the
+# relation of the name to AppConfiguration.settings['customizable_homepage_banner']['allowed'],
+# which is used to toggle the feature via AdminHQ, usually in-line with pricing plans.
+# Here, customizable_homepage_banner_enabled is a toggle to be used by the app user,
+# for example, via the Admin UI.
+# Both related toggles should be 'true' for the feature to be active.
+
 # Contains settings & configuration data of the homepage.
 # == Schema Information
 #
@@ -30,13 +37,6 @@
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  header_bg                                :string
-#
-# We don't use the 'banner_' prefix for customizable_homepage_banner_enabled to maintain the
-# relation of the name to AppConfiguration.settings['customizable_homepage_banner']['allowed'],
-# which is used to toggle the feature via AdminHQ, usually in-line with pricing plans.
-# Here, customizable_homepage_banner_enabled is a toggle to be used by the app user,
-# for example, via the Admin UI.
-# Both related toggles should be 'true' for the feature to be active.
 #
 class HomePage < ApplicationRecord
   has_many :pins, as: :page, inverse_of: :page, dependent: :destroy
