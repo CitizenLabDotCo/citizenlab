@@ -2,9 +2,69 @@ import { isValidUrl } from './utils';
 
 const validPlatformLinks = [
   {
+    platform: 'Typeform',
+    urls: ['https://citizenlabco.typeform.com/to/I3AaTInh'],
+  },
+  {
+    platform: 'Enalyzer',
+    urls: ['https://surveys.enalyzer.com/?pid=cefb4s4s'],
+  },
+  {
+    platform: 'Qualtrics',
+    urls: [
+      'https://qfreeaccountssjc1.az1.qualtrics.com/jfe/form/SV_0c5J0877iwxXFX0',
+    ],
+  },
+  {
+    platform: 'Smart survey',
+    urls: ['https://www.smartsurvey.co.uk/s/LU3JMS/'],
+  },
+  {
     platform: 'Tableau',
     urls: [
       'https://public.tableau.com/views/CountyExplorationTool/Dashboard1?:language=en-US&:display_count=n&:origin=viz_share_link&:showVizHome=no&:embed=true',
+    ],
+  },
+  {
+    platform: 'Konveio',
+    urls: [
+      'https://maunakea.konveio.com/sites/maunakea.konveio.com/files/u2/MKMasterPlan-AllParts_Sept2021.pdf',
+    ],
+  },
+  {
+    platform: 'Facebook',
+    urls: [
+      'https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Fnytimes%2Fvideos%2F348112350782308%2F&',
+    ],
+  },
+  {
+    platform: 'Youtube',
+    urls: ['https://www.youtube.com/embed/szg3dIZ8xDc'],
+  },
+  {
+    platform: 'Vimeo',
+    urls: ['https://player.vimeo.com/video/719182720?h=ef103ac0a7'],
+  },
+  {
+    platform: 'Dailymotion',
+    urls: ['https://www.dailymotion.com/embed/video/x855y3y?'],
+  },
+  {
+    platform: 'Vimeo',
+    urls: ['https://www.youtube.com/embed/szg3dIZ8xDc'],
+  },
+  {
+    platform: 'Dreambroker',
+    urls: ['https://www.dreambroker.com/channel/3lkvmi5h/iframe/33jxadml'],
+  },
+  {
+    platform: 'Wistia',
+    urls: ['https://citizenlab-15.wistia.com/medias/lgaj8h7vnt'],
+  },
+  {
+    platform: 'Snapsurveys',
+    urls: [
+      'https://online1.snapsurveys.com/interview/deff624d-0604-45bb-a072-0c6da45b22e6',
     ],
   },
   {
