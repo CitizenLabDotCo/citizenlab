@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- [CL-1051] When a new project is published, it's default publication status is now draft
+- [CL-1051] When a new project is published, its default publication status is now draft
 
 ## 2022-06-29_2
 
