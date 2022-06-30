@@ -601,7 +601,9 @@ export const insertConfiguration =
     insertBeforeName,
   }: InsertConfigurationOptions<T>) =>
   (items: T[]): T[] => {
-    items = items.filter((item) => item.name !== configuration.name);
+    const itemAlreadyInserted = items.some(
+      (item) => item.name === configuration.name
+    );
     // index of item where we need to insert before/after
     const referenceIndex = items.findIndex(
       (item) => item.name === (insertAfterName || insertBeforeName)
@@ -614,6 +616,10 @@ export const insertConfiguration =
       0,
       items.length
     );
+
+    if (itemAlreadyInserted) {
+      items.splice(insertIndex, 1);
+    }
 
     const newItems = [
       ...items.slice(0, insertIndex),
