@@ -146,6 +146,8 @@ describe JsonFormsService do
             type: 'object',
             additionalProperties: false,
             properties: {
+              'author_id' => { type: 'string' },
+              'budget' => { type: 'number' },
               'title_multiloc' => {
                 type: 'object',
                 minProperties: 1,
