@@ -118,6 +118,37 @@ describe ContentBuilder::LayoutImageService do
       output = service.swap_data_images imageable, :craftjs_jsonmultiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
     end
+
+    it 'deals with image elements with no image attributes' do
+      input = {
+        'ROOT' => { 'type' => 'div' },
+        'nt24xY6COf' => {
+          'type' => { 'resolvedName' => 'Image' },
+          'props' => {
+            'id' => 'image',
+            'alt' => ''
+          },
+          'displayName' => 'Image',
+          'parent' => 'ROOT'
+        }
+      }
+      expected_json = {
+        'ROOT' => { 'type' => 'div' },
+        'nt24xY6COf' => {
+          'type' => { 'resolvedName' => 'Image' },
+          'props' => {
+            'id' => 'image',
+            'alt' => ''
+          },
+          'displayName' => 'Image',
+          'parent' => 'ROOT'
+        }
+      }
+
+      imageable = build :layout, craftjs_jsonmultiloc: { 'en' => input }
+      output = service.swap_data_images imageable, :craftjs_jsonmultiloc
+      expect(output).to eq({ 'en' => expected_json })
+    end
   end
 
   describe 'render_data_images' do
@@ -226,6 +257,37 @@ describe ContentBuilder::LayoutImageService do
           'hidden' => false,
           'nodes' => [],
           'linkedNodes' => {}
+        }
+      }
+
+      imageable = build :layout, craftjs_jsonmultiloc: { 'fr-BE' => input }
+      output = service.render_data_images imageable, :craftjs_jsonmultiloc
+      expect(output).to eq({ 'fr-BE' => expected_json })
+    end
+
+    it 'deals with image elements with no image attributes' do
+      input = {
+        'ROOT' => { 'type' => 'div' },
+        'nt24xY6COf' => {
+          'type' => { 'resolvedName' => 'Image' },
+          'props' => {
+            'id' => 'image',
+            'alt' => ''
+          },
+          'displayName' => 'Image',
+          'parent' => 'ROOT'
+        }
+      }
+      expected_json = {
+        'ROOT' => { 'type' => 'div' },
+        'nt24xY6COf' => {
+          'type' => { 'resolvedName' => 'Image' },
+          'props' => {
+            'id' => 'image',
+            'alt' => ''
+          },
+          'displayName' => 'Image',
+          'parent' => 'ROOT'
         }
       }
 
