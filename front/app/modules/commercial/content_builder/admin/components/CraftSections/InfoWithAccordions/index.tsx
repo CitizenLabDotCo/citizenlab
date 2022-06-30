@@ -26,7 +26,7 @@ const InfoWithAccordions: UserComponent = ({
   projectId,
 }: InfoWithAccordionsProps) => {
   return (
-    <Element id="image-text-cards" is={Box} canvas>
+    <Element id="info-with-accordions" is={Box} canvas>
       <TwoColumn columnLayout="2-1">
         <Element id="left" is={Container} canvas>
           <Text text={formatMessage(messages.textValue)} />
