@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Fixed
+
+- [CL-1051] When a new project is published, it's default publication status is now draft
+
 ## 2022-06-29_2
 
 ### Added

@@ -86,7 +86,11 @@ const AdminProjectsProjectGeneral = ({
   const [apiErrors, setApiErrors] = useState({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
-  >({});
+  >({
+    admin_publication_attributes: {
+      publication_status: 'draft',
+    },
+  });
   const [titleError, setTitleError] =
     useState<IProjectFormState['titleError']>(null);
   // We should probably not have projectType, slug, publicationStatus, etc.
