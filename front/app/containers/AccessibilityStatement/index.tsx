@@ -93,7 +93,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                     values={{
                       statusPageLink: (
                         <a
-                          href="#link_to_be_added"
+                          href="https://www.anysurfer.be/en/labels/anysurfer-label-for-websites/status/689"
                           target="_blank"
                           rel="noreferrer"
                         >
