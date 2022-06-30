@@ -209,7 +209,7 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-image"
           ref={(ref) => {
             ref &&
-              connectors.create(ref, <Image imageUrl="" alt="" />, {
+              connectors.create(ref, <Image alt="" />, {
                 onCreate: (node) => {
                   selectNode(node.rootNodeId);
                 },
