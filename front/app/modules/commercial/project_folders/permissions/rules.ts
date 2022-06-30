@@ -24,7 +24,7 @@ const canUserAccessAdminFolderRoute = (
     // folder mods have the same
     // access rights as project mods
     // besides their respective folders/projects
-    (isModeratorRoute(item) || item.path.includes('folders'));
+    (isModeratorRoute(item) || item.path.includes('admin/projects/folders'));
 
   return canAccessRoute(item, user, tenant) || hasAdminFolderRouteAccess;
 };
