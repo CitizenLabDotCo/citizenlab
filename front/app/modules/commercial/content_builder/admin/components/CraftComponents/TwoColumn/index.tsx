@@ -1,16 +1,13 @@
 import React from 'react';
 
 // components
-import {
-  Box,
-  Radio,
-  Title,
-  useBreakpoint,
-  Icon,
-} from '@citizenlab/cl2-component-library';
+import { Box, Radio, Title, Icon } from '@citizenlab/cl2-component-library';
+
+// styles
+import styled from 'styled-components';
 
 // utils
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 // craft
 import { useNode, UserComponent, Element } from '@craftjs/core';
@@ -20,25 +17,42 @@ import Container from '../Container';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 
-const TwoColumn: UserComponent = ({ columnLayout }) => {
-  const isLargeTablet = useBreakpoint('largeTablet');
+type TwoColumnProps = {
+  columnLayout: string;
+  children: React.ReactNode;
+};
 
+const StyledBox = styled(Box)`
+  min-height: 40px;
+  width: 100%;
+  gap: 24px;
+  display: grid;
+
+  ${media.smallerThanMaxTablet`
+    grid-template-columns: 1fr;
+  `}
+
+  grid-template-columns: ${(props: TwoColumnProps) =>
+    props.columnLayout === '1-1'
+      ? '1fr 1fr'
+      : props.columnLayout === '2-1'
+      ? '2fr 1fr'
+      : '1fr 2fr'};
+`;
+
+export const TwoColumn: UserComponent = ({
+  columnLayout,
+  children,
+}: TwoColumnProps) => {
   return (
-    <Box
-      id="e2e-two-column"
-      flexDirection={isLargeTablet ? 'column' : 'row'}
-      minHeight="40px"
-      display="flex"
-      w="100%"
-      gap="16px"
-    >
-      <Box flex={columnLayout === '2-1' ? '2' : '1'}>
-        <Element id="column1" is={Container} canvas />
-      </Box>
-      <Box flex={columnLayout === '1-2' ? '2' : '1'}>
-        <Element id="column2" is={Container} canvas />
-      </Box>
-    </Box>
+    <StyledBox id="e2e-two-column" columnLayout={columnLayout}>
+      {children || (
+        <>
+          <Element id={'left'} is={Container} canvas />
+          <Element id={'right'} is={Container} canvas />
+        </>
+      )}
+    </StyledBox>
   );
 };
 

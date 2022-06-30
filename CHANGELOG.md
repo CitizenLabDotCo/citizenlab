@@ -1,5 +1,30 @@
 # Changelog
 
+## Next release
+
+## 2022-06-30
+
+### Fixed
+
+- [CL-1051] When a new project is published, its default publication status is now draft
+- [CL-993] Fixed bug on idea form where fields were reset to empty state after changing description
+
+## 2022-06-29_2
+
+### Added
+
+- [CL-949] Adds explanation of the implications for project filtering when selecting all areas / no areas / a selection of areas in the Admin project creation / editing form.
+
+## 2022-06-29
+
+### Added
+
+- [CL-1028] Add Swedish locale
+
+### Changed
+
+- [CL-1024] Shows respective CTA buttons in the About component of the content builder
+
 ## 2022-06-22
 
 ### Fixed

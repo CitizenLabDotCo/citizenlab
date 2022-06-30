@@ -1,6 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  sections: {
+    id: 'app.containers.admin.ContentBuilder.sections',
+    defaultMessage: 'SECTIONS',
+  },
+  content: {
+    id: 'app.containers.admin.ContentBuilder.content',
+    defaultMessage: 'CONTENT',
+  },
+  layout: {
+    id: 'app.containers.admin.ContentBuilder.layout',
+    defaultMessage: 'LAYOUT',
+  },
   projectDescription: {
     id: 'app.containers.admin.ContentBuilder.projectDescription',
     defaultMessage: 'Project description',
@@ -46,22 +58,22 @@ export default defineMessages({
     defaultMessage:
       'There is an error on { locale } content, please fix the issue to be able to save your changes',
   },
-  iframeUrlLabel: {
-    id: 'app.containers.admin.ContentBuilder.iframeUrlLabel',
+  embedIframeUrlLabel: {
+    id: 'app.containers.admin.ContentBuilder.embedIframeUrlLabel',
     defaultMessage: 'Website address',
   },
-  iframeUrlLabelTooltip: {
-    id: 'app.containers.admin.ContentBuilder.iframeUrlLabelTooltip',
+  embedIframeUrlLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.embedIframeUrlLabelTooltip',
     defaultMessage: 'Full URL of the website you want to embed.',
   },
-  iframeHeightLabel: {
-    id: 'app.containers.admin.ContentBuilder.iframeHeightLabel',
+  embedIframeHeightLabel: {
+    id: 'app.containers.admin.ContentBuilder.embedIframeHeightLabel',
     defaultMessage: 'Embed height (pixels)',
   },
-  iframeHeightLabelTooltip: {
-    id: 'app.containers.admin.ContentBuilder.iframeHeightLabelTooltip',
+  embedIframeHeightLabelTooltip: {
+    id: 'app.containers.admin.ContentBuilder.embedIframeHeightLabelTooltip',
     defaultMessage:
-      'Height you want your embedded content to appear on the page (in pixels)',
+      'Height you want your embedded content to appear on the page (in pixels).',
   },
   iframeUrlPlaceholder: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlPlaceholder',
@@ -71,14 +83,14 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.iframeHeightPlaceholder',
     defaultMessage: '300',
   },
-  iframeTitleLabel: {
-    id: 'app.containers.admin.ContentBuilder.iframeTitleLabel',
+  embedIframeTitleLabel: {
+    id: 'app.containers.admin.ContentBuilder.embedIframeTitleLabel',
     defaultMessage: 'Short description of the content you are embedding',
   },
-  iframeTitleTooltip: {
-    id: 'app.containers.admin.ContentBuilder.iframeTitleTooltip',
+  embedIframeTitleTooltip: {
+    id: 'app.containers.admin.ContentBuilder.embedIframeTitleTooltip',
     defaultMessage:
-      'It is useful to provide this information for users who rely on a screenreader or other assistive technology.',
+      'It is useful to provide this information for users who rely on a screen reader or other assistive technology.',
   },
   iframeInvalidUrlErrorMessage: {
     id: 'app.containers.admin.ContentBuilder.iframeUrlErrorMessage',
@@ -102,6 +114,14 @@ export default defineMessages({
   accordion: {
     id: 'app.containers.admin.ContentBuilder.accordion',
     defaultMessage: 'Accordion',
+  },
+  imageTextCards: {
+    id: 'app.containers.admin.ContentBuilder.imageTextCards',
+    defaultMessage: 'Image & text cards',
+  },
+  infoWithAccordions: {
+    id: 'app.containers.admin.ContentBuilder.infoWithAccordions',
+    defaultMessage: 'Info & accordions',
   },
   image: {
     id: 'app.containers.admin.ContentBuilder.image',
@@ -145,6 +165,10 @@ export default defineMessages({
   delete: {
     id: 'app.containers.admin.ContentBuilder.delete',
     defaultMessage: 'Delete',
+  },
+  default: {
+    id: 'app.containers.admin.ContentBuilder.default',
+    defaultMessage: 'default',
   },
   toggleLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.toggleLabel',
