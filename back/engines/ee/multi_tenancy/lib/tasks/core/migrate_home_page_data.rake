@@ -33,7 +33,7 @@ namespace :fix_existing_tenants do
         begin
           home_page = HomePage.first || HomePage.new
 
-          home_page.events_widget = settings['events_widget']['enabled']
+          home_page.events_widget_enabled = settings['events_widget']['enabled']
 
           if settings['core']['currently_working_on_text']
             home_page.projects_header_multiloc = settings['core']['currently_working_on_text']
@@ -63,24 +63,24 @@ namespace :fix_existing_tenants do
 
           if settings['customizable_homepage_banner']
             banner = settings['customizable_homepage_banner']
-            home_page.customizable_homepage_banner = banner['enabled']
+            home_page.customizable_homepage_banner_enabled = banner['enabled']
             home_page.banner_layout = banner['layout'] if banner['layout']
-            home_page.cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
+            home_page.banner_cta_signed_in_type = banner['cta_signed_in_type'] if banner['cta_signed_in_type']
 
-            if home_page.cta_signed_in_type == 'customized_button' &&
+            if home_page.banner_cta_signed_in_type == 'customized_button' &&
                banner['cta_signed_in_customized_button']['text'] &&
                banner['cta_signed_in_customized_button']['url']
-              home_page.cta_signed_in_text_multiloc = banner['cta_signed_in_customized_button']['text']
-              home_page.cta_signed_in_url = banner['cta_signed_in_customized_button']['url']
+              home_page.banner_cta_signed_in_text_multiloc = banner['cta_signed_in_customized_button']['text']
+              home_page.banner_cta_signed_in_url = banner['cta_signed_in_customized_button']['url']
             end
 
             home_page.cta_signed_out_type = banner['cta_signed_out_type'] if banner['cta_signed_out_type']
 
-            if home_page.cta_signed_out_type == 'customized_button' &&
+            if home_page.banner_cta_signed_out_type == 'customized_button' &&
                banner['cta_signed_out_customized_button']['text'] &&
                banner['cta_signed_out_customized_button']['url']
-              home_page.cta_signed_out_text_multiloc = banner['cta_signed_out_customized_button']['text']
-              home_page.cta_signed_out_url = banner['cta_signed_out_customized_button']['url']
+              home_page.banner_cta_signed_out_text_multiloc = banner['cta_signed_out_customized_button']['text']
+              home_page.banner_cta_signed_out_url = banner['cta_signed_out_customized_button']['url']
             end
           end
 
