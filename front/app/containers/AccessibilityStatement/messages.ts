@@ -153,6 +153,6 @@ export default defineMessages({
   screenReaderSearchResultsException: {
     id: 'app.containers.AccessibilityStatement.screenReaderSearchResultsException',
     defaultMessage:
-      'Users may experience difficulties when using the search function. The number of search results may not be consistenly reported.',
+      'Users may experience difficulties when using the search function. The number of search results may not be reported consistently.',
   },
 });
