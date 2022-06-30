@@ -1,5 +1,9 @@
 # Changelog
 
+### Added
+
+- [CL-1034] Add support for more URLs in the embed component whitelist
+
 ## 2022-06-29_2
 
 ### Added
