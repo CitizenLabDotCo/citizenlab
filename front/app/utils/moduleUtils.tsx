@@ -71,7 +71,7 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
-import { Props as FlexiblePagesSectionToggleProps } from 'containers/Admin/flexible-pages/SectionToggle';
+import { Props as FlexiblePagesSectionToggleProps } from 'containers/Admin/pages-menu/SectionToggle';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -393,6 +393,8 @@ export type OutletsPropertyMap = {
     ) => (settingKey: string, settingValue: any) => void;
     errors: CLErrors;
   };
+  'app.containers.Admin.pages-menu.index': Record<string, any>;
+  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
     ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;

@@ -1,0 +1,29 @@
+import React from 'react';
+import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Outlet as RouterOutlet } from 'react-router-dom';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import TabbedResource from 'components/admin/TabbedResource';
+import messages from './messages';
+import Outlet from 'components/Outlet';
+
+export const NAVIGATION_PATH = '/admin/pages-menu';
+
+const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  return (
+    <>
+      <Outlet id="app.containers.Admin.pages-menu.index" />
+      {useFeatureFlag({ name: 'customizable_navbar' }) || (
+        <TabbedResource
+          resource={{
+            title: formatMessage(messages.pageHeader),
+          }}
+        >
+          <RouterOutlet />
+        </TabbedResource>
+      )}
+    </>
+  );
+};
+
+export default injectIntl(Containers);

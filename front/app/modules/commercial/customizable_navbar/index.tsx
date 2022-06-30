@@ -1,8 +1,9 @@
 import React, { lazy } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
-import SidebarNavItem from './admin/components/SidebarNavItem';
+import FeatureFlag from 'components/FeatureFlag';
 import ModuleActive from './admin/components/ModuleActive';
 import PoliciesSubtitle from './admin/components/PoliciesSubtitle';
+import PagesMenu from './admin/containers';
 
 const NewPageFormComponent = lazy(
   () => import('./admin/containers/NewPageForm')
@@ -10,6 +11,10 @@ const NewPageFormComponent = lazy(
 const EditPageComponent = lazy(() => import('./admin/containers/EditPageForm'));
 const EditNavbarItemComponent = lazy(
   () => import('./admin/containers/EditNavbarItemForm')
+);
+
+const NavigationSettings = lazy(
+  () => import('./admin/containers/NavigationSettings')
 );
 
 const configuration: ModuleConfiguration = {
@@ -45,8 +50,15 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.settings.policies.subTitle': () => (
       <PoliciesSubtitle />
     ),
-    'app.containers.Admin.sideBar.navItems': (props) => (
-      <SidebarNavItem {...props} />
+    'app.containers.Admin.pages-menu.index': () => (
+      <FeatureFlag name="customizable_navbar">
+        <PagesMenu />
+      </FeatureFlag>
+    ),
+    'app.containers.Admin.pages-menu.NavigationSettings': () => (
+      <FeatureFlag name="customizable_navbar">
+        <NavigationSettings />
+      </FeatureFlag>
     ),
   },
 };

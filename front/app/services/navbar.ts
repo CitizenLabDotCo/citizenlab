@@ -41,7 +41,7 @@ export interface INavbarItem {
   };
 }
 
-export function navbarItemsStream({ standard = false } = {}) {
+export function navbarItemsStream({ standard } = { standard: false }) {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint,
     queryParameters: { standard },

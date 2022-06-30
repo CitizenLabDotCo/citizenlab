@@ -63,7 +63,6 @@ export default ({
   showAddButton,
   addButtonDisabled,
   showRemoveButton,
-  showDeleteButton,
   viewButtonLink,
   onClickEditButton,
   onClickAddButton,
@@ -122,7 +121,7 @@ export default ({
           </Link>
         )}
 
-        {!isDefaultPage && showDeleteButton && (
+        {!isDefaultPage && onClickDeleteButton && (
           <Button
             buttonStyle="secondary"
             icon="delete"

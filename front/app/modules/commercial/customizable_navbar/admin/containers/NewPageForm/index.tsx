@@ -22,7 +22,7 @@ import messages from '../messages';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getInitialValues from './getInitialValues';
-import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
+import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
 
 const PageTitle = styled.h1`
   width: 100%;

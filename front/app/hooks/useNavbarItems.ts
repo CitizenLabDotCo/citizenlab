@@ -9,7 +9,7 @@ import { truncateMultiloc } from 'utils/textUtils';
 
 export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
-export default function useNavbarItems({ standard = false } = {}) {
+export default function useNavbarItems({ standard } = { standard: false }) {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
 
   useEffect(() => {

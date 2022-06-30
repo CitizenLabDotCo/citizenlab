@@ -16,7 +16,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
 import { getInitialFormValues, createNavbarItemUpdateData } from './utils';
-import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
+import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
 
 // services
 import { updateNavbarItem } from '../../../services/navbar';
