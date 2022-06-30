@@ -135,6 +135,7 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  imageFileIsChanged: boolean;
   ideaFiles: UploadFile[];
   imageId: string | null;
   loaded: boolean;
@@ -161,6 +162,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      imageFileIsChanged: false,
       ideaFiles: [],
       imageId: null,
       loaded: false,
@@ -260,8 +262,14 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
     const { project, authUser, appConfiguration } = this.props;
-    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } =
-      this.state;
+    const {
+      locale,
+      imageFileIsChanged,
+      titleMultiloc,
+      descriptionMultiloc,
+      ideaSlug,
+      imageId,
+    } = this.state;
     const {
       title,
       description,
@@ -278,9 +286,10 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         ? ideaFormOutput.imageFile[0]
         : null;
     const newImageBase64 = newImage ? newImage.base64 : null;
-    const imageToAddPromise = newImageBase64
-      ? addIdeaImage(ideaId, newImageBase64, 0)
-      : Promise.resolve(null);
+    const imageToAddPromise =
+      imageFileIsChanged && newImageBase64
+        ? addIdeaImage(ideaId, newImageBase64, 0)
+        : Promise.resolve(null);
     const filesToAddPromises = ideaFiles
       .filter((file) => !file.remote)
       .map((file) => addIdeaFile(ideaId, file.base64, file.name));
@@ -317,7 +326,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ submitError: false, processing: true });
 
     try {
-      if (oldImageId) {
+      if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -396,11 +405,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
   };
 
   onImageFileAdd = (imageFile: UploadFile[]) => {
-    this.setState({ imageFile: [imageFile[0]] });
+    this.setState({ imageFile: [imageFile[0]], imageFileIsChanged: true });
   };
 
   onImageFileRemove = () => {
-    this.setState({ imageFile: [] });
+    this.setState({ imageFile: [], imageFileIsChanged: true });
   };
 
   onTagsChange = (selectedTopics: string[]) => {

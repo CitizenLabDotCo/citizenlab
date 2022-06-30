@@ -90,6 +90,7 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  imageFileIsChanged: boolean;
   ideaFiles: UploadFile[];
   imageId: string | null;
   submitError: boolean;
@@ -117,6 +118,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      imageFileIsChanged: false,
       ideaFiles: [],
       imageId: null,
       submitError: false,
@@ -218,6 +220,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
       locale,
       titleMultiloc,
       descriptionMultiloc,
+      imageFileIsChanged,
       imageId,
       authorId,
       projectId,
@@ -238,9 +241,10 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
     const newImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
 
     const newImageBase64 = newImage ? newImage.base64 : null;
-    const imageToAddPromise = newImageBase64
-      ? addIdeaImage(ideaId, newImageBase64, 0)
-      : Promise.resolve(null);
+    const imageToAddPromise =
+      imageFileIsChanged && newImageBase64
+        ? addIdeaImage(ideaId, newImageBase64, 0)
+        : Promise.resolve(null);
 
     const filesToAddPromises = ideaFiles
       .filter((file) => !file.remote)
@@ -276,7 +280,7 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
 
     this.setState({ processing: true, submitError: false });
     try {
-      if (oldImageId) {
+      if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -353,11 +357,11 @@ class AdminIdeaEdit extends PureComponent<Props, State> {
   };
 
   onImageFileAdd = (newImageFile: UploadFile[]) => {
-    this.setState({ imageFile: [newImageFile[0]] });
+    this.setState({ imageFile: [newImageFile[0]], imageFileIsChanged: true });
   };
 
   onImageFileRemove = () => {
-    this.setState({ imageFile: [] });
+    this.setState({ imageFile: [], imageFileIsChanged: true });
   };
 
   onTagsChange = (selectedTopics: string[]) => {
