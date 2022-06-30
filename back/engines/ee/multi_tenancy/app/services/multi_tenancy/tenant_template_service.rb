@@ -45,13 +45,7 @@ module MultiTenancy
 
           model = model_class.new
           image_assignments = {}
-
-          restored_attributes = restore_template_attributes(
-            attributes,
-            obj_to_id_and_class,
-            AppConfiguration.instance.settings
-          )
-
+          restored_attributes = restore_template_attributes(attributes, obj_to_id_and_class, AppConfiguration.instance.settings)
           restored_attributes.each do |field_name, field_value|
             if field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
               image_assignments[field_name] = field_value
@@ -66,7 +60,8 @@ module MultiTenancy
               model.save # Might fail but runs before_validations
               model.save(validate: false)
             end
-            attributes.each do |field_name, field_value| # taking original attributes to get correct object ID
+            # taking original attributes to get correct object ID
+            attributes.each do |field_name, field_value|
               if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
                 submodel = model.send(field_name.chomp('_attributes'))
                 obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
@@ -80,7 +75,7 @@ module MultiTenancy
                 FROM information_schema.tables
                 WHERE table_type = 'BASE TABLE'
                 AND table_schema = \'#{Tenant.current.schema_name}\'
-              SQL
+            SQL
             ).map do |r|
               r['table_name']
             end
@@ -103,13 +98,11 @@ module MultiTenancy
     end
 
     def restore_template_attributes(attributes, obj_to_id_and_class, app_settings)
-
       start_of_day = Time.now.in_time_zone(app_settings.dig('core', 'timezone')).beginning_of_day
       locales = app_settings.dig('core', 'locales')
 
       new_attributes = {}
       attributes.each do |field_name, field_value|
-
         if multiloc?(field_name)
           new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
 
@@ -180,10 +173,10 @@ module MultiTenancy
             next unless (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
 
             multiloc[locale_to] = if locale_from.blank?
-              multiloc.values.first
-            else
-              multiloc[locale_from]
-            end
+                                    multiloc.values.first
+                                  else
+                                    multiloc[locale_from]
+                                  end
           end
         end
       end
