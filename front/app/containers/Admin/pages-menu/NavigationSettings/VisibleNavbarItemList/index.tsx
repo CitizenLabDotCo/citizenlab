@@ -37,17 +37,17 @@ export default function VisibleNavbarItemList() {
 
   return (
     <List>
-      {!isNilOrError(navbarItems) &&
-        navbarItems.map((navbarItem: INavbarItem, i: number) => (
-          <Row key={navbarItem.id} isLastItem={i === navbarItems.length - 1}>
-            <NavbarItemRow
-              title={navbarItem.attributes.title_multiloc}
-              showEditButton={navbarItem.attributes.code !== 'home'}
-              viewButtonLink={getViewButtonLink(navbarItem)}
-              onClickEditButton={handleClickEdit(navbarItem)}
-            />
-          </Row>
-        ))}
+      {navbarItems.map((navbarItem: INavbarItem, i: number) => (
+        <Row key={navbarItem.id} isLastItem={i === navbarItems.length - 1}>
+          <NavbarItemRow
+            title={navbarItem.attributes.title_multiloc}
+            showEditButton={navbarItem.attributes.code !== 'home'}
+            viewButtonLink={getViewButtonLink(navbarItem)}
+            onClickEditButton={handleClickEdit(navbarItem)}
+            data-testid="navbar-item-row"
+          />
+        </Row>
+      ))}
     </List>
   );
 }
