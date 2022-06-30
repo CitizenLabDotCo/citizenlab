@@ -9,12 +9,14 @@ import { truncateMultiloc } from 'utils/textUtils';
 
 export type TNavbarItemsState = INavbarItem[] | undefined | null | Error;
 
-export default function useNavbarItems({ standard } = { standard: false }) {
+export default function useNavbarItems(
+  { onlyDefault } = { onlyDefault: false }
+) {
   const [navbarItems, setNavbarItems] = useState<TNavbarItemsState>(undefined);
 
   useEffect(() => {
     const subscription = navbarItemsStream({
-      standard,
+      onlyDefault,
     }).observable.subscribe((response) => {
       isNilOrError(response)
         ? setNavbarItems(response)
@@ -22,7 +24,7 @@ export default function useNavbarItems({ standard } = { standard: false }) {
     });
 
     return () => subscription.unsubscribe();
-  }, [standard]);
+  }, [onlyDefault]);
 
   return navbarItems;
 }

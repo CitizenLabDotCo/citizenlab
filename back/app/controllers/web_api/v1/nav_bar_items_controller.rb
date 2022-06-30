@@ -8,7 +8,7 @@ class WebApi::V1::NavBarItemsController < ApplicationController
 
   def index
     @items = policy_scope(NavBarItem).includes(:static_page).order(:ordering)
-    @items = @items.standard if parse_bool(params[:standard]) && !customizable_navbar_activated?
+    @items = @items.only_default if parse_bool(params[:only_default])
     render json: WebApi::V1::NavBarItemSerializer.new(@items, params: fastjson_params).serialized_json
   end
 
