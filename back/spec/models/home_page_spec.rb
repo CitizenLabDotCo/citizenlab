@@ -39,7 +39,14 @@ RSpec.describe HomePage, type: :model do
     end
   end
 
-  # We need to understand why this fails and fix it
+  # This currently fails as we have switched HomePage back to using AppBgHeaderUploader
+  # in an attempt to use the images files in their existing locations (to make use of originals).
+  # This caused an ee release to be blocked by CI failure, probably because we had not dealt with 
+  # related code in back/engines/ee/multi_tenancy/app/serializers/web_api/v1/external/tenant_serializer.rb
+  # Thus, we reverted related changes in ee: https://github.com/CitizenLabDotCo/citizenlab-ee/pull/288
+  # Since we have not resolved this issue yet, and continue to use AppBgHeaderUploader,
+  # this test currently fails with: undefined method 'tenant' for #<HomePage:0x000055a142aea180>
+  #
   # Currently skipped with `xit`
   describe 'image uploads' do
     subject(:home_page) { build(:home_page) }
