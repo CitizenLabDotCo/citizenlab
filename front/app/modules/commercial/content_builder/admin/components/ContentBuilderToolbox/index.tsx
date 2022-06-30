@@ -63,7 +63,7 @@ const ContentBuilderToolbox = ({
       flexDirection="column"
       alignItems="center"
       bgColor="#ffffff"
-      overflowY="scroll"
+      overflowY="auto"
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
