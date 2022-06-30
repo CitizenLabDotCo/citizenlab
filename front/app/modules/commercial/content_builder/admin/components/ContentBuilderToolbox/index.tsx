@@ -63,10 +63,19 @@ const ContentBuilderToolbox = ({
       flexDirection="column"
       alignItems="center"
       bgColor="#ffffff"
+      overflowY="scroll"
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
-        <Title mt="24px" ml="5px" variant="h6" as="h1" color="label">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
           <FormattedMessage {...messages.sections} />
         </Title>
         <DraggableElement
@@ -105,7 +114,15 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.infoWithAccordions)}
           />
         </DraggableElement>
-        <Title mt="32px" ml="5px" variant="h6" as="h1" color="label">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
           <FormattedMessage {...messages.layout} />
         </Title>
         <DraggableElement
@@ -160,7 +177,15 @@ const ContentBuilderToolbox = ({
             label={formatMessage(messages.whiteSpace)}
           />
         </DraggableElement>
-        <Title mt="32px" ml="4px" variant="h6" as="h1" color="label">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
           <FormattedMessage {...messages.content} />
         </Title>
         <DraggableElement
