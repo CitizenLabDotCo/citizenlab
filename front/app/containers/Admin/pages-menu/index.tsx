@@ -10,10 +10,13 @@ import Outlet from 'components/Outlet';
 export const NAVIGATION_PATH = '/admin/pages-menu';
 
 const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const customizableNavbarEnabled = useFeatureFlag({
+    name: 'customizable_navbar',
+  });
   return (
     <>
       <Outlet id="app.containers.Admin.pages-menu.index" />
-      {useFeatureFlag({ name: 'customizable_navbar' }) || (
+      {customizableNavbarEnabled || (
         <TabbedResource
           resource={{
             title: formatMessage(messages.pageHeader),
