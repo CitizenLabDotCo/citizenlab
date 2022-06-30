@@ -1371,7 +1371,7 @@
   "app.containers.admin.ContentBuilder.image": "Billede",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kort beskrivelse af billedet",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Det er vigtigt at tilføje \"alt-tekst\" til billeder for at gøre din platform tilgængelig for brugere, der bruger skærmlæsere.",
-  "app.containers.admin.ContentBuilder.imageTextCards": "Image & Text Cards",
+  "app.containers.admin.ContentBuilder.imageTextCards": "Image & text cards",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.layout": "LAYOUT",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolonne",
