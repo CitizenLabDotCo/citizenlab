@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 // components
-import VisibleNavbarItemList from '../VisibleNavbarItemList';
+import VisibleNavbarItemList from './VisibleNavbarItemList';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import Outlet from 'components/Outlet';
 
