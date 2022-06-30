@@ -1,10 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen } from 'utils/testUtils/rtl';
+import { fireEvent, render, screen, within } from 'utils/testUtils/rtl';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import VisibleNavbarItemList from '.';
 import clHistory from 'utils/cl-router/history';
 
-let mockNavbarItems = allNavbarItems;
+const mockNavbarItems = allNavbarItems;
 
 jest.mock('services/locale');
 jest.mock('hooks/usePageSlugById', () => jest.fn(() => 'slug'));
@@ -29,9 +29,9 @@ describe('<VisibleNavbarItemList />', () => {
       (item) => item.relationships.static_page.data
     )!;
     fireEvent.click(
-      navbarItemRows[itemWithPage.attributes.ordering].querySelector(
-        '[data-testid="edit-button"'
-      )!
+      within(navbarItemRows[itemWithPage.attributes.ordering]).getByTestId(
+        'edit-button'
+      )
     );
     expect(clHistory.push).toHaveBeenCalledWith(
       `/admin/pages-menu/pages/edit/${
@@ -49,9 +49,9 @@ describe('<VisibleNavbarItemList />', () => {
         !item.relationships.static_page.data && item.attributes.code !== 'home'
     )!;
     fireEvent.click(
-      navbarItemRows[itemWithPage.attributes.ordering].querySelector(
-        '[data-testid="edit-button"'
-      )!
+      within(navbarItemRows[itemWithPage.attributes.ordering]).getByTestId(
+        'edit-button'
+      )
     );
     expect(clHistory.push).toHaveBeenCalledWith(
       `/admin/pages-menu/navbar-items/edit/${itemWithPage.id}`
