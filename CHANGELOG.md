@@ -6,6 +6,10 @@
 
 - Dynamic idea form has limited support for extra fields
 
+### Added
+
+- [CL-1034] Add support for more URLs in the embed component whitelist
+
 ## 2022-06-30
 
 ### Fixed
