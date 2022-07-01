@@ -1,8 +1,17 @@
 # Changelog
 
-## Next release
+## 2022-07-01
+
+### Added
+
+- Dynamic idea form has limited support for extra fields
+
+### Added
+
+- [CL-1034] Add support for more URLs in the embed component whitelist
 
 ## 2022-06-30
+
 ### Fixed
 
 - [CL-1051] When a new project is published, its default publication status is now draft

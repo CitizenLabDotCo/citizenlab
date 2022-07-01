@@ -7,13 +7,13 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   skip_before_action :authenticate_user
 
   def schema
-    @idea_form_fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
+    @idea_form_fields = IdeaCustomFieldsService.new(@custom_form).all_fields
     render json: CustomFieldService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields)
   end
 
   def json_forms_schema
-    @idea_form_fields = IdeaCustomFieldsService.new.all_fields(@custom_form)
-    render json: JsonFormsService.new.ui_and_json_multiloc_schemas(AppConfiguration.instance, @idea_form_fields, current_user)
+    @idea_form_fields = IdeaCustomFieldsService.new(@custom_form).all_fields
+    render json: JsonFormsService.new.ui_and_json_multiloc_schemas(@idea_form_fields, current_user)
   end
 
   private

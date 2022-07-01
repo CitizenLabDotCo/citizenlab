@@ -1371,7 +1371,7 @@
   "app.containers.admin.ContentBuilder.image": "Obrazek",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Krótki opis zdjęcia",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Dodawanie \"tekstu alt\" do obrazów jest ważne, aby platforma była dostępna dla użytkowników korzystających z czytników ekranu.",
-  "app.containers.admin.ContentBuilder.imageTextCards": "Image & Text Cards",
+  "app.containers.admin.ContentBuilder.imageTextCards": "Image & text cards",
   "app.containers.admin.ContentBuilder.infoWithAccordions": "Info & accordions",
   "app.containers.admin.ContentBuilder.layout": "UKŁAD",
   "app.containers.admin.ContentBuilder.oneColumnLayout": "1 kolumna",

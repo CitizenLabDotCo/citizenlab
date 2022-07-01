@@ -417,6 +417,7 @@ ActiveRecord::Schema.define(version: 2022_06_30_084221) do
     t.uuid "assignee_id"
     t.datetime "assigned_at"
     t.integer "proposed_budget"
+    t.jsonb "custom_field_values", default: {}, null: false
     t.index "((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))", name: "index_ideas_search", using: :gin
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
