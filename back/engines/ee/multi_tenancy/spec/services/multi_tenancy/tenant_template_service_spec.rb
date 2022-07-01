@@ -145,6 +145,7 @@ describe MultiTenancy::TenantTemplateService do
         expect(project.description_multiloc.keys).to match(platform_locales)
       end
 
+      # rubocop:disable RSpec/NestedGroups
       context 'when none of the platform locales is available', :aggregate_failures do
         let(:platform_locales) { %w[it-IT en-GB] }
 
@@ -153,9 +154,12 @@ describe MultiTenancy::TenantTemplateService do
 
           project = Project.first
           expect(project.title_multiloc.keys.size).to eq(1)
+          # rubocop:disable RSpec/ExpectActual
           expect(%w[en nl-BE es-ES]).to include(*project.title_multiloc.keys)
+          # rubocop:enable RSpec/ExpectActual
         end
       end
+      # rubocop:enable RSpec/NestedGroups
     end
   end
 end
