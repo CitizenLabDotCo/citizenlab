@@ -169,6 +169,12 @@ gem 'rack-attack', '~> 6'
 gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
 
+# Included here because of CVE-2022-32209.
+# See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
+# The gem is a dependency of Rails, but we use Rails 6.1.6 and no Rails upgrade is available yet.
+# Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
+gem 'rails-html-sanitizer', '>= 1.4.3'
+
 require 'json'
 if File.exist? '../citizenlab.config.ee.json'
   gem 'ros-apartment', require: 'apartment'
