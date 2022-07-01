@@ -117,7 +117,7 @@
     "react-resize-detector": "6.7.6",
     "react-router-dom": "^6.3.0",
     "react-scroll-to-component": "1.0.2",
-    "react-select": "4.3.1",
+    "react-select": "5.4.0",
     "react-share": "^4.4.0",
     "react-transition-group": "4.4.2",
     "recharts": "^2.1.10",
