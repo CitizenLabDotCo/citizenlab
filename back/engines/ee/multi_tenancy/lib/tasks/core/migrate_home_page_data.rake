@@ -74,7 +74,7 @@ namespace :fix_existing_tenants do
               home_page.banner_cta_signed_in_url = banner['cta_signed_in_customized_button']['url']
             end
 
-            home_page.cta_signed_out_type = banner['cta_signed_out_type'] if banner['cta_signed_out_type']
+            home_page.banner_cta_signed_out_type = banner['cta_signed_out_type'] if banner['cta_signed_out_type']
 
             if home_page.banner_cta_signed_out_type == 'customized_button' &&
                banner['cta_signed_out_customized_button']['text'] &&
