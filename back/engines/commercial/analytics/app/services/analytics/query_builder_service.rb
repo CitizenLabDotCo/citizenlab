@@ -3,6 +3,21 @@ module Analytics
     AGGREGATIONS = ["min", "max", "avg", "sum", "count"]
     ANY_KEY = "^[a-z_]*$"
     ANY_DOT_KEY = "^[a-z_]*\.[a-z_]*$"
+    SORT_STRING = {
+      "type" => "string",
+      "pattern" => ANY_DOT_KEY
+    }
+    SORT_OBJECT = {
+      "type": "object",
+      "patternProperties" => {
+        ANY_DOT_KEY => {
+          "type" => "string",
+          "enum" => ["ASC", "DESC"]
+        }
+      },
+      "minProperties" => 1,
+      "maxProperties" => 1
+    }
     SCHEMA = {
       "type" => "object",
       "properties" => {
@@ -76,8 +91,19 @@ module Analytics
           "additionalProperties" => false
         },
         "sort" => {
-          "type" => ["string", "array"],
-          "minLength" => 1
+          "anyOf" => [
+            SORT_STRING,
+            SORT_OBJECT,
+            {
+                "type": "array",
+                "items" => {
+                  "anyOf" => [
+                    SORT_STRING, 
+                    SORT_OBJECT
+                  ]
+                }
+            }
+          ]
         },
         "limit" => {
           "type" => "integer",
@@ -207,7 +233,7 @@ module Analytics
       results
     end
 
-    def group(results)
+    def aggregate(results)
       aggregations = []
       aggregations_names = []
       @query[:groups][:aggregations].each do |column, aggregation|
@@ -230,8 +256,34 @@ module Analytics
         aggregations_names.push(@query[:groups][:key])
       end
 
+      #TODO: add not used sort keys into pluck method
+
       results = results.group(@query[:groups][:key]).pluck(*aggregations)
       results = results.map { |result| aggregations_names.zip(result).to_h }
+    end
+
+    def parse_order_value(order_value)
+      order_query = ""
+
+      if order_value.class == ActionController::Parameters
+        column = order_value.keys[0]
+        order_query = "#{column} #{order_value[column]}"
+      elsif order_value.class == String
+        order_query = order_value
+      end
+      order_query
+    end
+
+    def order(results)
+      order_query = ""
+
+      if @query[:sort].class == Array
+        order_query = @query[:sort].map{ |order_value| parse_order_value(order_value) }.join(", ")
+      else
+        order_query = parse_order_value(@query[:sort])
+      end
+
+      results.order(order_query)
     end
     
     def run()
@@ -240,7 +292,15 @@ module Analytics
       results = query_dimensions(results)
 
       if @query.key?(:groups)
-        results = group(results)
+        results.group(@query[:groups][:key])
+      end
+
+      if @query.key?(:sort)
+        results = order(results)
+      end
+
+      if @query.key?(:groups)
+        results = aggregate(results)
       end
       
       results
