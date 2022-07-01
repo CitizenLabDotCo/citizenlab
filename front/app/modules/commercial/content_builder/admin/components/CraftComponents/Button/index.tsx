@@ -48,9 +48,8 @@ const Button = ({ text, url, opensInNewTab, type, alignment }: ButtonProps) => {
         id="e2e-button"
         width={alignment === 'fullWidth' ? '100%' : 'auto'}
         buttonStyle={type}
-      >
-        {text}
-      </ButtonComponent>
+        text={text}
+      />
     </Box>
   );
 };
@@ -209,9 +208,6 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
 });
 
 Button.craft = {
-  props: {
-    text: '',
-  },
   related: {
     settings: ButtonSettings,
   },
