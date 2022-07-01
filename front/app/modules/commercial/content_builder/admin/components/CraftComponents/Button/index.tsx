@@ -73,6 +73,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     <Box background="#ffffff" marginBottom="20px">
       <Box flex="0 0 100%">
         <Input
+          id="e2e-button-text-input"
           label={
             <Title variant="h4" as="h3">
               {formatMessage(messages.buttonText)}
@@ -88,6 +89,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
       </Box>
       <Box flex="0 0 100%">
         <Input
+          id="e2e-button-url-input"
           label={
             <Title variant="h4" as="h3">
               {formatMessage(messages.buttonUrl)}
