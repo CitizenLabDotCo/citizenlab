@@ -10,8 +10,8 @@ module Analytics
         query = QueryBuilderService.new(FactParticipation, params[:query])
         validation = query.validate
         
-        if validation["error"]
-          render json: {"messages" => validation["messages"]}, status: validation["status"]
+        if validation["messages"].length > 0
+          render json: {"messages" => validation["messages"]}, status: 400
         else
           results = query.run
           render json: results
