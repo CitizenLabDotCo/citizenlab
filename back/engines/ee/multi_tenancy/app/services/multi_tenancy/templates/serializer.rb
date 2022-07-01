@@ -630,15 +630,16 @@ module MultiTenancy
             'idea_status_ref' => lookup_ref(i.idea_status_id, :idea_status),
             'budget' => i.budget,
             'proposed_budget' => i.proposed_budget,
-            'text_images_attributes' => i.text_images.map do |idea|
+            'text_images_attributes' => i.text_images.map do |img|
               {
-                'imageable_field' => idea.imageable_field,
-                'remote_image_url' => idea.image_url,
-                'text_reference' => idea.text_reference,
-                'created_at' => idea.created_at.to_s,
-                'updated_at' => idea.updated_at.to_s
+                'imageable_field' => img.imageable_field,
+                'remote_image_url' => img.image_url,
+                'text_reference' => img.text_reference,
+                'created_at' => img.created_at.to_s,
+                'updated_at' => img.updated_at.to_s
               }
-            end
+            end,
+            'custom_field_values' => i.custom_field_values
           }
           store_ref yml_idea, i.id, :idea
           yml_idea
