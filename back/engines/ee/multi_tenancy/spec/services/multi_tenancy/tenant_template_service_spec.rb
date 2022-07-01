@@ -111,10 +111,10 @@ describe MultiTenancy::TenantTemplateService do
       expect(Project.all.map { |pj| pj.folder&.id }.uniq).to eq [ProjectFolders::Folder.first.id]
     end
 
-    context 'when platform locales are a subset of template locales' do
+    describe 'filtering of template multiloc attributes' do
       let(:platform_locales) { %w[en nl-BE] }
-      let(:yaml_template) do
-        <<~YAML
+      let(:template) do
+        YAML.safe_load(<<~YAML)
           models:
             project:
               - title_multiloc:
@@ -134,16 +134,27 @@ describe MultiTenancy::TenantTemplateService do
         app_config = AppConfiguration.instance
         settings = app_config.settings
         settings['core']['locales'] = platform_locales
-        AppConfiguration.instance.update(settings: settings)
+        app_config.update!(settings: settings)
       end
 
       it 'removes locales not relevant to the platform' do
-        template = YAML.safe_load(yaml_template)
         service.apply_template(template)
 
         project = Project.first
         expect(project.title_multiloc.keys).to match(platform_locales)
         expect(project.description_multiloc.keys).to match(platform_locales)
+      end
+
+      context 'when none of the platform locales is available', :aggregate_failures do
+        let(:platform_locales) { %w[it-IT en-GB] }
+
+        it 'falls back to another (unspecified) locale' do
+          service.apply_template(template)
+
+          project = Project.first
+          expect(project.title_multiloc.keys.size).to eq(1)
+          expect(%w[en nl-BE es-ES]).to include(*project.title_multiloc.keys)
+        end
       end
     end
   end

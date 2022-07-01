@@ -22,8 +22,13 @@ module MultiTenancy
     end
 
     def resolve_and_apply_template(template_name, external_subfolder: 'release', validate: true, max_time: nil)
-      apply_template resolve_template(template_name, external_subfolder: external_subfolder), validate: validate,
-        max_time: max_time
+      Rails.logger.tagged('loading template', template_name: template_name) do
+        apply_template(
+          resolve_template(template_name, external_subfolder: external_subfolder),
+          validate: validate,
+          max_time: max_time
+        )
+      end
     end
 
     def apply_template(template, validate: true, max_time: nil)
@@ -263,7 +268,14 @@ module MultiTenancy
           [locale, translation]
         end
       else
-        field_value.slice(*locales)
+        multiloc = field_value.slice(*locales)
+
+        if multiloc.empty?
+          Rails.logger.warn('locales missing in multiloc', template_multiloc: field_value, locales: locales)
+          multiloc = field_value.slice(field_value.keys.first)
+        end
+
+        multiloc
       end
     end
 
