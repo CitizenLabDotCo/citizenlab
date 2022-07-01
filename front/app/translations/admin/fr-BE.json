@@ -1207,7 +1207,7 @@
   "app.containers.AdminPage.SideBar.insights": "Reporting",
   "app.containers.AdminPage.SideBar.invitations": "Invitations",
   "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.menu": "Pages & menu",
+  "app.containers.AdminPage.SideBar.menu": "Pages et menu",
   "app.containers.AdminPage.SideBar.messaging": "Messagerie",
   "app.containers.AdminPage.SideBar.moderation": "Activité",
   "app.containers.AdminPage.SideBar.pages": "Pages",
@@ -1436,7 +1436,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "Ajouter une page",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée. Vous pouvez également supprimer la page de la barre de navigation si vous n'êtes pas encore prêt à la supprimer.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Êtes-vous sûr de vouloir supprimer cette page ? Cette suppression ne peut être annulée.",
-  "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
+  "app.modules.navbar.admin.containers.pageHeader": "Pages et menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Votre barre de navigation peut afficher jusqu'à cinq pages en plus des pages d'accueil et des projets. Vous pouvez renommer les éléments du menu, les réorganiser et ajouter de nouvelles pages avec votre propre contenu.",
   "app.modules.project_management.admin.components.permissionsTab": "Droits d'accès",
   "components.admin.ServerError.genericServerError": "Une erreur est survenue lors du chargement de ce contenu, veuillez réessayer plus tard."
