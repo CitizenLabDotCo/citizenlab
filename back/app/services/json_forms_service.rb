@@ -266,7 +266,7 @@ class JsonFormsService
     {
       type: 'string'
     }.tap do |json|
-      options = field.custom_field_options.order(:ordering)
+      options = field.options.order(:ordering)
       unless options.empty?
         json[:oneOf] = options.map do |option|
           {
@@ -292,7 +292,7 @@ class JsonFormsService
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.custom_field_options.order(:ordering)
+        options = field.options.order(:ordering)
         unless options.empty?
           items[:oneOf] = options.map do |option|
             {
