@@ -5,9 +5,9 @@ const urlWhiteList = [
   /^(https?):\/\/(.+\.)qualtrics\.com\/jfe\/form\//,
   /^(https?):\/\/(www\.)?smartsurvey\.co\.uk\//,
   /^(https?):\/\/(.+\.)(microsoft|office)\.com\//,
-  /^(https?):\/\/(www\.)?eventbrite\.([-A-Z0-9+&@#\/%=~_|!:,.;]+)/i,
-  /^(https?):\/\/(www\.)?(arcgis|arcg)\.([-A-Z0-9+&@#\/%=~_|!:,.;]+)/i,
-  /^(https?):\/\/public\.tableau\.com\/([-A-Z0-9+&@#\/%=~_|!:,.;?]+)/i,
+  /^(https?):\/\/(www\.)?eventbrite\.([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
+  /^(https?):\/\/(www\.)?(arcgis|arcg)\.([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
+  /^(https?):\/\/public\.tableau\.com\/([-A-Z0-9+&@#/%=~_|!:,.;?]+)/i,
   /^(https?):\/\/datastudio\.google\.com\/embed\//,
   /^(https?):\/\/app\.powerbi\.com\//,
   /^(https?):\/\/static\.ctctcdn\.com\/js\//,
@@ -22,11 +22,11 @@ const urlWhiteList = [
   /^(https?):\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
   /^(https?):\/\/(.+)?(wistia\.com|wi\.st)\/.*\//,
   /^(https?):\/\/(.+\.)(welcomesyourfeedback.net|snapsurveys.com)\//,
-  /^(https?):\/\/([-A-Z0-9.]+)\.surveymonkey\.([-A-Z0-9+&@#\/%=~_|!:,.;]+)/i,
+  /^(https?):\/\/([-A-Z0-9.]+)\.surveymonkey\.([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
   /^(https?):\/\/docs\.google\.com\/(document|spreadsheets|forms|presentation)\/d\/(.*?)\/.*?/,
-  /^(https?):\/\/(www\.)?google\.com\/maps(\/[a-z])?\/embed\?([^&]*)=([-A-Z0-9+&@#\/%=~_|!:,.;]+)/i,
-  /^(https?):\/\/([-A-Z0-9.]+)\.slideshare(\.(net|com))\/slideshow\/embed_code\/key\/([-A-Z0-9+&@#\/%=~_|!:,.;]+)/i,
-  /^(https?):\/\/(www\.)?onedrive\.live\.([-A-Z0-9+&@#\/%=~_|!:,.;?]+)/i,
+  /^(https?):\/\/(www\.)?google\.com\/maps(\/[a-z])?\/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
+  /^(https?):\/\/([-A-Z0-9.]+)\.slideshare(\.(net|com))\/slideshow\/embed_code\/key\/([-A-Z0-9+&@#/%=~_|!:,.;]+)/i,
+  /^(https?):\/\/(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)/i,
 ];
 
 /*
