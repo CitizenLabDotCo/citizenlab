@@ -544,6 +544,7 @@ workflows:
             - front-lint
             - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:
@@ -559,6 +560,7 @@ workflows:
             - front-lint
             - back-lint
             - back-test
+            - back-bundle-audit
             - back-license-check
           filters:
             branches:
