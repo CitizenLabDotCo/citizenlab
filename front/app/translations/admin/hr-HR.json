@@ -1207,7 +1207,7 @@
   "app.containers.AdminPage.SideBar.insights": "Izvještavanje",
   "app.containers.AdminPage.SideBar.invitations": "Pozivnice",
   "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.menu": "Pages & menu",
+  "app.containers.AdminPage.SideBar.menu": "Stranice i izbornik",
   "app.containers.AdminPage.SideBar.messaging": "Slanje poruka",
   "app.containers.AdminPage.SideBar.moderation": "Aktivnosti",
   "app.containers.AdminPage.SideBar.pages": "Stranice",
@@ -1436,7 +1436,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "Dodaj stranicu",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Jeste li sigurni da želite izbrisati ovu stranicu? Ova radnja ne može se poništiti. Također možete ukloniti stranicu iz navigacijske trake ako je još uvijek niste spremni izbrisati.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Jeste li sigurni da želite izbrisati ovu stranicu? Ovu radnju ne možete poništiti.",
-  "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
+  "app.modules.navbar.admin.containers.pageHeader": "Stranice i izbornik",
   "app.modules.navbar.admin.containers.pageSubtitle": "Na vašoj navigacijskoj traci može biti prikazano do pet stranica, pored Početne i projektnih stranica. Možete preimenovati stavke izbornika, preurediti i dodati nove stranice s vlastitim sadržajem.",
   "app.modules.project_management.admin.components.permissionsTab": "Prava pristupa",
   "components.admin.ServerError.genericServerError": "Došlo je do pogreške prilikom brisanja sadržaja, pokušajte ponovno kasnije."
