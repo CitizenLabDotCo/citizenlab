@@ -1366,7 +1366,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Visa innehåll från en extern webbplats på din sida i en HTML-iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "t.ex. 120 px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Måste ange en giltig webbadress.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "Du kan inte bädda in innehåll från den här webbplatsen av säkerhetsskäl, prova något annat.",
   "app.containers.admin.ContentBuilder.image": "Bild",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kort beskrivning av bilden",
