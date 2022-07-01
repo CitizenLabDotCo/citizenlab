@@ -34,12 +34,6 @@ RSpec.describe Idea, type: :model do
           expect(idea.valid?(:create)).to be true
         end
 
-        # it 'can persist an idea with an invalid field value' do
-        #   long_title = 'My long idea title. ' * 100
-        #   idea.custom_field_values = { required_field.key => 80, 'title_multiloc' => { 'en' => long_title } }
-        #   expect(idea.valid?(:create)).to be true
-        # end
-
         it 'can persist an idea without required field values' do
           idea.custom_field_values = { optional_field.key => 'option1' }
           expect(idea.valid?(:create)).to be true

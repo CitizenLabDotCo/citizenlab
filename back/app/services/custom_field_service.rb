@@ -39,7 +39,7 @@ class CustomFieldService
           end
       end
     }.tap do |output|
-      required = fields.select(&:enabled).select(&:required).map(&:key)
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
       output[:required] = required unless required.empty?
     end
   end
@@ -128,7 +128,7 @@ class CustomFieldService
 
   def base_ui_schema_field(field, _locale)
     {}.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden' if field.hidden || !field.enabled
+      ui_schema[:'ui:widget'] = 'hidden' if field.hidden? || !field.enabled?
     end
   end
 
@@ -211,7 +211,7 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'array',
       uniqueItems: true,
-      minItems: field.enabled && field.required ? 1 : 0,
+      minItems: field.enabled? && field.required? ? 1 : 0,
       items: {
         type: 'string'
       }.tap do |items|

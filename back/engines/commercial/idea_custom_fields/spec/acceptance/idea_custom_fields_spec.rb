@@ -29,7 +29,7 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response[:data].size).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to match_array [
+        expect(json_response[:data].map { |d| d.dig(:attributes, :key) }).to eq [
           'title_multiloc', 'body_multiloc', 'proposed_budget', 'topic_ids',
           'location_description', 'idea_images_attributes', 'idea_files_attributes', custom_field.key
         ]

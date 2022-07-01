@@ -77,6 +77,10 @@ class CustomField < ApplicationRecord
     enabled
   end
 
+  def required?
+    required
+  end
+
   private
 
   def set_default_enabled

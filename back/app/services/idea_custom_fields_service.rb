@@ -17,11 +17,11 @@ class IdeaCustomFieldsService
   end
 
   def reportable_fields
-    all_fields.select(&:enabled?).reject(&:built_in?)
+    enabled_fields.reject(&:built_in?)
   end
 
   def visible_fields
-    all_fields.select(&:enabled?)
+    enabled_fields
   end
 
   def enabled_fields
@@ -33,10 +33,7 @@ class IdeaCustomFieldsService
   end
 
   def allowed_extra_field_keys
-    enabled_extra_fields = all_fields.find_all do |field|
-      !field.built_in? && field.enabled
-    end
-    fields_with_array_keys, fields_with_simple_keys = enabled_extra_fields.partition do |field|
+    fields_with_array_keys, fields_with_simple_keys = extra_visible_fields.partition do |field|
       field.input_type == 'multiselect'
     end
     [

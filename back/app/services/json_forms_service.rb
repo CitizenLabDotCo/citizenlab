@@ -58,7 +58,7 @@ class JsonFormsService
         end
       end
     }.tap do |output|
-      required = fields.select(&:enabled).select(&:required).map(&:key)
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
       output[:required] = required unless required.empty?
     end
   end
@@ -71,7 +71,7 @@ class JsonFormsService
 
   def fields_to_ui_schema(fields, locale = 'en')
     send("#{fields.first.resource_type.underscore}_to_ui_schema", fields, locale) do |field, previous_scope|
-      next nil if !field || !field.enabled || field.hidden
+      next nil if !field || !field.enabled? || field.hidden?
 
       override_method = "#{fields.first.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       if field.code && respond_to?(override_method, true)
@@ -289,7 +289,7 @@ class JsonFormsService
     {
       type: 'array',
       uniqueItems: true,
-      minItems: field.enabled && field.required ? 1 : 0,
+      minItems: field.enabled? && field.required? ? 1 : 0,
       items: {
         type: 'string'
       }.tap do |items|

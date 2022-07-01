@@ -65,7 +65,7 @@ module JsonFormsIdeasOverrides
           end
       end
     }.tap do |output|
-      required = fields.select(&:enabled).select(&:required).map(&:key)
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
       output[:required] = required if required.any?
     end
   end
@@ -141,7 +141,7 @@ module JsonFormsIdeasOverrides
     {
       type: 'array',
       uniqueItems: true,
-      minItems: field.enabled && field.required ? 1 : 0,
+      minItems: field.enabled? && field.required? ? 1 : 0,
       items: {
         type: 'string'
       }.tap do |items|

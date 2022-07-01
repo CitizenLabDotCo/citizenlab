@@ -104,6 +104,25 @@ describe IdeaCustomFieldsService do
     end
   end
 
+  describe 'configurable_fields' do
+    it 'returns all fields except author_id and budget' do
+      create :custom_field, resource: custom_form, key: 'extra_field1', enabled: true
+      create :custom_field, resource: custom_form, key: 'extra_field2', enabled: false
+      output = service.configurable_fields
+      expect(output.map(&:key)).to eq %w[
+        title_multiloc
+        body_multiloc
+        proposed_budget
+        topic_ids
+        location_description
+        idea_images_attributes
+        idea_files_attributes
+        extra_field1
+        extra_field2
+      ]
+    end
+  end
+
   describe 'reportable_fields' do
     it 'excludes disabled and built-in fields' do
       title_field = create :custom_field, resource: custom_form, code: 'title_multiloc'
