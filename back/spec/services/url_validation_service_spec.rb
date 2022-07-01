@@ -44,7 +44,7 @@ describe UrlValidationService do
         'https://arcg.is/1jiOj',
         'https://onedrive.live.com/embed?cid=ECDDF98AA79FDEDB&resid=ECDDF98AA79FDEDB%21145&authkey=AIRY6_880wuOdDc&em=2',
         'https://www.eventbrite.com/e/embed-test-tickets-370340266707',
-        'http://www.slideshare.net/slideshow/embed_code/key/AYBogCfDlXkgMi',
+        'http://www.slideshare.net/slideshow/embed_code/key/AYBogCfDlXkgMi'
       ]
     end
     let :invalid_urls do
