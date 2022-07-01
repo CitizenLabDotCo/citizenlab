@@ -119,20 +119,6 @@ jobs:
       # See https://github.com/rubysec/bundler-audit
       - run: bundle exec bundle-audit check --update --ignore CVE-2015-9284
 
-  back-brakeman:
-    resource_class: small
-    executor:
-      name: cl2-back
-      image-tag: $CIRCLE_SHA1
-    working_directory: /cl2_back
-    environment:
-      RAILS_ENV: development
-    steps:
-      # See https://github.com/presidentbeef/brakeman
-      - run: bundle exec brakeman -A --no-exit-on-warn --no-exit-on-error -o brakeman_repport.html
-      - store_artifacts:
-          path: brakeman_repport.html
-
   back-test:
     resource_class: small
     executor:
@@ -405,15 +391,6 @@ workflows:
                 - crowdin_master
                 - /l10n_.*/
       - back-bundle-audit:
-          context: docker-hub-access
-          requires:
-            - back-build-essential-docker-image
-          filters:
-            branches:
-              ignore:
-                - crowdin_master
-                - /l10n_.*/
-      - back-brakeman:
           context: docker-hub-access
           requires:
             - back-build-essential-docker-image

@@ -556,7 +556,6 @@ GEM
       debug_inspector (>= 0.0.1)
     bootsnap (1.12.0)
       msgpack (~> 1.2)
-    brakeman (5.2.3)
     builder (3.2.4)
     bullet (7.0.2)
       activesupport (>= 3.0.0)
@@ -1143,7 +1142,6 @@ DEPENDENCIES
   axlsx (= 3.0.0.pre)
   bcrypt (~> 3.1.7)
   bootsnap (~> 1)
-  brakeman
   bullet
   bundler-audit
   bunny (>= 2.7.2)
