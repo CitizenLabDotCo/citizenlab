@@ -25,22 +25,20 @@ const Accordion = ({ text, title, openByDefault }) => {
   const theme: any = useTheme();
 
   return (
-    <Box id="e2e-accordion">
-      <AccordionComponent
-        isOpenByDefault={openByDefault}
-        title={
-          <Box display="flex">
-            <Title variant="h3" color="colorText">
-              {title}
-            </Title>
-          </Box>
-        }
-      >
-        <QuillEditedContent textColor={theme.colorText}>
-          <div dangerouslySetInnerHTML={{ __html: text }} />
-        </QuillEditedContent>
-      </AccordionComponent>
-    </Box>
+    <AccordionComponent
+      isOpenByDefault={openByDefault}
+      title={
+        <Box id="e2e-accordion" display="flex">
+          <Title variant="h3" color="colorText">
+            {title}
+          </Title>
+        </Box>
+      }
+    >
+      <QuillEditedContent textColor={theme.colorText}>
+        <div dangerouslySetInnerHTML={{ __html: text }} />
+      </QuillEditedContent>
+    </AccordionComponent>
   );
 };
 

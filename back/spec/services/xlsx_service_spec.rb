@@ -59,6 +59,20 @@ describe XlsxService do
       expect(options_col).to include(custom_options[0].title_multiloc['en'])
     end
 
+    it 'includes hidden custom fields' do
+      create :custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' }
+      headers = worksheet[0].cells.map(&:value)
+      field_idx = headers.find_index 'Hidden field'
+      expect(field_idx).to be_present
+    end
+
+    it 'excludes disabled custom fields' do
+      create :custom_field, enabled: false, title_multiloc: { 'en' => 'Disabled field' }
+      headers = worksheet[0].cells.map(&:value)
+      field_idx = headers.find_index 'Disabled field'
+      expect(field_idx).to be_nil
+    end
+
     describe do
       let(:xlsx) { service.generate_users_xlsx(users, view_private_attributes: false) }
 
@@ -72,8 +86,6 @@ describe XlsxService do
   end
 
   describe 'generate_ideas_xlsx' do
-    before { create_list(:custom_field, 2) }
-
     let(:ideas) do
       create_list(:idea, 5).tap do |ideas|
         ideas.first.author.destroy! # should be able to handle ideas without author
