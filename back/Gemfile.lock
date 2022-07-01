@@ -888,7 +888,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.2)
+    rails-html-sanitizer (1.4.3)
       loofah (~> 2.3)
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
@@ -1224,6 +1224,7 @@ DEPENDENCIES
   rack-cors
   rack-mini-profiler
   rails (~> 6.1)
+  rails-html-sanitizer (>= 1.4.3)
   rails-i18n (~> 6.0.0)
   rails_semantic_logger
   redcarpet
