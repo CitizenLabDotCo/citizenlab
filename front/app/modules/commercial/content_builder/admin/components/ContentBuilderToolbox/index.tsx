@@ -227,7 +227,7 @@ const ContentBuilderToolbox = ({
             )
           }
         >
-          <ToolboxItem icon="text" label={formatMessage(messages.button)} />
+          <ToolboxItem icon="button" label={formatMessage(messages.button)} />
         </DraggableElement>
         <DraggableElement
           id="e2e-draggable-image"
