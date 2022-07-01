@@ -1,8 +1,14 @@
 # Changelog
 
-## Next release
+## 2022-07-01
+
+### Added
+
+- [CL-504] Dynamic idea form has limited support for extra fields
+- [CL-1034] Add support for more URLs in the embed component whitelist
 
 ## 2022-06-30
+
 ### Fixed
 
 - [CL-1051] When a new project is published, its default publication status is now draft
@@ -25,6 +31,10 @@
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
 
 ## 2022-06-22
+
+### Added
+
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
 
 ### Fixed
 
