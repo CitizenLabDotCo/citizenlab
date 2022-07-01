@@ -234,7 +234,7 @@
     "webpack-bundle-analyzer": "4.5.0",
     "webpack-cli": "4.9.1",
     "webpack-dev-server": "4.9.0",
-    "yargs": "17.3.1"
+    "yargs": "17.5.1"
   },
   "resolutions": {
     "react-test-renderer": "16.14.0"
