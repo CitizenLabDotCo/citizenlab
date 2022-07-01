@@ -32,6 +32,10 @@
 
 ## 2022-06-22
 
+### Added
+
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
+
 ### Fixed
 
 - [CL-926] The ideas count never exceeded 250 due to a bug in the `ideas_count` endpoint.
