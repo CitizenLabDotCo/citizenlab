@@ -75,8 +75,8 @@ export default defineMessages({
     defaultMessage:
       'Height you want your embedded content to appear on the page (in pixels).',
   },
-  iframeUrlPlaceholder: {
-    id: 'app.containers.admin.ContentBuilder.iframeUrlPlaceholder',
+  urlPlaceholder: {
+    id: 'app.containers.admin.ContentBuilder.urlPlaceholder',
     defaultMessage: 'https://example.com',
   },
   iframeHeightPlaceholder: {
@@ -114,6 +114,10 @@ export default defineMessages({
   accordion: {
     id: 'app.containers.admin.ContentBuilder.accordion',
     defaultMessage: 'Accordion',
+  },
+  button: {
+    id: 'app.containers.admin.ContentBuilder.button',
+    defaultMessage: 'Button',
   },
   imageTextCards: {
     id: 'app.containers.admin.ContentBuilder.imageTextCards',
@@ -191,6 +195,50 @@ export default defineMessages({
   columnLayoutRadioLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.columnLayoutRadioLabel',
     defaultMessage: 'Column layout',
+  },
+  buttonTypeRadioLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonTypeRadioLabel',
+    defaultMessage: 'Button type',
+  },
+  alignmentFullWidth: {
+    id: 'app.containers.AdminPage.ProjectDescription.alignmentFullWidth',
+    defaultMessage: 'Full width',
+  },
+  alignmentLeft: {
+    id: 'app.containers.AdminPage.ProjectDescription.alignmentLeft',
+    defaultMessage: 'Left',
+  },
+  alignmentRight: {
+    id: 'app.containers.AdminPage.ProjectDescription.alignmentRight',
+    defaultMessage: 'Right',
+  },
+  alignmentCenter: {
+    id: 'app.containers.AdminPage.ProjectDescription.alignmentCenter',
+    defaultMessage: 'Center',
+  },
+  openInTabOrWindow: {
+    id: 'app.containers.AdminPage.ProjectDescription.openInTabOrWindow',
+    defaultMessage: 'Open in new tab/window',
+  },
+  buttonTypePrimaryLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonTypePrimaryLabel',
+    defaultMessage: 'Primary',
+  },
+  buttonTypeSecondaryLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonTypeSecondaryLabel',
+    defaultMessage: 'Secondary',
+  },
+  buttonAlignmentRadioLabel: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonAlignmentRadioLabel',
+    defaultMessage: 'Button alignment',
+  },
+  buttonText: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonText',
+    defaultMessage: 'Button text',
+  },
+  buttonUrl: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonUrl',
+    defaultMessage: 'Button URL',
   },
   whiteSpace: {
     id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',

@@ -21,6 +21,7 @@ import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
 import WhiteSpace from '../CraftComponents/WhiteSpace';
+import Button from '../CraftComponents/Button';
 import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
 import ImageTextCards from '../CraftSections/ImageTextCards';
 
@@ -204,6 +205,29 @@ const ContentBuilderToolbox = ({
           }
         >
           <ToolboxItem icon="text" label={formatMessage(messages.text)} />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-button"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Button
+                text={formatMessage(messages.button)}
+                url={''}
+                opensInNewTab={false}
+                type={'primary'}
+                alignment={'left'}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem icon="text" label={formatMessage(messages.button)} />
         </DraggableElement>
         <DraggableElement
           id="e2e-draggable-image"

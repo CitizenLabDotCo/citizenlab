@@ -25,6 +25,7 @@ const ACCORDION = 'Accordion';
 const WHITE_SPACE = 'WhiteSpace';
 const INFO_WITH_ACCORDIONS = 'InfoWithAccordions';
 const IMAGE_TEXT_CARDS = 'ImageTextCards';
+const BUTTON = 'Button';
 
 type ComponentNamesType =
   | typeof CONTAINER
@@ -37,7 +38,8 @@ type ComponentNamesType =
   | typeof ACCORDION
   | typeof WHITE_SPACE
   | typeof INFO_WITH_ACCORDIONS
-  | typeof IMAGE_TEXT_CARDS;
+  | typeof IMAGE_TEXT_CARDS
+  | typeof BUTTON;
 
 export const getComponentNameMessage = (name: ComponentNamesType) => {
   switch (name) {
@@ -63,6 +65,8 @@ export const getComponentNameMessage = (name: ComponentNamesType) => {
       return messages.infoWithAccordions;
     case IMAGE_TEXT_CARDS:
       return messages.imageTextCards;
+    case BUTTON:
+      return messages.button;
     default:
       return messages.default;
   }
@@ -203,7 +207,9 @@ const RenderNode = ({ render }) => {
       <div
         style={{
           pointerEvents:
-            name === IFRAME || name === ABOUT_BOX ? 'none' : 'auto',
+            name === IFRAME || name === ABOUT_BOX || name === BUTTON
+              ? 'none'
+              : 'auto',
           display: name === IMAGE ? 'flex' : 'auto',
           width: '100%',
         }}
