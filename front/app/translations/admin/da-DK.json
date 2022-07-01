@@ -1207,7 +1207,7 @@
   "app.containers.AdminPage.SideBar.insights": "Indsigt",
   "app.containers.AdminPage.SideBar.invitations": "Invitationer",
   "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.menu": "Pages & menu",
+  "app.containers.AdminPage.SideBar.menu": "Sider og menu",
   "app.containers.AdminPage.SideBar.messaging": "Meddelelser",
   "app.containers.AdminPage.SideBar.moderation": "Aktivitet",
   "app.containers.AdminPage.SideBar.pages": "Sider",
@@ -1436,7 +1436,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "Tilføj side",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "Er du sikker på, at du ønsker at slette denne side? Dette kan ikke fortrydes. Du kan også fjerne siden fra navigationslinjen, hvis du ikke er klar til at slette den endnu.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "Er du sikker på, at du vil slette denne side? Dette kan ikke fortrydes.",
-  "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
+  "app.modules.navbar.admin.containers.pageHeader": "Sider og menu",
   "app.modules.navbar.admin.containers.pageSubtitle": "Din navigationslinje kan vise op til fem sider ud over siderne Startside og Projekter. Du kan omdøbe menupunkter, omarrangere og tilføje nye sider med dit eget indhold.",
   "app.modules.project_management.admin.components.permissionsTab": "Adgangsrettigheder",
   "components.admin.ServerError.genericServerError": "Der var et problem med at indlæse dette indhold, prøv venligst igen senere."
