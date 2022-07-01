@@ -126,9 +126,8 @@ module Insights
     private
 
     def category_ids
-      @category_ids ||= params[:categories].to_a.tap do |ids|
-        ids << params[:category] if params.key?(:category)
-      end.map(&:presence).uniq
+      # Empty strings are converted to nil and allow to select inputs without categories.
+      @category_ids ||= params.fetch(:categories, []).map(&:presence).uniq
     end
   end
 end
