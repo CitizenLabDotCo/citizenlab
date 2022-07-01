@@ -36,7 +36,7 @@ const smallPadding = '0px 40px 4px 40px';
 
 const Footer = ({
   fieldIsRequired,
-  includedUserPercentage,
+  includedUsers,
   hideTicks,
   dataIsTooLong,
   numberOfHiddenItems,
@@ -56,7 +56,7 @@ const Footer = ({
     >
       <FieldInfo
         fieldIsRequired={fieldIsRequired}
-        includedUserPercentage={includedUserPercentage}
+        includedUsers={includedUsers}
       />
 
       {!hideLegend && (
