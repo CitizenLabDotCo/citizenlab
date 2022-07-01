@@ -518,6 +518,14 @@ workflows:
             branches:
               only:
                 - production
+      - back-bundle-audit:
+          context: docker-hub-access
+          requires:
+            - back-build-essential-docker-image
+          filters:
+            branches:
+              only:
+                - production
       - back-test:
           context: docker-hub-access
           requires:
