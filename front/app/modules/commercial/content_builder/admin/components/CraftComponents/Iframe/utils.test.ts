@@ -51,7 +51,7 @@ const validPlatformLinks = [
   },
   {
     platform: 'Vimeo',
-    urls: ['https://www.youtube.com/embed/szg3dIZ8xDc'],
+    urls: ['https://player.vimeo.com/video/719182720?h=ef103ac0a7'],
   },
   {
     platform: 'Dreambroker',
