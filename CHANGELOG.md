@@ -1,8 +1,17 @@
 # Changelog
 
+## Next release
+
 ### Added
 
 - [CL-1034] Add support for more URLs in the embed component whitelist
+
+## 2022-06-30
+
+### Fixed
+
+- [CL-1051] When a new project is published, its default publication status is now draft
+- [CL-993] Fixed bug on idea form where fields were reset to empty state after changing description
 
 ## 2022-06-29_2
 
