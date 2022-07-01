@@ -1207,7 +1207,7 @@
   "app.containers.AdminPage.SideBar.insights": "تقديم بلاغات",
   "app.containers.AdminPage.SideBar.invitations": "الدعوات",
   "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.menu": "Pages & menu",
+  "app.containers.AdminPage.SideBar.menu": "صفحات وقائمة",
   "app.containers.AdminPage.SideBar.messaging": "رسائل",
   "app.containers.AdminPage.SideBar.moderation": "النشاط",
   "app.containers.AdminPage.SideBar.pages": "الصفحات",
@@ -1436,7 +1436,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "أضِف صفحة",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء. يمكنك أيضًا إزالة الصفحة من شريط التنقل إذا لم تكن قد حذفتها حتى الآن.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "هل تريد بالتأكيد حذف هذه الصفحة؟ لا يمكن التراجع عن هذا الإجراء.",
-  "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
+  "app.modules.navbar.admin.containers.pageHeader": "صفحات وقائمة",
   "app.modules.navbar.admin.containers.pageSubtitle": "باستطاعة شريط التنقل عرض ما يصل إلى خمس صفحات إضافة إلى الصفحة الرئيسية وصفحات المشاريع. يمكنك إعادة تسمية عناصر قائمة وإعادة ترتيب صفحات جديدة تتضمن المحتوى التابع لك وإضافتها.",
   "app.modules.project_management.admin.components.permissionsTab": "حقوق الوصول",
   "components.admin.ServerError.genericServerError": "حدثت مشكلة أثناء تحميل هذا المحتوى، يُرجى المحاولة مجددًا في وقت لاحق."
