@@ -1207,7 +1207,7 @@
   "app.containers.AdminPage.SideBar.insights": "Reportar",
   "app.containers.AdminPage.SideBar.invitations": "Invitaciones",
   "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
-  "app.containers.AdminPage.SideBar.menu": "Pages & menu",
+  "app.containers.AdminPage.SideBar.menu": "Páginas y menú",
   "app.containers.AdminPage.SideBar.messaging": "Mensajería ",
   "app.containers.AdminPage.SideBar.moderation": "Actividad",
   "app.containers.AdminPage.SideBar.pages": "Páginas",
@@ -1436,7 +1436,7 @@
   "app.modules.navbar.admin.containers.addPageButton": "Añadir página",
   "app.modules.navbar.admin.containers.deletePageConfirmation": "¿Está seguro de que quiere eliminar esta página? Este paso no podrá deshacerse. También puede eliminar la página de la barra de navegación si aún no está listo para eliminarla.",
   "app.modules.navbar.admin.containers.deletePageConfirmationHidden": "¿Está seguro de que quiere eliminar esta página? Este paso no podrá deshacerse. ",
-  "app.modules.navbar.admin.containers.pageHeader": "Pages & menu",
+  "app.modules.navbar.admin.containers.pageHeader": "Páginas y menú",
   "app.modules.navbar.admin.containers.pageSubtitle": "Su barra de navegación puede mostrar hasta cinco páginas además de las páginas de Inicio y de proyectos. Puede cambiar el nombre de los elementos del menú, reordenarlos y añadir páginas nuevas con su propio contenido.",
   "app.modules.project_management.admin.components.permissionsTab": "Derechos de acceso",
   "components.admin.ServerError.genericServerError": "Algo pasó al cargar este contenido, por favor intentalo más tarde."
