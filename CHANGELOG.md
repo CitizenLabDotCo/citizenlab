@@ -1,8 +1,13 @@
 # Changelog
 
-## Next release
+## 2022-07-01
+
+### Added
+
+- Dynamic idea form has limited support for extra fields
 
 ## 2022-06-30
+
 ### Fixed
 
 - [CL-1051] When a new project is published, its default publication status is now draft
@@ -140,10 +145,6 @@
 ### Fixed
 
 - [CL-788] Fixed issue with different URL when sharing idea from map vs list view
-
-### Added
-
-- Dynamic idea form has limited support for extra fields
 
 ## 2022-05-20
 
