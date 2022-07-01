@@ -104,7 +104,8 @@ module AdminApi
           'updated_at' => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
           'enabled' => c.enabled,
           'required' => c.required,
-          'code' => c.code
+          'code' => c.code,
+          'hidden' => c.hidden
         }
         store_ref yml_custom_field, c.id, :custom_field
         yml_custom_field
@@ -472,7 +473,8 @@ module AdminApi
               'created_at' => text_image.created_at.to_s,
               'updated_at' => text_image.updated_at.to_s
             }
-          end
+          end,
+          'custom_field_values' => i.custom_field_values
         }
         store_ref yml_idea, i.id, :idea
         yml_idea
