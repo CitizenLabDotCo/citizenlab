@@ -3,8 +3,8 @@
 class UrlValidationService
   URL_WHITELIST = [
     %r{\A(https?)://(.+\.)typeform\.com/to/},
-    %r{\A(https?):\/\/surveys.enalyzer.com\/?\?pid=.*},
-    %r{\A(https?):\/\/(www\.)?survey-xact\.dk\/LinkCollector\?key=.*}i,
+    %r{\A(https?)://surveys.enalyzer.com/?\?pid=.*},
+    %r{\A(https?)://(www\.)?survey-xact\.dk/LinkCollector\?key=.*}i,
     %r{\A(https?)://(.+\.)qualtrics\.com/jfe/form/},
     %r{\A(https?)://(www\.)?smartsurvey\.co\.uk/},
     %r{\A(https?)://(.+\.)(microsoft|office)\.com/},
@@ -20,7 +20,7 @@ class UrlValidationService
     %r{\A(https?)://(www\.)?facebook\.com/},
     %r{\A(https?)://(.+\.)(welcomesyourfeedback.net|snapsurveys.com)/},
     %r{\A(https?)://([-A-Z0-9.]+)\.surveymonkey\.([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
-    %r{\A(https?):\/\/docs\.google\.com\/(document|spreadsheets|forms|presentation)\/d\/(.*?)\/.*?},
+    %r{\A(https?)://docs\.google\.com/(document|spreadsheets|forms|presentation)/d/(.*?)/.*?},
     %r{\A(https?)://(www\.)?google\.com/maps(/[a-z])?/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://([-A-Z0-9.]+)\.slideshare(\.(net|com))/slideshow/embed_code/key/([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i
