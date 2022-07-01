@@ -5,7 +5,10 @@ import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import { THomepageSection, updateHomepageSettings } from 'services/homepageSettings';
+import {
+  THomepageSection,
+  updateHomepageSettings,
+} from 'services/homepageSettings';
 import Outlet from 'components/Outlet';
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -43,13 +46,10 @@ const EditHomepage = () => {
   ]);
 
   const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
-    handleUpdateHomepageSettings(sectionName);
-  };
-
-  const handleUpdateHomepageSettings = async (
-    sectionName: THomepageSection
-  ) => {
     try {
+      updateHomepageSettings({
+        sectionName: homepageSettings.attributes[sectionName],
+      });
     } catch (error) {}
   };
 
