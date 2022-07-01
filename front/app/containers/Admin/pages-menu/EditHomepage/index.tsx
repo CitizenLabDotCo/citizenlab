@@ -5,7 +5,7 @@ import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
 import useHomepageSettings from 'hooks/useHomepageSettings';
-import { THomepageSection } from 'services/homepages';
+import { THomepageSection, updateHomepageSettings } from 'services/homepageSettings';
 import Outlet from 'components/Outlet';
 import { MessageDescriptor } from 'utils/cl-intl';
 

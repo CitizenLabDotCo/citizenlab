@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { Multiloc } from 'typings';
 const homepageSettingsEndpoint = `${API_PATH}/home_pages`;
 
 export interface IHomepageSectionMap {
@@ -11,6 +12,12 @@ export interface IHomepageSectionMap {
 
 export type THomepageSection = IHomepageSectionMap[keyof IHomepageSectionMap];
 
+export interface THomepageBannerLayoutMap {
+  full_with_banner_layout: 'full_width_banner_layout';
+}
+
+export type THomepageBannerLayout =
+  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
 export interface IHomepageSettings {
   top_info_section_enabled: boolean;
@@ -42,4 +49,8 @@ export function homepageSettingsStream() {
   return streams.get<IHomepageSettings>({
     apiEndpoint: homepageSettingsEndpoint,
   });
+}
+
+export function updateHomepageSettings() {
+  return streams.update();
 }

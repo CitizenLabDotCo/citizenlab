@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { homepageSettingsStream, IHomepageSettings } from 'services/homepages';
+import {
+  homepageSettingsStream,
+  IHomepageSettings,
+} from 'services/homepageSettings';
 
 export default function useAppConfiguration() {
   const [homepageSettings, setHomepageSettings] = useState<
