@@ -1366,7 +1366,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Display content from an external website on your page in an HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "por exemplo, 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Deve fornecer um URL válido.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://exemplo.com/",
   "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "Não é possível incorporar conteúdo deste endereço web por razões de segurança, tente de outra forma.",
   "app.containers.admin.ContentBuilder.image": "Imagem  ",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Breve descrição da imagem",

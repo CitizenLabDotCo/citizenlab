@@ -1366,7 +1366,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Vis indhold fra et eksternt websted på din side i en HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "f.eks. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Skal angive en gyldig URL.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "Du kan ikke indlejre indhold fra dette websted af sikkerhedsmæssige årsager, prøv noget andet.",
   "app.containers.admin.ContentBuilder.image": "Billede",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kort beskrivelse af billedet",

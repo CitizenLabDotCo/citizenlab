@@ -1352,7 +1352,6 @@
   "app.containers.admin.ContentBuilder.delete": "Slett",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "e.g. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Must provide a valid URL.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "You cannot embed content from this website for security reasons, try something else.",
   "app.containers.admin.ContentBuilder.image": "Bilde",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Short description of the image",
