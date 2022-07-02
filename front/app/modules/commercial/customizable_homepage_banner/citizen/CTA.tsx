@@ -4,12 +4,8 @@ import BannerButton, {
   BannerButtonStyle,
 } from 'containers/LandingPage/BannerButton';
 import useLocalize from 'hooks/useLocalize';
-import {
-  CTASignedInType,
-  CTASignedOutType,
-  CustomizedButtonConfig,
-} from 'services/appConfiguration';
-
+import { CustomizedButtonConfig } from 'services/appConfiguration';
+import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
 interface Props {
   ctaType: CTASignedOutType | CTASignedInType;
   customizedButtonConfig?: CustomizedButtonConfig;

@@ -41,14 +41,13 @@ import { MessageValue } from 'react-intl';
 import { NavItem } from 'containers/Admin/sideBar';
 import {
   AppConfigurationFeature,
-  CTASignedInType,
-  CTASignedOutType,
   CustomizedButtonConfig,
   IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
   THomepageBannerLayout,
 } from 'services/appConfiguration';
+import { CTASignedOutType, CTASignedInType } from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';

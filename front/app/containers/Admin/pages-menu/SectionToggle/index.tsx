@@ -9,8 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
-import { FormattedMessage } from 'react-intl';
-import { MessageDescriptor } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 const StyledToggle = styled(Toggle)`
   margin-right: 20px;

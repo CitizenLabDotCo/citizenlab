@@ -34,12 +34,13 @@ const CTASettings = ({
   }
 
   const {
-    cta_signed_out_type: ctaSignedOutType,
     cta_signed_out_customized_button: ctaSignedOutCustomizedButton,
-
-    cta_signed_in_type: ctaSignedInType,
     cta_signed_in_customized_button: ctaSignedInCustomizedButton,
   } = latestAppConfigSettings.customizable_homepage_banner;
+  const {
+    cta_signed_out_type: ctaSignedOutType,
+    cta_signed_in_type: ctaSignedInType,
+  } = homepageSettings;
   return (
     <Section>
       <SubSectionTitle>

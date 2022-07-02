@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-  CTASignedOutType,
-  CTASignedInType,
-  CustomizedButtonConfig,
-} from 'services/appConfiguration';
+import { CustomizedButtonConfig } from 'services/appConfiguration';
+import { CTASignedOutType, CTASignedInType } from 'services/homepageSettings';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
