@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
+// home_pages or homepages?
 const homepageSettingsEndpoint = `${API_PATH}/home_pages`;
 
 export interface IHomepageSectionMap {
@@ -51,6 +52,15 @@ export function homepageSettingsStream() {
   });
 }
 
-export function updateHomepageSettings() {
-  return streams.update();
+export async function updateHomepageSettings(
+  object: Partial<IHomepageSettings>
+) {
+  const homepageSettings = await streams.update<IHomepageSettings>(
+    homepageSettingsEndpoint,
+    'home_pages',
+    { home_pages: object }
+  );
+  // is this needed?
+  await homepageSettingsStream().fetch();
+  return homepageSettings;
 }
