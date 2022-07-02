@@ -244,7 +244,7 @@ export interface IAppConfigurationStyle {
 }
 
 export interface THomepageBannerLayoutMap {
-  full_with_banner_layout: 'full_width_banner_layout';
+  full_width_banner_layout: 'full_width_banner_layout';
 }
 
 export type THomepageBannerLayout =
