@@ -18,7 +18,7 @@ const EditHomepage = () => {
     TSectionToggleData[]
   >([
     {
-      sectionEnabledSettingName: 'customizable_homepage_banner',
+      sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
     },

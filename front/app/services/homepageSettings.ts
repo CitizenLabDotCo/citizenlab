@@ -8,7 +8,7 @@ const homepageSettingsEndpoint = `${API_PATH}/home_pages`;
 
 // * THomepageSection *
 export interface IHomepageSectionMap {
-  customizable_homepage_banner: 'customizable_homepage_banner';
+  customizable_homepage_banner_enabled: 'customizable_homepage_banner_enabled';
   top_info_section_enabled: 'top_info_section_enabled';
   projects_enabled: 'projects_enabled';
   bottom_info_section_enabled: 'bottom_info_section_enabled';
