@@ -4,14 +4,8 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import {
-  THomepageSection,
-  updateHomepageSettings,
-} from 'services/homepageSettings';
-import Outlet from 'components/Outlet';
+import { THomepageSection } from 'services/homepageSettings';
 import { MessageDescriptor } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 type TSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
@@ -20,7 +14,6 @@ type TSectionToggleData = {
 };
 
 const EditHomepage = () => {
-  const homepageSettings = useHomepageSettings();
   const [sectionTogglesData, setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
@@ -48,11 +41,6 @@ const EditHomepage = () => {
 
   const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
     try {
-      if (!isNilOrError(homepageSettings)) {
-        updateHomepageSettings({
-          [sectionName]: homepageSettings.attributes[sectionName],
-        });
-      }
     } catch (error) {}
   };
 
@@ -103,11 +91,6 @@ const EditHomepage = () => {
             );
           }
         )}
-        <Outlet
-          id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
-          // Make the handle function more generic
-          onChangeSectionToggle={handleOnChangeToggle('events_widget')}
-        />
       </div>
     </>
   );
