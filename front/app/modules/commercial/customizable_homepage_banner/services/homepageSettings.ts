@@ -15,10 +15,10 @@ declare module 'services/homepageSettings' {
   }
   type CTASignedInType = CTASignedInTypeMap[keyof CTASignedInTypeMap];
 
-  interface IHomepageSettings {
+  export interface IHomepageSettingsAttributes {
     // cta_signed_in
     cta_signed_in_text_multiloc: Multiloc;
-    cta_signed_in_type;
+    cta_signed_in_type: CTASignedInType;
     cta_signed_in_url: string;
     // cta_signed_out
     cta_signed_out_text_multiloc: Multiloc;

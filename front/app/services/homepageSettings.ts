@@ -27,25 +27,27 @@ export interface IHomepageSettings {
   id: string;
   // To check
   type: string;
-  attributes: {
-    top_info_section_enabled: boolean;
-    top_info_section_multiloc: Multiloc;
-    bottom_info_section_enabled: boolean;
-    bottom_info_section_multiloc: Multiloc;
-    events_widget_enabled: boolean;
-    projects_enabled: boolean;
-    projects_header_multiloc: Multiloc;
-    banner_avatars_enabled: boolean;
-    customizable_homepage_banner: boolean;
-    banner_layout;
-    banner_signed_in_header_multiloc: Multiloc;
-    banner_signed_out_header_multiloc: Multiloc;
-    banner_signed_out_subheader_multiloc: Multiloc;
-    banner_signed_out_header_overlay_color;
-    banner_signed_out_header_overlay_opacity;
-    header_bg;
-    pinned_admin_publication_ids: string[];
-  };
+  attributes: IHomepageSettingsAttributes;
+}
+
+export interface IHomepageSettingsAttributes {
+  top_info_section_enabled: boolean;
+  top_info_section_multiloc: Multiloc;
+  bottom_info_section_enabled: boolean;
+  bottom_info_section_multiloc: Multiloc;
+  events_widget_enabled: boolean;
+  projects_enabled: boolean;
+  projects_header_multiloc: Multiloc;
+  banner_avatars_enabled: boolean;
+  customizable_homepage_banner: boolean;
+  banner_layout;
+  banner_signed_in_header_multiloc: Multiloc;
+  banner_signed_out_header_multiloc: Multiloc;
+  banner_signed_out_subheader_multiloc: Multiloc;
+  banner_signed_out_header_overlay_color;
+  banner_signed_out_header_overlay_opacity;
+  header_bg;
+  pinned_admin_publication_ids: string[];
 }
 
 // streams
