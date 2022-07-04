@@ -57,7 +57,7 @@ export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
 
 export const ContentBuilderPage = () => {
-  const [mobilePreviewEnabled, setMobilePreviewEnabled] = useState(false);
+  const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState<Locale | undefined>();
   const [draftData, setDraftData] = useState<Record<string, SerializedNodes>>();
   const { pathname } = useLocation();
@@ -181,15 +181,15 @@ export const ContentBuilderPage = () => {
         >
           <ContentBuilderTopBar
             localesWithError={localesWithError}
-            mobilePreviewEnabled={mobilePreviewEnabled}
-            setMobilePreviewEnabled={setMobilePreviewEnabled}
+            previewEnabled={previewEnabled}
+            setPreviewEnabled={setPreviewEnabled}
             selectedLocale={selectedLocale}
             onSelectLocale={handleSelectedLocaleChange}
             draftEditorData={draftData}
           />
           <Box
             mt={`${stylingConsts.menuHeight}px`}
-            display={mobilePreviewEnabled ? 'none' : 'flex'}
+            display={previewEnabled ? 'none' : 'flex'}
           >
             {selectedLocale && (
               <ContentBuilderToolbox selectedLocale={selectedLocale} />
@@ -214,10 +214,7 @@ export const ContentBuilderPage = () => {
             <ContentBuilderSettings />
           </Box>
         </Editor>
-        <Box
-          justifyContent="center"
-          display={mobilePreviewEnabled ? 'flex' : 'none'}
-        >
+        <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
           <ContentBuilderEditModePreview
             projectId={projectId}
             ref={iframeRef}

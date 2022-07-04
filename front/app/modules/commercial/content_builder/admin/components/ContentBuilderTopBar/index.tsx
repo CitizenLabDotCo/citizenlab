@@ -44,8 +44,8 @@ import { Locale } from 'typings';
 
 type ContentBuilderTopBarProps = {
   localesWithError: Locale[];
-  mobilePreviewEnabled: boolean;
-  setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+  previewEnabled: boolean;
+  setPreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   selectedLocale: Locale | undefined;
   draftEditorData?: Record<string, SerializedNodes>;
   onSelectLocale: (args: {
@@ -56,8 +56,8 @@ type ContentBuilderTopBarProps = {
 
 const ContentBuilderTopBar = ({
   params: { projectId },
-  mobilePreviewEnabled,
-  setMobilePreviewEnabled,
+  previewEnabled,
+  setPreviewEnabled,
   selectedLocale,
   onSelectLocale,
   draftEditorData,
@@ -172,8 +172,8 @@ const ContentBuilderTopBar = ({
         <Toggle
           id="e2e-preview-toggle"
           label={<FormattedMessage {...messages.preview} />}
-          checked={mobilePreviewEnabled}
-          onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
+          checked={previewEnabled}
+          onChange={() => setPreviewEnabled(!previewEnabled)}
         />
         <Button
           buttonStyle="secondary"

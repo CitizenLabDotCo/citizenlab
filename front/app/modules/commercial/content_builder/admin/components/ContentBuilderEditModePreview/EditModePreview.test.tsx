@@ -50,7 +50,7 @@ describe('Preview Content', () => {
   it('should render', () => {
     render(<EditModePreview />);
     expect(
-      screen.getByTestId('contentBuilderMobilePreviewContent')
+      screen.getByTestId('contentBuilderEditModePreviewContent')
     ).toBeInTheDocument();
     expect(screen.getByText('Test Project')).toBeInTheDocument();
   });

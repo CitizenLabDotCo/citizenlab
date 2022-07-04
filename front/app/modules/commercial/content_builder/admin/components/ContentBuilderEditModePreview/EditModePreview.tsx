@@ -72,7 +72,7 @@ export const EditModePreview = () => {
         height="100vh"
         bgColor="#fff"
         overflowY="auto"
-        data-testid="contentBuilderMobilePreviewContent"
+        data-testid="contentBuilderEditModePreviewContent"
       >
         <Box p="20px">
           <Title color="colorText" variant="h1">

@@ -4,26 +4,30 @@ import React, { memo, useState } from 'react';
 import { Box, Icon, Button } from '@citizenlab/cl2-component-library';
 
 // styles
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts, colors } from 'utils/styleUtils';
 
 // hooks
 import useLocale from 'hooks/useLocale';
 
-type ContentBuilderMobileViewProps = {
+type ContentBuilderPreviewProps = {
   projectId: string;
 };
 
 const ContentBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
-  ContentBuilderMobileViewProps
+  ContentBuilderPreviewProps
 >(({ projectId }, ref) => {
   const locale = useLocale();
   const [isMobile, setIsMobile] = useState(true);
-  const whiteIfMobile = isMobile ? '#FFFFFF' : '#044D6C';
-  const whiteIfDesktop = isMobile ? '#044D6C' : '#FFFFFF';
+  const colorIfDesktopView = isMobile
+    ? colors.adminContentBackground
+    : colors.adminTextColor;
+  const colorIfMobileView = isMobile
+    ? colors.adminTextColor
+    : colors.adminContentBackground;
   const buttonProps = {
-    height: '42px',
-    width: '90px',
+    height: '40px',
+    width: '92px',
   };
 
   return (
@@ -35,12 +39,12 @@ const ContentBuilderEditModePreview = React.forwardRef<
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
           display="flex"
-          mb="15px"
+          mb="16px"
           border="1px solid #AAAAAA"
           borderRadius="4px"
         >
           <Button
-            bgColor={whiteIfDesktop}
+            bgColor={colorIfMobileView}
             onClick={() => {
               !isMobile && setIsMobile(true);
             }}
@@ -48,19 +52,19 @@ const ContentBuilderEditModePreview = React.forwardRef<
           >
             <Icon
               name="tablet"
-              width="17px"
-              height="22px"
-              fill={whiteIfMobile}
+              width="16px"
+              height="20px"
+              fill={colorIfDesktopView}
             />
           </Button>
           <Button
-            bgColor={whiteIfMobile}
+            bgColor={colorIfDesktopView}
             onClick={() => {
               isMobile && setIsMobile(false);
             }}
             {...buttonProps}
           >
-            <Icon name="desktop" width="22px" fill={whiteIfDesktop} />
+            <Icon name="desktop" width="20px" fill={colorIfMobileView} />
           </Button>
         </Box>
         {/* Platform Container */}
