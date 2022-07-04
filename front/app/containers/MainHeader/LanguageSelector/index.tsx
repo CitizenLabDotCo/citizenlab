@@ -143,7 +143,7 @@ const LanguageSelector = ({ className }: Props) => {
         onClick={toggleDropdown}
       >
         <DropdownButton
-          className="e2e-langage-dropdown-toggle"
+          className="e2e-language-dropdown-toggle"
           aria-expanded={dropdownOpened}
         >
           <DropdownButtonText>{selectedLocale}</DropdownButtonText>
