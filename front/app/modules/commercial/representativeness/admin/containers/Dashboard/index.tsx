@@ -16,19 +16,17 @@ import ChartCards from './ChartCards';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { hasReferenceData } from './utils';
 
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const hasAnyReferenceData = (customFields: IUserCustomFieldData[]) =>
-  customFields.some(
-    ({ relationships }) =>
-      relationships && !!relationships.current_ref_distribution.data
-  );
+const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
+  userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
-  const customFields = useUserCustomFields({ inputTypes: ['select'] });
+  const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
 
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 
@@ -36,14 +34,15 @@ const RepresentativenessDashboard = () => {
     trackEventByName(tracks.filteredOnProject.name, {
       extra: { projectId: value },
     });
+
     setCurrentProjectFilter(value);
   };
 
-  if (isNilOrError(customFields)) {
+  if (isNilOrError(userCustomFields)) {
     return null;
   }
 
-  const anyReferenceData = hasAnyReferenceData(customFields);
+  const anyReferenceData = hasAnyReferenceData(userCustomFields);
 
   return (
     <>
@@ -68,12 +67,12 @@ const RepresentativenessDashboard = () => {
 };
 
 const RepresentativenessDashboardFeatureFlagWrapper = () => {
-  const customFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
+  const userCustomFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
   const representativenessActive = useFeatureFlag({
     name: 'representativeness',
   });
 
-  if (!customFieldsActive || !representativenessActive) {
+  if (!userCustomFieldsActive || !representativenessActive) {
     return null;
   }
 

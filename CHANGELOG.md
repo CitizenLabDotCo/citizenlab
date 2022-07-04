@@ -1,14 +1,17 @@
 # Changelog
 
-## 2022-07-01
+## 2022-07-04
 
 ### Added
 
-- Dynamic idea form has limited support for extra fields
-
-### Added
-
+- [CL-504] Dynamic idea form has limited support for extra fields
 - [CL-1034] Add support for more URLs in the embed component whitelist
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
+
+### Fixed
+
+- [CL-1074] Fix missing options check in user graph
+- [CL-1076] Fix failed request check on bar chart
 
 ## 2022-06-30
 

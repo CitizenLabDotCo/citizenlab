@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedFormikProps, FormikErrors } from 'formik';
+import { FormikProps, FormikErrors } from 'formik';
 
 // components
 import BasePageForm from './BasePageForm';
@@ -64,7 +64,7 @@ const PageForm = ({
   hideSlugInput,
   pageId,
   ...props
-}: InjectedFormikProps<Props, FormValues>) => (
+}: FormikProps<FormValues> & Props) => (
   <BasePageForm values={values} errors={errors} {...props}>
     {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
 
