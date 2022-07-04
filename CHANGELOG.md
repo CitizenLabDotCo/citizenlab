@@ -7,6 +7,11 @@
 - [CL-504] Dynamic idea form has limited support for extra fields
 - [CL-1034] Add support for more URLs in the embed component whitelist
 
+### Fixed
+
+- [CL-1074] Fix missing options check in user graph
+- [CL-1076] Fix failed request check on bar chart
+
 ## 2022-06-30
 
 ### Fixed

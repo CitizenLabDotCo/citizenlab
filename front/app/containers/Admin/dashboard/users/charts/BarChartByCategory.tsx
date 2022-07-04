@@ -23,6 +23,9 @@ import { Tooltip, LabelList } from 'recharts';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // types
 import { IStreamParams, IStream } from 'utils/streams';
 
@@ -79,7 +82,9 @@ export class BarChartByCategory extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages[graphUnit]);
 
