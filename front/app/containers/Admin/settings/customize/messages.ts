@@ -60,15 +60,6 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.allInputPageDescription',
     defaultMessage: 'Add a link to view all input to the navigation bar',
   },
-  customSectionLabel: {
-    id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
-    defaultMessage: 'Content',
-  },
-  homePageCustomizableSectionTooltip: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
-    defaultMessage:
-      'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
-  },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage:
