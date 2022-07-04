@@ -1,5 +1,9 @@
 # Changelog
 
+## Next release
+
+- [CL-1058] - Add desktop preview
+
 ## 2022-07-01
 
 ### Added
