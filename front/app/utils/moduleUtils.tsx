@@ -413,7 +413,10 @@ export type OutletsPropertyMap = {
     string,
     any
   >;
-  'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': FlexiblePagesSectionToggleProps;
+  'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': Pick<
+    FlexiblePagesSectionToggleProps,
+    'onChangeSectionToggle'
+  >;
 };
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
