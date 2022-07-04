@@ -1,5 +1,9 @@
 # Changelog
 
+## Next release
+
+- [CL-1058] - Add desktop preview in content builder
+
 ## 2022-07-04
 
 ### Added
