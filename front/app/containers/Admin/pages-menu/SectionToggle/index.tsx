@@ -44,7 +44,7 @@ const SectionToggle = ({
           content={<FormattedMessage {...tooltipMessageDescriptor} />}
         />
       </Box>
-      {onClickEditButton && <AdminEditButton onClick={onClickEditButton} />}{' '}
+      {onClickEditButton && <AdminEditButton onClick={onClickEditButton} />}
     </Row>
   );
 };
