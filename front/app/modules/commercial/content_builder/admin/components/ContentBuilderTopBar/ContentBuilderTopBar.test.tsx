@@ -286,8 +286,8 @@ describe('ContentBuilderTopBar', () => {
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={onSelectLocale}
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
