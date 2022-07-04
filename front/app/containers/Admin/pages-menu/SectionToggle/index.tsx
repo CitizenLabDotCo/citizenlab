@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+
 // components
 import {
   IconTooltip,
@@ -10,10 +10,6 @@ import {
 import { Row } from 'components/admin/ResourceList';
 import AdminEditButton from './AdminEditButton';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
-
-const StyledToggle = styled(Toggle)`
-  margin-right: 20px;
-`;
 
 export interface Props {
   onChangeSectionToggle: () => void;
