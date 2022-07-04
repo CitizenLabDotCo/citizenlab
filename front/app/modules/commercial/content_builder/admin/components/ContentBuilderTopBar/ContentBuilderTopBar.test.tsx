@@ -276,4 +276,21 @@ describe('ContentBuilderTopBar', () => {
     );
     expect(screen.getByText('en').firstChild).toHaveClass('empty');
   });
+
+  it('sets Save button to pending state correctly', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          hasPendingState={true}
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={onSelectLocale}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('Save')).not.toBeInTheDocument;
+  });
 });
