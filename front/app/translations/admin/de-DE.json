@@ -1172,7 +1172,7 @@
   "app.containers.AdminPage.SettingsPage.phone": "Telefon",
   "app.containers.AdminPage.SettingsPage.platformConfiguration": "Plattform-Konfiguration",
   "app.containers.AdminPage.SettingsPage.profanityBlockerSetting": "Schimpfwort-Blocker",
-  "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Blockiert automatisch Beiträge, Vorschläge und Kommentare, die die am häufigsten gemeldeten anstößigen Wörter enthalten",
+  "app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription": "Blockiert automatisch Beiträge, Vorschläge und Kommentare, die die am häufigsten gemeldeten anstößigen Wörter enthalten.",
   "app.containers.AdminPage.SettingsPage.projectsHeaderDescription": "Dieser Text wird auf der Homepage oberhalb der Projekte angezeigt.",
   "app.containers.AdminPage.SettingsPage.projectsSettings": "Projekt-Einstellungen",
   "app.containers.AdminPage.SettingsPage.projects_header": "Kopfzeile Projekte",
