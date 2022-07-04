@@ -13,7 +13,7 @@ type ContentBuilderMobileViewProps = {
   projectId: string;
 };
 
-const ContentBuilderMobileView = React.forwardRef<
+const ContentBuilderEditModePreview = React.forwardRef<
   HTMLIFrameElement,
   ContentBuilderMobileViewProps
 >(({ projectId }, ref) => {
@@ -77,7 +77,7 @@ const ContentBuilderMobileView = React.forwardRef<
           <Box
             as="iframe"
             ref={ref}
-            src={`/${locale}/admin/content-builder/projects/${projectId}/mobile-preview`}
+            src={`/${locale}/admin/content-builder/projects/${projectId}/preview`}
             height="560px"
             width={isMobile ? '320px' : '1020px'}
             border="none"
@@ -89,4 +89,4 @@ const ContentBuilderMobileView = React.forwardRef<
   );
 });
 
-export default memo(ContentBuilderMobileView);
+export default memo(ContentBuilderEditModePreview);

@@ -170,7 +170,7 @@ const ContentBuilderTopBar = ({
         )}
         <Box ml="24px" />
         <Toggle
-          id="e2e-mobile-preview-toggle"
+          id="e2e-preview-toggle"
           label={<FormattedMessage {...messages.preview} />}
           checked={mobilePreviewEnabled}
           onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}

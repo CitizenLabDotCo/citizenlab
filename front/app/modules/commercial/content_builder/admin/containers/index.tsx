@@ -11,7 +11,7 @@ import { stylingConsts, colors } from 'utils/styleUtils';
 import { RightColumn } from 'containers/Admin';
 import { Box } from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
-import ContentBuilderMobileView from '../components/ContentBuilderMobileView';
+import ContentBuilderEditModePreview from '../components/ContentBuilderEditModePreview';
 
 // craft
 import Editor from '../components/Editor';
@@ -218,7 +218,10 @@ export const ContentBuilderPage = () => {
           justifyContent="center"
           display={mobilePreviewEnabled ? 'flex' : 'none'}
         >
-          <ContentBuilderMobileView projectId={projectId} ref={iframeRef} />
+          <ContentBuilderEditModePreview
+            projectId={projectId}
+            ref={iframeRef}
+          />
         </Box>
       </FocusOn>
     </Box>
