@@ -43,7 +43,7 @@ import {
 import { Locale } from 'typings';
 
 type ContentBuilderTopBarProps = {
-  isPendingState: boolean;
+  hasPendingState?: boolean;
   localesWithError: Locale[];
   mobilePreviewEnabled: boolean;
   setMobilePreviewEnabled: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,7 +63,7 @@ const ContentBuilderTopBar = ({
   onSelectLocale,
   draftEditorData,
   localesWithError,
-  isPendingState,
+  hasPendingState,
 }: ContentBuilderTopBarProps) => {
   const [loading, setLoading] = useState(false);
   const { query } = useEditor();
@@ -172,10 +172,10 @@ const ContentBuilderTopBar = ({
           onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
         />
         <Button
-          disabled={disableSave}
+          disabled={disableSave || hasPendingState}
           id="e2e-content-builder-topbar-save"
           buttonStyle="primary"
-          processing={loading || isPendingState}
+          processing={loading}
           onClick={handleSave}
           data-testid="contentBuilderTopBarSaveButton"
           ml="24px"

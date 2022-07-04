@@ -196,7 +196,7 @@ export const ContentBuilderPage = () => {
         >
           <ContentBuilderTopBar
             localesWithError={localesWithError}
-            isPendingState={imageUploading}
+            hasPendingState={imageUploading}
             mobilePreviewEnabled={mobilePreviewEnabled}
             setMobilePreviewEnabled={setMobilePreviewEnabled}
             selectedLocale={selectedLocale}

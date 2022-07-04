@@ -93,7 +93,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -108,7 +107,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -124,7 +122,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -148,7 +145,6 @@ describe('ContentBuilderTopBar', () => {
     const { rerender } = render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={() => {}}
@@ -166,7 +162,6 @@ describe('ContentBuilderTopBar', () => {
     rerender(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -184,7 +179,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -203,7 +197,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -221,7 +214,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -238,7 +230,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -255,7 +246,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={onSelectLocale}
@@ -276,7 +266,6 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={false}
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={onSelectLocale}
@@ -293,7 +282,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          isPendingState={true}
+          hasPendingState={true}
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={onSelectLocale}
