@@ -14,6 +14,7 @@ import { injectIntl } from 'utils/cl-intl';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import Outlet from 'components/Outlet';
 import SignUpButton from '../SignUpButton';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 const Container = styled.div<{
   align: 'center' | 'left';
@@ -145,6 +146,7 @@ const HeaderContent = ({
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
   const appConfiguration = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
   const localize = useLocalize();
 
   const signUpIn = (event: React.FormEvent) => {
@@ -159,7 +161,7 @@ const HeaderContent = ({
     name: 'customizable_homepage_banner',
   });
 
-  if (!isNilOrError(appConfiguration)) {
+  if (!isNilOrError(appConfiguration) && !isNilOrError(homepageSettings)) {
     const coreSettings = appConfiguration.data.attributes.settings.core;
     const headerTitle = coreSettings.header_title
       ? localize(coreSettings.header_title)
@@ -205,7 +207,7 @@ const HeaderContent = ({
         )}
         <Outlet
           id="app.containers.LandingPage.SignedOutHeader.CTA"
-          ctaType={customizableHomepageBanner.cta_signed_out_type}
+          ctaType={homepageSettings.attributes.cta_signed_out_type}
           customizedButtonConfig={
             customizableHomepageBanner.cta_signed_out_customized_button
           }
