@@ -35,9 +35,9 @@ const ContentBuilderEditModePreview = React.forwardRef<
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box
           display="flex"
-          mb="10px"
+          mb="15px"
           border="1px solid #AAAAAA"
-          border-radius="0px 3px 3px 0px"
+          borderRadius="4px"
         >
           <Button
             bgColor={whiteIfDesktop}
@@ -70,8 +70,8 @@ const ContentBuilderEditModePreview = React.forwardRef<
           borderWidth="40px 20px 20px 20px"
           zIndex="1"
           mb="12px"
-          width={isMobile ? '360px' : '1060px'}
-          borderRadius={isMobile ? '30px' : '0px'}
+          width={isMobile ? '360px' : '1140px'}
+          borderRadius="33px"
         >
           {/* Iframe */}
           <Box
@@ -79,7 +79,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
             ref={ref}
             src={`/${locale}/admin/content-builder/projects/${projectId}/preview`}
             height="560px"
-            width={isMobile ? '320px' : '1020px'}
+            width={isMobile ? '320px' : '1100px'}
             border="none"
             borderRadius="3px"
           />
