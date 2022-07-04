@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
 // components
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Button } from '@citizenlab/cl2-component-library';
 
 // styles
 import { stylingConsts } from 'utils/styleUtils';
@@ -18,6 +18,13 @@ const ContentBuilderMobileView = React.forwardRef<
   ContentBuilderMobileViewProps
 >(({ projectId }, ref) => {
   const locale = useLocale();
+  const [isMobile, setIsMobile] = useState(true);
+  const whiteIfMobile = isMobile ? '#FFFFFF' : '#044D6C';
+  const whiteIfDesktop = isMobile ? '#044D6C' : '#FFFFFF';
+  const buttonProps = {
+    height: '42px',
+    width: '90px',
+  };
 
   return (
     <Box
@@ -26,15 +33,40 @@ const ContentBuilderMobileView = React.forwardRef<
       justifyContent="center"
     >
       <Box display="flex" flexDirection="column" alignItems="center">
-        {/* Phone Container */}
+        <Box
+          display="flex"
+          mb="10px"
+          border="1px solid #AAAAAA"
+          border-radius="0px 3px 3px 0px"
+        >
+          <Button
+            bgColor={whiteIfDesktop}
+            onClick={() => {
+              !isMobile && setIsMobile(true);
+            }}
+            {...buttonProps}
+          >
+            <Icon name="trash" fill={whiteIfMobile} />
+          </Button>
+          <Button
+            bgColor={whiteIfMobile}
+            onClick={() => {
+              isMobile && setIsMobile(false);
+            }}
+            {...buttonProps}
+          >
+            <Icon name="trash" fill={whiteIfDesktop} />
+          </Button>
+        </Box>
+        {/* Platform Container */}
         <Box
           height="620px"
-          width="360px"
           border="solid black"
           borderWidth="40px 20px 20px 20px"
-          borderRadius="30px"
           zIndex="1"
           mb="12px"
+          width={isMobile ? '360px' : '1060px'}
+          borderRadius={isMobile ? '30px' : '0px'}
         >
           {/* Iframe */}
           <Box
@@ -42,7 +74,7 @@ const ContentBuilderMobileView = React.forwardRef<
             ref={ref}
             src={`/${locale}/admin/content-builder/projects/${projectId}/mobile-preview`}
             height="560px"
-            width="320px"
+            width={isMobile ? '320px' : '1020px'}
             border="none"
             borderRadius="3px"
           />

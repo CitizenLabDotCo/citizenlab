@@ -106,6 +106,11 @@ const ContentBuilderTopBar = ({
     }
   };
 
+  const redirectToProject = async () => {
+    await handleSave();
+    window.open(`/projects/${project?.attributes.slug}`, '_blank');
+  };
+
   const handleSelectLocale = (locale: Locale) => {
     const editorData = query.getSerializedNodes();
     onSelectLocale({ locale, editorData });
@@ -166,10 +171,19 @@ const ContentBuilderTopBar = ({
         <Box ml="24px" />
         <Toggle
           id="e2e-mobile-preview-toggle"
-          label={<FormattedMessage {...messages.mobilePreview} />}
+          label={<FormattedMessage {...messages.preview} />}
           checked={mobilePreviewEnabled}
           onChange={() => setMobilePreviewEnabled(!mobilePreviewEnabled)}
         />
+        <Button
+          buttonStyle="secondary"
+          icon="eye"
+          mx="20px"
+          disabled={!project}
+          onClick={redirectToProject}
+        >
+          <FormattedMessage {...messages.viewProject} />
+        </Button>
         <Button
           disabled={disableSave}
           id="e2e-content-builder-topbar-save"
@@ -177,7 +191,6 @@ const ContentBuilderTopBar = ({
           processing={loading}
           onClick={handleSave}
           data-testid="contentBuilderTopBarSaveButton"
-          ml="24px"
         >
           <FormattedMessage {...messages.contentBuilderSave} />
         </Button>
