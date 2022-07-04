@@ -30,14 +30,6 @@ export default defineMessages({
     id: 'app.containers.Admin.pages-menu.EditHomepage.projectsListTooltip',
     defaultMessage: 'Customize how projects are displayed on the homepage.',
   },
-  eventsWidget: {
-    id: 'app.containers.Admin.pages-menu.EditHomepage.eventsWidget',
-    defaultMessage: 'Events',
-  },
-  eventsWidgetTooltip: {
-    id: 'app.containers.Admin.pages-menu.EditHomepage.eventsWidgetTooltip',
-    defaultMessage: 'Display a preview of upcoming events on the homepage.',
-  },
   bottomInfoSection: {
     id: 'app.containers.Admin.pages-menu.EditHomepage.bottomInfoSection',
     defaultMessage: 'Bottom info section',
