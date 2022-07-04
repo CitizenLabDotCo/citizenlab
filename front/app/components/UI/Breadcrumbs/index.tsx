@@ -40,11 +40,9 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
             color="adminSecondaryTextColor"
           >
             {linkTo && (
-              <StyledLink to={linkTo}>
-                <Text fontSize="m" as="span">
-                  {label}
-                </Text>
-              </StyledLink>
+              <Text fontSize="m" as="span">
+                <StyledLink to={linkTo}>{label}</StyledLink>
+              </Text>
             )}
             {!linkTo && (
               <Text fontSize="m" as="span">
@@ -52,7 +50,7 @@ const Breadcrumbs = ({ breadcrumbs }: Props) => {
               </Text>
             )}
             {!isLastBreadcrumb && (
-              <Text ml="16px" mr="16px" fontSize="m">
+              <Text ml="16px" as="span" mr="16px" fontSize="m">
                 /
               </Text>
             )}
