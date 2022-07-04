@@ -71,6 +71,7 @@ import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import { Localize } from 'hooks/useLocalize';
 import { TOnProjectAttributesDiffChangeFunction } from 'containers/Admin/projects/project/general';
+import { Props as FlexiblePagesSectionToggleProps } from 'containers/Admin/pages-menu/SectionToggle';
 
 export type ITabsOutlet = {
   formatMessage: (
@@ -412,6 +413,10 @@ export type OutletsPropertyMap = {
   'app.containers.Admin.projects.edit.general.components.TopicInputs.tooltipExtraCopy': Record<
     string,
     any
+  >;
+  'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': Pick<
+    FlexiblePagesSectionToggleProps,
+    'onChangeSectionToggle'
   >;
 };
 
