@@ -27,7 +27,7 @@ export interface IHomepageSettings {
   top_info_section_multiloc: Multiloc;
   bottom_info_section_enabled: boolean;
   bottom_info_section_multiloc: Multiloc;
-  events_widget: boolean;
+  events_widget_enabled: boolean;
   projects_enabled: boolean;
   projects_header_multiloc: Multiloc;
   banner_avatars_enabled: boolean;

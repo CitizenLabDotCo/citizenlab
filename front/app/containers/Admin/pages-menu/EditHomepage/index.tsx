@@ -100,15 +100,11 @@ const EditHomepage = () => {
             );
           }
         )}
-
-        {/* TO DO: move this toggle to module */}
-        <SectionToggle
+        <Outlet
+          id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
+          // Make the handle function more generic
           onChangeSectionToggle={handleOnChangeToggle('events_widget')}
-          onClickEditButton={handleOnClick}
-          titleMessageDescriptor={messages.eventsWidget}
-          tooltipMessageDescriptor={messages.eventsWidgetTooltip}
         />
-        <Outlet id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles" />
       </div>
     </>
   );

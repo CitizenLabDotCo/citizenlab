@@ -17,7 +17,7 @@ const StyledToggle = styled(Toggle)`
 
 export interface Props {
   onChangeSectionToggle: () => void;
-  onClickEditButton: () => void;
+  onClickEditButton?: () => void;
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
 }
@@ -43,7 +43,7 @@ const SectionToggle = ({
           content={<FormattedMessage {...tooltipMessageDescriptor} />}
         />
       </Box>
-      <AdminEditButton onClick={onClickEditButton} />
+      {onClickEditButton && <AdminEditButton onClick={onClickEditButton} />}
     </Row>
   );
 };
