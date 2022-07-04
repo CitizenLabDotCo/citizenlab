@@ -55,7 +55,7 @@ describe XlsxService do
 
       custom_fields_headers = %w[domicile Select Multiselect]
       title_row = worksheet[0].cells.map(&:value)
-      expect(title_row).to include *custom_fields_headers
+      expect(title_row).to include(*custom_fields_headers)
 
       domicile_index = title_row.find_index 'domicile'
       select_index = title_row.find_index 'Select'
