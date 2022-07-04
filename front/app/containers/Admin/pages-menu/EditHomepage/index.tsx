@@ -11,6 +11,7 @@ import {
 } from 'services/homepageSettings';
 import Outlet from 'components/Outlet';
 import { MessageDescriptor } from 'utils/cl-intl';
+import { isNilOrError } from 'utils/helperUtils';
 
 type TSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
@@ -47,9 +48,11 @@ const EditHomepage = () => {
 
   const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
     try {
-      updateHomepageSettings({
-        sectionName: homepageSettings.attributes[sectionName],
-      });
+      if (!isNilOrError(homepageSettings)) {
+        updateHomepageSettings({
+          [sectionName]: homepageSettings.attributes[sectionName],
+        });
+      }
     } catch (error) {}
   };
 
