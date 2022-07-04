@@ -1,11 +1,12 @@
 # Changelog
 
-## 2022-07-01
+## 2022-07-04
 
 ### Added
 
 - [CL-504] Dynamic idea form has limited support for extra fields
 - [CL-1034] Add support for more URLs in the embed component whitelist
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
 
 ### Fixed
 
@@ -36,10 +37,6 @@
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
 
 ## 2022-06-22
-
-### Added
-
-- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
 
 ### Fixed
 
