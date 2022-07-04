@@ -8,7 +8,7 @@ const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
 // * THomepageSection *
 export interface IHomepageSectionMap {
-  customizable_homepage_banner_enabled: 'customizable_homepage_banner_enabled';
+  customizable_homepage_banner: 'customizable_homepage_banner';
   top_info_section_enabled: 'top_info_section_enabled';
   projects_enabled: 'projects_enabled';
   bottom_info_section_enabled: 'bottom_info_section_enabled';
@@ -58,12 +58,14 @@ export function homepageSettingsStream() {
 }
 
 export async function updateHomepageSettings(
-  object: Partial<IHomepageSettings>
+  newHomepageSettings: Partial<IHomepageSettings>
 ) {
   const homepageSettings = await streams.update<IHomepageSettings>(
     homepageSettingsEndpoint,
-    'home_pages',
-    { home_pages: object }
+    // There's only 1 object with homepage settings
+    // As opposed to e.g. many ideas. So we can give it a dataId we like.
+    'home_page_settings',
+    { home_pages: newHomepageSettings }
   );
   // is this needed?
   await homepageSettingsStream().fetch();
