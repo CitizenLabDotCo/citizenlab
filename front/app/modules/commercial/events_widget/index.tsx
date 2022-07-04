@@ -3,8 +3,6 @@ import { ModuleConfiguration } from 'utils/moduleUtils';
 import FeatureFlag from 'components/FeatureFlag';
 import EventsWidget from './citizen';
 import EventsWidgetSwitch from './admin/EventsWidgetSwitch';
-import messages from './messages';
-import SectionToggle from 'containers/Admin/pages-menu/SectionToggle';
 
 const configuration: ModuleConfiguration = {
   outlets: {
@@ -22,18 +20,6 @@ const configuration: ModuleConfiguration = {
         <EventsWidgetSwitch {...props} />
       </FeatureFlag>
     ),
-    'app.containers.Admin.flexible-pages.EditHomepage.sectionToggles': (
-      props
-    ) => {
-      // still add new feature flag mechanism
-      return (
-        <SectionToggle
-          onChangeSectionToggle={props.onChangeSectionToggle}
-          titleMessageDescriptor={messages.eventsWidget}
-          tooltipMessageDescriptor={messages.eventsWidgetTooltip}
-        />
-      );
-    },
   },
 };
 

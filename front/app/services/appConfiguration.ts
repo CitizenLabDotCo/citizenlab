@@ -199,7 +199,9 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  events_widget?: { allowed: boolean; widget_title?: Multiloc };
+  events_widget?: AppConfigurationFeature & {
+    widget_title?: Multiloc;
+  };
   customizable_navbar?: AppConfigurationFeature;
   texting?: AppConfigurationFeature;
   content_builder?: AppConfigurationFeature;

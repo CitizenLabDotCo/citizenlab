@@ -5,7 +5,6 @@ import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
 import { THomepageSection } from 'services/homepageSettings';
-import Outlet from 'components/Outlet';
 import { MessageDescriptor } from 'utils/cl-intl';
 
 type TSectionToggleData = {
@@ -92,13 +91,6 @@ const EditHomepage = () => {
             );
           }
         )}
-
-        {/* TO DO: move this toggle to module */}
-        <Outlet
-          id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
-          // Make the handle function more generic
-          onChangeSectionToggle={handleOnChangeToggle('events_widget')}
-        />
       </div>
     </>
   );
