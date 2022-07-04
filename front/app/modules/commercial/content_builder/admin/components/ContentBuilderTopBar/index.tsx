@@ -177,6 +177,7 @@ const ContentBuilderTopBar = ({
           onChange={() => setPreviewEnabled(!previewEnabled)}
         />
         <Button
+          id="e2e-view-project-button"
           buttonStyle="secondary"
           icon="eye"
           mx="20px"
