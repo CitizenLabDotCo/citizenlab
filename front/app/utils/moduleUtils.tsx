@@ -98,7 +98,7 @@ export type IAdminSettingsRegistrationSectionEndOutletProps = {
   userConfirmationSetting?: AppConfigurationFeature;
 };
 
-export type OutletsPropertyMap = {
+export interface OutletsPropertyMap {
   'app.containers.Navbar.projectlist.item': {
     publication: IAdminPublicationContent;
     localize: Localize;
@@ -382,15 +382,6 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
-  'app.containers.Admin.settings.customize.headerSectionEnd': {
-    latestAppConfigSettings:
-      | IAppConfigurationSettings
-      | Partial<IAppConfigurationSettings>;
-    handleOnChange: (
-      settingName: TAppConfigurationSetting
-    ) => (settingKey: string, settingValue: any) => void;
-    errors: CLErrors;
-  };
   'app.containers.Admin.pages-menu.index': Record<string, any>;
   'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
@@ -412,7 +403,7 @@ export type OutletsPropertyMap = {
     string,
     any
   >;
-};
+}
 
 type Outlet<Props> = FunctionComponent<Props> | FunctionComponent<Props>[];
 

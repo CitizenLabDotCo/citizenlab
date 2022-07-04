@@ -9,11 +9,20 @@ import {
 import CTASignedOutSettings from './CTASignedOutSettings';
 import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
+import { IHomepageSettings } from 'services/homepageSettings';
+import 'utils/moduleUtils';
 
-interface Props {
+declare module 'utils/moduleUtils' {
+  interface OutletsPropertyMap {
+    'app.containers.Admin.settings.customize.headerSectionEnd': Props;
+  }
+}
+
+export interface Props {
   latestAppConfigSettings:
     | IAppConfigurationSettings
     | Partial<IAppConfigurationSettings>;
+  latestHomepageSettings: IHomepageSettings | Partial<IHomepageSettings>;
   handleOnChange: (
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
@@ -22,6 +31,7 @@ interface Props {
 
 const CTASettings = ({
   latestAppConfigSettings,
+  latestHomepageSettings,
   handleOnChange,
   errors,
 }: Props) => {
@@ -29,7 +39,10 @@ const CTASettings = ({
     handleOnChange('customizable_homepage_banner')(key, value);
   };
 
-  if (!latestAppConfigSettings.customizable_homepage_banner) {
+  if (
+    !latestAppConfigSettings.customizable_homepage_banner ||
+    !latestHomepageSettings.attributes
+  ) {
     return null;
   }
 
@@ -40,7 +53,8 @@ const CTASettings = ({
   const {
     cta_signed_out_type: ctaSignedOutType,
     cta_signed_in_type: ctaSignedInType,
-  } = homepageSettings;
+  } = latestHomepageSettings.attributes;
+
   return (
     <Section>
       <SubSectionTitle>
