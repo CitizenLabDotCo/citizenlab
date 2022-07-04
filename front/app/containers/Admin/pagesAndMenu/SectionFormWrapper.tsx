@@ -21,7 +21,7 @@ const SectionFormWrapper = ({
   stickyMenuContents,
 }: Props) => {
   return (
-    <div>
+    <>
       <Box mb="16px">
         <Breadcrumbs breadcrumbs={breadcrumbs} />
       </Box>
@@ -34,7 +34,7 @@ const SectionFormWrapper = ({
           <StickyContainer>{stickyMenuContents}</StickyContainer>
         </PageWrapper>
       </Box>
-    </div>
+    </>
   );
 };
 

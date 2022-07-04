@@ -8,7 +8,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Branding from './Branding';
 import Header from './Header';
 import ProjectHeader from './ProjectHeader';
-import HomepageCustomizableSection from './HomepageCustomizableSection';
 import Events from './Events';
 import AllInput from './AllInput';
 
@@ -255,8 +254,6 @@ class SettingsCustomizeTab extends PureComponent<
     const { locale, tenant } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const homepageInfoPage = tenant.data.attributes.homepage_info_multiloc;
-
       const {
         logo,
         header_bg,
@@ -311,14 +308,6 @@ class SettingsCustomizeTab extends PureComponent<
             currentlyWorkingOnText={
               latestAppConfigCoreSettings?.['currently_working_on_text']
             }
-            setParentState={setState}
-          />
-
-          <HomepageCustomizableSection
-            homepageInfoMultiloc={
-              attributesDiff.homepage_info_multiloc || homepageInfoPage
-            }
-            homepageInfoErrors={errors.homepage_info}
             setParentState={setState}
           />
 
