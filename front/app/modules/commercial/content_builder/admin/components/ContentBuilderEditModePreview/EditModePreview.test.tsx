@@ -59,7 +59,7 @@ describe('Preview Content', () => {
     mockLocale = 'fr-FR';
     render(<EditModePreview />);
 
-    expect(screen.getByText('Test Project')).toBeInTheDocument();
+    expect(screen.getByText('Test Projet')).toBeInTheDocument();
   });
 
   it('shows loading state correctly', () => {
