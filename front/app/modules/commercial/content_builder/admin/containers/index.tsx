@@ -52,6 +52,7 @@ type ContentBuilderErrors = Record<
   { hasError: boolean; selectedLocale: Locale }
 >;
 
+export const IMAGE_UPLOADING_EVENT = 'imageUploading';
 export const CONTENT_BUILDER_ERROR_EVENT = 'contentBuilderError';
 export const CONTENT_BUILDER_DELETE_ELEMENT_EVENT =
   'deleteContentBuilderElement';
@@ -82,6 +83,8 @@ export const ContentBuilderPage = () => {
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});
 
+  const [imageUploading, setImageUploading] = useState(false);
+
   useEffect(() => {
     const subscription = eventEmitter
       .observeEvent(CONTENT_BUILDER_ERROR_EVENT)
@@ -111,6 +114,18 @@ export const ContentBuilderPage = () => {
       subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    const subscription = eventEmitter
+      .observeEvent(IMAGE_UPLOADING_EVENT)
+      .subscribe(({ eventValue }) => {
+        const uploadingValue = eventValue as boolean;
+        setImageUploading(uploadingValue);
+      });
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
 
   const contentBuilderVisible =
     featureEnabled && pathname.includes('admin/content-builder');
@@ -181,6 +196,7 @@ export const ContentBuilderPage = () => {
         >
           <ContentBuilderTopBar
             localesWithError={localesWithError}
+            isPendingState={imageUploading}
             mobilePreviewEnabled={mobilePreviewEnabled}
             setMobilePreviewEnabled={setMobilePreviewEnabled}
             selectedLocale={selectedLocale}

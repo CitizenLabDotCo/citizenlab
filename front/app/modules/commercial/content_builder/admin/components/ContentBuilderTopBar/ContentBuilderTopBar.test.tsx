@@ -93,6 +93,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -107,6 +108,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -122,6 +124,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -145,6 +148,7 @@ describe('ContentBuilderTopBar', () => {
     const { rerender } = render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={() => {}}
@@ -162,6 +166,7 @@ describe('ContentBuilderTopBar', () => {
     rerender(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -179,6 +184,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -197,6 +203,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -214,6 +221,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -230,6 +238,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={() => {}}
@@ -246,6 +255,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={[]}
           onSelectLocale={onSelectLocale}
@@ -266,6 +276,7 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
+          isPendingState={false}
           selectedLocale="en"
           localesWithError={['en']}
           onSelectLocale={onSelectLocale}
@@ -275,5 +286,22 @@ describe('ContentBuilderTopBar', () => {
       </Editor>
     );
     expect(screen.getByText('en').firstChild).toHaveClass('empty');
+  });
+
+  it('sets Save button to pending state correctly', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          isPendingState={true}
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={onSelectLocale}
+          mobilePreviewEnabled={false}
+          setMobilePreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('Save')).not.toBeInTheDocument;
   });
 });
