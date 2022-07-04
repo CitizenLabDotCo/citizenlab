@@ -46,7 +46,12 @@ const ContentBuilderMobileView = React.forwardRef<
             }}
             {...buttonProps}
           >
-            <Icon name="trash" fill={whiteIfMobile} />
+            <Icon
+              name="tablet"
+              width="17px"
+              height="22px"
+              fill={whiteIfMobile}
+            />
           </Button>
           <Button
             bgColor={whiteIfMobile}
@@ -55,7 +60,7 @@ const ContentBuilderMobileView = React.forwardRef<
             }}
             {...buttonProps}
           >
-            <Icon name="trash" fill={whiteIfDesktop} />
+            <Icon name="desktop" width="22px" fill={whiteIfDesktop} />
           </Button>
         </Box>
         {/* Platform Container */}
