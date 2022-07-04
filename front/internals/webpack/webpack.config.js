@@ -163,7 +163,7 @@ const config = {
       CL_CONFIG: JSON.stringify(clConfig),
     }),
 
-    isDev && new ReactRefreshWebpackPlugin(),
+    isDev && new ReactRefreshWebpackPlugin({ overlay: false }),
 
     new ForkTsCheckerWebpackPlugin({
       async: isDev,

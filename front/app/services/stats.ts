@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-const apiEndpoint = `${API_PATH}/stats`;
+export const apiEndpoint = `${API_PATH}/stats`;
 
 export type IResourceByTime =
   | IIdeasByTime

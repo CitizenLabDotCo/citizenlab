@@ -27,4 +27,6 @@ queue.subscribe do |_delivery_info, _properties, payload|
 
   zsc_result = NLP::ZeroshotClassificationResult.from_json(payload)
   Insights::CategorySuggestionsService.save_suggestion(zsc_result)
+rescue StandardError => e
+  ErrorReporter.report e
 end

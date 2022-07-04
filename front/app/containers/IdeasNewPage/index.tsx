@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -47,6 +47,7 @@ import GetAppConfiguration, {
   GetAppConfigurationChildProps,
 } from 'resources/GetAppConfiguration';
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import { UploadFile } from 'typings';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -101,7 +102,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
+class IdeasNewPage extends React.Component<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IIdeasPageGlobalState>;
 
   constructor(props) {
@@ -330,10 +331,36 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     });
   };
 
+  onTagsChange = (selectedTopics: string[]) => {
+    this.globalState.set({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.globalState.set({ position: address });
+  };
+
+  onImageFileAdd = (imageFile: UploadFile[]) => {
+    this.globalState.set({
+      imageFile: [imageFile[0]],
+    });
+  };
+
+  onImageFileRemove = () => {
+    this.globalState.set({
+      imageFile: [],
+    });
+  };
+
   onDescriptionChange = (description: string) => {
     this.globalState.set({
       description,
       descriptionProfanityError: false,
+    });
+  };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.globalState.set({
+      ideaFiles,
     });
   };
 
@@ -350,6 +377,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
               projectId={project.id}
               onTitleChange={this.onTitleChange}
               onDescriptionChange={this.onDescriptionChange}
+              onImageFileAdd={this.onImageFileAdd}
+              onImageFileRemove={this.onImageFileRemove}
+              onTagsChange={this.onTagsChange}
+              onAddressChange={this.onAddressChange}
+              onIdeaFilesChange={this.onIdeaFilesChange}
             />
           </PageContainer>
           <ButtonBarContainer>

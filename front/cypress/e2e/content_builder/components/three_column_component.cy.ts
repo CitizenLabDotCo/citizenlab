@@ -49,20 +49,7 @@ describe('Content builder Three Column component', () => {
       }
     );
 
-    /* Check container rules */
-    // Non-permitted components
-    cy.get('#e2e-draggable-two-column').dragAndDrop('#e2e-three-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-three-column').dragAndDrop('#e2e-three-column', {
-      position: 'inside',
-    });
-
-    cy.get('div#e2e-single-column').should('have.length', 3); // Only original container columns
-    cy.get('#e2e-two-column').should('not.exist');
-    cy.get('#e2e-three-column').should('have.length', 1); // Only original container
-
-    // Permitted components added to all columns
+    // Components added to all columns
     cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
       position: 'inside',
     });

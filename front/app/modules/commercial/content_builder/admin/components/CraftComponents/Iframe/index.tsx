@@ -22,6 +22,9 @@ import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
 
 // types
 import { Locale } from 'typings';
+
+import { isValidUrl } from './utils';
+
 interface Props {
   url: string;
   height: number;
@@ -79,10 +82,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           id="e2e-content-builder-iframe-url-input"
           label={
             <span>
-              {formatMessage(messages.iframeUrlLabel)}{' '}
+              {formatMessage(messages.embedIframeUrlLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeUrlLabelTooltip)}
+                content={formatMessage(messages.embedIframeUrlLabelTooltip)}
               />
             </span>
           }
@@ -108,10 +111,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         <Input
           label={
             <span>
-              {formatMessage(messages.iframeHeightLabel)}{' '}
+              {formatMessage(messages.embedIframeHeightLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeHeightLabelTooltip)}
+                content={formatMessage(messages.embedIframeHeightLabelTooltip)}
               />
             </span>
           }
@@ -133,10 +136,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           value={title}
           label={
             <span>
-              {formatMessage(messages.iframeTitleLabel)}{' '}
+              {formatMessage(messages.embedIframeTitleLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeTitleTooltip)}
+                content={formatMessage(messages.embedIframeTitleTooltip)}
               />
             </span>
           }
@@ -154,58 +157,6 @@ Iframe.craft = {
   related: {
     settings: IframeSettings,
   },
-};
-
-/*
- * Function to validate embed URL against white list
- * Returns: boolean value whether URL input string is valid or not
- */
-const isValidUrl = (url: string) => {
-  // Used this reference for generating a valid URL regex:
-  // https://tutorial.eyehunts.com/js/url-regex-validation-javascript-example-code/
-  const validUrlRegex =
-    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g;
-  let invalidUrl = !validUrlRegex.test(url);
-  if (invalidUrl) {
-    return [false, 'invalidUrl'];
-  }
-
-  const urlWhiteList = [
-    /^https:\/\/(.+\.)typeform\.com\/to\//,
-    /^https:\/\/(.+\.)typeform\.com\/to\//,
-    /^https:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js/,
-    /^https:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true/,
-    /^https:\/\/surveys.enalyzer.com\/?\?pid=.*/,
-    /^https:\/\/(www\.)?survey-xact\.dk\/LinkCollector\?key=.*/,
-    /^https:\/\/(.+\.)qualtrics\.com\/jfe\/form\//,
-    /^https:\/\/(www\.)?smartsurvey\.co\.uk\//,
-    /^https:\/\/(.+\.)(microsoft|office)\.com\//,
-    /^https:\/\/(www\.)?eventbrite\.com\/static\/widgets\//,
-    /^https:\/\/(www\.)?arcgis\.com\//,
-    /^https:\/\/public\.tableau\.com\//,
-    /^https:\/\/datastudio\.google\.com\/embed\//,
-    /^https:\/\/app\.powerbi\.com\//,
-    /^https:\/\/static\.ctctcdn\.com\/js\//,
-    /^https:\/\/(www\.)?instagram\.com\//,
-    /^https:\/\/platform\.twitter\.com\//,
-    /^https:\/\/.+\.konveio\.com\//,
-    /^https:\/\/(www\.)?facebook\.com\//,
-    /^https:\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-_]*)/,
-    /^https:\/\/(?:www\.)?(?:player\.vimeo\.com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
-    /^https:\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/,
-    /^https:\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
-    /^https:\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
-    /^https:\/\/(.+)?(wistia\.com|wi\.st)\/.*\//,
-    /^https:\/\/(.+\.)(welcomesyourfeedback.net|snapsurveys.com)\//,
-  ];
-
-  invalidUrl = !urlWhiteList.some((rx) => rx.test(url));
-
-  if (invalidUrl) {
-    return [false, 'whitelist'];
-  } else {
-    return [true, 'whitelist'];
-  }
 };
 
 export default Iframe;

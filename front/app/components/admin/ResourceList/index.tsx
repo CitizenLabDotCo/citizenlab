@@ -20,7 +20,7 @@ const StyledList = styled.div`
 
 const timeout = 200;
 
-const Container = styled.div`
+export const Container = styled.div`
   font-size: ${fontSizes.s}px;
   font-weight: 300;
   justify-content: space-between !important;

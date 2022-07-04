@@ -10,11 +10,12 @@ module UserCustomFields
         def users_by_custom_field
           json_response = { series: {
             users: user_counts,
-            expected_users: expected_user_counts
+            expected_users: expected_user_counts,
+            reference_population: reference_population
           } }
 
-          if custom_field.custom_field_options.present?
-            json_response[:options] = custom_field.custom_field_options.to_h do |o|
+          if custom_field.options.present?
+            json_response[:options] = custom_field.options.to_h do |o|
               [o.key, o.attributes.slice('title_multiloc', 'ordering')]
             end
           end
@@ -78,93 +79,46 @@ module UserCustomFields
         end
 
         def user_counts
-          @user_counts ||= count_users_by_custom_field(find_users, custom_field)
-        end
-
-        def count_users_by_custom_field(users, custom_field)
-          field_values = select_field_values(users, custom_field)
-
-          # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
-          # error while rewriting the SELECT clause. This is because the 'field_value' column is a
-          # computed column and it does not seem to be supported properly by the +count+ method.
-          counts = field_values
-            .order('field_value')
-            .group('field_value')
-            .select('COUNT(*) as count')
-            .to_a.pluck(:field_value, :count).to_h
-
-          counts['_blank'] = counts.delete(nil) || 0
-          counts
-        end
-
-        # Returns an ActiveRecord::Relation of all the custom field values for the given users.
-        # It returns a view (result set) with a single column named 'field_value'. Essentially,
-        # something that looks like:
-        #   SELECT ... AS field_value FROM ...
-        #
-        # Each user results in one or multiple rows, depending on the type of custom field.
-        # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
-        # If the custom field has no value for a given user, the resulting row contains NULL.
-        def select_field_values(users, custom_field)
-          case custom_field.input_type
-          when 'select', 'checkbox', 'number'
-            users.select("custom_field_values->'#{custom_field.key}' as field_value")
-          when 'multiselect'
-            users.joins(<<~SQL.squish).select('cfv.field_value as field_value')
-              LEFT JOIN (
-                SELECT
-                  jsonb_array_elements(custom_field_values->'#{custom_field.key}') as field_value,
-                  id as user_id
-                FROM users
-              ) as cfv
-              ON users.id = cfv.user_id
-            SQL
-          else
-            raise NotSupportedFieldTypeError
-          end
+          @user_counts ||= FieldValueCounter.counts_by_field_option(find_users, custom_field)
         end
 
         def find_users
           users = policy_scope(User.active, policy_scope_class: StatUserPolicy::Scope)
-            .where(registration_completed_at: @start_at..@end_at)
-
-          if params[:group]
-            group = Group.find(params[:group])
-            users = users.merge(group.members)
-          end
-
-          if params[:project]
-            project = Project.find(params[:project])
-            participants = ParticipantsService.new.project_participants(project)
-            users = users.where(id: participants)
-          end
-
-          users
+          finder_params = params.permit(:group, :project).merge(registration_date_range: @start_at..@end_at)
+          UsersFinder.new(users, finder_params).execute
         end
 
         def expected_user_counts
           @expected_user_counts ||=
             if (ref_distribution = custom_field.current_ref_distribution).present?
+              # user counts for toggled off options are not used to calculate expected user counts
+              toggled_on_option_keys = ref_distribution.distribution_by_option_id.keys
+              nb_users_to_redistribute = user_counts.slice(*toggled_on_option_keys).values.sum
+              expected_counts = ref_distribution.expected_counts(nb_users_to_redistribute)
 
-              nb_users_with_response = user_counts.values.sum - user_counts['_blank']
-              expected_counts = ref_distribution.expected_counts(nb_users_with_response)
+              option_id_to_key = custom_field.options.to_h { |option| [option.id, option.key] }
+              expected_counts.transform_keys { |option_id| option_id_to_key.fetch(option_id) }
+            end
+        end
 
-              option_id_to_key = custom_field.custom_field_options.to_h { |option| [option.id, option.key] }
-              expected_counts.transform_keys { |option_id| option_id_to_key[option_id] }
+        def reference_population
+          @reference_population ||=
+            if (ref_distribution = custom_field.current_ref_distribution).present?
+              ref_distribution.distribution_by_option_id
             end
         end
 
         def users_by_custom_field_xlsx
           xlsx_columns =
-            if (options = custom_field.custom_field_options).present?
+            if (options = custom_field.options).present?
               {
                 option: localized_option_titles(options) << '_blank',
                 option_id: options.pluck(:key) << '_blank'
               }.tap do |cols|
-                cols[:users] = user_counts.fetch_values(*cols[:option_id]) { 0 }
-                if expected_user_counts.present?
-                  cols[:expected_users] = expected_user_counts.fetch_values(*cols[:option_id]) { 0 }
-                end
+                option_ids = cols[:option_id]
+                cols[:users] = user_counts.fetch_values(*option_ids) { 0 }
+                cols[:expected_users] = expected_user_counts.fetch_values(*option_ids) { nil } if expected_user_counts.present?
+                cols[:reference_population] = reference_population.fetch_values(*option_ids) { nil } if reference_population.present?
               end
             else
               {

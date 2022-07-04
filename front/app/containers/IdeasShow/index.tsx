@@ -76,7 +76,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // utils
 import clHistory from 'utils/cl-router/history';
-import { parse } from 'qs';
 
 // style
 import styled from 'styled-components';
@@ -253,10 +252,8 @@ export class IdeasShow extends PureComponent<
   }
 
   componentDidMount() {
-    const queryParams = parse(clHistory.location.search, {
-      ignoreQueryPrefix: true,
-    });
-    const newIdeaId = queryParams.new_idea_id;
+    const queryParams = new URLSearchParams(window.location.search);
+    const newIdeaId = queryParams.get('new_idea_id');
     this.setLoaded();
     if (isString(newIdeaId)) {
       setTimeout(() => {
