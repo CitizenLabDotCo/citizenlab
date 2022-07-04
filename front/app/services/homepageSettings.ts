@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 // home_pages or homepages?
-const homepageSettingsEndpoint = `${API_PATH}/home_pages`;
+const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
 // type definitions
 
