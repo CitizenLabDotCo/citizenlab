@@ -110,5 +110,56 @@ describe MultiTenancy::TenantTemplateService do
       expect(Project.count).to eq 2
       expect(Project.all.map { |pj| pj.folder&.id }.uniq).to eq [ProjectFolders::Folder.first.id]
     end
+
+    describe 'filtering of template multiloc attributes' do
+      let(:platform_locales) { %w[en nl-BE] }
+      let(:template) do
+        YAML.safe_load(<<~YAML)
+          models:
+            project:
+              - title_multiloc:
+                  en: Project title
+                  nl-BE: Project titel
+                  es-ES: Proyecto titulo
+                description_multiloc:
+                  en: Project description
+                  nl-BE: Projectbeschrijving
+                  es-ES: Proyecto descripción
+                admin_publication_attributes:
+                  publication_status: published
+        YAML
+      end
+
+      before do
+        app_config = AppConfiguration.instance
+        settings = app_config.settings
+        settings['core']['locales'] = platform_locales
+        app_config.update!(settings: settings)
+      end
+
+      it 'removes locales not relevant to the platform' do
+        service.apply_template(template)
+
+        project = Project.first
+        expect(project.title_multiloc.keys).to match(platform_locales)
+        expect(project.description_multiloc.keys).to match(platform_locales)
+      end
+
+      # rubocop:disable RSpec/NestedGroups
+      context 'when none of the platform locales is available', :aggregate_failures do
+        let(:platform_locales) { %w[it-IT en-GB] }
+
+        it 'falls back to another (unspecified) locale' do
+          service.apply_template(template)
+
+          project = Project.first
+          expect(project.title_multiloc.keys.size).to eq(1)
+          # rubocop:disable RSpec/ExpectActual
+          expect(%w[en nl-BE es-ES]).to include(*project.title_multiloc.keys)
+          # rubocop:enable RSpec/ExpectActual
+        end
+      end
+      # rubocop:enable RSpec/NestedGroups
+    end
   end
 end
