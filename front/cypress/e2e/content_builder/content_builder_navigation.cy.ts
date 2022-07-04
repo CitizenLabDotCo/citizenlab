@@ -35,7 +35,7 @@ describe('Content builder navigation', () => {
     cy.apiRemoveProject(projectId);
   });
 
-  it.skip('navigates to content builder when edit project description link clicked', () => {
+  it('navigates to content builder when edit project description link clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
     cy.get('#e2e-toggle-enable-content-builder')
       .find('input')
@@ -49,13 +49,13 @@ describe('Content builder navigation', () => {
     );
   });
 
-  it.skip('navigates to projects list when project settings goBack clicked', () => {
+  it('navigates to projects list when project settings goBack clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
     cy.get('#e2e-go-back-button').click();
     cy.url().should('eq', `${Cypress.config().baseUrl}/en/admin/projects/`);
   });
 
-  it.skip('navigates to project settings when content builder goBack clicked', () => {
+  it('navigates to project settings when content builder goBack clicked', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-go-back-button').click();
     cy.url().should(
@@ -64,7 +64,7 @@ describe('Content builder navigation', () => {
     );
   });
 
-  it.skip('navigates to live project when view project button clicked', () => {
+  it('navigates to live project when view project button clicked', () => {
     cy.visit(`/admin/projects/${projectId}/description`);
     cy.get('#to-project').click();
     cy.url().should(
