@@ -22,10 +22,9 @@ describe('Content builder language switch', () => {
       }).then((project) => {
         projectSlug = projectTitle;
         projectId = project.body.data.id;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
@@ -45,7 +44,6 @@ describe('Content builder language switch', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveContentBuilder'
     );
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 
     // EN
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
