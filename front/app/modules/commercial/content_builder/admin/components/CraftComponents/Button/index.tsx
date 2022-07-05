@@ -17,15 +17,11 @@ import { useTheme } from 'styled-components';
 import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
 
-// types
-import { Locale } from 'typings';
-
 type ButtonProps = {
   text: string;
   url: string;
   type: 'primary' | 'secondary';
   alignment: string;
-  selectedLocale: Locale;
 };
 
 const Button = ({ text, url, type, alignment }: ButtonProps) => {
@@ -76,7 +72,6 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     url: node.data.props.url,
     type: node.data.props.type,
     alignment: node.data.props.alignment,
-    selectedLocale: node.data.props.selectedLocale,
     id: node.id,
   }));
   const theme: any = useTheme();

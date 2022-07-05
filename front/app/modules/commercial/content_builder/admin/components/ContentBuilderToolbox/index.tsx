@@ -217,7 +217,6 @@ const ContentBuilderToolbox = ({
                 url={''}
                 type={'primary'}
                 alignment={'left'}
-                selectedLocale={selectedLocale}
               />,
               {
                 onCreate: (node) => {
