@@ -1,3 +1,5 @@
+// to be deleted once all functionality has moved to the new pages-menu folder
+
 import React, { useState, useMemo } from 'react';
 import styled, { useTheme } from 'styled-components';
 
