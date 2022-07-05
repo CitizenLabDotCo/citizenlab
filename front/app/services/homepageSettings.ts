@@ -59,7 +59,8 @@ export function homepageSettingsStream() {
 }
 
 export async function updateHomepageSettings(
-  // still to update, won't work for header_bg
+  // still to update, won't work for header_bg, which has different types when
+  // updating vs. getting the data.
   newHomepageSettings: Partial<IHomepageSettings>
 ) {
   const homepageSettings = await streams.update<IHomepageSettings>(
