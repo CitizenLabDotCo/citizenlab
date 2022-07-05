@@ -46,8 +46,11 @@ const LayoutOptionTextWrapper = styled.div`
 `;
 
 interface Props {
+  // to be changed, I would actually keep the state for this here
+  // and only have handleOnChange as a prop
   latestHomepageSettingsAttributes: IHomepageSettingsAttributes;
   handleOnChange: (
+    // also to be adjusted, should be a homepage setting
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
 }
