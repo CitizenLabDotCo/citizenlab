@@ -2,46 +2,24 @@
 
 module IdeaCustomFields
   class IdeaCustomFieldPolicy < ApplicationPolicy
-    class Scope
-      attr_reader :user, :scope
-
-      def initialize(user, scope)
-        @user  = user
-        @scope = scope
-      end
-
-      def resolve
-        if user&.admin?
-          scope.all
-        elsif user&.project_moderator?
-          scope
-            .joins('LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id')
-            .joins('LEFT JOIN projects ON projects.custom_form_id = custom_forms.id')
-            .where('projects.id' => ::UserRoleService.new.moderatable_projects(user))
-        else
-          scope.none
-        end
-      end
+    def index?
+      can_configure_custom_fields? record&.resource&.project
     end
 
     def show?
-      can_view_custom_fields_for_project? record&.resource&.project
+      can_configure_custom_fields? record&.resource&.project
     end
 
     def upsert_by_code?
-      show?
+      can_configure_custom_fields? record&.resource&.project
     end
 
-    def destroy?
-      show?
-    end
-
-    def can_view_custom_fields_for_project?(project)
-      user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
+    def update?
+      upsert_by_code?
     end
 
     def permitted_attributes
-      if %w[title body].include? record.code
+      if %w[title_multiloc body_multiloc].include? record.code
         [
           description_multiloc: CL2_SUPPORTED_LOCALES
         ]
@@ -53,6 +31,12 @@ module IdeaCustomFields
             description_multiloc: CL2_SUPPORTED_LOCALES }
         ]
       end
+    end
+
+    private
+
+    def can_configure_custom_fields?(project)
+      project && user&.active? && ::UserRoleService.new.can_moderate_project?(project, user)
     end
   end
 end

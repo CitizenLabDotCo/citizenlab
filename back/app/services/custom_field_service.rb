@@ -4,8 +4,7 @@ class CustomFieldService
   include CustomFieldUserOverrides
 
   def initialize
-    ActiveSupport::Deprecation.warn('CustomFieldService is deprecated. Use JsonFormsService instead.')
-    @multiloc_service = MultilocService.new
+    @multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
   end
 
   def ui_and_json_multiloc_schemas(configuration, fields)
@@ -40,7 +39,7 @@ class CustomFieldService
           end
       end
     }.tap do |output|
-      required = fields.select(&:enabled).select(&:required).map(&:key)
+      required = fields.select(&:enabled?).select(&:required?).map(&:key)
       output[:required] = required unless required.empty?
     end
   end
@@ -85,9 +84,11 @@ class CustomFieldService
 
   def cleanup_custom_field_values!(custom_field_values)
     custom_field_values.each_key do |key|
-      if custom_field_values[key].nil?
-        custom_field_values.delete key
-      end
+      value = custom_field_values[key]
+      is_boolean = !!value == value
+      next if is_boolean || value.present?
+
+      custom_field_values.delete key
     end
     custom_field_values
   end
@@ -127,7 +128,7 @@ class CustomFieldService
 
   def base_ui_schema_field(field, _locale)
     {}.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden' if field.hidden || !field.enabled
+      ui_schema[:'ui:widget'] = 'hidden' if field.hidden? || !field.enabled?
     end
   end
 
@@ -190,7 +191,7 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'string'
     }.tap do |items|
-      options = field.custom_field_options.order(:ordering)
+      options = field.options.order(:ordering)
       unless options.empty?
         items[:enum] = options.map(&:key)
         items[:enumNames] = options.map { |o| handle_title(o, locale) }
@@ -210,11 +211,11 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: 'array',
       uniqueItems: true,
-      minItems: field.enabled && field.required ? 1 : 0,
+      minItems: field.enabled? && field.required? ? 1 : 0,
       items: {
         type: 'string'
       }.tap do |items|
-        options = field.custom_field_options.order(:ordering)
+        options = field.options.order(:ordering)
         unless options.empty?
           items[:enum] = options.map(&:key)
           items[:enumNames] = options.map { |o| handle_title(o, locale) }
