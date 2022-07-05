@@ -40,7 +40,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
         <Box
           display="flex"
           mb="16px"
-          border="1px solid #AAAAAA"
+          border={`1px solid ${colors.adminTextColor}`}
           borderRadius="4px"
         >
           <Button
@@ -48,6 +48,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
             onClick={() => {
               !isMobile && setIsMobile(true);
             }}
+            id="e2e-mobile-preview"
             {...buttonProps}
           >
             <Icon
@@ -62,6 +63,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
             onClick={() => {
               isMobile && setIsMobile(false);
             }}
+            id="e2e-desktop-preview"
             {...buttonProps}
           >
             <Icon name="desktop" width="20px" fill={colorIfMobileView} />
