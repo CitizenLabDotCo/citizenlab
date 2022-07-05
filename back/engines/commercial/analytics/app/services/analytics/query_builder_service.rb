@@ -3,7 +3,9 @@ module Analytics
     def initialize(model, query)
       @model = model
       @query = query
-      @available_dimensions =  self.get_all_dimensions
+      @available_dimensions = get_all_dimensions
+      @calculated_attributes = get_calculated_attributes
+      @normalized_calculated_attributes = @calculated_attributes.map{|key| normalize_calulated_attribute(key)}
     end
 
     def get_all_dimensions
@@ -43,11 +45,29 @@ module Analytics
       end
     end
 
-    def filter_calculated_keys(keys)
-      calculated_keys = @pluck_attributes
-        .select{ |key| key.include? " as " }
-        .map{ |key| key.split(" as ")[1]}
-      keys.filter{ |key| !calculated_keys.include? key }
+    def get_calculated_attributes
+      attribute = []
+      if @query.key?(:groups)
+        @query[:groups][:aggregations].each do |column, aggregation|
+          if aggregation.class == Array
+            aggregation.each do |aggregation_|
+              attribute.push("#{aggregation_}(#{column}) as #{aggregation_}_#{column.gsub('.', '_')}")
+            end
+          else
+            attribute.push("#{aggregation}(#{column}) as #{aggregation}_#{column.gsub('.', '_')}")
+          end
+        end
+      end
+
+      attribute
+    end
+
+    def normalize_calulated_attribute(attribute)
+      if (attribute.include? " as ")
+        return attribute.split(" as ")[1]
+      else
+        return attribute
+      end
     end
 
     def validate_json
@@ -99,10 +119,8 @@ module Analytics
           @validation["messages"].push("#{kind} dimension #{dimension} does not exist.")
         end
         
-      else
-        unless @model.column_names.include?(key)
-          @validation["messages"].push("#{kind} column #{key} does not exist in fact table.")
-        end
+      elsif !@normalized_calculated_attributes.include?(key) && !@model.column_names.include?(key)
+        @validation["messages"].push("#{kind} column #{key} does not exist in fact table.")
       end
     end
 
@@ -113,6 +131,12 @@ module Analytics
 
       @query[:groups][:aggregations].each do |key, aggregation|
         validate_dot_key(key, "Aggregations")
+      end
+    end
+
+    def validate_order
+      @query[:sort].keys.each do |key|
+        validate_dot_key(key, "Sort")
       end
     end
 
@@ -128,6 +152,10 @@ module Analytics
 
       if @query.key?(:groups)
         validate_groups
+      end
+
+      if @query.key?(:sort)
+        validate_order
       end
 
       @validation
@@ -172,19 +200,7 @@ module Analytics
     end
 
     def groups(results)
-      keys = []
-
-      @query[:groups][:aggregations].each do |column, aggregation|
-        if aggregation.class == Array
-          aggregation.each do |aggregation_|
-            keys.push("#{aggregation_}(#{column}) as #{aggregation_}_#{column.gsub('.', '_')}")
-          end
-        else
-          keys.push("#{aggregation}(#{column}) as #{aggregation}_#{column.gsub('.', '_')}")
-        end
-      end
-
-      @pluck_attributes = keys + get_group_keys
+      @pluck_attributes = @calculated_attributes + get_group_keys
       
       results = results.group(@query[:groups][:key])
       
@@ -193,7 +209,7 @@ module Analytics
 
     def order(results)
       keys = @query[:sort].keys
-      @pluck_attributes += filter_calculated_keys(keys)
+      @pluck_attributes += keys.filter{ |key| !@normalized_calculated_attributes.include? key }
 
       order_query = []
       @query[:sort].each do |key, direction|
@@ -206,7 +222,7 @@ module Analytics
 
     def pluck(results)
       results = results.pluck(*@pluck_attributes)
-      response_attributes = @pluck_attributes.map{ |key| (key.include? " as ") ? key.split(" as ")[1] : key}
+      response_attributes = @pluck_attributes.map{|key| normalize_calulated_attribute(key)}
       results = results.map { |result| response_attributes.zip(result).to_h }
 
       results
@@ -215,24 +231,30 @@ module Analytics
     def run()
       @pluck_attributes = @model.column_names
       dimensions = get_used_dimensions
+      
       results = @model.includes(dimensions)
-      results = include_dimensions(results)
+      begin
+        results = include_dimensions(results)
+        
+        if @query.key?(:dimensions)
+          results = dimensions(results)
+        end
+
+        if @query.key?(:groups)
+          results = groups(results)
+        end
+
+        if @query.key?(:sort)
+          results = order(results)
+        end
+
+        results = pluck(results)
       
-      if @query.key?(:dimensions)
-        results = dimensions(results)
+      rescue ActiveRecord::StatementInvalid => e
+        @validation["messages"].push(e.message)
+      else
+        results
       end
-
-      if @query.key?(:groups)
-        results = groups(results)
-      end
-
-      if @query.key?(:sort)
-        results = order(results)
-      end
-
-      results = pluck(results)
-      
-      results
     end
   end
 end
