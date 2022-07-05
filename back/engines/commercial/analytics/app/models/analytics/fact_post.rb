@@ -2,7 +2,7 @@
 #
 # Table name: analytics_fact_posts
 #
-#  id                     :uuid
+#  id                     :uuid             primary key
 #  user_id                :uuid
 #  project_id             :uuid
 #  type_id                :uuid
@@ -19,8 +19,8 @@
 # Indexes
 #
 #  index_analytics_fact_posts_on_created_date  (created_date)
-#  index_analytics_fact_posts_on_id               (id)
-#  index_analytics_fact_posts_on_project_id       (project_id)
+#  index_analytics_fact_posts_on_id            (id)
+#  index_analytics_fact_posts_on_project_id    (project_id)
 #
 module Analytics
   class FactPost < Analytics::ApplicationRecord
