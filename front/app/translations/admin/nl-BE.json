@@ -1382,8 +1382,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Scherminhoud van een externe website op je pagina in een HTML iFrame",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "B.v. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Er dient een geldige URL geleverd te worden.",
-  "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "Je kunt wegens veiligheidsredenen geen inhoud van deze website insluiten, probeer iets anders.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.image": "Afbeelding",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Korte beschrijving van de afbeelding",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Het toevoegen van \"alt-tekst\" voor afbeeldingen is belangrijk om uw platform toegankelijk te maken voor gebruikers die schermlezers gebruiken.",

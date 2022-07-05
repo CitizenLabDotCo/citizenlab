@@ -1382,8 +1382,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Zeigen Sie Inhalte einer externen Website auf Ihrer Seite in einem HTML-iFrame an.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "z.B. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Muss eine gültige URL angeben.",
-  "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "Sie können aus Sicherheitsgründen keine Inhalte von dieser Website einbetten, versuchen Sie etwas anderes.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.image": "Bild",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kurzbeschreibung des Bildes",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Das Hinzufügen von \"Alt-Text\" für Bilder ist wichtig, um Ihre Plattform für Nutzer mit Bildschirmlesegeräten zugänglich zu machen.",
