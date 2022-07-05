@@ -31,7 +31,7 @@ docker exec -it -e PGPASSWORD=postgres cl-postgres-analytics /bin/bash -c "pg_du
 
 ## Database
 
-There is a secondary database connection set up to cl_back_analytics - however it currently is ignoring appartment and 
+There is a secondary database connection set up to cl_back_analytics - however it currently is ignoring appartment and
 only using a single schema. There is currently a setting in the DB config to make it use 'localhost' so we can develop
 on our default localhost tenant.
 
@@ -39,30 +39,25 @@ on our default localhost tenant.
 
 ### Important
 
-Views can't currently be read from the engine folder, but the migrations are configured to run from here.
-Run the following command on cl-back-web to ensure views are copied to the main migrations folder before running:
+Views cannot be read directly from the engine folder,
+so rake migration tasks have been extended to copy the views to the main codebase before running migrations.
+All sql files starting with analytics_ in the main codebase are therefore excluded from git using .gitignore.
+Migrations can be run just for this engine using:
 
-`cp -r /cl2_back/engines/commercial/analytics/db/views/*.sql /cl2_back/db/views && rails db:migrate:analytics`
+```
+rails db:migrate:analytics
+```
 
 To rollback:
 
-`rails db:rollback:analytics`
+```
+rails db:rollback:analytics
+```
 
-## Creating a view migration
+### Naming
 
 Views/tables should be named as follows:
 
 * analytics_dimension_*
 * analytics_fact_*
-
-## TODO:
-
-* Create a view model with relations
-* Fix multi-tenancy
-* Set up a refresh job - rake file to trigger views in order?
-
-Note: Currently scenic doesn't support creating migrations & views inside the engine.
-Views can be run by migrations only from /db/views in the main app.
-There is an open pull request for this: https://github.com/scenic-views/scenic/pull/357
-
 
