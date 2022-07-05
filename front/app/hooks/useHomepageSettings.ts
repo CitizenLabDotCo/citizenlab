@@ -12,8 +12,6 @@ export default function useHomepageSettings() {
   useEffect(() => {
     const subscription = homepageSettingsStream().observable.subscribe(
       (currentlySavedHomepageSettings) => {
-        console.log(currentlySavedHomepageSettings);
-
         setHomepageSettings(currentlySavedHomepageSettings);
       }
     );

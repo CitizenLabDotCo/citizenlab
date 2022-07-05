@@ -38,7 +38,7 @@ const HomepageCustomizableSection = ({
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
       setBottomInfoSectionMultilocState(
-        homepageSettings.attributes.bottom_info_section_multiloc
+        homepageSettings.data.attributes.bottom_info_section_multiloc
       );
     }
   }, [homepageSettings]);

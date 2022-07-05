@@ -26,7 +26,7 @@ export interface IHomepageSettings {
   id: string;
   // To check
   type: string;
-  attributes: IHomepageSettingsAttributes;
+  data: { attributes: IHomepageSettingsAttributes };
 }
 
 export interface IHomepageSettingsAttributes {
@@ -63,12 +63,11 @@ export async function updateHomepageSettings(
   // updating vs. getting the data.
   newHomepageSettings: Partial<IHomepageSettingsAttributes>
 ) {
+  console.log({ newHomepageSettings });
   const homepageSettings = await streams.update<IHomepageSettings>(
     homepageSettingsEndpoint,
-    // There's only 1 object with homepage settings
-    // As opposed to e.g. many ideas. So we can give it a dataId we like.
     'home_page_settings',
-    { home_pages: newHomepageSettings }
+    { home_page: newHomepageSettings }
   );
   // is this needed?
   await homepageSettingsStream().fetch();
