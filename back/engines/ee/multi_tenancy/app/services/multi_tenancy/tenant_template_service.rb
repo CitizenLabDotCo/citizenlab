@@ -99,6 +99,8 @@ module MultiTenancy
           obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
         end
       end
+
+      DumpTenantJob.perform_later(Tenant.current)
       nil
     end
 
