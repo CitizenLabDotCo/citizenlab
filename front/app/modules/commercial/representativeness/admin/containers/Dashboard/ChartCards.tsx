@@ -9,29 +9,31 @@ import EmptyCard from '../../components/ChartCard/EmptyCard';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+import { isShown, isSupported, sortUserCustomFields } from './utils';
 
 interface Props {
   projectFilter?: string;
 }
 
-const isSupported = ({ attributes }: IUserCustomFieldData) =>
-  attributes.code !== 'domicile';
-
 const ChartCards = ({ projectFilter }: Props) => {
-  const customFields = useUserCustomFields({ inputTypes: ['select'] });
-  if (isNilOrError(customFields)) return null;
+  const userCustomFields = useUserCustomFields({
+    inputTypes: ['select', 'number'],
+  });
+
+  if (isNilOrError(userCustomFields)) return null;
+
+  const sortedUserCustomFields = sortUserCustomFields(
+    userCustomFields.filter(isShown)
+  );
 
   return (
     <>
-      {customFields.map((customField) => {
-        if (isSupported(customField)) {
+      {sortedUserCustomFields.map((userCustomField) => {
+        if (isSupported(userCustomField)) {
           return (
             <ChartCard
-              customField={customField}
-              key={customField.id}
+              userCustomField={userCustomField}
+              key={userCustomField.id}
               projectFilter={projectFilter}
             />
           );
@@ -39,8 +41,8 @@ const ChartCards = ({ projectFilter }: Props) => {
 
         return (
           <EmptyCard
-            titleMultiloc={customField.attributes.title_multiloc}
-            key={customField.id}
+            titleMultiloc={userCustomField.attributes.title_multiloc}
+            key={userCustomField.id}
             isComingSoon
           />
         );

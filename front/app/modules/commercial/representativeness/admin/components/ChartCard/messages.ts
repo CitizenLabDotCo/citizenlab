@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  percentageUsersIncluded: {
-    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.percentageUsersIncluded',
-    defaultMessage: '{percentage} of users included',
+  includedUsersMessage: {
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.includedUsersMessage2',
+    defaultMessage: '{known} out of {total} users included ({percentage})',
   },
   required: {
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.required',
@@ -52,9 +52,9 @@ export default defineMessages({
     defaultMessage: 'Please provide a base dataset.',
   },
   baseDatasetExplanation: {
-    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation',
+    id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1',
     defaultMessage:
-      'This base dataset is required to calculate the representativeness of platform users compared to the total population.',
+      'A base dataset is required to measure the representation of platform users.',
   },
   submitBaseDataButton: {
     id: 'app.containers.AdminPage.DashboardPage.components.ChartCard.submitBaseDataButton',
