@@ -2,6 +2,8 @@
 
 ## Next release
 
+### Added
+
 - [CL-1085] - Add link to support article when there are errors during embed in the content builder
 
 ## 2022-07-05
