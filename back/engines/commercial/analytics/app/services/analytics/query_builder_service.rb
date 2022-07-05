@@ -1,127 +1,12 @@
 module Analytics
   class QueryBuilderService
-    AGGREGATIONS = ["min", "max", "avg", "sum", "count"]
-    ANY_KEY = "^[a-z_]*$"
-    ANY_DOT_KEY = "^[a-z_]*\.[a-z_]*$"
-    SORT_STRING = {
-      "type" => "string",
-      "pattern" => ANY_DOT_KEY
-    }
-    SORT_OBJECT = {
-      "type": "object",
-      "patternProperties" => {
-        ANY_DOT_KEY => {
-          "type" => "string",
-          "enum" => ["ASC", "DESC"]
-        }
-      },
-      "minProperties" => 1,
-      "maxProperties" => 1
-    }
-    SCHEMA = {
-      "type" => "object",
-      "properties" => {
-        "dimensions" => {
-          "type" => "object",
-          "minProperties" => 1,
-          "patternProperties" => {
-            ANY_KEY => {
-              "type" => "object",
-              "minProperties" => 1,
-              "patternProperties" => {
-                ANY_KEY => {
-                  "type" => ["string", "array", "object"],
-                  "minLength" => 1,
-                  "properties" => {
-                    "from" => {"type": ["integer","string"]},
-                    "to" => {"type": ["integer","string"]}
-                  },
-                  "required" => ["from", "to"],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "additionalProperties": false
-        },
-        "groups" => {
-          "type" => "object",
-          "properties" => {
-            "key" => {
-              "anyOf" => [
-                {
-                    "type" => "string",
-                    "pattern" => ANY_DOT_KEY
-                }, 
-                {
-                    "type": "array",
-                    "items" => {
-                      "type" => "string",
-                      "pattern" => ANY_DOT_KEY
-                    },
-                    "minLength" => 1
-                }
-              ]
-            },
-            "aggregations" => {
-              "type" => "object",
-              "minProperties" => 1,
-              "patternProperties" => {
-                ANY_DOT_KEY => {
-                  "anyOf" => [
-                    {
-                        "type" => "string",
-                        "enum" => AGGREGATIONS
-                    }, 
-                    {
-                        "type": "array",
-                        "items" => {
-                          "type" => "string",
-                          "enum" => AGGREGATIONS
-                        },
-                        "minLength" => 1
-                    }
-                  ]
-                }
-              },
-              "additionalProperties" => false
-            }
-          },
-          "required" => ["key","aggregations"],
-          "additionalProperties" => false
-        },
-        "sort" => {
-          "anyOf" => [
-            SORT_STRING,
-            SORT_OBJECT,
-            {
-                "type": "array",
-                "items" => {
-                  "anyOf" => [
-                    SORT_STRING, 
-                    SORT_OBJECT
-                  ]
-                }
-            }
-          ]
-        },
-        "limit" => {
-          "type" => "integer",
-          "minimum" => 1,
-          "maximum" => 1000
-        }
-      },
-      "required" => ["dimensions"],
-      "additionalProperties" => false
-    }
-    
     def initialize(model, query)
       @model = model
       @query = query
-      @available_dimensions =  self.get_dimensions_keys
+      @available_dimensions =  self.get_all_dimensions
     end
 
-    def get_dimensions_keys
+    def get_all_dimensions
       @model
         .reflect_on_all_associations(:belongs_to)
         .map { |assoc|
@@ -129,8 +14,41 @@ module Analytics
         }.to_h
     end
 
+    def get_used_dimensions
+      dot_key_dimensions = []
+      
+      if @query.key?(:groups)
+        dot_key_dimensions += get_group_keys + @query[:groups][:aggregations].keys
+      end
+
+      if @query.key?(:sort)
+        dot_key_dimensions += @query[:sort].keys
+      end
+
+      dot_key_dimensions = dot_key_dimensions.map{ |key| (key.include? ".") ? key.split(".")[0] : key }
+      dot_key_dimensions = dot_key_dimensions.select{ |key|  @available_dimensions.include? key }
+
+      used_dimensions = @query[:dimensions].keys + dot_key_dimensions
+      used_dimensions.uniq
+    end
+
+    def get_group_keys
+      if @query[:groups][:key].class == Array
+        return @query[:groups][:key]
+      else
+        return [@query[:groups][:key]]
+      end
+    end
+
+    def filter_calculated_keys(keys)
+      calculated_keys = @pluck_attributes
+        .select{ |key| key.include? " as " }
+        .map{ |key| key.split(" as ")[1]}
+      keys.filter{ |key| !calculated_keys.include? key }
+    end
+
     def validate_json
-      json_errors = JSON::Validator.fully_validate(SCHEMA, @query.to_unsafe_hash)
+      json_errors = JSON::Validator.fully_validate("engines/commercial/analytics/app/services/analytics/query_schema.json", @query.to_unsafe_hash)
       @validation["messages"] = json_errors
     end
 
@@ -186,12 +104,8 @@ module Analytics
     end
 
     def validate_groups
-      if @query[:groups][:key].class == Array
-        @query[:groups][:key].each do |key|
-          validate_dot_key(key, "Groups")
-        end
-      else
-        validate_dot_key(@query[:groups][:key], "Groups")
+      get_group_keys().each do |key|
+        validate_dot_key(key, "Groups")
       end
 
       @query[:groups][:aggregations].each do |key, aggregation|
@@ -203,8 +117,11 @@ module Analytics
       @validation = {"messages" => []}
       
       validate_json
-      validate_dimensions
-      validate_dates
+
+      if @query.key?(:dimensions)
+        validate_dimensions
+        validate_dates
+      end
 
       if @query.key?(:groups)
         validate_groups
@@ -213,7 +130,7 @@ module Analytics
       @validation
     end
 
-    def query_dimensions(results)
+    def dimensions(results)
       @query[:dimensions].each do |dimension, columns|
         columns.each do |column, value|
           if [Array, String].include? value.class
@@ -230,78 +147,74 @@ module Analytics
           end
         end
       end
+
+      necesary_dimensions = get_used_dimensions.select{ |dim|  !@query[:dimensions].keys.include? dim}
+      necesary_dimensions.each do |dimension|
+        results = results.where.not(dimension => { id: nil })
+      end
+
       results
     end
 
-    def aggregate(results)
-      aggregations = []
-      aggregations_names = []
+    def groups(results)
+      keys = []
+
       @query[:groups][:aggregations].each do |column, aggregation|
         if aggregation.class == Array
           aggregation.each do |aggregation_|
-            aggregations.push("#{aggregation_}(#{column})")
-            aggregations_names.push("#{aggregation_}__#{column}")
+            keys.push("#{aggregation_}(#{column}) as #{aggregation_}_#{column.gsub('.', '_')}")
           end
         else
-          aggregations.push("#{aggregation}(#{column})")
-          aggregations_names.push("#{aggregation}__#{column}")
+          keys.push("#{aggregation}(#{column}) as #{aggregation}_#{column.gsub('.', '_')}")
         end
       end
 
-      if @query[:groups][:key].class == Array
-        aggregations = @query[:groups][:key] + aggregations
-        aggregations_names = @query[:groups][:key] + aggregations_names
-      else
-        aggregations.push(@query[:groups][:key])
-        aggregations_names.push(@query[:groups][:key])
-      end
-
-      #TODO: add not used sort keys into pluck method
-
-      results = results.group(@query[:groups][:key]).pluck(*aggregations)
-      results = results.map { |result| aggregations_names.zip(result).to_h }
-    end
-
-    def parse_order_value(order_value)
-      order_query = ""
-
-      if order_value.class == ActionController::Parameters
-        column = order_value.keys[0]
-        order_query = "#{column} #{order_value[column]}"
-      elsif order_value.class == String
-        order_query = order_value
-      end
-      order_query
+      @pluck_attributes = keys + get_group_keys
+      
+      results = results.group(@query[:groups][:key])
+      
+      results
     end
 
     def order(results)
-      order_query = ""
+      keys = @query[:sort].keys
+      @pluck_attributes += filter_calculated_keys(keys)
 
-      if @query[:sort].class == Array
-        order_query = @query[:sort].map{ |order_value| parse_order_value(order_value) }.join(", ")
-      else
-        order_query = parse_order_value(@query[:sort])
+      order_query = []
+      @query[:sort].each do |key, direction|
+        order_query.push("#{key} #{direction}")
+      end
+      results = results.order(order_query)
+
+      results
+    end
+
+    def pluck(results)
+      results = results.pluck(*@pluck_attributes)
+      response_attributes = @pluck_attributes.map{ |key| (key.include? " as ") ? key.split(" as ")[1] : key}
+      results = results.map { |result| response_attributes.zip(result).to_h }
+
+      results
+    end
+
+    def run()
+      @pluck_attributes = @model.column_names
+      dimensions = get_used_dimensions
+      results = @model.includes(dimensions)
+      
+      if @query.key?(:dimensions)
+        results = dimensions(results)
       end
 
-      results.order(order_query)
-    end
-    
-    def run()
-      results = @model.select(@model.column_names).includes(@query[:dimensions].keys)
-
-      results = query_dimensions(results)
-
       if @query.key?(:groups)
-        results.group(@query[:groups][:key])
+        results = groups(results)
       end
 
       if @query.key?(:sort)
         results = order(results)
       end
 
-      if @query.key?(:groups)
-        results = aggregate(results)
-      end
+      results = pluck(results)
       
       results
     end
