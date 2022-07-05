@@ -39,14 +39,20 @@ on our default localhost tenant.
 
 ### Important
 
-Views can't currently be read from the engine folder, but the migrations are configured to run from here.
-Run the following command on cl-back-web to ensure views are copied to the main migrations folder before running:
+Views cannot be read directly from the engine folder, 
+so rake migration tasks have been extended to copy the views to the main codebase before running migrations.
+All sql files starting with analytics_ in the main codebase are therefore excluded from git using .gitignore.
+Migrations can be run just for this engine using:
 
-`cp -r /cl2_back/engines/commercial/analytics/db/views/*.sql /cl2_back/db/views && rails db:migrate:analytics`
+```
+rails db:migrate:analytics
+```
 
 To rollback:
 
-`rails db:rollback:analytics`
+```
+rails db:rollback:analytics
+```
 
 ## Creating a view migration
 
