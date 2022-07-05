@@ -1383,7 +1383,6 @@
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "Ej. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Debe proporcionar una URL válida.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
-  "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "No puede incrustar contenido de este sitio web por razones de seguridad, intente algo diferente.",
   "app.containers.admin.ContentBuilder.image": "Imagen",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Breve descripción de la imagen",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Añadir \"texto alternativo\" a las imágenes es importante para que los usuarios que utilizan lectores de pantalla puedan acceder a su plataforma.",
