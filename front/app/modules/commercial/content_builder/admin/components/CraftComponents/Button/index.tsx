@@ -1,17 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { isEmpty } from 'lodash-es';
 
 // craft
 import { useNode } from '@craftjs/core';
 
 // components
-import {
-  Radio,
-  Box,
-  Title,
-  Input,
-  Toggle,
-} from '@citizenlab/cl2-component-library';
-
+import { Radio, Box, Title, Input } from '@citizenlab/cl2-component-library';
+import Error from 'components/UI/Error';
 import ButtonComponent from 'components/UI/Button';
 
 // styles
@@ -23,16 +18,24 @@ import { useTheme } from 'styled-components';
 // intl
 import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
+import eventEmitter from 'utils/eventEmitter';
+import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
+
+// types
+import { Locale } from 'typings';
 
 type ButtonProps = {
   text: string;
   url: string;
-  opensInNewTab: boolean;
   type: 'primary' | 'secondary';
   alignment: string;
+  hasUrlError?: boolean;
+  hasTextError?: boolean;
+  hasError?: boolean;
+  selectedLocale: Locale;
 };
 
-const Button = ({ text, url, opensInNewTab, type, alignment }: ButtonProps) => {
+const Button = ({ text, url, type, alignment }: ButtonProps) => {
   return (
     <Box
       display="flex"
@@ -46,7 +49,7 @@ const Button = ({ text, url, opensInNewTab, type, alignment }: ButtonProps) => {
     >
       <ButtonComponent
         linkTo={url}
-        openLinkInNewTab={opensInNewTab}
+        openLinkInNewTab={true}
         id="e2e-button"
         width={alignment === 'fullWidth' ? '100%' : 'auto'}
         buttonStyle={type}
@@ -61,17 +64,53 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     actions: { setProp },
     text,
     url,
-    opensInNewTab,
     type,
     alignment,
+    selectedLocale,
+    id,
+    hasUrlError,
+    hasTextError,
+    hasError,
   } = useNode((node) => ({
     text: node.data.props.text,
     url: node.data.props.url,
-    opensInNewTab: node.data.props.opensInNewTab,
     type: node.data.props.type,
     alignment: node.data.props.alignment,
+    selectedLocale: node.data.props.selectedLocale,
+    id: node.id,
+    hasUrlError: node.data.props.hasUrlError,
+    hasTextError: node.data.props.hasTextError,
+    hasError: node.data.props.hasError,
   }));
+
+  useEffect(() => {
+    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+      [id]: { hasError, selectedLocale },
+    });
+  }, [hasError, id, selectedLocale]);
+
   const theme: any = useTheme();
+
+  const handleTextChange = (value: string) => {
+    setProp((props) => (props.text = value));
+    setProp((props) => (props.hasTextError = isEmpty(value)));
+    const errorState = isEmpty(value) || hasUrlError;
+    setProp((props) => (props.hasError = errorState));
+    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+      [id]: { hasError: errorState, selectedLocale },
+    });
+  };
+
+  const handleUrlChange = (value: string) => {
+    setProp((props) => (props.url = value));
+    setProp((props) => (props.hasUrlError = isEmpty(value)));
+    const errorState = isEmpty(value) || hasTextError;
+    setProp((props) => (props.hasError = errorState));
+    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+      [id]: { hasError: errorState, selectedLocale },
+    });
+  };
+
   return (
     <Box background="#ffffff" marginBottom="20px">
       <Box flex="0 0 100%">
@@ -86,9 +125,15 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={text}
           onChange={(value) => {
-            setProp((props) => (props.text = value));
+            handleTextChange(value);
           }}
         />
+        {hasTextError && (
+          <Error
+            marginTop="4px"
+            text={formatMessage(messages.buttonTextErrorMessage)}
+          />
+        )}
       </Box>
       <Box flex="0 0 100%">
         <Input
@@ -102,19 +147,15 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={url}
           onChange={(value) => {
-            setProp((props) => (props.url = value));
+            handleUrlChange(value);
           }}
         />
-      </Box>
-      <Box mt="20px" mb="20px">
-        <Toggle
-          id="toggle-open-new-tab-window"
-          checked={opensInNewTab}
-          onChange={() => {
-            setProp((props) => (props.opensInNewTab = !opensInNewTab));
-          }}
-          label={formatMessage(messages.openInTabOrWindow)}
-        />
+        {hasUrlError && (
+          <Error
+            marginTop="4px"
+            text={formatMessage(messages.buttonUrlErrorMessage)}
+          />
+        )}
       </Box>
       <Title variant="h4" as="h3">
         {formatMessage(messages.buttonTypeRadioLabel)}

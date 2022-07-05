@@ -215,9 +215,11 @@ const ContentBuilderToolbox = ({
               <Button
                 text={formatMessage(messages.button)}
                 url={''}
-                opensInNewTab={false}
                 type={'primary'}
                 alignment={'left'}
+                selectedLocale={selectedLocale}
+                hasUrlError={true}
+                hasError={true}
               />,
               {
                 onCreate: (node) => {

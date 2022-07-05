@@ -216,10 +216,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.alignmentCenter',
     defaultMessage: 'Center',
   },
-  openInTabOrWindow: {
-    id: 'app.containers.AdminPage.ProjectDescription.openInTabOrWindow',
-    defaultMessage: 'Open in new tab/window',
-  },
   buttonTypePrimaryLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.buttonTypePrimaryLabel',
     defaultMessage: 'Primary',
@@ -236,9 +232,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.buttonText',
     defaultMessage: 'Button text',
   },
+  buttonTextErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonTextErrorMessage',
+    defaultMessage: 'Enter text for the button',
+  },
   buttonUrl: {
     id: 'app.containers.AdminPage.ProjectDescription.buttonUrl',
     defaultMessage: 'Button URL',
+  },
+  buttonUrlErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectDescription.buttonUrlErrorMessage',
+    defaultMessage: 'Enter a URL for the button',
   },
   whiteSpace: {
     id: 'app.containers.AdminPage.ProjectDescription.whiteSpace',
