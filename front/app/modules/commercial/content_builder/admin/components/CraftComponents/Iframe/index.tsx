@@ -11,8 +11,7 @@ import Error from 'components/UI/Error';
 
 // intl
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';
