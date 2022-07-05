@@ -7,12 +7,18 @@ import { useNode } from '@craftjs/core';
 import {
   Radio,
   Box,
-  Button as ButtonComponent,
   Title,
   Input,
   Toggle,
-  ButtonStyles,
 } from '@citizenlab/cl2-component-library';
+
+import ButtonComponent from 'components/UI/Button';
+
+// styles
+import { colors } from 'utils/styleUtils';
+
+// hooks
+import { useTheme } from 'styled-components';
 
 // intl
 import messages from '../../../messages';
@@ -22,16 +28,11 @@ type ButtonProps = {
   text: string;
   url: string;
   opensInNewTab: boolean;
-  type: ButtonStyles;
+  type: 'primary' | 'secondary';
   alignment: string;
 };
 
 const Button = ({ text, url, opensInNewTab, type, alignment }: ButtonProps) => {
-  const openUrl = (url: string) => {
-    const targetValue = opensInNewTab ? '_blank' : '_self';
-    window.open(url, targetValue);
-  };
-
   return (
     <Box
       display="flex"
@@ -44,7 +45,8 @@ const Button = ({ text, url, opensInNewTab, type, alignment }: ButtonProps) => {
       }
     >
       <ButtonComponent
-        onClick={() => openUrl(url)}
+        linkTo={url}
+        openLinkInNewTab={opensInNewTab}
         id="e2e-button"
         width={alignment === 'fullWidth' ? '100%' : 'auto'}
         buttonStyle={type}
@@ -69,6 +71,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     type: node.data.props.type,
     alignment: node.data.props.alignment,
   }));
+  const theme: any = useTheme();
   return (
     <Box background="#ffffff" marginBottom="20px">
       <Box flex="0 0 100%">
@@ -125,15 +128,16 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         name="buttonStyle"
         value={'primary'}
         label={
-          <ButtonComponent
-            text={formatMessage(messages.buttonTypePrimaryLabel)}
+          <Box
             id="e2e-button"
-            buttonStyle="primary"
-            fontSize="small"
-            paddingX="8px"
-            paddingY="0px"
-            style={{ pointerEvents: 'none' }}
-          />
+            bgColor={theme.colorMain}
+            color={colors.adminLightText}
+            borderRadius="4px"
+            px="8px"
+            py="2px"
+          >
+            {formatMessage(messages.buttonTypePrimaryLabel)}
+          </Box>
         }
         isRequired
       />
@@ -146,15 +150,16 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         name="buttonStyle"
         value="secondary"
         label={
-          <ButtonComponent
-            text={formatMessage(messages.buttonTypeSecondaryLabel)}
+          <Box
             id="e2e-button"
-            buttonStyle="secondary"
-            fontSize="small"
-            paddingX="8px"
-            paddingY="0px"
-            style={{ pointerEvents: 'none' }}
-          />
+            borderRadius="4px"
+            px="8px"
+            py="2px"
+            bgColor={colors.backgroundLightGrey}
+            color={colors.text}
+          >
+            {formatMessage(messages.buttonTypeSecondaryLabel)}
+          </Box>
         }
         isRequired
       />
