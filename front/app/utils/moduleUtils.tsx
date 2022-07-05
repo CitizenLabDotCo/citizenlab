@@ -26,7 +26,6 @@ import { IGroupDataAttributes, MembershipType } from 'services/groups';
 import { ParticipationMethod } from 'services/participationContexts';
 import {
   CellConfiguration,
-  CLErrors,
   FormikSubmitHandler,
   InsertConfigurationOptions,
   ITab,
@@ -45,9 +44,12 @@ import {
   IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
-  THomepageBannerLayout,
 } from 'services/appConfiguration';
-import { CTASignedOutType, CTASignedInType } from 'services/homepageSettings';
+import {
+  CTASignedOutType,
+  CTASignedInType,
+  THomepageBannerLayout,
+} from 'services/homepageSettings';
 import { ManagerType } from 'components/admin/PostManager';
 import { IdeaCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaRow';
 import { IdeaHeaderCellComponentProps } from 'components/admin/PostManager/components/PostTable/IdeaHeaderRow';

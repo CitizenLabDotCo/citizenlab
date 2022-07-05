@@ -25,4 +25,9 @@ declare module 'services/homepageSettings' {
     cta_signed_out_type: CTASignedOutType;
     cta_signed_out_url: string;
   }
+
+  interface THomepageBannerLayoutMap {
+    two_column_layout: 'two_column_layout';
+    two_row_layout: 'two_row_layout';
+  }
 }

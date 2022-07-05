@@ -243,13 +243,7 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
-export interface THomepageBannerLayoutMap {
-  full_width_banner_layout: 'full_width_banner_layout';
-}
-
-export type THomepageBannerLayout =
-  THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
-
+// to be moved?
 export const homepageBannerLayoutHeights = {
   full_width_banner_layout: {
     desktop: 450,

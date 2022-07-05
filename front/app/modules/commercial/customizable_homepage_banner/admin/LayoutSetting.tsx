@@ -17,11 +17,11 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 import {
   THomepageBannerLayout,
-  TAppConfigurationSetting,
-  IAppConfigurationSettings,
-} from 'services/appConfiguration';
+  IHomepageSettingsAttributes,
+} from 'services/homepageSettings';
 
 const LayoutPreview = styled.img`
   width: 200px;
@@ -46,21 +46,22 @@ const LayoutOptionTextWrapper = styled.div`
 `;
 
 interface Props {
-  latestAppConfigSettings:
-    | IAppConfigurationSettings
-    | Partial<IAppConfigurationSettings>;
+  latestHomepageSettingsAttributes: IHomepageSettingsAttributes;
   handleOnChange: (
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
 }
 
-const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
+const LayoutSetting = ({
+  latestHomepageSettingsAttributes,
+  handleOnChange,
+}: Props) => {
   const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
     handleOnChange('customizable_homepage_banner')('layout', layout);
   };
 
-  const homepageBannerLayout =
-    latestAppConfigSettings.customizable_homepage_banner?.layout;
+  // to be tested. Is it okay for this value to be possibly null?
+  const homepageBannerLayout = latestHomepageSettingsAttributes.banner_layout;
   return (
     <SectionField key="layout">
       <SubSectionTitle>
