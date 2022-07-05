@@ -2,7 +2,13 @@
 
 ## Next release
 
+### Added
+
 - [CL-1058] - Add desktop preview in content builder
+
+### Changed
+
+- [CL-870] Move "navigation" to primary nav item
 
 ## 2022-07-04
 
