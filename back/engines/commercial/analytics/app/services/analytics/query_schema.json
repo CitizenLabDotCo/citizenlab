@@ -85,6 +85,5 @@
       "maximum" : 1000
     }
   },
-  "required" : ["dimensions"],
   "additionalProperties" : false
 }

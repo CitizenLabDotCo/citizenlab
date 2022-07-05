@@ -15,20 +15,23 @@ module Analytics
     end
 
     def get_used_dimensions
-      dot_key_dimensions = []
+      used_dimensions = []
       
       if @query.key?(:groups)
-        dot_key_dimensions += get_group_keys + @query[:groups][:aggregations].keys
+        used_dimensions += get_group_keys + @query[:groups][:aggregations].keys
       end
 
       if @query.key?(:sort)
-        dot_key_dimensions += @query[:sort].keys
+        used_dimensions += @query[:sort].keys
       end
 
-      dot_key_dimensions = dot_key_dimensions.map{ |key| (key.include? ".") ? key.split(".")[0] : key }
-      dot_key_dimensions = dot_key_dimensions.select{ |key|  @available_dimensions.include? key }
+      if @query.key?(:dimensions)
+        used_dimensions += @query[:dimensions].keys
+      end
 
-      used_dimensions = @query[:dimensions].keys + dot_key_dimensions
+      used_dimensions = used_dimensions.map{ |key| (key.include? ".") ? key.split(".")[0] : key }
+      used_dimensions = used_dimensions.select{ |key|  @available_dimensions.include? key }
+
       used_dimensions.uniq
     end
 
@@ -156,6 +159,18 @@ module Analytics
       results
     end
 
+    def include_dimensions(results)
+      dimensions = get_used_dimensions
+      if @query.key?(:dimensions)
+        dimensions = dimensions.select{ |dim|  !@query[:dimensions].keys.include? dim}
+      end
+
+      dimensions.each do |dimension|
+        results = results.where.not(dimension => { id: nil })
+      end
+      results
+    end
+
     def groups(results)
       keys = []
 
@@ -201,6 +216,7 @@ module Analytics
       @pluck_attributes = @model.column_names
       dimensions = get_used_dimensions
       results = @model.includes(dimensions)
+      results = include_dimensions(results)
       
       if @query.key?(:dimensions)
         results = dimensions(results)
