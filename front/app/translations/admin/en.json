@@ -1380,7 +1380,6 @@
   "app.containers.admin.ContentBuilder.twoColumnLayoutVariant2-1": "2 columns with 60% and 30% width respectively",
   "app.containers.admin.ContentBuilder.twoEvenColumnLayout": "2 even columns",
   "app.containers.admin.ContentBuilder.url": "Embed",
-  "app.containers.admin.flexible-pages.pageHeader": "Pages",
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": "Add status",
   "app.containers.admin.ideaStatuses.all.defaultStatusDeleteButtonTooltip": "The default status can not be deleted.",
   "app.containers.admin.ideaStatuses.all.deleteButtonLabel": "Delete",
