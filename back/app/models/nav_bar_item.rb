@@ -37,7 +37,7 @@ class NavBarItem < ApplicationRecord
 
   before_validation :set_code, on: :create
 
-  scope :standard, lambda {
+  scope :only_default, lambda {
     result = left_joins(:static_page)
     result.where(code: 'home').or(result.where(static_page: { code: %w[about faq] }))
   }

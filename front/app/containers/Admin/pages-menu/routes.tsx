@@ -3,7 +3,7 @@ import PageLoading from 'components/UI/PageLoading';
 import moduleConfiguration from 'modules';
 
 const CustomNavbarContainer = React.lazy(
-  () => import('containers/Admin/flexible-pages')
+  () => import('containers/Admin/pages-menu')
 );
 const CustomNavbarSettingsComponent = React.lazy(
   () => import('./NavigationSettings')

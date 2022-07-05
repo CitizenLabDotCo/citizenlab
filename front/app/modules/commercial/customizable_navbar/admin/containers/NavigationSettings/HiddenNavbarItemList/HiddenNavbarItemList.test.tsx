@@ -4,7 +4,7 @@ import HiddenNavbarItemList from '.';
 import allNavbarItems from 'hooks/fixtures/navbarItems';
 import { addNavbarItem } from '../../../../services/navbar';
 import { deletePage } from 'services/pages';
-import { NAVIGATION_PATH } from 'containers/Admin/flexible-pages';
+import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
 import clHistory from 'utils/cl-router/history';
 
 jest.mock('services/locale');

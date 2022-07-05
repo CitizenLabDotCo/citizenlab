@@ -20,15 +20,22 @@
 #
 class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
   belongs_to :custom_field
-  has_many :values, through: :custom_field, source: :custom_field_options
+  has_many :values, through: :custom_field, source: :options
 
   validates :custom_field_id, uniqueness: true
   validates :distribution, presence: true, length: { minimum: 2, message: 'must have at least 2 options.' }
   validate :validate_distribution_options
+  validate :validate_distribution_counts
 
   def probabilities_and_counts
     distribution.merge(probabilities) do |_option_id, count, probability|
       { count: count, probability: probability }
+    end
+  end
+
+  def distribution_by_option_id
+    @distribution_by_option_id ||= distribution.transform_keys do |option_id|
+      option_id_to_key.fetch(option_id)
     end
   end
 
@@ -44,7 +51,22 @@ class UserCustomFields::Representativeness::RefDistribution < ApplicationRecord
     errors.add(:distribution, 'options must be a subset of the options of the associated custom field.')
   end
 
+  def validate_distribution_counts
+    return if custom_field.blank? || distribution.blank?
+
+    counts = distribution.values
+    errors.add(:distribution, 'population counts cannot be nil.') if counts.any?(&:nil?)
+
+    counts.compact!
+    errors.add(:distribution, 'population counts must be strictly positive.') unless counts.all?(&:positive?)
+    errors.add(:distribution, 'population counts must be integers.') unless counts.all?(&:integer?)
+  end
+
   private
+
+  def option_id_to_key
+    @option_id_to_key ||= custom_field.options.to_h { |option| [option.id, option.key] }
+  end
 
   def total_population
     @total_population ||= distribution.values.sum

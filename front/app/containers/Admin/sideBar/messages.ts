@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.menu',
     defaultMessage: 'Pages & menu',
   },
+  pages: {
+    id: 'app.containers.AdminPage.SideBar.pages',
+    defaultMessage: 'Pages',
+  },
   guide: {
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',

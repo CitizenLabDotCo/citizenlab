@@ -41,10 +41,10 @@ export interface INavbarItem {
   };
 }
 
-export function navbarItemsStream({ standard = false } = {}) {
+export function navbarItemsStream({ onlyDefault } = { onlyDefault: false }) {
   return streams.get<{ data: INavbarItem[] }>({
     apiEndpoint,
-    queryParameters: { standard },
+    queryParameters: { only_default: onlyDefault },
   });
 }
 
