@@ -88,6 +88,9 @@ const ContentBuilderEditModePreview = React.forwardRef<
             width={isMobile ? '320px' : '1100px'}
             border="none"
             borderRadius="3px"
+            data-cy={
+              isMobile ? 'mobile-preview-iframe' : 'desktop-preview-iframe'
+            }
           />
         </Box>
       </Box>

@@ -91,9 +91,11 @@ describe('Content builder preview', () => {
     cy.get('#e2e-preview-toggle').find('input').click({ force: true });
 
     getIframeBody().contains('Sample text.').should('be.visible');
+    cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
 
     cy.get('#e2e-desktop-preview').click();
 
     getIframeBody().contains('Sample text.').should('be.visible');
+    cy.get('[data-cy="desktop-preview-iframe"]').should('exist');
   });
 });
