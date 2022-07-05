@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 // components
 import { Box, Icon } from '@citizenlab/cl2-component-library';
+import Button from 'components/UI/Button';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -223,6 +224,24 @@ const RenderNode = ({ render }) => {
             fill={colors.clIconSecondary}
             name="image"
           />
+        )}
+        {name === BUTTON && !props.url && (
+          <Box
+            display="flex"
+            justifyContent={
+              props.alignment === 'center'
+                ? 'center'
+                : props.alignment === 'left'
+                ? 'flex-start'
+                : 'flex-end'
+            }
+          >
+            <Button
+              width={props.alignment === 'fullWidth' ? '100%' : 'auto'}
+              buttonStyle={props.type}
+              text={props.text}
+            />
+          </Box>
         )}
         {render}
       </div>

@@ -218,8 +218,6 @@ const ContentBuilderToolbox = ({
                 type={'primary'}
                 alignment={'left'}
                 selectedLocale={selectedLocale}
-                hasUrlError={true}
-                hasError={true}
               />,
               {
                 onCreate: (node) => {

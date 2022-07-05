@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import { isEmpty } from 'lodash-es';
+import React from 'react';
 
 // craft
 import { useNode } from '@craftjs/core';
 
 // components
 import { Radio, Box, Title, Input } from '@citizenlab/cl2-component-library';
-import Error from 'components/UI/Error';
 import ButtonComponent from 'components/UI/Button';
 
 // styles
@@ -18,8 +16,6 @@ import { useTheme } from 'styled-components';
 // intl
 import messages from '../../../messages';
 import { injectIntl } from 'utils/cl-intl';
-import eventEmitter from 'utils/eventEmitter';
-import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
 
 // types
 import { Locale } from 'typings';
@@ -29,9 +25,6 @@ type ButtonProps = {
   url: string;
   type: 'primary' | 'secondary';
   alignment: string;
-  hasUrlError?: boolean;
-  hasTextError?: boolean;
-  hasError?: boolean;
   selectedLocale: Locale;
 };
 
@@ -47,14 +40,16 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           : 'flex-end'
       }
     >
-      <ButtonComponent
-        linkTo={url}
-        openLinkInNewTab={true}
-        id="e2e-button"
-        width={alignment === 'fullWidth' ? '100%' : 'auto'}
-        buttonStyle={type}
-        text={text}
-      />
+      {url && text && (
+        <ButtonComponent
+          linkTo={url}
+          openLinkInNewTab={true}
+          id="e2e-button"
+          width={alignment === 'fullWidth' ? '100%' : 'auto'}
+          buttonStyle={type}
+          text={text}
+        />
+      )}
     </Box>
   );
 };
@@ -66,11 +61,6 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     url,
     type,
     alignment,
-    selectedLocale,
-    id,
-    hasUrlError,
-    hasTextError,
-    hasError,
   } = useNode((node) => ({
     text: node.data.props.text,
     url: node.data.props.url,
@@ -78,37 +68,15 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
     alignment: node.data.props.alignment,
     selectedLocale: node.data.props.selectedLocale,
     id: node.id,
-    hasUrlError: node.data.props.hasUrlError,
-    hasTextError: node.data.props.hasTextError,
-    hasError: node.data.props.hasError,
   }));
-
-  useEffect(() => {
-    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-      [id]: { hasError, selectedLocale },
-    });
-  }, [hasError, id, selectedLocale]);
-
   const theme: any = useTheme();
 
   const handleTextChange = (value: string) => {
     setProp((props) => (props.text = value));
-    setProp((props) => (props.hasTextError = isEmpty(value)));
-    const errorState = isEmpty(value) || hasUrlError;
-    setProp((props) => (props.hasError = errorState));
-    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-      [id]: { hasError: errorState, selectedLocale },
-    });
   };
 
   const handleUrlChange = (value: string) => {
     setProp((props) => (props.url = value));
-    setProp((props) => (props.hasUrlError = isEmpty(value)));
-    const errorState = isEmpty(value) || hasTextError;
-    setProp((props) => (props.hasError = errorState));
-    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
-      [id]: { hasError: errorState, selectedLocale },
-    });
   };
 
   return (
@@ -128,12 +96,6 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
             handleTextChange(value);
           }}
         />
-        {hasTextError && (
-          <Error
-            marginTop="4px"
-            text={formatMessage(messages.buttonTextErrorMessage)}
-          />
-        )}
       </Box>
       <Box flex="0 0 100%">
         <Input
@@ -150,12 +112,6 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
             handleUrlChange(value);
           }}
         />
-        {hasUrlError && (
-          <Error
-            marginTop="4px"
-            text={formatMessage(messages.buttonUrlErrorMessage)}
-          />
-        )}
       </Box>
       <Title variant="h4" as="h3">
         {formatMessage(messages.buttonTypeRadioLabel)}
