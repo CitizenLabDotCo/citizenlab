@@ -6,8 +6,8 @@
 #  user_id                :uuid
 #  project_id             :uuid
 #  type_id                :uuid
-#  created_date_id        :uuid
-#  feedback_first_date_id :uuid
+#  created_date           :date
+#  feedback_first_date    :date
 #  feedback_time_taken    :interval
 #  feedback_official      :integer
 #  feedback_status_change :integer
@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_analytics_fact_posts_on_created_date_id  (created_date_id)
+#  index_analytics_fact_posts_on_created_date  (created_date)
 #  index_analytics_fact_posts_on_id               (id)
 #  index_analytics_fact_posts_on_project_id       (project_id)
 #
