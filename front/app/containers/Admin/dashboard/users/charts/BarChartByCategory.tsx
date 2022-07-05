@@ -30,7 +30,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IStreamParams, IStream } from 'utils/streams';
 
 import { IGraphFormat } from 'typings';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface DataProps {
   serie: IGraphFormat;

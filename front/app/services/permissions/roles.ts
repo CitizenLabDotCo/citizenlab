@@ -1,7 +1,7 @@
-import { IUser, IRole, IProjectModeratorRole } from 'services/users';
+import { IUser, TRole, IProjectModeratorRole } from 'services/users';
 import { isNilOrError } from 'utils/helperUtils';
 
-export const userHasRole = (user: IUser, role: IRole['type']) => {
+export const userHasRole = (user: IUser, role: TRole['type']) => {
   return !!(
     user.data.attributes?.roles &&
     user.data.attributes.roles?.find((r) => r.type === role)

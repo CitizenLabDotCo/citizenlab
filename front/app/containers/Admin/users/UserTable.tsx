@@ -10,7 +10,7 @@ import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData, IRole, updateUser } from 'services/users';
+import { IUserData, TRole, updateUser } from 'services/users';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';
@@ -91,7 +91,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
   };
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
-    let newRoles: IRole[] = [];
+    let newRoles: TRole[] = [];
     const { authUser, trackAdminToggle } = this.props;
 
     trackAdminToggle();

@@ -5,16 +5,21 @@ import { authApiEndpoint } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 
-export type IProjectModeratorRole = {
+export interface IProjectModeratorRole {
   type: 'project_moderator';
   project_id: string;
-};
+}
 
-type IAdminRole = {
+interface IAdminRole {
   type: 'admin';
-};
+}
 
-export type IRole = IAdminRole | IProjectModeratorRole;
+export interface IRoleRegisty {
+  IAdminRole: IAdminRole;
+  IProjectModeratorRole: IProjectModeratorRole;
+}
+
+export type TRole = IRoleRegisty[keyof IRoleRegisty];
 
 export interface IUserAttributes {
   first_name: string;
@@ -24,7 +29,7 @@ export interface IUserAttributes {
   slug: string;
   locale: Locale;
   avatar?: ImageSizes;
-  roles?: IRole[];
+  roles?: TRole[];
   highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user';
   bio_multiloc: Multiloc;
   registration_completed_at: string | null;
@@ -71,7 +76,7 @@ export interface IUserUpdate {
   password?: string;
   locale?: string;
   avatar?: string;
-  roles?: IRole[];
+  roles?: TRole[];
   birthyear?: number;
   gender?: string;
   domicile?: string;
