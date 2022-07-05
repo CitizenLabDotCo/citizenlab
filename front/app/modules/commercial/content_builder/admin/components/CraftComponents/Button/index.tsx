@@ -29,6 +29,16 @@ type ButtonProps = {
 };
 
 const Button = ({ text, url, type, alignment }: ButtonProps) => {
+  // Open in new tab only if provided link is external
+  const openInNewTab = (url: string) => {
+    const linkUrl = document.createElement('a');
+    linkUrl.href = url;
+    if (window.location.hostname === linkUrl.hostname) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <Box
       display="flex"
@@ -43,7 +53,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
       {url && text && (
         <ButtonComponent
           linkTo={url}
-          openLinkInNewTab={true}
+          openLinkInNewTab={openInNewTab(url)}
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
