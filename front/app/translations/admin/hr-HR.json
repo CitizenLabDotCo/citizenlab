@@ -751,7 +751,6 @@
   "app.containers.AdminPage.ProjectDescription.errorMessage": "Došlo je do pogreške. Pokušajte kasnije.",
   "app.containers.AdminPage.ProjectDescription.layoutBuilderWarning": "Upotreba alata za izradu sadržaja omogućuje vam korištenje naprednijih opcija rasporeda. Za jezike kod kojih nema dostupnog sadržaja u alatu za izradu sadržaja, prikazat će se uobičajen sadržaj opisa projekta.",
   "app.containers.AdminPage.ProjectDescription.linkText": "Uredite opis u alatu za izradu sadržaja",
-  "app.containers.AdminPage.ProjectDescription.mobilePreview": "Mobilni pregled",
   "app.containers.AdminPage.ProjectDescription.save": "Spremi",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Vaše promjene su spremljene.",
   "app.containers.AdminPage.ProjectDescription.saved": "Spremljeno!",

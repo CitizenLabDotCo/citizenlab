@@ -32,4 +32,6 @@ queue.subscribe do |_delivery_info, _properties, payload|
 
   tna_result = NLP::TextNetworkAnalysisResult.from_json(payload)
   NLP::TextNetworkAnalysisService.handle_result(tna_result)
+rescue StandardError => e
+  ErrorReporter.report e
 end

@@ -72,4 +72,24 @@ describe('Content builder navigation', () => {
       `${Cypress.config().baseUrl}/en/projects/${projectSlug}`
     );
   });
+
+  it('navigates to live project in a new tab when view project button ion content builder is clicked', () => {
+    cy.visit(`/admin/projects/${projectId}/description`);
+    cy.get('#e2e-toggle-enable-content-builder')
+      .find('input')
+      .click({ force: true });
+    cy.get('#e2e-content-builder-link').click();
+
+    cy.window().then((win) => {
+      cy.stub(win, 'open').as('open');
+    });
+
+    cy.get('#e2e-view-project-button').click();
+
+    cy.get('@open').should(
+      'have.been.calledOnceWithExactly',
+      `/projects/${projectSlug}`,
+      '_blank'
+    );
+  });
 });
