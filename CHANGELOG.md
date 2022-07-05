@@ -1,5 +1,40 @@
 # Changelog
 
+## Next release
+
+- [CL-1085] - Add link to support article when there are errors during embed in the content builder
+
+## 2022-07-05
+
+### Added
+
+- [CL-1058] Add desktop preview in content builder
+- [CL-1001] Added noindex meta tag to user profile pages to reduce the SEO effectiveness of external spam links
+
+### Fixed
+
+- [CL-1083] XLSX export issues with custom fields
+
+## 2022-07-04
+
+### Added
+
+- [CL-504] Dynamic idea form has limited support for extra fields
+- [CL-1034] Add support for more URLs in the embed component whitelist
+- [CL-851] Create interface to add representativeness reference data (feature flagged for now).
+
+### Fixed
+
+- [CL-1074] Fix missing options check in user graph
+- [CL-1076] Fix failed request check on bar chart
+
+## 2022-06-30
+
+### Fixed
+
+- [CL-1051] When a new project is published, its default publication status is now draft
+- [CL-993] Fixed bug on idea form where fields were reset to empty state after changing description
+
 ## 2022-06-29_2
 
 ### Added
