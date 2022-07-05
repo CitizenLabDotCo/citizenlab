@@ -30,6 +30,7 @@ export interface IHomepageSettings {
 }
 
 export interface IHomepageSettingsAttributes {
+  // are these values always there?
   top_info_section_enabled: boolean;
   top_info_section_multiloc: Multiloc;
   bottom_info_section_enabled: boolean;
@@ -43,8 +44,9 @@ export interface IHomepageSettingsAttributes {
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;
-  banner_signed_out_header_overlay_color;
-  banner_signed_out_header_overlay_opacity;
+  // Number between 0 and 100, inclusive
+  banner_signed_out_header_overlay_color: string;
+  banner_signed_out_header_overlay_opacity: number;
   header_bg: ImageSizes | null;
   pinned_admin_publication_ids: string[];
 }
