@@ -60,7 +60,7 @@ describe('Content builder mobile preview', () => {
     cy.get('#quill-editor').type('Edited text.', { force: true });
 
     cy.get('#e2e-content-builder-topbar-save').click();
-    cy.get('#e2e-mobile-preview-toggle').find('input').click({ force: true });
+    cy.get('#e2e-preview-toggle').find('input').click({ force: true });
 
     getIframeBody().contains('Edited text.').should('be.visible');
   });
@@ -72,7 +72,7 @@ describe('Content builder mobile preview', () => {
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Another edited text.', { force: true });
 
-    cy.get('#e2e-mobile-preview-toggle').find('input').click({ force: true });
+    cy.get('#e2e-preview-toggle').find('input').click({ force: true });
 
     getIframeBody()
       .contains('Edited text.Another edited text.')

@@ -8,6 +8,7 @@ import useIdeaCustomFields from 'modules/commercial/idea_custom_fields/hooks/use
 import {
   updateIdeaCustomField,
   IUpdatedIdeaCustomFieldProperties,
+  refetchCustomFields,
 } from 'modules/commercial/idea_custom_fields/services/ideaCustomFields';
 
 import IdeaCustomField from '../../../../../admin/containers/projects/edit/ideaform/IdeaCustomField';
@@ -183,18 +184,17 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(
               const ideaCustomFieldCode = ideaCustomFields.data.find(
                 (item) => item.id === ideaCustomFieldId
               )?.attributes?.code;
-              return ideaCustomFieldCode
-                ? updateIdeaCustomField(
-                    projectId,
-                    ideaCustomFieldId,
-                    ideaCustomFieldCode,
-                    changes[ideaCustomFieldId]
-                  )
-                : Promise.resolve();
+              return updateIdeaCustomField(
+                projectId,
+                ideaCustomFieldId,
+                ideaCustomFieldCode,
+                changes[ideaCustomFieldId]
+              );
             }
           );
 
           await Promise.all(promises);
+          refetchCustomFields(projectId);
           setChanges({});
           setProcessing(false);
           setSuccess(true);
