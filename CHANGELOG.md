@@ -2,7 +2,13 @@
 
 ## Next release
 
+### Added
+
 - [CL-1058] - Add desktop preview in content builder
+
+### Changed
+
+- [CL-870] Move "navigation" to primary nav item
 
 ## 2022-07-04
 
@@ -38,7 +44,6 @@
 
 ### Changed
 
-- [CL-870] Move "navigation" to primary nav item
 - [CL-1024] Shows respective CTA buttons in the About component of the content builder
 
 ## 2022-06-22
