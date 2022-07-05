@@ -5,6 +5,7 @@
 ### Added
 
 - [CL-1058] Add desktop preview in content builder
+- [CL-1001] Added noindex meta tag to user profile pages to reduce the SEO effectiveness of external spam links
 
 ### Fixed
 

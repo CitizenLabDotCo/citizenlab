@@ -353,6 +353,7 @@ PATH
   specs:
     multi_tenancy (0.1.0)
       actionpack-cloudfront (~> 1.2.0)
+      nlp
       rails (~> 6.1)
       ros-apartment (>= 2.9.0)
 
@@ -1271,4 +1272,4 @@ DEPENDENCIES
   webmock (~> 3.14)
 
 BUNDLED WITH
-   2.3.16
+   2.3.8
