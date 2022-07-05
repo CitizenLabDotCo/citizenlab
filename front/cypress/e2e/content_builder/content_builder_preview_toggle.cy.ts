@@ -81,7 +81,6 @@ describe('Content builder preview', () => {
 
   it('allows user to navigate between mobile and desktop preview and see content in both', () => {
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
-    cy.wait(40000);
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
