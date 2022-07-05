@@ -1383,7 +1383,6 @@
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "مثال: 120 بكسل",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "يجب إدخال عنوان URL صالح.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
-  "app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage": "لا يمكنك تضمين محتوى من موقع الويب هذا لأسباب متعلقة بالأمان، جرِّب شيئًا آخر.",
   "app.containers.admin.ContentBuilder.image": "صورة",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "وصف موجز للصورة",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "من المهم إضافة \"نص بديل\" للصور لتيسير وصول المستخدمين إلى منصتك باستخدام قارئات شاشة.",
