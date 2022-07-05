@@ -248,7 +248,11 @@ module Analytics
           results = order(results)
         end
 
+        limit = @query.key?(:limit) ? @query[:limit] : 10
+        results = results.limit(limit)
+
         results = pluck(results)
+
       
       rescue ActiveRecord::StatementInvalid => e
         @validation["messages"].push(e.message)
