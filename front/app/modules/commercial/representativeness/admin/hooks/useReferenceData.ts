@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import {
   usersByRegFieldStream,
   usersByGenderStream,
-  usersByDomicileStream,
+  // usersByDomicileStream,
   TStreamResponse,
 } from 'modules/commercial/user_custom_fields/services/stats';
 
 // utils
+import { zipObject } from 'lodash-es';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
+import { sum, roundPercentage, roundPercentages } from 'utils/math';
 
 // typings
 import {
@@ -24,6 +26,7 @@ interface RepresentativenessRowBase {
   actualNumber: number;
   referenceNumber: number;
 }
+
 export interface RepresentativenessRow extends RepresentativenessRowBase {
   name: string;
 }
@@ -35,22 +38,18 @@ export interface RepresentativenessRowMultiloc
 
 export type RepresentativenessData = RepresentativenessRow[];
 
+export interface IncludedUsers {
+  known: number;
+  total: number;
+  percentage: number;
+}
+
 const getSubscription = (
   code: TCustomFieldCode | null,
-  fieldId: string,
+  userCustomFieldId: string,
   projectId: string | undefined,
   handleStreamResponse: (usersByField: TStreamResponse) => void
 ) => {
-  if (code === null) {
-    const observable = usersByRegFieldStream(
-      { queryParameters: { project: projectId } },
-      fieldId
-    ).observable;
-
-    const subscription = observable.subscribe(handleStreamResponse);
-    return subscription;
-  }
-
   if (code === 'gender') {
     const observable = usersByGenderStream({
       queryParameters: { project: projectId },
@@ -60,55 +59,64 @@ const getSubscription = (
     return subscription;
   }
 
-  if (code === 'domicile') {
-    const observable = usersByDomicileStream({
-      queryParameters: { project: projectId },
-    }).observable;
+  // if (code === 'domicile') {
+  //   const observable = usersByDomicileStream({
+  //     queryParameters: { project: projectId },
+  //   }).observable;
 
-    const subscription = observable.subscribe(handleStreamResponse);
-    return subscription;
-  }
+  //   const subscription = observable.subscribe(handleStreamResponse);
+  //   return subscription;
+  // }
 
-  return;
+  const observable = usersByRegFieldStream(
+    { queryParameters: { project: projectId } },
+    userCustomFieldId
+  ).observable;
+
+  const subscription = observable.subscribe(handleStreamResponse);
+  return subscription;
 };
 
-function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
+function useReferenceData(
+  userCustomField: IUserCustomFieldData,
+  projectId?: string
+) {
   const [referenceData, setReferenceData] = useState<
     RepresentativenessRowMultiloc[] | NilOrError
   >();
-  const [includedUserPercentage, setIncludedUserPercentage] = useState<
-    number | NilOrError
+  const [includedUsers, setIncludedUsers] = useState<
+    IncludedUsers | NilOrError
   >();
   const [referenceDataUploaded, setReferenceDataUploaded] = useState<
     boolean | undefined
   >();
 
-  const code = field.attributes.code;
-  const fieldId = field.id;
+  const code = userCustomField.attributes.code;
+  const userCustomFieldId = userCustomField.id;
 
   useEffect(() => {
     const handleStreamResponse = (usersByField: TStreamResponse) => {
       if (isNilOrError(usersByField)) {
         setReferenceData(usersByField);
-        setIncludedUserPercentage(usersByField);
+        setIncludedUsers(usersByField);
         return;
       }
 
-      if (!usersByField.series.expected_users) {
+      if (!usersByField.series.reference_population) {
         setReferenceDataUploaded(false);
         return;
       }
 
       const referenceData = toReferenceData(usersByField);
-      const includedUsersPercentage = getIncludedUserPercentage(usersByField);
+      const includedUsers = getIncludedUsers(usersByField);
       setReferenceData(referenceData);
-      setIncludedUserPercentage(includedUsersPercentage);
+      setIncludedUsers(includedUsers);
       setReferenceDataUploaded(true);
     };
 
     const subscription = getSubscription(
       code,
-      fieldId,
+      userCustomFieldId,
       projectId,
       handleStreamResponse
     );
@@ -118,47 +126,83 @@ function useReferenceData(field: IUserCustomFieldData, projectId?: string) {
     }
 
     return;
-  }, [code, fieldId, projectId]);
+  }, [code, userCustomFieldId, projectId]);
 
   return {
     referenceData,
-    includedUserPercentage,
+    includedUsers,
     referenceDataUploaded,
   };
 }
 
 export default useReferenceData;
 
-const sum = (values: number[]) => values.reduce((acc, v) => v + acc, 0);
-const percentage = (num: number, denom: number) =>
-  Math.round((num / denom) * 100);
-
-const toReferenceData = (
+export const toReferenceData = (
   usersByField: TStreamResponse
 ): RepresentativenessRowMultiloc[] => {
-  const { users, expected_users } = usersByField.series;
-  const options =
-    'options' in usersByField ? usersByField.options : usersByField.areas;
-  const totalActualUsers = sum(Object.values(users));
-  const totalReferenceUsers = sum(Object.values(expected_users));
-  const data = Object.keys(users)
-    .filter((opt) => opt !== '_blank')
-    .map((opt) => ({
-      title_multiloc: options[opt].title_multiloc,
-      actualPercentage: percentage(users[opt], totalReferenceUsers),
-      referencePercentage: percentage(expected_users[opt], totalActualUsers),
-      actualNumber: users[opt],
-      referenceNumber: expected_users[opt],
-    }));
+  const { users, reference_population } = usersByField.series;
+
+  const optionIds = Object.keys(reference_population);
+  const includedUsers = syncKeys(users, optionIds);
+
+  // const options =
+  //   'options' in usersByField ? usersByField.options : usersByField.areas;
+  const options = usersByField.options;
+
+  const actualPercentages = roundPercentages(Object.values(includedUsers), 1);
+  const referencePercentages = roundPercentages(
+    Object.values(reference_population),
+    1
+  );
+
+  const actualPercentagesObj = zipObject(optionIds, actualPercentages);
+  const referencePercentagesObj = zipObject(optionIds, referencePercentages);
+
+  const sortedOptionIds = [...optionIds].sort(
+    (a, b) => options[a].ordering - options[b].ordering
+  );
+
+  const data = sortedOptionIds.map((optionId) => ({
+    title_multiloc: options[optionId].title_multiloc,
+    actualPercentage: actualPercentagesObj[optionId],
+    referencePercentage: referencePercentagesObj[optionId],
+    actualNumber: includedUsers[optionId],
+    referenceNumber: reference_population[optionId],
+  }));
 
   return data;
 };
 
-const getIncludedUserPercentage = (usersByField: TStreamResponse): number => {
-  const { users } = usersByField.series;
-  const known = Object.keys(users)
-    .filter((opt) => opt !== '_blank')
+// Makes sure that users has the same keys as reference_population
+const syncKeys = (users: Record<string, number>, keys: string[]) => {
+  const fixedUsers = {};
+
+  keys.forEach((key) => {
+    fixedUsers[key] = users[key] ?? 0;
+  });
+
+  return fixedUsers;
+};
+
+export const getIncludedUsers = (
+  usersByField: TStreamResponse
+): IncludedUsers => {
+  const { users, reference_population } = usersByField.series;
+  const includedUsers = syncKeys(users, [
+    ...Object.keys(reference_population),
+    '_blank',
+  ]);
+
+  const known = Object.keys(includedUsers)
+    .filter((optionId) => optionId !== '_blank')
     .reduce((acc, v) => users[v] + acc, 0);
-  const total = sum(Object.values(users));
-  return percentage(known, total);
+
+  const total = sum(Object.values(includedUsers));
+  const percentage = total === 0 ? 0 : roundPercentage(known, total);
+
+  return {
+    known,
+    total,
+    percentage,
+  };
 };

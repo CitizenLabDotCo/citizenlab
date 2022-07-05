@@ -23,6 +23,9 @@ import { Tooltip, LabelList } from 'recharts';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 // types
 import { IStreamParams, IStream } from 'utils/streams';
 

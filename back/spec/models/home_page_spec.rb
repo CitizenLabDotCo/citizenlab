@@ -12,18 +12,18 @@ RSpec.describe HomePage, type: :model do
       expect(second_home_page.errors[:base]).not_to be_empty
     end
 
-    context 'when cta_signed_out_type is set to \'customized_button\'' do
-      subject { described_class.new(cta_signed_out_type: 'customized_button') }
+    context 'when banner_cta_signed_out_type is set to \'customized_button\'' do
+      subject { described_class.new(banner_cta_signed_out_type: 'customized_button') }
 
-      it { is_expected.to validate_presence_of(:cta_signed_out_url) }
-      it { is_expected.to validate_presence_of(:cta_signed_out_text_multiloc) }
+      it { is_expected.to validate_presence_of(:banner_cta_signed_out_url) }
+      it { is_expected.to validate_presence_of(:banner_cta_signed_out_text_multiloc) }
     end
 
-    context 'when cta_signed_in_type is set to \'customized_button\'' do
-      subject { described_class.new(cta_signed_in_type: 'customized_button') }
+    context 'when banner_cta_signed_in_type is set to \'customized_button\'' do
+      subject { described_class.new(banner_cta_signed_in_type: 'customized_button') }
 
-      it { is_expected.to validate_presence_of(:cta_signed_in_url) }
-      it { is_expected.to validate_presence_of(:cta_signed_in_text_multiloc) }
+      it { is_expected.to validate_presence_of(:banner_cta_signed_in_url) }
+      it { is_expected.to validate_presence_of(:banner_cta_signed_in_text_multiloc) }
     end
 
     context 'when top_info_section is enabled' do
@@ -39,12 +39,10 @@ RSpec.describe HomePage, type: :model do
     end
   end
 
-  # We need to understand why this fails and fix it
-  # Currently skipped with `xit`
   describe 'image uploads' do
     subject(:home_page) { build(:home_page) }
 
-    xit 'stores a header background image' do
+    it 'stores a header background image' do
       home_page.header_bg = File.open(Rails.root.join('spec/fixtures/header.jpg'))
       home_page.save!
       expect(home_page.header_bg.url).to be_present
