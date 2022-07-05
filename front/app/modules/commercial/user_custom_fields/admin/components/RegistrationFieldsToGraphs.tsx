@@ -40,6 +40,12 @@ interface DataProps {
   customFields: GetUserCustomFieldsChildProps;
 }
 
+type GraphOption = {
+  value: number;
+  name: string;
+  code: string;
+};
+
 export interface Props extends InputProps, DataProps {}
 
 export class RegistrationFieldsToGraphs extends PureComponent<
@@ -50,13 +56,16 @@ export class RegistrationFieldsToGraphs extends PureComponent<
       series: { users },
       options,
     } = data;
-    const res = Object.entries(options)
-      .sort((a, b) => a[1].ordering - b[1].ordering)
-      .map(([key, value]) => ({
-        value: users[key] || 0,
-        name: this.props.localize(value.title_multiloc),
-        code: key,
-      }));
+    let res: GraphOption[] = [];
+    if (options) {
+      res = Object.entries(options)
+        .sort((a, b) => a[1].ordering - b[1].ordering)
+        .map(([key, value]) => ({
+          value: users[key] || 0,
+          name: this.props.localize(value.title_multiloc),
+          code: key,
+        }));
+    }
 
     if (users['_blank']) {
       res.push({
