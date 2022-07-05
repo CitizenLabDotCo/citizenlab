@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  heroBannerPageTitle: {
-    id: 'app.containers.Admin.pagesAndMenu.heroBannerPageTitle',
-    defaultMessage: 'Hero banner',
-  },
   bottomInfoPageTitle: {
     id: 'app.containers.Admin.pagesAndMenu.bottomInfoPageTitle',
     defaultMessage: 'Bottom Info Section',

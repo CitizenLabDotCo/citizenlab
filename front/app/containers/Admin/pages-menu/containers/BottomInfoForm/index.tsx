@@ -19,43 +19,42 @@ import { Multiloc, CLError } from 'typings';
 import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../constants';
 
 // resources
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { updateAppConfiguration } from 'services/appConfiguration';
+import { updateHomepageSettings } from 'services/homepageSettings';
 
 const HomepageCustomizableSection = ({
   intl: { formatMessage },
 }: InjectedIntlProps) => {
-  const appConfig = useAppConfiguration();
+  const homepageSettings = useHomepageSettings();
   const theme: any = useTheme();
 
-  const [homePageInfoMultilocState, setHomePageInfoMultilocState] = useState<
-    Multiloc | null | undefined
-  >(null);
+  const [bottomInfoSectionMultilocState, setBottomInfoSectionMultilocState] =
+    useState<Multiloc | null | undefined>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
 
   useEffect(() => {
-    if (!isNilOrError(appConfig)) {
-      setHomePageInfoMultilocState(
-        appConfig.data.attributes.homepage_info_multiloc
+    if (!isNilOrError(homepageSettings)) {
+      setBottomInfoSectionMultilocState(
+        homepageSettings.attributes.bottom_info_section_multiloc
       );
     }
-  }, [appConfig]);
+  }, [homepageSettings]);
 
   const handleCustomSectionMultilocOnChange = (
     homepageInfoPageMultiloc: Multiloc
   ) => {
-    setHomePageInfoMultilocState(homepageInfoPageMultiloc);
+    setBottomInfoSectionMultilocState(homepageInfoPageMultiloc);
   };
 
   const onSave = async () => {
     setIsLoading(true);
     try {
-      if (homePageInfoMultilocState) {
-        await updateAppConfiguration({
-          homepage_info_multiloc: homePageInfoMultilocState,
+      if (bottomInfoSectionMultilocState) {
+        await updateHomepageSettings({
+          bottom_info_section_multiloc: bottomInfoSectionMultilocState,
         });
       }
       setIsLoading(false);
@@ -95,7 +94,7 @@ const HomepageCustomizableSection = ({
             id="custom-section"
             label={formatMessage(messages.bottomInfoContentEditorTitle)}
             labelTooltipText={formatMessage(messages.bottomInfoDescription)}
-            valueMultiloc={homePageInfoMultilocState}
+            valueMultiloc={bottomInfoSectionMultilocState}
             onChange={handleCustomSectionMultilocOnChange}
             withCTAButton
           />

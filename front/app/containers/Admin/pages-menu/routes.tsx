@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import PageLoading from 'components/UI/PageLoading';
 
+const TopInfoForm = lazy(() => import('./containers/BottomInfoForm'));
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoForm'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBannerForm'));
 
@@ -10,6 +11,14 @@ export default () => [
     element: (
       <PageLoading>
         <div>pages-and-menu home</div>
+      </PageLoading>
+    ),
+  },
+  {
+    path: 'pages-and-menu/top-info-section',
+    element: (
+      <PageLoading>
+        <TopInfoForm />
       </PageLoading>
     ),
   },
