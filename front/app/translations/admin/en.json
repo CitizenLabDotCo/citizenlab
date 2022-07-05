@@ -1385,6 +1385,7 @@
   "app.containers.admin.ContentBuilder.iframeEmbedVisitLinkMessage": "Visit our support page",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "e.g. 120px",
   "app.containers.admin.ContentBuilder.iframeInvalidWhitelistUrlErrorMessage": "Sorry, this content could not be embedded. {visitLinkMessage} to learn more.",
+  "app.containers.admin.ContentBuilder.iframeSupportLink": "https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Must provide a valid URL.",
   "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.image": "Image",
