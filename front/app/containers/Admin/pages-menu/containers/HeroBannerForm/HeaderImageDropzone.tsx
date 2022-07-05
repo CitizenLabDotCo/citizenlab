@@ -5,7 +5,7 @@ import {
   THomepageBannerLayout,
 } from 'services/appConfiguration';
 import { UploadFile } from 'typings';
-import { PreviewDevice } from './';
+import { PreviewDevice } from './index';
 import styled, { useTheme } from 'styled-components';
 
 const HeaderImageOverlay = styled.div<{

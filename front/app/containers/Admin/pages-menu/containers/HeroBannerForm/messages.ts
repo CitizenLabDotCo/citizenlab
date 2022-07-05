@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
 
+// moved from admin/settings/customize
+
 export default defineMessages({
   header: {
     id: 'app.containers.AdminPage.SettingsPage.header',

@@ -11,6 +11,7 @@ import settingsRoutes from './settings/routes';
 import pagesRoutes from './pages/routes';
 import createAdminMessagingRoutes from './messaging/routes';
 import ideasRoutes from './ideas/routes';
+import pagesAndMenuRoutes from './pages-menu/routes';
 
 // components
 import PageLoading from 'components/UI/PageLoading';
@@ -18,9 +19,6 @@ import { Navigate, useLocation } from 'react-router-dom';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminWorkshops = lazy(() => import('containers/Admin/workshops'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
-const BottomInfoForm = lazy(
-  () => import('containers/Admin/pagesAndMenu/BottomInfoForm')
-);
 
 // hooks
 import { usePermission } from 'services/permissions';
@@ -117,6 +115,7 @@ const createAdminRoutes = () => {
       createAdminProjectsRoutes(),
       settingsRoutes(),
       pagesRoutes(),
+      pagesAndMenuRoutes(),
       invitationsRoutes(),
       createAdminMessagingRoutes(),
       ideasRoutes(),
@@ -140,14 +139,6 @@ const createAdminRoutes = () => {
         ),
       },
       ...moduleConfiguration.routes.admin,
-      {
-        path: 'pages-and-menu/bottom-info-section',
-        element: (
-          <PageLoading>
-            <BottomInfoForm />
-          </PageLoading>
-        ),
-      },
     ],
   };
 };

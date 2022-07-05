@@ -4,7 +4,7 @@ import { useTheme } from 'styled-components';
 // components
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Error from 'components/UI/Error';
-import SectionFormWrapper from './SectionFormWrapper';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 // i18n
@@ -14,6 +14,9 @@ import messages from './messages';
 
 // typings
 import { Multiloc, CLError } from 'typings';
+
+// constants
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../constants';
 
 // resources
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -69,8 +72,14 @@ const HomepageCustomizableSection = ({
   return (
     <SectionFormWrapper
       breadcrumbs={[
-        { label: formatMessage(messages.title), linkTo: 'admin' },
-        { label: formatMessage(messages.homeTitle), linkTo: 'pages-and-menu' },
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: formatMessage(homeBreadcrumb.label),
+          linkTo: homeBreadcrumb.linkTo,
+        },
         { label: formatMessage(messages.bottomInfoPageTitle) },
       ]}
       title="Bottom Info Section"
