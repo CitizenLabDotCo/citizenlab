@@ -56,7 +56,7 @@ describe('Content builder Button component', () => {
     cy.get('#style-primary').click({ force: true });
     cy.get('#e2e-button').get('button').should('have.class', 'primary');
     cy.get('#style-secondary').click({ force: true });
-    cy.get('#e2e-button').get('button').should('have.class', 'secondary');
+    cy.get('#e2e-button').get('a').should('have.class', 'secondary');
 
     // Change alignment
     cy.get('#e2e-button')
@@ -80,10 +80,6 @@ describe('Content builder Button component', () => {
     cy.wait('@saveContentBuilder');
     cy.visit(`/projects/${projectSlug}`);
     cy.contains('New Button Title').should('exist');
-    cy.contains('New Button Title').click({ force: true });
-    cy.location().should((loc) => {
-      expect(loc.href).to.eq('https://www.google.com/');
-    });
   });
 
   it('deletes Button component correctly', () => {
