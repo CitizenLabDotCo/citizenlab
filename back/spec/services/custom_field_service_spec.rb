@@ -7,6 +7,16 @@ describe CustomFieldService do
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:locale) { 'en' }
 
+  describe 'cleanup_custom_field_values!' do
+    let(:field_values) { { 'key1' => nil, 'key2' => '', 'key3' => 'Not blank', 'key4' => true, 'key5' => false } }
+
+    it 'destructively deletes keys with blank values from the argument and returns the argument' do
+      cleaned_values = service.cleanup_custom_field_values! field_values
+      expect(field_values).to eq({ 'key3' => 'Not blank', 'key4' => true, 'key5' => false })
+      expect(cleaned_values).to be field_values
+    end
+  end
+
   describe 'fields_to_json_schema_multiloc' do
     let(:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
     let(:description_multiloc) { { 'en' => 'How big is it?', 'nl-NL' => 'Hoe groot is het?' } }
@@ -150,7 +160,7 @@ describe CustomFieldService do
 
     it 'it creates a valid schema for the built in idea custom fields' do
       custom_form = create(:custom_form)
-      fields = IdeaCustomFieldsService.new.all_fields(custom_form)
+      fields = IdeaCustomFieldsService.new(custom_form).all_fields
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
