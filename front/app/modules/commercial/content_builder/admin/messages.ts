@@ -102,10 +102,19 @@ export default defineMessages({
     defaultMessage:
       'Display content from an external website on your page in an HTML iFrame.',
   },
-  iframeWhitelistUrlErrorMessage: {
-    id: 'app.containers.admin.ContentBuilder.iframeWhitelistUrlErrorMessage',
+  iframeInvalidWhitelistUrlErrorMessage: {
+    id: 'app.containers.admin.ContentBuilder.iframeInvalidWhitelistUrlErrorMessage',
     defaultMessage:
-      'You cannot embed content from this website for security reasons, try something else.',
+      'Sorry, this content could not be embedded. {visitLinkMessage} to learn more.',
+  },
+  iframeEmbedVisitLinkMessage: {
+    id: 'app.containers.admin.ContentBuilder.iframeEmbedVisitLinkMessage',
+    defaultMessage: 'Visit our support page',
+  },
+  iframeSupportLink: {
+    id: 'app.containers.admin.ContentBuilder.iframeSupportLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
   },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',
