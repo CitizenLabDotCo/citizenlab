@@ -44,9 +44,6 @@ const Iframe = ({ url, height, hasError, title }: Props) => {
   );
 };
 
-const supportArticleUrl =
-  'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions';
-
 const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
   const {
     actions: { setProp },
@@ -82,7 +79,11 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
       {...messages.iframeInvalidWhitelistUrlErrorMessage}
       values={{
         visitLinkMessage: (
-          <a href={supportArticleUrl} target="_blank" rel="noreferrer">
+          <a
+            href={formatMessage(messages.iframeSupportLink)}
+            target="_blank"
+            rel="noreferrer"
+          >
             {formatMessage(messages.iframeEmbedVisitLinkMessage)}
           </a>
         ),

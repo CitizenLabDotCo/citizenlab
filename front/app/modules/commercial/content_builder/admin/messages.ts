@@ -111,6 +111,11 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.iframeEmbedVisitLinkMessage',
     defaultMessage: 'Visit our support page',
   },
+  iframeSupportLink: {
+    id: 'app.containers.admin.ContentBuilder.iframeSupportLink',
+    defaultMessage:
+      'https://support.citizenlab.co/en/articles/6354058-embedding-elements-in-the-content-builder-to-enrich-project-descriptions',
+  },
   aboutBox: {
     id: 'app.containers.admin.ContentBuilder.aboutBox',
     defaultMessage: 'About Box',
