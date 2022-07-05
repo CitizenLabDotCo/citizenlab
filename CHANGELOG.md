@@ -2,8 +2,18 @@
 
 ## Next release
 
-- [CL-1058] - Add desktop preview in content builder
 - [CL-1085] - Add link to support article when there are errors during embed in the content builder
+
+## 2022-07-05
+
+### Added
+
+- [CL-1058] Add desktop preview in content builder
+- [CL-1001] Added noindex meta tag to user profile pages to reduce the SEO effectiveness of external spam links
+
+### Fixed
+
+- [CL-1083] XLSX export issues with custom fields
 
 ## 2022-07-04
 
