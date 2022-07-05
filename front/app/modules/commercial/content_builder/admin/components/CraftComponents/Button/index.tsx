@@ -81,14 +81,6 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
   }));
   const theme: any = useTheme();
 
-  const handleTextChange = (value: string) => {
-    setProp((props) => (props.text = value));
-  };
-
-  const handleUrlChange = (value: string) => {
-    setProp((props) => (props.url = value));
-  };
-
   return (
     <Box background="#ffffff" marginBottom="20px">
       <Box flex="0 0 100%">
@@ -103,7 +95,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={text}
           onChange={(value) => {
-            handleTextChange(value);
+            setProp((props) => (props.text = value));
           }}
         />
       </Box>
@@ -119,7 +111,7 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
           type="text"
           value={url}
           onChange={(value) => {
-            handleUrlChange(value);
+            setProp((props) => (props.url = value));
           }}
         />
       </Box>
