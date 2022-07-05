@@ -11,7 +11,7 @@ export default () => ({
   element: (
     <PageLoading>
       <div>
-        pages-and-menu home
+        {/* pages-and-menu home */}
         <RouterOutlet />
       </div>
     </PageLoading>

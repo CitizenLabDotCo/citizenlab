@@ -24,9 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
 import { updateHomepageSettings } from 'services/homepageSettings';
 
-const HomepageCustomizableSection = ({
-  intl: { formatMessage },
-}: InjectedIntlProps) => {
+const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
   const theme: any = useTheme();
 
@@ -105,4 +103,4 @@ const HomepageCustomizableSection = ({
   );
 };
 
-export default injectIntl(HomepageCustomizableSection);
+export default injectIntl(BottomInfoForm);
