@@ -21,12 +21,12 @@ const configuration: ModuleConfiguration = {
     ),
     'app.containers.LandingPage.SignedOutHeader.CTA': (props) => (
       <FeatureFlag name="customizable_homepage_banner">
-        <CTA {...props} />
+        <CTA signedIn={false} {...props} />
       </FeatureFlag>
     ),
     'app.containers.LandingPage.SignedInHeader.CTA': (props) => (
       <FeatureFlag name="customizable_homepage_banner">
-        <CTA {...props} />
+        <CTA signedIn {...props} />
       </FeatureFlag>
     ),
     'app.containers.LandingPage.SignedOutHeader.index': ({

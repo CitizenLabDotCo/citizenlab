@@ -5,39 +5,50 @@ import BannerButton, {
 } from 'containers/LandingPage/BannerButton';
 import useLocalize from 'hooks/useLocalize';
 import { CustomizedButtonConfig } from 'services/appConfiguration';
-import { CTASignedInType, CTASignedOutType } from 'services/homepageSettings';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { isNilOrError } from 'utils/helperUtils';
+
 interface Props {
-  ctaType: CTASignedOutType | CTASignedInType;
   customizedButtonConfig?: CustomizedButtonConfig;
   buttonStyle: BannerButtonStyle;
   signUpIn?: (event: MouseEvent | KeyboardEvent) => void;
+  signedIn: boolean;
 }
 
 const CTA = ({
-  ctaType,
   customizedButtonConfig,
   buttonStyle,
   signUpIn,
+  signedIn,
 }: Props) => {
   const localize = useLocalize();
+  const homepageSettings = useHomepageSettings();
 
-  switch (ctaType) {
-    case 'sign_up_button':
-      return signUpIn ? (
-        <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
-      ) : null;
-    case 'customized_button':
-      return customizedButtonConfig ? (
-        <BannerButton
-          buttonStyle={buttonStyle}
-          text={localize(customizedButtonConfig.text)}
-          linkTo={customizedButtonConfig.url}
-          openLinkInNewTab={true}
-        />
-      ) : null;
-    case 'no_button':
-      return null;
+  if (!isNilOrError(homepageSettings)) {
+    const ctaType = signedIn
+      ? homepageSettings.attributes.cta_signed_in_type
+      : homepageSettings.attributes.cta_signed_out_type;
+
+    switch (ctaType) {
+      case 'sign_up_button':
+        return signUpIn ? (
+          <SignUpButton buttonStyle={buttonStyle} signUpIn={signUpIn} />
+        ) : null;
+      case 'customized_button':
+        return customizedButtonConfig ? (
+          <BannerButton
+            buttonStyle={buttonStyle}
+            text={localize(customizedButtonConfig.text)}
+            linkTo={customizedButtonConfig.url}
+            openLinkInNewTab={true}
+          />
+        ) : null;
+      case 'no_button':
+        return null;
+    }
   }
+
+  return null;
 };
 
 export default CTA;
