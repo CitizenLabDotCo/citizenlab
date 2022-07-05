@@ -1,7 +1,7 @@
 import React from 'react';
 
 // craft
-import { useNode } from '@craftjs/core';
+import { useNode, useEditor } from '@craftjs/core';
 
 // components
 import { Radio, Box, Title, Input } from '@citizenlab/cl2-component-library';
@@ -9,6 +9,7 @@ import ButtonComponent from 'components/UI/Button';
 
 // styles
 import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // hooks
 import { useTheme } from 'styled-components';
@@ -25,19 +26,15 @@ type ButtonProps = {
 };
 
 const Button = ({ text, url, type, alignment }: ButtonProps) => {
-  // Open in new tab only if provided link is external
-  const openInNewTab = (url: string) => {
-    const linkUrl = document.createElement('a');
-    linkUrl.href = url;
-    if (window.location.hostname === linkUrl.hostname) {
-      return false;
-    }
-    return true;
-  };
-
+  const { enabled } = useEditor((state) => {
+    return {
+      enabled: state.options.enabled,
+    };
+  });
   return (
     <Box
       display="flex"
+      minHeight="26px"
       justifyContent={
         alignment === 'center'
           ? 'center'
@@ -46,10 +43,12 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
           : 'flex-end'
       }
     >
-      {url && text && (
+      {/* In edit view, show the button regardless if URL is set. The button should
+          not be shown though in the live view if the URL is not set. */}
+      {((enabled && text) || (text && url)) && (
         <ButtonComponent
           linkTo={url}
-          openLinkInNewTab={openInNewTab(url)}
+          openLinkInNewTab={!url.includes(window.location.hostname)}
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
@@ -123,9 +122,8 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         value={'primary'}
         label={
           <Box
-            id="e2e-button"
             bgColor={theme.colorMain}
-            color={colors.adminLightText}
+            color="white"
             borderRadius="4px"
             px="8px"
             py="2px"
@@ -145,12 +143,11 @@ const ButtonSettings = injectIntl(({ intl: { formatMessage } }) => {
         value="secondary"
         label={
           <Box
-            id="e2e-button"
             borderRadius="4px"
             px="8px"
             py="2px"
-            bgColor={colors.backgroundLightGrey}
-            color={colors.text}
+            bgColor={colors.lightGreyishBlue}
+            color={darken(0.1, colors.label)}
           >
             {formatMessage(messages.buttonTypeSecondaryLabel)}
           </Box>

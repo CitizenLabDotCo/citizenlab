@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 // components
-import { Box, Icon } from '@citizenlab/cl2-component-library';
-import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -91,7 +90,6 @@ const RenderNode = ({ render }) => {
     name,
     isHover,
     hasError,
-    props,
     connectors: { connect, drag },
   } = useNode((node) => ({
     props: node.data.props,
@@ -211,38 +209,9 @@ const RenderNode = ({ render }) => {
             name === IFRAME || name === ABOUT_BOX || name === BUTTON
               ? 'none'
               : 'auto',
-          display: name === IMAGE ? 'flex' : 'auto',
           width: '100%',
         }}
       >
-        {name === IMAGE && !props.imageUrl && (
-          <Icon
-            margin="auto"
-            padding="24px"
-            width="100px"
-            height="100px"
-            fill={colors.clIconSecondary}
-            name="image"
-          />
-        )}
-        {name === BUTTON && !props.url && (
-          <Box
-            display="flex"
-            justifyContent={
-              props.alignment === 'center'
-                ? 'center'
-                : props.alignment === 'left'
-                ? 'flex-start'
-                : 'flex-end'
-            }
-          >
-            <Button
-              width={props.alignment === 'fullWidth' ? '100%' : 'auto'}
-              buttonStyle={props.type}
-              text={props.text}
-            />
-          </Box>
-        )}
         {render}
       </div>
     </StyledBox>
