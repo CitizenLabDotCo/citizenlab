@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { Multiloc } from 'typings';
-// home_pages or homepages?
+import { ImageSizes, Multiloc } from 'typings';
 const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
 // type definitions
@@ -46,7 +45,7 @@ export interface IHomepageSettingsAttributes {
   banner_signed_out_subheader_multiloc: Multiloc;
   banner_signed_out_header_overlay_color;
   banner_signed_out_header_overlay_opacity;
-  header_bg;
+  header_bg: ImageSizes | null;
   pinned_admin_publication_ids: string[];
 }
 
@@ -58,6 +57,7 @@ export function homepageSettingsStream() {
 }
 
 export async function updateHomepageSettings(
+  // still to update, won't work for header_bg
   newHomepageSettings: Partial<IHomepageSettings>
 ) {
   const homepageSettings = await streams.update<IHomepageSettings>(
