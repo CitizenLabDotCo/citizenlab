@@ -62,7 +62,7 @@ describe('Content builder Accordion component', () => {
     );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 
-    cy.get('#e2e-accordion').click();
+    cy.get('#e2e-accordion').click({ force: true });
     cy.get('#default-open-toggle').find('input').click({ force: true });
     cy.get('#quill-editor').click();
     cy.get('#quill-editor').type('Edited text.', { force: true });
@@ -80,7 +80,7 @@ describe('Content builder Accordion component', () => {
     );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
 
-    cy.get('#e2e-accordion').click();
+    cy.get('#e2e-accordion').click({ force: true });
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
     cy.wait('@saveContentBuilder');
