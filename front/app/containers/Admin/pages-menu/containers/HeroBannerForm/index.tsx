@@ -66,6 +66,7 @@ const BgHeaderPreviewSelect = styled(Select)`
 `;
 
 // constants
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../constants';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 export type PreviewDevice = 'mobile' | 'tablet' | 'desktop';
@@ -76,16 +77,18 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   const [isLoading, setIsLoading] = useState(false);
   // const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
+  const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] = useState<{
+    signedOutHeaderErrors: Multiloc;
+    signedOutSubheaderErrors: Multiloc;
+  }>({
+    signedOutHeaderErrors: {},
+    signedOutSubheaderErrors: {},
+  });
   const [localHomepageSettings, setLocalHomepageSettings] =
     useState<IHomepageSettingsAttributes | null>(null);
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
-  console.log([setPreviewDevice, setIsLoading]);
-  console.log({ localHomepageSettings });
-  console.log({ theme });
-
   useEffect(() => {
-    console.log({ homepageSettings });
     if (!isNilOrError(homepageSettings)) {
       setLocalHomepageSettings({
         ...homepageSettings.data.attributes,
@@ -96,9 +99,13 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     }
   }, [homepageSettings]);
 
-  const onSave = () => {
-    console.log(updateHomepageSettings);
-    console.log('save');
+  const onSave = async () => {
+    if (localHomepageSettings) {
+      setIsLoading(true);
+      await updateHomepageSettings(localHomepageSettings);
+      setIsLoading(false);
+      console.log('saved');
+    }
   };
 
   const updateValueInLocalState = (key: string, value: any) => {
@@ -115,7 +122,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
 
   const handleOverlayOpacityOnChange = (opacity: number) => {
-    console.log({ opacity });
     updateValueInLocalState(
       'banner_signed_out_header_overlay_opacity',
       opacity
@@ -167,24 +173,31 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   // };
 
   const handleSignedOutHeaderOnChange = (titleMultiloc: Multiloc) => {
-    console.log({ titleMultiloc });
-    const titleError = {};
+    const signedOutHeaderErrors = {};
 
     forOwn(titleMultiloc, (title, locale) => {
       if (size(trim(title)) > 45) {
-        titleError[locale] = formatMessage(messages.titleMaxCharError);
+        signedOutHeaderErrors[locale] = formatMessage(
+          messages.titleMaxCharError
+        );
       }
     });
 
     updateValueInLocalState('banner_signed_out_header_multiloc', titleMultiloc);
+    setHeaderAndSubheaderErrors((prevState) => ({
+      ...prevState,
+      ...signedOutHeaderErrors,
+    }));
   };
 
   const handleSignedOutSubheaderOnChange = (subtitleMultiloc: Multiloc) => {
-    const subtitleError = {};
+    const signedOutSubheaderErrors = {};
 
     forOwn(subtitleMultiloc, (subtitle, locale) => {
       if (size(trim(subtitle)) > 90) {
-        subtitleError[locale] = formatMessage(messages.subtitleMaxCharError);
+        signedOutSubheaderErrors[locale] = formatMessage(
+          messages.subtitleMaxCharError
+        );
       }
     });
 
@@ -192,6 +205,10 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       'banner_signed_out_subheader_multiloc',
       subtitleMultiloc
     );
+    setHeaderAndSubheaderErrors((prevState) => ({
+      ...prevState,
+      ...signedOutSubheaderErrors,
+    }));
   };
 
   const handleSignedInHeaderOnChange = (titleMultiloc: Multiloc) => {
@@ -220,31 +237,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   // headerBgOnRemoveHandler();
   // };
 
-  // const handleDisplayHeaderAvatarsOnChange = () => {
-  //   // setParentState((state) => {
-  //   //   return {
-  //   //     attributesDiff: {
-  //   //       ...state.attributesDiff,
-  //   //       settings: {
-  //   //         ...state.settings,
-  //   //         ...get(state.attributesDiff, 'settings', {}),
-  //   //         core: {
-  //   //           ...get(state.settings, 'core', {}),
-  //   //           ...get(state.attributesDiff, 'settings.core', {}),
-  //   //           display_header_avatars:
-  //   //             !getSetting('core').display_header_avatars,
-  //   //         },
-  //   //       },
-  //   //     },
-  //   //   };
-  //   // });
-  // };
-
-  const handleHeaderBgPreviewOnChange = (option: IOption) => {
-    console.log(option);
-    // setPreviewDevice(option.value);
-  };
-
   if (isNilOrError(homepageSettings) || isNilOrError(localHomepageSettings)) {
     return null;
   }
@@ -263,9 +255,14 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   return (
     <SectionFormWrapper
       breadcrumbs={[
-        // { label: formatMessage(messages.title), linkTo: 'admin' },
-        // { label: formatMessage(messages.homeTitle), linkTo: 'pages-and-menu' },
-        // to update
+        {
+          label: formatMessage(pagesAndMenuBreadcrumb.label),
+          linkTo: pagesAndMenuBreadcrumb.linkTo,
+        },
+        {
+          label: formatMessage(homeBreadcrumb.label),
+          linkTo: homeBreadcrumb.linkTo,
+        },
         { label: formatMessage(messages.header) },
       ]}
       title="Bottom Info Section"
@@ -332,12 +329,12 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                       label: formatMessage(messages.phone),
                     },
                   ]}
-                  onChange={handleHeaderBgPreviewOnChange}
+                  onChange={(option: IOption) => setPreviewDevice(option.value)}
                   value={previewDevice}
                 />
               </>
             )}
-            {/* 
+            {/*             
             <HeaderImageDropzone
               onAdd={headerBgOnAddHandler}
               onRemove={handleHeaderBgOnRemove}
@@ -358,8 +355,8 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 </Label>
                 <ColorPickerInput
                   type="text"
-                  // default values come from the theme
                   value={
+                    // default values come from the theme
                     banner_signed_out_header_overlay_color ?? theme.colorMain
                   }
                   onChange={handleOverlayColorOnChange}
@@ -396,7 +393,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               }
               maxCharCount={TITLE_MAX_CHAR_COUNT}
               onChange={handleSignedOutHeaderOnChange}
-              // errorMultiloc={titleError}
+              errorMultiloc={headerAndSubheaderErrors.signedOutHeaderErrors}
             />
           </SectionField>
           <SectionField>
@@ -406,7 +403,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               label={formatMessage(messages.bannerHeaderSignedOutSubtitle)}
               maxCharCount={SUBTITLE_MAX_CHAR_COUNT}
               onChange={handleSignedOutSubheaderOnChange}
-              // errorMultiloc={subtitleError}
+              errorMultiloc={headerAndSubheaderErrors.signedOutSubheaderErrors}
             />
           </SectionField>
           <SectionField>
