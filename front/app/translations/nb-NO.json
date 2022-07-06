@@ -548,7 +548,6 @@
   "app.containers.AccessibilityStatement.conformanceStatus": "Samsvar status",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Vi bestreber oss på å gjøre innholdet vårt inkluderende for alle. Likevel, vil det i blant være utilgjengelig innhold på plattformen som skissert under:",
   "app.containers.AccessibilityStatement.email": "E-post:",
-  "app.containers.AccessibilityStatement.exception2": "Våre online workshops har en funksjon for direkte videostrømming, som ikke understøtter undertekster for tiden.",
   "app.containers.AccessibilityStatement.exception_1": "Vår digital involveringsplattform fasiliteter bruker-generert innhold sendt inn av individer og organisasjoner. Det er mulig at PDFer, bilder eller andre filtyper som inneholder multimedia er lastet opp på plattformen som vedlegg eller tilføyet i tekstfelter av plattformbrukere. Tilgjengeligheten til disse dokumenter kan være begrenset.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Vi vil gjerne høre dine tilbakemeldinger angående tilgjengelighet for nettstedet. Vennligst kontakt oss via en av følgende metoder:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Tilbakemeldingsprosess",

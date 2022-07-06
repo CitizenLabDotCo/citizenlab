@@ -548,7 +548,6 @@
   "app.containers.AccessibilityStatement.conformanceStatus": "Starea conformității",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Ne străduim să facem conținutul nostru inclusiv pentru toți. Cu toate acestea, în unele cazuri, poate exista conținut inaccesibil unor utilizatori ai platformei, după cum se arată mai jos:",
   "app.containers.AccessibilityStatement.email": "Email:",
-  "app.containers.AccessibilityStatement.exception2": "Atelierele noastre online au o componentă de streaming video live, care în prezent nu acceptă subtitrări.",
   "app.containers.AccessibilityStatement.exception_1": "Platformele noastre digitale de bugetare participativă facilitează conținutul postat de către persoane și organizații. Este posibil ca PDF-urile, imaginile sau alte tipuri de fișiere, inclusiv multimedia, să fie încărcate pe platformă ca atașamente sau adăugate în câmpurile de text de către utilizatorii platformei. Este posibil ca aceste documente să nu fie accesibile în totalitate.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Apreciem recenzia ta cu privire la accesibilitatea acestui site. Te rugăm să ne contactezi prin una dintre următoarele metode:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Procesul de feedback",

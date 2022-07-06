@@ -548,7 +548,6 @@
   "app.containers.AccessibilityStatement.conformanceStatus": "Conformance status",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "We strive to make our content inclusive for all. However, in some instances there may be inaccessible content on the platform as outlined below:",
   "app.containers.AccessibilityStatement.email": "E-mail:",
-  "app.containers.AccessibilityStatement.exception2": "Our online workshops have a live video streaming component, which do not currently support subtitles.",
   "app.containers.AccessibilityStatement.exception_1": "Digitalikkut ataatsimoortitsilluni nittartagaativut inunnit suliffeqarfinnillu ikkunneqartartunit aqunneqartumik ingerlanneqarput. \n\nNittartakkamik atuisut PDF-inik, assinik allanilluunniit filinik multimedianillu nittartakkamut kakkiussisinnaapput allaffissamulluunniit ikkussillutik. \n\nTakussutissiat taakku tamakkiisumik takuneqarsinnaanerat killeqarsinnaavoq.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "We welcome your feedback on the accessibility of this site. Please contact us via one of the following methods:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedback process",

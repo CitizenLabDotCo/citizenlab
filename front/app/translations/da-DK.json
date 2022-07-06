@@ -556,7 +556,6 @@
   "app.containers.AccessibilityStatement.conformanceStatus": "Overensstemmelsesstatus",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Vi stræber efter at gøre vores indhold inkluderende for alle. I nogle tilfælde kan der imidlertid være utilgængeligt indhold på platformen som beskrevet nedenfor:",
   "app.containers.AccessibilityStatement.email": "E-mail:",
-  "app.containers.AccessibilityStatement.exception2": "Vores online workshops har en live video streaming-komponent, som i øjeblikket ikke understøtter undertekster.",
   "app.containers.AccessibilityStatement.exception_1": "Vores digitale borgerinddragelsesplatform håndterer brugergenereret indhold sendt af enkeltpersoner og organisationer. Det er muligt, at PDF-filer, billeder eller andre filtyper inklusive multimedier uploades til platformen som vedhæftede filer eller tilføjes til tekstfelter af platformbrugere. Disse dokumenter er muligvis ikke fuldt tilgængelige.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Vi glæder os over din feedback om tilgængeligheden af denne platform. Kontakt os via en af følgende metoder:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Proces for svar",

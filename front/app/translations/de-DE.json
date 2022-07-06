@@ -556,7 +556,6 @@
   "app.containers.AccessibilityStatement.conformanceStatus": "Konformitätsstatus",
   "app.containers.AccessibilityStatement.contentConformanceExceptions": "Wir bemühen uns unsere Inhalte für alle inklusiv zu gestalten. Allerdings sind bestimmte Inhalte der Plattform unter den folgenden Umständen nicht barrierefrei:",
   "app.containers.AccessibilityStatement.email": "E-Mail:",
-  "app.containers.AccessibilityStatement.exception2": "Unsere Onlineworkshops beinhalten Videostreamingelemente, die momentan keine Untertitel unterstützen.",
   "app.containers.AccessibilityStatement.exception_1": "Unsere Plattformen für digitalen Dialog fördern die Veröffentlichung von nutzergenerierten Inhalten von Einzelpersonen und Organisationen. Sie ermöglichen den Nutzern unserer Plattformen das Hochladen von PDFs, Bildern, Multimediadateien und anderen Dateitypen in Form von Anhängen oder als Einfügungen in die Textfelder. Möglicherweise sind diese Dokumente nicht vollständig zugänglich.",
   "app.containers.AccessibilityStatement.feedbackProcessIntro": "Wir freuen uns über Rückmeldungen zur Barrierefreiheit dieser Website. Bitte kontaktieren Sie uns auf einem der folgenden Wege:",
   "app.containers.AccessibilityStatement.feedbackProcessTitle": "Feedbackprozess",
