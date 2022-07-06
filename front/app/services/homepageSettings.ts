@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { ImageSizes, Multiloc } from 'typings';
+import { CTASignedInType, CTASignedOutType } from 'services/appConfiguration';
 const homepageSettingsEndpoint = `${API_PATH}/home_page`;
 
 // type definitions
@@ -16,8 +17,11 @@ export type THomepageSection = IHomepageSectionMap[keyof IHomepageSectionMap];
 
 // * THomepageBannerLayout *
 export interface THomepageBannerLayoutMap {
-  full_with_banner_layout: 'full_width_banner_layout';
+  full_width_banner_layout: 'full_width_banner_layout';
+  two_column_layout: 'two_column_layout';
+  two_row_layout: 'two_row_layout';
 }
+
 export type THomepageBannerLayout =
   THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
 
@@ -39,6 +43,7 @@ export interface IHomepageSettingsAttributes {
   projects_enabled: boolean;
   projects_header_multiloc: Multiloc;
   banner_avatars_enabled: boolean;
+  // does this need _enabled?
   customizable_homepage_banner: boolean;
   banner_layout: THomepageBannerLayout | null;
   banner_signed_in_header_multiloc: Multiloc;
@@ -49,6 +54,14 @@ export interface IHomepageSettingsAttributes {
   banner_signed_out_header_overlay_opacity: number;
   header_bg: ImageSizes | null;
   pinned_admin_publication_ids: string[];
+
+  banner_cta_signed_out_type: CTASignedOutType;
+  banner_cta_signed_out_text_multiloc: Multiloc;
+  banner_cta_signed_out_url: string;
+
+  banner_cta_signed_in_type: CTASignedInType;
+  banner_cta_signed_in_text_multiloc: Multiloc;
+  banner_cta_signed_in_url: string;
 }
 
 // streams

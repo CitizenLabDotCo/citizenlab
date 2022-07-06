@@ -34,7 +34,7 @@ import {
 // import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-// import Outlet from 'components/Outlet';
+import Outlet from 'components/Outlet';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -90,6 +90,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
+      console.log({ homepageSettings });
       setLocalHomepageSettings({
         ...homepageSettings.data.attributes,
         banner_layout:
@@ -137,6 +138,13 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     () => debounceHandleOverlayOpacityOnChange,
     [debounceHandleOverlayOpacityOnChange]
   );
+
+  const handleSettingOnChange = (
+    key: keyof IHomepageSettingsAttributes,
+    value: any
+  ) => {
+    updateValueInLocalState(key, value);
+  };
 
   // const layout =
   //   latestAppConfigSettings.customizable_homepage_banner?.layout ||
@@ -212,7 +220,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   };
 
   const handleSignedInHeaderOnChange = (titleMultiloc: Multiloc) => {
-    console.log({ titleMultiloc });
     const titleError = {};
 
     forOwn(titleMultiloc, (title, locale) => {
@@ -280,11 +287,11 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           <SectionDescription>
             <FormattedMessage {...messages.headerDescription} />
           </SectionDescription>
-          {/* <Outlet
+          <Outlet
             id="app.containers.Admin.settings.customize.headerSectionStart"
-            latestAppConfigSettings={latestAppConfigSettings}
+            homepageSettings={localHomepageSettings}
             handleOnChange={handleSettingOnChange}
-          /> */}
+          />
           <SubSectionTitle>
             <FormattedMessage {...messages.header_bg} />
             <IconTooltip

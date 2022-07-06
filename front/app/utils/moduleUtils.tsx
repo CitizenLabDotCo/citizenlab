@@ -44,7 +44,7 @@ import {
   CTASignedInType,
   CTASignedOutType,
   CustomizedButtonConfig,
-  IAppConfigurationSettings,
+  // IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
   THomepageBannerLayout,
@@ -66,6 +66,7 @@ import {
   IOnboardingCampaignNames,
   IOnboardingCampaigns,
 } from 'services/onboardingCampaigns';
+import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import { TNotificationData } from 'services/notifications';
 import { BannerButtonStyle } from 'containers/LandingPage/BannerButton';
 import { AuthProvider } from 'components/SignUpIn/AuthProviders';
@@ -369,12 +370,13 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    latestAppConfigSettings:
-      | IAppConfigurationSettings
-      | Partial<IAppConfigurationSettings>;
+    homepageSettings:
+      | IHomepageSettingsAttributes
+      | Partial<IHomepageSettingsAttributes>;
     handleOnChange: (
-      settingName: TAppConfigurationSetting
-    ) => (settingKey: string, settingValue: any) => void;
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
   };
   'app.containers.LandingPage.SignedOutHeader.index': {
     homepageBannerLayout: THomepageBannerLayout;
@@ -384,12 +386,13 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
   'app.containers.Admin.settings.customize.headerSectionEnd': {
-    latestAppConfigSettings:
-      | IAppConfigurationSettings
-      | Partial<IAppConfigurationSettings>;
+    homepageSettings:
+      | IHomepageSettingsAttributes
+      | Partial<IHomepageSettingsAttributes>;
     handleOnChange: (
-      settingName: TAppConfigurationSetting
-    ) => (settingKey: string, settingValue: any) => void;
+      settingKey: keyof IHomepageSettingsAttributes,
+      settingValue: any
+    ) => void;
     errors: CLErrors;
   };
   'app.containers.LandingPage.SignedOutHeader.CTA': {
