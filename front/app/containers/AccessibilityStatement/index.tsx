@@ -83,7 +83,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 <h3>{formatMessage(messages.userGeneratedContent)}</h3>
                 <p>{formatMessage(messages.exception_1)}</p>
                 <h3>{formatMessage(messages.workshops)}</h3>
-                <p>{formatMessage(messages.exception2)}</p>
+                <p>{formatMessage(messages.onlineWorkshopsException)}</p>
                 <h3>{formatMessage(messages.compatibilityTitle)}</h3>
                 <p>{formatMessage(messages.screenReaderBugWarning)}</p>
                 <h4>{formatMessage(messages.screenReaderSearchResults)}</h4>

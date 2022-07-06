@@ -13,7 +13,7 @@ export default defineMessages({
   intro2022: {
     id: 'app.containers.AccessibilityStatement.intro2022',
     defaultMessage:
-      '{citizenLabLink} is committed to ensuring digital accessibility for people with disabilities. Current and relevant accessibility standards are applied in our on-going efforts to improve the user experience for all who visit and use our platforms.',
+      '{citizenLabLink} providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximize the accessibility and usability of our platforms for all users.',
   },
   changePreferencesText: {
     id: 'app.containers.AccessibilityStatement.changePreferencesText',
@@ -37,10 +37,10 @@ export default defineMessages({
     defaultMessage:
       'Our digital engagement platforms facilitate user-generated content posted by individuals and organisations. It is possible that PDFs, images or other file types including multi-media are uploaded to the platform as attachments or added into text fields by platform users. These documents may not be fully accessible.',
   },
-  exception2: {
-    id: 'app.containers.AccessibilityStatement.exception2',
+  onlineWorkshopsException: {
+    id: 'app.containers.AccessibilityStatement.onlineWorkshopsException',
     defaultMessage:
-      'Our online workshops have a live video streaming component, which do not currently support subtitles.',
+      'Our online workshops have a live video streaming component, which does not currently support subtitles.',
   },
   compatibilityTitle: {
     id: 'app.containers.AccessibilityStatement.compatibilityTitle2022',
