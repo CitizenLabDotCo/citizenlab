@@ -42,7 +42,7 @@ module UserCustomFields
       def reference_distribution
         @reference_distribution ||= authorize(
           Representativeness::RefDistribution
-            .includes(:values)
+            .includes(:options)
             .find_by!(custom_field_id: params[:custom_field_id])
         )
       end
