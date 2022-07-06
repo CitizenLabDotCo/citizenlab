@@ -2,10 +2,7 @@ import React from 'react';
 import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import {
-  CTASignedOutType,
-  // CustomizedButtonConfig,
-} from 'services/appConfiguration';
+import { CTASignedOutType } from 'services/appConfiguration';
 import { Multiloc } from 'typings';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors } from 'typings';
@@ -21,7 +18,6 @@ type Props = {
   ctaType: CTASignedOutType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string;
-  // customizedButtonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (settingKey: string, settingValue: any) => void;
   errors: CLErrors;
 };
@@ -43,7 +39,6 @@ const CTASignedOutSettings = ({
       signInStatus={'signed_out'}
       ctaButtonMultiloc={ctaButtonMultiloc}
       ctaButtonUrl={ctaButtonUrl}
-      // customizedButtonConfig={customizedButtonConfig}
       handleSettingOnChange={handleSettingOnChange}
       errors={errors}
     />

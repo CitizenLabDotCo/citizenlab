@@ -47,12 +47,13 @@ const SettingRadioButtons = ({
   errors,
 }: SettingRadioButtonsProps) => {
   const handleOnChange = (value: string) => {
-    if (signInStatus === 'signed_out') {
-      handleSettingOnChange('banner_cta_signed_out_type', value);
-    } else {
-      handleSettingOnChange('banner_cta_signed_in_type', value);
-    }
+    const ctaTypeToToggle =
+      signInStatus === 'signed_out'
+        ? 'banner_cta_signed_out'
+        : 'banner_cta_signed_in';
+    handleSettingOnChange(ctaTypeToToggle, value);
   };
+
   return (
     <>
       {ctaTypes.map((option: CTASignedOutType | CTASignedInType) => (

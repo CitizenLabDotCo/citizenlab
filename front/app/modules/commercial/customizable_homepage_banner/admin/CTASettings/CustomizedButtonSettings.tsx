@@ -102,23 +102,12 @@ const CustomizedButtonSettings = ({
   className,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  // const customizedButtonKey = `cta_${signInStatus}_customized_button`;
-  // (buttonKey: keyof CustomizedButtonConfig) => (value: any) => {
-  //   console.log()
-  //   handleSettingOnChange(customizedButtonKey, {
-  //     ...buttonConfig,
-  //     [buttonKey]: value,
-  //   });
-  // };
   const handleTextOnChange = (textMultiloc: Multiloc) => {
-    if (signInStatus === 'signed_out') {
-      handleSettingOnChange(
-        'banner_cta_signed_out_text_multiloc',
-        textMultiloc
-      );
-    } else {
-      handleSettingOnChange('banner_cta_signed_in_text_multiloc', textMultiloc);
-    }
+    const signedInStatusKey =
+      signInStatus === 'signed_out'
+        ? 'banner_cta_signed_out_text_multiloc'
+        : 'banner_cta_signed_in_text_multiloc';
+    handleSettingOnChange(signedInStatusKey, textMultiloc);
     // We set it to {} because if it's set to the current error and there are two empty locale inputs,
     // cursor jumps to the next empty locale input after typing the first letter in the first empty locale input.
     // For the same reason we don't calculate the errors on every render.
@@ -127,11 +116,11 @@ const CustomizedButtonSettings = ({
   };
 
   const handleUrlOnChange = (url: string) => {
-    if (signInStatus === 'signed_out') {
-      handleSettingOnChange('banner_cta_signed_out_url', url);
-    } else {
-      handleSettingOnChange('banner_cta_signed_in_url', url);
-    }
+    const signedInStatusKey =
+      signInStatus === 'signed_out'
+        ? 'banner_cta_signed_out_url'
+        : 'banner_cta_signed_in_url';
+    handleSettingOnChange(signedInStatusKey, url);
   };
 
   const tenantLocales = useAppConfigurationLocales();
