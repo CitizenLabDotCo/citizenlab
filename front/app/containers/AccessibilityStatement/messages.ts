@@ -13,7 +13,7 @@ export default defineMessages({
   intro2022: {
     id: 'app.containers.AccessibilityStatement.intro2022',
     defaultMessage:
-      '{citizenLabLink} providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximize the accessibility and usability of our platforms for all users.',
+      '{citizenLabLink} is committed to providing a platform that is accessible to all users, regardless of technology or ability. Current relevant accessibility standards are adhered to in our on-going efforts to maximise the accessibility and usability of our platforms for all users.',
   },
   changePreferencesText: {
     id: 'app.containers.AccessibilityStatement.changePreferencesText',
