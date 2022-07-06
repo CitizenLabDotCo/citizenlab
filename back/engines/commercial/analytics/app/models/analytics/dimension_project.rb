@@ -2,7 +2,7 @@
 #
 # Table name: analytics_dimension_projects
 #
-#  id             :uuid
+#  id             :uuid             primary key
 #  title_multiloc :jsonb
 #
 module Analytics
