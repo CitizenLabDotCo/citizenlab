@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Changed
+
+- [CL-875] "en" locale is shown as "en-US" in admin HQ
+
 ## Next release
 
 ### Added
