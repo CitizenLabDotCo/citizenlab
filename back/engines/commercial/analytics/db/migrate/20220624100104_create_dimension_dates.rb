@@ -2,7 +2,6 @@
 
 class CreateDimensionDates < ActiveRecord::Migration[6.1]
   def up
-
     create_table :analytics_dimension_dates, id: :uuid do |t|
       t.date :date
       t.string :year
@@ -25,12 +24,10 @@ class CreateDimensionDates < ActiveRecord::Migration[6.1]
           interval '1 day'
         ) AS date
       ) a;
-    ");
-
+    ")
   end
 
   def down
     drop_table :analytics_dimension_dates
   end
-
 end

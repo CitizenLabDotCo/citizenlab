@@ -9,12 +9,12 @@ module Analytics
       def create
         query = QueryBuilderService.new(FactPost, params[:query])
         validation = query.validate
-        
-        if validation["messages"].length > 0
-          render json: {"messages" => validation["messages"]}, status: 400
-        else
+
+        if validation['messages'].empty?
           results = query.run
           render json: results
+        else
+          render json: { 'messages' => validation['messages'] }, status: :bad_request
         end
       end
     end

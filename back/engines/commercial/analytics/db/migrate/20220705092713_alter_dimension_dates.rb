@@ -2,7 +2,6 @@
 
 class AlterDimensionDates < ActiveRecord::Migration[6.1]
   def change
-
     # Drop the fact views that rely on date dimension
     drop_view :analytics_fact_posts, materialized: true
     drop_view :analytics_fact_participations, materialized: true
@@ -32,7 +31,7 @@ class AlterDimensionDates < ActiveRecord::Migration[6.1]
                               interval '1 day'
                           ) AS date
            ) a;
-    ");
+    ")
 
     # Recreate the fact views
     create_view :analytics_fact_posts, version: 2, materialized: true
@@ -46,7 +45,5 @@ class AlterDimensionDates < ActiveRecord::Migration[6.1]
     add_index :analytics_fact_participations, :id
     add_index :analytics_fact_participations, :project_id
     add_index :analytics_fact_participations, :created_date
-
   end
-
 end

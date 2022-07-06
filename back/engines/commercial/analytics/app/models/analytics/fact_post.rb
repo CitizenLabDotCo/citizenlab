@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: analytics_fact_posts
@@ -25,13 +27,12 @@
 module Analytics
   class FactPost < Analytics::ApplicationRecord
     self.primary_key = :id
-    belongs_to :type, class_name: "DimensionType"
-    belongs_to :created_date, class_name: "DimensionDate"
-    belongs_to :project, class_name: "DimensionProject"
+    belongs_to :type, class_name: 'DimensionType'
+    belongs_to :created_date, class_name: 'DimensionDate'
+    belongs_to :project, class_name: 'DimensionProject'
 
     def self.refresh
       Scenic.database.refresh_materialized_view(table_name, concurrently: true, cascade: true)
     end
-
   end
 end

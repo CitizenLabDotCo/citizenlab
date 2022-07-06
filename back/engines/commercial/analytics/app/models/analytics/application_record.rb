@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Analytics
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true
@@ -6,6 +8,5 @@ module Analytics
     def readonly?
       true
     end
-
   end
 end

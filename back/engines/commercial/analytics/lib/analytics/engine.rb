@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Analytics
   class Engine < ::Rails::Engine
     isolate_namespace Analytics
@@ -16,6 +18,5 @@ module Analytics
     #
     #   end
     # end
-
   end
 end

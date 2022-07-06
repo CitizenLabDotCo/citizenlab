@@ -2,7 +2,6 @@
 
 class CreateDimensionTypes < ActiveRecord::Migration[6.1]
   def up
-
     create_table :analytics_dimension_types, id: :uuid do |t|
       t.string :name
       t.string :parent
@@ -17,11 +16,9 @@ class CreateDimensionTypes < ActiveRecord::Migration[6.1]
         ('comment', null),
         ('vote', null);
     ")
-
   end
 
   def down
     drop_table :analytics_dimension_types
   end
-
 end
