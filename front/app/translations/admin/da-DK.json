@@ -1382,7 +1382,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Vis indhold fra et eksternt websted på din side i en HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "f.eks. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Skal angive en gyldig URL.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.image": "Billede",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Kort beskrivelse af billedet",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Det er vigtigt at tilføje \"alt-tekst\" til billeder for at gøre din platform tilgængelig for brugere, der bruger skærmlæsere.",

@@ -1382,7 +1382,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Wyświetlanie zawartości z zewnętrznej witryny na swojej stronie w ramce HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "np. 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Należy podać prawidłowy adres URL.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://example.com/",
   "app.containers.admin.ContentBuilder.image": "Obrazek",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Krótki opis zdjęcia",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Dodawanie \"tekstu alt\" do obrazów jest ważne, aby platforma była dostępna dla użytkowników korzystających z czytników ekranu.",

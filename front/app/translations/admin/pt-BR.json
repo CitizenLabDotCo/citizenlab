@@ -1382,7 +1382,6 @@
   "app.containers.admin.ContentBuilder.iframeDescription": "Display content from an external website on your page in an HTML iFrame.",
   "app.containers.admin.ContentBuilder.iframeHeightPlaceholder": "por exemplo, 120px",
   "app.containers.admin.ContentBuilder.iframeUrlErrorMessage": "Deve fornecer um URL válido.",
-  "app.containers.admin.ContentBuilder.iframeUrlPlaceholder": "https://exemplo.com/",
   "app.containers.admin.ContentBuilder.image": "Imagem  ",
   "app.containers.admin.ContentBuilder.imageAltTextLabel": "Breve descrição da imagem",
   "app.containers.admin.ContentBuilder.imageAltTextTooltip": "Adicionar \"alt text\" para imagens é importante para tornar a sua plataforma acessível aos utilizadores que utilizam leitores de tela.",
