@@ -25,7 +25,7 @@ const TableModal = ({
   title,
   columns,
   data,
-  includedUserPercentage,
+  includedUsers,
   fieldIsRequired,
   projectFilter,
   xlsxEndpoint,
@@ -48,7 +48,7 @@ const TableModal = ({
         <Box display="flex" alignItems="center">
           <Box mt="0px" display="flex" alignItems="flex-start" mr="16px">
             <FieldInfo
-              includedUserPercentage={includedUserPercentage}
+              includedUsers={includedUsers}
               fieldIsRequired={fieldIsRequired}
             />
           </Box>

@@ -21,6 +21,10 @@ import messages from '../../../messages';
 // intl
 import { injectIntl } from 'utils/cl-intl';
 
+// events
+import eventEmitter from 'utils/eventEmitter';
+import { IMAGE_UPLOADING_EVENT } from 'modules/commercial/content_builder/admin/containers';
+
 const Image = ({
   imageUrl,
   alt = '',
@@ -58,10 +62,12 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   useEffect(() => {
     if (imageUrl) {
       (async () => {
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
         const imageFile = await convertUrlToUploadFile(imageUrl);
         if (imageFile) {
           setImageFiles([imageFile]);
         }
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
       })();
     }
   }, [imageUrl]);
