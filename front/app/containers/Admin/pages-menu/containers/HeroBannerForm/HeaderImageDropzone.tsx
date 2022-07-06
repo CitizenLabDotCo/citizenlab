@@ -31,6 +31,7 @@ interface Props {
   layout: THomepageBannerLayout;
 }
 
+// move this to homepage settings resource?
 export const homepageBannerLayoutHeights = {
   full_width_banner_layout: {
     desktop: 450,

@@ -82,7 +82,10 @@ const getUrlErrors = (
 };
 
 interface Props {
+  buttonUrl: string;
+  buttonMultiloc: Multiloc;
   buttonConfig?: CustomizedButtonConfig;
+  // settingKey can be typed
   handleSettingOnChange: (settingKey: string, settingValue: any) => void;
   signInStatus: 'signed_out' | 'signed_in';
   errors: CLErrors;
@@ -90,37 +93,52 @@ interface Props {
 }
 
 const CustomizedButtonSettings = ({
-  buttonConfig,
+  buttonMultiloc,
+  buttonUrl,
+  // buttonConfig,
   handleSettingOnChange,
   signInStatus,
   errors,
   className,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const customizedButtonKey = `cta_${signInStatus}_customized_button`;
-  const handleOnChange =
-    (buttonKey: keyof CustomizedButtonConfig) => (value: any) => {
-      handleSettingOnChange(customizedButtonKey, {
-        ...buttonConfig,
-        [buttonKey]: value,
-      });
-    };
+  // const customizedButtonKey = `cta_${signInStatus}_customized_button`;
+  // (buttonKey: keyof CustomizedButtonConfig) => (value: any) => {
+  //   console.log()
+  //   handleSettingOnChange(customizedButtonKey, {
+  //     ...buttonConfig,
+  //     [buttonKey]: value,
+  //   });
+  // };
   const handleTextOnChange = (textMultiloc: Multiloc) => {
-    handleOnChange('text')(textMultiloc);
+    if (signInStatus === 'signed_out') {
+      handleSettingOnChange(
+        'banner_cta_signed_out_text_multiloc',
+        textMultiloc
+      );
+    } else {
+      handleSettingOnChange('banner_cta_signed_in_text_multiloc', textMultiloc);
+    }
     // We set it to {} because if it's set to the current error and there are two empty locale inputs,
     // cursor jumps to the next empty locale input after typing the first letter in the first empty locale input.
     // For the same reason we don't calculate the errors on every render.
     // The same done in front/app/containers/Admin/projects/general/index.tsx  #handleTitleMultilocOnChange
     setTextError({});
   };
-  const handleUrlOnChange = (url: string) => handleOnChange('url')(url);
+
+  const handleUrlOnChange = (url: string) => {
+    if (signInStatus === 'signed_out') {
+      handleSettingOnChange('banner_cta_signed_out_url', url);
+    } else {
+      handleSettingOnChange('banner_cta_signed_in_url', url);
+    }
+  };
 
   const tenantLocales = useAppConfigurationLocales();
   const [textErrors, setTextError] = useState<Multiloc>({});
 
   const memedTextErrors = useMemo(
-    () =>
-      getTextErrors(buttonConfig?.text, errors, formatMessage, tenantLocales),
+    () => getTextErrors(buttonMultiloc, errors, formatMessage, tenantLocales),
     // if it depends on buttonConfig, cursor jumps to the next empty locale input (see comment in text onChange)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [errors, formatMessage, tenantLocales]
@@ -133,7 +151,7 @@ const CustomizedButtonSettings = ({
         <InputMultilocWithLocaleSwitcher
           data-testid="inputMultilocLocaleSwitcher"
           type="text"
-          valueMultiloc={buttonConfig?.text}
+          valueMultiloc={buttonMultiloc}
           label={
             <FormattedMessage {...messages.customized_button_text_label} />
           }
@@ -150,8 +168,8 @@ const CustomizedButtonSettings = ({
         type="text"
         placeholder="https://..."
         onChange={handleUrlOnChange}
-        value={buttonConfig?.url}
-        error={getUrlErrors(buttonConfig?.url, errors, formatMessage)}
+        value={buttonUrl}
+        error={getUrlErrors(buttonUrl, errors, formatMessage)}
       />
     </SectionField>
   );

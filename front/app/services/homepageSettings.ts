@@ -44,7 +44,7 @@ export interface IHomepageSettingsAttributes {
   projects_header_multiloc: Multiloc;
   banner_avatars_enabled: boolean;
   // does this need _enabled?
-  customizable_homepage_banner: boolean;
+  customizable_homepage_banner_enabled: boolean;
   banner_layout: THomepageBannerLayout | null;
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_out_header_multiloc: Multiloc;

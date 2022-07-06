@@ -4,8 +4,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import {
   CTASignedOutType,
-  CustomizedButtonConfig,
+  // CustomizedButtonConfig,
 } from 'services/appConfiguration';
+import { Multiloc } from 'typings';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors } from 'typings';
 import SettingsLabel from './SettingsLabel';
@@ -18,14 +19,17 @@ const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
 
 type Props = {
   ctaType: CTASignedOutType;
-  customizedButtonConfig?: CustomizedButtonConfig;
+  ctaButtonMultiloc: Multiloc;
+  ctaButtonUrl: string;
+  // customizedButtonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (settingKey: string, settingValue: any) => void;
   errors: CLErrors;
 };
 
 const CTASignedOutSettings = ({
   ctaType,
-  customizedButtonConfig,
+  ctaButtonMultiloc,
+  ctaButtonUrl,
   handleSettingOnChange,
   errors,
 }: Props) => (
@@ -37,7 +41,9 @@ const CTASignedOutSettings = ({
       ctaTypes={CTA_SIGNED_OUT_TYPES}
       ctaType={ctaType}
       signInStatus={'signed_out'}
-      customizedButtonConfig={customizedButtonConfig}
+      ctaButtonMultiloc={ctaButtonMultiloc}
+      ctaButtonUrl={ctaButtonUrl}
+      // customizedButtonConfig={customizedButtonConfig}
       handleSettingOnChange={handleSettingOnChange}
       errors={errors}
     />

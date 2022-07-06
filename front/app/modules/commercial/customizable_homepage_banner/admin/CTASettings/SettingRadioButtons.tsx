@@ -2,8 +2,9 @@ import React from 'react';
 import {
   CTASignedOutType,
   CTASignedInType,
-  CustomizedButtonConfig,
+  // CustomizedButtonConfig,
 } from 'services/appConfiguration';
+import { Multiloc } from 'typings';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
@@ -20,7 +21,9 @@ type SettingRadioButtonsProps =
       signInStatus: 'signed_out';
       ctaTypes: CTASignedOutType[];
       ctaType: CTASignedOutType;
-      customizedButtonConfig?: CustomizedButtonConfig;
+      ctaButtonMultiloc: Multiloc;
+      ctaButtonUrl: string;
+      // customizedButtonConfig?: CustomizedButtonConfig;
       handleSettingOnChange: (settingKey: string, settingValue: any) => void;
       errors: CLErrors;
     }
@@ -28,7 +31,8 @@ type SettingRadioButtonsProps =
       signInStatus: 'signed_in';
       ctaTypes: CTASignedInType[];
       ctaType: CTASignedInType;
-      customizedButtonConfig?: CustomizedButtonConfig;
+      ctaButtonMultiloc: Multiloc;
+      ctaButtonUrl: string;
       handleSettingOnChange: (settingKey: string, settingValue: any) => void;
       errors: CLErrors;
     };
@@ -37,12 +41,17 @@ const SettingRadioButtons = ({
   ctaTypes,
   ctaType,
   signInStatus,
-  customizedButtonConfig,
+  ctaButtonMultiloc,
+  ctaButtonUrl,
   handleSettingOnChange,
   errors,
 }: SettingRadioButtonsProps) => {
   const handleOnChange = (value: string) => {
-    handleSettingOnChange(`cta_${signInStatus}_type`, value);
+    if (signInStatus === 'signed_out') {
+      handleSettingOnChange('banner_cta_signed_out_type', value);
+    } else {
+      handleSettingOnChange('banner_cta_signed_in_type', value);
+    }
   };
   return (
     <>
@@ -68,7 +77,8 @@ const SettingRadioButtons = ({
           {option === 'customized_button' &&
             ctaType === 'customized_button' && (
               <StyledCustomizedButtonSettings
-                buttonConfig={customizedButtonConfig}
+                buttonMultiloc={ctaButtonMultiloc}
+                buttonUrl={ctaButtonUrl}
                 handleSettingOnChange={handleSettingOnChange}
                 signInStatus={signInStatus}
                 errors={errors}

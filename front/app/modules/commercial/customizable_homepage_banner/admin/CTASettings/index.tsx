@@ -2,58 +2,65 @@ import { Section, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import React from 'react';
 import messages from '../messages';
-import {
-  TAppConfigurationSetting,
-  IAppConfigurationSettings,
-} from 'services/appConfiguration';
+import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+// import {
+// TAppConfigurationSetting,
+// IAppConfigurationSettings,
+// } from 'services/appConfiguration';
 import CTASignedOutSettings from './CTASignedOutSettings';
 import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
 
 interface Props {
-  latestAppConfigSettings:
-    | IAppConfigurationSettings
-    | Partial<IAppConfigurationSettings>;
-  handleOnChange: (
-    settingName: TAppConfigurationSetting
-  ) => (settingKey: string, settingValue: any) => void;
+  latestHomepageSettings: IHomepageSettingsAttributes;
+  handleOnChange: (settingKey: string, settingValue: any) => void;
   errors: CLErrors;
 }
 
 const CTASettings = ({
-  latestAppConfigSettings,
+  latestHomepageSettings,
   handleOnChange,
   errors,
 }: Props) => {
   const handleSettingOnChange = (key: string, value: any) => {
-    handleOnChange('customizable_homepage_banner')(key, value);
+    handleOnChange(key, value);
   };
 
-  if (!latestAppConfigSettings.customizable_homepage_banner) {
+  if (!latestHomepageSettings.customizable_homepage_banner_enabled) {
     return null;
   }
 
   const {
-    cta_signed_out_type: ctaSignedOutType,
-    cta_signed_out_customized_button: ctaSignedOutCustomizedButton,
+    // these should be not null but check on it
+    banner_cta_signed_out_type,
+    banner_cta_signed_out_text_multiloc,
+    banner_cta_signed_out_url,
+    banner_cta_signed_in_type,
+    banner_cta_signed_in_text_multiloc,
+    banner_cta_signed_in_url,
+  } = latestHomepageSettings;
 
-    cta_signed_in_type: ctaSignedInType,
-    cta_signed_in_customized_button: ctaSignedInCustomizedButton,
-  } = latestAppConfigSettings.customizable_homepage_banner;
+  console.log({ banner_cta_signed_in_type });
+  console.log({ banner_cta_signed_out_type });
+
   return (
     <Section>
       <SubSectionTitle>
         <FormattedMessage {...messages.ctaHeader} />
       </SubSectionTitle>
       <CTASignedOutSettings
-        ctaType={ctaSignedOutType}
-        customizedButtonConfig={ctaSignedOutCustomizedButton}
+        ctaType={banner_cta_signed_out_type}
+        ctaButtonMultiloc={banner_cta_signed_out_text_multiloc}
+        ctaButtonUrl={banner_cta_signed_out_url}
+        // customizedButtonConfig={ctaSignedOutCustomizedButton}
         handleSettingOnChange={handleSettingOnChange}
         errors={errors}
       />
       <CTASignedInSettings
-        ctaType={ctaSignedInType}
-        customizedButtonConfig={ctaSignedInCustomizedButton}
+        ctaType={banner_cta_signed_in_type}
+        ctaButtonMultiloc={banner_cta_signed_in_text_multiloc}
+        ctaButtonUrl={banner_cta_signed_in_url}
+        // customizedButtonConfig={ctaSignedInCustomizedButton}
         handleSettingOnChange={handleSettingOnChange}
         errors={errors}
       />

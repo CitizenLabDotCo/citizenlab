@@ -370,9 +370,7 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    homepageSettings:
-      | IHomepageSettingsAttributes
-      | Partial<IHomepageSettingsAttributes>;
+    latestHomepageSettings: IHomepageSettingsAttributes;
     handleOnChange: (
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any
@@ -386,9 +384,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
   'app.containers.Admin.settings.customize.headerSectionEnd': {
-    homepageSettings:
-      | IHomepageSettingsAttributes
-      | Partial<IHomepageSettingsAttributes>;
+    latestHomepageSettings: IHomepageSettingsAttributes;
     handleOnChange: (
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any

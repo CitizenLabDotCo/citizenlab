@@ -1,7 +1,6 @@
 import React from 'react';
-import { IAppConfigurationSettings } from 'services/appConfiguration';
 import { render, screen } from 'utils/testUtils/rtl';
-
+import { IHomepageSettingsAttributes } from 'services/homepageSettings';
 import CTASettings from './';
 
 jest.mock('utils/cl-router/Link', () => 'Link');
@@ -10,16 +9,13 @@ jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
 const props = {
-  latestAppConfigSettings: {
-    customizable_homepage_banner: {
-      allowed: true,
-      enabled: true,
-      layout: 'full_width_banner_layout',
-      cta_signed_out_type: 'no_button',
-      cta_signed_in_type: 'no_button',
-    },
-  } as Partial<IAppConfigurationSettings>,
-  handleOnChange: (_value) => (_settingKey, _settingValue) => {},
+  latestHomepageSettings: {
+    customizable_homepage_banner_enabled: true,
+    banner_layout: 'full_width_banner_layout',
+    banner_cta_signed_out_type: 'no_button',
+    banner_cta_signed_in_type: 'no_button',
+  } as IHomepageSettingsAttributes,
+  handleOnChange: (_settingKey, _settingValue) => {},
   errors: { base: [{ error: 'some error' }] },
 };
 

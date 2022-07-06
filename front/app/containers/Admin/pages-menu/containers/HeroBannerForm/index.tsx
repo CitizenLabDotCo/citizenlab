@@ -143,6 +143,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     key: keyof IHomepageSettingsAttributes,
     value: any
   ) => {
+    console.log([key, value]);
     updateValueInLocalState(key, value);
   };
 
@@ -289,7 +290,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           </SectionDescription>
           <Outlet
             id="app.containers.Admin.settings.customize.headerSectionStart"
-            homepageSettings={localHomepageSettings}
+            latestHomepageSettings={localHomepageSettings}
             handleOnChange={handleSettingOnChange}
           />
           <SubSectionTitle>
@@ -447,12 +448,13 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               </ToggleLabel>
             </Setting>
           </SectionField>
-          {/* <Outlet
+          <Outlet
             id="app.containers.Admin.settings.customize.headerSectionEnd"
-            latestAppConfigSettings={latestAppConfigSettings}
+            latestHomepageSettings={localHomepageSettings}
             handleOnChange={handleSettingOnChange}
-            errors={errors}
-          /> */}
+            // testing
+            errors={{ base: [{ error: 'some error' }] }}
+          />
         </Section>
       </>
     </SectionFormWrapper>
