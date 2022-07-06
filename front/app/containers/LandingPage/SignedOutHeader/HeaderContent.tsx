@@ -207,7 +207,6 @@ const HeaderContent = ({
         )}
         <Outlet
           id="app.containers.LandingPage.SignedOutHeader.CTA"
-          ctaType={homepageSettings.attributes.cta_signed_out_type}
           customizedButtonConfig={
             customizableHomepageBanner.cta_signed_out_customized_button
           }
