@@ -1311,7 +1311,7 @@
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_option": "Enviar sua opção",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_project": "Enviar seu projeto",
   "app.containers.AdminPage.groups.permissions.permissionAction_submit_question": "Enviar sua dúvida",
-  "app.containers.AdminPage.groups.permissions.permissionAction_take_poll": "Faça a sondagem",
+  "app.containers.AdminPage.groups.permissions.permissionAction_take_poll": "Faça a pesquisa",
   "app.containers.AdminPage.groups.permissions.permissionAction_take_survey": "Faça a pesquisa",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_contributions": "Votar em contribuições",
   "app.containers.AdminPage.groups.permissions.permissionAction_vote_ideas": "Votar em ideias",
