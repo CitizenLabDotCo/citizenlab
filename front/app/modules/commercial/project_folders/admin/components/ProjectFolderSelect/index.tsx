@@ -58,10 +58,7 @@ const ProjectFolderSelect = ({
   const authUser = useAuthUser();
 
   const userCanCreateProjectInFolderOnly = usePermission({
-    item: {
-      type: 'project_folder',
-      context: { folder: 'folder', user: authUser },
-    },
+    item: 'project_folder',
     action: 'create_project_in_folder_only',
   });
 
