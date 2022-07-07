@@ -55,6 +55,14 @@ describe('<ChartCard />', () => {
 
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
   });
+
+  it('shows representativeness score', () => {
+    render(<ChartCard userCustomField={userCustomField} />);
+
+    expect(screen.getByText('Representativeness score:')).toBeInTheDocument();
+    expect(screen.getByText('80')).toBeInTheDocument();
+    expect(screen.getByText('/100')).toBeInTheDocument();
+  });
 });
 
 describe('<ChartCard /> (chart view)', () => {
