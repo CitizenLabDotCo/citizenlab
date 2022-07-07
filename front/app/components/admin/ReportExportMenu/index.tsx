@@ -28,6 +28,13 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
+const StyledButton = styled(Button)`
+  button {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+`;
+
 interface ReportExportMenuProps {
   className?: string;
   name: string;
@@ -189,27 +196,27 @@ const ReportExportMenu = ({
         content={
           <>
             {svgNode && (
-              <Button
+              <StyledButton
                 onClick={handleDownloadSvg}
                 buttonStyle="text"
                 padding="0"
                 fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadAsImage} />
-              </Button>
+              </StyledButton>
             )}
             {svgNode && (
-              <Button
+              <StyledButton
                 onClick={handleDownloadPng}
                 buttonStyle="text"
                 padding="0"
                 fontSize={`${fontSizes.s}px`}
               >
                 Download as PNG
-              </Button>
+              </StyledButton>
             )}
             {xlsxEndpoint && (
-              <Button
+              <StyledButton
                 onClick={downloadXlsx}
                 buttonStyle="text"
                 processing={exportingXls}
@@ -217,7 +224,7 @@ const ReportExportMenu = ({
                 fontSize={`${fontSizes.s}px`}
               >
                 <FormattedMessage {...messages.downloadXlsx} />
-              </Button>
+              </StyledButton>
             )}
           </>
         }
