@@ -16,7 +16,7 @@ import messages from './messages';
 import { Multiloc, CLError } from 'typings';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../constants';
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 
 // resources
 import useHomepageSettings from 'hooks/useHomepageSettings';

@@ -76,7 +76,6 @@ export async function updateHomepageSettings(
   // updating vs. getting the data.
   newHomepageSettings: Partial<IHomepageSettingsAttributes>
 ) {
-  console.log({ newHomepageSettings });
   const homepageSettings = await streams.update<IHomepageSettings>(
     homepageSettingsEndpoint,
     'home_page_settings',

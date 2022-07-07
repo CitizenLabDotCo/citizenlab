@@ -63,7 +63,7 @@ import { forOwn, size, trim, debounce, pick } from 'lodash-es';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // constants
-import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../constants';
+import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 
@@ -75,7 +75,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const theme: any = useTheme();
   const homepageSettings = useHomepageSettings();
 
-  // local state
+  // component state
   const [isLoading, setIsLoading] = useState(false);
   const [convertedHeaderBg, setConvertedHeaderBG] = useState<
     UploadFile[] | null
@@ -93,7 +93,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
-      // to do: pick only the attributes we need
       setLocalHomepageSettings({
         ...homepageSettings.data.attributes,
         banner_layout:
@@ -124,6 +123,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       setIsLoading(true);
       try {
         await updateHomepageSettings(bannerRelevantValues);
+        setApiErrors(null);
         setIsLoading(false);
       } catch (error) {
         if (isCLErrorJSON(error)) {
@@ -133,8 +133,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         }
         setIsLoading(false);
       }
-      // to do add validation
-      setIsLoading(false);
     }
   };
 
@@ -175,8 +173,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     key: keyof IHomepageSettingsAttributes,
     value: any
   ) => {
-    console.log('handle change');
-    console.log([key, value]);
     updateValueInLocalHomepageSettings(key, value);
   };
 

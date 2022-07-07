@@ -392,9 +392,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
       className,
       previewOverlayElement,
     } = this.props;
-
-    console.log({ images });
-
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
     const remainingImages =
