@@ -21,6 +21,8 @@ const StickyContainer = styled.div`
     width: calc(100% + 4rem);
     margin-left: -2rem;
   `}
+
+  z-index: 1001;
 `;
 
 export default StickyContainer;
