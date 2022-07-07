@@ -4,7 +4,7 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 export default function useRScore(
   userCustomFieldId: string,
-  projectId: string
+  projectId?: string
 ) {
   const [rScore, setRScore] = useState<RScoreData | NilOrError>();
 
