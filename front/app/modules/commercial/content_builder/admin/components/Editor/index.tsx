@@ -48,6 +48,11 @@ const Editor: React.FC<EditorProps> = ({
         ImageTextCards,
         Button,
       }}
+      indicator={{
+        success: 'rgb(98, 196, 98)',
+        error: 'red',
+        transition: 'none',
+      }}
       onRender={isPreview ? undefined : RenderNode}
       enabled={isPreview ? false : true}
       onNodesChange={(data) =>
