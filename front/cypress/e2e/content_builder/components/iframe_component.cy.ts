@@ -83,7 +83,7 @@ describe('Content builder Iframe component', () => {
       .clear()
       .type('https://www.citizenlab.co');
     cy.contains(
-      'You cannot embed content from this website for security reasons'
+      'Sorry, this content could not be embedded. Visit our support page to learn more.'
     ).should('be.visible');
     // Check that save is disabled
     cy.contains('Save').should('be.disabled');

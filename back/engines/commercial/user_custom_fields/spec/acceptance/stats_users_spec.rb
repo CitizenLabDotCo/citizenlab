@@ -20,7 +20,7 @@ shared_examples 'xlsx export' do |field_name|
     worksheet_values = xlsx_worksheet_to_array(worksheet)
 
     expect(worksheet.sheet_name).to eq(expected_worksheet_name)
-    expect(worksheet_values).to match(expected_worksheet_values)
+    expect(worksheet_values).to eq(expected_worksheet_values)
   end
 end
 
@@ -77,15 +77,16 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to include(
             series: {
-              users: { female: 2, unspecified: 1, _blank: 0 },
-              expected_users: nil
+              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
+              expected_users: nil,
+              reference_population: nil
             }
           )
         end
       end
 
       context "when 'gender' custom field has a reference distribution" do
-        before do
+        let!(:ref_distribution) do
           create(:ref_distribution, custom_field: CustomField.find_by(key: 'gender'))
         end
 
@@ -93,12 +94,13 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to include(
             series: {
-              users: { female: 2, unspecified: 1, _blank: 0 },
+              users: { female: 2, unspecified: 1, male: 0, _blank: 0 },
               expected_users: {
                 male: kind_of(Numeric),
                 female: kind_of(Numeric),
                 unspecified: kind_of(Numeric)
-              }
+              },
+              reference_population: ref_distribution.distribution_by_option_id.symbolize_keys
             }
           )
         end
@@ -157,7 +159,8 @@ resource 'Stats - Users' do
           expect(json_response_body).to match({
             series: {
               users: { '1980': 2, '1976': 1, _blank: 0 },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
           })
         end
@@ -282,10 +285,17 @@ resource 'Stats - Users' do
 
       example_request 'Users by education' do
         expect(response_status).to eq 200
+
+        expected_users = CustomField.find_by(key: 'education')
+          .options.to_h { |option| [option.key, 0] }
+          .merge('3': 2, '5': 1, _blank: 0)
+          .symbolize_keys
+
         expect(json_response_body).to include(
           series: {
-            users: { '3': 2, '5': 1, _blank: 0 },
-            expected_users: nil
+            users: expected_users,
+            expected_users: nil,
+            reference_population: nil
           }
         )
       end
@@ -357,19 +367,21 @@ resource 'Stats - Users' do
             expect(response_status).to eq 200
             expect(json_response_body).to match({
               options: {
-                @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-                @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-                @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
+                @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+                @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
+                @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
               },
               series: {
                 users: {
-                  @option1.key.to_sym => 1,
-                  @option2.key.to_sym => 1,
+                  @option1.key => 1,
+                  @option2.key => 1,
+                  @option3.key => 0,
                   _blank: 1
                 },
-                expected_users: nil
+                expected_users: nil,
+                reference_population: nil
               }
-            })
+            }.deep_symbolize_keys)
           end
         end
 
@@ -379,7 +391,7 @@ resource 'Stats - Users' do
           example_request 'Users by custom field (select) including expected nb of users' do
             expect(response_status).to eq 200
             expect(json_response_body).to include(series: hash_including(
-              expected_users: @custom_field.custom_field_options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
+              expected_users: @custom_field.options.to_h { |option| [option.key.to_sym, kind_of(Numeric)] }
             ))
           end
         end
@@ -413,19 +425,21 @@ resource 'Stats - Users' do
           expect(response_status).to eq 200
           expect(json_response_body).to match({
             options: {
-              @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys, ordering: 0 },
-              @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys, ordering: 1 },
-              @option3.key.to_sym => { title_multiloc: @option3.title_multiloc.symbolize_keys, ordering: 2 }
+              @option1.key => { title_multiloc: @option1.title_multiloc, ordering: 0 },
+              @option2.key => { title_multiloc: @option2.title_multiloc, ordering: 1 },
+              @option3.key => { title_multiloc: @option3.title_multiloc, ordering: 2 }
             },
             series: {
               users: {
-                @option1.key.to_sym => 2,
-                @option2.key.to_sym => 1,
+                @option1.key => 2,
+                @option2.key => 1,
+                @option3.key => 0,
                 _blank: 1
               },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
-          })
+          }.deep_symbolize_keys)
         end
       end
 
@@ -462,7 +476,8 @@ resource 'Stats - Users' do
                 # rubocop:enable Lint/BooleanSymbol
                 _blank: 1
               },
-              expected_users: nil
+              expected_users: nil,
+              reference_population: nil
             }
           })
         end
@@ -520,17 +535,21 @@ resource 'Stats - Users' do
         end
 
         describe 'when the custom field has a reference distribution' do
-          before { create(:ref_distribution, custom_field: @custom_field) }
+          before do
+            create(:ref_distribution, custom_field: @custom_field, distribution: {
+              @option1.id => 80, @option3.id => 20
+            })
+          end
 
           include_examples('xlsx export', 'custom field (select) including expected nb of users') do
             let(:expected_worksheet_name) { 'users_by_select_field' }
             let(:expected_worksheet_values) do
               [
-                %w[option option_id users expected_users],
-                ['youth council', @option1.key, 1, kind_of(Numeric)],
-                ['youth council', @option2.key, 1, kind_of(Numeric)],
-                ['youth council', @option3.key, 0, kind_of(Numeric)],
-                ['_blank', '_blank', 1, 0]
+                %w[option option_id users expected_users reference_population],
+                ['youth council', @option1.key, 1, 0.8, 80],
+                ['youth council', @option2.key, 1, '', ''],
+                ['youth council', @option3.key, 0, 0.2, 20],
+                ['_blank', '_blank', 1, '', '']
               ]
             end
           end

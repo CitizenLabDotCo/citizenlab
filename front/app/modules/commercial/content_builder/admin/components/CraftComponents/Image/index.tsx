@@ -6,6 +6,8 @@ import {
   Image as ImageComponent,
   Input,
   IconTooltip,
+  colors,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 
 // image upload
@@ -15,11 +17,15 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { UploadFile } from 'typings';
 
 // craft
-import { useNode } from '@craftjs/core';
+import { useEditor, useNode } from '@craftjs/core';
 import messages from '../../../messages';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
+
+// events
+import eventEmitter from 'utils/eventEmitter';
+import { IMAGE_UPLOADING_EVENT } from 'modules/commercial/content_builder/admin/containers';
 
 const Image = ({
   imageUrl,
@@ -30,14 +36,37 @@ const Image = ({
   alt: string;
   dataCode?: string;
 }) => {
+  const { enabled } = useEditor((state) => {
+    return {
+      enabled: state.options.enabled,
+    };
+  });
+
   return (
-    <Box id="e2e-image" style={{ pointerEvents: 'none' }} minHeight="26px">
+    <Box
+      width="100%"
+      display="flex"
+      id="e2e-image"
+      style={{ pointerEvents: 'none' }}
+      minHeight="26px"
+    >
       {imageUrl && (
         <ImageComponent
           width="100%"
           src={imageUrl}
           alt={alt}
           data-code={dataCode}
+        />
+      )}
+      {/* In edit view, show an image placeholder if image is not set. */}
+      {!imageUrl && enabled && (
+        <Icon
+          margin="auto"
+          padding="24px"
+          width="100px"
+          height="100px"
+          fill={colors.clIconSecondary}
+          name="image"
         />
       )}
     </Box>
@@ -58,10 +87,12 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
   useEffect(() => {
     if (imageUrl) {
       (async () => {
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, true);
         const imageFile = await convertUrlToUploadFile(imageUrl);
         if (imageFile) {
           setImageFiles([imageFile]);
         }
+        eventEmitter.emit(IMAGE_UPLOADING_EVENT, false);
       })();
     }
   }, [imageUrl]);
@@ -82,7 +113,7 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 
   const handleOnRemove = () => {
     setProp((props) => {
-      props.imageUrl = undefined;
+      props.imageUrl = '';
       props.dataCode = undefined;
       props.alt = '';
     });
@@ -100,7 +131,9 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
         imagePreviewRatio={1 / 2}
         maxImagePreviewWidth="360px"
         objectFit="contain"
-        acceptedFileTypes="image/jpg, image/jpeg, image/png"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png'],
+        }}
         onAdd={handleOnAdd}
         onRemove={handleOnRemove}
       />
@@ -127,9 +160,6 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
 });
 
 Image.craft = {
-  props: {
-    imageUrl: '',
-  },
   related: {
     settings: ImageSettings,
   },

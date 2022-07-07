@@ -39,24 +39,51 @@ describe XlsxService do
     end
 
     it 'contains extra columns for custom user fields' do
-      custom_fields = create_list(:custom_field, 2)
-      custom_select = create(:custom_field_select)
-      custom_multiselect = create(:custom_field_multiselect)
-      custom_options = create_list(:custom_field_option, 2, custom_field: custom_select)
-      custom_options_multi = create_list(:custom_field_option, 2, custom_field: custom_multiselect)
-      users[0].custom_field_values[custom_select.key] = custom_options[0].key
-      users[0].custom_field_values[custom_multiselect.key] = custom_options_multi[0].key
+      create :custom_field_domicile
+      custom_select = create :custom_field_select, title_multiloc: { 'en' => 'Select' }
+      custom_multiselect = create :custom_field_multiselect, title_multiloc: { 'en' => 'Multiselect' }
+      select_option = create :custom_field_option, custom_field: custom_select, title_multiloc: { 'en' => 'Option 1' }
+      multiselect_option = create :custom_field_option, custom_field: custom_multiselect, title_multiloc: { 'en' => 'Option 2' }
+      area = create :area, title_multiloc: { 'en' => 'Center' }
+      users.first.update!(
+        custom_field_values: {
+          'domicile' => area.id,
+          custom_select.key => select_option.key,
+          custom_multiselect.key => [multiselect_option.key]
+        }
+      )
 
-      custom_fields_headers = (custom_fields | [custom_select]).map do |custom_field|
-        custom_field.title_multiloc['en']
-      end
+      custom_fields_headers = %w[domicile Select Multiselect]
       title_row = worksheet[0].cells.map(&:value)
-      # works because the custom_field_select facory gives it a disting name from other fields
-      select_col_index = title_row.find_index(custom_select.title_multiloc['en'])
-      options_col = worksheet.map { |col| col.cells[select_col_index].value }
-
       expect(title_row).to include(*custom_fields_headers)
-      expect(options_col).to include(custom_options[0].title_multiloc['en'])
+
+      domicile_index = title_row.find_index 'domicile'
+      select_index = title_row.find_index 'Select'
+      multiselect_index = title_row.find_index 'Multiselect'
+      expect([domicile_index, select_index, multiselect_index]).to all(be_present)
+      user_rows = worksheet.map do |row|
+        row.cells.map(&:value)
+      end
+      user_row = user_rows.find do |values|
+        values.include? users.first.id
+      end
+      expect(
+        [user_row[domicile_index], user_row[select_index], user_row[multiselect_index]]
+      ).to eq ['Center', 'Option 1', 'Option 2']
+    end
+
+    it 'includes hidden custom fields' do
+      create :custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' }
+      headers = worksheet[0].cells.map(&:value)
+      field_idx = headers.find_index 'Hidden field'
+      expect(field_idx).to be_present
+    end
+
+    it 'excludes disabled custom fields' do
+      create :custom_field, enabled: false, title_multiloc: { 'en' => 'Disabled field' }
+      headers = worksheet[0].cells.map(&:value)
+      field_idx = headers.find_index 'Disabled field'
+      expect(field_idx).to be_nil
     end
 
     describe do
@@ -72,8 +99,6 @@ describe XlsxService do
   end
 
   describe 'generate_ideas_xlsx' do
-    before { create_list(:custom_field, 2) }
-
     let(:ideas) do
       create_list(:idea, 5).tap do |ideas|
         ideas.first.author.destroy! # should be able to handle ideas without author

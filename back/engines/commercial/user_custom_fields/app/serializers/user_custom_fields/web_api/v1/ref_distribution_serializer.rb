@@ -10,6 +10,8 @@ module UserCustomFields
 
         has_many(
           :values,
+          object_method_name: :options,
+          id_method_name: :option_ids,
           serializer: ::WebApi::V1::CustomFieldOptionSerializer,
           record_type: :custom_field_option
         )

@@ -135,6 +135,8 @@ interface State {
   proposedBudget: number | null;
   address: string | null;
   imageFile: UploadFile[];
+  imageFileIsChanged: boolean;
+  ideaFiles: UploadFile[];
   imageId: string | null;
   loaded: boolean;
   submitError: boolean;
@@ -160,6 +162,8 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       proposedBudget: null,
       address: null,
       imageFile: [],
+      imageFileIsChanged: false,
+      ideaFiles: [],
       imageId: null,
       loaded: false,
       submitError: false,
@@ -260,11 +264,11 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     const { project, authUser, appConfiguration } = this.props;
     const {
       locale,
+      imageFileIsChanged,
       titleMultiloc,
       descriptionMultiloc,
       ideaSlug,
       imageId,
-      imageFile,
     } = this.state;
     const {
       title,
@@ -277,15 +281,13 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
       address,
     } = ideaFormOutput;
     const oldImageId = imageId;
-    const oldImage = imageFile && imageFile.length > 0 ? imageFile[0] : null;
-    const oldImageBase64 = oldImage ? oldImage.base64 : null;
     const newImage =
       ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0
         ? ideaFormOutput.imageFile[0]
         : null;
     const newImageBase64 = newImage ? newImage.base64 : null;
     const imageToAddPromise =
-      newImageBase64 && oldImageBase64 !== newImageBase64
+      imageFileIsChanged && newImageBase64
         ? addIdeaImage(ideaId, newImageBase64, 0)
         : Promise.resolve(null);
     const filesToAddPromises = ideaFiles
@@ -324,7 +326,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ submitError: false, processing: true });
 
     try {
-      if (oldImageId && oldImageBase64 !== newImageBase64) {
+      if (oldImageId && imageFileIsChanged) {
         await deleteIdeaImage(ideaId, oldImageId);
       }
 
@@ -402,6 +404,22 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     this.setState({ titleMultiloc, titleProfanityError: false });
   };
 
+  onImageFileAdd = (imageFile: UploadFile[]) => {
+    this.setState({ imageFile: [imageFile[0]], imageFileIsChanged: true });
+  };
+
+  onImageFileRemove = () => {
+    this.setState({ imageFile: [], imageFileIsChanged: true });
+  };
+
+  onTagsChange = (selectedTopics: string[]) => {
+    this.setState({ selectedTopics });
+  };
+
+  onAddressChange = (address: string) => {
+    this.setState({ address });
+  };
+
   onDescriptionChange = (description: string) => {
     const { locale } = this.props;
     const descriptionMultiloc = {
@@ -410,6 +428,12 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
     };
 
     this.setState({ descriptionMultiloc, descriptionProfanityError: false });
+  };
+
+  onIdeaFilesChange = (ideaFiles: UploadFile[]) => {
+    this.setState({
+      ideaFiles,
+    });
   };
 
   render() {
@@ -422,6 +446,7 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
         selectedTopics,
         address,
         imageFile,
+        ideaFiles,
         budget,
         proposedBudget,
         titleProfanityError,
@@ -474,14 +499,20 @@ class IdeaEditPage extends PureComponent<Props & InjectedLocalized, State> {
                 proposedBudget={proposedBudget}
                 address={address || ''}
                 imageFile={imageFile}
+                ideaFiles={ideaFiles}
                 onSubmit={this.handleIdeaFormOutput}
                 remoteIdeaFiles={
                   !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null
                 }
                 hasTitleProfanityError={titleProfanityError}
                 hasDescriptionProfanityError={descriptionProfanityError}
+                onImageFileAdd={this.onImageFileAdd}
+                onImageFileRemove={this.onImageFileRemove}
+                onTagsChange={this.onTagsChange}
                 onTitleChange={this.onTitleChange}
                 onDescriptionChange={this.onDescriptionChange}
+                onAddressChange={this.onAddressChange}
+                onIdeaFilesChange={this.onIdeaFilesChange}
               />
 
               <ButtonBarContainer>
