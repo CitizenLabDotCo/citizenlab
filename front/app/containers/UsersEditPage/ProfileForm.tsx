@@ -313,7 +313,9 @@ class ProfileForm extends PureComponent<Props, State> {
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="170px"
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+              }}
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
               label={formatMessage(messages.imageDropzonePlaceholder)}
