@@ -151,7 +151,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "projekt",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "temat",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "do",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Pobierz jako obrazek",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Pobierz Excel",
   "app.components.admin.SlugInput.regexError": "Url może zawierać tylko zwykłe, małe litery (a-z), cyfry (0-9) i myślniki (-). Pierwszy i ostatni znak nie mogą być myślnikami. Kolejne myślniki (--) są niedozwolone.",
   "app.components.admin.SlugInput.resultingURL": "Wynikowy adres URL",

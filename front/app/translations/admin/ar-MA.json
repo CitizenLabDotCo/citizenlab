@@ -151,7 +151,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "مشروع",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "موضوع",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "حتى",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Download as image",
   "app.components.admin.ReportExportMenu.downloadXlsx": "تنزيل إكسل",
   "app.components.admin.SlugInput.regexError": "The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.",
   "app.components.admin.SlugInput.resultingURL": "Resulting URL",
