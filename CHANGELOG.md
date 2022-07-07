@@ -1,10 +1,14 @@
 # Changelog
 
-## Next release
+## 2022-07-06
 
 ### Added
 
-- [CL-1085] - Add link to support article when there are errors during embed in the content builder
+- [CL-1085] Add link to support article when there are errors during embed in the content builder
+
+### Changed
+
+- [CL-875] "en" locale is shown as "en-US" in admin HQ
 
 ## 2022-07-05
 
