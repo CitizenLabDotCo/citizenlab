@@ -1464,7 +1464,7 @@
   "app.utils.errors.default.ajv_error_politician_required": "Please fill in whether you are a politician",
   "app.utils.errors.default.ajv_error_required": "Acest câmp este obligatoriu",
   "app.utils.errors.default.ajv_error_type": "Can't be blank",
-  "app.utils.errors.default.api_error_accepted": "Must be accepted",
+  "app.utils.errors.default.test.api_error_accepted": "Must be accepted",
   "app.utils.errors.default.api_error_blank": "Can't be blank",
   "app.utils.errors.default.api_error_confirmation": "Doesn't match",
   "app.utils.errors.default.api_error_empty": "Can't be empty",

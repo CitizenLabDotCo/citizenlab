@@ -1486,7 +1486,7 @@
   "app.utils.errors.default.ajv_error_politician_required": "Bitte geben Sie ein, ob Sie ein Politiker/in sind",
   "app.utils.errors.default.ajv_error_required": "Dieses Feld ist erforderlich",
   "app.utils.errors.default.ajv_error_type": "Kann nicht leer sein",
-  "app.utils.errors.default.api_error_accepted": "Muss akzeptiert werden",
+  "app.utils.errors.default.test.api_error_accepted": "Muss akzeptiert werden",
   "app.utils.errors.default.api_error_blank": "Kann nicht leer sein",
   "app.utils.errors.default.api_error_confirmation": "Stimmt nicht überein",
   "app.utils.errors.default.api_error_empty": "Kann nicht leer sein",

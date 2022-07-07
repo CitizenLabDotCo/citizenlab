@@ -1486,7 +1486,7 @@
   "app.utils.errors.default.ajv_error_politician_required": "Angiv venligst, om du er politiker",
   "app.utils.errors.default.ajv_error_required": "Dette felt er påkrævet",
   "app.utils.errors.default.ajv_error_type": "Kan ikke være tom",
-  "app.utils.errors.default.api_error_accepted": "Skal accepteres",
+  "app.utils.errors.default.test.api_error_accepted": "Skal accepteres",
   "app.utils.errors.default.api_error_blank": "Kan ikke være tom",
   "app.utils.errors.default.api_error_confirmation": "Passer ikke sammen",
   "app.utils.errors.default.api_error_empty": "Må ikke være tomt",

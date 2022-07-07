@@ -1486,7 +1486,7 @@
   "app.utils.errors.default.ajv_error_politician_required": "Унесите да ли сте политичар",
   "app.utils.errors.default.ajv_error_required": "Ово поље је обавезно",
   "app.utils.errors.default.ajv_error_type": "Не може остати празно",
-  "app.utils.errors.default.api_error_accepted": "Мора се прихватити",
+  "app.utils.errors.default.test.api_error_accepted": "Мора се прихватити",
   "app.utils.errors.default.api_error_blank": "Не може остати празно",
   "app.utils.errors.default.api_error_confirmation": "Не поклапа се",
   "app.utils.errors.default.api_error_empty": "Не може остати празно",

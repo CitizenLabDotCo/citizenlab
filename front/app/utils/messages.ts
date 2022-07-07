@@ -7,7 +7,7 @@ export default defineMessages({
     defaultMessage: "Doesn't match",
   },
   api_error_accepted: {
-    id: 'app.utils.errors.default.api_error_accepted',
+    id: 'app.utils.errors.default.test.api_error_accepted',
     defaultMessage: 'Must be accepted',
   },
   api_error_inclusion: {
