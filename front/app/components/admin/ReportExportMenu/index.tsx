@@ -202,7 +202,7 @@ const ReportExportMenu = ({
                 padding="0"
                 fontSize={`${fontSizes.s}px`}
               >
-                <FormattedMessage {...messages.downloadAsImage} />
+                <FormattedMessage {...messages.downloadSvg} />
               </StyledButton>
             )}
             {svgNode && (
@@ -212,7 +212,7 @@ const ReportExportMenu = ({
                 padding="0"
                 fontSize={`${fontSizes.s}px`}
               >
-                Download as PNG
+                <FormattedMessage {...messages.downloadPng} />
               </StyledButton>
             )}
             {xlsxEndpoint && (
