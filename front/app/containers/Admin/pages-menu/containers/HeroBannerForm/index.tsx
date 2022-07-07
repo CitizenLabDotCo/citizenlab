@@ -223,7 +223,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   function createRemoveUploadHandler() {
     return () => {
       updateValueInLocalState('header_bg', null);
-      updateValueInLocalState('header_bg', []);
       // setState((state) => ({
       //   ...state,
       //   [type]: [],
@@ -244,11 +243,9 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   useEffect(() => {
     if (localHomepageSettings?.header_bg) {
-      const convertHeaderToUploadFile = async (settingsHeaderUrl) => {
-        if (settingsHeaderUrl) {
-          const tenantHeaderBg = await convertUrlToUploadFile(
-            settingsHeaderUrl
-          );
+      const convertHeaderToUploadFile = async (fileInfo) => {
+        if (fileInfo) {
+          const tenantHeaderBg = await convertUrlToUploadFile(fileInfo.url);
           const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
             ? [tenantHeaderBg]
             : [];
@@ -257,8 +254,10 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         }
       };
 
-      const headerUrl = localHomepageSettings.header_bg?.large;
-      convertHeaderToUploadFile(headerUrl);
+      const headerFileInfo = localHomepageSettings.header_bg?.large;
+      convertHeaderToUploadFile(headerFileInfo);
+    } else {
+      setConvertedHeaderBG(null);
     }
   }, [localHomepageSettings?.header_bg]);
 
