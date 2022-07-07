@@ -18,6 +18,6 @@ class AddUniquenessConstraintToVolunteers < ActiveRecord::Migration[6.1]
       SQL
     )
     add_index :volunteering_volunteers, %i[cause_id user_id], unique: true
-    remove_index :volunteers, :cause_id
+    remove_index :volunteers, name: :index_volunteering_volunteers_on_cause_id
   end
 end

@@ -1194,7 +1194,6 @@ ActiveRecord::Schema.define(version: 2022_07_07_102050) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cause_id", "user_id"], name: "index_volunteering_volunteers_on_cause_id_and_user_id", unique: true
-    t.index ["cause_id"], name: "index_volunteering_volunteers_on_cause_id"
     t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
   end
 
