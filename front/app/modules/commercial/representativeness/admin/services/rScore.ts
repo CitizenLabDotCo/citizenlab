@@ -4,11 +4,11 @@ import { API_PATH } from 'containers/App/constants';
 const getEndpoint = (userCustomFieldId: string) =>
   `${API_PATH}/users/custom_fields/${userCustomFieldId}/rscore`;
 
-interface RScore {
+export interface RScore {
   data: RScoreData;
 }
 
-interface RScoreData {
+export interface RScoreData {
   id: string;
   type: 'rscore';
   attributes: {
