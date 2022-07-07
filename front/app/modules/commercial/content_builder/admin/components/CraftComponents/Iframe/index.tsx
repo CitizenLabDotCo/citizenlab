@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 
 // intl
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';
@@ -74,6 +74,23 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     });
   };
 
+  const invalidWhiteListError = (
+    <FormattedMessage
+      {...messages.iframeInvalidWhitelistUrlErrorMessage}
+      values={{
+        visitLinkMessage: (
+          <a
+            href={formatMessage(messages.iframeSupportLink)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {formatMessage(messages.iframeEmbedVisitLinkMessage)}
+          </a>
+        ),
+      }}
+    />
+  );
+
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
       <Text variant="bodyM">{formatMessage(messages.iframeDescription)}</Text>
@@ -89,7 +106,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
               />
             </span>
           }
-          placeholder={formatMessage(messages.iframeUrlPlaceholder)}
+          placeholder={formatMessage(messages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {
@@ -102,7 +119,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             text={
               errorType === 'invalidUrl'
                 ? formatMessage(messages.iframeInvalidUrlErrorMessage)
-                : formatMessage(messages.iframeWhitelistUrlErrorMessage)
+                : invalidWhiteListError
             }
           />
         )}
