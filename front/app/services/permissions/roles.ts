@@ -1,4 +1,5 @@
-import { IUser, TRole, IProjectModeratorRole } from 'services/users';
+import { IUser } from 'services/users';
+import { TRole, IProjectModeratorRole } from 'services/permissions';
 import { isNilOrError } from 'utils/helperUtils';
 
 export const userHasRole = (user: IUser, role: TRole['type']) => {

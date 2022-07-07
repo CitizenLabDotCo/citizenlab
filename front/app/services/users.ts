@@ -2,24 +2,9 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
 import { authApiEndpoint } from './auth';
+import { TRole } from 'services/permissions';
 
 const apiEndpoint = `${API_PATH}/users`;
-
-export interface IProjectModeratorRole {
-  type: 'project_moderator';
-  project_id: string;
-}
-
-interface IAdminRole {
-  type: 'admin';
-}
-
-export interface IRoleRegisty {
-  IAdminRole: IAdminRole;
-  IProjectModeratorRole: IProjectModeratorRole;
-}
-
-export type TRole = IRoleRegisty[keyof IRoleRegisty];
 
 export interface IUserAttributes {
   first_name: string;

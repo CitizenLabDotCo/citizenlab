@@ -10,7 +10,8 @@ import Pagination from 'components/Pagination';
 import UserTableRow from './UserTableRow';
 
 // Services
-import { IUserData, TRole, updateUser } from 'services/users';
+import { IUserData, updateUser } from 'services/users';
+import { TRole } from 'services/permissions';
 
 // Resources
 import { GetUsersChildProps, SortAttribute } from 'resources/GetUsers';

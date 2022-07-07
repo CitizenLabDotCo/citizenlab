@@ -1,8 +1,9 @@
 import { isNilOrError } from 'utils/helperUtils';
-import { IUserData, TRole } from 'services/users';
+import { IUserData } from 'services/users';
+import { TRole } from 'services/permissions';
 import { isAdmin } from 'services/permissions/roles';
 
-declare module 'services/users' {
+declare module 'services/permissions' {
   interface IProjectFolderModeratorRole {
     type: 'project_folder_moderator';
     project_folder_id: string;
