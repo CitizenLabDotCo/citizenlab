@@ -77,7 +77,7 @@ const ContentBuilderEditModePreview = React.forwardRef<
           zIndex="1"
           mb="12px"
           width={isMobile ? '360px' : '1140px'}
-          borderRadius="33px"
+          borderRadius="20px"
         >
           {/* Iframe */}
           <Box

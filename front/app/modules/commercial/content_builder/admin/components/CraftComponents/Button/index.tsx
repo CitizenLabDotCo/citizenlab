@@ -48,7 +48,13 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
       {((enabled && text) || (text && url)) && (
         <ButtonComponent
           linkTo={url}
-          openLinkInNewTab={!url.includes(window.location.hostname)}
+          openLinkInNewTab={
+            url.includes(window.location.hostname)
+              ? false
+              : url.includes('.')
+              ? true
+              : false
+          }
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}
