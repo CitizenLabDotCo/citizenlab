@@ -25,6 +25,12 @@ const generateData = (n: number) => {
 
 let mockData = generateData(4);
 
+jest.mock('../../hooks/useRScore', () => () => ({
+  attributes: {
+    score: 0.8,
+  },
+}));
+
 jest.mock('../../hooks/useReferenceData', () => () => ({
   referenceData: mockData,
   includedUsers: {
