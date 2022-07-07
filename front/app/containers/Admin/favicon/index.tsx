@@ -145,7 +145,7 @@ class Favicon extends PureComponent<Props, State> {
               <Label>Favicon</Label>
               <FormattedMessage {...messages.faviconExplaination} />
               <MainDropzone
-                acceptedFileTypes="image/png"
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="152px"
@@ -156,7 +156,7 @@ class Favicon extends PureComponent<Props, State> {
                 errorMessage={faviconError}
               />
               <Preview
-                acceptedFileTypes="image/png"
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="32px"
@@ -167,7 +167,7 @@ class Favicon extends PureComponent<Props, State> {
                 errorMessage={faviconError}
               />
               <Preview
-                acceptedFileTypes="image/png"
+                acceptedFileTypes={{ 'image/*': ['.png'] }}
                 images={favicon}
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="16px"

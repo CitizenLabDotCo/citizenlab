@@ -131,7 +131,9 @@ const ImageSettings = injectIntl(({ intl: { formatMessage } }) => {
         imagePreviewRatio={1 / 2}
         maxImagePreviewWidth="360px"
         objectFit="contain"
-        acceptedFileTypes="image/jpg, image/jpeg, image/png"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png'],
+        }}
         onAdd={handleOnAdd}
         onRemove={handleOnRemove}
       />

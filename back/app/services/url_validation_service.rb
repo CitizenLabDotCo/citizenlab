@@ -23,7 +23,8 @@ class UrlValidationService
     %r{\A(https?)://docs\.google\.com/(document|spreadsheets|forms|presentation)/d/(.*?)/.*?},
     %r{\A(https?)://(www\.)?google\.com/maps(/[a-z])?/embed\?([^&]*)=([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
     %r{\A(https?)://([-A-Z0-9.]+)\.slideshare(\.(net|com))/slideshow/embed_code/key/([-A-Z0-9+&@#/%=~_|!:,.;]+)}i,
-    %r{\A(https?)://(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i
+    %r{\A(https?)://(www\.)?onedrive\.live\.([-A-Z0-9+&@#/%=~_|!:,.;?]+)}i,
+    %r{\A(https?)://.*pdf$}
   ].freeze
 
   VIDEO_WHITELIST = [

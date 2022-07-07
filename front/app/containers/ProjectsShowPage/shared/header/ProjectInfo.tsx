@@ -7,7 +7,7 @@ import Fragment from 'components/Fragment';
 import Button from 'components/UI/Button';
 import FileAttachments from 'components/UI/FileAttachments';
 import ProjectInfoSideBar from './ProjectInfoSideBar';
-import ReactResizeDetector from 'react-resize-detector/build/withPolyfill';
+import ReactResizeDetector from 'react-resize-detector';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // hooks
