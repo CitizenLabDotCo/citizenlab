@@ -96,7 +96,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       setLocalHomepageSettings({
         ...homepageSettings.data.attributes,
         banner_layout:
-          homepageSettings.data.attributes.banner_layout ||
+          homepageSettings.data.attributes.banner_layout ??
           'full_width_banner_layout',
       });
     }
@@ -104,15 +104,15 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   const onSave = async () => {
     if (localHomepageSettings) {
-      // filter only the relevant homepage settings
-      // before sending to the api
+      // only send the keys that relate to the banner
+      // and layout back to the API
       const bannerRelevantKeys = [
         'banner_layout',
         'banner_avatars_enabled',
-        'banner_signed_out_headr,_overlay_opacity',
+        'banner_signed_out_header_overlay_opacity',
         'banner_signed_out_header_overlay_color',
         'banner_signed_out_header_multiloc',
-        'banner_signed_out_subheader_multio,c',
+        'banner_signed_out_subheader_multiloc',
         'banner_signed_in_header_multiloc',
         'header_bg',
       ];
