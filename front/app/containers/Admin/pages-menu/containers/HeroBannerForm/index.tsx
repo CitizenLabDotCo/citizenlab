@@ -255,7 +255,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     }
 
     setBannerError(null);
-  }, [localHomepageSettings?.header_bg]);
+  }, [localHomepageSettings?.header_bg, formatMessage]);
 
   if (isNilOrError(localHomepageSettings)) {
     return null;

@@ -55,7 +55,6 @@ const LayoutSetting = ({ latestHomepageSettings, handleOnChange }: Props) => {
   };
 
   const homepageBannerLayout = latestHomepageSettings.banner_layout;
-  console.log('homepageBannerLayout', homepageBannerLayout);
   return (
     <SectionField key="layout">
       <SubSectionTitle>

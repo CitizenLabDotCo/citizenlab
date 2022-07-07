@@ -30,8 +30,6 @@ const CTASettings = ({
     return null;
   }
 
-  console.log('latestHomepageSettings', latestHomepageSettings);
-
   const {
     // these should be not null but check on it
     banner_cta_signed_out_type,

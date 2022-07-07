@@ -3,9 +3,8 @@ import { SectionField } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { CTASignedOutType } from 'services/appConfiguration';
-import { Multiloc } from 'typings';
 import SettingRadioButtons from './SettingRadioButtons';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [

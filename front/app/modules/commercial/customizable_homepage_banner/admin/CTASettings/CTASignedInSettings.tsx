@@ -6,9 +6,8 @@ import {
   CTASignedInType,
   // CustomizedButtonConfig,
 } from 'services/appConfiguration';
-import { Multiloc } from 'typings';
 import SettingRadioButtons from './SettingRadioButtons';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
 
 const CTA_SIGNED_IN_TYPES: CTASignedInType[] = [
@@ -20,14 +19,12 @@ type Props = {
   ctaType: CTASignedInType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string;
-  // customizedButtonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (settingKey: string, settingValue: any) => void;
   errors: CLErrors;
 };
 
 const CTASignedInSettings = ({
   ctaType,
-  // customizedButtonConfig,
   ctaButtonMultiloc,
   ctaButtonUrl,
   handleSettingOnChange,

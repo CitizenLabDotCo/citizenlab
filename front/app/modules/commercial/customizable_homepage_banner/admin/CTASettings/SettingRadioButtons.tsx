@@ -4,12 +4,11 @@ import {
   CTASignedInType,
   // CustomizedButtonConfig,
 } from 'services/appConfiguration';
-import { Multiloc } from 'typings';
+import { Multiloc, CLErrors } from 'typings';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
-import { CLErrors } from 'typings';
 import styled from 'styled-components';
 
 const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
