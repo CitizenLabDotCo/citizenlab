@@ -63,6 +63,7 @@ const ProjectFolderSelect = ({
   });
 
   const localize = useLocalize();
+  // Initially null, the value is set in the useEffect below based on user permissions and folder_id
   const [radioFolderSelect, setRadioFolderSelect] = useState<boolean | null>(
     null
   );
