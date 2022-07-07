@@ -199,7 +199,10 @@ export interface IAppConfigurationSettings {
     }[];
   };
   disable_user_bios?: AppConfigurationFeature;
-  events_widget?: AppConfigurationFeature & {
+  // the enabled value still needs to be checked in homepageSettings
+  /// (with e.g. useHomepageSettingsFeatureFlag)
+  events_widget?: {
+    allowed: boolean;
     widget_title?: Multiloc;
   };
   customizable_navbar?: AppConfigurationFeature;

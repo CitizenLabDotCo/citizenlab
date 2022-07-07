@@ -29,17 +29,27 @@ export interface IHomepageSettings {
   attributes: IHomepageSettingsAttributes;
 }
 
+type KeysOfBooleanValues<T> = {
+  [K in keyof T]: T[K] extends boolean ? K : never;
+}[keyof T];
+
+export type THomepageEnabledSetting =
+  KeysOfBooleanValues<IHomepageSettingsAttributes>;
+
 export interface IHomepageSettingsAttributes {
   // are these values always there?
   top_info_section_enabled: boolean;
   top_info_section_multiloc: Multiloc;
   bottom_info_section_enabled: boolean;
   bottom_info_section_multiloc: Multiloc;
+  // move to module
+  // the allowed still needs to be checked in appConfig
   events_widget_enabled: boolean;
   projects_enabled: boolean;
   projects_header_multiloc: Multiloc;
   banner_avatars_enabled: boolean;
-  customizable_homepage_banner: boolean;
+  // the allowed still needs to be checked in appConfig
+  customizable_homepage_banner_enabled: boolean;
   banner_layout: THomepageBannerLayout | null;
   banner_signed_in_header_multiloc: Multiloc;
   banner_signed_out_header_multiloc: Multiloc;
