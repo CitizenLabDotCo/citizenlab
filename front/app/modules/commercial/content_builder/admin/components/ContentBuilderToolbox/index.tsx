@@ -70,7 +70,7 @@ const ContentBuilderToolbox = ({
       <Box w="100%" display="inline">
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
@@ -117,7 +117,7 @@ const ContentBuilderToolbox = ({
         </DraggableElement>
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
@@ -180,7 +180,7 @@ const ContentBuilderToolbox = ({
         </DraggableElement>
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
