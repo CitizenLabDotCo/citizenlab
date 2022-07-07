@@ -43,7 +43,7 @@ resource 'Phases' do
       )
 
       expect(json_response.dig(:data, :relationships, :project)).to match({
-          data: { id: @phases.first.project_id, type: 'project' }
+        data: { id: @phases.first.project_id, type: 'project' }
       })
 
       if CitizenLab.ee?

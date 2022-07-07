@@ -60,7 +60,8 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [<%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l}\""}.join(",") %>]
+              "enum": [<%= CL2_SUPPORTED_LOCALES.map { |locale| "\"#{locale}\"" }.join(",") %>],
+              "enumNames": [<%= CL2_SUPPORTED_LOCALES.map { |locale| locale.to_s == 'en' ? '"en-US"' : "\"#{locale}\"" }.join(",") %>]
             },
             "uniqueItems": true,
             "minItems": 1,
@@ -652,6 +653,18 @@
         }
       },
 
+      "snap_survey_surveys": {
+        "type": "object",
+        "title": "Snap Survey Surveys",
+        "description":  "Allow the embedding of Snap Survey surveys.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "qualtrics_surveys": {
         "type": "object",
         "title": "Qualtrics Surveys",
@@ -788,18 +801,6 @@
             "type": "string",
             "format": "uri"
           }
-        }
-      },
-
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -1026,6 +1027,7 @@
     "survey_xact_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"],
     "qualtrics_surveys": ["surveys"],
+    "snap_survey_surveys": ["surveys"],
     "microsoft_forms_surveys": ["surveys"],
     "smart_survey_surveys": ["surveys"],
 

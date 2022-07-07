@@ -12,16 +12,16 @@ class ApplicationMailer < ActionMailer::Base
   delegate :first_name, to: :recipient, prefix: true
 
   helper_method :app_configuration, :app_settings, :header_title, :header_message,
-                :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
-                :text_direction
+    :show_header?, :preheader, :subject, :user, :recipient, :locale, :count_from, :days_since_publishing,
+    :text_direction
 
   helper_method :organization_name, :recipient_name,
-                :url_service, :multiloc_service, :organization_name,
-                :loc, :localize_for_recipient, :recipient_first_name
+    :url_service, :multiloc_service, :organization_name,
+    :loc, :localize_for_recipient, :recipient_first_name
 
   helper_method :unsubscribe_url, :terms_conditions_url, :privacy_policy_url, :home_url, :logo_url,
-                :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
-                :header_logo_only?, :remove_vendor_branding?
+    :show_unsubscribe_link?, :show_terms_link?, :show_privacy_policy_link?, :format_message,
+    :header_logo_only?, :remove_vendor_branding?
 
   NotImplementedError = Class.new(StandardError)
 

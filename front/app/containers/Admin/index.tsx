@@ -1,10 +1,11 @@
 import React, { memo, useState, useEffect } from 'react';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { globalState } from 'services/globalState';
+import { Outlet as RouterOutlet } from 'react-router-dom';
 
 // permissions
 import useAuthUser from 'hooks/useAuthUser';
-import { hasPermission } from 'services/permissions';
+import { usePermission } from 'services/permissions';
 import HasPermission from 'components/HasPermission';
 
 // components
@@ -19,8 +20,6 @@ import { endsWith } from 'utils/helperUtils';
 // stlying
 import 'assets/semantic/semantic.min.css';
 import { rgba } from 'polished';
-
-import Outlet from 'components/Outlet';
 
 const Container = styled.div`
   display: flex;
@@ -109,17 +108,19 @@ export const chartTheme = (theme) => {
 
 type Props = {
   className?: string;
-  children: React.ReactNode;
 };
 
 const AdminPage = memo<Props & WithRouterProps>(
-  ({ className, children, location: { pathname } }) => {
+  ({ className, location: { pathname } }) => {
     const authUser = useAuthUser();
 
     const [adminFullWidth, setAdminFullWidth] = useState(false);
     const [adminNoPadding, setAdminNoPadding] = useState(false);
 
-    const [adminFullWidthContent, setAdminFullWidthContent] = useState(false);
+    const userCanViewAdmin = usePermission({
+      item: { type: 'route', path: '/admin' },
+      action: 'access',
+    });
 
     useEffect(() => {
       const subscriptions = [
@@ -135,25 +136,13 @@ const AdminPage = memo<Props & WithRouterProps>(
       };
     }, []);
 
-    const setAdminFullWidthContentToVisible = (isVisible) =>
-      setAdminFullWidthContent(isVisible);
-
-    const userCanViewAdmin = () =>
-      hasPermission({
-        action: 'access',
-        item: { type: 'route', path: '/admin' },
-      });
-
     useEffect(() => {
-      if (
-        authUser === null ||
-        (authUser !== undefined && !userCanViewAdmin())
-      ) {
+      if (authUser === null || (authUser !== undefined && !userCanViewAdmin)) {
         clHistory.push('/');
       }
-    }, [authUser]);
+    }, [authUser, userCanViewAdmin]);
 
-    if (!userCanViewAdmin()) {
+    if (!userCanViewAdmin) {
       return null;
     }
 
@@ -177,23 +166,14 @@ const AdminPage = memo<Props & WithRouterProps>(
       >
         <ThemeProvider theme={chartTheme}>
           <Container className={`${className} ${whiteBg ? 'whiteBg' : ''}`}>
-            {!adminFullWidthContent && (
-              <>
-                <Sidebar />
-                <RightColumn
-                  className={`${fullWidth && 'fullWidth'} ${
-                    noPadding && 'noPadding'
-                  }`}
-                >
-                  {children}
-                </RightColumn>
-              </>
-            )}
-            <Outlet
-              id="app.containers.Admin.contentBuilderLayout"
-              onMount={setAdminFullWidthContentToVisible}
-              childrenToRender={children}
-            />
+            <Sidebar />
+            <RightColumn
+              className={`${fullWidth && 'fullWidth'} ${
+                noPadding && 'noPadding'
+              }`}
+            >
+              <RouterOutlet />
+            </RightColumn>
           </Container>
         </ThemeProvider>
       </HasPermission>
@@ -201,4 +181,4 @@ const AdminPage = memo<Props & WithRouterProps>(
   }
 );
 
-export default withRouter<Props>(AdminPage);
+export default withRouter(AdminPage);

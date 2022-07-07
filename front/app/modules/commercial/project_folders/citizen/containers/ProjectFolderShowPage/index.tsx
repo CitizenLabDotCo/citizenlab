@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { isError, isUndefined } from 'lodash-es';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
-import { moderatesFolder } from '../../../permissions/roles';
+import { userModeratesFolder } from '../../../permissions/roles';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -31,7 +31,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IProjectFolderData } from '../../../services/projectFolders';
-import { PublicationStatus } from 'resources/GetProjects';
+import { PublicationStatus } from 'services/projects';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -176,7 +176,7 @@ const ProjectFolderShowPage = memo<{
     isUndefined(adminPublicationsList);
 
   const userCanEditFolder =
-    !isNilOrError(authUser) && moderatesFolder(authUser, projectFolder.id);
+    !isNilOrError(authUser) && userModeratesFolder(authUser, projectFolder.id);
 
   return (
     <>

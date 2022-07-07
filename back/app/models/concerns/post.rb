@@ -10,16 +10,16 @@ module Post
 
   included do
     pg_search_scope :search_by_all,
-                    against: %i[title_multiloc body_multiloc],
-                    using: { tsearch: { prefix: true } }
+      against: %i[title_multiloc body_multiloc],
+      using: { tsearch: { prefix: true } }
 
     pg_search_scope :restricted_search,
-                    against: %i[title_multiloc body_multiloc],
-                    using: { tsearch: { prefix: true } }
+      against: %i[title_multiloc body_multiloc],
+      using: { tsearch: { prefix: true } }
 
     pg_search_scope :search_any_word,
-                    against: %i[title_multiloc body_multiloc],
-                    using: { tsearch: { any_word: true } }
+      against: %i[title_multiloc body_multiloc],
+      using: { tsearch: { any_word: true } }
 
     # Note from: https://github.com/Casecommons/pg_search
     # > Searching through associations
@@ -50,6 +50,7 @@ module Post
       post.validates :title_multiloc, presence: true, multiloc: { presence: true }
       post.validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
       post.validates :author, presence: true, on: :publication
+      post.validates :author, presence: true, if: :author_id_changed?
       post.validates :slug, uniqueness: true, presence: true
 
       post.before_validation :strip_title

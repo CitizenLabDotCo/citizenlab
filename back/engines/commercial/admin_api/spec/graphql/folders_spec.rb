@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Graphql folder' do
+RSpec.describe AdminApi::Schema do
   let(:context) { {} }
   let(:result) do
-    AdminApi::Schema.execute(
+    described_class.execute(
       query_string,
       context: context,
       variables: variables

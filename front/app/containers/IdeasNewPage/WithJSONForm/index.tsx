@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { PreviousPathnameContext } from 'context';
 
-import { WithRouterProps } from 'react-router';
+import { WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 
 import { isAdmin, isModerator, isSuperAdmin } from 'services/permissions/roles';
@@ -143,7 +143,7 @@ const IdeasNewPageWithJSONForm = ({ params }: WithRouterProps) => {
   );
 
   return (
-    <PageContainer id="e2e-idea-new-page">
+    <PageContainer id="e2e-idea-new-page" overflow="hidden">
       {!isNilOrError(project) && !processingLocation && schema && uiSchema ? (
         <>
           <IdeasNewMeta />

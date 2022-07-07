@@ -40,10 +40,10 @@ class WebApi::V1::InitiativesController < ApplicationController
 
     I18n.with_locale(current_user&.locale) do
       xlsx = XlsxService.new.generate_initiatives_xlsx initiatives,
-                                                       view_private_attributes: Pundit.policy!(current_user,
-                                                                                               User).view_private_attributes?
+        view_private_attributes: Pundit.policy!(current_user,
+          User).view_private_attributes?
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                      filename: 'initiatives.xlsx'
+        filename: 'initiatives.xlsx'
     end
   end
 
@@ -103,7 +103,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     verify_profanity @initiative
 
     save_options = {}
-    save_options[:context] = :publication if @initiative.published?
+    save_options[:context] = :publication if params.dig(:initiative, :publication_status) == 'published'
     ActiveRecord::Base.transaction do
       if @initiative.save save_options
         service.after_create(@initiative, current_user)
@@ -133,7 +133,7 @@ class WebApi::V1::InitiativesController < ApplicationController
     service.before_update(@initiative, current_user)
 
     save_options = {}
-    save_options[:context] = :publication if @initiative.published?
+    save_options[:context] = :publication if params.dig(:initiative, :publication_status) == 'published'
     saved = nil
     ActiveRecord::Base.transaction do
       saved = @initiative.save save_options

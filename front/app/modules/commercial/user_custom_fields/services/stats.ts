@@ -4,17 +4,15 @@ import streams, { IStreamParams } from 'utils/streams';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
-export interface IUsersByGender {
+export interface IUsersByRegistrationField {
   series: {
     users: {
       [key: string]: number;
     };
-  };
-}
-
-export interface IUsersByRegistrationField {
-  series: {
-    users: {
+    reference_population: {
+      [key: string]: number;
+    };
+    expected_users: {
       [key: string]: number;
     };
   };
@@ -31,10 +29,17 @@ export interface IUsersByDomicile {
     users: {
       [key: string]: number;
     };
+    // reference_population: {
+    //   [key: string]: number;
+    // }
+    // expected_users: {
+    //   [key: string]: number;
+    // };
   };
   areas: {
     [key: string]: {
       title_multiloc: Multiloc;
+      ordering: number;
     };
   };
 }
@@ -46,6 +51,8 @@ export interface IUsersByBirthyear {
     };
   };
 }
+
+export type TStreamResponse = IUsersByRegistrationField; // | IUsersByDomicile;
 
 export const usersByRegFieldXlsxEndpoint = (customFieldId: string) =>
   `${apiEndpoint}/users_by_custom_field_as_xlsx/${customFieldId}`;
@@ -75,7 +82,7 @@ export function usersByBirthyearStream(
 export const usersByGenderXlsxEndpoint = `${apiEndpoint}/users_by_gender_as_xlsx`;
 
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByGender>({
+  return streams.get<IUsersByRegistrationField>({
     apiEndpoint: `${apiEndpoint}/users_by_gender`,
     ...streamParams,
   });

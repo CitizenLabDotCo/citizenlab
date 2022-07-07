@@ -1,18 +1,29 @@
 import React from 'react';
 
 // components
-import { Box, IconTooltip, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Input,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import Error from 'components/UI/Error';
 
 // intl
 import messages from '../../../messages';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // craft
 import { useNode } from '@craftjs/core';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
+import { CONTENT_BUILDER_ERROR_EVENT } from '../../../containers';
+
+// types
+import { Locale } from 'typings';
+
+import { isValidUrl } from './utils';
 
 interface Props {
   url: string;
@@ -20,6 +31,7 @@ interface Props {
   hasError: boolean;
   errorType?: string;
   title?: string;
+  selectedLocale: Locale;
 }
 
 const Iframe = ({ url, height, hasError, title }: Props) => {
@@ -41,6 +53,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     hasError,
     errorType,
     title,
+    selectedLocale,
   } = useNode((node) => ({
     url: node.data.props.url,
     height: node.data.props.height,
@@ -48,6 +61,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     title: node.data.props.title,
     hasError: node.data.props.hasError,
     errorType: node.data.props.errorType,
+    selectedLocale: node.data.props.selectedLocale,
   }));
 
   const handleChange = (value: string) => {
@@ -55,26 +69,44 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
     setProp((props) => (props.url = value));
     setProp((props) => (props.errorType = validation[1]));
     setProp((props) => (props.hasError = !validation[0]));
-    eventEmitter.emit('contentBuilderError', {
-      [id]: !validation[0],
+    eventEmitter.emit(CONTENT_BUILDER_ERROR_EVENT, {
+      [id]: { hasError: !validation[0], selectedLocale },
     });
   };
 
+  const invalidWhiteListError = (
+    <FormattedMessage
+      {...messages.iframeInvalidWhitelistUrlErrorMessage}
+      values={{
+        visitLinkMessage: (
+          <a
+            href={formatMessage(messages.iframeSupportLink)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {formatMessage(messages.iframeEmbedVisitLinkMessage)}
+          </a>
+        ),
+      }}
+    />
+  );
+
   return (
     <Box flexWrap="wrap" display="flex" gap="16px" marginBottom="20px">
+      <Text variant="bodyM">{formatMessage(messages.iframeDescription)}</Text>
       <Box flex="0 0 100%">
         <Input
           id="e2e-content-builder-iframe-url-input"
           label={
             <span>
-              {formatMessage(messages.iframeUrlLabel)}{' '}
+              {formatMessage(messages.embedIframeUrlLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeUrlLabelTooltip)}
+                content={formatMessage(messages.embedIframeUrlLabelTooltip)}
               />
             </span>
           }
-          placeholder={formatMessage(messages.iframeUrlPlaceholder)}
+          placeholder={formatMessage(messages.urlPlaceholder)}
           type="text"
           value={url}
           onChange={(value) => {
@@ -87,7 +119,7 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
             text={
               errorType === 'invalidUrl'
                 ? formatMessage(messages.iframeInvalidUrlErrorMessage)
-                : formatMessage(messages.iframeWhitelistUrlErrorMessage)
+                : invalidWhiteListError
             }
           />
         )}
@@ -96,15 +128,15 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
         <Input
           label={
             <span>
-              {formatMessage(messages.iframeHeightLabel)}{' '}
+              {formatMessage(messages.embedIframeHeightLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeHeightLabelTooltip)}
+                content={formatMessage(messages.embedIframeHeightLabelTooltip)}
               />
             </span>
           }
           placeholder={formatMessage(messages.iframeHeightPlaceholder)}
-          type="text"
+          type="number"
           value={height}
           onChange={(value) => {
             setProp((props) => (props.height = value));
@@ -121,10 +153,10 @@ const IframeSettings = injectIntl(({ intl: { formatMessage } }) => {
           value={title}
           label={
             <span>
-              {formatMessage(messages.iframeTitleLabel)}{' '}
+              {formatMessage(messages.embedIframeTitleLabel)}{' '}
               <IconTooltip
                 icon="info3"
-                content={formatMessage(messages.iframeTitleTooltip)}
+                content={formatMessage(messages.embedIframeTitleTooltip)}
               />
             </span>
           }
@@ -142,57 +174,6 @@ Iframe.craft = {
   related: {
     settings: IframeSettings,
   },
-};
-
-/*
- * Function to validate embed URL against white list
- * Returns: boolean value whether URL input string is valid or not
- */
-const isValidUrl = (url: string) => {
-  // Used this reference for generating a valid URL regex:
-  // https://tutorial.eyehunts.com/js/url-regex-validation-javascript-example-code/
-  const validUrlRegex =
-    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g;
-  let invalidUrl = !validUrlRegex.test(url);
-  if (invalidUrl) {
-    return [false, 'invalidUrl'];
-  }
-
-  const urlWhiteList = [
-    /^https:\/\/(.+\.)typeform\.com\/to\//,
-    /^https:\/\/(.+\.)typeform\.com\/to\//,
-    /^https:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js/,
-    /^https:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true/,
-    /^https:\/\/surveys.enalyzer.com\/?\?pid=.*/,
-    /^https:\/\/(www\.)?survey-xact\.dk\/LinkCollector\?key=.*/,
-    /^https:\/\/(.+\.)qualtrics\.com\/jfe\/form\//,
-    /^https:\/\/(www\.)?smartsurvey\.co\.uk\//,
-    /^https:\/\/(.+\.)(microsoft|office)\.com\//,
-    /^https:\/\/(www\.)?eventbrite\.com\/static\/widgets\//,
-    /^https:\/\/(www\.)?arcgis\.com\//,
-    /^https:\/\/public\.tableau\.com\//,
-    /^https:\/\/datastudio\.google\.com\/embed\//,
-    /^https:\/\/app\.powerbi\.com\//,
-    /^https:\/\/static\.ctctcdn\.com\/js\//,
-    /^https:\/\/(www\.)?instagram\.com\//,
-    /^https:\/\/platform\.twitter\.com\//,
-    /^https:\/\/.+\.konveio\.com\//,
-    /^https:\/\/(www\.)?facebook\.com\//,
-    /^https:\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-_]*)/,
-    /^https:\/\/(?:www\.)?(?:player\.vimeo\.com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
-    /^https:\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/,
-    /^https:\/\/?media\.videotool\.dk\/?\?vn=[\w-]+/,
-    /^https:\/\/(?:www\.)?dreambroker\.com\/channel\/([\w-]+)\/iframe\//,
-    /^https:\/\/(.+)?(wistia\.com|wi\.st)\/.*\//,
-  ];
-
-  invalidUrl = !urlWhiteList.some((rx) => rx.test(url));
-
-  if (invalidUrl) {
-    return [false, 'whitelist'];
-  } else {
-    return [true, 'whitelist'];
-  }
 };
 
 export default Iframe;

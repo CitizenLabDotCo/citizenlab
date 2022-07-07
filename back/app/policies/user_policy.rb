@@ -51,7 +51,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && (record.id == user.id || user.admin?)
+    user&.active? && (record.id == user.id || user&.admin?)
   end
 
   def complete_registration?
@@ -59,7 +59,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record.id == user&.id || (user&.active? && user.admin?)
+    record.id == user&.id || (user&.active? && user&.admin?)
   end
 
   def ideas_count?

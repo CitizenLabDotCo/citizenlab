@@ -30,10 +30,9 @@ import FormattedBudget from 'utils/currency/FormattedBudget';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 // a11y
-import { LiveMessage } from 'react-aria-live';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // hooks
 import useAppConfiguration from 'hooks/useAppConfiguration';
@@ -422,10 +421,9 @@ const PBExpenses = ({
                   <FormattedMessage {...messages.basketSubmitted} />
                 </>
               )}
-              <LiveMessage
-                message={validationStatusMessage}
-                aria-live="polite"
-              />
+              <ScreenReaderOnly aria-live="polite">
+                {validationStatusMessage}
+              </ScreenReaderOnly>
             </Title>
             <Spacer />
             {viewMode === 'row' && (

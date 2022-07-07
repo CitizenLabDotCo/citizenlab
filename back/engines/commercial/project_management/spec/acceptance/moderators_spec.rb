@@ -150,8 +150,8 @@ resource 'Moderators' do
       let(:other_project) { create(:project) }
       let!(:u1) do
         create(:user,
-               first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com',
-               roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
+          first_name: 'Freddy', last_name: 'Smith', email: 'jofreddy@jojo.com',
+          roles: [{ 'type' => 'project_moderator', 'project_id' => @project.id }])
       end
       let!(:u2) do
         create(

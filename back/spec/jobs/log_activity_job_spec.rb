@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe LogActivityJob, type: :job do
-  subject(:job) { LogActivityJob.new }
+  subject(:job) { described_class.new }
 
   describe '#perform' do
     it 'logs an activity with a GlobalID' do

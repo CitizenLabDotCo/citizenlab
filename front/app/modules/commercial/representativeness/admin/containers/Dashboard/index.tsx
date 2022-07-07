@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 
 // hooks
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useUserCustomFields from 'modules/commercial/user_custom_fields/hooks/useUserCustomFields';
+
+// typings
+import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
@@ -10,21 +14,35 @@ import ChartFilters from '../../components/ChartFilters';
 import EmptyState from './EmptyState';
 import ChartCards from './ChartCards';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { hasReferenceData } from './utils';
+
 // tracks
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-const SHOW_EMPTY = false;
+const hasAnyReferenceData = (userCustomFields: IUserCustomFieldData[]) =>
+  userCustomFields.some(hasReferenceData);
 
 const RepresentativenessDashboard = () => {
+  const userCustomFields = useUserCustomFields({ inputTypes: ['select'] });
+
   const [currentProjectFilter, setCurrentProjectFilter] = useState<string>();
 
   const onProjectFilter = ({ value }) => {
     trackEventByName(tracks.filteredOnProject.name, {
       extra: { projectId: value },
     });
+
     setCurrentProjectFilter(value);
   };
+
+  if (isNilOrError(userCustomFields)) {
+    return null;
+  }
+
+  const anyReferenceData = hasAnyReferenceData(userCustomFields);
 
   return (
     <>
@@ -33,22 +51,28 @@ const RepresentativenessDashboard = () => {
         <ChartFilters
           currentProjectFilter={currentProjectFilter}
           onProjectFilter={onProjectFilter}
-          noData={SHOW_EMPTY}
+          noData={!anyReferenceData}
         />
       </Box>
 
-      <Box>{SHOW_EMPTY ? <EmptyState /> : <ChartCards />}</Box>
+      <Box>
+        {anyReferenceData ? (
+          <ChartCards projectFilter={currentProjectFilter} />
+        ) : (
+          <EmptyState />
+        )}
+      </Box>
     </>
   );
 };
 
 const RepresentativenessDashboardFeatureFlagWrapper = () => {
-  const customFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
+  const userCustomFieldsActive = useFeatureFlag({ name: 'user_custom_fields' });
   const representativenessActive = useFeatureFlag({
     name: 'representativeness',
   });
 
-  if (!customFieldsActive || !representativenessActive) {
+  if (!userCustomFieldsActive || !representativenessActive) {
     return null;
   }
 

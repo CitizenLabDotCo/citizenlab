@@ -11,6 +11,9 @@ import { colors } from 'utils/styleUtils';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// typings
+import { IncludedUsers } from '../../hooks/useReferenceData';
+
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);
 `;
@@ -35,10 +38,10 @@ interface RequiredOrOptionalProps {
 }
 
 export interface Props extends RequiredOrOptionalProps {
-  includedUserPercentage: number;
+  includedUsers: IncludedUsers;
 }
 
-const FieldInfo = ({ includedUserPercentage, fieldIsRequired }) => (
+const FieldInfo = ({ includedUsers, fieldIsRequired }: Props) => (
   <>
     <Text fontSize="s" color="adminSecondaryTextColor">
       <StyledIcon
@@ -49,9 +52,11 @@ const FieldInfo = ({ includedUserPercentage, fieldIsRequired }) => (
         mr="6px"
       />
       <FormattedMessage
-        {...messages.percentageUsersIncluded}
+        {...messages.includedUsersMessage}
         values={{
-          percentage: <b>{includedUserPercentage}%</b>,
+          known: includedUsers.known,
+          total: includedUsers.total,
+          percentage: <b>{includedUsers.percentage}%</b>,
         }}
       />
       <Separator>•</Separator>

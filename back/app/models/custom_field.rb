@@ -31,16 +31,16 @@
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
-  has_many :custom_field_options, dependent: :destroy
+  has_many :options, dependent: :destroy, class_name: 'CustomFieldOption'
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w[User CustomForm].freeze
   INPUT_TYPES = %w[text number multiline_text html text_multiloc multiline_text_multiloc html_multiloc select multiselect checkbox date files image_files point].freeze
-  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description location_point_geojson proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
+  CODES = %w[gender birthyear domicile education title_multiloc body_multiloc topic_ids location_description proposed_budget idea_images_attributes idea_files_attributes author_id budget].freeze
 
   validates :resource_type, presence: true, inclusion: { in: FIELDABLE_TYPES }
   validates :key, presence: true, uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/,
-    message: 'only letters, numbers and underscore' }
+                                                                                                  message: 'only letters, numbers and underscore' }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
@@ -69,6 +69,18 @@ class CustomField < ApplicationRecord
     !!code
   end
 
+  def hidden?
+    hidden
+  end
+
+  def enabled?
+    enabled
+  end
+
+  def required?
+    required
+  end
+
   private
 
   def set_default_enabled
@@ -92,3 +104,4 @@ class CustomField < ApplicationRecord
 end
 
 CustomField.include_if_ee('SmartGroups::Extensions::CustomField')
+CustomField.include_if_ee('UserCustomFields::Patches::CustomField')

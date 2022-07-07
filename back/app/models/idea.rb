@@ -26,6 +26,7 @@
 #  assignee_id              :uuid
 #  assigned_at              :datetime
 #  proposed_budget          :integer
+#  custom_field_values      :jsonb            not null
 #
 # Indexes
 #
@@ -92,13 +93,6 @@ class Idea < ApplicationRecord
   end
 
   after_update :fix_comments_count_on_projects
-
-  scope :with_all_topics, (proc do |topic_ids|
-    uniq_topic_ids = topic_ids.uniq
-    joins(:ideas_topics)
-    .where(ideas_topics: { topic_id: uniq_topic_ids })
-    .group(:id).having('COUNT(*) = ?', uniq_topic_ids.size)
-  end)
 
   scope :with_some_topics, (proc do |topics|
     ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
@@ -180,3 +174,4 @@ Idea.include_if_ee 'Insights::Concerns::Input'
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
+Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'

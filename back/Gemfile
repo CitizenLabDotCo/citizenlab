@@ -55,6 +55,7 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'bundler-audit', require: false
   gem 'saharspec'
   gem 'simplecov'
   gem 'simplecov-rcov'
@@ -63,7 +64,7 @@ end
 
 group :development do
   gem 'bullet'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '>= 3.0.5', '< 4.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'redcarpet'
   gem 'spring'
@@ -100,14 +101,14 @@ gem 'activerecord-postgis-adapter', '~> 7.0.0'
 # We need `config.download_retry_count`.
 # It should be available in the version next to 2.2.2
 gem 'carrierwave', git: 'https://github.com/carrierwaveuploader/carrierwave.git',
-                   ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
+  ref: 'a3ffc5381e70a4014b61b27b35540aa3b945910d'
 gem 'carrierwave-base64', '~> 2.10'
 gem 'fog-aws', '~> 3.12'
 
 gem 'api-pagination', '~> 4.8.2'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 6.0.0'
-gem 'awesome_nested_set', '~> 3.4.0'
+gem 'awesome_nested_set', '~> 3.5.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'counter_culture', '~> 2.8'
 gem 'groupdate', '~> 4.1'
@@ -133,14 +134,14 @@ gem 'simple_segment', '~>1.2'
 # This fork was made to update the version of jws which is
 # required for the google omniauth gem.
 gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
-gem 'omniauth_openid_connect', '~> 0.3.3'
-# Forked to support a userinfo response in JWT form
-# Can go back to vanilla when this PR is merged and released:
-# https://github.com/nov/openid_connect/pull/48
+gem 'omniauth_openid_connect', '~> 0.4.0'
 gem 'acts_as_list', '~> 1.0'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'
 gem 'order_as_specified'
+# Forked to support a userinfo response in JWT form
+# Can go back to vanilla when this PR is merged and released:
+# https://github.com/nov/openid_connect/pull/48
 gem 'openid_connect', github: 'CitizenLabDotCo/openid_connect'
 gem 'scenic'
 
@@ -167,6 +168,12 @@ gem 'rack-attack', '~> 6'
 # in the main app.
 gem 'intercom', '~> 4.1'
 gem 'mjml-rails', '~> 4.4'
+
+# Included here because of CVE-2022-32209.
+# See https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s
+# The gem is a dependency of Rails, but we use Rails 6.1.6 and no Rails upgrade is available yet.
+# Specifying this gem explicitly can probably be removed when the Rails upgrade is available.
+gem 'rails-html-sanitizer', '>= 1.4.3'
 
 require 'json'
 if File.exist? '../citizenlab.config.ee.json'

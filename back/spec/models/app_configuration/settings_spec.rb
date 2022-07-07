@@ -65,20 +65,20 @@ RSpec.describe AppConfiguration::Settings do
     it 'requires lifecycle stage' do
       config = AppConfiguration.instance
       config.settings['core'].except! 'lifecycle_stage'
-      expect(config.update(settings: config.settings)).to be_falsey
+      expect(config.update(settings: config.settings)).to be false
     end
 
     it 'requires timezone as it is in `required-settings`' do
       config = AppConfiguration.instance
       config.settings['core'].except! 'timezone'
-      expect(config.update(settings: config.settings)).to be_falsey
+      expect(config.update(settings: config.settings)).to be false
     end
 
     it 'does not require timezone if `core` feature is disabled' do
       SettingsService.new.deactivate_feature!('core')
       config = AppConfiguration.instance
       config.settings['core'].except! 'timezone'
-      expect(config.update(settings: config.settings)).to be_truthy
+      expect(config.update(settings: config.settings)).to be true
     end
   end
 end

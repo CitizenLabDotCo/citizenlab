@@ -1,19 +1,18 @@
 import React from 'react';
 
-// Craft
-import { useEditor, Element } from '@craftjs/core';
+// craft
+import { useEditor } from '@craftjs/core';
 
 // Router
-import { withRouter, WithRouterProps } from 'react-router';
+import { useParams } from 'react-router-dom';
 
-// Intl
-import { injectIntl } from 'utils/cl-intl';
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// Components
+// components
 import ToolboxItem from './ToolboxItem';
-import { Box } from '@citizenlab/cl2-component-library';
-import Container from '../CraftComponents/Container';
+import { Box, Title } from '@citizenlab/cl2-component-library';
 import Text from '../CraftComponents/Text';
 import TwoColumn from '../CraftComponents/TwoColumn';
 import ThreeColumn from '../CraftComponents/ThreeColumn';
@@ -21,22 +20,34 @@ import Image from '../CraftComponents/Image';
 import Iframe from '../CraftComponents/Iframe';
 import AboutBox from '../CraftComponents/AboutBox';
 import Accordion from '../CraftComponents/Accordion';
+import WhiteSpace from '../CraftComponents/WhiteSpace';
+import Button from '../CraftComponents/Button';
+import InfoWithAccordions from '../CraftSections/InfoWithAccordions';
+import ImageTextCards from '../CraftSections/ImageTextCards';
 
-// Intl
+// intl
 import messages from '../../messages';
 
-// Styles
+// styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+
+// types
+import { Locale } from 'typings';
 
 const DraggableElement = styled.div`
   cursor: move;
 `;
 
+type ContentBuilderToolboxProps = {
+  selectedLocale: Locale;
+} & InjectedIntlProps;
+
 const ContentBuilderToolbox = ({
+  selectedLocale,
   intl: { formatMessage },
-  params: { projectId },
-}: InjectedIntlProps & WithRouterProps) => {
+}: ContentBuilderToolboxProps) => {
+  const { projectId } = useParams() as { projectId: string };
   const {
     connectors,
     actions: { selectNode },
@@ -53,36 +64,80 @@ const ContentBuilderToolbox = ({
       flexDirection="column"
       alignItems="center"
       bgColor="#ffffff"
+      overflowY="auto"
       borderRight={`1px solid ${colors.mediumGrey}`}
     >
       <Box w="100%" display="inline">
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
+          <FormattedMessage {...messages.sections} />
+        </Title>
         <DraggableElement
-          id="e2e-draggable-single-column"
+          id="e2e-draggable-image-text-cards"
+          ref={(ref) =>
+            ref &&
+            connectors.create(ref, <ImageTextCards />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
+          }
+        >
+          <ToolboxItem
+            icon="imageCardSection"
+            label={formatMessage(messages.imageTextCards)}
+          />
+        </DraggableElement>
+        <DraggableElement
+          id="e2e-draggable-info-accordions"
           ref={(ref) =>
             ref &&
             connectors.create(
               ref,
-              <Element canvas is={Container} id="container" />
+              <InfoWithAccordions projectId={projectId} />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
           <ToolboxItem
-            icon="column1"
-            label={formatMessage(messages.oneColumn)}
+            icon="infoAccordionSection"
+            label={formatMessage(messages.infoWithAccordions)}
           />
         </DraggableElement>
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
+          <FormattedMessage {...messages.layout} />
+        </Title>
         <DraggableElement
           id="e2e-draggable-two-column"
           ref={(ref) =>
             ref &&
             connectors.create(
               ref,
-              <Element
-                canvas
-                is={TwoColumn}
-                columnLayout="1-1"
-                id="twoColumn"
-              />
+              <TwoColumn columnLayout="1-1" id="twoColumn" />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
             )
           }
         >
@@ -95,10 +150,11 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-three-column"
           ref={(ref) =>
             ref &&
-            connectors.create(
-              ref,
-              <Element canvas is={ThreeColumn} id="threeColumn" />
-            )
+            connectors.create(ref, <ThreeColumn />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
           }
         >
           <ToolboxItem
@@ -107,16 +163,39 @@ const ContentBuilderToolbox = ({
           />
         </DraggableElement>
         <DraggableElement
+          id="e2e-draggable-white-space"
+          ref={(ref) =>
+            ref &&
+            connectors.create(ref, <WhiteSpace size="small" />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
+          }
+        >
+          <ToolboxItem
+            icon="dashedBorderRectangle"
+            label={formatMessage(messages.whiteSpace)}
+          />
+        </DraggableElement>
+        <Title
+          fontWeight="normal"
+          mb="0px"
+          mt="24px"
+          ml="10px"
+          variant="h6"
+          as="h3"
+          color="label"
+        >
+          <FormattedMessage {...messages.content} />
+        </Title>
+        <DraggableElement
           id="e2e-draggable-text"
           ref={(ref) =>
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={Text}
-                id="text"
-                text={formatMessage(messages.textValue)}
-              />,
+              <Text text={formatMessage(messages.textValue)} />,
               {
                 onCreate: (node) => {
                   selectNode(node.rootNodeId);
@@ -128,18 +207,36 @@ const ContentBuilderToolbox = ({
           <ToolboxItem icon="text" label={formatMessage(messages.text)} />
         </DraggableElement>
         <DraggableElement
+          id="e2e-draggable-button"
+          ref={(ref) =>
+            ref &&
+            connectors.create(
+              ref,
+              <Button
+                text={formatMessage(messages.button)}
+                url={''}
+                type={'primary'}
+                alignment={'left'}
+              />,
+              {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              }
+            )
+          }
+        >
+          <ToolboxItem icon="button" label={formatMessage(messages.button)} />
+        </DraggableElement>
+        <DraggableElement
           id="e2e-draggable-image"
           ref={(ref) => {
             ref &&
-              connectors.create(
-                ref,
-                <Element is={Image} imageUrl="" id="image" alt="" />,
-                {
-                  onCreate: (node) => {
-                    selectNode(node.rootNodeId);
-                  },
-                }
-              );
+              connectors.create(ref, <Image alt="" />, {
+                onCreate: (node) => {
+                  selectNode(node.rootNodeId);
+                },
+              });
           }}
         >
           <ToolboxItem icon="image" label={formatMessage(messages.image)} />
@@ -150,12 +247,11 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={Iframe}
-                id="Iframe"
+              <Iframe
                 url=""
                 height={500}
                 hasError={false}
+                selectedLocale={selectedLocale}
               />,
               {
                 onCreate: (node) => {
@@ -171,10 +267,11 @@ const ContentBuilderToolbox = ({
           id="e2e-draggable-about-box"
           ref={(ref) =>
             ref &&
-            connectors.create(
-              ref,
-              <Element is={AboutBox} id="AboutBox" projectId={projectId} />
-            )
+            connectors.create(ref, <AboutBox projectId={projectId} />, {
+              onCreate: (node) => {
+                selectNode(node.rootNodeId);
+              },
+            })
           }
         >
           <ToolboxItem icon="info3" label={formatMessage(messages.aboutBox)} />
@@ -185,12 +282,10 @@ const ContentBuilderToolbox = ({
             ref &&
             connectors.create(
               ref,
-              <Element
-                is={Accordion}
+              <Accordion
                 title={formatMessage(messages.accordionTitleValue)}
                 text={formatMessage(messages.accordionTextValue)}
                 openByDefault={false}
-                id="Accordion"
               />,
               {
                 onCreate: (node) => {
@@ -210,4 +305,4 @@ const ContentBuilderToolbox = ({
   );
 };
 
-export default withRouter(injectIntl(ContentBuilderToolbox));
+export default injectIntl(ContentBuilderToolbox);

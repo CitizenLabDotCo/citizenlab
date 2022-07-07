@@ -11,7 +11,7 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
         'value' => (Date.today - 1.day)
       }
     end
-    let(:valid_rule) { SmartGroups::Rules::RegistrationCompletedAt.from_json(valid_json_rule) }
+    let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
     it 'successfully validate the valid rule' do
       expect(valid_rule).to be_valid
@@ -32,27 +32,27 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
       end
 
       it "correctly filters on 'is_before' predicate" do
-        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_before', Date.today)
+        rule = described_class.new('is_before', Date.today)
         expect(rule.filter(User).count).to eq 2
       end
 
       it "correctly filters on 'is_after' predicate" do
-        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_after', Date.today)
+        rule = described_class.new('is_after', Date.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_exactly' predicate" do
-        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_exactly', Date.today)
+        rule = described_class.new('is_exactly', Date.today)
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'is_empty' predicate" do
-        rule = SmartGroups::Rules::RegistrationCompletedAt.new('is_empty')
+        rule = described_class.new('is_empty')
         expect(rule.filter(User).count).to eq 1
       end
 
       it "correctly filters on 'not_is_empty' predicate" do
-        rule = SmartGroups::Rules::RegistrationCompletedAt.new('not_is_empty')
+        rule = described_class.new('not_is_empty')
         expect(rule.filter(User).count).to eq User.count - 1
       end
     end
@@ -60,62 +60,62 @@ describe SmartGroups::Rules::RegistrationCompletedAt do
 
   describe 'description_multiloc' do
     let(:registration_completed_at_is_before_rule) do
-      SmartGroups::Rules::RegistrationCompletedAt.from_json({
-        'ruleType'      => 'registration_completed_at',
-        'predicate'     => 'is_before',
-        'value'         => '2019-11-12'
+      described_class.from_json({
+        'ruleType' => 'registration_completed_at',
+        'predicate' => 'is_before',
+        'value' => '2019-11-12'
       })
     end
     let(:registration_completed_at_is_after_rule) do
-      SmartGroups::Rules::RegistrationCompletedAt.from_json({
-        'ruleType'      => 'registration_completed_at',
-        'predicate'     => 'is_after',
-        'value'         => '2019-11-12'
+      described_class.from_json({
+        'ruleType' => 'registration_completed_at',
+        'predicate' => 'is_after',
+        'value' => '2019-11-12'
       })
     end
     let(:registration_completed_at_is_exactly_rule) do
-      SmartGroups::Rules::RegistrationCompletedAt.from_json({
-        'ruleType'      => 'registration_completed_at',
-        'predicate'     => 'is_exactly',
-        'value'         => '2019-11-12'
+      described_class.from_json({
+        'ruleType' => 'registration_completed_at',
+        'predicate' => 'is_exactly',
+        'value' => '2019-11-12'
       })
     end
     let(:registration_completed_at_is_empty_rule) do
-      SmartGroups::Rules::RegistrationCompletedAt.from_json({
-        'ruleType'      => 'registration_completed_at',
-        'predicate'     => 'is_empty'
+      described_class.from_json({
+        'ruleType' => 'registration_completed_at',
+        'predicate' => 'is_empty'
       })
     end
     let(:registration_completed_at_not_is_empty_rule) do
-      SmartGroups::Rules::RegistrationCompletedAt.from_json({
-        'ruleType'      => 'registration_completed_at',
-        'predicate'     => 'not_is_empty'
+      described_class.from_json({
+        'ruleType' => 'registration_completed_at',
+        'predicate' => 'not_is_empty'
       })
     end
 
     it 'successfully translates different combinations of rules' do
       expect(registration_completed_at_is_before_rule.description_multiloc).to eq({
-        'en'    => 'registration is before 2019-11-12',
+        'en' => 'registration is before 2019-11-12',
         'fr-FR' => 'date d\'inscription est avant 12/11/2019',
         'nl-NL' => 'registratie is voor 12-11-2019'
       })
       expect(registration_completed_at_is_after_rule.description_multiloc).to eq({
-        'en'    => 'registration is after 2019-11-12',
+        'en' => 'registration is after 2019-11-12',
         'fr-FR' => 'date d\'inscription est après 12/11/2019',
         'nl-NL' => 'registratie is na 12-11-2019'
       })
       expect(registration_completed_at_is_exactly_rule.description_multiloc).to eq({
-        'en'    => 'registration is 2019-11-12',
+        'en' => 'registration is 2019-11-12',
         'fr-FR' => 'date d\'inscription est 12/11/2019',
         'nl-NL' => 'registratie is 12-11-2019'
       })
       expect(registration_completed_at_is_empty_rule.description_multiloc).to eq({
-        'en'    => 'registration has no value',
+        'en' => 'registration has no value',
         'fr-FR' => 'date d\'inscription n\'as pas de value',
         'nl-NL' => 'registratie heeft geen waarde'
       })
       expect(registration_completed_at_not_is_empty_rule.description_multiloc).to eq({
-        'en'    => 'registration has any value',
+        'en' => 'registration has any value',
         'fr-FR' => 'date d\'inscription peut avoir n\'importe quel value',
         'nl-NL' => 'registratie heeft om het even welke waarde'
       })

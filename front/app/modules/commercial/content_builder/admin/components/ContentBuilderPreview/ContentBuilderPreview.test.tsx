@@ -5,17 +5,16 @@ import ContentBuilderPreview from './';
 let mockFeatureFlagData = true;
 
 jest.mock('services/locale');
-
-jest.mock('react-router', () => {
+jest.mock('utils/cl-router/withRouter', () => {
   return {
     withRouter: (Component) => {
       return (props) => {
         return <Component {...props} params={{ slug: 'slug' }} />;
       };
     },
-    Link: () => 'LinkText',
   };
 });
+jest.mock('utils/cl-router/Link');
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => mockFeatureFlagData));
 

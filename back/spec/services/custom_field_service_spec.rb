@@ -3,9 +3,19 @@
 require 'rails_helper'
 
 describe CustomFieldService do
-  let(:service) { CustomFieldService.new }
+  let(:service) { described_class.new }
   let(:metaschema) { JSON::Validator.validator_for_name('draft4').metaschema }
   let(:locale) { 'en' }
+
+  describe 'cleanup_custom_field_values!' do
+    let(:field_values) { { 'key1' => nil, 'key2' => '', 'key3' => 'Not blank', 'key4' => true, 'key5' => false } }
+
+    it 'destructively deletes keys with blank values from the argument and returns the argument' do
+      cleaned_values = service.cleanup_custom_field_values! field_values
+      expect(field_values).to eq({ 'key3' => 'Not blank', 'key4' => true, 'key5' => false })
+      expect(cleaned_values).to be field_values
+    end
+  end
 
   describe 'fields_to_json_schema_multiloc' do
     let(:title_multiloc) { { 'en' => 'size', 'nl-NL' => 'grootte' } }
@@ -13,10 +23,10 @@ describe CustomFieldService do
     let(:fields) do
       [
         create(:custom_field,
-               key: 'field1',
-               input_type: 'text',
-               title_multiloc: title_multiloc,
-               description_multiloc: description_multiloc)
+          key: 'field1',
+          input_type: 'text',
+          title_multiloc: title_multiloc,
+          description_multiloc: description_multiloc)
       ]
     end
 
@@ -75,61 +85,61 @@ describe CustomFieldService do
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema).to match(
         { type: 'object',
-         additionalProperties: false,
-         properties:           { 'field1' =>
+          additionalProperties: false,
+          properties: { 'field1' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string' },
-           'field2' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string' },
+                        'field2' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string' },
-           'field3' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string' },
+                        'field3' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string',
-             enum: %w[option_1 option_2 option_3],
-             enumNames: ['youth council', 'youth council', 'youth council'] },
-           'field4' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string',
+              enum: %w[option_1 option_2 option_3],
+              enumNames: ['youth council', 'youth council', 'youth council'] },
+                        'field4' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'array',
-             uniqueItems: true,
-             items:               { type: 'string',
-               enum: %w[option_a option_b],
-               enumNames: ['youth council', 'youth council'] },
-             minItems: 0 },
-           'field5' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'array',
+              uniqueItems: true,
+              items: { type: 'string',
+                       enum: %w[option_a option_b],
+                       enumNames: ['youth council', 'youth council'] },
+              minItems: 0 },
+                        'field5' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'boolean' },
-           'field6' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'boolean' },
+                        'field6' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'string',
-             format: 'date' },
-            'field7' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'string',
+              format: 'date' },
+                        'field7' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'number' },
-           'field8' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'number' },
+                        'field8' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'array',
-             uniqueItems: true,
-             items:               { type: 'string',
-               enum: %w[option_a option_b],
-               enumNames: ['youth council', 'youth council'] },
-             minItems: 1 },
-            'field9' =>
+              description: 'Which councils are you attending in our city?',
+              type: 'array',
+              uniqueItems: true,
+              items: { type: 'string',
+                       enum: %w[option_a option_b],
+                       enumNames: ['youth council', 'youth council'] },
+              minItems: 1 },
+                        'field9' =>
             { title: 'Did you attend',
-             description: 'Which councils are you attending in our city?',
-             type: 'array',
-             items: {
-               type: 'string',
-               format: 'data-url'
+              description: 'Which councils are you attending in our city?',
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'data-url'
               } } },
-         required: %w[field2 field8 field9] }
+          required: %w[field2 field8 field9] }
       )
     end
 
@@ -150,7 +160,7 @@ describe CustomFieldService do
 
     it 'it creates a valid schema for the built in idea custom fields' do
       custom_form = create(:custom_form)
-      fields = IdeaCustomFieldsService.new.all_fields(custom_form)
+      fields = IdeaCustomFieldsService.new(custom_form).all_fields
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
@@ -178,14 +188,14 @@ describe CustomFieldService do
       schema = service.fields_to_ui_schema(fields.map(&:reload), locale)
       expect(schema).to match(
         { 'field1' => {},
-         'field2' => { 'ui:widget': 'textarea' },
-         'field3' => {},
-         'field4' => {},
-         'field5' => {},
-         'field6' => {},
-         'field7' => { 'ui:widget': 'hidden' },
-         'field8' => { 'ui:widget': 'hidden' },
-         'ui:order' =>
+          'field2' => { 'ui:widget': 'textarea' },
+          'field3' => {},
+          'field4' => {},
+          'field5' => {},
+          'field6' => {},
+          'field7' => { 'ui:widget': 'hidden' },
+          'field8' => { 'ui:widget': 'hidden' },
+          'ui:order' =>
              %w[field1 field2 field3 field6 field5 field4 field7 field8] }
       )
     end

@@ -7,8 +7,8 @@ RSpec.describe User, type: :model do
     let!(:manual_group) { create(:group) }
     let!(:rules_group) do
       create(:smart_group, rules: [
-               { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
-             ])
+        { ruleType: 'email', predicate: 'is', value: 'user@test.com' }
+      ])
     end
 
     it 'returns rule groups' do
@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
         create(:user, manual_groups: [create(:group)])
       ]
 
-      expect(User.in_group(group).pluck(:id)).to match_array [users[0].id, users[1].id]
+      expect(described_class.in_group(group).pluck(:id)).to match_array [users[0].id, users[1].id]
     end
   end
 
@@ -47,7 +47,7 @@ RSpec.describe User, type: :model do
       create(:user)
       user4 = create(:user, manual_groups: [group2])
 
-      expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]
+      expect(described_class.in_any_group([group1, group2])).to match_array [user1, user2, user4]
     end
   end
 
@@ -59,14 +59,14 @@ RSpec.describe User, type: :model do
       user2 = create(:user, email: 'jules@test.com')
       user3 = create(:user, email: 'jules@something.com')
 
-      expect(user1.in_any_groups?(Group.where(id: group1))).to be_truthy
-      expect(user1.in_any_groups?(Group.where(id: group2))).to be_truthy
-      expect(user1.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
-      expect(user1.in_any_groups?(Group.none)).to be_falsey
-      expect(user2.in_any_groups?(Group.where(id: [group1]))).to be_truthy
-      expect(user2.in_any_groups?(Group.where(id: [group2]))).to be_falsy
-      expect(user2.in_any_groups?(Group.where(id: [group1, group2]))).to be_truthy
-      expect(user3.in_any_groups?(Group.where(id: [group1, group2]))).to be_falsey
+      expect(user1.in_any_groups?(Group.where(id: group1))).to be true
+      expect(user1.in_any_groups?(Group.where(id: group2))).to be true
+      expect(user1.in_any_groups?(Group.where(id: [group1, group2]))).to be true
+      expect(user1.in_any_groups?(Group.none)).to be false
+      expect(user2.in_any_groups?(Group.where(id: [group1]))).to be true
+      expect(user2).not_to be_in_any_groups(Group.where(id: [group2]))
+      expect(user2.in_any_groups?(Group.where(id: [group1, group2]))).to be true
+      expect(user3.in_any_groups?(Group.where(id: [group1, group2]))).to be false
     end
   end
 end

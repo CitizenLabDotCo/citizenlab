@@ -9,62 +9,44 @@ import EmptyCard from '../../components/ChartCard/EmptyCard';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
+import { isShown, isSupported, sortUserCustomFields } from './utils';
 
-// typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
+interface Props {
+  projectFilter?: string;
+}
 
-// fake data
-import fakeData from './fakeData';
+const ChartCards = ({ projectFilter }: Props) => {
+  const userCustomFields = useUserCustomFields({
+    inputTypes: ['select', 'number'],
+  });
 
-// TODO remove this later, generalize for all select fields
-const onlyGender = ({ attributes: { code } }: IUserCustomFieldData) =>
-  code === 'gender';
+  if (isNilOrError(userCustomFields)) return null;
 
-const onlyDomicile = ({ attributes: { code } }: IUserCustomFieldData) =>
-  code === 'domicile';
-
-const ChartCards = () => {
-  const customFields = useUserCustomFields({ inputTypes: ['select'] });
-  if (isNilOrError(customFields)) return null;
+  const sortedUserCustomFields = sortUserCustomFields(
+    userCustomFields.filter(isShown)
+  );
 
   return (
     <>
-      {customFields.filter(onlyGender).map((customField) => (
-        <ChartCard
-          customField={customField}
-          key={customField.id}
-          data={fakeData.gender.data}
-          includedUserPercentage={fakeData.gender.includedUsersPercentage}
-          demographicDataDate={fakeData.gender.demographicDataDate}
-        />
-      ))}
+      {sortedUserCustomFields.map((userCustomField) => {
+        if (isSupported(userCustomField)) {
+          return (
+            <ChartCard
+              userCustomField={userCustomField}
+              key={userCustomField.id}
+              projectFilter={projectFilter}
+            />
+          );
+        }
 
-      {customFields.filter(onlyDomicile).map((customField) => (
-        <ChartCard
-          customField={customField}
-          key={customField.id}
-          data={fakeData.domicile.data}
-          includedUserPercentage={fakeData.domicile.includedUsersPercentage}
-          demographicDataDate={fakeData.domicile.demographicDataDate}
-        />
-      ))}
-
-      {customFields.filter(onlyDomicile).map((customField) => (
-        <ChartCard
-          customField={customField}
-          key={customField.id}
-          data={fakeData.domicileLong.data}
-          includedUserPercentage={fakeData.domicile.includedUsersPercentage}
-          demographicDataDate={fakeData.domicile.demographicDataDate}
-        />
-      ))}
-
-      <EmptyCard
-        titleMultiloc={{ en: 'Favorite ice cream flavor' }}
-        isComingSoon={false}
-      />
-
-      <EmptyCard titleMultiloc={{ en: 'Age group' }} isComingSoon />
+        return (
+          <EmptyCard
+            titleMultiloc={userCustomField.attributes.title_multiloc}
+            key={userCustomField.id}
+            isComingSoon
+          />
+        );
+      })}
     </>
   );
 };

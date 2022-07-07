@@ -4,7 +4,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { uniq, includes } from 'lodash-es';
 import { isNilOrError, isPage, endsWith, isDesktop } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import clHistory from 'utils/cl-router/history';
 import moment from 'moment';
 import 'moment-timezone';
@@ -26,18 +26,14 @@ import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
+const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 import MainHeader from 'containers/MainHeader';
 import MobileNavbar from 'containers/MobileNavbar';
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import LoadableModal from 'components/Loadable/Modal';
-import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import SignUpInModal from 'components/SignUpIn/SignUpInModal';
-
 import Outlet from 'components/Outlet';
-
-import { LiveAnnouncer } from 'react-aria-live';
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
@@ -79,6 +75,7 @@ import { Locale } from 'typings';
 // utils
 import openVerificationModalIfSuccessOrError from './openVerificationModalIfSuccessOrError';
 import openSignUpInModalIfNecessary from './openSignUpInModalIfNecessary';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 const Container = styled.div`
   display: flex;
@@ -171,7 +168,7 @@ class App extends PureComponent<Props, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentAppConfigurationStream().observable;
 
-    this.unlisten = clHistory.listenBefore((newLocation) => {
+    this.unlisten = clHistory.listen(({ location }) => {
       const newPreviousPathname = location.pathname;
       const pathsToIgnore = [
         'sign-up',
@@ -188,7 +185,7 @@ class App extends PureComponent<Props, State> {
       if (redirectsEnabled) {
         this.handleCustomRedirect();
       }
-      trackPage(newLocation.pathname);
+      trackPage(location.pathname);
     });
 
     trackPage(location.pathname);
@@ -474,7 +471,7 @@ class App extends PureComponent<Props, State> {
       !isInitiativeFormPage &&
       !isIdeaEditPage &&
       !isInitiativeEditPage;
-
+    const { pathname } = removeLocale(location.pathname);
     return (
       <>
         {tenant && visible && (
@@ -482,81 +479,81 @@ class App extends PureComponent<Props, State> {
             <ThemeProvider
               theme={{ ...theme, isRtl: !!this.state.locale?.startsWith('ar') }}
             >
-              <LiveAnnouncer>
-                <GlobalStyle />
+              <GlobalStyle />
 
-                <Container>
-                  <Meta />
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <PostPageFullscreenModal
-                        type={modalType}
-                        postId={modalId}
-                        slug={modalSlug}
-                        close={this.closePostPageModal}
-                        navbarRef={navbarRef}
-                        mobileNavbarRef={mobileNavbarRef}
-                      />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <LoadableModal
-                      opened={userDeletedSuccessfullyModalOpened}
-                      close={this.closeUserDeletedModal}
-                    >
-                      <LoadableUserDeleted
-                        userSuccessfullyDeleted={userSuccessfullyDeleted}
-                      />
-                    </LoadableModal>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <SignUpInModal
-                      onMounted={this.handleSignUpInModalMounted}
-                      onDeclineInvitation={this.handleDeclineInvitation}
+              <Container>
+                <Meta />
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <PostPageFullscreenModal
+                      type={modalType}
+                      postId={modalId}
+                      slug={modalSlug}
+                      close={this.closePostPageModal}
+                      navbarRef={navbarRef}
+                      mobileNavbarRef={mobileNavbarRef}
                     />
-                  </ErrorBoundary>
-                  <Outlet
-                    id="app.containers.App.modals"
-                    onMounted={this.handleModalMounted}
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <UserDeletedModal
+                      modalOpened={userDeletedSuccessfullyModalOpened}
+                      closeUserDeletedModal={this.closeUserDeletedModal}
+                      userSuccessfullyDeleted={userSuccessfullyDeleted}
+                    />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <SignUpInModal
+                    onMounted={this.handleSignUpInModalMounted}
+                    onDeclineInvitation={this.handleDeclineInvitation}
                   />
-                  <ErrorBoundary>
-                    <div id="modal-portal" />
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <div id="topbar-portal" />
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <Suspense fallback={null}>
-                      <ConsentManager />
-                    </Suspense>
-                  </ErrorBoundary>
-                  <ErrorBoundary>
-                    <MainHeader setRef={this.setNavbarRef} />
-                  </ErrorBoundary>
-                  <InnerContainer>
-                    <HasPermission
-                      item={{ type: 'route', path: location.pathname }}
-                      action="access"
-                    >
-                      <ErrorBoundary>{children}</ErrorBoundary>
-                      <HasPermission.No>
-                        <ForbiddenRoute />
-                      </HasPermission.No>
-                    </HasPermission>
-                  </InnerContainer>
-                  {showFooter && (
-                    <Suspense fallback={null}>
-                      <PlatformFooter />
-                    </Suspense>
-                  )}
-                  {showMobileNav && (
-                    <MobileNavbar setRef={this.setMobileNavigationRef} />
-                  )}
-                  <ErrorBoundary>
-                    <div id="mobile-nav-portal" />
-                  </ErrorBoundary>
-                </Container>
-              </LiveAnnouncer>
+                </ErrorBoundary>
+                <Outlet
+                  id="app.containers.App.modals"
+                  onMounted={this.handleModalMounted}
+                />
+                <ErrorBoundary>
+                  <div id="modal-portal" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <div id="topbar-portal" />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <Suspense fallback={null}>
+                    <ConsentManager />
+                  </Suspense>
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <MainHeader setRef={this.setNavbarRef} />
+                </ErrorBoundary>
+                <InnerContainer>
+                  <HasPermission
+                    item={{
+                      type: 'route',
+                      path: pathname,
+                    }}
+                    action="access"
+                  >
+                    <ErrorBoundary>{children}</ErrorBoundary>
+                    <HasPermission.No>
+                      <ForbiddenRoute />
+                    </HasPermission.No>
+                  </HasPermission>
+                </InnerContainer>
+                {showFooter && (
+                  <Suspense fallback={null}>
+                    <PlatformFooter />
+                  </Suspense>
+                )}
+                {showMobileNav && (
+                  <MobileNavbar setRef={this.setMobileNavigationRef} />
+                )}
+                <ErrorBoundary>
+                  <div id="mobile-nav-portal" />
+                </ErrorBoundary>
+              </Container>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}

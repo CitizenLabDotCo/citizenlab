@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, fireEvent } from 'utils/testUtils/rtl';
 import ChartCard from './';
-import moment from 'moment';
 
 jest.mock('utils/cl-intl');
 jest.mock('hooks/useLocalize');
@@ -13,7 +12,7 @@ const generateData = (n: number) => {
 
   for (let i = 0; i < n; i++) {
     data.push({
-      name: `label ${i}`,
+      title_multiloc: { en: `label ${i}` },
       actualPercentage: i,
       referencePercentage: i,
       actualNumber: i,
@@ -24,76 +23,49 @@ const generateData = (n: number) => {
   return data;
 };
 
-const customField: any = {
-  id: '1',
+let mockData = generateData(4);
+
+jest.mock('../../hooks/useReferenceData', () => () => ({
+  referenceData: mockData,
+  includedUsers: {
+    known: 85,
+    total: 100,
+    percentage: 85,
+  },
+  referenceDataUploaded: true,
+}));
+
+const userCustomField: any = {
+  id: '4',
   attributes: {
     title_multiloc: { en: 'FIELD TITLE' },
     required: false,
   },
 };
 
-const demographicDataDate = moment('2021-09-02');
-
 describe('<ChartCard />', () => {
   it('renders title', () => {
-    const data = generateData(4);
-
-    render(
-      <ChartCard
-        data={data}
-        customField={customField}
-        demographicDataDate={demographicDataDate}
-        includedUserPercentage={85}
-      />
-    );
+    render(<ChartCard userCustomField={userCustomField} />);
 
     expect(screen.getByText('FIELD TITLE')).toBeInTheDocument();
   });
-
-  // it('renders representativeness score', () => {
-  //   const data = generateData(4);
-
-  //   render(
-  //     <ChartCard
-  //       data={data}
-  //       customField={customField}
-  //       representativenessScore={70}
-  //       demographicDataDate={demographicDataDate}
-  //       includedUserPercentage={85}
-  //     />
-  //   );
-
-  //   expect(screen.getByText('70')).toBeInTheDocument();
-  // });
 });
 
 describe('<ChartCard /> (chart view)', () => {
   it('renders legend', () => {
-    const data = generateData(6);
-
-    render(
-      <ChartCard
-        data={data}
-        customField={customField}
-        demographicDataDate={demographicDataDate}
-        includedUserPercentage={85}
-      />
-    );
+    render(<ChartCard userCustomField={userCustomField} />);
 
     expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
   });
 
   describe('N <= 10', () => {
-    const data = generateData(4);
+    beforeEach(() => {
+      mockData = generateData(6);
+    });
 
     it('renders chart by default', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(
@@ -103,12 +75,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('renders labels', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       waitFor(() => {
@@ -118,12 +85,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('renders ticks', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       waitFor(() => {
@@ -137,27 +99,13 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders included users percentage', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -166,16 +114,13 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('10 < N <= 12', () => {
-    const data = generateData(11);
+    beforeEach(() => {
+      mockData = generateData(11);
+    });
 
     it('renders chart by default', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(
@@ -185,12 +130,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('does not render labels', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       waitFor(() => {
@@ -200,12 +140,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('renders ticks', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       waitFor(() => {
@@ -219,27 +154,13 @@ describe('<ChartCard /> (chart view)', () => {
     });
 
     it('renders included users percentage', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -248,16 +169,13 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('12 < N <= 24', () => {
-    const data = generateData(16);
+    beforeEach(() => {
+      mockData = generateData(16);
+    });
 
     it('does not render chart by default', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(
@@ -274,12 +192,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: does not render labels', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -292,12 +205,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: does not render ticks', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -315,12 +223,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: renders included users percentage', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -331,12 +234,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: does not render warning', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -349,16 +247,13 @@ describe('<ChartCard /> (chart view)', () => {
   });
 
   describe('24 < N', () => {
-    const data = generateData(26);
+    beforeEach(() => {
+      mockData = generateData(26);
+    });
 
     it('does not render chart by default', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(
@@ -375,12 +270,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: renders included users percentage', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -391,12 +281,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: renders warning', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -409,12 +294,7 @@ describe('<ChartCard /> (chart view)', () => {
 
     it('on select chart view: link in warning switches to tab view', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const chartTabButton = container.querySelector('button#chart');
@@ -432,16 +312,13 @@ describe('<ChartCard /> (chart view)', () => {
 });
 
 describe('<ChartCard /> (table view)', () => {
-  it('does not render legend in table view', () => {
-    const data = generateData(6);
+  beforeEach(() => {
+    mockData = generateData(6);
+  });
 
+  it('does not render legend in table view', () => {
     const { container } = render(
-      <ChartCard
-        data={data}
-        customField={customField}
-        demographicDataDate={demographicDataDate}
-        includedUserPercentage={85}
-      />
+      <ChartCard userCustomField={userCustomField} />
     );
 
     expect(screen.getByTestId('graph-legend')).toBeInTheDocument();
@@ -453,16 +330,13 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('N <= 12', () => {
-    const data = generateData(4);
+    beforeEach(() => {
+      mockData = generateData(4);
+    });
 
     it('does not render table by default', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(container.querySelector('table.ui.table')).not.toBeInTheDocument();
@@ -475,12 +349,7 @@ describe('<ChartCard /> (table view)', () => {
 
     it('renders correct number of rows', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const tableTabButton = container.querySelector('button#table');
@@ -491,12 +360,7 @@ describe('<ChartCard /> (table view)', () => {
 
     it('renders included users percentage', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const tableTabButton = container.querySelector('button#table');
@@ -507,12 +371,7 @@ describe('<ChartCard /> (table view)', () => {
 
     it('does not render warning', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const tableTabButton = container.querySelector('button#table');
@@ -524,30 +383,20 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('does not render open modal button', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.queryByTestId('show-modal-button')).not.toBeInTheDocument();
     });
   });
 
   describe('12 < N <= 24', () => {
-    const data = generateData(16);
+    beforeEach(() => {
+      mockData = generateData(16);
+    });
 
     it('renders table by default', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(container.querySelector('table.ui.table')).toBeInTheDocument();
@@ -555,39 +404,20 @@ describe('<ChartCard /> (table view)', () => {
 
     it('renders correct number of rows', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(container.querySelectorAll('tbody > tr')).toHaveLength(12);
     });
 
     it('renders included users percentage', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -595,44 +425,25 @@ describe('<ChartCard /> (table view)', () => {
     });
 
     it('renders open modal button', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByTestId('show-modal-button')).toBeInTheDocument();
     });
   });
 
   describe('24 < N', () => {
-    const data = generateData(26);
+    beforeEach(() => {
+      mockData = generateData(26);
+    });
 
     it('renders included users percentage', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(screen.getByText('85%')).toBeInTheDocument();
     });
 
     it('does not render warning', () => {
-      render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
-      );
+      render(<ChartCard userCustomField={userCustomField} />);
 
       expect(
         screen.queryByTestId('representativeness-items-hidden-warning')
@@ -641,16 +452,13 @@ describe('<ChartCard /> (table view)', () => {
   });
 
   describe('Opening modal', () => {
-    const data = generateData(16);
+    beforeEach(() => {
+      mockData = generateData(16);
+    });
 
     it('opens modal on click button', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       expect(
@@ -667,12 +475,7 @@ describe('<ChartCard /> (table view)', () => {
 
     it('renders correct number of rows', () => {
       const { container } = render(
-        <ChartCard
-          data={data}
-          customField={customField}
-          demographicDataDate={demographicDataDate}
-          includedUserPercentage={85}
-        />
+        <ChartCard userCustomField={userCustomField} />
       );
 
       const button = screen.getByTestId('show-modal-button');
