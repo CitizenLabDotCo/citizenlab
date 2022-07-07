@@ -31,7 +31,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 
-// import HeaderImageDropzone from './HeaderImageDropzone';
+import HeaderImageDropzone from './HeaderImageDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Outlet from 'components/Outlet';
@@ -42,7 +42,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { Multiloc } from 'typings';
+import { UploadFile, Multiloc } from 'typings';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
@@ -55,6 +55,7 @@ import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { forOwn, size, trim, debounce } from 'lodash-es';
+import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // import {
 // createAddUploadHandler,
@@ -77,6 +78,9 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [convertedHeaderBg, setConvertedHeaderBG] = useState<
+    UploadFile[] | null
+  >(null);
   // const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
   const [headerAndSubheaderErrors, setHeaderAndSubheaderErrors] = useState<{
     signedOutHeaderErrors: Multiloc;
@@ -92,6 +96,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
       console.log({ homepageSettings });
+      // to do: pick only the attributes we need
       setLocalHomepageSettings({
         ...homepageSettings.data.attributes,
         banner_layout:
@@ -148,40 +153,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     updateValueInLocalState(key, value);
   };
 
-  // const layout =
-  //   latestAppConfigSettings.customizable_homepage_banner?.layout ||
-  //   'full_width_banner_layout';
-
-  // const updateHeaderTitle = createCoreMultilocHandler(
-  //   'header_title',
-  //   setParentState
-  // );
-
-  // const updateHeaderSlogan = createCoreMultilocHandler(
-  //   'header_slogan',
-  //   setParentState
-  // );
-
-  // const updateOnboardingFallbackMessage = createCoreMultilocHandler(
-  //   'custom_onboarding_fallback_message',
-  //   setParentState
-  // );
-
-  // const handleAppConfigurationStyleChange = () => {
-  // (key: string) => (value: unknown) => {
-  //   // setParentState((state) => {
-  //   //   return {
-  //   //     attributesDiff: {
-  //   //       ...state.attributesDiff,
-  //   //       style: {
-  //   //         ...get(state.attributesDiff, 'style', {}),
-  //   //         [key]: value,
-  //   //       },
-  //   //     },
-  //   //   };
-  //   });
-  // };
-
   const handleSignedOutHeaderOnChange = (titleMultiloc: Multiloc) => {
     const signedOutHeaderErrors = {};
 
@@ -233,33 +204,83 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     updateValueInLocalState('banner_signed_in_header_multiloc', titleMultiloc);
   };
 
-  // const headerBgOnAddHandler = createAddUploadHandler(
-  //   'header_bg',
-  //   setParentState
-  // );
-  // const headerBgOnRemoveHandler = createRemoveUploadHandler(
-  //   'header_bg',
-  //   setParentState
-  // );
+  function createAddUploadHandler() {
+    return (newImage: UploadFile[]) => {
+      console.log(newImage);
+      updateValueInLocalState('header_bg', newImage[0].base64);
+      // updateValueInLocalState('header_bg', newImage[0])
+      // setState((state) => ({
+      //   ...state,
+      //   [type]: [newImage[0]],
+      //   attributesDiff: {
+      //     ...(state.attributesDiff || {}),
+      //     [type]: newImage[0].base64,
+      //   },
+      // }));
+    };
+  }
 
-  // const handleHeaderBgOnRemove = () => {
-  // headerBgOnRemoveHandler();
-  // };
+  function createRemoveUploadHandler() {
+    return () => {
+      updateValueInLocalState('header_bg', null);
+      updateValueInLocalState('header_bg', []);
+      // setState((state) => ({
+      //   ...state,
+      //   [type]: [],
+      //   attributesDiff: {
+      //     ...(state.attributesDiff || {}),
+      //     [type]: null,
+      //   },
+      // }));
+    };
+  }
+
+  const headerBgOnAddHandler = createAddUploadHandler();
+  const headerBgOnRemoveHandler = createRemoveUploadHandler();
+
+  const handleHeaderBgOnRemove = () => {
+    headerBgOnRemoveHandler();
+  };
+
+  useEffect(() => {
+    if (localHomepageSettings?.header_bg) {
+      const convertHeaderToUploadFile = async (settingsHeaderUrl) => {
+        if (settingsHeaderUrl) {
+          const tenantHeaderBg = await convertUrlToUploadFile(
+            settingsHeaderUrl
+          );
+          const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
+            ? [tenantHeaderBg]
+            : [];
+          setConvertedHeaderBG(headerBgUploadFile);
+          return;
+        }
+      };
+
+      const headerUrl = localHomepageSettings.header_bg?.large;
+      convertHeaderToUploadFile(headerUrl);
+    }
+  }, [localHomepageSettings?.header_bg]);
 
   if (isNilOrError(homepageSettings) || isNilOrError(localHomepageSettings)) {
     return null;
   }
 
+  console.log({ convertedHeaderBg });
+
   const {
     banner_layout,
     banner_avatars_enabled,
-    header_bg,
     banner_signed_out_header_overlay_opacity,
     banner_signed_out_header_overlay_color,
     banner_signed_out_header_multiloc,
     banner_signed_out_subheader_multiloc,
     banner_signed_in_header_multiloc,
   } = localHomepageSettings;
+
+  console.log({ homepageSettings });
+  console.log({ convertedHeaderBg });
+  console.log({ localHomepageSettings });
 
   return (
     <SectionFormWrapper
@@ -318,7 +339,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             />
           </SubSectionTitle>
           <SectionField>
-            {header_bg && (
+            {!isNilOrError(convertedHeaderBg) && (
               <>
                 <Label>
                   <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
@@ -343,20 +364,25 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
                 />
               </>
             )}
-            {/*             
             <HeaderImageDropzone
               onAdd={headerBgOnAddHandler}
               onRemove={handleHeaderBgOnRemove}
-              latestAppConfigStyleSettings={latestAppConfigStyleSettings}
-              headerError={headerError}
-              header_bg={header_bg}
+              homepageSettingsOverlayColor={
+                banner_signed_out_header_overlay_color
+              }
+              homepageSettingsOverlayOpacity={
+                banner_signed_out_header_overlay_opacity
+              }
+              headerError={'oops'}
+              header_bg={convertedHeaderBg}
               previewDevice={previewDevice}
-              layout={layout}
-            /> */}
+              // check on default
+              layout={banner_layout || 'full_width_banner_layout'}
+            />
           </SectionField>
 
           {/* We only allow the overlay for the full-width banner layout for the moment. */}
-          {banner_layout === 'full_width_banner_layout' && header_bg && (
+          {banner_layout === 'full_width_banner_layout' && convertedHeaderBg && (
             <>
               <SectionField>
                 <Label>

@@ -1,9 +1,6 @@
 import React from 'react';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import {
-  IAppConfigurationStyle,
-  THomepageBannerLayout,
-} from 'services/appConfiguration';
+import { THomepageBannerLayout } from 'services/appConfiguration';
 import { UploadFile } from 'typings';
 import { PreviewDevice } from './index';
 import styled, { useTheme } from 'styled-components';
@@ -22,7 +19,8 @@ const HeaderImageOverlay = styled.div<{
 `;
 
 interface Props {
-  latestAppConfigStyleSettings?: IAppConfigurationStyle;
+  homepageSettingsOverlayOpacity: number;
+  homepageSettingsOverlayColor: string;
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;
@@ -51,7 +49,8 @@ export const homepageBannerLayoutHeights = {
 };
 
 const HeaderImageDropzone = ({
-  latestAppConfigStyleSettings,
+  homepageSettingsOverlayColor,
+  homepageSettingsOverlayOpacity,
   onAdd,
   onRemove,
   headerError,
@@ -74,12 +73,9 @@ const HeaderImageDropzone = ({
   };
 
   const theme: any = useTheme();
-  const overlayColor =
-    latestAppConfigStyleSettings?.signedOutHeaderOverlayColor ??
-    theme.colorMain;
+  const overlayColor = homepageSettingsOverlayColor ?? theme.colorMain;
   const overlayOpacity =
-    latestAppConfigStyleSettings?.signedOutHeaderOverlayOpacity ??
-    theme.signedOutHeaderOverlayOpacity;
+    homepageSettingsOverlayOpacity ?? theme.signedOutHeaderOverlayOpacity;
   const previewOverlayElement =
     layout === 'full_width_banner_layout' && overlayColor && overlayOpacity ? (
       <HeaderImageOverlay
