@@ -92,4 +92,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.headerImageSupportPageText',
     defaultMessage: 'visit our support center',
   },
+  noHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.noHeader',
+    defaultMessage: 'Please upload a header image',
+  },
 });

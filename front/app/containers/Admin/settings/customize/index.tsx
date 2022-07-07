@@ -159,22 +159,14 @@ class SettingsCustomizeTab extends PureComponent<
       !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
         ? null
         : formatMessage(messages.noLogo);
-    const hasRemoteHeader = has(tenant, 'data.attributes.header_bg.large');
-    const localHeaderIsNotSet = !has(attributesDiff, 'header_bg');
-    const localHeaderIsNull =
-      !localHeaderIsNotSet && attributesDiff.header_bg === null;
-    const headerError =
-      !localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet)
-        ? null
-        : formatMessage(messages.noHeader);
     const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
     const hasSubtitleError = !isEmpty(
       omitBy(this.state.subtitleError, isEmpty)
     );
 
-    this.setState({ logoError, headerError });
+    this.setState({ logoError });
 
-    return !logoError && !headerError && !hasTitleError && !hasSubtitleError;
+    return !logoError && !hasTitleError && !hasSubtitleError;
   };
 
   save = async (event: React.FormEvent<HTMLFormElement>) => {

@@ -27,10 +27,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
     defaultMessage: 'Please upload a logo',
   },
-  noHeader: {
-    id: 'app.containers.AdminPage.SettingsPage.noHeader',
-    defaultMessage: 'Please upload a header image',
-  },
   homePageCustomizableSection: {
     id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSection',
     defaultMessage: 'Homepage customizable section',

@@ -95,7 +95,6 @@ interface Props {
 const CustomizedButtonSettings = ({
   buttonMultiloc,
   buttonUrl,
-  // buttonConfig,
   handleSettingOnChange,
   signInStatus,
   errors,

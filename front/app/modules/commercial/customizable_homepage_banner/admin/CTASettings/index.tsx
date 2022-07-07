@@ -30,6 +30,8 @@ const CTASettings = ({
     return null;
   }
 
+  console.log('latestHomepageSettings', latestHomepageSettings);
+
   const {
     // these should be not null but check on it
     banner_cta_signed_out_type,
@@ -40,9 +42,6 @@ const CTASettings = ({
     banner_cta_signed_in_url,
   } = latestHomepageSettings;
 
-  console.log({ banner_cta_signed_in_type });
-  console.log({ banner_cta_signed_out_type });
-
   return (
     <Section>
       <SubSectionTitle>
@@ -52,7 +51,6 @@ const CTASettings = ({
         ctaType={banner_cta_signed_out_type}
         ctaButtonMultiloc={banner_cta_signed_out_text_multiloc}
         ctaButtonUrl={banner_cta_signed_out_url}
-        // customizedButtonConfig={ctaSignedOutCustomizedButton}
         handleSettingOnChange={handleSettingOnChange}
         errors={errors}
       />
@@ -60,7 +58,6 @@ const CTASettings = ({
         ctaType={banner_cta_signed_in_type}
         ctaButtonMultiloc={banner_cta_signed_in_text_multiloc}
         ctaButtonUrl={banner_cta_signed_in_url}
-        // customizedButtonConfig={ctaSignedInCustomizedButton}
         handleSettingOnChange={handleSettingOnChange}
         errors={errors}
       />
