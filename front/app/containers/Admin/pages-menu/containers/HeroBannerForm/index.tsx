@@ -91,31 +91,35 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const [previewDevice, setPreviewDevice] = useState<PreviewDevice>('desktop');
 
   useEffect(() => {
-    if (!isNilOrError(homepageSettings)) {
-      // copy homepage settings to local state
-      setLocalHomepageSettings({
-        ...homepageSettings.data.attributes,
-        banner_layout:
-          homepageSettings.data.attributes.banner_layout ??
-          'full_width_banner_layout',
-      });
-
-      // the image file sent from the API needs to be converted
-      // to a format that can be displayed
-      const convertHeaderToUploadFile = async (fileInfo) => {
-        if (fileInfo) {
-          const tenantHeaderBg = await convertUrlToUploadFile(fileInfo.url);
-          const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
-            ? [tenantHeaderBg]
-            : [];
-          setHeaderLocalDisplayImage(headerBgUploadFile);
-          setBannerError(null);
-        }
-      };
-
-      const headerFileInfo = homepageSettings.data.attributes.header_bg?.large;
-      convertHeaderToUploadFile(headerFileInfo);
+    if (isNilOrError(homepageSettings)) {
+      return;
     }
+
+    // copy homepage settings to local state
+    setLocalHomepageSettings({
+      ...homepageSettings.data.attributes,
+      banner_layout:
+        homepageSettings.data.attributes.banner_layout ??
+        'full_width_banner_layout',
+    });
+
+    // the image file sent from the API needs to be converted
+    // to a format that can be displayed. this is done locally
+    // when the image is changed but needs to be done manually
+    // to process the initial API response
+    const convertHeaderToUploadFile = async (fileInfo) => {
+      if (fileInfo) {
+        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo.url);
+        const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
+          ? [tenantHeaderBg]
+          : [];
+        setHeaderLocalDisplayImage(headerBgUploadFile);
+        setBannerError(null);
+      }
+    };
+
+    const headerFileInfo = homepageSettings.data.attributes.header_bg?.large;
+    convertHeaderToUploadFile(headerFileInfo);
   }, [homepageSettings]);
 
   const onSave = async () => {
@@ -166,6 +170,18 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     value: any
   ) => {
     updateValueInLocalHomepageSettings(key, value);
+  };
+
+  const bannerImageAddHandler = (newImage: UploadFile[]) => {
+    // this base64 value is sent to the API
+    updateValueInLocalHomepageSettings('header_bg', newImage[0].base64);
+    // this value is used for local display
+    setHeaderLocalDisplayImage([newImage[0]]);
+  };
+
+  const bannerImageRemoveHandler = () => {
+    updateValueInLocalHomepageSettings('header_bg', null);
+    setHeaderLocalDisplayImage(null);
   };
 
   const handleOverlayColorOnChange = (color: string) => {
@@ -242,7 +258,8 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     );
   };
 
-  // set error and disable save button if header is removed
+  // set error and disable save button if header is removed,
+  // the form cannot be saved without an image
   useEffect(() => {
     if (isNil(localHomepageSettings?.header_bg)) {
       setBannerError(formatMessage(messages.noHeader));
@@ -255,18 +272,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   if (isNilOrError(localHomepageSettings)) {
     return null;
   }
-
-  const bannerImageAddHandler = (newImage: UploadFile[]) => {
-    // this base64 value is sent to the API
-    updateValueInLocalHomepageSettings('header_bg', newImage[0].base64);
-    // this value is used for local display
-    setHeaderLocalDisplayImage([newImage[0]]);
-  };
-
-  const bannerImageRemoveHandler = () => {
-    updateValueInLocalHomepageSettings('header_bg', null);
-    setHeaderLocalDisplayImage(null);
-  };
 
   const {
     banner_layout,
