@@ -312,7 +312,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         />
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionStart"
-          latestHomepageSettings={localHomepageSettings}
+          homepageSettings={localHomepageSettings}
           handleOnChange={handleSettingOnChange}
         />
         <SubSectionTitle>
@@ -478,7 +478,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </SectionField>
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionEnd"
-          latestHomepageSettings={localHomepageSettings}
+          homepageSettings={localHomepageSettings}
           handleOnChange={handleSettingOnChange}
           // testing
           errors={{ base: [{ error: 'some error' }] }}

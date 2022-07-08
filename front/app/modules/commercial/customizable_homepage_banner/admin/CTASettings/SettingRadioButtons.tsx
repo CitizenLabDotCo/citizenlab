@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  CTASignedOutType,
-  CTASignedInType,
-  // CustomizedButtonConfig,
-} from 'services/appConfiguration';
+import { CTASignedOutType, CTASignedInType } from 'services/appConfiguration';
 import { Multiloc, CLErrors } from 'typings';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,7 +18,6 @@ type SettingRadioButtonsProps =
       ctaType: CTASignedOutType;
       ctaButtonMultiloc: Multiloc;
       ctaButtonUrl: string;
-      // customizedButtonConfig?: CustomizedButtonConfig;
       handleSettingOnChange: (settingKey: string, settingValue: any) => void;
       errors: CLErrors;
     }

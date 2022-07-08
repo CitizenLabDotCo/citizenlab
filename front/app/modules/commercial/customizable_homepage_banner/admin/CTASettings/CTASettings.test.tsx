@@ -9,7 +9,7 @@ jest.mock('services/locale');
 jest.mock('services/appConfiguration');
 
 const props = {
-  latestHomepageSettings: {
+  homepageSettings: {
     customizable_homepage_banner_enabled: true,
     banner_layout: 'full_width_banner_layout',
     banner_cta_signed_out_type: 'no_button',

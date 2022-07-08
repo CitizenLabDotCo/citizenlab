@@ -44,7 +44,6 @@ import {
   CTASignedInType,
   CTASignedOutType,
   CustomizedButtonConfig,
-  // IAppConfigurationSettings,
   TAppConfigurationSetting,
   TAppConfigurationSettingCore,
   THomepageBannerLayout,
@@ -370,7 +369,7 @@ export type OutletsPropertyMap = {
     onMount: () => void;
   };
   'app.containers.Admin.settings.customize.headerSectionStart': {
-    latestHomepageSettings: IHomepageSettingsAttributes;
+    homepageSettings: IHomepageSettingsAttributes;
     handleOnChange: (
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any
@@ -384,7 +383,7 @@ export type OutletsPropertyMap = {
   };
   'app.containers.Admin.settings.policies.subTitle': Record<string, any>;
   'app.containers.Admin.settings.customize.headerSectionEnd': {
-    latestHomepageSettings: IHomepageSettingsAttributes;
+    homepageSettings: IHomepageSettingsAttributes;
     handleOnChange: (
       settingKey: keyof IHomepageSettingsAttributes,
       settingValue: any

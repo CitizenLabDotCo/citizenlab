@@ -3,42 +3,25 @@ import { FormattedMessage } from 'utils/cl-intl';
 import React from 'react';
 import messages from '../messages';
 import { IHomepageSettingsAttributes } from 'services/homepageSettings';
-// import {
-// TAppConfigurationSetting,
-// IAppConfigurationSettings,
-// } from 'services/appConfiguration';
 import CTASignedOutSettings from './CTASignedOutSettings';
 import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
 
 interface Props {
-  latestHomepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: IHomepageSettingsAttributes;
   handleOnChange: (settingKey: string, settingValue: any) => void;
   errors: CLErrors;
 }
 
-const CTASettings = ({
-  latestHomepageSettings,
-  handleOnChange,
-  errors,
-}: Props) => {
+const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
   const handleSettingOnChange = (key: string, value: any) => {
     handleOnChange(key, value);
   };
 
-  if (!latestHomepageSettings.customizable_homepage_banner_enabled) {
+  // this will be handled in the main outlet file alongside feature flags
+  if (!homepageSettings.customizable_homepage_banner_enabled) {
     return null;
   }
-
-  const {
-    // these should be not null but check on it
-    banner_cta_signed_out_type,
-    banner_cta_signed_out_text_multiloc,
-    banner_cta_signed_out_url,
-    banner_cta_signed_in_type,
-    banner_cta_signed_in_text_multiloc,
-    banner_cta_signed_in_url,
-  } = latestHomepageSettings;
 
   return (
     <Section>
@@ -46,16 +29,16 @@ const CTASettings = ({
         <FormattedMessage {...messages.ctaHeader} />
       </SubSectionTitle>
       <CTASignedOutSettings
-        ctaType={banner_cta_signed_out_type}
-        ctaButtonMultiloc={banner_cta_signed_out_text_multiloc}
-        ctaButtonUrl={banner_cta_signed_out_url}
+        ctaType={homepageSettings.banner_cta_signed_out_type}
+        ctaButtonMultiloc={homepageSettings.banner_cta_signed_out_text_multiloc}
+        ctaButtonUrl={homepageSettings.banner_cta_signed_out_url}
         handleSettingOnChange={handleSettingOnChange}
         errors={errors}
       />
       <CTASignedInSettings
-        ctaType={banner_cta_signed_in_type}
-        ctaButtonMultiloc={banner_cta_signed_in_text_multiloc}
-        ctaButtonUrl={banner_cta_signed_in_url}
+        ctaType={homepageSettings.banner_cta_signed_in_type}
+        ctaButtonMultiloc={homepageSettings.banner_cta_signed_in_text_multiloc}
+        ctaButtonUrl={homepageSettings.banner_cta_signed_in_url}
         handleSettingOnChange={handleSettingOnChange}
         errors={errors}
       />

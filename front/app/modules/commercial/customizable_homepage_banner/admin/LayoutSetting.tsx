@@ -45,16 +45,16 @@ const LayoutOptionTextWrapper = styled.div`
 `;
 
 interface Props {
-  latestHomepageSettings: IHomepageSettingsAttributes;
+  homepageSettings: IHomepageSettingsAttributes;
   handleOnChange: (settingKey: string, settingValue: any) => void;
 }
 
-const LayoutSetting = ({ latestHomepageSettings, handleOnChange }: Props) => {
+const LayoutSetting = ({ homepageSettings, handleOnChange }: Props) => {
   const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
     handleOnChange('banner_layout', layout);
   };
 
-  const homepageBannerLayout = latestHomepageSettings.banner_layout;
+  const homepageBannerLayout = homepageSettings.banner_layout;
   return (
     <SectionField key="layout">
       <SubSectionTitle>

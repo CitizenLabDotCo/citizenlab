@@ -81,12 +81,20 @@ const getUrlErrors = (
   return null;
 };
 
+type SettingKeyType =
+  | 'banner_cta_signed_out_text_multiloc'
+  | 'banner_cta_signed_in_text_multiloc'
+  | 'banner_cta_signed_out_url'
+  | 'banner_cta_signed_in_url';
+
 interface Props {
   buttonUrl: string;
   buttonMultiloc: Multiloc;
   buttonConfig?: CustomizedButtonConfig;
-  // settingKey can be typed
-  handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+  handleSettingOnChange: (
+    settingKey: SettingKeyType,
+    settingValue: Multiloc | String
+  ) => void;
   signInStatus: 'signed_out' | 'signed_in';
   errors: CLErrors;
   className?: string;
