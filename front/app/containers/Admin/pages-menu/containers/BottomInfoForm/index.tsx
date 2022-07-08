@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from 'styled-components';
 
 // components
-import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import Error from 'components/UI/Error';
-import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { Box, Button } from '@citizenlab/cl2-component-library';
+import SectionFormWrapper from '../../components/SectionFormWrapper';
+import Error from 'components/UI/Error';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // i18n
 import { FormattedMessage, InjectedIntlProps } from 'react-intl';
@@ -18,11 +18,13 @@ import { Multiloc, CLError } from 'typings';
 // constants
 import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
 
-// resources
+// services and hooks
 import useHomepageSettings from 'hooks/useHomepageSettings';
+import { updateHomepageSettings } from 'services/homepageSettings';
+
+// utils
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
-import { updateHomepageSettings } from 'services/homepageSettings';
 
 const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const homepageSettings = useHomepageSettings();

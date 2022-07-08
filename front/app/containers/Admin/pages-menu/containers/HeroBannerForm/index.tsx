@@ -76,7 +76,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   // component state
   const [isLoading, setIsLoading] = useState(false);
-  const [convertedHeaderBg, setConvertedHeaderBG] = useState<
+  const [headerLocalDisplayImage, setHeaderLocalDisplayImage] = useState<
     UploadFile[] | null
   >(null);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
@@ -92,12 +92,29 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
 
   useEffect(() => {
     if (!isNilOrError(homepageSettings)) {
+      // copy homepage settings to local state
       setLocalHomepageSettings({
         ...homepageSettings.data.attributes,
         banner_layout:
           homepageSettings.data.attributes.banner_layout ??
           'full_width_banner_layout',
       });
+
+      // the image file sent from the API needs to be converted
+      // to a format that can be displayed
+      const convertHeaderToUploadFile = async (fileInfo) => {
+        if (fileInfo) {
+          const tenantHeaderBg = await convertUrlToUploadFile(fileInfo.url);
+          const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
+            ? [tenantHeaderBg]
+            : [];
+          setHeaderLocalDisplayImage(headerBgUploadFile);
+          setBannerError(null);
+        }
+      };
+
+      const headerFileInfo = homepageSettings.data.attributes.header_bg?.large;
+      convertHeaderToUploadFile(headerFileInfo);
     }
   }, [homepageSettings]);
 
@@ -144,6 +161,13 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     }
   };
 
+  const handleSettingOnChange = (
+    key: keyof IHomepageSettingsAttributes,
+    value: any
+  ) => {
+    updateValueInLocalHomepageSettings(key, value);
+  };
+
   const handleOverlayColorOnChange = (color: string) => {
     updateValueInLocalHomepageSettings(
       'banner_signed_out_header_overlay_color',
@@ -167,13 +191,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     () => debounceHandleOverlayOpacityOnChange,
     [debounceHandleOverlayOpacityOnChange]
   );
-
-  const handleSettingOnChange = (
-    key: keyof IHomepageSettingsAttributes,
-    value: any
-  ) => {
-    updateValueInLocalHomepageSettings(key, value);
-  };
 
   const handleSignedOutHeaderOnChange = (titleMultiloc: Multiloc) => {
     const signedOutHeaderErrors = {};
@@ -225,27 +242,6 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
     );
   };
 
-  useEffect(() => {
-    if (!localHomepageSettings?.header_bg) {
-      setConvertedHeaderBG(null);
-      return;
-    }
-
-    const convertHeaderToUploadFile = async (fileInfo) => {
-      if (fileInfo) {
-        const tenantHeaderBg = await convertUrlToUploadFile(fileInfo.url);
-        const headerBgUploadFile = !isNilOrError(tenantHeaderBg)
-          ? [tenantHeaderBg]
-          : [];
-        setConvertedHeaderBG(headerBgUploadFile);
-        setBannerError(null);
-      }
-    };
-
-    const headerFileInfo = localHomepageSettings.header_bg?.large;
-    convertHeaderToUploadFile(headerFileInfo);
-  }, [localHomepageSettings?.header_bg]);
-
   // set error and disable save button if header is removed
   useEffect(() => {
     if (isNil(localHomepageSettings?.header_bg)) {
@@ -259,6 +255,18 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   if (isNilOrError(localHomepageSettings)) {
     return null;
   }
+
+  const bannerImageAddHandler = (newImage: UploadFile[]) => {
+    // this base64 value is sent to the API
+    updateValueInLocalHomepageSettings('header_bg', newImage[0].base64);
+    // this value is used for local display
+    setHeaderLocalDisplayImage([newImage[0]]);
+  };
+
+  const bannerImageRemoveHandler = () => {
+    updateValueInLocalHomepageSettings('header_bg', null);
+    setHeaderLocalDisplayImage(null);
+  };
 
   const {
     banner_layout,
@@ -326,7 +334,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           />
         </SubSectionTitle>
         <SectionField>
-          {!isNilOrError(convertedHeaderBg) && (
+          {!isNilOrError(headerLocalDisplayImage) && (
             <>
               <Label>
                 <FormattedMessage {...messages.bgHeaderPreviewSelectLabel} />
@@ -352,15 +360,8 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
             </>
           )}
           <HeaderImageDropzone
-            onAdd={(newImage: UploadFile[]) => {
-              updateValueInLocalHomepageSettings(
-                'header_bg',
-                newImage[0].base64
-              );
-            }}
-            onRemove={() => {
-              updateValueInLocalHomepageSettings('header_bg', null);
-            }}
+            onAdd={bannerImageAddHandler}
+            onRemove={bannerImageRemoveHandler}
             homepageSettingsOverlayColor={
               banner_signed_out_header_overlay_color
             }
@@ -368,7 +369,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
               banner_signed_out_header_overlay_opacity
             }
             headerError={bannerError}
-            header_bg={convertedHeaderBg}
+            header_bg={headerLocalDisplayImage}
             previewDevice={previewDevice}
             // check on default
             layout={banner_layout || 'full_width_banner_layout'}
@@ -376,38 +377,39 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </SectionField>
 
         {/* We only allow the overlay for the full-width banner layout for the moment. */}
-        {banner_layout === 'full_width_banner_layout' && convertedHeaderBg && (
-          <>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={
-                  // default values come from the theme
-                  banner_signed_out_header_overlay_color ?? theme.colorMain
-                }
-                onChange={handleOverlayColorOnChange}
-              />
-            </SectionField>
-            <SectionField>
-              <Label>
-                <FormattedMessage {...messages.imageOverlayOpacity} />
-              </Label>
-              <RangeInput
-                step={1}
-                min={0}
-                max={100}
-                value={
-                  banner_signed_out_header_overlay_opacity ||
-                  theme.signedOutHeaderOverlayOpacity
-                }
-                onChange={debouncedHandleOverlayOpacityOnChange}
-              />
-            </SectionField>
-          </>
-        )}
+        {banner_layout === 'full_width_banner_layout' &&
+          headerLocalDisplayImage && (
+            <>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.imageOverlayColor} />
+                </Label>
+                <ColorPickerInput
+                  type="text"
+                  value={
+                    // default values come from the theme
+                    banner_signed_out_header_overlay_color ?? theme.colorMain
+                  }
+                  onChange={handleOverlayColorOnChange}
+                />
+              </SectionField>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.imageOverlayOpacity} />
+                </Label>
+                <RangeInput
+                  step={1}
+                  min={0}
+                  max={100}
+                  value={
+                    banner_signed_out_header_overlay_opacity ||
+                    theme.signedOutHeaderOverlayOpacity
+                  }
+                  onChange={debouncedHandleOverlayOpacityOnChange}
+                />
+              </SectionField>
+            </>
+          )}
         <SectionField key={'banner_text'}>
           <SubSectionTitle>
             <FormattedMessage {...messages.bannerTextTitle} />

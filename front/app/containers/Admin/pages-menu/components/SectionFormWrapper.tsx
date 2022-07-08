@@ -1,8 +1,8 @@
 import React from 'react';
 
 // components
-import StickyContainer from './StickyContainer';
 import { Box } from '@citizenlab/cl2-component-library';
+import StickyContainer from './StickyContainer';
 import Breadcrumbs from 'components/UI/Breadcrumbs';
 import PageTitle from 'components/admin/PageTitle';
 import PageWrapper from 'components/admin/PageWrapper';
