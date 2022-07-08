@@ -121,6 +121,14 @@ const ReportExportMenu = ({
     if (node) {
       const svgContent = new XMLSerializer().serializeToString(node);
       const canvas = document.createElement('canvas');
+
+      // get aspect ratio
+      const aspectRatio =
+        (node as any).clientWidth / (node as any).clientHeight;
+
+      canvas.width = aspectRatio > 1 ? 4000 : aspectRatio * 4000;
+      canvas.height = aspectRatio <= 1 ? 4000 : aspectRatio * 4000;
+
       document.body.appendChild(canvas);
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
@@ -129,6 +137,10 @@ const ReportExportMenu = ({
 
       // Start SVG rendering with animations and mouse handling.
       v.start();
+
+      // Scale down canvas for higher resolution
+      canvas.width = aspectRatio > 1 ? 1000 : aspectRatio * 1000;
+      canvas.height = aspectRatio <= 1 ? 1000 : aspectRatio * 1000;
 
       // Convert the Canvas to an image
       const link = document.createElement('a');
