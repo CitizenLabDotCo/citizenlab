@@ -35,6 +35,25 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const getSVGStringStart = (width: number, height: number) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" class="recharts-surface" width="${width}" height="${height}"`;
+
+const replaceWH = (
+  svgContent: string,
+  width: number,
+  height: number,
+  newWidth: number,
+  newHeight: number
+) => {
+  const start = getSVGStringStart(width, height);
+  const contentWithoutStart = svgContent.split(start)[1];
+  const newStart = getSVGStringStart(
+    Math.round(newWidth),
+    Math.round(newHeight)
+  );
+  return `${newStart}${contentWithoutStart}`;
+};
+
 interface ReportExportMenuProps {
   className?: string;
   name: string;
@@ -119,28 +138,41 @@ const ReportExportMenu = ({
     // eslint-disable-next-line react/no-find-dom-node
     const node = findDOMNode(svgNode && svgNode.current.container.children[0]);
     if (node) {
+      // Create copy of node to trick TS (doesn't seem to understand that this will be always be a SVG)
+      const copy = node as SVGElement;
+
+      // Get aspect ratio
+      const width = copy.clientWidth;
+      const height = copy.clientHeight;
+
+      const aspectRatio = width / height;
+
+      // Increase width and height for better resolution
+      const newWidth = aspectRatio > 1 ? 4000 : aspectRatio * 4000;
+      const newHeight = aspectRatio <= 1 ? 4000 : (1 / aspectRatio) * 4000;
+
+      // Convert SVG to string
       const svgContent = new XMLSerializer().serializeToString(node);
+
+      // Make SVG string with bigger width and height
+      const newSvgContent = replaceWH(
+        svgContent,
+        width,
+        height,
+        newWidth,
+        newHeight
+      );
+
+      // Create canvas
       const canvas = document.createElement('canvas');
 
-      // get aspect ratio
-      const aspectRatio =
-        (node as any).clientWidth / (node as any).clientHeight;
-
-      canvas.width = aspectRatio > 1 ? 4000 : aspectRatio * 4000;
-      canvas.height = aspectRatio <= 1 ? 4000 : aspectRatio * 4000;
-
-      document.body.appendChild(canvas);
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      const v = await Canvg.fromString(ctx, svgContent);
+      const v = await Canvg.fromString(ctx, newSvgContent);
 
       // Start SVG rendering with animations and mouse handling.
       v.start();
-
-      // Scale down canvas for higher resolution
-      canvas.width = aspectRatio > 1 ? 1000 : aspectRatio * 1000;
-      canvas.height = aspectRatio <= 1 ? 1000 : aspectRatio * 1000;
 
       // Convert the Canvas to an image
       const link = document.createElement('a');
