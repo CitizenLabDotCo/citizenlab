@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -17,22 +17,37 @@ interface Props {
   onClose: () => void;
 }
 
-const BinModal = ({ open, onClose }: Props) => (
-  <Modal
-    opened={open}
-    close={onClose}
-    width="70%"
-    header={
-      <Box color={colors.adminTextColor} style={{ fontWeight: 700 }}>
-        <FormattedMessage {...messages.ageGroups} />
+// TODO delete this when actual data is in place
+const getDummyBins = (): [number, number][] => [
+  [18, 24],
+  [25, 34],
+  [35, 44],
+  [45, 54],
+  [55, 64],
+  [65, Infinity],
+];
+
+const BinModal = ({ open, onClose }: Props) => {
+  const [bins, setBins] = useState(getDummyBins());
+  setBins(getDummyBins());
+
+  return (
+    <Modal
+      opened={open}
+      close={onClose}
+      width="70%"
+      header={
+        <Box color={colors.adminTextColor} style={{ fontWeight: 700 }}>
+          <FormattedMessage {...messages.ageGroups} />
+        </Box>
+      }
+    >
+      <Box p="28px">
+        <FormattedMessage {...messages.modalDescription} />
+        <BinInputs bins={bins} />
       </Box>
-    }
-  >
-    <Box p="28px">
-      <FormattedMessage {...messages.modalDescription} />
-      <BinInputs />
-    </Box>
-  </Modal>
-);
+    </Modal>
+  );
+};
 
 export default BinModal;
