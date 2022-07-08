@@ -183,7 +183,7 @@ const ReportExportMenu = ({
       link.click();
     }
 
-    // trackEventByName('Clicked export svg', { extra: { graph: name } });
+    trackEventByName('Clicked export png', { extra: { graph: name } });
   };
 
   const toggleDropdown = (value?: boolean) => () => {
