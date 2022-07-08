@@ -79,7 +79,7 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         },
         { label: formatMessage(messages.bottomInfoPageTitle) },
       ]}
-      title="Bottom Info Section"
+      title={formatMessage(messages.bottomInfoPageTitle)}
       stickyMenuContents={
         <Button disabled={isLoading} onClick={onSave}>
           Save Bottom Info Form

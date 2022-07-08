@@ -14,4 +14,8 @@ export default defineMessages({
     defaultMessage:
       'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
   },
+  bottomInfoSaveButton: {
+    id: 'app.containers.Admin.pagesAndMenu.bottomInfoSaveButton',
+    defaultMessage: 'Save Bottom Info Section',
+  },
 });

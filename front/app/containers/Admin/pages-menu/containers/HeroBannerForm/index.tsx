@@ -4,11 +4,10 @@ import styled, { useTheme } from 'styled-components';
 // components
 import Error from 'components/UI/Error';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
+import InfoBar from '../../components/InfoBar';
 import {
   Section,
   SectionField,
-  SectionTitle,
-  SectionDescription,
   SubSectionTitle,
 } from 'components/admin/Section';
 
@@ -24,11 +23,11 @@ import {
 import {
   Box,
   Button,
-  Select,
-  IOption,
-  Label,
   ColorPickerInput,
   IconTooltip,
+  IOption,
+  Label,
+  Select,
 } from '@citizenlab/cl2-component-library';
 
 import HeaderImageDropzone from './HeaderImageDropzone';
@@ -287,20 +286,17 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         },
         { label: formatMessage(messages.header) },
       ]}
-      title="Hero Banner Form"
+      title={formatMessage(messages.heroBannerTitle)}
       stickyMenuContents={
         <Button disabled={saveDisabled} onClick={onSave}>
-          Save Hero Banner
+          <FormattedMessage {...messages.saveHeroBanner} />
         </Button>
       }
     >
       <Section key={'header'}>
-        <SectionTitle>
-          <FormattedMessage {...messages.header} />
-        </SectionTitle>
-        <SectionDescription>
-          <FormattedMessage {...messages.headerDescription} />
-        </SectionDescription>
+        <InfoBar
+          textContent={<FormattedMessage {...messages.heroBannerInfoBar} />}
+        />
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionStart"
           latestHomepageSettings={localHomepageSettings}

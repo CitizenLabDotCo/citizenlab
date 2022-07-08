@@ -96,4 +96,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.noHeader',
     defaultMessage: 'Please upload a header image',
   },
+  heroBannerTitle: {
+    id: 'app.containers.AdminPage.HeroBannerForm.heroBannerTitle',
+    defaultMessage: 'Hero Banner',
+  },
+  saveHeroBanner: {
+    id: 'app.containers.AdminPage.HeroBannerForm.saveHeroBanner',
+    defaultMessage: 'Save Hero Banner',
+  },
+  heroBannerInfoBar: {
+    id: 'app.containers.AdminPage.HeroBannerForm.heroBannerInfoBar',
+    defaultMessage: 'Customise the hero banner image and text.',
+  },
 });
