@@ -27,7 +27,9 @@ const BinModal = ({ open, onClose }: Props) => (
       </Box>
     }
   >
-    <>BLA</>
+    <Box p="28px">
+      <FormattedMessage {...messages.modalDescription} />
+    </Box>
   </Modal>
 );
 
