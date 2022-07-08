@@ -169,9 +169,8 @@ const ReportExportMenu = ({
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
+      // Start SVG rendering with animations and mouse handling
       const v = await Canvg.fromString(ctx, newSvgContent);
-
-      // Start SVG rendering with animations and mouse handling.
       v.start();
 
       // Convert the Canvas to an image
