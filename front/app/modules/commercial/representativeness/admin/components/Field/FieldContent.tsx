@@ -24,14 +24,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isSubmittingAllowed, FormValues } from './utils';
 import { isNilOrError } from 'utils/helperUtils';
 
-// TODO derive this from reference distribution (depending on Adrien's work)
-const AGE_GROUPS_SET = false;
-
 interface Props {
   userCustomFieldId: string;
   formValues: FormValues;
   submitting: boolean;
   touched: boolean;
+  ageGroupsSet?: boolean;
   onUpdateEnabled: (optionId: string, enabled: boolean) => void;
   onUpdatePopulation: (optionId: string, population: number | null) => void;
   onSubmit: () => void;
@@ -42,6 +40,7 @@ const FieldContent = ({
   formValues,
   submitting,
   touched,
+  ageGroupsSet,
   onUpdateEnabled,
   onUpdatePopulation,
   onSubmit,
@@ -61,7 +60,7 @@ const FieldContent = ({
   );
 
   const showSetAgeGroupsMessage =
-    userCustomField.attributes.code === 'birthyear' && !AGE_GROUPS_SET;
+    userCustomField.attributes.code === 'birthyear' && ageGroupsSet === false;
 
   const openBinModal = () => setBinModalOpen(true);
   const closeBinModal = () => setBinModalOpen(false);

@@ -72,8 +72,11 @@ export type Status = 'saved' | 'complete' | 'incomplete';
 export const getStatus = (
   formValues: FormValues,
   referenceDistribution: IReferenceDistributionData | NilOrError,
-  touched: boolean
+  touched: boolean,
+  ageGroupsDefined?: boolean
 ): Status | null => {
+  if (ageGroupsDefined === false) return null;
+
   if (isSaved(formValues, referenceDistribution, touched)) {
     return 'saved';
   }

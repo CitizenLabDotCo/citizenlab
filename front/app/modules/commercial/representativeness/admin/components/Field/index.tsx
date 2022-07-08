@@ -44,6 +44,9 @@ interface InnerProps extends Props {
   referenceDataUploaded: boolean;
 }
 
+// TODO derive this from reference distribution or whatever
+const AGE_GROUPS_SET = false;
+
 const Field = ({
   userCustomFieldId,
   titleMultiloc,
@@ -130,7 +133,12 @@ const Field = ({
     setSubmitting(false);
   };
 
-  const status = getStatus(formValues, referenceDistribution, touched);
+  const status = getStatus(
+    formValues,
+    referenceDistribution,
+    touched,
+    AGE_GROUPS_SET
+  );
 
   if (isComingSoon) {
     return (
@@ -161,6 +169,7 @@ const Field = ({
         formValues={formValues}
         submitting={submitting}
         touched={touched}
+        ageGroupsSet={AGE_GROUPS_SET}
         onUpdateEnabled={onUpdateEnabled}
         onUpdatePopulation={onUpdatePopulation}
         onSubmit={onSubmit}
