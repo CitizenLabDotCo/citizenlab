@@ -1,28 +1,50 @@
-import { useState, useEffect } from 'react';
-import {
-  homepageSettingsStream,
-  THomepageEnabledSetting,
-  IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
+import { THomepageEnabledSetting } from 'services/homepageSettings';
+import { TAppConfigurationSetting } from 'services/appConfiguration';
 import { isNilOrError } from 'utils/helperUtils';
+import useHomepageSettings from './useHomepageSettings';
+import useAppConfiguration from './useAppConfiguration';
 
-export default function useHomepageSettingsFeatureFlag(
-  homepageEnabledSetting: THomepageEnabledSetting
-) {
-  const [homepageSettings, setHomepageSettings] =
-    useState<IHomepageSettingsAttributes | null>(null);
+type TFeatureSectionHomepageEnabledSetting = Extract<
+  THomepageEnabledSetting,
+  'events_widget_enabled' | 'customizable_homepage_banner_enabled'
+>;
 
-  useEffect(() => {
-    const homepageSettingsSubscription =
-      homepageSettingsStream().observable.subscribe((homepageSettings) =>
-        // it doesn't seem right that we can't return an error here
-        setHomepageSettings(homepageSettings.attributes)
-      );
+type TRegularSectionHomepageEnabledSetting = Exclude<
+  THomepageEnabledSetting,
+  TFeatureSectionHomepageEnabledSetting
+>;
 
-    return homepageSettingsSubscription.unsubscribe();
-  }, []);
+type FeatureSectionParameters = {
+  homepageEnabledSetting: TFeatureSectionHomepageEnabledSetting;
+  homePageAllowedSettingName: Extract<
+    TAppConfigurationSetting,
+    'events_widget' | 'customizable_homepage_banner'
+  >;
+};
 
-  return !isNilOrError(homepageSettings)
-    ? homepageSettings[homepageEnabledSetting]
+type RegularSectionParameters = {
+  homepageEnabledSetting: TRegularSectionHomepageEnabledSetting;
+  homePageAllowedSettingName?: never;
+};
+
+type Parameters = FeatureSectionParameters | RegularSectionParameters;
+
+export default function useHomepageSettingsFeatureFlag({
+  homepageEnabledSetting,
+  homePageAllowedSettingName,
+}: Parameters) {
+  const homepageSettings = useHomepageSettings();
+  const appConfig = useAppConfiguration();
+  const appConfigSetting =
+    homePageAllowedSettingName && !isNilOrError(appConfig)
+      ? appConfig.data.attributes.settings?.[homePageAllowedSettingName]
+      : null;
+  const isEnabled = !isNilOrError(homepageSettings)
+    ? homepageSettings.attributes[homepageEnabledSetting]
     : false;
+  const isAllowed = !isNilOrError(appConfigSetting)
+    ? appConfigSetting.allowed
+    : false;
+
+  return isAllowed && isEnabled;
 }
