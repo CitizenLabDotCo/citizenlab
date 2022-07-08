@@ -575,7 +575,7 @@
   "app.containers.AccessibilityStatement.publicationDateIntro": "This accessibility statement was published on June 30, 2022.",
   "app.containers.AccessibilityStatement.responsiveness": "Staramy się udzielać odpowiedzi w ciągu 1-2 dni roboczych.",
   "app.containers.AccessibilityStatement.screenReaderBugWarning": "W przypadku różnych kombinacji przeglądarki/czytnika ekranowego mogą wystąpić błędy w czytniku ekranowym. Błędy te można zgłaszać w następujący sposób.",
-  "app.containers.AccessibilityStatement.screenReaderSearchResults": "Search function",
+  "app.containers.AccessibilityStatement.screenReaderSearchResults": "Funkcja wyszukiwania",
   "app.containers.AccessibilityStatement.screenReaderSearchResultsException": "Screen reader users may experience difficulties when using the search function. The number of search results may not be reported consistently.",
   "app.containers.AccessibilityStatement.statusPageText": "status strony",
   "app.containers.AccessibilityStatement.surveyTools": "Survey tools",
