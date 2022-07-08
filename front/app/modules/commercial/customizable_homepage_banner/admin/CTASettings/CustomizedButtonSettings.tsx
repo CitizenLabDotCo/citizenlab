@@ -93,7 +93,7 @@ interface Props {
   buttonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (
     settingKey: SettingKeyType,
-    settingValue: Multiloc | String
+    settingValue: Multiloc | string
   ) => void;
   signInStatus: 'signed_out' | 'signed_in';
   errors: CLErrors;
@@ -109,6 +109,9 @@ const CustomizedButtonSettings = ({
   className,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
+  const tenantLocales = useAppConfigurationLocales();
+  const [textErrors, setTextError] = useState<Multiloc>({});
+
   const handleTextOnChange = (textMultiloc: Multiloc) => {
     const signedInStatusKey =
       signInStatus === 'signed_out'
@@ -129,9 +132,6 @@ const CustomizedButtonSettings = ({
         : 'banner_cta_signed_in_url';
     handleSettingOnChange(signedInStatusKey, url);
   };
-
-  const tenantLocales = useAppConfigurationLocales();
-  const [textErrors, setTextError] = useState<Multiloc>({});
 
   const memedTextErrors = useMemo(
     () => getTextErrors(buttonMultiloc, errors, formatMessage, tenantLocales),
