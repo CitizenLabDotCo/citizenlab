@@ -9,7 +9,8 @@ export const isShown = ({
 
 export const isSupported = ({
   attributes: { input_type, code },
-}: IUserCustomFieldData) => input_type === 'select' && code !== 'domicile';
+}: IUserCustomFieldData) =>
+  (input_type === 'select' && code !== 'domicile') || code === 'birthyear';
 
 export const hasReferenceData = ({ relationships }: IUserCustomFieldData) =>
   !!relationships?.current_ref_distribution.data;

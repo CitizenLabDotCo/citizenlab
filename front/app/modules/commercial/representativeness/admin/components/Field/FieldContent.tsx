@@ -1,6 +1,7 @@
 import React from 'react';
 
 // hooks
+import useUserCustomField from 'modules/commercial/user_custom_fields/hooks/useUserCustomField';
 import useReferenceDistribution from '../../hooks/useReferenceDistribution';
 
 // components
@@ -9,6 +10,7 @@ import Header from './Header';
 import Options from './Options';
 import Tippy from '@tippyjs/react';
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -19,6 +21,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
 import { isSubmittingAllowed, FormValues } from './utils';
+import { isNilOrError } from 'utils/helperUtils';
+
+// TODO derive this from reference distribution (depending on Adrien's work)
+const AGE_GROUPS_SET = false;
 
 interface Props {
   userCustomFieldId: string;
@@ -39,14 +45,23 @@ const FieldContent = ({
   onUpdatePopulation,
   onSubmit,
 }: Props) => {
+  const userCustomField = useUserCustomField(userCustomFieldId);
   const { referenceDataUploaded } = useReferenceDistribution(userCustomFieldId);
-  if (referenceDataUploaded === undefined) return null;
+
+  if (referenceDataUploaded === undefined || isNilOrError(userCustomField)) {
+    return null;
+  }
 
   const allowSubmit = isSubmittingAllowed(
     formValues,
     touched,
     referenceDataUploaded
   );
+
+  const showSetAgeGroupsMessage =
+    userCustomField.attributes.code === 'birthyear' && !AGE_GROUPS_SET;
+
+  const noop = () => {};
 
   return (
     <Box
@@ -65,12 +80,29 @@ const FieldContent = ({
         px="16px"
       >
         <Header />
-        <Options
-          userCustomFieldId={userCustomFieldId}
-          formValues={formValues}
-          onUpdateEnabled={onUpdateEnabled}
-          onUpdatePopulation={onUpdatePopulation}
-        />
+        {showSetAgeGroupsMessage ? (
+          <Box mt="12px" mb="12px">
+            <Warning>
+              <FormattedMessage
+                {...messages.setAgeGroups}
+                values={{
+                  setAgeGroupsLink: (
+                    <Box as="button" style={{ fontWeight: 700 }} onClick={noop}>
+                      <FormattedMessage {...messages.setAgeGroupsLink} />
+                    </Box>
+                  ),
+                }}
+              />
+            </Warning>
+          </Box>
+        ) : (
+          <Options
+            userCustomFieldId={userCustomFieldId}
+            formValues={formValues}
+            onUpdateEnabled={onUpdateEnabled}
+            onUpdatePopulation={onUpdatePopulation}
+          />
+        )}
       </Box>
 
       <Tippy
