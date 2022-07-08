@@ -150,7 +150,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "project",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "tag",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "until",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Download as image",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Download Excel",
   "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Bäitrag",
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip": "Méi Informatiounen doriwwer, wéi Dir e Link fir Google Forms abanne kënnt, fannt Dir ënner {googleFormsTooltipLink}.",

@@ -151,7 +151,6 @@
   "app.components.admin.ReportExportMenu.FileName.projectFilter": "proyecto",
   "app.components.admin.ReportExportMenu.FileName.topicFilter": "tema",
   "app.components.admin.ReportExportMenu.FileName.untilFilter": "hasta",
-  "app.components.admin.ReportExportMenu.downloadAsImage": "Descargar como imagen",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Descargar Excel",
   "app.components.admin.SlugInput.regexError": "El slug sólo puede contener letras regulares, minúsculas (a-z), números (0-9) y guiones (-). El primer y el último carácter no pueden ser guiones, y los guiones consecutivos (-) no pueden ser utilizados.",
   "app.components.admin.SlugInput.resultingURL": "URL resultante",
