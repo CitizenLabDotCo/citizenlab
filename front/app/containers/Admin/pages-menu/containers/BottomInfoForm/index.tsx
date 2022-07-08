@@ -88,19 +88,17 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
         </Button>
       }
     >
-      <>
-        <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
-          <QuillMultilocWithLocaleSwitcher
-            id="custom-section"
-            label={formatMessage(messages.bottomInfoContentEditorTitle)}
-            labelTooltipText={formatMessage(messages.bottomInfoDescription)}
-            valueMultiloc={bottomInfoSectionMultilocState}
-            onChange={handleCustomSectionMultilocOnChange}
-            withCTAButton
-          />
-        </Box>
-        <Error apiErrors={apiErrors} />
-      </>
+      <Box maxWidth={`${theme.maxPageWidth - 100}px`} mb="24px">
+        <QuillMultilocWithLocaleSwitcher
+          id="custom-section"
+          label={formatMessage(messages.bottomInfoContentEditorTitle)}
+          labelTooltipText={formatMessage(messages.bottomInfoDescription)}
+          valueMultiloc={bottomInfoSectionMultilocState}
+          onChange={handleCustomSectionMultilocOnChange}
+          withCTAButton
+        />
+      </Box>
+      <Error apiErrors={apiErrors} />
     </SectionFormWrapper>
   );
 };
