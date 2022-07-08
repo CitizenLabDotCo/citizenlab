@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import Modal from 'components/UI/Modal';
 import { Box } from '@citizenlab/cl2-component-library';
+import BinInputs from './BinInputs';
 
 // i18n
 import messages from './messages';
@@ -29,6 +30,7 @@ const BinModal = ({ open, onClose }: Props) => (
   >
     <Box p="28px">
       <FormattedMessage {...messages.modalDescription} />
+      <BinInputs />
     </Box>
   </Modal>
 );
