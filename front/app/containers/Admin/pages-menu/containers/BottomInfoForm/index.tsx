@@ -8,7 +8,7 @@ import SectionFormWrapper from '../../components/SectionFormWrapper';
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
 // i18n
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -82,7 +82,7 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       title={formatMessage(messages.bottomInfoPageTitle)}
       stickyMenuContents={
         <Button disabled={isLoading} onClick={onSave}>
-          Save Bottom Info Form
+          <FormattedMessage {...messages.bottomInfoSaveButton} />
         </Button>
       }
     >
