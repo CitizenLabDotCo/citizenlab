@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Added
+
+- [CL-1077] Add PNG export to graph export dropdown
+
 ## 2022-07-07
 
 ### Fixed
