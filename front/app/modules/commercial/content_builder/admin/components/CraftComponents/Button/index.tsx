@@ -31,6 +31,17 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
       enabled: state.options.enabled,
     };
   });
+
+  // Links that are relative or of same hostname should open in same window
+  let openInNewTab;
+  if (url.includes(window.location.hostname)) {
+    openInNewTab = false;
+  } else if (!url.includes('.')) {
+    openInNewTab = false;
+  } else {
+    openInNewTab = true;
+  }
+
   return (
     <Box
       display="flex"
@@ -48,7 +59,7 @@ const Button = ({ text, url, type, alignment }: ButtonProps) => {
       {((enabled && text) || (text && url)) && (
         <ButtonComponent
           linkTo={url}
-          openLinkInNewTab={!url.includes(window.location.hostname)}
+          openLinkInNewTab={openInNewTab}
           id="e2e-button"
           width={alignment === 'fullWidth' ? '100%' : 'auto'}
           buttonStyle={type}

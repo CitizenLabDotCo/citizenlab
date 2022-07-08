@@ -177,7 +177,9 @@ export default ({ logo, logoError, setParentState, getSetting }: Props) => {
         </SubSectionTitle>
         <ImagesDropzone
           id="tenant-logo-dropzone"
-          acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+          acceptedFileTypes={{
+            'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+          }}
           images={logo}
           imagePreviewRatio={1}
           maxImagePreviewWidth="150px"

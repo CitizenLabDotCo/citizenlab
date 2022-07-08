@@ -6,6 +6,16 @@
 
 - [CL-1096] Add representativeness score to header of representativeness chart card
 
+## 2022-07-07
+
+### Fixed
+
+- [TEC-198] Various permission issues
+  - Route access for project folder moderators now works correctly
+  - Project folder moderators can now create a project and select the appropriate folder for it
+  - Route access for admins is now checked correctly
+  - Project/folder moderators now see the dashboard data correctly
+
 ## 2022-07-06
 
 ### Added
