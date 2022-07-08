@@ -2,11 +2,14 @@ import React from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// styling
+import { colors } from 'utils/styleUtils';
 
 interface Props {
   open: boolean;
@@ -19,9 +22,9 @@ const BinModal = ({ open, onClose }: Props) => (
     close={onClose}
     width="70%"
     header={
-      <Title variant="h3" mt="0px" mb="0px">
+      <Box color={colors.adminTextColor} style={{ fontWeight: 700 }}>
         <FormattedMessage {...messages.ageGroups} />
-      </Title>
+      </Box>
     }
   >
     <>BLA</>
