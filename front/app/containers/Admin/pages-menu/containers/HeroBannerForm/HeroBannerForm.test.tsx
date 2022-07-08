@@ -36,7 +36,9 @@ jest.mock('hooks/useHomepageSettings', () => {
 describe('<HeroBannerForm />', () => {
   it('renders with HomepageSettings', () => {
     render(<HeroBannerForm />);
-    expect(screen.getByText('Hero Banner Form')).toBeInTheDocument();
+    expect(
+      screen.getByText('Customise the hero banner image and text.')
+    ).toBeInTheDocument();
   });
 
   it('correctly stores updated properties to state and sends them to the backend', async () => {

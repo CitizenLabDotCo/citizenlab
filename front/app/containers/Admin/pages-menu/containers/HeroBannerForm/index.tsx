@@ -297,7 +297,7 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           label: formatMessage(homeBreadcrumb.label),
           linkTo: homeBreadcrumb.linkTo,
         },
-        { label: formatMessage(messages.header) },
+        { label: formatMessage(messages.heroBannerTitle) },
       ]}
       title={formatMessage(messages.heroBannerTitle)}
       stickyMenuContents={

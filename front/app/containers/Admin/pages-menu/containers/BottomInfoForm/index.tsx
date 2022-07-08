@@ -8,8 +8,8 @@ import Error from 'components/UI/Error';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 // i18n
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
