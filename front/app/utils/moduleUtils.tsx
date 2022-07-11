@@ -392,8 +392,8 @@ export type OutletsPropertyMap = {
     ) => (settingKey: string, settingValue: any) => void;
     errors: CLErrors;
   };
-  'app.containers.Admin.pages-menu.index': Record<string, any>;
-  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
+  'app.containers.Admin.pages-menu.index': Record<string, never>;
+  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, never>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
     ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;
