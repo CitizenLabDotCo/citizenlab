@@ -56,9 +56,9 @@ const LandingPage = () => {
 
         <Content>
           <Suspense fallback={<LoadingBox />}>
-            <HomepageInfoSection sectionData="top_info_section_multiloc" />
+            <HomepageInfoSection sectionLocation="top" />
             <MainContent />
-            <HomepageInfoSection sectionData="bottom_info_section_multiloc" />
+            <HomepageInfoSection sectionLocation="bottom" />
             <Footer />
           </Suspense>
         </Content>

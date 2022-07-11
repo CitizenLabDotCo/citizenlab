@@ -38,19 +38,21 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 `;
 
 type Props = {
-  sectionData: 'bottom_info_section_multiloc' | 'top_info_section_multiloc';
+  sectionLocation: 'bottom' | 'top';
 };
 
-const HomepageInfoSection = ({ sectionData }: Props) => {
+const HomepageInfoSection = ({ sectionLocation }: Props) => {
   const homepageSettings = useHomepageSettings();
   if (!isNilOrError(homepageSettings)) {
-    const enabledKey =
-      sectionData === 'top_info_section_multiloc'
-        ? 'top_info_section_enabled'
-        : 'bottom_info_section_enabled';
-    const sectionIsEnabled = homepageSettings.data.attributes[enabledKey];
+    const [sectionEnabledKey, sectionMultilocKey] =
+      sectionLocation === 'top'
+        ? ['top_info_section_enabled', 'top_info_section_multiloc']
+        : ['bottom_info_section_enabled', 'bottom_info_section_multiloc'];
+
+    const sectionIsEnabled =
+      homepageSettings.data.attributes[sectionEnabledKey];
     const sectionMultilocContent =
-      homepageSettings.data.attributes[sectionData];
+      homepageSettings.data.attributes[sectionMultilocKey];
 
     if (
       sectionIsEnabled &&
