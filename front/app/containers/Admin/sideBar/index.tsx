@@ -218,6 +218,8 @@ class Sidebar extends PureComponent<
           name: 'menu',
           link: '/admin/pages-menu',
           iconName: 'blankPage',
+          // It's better to avoid using this feature flag in the core
+          // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916512426
           message: props.customizableNavbarFeatureFlag ? 'menu' : 'pages',
         },
         {

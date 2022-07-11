@@ -8,6 +8,8 @@ import messages from './messages';
 import Outlet from 'components/Outlet';
 
 const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  // It's better to avoid using this feature flag in the core
+  // https://github.com/CitizenLabDotCo/citizenlab/pull/2162#discussion_r916522447
   const customizableNavbarEnabled = useFeatureFlag({
     name: 'customizable_navbar',
   });
