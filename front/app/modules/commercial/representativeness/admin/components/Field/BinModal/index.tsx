@@ -29,7 +29,9 @@ const getDummyBins = (): [number, number][] => [
 
 const BinModal = ({ open, onClose }: Props) => {
   const [bins, setBins] = useState(getDummyBins());
-  setBins(getDummyBins());
+  console.log(setBins)
+
+  console.log(bins)
 
   return (
     <Modal
