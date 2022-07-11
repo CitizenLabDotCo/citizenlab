@@ -182,7 +182,7 @@
     "@types/react-select": "5.0.1",
     "@types/react-transition-group": "4.4.4",
     "@types/segment-analytics": "0.0.34",
-    "@types/shelljs": "0.8.9",
+    "@types/shelljs": "0.8.11",
     "@types/styled-components": "^5.1.24",
     "@types/webfontloader": "1.6.34",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
