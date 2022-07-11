@@ -9,6 +9,8 @@ const CustomNavbarSettingsComponent = React.lazy(
   () => import('./NavigationSettings')
 );
 
+export const PAGES_MENU_PATH = '/admin/pages-menu';
+
 export default () => ({
   path: 'pages-menu',
   element: (

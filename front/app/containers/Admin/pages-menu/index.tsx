@@ -7,8 +7,6 @@ import TabbedResource from 'components/admin/TabbedResource';
 import messages from './messages';
 import Outlet from 'components/Outlet';
 
-export const NAVIGATION_PATH = '/admin/pages-menu';
-
 const Containers = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const customizableNavbarEnabled = useFeatureFlag({
     name: 'customizable_navbar',
