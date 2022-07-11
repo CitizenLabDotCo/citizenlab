@@ -25,4 +25,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.range',
     defaultMessage: 'Range',
   },
+  ageAndOver: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.ageAndOver',
+    defaultMessage: '{age} and over',
+  },
+  andOver: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver',
+    defaultMessage: 'and over',
+  },
 });
