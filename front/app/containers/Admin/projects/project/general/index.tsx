@@ -296,7 +296,7 @@ const AdminProjectsProjectGeneral = ({
     if (isFormValid && !processing) {
       const nextProjectAttributesDiff: IUpdatedProjectProperties = {
         admin_publication_attributes: {
-          publication_status: 'draft',
+          publication_status: project?.attributes.publication_status || 'draft',
         },
         ...projectAttributesDiff,
         ...participationContextConfig,
