@@ -1,5 +1,11 @@
 # Changelog
 
+## Next release
+
+### Added
+
+- [CL-1096] Add representativeness score to header of representativeness chart card
+
 ## 2022-07-07
 
 ### Fixed
