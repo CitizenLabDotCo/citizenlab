@@ -6,13 +6,13 @@ import {
   isAdmin,
   isModerator,
   isProjectModerator,
-  isProjectFolderModerator,
   isSuperAdmin,
 } from '../roles';
 import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 export const MODERATOR_ROUTES = [
+  '/admin', // currently redirects to /admin/dashboard
   '/admin/projects',
   '/admin/messaging',
   '/admin/ideas',
@@ -66,18 +66,7 @@ export const canAccessRoute = (
       return true;
     }
 
-    if (
-      (isModerator(user) || isProjectFolderModerator(user)) &&
-      isModeratorRoute(item)
-    ) {
-      return true;
-    }
-
-    if (
-      item.path.includes('folders') &&
-      user &&
-      isProjectFolderModerator(user)
-    ) {
+    if (isModerator(user) && isModeratorRoute(item)) {
       return true;
     }
 
