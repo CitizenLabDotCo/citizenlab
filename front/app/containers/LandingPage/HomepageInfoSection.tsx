@@ -1,5 +1,5 @@
 import React from 'react';
-import useAppConfiguration from 'hooks/useAppConfiguration';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 import T from 'components/T';
 import ContentContainer from 'components/ContentContainer';
@@ -37,17 +37,20 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
   }
 `;
 
-const HomepageInfoSection = () => {
-  const appConfiguration = useAppConfiguration();
+type Props = {
+  sectionData: 'bottom_info_section_multiloc' | 'top_info_section_multiloc';
+};
 
-  if (!isNilOrError(appConfiguration)) {
-    const homepageInfoMultiloc =
-      appConfiguration.data.attributes.homepage_info_multiloc;
+const HomepageInfoSection = ({ sectionData }: Props) => {
+  const homepageSettings = useHomepageSettings();
+  if (!isNilOrError(homepageSettings)) {
+    const homepageInfoMultiloc = homepageSettings.data.attributes[sectionData];
 
     if (homepageInfoMultiloc && !isEmptyMultiloc(homepageInfoMultiloc)) {
       return (
         <CustomSectionContentContainer>
           <StyledQuillEditedContent>
+            {/* what does this do */}
             <Fragment name={'pages/homepage_info/content'}>
               <T value={homepageInfoMultiloc} supportHtml={true} />
             </Fragment>

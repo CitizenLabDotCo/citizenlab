@@ -3,6 +3,7 @@ import PageLoading from 'components/UI/PageLoading';
 import { Outlet as RouterOutlet } from 'react-router-dom';
 
 const BottomInfoForm = lazy(() => import('./containers/BottomInfoForm'));
+const TopInfoSection = lazy(() => import('./containers/TopInfoSection'));
 const HeroBannerForm = lazy(() => import('./containers/HeroBannerForm'));
 
 export default () => ({
@@ -21,6 +22,14 @@ export default () => ({
       element: (
         <PageLoading>
           <BottomInfoForm />
+        </PageLoading>
+      ),
+    },
+    {
+      path: 'top-info-section',
+      element: (
+        <PageLoading>
+          <TopInfoSection />
         </PageLoading>
       ),
     },
