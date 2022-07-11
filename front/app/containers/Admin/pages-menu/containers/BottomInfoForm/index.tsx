@@ -44,9 +44,9 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   }, [homepageSettings]);
 
   const handleCustomSectionMultilocOnChange = (
-    homepageInfoPageMultiloc: Multiloc
+    bottomInfoMultiloc: Multiloc
   ) => {
-    setBottomInfoSectionMultilocState(homepageInfoPageMultiloc);
+    setBottomInfoSectionMultilocState(bottomInfoMultiloc);
   };
 
   const onSave = async () => {

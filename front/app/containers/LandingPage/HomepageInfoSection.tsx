@@ -50,7 +50,7 @@ const HomepageInfoSection = ({ sectionData }: Props) => {
       return (
         <CustomSectionContentContainer>
           <StyledQuillEditedContent>
-            {/* what does this do */}
+            {/* does this need to be changed if there are two of them? */}
             <Fragment name={'pages/homepage_info/content'}>
               <T value={homepageInfoMultiloc} supportHtml={true} />
             </Fragment>
