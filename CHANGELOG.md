@@ -2,6 +2,9 @@
 
 ## Next release
 
+### Changed
+
+- [CL-1093] Pin Node.js version in package.json
 
 ## 2022-07-11
 
