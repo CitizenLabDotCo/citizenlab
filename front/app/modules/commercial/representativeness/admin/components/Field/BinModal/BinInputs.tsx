@@ -10,7 +10,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // typings
-import { Bins } from '.'
+import { Bins } from '.';
 
 interface Props {
   bins: Bins;
@@ -20,10 +20,10 @@ interface Props {
 const BinInputs = ({ bins, onUpdateLowerBound }: Props) => (
   <Box mt="32px">
     <BinInputsHeader />
-    {bins.map((bin, i) => (
-      <BinInputRow 
+    {bins.map((_, i) => (
+      <BinInputRow
         groupIndex={i}
-        bin={bin}
+        bins={bins}
         onUpdateLowerBound={onUpdateLowerBound}
         key={i}
       />
@@ -32,24 +32,29 @@ const BinInputs = ({ bins, onUpdateLowerBound }: Props) => (
 );
 
 interface RowProps {
-  bin: [number, number];
+  bins: Bins;
   groupIndex: number;
   onUpdateLowerBound: (groupIndex: number, newValue: number) => void;
 }
 
 const BinInputRow = injectIntl(
   ({
-    bin,
+    bins,
     groupIndex,
     onUpdateLowerBound,
     intl: { formatMessage },
   }: RowProps & InjectedIntlProps) => {
     const [lowerBound, setLowerBound] = useState<number | undefined>();
 
+    const bin = bins[groupIndex];
+    const isLastBin = groupIndex === bins.length - 1;
+    const lowerBoundMin = groupIndex === 0 ? 0 : bins[groupIndex - 1][0] + 2;
+    const lowerBoundMax = isLastBin ? 129 : bin[1] - 1;
+
     const handleChangeLowerBound = (newValueStr: string) => {
       const newValue = +newValueStr;
       setLowerBound(newValue);
-    }
+    };
 
     const handleBlurLowerBound = () => {
       if (lowerBound === undefined || lowerBound === bin[0]) {
@@ -58,8 +63,11 @@ const BinInputRow = injectIntl(
 
       const newLowerBound = lowerBound;
       setLowerBound(undefined);
-      onUpdateLowerBound(groupIndex, newLowerBound);
-    }
+
+      if (newLowerBound >= lowerBoundMin && newLowerBound <= lowerBoundMax) {
+        onUpdateLowerBound(groupIndex, newLowerBound);
+      }
+    };
 
     return (
       <Box display="flex" flexDirection="row" mt="10px" mb="10px">
@@ -67,11 +75,12 @@ const BinInputRow = injectIntl(
           <Text color="adminTextColor">Age group {groupIndex + 1}</Text>
         </Box>
         <Box width="25%" pr="24px" display="flex" alignItems="center">
-          <Input 
+          <Input
             type="number"
             value={(lowerBound !== undefined ? lowerBound : bin[0]).toString()}
             onChange={handleChangeLowerBound}
-            min="0"
+            min={lowerBoundMin.toString()}
+            max={lowerBoundMax.toString()}
             onBlur={handleBlurLowerBound}
           />
         </Box>
@@ -79,10 +88,12 @@ const BinInputRow = injectIntl(
           <Input
             type="number"
             value={bin[1].toString()}
-            disabled={isFinite(bin[1])}
+            disabled={!isLastBin}
             placeholder={
-              !isFinite(bin[1]) ? formatMessage(messages.andOver) : undefined
+              isLastBin ? formatMessage(messages.andOver) : undefined
             }
+            min={(bin[0] + 1).toString()}
+            max="130"
           />
         </Box>
         <Box width="25%">
@@ -93,7 +104,7 @@ const BinInputRow = injectIntl(
           </Text>
         </Box>
       </Box>
-    )
+    );
   }
 );
 
