@@ -187,7 +187,9 @@ const CustomFieldsGraph = ({
   }, [customField, currentProject, startAt, endAt]);
 
   const noData =
-    !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+    isNilOrError(serie) ||
+    serie.every((item) => isEmpty(item)) ||
+    serie.length <= 0;
 
   const { code } = customField.attributes;
 
