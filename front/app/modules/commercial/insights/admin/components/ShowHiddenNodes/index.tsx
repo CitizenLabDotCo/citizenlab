@@ -13,8 +13,8 @@ import { TooltipContentList } from 'modules/commercial/insights/admin/components
 import Tippy from '@tippyjs/react';
 
 // intl
-
-import { FormattedMessage } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../../containers/Insights/messages';
 
 const Button = styled.button`
@@ -39,7 +39,8 @@ const ShowHiddenNodes = ({
   hiddenNodes,
   nodesNames,
   handleShowHiddenNodesClick,
-}: ShowHiddenNodesProps) => {
+  intl: { formatMessage },
+}: ShowHiddenNodesProps & InjectedIntlProps) => {
   if (isNilOrError(hiddenNodes) || hiddenNodes.length === 0 || !nodesNames) {
     return null;
   }
@@ -74,16 +75,13 @@ const ShowHiddenNodes = ({
             margin=" 0 5px 3px 0"
             name="eye"
           />
-          <FormattedMessage
-            {...messages.networkShowHiddenNodes}
-            values={{
-              count: hiddenNodesCount,
-            }}
-          />
+          {formatMessage(messages.networkShowHiddenNodes, {
+            count: hiddenNodesCount,
+          })}
         </Box>
       </Tippy>
     </Button>
   );
 };
 
-export default ShowHiddenNodes;
+export default injectIntl(ShowHiddenNodes);

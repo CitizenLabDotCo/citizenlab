@@ -191,7 +191,7 @@ const Network = ({
       if (globalScale >= visibleKeywordLabelScale) {
         ctx.fillText(label, node.x, nodeVerticalOffset);
 
-        if (node == hoverNode) {
+        if (node === hoverNode) {
           drawHideIcon(ctx, node);
 
           const [offsetX, offsetY] = pointerPosition;

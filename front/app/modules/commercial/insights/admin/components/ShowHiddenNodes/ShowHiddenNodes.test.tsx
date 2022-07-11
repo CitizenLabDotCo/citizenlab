@@ -3,6 +3,8 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import ShowHiddenNodes, { NodeName } from './';
 
+jest.mock('utils/cl-intl');
+
 const getHiddenNodes = (n) =>
   [...Array(n)].map((_, i) => ({
     id: `${i}`,
@@ -14,7 +16,7 @@ const getMockData = (n: number): [NodeName[], string[]] => {
   const hiddenNodes = nodesNames.map(({ id }) => id);
   return [nodesNames, hiddenNodes];
 };
-let [nodesNames, hiddenNodes] = getMockData(5);
+const [nodesNames, hiddenNodes] = getMockData(5);
 
 const handleShowHiddenNodesClick = () => {};
 
