@@ -1,22 +1,21 @@
 import React from 'react';
-import { FormikProps, FormikErrors } from 'formik';
 
-// components
-import BasePageForm from './BasePageForm';
-import PageTitleField from './fields/PageTitleField';
-import BodyField from './fields/BodyField';
-import SlugField from './fields/SlugField';
-import FileUploadField from './fields/FileUploadField';
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 // typings
-import { Multiloc, Locale, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
-// utils
-import {
-  validateMultiloc,
-  validateSlug,
-  removeUndefined,
-} from './fields/validate';
+import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
+
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+
+// body_multiloc: page.attributes.body_multiloc,
+// slug: page.attributes.slug,
+// local_page_files: remotePageFiles,
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -31,51 +30,41 @@ export interface Props {
   pageId: string | null;
 }
 
-export function validatePageForm(
-  appConfigurationLocales: Locale[],
-  existingSlugs?: Set<string>,
-  currentSlug?: string
-) {
-  return function ({
-    title_multiloc,
-    body_multiloc,
-    slug,
-  }: FormValues): FormikErrors<FormValues> {
-    const errors: FormikErrors<FormValues> = {};
+const PageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+  const schema = yup
+    .object({
+      title_multiloc: yup.lazy((obj) => {
+        const keys = Object.keys(obj);
 
-    errors.title_multiloc = validateMultiloc(
-      title_multiloc,
-      appConfigurationLocales
-    );
-    errors.body_multiloc = validateMultiloc(
-      body_multiloc,
-      appConfigurationLocales
-    );
-    errors.slug = validateSlug(slug, existingSlugs, currentSlug);
+        return yup.object(
+          keys.reduce(
+            (acc, curr) => (
+              (acc[curr] = yup
+                .string()
+                .required(formatMessage(messages.emptyTitleError))),
+              acc
+            ),
+            {}
+          )
+        );
+      }),
+    })
+    .required();
 
-    return removeUndefined(errors);
-  };
-}
+  const methods = useForm({
+    resolver: yupResolver(schema),
+  });
 
-const PageForm = ({
-  values,
-  errors,
-  hideTitle,
-  hideSlugInput,
-  pageId,
-  ...props
-}: FormikProps<FormValues> & Props) => (
-  <BasePageForm values={values} errors={errors} {...props}>
-    {!hideTitle && <PageTitleField error={errors.title_multiloc} />}
+  const onSubmit = (data) => console.log(data);
 
-    <BodyField error={errors.body_multiloc} pageId={pageId} />
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <RHFInputMultilocWithLocaleSwitcher type="text" name="title_multiloc" />
+        <input type="submit" />
+      </form>
+    </FormProvider>
+  );
+};
 
-    {!hideSlugInput && (
-      <SlugField pageId={pageId} values={values} error={errors.slug} />
-    )}
-
-    <FileUploadField pageId={pageId} />
-  </BasePageForm>
-);
-
-export default PageForm;
+export default injectIntl(PageForm);

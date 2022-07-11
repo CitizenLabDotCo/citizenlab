@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
-import { Formik, FormikProps } from 'formik';
 
 // components
-import PageForm, { validatePageForm, FormValues } from 'components/PageForm';
+import PageForm, { FormValues } from 'components/PageForm';
 import PageWrapper from 'components/admin/PageWrapper';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
@@ -73,9 +72,9 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     clHistory.push('/admin/pages');
   };
 
-  const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
-    return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
-  };
+  // const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
+  //   return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
+  // };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     return (
@@ -85,14 +84,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
           <T value={page.attributes.title_multiloc} />
         </Title>
         <PageWrapper>
-          <Formik
-            initialValues={getInitialValues(page, remotePageFiles)}
-            onSubmit={handleSubmit(page, remotePageFiles)}
-            render={renderFn(page.id)}
-            validate={validatePageForm(appConfigurationLocales)}
-            validateOnChange={false}
-            validateOnBlur={false}
-          />
+          <PageForm onSubmit={handleSubmit(page, remotePageFiles)} />
         </PageWrapper>
       </div>
     );
