@@ -94,7 +94,7 @@
     "lodash-es": "4.17.21",
     "moment": "2.29.4",
     "moment-timezone": "0.5.34",
-    "path-to-regexp": "6.2.0",
+    "path-to-regexp": "6.2.1",
     "polished": "^4.2.2",
     "process": "^0.11.10",
     "qs": "6.10.3",
