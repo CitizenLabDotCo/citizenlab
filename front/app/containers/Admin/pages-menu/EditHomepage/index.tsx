@@ -92,8 +92,6 @@ const EditHomepage = () => {
             );
           }
         )}
-
-        {/* TO DO: move this toggle to module */}
         <Outlet
           id="app.containers.Admin.flexible-pages.EditHomepage.sectionToggles"
           // Make the handle function more generic
