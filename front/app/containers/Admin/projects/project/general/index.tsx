@@ -86,11 +86,7 @@ const AdminProjectsProjectGeneral = ({
   const [apiErrors, setApiErrors] = useState({});
   const [projectAttributesDiff, setProjectAttributesDiff] = useState<
     IProjectFormState['projectAttributesDiff']
-  >({
-    admin_publication_attributes: {
-      publication_status: 'draft',
-    },
-  });
+  >({});
   const [titleError, setTitleError] =
     useState<IProjectFormState['titleError']>(null);
   // We should probably not have projectType, slug, publicationStatus, etc.
@@ -299,6 +295,9 @@ const AdminProjectsProjectGeneral = ({
 
     if (isFormValid && !processing) {
       const nextProjectAttributesDiff: IUpdatedProjectProperties = {
+        admin_publication_attributes: {
+          publication_status: project?.attributes.publication_status || 'draft',
+        },
         ...projectAttributesDiff,
         ...participationContextConfig,
       };
