@@ -2,10 +2,13 @@
 
 ## Next release
 
+
+## 2022-07-11
+
 ### Fixed
 
 - Project publication status now defaults to draft on creation but remains published if it was already published
-## 2022-07-11
+
 ### Added
 
 - [CL-1096] Add representativeness score to header of representativeness chart card
