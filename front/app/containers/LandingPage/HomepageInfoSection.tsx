@@ -44,15 +44,25 @@ type Props = {
 const HomepageInfoSection = ({ sectionData }: Props) => {
   const homepageSettings = useHomepageSettings();
   if (!isNilOrError(homepageSettings)) {
-    const homepageInfoMultiloc = homepageSettings.data.attributes[sectionData];
+    const enabledKey =
+      sectionData === 'top_info_section_multiloc'
+        ? 'top_info_section_enabled'
+        : 'bottom_info_section_enabled';
+    const sectionIsEnabled = homepageSettings.data.attributes[enabledKey];
+    const sectionMultilocContent =
+      homepageSettings.data.attributes[sectionData];
 
-    if (homepageInfoMultiloc && !isEmptyMultiloc(homepageInfoMultiloc)) {
+    if (
+      sectionIsEnabled &&
+      sectionMultilocContent &&
+      !isEmptyMultiloc(sectionMultilocContent)
+    ) {
       return (
         <CustomSectionContentContainer>
           <StyledQuillEditedContent>
             {/* does this need to be changed if there are two of them? */}
             <Fragment name={'pages/homepage_info/content'}>
-              <T value={homepageInfoMultiloc} supportHtml={true} />
+              <T value={sectionMultilocContent} supportHtml={true} />
             </Fragment>
           </StyledQuillEditedContent>
         </CustomSectionContentContainer>
