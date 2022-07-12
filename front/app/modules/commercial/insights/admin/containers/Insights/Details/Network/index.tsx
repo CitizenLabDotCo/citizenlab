@@ -174,7 +174,7 @@ const Network = ({
     ctx: CanvasRenderingContext2D,
     globalScale: number
   ) => {
-    if (node.x && node.y) {
+    if (node.x !== undefined && node.y !== undefined) {
       const label = node.name;
       const nodeFontSize = 14 / (globalScale * 1.2);
       const nodeVerticalOffset = node.y - node.val / 3 - 2.5;
@@ -226,7 +226,7 @@ const Network = ({
   const handleNodeClick = (node: Node, event) => {
     let isHiding = false;
     const hidden_keywords = getURLArrayParam('hidden_keywords');
-    if (node.x && node.y) {
+    if (node.x !== undefined && node.y !== undefined) {
       const { target, offsetX, offsetY } = event;
       const ctx = target.getContext('2d');
       const rect = drawHideIconClickBox(node);
