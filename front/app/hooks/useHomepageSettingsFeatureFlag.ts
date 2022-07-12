@@ -36,6 +36,9 @@ type RegularSectionParameters = {
   appConfigSettingName?: never;
 };
 
+// If you just need to check the allowed value for appConfig settings,
+// you should still use onlyCheckAllowed useFeatureFlag/FeatureFlag/GetFeatureFlag. This hook
+// doesn't have this functionality implemented.
 export default function useHomepageSettingsFeatureFlag({
   homepageEnabledSetting,
   appConfigSettingName,
