@@ -14,7 +14,7 @@ interface Props
   > {
   name: string;
   resourceType: TResourceType;
-  resourceId: string;
+  resourceId: string | null;
 }
 
 const RHFFileUploader = ({

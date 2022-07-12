@@ -50,9 +50,10 @@ export interface FormValues {
 }
 
 type PageFormProps = {
-  onSubmit: (formValues: FormValues) => void;
-  defaultValues: FormValues;
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
   pageId: string | null;
+  hideSlugInput?: boolean;
 } & InjectedIntlProps;
 
 const PageForm = ({
@@ -60,6 +61,7 @@ const PageForm = ({
   onSubmit,
   defaultValues,
   pageId,
+  hideSlugInput,
 }: PageFormProps) => {
   const locale = useLocale();
   const page = usePage({ pageId });
@@ -97,11 +99,13 @@ const PageForm = ({
           )
         );
       }),
-      slug: yup
-        .string()
-        .matches(slugRexEx, formatMessage(messages.slugRegexError))
-        .required(formatMessage(messages.emptySlugError)),
-      local_page_files: yup.mixed(),
+      ...(!hideSlugInput && {
+        slug: yup
+          .string()
+          .matches(slugRexEx, formatMessage(messages.slugRegexError))
+          .required(formatMessage(messages.emptySlugError)),
+        local_page_files: yup.mixed(),
+      }),
     })
     .required();
 
@@ -128,50 +132,52 @@ const PageForm = ({
             label={formatMessage(messages.editContent)}
           />
         </SectionFieldPageContent>
-        <SectionField>
-          <Label htmlFor="slug">
-            <FormattedMessage {...messages.pageUrl} />
+        {!hideSlugInput && (
+          <SectionField>
+            <Label htmlFor="slug">
+              <FormattedMessage {...messages.pageUrl} />
+              {!isNilOrError(page) && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.slugLabelTooltip}
+                      values={{
+                        currentPageURL: (
+                          <em>
+                            <b>
+                              {appConfig.data.attributes.host}/{locale}
+                              /pages/{page.attributes.slug}
+                            </b>
+                          </em>
+                        ),
+                        currentPageSlug: (
+                          <em>
+                            <b>{page.attributes.slug}</b>
+                          </em>
+                        ),
+                      }}
+                    />
+                  }
+                />
+              )}
+            </Label>
             {!isNilOrError(page) && (
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.slugLabelTooltip}
-                    values={{
-                      currentPageURL: (
-                        <em>
-                          <b>
-                            {appConfig.data.attributes.host}/{locale}
-                            /pages/{page.attributes.slug}
-                          </b>
-                        </em>
-                      ),
-                      currentPageSlug: (
-                        <em>
-                          <b>{page.attributes.slug}</b>
-                        </em>
-                      ),
-                    }}
-                  />
-                }
-              />
+              <Box mb="16px">
+                <Warning>
+                  <FormattedMessage {...messages.brokenURLWarning} />
+                </Warning>
+              </Box>
             )}
-          </Label>
-          {!isNilOrError(page) && (
-            <Box mb="16px">
-              <Warning>
-                <FormattedMessage {...messages.brokenURLWarning} />
-              </Warning>
-            </Box>
-          )}
-          <RHFInput id="slug" name="slug" type="text" />
-          <Text>
-            <b>
-              <FormattedMessage {...messages.resultingPageURL} />
-            </b>
-            : {appConfig.data.attributes.host}/{locale}/pages/
-            {methods.getValues('slug')}
-          </Text>
-        </SectionField>
+            <RHFInput id="slug" name="slug" type="text" />
+            <Text>
+              <b>
+                <FormattedMessage {...messages.resultingPageURL} />
+              </b>
+              : {appConfig.data.attributes.host}/{locale}/pages/
+              {methods.getValues('slug')}
+            </Text>
+          </SectionField>
+        )}
         <SectionField>
           <Label htmlFor="local_page_files">
             <FormattedMessage {...messages.fileUploadLabel} />
