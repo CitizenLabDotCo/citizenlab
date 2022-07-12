@@ -10,6 +10,7 @@
 
 ### Added
 
+- [CL-1088] Add link to academy. Update link to guides
 - [CL-972] Add a 'read more' expand/collapse feature to timeline phases
 
 ### Changed
