@@ -4,47 +4,47 @@ import { isNilOrError } from 'utils/helperUtils';
 import useHomepageSettings from './useHomepageSettings';
 import useAppConfiguration from './useAppConfiguration';
 
-type TFeatureSectionHomepageEnabledSetting = Extract<
+type TFeatureSectionEnabledSetting = Extract<
   THomepageEnabledSetting,
   'events_widget_enabled' | 'customizable_homepage_banner_enabled'
 >;
 
-type TRegularSectionHomepageEnabledSetting = Exclude<
+type TRegularSectionEnabledSetting = Exclude<
   THomepageEnabledSetting,
-  TFeatureSectionHomepageEnabledSetting
+  TFeatureSectionEnabledSetting
 >;
 
 type FeatureSectionParameters = {
-  homepageEnabledSetting: TFeatureSectionHomepageEnabledSetting;
-  homePageAllowedSettingName: Extract<
+  homepageEnabledSetting: TFeatureSectionEnabledSetting;
+  appConfigSettingName: Extract<
     TAppConfigurationSetting,
     'events_widget' | 'customizable_homepage_banner'
   >;
 };
 
 type RegularSectionParameters = {
-  homepageEnabledSetting: TRegularSectionHomepageEnabledSetting;
-  homePageAllowedSettingName?: never;
+  homepageEnabledSetting: TRegularSectionEnabledSetting;
+  appConfigSettingName?: never;
 };
 
 type Parameters = FeatureSectionParameters | RegularSectionParameters;
 
 export default function useHomepageSettingsFeatureFlag({
   homepageEnabledSetting,
-  homePageAllowedSettingName,
+  appConfigSettingName,
 }: Parameters) {
   const homepageSettings = useHomepageSettings();
   const appConfig = useAppConfiguration();
   const appConfigSetting =
-    homePageAllowedSettingName && !isNilOrError(appConfig)
-      ? appConfig.data.attributes.settings?.[homePageAllowedSettingName]
+    appConfigSettingName && !isNilOrError(appConfig)
+      ? appConfig.data.attributes.settings?.[appConfigSettingName]
       : null;
+  const isAllowed =
+    !appConfigSettingName ||
+    (!isNilOrError(appConfigSetting) ? appConfigSetting.allowed : false);
   const isEnabled = !isNilOrError(homepageSettings)
     ? homepageSettings.attributes[homepageEnabledSetting]
     : false;
-  const isAllowed =
-    !homePageAllowedSettingName ||
-    (!isNilOrError(appConfigSetting) ? appConfigSetting.allowed : false);
 
   return isAllowed && isEnabled;
 }
