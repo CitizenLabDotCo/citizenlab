@@ -22,7 +22,7 @@ import messages from '../messages';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import getInitialValues from './getInitialValues';
-import { NAVIGATION_PATH } from 'containers/Admin/pages-menu';
+import { PAGES_MENU_PATH } from 'containers/Admin/pages-menu/routes';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -39,7 +39,7 @@ const NewPageForm = () => {
   }
 
   const goBack = () => {
-    clHistory.push(NAVIGATION_PATH);
+    clHistory.push(PAGES_MENU_PATH);
   };
 
   const handleSubmit = async (
