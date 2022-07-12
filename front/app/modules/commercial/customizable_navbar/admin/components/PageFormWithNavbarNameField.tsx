@@ -1,23 +1,44 @@
 import React from 'react';
-import { InjectedFormikProps, FormikErrors } from 'formik';
+
+// types
+import { Multiloc, UploadFile } from 'typings';
+
+// form
+import { useForm, FormProvider } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
+import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
+import RHFSubmit from 'components/UI/RHFSubmit';
+import RHFInput from 'components/UI/RHFInput';
+import RHFFileUploader from 'components/UI/RHFFileUploader';
+import {
+  SectionFieldPageContent,
+  SectionField,
+} from 'components/admin/Section';
+
+// intl
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
-import NavbarTitleField from './NavbarTitleField';
-import BasePageForm from 'components/PageForm/BasePageForm';
-import PageTitleField from 'components/PageForm/fields/PageTitleField';
-import BodyField from 'components/PageForm/fields/BodyField';
-import SlugField from 'components/PageForm/fields/SlugField';
-import FileUploadField from 'components/PageForm/fields/FileUploadField';
-
-// typings
-import { Multiloc, Locale, UploadFile } from 'typings';
+import {
+  IconTooltip,
+  Label,
+  Box,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
 
 // utils
-import {
-  validateMultiloc,
-  validateSlug,
-  removeUndefined,
-} from 'components/PageForm/fields/validate';
+import { isNilOrError } from 'utils/helperUtils';
+import { slugRexEx } from 'utils/textUtils';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import usePage from 'hooks/usePage';
+import useAppConfiguration from 'hooks/useAppConfiguration';
 
 export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;
@@ -31,54 +52,174 @@ export interface Props {
   pageId: string | null;
 }
 
-export function validatePageForm(
-  appConfigurationLocales: Locale[],
-  existingSlugs?: Set<string>,
-  currentSlug?: string
-) {
-  return function ({
-    nav_bar_item_title_multiloc,
-    title_multiloc,
-    body_multiloc,
-    slug,
-  }: FormValues): FormikErrors<FormValues> {
-    const errors: FormikErrors<FormValues> = {};
-
-    errors.nav_bar_item_title_multiloc = validateMultiloc(
-      nav_bar_item_title_multiloc,
-      appConfigurationLocales
-    );
-    errors.title_multiloc = validateMultiloc(
-      title_multiloc,
-      appConfigurationLocales
-    );
-    errors.body_multiloc = validateMultiloc(
-      body_multiloc,
-      appConfigurationLocales
-    );
-    errors.slug = validateSlug(slug, existingSlugs, currentSlug);
-
-    return removeUndefined(errors);
-  };
-}
+type PageFormProps = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
+  pageId: string | null;
+  hideSlugInput?: boolean;
+} & InjectedIntlProps;
 
 const PageForm = ({
-  values,
-  errors,
+  defaultValues,
+  onSubmit,
   pageId,
-  ...props
-}: InjectedFormikProps<Props, FormValues>) => (
-  <BasePageForm values={values} errors={errors} {...props}>
-    <NavbarTitleField error={errors.nav_bar_item_title_multiloc} />
+  intl: { formatMessage },
+}: PageFormProps) => {
+  const locale = useLocale();
+  const page = usePage({ pageId });
+  const appConfig = useAppConfiguration();
 
-    <PageTitleField error={errors.title_multiloc} />
+  const schema = yup
+    .object({
+      nav_bar_item_title_multiloc: yup.lazy((obj) => {
+        const keys = Object.keys(obj);
 
-    <BodyField error={errors.body_multiloc} pageId={pageId} />
+        return yup.object(
+          keys.reduce(
+            (acc, curr) => (
+              (acc[curr] = yup
+                .string()
+                .required(formatMessage(messages.emptyNavbarItemTitleError))),
+              acc
+            ),
+            {}
+          )
+        );
+      }),
+      title_multiloc: yup.lazy((obj) => {
+        const keys = Object.keys(obj);
 
-    <SlugField pageId={pageId} values={values} error={errors.slug} />
+        return yup.object(
+          keys.reduce(
+            (acc, curr) => (
+              (acc[curr] = yup
+                .string()
+                .required(formatMessage(messages.emptyTitleError))),
+              acc
+            ),
+            {}
+          )
+        );
+      }),
+      body_multiloc: yup.lazy((obj) => {
+        const keys = Object.keys(obj);
 
-    <FileUploadField pageId={pageId} />
-  </BasePageForm>
-);
+        return yup.object(
+          keys.reduce(
+            (acc, curr) => (
+              (acc[curr] = yup
+                .string()
+                .required(formatMessage(messages.emptyDescriptionError))),
+              acc
+            ),
+            {}
+          )
+        );
+      }),
 
-export default PageForm;
+      slug: yup
+        .string()
+        .matches(slugRexEx, formatMessage(messages.slugRegexError))
+        .required(formatMessage(messages.emptySlugError)),
+      local_page_files: yup.mixed(),
+    })
+    .required();
+
+  const methods = useForm({
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  if (isNilOrError(appConfig)) return null;
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <SectionField>
+          <RHFInputMultilocWithLocaleSwitcher
+            label={formatMessage(messages.navbarItemTitle)}
+            type="text"
+            name="nav_bar_item_title_multiloc"
+          />
+        </SectionField>
+        <SectionField>
+          <RHFInputMultilocWithLocaleSwitcher
+            label={formatMessage(messages.pageTitle)}
+            type="text"
+            name="title_multiloc"
+          />
+        </SectionField>
+        <SectionFieldPageContent>
+          <RHFQuillMultilocWithLocaleSwitcher
+            name="body_multiloc"
+            label={formatMessage(messages.editContent)}
+          />
+        </SectionFieldPageContent>
+
+        <SectionField>
+          <Label htmlFor="slug">
+            <FormattedMessage {...messages.pageUrl} />
+            {!isNilOrError(page) && (
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.slugLabelTooltip}
+                    values={{
+                      currentPageURL: (
+                        <em>
+                          <b>
+                            {appConfig.data.attributes.host}/{locale}
+                            /pages/{page.attributes.slug}
+                          </b>
+                        </em>
+                      ),
+                      currentPageSlug: (
+                        <em>
+                          <b>{page.attributes.slug}</b>
+                        </em>
+                      ),
+                    }}
+                  />
+                }
+              />
+            )}
+          </Label>
+          {!isNilOrError(page) && (
+            <Box mb="16px">
+              <Warning>
+                <FormattedMessage {...messages.brokenURLWarning} />
+              </Warning>
+            </Box>
+          )}
+          <RHFInput id="slug" name="slug" type="text" />
+          <Text>
+            <b>
+              <FormattedMessage {...messages.resultingPageURL} />
+            </b>
+            : {appConfig.data.attributes.host}/{locale}/pages/
+            {methods.getValues('slug')}
+          </Text>
+        </SectionField>
+
+        <SectionField>
+          <Label htmlFor="local_page_files">
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage {...messages.fileUploadLabelTooltip} />
+              }
+            />
+          </Label>
+          <RHFFileUploader
+            name="local_page_files"
+            resourceId={pageId}
+            resourceType="page"
+          />
+        </SectionField>
+        <RHFSubmit />
+      </form>
+    </FormProvider>
+  );
+};
+
+export default injectIntl(PageForm);
