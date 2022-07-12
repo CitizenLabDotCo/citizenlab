@@ -1,23 +1,94 @@
 import { Bins } from '.';
 
-export const updateLowerBound = (
-  bins: Bins,
-  groupIndex: number,
-  newValue: number
-): Bins => {
-  const binsCloned: Bins = bins.map((bin) => [...bin]);
-  binsCloned[groupIndex][0] = newValue;
-
-  if (groupIndex !== 0) {
-    binsCloned[groupIndex - 1][1] = newValue - 1;
+export const validateBins = (bins: Bins) => {
+  for (let i = 0; i < bins.length - 1; i++) {
+    if (bins[i] === null) return false;
   }
 
-  return binsCloned;
-};
+  return true;
+}
 
-export const updateUpperBound = (bins: Bins, newValue: number): Bins => {
-  const binsCloned: Bins = bins.map((bin) => [...bin]);
-  binsCloned[bins.length - 1][1] = newValue;
+export const updateLowerBound = (
+  bins: Bins,
+  binIndex: number,
+  newValue: number | null
+): Bins => {
+  const clonedBins = [...bins];
+  clonedBins[binIndex] = newValue;
 
-  return binsCloned;
-};
+  return clonedBins;
+}
+
+export const updateUpperBound = (
+  bins: Bins,
+  newValue: number | null
+): Bins => {
+  const clonedBins = [...bins];
+  clonedBins[clonedBins.length - 1] = newValue;
+
+  return clonedBins;
+}
+
+const ABSOLUTE_MIN = 0;
+const ABSOLUTE_MAX = 130;
+
+export const getLowerBoundLimits = (
+  bins: Bins,
+  binIndex: number
+) => ([
+  getLowerBoundMin(bins, binIndex),
+  getLowerBoundMax(bins, binIndex)
+])
+
+const getLowerBoundMin = (bins: Bins, binIndex: number) => {
+  if (binIndex === 0) return ABSOLUTE_MIN;
+
+  for (let i = binIndex - 1; i >= 0; i--) {
+    const bin = bins[i];
+
+    if (bin !== null) {
+      return bin + ((binIndex - i) * 2);
+    }
+  }
+
+  return ABSOLUTE_MIN + binIndex * 2;
+}
+
+const getLowerBoundMax = (bins: Bins, binIndex: number) => {
+  if (binIndex === bins.length - 2) {
+    const upperBound = bins[bins.length - 1];
+
+    if (upperBound !== null) {
+      return upperBound - 1;
+    }
+
+    return ABSOLUTE_MAX - 1;
+  }
+
+  for (let i = binIndex + 1; i < bins.length - 1; i++) {
+    const bin = bins[i];
+
+    if (bin !== null) {
+      return bin - ((i - binIndex) * 2)
+    }
+  }
+
+  const upperBound = bins[bins.length - 1];
+
+  return upperBound === null
+    ? ABSOLUTE_MAX - ((bins.length - binIndex) * 2) + 3
+    : upperBound - ((bins.length - binIndex) * 2) + 3
+}
+
+export const getUpperBoundLimits = (bins: Bins) => {
+  const lowerBoundLastBin = bins[bins.length - 2];
+
+  const lastLowerBoundMin = lowerBoundLastBin === null
+    ? getLowerBoundMin(bins, bins.length - 2)
+    : lowerBoundLastBin
+
+  return [
+    lastLowerBoundMin + 1,
+    ABSOLUTE_MAX
+  ]
+}

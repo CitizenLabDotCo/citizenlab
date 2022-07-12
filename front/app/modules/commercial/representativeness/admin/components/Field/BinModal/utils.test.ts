@@ -1,47 +1,61 @@
-import { updateLowerBound } from './utils';
-import { Bins } from '.';
+import { getLowerBoundLimits , getUpperBoundLimits} from './utils';
 
-const getDummyBins = (): Bins => [
-  [18, 24],
-  [25, 34],
-  [35, 44],
-  [45, 54],
-  [55, 64],
-  [65, Infinity],
-];
+describe('getLowerBoundLimits', () => {
+  it('works when all bins are empty', () => {
+    const bins = [null, null, null, null, null];
 
-describe('updateLowerBound', () => {
-  it('works if new value is lower than old value', () => {
-    const bins = getDummyBins();
+    expect(getLowerBoundLimits(bins, 0)).toEqual([0, 123]);
+    expect(getLowerBoundLimits(bins, 1)).toEqual([2, 125]);
+    expect(getLowerBoundLimits(bins, 2)).toEqual([4, 127]);
+    expect(getLowerBoundLimits(bins, 3)).toEqual([6, 129]);
+  })
 
-    const newBins = updateLowerBound(bins, 2, 27);
+  it('works when some bins are empty', () => {
+    const bins = [18, 25, null, null, 100];
 
-    const expectedNewBins: Bins = [
-      [18, 24],
-      [25, 26],
-      [27, 44],
-      [45, 54],
-      [55, 64],
-      [65, Infinity],
-    ];
+    expect(getLowerBoundLimits(bins, 0)).toEqual([0, 23]);
+    expect(getLowerBoundLimits(bins, 1)).toEqual([20, 95]);
+    expect(getLowerBoundLimits(bins, 2)).toEqual([27, 97]);
+    expect(getLowerBoundLimits(bins, 3)).toEqual([29, 99]);
+  })
 
-    expect(newBins).toEqual(expectedNewBins);
-  });
+  it('works when no bins are empty (no upper bound)', () => {
+    const bins = [18, 25, 45, 65, null];
 
-  it('works if new value is higher than old value', () => {
-    const bins = getDummyBins();
+    expect(getLowerBoundLimits(bins, 0)).toEqual([0, 23]);
+    expect(getLowerBoundLimits(bins, 1)).toEqual([20, 43]);
+    expect(getLowerBoundLimits(bins, 2)).toEqual([27, 63]);
+    expect(getLowerBoundLimits(bins, 3)).toEqual([47, 129]);
+  })
 
-    const newBins = updateLowerBound(bins, 2, 43);
+  it('works when no bins are empty (with upper bound)', () => {
+    const bins = [18, 25, 45, 65, 100];
 
-    const expectedNewBins = [
-      [18, 24],
-      [25, 42],
-      [43, 44],
-      [45, 54],
-      [55, 64],
-      [65, Infinity],
-    ];
-
-    expect(newBins).toEqual(expectedNewBins);
-  });
+    expect(getLowerBoundLimits(bins, 0)).toEqual([0, 23]);
+    expect(getLowerBoundLimits(bins, 1)).toEqual([20, 43]);
+    expect(getLowerBoundLimits(bins, 2)).toEqual([27, 63]);
+    expect(getLowerBoundLimits(bins, 3)).toEqual([47, 99]);
+  })
 });
+
+describe('getUpperBoundLimits', () => {
+  it('works when all bins are empty', () => {
+    const bins = [null, null, null, null, null];
+    expect(getUpperBoundLimits(bins)).toEqual([7, 130])
+  })
+
+  it('works when some bins are empty', () => {
+    const bins = [18, 25, null, null, 100];
+    expect(getUpperBoundLimits(bins)).toEqual([30, 130])
+  })
+
+  it('works when no bins are empty (no upper bound)', () => {
+    const bins = [18, 25, 45, 65, null];
+    expect(getUpperBoundLimits(bins)).toEqual([66, 130])
+  })
+
+  it('works when no bins are empty (with upper bound)', () => {
+    const bins = [18, 25, 45, 65, 100];
+    expect(getUpperBoundLimits(bins)).toEqual([66, 130])
+  })
+})

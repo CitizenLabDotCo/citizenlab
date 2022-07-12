@@ -20,26 +20,21 @@ interface Props {
   onClose: () => void;
 }
 
-export type Bins = [number, number][];
+export type Bins = (number| null)[];
 
-// TODO delete this when actual data is in place
-const getDummyBins = (): Bins => [
-  [18, 24],
-  [25, 34],
-  [35, 44],
-  [45, 54],
-  [55, 64],
-  [65, Infinity],
-];
+// TODO delete this when real data is available
+export const getDummyBins = (): Bins => [
+  18, 25, 35, 45, 55, 65, null
+]
 
 const BinModal = ({ open, onClose }: Props) => {
   const [bins, setBins] = useState(getDummyBins());
 
-  const handleUpdateLowerBound = (groupIndex: number, newValue: number) => {
-    setBins((bins) => updateLowerBound(bins, groupIndex, newValue));
+  const handleUpdateLowerBound = (binIndex: number, newValue: number | null) => {
+    setBins((bins) => updateLowerBound(bins, binIndex, newValue));
   };
 
-  const handleUpdateUpperBound = (newValue: number) => {
+  const handleUpdateUpperBound = (newValue: number | null) => {
     setBins((bins) => updateUpperBound(bins, newValue));
   };
 
