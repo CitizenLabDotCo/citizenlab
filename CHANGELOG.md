@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Added
+
+- [CL-1118] Native survey feature
+
 ## Next release
 
 ### Changed
