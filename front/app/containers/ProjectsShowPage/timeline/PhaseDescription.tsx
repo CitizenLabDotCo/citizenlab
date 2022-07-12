@@ -76,6 +76,7 @@ const PhaseDescription = ({
         <>
           <ReadMoreWrapper
             fontSize="base"
+            contentId="phase-description"
             value={phase?.attributes?.description_multiloc}
           />
 

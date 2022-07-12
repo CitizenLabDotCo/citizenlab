@@ -93,64 +93,90 @@ const CollapseButton = styled(Button)``;
 
 interface Props {
   className?: string;
+  contentId?: string;
   fontSize: 'base' | 's' | 'm' | 'l';
   value: Multiloc;
 }
 
-const ReadMoreWrapper = memo<Props>(({ className, value, fontSize }) => {
-  const theme: any = useTheme();
-  const { windowWidth } = useWindowSize();
+const ReadMoreWrapper = memo<Props>(
+  ({ className, value, fontSize, contentId }) => {
+    const theme: any = useTheme();
+    const { windowWidth } = useWindowSize();
 
-  const [expanded, setExpanded] = useState(false);
-  const [contentHeight, setContentHeight] = useState<number | null>(null);
+    const [expanded, setExpanded] = useState(false);
+    const [contentHeight, setContentHeight] = useState<number | null>(null);
 
-  const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
+    const smallerThanLargeTablet = windowWidth <= viewportWidths.largeTablet;
 
-  const collapsedContentMaxHeight = smallerThanLargeTablet
-    ? mobileCollapsedContentMaxHeight
-    : desktopCollapsedContentMaxHeight;
+    const collapsedContentMaxHeight = smallerThanLargeTablet
+      ? mobileCollapsedContentMaxHeight
+      : desktopCollapsedContentMaxHeight;
 
-  useEffect(() => {
-    setExpanded(false);
-  }, [value]);
+    useEffect(() => {
+      setExpanded(false);
+    }, [value]);
 
-  const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-    setExpanded((expanded) => !expanded);
-  }, []);
+    const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
+      event.preventDefault();
+      setExpanded((expanded) => !expanded);
+    }, []);
 
-  const onResize = (_width: number | undefined, height: number | undefined) => {
-    if (height) {
-      setContentHeight(height);
-    }
-  };
+    const onResize = (
+      _width: number | undefined,
+      height: number | undefined
+    ) => {
+      if (height) {
+        setContentHeight(height);
+      }
+    };
 
-  return (
-    <Container className={`${className || ''} e2e-project-info`}>
-      <Content
-        className={expanded ? 'expanded' : ''}
-        maxHeight={collapsedContentMaxHeight}
-      >
-        {!isEmpty(value) && (
-          <>
-            <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-              <div id="e2e-project-description">
-                <QuillEditedContent
-                  fontSize={fontSize}
-                  textColor={theme.colorText}
-                  disableTabbing={!expanded}
-                >
-                  <T value={value} supportHtml={true} />
-                </QuillEditedContent>
-              </div>
-            </ReactResizeDetector>
-            {contentHeight &&
-              contentHeight > collapsedContentMaxHeight &&
-              !expanded && (
-                <ReadMoreOuterWrapper>
-                  <ReadMoreInnerWrapper>
-                    <ReadMoreButton
-                      id="e2e-project-description-read-more-button"
+    return (
+      <Container className={`${className || ''}`}>
+        <Content
+          className={expanded ? 'expanded' : ''}
+          maxHeight={collapsedContentMaxHeight}
+        >
+          {!isEmpty(value) && (
+            <>
+              <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
+                <div id={`e2e-project-${contentId}`}>
+                  <QuillEditedContent
+                    fontSize={fontSize}
+                    textColor={theme.colorText}
+                    disableTabbing={!expanded}
+                  >
+                    <T value={value} supportHtml={true} />
+                  </QuillEditedContent>
+                </div>
+              </ReactResizeDetector>
+              {contentHeight &&
+                contentHeight > collapsedContentMaxHeight &&
+                !expanded && (
+                  <ReadMoreOuterWrapper>
+                    <ReadMoreInnerWrapper>
+                      <ReadMoreButton
+                        id={`e2e-project-${contentId}-read-more-button`}
+                        buttonStyle="text"
+                        onClick={toggleExpandCollapse}
+                        textDecoration="underline"
+                        textDecorationHover="underline"
+                        textColor={colors.label}
+                        textHoverColor={theme.colorText}
+                        fontWeight="500"
+                        fontSize={`${fontSizes.m}px`}
+                        padding="0"
+                      >
+                        <FormattedMessage {...messages.readMore} />
+                      </ReadMoreButton>
+                    </ReadMoreInnerWrapper>
+                  </ReadMoreOuterWrapper>
+                )}
+              {contentHeight &&
+                contentHeight > collapsedContentMaxHeight &&
+                expanded && (
+                  <CollapseButtonWrapper>
+                    <CollapseButton
+                      id={`e2e-project-${contentId}-see-less-button`}
                       buttonStyle="text"
                       onClick={toggleExpandCollapse}
                       textDecoration="underline"
@@ -161,36 +187,16 @@ const ReadMoreWrapper = memo<Props>(({ className, value, fontSize }) => {
                       fontSize={`${fontSizes.m}px`}
                       padding="0"
                     >
-                      <FormattedMessage {...messages.readMore} />
-                    </ReadMoreButton>
-                  </ReadMoreInnerWrapper>
-                </ReadMoreOuterWrapper>
-              )}
-            {contentHeight &&
-              contentHeight > collapsedContentMaxHeight &&
-              expanded && (
-                <CollapseButtonWrapper>
-                  <CollapseButton
-                    id="e2e-project-description-see-less-button"
-                    buttonStyle="text"
-                    onClick={toggleExpandCollapse}
-                    textDecoration="underline"
-                    textDecorationHover="underline"
-                    textColor={colors.label}
-                    textHoverColor={theme.colorText}
-                    fontWeight="500"
-                    fontSize={`${fontSizes.m}px`}
-                    padding="0"
-                  >
-                    <FormattedMessage {...messages.seeLess} />
-                  </CollapseButton>
-                </CollapseButtonWrapper>
-              )}
-          </>
-        )}
-      </Content>
-    </Container>
-  );
-});
+                      <FormattedMessage {...messages.seeLess} />
+                    </CollapseButton>
+                  </CollapseButtonWrapper>
+                )}
+            </>
+          )}
+        </Content>
+      </Container>
+    );
+  }
+);
 
 export default ReadMoreWrapper;

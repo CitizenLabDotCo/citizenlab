@@ -92,6 +92,7 @@ const ProjectInfo = memo<Props>(({ projectId, className }) => {
 
             <ReadMoreWrapper
               fontSize="m"
+              contentId="description"
               value={project.attributes.description_multiloc}
             />
 
