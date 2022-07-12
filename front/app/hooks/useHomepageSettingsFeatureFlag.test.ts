@@ -24,16 +24,16 @@ describe('useHomepageSettingsFeatureFlag', () => {
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
         homepageEnabledSetting: 'events_widget_enabled',
-        homePageAllowedSettingName: 'events_widget',
+        appConfigSettingName: 'events_widget',
       })
     );
     expect(result.current).toBe(true);
   });
 
-  it('should return true when widget is just enabled without appconfig check', () => {
+  it('should return true when checking a homepageSetting without a corresponding app config section', () => {
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
-        homepageEnabledSetting: 'events_widget_enabled',
+        homepageEnabledSetting: 'top_info_section_enabled',
       })
     );
     expect(result.current).toBe(true);
@@ -46,7 +46,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
         homepageEnabledSetting: 'events_widget_enabled',
-        homePageAllowedSettingName: 'events_widget',
+        appConfigSettingName: 'events_widget',
       })
     );
     expect(result.current).toBe(false);
@@ -63,7 +63,7 @@ describe('useHomepageSettingsFeatureFlag', () => {
     const { result } = renderHook(() =>
       useHomepageSettingsFeatureFlag({
         homepageEnabledSetting: 'events_widget_enabled',
-        homePageAllowedSettingName: 'events_widget',
+        appConfigSettingName: 'events_widget',
       })
     );
     expect(result.current).toBe(false);
