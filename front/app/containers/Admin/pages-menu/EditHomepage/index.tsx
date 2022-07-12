@@ -4,8 +4,13 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
 import AdminViewButton from './AdminViewButton';
 import messages from './messages';
-import { THomepageSection } from 'services/homepageSettings';
 import { MessageDescriptor } from 'utils/cl-intl';
+import {
+  updateHomepageSettings,
+  THomepageSection,
+} from 'services/homepageSettings';
+import useHomepageSettings from 'hooks/useHomepageSettings';
+import { isNilOrError } from 'utils/helperUtils';
 
 type TSectionToggleData = {
   titleMessageDescriptor: MessageDescriptor;
@@ -14,11 +19,13 @@ type TSectionToggleData = {
 };
 
 const EditHomepage = () => {
-  const [sectionTogglesData, setSectionTogglesData] = useState<
+  const homepageSettings = useHomepageSettings();
+
+  const [sectionTogglesData, _setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
     {
-      sectionEnabledSettingName: 'customizable_homepage_banner',
+      sectionEnabledSettingName: 'customizable_homepage_banner_enabled',
       titleMessageDescriptor: messages.heroBanner,
       tooltipMessageDescriptor: messages.heroBannerTooltip,
     },
@@ -40,9 +47,19 @@ const EditHomepage = () => {
   ]);
 
   const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
+    if (isNilOrError(homepageSettings)) {
+      return;
+    }
     try {
-    } catch (error) {}
+      updateHomepageSettings({
+        [sectionName]: !homepageSettings.data.attributes[sectionName],
+      });
+    }
   };
+
+  if (isNilOrError(homepageSettings)) {
+    return null;
+  }
 
   const handleOnClick = () => {};
   return (
@@ -81,6 +98,10 @@ const EditHomepage = () => {
           }) => {
             return (
               <SectionToggle
+                key={sectionEnabledSettingName}
+                checked={
+                  homepageSettings.data.attributes[sectionEnabledSettingName]
+                }
                 onChangeSectionToggle={handleOnChangeToggle(
                   sectionEnabledSettingName
                 )}
