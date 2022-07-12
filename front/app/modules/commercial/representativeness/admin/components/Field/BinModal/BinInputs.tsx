@@ -15,18 +15,14 @@ import { Bins } from '.';
 interface Props {
   bins: Bins;
   onUpdateLowerBound: (groupIndex: number, newValue: number) => void;
+  onUpdateUpperBound: (newValue: number) => void;
 }
 
-const BinInputs = ({ bins, onUpdateLowerBound }: Props) => (
+const BinInputs = ({ bins, ...otherProps }: Props) => (
   <Box mt="32px">
     <BinInputsHeader />
     {bins.map((_, i) => (
-      <BinInputRow
-        groupIndex={i}
-        bins={bins}
-        onUpdateLowerBound={onUpdateLowerBound}
-        key={i}
-      />
+      <BinInputRow groupIndex={i} bins={bins} key={i} {...otherProps} />
     ))}
   </Box>
 );
@@ -35,21 +31,31 @@ interface RowProps {
   bins: Bins;
   groupIndex: number;
   onUpdateLowerBound: (groupIndex: number, newValue: number) => void;
+  onUpdateUpperBound: (newValue: number) => void;
 }
+
+const withinRange = (value: number, lower: number, upper: number) =>
+  value >= lower && value <= upper;
 
 const BinInputRow = injectIntl(
   ({
     bins,
     groupIndex,
     onUpdateLowerBound,
+    onUpdateUpperBound,
     intl: { formatMessage },
   }: RowProps & InjectedIntlProps) => {
     const [lowerBound, setLowerBound] = useState<number | undefined>();
+    const [upperBound, setUpperBound] = useState<number | undefined>();
 
     const bin = bins[groupIndex];
     const isLastBin = groupIndex === bins.length - 1;
+
     const lowerBoundMin = groupIndex === 0 ? 0 : bins[groupIndex - 1][0] + 2;
     const lowerBoundMax = isLastBin ? 129 : bin[1] - 1;
+
+    const upperBoundMin = bin[0] + 1;
+    const upperBoundMax = 130;
 
     const handleChangeLowerBound = (newValueStr: string) => {
       const newValue = +newValueStr;
@@ -64,8 +70,30 @@ const BinInputRow = injectIntl(
       const newLowerBound = lowerBound;
       setLowerBound(undefined);
 
-      if (newLowerBound >= lowerBoundMin && newLowerBound <= lowerBoundMax) {
+      if (withinRange(newLowerBound, lowerBoundMin, lowerBoundMax)) {
         onUpdateLowerBound(groupIndex, newLowerBound);
+      }
+    };
+
+    const handleChangeUpperBound = (newValueStr: string) => {
+      const newValue = +newValueStr;
+      setUpperBound(newValue === 0 ? Infinity : newValue);
+    };
+
+    const handleBlurUpperBound = () => {
+      if (upperBound === bin[1]) {
+        return;
+      }
+
+      const newUpperBound = upperBound !== undefined ? upperBound : Infinity;
+
+      setUpperBound(undefined);
+
+      if (
+        withinRange(newUpperBound, upperBoundMin, upperBoundMax) ||
+        !isFinite(newUpperBound)
+      ) {
+        onUpdateUpperBound(newUpperBound);
       }
     };
 
@@ -78,22 +106,24 @@ const BinInputRow = injectIntl(
           <Input
             type="number"
             value={(lowerBound !== undefined ? lowerBound : bin[0]).toString()}
-            onChange={handleChangeLowerBound}
             min={lowerBoundMin.toString()}
             max={lowerBoundMax.toString()}
+            onChange={handleChangeLowerBound}
             onBlur={handleBlurLowerBound}
           />
         </Box>
         <Box width="25%" pr="24px" display="flex" alignItems="center">
           <Input
             type="number"
-            value={bin[1].toString()}
+            value={(upperBound !== undefined ? upperBound : bin[1]).toString()}
             disabled={!isLastBin}
             placeholder={
               isLastBin ? formatMessage(messages.andOver) : undefined
             }
-            min={(bin[0] + 1).toString()}
-            max="130"
+            min={upperBoundMin.toString()}
+            max={upperBoundMax.toString()}
+            onChange={handleChangeUpperBound}
+            onBlur={handleBlurUpperBound}
           />
         </Box>
         <Box width="25%">

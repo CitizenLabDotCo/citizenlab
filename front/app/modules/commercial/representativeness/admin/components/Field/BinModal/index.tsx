@@ -13,14 +13,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { updateLowerBound } from './utils';
+import { updateLowerBound, updateUpperBound } from './utils';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-export type Bins = [number, number][]
+export type Bins = [number, number][];
 
 // TODO delete this when actual data is in place
 const getDummyBins = (): Bins => [
@@ -34,10 +34,14 @@ const getDummyBins = (): Bins => [
 
 const BinModal = ({ open, onClose }: Props) => {
   const [bins, setBins] = useState(getDummyBins());
-  
+
   const handleUpdateLowerBound = (groupIndex: number, newValue: number) => {
-    setBins((bins) => updateLowerBound(bins, groupIndex, newValue))
-  }
+    setBins((bins) => updateLowerBound(bins, groupIndex, newValue));
+  };
+
+  const handleUpdateUpperBound = (newValue: number) => {
+    setBins((bins) => updateUpperBound(bins, newValue));
+  };
 
   return (
     <Modal
@@ -52,9 +56,10 @@ const BinModal = ({ open, onClose }: Props) => {
     >
       <Box p="28px">
         <FormattedMessage {...messages.modalDescription} />
-        <BinInputs 
+        <BinInputs
           bins={bins}
           onUpdateLowerBound={handleUpdateLowerBound}
+          onUpdateUpperBound={handleUpdateUpperBound}
         />
       </Box>
     </Modal>
