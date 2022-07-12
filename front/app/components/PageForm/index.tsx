@@ -1,26 +1,45 @@
 import React from 'react';
 
+// types
+import { Multiloc, UploadFile } from 'typings';
+
+// form
 import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
-// typings
-import { Multiloc, UploadFile } from 'typings';
-
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
 import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
 import RHFSubmit from 'components/UI/RHFSubmit';
-
-import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
-
+import RHFInput from 'components/UI/RHFInput';
 import {
   SectionFieldPageContent,
   SectionField,
 } from 'components/admin/Section';
 
-// slug: page.attributes.slug,
+// intl
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+
+// components
+import {
+  IconTooltip,
+  Label,
+  Box,
+  Text,
+} from '@citizenlab/cl2-component-library';
+import Warning from 'components/UI/Warning';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { slugRexEx } from 'utils/textUtils';
+
+// hooks
+import useLocale from 'hooks/useLocale';
+import usePage from 'hooks/usePage';
+import useAppConfiguration from 'hooks/useAppConfiguration';
+import { useParams } from 'react-router-dom';
+
 // local_page_files: remotePageFiles,
 
 export interface FormValues {
@@ -41,6 +60,11 @@ const PageForm = ({
   onSubmit,
   defaultValues,
 }: InjectedIntlProps & { onSubmit: any; defaultValues: FormValues }) => {
+  const { pageId } = useParams();
+  const locale = useLocale();
+  const page = usePage({ pageId });
+  const appConfig = useAppConfiguration();
+
   const schema = yup
     .object({
       title_multiloc: yup.lazy((obj) => {
@@ -73,6 +97,10 @@ const PageForm = ({
           )
         );
       }),
+      slug: yup
+        .string()
+        .matches(slugRexEx, formatMessage(messages.slugRegexError))
+        .required(formatMessage(messages.emptySlugError)),
     })
     .required();
 
@@ -80,6 +108,8 @@ const PageForm = ({
     defaultValues,
     resolver: yupResolver(schema),
   });
+
+  if (isNilOrError(appConfig)) return null;
 
   return (
     <FormProvider {...methods}>
@@ -97,6 +127,51 @@ const PageForm = ({
             label={formatMessage(messages.editContent)}
           />
         </SectionFieldPageContent>
+        <SectionField>
+          <Label htmlFor="slug">
+            <FormattedMessage {...messages.pageUrl} />
+            {!isNilOrError(page) && (
+              <IconTooltip
+                content={
+                  <FormattedMessage
+                    {...messages.slugLabelTooltip}
+                    values={{
+                      currentPageURL: (
+                        <em>
+                          <b>
+                            {appConfig.data.attributes.host}/{locale}
+                            /pages/{page.attributes.slug}
+                          </b>
+                        </em>
+                      ),
+                      currentPageSlug: (
+                        <em>
+                          <b>{page.attributes.slug}</b>
+                        </em>
+                      ),
+                    }}
+                  />
+                }
+              />
+            )}
+          </Label>
+          {!isNilOrError(page) && (
+            <Box mb="16px">
+              <Warning>
+                <FormattedMessage {...messages.brokenURLWarning} />
+              </Warning>
+            </Box>
+          )}
+          <RHFInput id="slug" name="slug" type="text" />
+          <Text>
+            <b>
+              <FormattedMessage {...messages.resultingPageURL} />
+            </b>
+            : {appConfig.data.attributes.host}/{locale}/pages/
+            {methods.getValues('slug')}
+          </Text>
+        </SectionField>
+
         <RHFSubmit />
       </form>
     </FormProvider>
