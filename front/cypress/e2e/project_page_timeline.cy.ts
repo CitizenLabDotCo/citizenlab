@@ -55,6 +55,7 @@ describe('New timeline project', () => {
 
   const phasePastTitle = randomString();
   const phaseCurrentTitle = randomString();
+  const phaseLongDescription = randomString(10000);
   const phaseFutureTitle = randomString();
 
   let projectId: string;
@@ -98,7 +99,7 @@ describe('New timeline project', () => {
         true,
         true,
         true,
-        `description ${phaseCurrentTitle}`
+        phaseLongDescription
       );
       cy.apiCreatePhase(
         projectId,
@@ -127,9 +128,29 @@ describe('New timeline project', () => {
       .find('.currentPhase')
       .should('have.class', 'selectedPhase')
       .contains(phaseCurrentTitle);
-    cy.get('.e2e-project-process-page').contains(
-      `description ${phaseCurrentTitle}`
+    cy.get('.e2e-project-process-page').contains(phaseLongDescription);
+  });
+
+  it('can toggle between read more and read less when description is long', () => {
+    cy.get('.e2e-phases')
+      .find('.currentPhase')
+      .should('have.class', 'selectedPhase')
+      .contains(phaseCurrentTitle);
+    cy.get('.e2e-project-process-page').contains(phaseLongDescription);
+
+    cy.get('#e2e-project-phase-description-see-less-button').should(
+      'not.exist'
     );
+    cy.get('#e2e-project-phase-description-read-more-button')
+      .should('exist')
+      .click();
+
+    cy.get('#e2e-project-phase-description-read-more-button').should(
+      'not.exist'
+    );
+    cy.get('#e2e-project-phase-description-see-less-button')
+      .should('exist')
+      .click();
   });
 
   it('shows the previous phase', () => {
