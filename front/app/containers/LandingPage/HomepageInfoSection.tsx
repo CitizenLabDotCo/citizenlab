@@ -38,32 +38,27 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 `;
 
 type Props = {
-  sectionLocation: 'bottom' | 'top';
+  sectionMultilocKey:
+    | 'top_info_section_multiloc'
+    | 'bottom_info_section_multiloc';
+  // pages/homepage_info/content was the previous bottom info section fragment key,
+  // leaving it as such for backwards compatibility
+  fragmentName:
+    | 'pages/homepage_info/content'
+    | 'pages/homepage_info/top-content';
 };
 
-const HomepageInfoSection = ({ sectionLocation }: Props) => {
+const HomepageInfoSection = ({ sectionMultilocKey, fragmentName }: Props) => {
   const homepageSettings = useHomepageSettings();
   if (!isNilOrError(homepageSettings)) {
-    const [sectionEnabledKey, sectionMultilocKey] =
-      sectionLocation === 'top'
-        ? ['top_info_section_enabled', 'top_info_section_multiloc']
-        : ['bottom_info_section_enabled', 'bottom_info_section_multiloc'];
-
-    const sectionIsEnabled =
-      homepageSettings.data.attributes[sectionEnabledKey];
     const sectionMultilocContent =
       homepageSettings.data.attributes[sectionMultilocKey];
 
-    if (
-      sectionIsEnabled &&
-      sectionMultilocContent &&
-      !isEmptyMultiloc(sectionMultilocContent)
-    ) {
+    if (sectionMultilocContent && !isEmptyMultiloc(sectionMultilocContent)) {
       return (
         <CustomSectionContentContainer>
           <StyledQuillEditedContent>
-            {/* does this need to be changed if there are two of them? */}
-            <Fragment name={'pages/homepage_info/content'}>
+            <Fragment name={fragmentName}>
               <T value={sectionMultilocContent} supportHtml={true} />
             </Fragment>
           </StyledQuillEditedContent>

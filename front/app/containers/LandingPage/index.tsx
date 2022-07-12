@@ -11,6 +11,7 @@ const Footer = lazy(() => import('./Footer'));
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useHomepageSettings from 'hooks/useHomepageSettings';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -41,6 +42,7 @@ const Content = styled.div`
 `;
 
 const LandingPage = () => {
+  const homepageSettings = useHomepageSettings();
   const authUser = useAuthUser();
 
   return (
@@ -56,9 +58,23 @@ const LandingPage = () => {
 
         <Content>
           <Suspense fallback={<LoadingBox />}>
-            <HomepageInfoSection sectionLocation="top" />
+            {!isNilOrError(homepageSettings) &&
+              homepageSettings.data.attributes.top_info_section_enabled && (
+                // top info section
+                <HomepageInfoSection
+                  sectionMultilocKey="top_info_section_multiloc"
+                  fragmentName="pages/homepage_info/top-content"
+                />
+              )}
             <MainContent />
-            <HomepageInfoSection sectionLocation="bottom" />
+            {!isNilOrError(homepageSettings) &&
+              homepageSettings.data.attributes.top_info_section_enabled && (
+                // bottom info section
+                <HomepageInfoSection
+                  sectionMultilocKey="bottom_info_section_multiloc"
+                  fragmentName="pages/homepage_info/content"
+                />
+              )}
             <Footer />
           </Suspense>
         </Content>
