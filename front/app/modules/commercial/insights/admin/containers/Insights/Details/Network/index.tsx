@@ -223,17 +223,19 @@ const Network = ({
     return keywords;
   };
 
-  const handleNodeClick = (node: Node, event) => {
+  const handleNodeClick = (node: Node, event: MouseEvent) => {
     let isHiding = false;
     const hidden_keywords = getURLArrayParam('hidden_keywords');
     if (node.x !== undefined && node.y !== undefined) {
       const { target, offsetX, offsetY } = event;
-      const ctx = target.getContext('2d');
-      const rect = drawHideIconClickBox(node);
+      if (target) {
+        const ctx = (target as HTMLCanvasElement).getContext('2d');
+        const rect = drawHideIconClickBox(node);
 
-      if (ctx.isPointInPath(rect, offsetX, offsetY)) {
-        hidden_keywords.push(node.id);
-        isHiding = true;
+        if (ctx && ctx.isPointInPath(rect, offsetX, offsetY)) {
+          hidden_keywords.push(node.id);
+          isHiding = true;
+        }
       }
     }
 
