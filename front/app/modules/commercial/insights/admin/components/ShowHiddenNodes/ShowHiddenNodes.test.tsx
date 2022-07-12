@@ -64,6 +64,11 @@ describe('Show hidden keyword network nodes', () => {
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
+    expect(screen.queryByText('name-0')).not.toBeInTheDocument();
+    expect(screen.queryByText('name-1')).not.toBeInTheDocument();
+    expect(screen.queryByText('name-2')).not.toBeInTheDocument();
+    expect(screen.queryByText('name-3')).not.toBeInTheDocument();
+    expect(screen.queryByText('name-4')).not.toBeInTheDocument();
     fireEvent.mouseEnter(screen.getByTestId('insightsShowHiddenNodesContent'));
     expect(screen.getByText('name-0')).toBeInTheDocument();
     expect(screen.getByText('name-1')).toBeInTheDocument();
@@ -81,6 +86,7 @@ describe('Show hidden keyword network nodes', () => {
         handleShowHiddenNodesClick={handleShowHiddenNodesClick}
       />
     );
+    expect(screen.queryByText('...')).not.toBeInTheDocument();
     fireEvent.mouseEnter(screen.getByTestId('insightsShowHiddenNodesContent'));
     expect(screen.getByText('...')).toBeInTheDocument();
   });
