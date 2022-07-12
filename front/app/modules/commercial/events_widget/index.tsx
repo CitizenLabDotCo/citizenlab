@@ -10,7 +10,7 @@ const configuration: ModuleConfiguration = {
     'app.containers.LandingPage.EventsWidget': () => {
       const featureFlag = useHomepageSettingsFeatureFlag({
         homepageEnabledSetting: 'events_widget_enabled',
-        homePageAllowedSettingName: 'events_widget',
+        appConfigSettingName: 'events_widget',
       });
 
       if (featureFlag) {
