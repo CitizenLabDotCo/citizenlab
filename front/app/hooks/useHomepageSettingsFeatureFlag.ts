@@ -40,7 +40,7 @@ export default function useHomepageSettingsFeatureFlag({
       ? appConfig.data.attributes.settings?.[homePageAllowedSettingName]
       : null;
   const isEnabled = !isNilOrError(homepageSettings)
-    ? homepageSettings.attributes[homepageEnabledSetting]
+    ? homepageSettings.data.attributes[homepageEnabledSetting]
     : false;
   const isAllowed =
     !homePageAllowedSettingName ||

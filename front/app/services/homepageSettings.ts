@@ -26,7 +26,7 @@ export interface IHomepageSettings {
   id: string;
   // To check
   type: string;
-  attributes: IHomepageSettingsAttributes;
+  data: { attributes: IHomepageSettingsAttributes };
 }
 
 type KeysOfBooleanValues<T> = {
