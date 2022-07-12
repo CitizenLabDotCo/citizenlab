@@ -1,0 +1,83 @@
+import React, { useEffect } from 'react';
+import FileUploader, { FileUploaderProps } from 'components/UI/FileUploader';
+
+import Error from 'components/UI/Error';
+import { Controller, useFormContext } from 'react-hook-form';
+import { UploadFile } from 'typings';
+import useRemoteFiles from 'hooks/useRemoteFiles';
+import { TResourceType } from 'resources/GetRemoteFiles';
+
+interface Props
+  extends Omit<
+    FileUploaderProps,
+    'onFileAdd' | 'onFileRemove' | 'files' | 'id'
+  > {
+  name: string;
+  resourceType: TResourceType;
+  resourceId: string;
+}
+
+const RHFFileUploader = ({
+  name,
+  resourceId,
+  resourceType,
+  ...rest
+}: Props) => {
+  const {
+    setValue,
+    formState: { errors },
+    control,
+  } = useFormContext();
+
+  const remoteFiles = useRemoteFiles({
+    resourceId,
+    resourceType,
+  });
+
+  useEffect(() => {
+    if (remoteFiles) {
+      setValue(name, remoteFiles);
+    }
+  }, [setValue, remoteFiles, name]);
+
+  const errorMessage = errors[name]?.message as string | undefined;
+
+  return (
+    <>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={[]}
+        render={({ field: { ref: _ref, ...field } }) => {
+          return (
+            <FileUploader
+              {...field}
+              {...rest}
+              id={name}
+              files={field.value}
+              onFileAdd={(file) =>
+                setValue(name, field.value ? [...field.value, file] : [file], {
+                  shouldDirty: true,
+                })
+              }
+              onFileRemove={(fileToRemove) =>
+                setValue(
+                  name,
+                  field.value.filter(
+                    (file: UploadFile) => file.base64 !== fileToRemove.base64
+                  ),
+                  { shouldDirty: true }
+                )
+              }
+            />
+          );
+        }}
+      />
+      {errorMessage && (
+        <Error marginTop="8px" marginBottom="8px" text={errorMessage} />
+      )}
+    </>
+  );
+};
+
+export default RHFFileUploader;

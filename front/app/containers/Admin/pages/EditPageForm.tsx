@@ -48,13 +48,8 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
     async (values: FormValues) => {
       const localPageFiles = values.local_page_files;
       const pageId = page.id;
-
       try {
-        await updatePage(pageId, {
-          ...getInitialValues(page, remotePageFiles),
-          ...values,
-        });
-
+        await updatePage(pageId, values);
         if (!isNilOrError(localPageFiles)) {
           handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
           handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
@@ -77,6 +72,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
         </Title>
         <PageWrapper>
           <PageForm
+            pageId={pageId}
             onSubmit={handleSubmit(page, remotePageFiles)}
             defaultValues={getInitialValues(page, remotePageFiles)}
           />

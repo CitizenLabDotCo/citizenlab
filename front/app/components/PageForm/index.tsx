@@ -11,6 +11,7 @@ import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWi
 import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
 import RHFSubmit from 'components/UI/RHFSubmit';
 import RHFInput from 'components/UI/RHFInput';
+import RHFFileUploader from 'components/UI/RHFFileUploader';
 import {
   SectionFieldPageContent,
   SectionField,
@@ -38,7 +39,6 @@ import { slugRexEx } from 'utils/textUtils';
 import useLocale from 'hooks/useLocale';
 import usePage from 'hooks/usePage';
 import useAppConfiguration from 'hooks/useAppConfiguration';
-import { useParams } from 'react-router-dom';
 
 // local_page_files: remotePageFiles,
 
@@ -49,18 +49,18 @@ export interface FormValues {
   local_page_files: UploadFile[] | null;
 }
 
-export interface Props {
-  hideTitle?: boolean;
-  hideSlugInput?: boolean;
+type PageFormProps = {
+  onSubmit: (formValues: FormValues) => void;
+  defaultValues: FormValues;
   pageId: string | null;
-}
+} & InjectedIntlProps;
 
 const PageForm = ({
   intl: { formatMessage },
   onSubmit,
   defaultValues,
-}: InjectedIntlProps & { onSubmit: any; defaultValues: FormValues }) => {
-  const { pageId } = useParams();
+  pageId,
+}: PageFormProps) => {
   const locale = useLocale();
   const page = usePage({ pageId });
   const appConfig = useAppConfiguration();
@@ -101,6 +101,7 @@ const PageForm = ({
         .string()
         .matches(slugRexEx, formatMessage(messages.slugRegexError))
         .required(formatMessage(messages.emptySlugError)),
+      local_page_files: yup.mixed(),
     })
     .required();
 
@@ -171,7 +172,21 @@ const PageForm = ({
             {methods.getValues('slug')}
           </Text>
         </SectionField>
-
+        <SectionField>
+          <Label htmlFor="local_page_files">
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip
+              content={
+                <FormattedMessage {...messages.fileUploadLabelTooltip} />
+              }
+            />
+          </Label>
+          <RHFFileUploader
+            name="local_page_files"
+            resourceId={pageId}
+            resourceType="page"
+          />
+        </SectionField>
         <RHFSubmit />
       </form>
     </FormProvider>
