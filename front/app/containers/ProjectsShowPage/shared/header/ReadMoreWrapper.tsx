@@ -6,7 +6,7 @@ import Button from 'components/UI/Button';
 import ReactResizeDetector from 'react-resize-detector';
 
 // hooks
-import { useWindowSize } from '@citizenlab/cl2-component-library';
+import { useWindowSize, Box } from '@citizenlab/cl2-component-library';
 
 // i18n
 import T from 'components/T';
@@ -56,40 +56,11 @@ const Content = styled.div<{ maxHeight: number }>`
   }
 `;
 
-const ReadMoreOuterWrapper = styled.div`
-  height: 130px;
-  content: '';
-  display: flex;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgb(255, 255, 255);
-  background: linear-gradient(
-    0deg,
-    rgba(255, 255, 255, 1) 30%,
-    rgba(255, 255, 255, 0) 100%
-  );
-`;
-
-const ReadMoreInnerWrapper = styled.div`
-  position: relative;
-  flex: 1;
-`;
-
 const ReadMoreButton = styled(Button)`
   position: absolute;
   bottom: 0;
   left: 0;
 `;
-
-const CollapseButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 20px;
-`;
-
-const CollapseButton = styled(Button)``;
 
 interface Props {
   className?: string;
@@ -152,8 +123,16 @@ const ReadMoreWrapper = memo<Props>(
               {contentHeight &&
                 contentHeight > collapsedContentMaxHeight &&
                 !expanded && (
-                  <ReadMoreOuterWrapper>
-                    <ReadMoreInnerWrapper>
+                  <Box
+                    display="flex"
+                    height="132px"
+                    position="absolute"
+                    bottom="0"
+                    left="0"
+                    right="0"
+                    background="linear-gradient(0deg, rgba(255, 255, 255, 1) 30%, rgba(255, 255, 255, 0) 100%)"
+                  >
+                    <Box position="relative" flex="1">
                       <ReadMoreButton
                         id={`e2e-project-${contentId}-read-more-button`}
                         buttonStyle="text"
@@ -168,14 +147,14 @@ const ReadMoreWrapper = memo<Props>(
                       >
                         <FormattedMessage {...messages.readMore} />
                       </ReadMoreButton>
-                    </ReadMoreInnerWrapper>
-                  </ReadMoreOuterWrapper>
+                    </Box>
+                  </Box>
                 )}
               {contentHeight &&
                 contentHeight > collapsedContentMaxHeight &&
                 expanded && (
-                  <CollapseButtonWrapper>
-                    <CollapseButton
+                  <Box display="flex" justifyContent="flex-start" mt="20px">
+                    <Button
                       id={`e2e-project-${contentId}-see-less-button`}
                       buttonStyle="text"
                       onClick={toggleExpandCollapse}
@@ -188,8 +167,8 @@ const ReadMoreWrapper = memo<Props>(
                       padding="0"
                     >
                       <FormattedMessage {...messages.seeLess} />
-                    </CollapseButton>
-                  </CollapseButtonWrapper>
+                    </Button>
+                  </Box>
                 )}
             </>
           )}
