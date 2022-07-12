@@ -15,6 +15,11 @@ import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
+import {
+  SectionFieldPageContent,
+  SectionField,
+} from 'components/admin/Section';
+
 // slug: page.attributes.slug,
 // local_page_files: remotePageFiles,
 
@@ -79,8 +84,19 @@ const PageForm = ({
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <RHFInputMultilocWithLocaleSwitcher type="text" name="title_multiloc" />
-        <RHFQuillMultilocWithLocaleSwitcher name="body_multiloc" />
+        <SectionField>
+          <RHFInputMultilocWithLocaleSwitcher
+            label={formatMessage(messages.pageTitle)}
+            type="text"
+            name="title_multiloc"
+          />
+        </SectionField>
+        <SectionFieldPageContent>
+          <RHFQuillMultilocWithLocaleSwitcher
+            name="body_multiloc"
+            label={formatMessage(messages.editContent)}
+          />
+        </SectionFieldPageContent>
         <RHFSubmit />
       </form>
     </FormProvider>
