@@ -392,6 +392,8 @@ export type OutletsPropertyMap = {
     ) => (settingKey: string, settingValue: any) => void;
     errors: CLErrors;
   };
+  'app.containers.Admin.pages-menu.index': Record<string, any>;
+  'app.containers.Admin.pages-menu.NavigationSettings': Record<string, any>;
   'app.containers.LandingPage.SignedOutHeader.CTA': {
     ctaType: CTASignedOutType;
     customizedButtonConfig?: CustomizedButtonConfig;
@@ -447,6 +449,7 @@ interface Routes {
   'admin.projects.project': RouteConfiguration[];
   'admin.initiatives': RouteConfiguration[];
   'admin.ideas': RouteConfiguration[];
+  'admin.pages-menu': RouteConfiguration[];
   'admin.dashboards': RouteConfiguration[];
   'admin.project_templates': RouteConfiguration[];
   'admin.settings': RouteConfiguration[];
@@ -553,6 +556,10 @@ export const loadModules = (modules: Modules): ParsedModuleConfiguration => {
         mergedRoutes?.['admin.ideas'],
         RouteTypes.ADMIN
       ),
+      'admin.pages-menu': parseModuleRoutes(
+        mergedRoutes?.['admin.pages-menu'],
+        RouteTypes.ADMIN
+      ),
       'admin.dashboards': parseModuleRoutes(
         mergedRoutes?.['admin.dashboards'],
         RouteTypes.ADMIN
@@ -590,7 +597,6 @@ export const insertConfiguration =
     configuration,
     insertAfterName,
     insertBeforeName,
-    removeName,
   }: InsertConfigurationOptions<T>) =>
   (items: T[]): T[] => {
     const itemAlreadyInserted = items.some(
@@ -618,16 +624,6 @@ export const insertConfiguration =
       configuration,
       ...items.slice(insertIndex),
     ];
-
-    if (removeName) {
-      const removeIndex = newItems.findIndex(
-        (item) => removeName === item.name
-      );
-
-      if (removeIndex > -1) {
-        newItems.splice(removeIndex, 1);
-      }
-    }
 
     return newItems;
   };

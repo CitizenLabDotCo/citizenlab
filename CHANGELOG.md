@@ -4,6 +4,7 @@
 
 ### Changed
 
+- [CL-870] Move "navigation" to primary nav item
 - [CL-1093] Pin Node.js version in package.json
 
 ## 2022-07-11
@@ -46,6 +47,7 @@
 ### Fixed
 
 - [CL-1083] XLSX export issues with custom fields
+
 
 ## 2022-07-04
 
