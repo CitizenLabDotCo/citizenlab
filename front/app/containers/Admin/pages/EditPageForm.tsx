@@ -45,7 +45,7 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
 
   const handleSubmit =
     (page: IPageData, remotePageFiles: RemoteFiles) =>
-    async (values: FormValues, { setSubmitting, setStatus }) => {
+    async (values: FormValues) => {
       const localPageFiles = values.local_page_files;
       const pageId = page.id;
 
@@ -59,22 +59,14 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
           handleAddPageFiles(pageId, localPageFiles, remotePageFiles);
           handleRemovePageFiles(pageId, localPageFiles, remotePageFiles);
         }
-
-        setStatus('success');
-        setSubmitting(false);
       } catch (error) {
-        setStatus('error');
-        setSubmitting(false);
+        // Do nothing
       }
     };
 
   const handleGoBack = () => {
     clHistory.push('/admin/pages');
   };
-
-  // const renderFn = (pageId: string) => (props: FormikProps<FormValues>) => {
-  //   return <PageForm {...props} pageId={pageId} hideSlugInput={false} />;
-  // };
 
   if (!isNilOrError(page) && !isNilOrError(appConfigurationLocales)) {
     return (
@@ -84,7 +76,10 @@ const EditPageForm = ({ params: { pageId } }: WithRouterProps) => {
           <T value={page.attributes.title_multiloc} />
         </Title>
         <PageWrapper>
-          <PageForm onSubmit={handleSubmit(page, remotePageFiles)} />
+          <PageForm
+            onSubmit={handleSubmit(page, remotePageFiles)}
+            defaultValues={getInitialValues(page, remotePageFiles)}
+          />
         </PageWrapper>
       </div>
     );

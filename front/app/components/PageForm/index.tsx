@@ -8,12 +8,13 @@ import * as yup from 'yup';
 import { Multiloc, UploadFile } from 'typings';
 
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
+import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
+import RHFSubmit from 'components/UI/RHFSubmit';
 
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
-// body_multiloc: page.attributes.body_multiloc,
 // slug: page.attributes.slug,
 // local_page_files: remotePageFiles,
 
@@ -30,7 +31,11 @@ export interface Props {
   pageId: string | null;
 }
 
-const PageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
+const PageForm = ({
+  intl: { formatMessage },
+  onSubmit,
+  defaultValues,
+}: InjectedIntlProps & { onSubmit: any; defaultValues: FormValues }) => {
   const schema = yup
     .object({
       title_multiloc: yup.lazy((obj) => {
@@ -48,20 +53,35 @@ const PageForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
           )
         );
       }),
+      body_multiloc: yup.lazy((obj) => {
+        const keys = Object.keys(obj);
+
+        return yup.object(
+          keys.reduce(
+            (acc, curr) => (
+              (acc[curr] = yup
+                .string()
+                .required(formatMessage(messages.emptyDescriptionError))),
+              acc
+            ),
+            {}
+          )
+        );
+      }),
     })
     .required();
 
   const methods = useForm({
+    defaultValues,
     resolver: yupResolver(schema),
   });
-
-  const onSubmit = (data) => console.log(data);
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <RHFInputMultilocWithLocaleSwitcher type="text" name="title_multiloc" />
-        <input type="submit" />
+        <RHFQuillMultilocWithLocaleSwitcher name="body_multiloc" />
+        <RHFSubmit />
       </form>
     </FormProvider>
   );

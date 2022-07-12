@@ -7,11 +7,13 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import styled, { css } from 'styled-components';
 
 // components
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import Button, {
   ButtonStyles,
   Props as OriginalButtonProps,
 } from 'components/UI/Button';
+
+import defaultMessages from './messages';
 
 // typings
 import { Omit } from 'typings';
@@ -83,11 +85,11 @@ interface Props
   status: ISubmitState;
   loading: boolean;
   customError?: string | null;
-  messages: {
-    buttonSave: any;
-    buttonSuccess: any;
-    messageSuccess: any;
-    messageError: any;
+  messages?: {
+    buttonSave: MessageDescriptor;
+    buttonSuccess: MessageDescriptor;
+    messageSuccess: MessageDescriptor;
+    messageError: MessageDescriptor;
   };
   onClick?: (event: FormEvent<any>) => void;
   buttonStyle?: ButtonStyles;
@@ -128,8 +130,14 @@ export default class SubmitWrapper extends PureComponent<Props> {
       'loading',
     ]);
 
-    const { loading, status, onClick, messages, animate, customError } =
-      this.props;
+    const {
+      loading,
+      status,
+      onClick,
+      messages = defaultMessages,
+      animate,
+      customError,
+    } = this.props;
 
     return (
       <Wrapper aria-live="polite" fullWidth={!!buttonProps.fullWidth}>

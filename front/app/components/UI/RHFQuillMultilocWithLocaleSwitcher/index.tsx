@@ -1,23 +1,24 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import {
-  InputMultilocWithLocaleSwitcher,
-  InputMultilocWithLocaleSwitcherProps,
-} from '@citizenlab/cl2-component-library';
+
 import Error from 'components/UI/Error';
 import { Controller, useFormContext, FieldError } from 'react-hook-form';
 import { Locale } from 'typings';
 
-export interface Props
-  extends Omit<
-    InputMultilocWithLocaleSwitcherProps,
-    'locales' | 'valueMultiloc'
-  > {
+// components
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import { isNilOrError } from 'utils/helperUtils';
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+
+// typings
+
+interface Props {
   name: string;
+  labelTooltipText?: string | JSX.Element | null;
+  label?: string | JSX.Element | null;
+  withCTAButton?: boolean;
 }
 
-const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
+const RHFQuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   const {
     formState: { errors },
     control,
@@ -44,11 +45,10 @@ const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         control={control}
         defaultValue={defaultValue}
         render={({ field: { ref: _ref, ...field } }) => (
-          <InputMultilocWithLocaleSwitcher
+          <QuillMultilocWithLocaleSwitcher
             {...field}
             {...rest}
-            locales={locales}
-            type="text"
+            id={name}
             valueMultiloc={field.value}
           />
         )}
@@ -60,4 +60,4 @@ const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
   );
 };
 
-export default RHFInputMultilocWithLocaleSwitcher;
+export default RHFQuillMultilocWithLocaleSwitcher;
