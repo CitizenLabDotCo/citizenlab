@@ -1,10 +1,12 @@
 import React from 'react';
-import useHomepageSettings from 'hooks/useHomepageSettings';
-import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+import { isEmptyMultiloc } from 'utils/helperUtils';
 import T from 'components/T';
 import ContentContainer from 'components/ContentContainer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Fragment from 'components/Fragment';
+
+// typings
+import { Multiloc } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -38,9 +40,7 @@ const StyledQuillEditedContent = styled(QuillEditedContent)`
 `;
 
 type Props = {
-  sectionMultilocKey:
-    | 'top_info_section_multiloc'
-    | 'bottom_info_section_multiloc';
+  multilocContent: Multiloc;
   // pages/homepage_info/content was the previous bottom info section fragment key,
   // leaving it as such for backwards compatibility
   fragmentName:
@@ -48,26 +48,20 @@ type Props = {
     | 'pages/homepage_info/top-content';
 };
 
-const HomepageInfoSection = ({ sectionMultilocKey, fragmentName }: Props) => {
-  const homepageSettings = useHomepageSettings();
-  if (!isNilOrError(homepageSettings)) {
-    const sectionMultilocContent =
-      homepageSettings.data.attributes[sectionMultilocKey];
-
-    if (sectionMultilocContent && !isEmptyMultiloc(sectionMultilocContent)) {
-      return (
-        <CustomSectionContentContainer>
-          <StyledQuillEditedContent>
-            <Fragment name={fragmentName}>
-              <T value={sectionMultilocContent} supportHtml={true} />
-            </Fragment>
-          </StyledQuillEditedContent>
-        </CustomSectionContentContainer>
-      );
-    }
+const HomepageInfoSection = ({ multilocContent, fragmentName }: Props) => {
+  if (!multilocContent || isEmptyMultiloc(multilocContent)) {
+    return null;
   }
 
-  return null;
+  return (
+    <CustomSectionContentContainer>
+      <StyledQuillEditedContent>
+        <Fragment name={fragmentName}>
+          <T value={multilocContent} supportHtml={true} />
+        </Fragment>
+      </StyledQuillEditedContent>
+    </CustomSectionContentContainer>
+  );
 };
 
 export default HomepageInfoSection;

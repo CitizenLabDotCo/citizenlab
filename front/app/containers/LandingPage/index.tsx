@@ -62,7 +62,9 @@ const LandingPage = () => {
               homepageSettings.data.attributes.top_info_section_enabled && (
                 // top info section
                 <HomepageInfoSection
-                  sectionMultilocKey="top_info_section_multiloc"
+                  multilocContent={
+                    homepageSettings.data.attributes.top_info_section_multiloc
+                  }
                   fragmentName="pages/homepage_info/top-content"
                 />
               )}
@@ -71,7 +73,10 @@ const LandingPage = () => {
               homepageSettings.data.attributes.top_info_section_enabled && (
                 // bottom info section
                 <HomepageInfoSection
-                  sectionMultilocKey="bottom_info_section_multiloc"
+                  multilocContent={
+                    homepageSettings.data.attributes
+                      .bottom_info_section_multiloc
+                  }
                   fragmentName="pages/homepage_info/content"
                 />
               )}
