@@ -30,6 +30,8 @@ import { Icon } from '@citizenlab/cl2-component-library';
 // styling
 import styled from 'styled-components';
 
+import { isNilOrError } from 'utils/helperUtils';
+
 const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
@@ -207,7 +209,9 @@ class BarChartActiveUsersByTime extends React.PureComponent<
     const { serie } = this.state;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     return (
       <GraphCard className={className}>

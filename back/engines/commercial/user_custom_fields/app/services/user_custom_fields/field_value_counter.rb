@@ -75,7 +75,11 @@ module UserCustomFields
     # It only adds missing options when they are explicitly defined (as
     # +CustomFieldOption+ records). This is not the case for number and checkbox
     # custom fields whose options are implicitly defined.
-    private_class_method def self.add_missing_options(counts, custom_field)
+    #
+    # @raise [ArgumentError] if the custom field values are not consistent with the
+    #   custom field options. That is if the custom field values reference options that
+    #   do not exist.
+    private_class_method def self.add_missing_options!(counts, custom_field)
       return counts if custom_field.options.empty?
 
       option_keys = custom_field.options.pluck(:key)
@@ -86,6 +90,16 @@ module UserCustomFields
       MSG
 
       option_keys.index_with { 0 }.merge(counts)
+    end
+
+    # Same as +add_missing_options!+ but does not raise an error when it detects data
+    # inconsistencies. Instead, it returns the counts unchanged and reports the error
+    # without failing.
+    private_class_method def self.add_missing_options(counts, custom_field)
+      add_missing_options!(counts, custom_field)
+    rescue ArgumentError => e
+      ErrorReporter.report(e)
+      counts
     end
   end
 end

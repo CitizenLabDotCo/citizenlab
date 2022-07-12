@@ -1,6 +1,6 @@
 import { randomString } from '../../support/commands';
 
-describe('Content builder mobile preview', () => {
+describe('Content builder preview', () => {
   let projectId = '';
 
   const getIframeBody = () => {
@@ -77,5 +77,26 @@ describe('Content builder mobile preview', () => {
     getIframeBody()
       .contains('Edited text.Another edited text.')
       .should('be.visible');
+  });
+
+  it('allows user to navigate between mobile and desktop preview and see content in both', () => {
+    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
+      position: 'inside',
+    });
+    cy.wait(5000);
+    cy.get('#e2e-text-box').click();
+    cy.get('#quill-editor').click();
+    cy.get('#quill-editor').type('Sample text.', { force: true });
+
+    cy.get('#e2e-preview-toggle').find('input').click({ force: true });
+
+    getIframeBody().contains('Sample text.').should('be.visible');
+    cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
+
+    cy.get('#e2e-desktop-preview').click({ force: true });
+
+    getIframeBody().contains('Sample text.').should('be.visible');
+    cy.get('[data-cy="desktop-preview-iframe"]').should('exist');
   });
 });
