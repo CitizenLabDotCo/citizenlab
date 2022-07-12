@@ -60,7 +60,8 @@
             "type": "array",
             "items": {
               "type": "string",
-              "enum": [<%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l}\""}.join(",") %>]
+              "enum": [<%= CL2_SUPPORTED_LOCALES.map { |locale| "\"#{locale}\"" }.join(",") %>],
+              "enumNames": [<%= CL2_SUPPORTED_LOCALES.map { |locale| locale.to_s == 'en' ? '"en-US"' : "\"#{locale}\"" }.join(",") %>]
             },
             "uniqueItems": true,
             "minItems": 1,
@@ -800,18 +801,6 @@
             "type": "string",
             "format": "uri"
           }
-        }
-      },
-
-      "idea_custom_fields": {
-        "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 

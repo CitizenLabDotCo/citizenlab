@@ -1,10 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // hooks
 import useLocalize from 'hooks/useLocalize';
+import useReferenceData, {
+  RepresentativenessRow,
+  RepresentativenessRowMultiloc,
+} from '../../hooks/useReferenceData';
+import useRScore from '../../hooks/useRScore';
+
+// services
+import {
+  usersByRegFieldXlsxEndpoint,
+  usersByGenderXlsxEndpoint,
+  usersByDomicileXlsxEndpoint,
+} from 'modules/commercial/user_custom_fields/services/stats';
 
 // components
 import { Box } from '@citizenlab/cl2-component-library';
+import EmptyCard from './EmptyCard';
 import Header from './Header';
 import Chart from './Chart';
 import Table from './Table';
@@ -16,51 +29,87 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // typings
-import { IUserCustomFieldData } from 'modules/commercial/user_custom_fields/services/userCustomFields';
-import { Moment } from 'moment';
+import {
+  IUserCustomFieldData,
+  TCustomFieldCode,
+} from 'modules/commercial/user_custom_fields/services/userCustomFields';
 
 // utils
 import { getLegendLabels } from './utils';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type ViewState = 'chart' | 'table';
 
-export interface RepresentativenessRow {
-  name: string;
-  actualPercentage: number;
-  referencePercentage: number;
-  actualNumber: number;
-  referenceNumber: number;
-}
-
-export type RepresentativenessData = RepresentativenessRow[];
-
 interface Props {
-  customField: IUserCustomFieldData;
-  data: RepresentativenessData;
-  // representativenessScore: number;
-  includedUserPercentage: number;
-  demographicDataDate: Moment;
+  userCustomField: IUserCustomFieldData;
+  projectFilter?: string;
 }
+
+const getXlsxEndpoint = (
+  code: TCustomFieldCode | null,
+  userCustomFieldId: string
+): string => {
+  switch (code) {
+    case 'gender':
+      return usersByGenderXlsxEndpoint;
+    case 'domicile':
+      return usersByDomicileXlsxEndpoint;
+    default:
+      return usersByRegFieldXlsxEndpoint(userCustomFieldId);
+  }
+};
 
 const ChartCard = ({
-  customField,
-  data,
-  includedUserPercentage,
-  demographicDataDate,
+  userCustomField,
+  projectFilter,
   intl: { formatMessage },
 }: Props & InjectedIntlProps) => {
-  const hideTicks = data.length > 12;
-  const preferTableView = hideTicks;
+  const rScore = useRScore(userCustomField.id, projectFilter);
+  const { referenceData, includedUsers, referenceDataUploaded } =
+    useReferenceData(userCustomField, projectFilter);
 
   const currentChartRef = useRef<SVGElement>();
-  const [viewState, setViewState] = useState<ViewState>(
-    preferTableView ? 'table' : 'chart'
+  const [viewState, setViewState] = useState<ViewState | undefined>(
+    isNilOrError(referenceData)
+      ? undefined
+      : referenceData.length > 12
+      ? 'table'
+      : 'chart'
   );
+
+  useEffect(() => {
+    if (viewState !== undefined) return;
+    if (isNilOrError(referenceData)) return;
+
+    setViewState(referenceData.length > 12 ? 'table' : 'chart');
+  }, [referenceData, viewState]);
+
   const localize = useLocalize();
+
+  if (referenceDataUploaded === false) {
+    return (
+      <EmptyCard
+        titleMultiloc={userCustomField.attributes.title_multiloc}
+        isComingSoon={false}
+      />
+    );
+  }
+
+  if (
+    isNilOrError(referenceData) ||
+    isNilOrError(rScore) ||
+    isNilOrError(includedUsers) ||
+    referenceDataUploaded === undefined ||
+    viewState === undefined
+  ) {
+    return null;
+  }
+
   const handleClickSwitchToTableView = () => setViewState('table');
 
-  const dataIsTooLong = data.length > 24;
-  const numberOfHiddenItems = data.length - 24;
+  const hideTicks = referenceData.length > 12;
+  const dataIsTooLong = referenceData.length > 24;
+  const numberOfHiddenItems = referenceData.length - 24;
   const hideLegend = viewState === 'table';
 
   const barNames = [
@@ -68,17 +117,31 @@ const ChartCard = ({
     formatMessage(messages.totalPopulation),
   ];
 
-  const legendLabels = getLegendLabels(barNames, demographicDataDate);
+  const legendLabels = getLegendLabels(barNames);
 
-  const title = localize(customField.attributes.title_multiloc);
-  const fieldIsRequired = customField.attributes.required;
+  const title = localize(userCustomField.attributes.title_multiloc);
+  const fieldIsRequired = userCustomField.attributes.required;
+  const xlsxEndpoint = getXlsxEndpoint(
+    userCustomField.attributes.code,
+    userCustomField.id
+  );
+
+  const data = referenceData.map(
+    (row: RepresentativenessRowMultiloc): RepresentativenessRow => {
+      const { title_multiloc, ...rest } = row;
+      return { ...rest, name: localize(title_multiloc) };
+    }
+  );
 
   return (
     <Box background="white" mb="36px" borderRadius="3px">
       <Header
         title={title}
         svgNode={currentChartRef}
+        rScore={rScore.attributes.score}
         viewState={viewState}
+        projectFilter={projectFilter}
+        xlsxEndpoint={xlsxEndpoint}
         onChangeViewState={setViewState}
       />
       {viewState === 'chart' && (
@@ -94,14 +157,15 @@ const ChartCard = ({
           title={title}
           data={data}
           legendLabels={legendLabels}
-          includedUserPercentage={includedUserPercentage}
+          includedUsers={includedUsers}
           fieldIsRequired={fieldIsRequired}
-          svgNode={currentChartRef}
+          projectFilter={projectFilter}
+          xlsxEndpoint={xlsxEndpoint}
         />
       )}
       <Footer
         fieldIsRequired={fieldIsRequired}
-        includedUserPercentage={includedUserPercentage}
+        includedUsers={includedUsers}
         hideTicks={hideTicks}
         dataIsTooLong={dataIsTooLong}
         numberOfHiddenItems={numberOfHiddenItems}

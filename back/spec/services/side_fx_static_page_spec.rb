@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SideFxStaticPageService do
-  let(:service) { SideFxStaticPageService.new }
+  let(:service) { described_class.new }
   let(:user) { create(:user) }
   let(:page) { create(:static_page) }
 

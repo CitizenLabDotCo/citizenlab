@@ -12,6 +12,7 @@ import { IUser } from 'services/users';
 import { IAppConfigurationData } from 'services/appConfiguration';
 
 export const MODERATOR_ROUTES = [
+  '/admin', // currently redirects to /admin/dashboard
   '/admin/projects',
   '/admin/messaging',
   '/admin/ideas',
@@ -20,17 +21,20 @@ export const MODERATOR_ROUTES = [
   '/admin/dashboard',
   '/admin/moderation',
   '/admin/insights',
+  '/admin/content-builder',
 ];
 
 export const isModeratorRoute = (item: IRouteItem) => {
-  return MODERATOR_ROUTES.includes(item.path);
+  return MODERATOR_ROUTES.some((moderatorRoute) => {
+    return item.path.includes(moderatorRoute);
+  });
 };
 
 export const isModeratedProjectRoute = (
   item: IRouteItem,
   user: IUser | null
 ) => {
-  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
+  const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\/?/;
   const matches = idRegexp.exec(item.path);
   const pathProjectId = matches && matches[1];
   return (pathProjectId && isProjectModerator(user, pathProjectId)) || false;

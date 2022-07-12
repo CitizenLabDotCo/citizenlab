@@ -137,7 +137,7 @@ class XlsxService
       { header: 'last_name', f: ->(u) { u.last_name } },
       { header: 'profile_page', f: ->(u) { url_service.model_to_url(u) }, skip_sanitization: true },
       { header: 'created_at', f: ->(u) { u.created_at }, skip_sanitization: true },
-      *custom_field_columns(:itself, true)
+      *user_custom_field_columns(:itself, true)
     ]
 
     unless view_private_attributes
@@ -173,7 +173,7 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachments',          f: ->(i) { i.idea_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     columns
   end
@@ -205,7 +205,7 @@ class XlsxService
       { header: 'location_description', f: ->(i) { i.location_description } },
       { header: 'attachmens',           f: ->(i) { i.initiative_files.map { |f| f.file.url }.join("\n") }, skip_sanitization: true, width: 2 }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email assignee_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Initiatives', columns, initiatives
   end
@@ -224,7 +224,7 @@ class XlsxService
       { header: 'parent_comment_id',  f: ->(c) { c.parent_id },     skip_sanitization: true },
       { header: 'project',            f: ->(c) { multiloc_service.t(c&.idea&.project&.title_multiloc) } }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -242,7 +242,7 @@ class XlsxService
       { header: 'created_at', f: ->(c) { c.created_at }, skip_sanitization: true },
       { header: 'parent_comment_id',        f: ->(c) { c.parent_id }, skip_sanitization: true }
     ]
-    columns.concat custom_field_columns :author, view_private_attributes
+    columns.concat user_custom_field_columns :author, view_private_attributes
     columns.reject! { |c| %w[author_email author_id].include?(c[:header]) } unless view_private_attributes
     generate_xlsx 'Comments', columns, comments
   end
@@ -264,46 +264,16 @@ class XlsxService
 
   # @param [Symbol] record_to_user
   # @param [Boolean] view_private_attributes
-  def custom_field_columns(record_to_user, view_private_attributes)
+  def user_custom_field_columns(record_to_user, view_private_attributes)
     return [] unless view_private_attributes
 
-    areas = Area.all.index_by(&:id)
     # options keys are only unique in the scope of their field, namespacing to avoid collisions
     options = CustomFieldOption.all.index_by { |option| namespace(option.custom_field_id, option.key) }
     user_custom_fields = CustomField.with_resource_type('User').enabled.order(:ordering)
 
     user_custom_fields&.map do |field|
       column_name = multiloc_service.t(field.title_multiloc)
-      value_getter = # lambda that gets a record and returns the field value
-        if field.key == 'domicile' # 'domicile' is a special case
-          lambda do |record|
-            user = record.send(record_to_user)
-            multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
-          end
-        elsif field.support_options? # field with option
-          lambda do |record|
-            user = record.send(record_to_user)
-
-            if user && user.custom_field_values[field.key]
-              case user.custom_field_values[field.key]
-              when Array
-                user.custom_field_values[field.key].map do |key|
-                  multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
-                end.join(', ')
-              when String
-                multiloc_service.t(options[namespace(field.id, user.custom_field_values[field.key])]&.title_multiloc)
-              end
-            end
-          end
-        else # all other custom fields
-          lambda do |record|
-            user = record.send(record_to_user)
-
-            user && user.custom_field_values[field.key]
-          end
-        end
-
-      { header: column_name, f: value_getter }
+      { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
     end
   end
 
@@ -313,6 +283,39 @@ class XlsxService
     @multiloc_service ||= MultilocService.new app_configuration: AppConfiguration.instance
   end
 
+  def title_multiloc_for(record, field, options)
+    return unless record
+
+    case record.custom_field_values[field.key]
+    when Array
+      record.custom_field_values[field.key].map do |key|
+        multiloc_service.t(options[namespace(field.id, key)]&.title_multiloc)
+      end.join(', ')
+    when String
+      multiloc_service.t(options[namespace(field.id, record.custom_field_values[field.key])]&.title_multiloc)
+    end
+  end
+
+  def value_getter_for_user_custom_field_columns(field, record_to_user, options)
+    if field.code == 'domicile' # 'domicile' is a special case
+      areas = Area.all.index_by(&:id)
+      lambda do |record|
+        user = record.send(record_to_user)
+        multiloc_service.t(areas[user.domicile]&.title_multiloc) if user && user.custom_field_values['domicile']
+      end
+    elsif field.support_options? # field with option
+      lambda do |record|
+        user = record.send(record_to_user)
+        title_multiloc_for user, field, options
+      end
+    else # all other custom fields
+      lambda do |record|
+        user = record.send(record_to_user)
+        user && user.custom_field_values[field.key]
+      end
+    end
+  end
+
   def private_attributes
     custom_field_attrs = CustomField.with_resource_type('User')&.map do |field|
       multiloc_service.t(field.title_multiloc)
@@ -320,24 +323,46 @@ class XlsxService
     custom_field_attrs + %w[email gender birthyear domicile education Email author_email author_id assignee_email]
   end
 
-  def header_style(s)
-    s.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
+  def header_style(style)
+    style.add_style bg_color: '99ccff', fg_color: '2626ff', sz: 16, alignment: { horizontal: :center }
   end
 
   def convert_to_text_long_lines(html)
     convert_to_text(html).tr("\n", ' ')
   end
 
-  # Sheet names, derived from Cause titles for example, can only be 31 characters long,
-  # and cannot contain the characters \ , / , * , ? , : , [ , ].
-  # We are being strict and removing any character that is not alphanumeric or a space.
+  # Sanitize sheet names to comply with Excel naming restrictions.
+  # See: https://support.microsoft.com/en-us/office/rename-a-worksheet-3f1f7148-ee83-404d-8ef0-9ff99fbad1f9
   def sanitize_sheetname(sheetname)
-    sheetname.gsub(/[^A-Za-z0-9 ]/, '')[0..30]
+    invalid_chars = '?*:[]/\\'
+    sanitized_name = sheetname.tr(invalid_chars, '')
+    sanitized_name = strip_char(sanitized_name, "'")
+    sanitized_name = sanitized_name[0..30]
+
+    if sanitized_name.empty? || sanitized_name == 'History'
+      raise InvalidSheetnameError.new(sheetname, sanitized_name)
+    end
+
+    sanitized_name
+  end
+
+  # Return a copy of the string with the leading and trailing +char+ removed.
+  # @param [String] string
+  # @param [String] char a single character
+  def strip_char(string, char)
+    string.gsub(/^#{char}+|#{char}+$/, '')
   end
 
   def namespace(field_id, option_key)
     "#{field_id}/#{option_key}"
   end
+
+  class InvalidSheetnameError < StandardError
+    def initialize(sheetname, sanitized_sheetname)
+      super("sheet name '#{sheetname}' (sanitized as '#{sanitized_sheetname}') is invalid")
+    end
+  end
 end
 
-XlsxService.prepend_if_ee('Verification::Patches::XlsxService')
+XlsxService.prepend_if_ee 'IdeaCustomFields::Patches::XlsxService'
+XlsxService.prepend_if_ee 'Verification::Patches::XlsxService'

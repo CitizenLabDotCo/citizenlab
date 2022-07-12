@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {
   Box,
   Title,
-  // Text,
+  Text,
   // IconTooltip,
 } from '@citizenlab/cl2-component-library';
 // import RepresentativenessArticleLink from '../RepresentativenessArticleLink';
@@ -13,8 +13,8 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 
 // i18n
-// import messages from './messages';
-// import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // typings
 import { ViewState } from '.';
@@ -31,7 +31,9 @@ const StyledTabs = styled(Tabs)`
 interface Props {
   title: string;
   svgNode: React.RefObject<SVGElement | undefined>;
-  // representativenessScore: number;
+  rScore: number;
+  projectFilter?: string;
+  xlsxEndpoint: string;
   viewState: ViewState;
   onChangeViewState: (newViewState: ViewState) => void;
 }
@@ -44,7 +46,9 @@ const TAB_ITEMS: ITabItem[] = [
 const Header = ({
   title,
   svgNode,
-  // representativenessScore,
+  rScore,
+  projectFilter,
+  xlsxEndpoint,
   viewState,
   onChangeViewState,
 }: Props) => (
@@ -58,7 +62,7 @@ const Header = ({
       {title}
     </Title>
     <Box display="flex" alignItems="center" mt="4px">
-      {/* <Text
+      <Text
         fontSize="s"
         color="adminSecondaryTextColor"
         fontWeight="bold"
@@ -78,7 +82,7 @@ const Header = ({
         m="0px"
         mb="0px"
       >
-        {representativenessScore}
+        {Math.round(rScore * 100)}
       </Text>
 
       <Text
@@ -91,7 +95,7 @@ const Header = ({
       >
         /100
       </Text>
-      <IconTooltip
+      {/* <IconTooltip
         content={
           <FormattedMessage
             {...messages.representativenessScoreTooltipText}
@@ -105,6 +109,8 @@ const Header = ({
       <Box mr="12px">
         <ReportExportMenu
           name={title}
+          currentProjectFilter={projectFilter}
+          xlsxEndpoint={viewState === 'table' ? xlsxEndpoint : undefined}
           svgNode={viewState === 'chart' ? svgNode : undefined}
         />
       </Box>

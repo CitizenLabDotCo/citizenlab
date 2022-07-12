@@ -25,10 +25,15 @@ import { Tooltip, LabelList } from 'recharts';
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 
-// types
+// services
 import { ideasByStatusStream, ideasByStatusXlsxEndpoint } from 'services/stats';
+
+// types
 import { IGraphFormat } from 'typings';
+
+// utils
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -57,6 +62,8 @@ export class IdeasByStatusChart extends React.PureComponent<
   render() {
     const { chartFill, barSize } = this.props['theme'];
     const {
+      startAt,
+      endAt,
       currentGroupFilterLabel,
       currentGroupFilter,
       className,
@@ -65,7 +72,9 @@ export class IdeasByStatusChart extends React.PureComponent<
     } = this.props;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     const unitName = formatMessage(messages.inputs);
     const sortedByValue = orderBy(serie, ['value'], ['desc']);
@@ -84,6 +93,8 @@ export class IdeasByStatusChart extends React.PureComponent<
                 xlsxEndpoint={ideasByStatusXlsxEndpoint}
                 currentGroupFilterLabel={currentGroupFilterLabel}
                 currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
               />
             )}
           </GraphCardHeader>

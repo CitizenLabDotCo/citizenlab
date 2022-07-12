@@ -7,7 +7,6 @@ import {
   addContentBuilderLayout,
 } from '../../../services/contentBuilder';
 import clHistory from 'utils/cl-router/history';
-import eventEmitter from 'utils/eventEmitter';
 
 const mockEditorData: IContentBuilderLayoutData = {
   id: '2',
@@ -46,6 +45,11 @@ jest.mock('../../../services/contentBuilder', () => ({
   addContentBuilderLayout: jest.fn(),
 }));
 
+let mockLocalesData = ['en'];
+jest.mock('hooks/useAppConfigurationLocales', () =>
+  jest.fn(() => mockLocalesData)
+);
+
 const mockParams = { projectId: 'id' };
 
 jest.mock('utils/cl-router/withRouter', () => {
@@ -74,7 +78,13 @@ jest.mock('@craftjs/core', () => {
   const originalModule = jest.requireActual('@craftjs/core');
   return {
     ...originalModule,
-    useEditor: () => ({ query: { serialize: jest.fn(() => '{}') } }),
+    useEditor: () => ({
+      query: {
+        getSerializedNodes: jest.fn(() => {
+          return {};
+        }),
+      },
+    }),
   };
 });
 
@@ -83,8 +93,11 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -94,8 +107,11 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
@@ -106,11 +122,16 @@ describe('ContentBuilderTopBar', () => {
     render(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+          draftEditorData={{ en: {} }}
         />
       </Editor>
     );
+
     await act(async () => {
       fireEvent.click(screen.getByTestId('contentBuilderTopBarSaveButton'));
     });
@@ -121,88 +142,155 @@ describe('ContentBuilderTopBar', () => {
     );
   });
   it('enables and disables save in accordance with the error status', async () => {
-    render(
+    const { rerender } = render(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someId: true });
-      eventEmitter.emit('contentBuilderError', { someOtherId: true });
-    });
 
     const saveButton = within(
       screen.getByTestId('contentBuilderTopBarSaveButton')
     ).getByRole('button');
 
     expect(saveButton).toBeDisabled();
-
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someId: false });
-    });
-    expect(saveButton).toBeDisabled();
-
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someOtherId: false });
-    });
-    expect(saveButton).not.toBeDisabled();
-  });
-  it('re-enables save when the element with the error is deleted', async () => {
-    render(
+    rerender(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={() => {}}
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
         />
       </Editor>
     );
-    await act(async () => {
-      eventEmitter.emit('contentBuilderError', { someId: true });
-    });
-
-    const saveButton = within(
-      screen.getByTestId('contentBuilderTopBarSaveButton')
-    ).getByRole('button');
-
-    expect(saveButton).toBeDisabled();
-
-    await act(async () => {
-      eventEmitter.emit('deleteContentBuilderElement', 'someId');
-    });
 
     expect(saveButton).not.toBeDisabled();
   });
 
-  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is false', async () => {
-    const setMobilePreviewEnabled = jest.fn();
+  it('calls setPreviewEnabled correctly on toggle change when previewEnabled is false', async () => {
+    const setPreviewEnabled = jest.fn();
     render(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={false}
-          setMobilePreviewEnabled={setMobilePreviewEnabled}
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={setPreviewEnabled}
         />
       </Editor>
     );
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
-    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(true);
+    expect(setPreviewEnabled).toHaveBeenCalledWith(true);
   });
 
-  it('calls setMobilePreviewEnabled correctly on toggle change when mobilePreviewEnabled is true', async () => {
-    const setMobilePreviewEnabled = jest.fn();
+  it('calls setPreviewEnabled correctly on toggle change when previewEnabled is true', async () => {
+    const setPreviewEnabled = jest.fn();
     render(
       <Editor>
         <ContentBuilderTopBar
-          mobilePreviewEnabled={true}
-          setMobilePreviewEnabled={setMobilePreviewEnabled}
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={true}
+          setPreviewEnabled={setPreviewEnabled}
         />
       </Editor>
     );
     const toggle = screen.getByRole('checkbox');
     fireEvent.click(toggle);
-    expect(setMobilePreviewEnabled).toHaveBeenCalledWith(false);
+    expect(setPreviewEnabled).toHaveBeenCalledWith(false);
+  });
+
+  it('does not render locale switcher when there is only one locale', () => {
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.queryByText('en')).not.toBeInTheDocument();
+  });
+
+  it('renders locale switcher when there is only one locale', () => {
+    mockLocalesData = ['en', 'fr-FR'];
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={() => {}}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('en')).toBeInTheDocument();
+  });
+
+  it('calls onSelectLocale correctly when the locale is changed', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={[]}
+          onSelectLocale={onSelectLocale}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    fireEvent.click(screen.getByText('fr-FR'));
+    expect(onSelectLocale).toHaveBeenCalledWith({
+      editorData: {},
+      locale: 'fr-FR',
+    });
+  });
+
+  it('shows locale switcher error correctly', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={onSelectLocale}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('en').firstChild).toHaveClass('empty');
+  });
+
+  it('sets Save button to pending state correctly', () => {
+    const onSelectLocale = jest.fn();
+    render(
+      <Editor>
+        <ContentBuilderTopBar
+          hasPendingState={true}
+          selectedLocale="en"
+          localesWithError={['en']}
+          onSelectLocale={onSelectLocale}
+          previewEnabled={false}
+          setPreviewEnabled={() => {}}
+        />
+      </Editor>
+    );
+    expect(screen.getByText('Save')).not.toBeInTheDocument;
   });
 });

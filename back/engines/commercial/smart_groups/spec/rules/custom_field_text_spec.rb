@@ -11,7 +11,7 @@ describe SmartGroups::Rules::CustomFieldText do
       'value' => 'high'
     }
   end
-  let(:valid_rule) { SmartGroups::Rules::CustomFieldText.from_json(valid_json_rule) }
+  let(:valid_rule) { described_class.from_json(valid_json_rule) }
 
   describe 'from_json' do
     it 'successfully parses a valid json' do
@@ -44,52 +44,52 @@ describe SmartGroups::Rules::CustomFieldText do
     end
 
     it "correctly filters on 'is' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'is', 'two')
+      rule = described_class.new(custom_field.id, 'is', 'two')
       expect(rule.filter(User).count).to eq 1
     end
 
     it "correctly filters on 'not_is' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'not_is', 'two')
+      rule = described_class.new(custom_field.id, 'not_is', 'two')
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'contains' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'contains', 'hre')
+      rule = described_class.new(custom_field.id, 'contains', 'hre')
       expect(rule.filter(User).count).to eq 1
     end
 
     it "correctly filters on 'not_contains' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'not_contains', 'hre')
+      rule = described_class.new(custom_field.id, 'not_contains', 'hre')
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'begins_with' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'begins_with', 'f')
+      rule = described_class.new(custom_field.id, 'begins_with', 'f')
       expect(rule.filter(User).count).to eq 2
     end
 
     it "correctly filters on 'not_begins_with' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'not_begins_with', 'fiv')
+      rule = described_class.new(custom_field.id, 'not_begins_with', 'fiv')
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'ends_on' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'ends_on', 'e')
+      rule = described_class.new(custom_field.id, 'ends_on', 'e')
       expect(rule.filter(User).count).to eq 3
     end
 
     it "correctly filters on 'not_ends_on' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'not_ends_on', 'three')
+      rule = described_class.new(custom_field.id, 'not_ends_on', 'three')
       expect(rule.filter(User).count).to eq User.count - 1
     end
 
     it "correctly filters on 'is_empty' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'is_empty')
+      rule = described_class.new(custom_field.id, 'is_empty')
       expect(rule.filter(User).count).to eq 0
     end
 
     it "correctly filters on 'not_is_empty' predicate" do
-      rule = SmartGroups::Rules::CustomFieldText.new(custom_field.id, 'not_is_empty')
+      rule = described_class.new(custom_field.id, 'not_is_empty')
       expect(rule.filter(User).count).to eq User.count
     end
   end
@@ -104,7 +104,7 @@ describe SmartGroups::Rules::CustomFieldText do
     end
 
     let(:custom_field_text_is_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'is',
         'customFieldId' => text_field.id,
@@ -112,7 +112,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_not_is_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'not_is',
         'customFieldId' => text_field.id,
@@ -120,7 +120,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_contains_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'contains',
         'customFieldId' => text_field.id,
@@ -128,7 +128,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_not_contains_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'not_contains',
         'customFieldId' => text_field.id,
@@ -136,7 +136,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_begins_with_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'begins_with',
         'customFieldId' => text_field.id,
@@ -144,7 +144,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_not_begins_with_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'not_begins_with',
         'customFieldId' => text_field.id,
@@ -152,7 +152,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_ends_on_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'ends_on',
         'customFieldId' => text_field.id,
@@ -160,7 +160,7 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_not_ends_on_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'not_ends_on',
         'customFieldId' => text_field.id,
@@ -168,14 +168,14 @@ describe SmartGroups::Rules::CustomFieldText do
       })
     end
     let(:custom_field_text_is_empty_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'is_empty',
         'customFieldId' => text_field.id
       })
     end
     let(:custom_field_text_not_is_empty_rule) do
-      SmartGroups::Rules::CustomFieldText.from_json({
+      described_class.from_json({
         'ruleType' => 'custom_field_text',
         'predicate' => 'not_is_empty',
         'customFieldId' => text_field.id

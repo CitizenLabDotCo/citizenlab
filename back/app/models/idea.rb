@@ -26,6 +26,7 @@
 #  assignee_id              :uuid
 #  assigned_at              :datetime
 #  proposed_budget          :integer
+#  custom_field_values      :jsonb            not null
 #
 # Indexes
 #
@@ -173,3 +174,4 @@ Idea.include_if_ee 'Insights::Concerns::Input'
 Idea.include_if_ee 'Moderation::Concerns::Moderatable'
 Idea.include_if_ee 'MachineTranslations::Concerns::Translatable'
 Idea.include_if_ee 'IdeaAssignment::Extensions::Idea'
+Idea.include_if_ee 'IdeaCustomFields::Extensions::Idea'

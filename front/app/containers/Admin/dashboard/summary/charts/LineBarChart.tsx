@@ -47,6 +47,7 @@ import {
 import { Popup } from 'semantic-ui-react';
 import { Icon } from '@citizenlab/cl2-component-library';
 import { IResolution } from 'components/admin/ResolutionControl';
+import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -284,7 +285,9 @@ class LineBarChart extends React.PureComponent<
       formattedNumbers;
 
     const noData =
-      !serie || serie.every((item) => isEmpty(item)) || serie.length <= 0;
+      isNilOrError(serie) ||
+      serie.every((item) => isEmpty(item)) ||
+      serie.length <= 0;
 
     return (
       <GraphCard className={className}>

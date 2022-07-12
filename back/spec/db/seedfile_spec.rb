@@ -2,13 +2,15 @@
 
 require 'rails_helper'
 
-describe 'seedfile', slow_test: true do
+describe AppConfiguration, slow_test: true do
   unless CitizenLab.ee?
     it 'generates a valid app configuration, user and initial data' do
-      AppConfiguration.first.destroy!
+      described_class.first.destroy!
 
       load Rails.root.join('db', 'seeds.rb')
-      expect(AppConfiguration.count).to be(1)
+
+      expect(described_class.count).to be(1)
+      expect(HomePage.count).to be(1)
 
       expect(User.admin.count).to be > 0
       expect(StaticPage.count).to be > 3

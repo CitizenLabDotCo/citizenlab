@@ -37,7 +37,7 @@ module EmailCampaigns
 
     recipient_filter :user_filter_no_invitees
 
-    before_send :is_content_worth_sending?
+    before_send :content_worth_sending?
 
     N_TOP_IDEAS = ENV.fetch('N_USER_PLATFORM_DIGEST_IDEAS', 3).to_i
     N_TOP_COMMENTS = ENV.fetch('N_TOP_COMMENTS', 2).to_i
@@ -93,8 +93,8 @@ module EmailCampaigns
     end
 
     # @return [Boolean]
-    def is_content_worth_sending?(_)
-      @is_content_worth_sending ||= TrendingIdeaService.new.filter_trending(
+    def content_worth_sending?(_)
+      @content_worth_sending ||= TrendingIdeaService.new.filter_trending(
         IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
       ).count('*') >= N_TOP_IDEAS
     end

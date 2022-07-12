@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SideFxProjectService do
   let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
-  let(:service) { SideFxProjectService.new(sfx_pc) }
+  let(:service) { described_class.new(sfx_pc) }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 

@@ -1,6 +1,6 @@
 import { randomString } from '../../../support/commands';
 
-describe.skip('Content builder Three Column component', () => {
+describe('Content builder Three Column component', () => {
   let projectId = '';
   let projectSlug = '';
 
@@ -23,10 +23,9 @@ describe.skip('Content builder Three Column component', () => {
       }).then((project) => {
         projectId = project.body.data.id;
         projectSlug = projectTitle;
-        cy.visit(`/admin/projects/${projectId}/description`);
-        cy.get('#e2e-toggle-enable-content-builder')
-          .find('input')
-          .click({ force: true });
+        cy.apiEnableContentBuilder({ projectId }).then(() => {
+          cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+        });
       });
     });
   });
@@ -40,7 +39,9 @@ describe.skip('Content builder Three Column component', () => {
   });
 
   it('handles Three Column component correctly', () => {
-    cy.visit(`/admin/content-builder/projects/${projectId}/description`);
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.get('#e2e-draggable-three-column').dragAndDrop(
       '#e2e-content-builder-frame',
       {
@@ -48,23 +49,7 @@ describe.skip('Content builder Three Column component', () => {
       }
     );
 
-    /* Check container rules */
-    // Non-permitted components
-    cy.get('#e2e-draggable-single-column').dragAndDrop('#e2e-three-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-two-column').dragAndDrop('#e2e-three-column', {
-      position: 'inside',
-    });
-    cy.get('#e2e-draggable-three-column').dragAndDrop('#e2e-three-column', {
-      position: 'inside',
-    });
-
-    cy.get('div#e2e-single-column').should('have.length', 3); // Only original container columns
-    cy.get('#e2e-two-column').should('not.exist');
-    cy.get('#e2e-three-column').should('have.length', 1); // Only original container
-
-    // Permitted components added to all columns
+    // Components added to all columns
     cy.get('#e2e-draggable-about-box').dragAndDrop('div#e2e-single-column', {
       position: 'inside',
     });
@@ -76,6 +61,7 @@ describe.skip('Content builder Three Column component', () => {
     cy.get('div#e2e-about-box').should('have.length', 3);
 
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     // Check column and elements exist on page
     cy.visit(`/projects/${projectSlug}`);
@@ -85,12 +71,16 @@ describe.skip('Content builder Three Column component', () => {
   });
 
   it('deletes Three Column component correctly', () => {
+    cy.intercept('**/content_builder_layouts/project_description/upsert').as(
+      'saveContentBuilder'
+    );
     cy.visit(`/admin/content-builder/projects/${projectId}/description`);
     cy.get('#e2e-three-column').should('be.visible');
 
     cy.get('#e2e-three-column').click('top');
     cy.get('#e2e-delete-button').click();
     cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveContentBuilder');
 
     cy.visit(`/projects/${projectSlug}`);
     cy.get('#e2e-three-column').should('not.exist');
