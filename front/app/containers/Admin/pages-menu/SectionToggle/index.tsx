@@ -21,6 +21,7 @@ export interface Props {
   titleMessageDescriptor: MessageDescriptor;
   tooltipMessageDescriptor: MessageDescriptor;
   checked: boolean;
+  disabled: boolean;
 }
 
 const SectionToggle = ({
@@ -29,11 +30,16 @@ const SectionToggle = ({
   titleMessageDescriptor,
   tooltipMessageDescriptor,
   checked,
+  disabled,
 }: Props) => {
   return (
     <Row>
       <Box display="flex" alignItems="center">
-        <StyledToggle checked={checked} onChange={onChangeSectionToggle} />
+        <StyledToggle
+          checked={checked}
+          onChange={onChangeSectionToggle}
+          disabled={disabled}
+        />
         {/*
       Note: I think we want a default font-weigt of 600, not 700 for this component.
       Also, the margin-top is more than margin-bottom (for an h3).

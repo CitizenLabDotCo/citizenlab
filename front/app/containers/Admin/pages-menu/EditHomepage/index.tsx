@@ -20,6 +20,7 @@ type TSectionToggleData = {
 
 const EditHomepage = () => {
   const homepageSettings = useHomepageSettings();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [sectionTogglesData, _setSectionTogglesData] = useState<
     TSectionToggleData[]
@@ -46,14 +47,19 @@ const EditHomepage = () => {
     },
   ]);
 
-  const handleOnChangeToggle = (sectionName: THomepageSection) => () => {
+  const handleOnChangeToggle = (sectionName: THomepageSection) => async () => {
     if (isNilOrError(homepageSettings)) {
       return;
     }
+    setIsLoading(true);
     try {
-      updateHomepageSettings({
+      await updateHomepageSettings({
         [sectionName]: !homepageSettings.data.attributes[sectionName],
       });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,6 +114,7 @@ const EditHomepage = () => {
                 onClickEditButton={handleOnClick}
                 titleMessageDescriptor={titleMessageDescriptor}
                 tooltipMessageDescriptor={tooltipMessageDescriptor}
+                disabled={isLoading}
               />
             );
           }
