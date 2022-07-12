@@ -30,6 +30,15 @@ describe('useHomepageSettingsFeatureFlag', () => {
     expect(result.current).toBe(true);
   });
 
+  it('should return true when widget is just enabled without appconfig check', () => {
+    const { result } = renderHook(() =>
+      useHomepageSettingsFeatureFlag({
+        homepageEnabledSetting: 'events_widget_enabled',
+      })
+    );
+    expect(result.current).toBe(true);
+  });
+
   it('should return false when widget is allowed but not enabled', () => {
     (useHomepageSettings as jest.Mock).mockReturnValue({
       data: { attributes: { events_widget_enabled: false } },
