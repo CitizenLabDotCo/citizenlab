@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Added
+
+- [CL-972] Add a 'read more' expand/collapse feature to timeline phases
+
 ### Changed
 
 - [CL-1093] Pin Node.js version in package.json
