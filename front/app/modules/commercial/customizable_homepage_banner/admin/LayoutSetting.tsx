@@ -17,11 +17,12 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-import { TAppConfigurationSetting } from 'services/appConfiguration';
 import {
-  THomepageBannerLayout,
-  IHomepageSettingsAttributes,
-} from 'services/homepageSettings';
+  TAppConfigurationSetting,
+  IAppConfigurationSettings,
+} from 'services/appConfiguration';
+
+import { THomepageBannerLayout } from 'services/homepageSettings';
 
 const LayoutPreview = styled.img`
   width: 200px;
@@ -46,25 +47,21 @@ const LayoutOptionTextWrapper = styled.div`
 `;
 
 interface Props {
-  // to be changed, I would actually keep the state for this here
-  // and only have handleOnChange as a prop
-  latestHomepageSettingsAttributes: IHomepageSettingsAttributes;
+  latestAppConfigSettings:
+    | IAppConfigurationSettings
+    | Partial<IAppConfigurationSettings>;
   handleOnChange: (
-    // also to be adjusted, should be a homepage setting
     settingName: TAppConfigurationSetting
   ) => (settingKey: string, settingValue: any) => void;
 }
 
-const LayoutSetting = ({
-  latestHomepageSettingsAttributes,
-  handleOnChange,
-}: Props) => {
+const LayoutSetting = ({ latestAppConfigSettings, handleOnChange }: Props) => {
   const handleLayoutOnChange = (layout: THomepageBannerLayout) => {
     handleOnChange('customizable_homepage_banner')('layout', layout);
   };
 
-  // to be tested. Is it okay for this value to be possibly null?
-  const homepageBannerLayout = latestHomepageSettingsAttributes.banner_layout;
+  const homepageBannerLayout =
+    latestAppConfigSettings.customizable_homepage_banner?.layout;
   return (
     <SectionField key="layout">
       <SubSectionTitle>
