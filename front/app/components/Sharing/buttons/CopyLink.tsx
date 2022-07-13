@@ -24,23 +24,23 @@ const CopyLink = ({
   };
 
   return (
-    <Box display="flex">
+    <Box display="flex" flexGrow={1}>
       <Button
+        buttonStyle="secondary"
         minWidth="154px"
+        width="100%"
         onClick={handleClick()}
         aria-label={formatMessage(messages.shareByLink)}
-        bgColor={colors.backgroundLightGrey}
         icon="link"
         iconColor={colors.grey}
         iconSize="20px"
+        fontSize="14px"
         text={
           linkIsCopied
             ? formatMessage(messages.linkCopied)
             : formatMessage(messages.shareByLink)
         }
-        textColor={colors.grey}
-        textHoverColor={colors.grey}
-        iconHoverColor={colors.grey}
+        paddingX="4px"
       />
     </Box>
   );

@@ -48,7 +48,8 @@ const Messenger = ({
           onClick={handleClick(messengerHref)}
           aria-label={formatMessage(messages.shareViaWhatsApp)}
           bgColor={colors.facebookMessenger}
-          width="48px"
+          width="40px"
+          height="40px"
           icon="messenger"
           iconSize="20px"
         />
