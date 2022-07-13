@@ -31,7 +31,7 @@ const BottomInfoForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
   const theme: any = useTheme();
 
   const [bottomInfoSectionMultilocState, setBottomInfoSectionMultilocState] =
-    useState<Multiloc | null | undefined>(null);
+    useState<Multiloc | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLError[] | null>(null);
 

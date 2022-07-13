@@ -1,9 +1,14 @@
 import React from 'react';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { THomepageBannerLayout } from 'services/appConfiguration';
-import { UploadFile } from 'typings';
-import { PreviewDevice } from './index';
+
+// components and theming
 import styled, { useTheme } from 'styled-components';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import { PreviewDevice } from './index';
+
+// types
+import { THomepageBannerLayout } from 'services/appConfiguration';
+import { IHomepageSettingsAttributes } from 'services/homepageSettings';
+import { UploadFile } from 'typings';
 
 const HeaderImageOverlay = styled.div<{
   overlayColor: string;
@@ -19,8 +24,8 @@ const HeaderImageOverlay = styled.div<{
 `;
 
 interface Props {
-  homepageSettingsOverlayOpacity: number;
-  homepageSettingsOverlayColor: string;
+  homepageSettingsOverlayOpacity: IHomepageSettingsAttributes['banner_signed_out_header_overlay_opacity'];
+  homepageSettingsOverlayColor: IHomepageSettingsAttributes['banner_signed_out_header_overlay_color'];
   onAdd: (newImage: UploadFile[]) => void;
   onRemove: () => void;
   headerError: string | null;

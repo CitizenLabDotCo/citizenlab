@@ -7,21 +7,33 @@ import CTASignedOutSettings from './CTASignedOutSettings';
 import CTASignedInSettings from './CTASignedInSettings';
 import { CLErrors } from 'typings';
 
+// only these keys will be used in CTA settings
+export type BannerSettingKeyTypes = Extract<
+  IHomepageSettingsAttributes,
+  | 'banner_cta_signed_in_text_multiloc'
+  | 'banner_cta_signed_out_text_multiloc'
+  | 'banner_cta_signed_in_url'
+  | 'banner_cta_signed_out_url'
+  | 'banner_cta_signed_out_type'
+  | 'banner_cta_signed_in_type'
+>;
+
 interface Props {
   homepageSettings: IHomepageSettingsAttributes;
-  handleOnChange: (settingKey: string, settingValue: any) => void;
+  handleOnChange: (
+    settingKey: keyof BannerSettingKeyTypes,
+    settingValue: any
+  ) => void;
   errors: CLErrors;
 }
 
 const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
-  const handleSettingOnChange = (key: string, value: any) => {
+  const handleSettingOnChange = (
+    key: keyof BannerSettingKeyTypes,
+    value: string
+  ) => {
     handleOnChange(key, value);
   };
-
-  // this will be handled in the main outlet file alongside feature flags
-  if (!homepageSettings.customizable_homepage_banner_enabled) {
-    return null;
-  }
 
   return (
     <Section>

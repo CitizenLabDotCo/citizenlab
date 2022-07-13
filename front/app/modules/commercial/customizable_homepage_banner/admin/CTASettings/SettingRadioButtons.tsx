@@ -6,6 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { Radio } from '@citizenlab/cl2-component-library';
 import CustomizedButtonSettings from './CustomizedButtonSettings';
 import styled from 'styled-components';
+import { BannerSettingKeyTypes } from '.';
 
 const StyledCustomizedButtonSettings = styled(CustomizedButtonSettings)`
   margin-left: 28px;
@@ -18,7 +19,10 @@ type SettingRadioButtonsProps =
       ctaType: CTASignedOutType;
       ctaButtonMultiloc: Multiloc;
       ctaButtonUrl: string;
-      handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+      handleSettingOnChange: (
+        settingKey: keyof BannerSettingKeyTypes,
+        settingValue: any
+      ) => void;
       errors: CLErrors;
     }
   | {
@@ -27,7 +31,10 @@ type SettingRadioButtonsProps =
       ctaType: CTASignedInType;
       ctaButtonMultiloc: Multiloc;
       ctaButtonUrl: string;
-      handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+      handleSettingOnChange: (
+        settingKey: keyof BannerSettingKeyTypes,
+        settingValue: any
+      ) => void;
       errors: CLErrors;
     };
 

@@ -13,6 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { BannerSettingKeyTypes } from '.';
 
 const TextSettings = styled.div`
   margin-top: 10px;
@@ -81,18 +82,12 @@ const getUrlErrors = (
   return null;
 };
 
-type SettingKeyType =
-  | 'banner_cta_signed_out_text_multiloc'
-  | 'banner_cta_signed_in_text_multiloc'
-  | 'banner_cta_signed_out_url'
-  | 'banner_cta_signed_in_url';
-
 interface Props {
   buttonUrl: string;
   buttonMultiloc: Multiloc;
   buttonConfig?: CustomizedButtonConfig;
   handleSettingOnChange: (
-    settingKey: SettingKeyType,
+    settingKey: keyof BannerSettingKeyTypes,
     settingValue: Multiloc | string
   ) => void;
   signInStatus: 'signed_out' | 'signed_in';

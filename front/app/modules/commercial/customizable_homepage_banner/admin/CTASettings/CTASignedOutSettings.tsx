@@ -6,6 +6,7 @@ import { CTASignedOutType } from 'services/appConfiguration';
 import SettingRadioButtons from './SettingRadioButtons';
 import { CLErrors, Multiloc } from 'typings';
 import SettingsLabel from './SettingsLabel';
+import { BannerSettingKeyTypes } from '.';
 
 const CTA_SIGNED_OUT_TYPES: CTASignedOutType[] = [
   'sign_up_button',
@@ -17,7 +18,10 @@ type Props = {
   ctaType: CTASignedOutType;
   ctaButtonMultiloc: Multiloc;
   ctaButtonUrl: string;
-  handleSettingOnChange: (settingKey: string, settingValue: any) => void;
+  handleSettingOnChange: (
+    settingKey: keyof BannerSettingKeyTypes,
+    settingValue: string
+  ) => void;
   errors: CLErrors;
 };
 
