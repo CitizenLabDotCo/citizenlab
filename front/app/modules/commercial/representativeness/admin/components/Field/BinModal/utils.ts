@@ -10,7 +10,7 @@ export const validateBins = (bins: Bins) => {
 
 export const allBinsEmpty = (bins: Bins) => {
   return bins.every((bin) => bin === null);
-}
+};
 
 export const updateLowerBound = (
   bins: Bins,
@@ -87,6 +87,15 @@ export const getUpperBoundLimits = (bins: Bins) => {
       : lowerBoundLastBin;
 
   return [lastLowerBoundMin + 1, ABSOLUTE_MAX];
+};
+
+export const removeBin = (bins: Bins) => {
+  const sliced = bins.slice(0, bins.length - 1);
+  const newLastBin = sliced[sliced.length - 1];
+
+  sliced[sliced.length - 1] = newLastBin === null ? newLastBin : newLastBin - 1;
+
+  return sliced;
 };
 
 const defined = (bound: string | undefined) =>

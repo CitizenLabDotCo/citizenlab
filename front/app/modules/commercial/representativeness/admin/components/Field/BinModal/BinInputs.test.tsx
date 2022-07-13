@@ -15,6 +15,7 @@ describe('<BinInputs />', () => {
           bins={bins}
           onUpdateLowerBound={jest.fn()}
           onUpdateUpperBound={jest.fn()}
+          onRemoveBin={jest.fn()}
         />
       );
 
@@ -31,6 +32,7 @@ describe('<BinInputs />', () => {
           bins={bins}
           onUpdateLowerBound={jest.fn()}
           onUpdateUpperBound={jest.fn()}
+          onRemoveBin={jest.fn()}
         />
       );
 
@@ -53,6 +55,7 @@ describe('<BinInputs />', () => {
           bins={bins}
           onUpdateLowerBound={jest.fn()}
           onUpdateUpperBound={jest.fn()}
+          onRemoveBin={jest.fn()}
         />
       );
 
@@ -68,6 +71,7 @@ describe('<BinInputs />', () => {
           bins={[18, 25, 35, 55, 80]}
           onUpdateLowerBound={jest.fn()}
           onUpdateUpperBound={jest.fn()}
+          onRemoveBin={jest.fn()}
         />
       );
 
@@ -88,6 +92,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={onUpdateLowerBound}
             onUpdateUpperBound={jest.fn()}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -101,6 +106,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={onUpdateLowerBound}
             onUpdateUpperBound={jest.fn()}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -125,6 +131,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={onUpdateLowerBound}
             onUpdateUpperBound={jest.fn()}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -138,6 +145,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={onUpdateLowerBound}
             onUpdateUpperBound={jest.fn()}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -162,6 +170,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={onUpdateLowerBound}
             onUpdateUpperBound={jest.fn()}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -175,6 +184,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={onUpdateLowerBound}
             onUpdateUpperBound={jest.fn()}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -199,6 +209,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={jest.fn()}
             onUpdateUpperBound={onUpdateUpperBound}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -212,6 +223,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={jest.fn()}
             onUpdateUpperBound={onUpdateUpperBound}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -234,6 +246,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={jest.fn()}
             onUpdateUpperBound={onUpdateUpperBound}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -247,6 +260,7 @@ describe('<BinInputs />', () => {
             bins={bins}
             onUpdateLowerBound={jest.fn()}
             onUpdateUpperBound={onUpdateUpperBound}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -269,6 +283,7 @@ describe('<BinInputs />', () => {
             bins={[18, 25, 35, 55, 80]}
             onUpdateLowerBound={jest.fn()}
             onUpdateUpperBound={onUpdateUpperBound}
+            onRemoveBin={jest.fn()}
           />
         );
 
@@ -282,6 +297,7 @@ describe('<BinInputs />', () => {
             bins={[18, 25, 35, 55, 80]}
             onUpdateLowerBound={jest.fn()}
             onUpdateUpperBound={onUpdateUpperBound}
+            onRemoveBin={jest.fn()}
           />
         );
 

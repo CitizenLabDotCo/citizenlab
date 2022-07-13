@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
 // components
-import { Box, Text, Input } from '@citizenlab/cl2-component-library';
+import { Box, Text, Input, Icon } from '@citizenlab/cl2-component-library';
 import BinInputsHeader from './BinInputsHeader';
 
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+
+// styling
+import styled from 'styled-components';
 
 // utils
 import { getLowerBoundLimits, getUpperBoundLimits, parseLabel } from './utils';
@@ -16,10 +19,15 @@ import { clamp } from 'lodash-es';
 // typings
 import { Bins } from '.';
 
+const RemoveBinButton = styled.button`
+  cursor: pointer;
+`;
+
 interface Props {
   bins: Bins;
   onUpdateLowerBound: (binIndex: number, newValue: number | null) => void;
   onUpdateUpperBound: (newValue: number | null) => void;
+  onRemoveBin: () => void;
 }
 
 const BinInputs = ({ bins, ...otherProps }: Props) => (
@@ -41,6 +49,7 @@ const BinInputRow = injectIntl(
     binIndex,
     onUpdateLowerBound,
     onUpdateUpperBound,
+    onRemoveBin,
     intl: { formatMessage },
   }: RowProps & InjectedIntlProps) => {
     const lowerBound = bins[binIndex];
@@ -123,13 +132,23 @@ const BinInputRow = injectIntl(
             onBlur={handleBlurUpperBound}
           />
         </Box>
-        <Box width="25%">
+        <Box width="25%" display="flex" alignItems="center">
           <Text variant="bodyS" fontWeight="bold" color="adminTextColor">
             {parseLabel(
               lowerBoundDisplayValue,
               upperBoundDisplayValue,
               isLastBin,
               formatMessage(messages.ageAndOver, { age: lowerBound })
+            )}
+            {isLastBin && (
+              <RemoveBinButton onClick={onRemoveBin}>
+                <Icon
+                  name="minus-circle"
+                  width="13px"
+                  height="13px"
+                  ml="12px"
+                />
+              </RemoveBinButton>
             )}
           </Text>
         </Box>

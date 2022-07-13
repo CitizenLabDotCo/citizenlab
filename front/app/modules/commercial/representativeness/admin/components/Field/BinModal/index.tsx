@@ -14,7 +14,12 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { allBinsEmpty, updateLowerBound, updateUpperBound } from './utils';
+import {
+  allBinsEmpty,
+  updateLowerBound,
+  updateUpperBound,
+  removeBin,
+} from './utils';
 
 const ClearAllButton = styled.button`
   cursor: pointer;
@@ -58,6 +63,10 @@ const BinModal = ({ open, onClose }: Props) => {
 
   const applyExampleGrouping = () => {
     setBins(getDummyBins());
+  };
+
+  const handleRemoveBin = () => {
+    setBins((bins) => removeBin(bins));
   };
 
   return (
@@ -104,6 +113,7 @@ const BinModal = ({ open, onClose }: Props) => {
           bins={bins}
           onUpdateLowerBound={handleUpdateLowerBound}
           onUpdateUpperBound={handleUpdateUpperBound}
+          onRemoveBin={handleRemoveBin}
         />
       </Box>
     </Modal>
