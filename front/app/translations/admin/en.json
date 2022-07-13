@@ -1464,6 +1464,7 @@
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.emptyNavbarItemTitleError": "The 'Name in navbar' field is required. If your platform has multiple languages, check that all languages are filled in.",
   "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.navbarItemTitle": "Name in navbar",
+  "app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.save": "Save",
   "app.modules.commercial.customizable_navbar.brokenURLWarning": "If you change the URL, links to this page using the old URL will no longer work.",
   "app.modules.commercial.customizable_navbar.editContent": "Content",
   "app.modules.commercial.customizable_navbar.emptyDescriptionError": "The description field is required. If your platform has multiple languages, check that all languages are filled in.",
