@@ -53,8 +53,8 @@ export interface IHomepageSettingsAttributes extends IHomepageEnabledSettings {
   banner_signed_out_header_multiloc: Multiloc;
   banner_signed_out_subheader_multiloc: Multiloc;
   // Number between 0 and 100, inclusive
-  banner_signed_out_header_overlay_color: string;
-  banner_signed_out_header_overlay_opacity: number;
+  banner_signed_out_header_overlay_color: string | null;
+  banner_signed_out_header_overlay_opacity: number | null;
   header_bg: ImageSizes | null;
   pinned_admin_publication_ids: string[];
 }

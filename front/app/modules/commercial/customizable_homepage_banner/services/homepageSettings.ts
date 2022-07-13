@@ -17,13 +17,13 @@ declare module 'services/homepageSettings' {
 
   export interface IHomepageSettingsAttributes {
     // cta_signed_in
-    cta_signed_in_text_multiloc: Multiloc;
-    cta_signed_in_type: CTASignedInType;
-    cta_signed_in_url: string;
+    banner_cta_signed_in_text_multiloc: Multiloc;
+    banner_cta_signed_in_type: CTASignedInType;
+    banner_cta_signed_in_url: string | null;
     // cta_signed_out
-    cta_signed_out_text_multiloc: Multiloc;
-    cta_signed_out_type: CTASignedOutType;
-    cta_signed_out_url: string;
+    banner_cta_signed_out_text_multiloc: Multiloc;
+    banner_cta_signed_out_type: CTASignedOutType;
+    banner_cta_signed_out_url: string | null;
   }
 
   interface THomepageBannerLayoutMap {
