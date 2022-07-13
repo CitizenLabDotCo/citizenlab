@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import RenderOnNotificationType from 'modules/utilComponents/RenderOnNotificationType';
-import FeatureFlag from 'components/FeatureFlag';
 import Setting from './admin/containers/Setting';
 import RemoveFlagButton from './admin/components/RemoveFlagButton';
 import ActivityWarningsTab from './admin/components/ActivityWarningsTab';
@@ -24,14 +23,31 @@ const RenderOnSelectedTabValue = ({
   return <>{children}</>;
 };
 
+const RenderOnFeatureFlag = ({ children }) => {
+  const featureFlag = useFeatureFlag({
+    name: 'flag_inappropriate_content',
+  });
+
+  return featureFlag ? <>{children}</> : null;
+};
+
+const RenderOnAllowed = ({ children }) => {
+  const allowed = useFeatureFlag({
+    name: 'flag_inappropriate_content',
+    onlyCheckAllowed: true,
+  });
+
+  return allowed ? <>{children}</> : null;
+};
+
 const configuration: ModuleConfiguration = {
   outlets: {
     'app.containers.Admin.settings.general.form': (props) => {
-      const allowed = useFeatureFlag({
-        name: 'flag_inappropriate_content',
-        onlyCheckAllowed: true,
-      });
-      return allowed ? <Setting {...props} /> : null;
+      return (
+        <RenderOnAllowed>
+          <Setting {...props} />
+        </RenderOnAllowed>
+      );
     },
     'app.modules.commercial.moderation.admin.containers.actionbar.buttons': ({
       isWarningsTabSelected,
@@ -66,13 +82,13 @@ const configuration: ModuleConfiguration = {
       },
     'app.modules.commercial.moderation.admin.containers.tabs': (props) => {
       return (
-        <FeatureFlag name="flag_inappropriate_content">
+        <RenderOnFeatureFlag>
           <ActivityWarningsTab {...props} />
-        </FeatureFlag>
+        </RenderOnFeatureFlag>
       );
     },
     'app.components.NotificationMenu.Notification': ({ notification }) => (
-      <FeatureFlag name="flag_inappropriate_content">
+      <RenderOnFeatureFlag>
         <RenderOnNotificationType
           notification={notification}
           notificationType="inappropriate_content_flagged"
@@ -81,7 +97,7 @@ const configuration: ModuleConfiguration = {
             notification={notification as INLPFlagNotificationData}
           />
         </RenderOnNotificationType>
-      </FeatureFlag>
+      </RenderOnFeatureFlag>
     ),
   },
 };
