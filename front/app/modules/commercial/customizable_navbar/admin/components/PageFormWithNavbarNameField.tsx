@@ -48,10 +48,6 @@ export interface FormValues {
   local_page_files: UploadFile[] | null;
 }
 
-export interface Props {
-  pageId: string | null;
-}
-
 type PageFormProps = {
   onSubmit: (formValues: FormValues) => void | Promise<void>;
   defaultValues?: FormValues;
