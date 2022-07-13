@@ -4,7 +4,6 @@ import styled, { useTheme } from 'styled-components';
 // components
 import Error from 'components/UI/Error';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
-import InfoBar from '../../components/InfoBar';
 import {
   Section,
   SectionField,
@@ -63,6 +62,7 @@ import { convertUrlToUploadFile } from 'utils/fileUtils';
 
 // constants
 import { pagesAndMenuBreadcrumb, homeBreadcrumb } from '../../breadcrumbs';
+import Warning from 'components/UI/Warning';
 const TITLE_MAX_CHAR_COUNT = 45;
 const SUBTITLE_MAX_CHAR_COUNT = 90;
 
@@ -299,9 +299,9 @@ const HeroBannerForm = ({ intl: { formatMessage } }: InjectedIntlProps) => {
       }
     >
       <Section key={'header'}>
-        <InfoBar
-          textContent={<FormattedMessage {...messages.heroBannerInfoBar} />}
-        />
+        <Warning>
+          <FormattedMessage {...messages.heroBannerInfoBar} />
+        </Warning>
         <Outlet
           id="app.containers.Admin.settings.customize.headerSectionStart"
           homepageSettings={localHomepageSettings}
