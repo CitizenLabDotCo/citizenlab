@@ -1237,7 +1237,6 @@
   "app.containers.AdminPage.SideBar.inputManager": "Indatahanteraren",
   "app.containers.AdminPage.SideBar.insights": "Rapportering",
   "app.containers.AdminPage.SideBar.invitations": "Inbjudningar",
-  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
   "app.containers.AdminPage.SideBar.messaging": "Meddelanden",
   "app.containers.AdminPage.SideBar.moderation": "Aktivitet",
   "app.containers.AdminPage.SideBar.processing": "Bearbetning",

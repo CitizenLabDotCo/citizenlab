@@ -1237,7 +1237,6 @@
   "app.containers.AdminPage.SideBar.inputManager": "Idéoverblik",
   "app.containers.AdminPage.SideBar.insights": "Indsigt",
   "app.containers.AdminPage.SideBar.invitations": "Invitationer",
-  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
   "app.containers.AdminPage.SideBar.messaging": "Meddelelser",
   "app.containers.AdminPage.SideBar.moderation": "Aktivitet",
   "app.containers.AdminPage.SideBar.processing": "Behandling",
