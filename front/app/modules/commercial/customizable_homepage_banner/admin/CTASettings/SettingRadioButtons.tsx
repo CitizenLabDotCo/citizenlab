@@ -47,7 +47,7 @@ const SettingRadioButtons = ({
   handleSettingOnChange,
   errors,
 }: SettingRadioButtonsProps) => {
-  const handleOnChange = (value: string) => {
+  const handleOnChange = (value: CTASignedOutType | CTASignedInType) => {
     const ctaTypeToToggle =
       signInStatus === 'signed_out'
         ? 'banner_cta_signed_out_type'

@@ -79,7 +79,6 @@ describe('<HeroBannerForm />', () => {
     });
 
     expect(spy).toHaveBeenCalledWith({
-      ...mockHomepageSettings.data.attributes,
       banner_avatars_enabled: false,
       banner_signed_out_header_multiloc: { en: 'Signed out header updated' },
       banner_signed_out_subheader_multiloc: {

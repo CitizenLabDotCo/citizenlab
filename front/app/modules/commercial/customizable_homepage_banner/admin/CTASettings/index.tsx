@@ -28,13 +28,6 @@ interface Props {
 }
 
 const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
-  const handleSettingOnChange = (
-    key: keyof BannerSettingKeyTypes,
-    value: string
-  ) => {
-    handleOnChange(key, value);
-  };
-
   return (
     <Section>
       <SubSectionTitle>
@@ -44,14 +37,14 @@ const CTASettings = ({ homepageSettings, handleOnChange, errors }: Props) => {
         ctaType={homepageSettings.banner_cta_signed_out_type}
         ctaButtonMultiloc={homepageSettings.banner_cta_signed_out_text_multiloc}
         ctaButtonUrl={homepageSettings.banner_cta_signed_out_url}
-        handleSettingOnChange={handleSettingOnChange}
+        handleSettingOnChange={handleOnChange}
         errors={errors}
       />
       <CTASignedInSettings
         ctaType={homepageSettings.banner_cta_signed_in_type}
         ctaButtonMultiloc={homepageSettings.banner_cta_signed_in_text_multiloc}
         ctaButtonUrl={homepageSettings.banner_cta_signed_in_url}
-        handleSettingOnChange={handleSettingOnChange}
+        handleSettingOnChange={handleOnChange}
         errors={errors}
       />
     </Section>

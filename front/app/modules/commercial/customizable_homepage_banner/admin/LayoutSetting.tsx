@@ -46,7 +46,7 @@ const LayoutOptionTextWrapper = styled.div`
 
 interface Props {
   homepageSettings: IHomepageSettingsAttributes;
-  handleOnChange: (settingKey: string, settingValue: any) => void;
+  handleOnChange: (settingKey: 'banner_layout', settingValue: string) => void;
 }
 
 const LayoutSetting = ({ homepageSettings, handleOnChange }: Props) => {
