@@ -4,9 +4,26 @@ import {
   IAppConfiguration,
   TAppConfigurationSetting,
 } from 'services/appConfiguration';
+import { THomepageAppConfigSettingName } from 'hooks/useHomepageSettingsFeatureFlag';
 
-type Parameters = {
-  name: TAppConfigurationSetting;
+// All appConfig setting names except those that should be checked
+// in homepageSettings/useHomepageSettingsFeatureFlag
+export type TSettingName = Exclude<
+  TAppConfigurationSetting,
+  THomepageAppConfigSettingName
+>;
+
+export type Parameters = HomepageSettingProps | AppConfigSettingProps;
+
+// For THomepageAppConfigSettingName, you can only use
+// this hook to check the allowed value, that is in appConfiguration
+type HomepageSettingProps = {
+  name: THomepageAppConfigSettingName;
+  onlyCheckAllowed: true;
+};
+
+type AppConfigSettingProps = {
+  name: TSettingName;
   onlyCheckAllowed?: boolean;
 };
 
