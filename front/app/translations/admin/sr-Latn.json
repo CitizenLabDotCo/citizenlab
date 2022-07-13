@@ -1237,7 +1237,6 @@
   "app.containers.AdminPage.SideBar.inputManager": "Menadžer unosa",
   "app.containers.AdminPage.SideBar.insights": "Izveštavanje",
   "app.containers.AdminPage.SideBar.invitations": "Pozivnice",
-  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
   "app.containers.AdminPage.SideBar.messaging": "Slanje poruka",
   "app.containers.AdminPage.SideBar.moderation": "Aktivnosti",
   "app.containers.AdminPage.SideBar.processing": "Obrada",
