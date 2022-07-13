@@ -2,12 +2,11 @@
 
 ## Next release
 
-
 ## 2022-07-13
 
 ### Changed
 
-- Update existing accessibility statement, following re-certification
+- [CL-474] Update existing accessibility statement, following re-certification
 
 ### Added
 
