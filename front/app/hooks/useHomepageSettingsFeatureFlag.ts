@@ -13,12 +13,12 @@ import useAppConfiguration from './useAppConfiguration';
 type Parameters = FeatureSectionParameters | RegularSectionParameters;
 
 type FeatureSectionParameters = {
-  homepageEnabledSetting: TAppConfigSectionSetting;
+  sectionEnabledSettingName: TAppConfigSectionSetting;
   appConfigSettingName: THomepageSetting;
 };
 
 type RegularSectionParameters = {
-  homepageEnabledSetting: TSectionSetting;
+  sectionEnabledSettingName: TSectionSetting;
   appConfigSettingName?: never;
 };
 
@@ -26,7 +26,7 @@ type RegularSectionParameters = {
 // you should still use onlyCheckAllowed useFeatureFlag/FeatureFlag/GetFeatureFlag. This hook
 // doesn't have this functionality implemented.
 export default function useHomepageSettingsFeatureFlag({
-  homepageEnabledSetting,
+  sectionEnabledSettingName,
   appConfigSettingName,
 }: Parameters) {
   const homepageSettings = useHomepageSettings();
@@ -42,7 +42,7 @@ export default function useHomepageSettingsFeatureFlag({
     !appConfigSettingName ||
     (!isNilOrError(appConfigSetting) ? appConfigSetting.allowed : false);
   const isEnabled = !isNilOrError(homepageSettings)
-    ? homepageSettings.data.attributes[homepageEnabledSetting]
+    ? homepageSettings.data.attributes[sectionEnabledSettingName]
     : false;
 
   return isAllowed && isEnabled;
