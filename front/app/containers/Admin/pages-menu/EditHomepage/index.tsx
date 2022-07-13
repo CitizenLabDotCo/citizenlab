@@ -20,9 +20,7 @@ type TSectionToggleData = {
 
 const EditHomepage = () => {
   const homepageSettings = useHomepageSettings();
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [sectionTogglesData, _setSectionTogglesData] = useState<
     TSectionToggleData[]
   >([
