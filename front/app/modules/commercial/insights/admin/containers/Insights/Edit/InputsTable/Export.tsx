@@ -41,7 +41,8 @@ const Export = ({
         `${API_PATH}/${getInsightsInputsEndpoint(viewId)}/as_xlsx`,
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         {
-          category: query.category,
+          categories:
+            typeof query.category === 'string' ? [query.category] : undefined,
           processed:
             query.processed === 'true'
               ? true
