@@ -41,7 +41,7 @@ const CTASettings = ({
 
   if (
     !latestAppConfigSettings.customizable_homepage_banner ||
-    !latestHomepageSettings.attributes
+    !latestHomepageSettings.data?.attributes
   ) {
     return null;
   }
@@ -53,7 +53,7 @@ const CTASettings = ({
   const {
     cta_signed_out_type: ctaSignedOutType,
     cta_signed_in_type: ctaSignedInType,
-  } = latestHomepageSettings.attributes;
+  } = latestHomepageSettings.data.attributes;
 
   return (
     <Section>
