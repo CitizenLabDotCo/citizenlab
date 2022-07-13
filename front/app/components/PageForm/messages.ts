@@ -66,4 +66,8 @@ export default defineMessages({
     defaultMessage:
       'The description field is required. If your platform has multiple languages, check that all languages are filled in.',
   },
+  save: {
+    id: 'app.components.PagesForm.save',
+    defaultMessage: 'Save',
+  },
 });

@@ -8,9 +8,12 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { SectionField } from 'components/admin/Section';
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
 import { yupResolver } from '@hookform/resolvers/yup';
-import RHFSubmit from 'components/UI/RHFSubmit';
 import { object } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
+
+// components
+import Button from 'components/UI/Button';
+import { Box } from '@citizenlab/cl2-component-library';
 
 // intl
 import messages from './messages';
@@ -52,8 +55,11 @@ const NavbarItemForm = ({
             name="nav_bar_item_title_multiloc"
           />
         </SectionField>
-
-        <RHFSubmit />
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.save)}
+          </Button>
+        </Box>
       </form>
     </FormProvider>
   );

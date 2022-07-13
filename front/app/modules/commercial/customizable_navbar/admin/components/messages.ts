@@ -82,4 +82,8 @@ export default defineMessages({
     defaultMessage:
       'The description field is required. If your platform has multiple languages, check that all languages are filled in.',
   },
+  save: {
+    id: 'app.modules.commercial.customizable_navbar.admin.components.NavbarTitleField.save',
+    defaultMessage: 'Save',
+  },
 });

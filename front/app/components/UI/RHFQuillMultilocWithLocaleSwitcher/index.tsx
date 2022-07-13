@@ -49,7 +49,7 @@ const RHFQuillMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
             {...field}
             {...rest}
             id={name}
-            valueMultiloc={field.value}
+            valueMultiloc={{ ...defaultValue, ...field.value }}
           />
         )}
       />

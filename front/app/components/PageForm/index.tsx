@@ -10,7 +10,6 @@ import { string, object, mixed } from 'yup';
 import validateMultiloc from 'utils/yup/validateMultiloc';
 import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
 import RHFQuillMultilocWithLocaleSwitcher from 'components/UI/RHFQuillMultilocWithLocaleSwitcher';
-import RHFSubmit from 'components/UI/RHFSubmit';
 import RHFInput from 'components/UI/RHFInput';
 import RHFFileUploader from 'components/UI/RHFFileUploader';
 import {
@@ -31,6 +30,7 @@ import {
   Text,
 } from '@citizenlab/cl2-component-library';
 import Warning from 'components/UI/Warning';
+import Button from 'components/UI/Button';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -162,7 +162,11 @@ const PageForm = ({
             resourceType="page"
           />
         </SectionField>
-        <RHFSubmit />
+        <Box display="flex">
+          <Button type="submit" processing={methods.formState.isSubmitting}>
+            {formatMessage(messages.save)}
+          </Button>
+        </Box>
       </form>
     </FormProvider>
   );

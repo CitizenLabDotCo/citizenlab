@@ -43,15 +43,17 @@ const RHFInputMultilocWithLocaleSwitcher = ({ name, ...rest }: Props) => {
         name={name}
         control={control}
         defaultValue={defaultValue}
-        render={({ field: { ref: _ref, ...field } }) => (
-          <InputMultilocWithLocaleSwitcher
-            {...field}
-            {...rest}
-            locales={locales}
-            type="text"
-            valueMultiloc={field.value}
-          />
-        )}
+        render={({ field: { ref: _ref, ...field } }) => {
+          return (
+            <InputMultilocWithLocaleSwitcher
+              {...field}
+              {...rest}
+              locales={locales}
+              type="text"
+              valueMultiloc={{ ...defaultValue, ...field.value }}
+            />
+          );
+        }}
       />
       {errorMessage && (
         <Error marginTop="8px" marginBottom="8px" text={errorMessage} />
