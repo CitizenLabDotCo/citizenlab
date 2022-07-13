@@ -23,6 +23,10 @@ declare module 'components/ConsentManager/destinations' {
   export interface IDestinationMap {
     intercom: 'intercom';
   }
+
+  interface IConsentManagerFeatureMap {
+    intercom: 'intercom';
+  }
 }
 
 const destinationConfig: IDestinationConfig = {
