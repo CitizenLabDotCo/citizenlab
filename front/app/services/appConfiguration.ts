@@ -256,25 +256,6 @@ export interface IAppConfigurationStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
-// to be moved?
-export const homepageBannerLayoutHeights = {
-  full_width_banner_layout: {
-    desktop: 450,
-    tablet: 350,
-    phone: 300,
-  },
-  two_column_layout: {
-    desktop: 532,
-    tablet: 532,
-    phone: 240,
-  },
-  two_row_layout: {
-    desktop: 280,
-    tablet: 200,
-    phone: 200,
-  },
-};
-
 export interface IAppConfigurationAttributes {
   name: string;
   host: string;
