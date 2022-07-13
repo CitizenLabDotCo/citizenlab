@@ -315,6 +315,22 @@ describe('<BinInputs />', () => {
   });
 
   describe('removing bin', () => {
-    // TODO
+    it('calls correct function on remove bin', () => {
+      const onRemoveBin = jest.fn();
+
+      const { container } = render(
+        <BinInputs
+          bins={[18, 25, 35, 55, 80]}
+          onUpdateLowerBound={jest.fn()}
+          onUpdateUpperBound={jest.fn()}
+          onRemoveBin={onRemoveBin}
+        />
+      );
+
+      const removeBinButton = container.querySelector('svg');
+      fireEvent.click(removeBinButton);
+
+      expect(onRemoveBin).toHaveBeenCalledTimes(1);
+    });
   });
 });
