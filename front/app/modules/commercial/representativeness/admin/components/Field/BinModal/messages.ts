@@ -37,4 +37,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.clearAll',
     defaultMessage: 'Clear all',
   },
+  applyExampleGrouping: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.applyExampleGrouping',
+    defaultMessage: 'Apply example grouping',
+  }
 });

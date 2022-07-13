@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
 import BinInputs from './BinInputs';
 
 // i18n
@@ -14,11 +14,18 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import { updateLowerBound, updateUpperBound } from './utils';
+import {
+  allBinsEmpty,
+  updateLowerBound,
+  updateUpperBound
+} from './utils';
 
-const ResetAllButton = styled.button`
+const StyledButton = styled.button`
   cursor: pointer;
-  color: ${colors.clRedError};
+`
+
+const StyledIcon = styled(Icon)`
+  transform: translateY(-1px);
 `
 
 interface Props {
@@ -26,7 +33,7 @@ interface Props {
   onClose: () => void;
 }
 
-export type Bins = (number| null)[];
+export type Bins = (number | null)[];
 
 // TODO delete this when real data is available
 export const getDummyBins = (): Bins => [
@@ -48,6 +55,10 @@ const BinModal = ({ open, onClose }: Props) => {
     setBins((bins) => Array(bins.length).fill(null));
   }
 
+  const applyExampleGrouping = () => {
+    setBins(getDummyBins());
+  }
+
   return (
     <Modal
       opened={open}
@@ -62,9 +73,27 @@ const BinModal = ({ open, onClose }: Props) => {
       <Box p="28px">
         <Box display="flex" justifyContent="space-between">
           <FormattedMessage {...messages.modalDescription} />
-          <ResetAllButton onClick={resetAll}>
-            <FormattedMessage {...messages.clearAll} />
-          </ResetAllButton>
+          <Box display="flex" flexDirection="row-reverse" justifyContent="flex-end">
+            <StyledButton onClick={resetAll}>
+              <Text variant="bodyS" mt="0px" mb="0px" color="clRedError">
+                <FormattedMessage {...messages.clearAll} />
+              </Text>
+            </StyledButton>
+            {allBinsEmpty(bins) && (
+              <StyledButton onClick={applyExampleGrouping}>
+                <Text variant="bodyS" mt="0px" mb="0px" color="label">
+                  <StyledIcon 
+                    name="groups2"
+                    height="10px"
+                    width="14px"
+                    mr="6px"
+                    fill={colors.label}
+                  />
+                  <FormattedMessage {...messages.applyExampleGrouping} />
+                </Text>
+              </StyledButton>
+            )}
+          </Box>
         </Box>
         <BinInputs
           bins={bins}

@@ -8,6 +8,10 @@ export const validateBins = (bins: Bins) => {
   return true;
 };
 
+export const allBinsEmpty = (bins: Bins) => {
+  return bins.every((bin) => bin === null);
+}
+
 export const updateLowerBound = (
   bins: Bins,
   binIndex: number,

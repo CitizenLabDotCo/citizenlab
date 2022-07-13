@@ -76,6 +76,7 @@ const BinInputRow = injectIntl(
           : clamp(+currentLowerBound, lowerBoundMin, lowerBoundMax);
 
       if (newValue !== lowerBound) {
+        console.log('calling function')
         onUpdateLowerBound(binIndex, newValue);
       }
 
