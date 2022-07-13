@@ -9,6 +9,7 @@ import InappropriateContentWarning from './admin/components/InappropriateContent
 import EmptyMessageModerationsWithFlag from './admin/components/EmptyMessageModerationsWithFlag';
 import NLPFlagNotification from './citizen/components/NLPFlagNotification';
 import { INLPFlagNotificationData } from 'services/notifications';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type RenderOnSelectedTabValueProps = {
   isTabSelected: boolean;
@@ -25,11 +26,13 @@ const RenderOnSelectedTabValue = ({
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.containers.Admin.settings.general.form': (props) => (
-      <FeatureFlag onlyCheckAllowed name="flag_inappropriate_content">
-        <Setting {...props} />
-      </FeatureFlag>
-    ),
+    'app.containers.Admin.settings.general.form': (props) => {
+      const allowed = useFeatureFlag({
+        name: 'flag_inappropriate_content',
+        onlyCheckAllowed: true,
+      });
+      return allowed ? <Setting {...props} /> : null;
+    },
     'app.modules.commercial.moderation.admin.containers.actionbar.buttons': ({
       isWarningsTabSelected,
       ...otherProps

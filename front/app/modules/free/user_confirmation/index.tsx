@@ -2,29 +2,38 @@ import React from 'react';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import ConfirmationSignupStep from './citizen/components/ConfirmationSignupStep';
 import ToggleUserConfirmation from './admin/components/ToggleUserConfirmation';
-import FeatureFlag from 'components/FeatureFlag';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const CONFIRMATION_STEP_NAME = 'confirmation';
 
 const configuration: ModuleConfiguration = {
   outlets: {
-    'app.components.SignUpIn.SignUp.step': (props) => (
-      <FeatureFlag name="user_confirmation">
-        <ConfirmationSignupStep {...props} />
-      </FeatureFlag>
-    ),
+    'app.components.SignUpIn.SignUp.step': (props) => {
+      const enabled = useFeatureFlag({
+        name: 'user_confirmation',
+      });
+      return enabled ? <ConfirmationSignupStep {...props} /> : null;
+    },
+
     'app.containers.Admin.settings.registrationSectionEnd': ({
       userConfirmationSetting,
       onSettingChange,
     }) => {
-      return userConfirmationSetting ? (
-        <FeatureFlag onlyCheckAllowed name="user_confirmation">
+      const allowed = useFeatureFlag({
+        name: 'user_confirmation',
+        onlyCheckAllowed: true,
+      });
+
+      if (allowed) {
+        return userConfirmationSetting ? (
           <ToggleUserConfirmation
             userConfirmationSetting={userConfirmationSetting}
             onSettingChange={onSettingChange}
           />
-        </FeatureFlag>
-      ) : null;
+        ) : null;
+      }
+
+      return null;
     },
   },
 };
