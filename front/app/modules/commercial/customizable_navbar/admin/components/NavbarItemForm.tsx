@@ -1,46 +1,75 @@
 import React from 'react';
-import { InjectedFormikProps, FormikErrors } from 'formik';
-
-// components
-import NavbarTitleField from './NavbarTitleField';
-import BasePageForm from 'components/PageForm/BasePageForm';
 
 // typings
-import { Multiloc, Locale } from 'typings';
+import { Multiloc } from 'typings';
 
-// utils
-import { validateMultiloc } from 'components/PageForm/fields/validate';
+// form
+import { FormProvider, useForm } from 'react-hook-form';
+import { SectionField } from 'components/admin/Section';
+import RHFInputMultilocWithLocaleSwitcher from 'components/UI/RHFInputMultilocWithLocaleSwitcher';
+import { yupResolver } from '@hookform/resolvers/yup';
+import RHFSubmit from 'components/UI/RHFSubmit';
+import * as yup from 'yup';
+
+// intl
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 export interface FormValues {
   nav_bar_item_title_multiloc: Multiloc;
 }
 
-export interface Props {}
-
-export function validatePageForm(appConfigurationLocales: Locale[]) {
-  return function ({
-    nav_bar_item_title_multiloc,
-  }: FormValues): FormikErrors<FormValues> {
-    const errors: FormikErrors<FormValues> = {};
-
-    const error = validateMultiloc(
-      nav_bar_item_title_multiloc,
-      appConfigurationLocales
-    );
-
-    error && (errors.nav_bar_item_title_multiloc = error);
-
-    return errors;
-  };
-}
+type PageFormProps = {
+  onSubmit: (formValues: FormValues) => void | Promise<void>;
+  defaultValues?: FormValues;
+} & InjectedIntlProps;
 
 const NavbarItemForm = ({
-  errors,
-  ...props
-}: InjectedFormikProps<Props, FormValues>) => (
-  <BasePageForm errors={errors} {...props}>
-    <NavbarTitleField error={errors.nav_bar_item_title_multiloc} />
-  </BasePageForm>
-);
+  onSubmit,
+  defaultValues,
+  intl: { formatMessage },
+}: PageFormProps) => {
+  const schema = yup
+    .object({
+      nav_bar_item_title_multiloc: yup.lazy((obj) => {
+        const keys = Object.keys(obj);
 
-export default NavbarItemForm;
+        return yup.object(
+          keys.reduce(
+            (acc, curr) => (
+              (acc[curr] = yup
+                .string()
+                .required(formatMessage(messages.emptyNavbarItemTitleError))),
+              acc
+            ),
+            {}
+          )
+        );
+      }),
+    })
+    .required();
+
+  const methods = useForm({
+    defaultValues,
+    resolver: yupResolver(schema),
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <SectionField>
+          <RHFInputMultilocWithLocaleSwitcher
+            label={formatMessage(messages.navbarItemTitle)}
+            type="text"
+            name="nav_bar_item_title_multiloc"
+          />
+        </SectionField>
+
+        <RHFSubmit />
+      </form>
+    </FormProvider>
+  );
+};
+
+export default injectIntl(NavbarItemForm);
