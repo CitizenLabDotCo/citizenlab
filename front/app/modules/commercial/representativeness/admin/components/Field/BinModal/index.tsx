@@ -14,19 +14,19 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
-import {
-  allBinsEmpty,
-  updateLowerBound,
-  updateUpperBound
-} from './utils';
+import { allBinsEmpty, updateLowerBound, updateUpperBound } from './utils';
 
-const StyledButton = styled.button`
+const ClearAllButton = styled.button`
   cursor: pointer;
-`
+`;
+
+const ApplyExampleGroupingButton = styled.button`
+  cursor: pointer;
+`;
 
 const StyledIcon = styled(Icon)`
   transform: translateY(-1px);
-`
+`;
 
 interface Props {
   open: boolean;
@@ -36,14 +36,15 @@ interface Props {
 export type Bins = (number | null)[];
 
 // TODO delete this when real data is available
-export const getDummyBins = (): Bins => [
-  18, 25, 35, 45, 55, 65, null
-]
+export const getDummyBins = (): Bins => [18, 25, 35, 45, 55, 65, null];
 
 const BinModal = ({ open, onClose }: Props) => {
   const [bins, setBins] = useState(getDummyBins());
 
-  const handleUpdateLowerBound = (binIndex: number, newValue: number | null) => {
+  const handleUpdateLowerBound = (
+    binIndex: number,
+    newValue: number | null
+  ) => {
     setBins((bins) => updateLowerBound(bins, binIndex, newValue));
   };
 
@@ -53,11 +54,11 @@ const BinModal = ({ open, onClose }: Props) => {
 
   const resetAll = () => {
     setBins((bins) => Array(bins.length).fill(null));
-  }
+  };
 
   const applyExampleGrouping = () => {
     setBins(getDummyBins());
-  }
+  };
 
   return (
     <Modal
@@ -73,16 +74,20 @@ const BinModal = ({ open, onClose }: Props) => {
       <Box p="28px">
         <Box display="flex" justifyContent="space-between">
           <FormattedMessage {...messages.modalDescription} />
-          <Box display="flex" flexDirection="row-reverse" justifyContent="flex-end">
-            <StyledButton onClick={resetAll}>
+          <Box
+            display="flex"
+            flexDirection="row-reverse"
+            justifyContent="flex-end"
+          >
+            <ClearAllButton onClick={resetAll}>
               <Text variant="bodyS" mt="0px" mb="0px" color="clRedError">
                 <FormattedMessage {...messages.clearAll} />
               </Text>
-            </StyledButton>
+            </ClearAllButton>
             {allBinsEmpty(bins) && (
-              <StyledButton onClick={applyExampleGrouping}>
+              <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
                 <Text variant="bodyS" mt="0px" mb="0px" color="label">
-                  <StyledIcon 
+                  <StyledIcon
                     name="groups2"
                     height="10px"
                     width="14px"
@@ -91,7 +96,7 @@ const BinModal = ({ open, onClose }: Props) => {
                   />
                   <FormattedMessage {...messages.applyExampleGrouping} />
                 </Text>
-              </StyledButton>
+              </ApplyExampleGroupingButton>
             )}
           </Box>
         </Box>
