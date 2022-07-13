@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.andOver',
     defaultMessage: 'and over',
   },
+  clearAll: {
+    id: 'app.containers.AdminPage.DashboardPage.components.Field.BinModal.clearAll',
+    defaultMessage: 'Clear all',
+  },
 });

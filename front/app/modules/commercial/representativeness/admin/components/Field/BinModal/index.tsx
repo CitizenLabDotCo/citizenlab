@@ -10,10 +10,16 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
+import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 // utils
 import { updateLowerBound, updateUpperBound } from './utils';
+
+const ResetAllButton = styled.button`
+  cursor: pointer;
+  color: ${colors.clRedError};
+`
 
 interface Props {
   open: boolean;
@@ -38,6 +44,10 @@ const BinModal = ({ open, onClose }: Props) => {
     setBins((bins) => updateUpperBound(bins, newValue));
   };
 
+  const resetAll = () => {
+    setBins((bins) => Array(bins.length).fill(null));
+  }
+
   return (
     <Modal
       opened={open}
@@ -50,7 +60,12 @@ const BinModal = ({ open, onClose }: Props) => {
       }
     >
       <Box p="28px">
-        <FormattedMessage {...messages.modalDescription} />
+        <Box display="flex" justifyContent="space-between">
+          <FormattedMessage {...messages.modalDescription} />
+          <ResetAllButton onClick={resetAll}>
+            <FormattedMessage {...messages.clearAll} />
+          </ResetAllButton>
+        </Box>
         <BinInputs
           bins={bins}
           onUpdateLowerBound={handleUpdateLowerBound}
