@@ -1237,7 +1237,6 @@
   "app.containers.AdminPage.SideBar.inputManager": "Input manager",
   "app.containers.AdminPage.SideBar.insights": "Reporting",
   "app.containers.AdminPage.SideBar.invitations": "Invitations",
-  "app.containers.AdminPage.SideBar.linkToSupportCenter": "https://support.citizenlab.co/",
   "app.containers.AdminPage.SideBar.messaging": "Allagarsiat",
   "app.containers.AdminPage.SideBar.moderation": "Sammisaq",
   "app.containers.AdminPage.SideBar.processing": "Processing",
