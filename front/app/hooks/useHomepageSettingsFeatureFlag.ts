@@ -6,33 +6,35 @@ import useAppConfiguration from './useAppConfiguration';
 
 // Enabled values for sections that have a corresponding
 // setting in appConfiguration.ts
-type TFeatureSectionEnabledSetting = Extract<
+export type TAppConfigSectionSetting = Extract<
   THomepageEnabledSetting,
   'events_widget_enabled' | 'customizable_homepage_banner_enabled'
 >;
 
 // Enabled values for sections that DON'T have a corresponding
 // setting in appConfiguration.ts (are regular sections)
-type TRegularSectionEnabledSetting = Exclude<
+type TSectionSetting = Exclude<
   THomepageEnabledSetting,
-  TFeatureSectionEnabledSetting
+  TAppConfigSectionSetting
+>;
+
+export type THomepageAppConfigSettingName = Extract<
+  TAppConfigurationSetting,
+  'events_widget' | 'customizable_homepage_banner'
 >;
 
 // If we deal with a section whose allowed value needs to be checked
-// in appConfiguration, we requre the appConfiguration setting name.
+// in appConfiguration, we require the appConfiguration setting name.
 // Otherwise, we just need the enabled value that can be found in homepageSettings.
 type Parameters = FeatureSectionParameters | RegularSectionParameters;
 
 type FeatureSectionParameters = {
-  homepageEnabledSetting: TFeatureSectionEnabledSetting;
-  appConfigSettingName: Extract<
-    TAppConfigurationSetting,
-    'events_widget' | 'customizable_homepage_banner'
-  >;
+  homepageEnabledSetting: TAppConfigSectionSetting;
+  appConfigSettingName: THomepageAppConfigSettingName;
 };
 
 type RegularSectionParameters = {
-  homepageEnabledSetting: TRegularSectionEnabledSetting;
+  homepageEnabledSetting: TSectionSetting;
   appConfigSettingName?: never;
 };
 
