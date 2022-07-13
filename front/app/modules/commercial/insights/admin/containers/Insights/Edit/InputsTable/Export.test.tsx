@@ -48,7 +48,7 @@ describe('Insights Export', () => {
     fireEvent.click(screen.getByRole('button'));
 
     expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
-      category: 'category',
+      categories: ['category'],
       processed: true,
     });
   });
@@ -59,7 +59,7 @@ describe('Insights Export', () => {
     fireEvent.click(screen.getByRole('button'));
 
     expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
-      category: 'category',
+      categories: ['category'],
       processed: false,
     });
   });
@@ -69,7 +69,7 @@ describe('Insights Export', () => {
     fireEvent.click(screen.getByRole('button'));
 
     expect(requestBlob).toHaveBeenCalledWith(apiPath, application, {
-      category: 'category',
+      categories: ['category'],
     });
   });
 });
