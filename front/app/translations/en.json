@@ -6,6 +6,7 @@
   "UI.FormComponents.buttonEnabled": "Submit button enabled",
   "UI.FormComponents.optional": "optional",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No proposals found",
+  "app.closeIconButton.a11y_buttonActionMessage": "Close",
   "app.components.AssignBudgetControl.a11y_price": "Price:",
   "app.components.AssignBudgetControl.add": "Add",
   "app.components.AssignBudgetControl.addToMyBasket": "Add to my basket",
