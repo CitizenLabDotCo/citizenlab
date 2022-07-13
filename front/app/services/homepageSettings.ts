@@ -20,7 +20,7 @@ export type THomepageSection = IHomepageSectionMap[keyof IHomepageSectionMap];
 
 // * THomepageBannerLayout *
 export interface THomepageBannerLayoutMap {
-  full_with_banner_layout: 'full_width_banner_layout';
+  full_width_banner_layout: 'full_width_banner_layout';
 }
 export type THomepageBannerLayout =
   THomepageBannerLayoutMap[keyof THomepageBannerLayoutMap];
