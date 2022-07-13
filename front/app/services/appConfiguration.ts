@@ -11,11 +11,11 @@ export interface AppConfigurationFeature {
 
 export type TAppConfigurationSetting = keyof IAppConfigurationSettings;
 
-// Setting that have their enabled values in homepageSettings.
+// Settings that have their enabled values in homepageSettings.
 // Their allowed value is still in appConfiguration.
 export type THomepageSetting = 'events_widget' | 'customizable_homepage_banner';
 
-// All appConfig setting names except THomepageSetting
+// All appConfig setting names except those in THomepageSetting
 export type TAppConfigurationSettingWithEnabled = Exclude<
   TAppConfigurationSetting,
   THomepageSetting
