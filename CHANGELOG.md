@@ -2,6 +2,10 @@
 
 ## Next release
 
+### Fixed
+
+- [CL-1113] Fixed sharing button styling when copy link text is long
+
 ### Changed
 
 - [CL-1093] Pin Node.js version in package.json
