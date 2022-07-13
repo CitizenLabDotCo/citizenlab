@@ -84,16 +84,17 @@ describe('Content builder preview', () => {
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });
+    cy.wait(5000);
     cy.get('#e2e-text-box').click();
     cy.get('#quill-editor').click();
-    cy.get('#quill-editor').clear().type('Sample text.', { force: true });
+    cy.get('#quill-editor').type('Sample text.', { force: true });
 
     cy.get('#e2e-preview-toggle').find('input').click({ force: true });
 
     getIframeBody().contains('Sample text.').should('be.visible');
     cy.get('[data-cy="mobile-preview-iframe"]').should('exist');
 
-    cy.get('#e2e-desktop-preview').click();
+    cy.get('#e2e-desktop-preview').click({ force: true });
 
     getIframeBody().contains('Sample text.').should('be.visible');
     cy.get('[data-cy="desktop-preview-iframe"]').should('exist');

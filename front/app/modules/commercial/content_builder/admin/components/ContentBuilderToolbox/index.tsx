@@ -70,12 +70,12 @@ const ContentBuilderToolbox = ({
       <Box w="100%" display="inline">
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
           as="h3"
-          color="label"
+          color="secondaryText"
         >
           <FormattedMessage {...messages.sections} />
         </Title>
@@ -117,12 +117,12 @@ const ContentBuilderToolbox = ({
         </DraggableElement>
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
           as="h3"
-          color="label"
+          color="secondaryText"
         >
           <FormattedMessage {...messages.layout} />
         </Title>
@@ -180,12 +180,12 @@ const ContentBuilderToolbox = ({
         </DraggableElement>
         <Title
           fontWeight="normal"
-          mb="0px"
+          mb="4px"
           mt="24px"
           ml="10px"
           variant="h6"
           as="h3"
-          color="label"
+          color="secondaryText"
         >
           <FormattedMessage {...messages.content} />
         </Title>

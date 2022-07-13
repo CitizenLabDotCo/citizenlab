@@ -62,7 +62,9 @@ export default injectIntl(
       <StyledImagesDropzone
         images={projectHeaderImage}
         imagePreviewRatio={240 / 952}
-        acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+        acceptedFileTypes={{
+          'image/*': ['.jpg', '.jpeg', '.png', '.gif'],
+        }}
         maxImagePreviewWidth="500px"
         onAdd={handleHeaderOnAdd}
         onRemove={handleHeaderOnRemove}

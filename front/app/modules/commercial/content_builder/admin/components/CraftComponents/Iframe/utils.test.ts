@@ -123,6 +123,12 @@ const validPlatformLinks = [
     platform: 'Survey Monkey',
     urls: ['https://www.surveymonkey.co.uk/r/ZF632GH'],
   },
+  {
+    platform: 'PDF Files',
+    urls: [
+      'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+    ],
+  },
 ];
 
 describe('isValidUrl', () => {
