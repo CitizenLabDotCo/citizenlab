@@ -23,8 +23,17 @@ const CopyLink = ({
     setLinkCopied(true);
   };
 
+  let setFullWidth = false;
+
+  if (
+    formatMessage(messages.linkCopied).length > 15 ||
+    formatMessage(messages.shareByLink).length > 15
+  ) {
+    setFullWidth = true;
+  }
+
   return (
-    <Box display="flex" flexGrow={1}>
+    <Box display="flex" flexGrow={setFullWidth ? 1 : 0}>
       <Button
         buttonStyle="secondary"
         minWidth="154px"

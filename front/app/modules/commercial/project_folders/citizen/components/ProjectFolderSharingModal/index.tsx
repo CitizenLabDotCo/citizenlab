@@ -59,7 +59,7 @@ const ProjectFolderSharingModal = memo<
       >
         <Box
           width="100%"
-          maxWidth="420px"
+          maxWidth="400px"
           padding="40px 25px"
           mx="auto"
           style={{ textAlign: 'center' }}
